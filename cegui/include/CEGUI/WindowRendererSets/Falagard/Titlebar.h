@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalTitlebar.h
+    filename:   Titlebar.h
     created:    Sat Jul 2 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalTitlebar_h_
 #define _FalTitlebar_h_
 
-#include "FalModule.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

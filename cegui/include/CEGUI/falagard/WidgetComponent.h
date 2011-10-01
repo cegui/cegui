@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalWidgetComponent.h
+    filename:   CEGUIWidgetComponent.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalWidgetComponent_h_
 #define _CEGUIFalWidgetComponent_h_
 
-#include "CEGUIFalDimensions.h"
-#include "CEGUIFalPropertyInitialiser.h"
-#include "../CEGUIWindow.h"
+#include "./Dimensions.h"
+#include "./PropertyInitialiser.h"
+#include "../Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

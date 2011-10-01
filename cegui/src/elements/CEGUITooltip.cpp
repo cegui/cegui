@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUITooltip.h"
-#include "CEGUILogger.h"
-#include "CEGUIFont.h"
-#include "CEGUIImage.h"
+#include "CEGUI/elements/Tooltip.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Image.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

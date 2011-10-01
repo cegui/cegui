@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOgreWindowTarget.h"
+#include "CEGUI/RendererModules/Ogre/WindowTarget.h"
 
 #include <OgreRenderTarget.h>
 

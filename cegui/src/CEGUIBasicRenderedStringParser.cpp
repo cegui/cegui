@@ -25,14 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIBasicRenderedStringParser.h"
-#include "CEGUIRenderedStringTextComponent.h"
-#include "CEGUIRenderedStringImageComponent.h"
-#include "CEGUIRenderedStringWidgetComponent.h"
-#include "CEGUILogger.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIFont.h"
-#include "CEGUIImage.h"
+#include "CEGUI/BasicRenderedStringParser.h"
+#include "CEGUI/RenderedStringTextComponent.h"
+#include "CEGUI/RenderedStringImageComponent.h"
+#include "CEGUI/RenderedStringWidgetComponent.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Image.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

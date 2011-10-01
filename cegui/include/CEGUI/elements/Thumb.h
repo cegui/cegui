@@ -31,7 +31,7 @@
 #ifndef _CEGUIThumb_h_
 #define _CEGUIThumb_h_
 
-#include "CEGUIPushButton.h"
+#include "./PushButton.h"
 #include <utility>
 
 

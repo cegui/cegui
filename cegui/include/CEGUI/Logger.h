@@ -30,13 +30,13 @@
 #ifndef _CEGUILogger_h_
 #define _CEGUILogger_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
 #include <fstream>
 #include <sstream>
 #include <vector>
 #include <utility>
-#include "CEGUISingleton.h"
+#include "CEGUI/Singleton.h"
 
 
 #if defined(_MSC_VER)

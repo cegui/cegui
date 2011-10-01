@@ -28,7 +28,7 @@
 #ifndef _CEGUILibxmlParser_h_
 #define _CEGUILibxmlParser_h_
 
-#include "../../CEGUIXMLParser.h"
+#include "../../XMLParser.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   ifdef CEGUILIBXMLPARSER_EXPORTS

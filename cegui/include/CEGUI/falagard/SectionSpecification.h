@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalSectionSpecification.h
+    filename:   CEGUISectionSpecification.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalSectionSpecification_h_
 #define _CEGUIFalSectionSpecification_h_
 
-#include "../CEGUIWindow.h"
-#include "../CEGUIColourRect.h"
+#include "../Window.h"
+#include "../ColourRect.h"
 
 
 // Start of CEGUI namespace section

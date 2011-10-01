@@ -30,14 +30,14 @@
 #ifndef _CEGUIMouseCursor_h_
 #define _CEGUIMouseCursor_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUISingleton.h"
-#include "CEGUIVector.h"
-#include "CEGUIRect.h"
-#include "CEGUIEventSet.h"
-#include "CEGUIInputEvent.h"
-#include "CEGUIUDim.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Rect.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/InputEvent.h"
+#include "CEGUI/UDim.h"
 
 
 #if defined(_MSC_VER)

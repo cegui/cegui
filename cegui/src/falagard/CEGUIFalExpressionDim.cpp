@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "../../include/falagard/CEGUIFalExpressionDim.h"
-#include "CEGUIFalExpressionDim_impl.h"
+#include "../../include/CEGUI/falagard/ExpressionDim.h"
+#include "CEGUI/ExpressionDim_impl.h"
 
 #define YY_DECL int lexScan(CEGUI::ExpressionDim_impl* ctx)
-#include "CEGUIFalExpressionDimScanner.h"
+#include "CEGUI/ExpressionDimScanner.h"
 
 YY_DECL;
 

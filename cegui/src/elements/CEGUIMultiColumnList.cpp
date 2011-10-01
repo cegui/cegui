@@ -27,16 +27,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIMultiColumnList.h"
-#include "CEGUIExceptions.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUIListHeader.h"
-#include "elements/CEGUIListboxItem.h"
-#include "CEGUILogger.h"
-#include "CEGUITextUtils.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/elements/MultiColumnList.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/ListHeader.h"
+#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/TextUtils.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/WindowManager.h"
 #include <algorithm>
 
 

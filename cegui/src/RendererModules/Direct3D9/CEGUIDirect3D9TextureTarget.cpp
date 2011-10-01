@@ -25,14 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDirect3D9TextureTarget.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIDirect3D9Renderer.h"
-#include "CEGUIDirect3D9Texture.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/RendererModules/Direct3D9/TextureTarget.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RendererModules/Direct3D9/Renderer.h"
+#include "CEGUI/RendererModules/Direct3D9/Texture.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

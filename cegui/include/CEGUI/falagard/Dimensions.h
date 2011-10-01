@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalDimensions.h
+    filename:   CEGUIDimensions.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,11 +28,11 @@
 #ifndef _CEGUIFalDimensions_h_
 #define _CEGUIFalDimensions_h_
 
-#include "CEGUIFalEnums.h"
-#include "../CEGUIString.h"
-#include "../CEGUIUDim.h"
-#include "../CEGUIRect.h"
-#include "../CEGUIXMLSerializer.h"
+#include "./Enums.h"
+#include "../String.h"
+#include "../UDim.h"
+#include "../Rect.h"
+#include "../XMLSerializer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -27,7 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUICoronaImageCodecModule.h" 
+#include "CEGUI/ImageCodecModules/Corona/ImageCodecModule.h" 
 
 
 CEGUI::ImageCodec* createImageCodec(void)

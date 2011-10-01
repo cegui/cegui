@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalProgressBarProperties.h
+    filename:   ProgressBarProperties.h
     created:    Sat Jul 2 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalProgressBarProperties_h_
 #define _FalProgressBarProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

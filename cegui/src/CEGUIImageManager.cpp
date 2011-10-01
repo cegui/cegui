@@ -25,16 +25,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIImageManager.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 
 // for the XML parsing part.
-#include "CEGUIXMLParser.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUISystem.h"
-#include "CEGUITexture.h"
-#include "CEGUIBasicImage.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/BasicImage.h"
 
 #include <cstdio>
 #include <algorithm>

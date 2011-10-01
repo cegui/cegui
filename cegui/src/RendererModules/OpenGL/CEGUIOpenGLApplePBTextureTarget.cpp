@@ -26,13 +26,13 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "GL/glew.h"
-#include "CEGUIOpenGLApplePBTextureTarget.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIGeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGL/ApplePBTextureTarget.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUIOpenGLRenderer.h"
-#include "CEGUIOpenGLTexture.h"
+#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

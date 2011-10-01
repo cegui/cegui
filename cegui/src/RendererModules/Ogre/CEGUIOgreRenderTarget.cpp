@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOgreRenderTarget.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIOgreGeometryBuffer.h"
+#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
 
 #include <OgreRenderSystem.h>
 #include <OgreCamera.h>

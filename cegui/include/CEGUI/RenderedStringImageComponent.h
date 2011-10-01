@@ -28,9 +28,9 @@
 #ifndef _CEGUIRenderedStringImageComponent_h_
 #define _CEGUIRenderedStringImageComponent_h_
 
-#include "CEGUIRenderedStringComponent.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIString.h"
+#include "CEGUI/RenderedStringComponent.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/String.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

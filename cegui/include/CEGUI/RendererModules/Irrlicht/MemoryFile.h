@@ -32,8 +32,8 @@
 # include "config.h"
 #endif
 
-#include "../../CEGUIBase.h"
-#include "../../CEGUIString.h"
+#include "../../Base.h"
+#include "../../String.h"
 #include <irrlicht.h>
 
 // Start of CEGUI namespace section

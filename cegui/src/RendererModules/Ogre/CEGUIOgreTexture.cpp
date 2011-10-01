@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOgreTexture.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIOgreImageCodec.h"
+#include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>
 

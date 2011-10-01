@@ -30,8 +30,8 @@
 #ifndef _CEGUIIrrlichtResourceProvider_h_
 #define _CEGUIIrrlichtResourceProvider_h_
 
-#include "CEGUIIrrlichtRendererDef.h"
-#include "../../CEGUIDefaultResourceProvider.h"
+#include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
+#include "../../DefaultResourceProvider.h"
 #include <IFileSystem.h>
 
 // Start of CEGUI namespace section

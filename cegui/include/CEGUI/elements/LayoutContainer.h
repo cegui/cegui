@@ -30,7 +30,7 @@
 #ifndef _CEGUILayoutContainer_h_
 #define _CEGUILayoutContainer_h_
 
-#include "../CEGUIWindow.h"
+#include "../Window.h"
 
 #include <map>
 

@@ -28,9 +28,9 @@
 #ifndef _CEGUITplWRFactoryRegisterer_h_
 #define _CEGUITplWRFactoryRegisterer_h_
 
-#include "CEGUIWRFactoryRegisterer.h"
-#include "CEGUITplWindowRendererFactory.h"
-#include "CEGUIWindowRendererManager.h"
+#include "CEGUI/WRFactoryRegisterer.h"
+#include "CEGUI/TplWindowRendererFactory.h"
+#include "CEGUI/WindowRendererManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

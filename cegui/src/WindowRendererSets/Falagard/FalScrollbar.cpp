@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalScrollbar.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUICoordConverter.h"
-#include "elements/CEGUIThumb.h"
-#include "elements/CEGUIPushButton.h"
+#include "CEGUI/WindowRendererSets/Falagard/Scrollbar.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/elements/Thumb.h"
+#include "CEGUI/elements/PushButton.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

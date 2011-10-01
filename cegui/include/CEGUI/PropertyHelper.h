@@ -30,14 +30,14 @@
 #ifndef _CEGUIPropertyHelper_h_
 #define _CEGUIPropertyHelper_h_
 
-#include "CEGUIString.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
-#include "CEGUIQuaternion.h"
-#include "CEGUIColour.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIUDim.h"
-#include "CEGUIRect.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Quaternion.h"
+#include "CEGUI/Colour.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/UDim.h"
+#include "CEGUI/Rect.h"
 
 
 #include <cstdio>

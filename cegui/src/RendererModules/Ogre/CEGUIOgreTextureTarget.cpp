@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOgreTextureTarget.h"
-#include "CEGUIOgreTexture.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/RendererModules/Ogre/TextureTarget.h"
+#include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <OgreTextureManager.h>
 #include <OgreHardwarePixelBuffer.h>

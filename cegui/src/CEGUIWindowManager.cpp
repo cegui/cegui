@@ -27,15 +27,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIWindowManager.h"
-#include "CEGUIWindowFactoryManager.h"
-#include "CEGUIWindowFactory.h"
-#include "CEGUIWindow.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIGUILayout_xmlHandler.h"
-#include "CEGUIXMLParser.h"
-#include "CEGUIRenderEffectManager.h"
-#include "CEGUIRenderingWindow.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/WindowFactoryManager.h"
+#include "CEGUI/WindowFactory.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/GUILayout_xmlHandler.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/RenderEffectManager.h"
+#include "CEGUI/RenderingWindow.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>

@@ -30,8 +30,8 @@
 #ifndef _CEGUICheckbox_h_
 #define _CEGUICheckbox_h_
 
-#include "../CEGUIBase.h"
-#include "CEGUIButtonBase.h"
+#include "../Base.h"
+#include "./ButtonBase.h"
 
 
 #if defined(_MSC_VER)

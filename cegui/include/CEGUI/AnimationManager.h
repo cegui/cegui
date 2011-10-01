@@ -30,8 +30,8 @@
 #ifndef _CEGUIAnimationManager_h_
 #define _CEGUIAnimationManager_h_
 
-#include "CEGUISingleton.h"
-#include "CEGUIString.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/String.h"
 #include <map>
 #include <vector>
 

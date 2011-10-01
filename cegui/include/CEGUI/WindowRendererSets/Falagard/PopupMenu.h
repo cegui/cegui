@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalPopupMenu.h
+    filename:   PopupMenu.h
     created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalPopupMenu_h_
 #define _FalPopupMenu_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIItemListBase.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ItemListBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

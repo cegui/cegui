@@ -30,7 +30,7 @@
 #ifndef _CEGUIDefaultLogger_h_
 #define _CEGUIDefaultLogger_h_
 
-#include "CEGUILogger.h"
+#include "CEGUI/Logger.h"
 
 
 #if defined(_MSC_VER)

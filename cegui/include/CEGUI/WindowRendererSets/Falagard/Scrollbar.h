@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalScrollbar.h
+    filename:   Scrollbar.h
     created:    Mon Jul 4 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _FalScrollbar_h_
 #define _FalScrollbar_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIScrollbar.h"
-#include "FalScrollbarProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/WindowRendererSets/Falagard/ScrollbarProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

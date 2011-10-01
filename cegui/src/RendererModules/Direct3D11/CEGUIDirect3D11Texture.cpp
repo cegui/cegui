@@ -24,10 +24,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDirect3D11Texture.h"
-#include "CEGUISystem.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIImageCodec.h"
+#include "CEGUI/RendererModules/Direct3D11/Texture.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageCodec.h"
 #include <d3d11.h>
 #include <d3dx11effect.h>
 

@@ -25,15 +25,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIXercesParser.h"
-#include "CEGUIString.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUIResourceProvider.h"
-#include "CEGUISystem.h"
-#include "CEGUIXMLHandler.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/XMLParserModules/Xerces/XMLParser.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/ResourceProvider.h"
+#include "CEGUI/System.h"
+#include "CEGUI/XMLHandler.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <xercesc/validators/schema/SchemaValidator.hpp>
 

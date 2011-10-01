@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalStaticImage.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticImage.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

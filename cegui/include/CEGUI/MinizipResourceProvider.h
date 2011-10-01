@@ -30,8 +30,8 @@
 #ifndef _CEGUIMinizipResourceProvider_h_
 #define _CEGUIMinizipResourceProvider_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIDefaultResourceProvider.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/DefaultResourceProvider.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUILinkedEvent.h"
-#include "CEGUIEventArgs.h"
-#include "CEGUIEventSet.h"
+#include "CEGUI/LinkedEvent.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/EventSet.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

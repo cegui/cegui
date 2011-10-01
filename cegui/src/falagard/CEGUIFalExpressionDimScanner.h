@@ -2,9 +2,9 @@
 #define CEGUI_yyHEADER_H 1
 #define CEGUI_yyIN_HEADER 1
 
-#line 6 "CEGUIFalExpressionDimScanner.h"
+#line 6 "CEGUI/ExpressionDimScanner.h"
 
-#line 8 "CEGUIFalExpressionDimScanner.h"
+#line 8 "CEGUI/ExpressionDimScanner.h"
 
 #define  YY_INT_ALIGNED short int
 
@@ -316,6 +316,6 @@ extern int CEGUI_yylex (void);
 #line 235 "CEGUIFalExpressionDimScanner.l"
 
 
-#line 320 "CEGUIFalExpressionDimScanner.h"
+#line 320 "CEGUI/ExpressionDimScanner.h"
 #undef CEGUI_yyIN_HEADER
 #endif /* CEGUI_yyHEADER_H */

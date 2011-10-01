@@ -30,7 +30,7 @@
 #ifndef _CEGUILuaFunctor_h_
 #define _CEGUILuaFunctor_h_
 
-#include "../../CEGUIEventSet.h"
+#include "CEGUI/EventSet.h"
 
 struct lua_State;
 

@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIListHeader.h"
-#include "CEGUIExceptions.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/elements/ListHeader.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/CoordConverter.h"
 #include <sstream>
 
 

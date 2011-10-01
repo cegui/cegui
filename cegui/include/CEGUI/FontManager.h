@@ -28,11 +28,11 @@
 #ifndef _CEGUIFontManager_h_
 #define _CEGUIFontManager_h_
 
-#include "CEGUISingleton.h"
-#include "CEGUINamedXMLResourceManager.h"
-#include "CEGUIFont.h"
-#include "CEGUIFont_xmlHandler.h"
-#include "CEGUIIteratorBase.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/NamedXMLResourceManager.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Font_xmlHandler.h"
+#include "CEGUI/IteratorBase.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

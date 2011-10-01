@@ -31,7 +31,7 @@
 #ifndef _CEGUITGAImageCodecModule_h_
 #define _CEGUITGAImageCodecModule_h_
 
-#include "CEGUITGAImageCodec.h"
+#include "CEGUI/ImageCodecModules/TGA/ImageCodec.h"
 
 /*! 
   \brief 

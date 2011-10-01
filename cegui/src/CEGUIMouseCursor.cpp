@@ -27,15 +27,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIMouseCursor.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUISystem.h"
-#include "CEGUIRenderer.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIImage.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/MouseCursor.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

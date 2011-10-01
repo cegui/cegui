@@ -28,10 +28,10 @@
 #ifndef _CEGUIConfig_xmlHandler_h_
 #define _CEGUIConfig_xmlHandler_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUILogger.h"
-#include "CEGUIXMLHandler.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/XMLHandler.h"
 #include <vector>
 
 #if defined (_MSC_VER)

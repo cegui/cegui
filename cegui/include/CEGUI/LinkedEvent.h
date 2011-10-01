@@ -28,7 +28,7 @@
 #ifndef _CEGUILinkedEvent_h_
 #define _CEGUILinkedEvent_h_
 
-#include "CEGUIEvent.h"
+#include "CEGUI/Event.h"
 #include <vector>
 
 #if defined(_MSC_VER)

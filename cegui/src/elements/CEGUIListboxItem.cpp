@@ -31,16 +31,16 @@
 #   include "config.h"
 #endif
 
-#include "elements/CEGUIListboxItem.h"
-#include "CEGUISystem.h"
-#include "CEGUIImageManager.h"
+#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/System.h"
+#include "CEGUI/ImageManager.h"
 
 #if defined (CEGUI_USE_FRIBIDI)
-    #include "CEGUIFribidiVisualMapping.h"
+    #include "CEGUI/FribidiVisualMapping.h"
 #elif defined (CEGUI_USE_MINIBIDI)
-    #include "CEGUIMinibidiVisualMapping.h"
+    #include "CEGUI/MinibidiVisualMapping.h"
 #else
-    #include "CEGUIBidiVisualMapping.h"
+    #include "CEGUI/BidiVisualMapping.h"
 #endif
 
 // Start of CEGUI namespace section

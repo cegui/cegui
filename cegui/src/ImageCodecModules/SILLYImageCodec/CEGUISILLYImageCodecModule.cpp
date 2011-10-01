@@ -27,7 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUISILLYImageCodecModule.h" 
+#include "CEGUI/ImageCodecModules/SILLY/ImageCodecModule.h" 
 
 
 CEGUI::ImageCodec* createImageCodec(void)

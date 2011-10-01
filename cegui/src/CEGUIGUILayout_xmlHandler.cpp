@@ -27,12 +27,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIGUILayout_xmlHandler.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIScriptModule.h"
-#include "CEGUIXMLAttributes.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/GUILayout_xmlHandler.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/ScriptModule.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/WindowManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

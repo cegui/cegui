@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalStatic.h
+    filename:   Static.h
     created:    Sat Sep 17 2005
     author:     Tomas Lindquist Olsen (based on code by Paul D Turner)
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalStatic_h_
 #define _FalStatic_h_
 
-#include "FalModule.h"
-#include "FalStaticProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

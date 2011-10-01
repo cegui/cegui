@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalTabControlProperties.h
+    filename:   TabControlProperties.h
     created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -27,7 +27,7 @@
  ***************************************************************************/
 #ifndef _FalTabControlProperties_h_
 #define _FalTabControlProperties_h_
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

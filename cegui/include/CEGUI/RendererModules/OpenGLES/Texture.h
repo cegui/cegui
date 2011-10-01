@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLESTexture_h_
 #define _CEGUIOpenGLESTexture_h_
 
-#include "../../CEGUIBase.h"
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUITexture.h"
-#include "CEGUIOpenGLESRenderer.h"
+#include "../../Base.h"
+#include "../../Renderer.h"
+#include "../../Texture.h"
+#include "CEGUI/OpenGLESRenderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

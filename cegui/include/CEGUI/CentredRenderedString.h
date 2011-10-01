@@ -28,7 +28,7 @@
 #ifndef _CEGUICentredRenderedString_h_
 #define _CEGUICentredRenderedString_h_
 
-#include "CEGUIFormattedRenderedString.h"
+#include "CEGUI/FormattedRenderedString.h"
 #include <vector>
 
 #if defined (_MSC_VER)

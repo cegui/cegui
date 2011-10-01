@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalStaticText.h
+    filename:   StaticText.h
     created:    Tue Jul 5 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,11 +28,11 @@
 #ifndef _FalStaticText_h_
 #define _FalStaticText_h_
 
-#include "FalModule.h"
-#include "FalStatic.h"
-#include "FalStaticTextProperties.h"
-#include "../../falagard/CEGUIFalEnums.h"
-#include "../../CEGUIColourRect.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/WindowRendererSets/Falagard/Static.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticTextProperties.h"
+#include "CEGUI/falagard/Enums.h"
+#include "CEGUI/ColourRect.h"
 #include <vector>
 
 #if defined(_MSC_VER)

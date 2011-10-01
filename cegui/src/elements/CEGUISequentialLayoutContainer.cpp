@@ -31,8 +31,8 @@
 #   include "config.h"
 #endif
 
-#include "elements/CEGUISequentialLayoutContainer.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/elements/SequentialLayoutContainer.h"
+#include "CEGUI/WindowManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

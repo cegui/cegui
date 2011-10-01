@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalPropertyInitialiser.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/falagard/PropertyInitialiser.h"
+#include "CEGUI/Exceptions.h"
 #include <iostream>
 
 // Start of CEGUI namespace section

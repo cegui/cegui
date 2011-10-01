@@ -24,9 +24,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDirect3D11RenderTarget.h"
-#include "CEGUIDirect3D11GeometryBuffer.h"
-#include "CEGUIRenderQueue.h"
+#include "CEGUI/RendererModules/Direct3D11/RenderTarget.h"
+#include "CEGUI/RendererModules/Direct3D11/GeometryBuffer.h"
+#include "CEGUI/RenderQueue.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

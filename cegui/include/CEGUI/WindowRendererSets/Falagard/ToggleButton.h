@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalToggleButton.h
+    filename:   ToggleButton.h
     created:    Sat Jan 14 2006
     author:     Tomas Lindquist Olsen <tomas@famolsen.dk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalToggleButton_h_
 #define _FalToggleButton_h_
 
-#include "FalModule.h"
-#include "FalButton.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/WindowRendererSets/Falagard/Button.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

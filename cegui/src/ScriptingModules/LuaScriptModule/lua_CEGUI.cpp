@@ -14,7 +14,7 @@
 int tolua_CEGUI_open (lua_State* tolua_S);
 
 #include "required.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/PropertyHelper.h"
 
 /* function to release collected object via destructor */
 #ifdef __cplusplus

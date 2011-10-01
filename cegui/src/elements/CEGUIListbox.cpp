@@ -27,13 +27,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowManager.h"
-#include "elements/CEGUIListbox.h"
-#include "elements/CEGUIListboxItem.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUITooltip.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/elements/Listbox.h"
+#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/Tooltip.h"
+#include "CEGUI/CoordConverter.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section

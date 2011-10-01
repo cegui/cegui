@@ -28,7 +28,7 @@
 #ifndef _CEGUIEventArgs_h_
 #define _CEGUIEventArgs_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 
 
 // Start of CEGUI namespace section

@@ -27,11 +27,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIAnimationInstance.h"
-#include "CEGUIAnimation.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIWindow.h"
-#include "CEGUIAffector.h"
+#include "CEGUI/AnimationInstance.h"
+#include "CEGUI/Animation.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Affector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

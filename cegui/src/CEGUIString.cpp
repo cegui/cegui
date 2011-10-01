@@ -27,7 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIString.h"
+#include "CEGUI/String.h"
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 

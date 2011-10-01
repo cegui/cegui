@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalEditboxProperties.h
+    filename:   EditboxProperties.h
     created:    Wed Jul 29 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalEditboxProperties_h_
 #define _FalEditboxProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

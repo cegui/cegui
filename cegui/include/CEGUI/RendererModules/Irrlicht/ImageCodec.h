@@ -28,8 +28,8 @@
 #ifndef _CEGUIIrrlichtImageCodec_h_
 #define _CEGUIIrrlichtImageCodec_h_
 
-#include "../../CEGUIImageCodec.h"
-#include "CEGUIIrrlichtRendererDef.h"
+#include "../../ImageCodec.h"
+#include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 
 // forward declararions of irrlicht bits.
 namespace irr

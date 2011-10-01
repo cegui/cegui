@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalLayerSpecification.h
+    filename:   CEGUILayerSpecification.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalLayerSpecification_h_
 #define _CEGUIFalLayerSpecification_h_
 
-#include "CEGUIFalSectionSpecification.h"
-#include "../CEGUIWindow.h"
+#include "./SectionSpecification.h"
+#include "../Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

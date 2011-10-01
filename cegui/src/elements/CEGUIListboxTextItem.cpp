@@ -27,11 +27,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIListboxTextItem.h"
-#include "CEGUIFontManager.h"
-#include "CEGUIFont.h"
-#include "CEGUIWindow.h"
-#include "CEGUIImage.h"
+#include "CEGUI/elements/ListboxTextItem.h"
+#include "CEGUI/FontManager.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Image.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

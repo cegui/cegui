@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOpenGLESRenderTarget.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIOpenGLESGeometryBuffer.h"
-#include "CEGUIOpenGLES.h"
+#include "CEGUI/RendererModules/OpenGLES/RenderTarget.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/RendererModules/OpenGLES/GeometryBuffer.h"
+#include "CEGUI/OpenGLES.h"
 #include <cmath>
 
 #include "glu.h"

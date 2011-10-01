@@ -28,7 +28,7 @@
 #ifndef _CEGUITinyXMLParserModule_h_
 #define _CEGUITinyXMLParserModule_h_
 
-#include "CEGUITinyXMLParser.h"
+#include "CEGUI/XMLParserModules/TinyXML/XMLParser.h"
 
 /*!
 \brief

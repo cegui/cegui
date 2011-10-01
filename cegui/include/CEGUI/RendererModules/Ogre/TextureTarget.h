@@ -28,8 +28,8 @@
 #ifndef _CEGUIOgreTextureTarget_h_
 #define _CEGUIOgreTextureTarget_h_
 
-#include "../../CEGUITextureTarget.h"
-#include "CEGUIOgreRenderTarget.h"
+#include "../../TextureTarget.h"
+#include "CEGUI/RendererModules/Ogre/RenderTarget.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

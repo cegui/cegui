@@ -28,8 +28,8 @@
 #ifndef _CEGUIOgreTexture_h_
 #define _CEGUIOgreTexture_h_
 
-#include "../../CEGUITexture.h"
-#include "CEGUIOgreRenderer.h"
+#include "../../Texture.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <OgreTexture.h>
 
 // Start of CEGUI namespace section

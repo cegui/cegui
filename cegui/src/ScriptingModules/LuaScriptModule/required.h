@@ -27,16 +27,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI.h"
-#include "CEGUILua.h"
-#include "CEGUILuaFunctor.h"
-#include "CEGUIRenderingContext.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIRenderingWindow.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUIVertex.h"
-#include "CEGUIRenderEffect.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/CEGUI.h"
+#include "CEGUI/ScriptModules/Lua/ScriptModule.h"
+#include "CEGUI/ScriptModules/Lua/Functor.h"
+#include "CEGUI/RenderingContext.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/RenderingWindow.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Vertex.h"
+#include "CEGUI/RenderEffect.h"
+#include "CEGUI/PropertyHelper.h"
 #include <fstream>
 
 #define __operator_increment    operator++

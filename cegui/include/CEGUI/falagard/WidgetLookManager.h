@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalWidgetLookManager.h
+    filename:   CEGUIWidgetLookManager.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,10 +28,10 @@
 #ifndef _CEGUIFalWidgetLookManager_h_
 #define _CEGUIFalWidgetLookManager_h_
 
-#include "../CEGUISingleton.h"
-#include "../CEGUIString.h"
-#include "../CEGUIExceptions.h"
-#include "CEGUIFalWidgetLookFeel.h"
+#include "../Singleton.h"
+#include "../String.h"
+#include "../Exceptions.h"
+#include "./WidgetLookFeel.h"
 #include <map>
 
 #if defined(_MSC_VER)

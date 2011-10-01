@@ -31,7 +31,7 @@
 #   include "config.h"
 #endif
 
-#include "elements/CEGUILayoutCell.h"
+#include "CEGUI/elements/LayoutCell.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

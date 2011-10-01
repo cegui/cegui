@@ -28,8 +28,8 @@
 #ifndef _CEGUIOpenGLTextureTarget_h_
 #define _CEGUIOpenGLTextureTarget_h_
 
-#include "CEGUIOpenGLRenderTarget.h"
-#include "../../CEGUITextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
+#include "../../TextureTarget.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

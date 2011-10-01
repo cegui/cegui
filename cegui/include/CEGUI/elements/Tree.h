@@ -28,10 +28,10 @@
 #ifndef _CEGUITree_h_
 #define _CEGUITree_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
-#include "../CEGUIWindowManager.h"
-#include "CEGUITreeItem.h"
+#include "../Base.h"
+#include "../Window.h"
+#include "../WindowManager.h"
+#include "./TreeItem.h"
 #include <vector>
 
 #if defined(_MSC_VER)

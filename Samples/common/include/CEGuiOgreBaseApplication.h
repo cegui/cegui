@@ -29,9 +29,9 @@
 #define _CEGuiOgreBaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
-#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <Ogre.h>
 #include <OIS.h>
 

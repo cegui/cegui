@@ -27,10 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalStaticTextProperties.h"
-#include "FalStaticText.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUILogger.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticTextProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/StaticText.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Logger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -31,7 +31,7 @@
 #ifndef _CEGUISILLYImageCodecModule_h_
 #define _CEGUISILLYImageCodecModule_h_
 
-#include "CEGUISILLYImageCodec.h"
+#include "CEGUI/ImageCodecModules/SILLY/ImageCodec.h"
 
 /*! 
   \brief 

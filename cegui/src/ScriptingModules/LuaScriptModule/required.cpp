@@ -27,7 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include "required.h"
 
 // Start of CEGUI namespace section

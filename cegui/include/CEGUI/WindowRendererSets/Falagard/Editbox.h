@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalEditbox.h
+    filename:   Editbox.h
     created:    Sat Jun 25 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _FalEditbox_h_
 #define _FalEditbox_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIEditbox.h"
-#include "FalEditboxProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/Editbox.h"
+#include "CEGUI/WindowRendererSets/Falagard/EditboxProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

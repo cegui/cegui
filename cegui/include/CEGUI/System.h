@@ -30,13 +30,13 @@
 #ifndef _CEGUISystem_h_
 #define _CEGUISystem_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUISingleton.h"
-#include "CEGUIRenderer.h"
-#include "CEGUIMouseCursor.h"
-#include "CEGUIInputEvent.h"
-#include "CEGUIResourceProvider.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/MouseCursor.h"
+#include "CEGUI/InputEvent.h"
+#include "CEGUI/ResourceProvider.h"
 
 
 #if defined(_MSC_VER)

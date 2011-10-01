@@ -1,5 +1,5 @@
 /************************************************************************
-    filename:   FalItemListbox.h
+    filename:   ItemListbox.h
     created:    Mon Mar 20 2006
     author:     Tomas Lindquist Olsen
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalItemListbox_h_
 #define _FalItemListbox_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIItemListBase.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/ItemListBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,7 +30,7 @@
 
 #include <GL/glxew.h>
 
-#include "CEGUIOpenGLTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

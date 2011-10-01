@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalToggleButton.h"
-#include "CEGUIPropertyHelper.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUI/WindowRendererSets/Falagard/ToggleButton.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

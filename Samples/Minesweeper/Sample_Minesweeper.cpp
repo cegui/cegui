@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include "Minesweeper_Timer.h"
 #include <ctime>
 #include <cstdlib>

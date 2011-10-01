@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalPropertyInitialiser.h
+    filename:   CEGUIPropertyInitialiser.h
     created:    Mon Jun 13 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalPropertyInitialiser_h_
 #define _CEGUIFalPropertyInitialiser_h_
 
-#include "../CEGUIPropertySet.h"
+#include "../PropertySet.h"
 
 
 // Start of CEGUI namespace section

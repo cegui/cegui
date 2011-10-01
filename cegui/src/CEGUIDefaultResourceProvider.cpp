@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDefaultResourceProvider.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/Exceptions.h"
 
 #include <stdio.h>
 

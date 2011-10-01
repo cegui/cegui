@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalListHeaderProperties.h
+    filename:   ListHeaderProperties.h
     created:    Wed Jul 6 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalListHeaderProperties_h_
 #define _FalListHeaderProperties_h_
 
-#include "../../CEGUIProperty.h"
+#include "CEGUI/Property.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

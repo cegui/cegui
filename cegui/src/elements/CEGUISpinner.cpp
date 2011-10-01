@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUISpinner.h"
-#include "elements/CEGUIPushButton.h"
-#include "elements/CEGUIEditbox.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/elements/Spinner.h"
+#include "CEGUI/elements/PushButton.h"
+#include "CEGUI/elements/Editbox.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowManager.h"
 #include <stdio.h>
 #include <sstream>
 #include <iomanip>

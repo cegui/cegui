@@ -36,7 +36,7 @@
 #ifndef _CEGUISingleton_h_
 #define _CEGUISingleton_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 #include <cassert>
 
 // Start of CEGUI namespace section

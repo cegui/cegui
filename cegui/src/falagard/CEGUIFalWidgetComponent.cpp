@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalWidgetComponent.h"
-#include "falagard/CEGUIFalXMLEnumHelper.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/falagard/WidgetComponent.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Exceptions.h"
 #include <iostream>
 
 // Start of CEGUI namespace section

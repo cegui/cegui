@@ -28,10 +28,10 @@
 #ifndef _CEGUIIrrlichtRenderer_h_
 #define _CEGUIIrrlichtRenderer_h_
 
-#include "CEGUIIrrlichtRendererDef.h"
-#include "../../CEGUIRenderer.h"
-#include "../../CEGUISize.h"
-#include "../../CEGUIVector.h"
+#include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
+#include "../../Renderer.h"
+#include "../../Size.h"
+#include "../../Vector.h"
 
 #include <vector>
 #include <map>

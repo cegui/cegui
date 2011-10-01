@@ -29,7 +29,7 @@
 #define _Sample_DragDropDemo_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Sample class
 class DragDropDemo : public CEGuiSample

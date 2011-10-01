@@ -26,8 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGuiSample.h"
-#include "CEGUI.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
 

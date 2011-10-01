@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOpenGLRenderTarget.h"
-#include "CEGUIRenderQueue.h"
-#include "CEGUIOpenGLGeometryBuffer.h"
-#include "CEGUIOpenGL.h"
+#include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
+#include "CEGUI/RenderQueue.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include <cmath>
 
 // Start of CEGUI namespace section

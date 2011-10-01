@@ -27,10 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUITitlebar.h"
-#include "elements/CEGUIFrameWindow.h"
-#include "CEGUIMouseCursor.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/elements/Titlebar.h"
+#include "CEGUI/elements/FrameWindow.h"
+#include "CEGUI/MouseCursor.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

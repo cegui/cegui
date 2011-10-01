@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIDragContainer.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIRenderingContext.h"
-#include "CEGUIImageManager.h"
+#include "CEGUI/elements/DragContainer.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/RenderingContext.h"
+#include "CEGUI/ImageManager.h"
 #include <math.h>
 
 // Start of CEGUI namespace section

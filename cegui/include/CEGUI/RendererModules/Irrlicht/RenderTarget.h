@@ -28,9 +28,9 @@
 #ifndef _CEGUIIrrlichtRenderTarget_h_
 #define _CEGUIIrrlichtRenderTarget_h_
 
-#include "CEGUIIrrlichtRendererDef.h"
-#include "../../CEGUIRenderTarget.h"
-#include "../../CEGUIRect.h"
+#include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
+#include "../../RenderTarget.h"
+#include "../../Rect.h"
 
 #include <irrlicht.h>
 

@@ -30,9 +30,9 @@
 #ifndef _CEGUIPopupMenu_h_
 #define _CEGUIPopupMenu_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
-#include "CEGUIMenuBase.h"
+#include "../Base.h"
+#include "../Window.h"
+#include "./MenuBase.h"
 
 
 #if defined(_MSC_VER)

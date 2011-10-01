@@ -1,5 +1,5 @@
 /***********************************************************************
-filename:   FalTree.h
+filename:   Tree.h
 created:	5-13-07
 author:		Jonathan Welch (Based on Code by David Durant)
 *************************************************************************/
@@ -28,9 +28,9 @@ author:		Jonathan Welch (Based on Code by David Durant)
 #ifndef _FalTree_h_
 #define _FalTree_h_
 
-#include "FalModule.h"
-#include "../../CEGUIWindowFactory.h"
-#include "../../elements/CEGUITree.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/WindowFactory.h"
+#include "CEGUI/elements/Tree.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

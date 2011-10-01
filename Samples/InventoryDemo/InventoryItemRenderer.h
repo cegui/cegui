@@ -28,7 +28,7 @@
 #ifndef _InventoryItemRenderer_h_
 #define _InventoryItemRenderer_h_
 
-#include <CEGUIWindowRenderer.h>
+#include <CEGUI/WindowRenderer.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

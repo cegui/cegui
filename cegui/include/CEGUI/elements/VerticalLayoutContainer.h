@@ -30,8 +30,8 @@
 #ifndef _CEGUIVerticalLayoutContainer_h_
 #define _CEGUIVerticalLayoutContainer_h_
 
-#include "CEGUISequentialLayoutContainer.h"
-#include "../CEGUIWindowFactory.h"
+#include "./SequentialLayoutContainer.h"
+#include "../WindowFactory.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

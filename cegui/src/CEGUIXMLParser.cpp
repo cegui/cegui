@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIXMLParser.h"
-#include "CEGUIDataContainer.h"
-#include "CEGUISystem.h"
-#include "CEGUIResourceProvider.h"
-#include "CEGUILogger.h"
+#include "CEGUI/XMLParser.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/System.h"
+#include "CEGUI/ResourceProvider.h"
+#include "CEGUI/Logger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

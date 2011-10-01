@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalTooltip.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/WindowRendererSets/Falagard/Tooltip.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

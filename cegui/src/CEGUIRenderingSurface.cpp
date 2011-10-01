@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIRenderingSurface.h"
-#include "CEGUIRenderTarget.h"
-#include "CEGUIRenderingWindow.h"
+#include "CEGUI/RenderingSurface.h"
+#include "CEGUI/RenderTarget.h"
+#include "CEGUI/RenderingWindow.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section

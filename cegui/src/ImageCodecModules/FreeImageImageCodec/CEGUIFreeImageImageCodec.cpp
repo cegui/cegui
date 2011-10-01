@@ -27,10 +27,10 @@ purpose:	This codec provide FreeImage based image loading
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "CEGUIFreeImageImageCodec.h"
-#include "CEGUILogger.h"
-#include "CEGUISize.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/ImageCodecModules/FreeImage/ImageCodec.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Size.h"
 
 #include <FreeImage.h>
 

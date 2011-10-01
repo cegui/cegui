@@ -28,10 +28,10 @@
 #ifndef _CEGUICoordConverter_h_
 #define _CEGUICoordConverter_h_
 
-#include "CEGUIUDim.h"
-#include "CEGUIVector.h"
-#include "CEGUISize.h"
-#include "CEGUIRect.h"
+#include "CEGUI/UDim.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

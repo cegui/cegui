@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUICoronaImageCodec.h" 
-#include "CEGUILogger.h" 
-#include "CEGUISize.h"
+#include "CEGUI/ImageCodecModules/Corona/ImageCodec.h" 
+#include "CEGUI/Logger.h" 
+#include "CEGUI/Size.h"
 
 #include <corona.h> 
 

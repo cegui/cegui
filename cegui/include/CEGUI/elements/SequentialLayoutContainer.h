@@ -30,7 +30,7 @@
 #ifndef _CEGUISequentialLayoutContainer_h_
 #define _CEGUISequentialLayoutContainer_h_
 
-#include "CEGUILayoutContainer.h"
+#include "./LayoutContainer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

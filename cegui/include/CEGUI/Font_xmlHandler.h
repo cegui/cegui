@@ -28,8 +28,8 @@
 #ifndef _CEGUIFont_xmlHandler_h_
 #define _CEGUIFont_xmlHandler_h_
 
-#include "CEGUIXMLHandler.h"
-#include "CEGUIString.h"
+#include "CEGUI/XMLHandler.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

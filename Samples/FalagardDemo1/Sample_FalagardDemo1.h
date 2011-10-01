@@ -29,7 +29,7 @@
 #define _Sample_FalagardDemo1_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 
 /*!

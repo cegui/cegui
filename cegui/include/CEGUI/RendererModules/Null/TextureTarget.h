@@ -28,8 +28,8 @@
 #ifndef _CEGUINullTextureTarget_h_
 #define _CEGUINullTextureTarget_h_
 
-#include "../../CEGUITextureTarget.h"
-#include "CEGUINullRenderTarget.h"
+#include "../../TextureTarget.h"
+#include "CEGUI/RendererModules/Null/RenderTarget.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

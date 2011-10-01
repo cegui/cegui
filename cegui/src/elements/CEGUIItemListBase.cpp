@@ -27,11 +27,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUICoordConverter.h"
-#include "elements/CEGUIItemListBase.h"
-#include "elements/CEGUIItemEntry.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/elements/ItemListBase.h"
+#include "CEGUI/elements/ItemEntry.h"
 
 #include <algorithm>
 

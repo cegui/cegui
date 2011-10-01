@@ -28,7 +28,7 @@
 #ifndef _CEGUIFunctorPointerSlot_h_
 #define _CEGUIFunctorPointerSlot_h_
 
-#include "CEGUISlotFunctorBase.h"
+#include "CEGUI/SlotFunctorBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

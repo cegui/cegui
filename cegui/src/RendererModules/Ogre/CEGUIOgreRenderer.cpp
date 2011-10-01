@@ -25,17 +25,17 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIOgreRenderer.h"
-#include "CEGUIOgreGeometryBuffer.h"
-#include "CEGUIOgreTextureTarget.h"
-#include "CEGUIOgreTexture.h"
-#include "CEGUIOgreWindowTarget.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIOgreResourceProvider.h"
-#include "CEGUIOgreImageCodec.h"
-#include "CEGUILogger.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
+#include "CEGUI/RendererModules/Ogre/GeometryBuffer.h"
+#include "CEGUI/RendererModules/Ogre/TextureTarget.h"
+#include "CEGUI/RendererModules/Ogre/Texture.h"
+#include "CEGUI/RendererModules/Ogre/WindowTarget.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+#include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/Logger.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>

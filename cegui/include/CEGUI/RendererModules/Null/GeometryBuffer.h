@@ -28,12 +28,12 @@
 #ifndef _CEGUINullGeometryBuffer_h_
 #define _CEGUINullGeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "CEGUINullRenderer.h"
-#include "../../CEGUIRect.h"
-#include "../../CEGUIColour.h"
-#include "../../CEGUIVertex.h"
-#include "../../CEGUIQuaternion.h"
+#include "../../GeometryBuffer.h"
+#include "CEGUI/RendererModules/Null/Renderer.h"
+#include "../../Rect.h"
+#include "../../Colour.h"
+#include "../../Vertex.h"
+#include "../../Quaternion.h"
 
 #include <utility>
 #include <vector>

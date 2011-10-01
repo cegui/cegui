@@ -28,8 +28,8 @@
 #ifndef _CEGUIPCRERegexMatcher_h_
 #define _CEGUIPCRERegexMatcher_h_
 
-#include "CEGUIRegexMatcher.h"
-#include "CEGUIString.h"
+#include "CEGUI/RegexMatcher.h"
+#include "CEGUI/String.h"
 #include <pcre.h>
 
 // Start of CEGUI namespace section

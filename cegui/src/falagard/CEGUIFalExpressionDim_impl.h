@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalExpressionDim_impl.h
+    filename:   CEGUIExpressionDim_impl.h
     created:    Wed Dec 30 2009
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalExpressionDim_impl_h
 #define _CEGUIFalExpressionDim_impl_h_
 
-#include "../../include/falagard/CEGUIFalDimensions.h"
-#include "CEGUIFalExpressionDimParser.hpp"
+#include "../../include/CEGUI/falagard/Dimensions.h"
+#include "CEGUI/ExpressionDimParser.hpp"
 #include <vector>
 #include <utility>
 

@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalSectionSpecification.h"
-#include "falagard/CEGUIFalImagerySection.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/falagard/SectionSpecification.h"
+#include "CEGUI/falagard/ImagerySection.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/WindowManager.h"
 #include <iostream>
 
 // Start of CEGUI namespace section

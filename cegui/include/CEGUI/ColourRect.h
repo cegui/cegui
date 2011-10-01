@@ -31,8 +31,8 @@
 #ifndef _CEGUIColourRect_h_
 #define _CEGUIColourRect_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIColour.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Colour.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

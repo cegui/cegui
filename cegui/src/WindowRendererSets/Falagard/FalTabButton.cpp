@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalTabButton.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "elements/CEGUITabButton.h"
-#include "elements/CEGUITabControl.h"
+#include "CEGUI/WindowRendererSets/Falagard/TabButton.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/elements/TabButton.h"
+#include "CEGUI/elements/TabControl.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

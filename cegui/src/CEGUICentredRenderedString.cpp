@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUICentredRenderedString.h"
-#include "CEGUIRenderedString.h"
-#include "CEGUIVector.h"
+#include "CEGUI/CentredRenderedString.h"
+#include "CEGUI/RenderedString.h"
+#include "CEGUI/Vector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

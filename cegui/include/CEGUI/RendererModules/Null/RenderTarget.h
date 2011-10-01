@@ -28,9 +28,9 @@
 #ifndef _CEGUINullRenderTarget_h_
 #define _CEGUINullRenderTarget_h_
 
-#include "../../CEGUIRenderTarget.h"
-#include "CEGUINullRenderer.h"
-#include "../../CEGUIRect.h"
+#include "../../RenderTarget.h"
+#include "CEGUI/RendererModules/Null/Renderer.h"
+#include "../../Rect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

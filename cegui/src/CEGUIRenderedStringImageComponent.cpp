@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIRenderedStringImageComponent.h"
-#include "CEGUIImageManager.h"
-#include "CEGUIImage.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/RenderedStringImageComponent.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Image.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

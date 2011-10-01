@@ -28,7 +28,7 @@
 #ifndef _CEGUIFontGlyph_h_
 #define _CEGUIFontGlyph_h_
 
-#include "CEGUIImage.h"
+#include "CEGUI/Image.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

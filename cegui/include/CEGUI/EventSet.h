@@ -30,10 +30,10 @@
 #ifndef _CEGUIEventSet_h_
 #define _CEGUIEventSet_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIEvent.h"
-#include "CEGUIIteratorBase.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Event.h"
+#include "CEGUI/IteratorBase.h"
 #include <map>
 
 #if defined (_MSC_VER)

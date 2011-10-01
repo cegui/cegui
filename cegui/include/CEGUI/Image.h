@@ -28,10 +28,10 @@
 #ifndef _CEGUIImage_h_
 #define _CEGUIImage_h_
 
-#include "CEGUIChainedXMLHandler.h"
-#include "CEGUIString.h"
-#include "CEGUIColourRect.h"
-#include "CEGUIRect.h"
+#include "CEGUI/ChainedXMLHandler.h"
+#include "CEGUI/String.h"
+#include "CEGUI/ColourRect.h"
+#include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

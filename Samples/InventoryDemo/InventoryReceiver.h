@@ -29,7 +29,7 @@
 #define _InventoryReceiver_h_
 
 #include "InventoryBase.h"
-#include <CEGUIWindow.h>
+#include <CEGUI/Window.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

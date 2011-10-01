@@ -30,8 +30,8 @@
 #ifndef _CEGUIFrameWindow_h_
 #define _CEGUIFrameWindow_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
+#include "../Base.h"
+#include "../Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalMultiColumnList.h
+    filename:   MultiColumnList.h
     created:    Wed Jul 6 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _FalMultiColumnList_h_
 #define _FalMultiColumnList_h_
 
-#include "FalModule.h"
-#include "../../elements/CEGUIMultiColumnList.h"
-#include "../../falagard/CEGUIFalWidgetLookFeel.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
+#include "CEGUI/elements/MultiColumnList.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

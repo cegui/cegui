@@ -28,7 +28,7 @@
 #ifndef _CEGUIRenderQueue_h_
 #define _CEGUIRenderQueue_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 #include <vector>
 
 #if defined(_MSC_VER)

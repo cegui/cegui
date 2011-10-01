@@ -30,9 +30,9 @@
 #ifndef _CEGUIGUILayout_xmlHandler_h_
 #define _CEGUIGUILayout_xmlHandler_h_
 
-#include "CEGUIWindowManager.h"
-#include "CEGUIWindow.h"
-#include "CEGUIXMLHandler.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/XMLHandler.h"
 
 #include <vector>
 

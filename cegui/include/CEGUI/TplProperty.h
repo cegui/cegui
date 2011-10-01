@@ -30,7 +30,7 @@
 #ifndef _CEGUITplProperty_h_
 #define _CEGUITplProperty_h_
 
-#include "CEGUITypedProperty.h"
+#include "CEGUI/TypedProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

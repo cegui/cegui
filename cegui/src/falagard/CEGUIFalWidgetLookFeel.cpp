@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "CEGUIExceptions.h"
-#include "CEGUILogger.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUIAnimationManager.h"
-#include "CEGUIAnimationInstance.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/AnimationManager.h"
+#include "CEGUI/AnimationInstance.h"
 #include <iostream>
 #include <algorithm>
 

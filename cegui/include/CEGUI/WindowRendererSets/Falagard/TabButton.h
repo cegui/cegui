@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalTabButton.h
+    filename:   TabButton.h
     created:    Fri Jul 8 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalTabButton_h_
 #define _FalTabButton_h_
 
-#include "FalModule.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

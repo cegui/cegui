@@ -32,7 +32,7 @@
 #ifndef _CEGUIFactoryModule_h_
 #define _CEGUIFactoryModule_h_
 
-#include "CEGUIDynamicModule.h"
+#include "CEGUI/DynamicModule.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

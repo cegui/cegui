@@ -1,7 +1,7 @@
-#include "CEGUIString.h"
-#include "CEGUIGeometryBuffer.h"
-#include "CEGUITexture.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIRenderingRoot.h"
+#include "CEGUI/String.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/TextureTarget.h"
+#include "CEGUI/RenderingRoot.h"
 
-#include "RendererModules/Null/CEGUINullRenderer.h"
+#include "CEGUI/RendererModules/Null/Renderer.h"

@@ -30,9 +30,9 @@
 #ifndef _CEGUIMultiColumnList_h_
 #define _CEGUIMultiColumnList_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
-#include "CEGUIListHeader.h"
+#include "../Base.h"
+#include "../Window.h"
+#include "./ListHeader.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

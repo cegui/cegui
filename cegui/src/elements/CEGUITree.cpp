@@ -25,16 +25,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIExceptions.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIWindowManager.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
-#include "falagard/CEGUIFalWidgetLookFeel.h"
-#include "elements/CEGUITreeItem.h"
-#include "elements/CEGUITree.h"
-#include "elements/CEGUIScrollbar.h"
-#include "elements/CEGUITooltip.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/elements/TreeItem.h"
+#include "CEGUI/elements/Tree.h"
+#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/elements/Tooltip.h"
 
 #include <algorithm>
 

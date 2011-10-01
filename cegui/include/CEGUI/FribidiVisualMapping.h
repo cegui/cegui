@@ -28,7 +28,7 @@
 #ifndef _CEGUIFribidiVisualMapping_h_
 #define _CEGUIFribidiVisualMapping_h_
 
-#include "CEGUIBidiVisualMapping.h"
+#include "CEGUI/BidiVisualMapping.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

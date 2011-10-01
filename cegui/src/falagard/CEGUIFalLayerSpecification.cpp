@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "falagard/CEGUIFalLayerSpecification.h"
+#include "CEGUI/falagard/LayerSpecification.h"
 #include <iostream>
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/PropertyHelper.h"
 // Start of CEGUI namespace section
 namespace CEGUI
 {

@@ -26,10 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
-#include "CEGUIOpenGLTexture.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIImageCodec.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/ImageCodec.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

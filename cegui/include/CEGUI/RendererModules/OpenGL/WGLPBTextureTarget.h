@@ -32,8 +32,8 @@
 #include <GL/glew.h>
 #include <GL/wglew.h>
 
-#include "CEGUIOpenGLTextureTarget.h"
-#include "../../CEGUIRect.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
+#include "../../Rect.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

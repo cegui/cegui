@@ -28,9 +28,9 @@
 #ifndef _CEGUIRenderTarget_h_
 #define _CEGUIRenderTarget_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIVector.h"
-#include "CEGUIRect.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

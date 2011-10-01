@@ -25,13 +25,13 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDirectFBRenderer.h"
-#include "CEGUIDirectFBTexture.h"
-#include "CEGUIDirectFBGeometryBuffer.h"
-#include "CEGUIDirectFBRenderTarget.h"
-#include "CEGUITextureTarget.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/RendererModules/DirectFB/Renderer.h"
+#include "CEGUI/RendererModules/DirectFB/Texture.h"
+#include "CEGUI/RendererModules/DirectFB/GeometryBuffer.h"
+#include "CEGUI/RendererModules/DirectFB/RenderTarget.h"
+#include "CEGUI/TextureTarget.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/Exceptions.h"
 
 #include <algorithm>
 

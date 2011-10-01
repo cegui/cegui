@@ -28,8 +28,8 @@
 #ifndef _CEGUIXMLAttributes_h_
 #define _CEGUIXMLAttributes_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
 #include <map>
 
 #if defined(_MSC_VER)

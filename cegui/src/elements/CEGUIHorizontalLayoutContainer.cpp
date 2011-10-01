@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIHorizontalLayoutContainer.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/elements/HorizontalLayoutContainer.h"
+#include "CEGUI/CoordConverter.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section

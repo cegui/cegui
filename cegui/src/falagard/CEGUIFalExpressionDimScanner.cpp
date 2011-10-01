@@ -579,10 +579,10 @@ char *CEGUI_yytext;
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #line 36 "CEGUIFalExpressionDimScanner.l"
-#include "CEGUIFalExpressionDimParser.hpp"
-#include "CEGUIFalExpressionDim_impl.h"
-#include "../../include/falagard/CEGUIFalXMLEnumHelper.h"
-#include "../../include/CEGUILogger.h"
+#include "CEGUI/ExpressionDimParser.hpp"
+#include "CEGUI/ExpressionDim_impl.h"
+#include "../../include/CEGUI/falagard/XMLEnumHelper.h"
+#include "../../include/Logger.h"
 
 #define YY_DECL int lexScan(CEGUI::ExpressionDim_impl* ctx)
 

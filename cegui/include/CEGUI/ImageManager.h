@@ -28,13 +28,13 @@
 #ifndef _CEGUIImageManager_h_
 #define _CEGUIImageManager_h_
 
-#include "CEGUISingleton.h"
-#include "CEGUIChainedXMLHandler.h"
-#include "CEGUIString.h"
-#include "CEGUISize.h"
-#include "CEGUIImageFactory.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/Singleton.h"
+#include "CEGUI/ChainedXMLHandler.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/ImageFactory.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 #include <map>
 
 #if defined(_MSC_VER)

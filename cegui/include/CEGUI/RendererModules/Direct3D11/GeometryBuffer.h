@@ -27,10 +27,10 @@
 #ifndef _CEGUIDirect3D11GeometryBuffer_h_
 #define _CEGUIDirect3D11GeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "CEGUIDirect3D11Renderer.h"
-#include "../../CEGUIRect.h"
-#include "../../CEGUIQuaternion.h"
+#include "../../GeometryBuffer.h"
+#include "CEGUI/RendererModules/Direct3D11/Renderer.h"
+#include "../../Rect.h"
+#include "../../Quaternion.h"
 
 
 

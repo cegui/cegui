@@ -25,12 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIScrolledItemListBase.h"
-#include "elements/CEGUIClippedContainer.h"
-#include "CEGUIWindowManager.h"
-#include "CEGUILogger.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/elements/ScrolledItemListBase.h"
+#include "CEGUI/elements/ClippedContainer.h"
+#include "CEGUI/WindowManager.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/CoordConverter.h"
 
 // begin CEGUI namespace
 namespace CEGUI

@@ -26,10 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
-#include "CEGUIOpenGLGeometryBuffer.h"
-#include "CEGUIRenderEffect.h"
-#include "CEGUIOpenGLTexture.h"
-#include "CEGUIVertex.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
+#include "CEGUI/RenderEffect.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/Vertex.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

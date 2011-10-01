@@ -27,10 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIScriptModule.h"
-#include "CEGUISystem.h"
-#include "CEGUILogger.h"
-#include "CEGUIString.h"
+#include "CEGUI/ScriptModule.h"
+#include "CEGUI/System.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/String.h"
 
 
 // Start of CEGUI namespace section

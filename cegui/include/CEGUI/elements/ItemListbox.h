@@ -28,7 +28,7 @@
 #ifndef _CEGUIItemListbox_h_
 #define _CEGUIItemListbox_h_
 
-#include "CEGUIScrolledItemListBase.h"
+#include "./ScrolledItemListBase.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

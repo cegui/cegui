@@ -30,7 +30,7 @@
 #ifndef _CEGUIComboDropList_h_
 #define _CEGUIComboDropList_h_
 
-#include "CEGUIListbox.h"
+#include "./Listbox.h"
 
 
 #if defined(_MSC_VER)

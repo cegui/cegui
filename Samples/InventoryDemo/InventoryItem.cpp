@@ -28,8 +28,8 @@
 #include "InventoryItem.h"
 #include "InventoryReceiver.h"
 
-#include <CEGUIPropertyHelper.h>
-#include <CEGUIImage.h>
+#include <CEGUI/PropertyHelper.h>
+#include <CEGUI/Image.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

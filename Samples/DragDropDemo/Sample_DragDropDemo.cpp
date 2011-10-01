@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_DragDropDemo.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include "CEGuiBaseApplication.h"
 
 //----------------------------------------------------------------------------//

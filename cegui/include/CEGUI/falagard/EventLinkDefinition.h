@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalEventLinkDefinition.h
+    filename:   CEGUIEventLinkDefinition.h
     created:    Sun Nov 21 2010
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalEventLinkDefinition_h_
 #define _CEGUIFalEventLinkDefinition_h_
 
-#include "../CEGUIString.h"
+#include "../String.h"
 
 #include <vector>
 

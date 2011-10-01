@@ -25,9 +25,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "elements/CEGUIScrolledContainer.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUIRenderingSurface.h"
+#include "CEGUI/elements/ScrolledContainer.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/RenderingSurface.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

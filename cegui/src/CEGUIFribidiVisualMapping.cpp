@@ -29,12 +29,12 @@
 #   include "config.h"
 #endif
 
-#include "CEGUIConfig.h"
+#include "CEGUI/Config.h"
 
 #ifdef CEGUI_USE_FRIBIDI
 
-#include "CEGUIFribidiVisualMapping.h"
-#include "CEGUILogger.h"
+#include "CEGUI/FribidiVisualMapping.h"
+#include "CEGUI/Logger.h"
 #include <fribidi.h>
 
 #ifdef _MSC_VER

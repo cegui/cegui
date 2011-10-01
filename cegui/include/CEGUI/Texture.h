@@ -31,11 +31,11 @@
 #ifndef _CEGUITexture_h_
 #define _CEGUITexture_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUISize.h"
-#include "CEGUIVector.h"
-#include "CEGUIRect.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

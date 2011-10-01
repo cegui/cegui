@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_Text.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include "CEGuiBaseApplication.h"
 #include <cstdlib>
 

@@ -28,8 +28,8 @@
 #ifndef _CEGUIDirectFBGeometryBuffer_h_
 #define _CEGUIDirectFBGeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "../../CEGUIRect.h"
+#include "../../GeometryBuffer.h"
+#include "../../Rect.h"
 #include <directfb.h>
 #include <vector>
 

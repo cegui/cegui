@@ -28,7 +28,7 @@
 #ifndef _CEGUIDynamicModule_h_
 #define _CEGUIDynamicModule_h_
 
-#include "CEGUIString.h"
+#include "CEGUI/String.h"
 
 /*************************************************************************
     The following is basically taken from DynLib.h, which is part of

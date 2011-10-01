@@ -39,8 +39,8 @@
 
 #include "CEGuiIrrlichtBaseApplication.h"
 #include "CEGuiSample.h"
-#include "RendererModules/Irrlicht/CEGUIIrrlichtImageCodec.h"
-#include "RendererModules/Irrlicht/CEGUIIrrlichtResourceProvider.h"
+#include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
+#include "CEGUI/RendererModules/Irrlicht/ResourceProvider.h"
 
 //----------------------------------------------------------------------------//
 CEGuiIrrlichtBaseApplication::CEGuiIrrlichtBaseApplication() :

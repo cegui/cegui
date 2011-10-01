@@ -28,8 +28,8 @@
 #ifndef _CEGUIClippedContainer_h_
 #define _CEGUIClippedContainer_h_
 
-#include "../CEGUIWindow.h"
-#include "../CEGUIWindowFactory.h"
+#include "../Window.h"
+#include "../WindowFactory.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

@@ -28,8 +28,8 @@
 #ifndef _CEGUIDirect3D10TextureTarget_h_
 #define _CEGUIDirect3D10TextureTarget_h_
 
-#include "CEGUIDirect3D10RenderTarget.h"
-#include "../../CEGUITextureTarget.h"
+#include "CEGUI/RendererModules/Direct3D10/RenderTarget.h"
+#include "../../TextureTarget.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

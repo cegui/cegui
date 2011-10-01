@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalModule.h
+    filename:   Module.h
     created:    Wed Jun 22 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,8 +28,8 @@
 #ifndef _FalModule_h_
 #define _FalModule_h_
 
-#include "../../CEGUIWindowRendererModule.h"
-#include "../../CEGUIWindowRenderer.h"
+#include "CEGUI/WindowRendererModule.h"
+#include "CEGUI/WindowRenderer.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIFALAGARDWRBASE_EXPORTS

@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIDevILImageCodec.h"
-#include "CEGUISize.h"
+#include "CEGUI/ImageCodecModules/DevIL/ImageCodec.h"
+#include "CEGUI/Size.h"
 #include <IL/il.h>
 #include <IL/ilu.h> 
 #include <string.h>

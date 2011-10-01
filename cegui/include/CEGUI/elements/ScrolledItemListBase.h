@@ -28,8 +28,8 @@
 #ifndef _CEGUIScrolledItemListBase_h_
 #define _CEGUIScrolledItemListBase_h_
 
-#include "CEGUIItemListBase.h"
-#include "CEGUIScrollbar.h"
+#include "./ItemListBase.h"
+#include "./Scrollbar.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

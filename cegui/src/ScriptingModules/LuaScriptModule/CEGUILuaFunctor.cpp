@@ -27,12 +27,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUILuaFunctor.h"
-#include "CEGUILogger.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIPropertyHelper.h"
-#include "CEGUILua.h"
-#include "CEGUISystem.h"
+#include "CEGUI/ScriptModules/Lua/Functor.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/PropertyHelper.h"
+#include "CEGUI/ScriptModules/Lua/ScriptModule.h"
+#include "CEGUI/System.h"
 
 // include Lua libs and tolua++
 extern "C" {

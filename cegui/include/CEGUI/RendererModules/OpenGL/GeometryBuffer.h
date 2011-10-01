@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLGeometryBuffer_h_
 #define _CEGUIOpenGLGeometryBuffer_h_
 
-#include "../../CEGUIGeometryBuffer.h"
-#include "CEGUIOpenGLRenderer.h"
-#include "../../CEGUIRect.h"
-#include "../../CEGUIQuaternion.h"
+#include "../../GeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "../../Rect.h"
+#include "../../Quaternion.h"
 
 #include <utility>
 #include <vector>

@@ -29,7 +29,7 @@
 #define _InventoryItem_h_
 
 #include "InventoryBase.h"
-#include <elements/CEGUIDragContainer.h>
+#include <CEGUI/elements/DragContainer.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

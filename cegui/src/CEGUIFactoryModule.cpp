@@ -27,10 +27,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIBase.h"
-#include "CEGUIString.h"
-#include "CEGUIExceptions.h"
-#include "CEGUIFactoryModule.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/FactoryModule.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"

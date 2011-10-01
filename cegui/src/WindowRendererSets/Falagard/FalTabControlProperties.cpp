@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FalTabControlProperties.h"
-#include "FalTabControl.h"
+#include "CEGUI/WindowRendererSets/Falagard/TabControlProperties.h"
+#include "CEGUI/WindowRendererSets/Falagard/TabControl.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

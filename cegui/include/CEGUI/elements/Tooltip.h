@@ -28,7 +28,7 @@
 #ifndef _CEGUITooltip_h_
 #define _CEGUITooltip_h_
 
-#include "../CEGUIWindow.h"
+#include "../Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

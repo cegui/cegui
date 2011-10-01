@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIFalagard_xmlHandler.h
+    filename:   CEGUIXMLHandler.h
     created:    Fri Jun 17 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,9 +28,9 @@
 #ifndef _CEGUIFalagard_xmlHandler_h_
 #define _CEGUIFalagard_xmlHandler_h_
 
-#include "../CEGUIChainedXMLHandler.h"
-#include "CEGUIFalDimensions.h"
-#include "../CEGUIWindow.h"
+#include "../ChainedXMLHandler.h"
+#include "./Dimensions.h"
+#include "../Window.h"
 #include <vector>
 
 // Start of CEGUI namespace section

@@ -27,9 +27,9 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIPropertySet.h"
-#include "CEGUIProperty.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/PropertySet.h"
+#include "CEGUI/Property.h"
+#include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

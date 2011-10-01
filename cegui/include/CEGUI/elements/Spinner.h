@@ -28,8 +28,8 @@
 #ifndef _CEGUISpinner_h_
 #define _CEGUISpinner_h_
 
-#include "../CEGUIBase.h"
-#include "../CEGUIWindow.h"
+#include "../Base.h"
+#include "../Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

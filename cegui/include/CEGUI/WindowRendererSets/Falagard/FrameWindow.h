@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FalFrameWindow.h
+    filename:   FrameWindow.h
     created:    Sat Jul 2 2005
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -28,7 +28,7 @@
 #ifndef _FalFrameWindow_h_
 #define _FalFrameWindow_h_
 
-#include "FalModule.h"
+#include "CEGUI/WindowRendererSets/Falagard/Module.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

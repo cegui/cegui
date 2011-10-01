@@ -30,9 +30,9 @@
 #ifndef _CEGUITplInterpolators_h_
 #define _CEGUITplInterpolators_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIInterpolator.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Interpolator.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

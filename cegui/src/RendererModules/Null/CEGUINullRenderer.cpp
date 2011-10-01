@@ -25,16 +25,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUINullRenderer.h"
-#include "CEGUINullGeometryBuffer.h"
-#include "CEGUINullTextureTarget.h"
-#include "CEGUINullTexture.h"
-#include "CEGUIImageCodec.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIExceptions.h"
-#include "CEGUISystem.h"
-#include "CEGUIDefaultResourceProvider.h"
-#include "CEGUILogger.h"
+#include "CEGUI/RendererModules/Null/Renderer.h"
+#include "CEGUI/RendererModules/Null/GeometryBuffer.h"
+#include "CEGUI/RendererModules/Null/TextureTarget.h"
+#include "CEGUI/RendererModules/Null/Texture.h"
+#include "CEGUI/ImageCodec.h"
+#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/Logger.h"
 
 #include <algorithm>
 

@@ -28,8 +28,8 @@
 #ifndef _CEGUIAnimation_xmlHandler_h_
 #define _CEGUIAnimation_xmlHandler_h_
 
-#include "CEGUIChainedXMLHandler.h"
-#include "CEGUIString.h"
+#include "CEGUI/ChainedXMLHandler.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

@@ -30,11 +30,11 @@
 #ifndef _CEGUIInputEvent_h_
 #define _CEGUIInputEvent_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIEventArgs.h"
-#include "CEGUIString.h"
-#include "CEGUIVector.h"
-#include "CEGUISize.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/String.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Size.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

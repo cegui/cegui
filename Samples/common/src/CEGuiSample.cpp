@@ -74,7 +74,7 @@
 // although there will be no renderers available for selection in the samples.
 #include "CEGuiBaseApplication.h"
 
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )

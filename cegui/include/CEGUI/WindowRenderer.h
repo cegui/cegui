@@ -30,8 +30,8 @@
 #ifndef _CEGUIWindowRenderer_h_
 #define _CEGUIWindowRenderer_h_
 
-#include "CEGUIWindow.h"
-#include "CEGUIProperty.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/Property.h"
 #include <vector>
 #include <utility>
 

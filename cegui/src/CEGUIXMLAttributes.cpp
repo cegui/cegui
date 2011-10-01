@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUIXMLAttributes.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/XMLAttributes.h"
+#include "CEGUI/Exceptions.h"
 #include <sstream>
 #include <iterator>
 

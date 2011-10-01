@@ -30,7 +30,7 @@
 #ifndef _CEGUIString_h_
 #define _CEGUIString_h_
 
-#include "CEGUIBase.h"
+#include "CEGUI/Base.h"
 #include <string.h>
 #include <stdexcept>
 #include <cstddef>

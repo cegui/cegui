@@ -28,8 +28,8 @@
 #ifndef _CEGUIDirectFBTexture_h_
 #define _CEGUIDirectFBTexture_h_
 
-#include "../../CEGUITexture.h"
-#include "CEGUIDirectFBRenderer.h"
+#include "../../Texture.h"
+#include "CEGUI/RendererModules/DirectFB/Renderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

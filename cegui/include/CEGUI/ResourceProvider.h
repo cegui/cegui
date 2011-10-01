@@ -30,9 +30,9 @@
 #ifndef _CEGUIResourceProvider_h_
 #define _CEGUIResourceProvider_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIDataContainer.h"
-#include "CEGUIString.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/DataContainer.h"
+#include "CEGUI/String.h"
 #include <vector>
 
 
