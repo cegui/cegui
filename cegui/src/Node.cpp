@@ -31,9 +31,9 @@
 #   include "config.h"
 #endif
 
-#include "CEGUINode.h"
-#include "CEGUICoordConverter.h"
-#include "CEGUISystem.h"
+#include "CEGUI/Node.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/System.h"
 
 #include <algorithm>
 

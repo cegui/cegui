@@ -32,7 +32,7 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Image.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

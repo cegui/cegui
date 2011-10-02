@@ -31,10 +31,10 @@
 #ifndef _CEGUINode_h_
 #define _CEGUINode_h_
 
-#include "CEGUIBase.h"
-#include "CEGUIPropertySet.h"
-#include "CEGUIEventSet.h"
-#include "CEGUIEventArgs.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/PropertySet.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/EventArgs.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

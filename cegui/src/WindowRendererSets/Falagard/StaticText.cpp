@@ -37,7 +37,7 @@
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
