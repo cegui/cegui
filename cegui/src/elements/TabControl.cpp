@@ -397,7 +397,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
         return;
 
     float ww = getPixelSize().d_width;
-    float x = CoordConverter::asAbsolute(tb->getXPosition(), ww);
+    float x = CoordConverter::asAbsolute(tb->getPosition().d_x, ww);
     float w = tb->getPixelSize().d_width;
     float lx = 0, rx = ww;
 
@@ -412,7 +412,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (isChild(ButtonScrollRight))
     {
         scrollRightBtn = getChild(ButtonScrollRight);
-        rx = CoordConverter::asAbsolute(scrollRightBtn->getXPosition(), ww);
+        rx = CoordConverter::asAbsolute(scrollRightBtn->getPosition().d_x, ww);
         scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
@@ -510,25 +510,31 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     TabButton* btn = d_tabButtonVector [index];
     // relative height is always 1.0 for buttons since they are embedded in a
     // panel of the correct height already
-    btn->setHeight(cegui_reldim(1.0f));
-    btn->setYPosition(cegui_absdim(0.0f));
+    UVector2 position(cegui_absdim(0.0f), cegui_absdim(0.0f));
+    USize size(cegui_absdim(0.0f), cegui_reldim(1.0f));
+    
     // x position is based on previous button
     if (!index)
+    {
         // First button
-        btn->setXPosition(cegui_absdim(d_firstTabOffset));
+        position.d_x = cegui_absdim(d_firstTabOffset);
+    }
     else
     {
-		Window* prevButton = d_tabButtonVector [index - 1];
+        Window* prevButton = d_tabButtonVector [index - 1];
 
-		// position is prev pos + width
-        btn->setXPosition(prevButton->getArea().d_max.d_x);
+        // position is prev pos + width
+        position.d_x = prevButton->getArea().d_max.d_x;
     }
+   
     // Width is based on font size (expressed as absolute)
     const Font* fnt = btn->getFont();
-    btn->setWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
-                        getTabTextPadding() + getTabTextPadding());
+    size.d_width = cegui_absdim(fnt->getTextExtent(btn->getText())) + getTabTextPadding() + getTabTextPadding();
+    
+    btn->setPosition(position);
+    btn->setSize(size);
 
-    float left_x = btn->getXPosition ().d_offset;
+    const float left_x = position.d_x.d_offset;
     btn->setVisible ((left_x < getPixelSize ().d_width) &&
                      (left_x + btn->getPixelSize ().d_width > 0));
     btn->invalidate();

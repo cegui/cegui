@@ -100,10 +100,11 @@ namespace CEGUI
     Rectf FalagardItemListbox::getUnclippedInnerRect() const
     {
         if (!d_widgetLookAssigned)
-            return d_window->getUnclippedOuterRect();
+            return d_window->getUnclippedOuterRect().get();
 
-        const Rectf lr(getItemRenderArea());
-        return CoordConverter::windowToScreen(*d_window, lr);
+        // URGENT FIXME
+        //const Rectf lr(getItemRenderArea());
+        //return CoordConverter::windowToScreen(*d_window, lr);
     }
 
 } // End of  CEGUI namespace section

@@ -157,10 +157,10 @@ void MenuBase::setPopupMenuItemClosing()
 }
 
 //----------------------------------------------------------------------------//
-void MenuBase::onChildRemoved(WindowEventArgs& e)
+void MenuBase::onChildRemoved(NodeEventArgs& e)
 {
     // if the removed window was our tracked popup item, zero ptr to it.
-    if (e.window == d_popupItem)
+    if (static_cast<Window*>(e.node) == d_popupItem)
         d_popupItem = 0;
 
     // base class version

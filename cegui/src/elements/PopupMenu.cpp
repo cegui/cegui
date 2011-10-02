@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/elements/PopupMenu.h"
 #include "CEGUI/elements/MenuItem.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -242,18 +243,18 @@ void PopupMenu::layoutItemWidgets()
 	Rectf render_rect = getItemRenderArea();
 
 	// get starting position
-	const float x0 = PixelAligned(render_rect.d_min.d_x);
-	float y0 = PixelAligned(render_rect.d_min.d_y);
+	const float x0 = CoordConverter::alignToPixels(render_rect.d_min.d_x);
+	float y0 = CoordConverter::alignToPixels(render_rect.d_min.d_y);
 
 	URect rect;
-	UVector2 sz(cegui_absdim(PixelAligned(render_rect.getWidth())), cegui_absdim(0)); // set item width
+	UVector2 sz(cegui_absdim(CoordConverter::alignToPixels(render_rect.getWidth())), cegui_absdim(0)); // set item width
 
 	// iterate through all items attached to this window
 	ItemEntryList::iterator item = d_listItems.begin();
 	while ( item != d_listItems.end() )
 	{
 		// get the "optimal" height of the item and use that!
-		sz.d_y.d_offset = PixelAligned((*item)->getItemPixelSize().d_height); // rounding errors ?
+		sz.d_y.d_offset = CoordConverter::alignToPixels((*item)->getItemPixelSize().d_height); // rounding errors ?
 
 		// set destination rect
 		rect.setPosition(UVector2(cegui_absdim(x0), cegui_absdim(y0)) );
@@ -262,7 +263,7 @@ void PopupMenu::layoutItemWidgets()
 		(*item)->setArea(rect);
 
 		// next position
-		y0 += PixelAligned(sz.d_y.d_offset + d_itemSpacing);
+		y0 += CoordConverter::alignToPixels(sz.d_y.d_offset + d_itemSpacing);
 
 		item++; // next item
 	}

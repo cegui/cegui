@@ -434,7 +434,7 @@ Window* System::setGUISheet(Window* sheet)
     // to the screen size.
     if (sheet)
     {
-        WindowEventArgs sheetargs(0);
+        NodeEventArgs sheetargs(0);
         sheet->onParentSized(sheetargs);
     }
 
@@ -1337,7 +1337,7 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
     // FIXME: it's parent element may not be the main screen.
 	if (d_activeSheet)
 	{
-		WindowEventArgs args(0);
+		NodeEventArgs args(0);
 		d_activeSheet->onParentSized(args);
     }
 

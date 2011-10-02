@@ -814,7 +814,7 @@ protected:
     /*************************************************************************
         Overridden Event handlers
      *************************************************************************/
-    virtual void onSized(WindowEventArgs& e);
+    virtual void onSized(NodeEventArgs& e);
     virtual void onMouseButtonDown(MouseEventArgs& e);
     virtual	void onMouseWheel(MouseEventArgs& e);
     virtual void onMouseMove(MouseEventArgs& e);

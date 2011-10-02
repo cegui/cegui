@@ -32,6 +32,7 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Image.h"
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -145,7 +146,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
 
     Vector2f draw_pos(targetRect.getPosition());
 
-    draw_pos.d_y += PixelAligned(
+    draw_pos.d_y += CoordConverter::alignToPixels(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
     if (!d_renderedStringValid)

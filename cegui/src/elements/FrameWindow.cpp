@@ -36,6 +36,8 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/CoordConverter.h"
 
+// URGENT FIXME: I commented instances of PixelAligned in here, I think they are not necessary but it should be checked!
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -223,8 +225,8 @@ void FrameWindow::setRolledup(bool val)
 *************************************************************************/
 void FrameWindow::offsetPixelPosition(const Vector2f& offset)
 {
-    UVector2 uOffset(cegui_absdim(PixelAligned(offset.d_x)),
-                     cegui_absdim(PixelAligned(offset.d_y)));
+    UVector2 uOffset(cegui_absdim(/*PixelAligned(*/offset.d_x/*)*/),
+                     cegui_absdim(/*PixelAligned(*/offset.d_y/*)*/));
 
     setPosition(d_area.getPosition() + uOffset);
 }
@@ -323,13 +325,13 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
         delta = orgWidth - minWidth;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
-    if (d_horzAlign == HA_RIGHT)
+    if (d_horizontalAlignment == HA_RIGHT)
     {
         out_area.d_max.d_x.d_offset -= adjustment;
     }
-    else if (d_horzAlign == HA_CENTRE)
+    else if (d_horizontalAlignment == HA_CENTRE)
     {
         out_area.d_max.d_x.d_offset -= adjustment * 0.5f;
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
@@ -339,7 +341,7 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
         out_area.d_min.d_x.d_offset += adjustment;
     }
 
-    return d_horzAlign == HA_LEFT;
+    return d_horizontalAlignment == HA_LEFT;
 }
 /*************************************************************************
 	move the window's right edge by 'delta'.  The rest of the window
@@ -365,16 +367,16 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
         delta = minWidth - orgWidth;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
     out_area.d_max.d_x.d_offset += adjustment;
 
-    if (d_horzAlign == HA_RIGHT)
+    if (d_horizontalAlignment == HA_RIGHT)
     {
         out_area.d_max.d_x.d_offset += adjustment;
         out_area.d_min.d_x.d_offset += adjustment;
     }
-    else if (d_horzAlign == HA_CENTRE)
+    else if (d_horizontalAlignment == HA_CENTRE)
     {
         out_area.d_max.d_x.d_offset += adjustment * 0.5f;
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
@@ -383,7 +385,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_x += adjustment;
 
-    return d_horzAlign == HA_RIGHT;
+    return d_horizontalAlignment == HA_RIGHT;
 }
 
 /*************************************************************************
@@ -409,13 +411,13 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
         delta = orgHeight - minHeight;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
-    if (d_vertAlign == VA_BOTTOM)
+    if (d_verticalAlignment == VA_BOTTOM)
     {
         out_area.d_max.d_y.d_offset -= adjustment;
     }
-    else if (d_vertAlign == VA_CENTRE)
+    else if (d_verticalAlignment == VA_CENTRE)
     {
         out_area.d_max.d_y.d_offset -= adjustment * 0.5f;
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
@@ -425,7 +427,7 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
         out_area.d_min.d_y.d_offset += adjustment;
     }
 
-    return d_vertAlign == VA_TOP;
+    return d_verticalAlignment == VA_TOP;
 }
 
 
@@ -453,16 +455,16 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
         delta = minHeight - orgHeight;
 
     // ensure adjustment will be whole pixel
-    float adjustment = PixelAligned(delta);
+    float adjustment = /*PixelAligned(*/delta/*)*/;
 
     out_area.d_max.d_y.d_offset += adjustment;
 
-    if (d_vertAlign == VA_BOTTOM)
+    if (d_verticalAlignment == VA_BOTTOM)
     {
         out_area.d_max.d_y.d_offset += adjustment;
         out_area.d_min.d_y.d_offset += adjustment;
     }
-    else if (d_vertAlign == VA_CENTRE)
+    else if (d_verticalAlignment == VA_CENTRE)
     {
         out_area.d_max.d_y.d_offset += adjustment * 0.5f;
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
@@ -471,7 +473,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // move the dragging point so mouse remains 'attached' to edge of window
     d_dragPoint.d_y += adjustment;
 
-    return d_vertAlign == VA_BOTTOM;
+    return d_verticalAlignment == VA_BOTTOM;
 }
 
 
@@ -531,7 +533,7 @@ void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(true);
     notifyClippingChanged();
-    WindowEventArgs size_args(e);
+    NodeEventArgs size_args(e.window);
     onSized(size_args);
 
 	fireEvent(EventRollupToggled, e, EventNamespace);
