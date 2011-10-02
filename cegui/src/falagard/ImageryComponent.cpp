@@ -31,7 +31,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/PropertyHelper.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/CoordConverter.h"
 #include <iostream>
 #include <cstdlib>
 

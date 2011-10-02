@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/elements/PopupMenu.h"
 #include "CEGUI/elements/MenuItem.h"
-#include "CEGUICoordConverter.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

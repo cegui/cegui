@@ -31,7 +31,7 @@
 #define _CEGUIWindow_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUINode.h"
+#include "CEGUI/Node.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"

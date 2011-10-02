@@ -32,7 +32,7 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/System.h" // this being here is a bit nasty IMO
-#include "CEGUICoordConverter.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
