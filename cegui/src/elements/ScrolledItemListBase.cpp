@@ -182,7 +182,7 @@ void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
     if ((old_vert_visible != v->isVisible()) ||
         (old_horz_visible != h->isVisible()))
     {
-        d_innerUnclippedRectValid = false;
+        d_unclippedInnerRect.invalidateCache();
         d_innerRectClipperValid = false;
     }
 
@@ -223,8 +223,8 @@ void ScrolledItemListBase::onMouseWheel(MouseEventArgs& e)
         return;
     }
 
-    float pixH = d_pane->getUnclippedOuterRect().getHeight();
-    float delta = (pixH/float(count)) * -e.wheelChange;
+    const float pixH = d_pane->getUnclippedOuterRect().get().getHeight();
+    const float delta = (pixH/float(count)) * -e.wheelChange;
     v->setScrollPosition(v->getScrollPosition() + delta);
     ++e.handled;
 }

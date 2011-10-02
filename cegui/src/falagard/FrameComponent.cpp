@@ -30,6 +30,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
+#include "CEGUICoordConverter.h"
 #include <iostream>
 #include <cstdlib>
 
@@ -413,7 +414,7 @@ namespace CEGUI
                 break;
 
             case HF_CENTRE_ALIGNED:
-                xpos = destRect.left() + PixelAligned((destRect.getWidth() - imgSz.d_width) * 0.5f);
+                xpos = destRect.left() + CoordConverter::alignToPixels((destRect.getWidth() - imgSz.d_width) * 0.5f);
                 horzTiles = 1;
                 break;
 
@@ -447,7 +448,7 @@ namespace CEGUI
                 break;
 
             case VF_CENTRE_ALIGNED:
-                ypos = destRect.top() + PixelAligned((destRect.getHeight() - imgSz.d_height) * 0.5f);
+                ypos = destRect.top() + CoordConverter::alignToPixels((destRect.getHeight() - imgSz.d_height) * 0.5f);
                 vertTiles = 1;
                 break;
 

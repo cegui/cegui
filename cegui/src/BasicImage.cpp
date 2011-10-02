@@ -32,6 +32,7 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/System.h" // this being here is a bit nasty IMO
+#include "CEGUICoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -201,10 +202,11 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
     const Rectf tex_rect((d_area.d_min + ((final_rect.d_min - dest.d_min) * tex_per_pix)) * scale,
                           (d_area.d_max + ((final_rect.d_max - dest.d_max) * tex_per_pix)) * scale);
 
-    final_rect.d_min.d_x = PixelAligned(final_rect.d_min.d_x);
-    final_rect.d_min.d_y = PixelAligned(final_rect.d_min.d_y);
-    final_rect.d_max.d_x = PixelAligned(final_rect.d_max.d_x);
-    final_rect.d_max.d_y = PixelAligned(final_rect.d_max.d_y);
+    // URGENT FIXME: Shouldn't this be in the hands of the user?
+    final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);
+    final_rect.d_min.d_y = CoordConverter::alignToPixels(final_rect.d_min.d_y);
+    final_rect.d_max.d_x = CoordConverter::alignToPixels(final_rect.d_max.d_x);
+    final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
 
     Vertex vbuffer[6];
 

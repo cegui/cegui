@@ -105,12 +105,16 @@ public:
 
     /// @copydoc Window::update
     virtual void update(float elapsed);
+    
+    virtual const CachedRectf& getClientChildContentArea() const;
+
+    virtual void notifyScreenAreaChanged(bool recursive);
 
 protected:
     /// @copydoc Window::getUnclippedInnerRect_impl
-    virtual Rectf getUnclippedInnerRect_impl() const;
-    /// @copydoc Window::getClientChildWindowContentArea_impl
-    virtual Rectf getClientChildWindowContentArea_impl() const;
+    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
+    
+    Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
 
     size_t getIdxOfChild(Window* wnd) const;
 
@@ -187,6 +191,8 @@ protected:
     typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
     //! Tracks event connections we make.
     ConnectionTracker d_eventConnections;
+    
+    CachedRectf d_clientChildContentArea;
 };
 
 } // End of  CEGUI namespace section

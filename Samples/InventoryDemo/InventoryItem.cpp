@@ -142,11 +142,11 @@ void InventoryItem::populateGeometryBuffer()
 //------------------------------------------------------------------------------//
 Rectf InventoryItem::gridBasePixelRect() const
 {
-    return getUnclippedOuterRect();
+    return getUnclippedOuterRect().get();
 }
 
 //------------------------------------------------------------------------------//
-void InventoryItem::onMoved(WindowEventArgs& e)
+void InventoryItem::onMoved(NodeEventArgs& e)
 {
     invalidate();
 
@@ -157,7 +157,7 @@ void InventoryItem::onMoved(WindowEventArgs& e)
     if (receiver)
     {
         const Sizef square_size(receiver->squarePixelSize());
-        Rectf area(getUnclippedOuterRect());
+        Rectf area(getUnclippedOuterRect().get());
         area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
         const int x = receiver->gridXLocationFromPixelPosition(area.left());
         const int y = receiver->gridYLocationFromPixelPosition(area.top());

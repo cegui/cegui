@@ -83,7 +83,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     // remove all child windows
     while (getChildCount() != 0)
     {
-        Window* wnd = d_children[0];
+        Window* wnd = static_cast<Window*>(d_children[0]);
         removeChild(wnd);
     }
 
@@ -115,7 +115,7 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
                 continue;
 
             const size_t oldIdx = mapFromGridToIdx(x, y, oldWidth, oldHeight);
-            Window* previous = oldChildren[oldIdx];
+            Window* previous = static_cast<Window*>(oldChildren[oldIdx]);
 
             if (isDummy(previous))
             {
@@ -139,9 +139,9 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
     // to be destroyed by parent
     for (size_t i = 0; i < oldChildren.size(); ++i)
     {
-        if (oldChildren[i] && oldChildren[i]->isDestroyedByParent())
+        if (oldChildren[i] && static_cast<Window*>(oldChildren[i])->isDestroyedByParent())
         {
-            WindowManager::getSingleton().destroyWindow(oldChildren[i]);
+            WindowManager::getSingleton().destroyWindow(static_cast<Window*>(oldChildren[i]));
         }
     }
 }
@@ -294,8 +294,8 @@ void GridLayoutContainer::layout()
     std::vector<UDim> rowSizes(d_gridHeight, UDim(0, 0));
 
     // used to compare UDims
-    const float absWidth = getChildWindowContentArea().getWidth();
-    const float absHeight = getChildWindowContentArea().getHeight();
+    const float absWidth = getChildContentArea().get().getWidth();
+    const float absHeight = getChildContentArea().get().getHeight();
 
     // first, we need to determine rowSizes and colSizes, this is needed before
     // any layouting work takes place
@@ -559,7 +559,7 @@ void GridLayoutContainer::addChild_impl(Window* wnd)
         // puts the dummy at the end of d_children it will soon get removed from
         std::swap(d_children[idx], d_children[d_children.size() - 1]);
 
-        Window* toBeRemoved = d_children[d_children.size() - 1];
+        Window* toBeRemoved = static_cast<Window*>(d_children[d_children.size() - 1]);
         removeChild(toBeRemoved);
 
         if (toBeRemoved->isDestroyedByParent())

@@ -68,9 +68,9 @@ Rectf WindowRenderer::getUnclippedInnerRect() const
 
     if (lf.isNamedAreaDefined("inner_rect"))
         return lf.getNamedArea("inner_rect").getArea().
-            getPixelRect(*d_window, d_window->getUnclippedOuterRect());
+            getPixelRect(*d_window, d_window->getUnclippedOuterRect().get());
     else
-        return d_window->getUnclippedOuterRect();
+        return d_window->getUnclippedOuterRect().get();
 }
 
 /************************************************************************

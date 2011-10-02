@@ -279,7 +279,8 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
         delta = minWidth - orgWidth;
     
     // update segment area rect
-    URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,PixelAligned(delta)), d_area.d_max.d_y);
+    // URGENT FIXME: The pixel alignment will be done automatically again, right? Why is it done here? setArea_impl will do it!
+    URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,/*PixelAligned(*/delta/*)*/), d_area.d_max.d_y);
     setArea_impl(area.d_min, area.getSize());
 
     // move the dragging point so mouse remains 'attached' to edge of segment

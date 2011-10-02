@@ -345,7 +345,7 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::onParentSized(WindowEventArgs& e)
+void ItemListBase::onParentSized(NodeEventArgs& e)
 {
     Window::onParentSized(e);
 

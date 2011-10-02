@@ -47,11 +47,31 @@ class CEGUIEXPORT CoordConverter
 public:
     /*!
     \brief
+        Static method used to return a float value rounded to the nearest integer.
+
+        This method is used throughout the library to ensure that elements are
+        kept at integer pixel positions on the display if user wishes so.
+
+    \param x
+        Expression to be rounded to nearest whole number
+
+    \return
+        \a x after having been rounded
+        
+    \see Node::setPixelAligned
+    */
+    inline static float alignToPixels(float x)
+    {
+        return (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f));
+    }
+    
+    /*!
+    \brief
         converts given UDim to absolute value
     */
-    inline static float asAbsolute(const UDim& u, float base)
+    inline static float asAbsolute(const UDim& u, float base, bool pixelAlign = true)
     {
-        return PixelAligned(base * u.d_scale) + u.d_offset;
+        return pixelAlign ? alignToPixels(base * u.d_scale + u.d_offset) : base * u.d_scale + u.d_offset;
     }
 
     /*!
@@ -67,9 +87,9 @@ public:
     \brief
         converts given Vector2<UDim> to absolute Vector2f
     */
-    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base)
+    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base, bool pixelAlign = true)
     {
-        return Vector2f(asAbsolute(v.d_x, base.d_width), asAbsolute(v.d_y, base.d_height));
+        return Vector2f(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
 
     /*!
@@ -85,9 +105,9 @@ public:
     \brief
         converts given Size<UDim> to absolute Sizef
     */
-    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base)
+    inline static Sizef asAbsolute(const Size<UDim>& v, const Sizef& base, bool pixelAlign = true)
     {
-        return Sizef(asAbsolute(v.d_width, base.d_width), asAbsolute(v.d_height, base.d_height));
+        return Sizef(asAbsolute(v.d_width, base.d_width, pixelAlign), asAbsolute(v.d_height, base.d_height, pixelAlign));
     }
 
     /*!
@@ -99,13 +119,13 @@ public:
         return Sizef(asRelative(v.d_width, base.d_width), asRelative(v.d_height, base.d_height));
     }
 
-    inline static Rectf asAbsolute(const URect& r, const Sizef& base)
+    inline static Rectf asAbsolute(const URect& r, const Sizef& base, bool pixelAlign = true)
     {
         return Rectf(
-                   asAbsolute(r.d_min.d_x, base.d_width),
-                   asAbsolute(r.d_min.d_y, base.d_height),
-                   asAbsolute(r.d_max.d_x, base.d_width),
-                   asAbsolute(r.d_max.d_y, base.d_height)
+                   asAbsolute(r.d_min.d_x, base.d_width,  pixelAlign),
+                   asAbsolute(r.d_min.d_y, base.d_height, pixelAlign),
+                   asAbsolute(r.d_max.d_x, base.d_width,  pixelAlign),
+                   asAbsolute(r.d_max.d_y, base.d_height, pixelAlign)
                );
     }
 
@@ -118,137 +138,6 @@ public:
                    asRelative(r.d_max.d_y, base.d_height)
                );
     }
-
-    /*!
-    \brief
-        Convert a window co-ordinate value, specified as a UDim, to a screen
-        relative pixel co-ordinate.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param x
-        UDim x co-ordinate value to be converted
-
-    \return
-        float value describing a pixel screen co-ordinate that is equivalent to
-        window UDim co-ordinate \a x.
-    */
-    static float windowToScreenX(const Window& window, const UDim& x);
-
-    /*!
-    \brief
-        Convert a window pixel co-ordinate value, specified as a float, to a
-        screen pixel co-ordinate.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param x
-        float x co-ordinate value to be converted.
-
-    \return
-        float value describing a pixel screen co-ordinate that is equivalent to
-        window co-ordinate \a x.
-    */
-    static float windowToScreenX(const Window& window, const float x);
-
-    /*!
-    \brief
-        Convert a window co-ordinate value, specified as a UDim, to a screen
-        relative pixel co-ordinate.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param y
-        UDim y co-ordinate value to be converted
-
-    \return
-        float value describing a screen co-ordinate that is equivalent to
-        window UDim co-ordinate \a y.
-    */
-    static float windowToScreenY(const Window& window, const UDim& y);
-
-    /*!
-    \brief
-        Convert a window pixel co-ordinate value, specified as a float, to a
-        screen pixel co-ordinate.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param y
-        float y co-ordinate value to be converted.
-
-    \return
-        float value describing a screen co-ordinate that is equivalent to
-        window co-ordinate \a y.
-    */
-    static float windowToScreenY(const Window& window, const float y);
-
-    /*!
-    \brief
-        Convert a window co-ordinate point, specified as a UVector2, to a
-        screen relative pixel co-ordinate point.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param vec
-        UVector2 object describing the point to be converted
-
-    \return
-        Vector2 object describing a screen co-ordinate position that is
-        equivalent to window based UVector2 \a vec.
-    */
-    static Vector2f windowToScreen(const Window& window, const UVector2& vec);
-
-    /*!
-    \brief
-        Convert a window pixel co-ordinate point, specified as a Vector2, to a
-        screen pixel co-ordinate point.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param vec
-        Vector2 object describing the point to be converted.
-
-    \return
-        Vector2 object describing a screen co-ordinate position that is
-        equivalent to window based Vector2 \a vec.
-    */
-    static Vector2f windowToScreen(const Window& window, const Vector2f& vec);
-
-    /*!
-    \brief
-        Convert a window area, specified as a URect, to a screen area.
-
-    \param rect
-        URect object describing the area to be converted
-
-    \return
-        Rect object describing a screen area that is equivalent to window
-        area \a rect.
-    */
-    static Rectf windowToScreen(const Window& window, const URect& rect);
-
-    /*!
-    \brief
-        Convert a pixel window area, specified as a Rect, to a screen area.
-
-    \param window
-        Window object to use as a base for the conversion.
-
-    \param rect
-        Rect object describing the area to be converted.
-
-    \return
-        Rect object describing a screen area that is equivalent to window
-        area \a rect.
-    */
-    static Rectf windowToScreen(const Window& window, const Rectf& rect);
 
     /*!
     \brief

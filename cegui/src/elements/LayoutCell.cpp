@@ -42,7 +42,9 @@ const String LayoutCell::WidgetTypeName("LayoutCell");
 
 //----------------------------------------------------------------------------//
 LayoutCell::LayoutCell(const String& type, const String& name):
-        Window(type, name)
+        Window(type, name),
+        
+        d_clientChildContentArea(this, static_cast<Node::CachedRectf::DataGenerator>(&LayoutCell::getClientChildContentArea_impl))
 {
     // cell should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
@@ -57,22 +59,47 @@ LayoutCell::LayoutCell(const String& type, const String& name):
 LayoutCell::~LayoutCell(void)
 {}
 
-//----------------------------------------------------------------------------//
-Rectf LayoutCell::getUnclippedInnerRect_impl(void) const
+const Node::CachedRectf& LayoutCell::getClientChildContentArea() const
 {
-    return d_parent ?
-           d_parent->getUnclippedInnerRect() :
-           Window::getUnclippedInnerRect_impl();
+    if (!d_parent)
+    {
+        return Window::getClientChildContentArea();
+    }
+    else
+    {
+        return d_clientChildContentArea;
+    }
 }
 
 //----------------------------------------------------------------------------//
-Rectf LayoutCell::getClientChildWindowContentArea_impl() const
+void LayoutCell::notifyScreenAreaChanged(bool recursive)
+{
+    d_clientChildContentArea.invalidateCache();
+    
+    Window::notifyScreenAreaChanged(recursive);
+}
+
+//----------------------------------------------------------------------------//
+Rectf LayoutCell::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
+{
+    return d_parent ?
+           (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get()) :
+           Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+}
+
+//----------------------------------------------------------------------------//
+Rectf LayoutCell::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
 {
     if (!d_parent)
-        return Window::getClientChildWindowContentArea_impl();
+    {
+        return skipAllPixelAlignment ? Window::getClientChildContentArea().getFresh(true) : Window::getClientChildContentArea().get();
+    }
     else
-        return Rectf(getUnclippedOuterRect().getPosition(),
-                    d_parent->getUnclippedInnerRect().getSize());
+    {
+        return skipAllPixelAlignment ?
+            Rectf(getUnclippedOuterRect().getFresh(true).getPosition(), d_parent->getUnclippedInnerRect().getFresh(true).getSize()) :
+            Rectf(getUnclippedOuterRect().get().getPosition(), d_parent->getUnclippedInnerRect().get().getSize());
+    }
 }
 
 //----------------------------------------------------------------------------//
