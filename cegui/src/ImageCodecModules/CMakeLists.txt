@@ -1,24 +1,24 @@
 if (CEGUI_BUILD_IMAGECODEC_CORONA)
-    add_subdirectory(CoronaImageCodec)
+    add_subdirectory(Corona)
 endif()
 
 if (CEGUI_BUILD_IMAGECODEC_DEVIL)
-    add_subdirectory(DevILImageCodec)
+    add_subdirectory(DevIL)
 endif()
 
 if (CEGUI_BUILD_IMAGECODEC_FREEIMAGE)
-    add_subdirectory(FreeImageImageCodec)
+    add_subdirectory(FreeImage)
 endif()
 
 if (CEGUI_BUILD_IMAGECODEC_SILLY)
-    add_subdirectory(SILLYImageCodec)
+    add_subdirectory(SILLY)
 endif()
 
 if (CEGUI_BUILD_IMAGECODEC_STB)
-    add_subdirectory(STBImageCodec)
+    add_subdirectory(STB)
 endif()
 
 if (CEGUI_BUILD_IMAGECODEC_TGA)
-    add_subdirectory(TGAImageCodec)
+    add_subdirectory(TGA)
 endif()
 

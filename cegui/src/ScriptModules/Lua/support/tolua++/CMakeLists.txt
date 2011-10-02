@@ -1,7 +1,7 @@
 set( CEGUI_TARGET_NAME ${CEGUI_TOLUAPP_LIBNAME} )
 
 set( CORE_HEADER_FILES
-    ${CMAKE_SOURCE_DIR}/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++/tolua++.h
+    ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/ScriptModules/Lua/support/tolua++/tolua++.h
 )
 
 set( CORE_SOURCE_FILES
@@ -12,7 +12,7 @@ set( CORE_SOURCE_FILES
     tolua_to.c
 )
 
-include_directories(${CMAKE_SOURCE_DIR}/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++)
+include_directories(${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/ScriptModules/Lua/support/tolua++)
 
 add_library(${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES})
 set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
@@ -43,6 +43,6 @@ if (UNIX AND NOT APPLE AND NOT WIN32)
         )
     endif()
 
-    install(FILES ${CORE_HEADER_FILES} DESTINATION include/${CMAKE_PROJECT_NAME}/ScriptingModules/LuaScriptModule/support/tolua++)
+    install(FILES ${CORE_HEADER_FILES} DESTINATION include/${CMAKE_PROJECT_NAME}/ScriptModules/Lua/support/tolua++)
 endif()
 

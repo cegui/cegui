@@ -37,7 +37,7 @@
 #include "CEGUI/Logger.h"
 #include <algorithm>
 
-#include "CEGUIDirect3D10RendererShader.txt"
+#include "shader.txt"
 
 // Start of CEGUI namespace section
 namespace CEGUI

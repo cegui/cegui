@@ -38,9 +38,7 @@
 
 #include "d3dx11effect.h"
 
-
-
-#include "CEGUIDirect3D11RendererShader.txt"
+#include "shader.txt"
 
 // Start of CEGUI namespace section
 namespace CEGUI
