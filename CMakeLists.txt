@@ -424,7 +424,7 @@ add_subdirectory(cegui/src/RendererModules)
 add_subdirectory(cegui/src/XMLParserModules)
 add_subdirectory(cegui/src/ImageCodecModules)
 add_subdirectory(cegui/src/WindowRendererSets)
-add_subdirectory(cegui/src/ScriptingModules)
+add_subdirectory(cegui/src/ScriptModules)
 
 if (CEGUI_SAMPLES_ENABLED)
     add_subdirectory(Samples)

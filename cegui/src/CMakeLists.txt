@@ -19,23 +19,23 @@ list (APPEND CORE_HEADER_FILES
 list (REMOVE_ITEM CORE_SOURCE_FILES minibidi.cpp)
 
 if (NOT CEGUI_HAS_DEFAULT_LOGGER)
-    list (REMOVE_ITEM CORE_SOURCE_FILES CEGUIDefaultLogger.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES DefaultLogger.cpp)
 endif()
 
 if (NOT CEGUI_HAS_FREETYPE)
-    list (REMOVE_ITEM CORE_SOURCE_FILES CEGUIFreeTypeFont.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES FreeTypeFont.cpp)
 endif()
 
 if (NOT CEGUI_HAS_PCRE_REGEX)
-    list (REMOVE_ITEM CORE_SOURCE_FILES CEGUIPCRERegexMatcher.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES PCRERegexMatcher.cpp)
 endif()
 
 if (NOT CEGUI_USE_FRIBIDI)
-    list (REMOVE_ITEM CORE_SOURCE_FILES CEGUIFribidiVisualMapping.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES FribidiVisualMapping.cpp)
 endif()
 
 if (NOT CEGUI_USE_MINIBIDI)
-    list (REMOVE_ITEM CORE_SOURCE_FILES CEGUIMinibidiVisualMapping.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES MinibidiVisualMapping.cpp)
 endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
@@ -46,14 +46,14 @@ if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
         list (APPEND CORE_SOURCE_FILES minizip/iowin32.cpp)
     endif()
 else()
-    list (REMOVE_ITEM CORE_SOURCE_FILES CEGUIMinizipResourceProvider.cpp)
+    list (REMOVE_ITEM CORE_SOURCE_FILES MinizipResourceProvider.cpp)
 endif()
 
 if (NOT CEGUI_HAS_EXPRESSION_DIM)
     list(REMOVE_ITEM CORE_SOURCE_FILES
-        falagard/CEGUIFalExpressionDim.cpp
-        falagard/CEGUIFalExpressionDimParser.cpp
-        falagard/CEGUIFalExpressionDimScanner.cpp
+        falagard/ExpressionDim.cpp
+        falagard/ExpressionDimParser.cpp
+        falagard/ExpressionDimScanner.cpp
     )
 endif()
 
