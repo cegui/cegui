@@ -87,25 +87,10 @@ AnimationManager::AnimationManager(void)
 /*************************************************************************
     Destructor
 *************************************************************************/
-AnimationManager::~AnimationManager(void)
+AnimationManager::~AnimationManager()
 {
-    // first we remove & destroy remaining animation instances
-    for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
-         it != d_animationInstances.end(); ++it)
-    {
-        CEGUI_DELETE_AO it->second;
-    }
-
-    d_animationInstances.clear();
-
-    // then we remove & destroy animation definitions
-    for (AnimationMap::const_iterator it = d_animations.begin();
-         it != d_animations.end(); ++it)
-    {
-        CEGUI_DELETE_AO it->second;
-    }
-
-    d_animations.clear();
+    // by destroying all animations their instances also get deleted
+    destroyAllAnimations();
 
     // and lastly, we remove all interpolators, but we don't delete them!
     // it is the creator's responsibility to delete them
@@ -214,6 +199,23 @@ void AnimationManager::destroyAnimation(const String& name)
 }
 
 //----------------------------------------------------------------------------//
+void AnimationManager::destroyAllAnimations()
+{
+    // we have to destroy all instances to avoid dangling pointers
+    // destroying all instances now is also faster than doing that for each
+    // animation that is being destroyed
+    destroyAllAnimationInstances();
+    
+    for (AnimationMap::const_iterator it = d_animations.begin();
+         it != d_animations.end(); ++it)
+    {
+        CEGUI_DELETE_AO it->second;
+    }
+
+    d_animations.clear();
+}
+
+//----------------------------------------------------------------------------//
 Animation* AnimationManager::getAnimation(const String& name) const
 {
     AnimationMap::const_iterator it = d_animations.find(name);
@@ -305,6 +307,18 @@ void AnimationManager::destroyAllInstancesOfAnimation(Animation* animation)
         CEGUI_DELETE_AO toErase->second;
         d_animationInstances.erase(toErase);
     }
+}
+
+//----------------------------------------------------------------------------//
+void AnimationManager::destroyAllAnimationInstances()
+{
+    for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
+         it != d_animationInstances.end(); ++it)
+    {
+        CEGUI_DELETE_AO it->second;
+    }
+
+    d_animationInstances.clear();
 }
 
 //----------------------------------------------------------------------------//

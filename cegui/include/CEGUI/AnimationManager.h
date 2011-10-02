@@ -121,6 +121,12 @@ public:
         Destroys given animation definition by name
     */
     void destroyAnimation(const String& name);
+    
+    /*!
+    \brief
+        Destroys all animations in existence!
+    */
+    void destroyAllAnimations();
 
     /*!
     \brief
@@ -182,6 +188,12 @@ public:
         Destroys all instances of given animation
     */
     void destroyAllInstancesOfAnimation(Animation* animation);
+    
+    /*!
+    \brief
+        Destroys all instances of all animations
+    */
+    void destroyAllAnimationInstances();
 
     /*!
     \brief
