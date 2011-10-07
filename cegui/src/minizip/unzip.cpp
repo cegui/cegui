@@ -1,5 +1,5 @@
 #ifdef __APPLE__
-#   include <CEGUIConfig.h>
+#   include <CEGUI/Config.h>
 #endif
 
 #if !defined(__APPLE__) || defined(CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
