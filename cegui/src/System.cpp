@@ -60,6 +60,9 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/elements/All.h"
+#ifdef CEGUI_HAS_PCRE_REGEX
+#   include "CEGUI/PCRERegexMatcher.h"
+#endif
 #include <ctime>
 #include <clocale>
 
@@ -2047,6 +2050,23 @@ void System::invalidateAllWindows()
         if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
             static_cast<RenderingWindow*>(rs)->invalidateGeometry();
     }
+}
+
+//----------------------------------------------------------------------------//
+RegexMatcher& System::createRegexMatcher() const
+{
+#ifdef CEGUI_HAS_PCRE_REGEX
+    return *CEGUI_NEW_AO PCRERegexMatcher();
+#else
+    CEGUI_THROW(InvalidRequestException("System::createRegexMatcher - "
+        "Library was built without support for regular expressions."));
+#endif
+}
+
+//----------------------------------------------------------------------------//
+void System::destroyRegexMatcher(RegexMatcher& rm) const
+{
+    CEGUI_DELETE_AO &rm;
 }
 
 //----------------------------------------------------------------------------//
