@@ -7,5 +7,5 @@ datafiles=${prefix}/@CEGUI_DATA_INSTALL_DIR@
 Name: CEGUI
 Description: The free GUI library for games and multi-media development.
 Version: @CEGUI_VERSION@
-Libs: -L${libdir} -l$@CEGUI_BASE_LIBNAME@
+Libs: -L${libdir} -l@CEGUI_BASE_LIBNAME@
 Cflags: -I${includedir} -I${includedir}/@CMAKE_PROJECT_NAME@
