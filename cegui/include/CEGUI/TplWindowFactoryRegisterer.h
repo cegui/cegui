@@ -29,7 +29,6 @@
 #define _CEGUITplWindowFactoryRegisterer_h_
 
 #include "CEGUI/FactoryRegisterer.h"
-#include "CEGUI/TplWindowFactory.h"
 #include "CEGUI/WindowFactoryManager.h"
 
 // Start of CEGUI namespace section
@@ -72,7 +71,7 @@ void TplWindowFactoryRegisterer<T>::unregisterFactory() const
 template <typename T>
 void TplWindowFactoryRegisterer<T>::doFactoryAdd() const
 {
-    WindowFactoryManager::addFactory<TplWindowFactory<T> >();
+    WindowFactoryManager::addWindowType<T>();
 }
 
 //----------------------------------------------------------------------------//
