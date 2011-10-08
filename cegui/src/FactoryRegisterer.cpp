@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIWindowRendererModule.cpp
-    created:    Thu Mar 19 2009
+    filename:   FactoryRegisterer.cpp
+    created:    Fri Oct 07 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,69 +25,34 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/WindowRendererModule.h"
-#include "CEGUI/WRFactoryRegisterer.h"
-#include "CEGUI/Exceptions.h"
+#include "CEGUI/FactoryRegisterer.h"
+#include "CEGUI/Logger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-WindowRendererModule::~WindowRendererModule()
+FactoryRegisterer::FactoryRegisterer(const String& type) :
+    d_type(type)
 {}
 
 //----------------------------------------------------------------------------//
-void WindowRendererModule::registerFactory(const String& type_name)
-{
-    FactoryRegistry::iterator i = d_registry.begin();
-    for ( ; i != d_registry.end(); ++i)
-    {
-        if ((*i)->d_type == type_name)
-        {
-            (*i)->registerFactory();
-            return;
-        }
-    }
-
-    CEGUI_THROW(UnknownObjectException("No factory for WindowRenderere type '" +
-        type_name + "' in this module."));
-}
+FactoryRegisterer::~FactoryRegisterer()
+{}
 
 //----------------------------------------------------------------------------//
-uint WindowRendererModule::registerAllFactories()
+void FactoryRegisterer::registerFactory() const
 {
-    FactoryRegistry::iterator i = d_registry.begin();
-    for ( ; i != d_registry.end(); ++i)
-        (*i)->registerFactory();
-
-    return static_cast<uint>(d_registry.size());
-}
-
-//----------------------------------------------------------------------------//
-void WindowRendererModule::unregisterFactory(const String& type_name)
-{
-    FactoryRegistry::iterator i = d_registry.begin();
-    for ( ; i != d_registry.end(); ++i)
-    {
-        if ((*i)->d_type == type_name)
-        {
-            (*i)->unregisterFactory();
-            return;
-        }
-    }
-
-}
-
-//----------------------------------------------------------------------------//
-uint WindowRendererModule::unregisterAllFactories()
-{
-    FactoryRegistry::iterator i = d_registry.begin();
-    for ( ; i != d_registry.end(); ++i)
-        (*i)->unregisterFactory();
-
-    return static_cast<uint>(d_registry.size());
+    if (this->isAlreadyRegistered())
+        CEGUI::Logger::getSingleton().logEvent(
+            "Factory for '" + CEGUI::String(d_type) +
+            "' appears to be  already registered, skipping.",
+            CEGUI::Informative);
+    else
+        this->doFactoryAdd();
 }
 
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

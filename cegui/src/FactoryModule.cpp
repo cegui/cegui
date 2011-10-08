@@ -1,12 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIFactoryModule.cpp
-	created:	12/4/2004
-	author:		Paul D Turner
-
-	purpose:	Implements FactoryModule for Win32 systems
+    filename:   FactoryModule.cpp
+    created:    Fri Oct 07 2011
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,105 +25,70 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/Base.h"
-#include "CEGUI/String.h"
-#include "CEGUI/Exceptions.h"
 #include "CEGUI/FactoryModule.h"
-
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
+#include "CEGUI/FactoryRegisterer.h"
+#include "CEGUI/Exceptions.h"
+#include <stdio.h>
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*************************************************************************
-	Constants
-*************************************************************************/
-const char	FactoryModule::RegisterFactoryFunctionName[] = "registerFactory";
-const char  FactoryModule::RegisterAllFunctionName[]     = "registerAllFactories";
+//----------------------------------------------------------------------------//
+FactoryModule::~FactoryModule()
+{}
 
-
-/*************************************************************************
-	Construct the FactoryModule object by loading the dynamic loadable
-	module specified.
-*************************************************************************/
-FactoryModule::FactoryModule(const String& filename):d_module(0)
+//----------------------------------------------------------------------------//
+void FactoryModule::registerFactory(const String& type_name)
 {
-#if !defined(CEGUI_STATIC)
-	d_module = CEGUI_NEW_AO DynamicModule(filename);
-#endif
+    FactoryRegistry::iterator i = d_registry.begin();
+    for ( ; i != d_registry.end(); ++i)
+    {
+        if ((*i)->d_type == type_name)
+        {
+            (*i)->registerFactory();
+            return;
+        }
+    }
 
-    // functions are now optional, and only throw upon the first attempt to use a missing function.
-    if(d_module)
-	{
-		d_regFunc = (FactoryRegisterFunction)d_module->getSymbolAddress(RegisterFactoryFunctionName);
-		d_regAllFunc = (RegisterAllFunction)d_module->getSymbolAddress(RegisterAllFunctionName);
-	}
+    CEGUI_THROW(UnknownObjectException("No factory for type '" +
+        type_name + "' in this module."));
 }
 
-
-/*************************************************************************
-	Destroys the FactoryModule object and unloads any loadable module.
-*************************************************************************/
-FactoryModule::~FactoryModule(void)
+//----------------------------------------------------------------------------//
+uint FactoryModule::registerAllFactories()
 {
-	if(d_module)
-	{
-		delete(d_module);
-		d_module = 0;
-	}
+    FactoryRegistry::iterator i = d_registry.begin();
+    for ( ; i != d_registry.end(); ++i)
+        (*i)->registerFactory();
+
+    return static_cast<uint>(d_registry.size());
 }
 
-
-/*************************************************************************
-	Register a WindowFactory for 'type' Windows.
-*************************************************************************/
-void FactoryModule::registerFactory(const String& type) const
+//----------------------------------------------------------------------------//
+void FactoryModule::unregisterFactory(const String& type_name)
 {
-	//Make sure we are using a dynamic factory and not the static one.
-	if(d_module)
-	{
-		// are we attempting to use a missing function export
-		if (!d_regFunc)
-		{
-			CEGUI_THROW(InvalidRequestException("FactoryModule::registerFactory - Required function export 'void registerFactory(const String& type)' was not found in module '" +
-				d_module->getModuleName() + "'."));
-		}
+    FactoryRegistry::iterator i = d_registry.begin();
+    for ( ; i != d_registry.end(); ++i)
+    {
+        if ((*i)->d_type == type_name)
+        {
+            (*i)->unregisterFactory();
+            return;
+        }
+    }
 
-		d_regFunc(type);
-	} // if(d_module)
-	else
-	{
-#if defined(CEGUI_STATIC)
-		//Call the register function for the current static library
-//		registerFactoryFunction(type);
-#endif
-	}
 }
 
-uint FactoryModule::registerAllFactories() const
+//----------------------------------------------------------------------------//
+uint FactoryModule::unregisterAllFactories()
 {
-	//Make sure we are using a dynamic factory and not a static one
-	if(d_module)
-	{
-		// are we attempting to use a missing function export
-		if (!d_regAllFunc)
-		{
-			CEGUI_THROW(InvalidRequestException("FactoryModule::registerAllFactories - Required function export 'uint registerAllFactories(void)' was not found in module '" +
-				d_module->getModuleName() + "'."));
-		}
+    FactoryRegistry::iterator i = d_registry.begin();
+    for ( ; i != d_registry.end(); ++i)
+        (*i)->unregisterFactory();
 
-		return d_regAllFunc();
-	} // if(d_module)
-	else
-	{
-#if defined(CEGUI_STATIC)
-//		return registerAllFactoriesFunction();
-#endif
-	}
-
-	return 0;
+    return static_cast<uint>(d_registry.size());
 }
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

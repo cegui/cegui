@@ -196,11 +196,11 @@ void Scheme_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 //----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementWindowSetStart(const XMLAttributes& attributes)
 {
-    Scheme::UIModule    module;
-    module.name     = attributes.getValueAsString(FilenameAttribute);
-    module.module   = 0;
+    Scheme::UIModule module;
+    module.name = attributes.getValueAsString(FilenameAttribute);
+    module.dynamicModule = 0;
+    module.factoryModule = 0;
 
-    module.factories.clear();
     d_scheme->d_widgetModules.push_back(module);
 }
 
@@ -208,22 +208,19 @@ void Scheme_xmlHandler::elementWindowSetStart(const XMLAttributes& attributes)
 void Scheme_xmlHandler::elementWindowFactoryStart(
     const XMLAttributes& attributes)
 {
-    Scheme::UIElementFactory factory;
-
-    factory.name = attributes.getValueAsString(NameAttribute);
-
     d_scheme->d_widgetModules[d_scheme->
-        d_widgetModules.size() - 1].factories.push_back(factory);
+        d_widgetModules.size() - 1].types.push_back(
+            attributes.getValueAsString(NameAttribute));
 }
 
 //----------------------------------------------------------------------------//
 void Scheme_xmlHandler::elementWindowRendererSetStart(
     const XMLAttributes& attributes)
 {
-    Scheme::WRModule module;
+    Scheme::UIModule module;
     module.name = attributes.getValueAsString(FilenameAttribute);
     module.dynamicModule = 0;
-    module.wrModule = 0;
+    module.factoryModule = 0;
 
     d_scheme->d_windowRendererModules.push_back(module);
 }
@@ -234,7 +231,7 @@ void Scheme_xmlHandler::elementWindowRendererFactoryStart(
 {
     d_scheme->
         d_windowRendererModules[d_scheme->d_windowRendererModules.size() - 1].
-            wrTypes.push_back(attributes.getValueAsString(NameAttribute));
+            types.push_back(attributes.getValueAsString(NameAttribute));
 }
 
 //----------------------------------------------------------------------------//
