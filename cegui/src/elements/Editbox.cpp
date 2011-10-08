@@ -36,11 +36,7 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Clipboard.h"
-#ifdef CEGUI_HAS_PCRE_REGEX
-#   include "CEGUI/PCRERegexMatcher.h"
-#else
-#   include "CEGUI/RegexMatcher.h"
-#endif
+#include "CEGUI/RegexMatcher.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include <string.h>
 
@@ -89,7 +85,7 @@ Editbox::Editbox(const String& type, const String& name) :
     banPropertyFromXML("TextParsingEnabled");
 
 #ifdef CEGUI_HAS_PCRE_REGEX
-    d_validator = CEGUI_NEW_AO PCRERegexMatcher();
+    d_validator = &System::getSingleton().createRegexMatcher();
     // default to accepting all characters
     setValidationString(".*");
 #else
@@ -101,7 +97,8 @@ Editbox::Editbox(const String& type, const String& name) :
 //----------------------------------------------------------------------------//
 Editbox::~Editbox(void)
 {
-    delete d_validator;
+    if (d_validator)
+        System::getSingleton().destroyRegexMatcher(*d_validator);
 }
 
 //----------------------------------------------------------------------------//
