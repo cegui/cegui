@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIWRFactoryRegisterer.h
-    created:    Thu Mar 19 2009
+    filename:   FactoryRegisterer.h
+    created:    Fri Oct 07 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,50 +25,55 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIWRFactoryRegisterer_h_
-#define _CEGUIWRFactoryRegisterer_h_
+#ifndef _CEGUIFactoryRegisterer_h_
+#define _CEGUIFactoryRegisterer_h_
 
 #include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
-    Base class encapsulating a type name and common parts of WindowRenderer
-    factory registration.
+    Base class encapsulating a type name and common parts of factory
+    registration.
 */
-class CEGUIEXPORT WRFactoryRegisterer
+class CEGUIEXPORT FactoryRegisterer
 {
 public:
     //! Destructor.
-    virtual ~WRFactoryRegisterer();
+    virtual ~FactoryRegisterer();
 
     /*!
     \brief
         Perform registration (addition) of the factory for whichever
-        WindowRenderer type this class registers a factory for.
+        type this class registers a factory for.
     */
-    void registerFactory();
+    void registerFactory() const;
 
     /*!
     \brief
         Perform unregistration (removal) of the factory for whichever
-        WindowRenderer type this class registers a factory for.
+        type this class registers a factory for.
     */
-    void unregisterFactory();
+    virtual void unregisterFactory() const = 0;
 
-    //! describes the WindowRenderer type this class registers a factory for.
+    //! describes the type this class registers a factory for.
     const String d_type;
 
 protected:
     //! Constructor.
-    WRFactoryRegisterer(const String& type);
+    FactoryRegisterer(const String& type);
 
     //! Function to do the actual addition of a factory to the CEGUI system.
-    virtual void doFactoryAdd() = 0;
+    virtual void doFactoryAdd() const = 0;
+
+    //! Function to check if factory for our type is already registered.
+    virtual bool isAlreadyRegistered() const = 0;
 };
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIWRFactoryRegisterer_h_
+#endif  // end of guard _CEGUIFactoryRegisterer_h_
+

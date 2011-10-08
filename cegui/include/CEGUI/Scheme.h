@@ -342,32 +342,16 @@ private:
 		Structs used to hold scheme information
 	*************************************************************************/
 
-	struct	UIElementFactory
-	{
-		String name;
-	};
-
-	struct	UIModule
-	{
-		String name;
-		FactoryModule*	module;
-
-		typedef std::vector<UIElementFactory
-            CEGUI_VECTOR_ALLOC(UIElementFactory)> FactoryList;
-        
-        FactoryList factories;
-	};
-
-    struct WRModule
+    struct UIModule
     {
         String name;
         DynamicModule* dynamicModule;
-        WindowRendererModule* wrModule;
+        FactoryModule* factoryModule;
 
         typedef std::vector<String
-            CEGUI_VECTOR_ALLOC(String)> WRTypeList;
-            
-        WRTypeList wrTypes;
+            CEGUI_VECTOR_ALLOC(String)> TypeList;
+
+        TypeList types;
     };
 
 	struct AliasMapping
@@ -398,8 +382,8 @@ private:
         CEGUI_VECTOR_ALLOC(UIModule)>               UIModuleList;
 	UIModuleList                    				d_widgetModules;
     
-    typedef std::vector<WRModule
-        CEGUI_VECTOR_ALLOC(WRModule)>               WRModuleList;
+    typedef std::vector<UIModule
+        CEGUI_VECTOR_ALLOC(UIModule)>               WRModuleList;
     WRModuleList                                    d_windowRendererModules;
 
 	typedef std::vector<AliasMapping

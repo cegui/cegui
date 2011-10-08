@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIWRFactoryRegisterer.cpp
-    created:    Thu Mar 19 2009
+    filename:   TplWindowFactoryRegisterer.h
+    created:    Fri Oct 07 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,39 +25,66 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/WRFactoryRegisterer.h"
-#include "CEGUI/WindowRendererManager.h"
+#ifndef _CEGUITplWindowFactoryRegisterer_h_
+#define _CEGUITplWindowFactoryRegisterer_h_
+
+#include "CEGUI/FactoryRegisterer.h"
+#include "CEGUI/TplWindowFactory.h"
+#include "CEGUI/WindowFactoryManager.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//----------------------------------------------------------------------------//
-WRFactoryRegisterer::WRFactoryRegisterer(const String& type) :
-    d_type(type)
-{}
-
-//----------------------------------------------------------------------------//
-WRFactoryRegisterer::~WRFactoryRegisterer()
-{}
-
-//----------------------------------------------------------------------------//
-void WRFactoryRegisterer::registerFactory()
+/*!
+\brief
+    Template based implementation of FactoryRegisterer that allows easy
+    registration of a factory for any Window type.
+*/
+template <typename T>
+class TplWindowFactoryRegisterer : public FactoryRegisterer
 {
-    if (CEGUI::WindowRendererManager::getSingleton().isFactoryPresent(d_type))
-        CEGUI::Logger::getSingleton().logEvent(
-            "Factory for '" + CEGUI::String(d_type) +
-            "' appears to be  already registered, skipping.",
-            CEGUI::Informative);
-    else
-        this->doFactoryAdd();
+public:
+    //! Constructor.
+    TplWindowFactoryRegisterer();
+
+    void unregisterFactory() const;
+
+protected:
+    void doFactoryAdd() const;
+    bool isAlreadyRegistered() const;
+};
+
+
+//----------------------------------------------------------------------------//
+template <typename T>
+TplWindowFactoryRegisterer<T>::TplWindowFactoryRegisterer() :
+    FactoryRegisterer(T::WidgetTypeName)
+{}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void TplWindowFactoryRegisterer<T>::unregisterFactory() const
+{
+    WindowFactoryManager::getSingleton().removeFactory(d_type);
 }
 
 //----------------------------------------------------------------------------//
-void WRFactoryRegisterer::unregisterFactory()
+template <typename T>
+void TplWindowFactoryRegisterer<T>::doFactoryAdd() const
 {
-    WindowRendererManager::getSingleton().removeFactory(d_type);
+    WindowFactoryManager::addFactory<TplWindowFactory<T> >();
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+bool TplWindowFactoryRegisterer<T>::isAlreadyRegistered() const
+{
+    return WindowFactoryManager::getSingleton().isFactoryPresent(d_type);
 }
 
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+#endif  // end of guard _CEGUITplWindowFactoryRegisterer_h_
+

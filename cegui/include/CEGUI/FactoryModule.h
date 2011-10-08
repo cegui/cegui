@@ -1,14 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIFactoryModule.h
-	created:	12/4/2004
-	author:		Paul D Turner
-	
-	purpose:	Defines interface for object that controls a loadable
-				module (.dll/.so/ whatever) that contains concrete
-				window / widget implementations and their factories.
+    filename:   FactoryModule.h
+    created:    Fri Oct 07 2011
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -32,81 +28,48 @@
 #ifndef _CEGUIFactoryModule_h_
 #define _CEGUIFactoryModule_h_
 
-#include "CEGUI/DynamicModule.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include <vector>
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class FactoryRegisterer;
 
-/*!
-\brief
-	Class that encapsulates access to a dynamic loadable module containing implementations of Windows, Widgets, and their factories.
-*/
-class FactoryModule :
+class CEGUIEXPORT FactoryModule :
     public AllocatedObject<FactoryModule>
 {
 public:
-	/*!
-	\brief
-		Construct the FactoryModule object by loading the dynamic loadable module specified.
+    //! Destructor.
+    virtual ~FactoryModule();
+    //! Register the factory for objects of the specified type.
+    void registerFactory(const String& type_name);
+    //! Register factories for all object types in the module.
+    uint registerAllFactories();
+    //! Unregister the factory for objects of the specified type.
+    void unregisterFactory(const String& type_name);
+    //! Unregister factories for all object types in the module.
+    uint unregisterAllFactories();
 
-	\param filename
-		String object holding the filename of a loadable module.
-
-	\return
-		Nothing
-	*/
-	FactoryModule(const String& filename);
-
-
-	/*!
-	\brief
-		Destroys the FactoryModule object and unloads any loadable module.
-
-	\return
-		Nothing
-	*/
-	virtual ~FactoryModule(void);
-
-
-	/*!
-	\brief
-		Register a WindowFactory for \a type Windows.
-
-	\param type
-		String object holding the name of the Window type a factory is to be registered for.
-
-	\return
-		Nothing.
-	*/
-	void	registerFactory(const String& type) const;
-
-
-    /*!
-    \brief
-        Register all factories available in this module.
-
-    \return
-        uint value indicating the number of factories registered.
-    */
-    uint registerAllFactories() const;
-
-private:
-	/*************************************************************************
-		Implementation Data
-	*************************************************************************/
-	static const char	RegisterFactoryFunctionName[];
-    static const char   RegisterAllFunctionName[];
-
-	typedef void (*FactoryRegisterFunction)(const String&); 
-    typedef uint (*RegisterAllFunction)(void);
-
-	FactoryRegisterFunction	d_regFunc;	//!< Pointer to the function called to register factories.
-    RegisterAllFunction d_regAllFunc;   //!< Pointer to a function called to register all factories in a module.
-    DynamicModule* d_module;
+protected:
+    //! Collection type that holds pointers to the factory registerer objects.
+    typedef std::vector<FactoryRegisterer*
+        CEGUI_VECTOR_ALLOC(FactoryRegisterer*)> FactoryRegistry;
+    //! The collection of factorty registerer object pointers.
+    FactoryRegistry d_registry;
 };
 
 } // End of  CEGUI namespace section
 
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
-#endif	// end of guard _CEGUIFactoryModule_h_
+#endif  // end of guard _CEGUIFactoryModule_h_
+

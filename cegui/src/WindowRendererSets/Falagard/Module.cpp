@@ -60,7 +60,7 @@
 
 //----------------------------------------------------------------------------//
 extern "C"
-CEGUI::WindowRendererModule& getWindowRendererModule()
+CEGUI::FactoryModule& getWindowRendererFactoryModule()
 {
     static CEGUI::FalagardWRModule mod;
     return mod;
