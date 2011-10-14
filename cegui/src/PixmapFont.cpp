@@ -64,6 +64,23 @@ PixmapFont::~PixmapFont()
     if (d_imagesetOwner)
         ImageManager::getSingleton().destroyImageCollection(d_imageNamePrefix);
 }
+//----------------------------------------------------------------------------//
+void PixmapFont::addPixmapFontProperties ()
+{
+    String propertyOrigin("PixmapFont");
+    CEGUI_DEFINE_PROPERTY(PixmapFont, String,
+        "ImageNamePrefix",
+        "This is the name prefix used by the images that contain the glyph "
+        "imagery for this font.",
+        &PixmapFont::setImageNamePrefix, &PixmapFont::getImageNamePrefix, ""
+    );
+    CEGUI_DEFINE_PROPERTY(PixmapFont, String,
+        "Mapping",
+        "This is the glyph-to-image mapping font property. It cannot be read. "
+        "Format is: codepoint,advance,imagename",
+        &PixmapFont::defineMapping, 0, ""
+    );
+}
 
 //----------------------------------------------------------------------------//
 void PixmapFont::reinit()
