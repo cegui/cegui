@@ -29,7 +29,7 @@
 #define _FalStatic_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/WindowRendererSets/Falagard/StaticProperties.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -105,10 +105,6 @@ namespace CEGUI
         virtual void render();
 
     protected:
-        // static properties
-        static FalagardStaticProperties::FrameEnabled       d_frameEnabledProperty;
-        static FalagardStaticProperties::BackgroundEnabled  d_backgroundEnabledProperty;
-
         // implementation data
         bool d_frameEnabled;        //!< True when the frame is enabled.
         bool d_backgroundEnabled;   //!< true when the background is enabled.
