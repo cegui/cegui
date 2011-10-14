@@ -92,6 +92,25 @@ const String& Font::getTypeName() const
     return d_type;
 }
 
+void Font::addFontProperties()
+{
+    String propertyOrigin("Font");
+    CEGUI_DEFINE_PROPERTY(Font, Sizef,
+        "NativeRes", "Native screen resolution for this font."
+        "Value uses the 'w:# h:#' format.",
+        &Font::setNativeResolution, &Font::getNativeResolution, Sizef::zero()
+    );
+
+    CEGUI_DEFINE_PROPERTY(Font, String,
+        "Name", "This is font name.  Value is a string.",
+        0, &Font::getName, ""
+    );
+    CEGUI_DEFINE_PROPERTY(Font, bool,
+        "AutoScaled", "This is a flag indicating whether to autoscale font depending on "
+        "resolution.  Value is either true or false.",
+        &Font::setAutoScaled, &Font::isAutoScaled, true
+    );
+}
 //----------------------------------------------------------------------------//
 void Font::setMaxCodepoint(utf32 codepoint)
 {
