@@ -38,14 +38,15 @@ namespace CEGUI
 {
     const String FalagardScrollbar::TypeName("Falagard/Scrollbar");
 
-    FalagardScrollbarProperties::VerticalScrollbar FalagardScrollbar::d_verticalProperty;
-
-
     FalagardScrollbar::FalagardScrollbar(const String& type) :
         ScrollbarWindowRenderer(type),
         d_vertical(false)
     {
-        registerProperty(&d_verticalProperty);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardScrollbar, bool,
+        "VerticalScrollbar", "Property to get/set whether the Scrollbar operates in the vertical direction."
+        "  Value is either \"True\" or \"False\".",
+        &FalagardScrollbar::setVertical, &FalagardScrollbar::isVertical,
+        false);
     }
 
     void FalagardScrollbar::render()

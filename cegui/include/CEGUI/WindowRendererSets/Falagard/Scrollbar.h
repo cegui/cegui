@@ -30,7 +30,7 @@
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/elements/Scrollbar.h"
-#include "CEGUI/WindowRendererSets/Falagard/ScrollbarProperties.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -88,9 +88,6 @@ namespace CEGUI
         void updateThumb(void);
         float getValueFromThumb(void) const;
         float getAdjustDirectionFromPoint(const Vector2f& pt) const;
-
-        // property objects
-        static FalagardScrollbarProperties::VerticalScrollbar d_verticalProperty;
     };
 
 } // End of  CEGUI namespace section

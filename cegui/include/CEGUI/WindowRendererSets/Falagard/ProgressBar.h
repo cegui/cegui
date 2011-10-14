@@ -29,7 +29,7 @@
 #define _FalProgressBar_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/WindowRendererSets/Falagard/ProgressBarProperties.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -87,10 +87,6 @@ namespace CEGUI
         // settings to make this class universal.
         bool d_vertical;    //!< True if progress bar operates on the vertical plane.
         bool d_reversed;    //!< True if progress grows in the opposite direction to usual (i.e. to the left / downwards).
-
-        // property objects
-        static FalagardProgressBarProperties::VerticalProgress d_verticalProperty;
-        static FalagardProgressBarProperties::ReversedProgress d_reversedProperty;
     };
 
 } // End of  CEGUI namespace section
