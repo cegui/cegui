@@ -41,7 +41,6 @@
 #include "CEGUI/TplProperty.h"
 #include "CEGUI/System.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/WindowProperties.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
 #include "CEGUI/TextUtils.h"
