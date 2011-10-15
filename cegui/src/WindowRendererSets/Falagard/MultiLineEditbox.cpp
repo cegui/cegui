@@ -32,6 +32,7 @@
 #include "CEGUI/elements/Scrollbar.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

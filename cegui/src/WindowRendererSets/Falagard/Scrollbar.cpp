@@ -32,6 +32,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/elements/Thumb.h"
 #include "CEGUI/elements/PushButton.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

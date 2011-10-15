@@ -87,7 +87,7 @@ public:
 
     void defineMapping(const utf32 codepoint, const String& image_name, 
                        const float horz_advance);
-
+    void defineMapping(const String& value);
     //! Return the image name prefix that the font is using for it's glyphs.
     const String& getImageNamePrefix() const;
 

@@ -29,7 +29,6 @@
 #define _FalProgressBar_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/TplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

@@ -36,6 +36,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 #include <stdio.h>
 

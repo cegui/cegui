@@ -191,6 +191,17 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
 }
 
 //----------------------------------------------------------------------------//
+void PixmapFont::defineMapping(const String& value)
+{
+    char img[33];
+    String::value_type codepoint;
+    float adv;
+    if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
+        CEGUI_THROW(InvalidRequestException(
+            "Bad glyph Mapping specified: " + value));
+    defineMapping(codepoint, img, adv);
+}
+//----------------------------------------------------------------------------//
 const String& PixmapFont::getImageNamePrefix() const
 {
     return d_imageNamePrefix;

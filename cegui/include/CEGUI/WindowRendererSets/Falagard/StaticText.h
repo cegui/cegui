@@ -30,7 +30,6 @@
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/WindowRendererSets/Falagard/Static.h"
-#include "CEGUI/TplWindowRendererProperty.h"
 #include "CEGUI/falagard/Enums.h"
 #include "CEGUI/ColourRect.h"
 #include <vector>
