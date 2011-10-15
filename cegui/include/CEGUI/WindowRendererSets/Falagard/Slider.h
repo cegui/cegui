@@ -30,7 +30,6 @@
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/elements/Slider.h"
-#include "CEGUI/TplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalEnums_h_
 #define _CEGUIFalEnums_h_
 
-#include "../CEGUIPropertyHelper.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

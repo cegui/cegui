@@ -31,7 +31,6 @@
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/elements/ListHeader.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/TplWindowRendererProperty.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

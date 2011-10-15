@@ -88,7 +88,7 @@ private:
 /*!
 Example of usage inside addStandardProperties or similar method.
 {
-    CEGUI_DEFINE_FALAGARD_PROPERTY(Window, float, "Alpha",
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(Window, float, "Alpha",
         "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f)
 };
@@ -104,11 +104,11 @@ Example of usage inside addStandardProperties or similar method.
 
 
 /*!
-Same as CEGUI_DEFINE_FALAGARD_PROPERTY but writeXML is set to false
+Same as CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY but writeXML is set to false
 
 Example of usage inside addStandardProperties or similar method.
 {
-    CEGUI_DEFINE_FALAGARD_PROPERTY_NO_XML(Window, float, "Alpha",
+    CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(Window, float, "Alpha",
         "Property to get/set the alpha value of the Window. Value is floating point number.",
         &Window::setAlpha, &Window::getAlpha, 1.0f)
 };

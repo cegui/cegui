@@ -31,6 +31,8 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/elements/Thumb.h"
+#include "CEGUI/TplWindowRendererProperty.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
