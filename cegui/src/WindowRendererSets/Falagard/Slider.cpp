@@ -31,23 +31,29 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/elements/Thumb.h"
+#include "CEGUI/TplWindowRendererProperty.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardSlider::TypeName("Falagard/Slider");
 
-    FalagardSliderProperties::VerticalSlider FalagardSlider::d_verticalProperty;
-    FalagardSliderProperties::ReversedDirection FalagardSlider::d_reversedProperty;
-
-
     FalagardSlider::FalagardSlider(const String& type) :
         SliderWindowRenderer(type),
         d_vertical(false),
         d_reversed(false)
     {
-        registerProperty(&d_verticalProperty);
-        registerProperty(&d_reversedProperty);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardSlider,bool,
+        "VerticalSlider", "Property to get/set whether the Slider operates in the vertical direction."
+        "  Value is either \"True\" or \"False\".",
+        &FalagardSlider::setVertical,&FalagardSlider::isVertical,
+        false);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardSlider,bool,
+        "ReversedDirection", "Property to get/set whether the Slider operates in reversed direction."
+        "  Value is either \"True\" or \"False\".",
+        &FalagardSlider::setReversedDirection,&FalagardSlider::isReversedDirection,
+        false);
     }
 
     void FalagardSlider::render()

@@ -102,6 +102,23 @@ FreeTypeFont::~FreeTypeFont()
 }
 
 //----------------------------------------------------------------------------//
+void FreeTypeFont::addFreeTypeFontProperties ()
+{
+    const String propertyOrigin("FreeTypeFont");
+
+    CEGUI_DEFINE_PROPERTY(FreeTypeFont, float,
+        "PointSize", "This is the point size of the font.",
+        &FreeTypeFont::setPointSize, &FreeTypeFont::getPointSize, 0
+    );
+
+    CEGUI_DEFINE_PROPERTY(FreeTypeFont, bool,
+        "Antialiased", "This is a flag indicating whenever to render antialiased font or not. "
+        "Value is either true or false.",
+        &FreeTypeFont::setAntiAliased, &FreeTypeFont::isAntiAliased, 0
+    );
+}
+
+//----------------------------------------------------------------------------//
 uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
                                   CodepointMap::const_iterator e) const
 {

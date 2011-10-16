@@ -66,6 +66,26 @@ PixmapFont::~PixmapFont()
 }
 
 //----------------------------------------------------------------------------//
+void PixmapFont::addPixmapFontProperties ()
+{
+    const String propertyOrigin("PixmapFont");
+
+    CEGUI_DEFINE_PROPERTY(PixmapFont, String,
+        "ImageNamePrefix",
+        "This is the name prefix used by the images that contain the glyph "
+        "imagery for this font.",
+        &PixmapFont::setImageNamePrefix, &PixmapFont::getImageNamePrefix, ""
+    );
+
+    CEGUI_DEFINE_PROPERTY(PixmapFont, String,
+        "Mapping",
+        "This is the glyph-to-image mapping font property. It cannot be read. "
+        "Format is: codepoint,advance,imagename",
+        &PixmapFont::defineMapping, 0, ""
+    );
+}
+
+//----------------------------------------------------------------------------//
 void PixmapFont::reinit()
 {
     if (d_imagesetOwner)
@@ -171,6 +191,18 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
 
     // add glyph to the map
     d_cp_map[codepoint] = glyph;
+}
+
+//----------------------------------------------------------------------------//
+void PixmapFont::defineMapping(const String& value)
+{
+    char img[33];
+    String::value_type codepoint;
+    float adv;
+    if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
+        CEGUI_THROW(InvalidRequestException(
+            "Bad glyph Mapping specified: " + value));
+    defineMapping(codepoint, img, adv);
 }
 
 //----------------------------------------------------------------------------//

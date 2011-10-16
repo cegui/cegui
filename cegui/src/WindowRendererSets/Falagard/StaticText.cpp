@@ -37,23 +37,12 @@
 #include "CEGUI/CentredRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
-#include "CEGUI/CoordConverter.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardStaticText::TypeName("Falagard/StaticText");
-
-    /************************************************************************
-        Properties
-    *************************************************************************/
-    FalagardStaticTextProperties::TextColours       FalagardStaticText::d_textColoursProperty;
-    FalagardStaticTextProperties::VertFormatting    FalagardStaticText::d_vertFormattingProperty;
-    FalagardStaticTextProperties::HorzFormatting    FalagardStaticText::d_horzFormattingProperty;
-    FalagardStaticTextProperties::VertScrollbar     FalagardStaticText::d_vertScrollbarProperty;
-    FalagardStaticTextProperties::HorzScrollbar     FalagardStaticText::d_horzScrollbarProperty;
-    FalagardStaticTextProperties::HorzExtent        FalagardStaticText::d_horzExtentProperty;
-    FalagardStaticTextProperties::VertExtent        FalagardStaticText::d_vertExtentProperty;
 
     /*************************************************************************
         Child Widget name constants
@@ -74,13 +63,48 @@ namespace CEGUI
         d_formattedRenderedString(0),
         d_formatValid(false)
     {
-        registerProperty(&d_textColoursProperty);
-        registerProperty(&d_vertFormattingProperty);
-        registerProperty(&d_horzFormattingProperty);
-        registerProperty(&d_vertScrollbarProperty);
-        registerProperty(&d_horzScrollbarProperty);
-        registerProperty(&d_horzExtentProperty, true);
-        registerProperty(&d_vertExtentProperty, true);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, ColourRect,
+            "TextColours", "Property to get/set the text colours for the FalagardStaticText widget."
+            "  Value is \"tl:[aarrggbb] tr:[aarrggbb] bl:[aarrggbb] br:[aarrggbb]\".",
+            &FalagardStaticText::setTextColours, &FalagardStaticText::getTextColours,
+            ColourRect(0xFFFFFFFF));
+
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, HorizontalTextFormatting,
+            "HorzFormatting", "Property to get/set the horizontal formatting mode."
+            "  Value is one of the HorzFormatting strings.",
+            &FalagardStaticText::setHorizontalFormatting, &FalagardStaticText::getHorizontalFormatting,
+            HTF_LEFT_ALIGNED);
+
+
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, VerticalTextFormatting,
+            "VertFormatting", "Property to get/set the vertical formatting mode."
+            "  Value is one of the VertFormatting strings.",
+            &FalagardStaticText::setVerticalFormatting, &FalagardStaticText::getVerticalFormatting,
+            VTF_CENTRE_ALIGNED);
+
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
+            "VertScrollbar", "Property to get/set the setting for the vertical scroll bar."
+            "  Value is either \"True\" or \"False\".",
+            &FalagardStaticText::setVerticalScrollbarEnabled, &FalagardStaticText::isVerticalScrollbarEnabled,
+            false);
+
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticText, bool,
+            "HorzScrollbar", "Property to get/set the setting for the horizontal scroll bar."
+            "  Value is either \"True\" or \"False\".",
+            &FalagardStaticText::setHorizontalScrollbarEnabled, &FalagardStaticText::isHorizontalScrollbarEnabled,
+            false);
+
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(FalagardStaticText, float,
+            "HorzExtent", "Property to get the current horizontal extent of the formatted text string."
+            "  Value is a float indicating the pixel extent.",
+            0, &FalagardStaticText::getHorizontalTextExtent,
+            0);
+
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(FalagardStaticText, float,
+            "VertExtent", "Property to get the current vertical extent of the formatted text string."
+            "  Value is a float indicating the pixel extent.",
+            0, &FalagardStaticText::getVerticalTextExtent,
+            0);
     }
 
 //----------------------------------------------------------------------------//

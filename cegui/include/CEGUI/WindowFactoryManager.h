@@ -36,6 +36,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/WindowFactory.h"
+#include "CEGUI/TplWindowFactory.h"
 #include <map>
 #include <vector>
 
@@ -179,6 +180,22 @@ public:
     template <typename T>
     static void addFactory();
 
+    /*!
+    \brief
+        Internally creates a factory suitable for creating Window objects
+        of the given type and adds it to the system.
+
+    \note
+        The internally created factory is owned and managed by CEGUI,
+        and will be automatically deleted when the window type is removed from
+        the system - either directly by calling
+        WindowFactoryManager::removeFactory or at system shut down.
+
+    \tparam T
+        Specifies the type of Window to add a factory for.
+    */
+    template <typename T>
+    static void addWindowType();
 
 	/*!
 	\brief
@@ -504,6 +521,15 @@ void WindowFactoryManager::addFactory()
 
     d_ownedFactories.push_back(factory);
 }
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void WindowFactoryManager::addWindowType()
+{
+    WindowFactoryManager::addFactory<TplWindowFactory<T> >();
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 

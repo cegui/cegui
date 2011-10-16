@@ -42,18 +42,19 @@
 #include "CEGUI/System.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
-#include "CEGUI/WindowRendererModule.h"
+#include "CEGUI/DynamicModule.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
 
-// Declare a function to return a WindowRendererModule as extern when
-// statically linking.
+// Declare functions to return FactoryModules for Window and WindowRenderers
+// as extern when statically linking.
 #if defined(CEGUI_STATIC)
 extern "C"
 {
-CEGUI::WindowRendererModule& getWindowRendererModule();
+CEGUI::FactoryModule& getWindowRendererFactoryModule();
+CEGUI::FactoryModule& getWindowFactoryModule();
 }
 #endif
 
@@ -250,35 +251,51 @@ void Scheme::loadLookNFeels()
 *************************************************************************/
 void Scheme::loadWindowFactories()
 {
-    WindowFactoryManager& wfmgr = WindowFactoryManager::getSingleton();
-
     // check factories
     for (UIModuleList::iterator cmod = d_widgetModules.begin();
         cmod != d_widgetModules.end(); ++cmod)
     {
-        // create and load dynamic module as required
-        if (!(*cmod).module)
+        if (!(*cmod).factoryModule)
         {
-            (*cmod).module = CEGUI_NEW_AO FactoryModule((*cmod).name);
+#if !defined(CEGUI_STATIC)
+            // load dynamic module as required
+            if (!(*cmod).dynamicModule)
+                (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
+
+            FactoryModule& (*getWindowFactoryModuleFunc)() =
+                reinterpret_cast<FactoryModule&(*)()>(
+                    (*cmod).dynamicModule->
+                        getSymbolAddress("getWindowFactoryModule"));
+
+            if (!getWindowFactoryModuleFunc)
+                CEGUI_THROW(InvalidRequestException(
+                    "Scheme::loadWindowFactories: Required function "
+                    "export 'FactoryModule& getWindowFactoryModule()' "
+                    "was not found in module '" + (*cmod).name + "'."));
+
+            // get the WindowRendererModule object for this module.
+            (*cmod).factoryModule = &getWindowFactoryModuleFunc();
+#else
+            (*cmod).factoryModule = &getWindowFactoryModule();
+#endif
         }
 
-        // see if we should just register all factories available in the module (i.e. No factories explicitly specified)
-        if ((*cmod).factories.size() == 0)
+        // see if we should just register all factories available in the module
+        // (i.e. No factories explicitly specified)
+        if ((*cmod).types.size() == 0)
         {
-            Logger::getSingleton().logEvent("No window factories specified for module '" + (*cmod).name + "' - adding all available factories...");
-            (*cmod).module->registerAllFactories();
+            Logger::getSingleton().logEvent("No Window factories "
+                                            "specified for module '" +
+                                            (*cmod).name + "' - adding all "
+                                            "available factories...");
+            (*cmod).factoryModule->registerAllFactories();
         }
         // some names were explicitly given, so only register those.
         else
         {
-            UIModule::FactoryList::const_iterator   elem = (*cmod).factories.begin();
-            for (; elem != (*cmod).factories.end(); ++elem)
-            {
-                if (!wfmgr.isFactoryPresent((*elem).name))
-                {
-                    (*cmod).module->registerFactory((*elem).name);
-                }
-            }
+            UIModule::TypeList::const_iterator elem = (*cmod).types.begin();
+            for (; elem != (*cmod).types.end(); ++elem)
+                (*cmod).factoryModule->registerFactory(*elem);
         }
     }
 }
@@ -292,47 +309,46 @@ void Scheme::loadWindowRendererFactories()
     for (WRModuleList::iterator cmod = d_windowRendererModules.begin();
         cmod != d_windowRendererModules.end(); ++cmod)
     {
-        if (!(*cmod).wrModule)
+        if (!(*cmod).factoryModule)
         {
 #if !defined(CEGUI_STATIC)
             // load dynamic module as required
             if (!(*cmod).dynamicModule)
                 (*cmod).dynamicModule = CEGUI_NEW_AO DynamicModule((*cmod).name);
 
-            WindowRendererModule& (*getWRModuleFunc)() =
-                reinterpret_cast<WindowRendererModule&(*)()>(
-                    (*cmod).dynamicModule->
-                        getSymbolAddress("getWindowRendererModule"));
+            FactoryModule& (*getWRFactoryModuleFunc)() =
+                reinterpret_cast<FactoryModule&(*)()>((*cmod).dynamicModule->
+                    getSymbolAddress("getWindowRendererFactoryModule"));
 
-            if (!getWRModuleFunc)
+            if (!getWRFactoryModuleFunc)
                 CEGUI_THROW(InvalidRequestException(
                     "Scheme::loadWindowRendererFactories: Required function "
-                    "export 'WindowRendererModule& getWindowRendererModule()' "
+                    "export 'FactoryModule& getWindowRendererFactoryModule()' "
                     "was not found in module '" + (*cmod).name + "'."));
 
             // get the WindowRendererModule object for this module.
-            (*cmod).wrModule = &getWRModuleFunc();
+            (*cmod).factoryModule = &getWRFactoryModuleFunc();
 #else
-            (*cmod).wrModule = &getWindowRendererModule();
+            (*cmod).factoryModule = &getWindowRendererFactoryModule();
 #endif
         }
 
         // see if we should just register all factories available in the module
         // (i.e. No factories explicitly specified)
-        if ((*cmod).wrTypes.size() == 0)
+        if ((*cmod).types.size() == 0)
         {
             Logger::getSingleton().logEvent("No window renderer factories "
                                             "specified for module '" +
                                             (*cmod).name + "' - adding all "
                                             "available factories...");
-            (*cmod).wrModule->registerAllFactories();
+            (*cmod).factoryModule->registerAllFactories();
         }
         // some names were explicitly given, so only register those.
         else
         {
-            WRModule::WRTypeList::const_iterator elem = (*cmod).wrTypes.begin();
-            for (; elem != (*cmod).wrTypes.end(); ++elem)
-                (*cmod).wrModule->registerFactory(*elem);
+            UIModule::TypeList::const_iterator elem = (*cmod).types.begin();
+            for (; elem != (*cmod).types.end(); ++elem)
+                (*cmod).factoryModule->registerFactory(*elem);
         }
     }
 }
@@ -474,32 +490,36 @@ void Scheme::unloadLookNFeels()
 *************************************************************************/
 void Scheme::unloadWindowFactories()
 {
-    WindowFactoryManager& wfmgr = WindowFactoryManager::getSingleton();
-
     // for all widget modules loaded
     for (UIModuleList::iterator cmod = d_widgetModules.begin();
         cmod != d_widgetModules.end(); ++cmod)
     {
+        // assume module's factories were already removed if factoryModule is 0.
+        if (!(*cmod).factoryModule)
+            continue;
+
         // see if we should just unregister all factories available in the
         // module (i.e. No factories explicitly specified)
-        if ((*cmod).factories.size() == 0)
+        if ((*cmod).types.size() == 0)
         {
-            // TODO: This is not supported yet!
+            (*cmod).factoryModule->unregisterAllFactories();
         }
         // remove all window factories explicitly registered for this module
         else
         {
-            UIModule::FactoryList::const_iterator elem = (*cmod).factories.begin();
-            for (; elem != (*cmod).factories.end(); ++elem)
-                wfmgr.removeFactory((*elem).name);
+            UIModule::TypeList::const_iterator elem = (*cmod).types.begin();
+            for (; elem != (*cmod).types.end(); ++elem)
+                (*cmod).factoryModule->unregisterFactory(*elem);
         }
 
         // unload dynamic module as required
-        if ((*cmod).module)
+        if ((*cmod).dynamicModule)
         {
-            CEGUI_DELETE_AO (*cmod).module;
-            (*cmod).module = 0;
+            CEGUI_DELETE_AO (*cmod).dynamicModule;
+            (*cmod).dynamicModule = 0;
         }
+
+        (*cmod).factoryModule = 0;
     }
 }
 
@@ -513,21 +533,21 @@ void Scheme::unloadWindowRendererFactories()
         cmod != d_windowRendererModules.end(); ++cmod)
     {
         // assume module's factories were already removed if wrModule is 0.
-        if (!(*cmod).wrModule)
+        if (!(*cmod).factoryModule)
             continue;
 
         // see if we should just unregister all factories available in the
         // module (i.e. No factories explicitly specified)
-        if ((*cmod).wrTypes.size() == 0)
+        if ((*cmod).types.size() == 0)
         {
-            (*cmod).wrModule->unregisterAllFactories();
+            (*cmod).factoryModule->unregisterAllFactories();
         }
         // remove all window factories explicitly registered for this module
         else
         {
-            WRModule::WRTypeList::const_iterator elem = (*cmod).wrTypes.begin();
-            for (; elem != (*cmod).wrTypes.end(); ++elem)
-                (*cmod).wrModule->unregisterFactory(*elem);
+            UIModule::TypeList::const_iterator elem = (*cmod).types.begin();
+            for (; elem != (*cmod).types.end(); ++elem)
+                (*cmod).factoryModule->unregisterFactory(*elem);
         }
 
         // unload dynamic module as required
@@ -537,7 +557,7 @@ void Scheme::unloadWindowRendererFactories()
             (*cmod).dynamicModule = 0;
         }
 
-        (*cmod).wrModule = 0;
+        (*cmod).factoryModule = 0;
     }
 }
 
@@ -674,18 +694,18 @@ bool Scheme::areWindowFactoriesLoaded() const
     {
         // see if we should just test all factories available in the
         // module (i.e. No factories explicitly specified)
-        if ((*cmod).factories.size() == 0)
+        if ((*cmod).types.size() == 0)
         {
             // TODO: This is not supported yet!
         }
         // check all window factories explicitly registered for this module
         else
         {
-            UIModule::FactoryList::const_iterator elem = (*cmod).factories.begin();
+            UIModule::TypeList::const_iterator elem = (*cmod).types.begin();
 
-            for (; elem != (*cmod).factories.end(); ++elem)
+            for (; elem != (*cmod).types.end(); ++elem)
             {
-                if (!wfmgr.isFactoryPresent((*elem).name))
+                if (!wfmgr.isFactoryPresent(*elem))
                     return false;
             }
         }
@@ -707,16 +727,16 @@ bool Scheme::areWindowRendererFactoriesLoaded() const
     {
         // see if we should just test all factories available in the
         // module (i.e. No factories explicitly specified)
-        if ((*cmod).wrTypes.size() == 0)
+        if ((*cmod).types.size() == 0)
         {
             // TODO: This is not supported yet!
         }
         // check all window factories explicitly registered for this module
         else
         {
-            WRModule::WRTypeList::const_iterator elem = (*cmod).wrTypes.begin();
+            UIModule::TypeList::const_iterator elem = (*cmod).types.begin();
 
-            for (; elem != (*cmod).wrTypes.end(); ++elem)
+            for (; elem != (*cmod).types.end(); ++elem)
                 if (!wfmgr.isFactoryPresent(*elem))
                     return false;
         }

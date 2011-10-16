@@ -453,7 +453,8 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     # handled elsewhere
     
     # CEGUIRefexMatcher.h
-    # not needed in python
+    regexMatcher = CEGUI_ns.class_("RegexMatcher")
+    regexMatcher.include()
     
     # CEGUIRenderedString.h
     renderedString = CEGUI_ns.class_("RenderedString")

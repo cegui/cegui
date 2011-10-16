@@ -250,6 +250,8 @@
 
 #include "Rectf.pypp.hpp"
 
+#include "RegexMatcher.pypp.hpp"
+
 #include "RenderEffect.pypp.hpp"
 
 #include "RenderEffectFactory.pypp.hpp"
@@ -804,6 +806,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_RawDataContainer_class();
 
     register_URect_class();
+
+    register_RegexMatcher_class();
 
     register_RenderEffect_class();
 

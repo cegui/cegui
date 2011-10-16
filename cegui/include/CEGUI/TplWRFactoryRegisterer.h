@@ -28,8 +28,7 @@
 #ifndef _CEGUITplWRFactoryRegisterer_h_
 #define _CEGUITplWRFactoryRegisterer_h_
 
-#include "CEGUI/WRFactoryRegisterer.h"
-#include "CEGUI/TplWindowRendererFactory.h"
+#include "CEGUI/FactoryRegisterer.h"
 #include "CEGUI/WindowRendererManager.h"
 
 // Start of CEGUI namespace section
@@ -37,33 +36,49 @@ namespace CEGUI
 {
 /*!
 \brief
-    Template based implementation of WRFactoryRegisterer that allows easy
+    Template based implementation of FactoryRegisterer that allows easy
     registration of a factory for any WindowRenderer type.
 */
 template <typename T>
-class TplWRFactoryRegisterer : public WRFactoryRegisterer
+class TplWRFactoryRegisterer : public FactoryRegisterer
 {
 public:
     //! Constructor.
     TplWRFactoryRegisterer();
 
+    void unregisterFactory() const;
+
 protected:
-    // implement WRFactoryRegisterer interface
-    void doFactoryAdd();
+    void doFactoryAdd() const;
+    bool isAlreadyRegistered() const;
 };
 
 
 //----------------------------------------------------------------------------//
 template <typename T>
 TplWRFactoryRegisterer<T>::TplWRFactoryRegisterer() :
-    WRFactoryRegisterer(T::TypeName)
+    FactoryRegisterer(T::TypeName)
 {}
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void TplWRFactoryRegisterer<T>::doFactoryAdd()
+void TplWRFactoryRegisterer<T>::unregisterFactory() const
 {
-    WindowRendererManager::addFactory<TplWindowRendererFactory<T> >();
+    WindowRendererManager::getSingleton().removeFactory(d_type);
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void TplWRFactoryRegisterer<T>::doFactoryAdd() const
+{
+    WindowRendererManager::addWindowRendererType<T>();
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+bool TplWRFactoryRegisterer<T>::isAlreadyRegistered() const
+{
+    return WindowRendererManager::getSingleton().isFactoryPresent(d_type);
 }
 
 //----------------------------------------------------------------------------//
@@ -71,3 +86,4 @@ void TplWRFactoryRegisterer<T>::doFactoryAdd()
 } // End of  CEGUI namespace section
 
 #endif  // end of guard _CEGUITplWRFactoryRegisterer_h_
+

@@ -41,7 +41,6 @@
 #include "CEGUI/TplProperty.h"
 #include "CEGUI/System.h"
 #include "CEGUI/InputEvent.h"
-#include "CEGUI/WindowProperties.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
 #include "CEGUI/TextUtils.h"
@@ -3401,8 +3400,46 @@ protected:
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
-    static  WindowProperties::WindowRenderer    d_windowRendererProperty;
-    static  WindowProperties::LookNFeel         d_lookNFeelProperty;
+
+    /*!
+    \brief
+        Property to access/change the assigned window renderer object.
+
+        \par Usage:
+            - Name: WindowRenderer
+            - Format: "[windowRendererName]"
+
+        \par Where [windowRendererName] is the factory name of the window renderer type you wish to assign.
+    */
+    class WindowRendererProperty : public TplProperty<Window,String>
+    {
+        public:
+            WindowRendererProperty();
+
+            void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
+    };
+
+
+    /*!
+    \brief
+        Property to access/change the assigned look'n'feel.
+
+        \par Usage:
+            - Name: LookNFeel
+            - Format: "[LookNFeelName]"
+
+        \par Where [LookNFeelName] is the name of the look'n'feel you wish to assign.
+    */
+    class LookNFeelProperty : public TplProperty<Window,String>
+    {
+        public:
+            LookNFeelProperty();
+
+            void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
+    };
+
+    static  WindowRendererProperty    d_windowRendererProperty;
+    static  LookNFeelProperty         d_lookNFeelProperty;
 
     /*************************************************************************
         Implementation Data

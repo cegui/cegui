@@ -356,7 +356,7 @@ endif ()
 # Point TOLUAPP vars to location of embedded lib if using that option
 if (CEGUI_BUILD_EMBEDDED_TOLUAPP)
     set (TOLUAPP_LIBRARIES ${CEGUI_TOLUAPP_LIBNAME})
-    set (TOLUAPP_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/cegui/include/ScriptingModules/LuaScriptModule/support/tolua++)
+    set (TOLUAPP_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/ScriptModules/Lua/support/tolua++)
 endif()
 
 # set up install sub-directories

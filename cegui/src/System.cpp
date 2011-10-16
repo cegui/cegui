@@ -37,7 +37,6 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/WindowFactoryManager.h"
-#include "CEGUI/TplWindowFactory.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
@@ -61,6 +60,9 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/elements/All.h"
+#ifdef CEGUI_HAS_PCRE_REGEX
+#   include "CEGUI/PCRERegexMatcher.h"
+#endif
 #include <ctime>
 #include <clocale>
 
@@ -1463,44 +1465,44 @@ void System::outputLogHeader()
 
 void System::addStandardWindowFactories()
 {
-    // Add factories for types all base elements
-    WindowFactoryManager::addFactory< TplWindowFactory<DefaultWindow> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<DragContainer> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ScrolledContainer> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ClippedContainer> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Checkbox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<PushButton> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<RadioButton> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Combobox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ComboDropList> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Editbox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<FrameWindow> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ItemEntry> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Listbox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ListHeader> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ListHeaderSegment> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Menubar> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<PopupMenu> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<MenuItem> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<MultiColumnList> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<MultiLineEditbox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ProgressBar> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ScrollablePane> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Scrollbar> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Slider> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Spinner> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<TabButton> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<TabControl> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Thumb> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Titlebar> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Tooltip> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<ItemListbox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<GroupBox> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<Tree> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<LayoutCell> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<HorizontalLayoutContainer> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<VerticalLayoutContainer> >();
-    WindowFactoryManager::addFactory< TplWindowFactory<GridLayoutContainer> >();
+    // Add types all base elements
+    WindowFactoryManager::addWindowType<DefaultWindow>();
+    WindowFactoryManager::addWindowType<DragContainer>();
+    WindowFactoryManager::addWindowType<ScrolledContainer>();
+    WindowFactoryManager::addWindowType<ClippedContainer>();
+    WindowFactoryManager::addWindowType<Checkbox>();
+    WindowFactoryManager::addWindowType<PushButton>();
+    WindowFactoryManager::addWindowType<RadioButton>();
+    WindowFactoryManager::addWindowType<Combobox>();
+    WindowFactoryManager::addWindowType<ComboDropList>();
+    WindowFactoryManager::addWindowType<Editbox>();
+    WindowFactoryManager::addWindowType<FrameWindow>();
+    WindowFactoryManager::addWindowType<ItemEntry>();
+    WindowFactoryManager::addWindowType<Listbox>();
+    WindowFactoryManager::addWindowType<ListHeader>();
+    WindowFactoryManager::addWindowType<ListHeaderSegment>();
+    WindowFactoryManager::addWindowType<Menubar>();
+    WindowFactoryManager::addWindowType<PopupMenu>();
+    WindowFactoryManager::addWindowType<MenuItem>();
+    WindowFactoryManager::addWindowType<MultiColumnList>();
+    WindowFactoryManager::addWindowType<MultiLineEditbox>();
+    WindowFactoryManager::addWindowType<ProgressBar>();
+    WindowFactoryManager::addWindowType<ScrollablePane>();
+    WindowFactoryManager::addWindowType<Scrollbar>();
+    WindowFactoryManager::addWindowType<Slider>();
+    WindowFactoryManager::addWindowType<Spinner>();
+    WindowFactoryManager::addWindowType<TabButton>();
+    WindowFactoryManager::addWindowType<TabControl>();
+    WindowFactoryManager::addWindowType<Thumb>();
+    WindowFactoryManager::addWindowType<Titlebar>();
+    WindowFactoryManager::addWindowType<Tooltip>();
+    WindowFactoryManager::addWindowType<ItemListbox>();
+    WindowFactoryManager::addWindowType<GroupBox>();
+    WindowFactoryManager::addWindowType<Tree>();
+    WindowFactoryManager::addWindowType<LayoutCell>();
+    WindowFactoryManager::addWindowType<HorizontalLayoutContainer>();
+    WindowFactoryManager::addWindowType<VerticalLayoutContainer>();
+    WindowFactoryManager::addWindowType<GridLayoutContainer>();
 }
 
 void System::createSingletons()
@@ -2048,6 +2050,23 @@ void System::invalidateAllWindows()
         if ((rs = wnd->getRenderingSurface()) && rs->isRenderingWindow())
             static_cast<RenderingWindow*>(rs)->invalidateGeometry();
     }
+}
+
+//----------------------------------------------------------------------------//
+RegexMatcher& System::createRegexMatcher() const
+{
+#ifdef CEGUI_HAS_PCRE_REGEX
+    return *CEGUI_NEW_AO PCRERegexMatcher();
+#else
+    CEGUI_THROW(InvalidRequestException("System::createRegexMatcher - "
+        "Library was built without support for regular expressions."));
+#endif
+}
+
+//----------------------------------------------------------------------------//
+void System::destroyRegexMatcher(RegexMatcher& rm) const
+{
+    CEGUI_DELETE_AO &rm;
 }
 
 //----------------------------------------------------------------------------//

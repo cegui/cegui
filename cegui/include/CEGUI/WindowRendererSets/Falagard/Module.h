@@ -28,7 +28,7 @@
 #ifndef _FalModule_h_
 #define _FalModule_h_
 
-#include "CEGUI/WindowRendererModule.h"
+#include "CEGUI/FactoryModule.h"
 #include "CEGUI/WindowRenderer.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
@@ -43,12 +43,12 @@
 
 //! Function we're required to export.
 extern "C"
-FALAGARDBASE_API CEGUI::WindowRendererModule& getWindowRendererModule();
+FALAGARDBASE_API CEGUI::FactoryModule& getWindowRendererFactoryModule();
 
 namespace CEGUI
 {
 //! Implementation of WindowRendererModule for the Falagard window renderers
-class FalagardWRModule : public CEGUI::WindowRendererModule
+class FalagardWRModule : public CEGUI::FactoryModule
 {
 public:
     FalagardWRModule();
