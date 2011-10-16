@@ -30,18 +30,19 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/elements/TabButton.h"
-
+#include "CEGUI/TplWindowRendererProperty.h"
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardTabControl::TypeName("Falagard/TabControl");
 
-    FalagardTabControlProperties::TabButtonType FalagardTabControl::d_tabButtonTypeProperty;
-
     FalagardTabControl::FalagardTabControl(const String& type) :
         TabControlWindowRenderer(type)
     {
-        registerProperty(&d_tabButtonTypeProperty);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardTabControl, String,
+        "TabButtonType", "Property to get/set the widget type used when creating tab buttons.  Value should be \"[widgetTypeName]\".",
+        &FalagardTabControl::setTabButtonType, &FalagardTabControl::getTabButtonType,
+        "");
     }
 
     void FalagardTabControl::render()

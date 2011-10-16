@@ -34,6 +34,7 @@
 #include "CEGUI/WindowRenderer.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/TplWindowRendererFactory.h"
 #include <map>
 #include <vector>
 
@@ -86,6 +87,24 @@ public:
     */
     template <typename T>
     static void addFactory();
+
+    /*!
+    \brief
+        Internally creates a factory suitable for creating WindowRenderer
+        objects of the given type and adds it to the system.
+
+    \note
+        The internally created factory is owned and managed by CEGUI,
+        and will be automatically deleted when the WindowRenderer type is
+        removed from the system - either directly by calling
+        WindowRendererManager::removeFactory or at system shut down.
+
+    \tparam T
+        Specifies the type of WindowRenderer to add a factory for.
+    */
+    template <typename T>
+    static void addWindowRendererType();
+
     void addFactory(WindowRendererFactory* wr);
     void removeFactory(const String& name);
 
@@ -143,6 +162,13 @@ void WindowRendererManager::addFactory()
     }
 
     d_ownedFactories.push_back(factory);
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+void WindowRendererManager::addWindowRendererType()
+{
+    WindowRendererManager::addFactory<TplWindowRendererFactory<T> >();
 }
 
 //----------------------------------------------------------------------------//

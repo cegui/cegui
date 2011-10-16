@@ -62,6 +62,32 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::AnimationManager::destroyAllAnimationInstances
+        
+            typedef void ( ::CEGUI::AnimationManager::*destroyAllAnimationInstances_function_type )(  ) ;
+            
+            AnimationManager_exposer.def( 
+                "destroyAllAnimationInstances"
+                , destroyAllAnimationInstances_function_type( &::CEGUI::AnimationManager::destroyAllAnimationInstances )
+                , "*!\n\
+            \n\
+                Destroys all instances of all animations\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::AnimationManager::destroyAllAnimations
+        
+            typedef void ( ::CEGUI::AnimationManager::*destroyAllAnimations_function_type )(  ) ;
+            
+            AnimationManager_exposer.def( 
+                "destroyAllAnimations"
+                , destroyAllAnimations_function_type( &::CEGUI::AnimationManager::destroyAllAnimations )
+                , "*!\n\
+            \n\
+                Destroys all animations in existence!\n\
+            *\n" );
+        
+        }
         { //::CEGUI::AnimationManager::destroyAllInstancesOfAnimation
         
             typedef void ( ::CEGUI::AnimationManager::*destroyAllInstancesOfAnimation_function_type )( ::CEGUI::Animation * ) ;

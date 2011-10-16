@@ -31,7 +31,6 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/WindowRendererSets/Falagard/Static.h"
-#include "CEGUI/WindowRendererSets/Falagard/StaticImageProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -85,9 +84,6 @@ namespace CEGUI
         void render();
 
     protected:
-        // static properties
-        static FalagardStaticImageProperties::Image d_imageProperty;
-
         // implementation data
         const Image* d_image;
     };

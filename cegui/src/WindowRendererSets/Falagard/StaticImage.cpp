@@ -28,19 +28,22 @@
 #include "CEGUI/WindowRendererSets/Falagard/StaticImage.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/TplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
     const String FalagardStaticImage::TypeName("Falagard/StaticImage");
-    
-    FalagardStaticImageProperties::Image    FalagardStaticImage::d_imageProperty;
 
     FalagardStaticImage::FalagardStaticImage(const String& type) :
         FalagardStatic(type),
         d_image(0)
     {
-        registerProperty(&d_imageProperty);
+        CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(FalagardStaticImage, Image*,
+            "Image", "Property to get/set the image for the FalagardStaticImage widget."
+            "  Value should be \"set:[imageset name] image:[image name]\".",
+            &FalagardStaticImage::setImage, &FalagardStaticImage::getImage,
+            0);
     }
 
     void FalagardStaticImage::render()

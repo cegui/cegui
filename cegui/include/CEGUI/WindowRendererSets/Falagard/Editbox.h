@@ -30,7 +30,6 @@
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/elements/Editbox.h"
-#include "CEGUI/WindowRendererSets/Falagard/EditboxProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -155,11 +154,6 @@ public:
     void update(float elapsed);
 
 protected:
-    // properties
-    static FalagardEditboxProperties::BlinkCaret d_blinkCaretProperty;
-    static FalagardEditboxProperties::BlinkCaretTimeout d_blinkCaretTimeoutProperty;
-    static FalagardEditboxProperties::TextFormatting d_textFormattingProperty;
-
     //! helper to draw the base imagery (container and what have you)
     void renderBaseImagery(const WidgetLookFeel& wlf) const;
     //! helper to set 'visual' to the string we will render (part of)

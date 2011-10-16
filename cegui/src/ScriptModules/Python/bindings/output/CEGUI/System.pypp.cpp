@@ -71,6 +71,29 @@ void register_System_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
+        { //::CEGUI::System::createRegexMatcher
+        
+            typedef ::CEGUI::RegexMatcher & ( ::CEGUI::System::*createRegexMatcher_function_type )(  ) const;
+            
+            System_exposer.def( 
+                "createRegexMatcher"
+                , createRegexMatcher_function_type( &::CEGUI::System::createRegexMatcher )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Create a RegexMatcher instance.\n\
+            \n\
+                \note\n\
+                    The created RegexMatcher is not tracked in any way, and it is the\n\
+                    resposibility of the caller to destroy the RegexMatcher when it is no\n\
+                    longer needed by calling System.destroyRegexMatcher.\n\
+            \n\
+                @exception\n\
+                    InvalidRequestException thrown if CEGUI was compiled without support\n\
+                    for regex matching.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::System::destroy
         
             typedef void ( *destroy_function_type )(  );
@@ -79,6 +102,17 @@ void register_System_class(){
                 "destroy"
                 , destroy_function_type( &::CEGUI::System::destroy )
                 , "! Destroy the System object.\n" );
+        
+        }
+        { //::CEGUI::System::destroyRegexMatcher
+        
+            typedef void ( ::CEGUI::System::*destroyRegexMatcher_function_type )( ::CEGUI::RegexMatcher & ) const;
+            
+            System_exposer.def( 
+                "destroyRegexMatcher"
+                , destroyRegexMatcher_function_type( &::CEGUI::System::destroyRegexMatcher )
+                , ( bp::arg("rm") )
+                , "! destroy a RegexMatcher instance returned by System.createRegexMatcher.\n" );
         
         }
         { //::CEGUI::System::executeScriptFile

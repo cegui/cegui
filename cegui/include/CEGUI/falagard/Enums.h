@@ -28,6 +28,8 @@
 #ifndef _CEGUIFalEnums_h_
 #define _CEGUIFalEnums_h_
 
+#include "CEGUI/PropertyHelper.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -144,6 +146,139 @@ namespace CEGUI
         FIC_BOTTOM_EDGE,            //!< References image used for the bottom edge.
         FIC_FRAME_IMAGE_COUNT       //!< Max number of images for a frame.
     };
+
+
+template<>
+class PropertyHelper<VerticalTextFormatting>
+{
+public:
+    typedef VerticalTextFormatting return_type;
+    typedef return_type safe_method_return_type;
+    typedef VerticalTextFormatting pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("VerticalTextFormatting");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "CentreAligned")
+        {
+            return VTF_CENTRE_ALIGNED;
+        }
+        else if (str == "BottomAligned")
+        {
+            return VTF_BOTTOM_ALIGNED;
+        }
+        else
+        {
+            return VTF_TOP_ALIGNED;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        switch (val)
+        {
+        case VTF_BOTTOM_ALIGNED:
+            return String("BottomAligned");
+            break;
+        case VTF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        default:
+            return String("TopAligned");
+            break;
+        }
+    }
+};
+template<>
+class PropertyHelper<HorizontalTextFormatting>
+{
+public:
+    typedef HorizontalTextFormatting return_type;
+    typedef return_type safe_method_return_type;
+    typedef HorizontalTextFormatting pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("HorizontalTextFormatting");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "CentreAligned")
+        {
+            return HTF_CENTRE_ALIGNED;
+        }
+        else if (str == "RightAligned")
+        {
+            return HTF_RIGHT_ALIGNED;
+        }
+        else if (str == "Justified")
+        {
+            return HTF_JUSTIFIED;
+        }
+        else if (str == "WordWrapLeftAligned")
+        {
+            return HTF_WORDWRAP_LEFT_ALIGNED;
+        }
+        else if (str == "WordWrapCentreAligned")
+        {
+            return HTF_WORDWRAP_CENTRE_ALIGNED;
+        }
+        else if (str == "WordWrapRightAligned")
+        {
+            return HTF_WORDWRAP_RIGHT_ALIGNED;
+        }
+        else if (str == "WordWrapJustified")
+        {
+            return HTF_WORDWRAP_JUSTIFIED;
+        }
+        else
+        {
+            return HTF_LEFT_ALIGNED;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        switch (val)
+        {
+        case HTF_RIGHT_ALIGNED:
+            return String("RightAligned");
+            break;
+        case HTF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        case HTF_JUSTIFIED:
+            return String("Justified");
+            break;
+        case HTF_WORDWRAP_LEFT_ALIGNED:
+            return String("WordWrapLeftAligned");
+            break;
+        case HTF_WORDWRAP_RIGHT_ALIGNED:
+            return String("WordWrapRightAligned");
+            break;
+        case HTF_WORDWRAP_CENTRE_ALIGNED:
+            return String("WordWrapCentreAligned");
+            break;
+        case HTF_WORDWRAP_JUSTIFIED:
+            return String("WordWrapJustified");
+            break;
+        default:
+            return String("LeftAligned");
+            break;
+        }
+    }
+};
 
 } // End of  CEGUI namespace section
 

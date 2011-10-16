@@ -31,7 +31,6 @@
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/elements/ListHeader.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/WindowRendererSets/Falagard/ListHeaderProperties.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -74,8 +73,6 @@ namespace CEGUI
         void destroyListSegment(ListHeaderSegment* segment) const;
 
 protected:
-        // properties
-        static FalagardListHeaderProperties::SegmentWidgetType   d_segmentWidgetTypeProperty;
 
         // data fields
         String  d_segmentWidgetType;

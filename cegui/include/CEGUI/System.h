@@ -864,6 +864,24 @@ public:
     */
     void invalidateAllCachedRendering();
 
+    /*!
+    \brief
+        Create a RegexMatcher instance.
+
+    \note
+        The created RegexMatcher is not tracked in any way, and it is the
+        resposibility of the caller to destroy the RegexMatcher when it is no
+        longer needed by calling System::destroyRegexMatcher.
+
+    \exception
+        InvalidRequestException thrown if CEGUI was compiled without support
+        for regex matching.
+    */
+    RegexMatcher& createRegexMatcher() const;
+
+    //! destroy a RegexMatcher instance returned by System::createRegexMatcher.
+    void destroyRegexMatcher(RegexMatcher& rm) const;
+
 	/*************************************************************************
 		Input injection interface
 	*************************************************************************/

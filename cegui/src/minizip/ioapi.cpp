@@ -1,5 +1,5 @@
 #ifdef __APPLE__
-#   include <CEGUIConfig.h>
+#   include <CEGUI/Config.h>
 #   define fopen64 fopen
 #   define ftello64 ftello
 #   define fseeko64 fseeko
