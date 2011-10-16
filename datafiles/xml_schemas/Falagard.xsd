@@ -5,6 +5,7 @@
 		<xsd:sequence>
 			<xsd:element name="WidgetLook" type="widgetLookType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
+		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:complexType>
 	<xsd:complexType name="widgetLookType">
 		<xsd:sequence>

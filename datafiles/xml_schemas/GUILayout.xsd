@@ -7,7 +7,7 @@
 		<xsd:sequence>
 			<xsd:element name="Window" type="WindowType" />
 		</xsd:sequence>
-		<xsd:attribute name="Parent" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:complexType>
 	
 	<xsd:complexType name="WindowType">
