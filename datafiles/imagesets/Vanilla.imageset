@@ -24,4 +24,18 @@
 	<Image Name="RadioButtonNormal" XPos="1" YPos="70" Width="20" Height="20" />
 	<Image Name="RadioButtonHover" XPos="1" YPos="112" Width="20" Height="20" />
 	<Image Name="RadioButtonMark" XPos="1" YPos="91" Width="20" Height="20" />
+	<Image Name="SliderScrollUpArrow" XPos="131" YPos="1" Width="20" Height="20" />
+	<Image Name="SliderScrollDownArrow" XPos="131" YPos="23" Width="20" Height="20" />
+	<Image Name="SliderScrollLeftArrow" XPos="196" YPos="8" Width="20" Height="20" />
+	<Image Name="SliderScrollRightArrow" XPos="218" YPos="8" Width="20" Height="20" />
+	<Image Name="VerticalImageSliderThumb" XPos="171" YPos="116" Width="85" Height="33" />
+	<Image Name="HorizontalImageSliderThumb" XPos="180" YPos="30" Width="33" Height="85" />
+	<Image Name="VerticalImageSliderContainer" XPos="195" YPos="2" Width="20" Height="1" />
+	<Image Name="HorizontalImageSliderContainer" XPos="178" YPos="45" Width="1" Height="20" />
+	<Image Name="DefaultScrollImage" XPos="174" YPos="12" Width="1" Height="24" />
+	<Image Name="VerticalImageSliderTopEnd" XPos="131" YPos="45" Width="20" Height="10" />
+	<Image Name="VerticalImageSliderBottomEnd" XPos="131" YPos="57" Width="20" Height="10" /> 
+	<Image Name="HorizontalImageSliderLeftEnd" XPos="153" YPos="45" Width="10" Height="20" />
+	<Image Name="HorizontalImageSliderRightEnd" XPos="165" YPos="45" Width="10" Height="20" />
+	<Image Name="ColourPickerCursor" XPos="131" YPos="69" Width="20" Height="20" /> 
 </Imageset>
