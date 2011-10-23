@@ -41,7 +41,6 @@
 #include "CEGuiSample.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGUIRenderingRoot.h"
 #include <stdexcept>
 
 //----------------------------------------------------------------------------//
