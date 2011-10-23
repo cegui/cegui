@@ -35,54 +35,43 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
-    
+ 
 template<class C, typename T>
-class TplWindowRendererProperty : public TypedProperty<T>
+class TplWindowRendererProperty : public TplProperty<C, T>
 {
 public:
-    typedef typename TplProperty<C,T>::Setter Setter;
-    typedef typename TplProperty<C,T>::GetterFunctor GetterFunctor;
-    typedef PropertyHelper<T> Helper;
-    
-    TplWindowRendererProperty(const String& name, const String& help,
-    Setter setter, GetterFunctor getter,
-    typename Helper::pass_type defaultValue = T()):
-    TypedProperty<T>(name,help,C::TypeName, defaultValue),
-        d_setter(setter),
-        d_getter(getter)
+    TplWindowRendererProperty(
+        const String& name, const String& help,
+        typename TplProperty<C, T>::Setter setter,
+        typename TplProperty<C, T>::GetterFunctor getter,
+        typename TplProperty<C, T>::Helper::pass_type defaultValue = T(),
+        bool writesXML = true) :
+
+        TplProperty<C, T>(name, help, "Unknown",
+                          setter, getter,
+                          defaultValue, writesXML)
     {}
-    
-    virtual ~TplWindowRendererProperty()
-    {}
-    
+
+protected:
     //! \copydoc TypedProperty::setNative_impl
-    virtual void setNative_impl(PropertyReceiver* receiver, typename Helper::pass_type value)
+    void setNative_impl(PropertyReceiver* receiver,
+                        typename TplProperty<C, T>::Helper::pass_type value)
     {
-        C* instance = static_cast<C*>(static_cast<const Window*>(receiver)->getWindowRenderer());
-        CEGUI_CALL_MEMBER_FN(*instance, d_setter)(value);
+        C* instance = static_cast<C*>(
+            static_cast<const Window*>(receiver)->getWindowRenderer());
+
+        CEGUI_CALL_MEMBER_FN(*instance, this->d_setter)(value);
     }
 
     //! \copydoc TypedProperty::getNative_impl
-    virtual typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const
+    typename TplProperty<C, T>::Helper::safe_method_return_type
+    getNative_impl(const PropertyReceiver* receiver) const
     {
-        const C* instance = static_cast<const C*>(static_cast<const Window*>(receiver)->getWindowRenderer());
-        return d_getter(instance);
+        const C* instance = static_cast<const C*>(
+            static_cast<const Window*>(receiver)->getWindowRenderer());
+
+        return this->d_getter(instance);
     }
-    
-    //! \copydoc Property::isReadable
-    virtual bool isReadable() const
-    {
-        return d_getter;
-    }
-    //! \copydoc Property::isWritable
-    virtual bool isWritable() const
-    {
-        return d_setter;
-    }
-private:
-    Setter d_setter;
-    GetterFunctor d_getter;
 };
 
 /*!
@@ -117,7 +106,7 @@ Example of usage inside addStandardProperties or similar method.
 #define CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
     static ::CEGUI::TplWindowRendererProperty<class_type, property_native_type> sProperty(\
-            name, help, setter, getter, default_value);\
+            name, help, setter, getter, default_value, false);\
     \
     this->registerProperty(&sProperty,true);\
 }
