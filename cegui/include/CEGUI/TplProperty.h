@@ -125,20 +125,7 @@ public:
     
     virtual ~TplProperty()
     {}
-    
-    //! \copydoc TypedProperty::setNative_impl
-    virtual void setNative_impl(PropertyReceiver* receiver, typename Helper::pass_type value)
-    {
-        C* instance = static_cast<C*>(receiver);
-        CEGUI_CALL_MEMBER_FN(*instance, d_setter)(value);
-    }
 
-    //! \copydoc TypedProperty::getNative_impl
-    virtual typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const
-    {
-        const C* instance = static_cast<const C*>(receiver);
-        return d_getter(instance);
-    }
     //! \copydoc Property::isReadable
     virtual bool isReadable() const
     {
@@ -149,7 +136,8 @@ public:
     {
         return d_setter;
     }
-private:
+
+protected:
     Setter d_setter;
     GetterFunctor d_getter;
 };
@@ -157,3 +145,4 @@ private:
 } // End of  CEGUI namespace section
 
 #endif  // end of guard _CEGUITplProperty_h_
+
