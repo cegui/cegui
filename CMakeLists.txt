@@ -245,6 +245,8 @@ set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 # sample related module names
 set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
 
+# Additional lib names
+set( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
 
 ################################################################################
 # Select one of the XML parser modules to be the default, warning if none are
@@ -425,6 +427,8 @@ add_subdirectory(cegui/src/XMLParserModules)
 add_subdirectory(cegui/src/ImageCodecModules)
 add_subdirectory(cegui/src/WindowRendererSets)
 add_subdirectory(cegui/src/ScriptModules)
+
+add_subdirectory(cegui/src/CommonDialogs)
 
 if (CEGUI_SAMPLES_ENABLED)
     add_subdirectory(Samples)

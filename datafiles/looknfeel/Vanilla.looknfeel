@@ -1460,123 +1460,221 @@
 	
 	<WidgetLook name="Vanilla/RadioButton">
 		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
-        <ImagerySection name="label">
-            <TextComponent>
-                <Area>
-                    <Dim type="LeftEdge" >
-                        <ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Width">
-                            <DimOperator op="Add">
-                                <AbsoluteDim value="3" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <VertFormat type="CentreAligned" />
-                <HorzFormat type="LeftAligned" />
-            </TextComponent>
-        </ImagerySection>
-        <ImagerySection name="normal">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image name="Vanilla-Images/RadioButtonNormal" />
-                <VertFormat type="CentreAligned" />
-                <HorzFormat type="LeftAligned" />
-            </ImageryComponent>
-        </ImagerySection>
-        <ImagerySection name="hover">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image name="Vanilla-Images/RadioButtonHover" />
-                <VertFormat type="CentreAligned" />
-                <HorzFormat type="LeftAligned" />
-            </ImageryComponent>
-        </ImagerySection>
-        <ImagerySection name="select_mark">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
-                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
-                </Area>
-                <Image name="Vanilla-Images/RadioButtonMark" />
-                <VertFormat type="CentreAligned" />
-                <HorzFormat type="LeftAligned" />
-            </ImageryComponent>
-        </ImagerySection>
-        <StateImagery name="Normal">
-            <Layer>
-                <Section section="normal" />
-                <Section section="label">
-                    <ColourProperty name="NormalTextColour" />
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Hover">
-            <Layer>
-                <Section section="hover" />
-                <Section section="label">
-                    <ColourProperty name="HoverTextColour" />
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Disabled">
-            <Layer>
-                <Section section="normal">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
-                </Section>
-                <Section section="label">
-                    <ColourProperty name="DisabledTextColour" />
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedNormal">
-            <Layer>
-                <Section section="normal" />
-                <Section section="select_mark" />
-                <Section section="label">
-                    <ColourProperty name="NormalTextColour" />
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedHover">
-            <Layer>
-                <Section section="hover" />
-                <Section section="select_mark" />
-                <Section section="label">
-                    <ColourProperty name="HoverTextColour" />
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedDisabled">
-            <Layer>
-                <Section section="normal">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
-                </Section>
-                <Section section="select_mark">
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
-                </Section>
-                <Section section="label">
-                    <ColourProperty name="DisabledTextColour" />
-                </Section>
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
+		<PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
+
+		<PropertyDefinition name="RadioButtonRelativeWidth" initialValue="1.0" redrawOnWrite="true" />
+		<PropertyDefinition name="RadioButtonRelativeHeight" initialValue="1.0" redrawOnWrite="true" />
+
+		<ImagerySection name="label">
+			<TextComponent>
+				<Area>
+					<Dim type="LeftEdge" >
+						<AbsoluteDim value="3">
+							<DimOperator op="Add">
+								<ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Width" >
+									<DimOperator op="Multiply">
+										<PropertyDim name="RadioButtonRelativeWidth" />
+									</DimOperator>
+								</ImageDim>
+							</DimOperator>
+						</AbsoluteDim>
+					</Dim>
+					<Dim type="TopEdge" >
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="RightEdge" >
+						<UnifiedDim scale="1" type="Width" />
+					</Dim>
+					<Dim type="Height" >
+						<UnifiedDim scale="1" type="Height" />
+					</Dim>
+				</Area>
+				<VertFormat type="CentreAligned" />
+				<HorzFormat type="LeftAligned" />
+			</TextComponent>
+		</ImagerySection>
+		<ImagerySection name="normal">
+			<ImageryComponent>
+				<Area>
+					<Dim type="LeftEdge" >
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="TopEdge" >
+						<UnifiedDim scale="0.5" type="Height">
+							<DimOperator op="Subtract">
+								<ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Height" >
+									<DimOperator op="Multiply">
+										<PropertyDim name="RadioButtonRelativeHeight">
+											<DimOperator op="Multiply">
+												<AbsoluteDim value="0.5" />
+											</DimOperator>
+										</PropertyDim>
+									</DimOperator>
+								</ImageDim>
+							</DimOperator>
+						</UnifiedDim>
+					</Dim>
+					<Dim type="Width" >
+						<ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Width" >
+							<DimOperator op="Multiply">
+								<PropertyDim name="RadioButtonRelativeWidth" />
+							</DimOperator>
+						</ImageDim>
+					</Dim>
+					<Dim type="Height" >
+						<ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Height" >
+							<DimOperator op="Multiply">
+								<PropertyDim name="RadioButtonRelativeHeight" />
+							</DimOperator>
+						</ImageDim>
+					</Dim>
+				</Area>
+				<Image name="Vanilla-Images/RadioButtonNormal" />
+				<VertFormat type="Stretched" />
+				<HorzFormat type="Stretched" />
+			</ImageryComponent>
+		</ImagerySection>
+		<ImagerySection name="hover">
+			<ImageryComponent>
+				<Area>
+					<Dim type="LeftEdge" >
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="TopEdge" >
+						<UnifiedDim scale="0.5" type="Height">
+							<DimOperator op="Subtract">
+								<ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Height" >
+									<DimOperator op="Multiply">
+										<PropertyDim name="RadioButtonRelativeHeight">
+											<DimOperator op="Multiply">
+												<AbsoluteDim value="0.5" />
+											</DimOperator>
+										</PropertyDim>
+									</DimOperator>
+								</ImageDim>
+							</DimOperator>
+						</UnifiedDim>
+					</Dim>
+					<Dim type="Width" >
+						<ImageDim name="Vanilla-Images/RadioButtonHover" dimension="Width" >
+							<DimOperator op="Multiply">
+								<PropertyDim name="RadioButtonRelativeWidth" />
+							</DimOperator>
+						</ImageDim>
+					</Dim>
+					<Dim type="Height" >
+						<ImageDim name="Vanilla-Images/RadioButtonHover" dimension="Height" >
+							<DimOperator op="Multiply">
+								<PropertyDim name="RadioButtonRelativeHeight" />
+							</DimOperator>
+						</ImageDim>
+					</Dim>
+				</Area>
+				<Image name="Vanilla-Images/RadioButtonHover" />
+				<VertFormat type="Stretched" />
+				<HorzFormat type="Stretched" />
+			</ImageryComponent>
+		</ImagerySection>
+		<ImagerySection name="select_mark">
+			<ImageryComponent>
+				<Area>
+					<Dim type="LeftEdge" >
+						<AbsoluteDim value="0" />
+					</Dim>
+					<Dim type="TopEdge" >
+						<UnifiedDim scale="0.5" type="Height">
+							<DimOperator op="Subtract">
+								<ImageDim name="Vanilla-Images/RadioButtonNormal" dimension="Height" >
+									<DimOperator op="Multiply">
+										<PropertyDim name="RadioButtonRelativeHeight">
+											<DimOperator op="Multiply">
+												<AbsoluteDim value="0.5" />
+											</DimOperator>
+										</PropertyDim>
+									</DimOperator>
+								</ImageDim>
+							</DimOperator>
+						</UnifiedDim>
+					</Dim>
+					<Dim type="Width" >
+						<ImageDim name="Vanilla-Images/RadioButtonMark" dimension="Width" >
+							<DimOperator op="Multiply">
+								<PropertyDim name="RadioButtonRelativeWidth" />
+							</DimOperator>
+						</ImageDim>
+					</Dim>
+					<Dim type="Height" >
+						<ImageDim name="Vanilla-Images/RadioButtonMark" dimension="Height" >
+							<DimOperator op="Multiply">
+								<PropertyDim name="RadioButtonRelativeHeight" />
+							</DimOperator>
+						</ImageDim>
+					</Dim>
+				</Area>
+				<Image name="Vanilla-Images/RadioButtonMark" />
+				<VertFormat type="Stretched" />
+				<HorzFormat type="Stretched" />
+			</ImageryComponent>
+		</ImagerySection>
+		<StateImagery name="Normal">
+			<Layer>
+				<Section section="normal" />
+				<Section section="label">
+					<ColourProperty name="NormalTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="Hover">
+			<Layer>
+				<Section section="hover" />
+				<Section section="label">
+					<ColourProperty name="HoverTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="Disabled">
+			<Layer>
+				<Section section="normal">
+					<Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+				</Section>
+				<Section section="label">
+					<ColourProperty name="DisabledTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="SelectedNormal">
+			<Layer>
+				<Section section="normal" />
+				<Section section="select_mark" />
+				<Section section="label">
+					<ColourProperty name="NormalTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="SelectedHover">
+			<Layer>
+				<Section section="hover" />
+				<Section section="select_mark" />
+				<Section section="label">
+					<ColourProperty name="HoverTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+		<StateImagery name="SelectedDisabled">
+			<Layer>
+				<Section section="normal">
+					<Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+				</Section>
+				<Section section="select_mark">
+					<Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+				</Section>
+				<Section section="label">
+					<ColourProperty name="DisabledTextColour" />
+				</Section>
+			</Layer>
+		</StateImagery>
+	</WidgetLook>
 
 </Falagard>

@@ -1,7 +1,7 @@
 /***********************************************************************
-    filename:   CEGUIRenderingContext.h
-    created:    Mon Jan 12 2009
-    author:     Paul D Turner
+    filename:   Module.cpp
+    created:    Sun Oct 09 2011
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
@@ -25,31 +25,42 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderingContext_h_
-#define _CEGUIRenderingContext_h_
+#include "CEGUI/CommonDialogs/Module.h"
+#include "CEGUI/TplWindowFactoryRegisterer.h"
 
-#include "CEGUI/RenderingSurface.h"
+#include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
+#include "CEGUI/CommonDialogs/ColourPicker/Controls.h"
+
+//----------------------------------------------------------------------------//
+extern "C"
+CEGUI::FactoryModule& getWindowFactoryModule()
+{
+    static CEGUI::CommonDialogsWindowModule module;
+    return module;
+}
+
+//----------------------------------------------------------------------------//
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    struct that holds some context relating to a RenderingSurface object.
-*/
-struct RenderingContext :
-    public AllocatedObject<RenderingContext>
+
+//----------------------------------------------------------------------------//
+CommonDialogsWindowModule::CommonDialogsWindowModule()
 {
-    //! RenderingSurface to be used for drawing
-    RenderingSurface* surface;
-    //! The Window object that owns the RenederingSurface (0 for default root)
-    const Window* owner;
-    //! The offset of the owning window on the root RenderingSurface.
-    Vector2f offset;
-    //! The queue that rendering should be added to.
-    RenderQueueID queue;
-};
+    d_registry.push_back(new TplWindowFactoryRegisterer<ColourPicker>);
+    d_registry.push_back(new TplWindowFactoryRegisterer<ColourPickerControls>);
+}
+
+//----------------------------------------------------------------------------//
+CommonDialogsWindowModule::~CommonDialogsWindowModule()
+{
+    FactoryRegistry::iterator i = d_registry.begin();
+    for ( ; i != d_registry.end(); ++i)
+        delete (*i);
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIRenderingContext_h_

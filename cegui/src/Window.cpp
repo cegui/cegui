@@ -121,39 +121,43 @@ BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
 //----------------------------------------------------------------------------//
+Window::WindowRendererProperty Window::d_windowRendererProperty;
+Window::LookNFeelProperty Window::d_lookNFeelProperty;
 
-
-Window::WindowRendererProperty::WindowRendererProperty() : TplProperty<Window,String>(
-    "WindowRenderer", "Property to get/set the windows assigned window renderer objects name.  Value is a string.",
-    "Window",&Window::setWindowRenderer,&Window::getWindowRendererName, "")
+//----------------------------------------------------------------------------//
+Window::WindowRendererProperty::WindowRendererProperty() : TplWindowProperty<Window,String>(
+    "WindowRenderer",
+    "Property to get/set the windows assigned window renderer objects name.  "
+    "Value is a string.",
+    "Window", &Window::setWindowRenderer,&Window::getWindowRendererName, "")
     {}
 
-void Window::WindowRendererProperty::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const
+//----------------------------------------------------------------------------//
+void Window::WindowRendererProperty::writeXMLToStream(const PropertyReceiver* receiver,
+                                                      XMLSerializer& xml_stream) const
 {
     const Window* wnd = static_cast<const Window*>(receiver);
+
     if (!WindowFactoryManager::getSingleton().isFalagardMappedType(wnd->getType()))
-    {
         Property::writeXMLToStream(receiver, xml_stream);
-    }
 }
 
-Window::LookNFeelProperty::LookNFeelProperty() : TplProperty<Window,String>(
-    "LookNFeel", "Property to get/set the windows assigned look'n'feel.  Value is a string.",
-    "Window",&Window::setLookNFeel,&Window::getLookNFeel, "")
+//----------------------------------------------------------------------------//
+Window::LookNFeelProperty::LookNFeelProperty() : TplWindowProperty<Window,String>(
+    "LookNFeel",
+    "Property to get/set the windows assigned look'n'feel.  Value is a string.",
+    "Window", &Window::setLookNFeel,&Window::getLookNFeel, "")
     {}
 
-void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const
+//----------------------------------------------------------------------------//
+void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receiver,
+                                                 XMLSerializer& xml_stream) const
 {
     const Window* wnd = static_cast<const Window*>(receiver);
+
     if (!WindowFactoryManager::getSingleton().isFalagardMappedType(wnd->getType()))
-    {
         Property::writeXMLToStream(receiver, xml_stream);
-    }
 }
-
-
-Window::WindowRendererProperty    Window::d_windowRendererProperty;
-Window::LookNFeelProperty         Window::d_lookNFeelProperty;
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name):

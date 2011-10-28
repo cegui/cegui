@@ -1,7 +1,7 @@
 /***********************************************************************
-    filename:   CEGUIRenderingContext.h
-    created:    Mon Jan 12 2009
-    author:     Paul D Turner
+    filename:   TplWindowProperty.h
+    created:    Sun Oct 23 2011
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
@@ -25,31 +25,48 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderingContext_h_
-#define _CEGUIRenderingContext_h_
+#ifndef _CEGUITplWindowProperty_h_
+#define _CEGUITplWindowProperty_h_
 
-#include "CEGUI/RenderingSurface.h"
+#include "CEGUI/TplProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    struct that holds some context relating to a RenderingSurface object.
-*/
-struct RenderingContext :
-    public AllocatedObject<RenderingContext>
+
+template<class C, typename T>
+class TplWindowProperty : public TplProperty<C, T>
 {
-    //! RenderingSurface to be used for drawing
-    RenderingSurface* surface;
-    //! The Window object that owns the RenederingSurface (0 for default root)
-    const Window* owner;
-    //! The offset of the owning window on the root RenderingSurface.
-    Vector2f offset;
-    //! The queue that rendering should be added to.
-    RenderQueueID queue;
+public:
+    TplWindowProperty(const String& name, const String& help,
+                      const String& origin,
+                      typename TplProperty<C, T>::Setter setter,
+                      typename TplProperty<C, T>::GetterFunctor getter,
+                      typename TplProperty<C, T>::Helper::pass_type defaultValue = T(),
+                      bool writesXML = true) :
+        TplProperty<C, T>(name, help, origin, setter, getter,
+                          defaultValue, writesXML)
+    {}
+
+protected:
+    //! \copydoc TypedProperty::setNative_impl
+    void setNative_impl(PropertyReceiver* receiver,
+                        typename TplProperty<C, T>::Helper::pass_type value)
+    {
+        C* instance = static_cast<C*>(receiver);
+        CEGUI_CALL_MEMBER_FN(*instance, this->d_setter)(value);
+    }
+
+    //! \copydoc TypedProperty::getNative_impl
+    typename TplProperty<C, T>::Helper::safe_method_return_type
+    getNative_impl(const PropertyReceiver* receiver) const
+    {
+        const C* instance = static_cast<const C*>(receiver);
+        return this->d_getter(instance);
+    }
 };
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIRenderingContext_h_
+#endif  // end of guard _CEGUITplWindowProperty_h_
+
