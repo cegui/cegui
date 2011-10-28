@@ -589,7 +589,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     
     const Sizef parent_size = parent_rect.getSize();
     
-    Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size);
+    Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
     {
