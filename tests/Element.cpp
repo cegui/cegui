@@ -174,4 +174,26 @@ BOOST_AUTO_TEST_CASE(VerticalBottomAlignment)
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 45, 0, 95));
 }
 
+BOOST_AUTO_TEST_CASE(AspectLocking)
+{
+    CEGUI::Element* root = new CEGUI::Element();
+    root->setSize(CEGUI::USize(100.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
+    
+    // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
+    BOOST_CHECK_EQUAL(root->getAspectMode(), CEGUI::AM_IGNORE);
+    BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 100));
+    
+    root->setAspectMode(CEGUI::AM_SHRINK);
+    root->setAspectRatio(1.0f / 2.0f);
+    
+    // todo: should have tolerances or something, or does boost do that automatically?
+    BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(50, 100));
+    
+    root->setAspectMode(CEGUI::AM_EXPAND);
+    root->setAspectRatio(1.0f / 2.0f);
+    
+    // todo: should have tolerances or something, or does boost do that automatically?
+    BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 200));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
