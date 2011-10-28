@@ -233,15 +233,15 @@ void ScrolledContainer::onChildAdded(ElementEventArgs& e)
     Window::onChildAdded(e);
 
     // subscribe to some events on this child
-    d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.node),
-        static_cast<Window*>(e.node)->subscribeEvent(Window::EventSized,
+    d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
+        static_cast<Window*>(e.element)->subscribeEvent(Window::EventSized,
             Event::Subscriber(&ScrolledContainer::handleChildSized, this))));
-    d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.node),
-        static_cast<Window*>(e.node)->subscribeEvent(Window::EventMoved,
+    d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
+        static_cast<Window*>(e.element)->subscribeEvent(Window::EventMoved,
             Event::Subscriber(&ScrolledContainer::handleChildMoved, this))));
 
     // force window to update what it thinks it's screen / pixel areas are.
-    static_cast<Window*>(e.node)->notifyScreenAreaChanged(false);
+    static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
 
     // perform notification.
     WindowEventArgs args(this);
@@ -255,7 +255,7 @@ void ScrolledContainer::onChildRemoved(ElementEventArgs& e)
 
     // disconnect from events for this window.
     ConnectionTracker::iterator conn;
-    while ((conn = d_eventConnections.find(static_cast<Window*>(e.node))) != d_eventConnections.end())
+    while ((conn = d_eventConnections.find(static_cast<Window*>(e.element))) != d_eventConnections.end())
     {
         conn->second->disconnect();
         d_eventConnections.erase(conn);

@@ -675,7 +675,7 @@ public:
 
     inline Window* getChildAtIdx(size_t idx) const
     {
-        return static_cast<Window*>(getChildNodeAtIdx(idx));
+        return static_cast<Window*>(getChildElementAtIdx(idx));
     }
     
     /*!
