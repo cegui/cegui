@@ -161,7 +161,7 @@ void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receive
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name):
-    Node(),
+    Element(),
 
     // basic types and initial window name
     d_type(type),
@@ -1176,9 +1176,9 @@ void Window::queueGeometry(const RenderingContext& ctx)
 }
 
 //----------------------------------------------------------------------------//
-void Window::setParent(Node* parent)
+void Window::setParent(Element* parent)
 {
-    Node::setParent(parent);
+    Element::setParent(parent);
 
     // if we do not have a surface, xfer any surfaces from our children to
     // whatever our target surface now is.
@@ -1214,7 +1214,7 @@ void Window::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChild_impl(Node* node)
+void Window::addChild_impl(Element* node)
 {
     Window* wnd = dynamic_cast<Window*>(node);
     
@@ -1237,7 +1237,7 @@ void Window::addChild_impl(Node* node)
 
     std::cout << getName().c_str() << std::endl;
         
-    Node::addChild_impl(wnd);
+    Element::addChild_impl(wnd);
 
     addWindowToDrawList(*wnd);
 
@@ -1251,14 +1251,14 @@ void Window::addChild_impl(Node* node)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild_impl(Node* node)
+void Window::removeChild_impl(Element* node)
 {
     Window* wnd = static_cast<Window*>(node);
     
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
-    Node::removeChild_impl(wnd);
+    Element::removeChild_impl(wnd);
     
     // find this window in the child list
     const ChildList::iterator position =
@@ -1917,7 +1917,7 @@ void Window::setInheritsTooltipText(bool setting)
 void Window::setArea_impl(const UVector2& pos, const USize& size,
                           bool topLeftSizing, bool fireEvents)
 {
-    Node::setArea_impl(pos, size, topLeftSizing, fireEvents);
+    Element::setArea_impl(pos, size, topLeftSizing, fireEvents);
     
     // we make sure the screen areas are recached when this is called as we need
     // it in most cases
@@ -2258,9 +2258,9 @@ void Window::rename(const String& new_name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onSized(NodeEventArgs& e)
+void Window::onSized(ElementEventArgs& e)
 {
-    Node::onSized(e);
+    Element::onSized(e);
     
     // resize the underlying RenderingWindow if we're using such a thing
     if (d_surface && d_surface->isRenderingWindow())
@@ -2278,9 +2278,9 @@ void Window::onSized(NodeEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMoved(NodeEventArgs& e)
+void Window::onMoved(ElementEventArgs& e)
 {
-    Node::onMoved(e);
+    Element::onMoved(e);
     
     // handle invalidation of surfaces and trigger needed redraws
     if (d_parent)
@@ -2508,9 +2508,9 @@ void Window::onDeactivated(ActivationEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onParentSized(NodeEventArgs& e)
+void Window::onParentSized(ElementEventArgs& e)
 {
-    Node::onParentSized(e);
+    Element::onParentSized(e);
 
     // if we were not moved or sized, do child layout anyway!
     // URGENT FIXME
@@ -2519,17 +2519,17 @@ void Window::onParentSized(NodeEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onChildAdded(NodeEventArgs& e)
+void Window::onChildAdded(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
     System::getSingleton().signalRedraw();
     
-    Node::onChildAdded(e);
+    Element::onChildAdded(e);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onChildRemoved(NodeEventArgs& e)
+void Window::onChildRemoved(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
@@ -2537,7 +2537,7 @@ void Window::onChildRemoved(NodeEventArgs& e)
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
     
-    Node::onChildRemoved(e);
+    Element::onChildRemoved(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -3026,7 +3026,7 @@ void Window::notifyScreenAreaChanged(bool recursive /* = true */)
     d_innerRectClipperValid = false;
     d_hitTestRectValid = false;
     
-    Node::notifyScreenAreaChanged(recursive);
+    Element::notifyScreenAreaChanged(recursive);
 
     updateGeometryRenderSettings();
 }
@@ -3369,9 +3369,9 @@ void Window::initialiseClippers(const RenderingContext& ctx)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onRotated(NodeEventArgs& e)
+void Window::onRotated(ElementEventArgs& e)
 {
-    Node::onRotated(e);
+    Element::onRotated(e);
     
     // if we have no surface set, enable the auto surface
     if (!d_surface)

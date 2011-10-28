@@ -31,7 +31,7 @@
 #define _CEGUIWindow_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/Node.h"
+#include "CEGUI/Element.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"
@@ -148,7 +148,7 @@ public:
     classes.
 */
 class CEGUIEXPORT Window :
-    public Node,
+    public Element,
     public AllocatedObject<Window>
 {
 public:
@@ -609,7 +609,7 @@ public:
     */
     uint getID(void) const {return d_ID;}
 
-    using Node::isChild;
+    using Element::isChild;
     /*!
     \brief
         returns whether the specified name path references a Window that is
@@ -764,7 +764,7 @@ public:
     Window* getActiveChild(void);
     const Window* getActiveChild(void) const;
 
-    using Node::isAncestor;
+    using Element::isAncestor;
     /*!
     \brief
         return true if the specified Window is some ancestor of this Window
@@ -1027,7 +1027,7 @@ public:
     */
     inline Window* getParent() const
     {
-        return static_cast<Window*>(getParentNode());
+        return static_cast<Window*>(getParentElement());
     }
 
     /*!
@@ -1649,7 +1649,7 @@ public:
     */
     void setFont(const String& name);
 
-    using Node::removeChild;
+    using Element::removeChild;
     /*!
     \brief
         Remove the Window referenced by the given name path from this Windows
@@ -2654,7 +2654,7 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onSized(NodeEventArgs& e);
+    virtual void onSized(ElementEventArgs& e);
 
     /*!
     \brief
@@ -2665,9 +2665,9 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onMoved(NodeEventArgs& e);
+    virtual void onMoved(ElementEventArgs& e);
     
-    virtual void onRotated(NodeEventArgs& e);
+    virtual void onRotated(ElementEventArgs& e);
 
     /*!
     \brief
@@ -2902,7 +2902,7 @@ protected:
         window that caused the event; this is typically either this window's
         parent window, or NULL to indicate the screen size has changed.
     */
-    virtual void onParentSized(NodeEventArgs& e);
+    virtual void onParentSized(ElementEventArgs& e);
 
     /*!
     \brief
@@ -2912,7 +2912,7 @@ protected:
         WindowEventArgs object whose 'window' pointer field is set to the window
         that has been added.
     */
-    virtual void onChildAdded(NodeEventArgs& e);
+    virtual void onChildAdded(ElementEventArgs& e);
 
     /*!
     \brief
@@ -2922,7 +2922,7 @@ protected:
         WindowEventArgs object whose 'window' pointer field is set the window
         that has been removed.
     */
-    virtual void onChildRemoved(NodeEventArgs& e);
+    virtual void onChildRemoved(ElementEventArgs& e);
 
     /*!
     \brief
@@ -3227,7 +3227,7 @@ protected:
     \return
         Nothing
     */
-    virtual void setParent(Node* parent);
+    virtual void setParent(Element* parent);
 
     /*!
     \brief
@@ -3281,13 +3281,13 @@ protected:
     \brief
         Add given window to child list at an appropriate position
     */
-    virtual void addChild_impl(Node* node);
+    virtual void addChild_impl(Element* node);
 
     /*!
     \brief
         Remove given window from child list
     */
-    virtual void removeChild_impl(Node* node);
+    virtual void removeChild_impl(Element* node);
 
     /*!
     \brief
@@ -3606,7 +3606,7 @@ private:
     /*************************************************************************
         May not copy or assign Window objects
     *************************************************************************/
-    Window(const Window&): Node() {}
+    Window(const Window&): Element() {}
     Window& operator=(const Window&) {return *this;}
 
     //! Not intended for public use, only used as a "Font" property getter

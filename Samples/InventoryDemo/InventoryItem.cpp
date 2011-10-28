@@ -146,7 +146,7 @@ Rectf InventoryItem::gridBasePixelRect() const
 }
 
 //------------------------------------------------------------------------------//
-void InventoryItem::onMoved(NodeEventArgs& e)
+void InventoryItem::onMoved(ElementEventArgs& e)
 {
     invalidate();
 

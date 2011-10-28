@@ -1,9 +1,9 @@
 /***********************************************************************
-    filename:   CEGUINode.cpp
+    filename:   CEGUI/Element.cpp
     created:    18/8/2011
     author:     Martin Preisler
 
-    purpose:    Implements the Node class
+    purpose:    Implements the Element class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
@@ -31,7 +31,7 @@
 #   include "config.h"
 #endif
 
-#include "CEGUI/Node.h"
+#include "CEGUI/Element.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
 
@@ -41,21 +41,21 @@
 namespace CEGUI
 {
 
-const String Node::EventNamespace("Node");
+const String Element::EventNamespace("Element");
 
-const String Node::EventSized("Sized");
-const String Node::EventParentSized("ParentSized");
-const String Node::EventMoved("Moved");
-const String Node::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
-const String Node::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
-const String Node::EventRotated("Rotated");
-const String Node::EventChildAdded("ChildAdded");
-const String Node::EventChildRemoved("ChildRemoved");
-const String Node::EventZOrderChanged("ZOrderChanged");
-const String Node::EventNonClientChanged("NonClientChanged");
+const String Element::EventSized("Sized");
+const String Element::EventParentSized("ParentSized");
+const String Element::EventMoved("Moved");
+const String Element::EventHorizontalAlignmentChanged("HorizontalAlignmentChanged");
+const String Element::EventVerticalAlignmentChanged("VerticalAlignmentChanged");
+const String Element::EventRotated("Rotated");
+const String Element::EventChildAdded("ChildAdded");
+const String Element::EventChildRemoved("ChildRemoved");
+const String Element::EventZOrderChanged("ZOrderChanged");
+const String Element::EventNonClientChanged("NonClientChanged");
 
 //----------------------------------------------------------------------------//
-Node::Node():
+Element::Element():
     d_parent(0),
     
     d_nonClient(false),
@@ -71,24 +71,24 @@ Node::Node():
     d_pixelSize(0.0f, 0.0f),
     d_rotation(Quaternion::IDENTITY),
     
-    d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
-    d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)
+    d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
+    d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {
-    addNodeProperties();
+    addElementProperties();
 }
 
 //----------------------------------------------------------------------------//
-Node::~Node()
+Element::~Element()
 {}
 
 //----------------------------------------------------------------------------//
-Node::Node(const Node&):
-    d_unclippedOuterRect(this, &Node::getUnclippedOuterRect_impl),
-    d_unclippedInnerRect(this, &Node::getUnclippedInnerRect_impl)
+Element::Element(const Element&):
+    d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
+    d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {}
 
 //----------------------------------------------------------------------------//
-void Node::setArea(const UVector2& pos, const USize& size)
+void Element::setArea(const UVector2& pos, const USize& size)
 {
     // Limit the value we set to something that's within the constraints
     // specified via the min and max size settings.
@@ -106,7 +106,7 @@ void Node::setArea(const UVector2& pos, const USize& size)
 }
 
 //----------------------------------------------------------------------------//
-void Node::notifyScreenAreaChanged(bool recursive /* = true */)
+void Element::notifyScreenAreaChanged(bool recursive /* = true */)
 {
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
@@ -121,31 +121,31 @@ void Node::notifyScreenAreaChanged(bool recursive /* = true */)
 }
 
 //----------------------------------------------------------------------------//
-void Node::setHorizontalAlignment(const HorizontalAlignment alignment)
+void Element::setHorizontalAlignment(const HorizontalAlignment alignment)
 {
     if (d_horizontalAlignment == alignment)
         return;
 
     d_horizontalAlignment = alignment;
 
-    NodeEventArgs args(this);
+    ElementEventArgs args(this);
     onHorizontalAlignmentChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void Node::setVerticalAlignment(const VerticalAlignment alignment)
+void Element::setVerticalAlignment(const VerticalAlignment alignment)
 {
     if (d_verticalAlignment == alignment)
         return;
 
     d_verticalAlignment = alignment;
 
-    NodeEventArgs args(this);
+    ElementEventArgs args(this);
     onVerticalAlignmentChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void Node::setMinSize(const USize& size)
+void Element::setMinSize(const USize& size)
 {
     d_minSize = size;
 
@@ -167,7 +167,7 @@ void Node::setMinSize(const USize& size)
 }
 
 //----------------------------------------------------------------------------//
-void Node::setMaxSize(const USize& size)
+void Element::setMaxSize(const USize& size)
 {
     d_maxSize = size;
 
@@ -189,7 +189,7 @@ void Node::setMaxSize(const USize& size)
 }
 
 //----------------------------------------------------------------------------//
-void Node::setAspectMode(AspectMode mode)
+void Element::setAspectMode(AspectMode mode)
 {
     if (d_aspectMode == mode)
         return;
@@ -205,7 +205,7 @@ void Node::setAspectMode(AspectMode mode)
 }
 
 //----------------------------------------------------------------------------//
-void Node::setAspectRatio(float ratio)
+void Element::setAspectRatio(float ratio)
 {
     if (d_aspectRatio == ratio)
         return;
@@ -221,7 +221,7 @@ void Node::setAspectRatio(float ratio)
 }
 
 //----------------------------------------------------------------------------//
-void Node::setPixelAligned(const bool setting)
+void Element::setPixelAligned(const bool setting)
 {
     if (d_pixelAligned == setting)
         return;
@@ -237,7 +237,7 @@ void Node::setPixelAligned(const bool setting)
 }
 
 //----------------------------------------------------------------------------//
-Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
+Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
 {
     // TODO: skip all pixel alignment!
     
@@ -324,7 +324,7 @@ Sizef Node::calculatePixelSize(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-Sizef Node::getParentPixelSize(bool skipAllPixelAlignment) const
+Sizef Element::getParentPixelSize(bool skipAllPixelAlignment) const
 {
     if (d_parent)
     {
@@ -337,16 +337,16 @@ Sizef Node::getParentPixelSize(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-void Node::setRotation(const Quaternion& rotation)
+void Element::setRotation(const Quaternion& rotation)
 {
     d_rotation = rotation;
 
-    NodeEventArgs args(this);
+    ElementEventArgs args(this);
     onRotated(args);
 }
 
 //----------------------------------------------------------------------------//
-void Node::addChild(Node* node)
+void Element::addChild(Element* node)
 {
     // don't add null window or ourself as a child
     // TODO: IMO we should throw exceptions in both of these cases
@@ -354,26 +354,26 @@ void Node::addChild(Node* node)
         return;
 
     addChild_impl(node);
-    NodeEventArgs args(node);
+    ElementEventArgs args(node);
     onChildAdded(args);
 }
 
 //----------------------------------------------------------------------------//
-void Node::removeChild(Node* node)
+void Element::removeChild(Element* node)
 {
     removeChild_impl(node);
-    NodeEventArgs args(node);
+    ElementEventArgs args(node);
     onChildRemoved(args);
 }
 
 //----------------------------------------------------------------------------//
-bool Node::isChild(const Node* node) const
+bool Element::isChild(const Element* node) const
 {
     return std::find(d_children.begin(), d_children.end(), node) != d_children.end();
 }
 
 //----------------------------------------------------------------------------//
-bool Node::isAncestor(const Node* node) const
+bool Element::isAncestor(const Element* node) const
 {
     if (!d_parent)
     {
@@ -385,7 +385,7 @@ bool Node::isAncestor(const Node* node) const
 }
 
 //----------------------------------------------------------------------------//
-void Node::setNonClient(const bool setting)
+void Element::setNonClient(const bool setting)
 {
     if (setting == d_nonClient)
     {
@@ -394,82 +394,82 @@ void Node::setNonClient(const bool setting)
     
     d_nonClient = setting;
 
-    NodeEventArgs args(this);
+    ElementEventArgs args(this);
     onNonClientChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-const Node::CachedRectf& Node::getClientChildContentArea() const
+const Element::CachedRectf& Element::getClientChildContentArea() const
 {
     return getUnclippedInnerRect();
 }
 
 //----------------------------------------------------------------------------//
-const Node::CachedRectf& Node::getNonClientChildContentArea() const
+const Element::CachedRectf& Element::getNonClientChildContentArea() const
 {
     return getUnclippedOuterRect();
 }
 
-void Node::addNodeProperties()
+void Element::addElementProperties()
 {
-    const String propertyOrigin("Node");
+    const String propertyOrigin("Element");
     
-    CEGUI_DEFINE_PROPERTY(Node, URect,
+    CEGUI_DEFINE_PROPERTY(Element, URect,
         "Area", "Property to get/set the windows unified area rectangle. Value is a \"URect\".",
-        &Node::setArea, &Node::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
+        &Element::setArea, &Element::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
     );
 
-    CEGUI_DEFINE_PROPERTY_NO_XML(Node, UVector2,
+    CEGUI_DEFINE_PROPERTY_NO_XML(Element, UVector2,
         "Position", "Property to get/set the windows unified position. Value is a \"UVector2\".",
-        &Node::setPosition, &Node::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
+        &Element::setPosition, &Element::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
     );
     
-    CEGUI_DEFINE_PROPERTY_NO_XML(Node, USize,
+    CEGUI_DEFINE_PROPERTY_NO_XML(Element, USize,
         "Size", "Property to get/set the windows unified size.  Value is a \"USize\".",
-        &Node::setSize, &Node::getSize, USize(UDim(0, 0), UDim(0, 0))
+        &Element::setSize, &Element::getSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
-    CEGUI_DEFINE_PROPERTY(Node, USize,
+    CEGUI_DEFINE_PROPERTY(Element, USize,
         "MinSize", "Property to get/set the windows unified minimum size.  Value is a \"USize\".",
-        &Node::setMinSize, &Node::getMinSize, USize(UDim(0, 0), UDim(0, 0))
+        &Element::setMinSize, &Element::getMinSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
-    CEGUI_DEFINE_PROPERTY(Node, USize,
+    CEGUI_DEFINE_PROPERTY(Element, USize,
         "MaxSize", "Property to get/set the windows unified maximum size.  Value is a \"USize\".",
-        &Node::setMaxSize, &Node::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
+        &Element::setMaxSize, &Element::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
     );
     
-    CEGUI_DEFINE_PROPERTY(Node, AspectMode,
+    CEGUI_DEFINE_PROPERTY(Element, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting for the Window. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
-        &Node::setAspectMode, &Node::getAspectMode, AM_IGNORE
+        &Element::setAspectMode, &Element::getAspectMode, AM_IGNORE
     );
 
-    CEGUI_DEFINE_PROPERTY(Node, float,
+    CEGUI_DEFINE_PROPERTY(Element, float,
         "AspectRatio", "Property to get/set the aspect ratio. Only applies when aspect mode is not \"Ignore\".",
-        &Node::setAspectRatio, &Node::getAspectRatio, 1.0 / 1.0
+        &Element::setAspectRatio, &Element::getAspectRatio, 1.0 / 1.0
     );
     
-    CEGUI_DEFINE_PROPERTY(Node, bool,
+    CEGUI_DEFINE_PROPERTY(Element, bool,
         "PixelAligned", "Property to get/set the Node's size and position should be pixel aligned.  "
         "Value is either \"True\" or \"False\".",
-        &Node::setPixelAligned, &Node::isPixelAligned, true
+        &Element::setPixelAligned, &Element::isPixelAligned, true
     );
     
-    CEGUI_DEFINE_PROPERTY(Node, Quaternion,
+    CEGUI_DEFINE_PROPERTY(Element, Quaternion,
         "Rotation", "Property to get/set the windows rotation factors.  Value is "
         "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
-        &Node::setRotation, &Node::getRotation, Quaternion(1.0,0.0,0.0,0.0)
+        &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
     );
     
-    CEGUI_DEFINE_PROPERTY(Node, bool,
+    CEGUI_DEFINE_PROPERTY(Element, bool,
         "NonClient", "Property to get/set the 'non-client' setting for the Window.  "
         "Value is either \"True\" or \"False\".",
-        &Node::setNonClient, &Node::isNonClient, false
+        &Element::setNonClient, &Element::isNonClient, false
     );
 }
 
 //----------------------------------------------------------------------------//
-void Node::setArea_impl(const UVector2& pos, const USize& size,
+void Element::setArea_impl(const UVector2& pos, const USize& size,
                         bool topLeftSizing, bool fireEvents)
 {
     // we make sure the screen areas are recached when this is called as we need
@@ -504,7 +504,7 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
     // fire events as required
     if (fireEvents)
     {
-        NodeEventArgs args(this);
+        ElementEventArgs args(this);
 
         if (moved)
         {
@@ -520,16 +520,16 @@ void Node::setArea_impl(const UVector2& pos, const USize& size,
 }
 
 //----------------------------------------------------------------------------//
-void Node::setParent(Node* parent)
+void Element::setParent(Element* parent)
 {
     d_parent = parent;
 }
 
 //----------------------------------------------------------------------------//
-void Node::addChild_impl(Node* node)
+void Element::addChild_impl(Element* node)
 {
     // if node is attached elsewhere, detach it first (will fire normal events)
-    Node* const old_parent = node->getParentNode();
+    Element* const old_parent = node->getParentElement();
     if (old_parent)
         old_parent->removeChild(node);
     
@@ -545,13 +545,13 @@ void Node::addChild_impl(Node* node)
     // correctly call parent sized notification if needed.
     if (!old_parent || old_parent->getPixelSize() != getPixelSize())
     {
-        NodeEventArgs args(this);
+        ElementEventArgs args(this);
         node->onParentSized(args);
     }
 }
 
 //----------------------------------------------------------------------------//
-void Node::removeChild_impl(Node* node)
+void Element::removeChild_impl(Element* node)
 {
     // find this window in the child list
     ChildList::iterator it = std::find(d_children.begin(), d_children.end(), node);
@@ -567,12 +567,12 @@ void Node::removeChild_impl(Node* node)
 }
 
 //----------------------------------------------------------------------------//
-Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
+Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
     const Sizef pixel_size = skipAllPixelAlignment ? calculatePixelSize(true) : getPixelSize();
     Rectf ret(Vector2f(0, 0), pixel_size);
     
-    const Node* parent = getParentNode();
+    const Element* parent = getParentElement();
     
     Rectf parent_rect;
     if (parent)
@@ -624,13 +624,13 @@ Rectf Node::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 }
 
 //----------------------------------------------------------------------------//
-Rectf Node::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
+Rectf Element::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
     return skipAllPixelAlignment ? getUnclippedOuterRect().getFresh(true) : getUnclippedOuterRect().get();
 }
 
 //----------------------------------------------------------------------------//
-bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
+bool Element::constrainToMinSize(const Sizef& base_sz, USize& sz) const
 {
     const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
     const Sizef min_sz(CoordConverter::asAbsolute(d_minSize,
@@ -666,7 +666,7 @@ bool Node::constrainToMinSize(const Sizef& base_sz, USize& sz) const
 }
 
 //----------------------------------------------------------------------------//
-bool Node::constrainToMaxSize(const Sizef& base_sz, USize& sz) const
+bool Element::constrainToMaxSize(const Sizef& base_sz, USize& sz) const
 {
     const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
     const Sizef max_sz(CoordConverter::asAbsolute(d_maxSize,
@@ -702,7 +702,7 @@ bool Node::constrainToMaxSize(const Sizef& base_sz, USize& sz) const
 }
 
 //----------------------------------------------------------------------------//
-void Node::onSized(NodeEventArgs& e)
+void Element::onSized(ElementEventArgs& e)
 {
     // screen area changes when we're resized.
     // NB: Called non-recursive since the onParentSized notifications will deal
@@ -713,7 +713,7 @@ void Node::onSized(NodeEventArgs& e)
     const size_t child_count = getChildCount();
     for (size_t i = 0; i < child_count; ++i)
     {
-        NodeEventArgs args(this);
+        ElementEventArgs args(this);
         d_children[i]->onParentSized(args);
     }
 
@@ -722,7 +722,7 @@ void Node::onSized(NodeEventArgs& e)
 
 
 //----------------------------------------------------------------------------//
-void Node::onParentSized(NodeEventArgs& e)
+void Element::onParentSized(ElementEventArgs& e)
 {
     // set window area back on itself to cause minimum and maximum size
     // constraints to be applied as required.  (fire no events though)
@@ -739,13 +739,13 @@ void Node::onParentSized(NodeEventArgs& e)
     // now see if events should be fired.
     if (moved)
     {
-        NodeEventArgs args(this);
+        ElementEventArgs args(this);
         onMoved(args);
     }
 
     if (sized)
     {
-        NodeEventArgs args(this);
+        ElementEventArgs args(this);
         onSized(args);
     }
 
@@ -753,21 +753,21 @@ void Node::onParentSized(NodeEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Node::onMoved(NodeEventArgs& e)
+void Element::onMoved(ElementEventArgs& e)
 {
     notifyScreenAreaChanged();
 
     fireEvent(EventMoved, e, EventNamespace);
 }
 
-void Node::onHorizontalAlignmentChanged(NodeEventArgs& e)
+void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 {
     notifyScreenAreaChanged();
 
     fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);   
 }
    
-void Node::onVerticalAlignmentChanged(NodeEventArgs& e)
+void Element::onVerticalAlignmentChanged(ElementEventArgs& e)
 {
     notifyScreenAreaChanged();
 
@@ -775,25 +775,25 @@ void Node::onVerticalAlignmentChanged(NodeEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Node::onRotated(NodeEventArgs& e)
+void Element::onRotated(ElementEventArgs& e)
 {
     fireEvent(EventRotated, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Node::onChildAdded(NodeEventArgs& e)
+void Element::onChildAdded(ElementEventArgs& e)
 {
     fireEvent(EventChildAdded, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Node::onChildRemoved(NodeEventArgs& e)
+void Element::onChildRemoved(ElementEventArgs& e)
 {
     fireEvent(EventChildRemoved, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Node::onNonClientChanged(NodeEventArgs& e)
+void Element::onNonClientChanged(ElementEventArgs& e)
 {
     // TODO: Trigger update of size and position information if needed
 
