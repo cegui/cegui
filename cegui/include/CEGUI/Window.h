@@ -38,7 +38,7 @@
 #include "CEGUI/Size.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/PropertySet.h"
-#include "CEGUI/TplProperty.h"
+#include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/System.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
@@ -3409,16 +3409,17 @@ protected:
             - Name: WindowRenderer
             - Format: "[windowRendererName]"
 
-        \par Where [windowRendererName] is the factory name of the window renderer type you wish to assign.
+        \par Where [windowRendererName] is the factory name of the window
+             renderer type you wish to assign.
     */
-    class WindowRendererProperty : public TplProperty<Window,String>
+    static
+    class WindowRendererProperty : public TplWindowProperty<Window, String>
     {
-        public:
-            WindowRendererProperty();
-
-            void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
-    };
-
+    public:
+        WindowRendererProperty();
+        void writeXMLToStream(const PropertyReceiver* receiver,
+                              XMLSerializer& xml_stream) const;
+    } d_windowRendererProperty;
 
     /*!
     \brief
@@ -3428,18 +3429,17 @@ protected:
             - Name: LookNFeel
             - Format: "[LookNFeelName]"
 
-        \par Where [LookNFeelName] is the name of the look'n'feel you wish to assign.
+        \par Where [LookNFeelName] is the name of the look'n'feel you wish
+             to assign.
     */
-    class LookNFeelProperty : public TplProperty<Window,String>
+    static
+    class LookNFeelProperty : public TplWindowProperty<Window, String>
     {
-        public:
-            LookNFeelProperty();
-
-            void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
-    };
-
-    static  WindowRendererProperty    d_windowRendererProperty;
-    static  LookNFeelProperty         d_lookNFeelProperty;
+    public:
+        LookNFeelProperty();
+        void writeXMLToStream(const PropertyReceiver* receiver,
+                              XMLSerializer& xml_stream) const;
+    } d_lookNFeelProperty;
 
     /*************************************************************************
         Implementation Data

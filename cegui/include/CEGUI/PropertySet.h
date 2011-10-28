@@ -38,7 +38,7 @@
 #include "CEGUI/TypedProperty.h"
 // not needed in this header but you are likely to use it if you include this,
 // we also define the CEGUI_DEFINE_PROPERTY macro that relies on this here
-#include "CEGUI/TplProperty.h"
+#include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/Exceptions.h"
 #include <map>
 
@@ -305,7 +305,7 @@ Example of usage inside addStandardProperties or similar method.
 */
 #define CEGUI_DEFINE_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
-    static ::CEGUI::TplProperty<class_type, property_native_type> sProperty(\
+    static ::CEGUI::TplWindowProperty<class_type, property_native_type> sProperty(\
             name, help, propertyOrigin, setter, getter, default_value);\
     \
     this->addProperty(&sProperty);\
@@ -327,7 +327,7 @@ Example of usage inside addStandardProperties or similar method.
 */
 #define CEGUI_DEFINE_PROPERTY_NO_XML(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
-    static ::CEGUI::TplProperty<class_type, property_native_type> sProperty(\
+    static ::CEGUI::TplWindowProperty<class_type, property_native_type> sProperty(\
             name, help, propertyOrigin, setter, getter, default_value, false);\
     \
     this->addProperty(&sProperty);\
