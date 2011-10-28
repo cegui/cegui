@@ -71,6 +71,27 @@ BOOST_AUTO_TEST_CASE(RelativePositioning)
 
 // TODO: RelativeRotation!
 
+BOOST_AUTO_TEST_CASE(MinMaxSize)
+{
+    CEGUI::Element* root = new CEGUI::Element();
+    root->setSize(CEGUI::USize(100.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
+    root->setMaxSize(CEGUI::USize(50.0f * CEGUI::UDim::px(), 50 * CEGUI::UDim::px()));;
+    
+    BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(50.0f, 50.0f));
+    
+    root->setMaxSize(CEGUI::USize(75.0f * CEGUI::UDim::px(), 75.0f * CEGUI::UDim::px()));;
+    
+    BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(75.0f, 75.0f));
+    
+    root->setMaxSize(CEGUI::USize(1000.0f * CEGUI::UDim::px(), 1000 * CEGUI::UDim::px()));;
+    
+    root->setMinSize(CEGUI::USize(125.0f * CEGUI::UDim::px(), 125.0f * CEGUI::UDim::px()));
+    
+    BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(125.0f, 125.0f));
+
+    delete root;
+}
+
 BOOST_AUTO_TEST_CASE(HorizontalLeftAlignment)
 {
     CEGUI::Element* root = new CEGUI::Element();
