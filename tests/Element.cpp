@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(VerticalTopAlignment)
     CEGUI::Element* root = new CEGUI::Element();
     root->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
     CEGUI::Element* child = new CEGUI::Element();
-    child->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 25.0f * CEGUI::UDim::px()));
+    child->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 50.0f * CEGUI::UDim::px()));
     root->addChild(child);
     
     // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
@@ -127,11 +127,51 @@ BOOST_AUTO_TEST_CASE(VerticalTopAlignment)
     BOOST_CHECK_EQUAL(child->getVerticalAlignment(), CEGUI::VA_TOP);
     
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 100));
-    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 25));
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 50));
     
     child->setPosition(CEGUI::UVector2(0.0f * CEGUI::UDim::px(), 5.0f * CEGUI::UDim::px()));
     
-    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 5, 0, 30));
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 5, 0, 55));
+}
+
+BOOST_AUTO_TEST_CASE(VerticalCentreAlignment)
+{
+    CEGUI::Element* root = new CEGUI::Element();
+    root->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
+    CEGUI::Element* child = new CEGUI::Element();
+    child->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 50.0f * CEGUI::UDim::px()));
+    root->addChild(child);
+    
+    // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
+    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VA_TOP);
+    child->setVerticalAlignment(CEGUI::VA_CENTRE);
+    
+    BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 100));
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 25, 0, 75));
+    
+    child->setPosition(CEGUI::UVector2(0.0f * CEGUI::UDim::px(), 5.0f * CEGUI::UDim::px()));
+    
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 30, 0, 80));
+}
+
+BOOST_AUTO_TEST_CASE(VerticalBottomAlignment)
+{
+    CEGUI::Element* root = new CEGUI::Element();
+    root->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
+    CEGUI::Element* child = new CEGUI::Element();
+    child->setSize(CEGUI::USize(0.0f * CEGUI::UDim::px(), 50.0f * CEGUI::UDim::px()));
+    root->addChild(child);
+    
+    // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
+    BOOST_CHECK_EQUAL(root->getVerticalAlignment(), CEGUI::VA_TOP);
+    child->setVerticalAlignment(CEGUI::VA_BOTTOM);
+    
+    BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 0, 100));
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 50, 0, 100));
+    
+    child->setPosition(CEGUI::UVector2(0.0f * CEGUI::UDim::px(), -5.0f * CEGUI::UDim::px()));
+    
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 45, 0, 95));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
