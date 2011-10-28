@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIPropertySet.h"
+#include "CEGUI/PropertySet.h"
 
 #include <boost/test/unit_test.hpp>
 

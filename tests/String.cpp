@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIString.h"
+#include "CEGUI/String.h"
 
 #include <boost/test/unit_test.hpp>
 
