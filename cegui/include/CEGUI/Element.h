@@ -52,17 +52,17 @@ namespace CEGUI
 enum HorizontalAlignment
 {
     /**
-     * Window's position specifies an offset of it's left edge from the left
+     * Element's position specifies an offset of it's left edge from the left
      * edge of it's parent.
      */
     HA_LEFT,
     /**
-     * Window's position specifies an offset of it's horizontal centre from the
+     * Element's position specifies an offset of it's horizontal centre from the
      * horizontal centre of it's parent.
      */
     HA_CENTRE,
     /**
-     * Window's position specifies an offset of it's right edge from the right
+     * Element's position specifies an offset of it's right edge from the right
      * edge of it's parent.
      */
     HA_RIGHT
@@ -86,7 +86,6 @@ public:
 
     static return_type fromString(const String& str)
     {
-    
         if (str == "Centre")
         {
             return HA_CENTRE;
@@ -130,17 +129,17 @@ public:
 enum VerticalAlignment
 {
     /**
-     * Window's position specifies an offset of it's top edge from the top edge
+     * Element's position specifies an offset of it's top edge from the top edge
      * of it's parent.
      */
     VA_TOP,
     /**
-     * Window's position specifies an offset of it's vertical centre from the
+     * Element's position specifies an offset of it's vertical centre from the
      * vertical centre of it's parent.
      */
     VA_CENTRE,
     /**
-     * Window's position specifies an offset of it's bottom edge from the
+     * Element's position specifies an offset of it's bottom edge from the
      * bottom edge of it's parent.
      */
     VA_BOTTOM
@@ -164,7 +163,6 @@ public:
 
     static return_type fromString(const String& str)
     {
-    
       if (str == "Centre")
       {
           return VA_CENTRE;
@@ -209,18 +207,22 @@ public:
 class CEGUIEXPORT ElementEventArgs : public EventArgs
 {
 public:
-    ElementEventArgs(Element* node):
-        node(node)
+    ElementEventArgs(Element* element):
+        element(element)
     {}
 
-    Element* node;     //!< pointer to a Node object of relevance to the event.
+    Element* element;     //!< pointer to an Element object of relevance to the event.
 };
 
 /*!
 \brief Represents a positioned and sized node in a tree graph (think of it as a widget graph)
 
 \internal
-    Methods retrieving Node (like getParentNode) have Node suffix so that deriving
+    Currently only CEGUI::Window uses this but in the future Falagard might use it for all
+    widget parts, this would unify currently repeated code.
+
+\internal
+    Methods retrieving Element (like getParentElement) have Element suffix so that deriving
     classes can easily make their getParent and return the proper type (Window* for example)
 */
 class CEGUIEXPORT Element :
@@ -232,65 +234,65 @@ public:
     //! Namespace for global events
     static const String EventNamespace;
 
-    // generated internally by Node
+    // generated internally by Element
     /** Event fired when the Element size has changed.
      * Handlers are passed a const ElementEventArgs reference with
-     * ElementEventArgs::node set to the Node whose size was changed.
+     * ElementEventArgs::element set to the Element whose size was changed.
      */
     static const String EventSized;
-    /** Event fired when the parent of this Window has been re-sized.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window pointing to the <em>parent window</em> that
-     * was resized, not the window whose parent was resized.
+    /** Event fired when the parent of this Element has been re-sized.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element pointing to the <em>parent element</em> that
+     * was resized, not the element whose parent was resized.
      */
     static const String EventParentSized;
     /** Event fired when the Element position has changed.
      * Handlers are passed a const ElementEventArgs reference with
-     * ElementEventArgs::node set to the Node whose position was changed.
+     * ElementEventArgs::element set to the Element whose position was changed.
      */
     static const String EventMoved;
-    /** Event fired when the horizontal alignment for the window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the window whose horizontal alignment
+    /** Event fired when the horizontal alignment for the element is changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the Element whose horizontal alignment
      * setting was changed.
      */
     static const String EventHorizontalAlignmentChanged;
-    /** Event fired when the vertical alignment for the window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the window whose vertical alignment
+    /** Event fired when the vertical alignment for the element is changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the Element whose vertical alignment
      * setting was changed.
      */
     static const String EventVerticalAlignmentChanged;
-    /** Event fired when the rotation factor(s) for the window are changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose rotation was changed.
+    /** Event fired when the rotation factor(s) for the element are changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the Element whose rotation was changed.
      */
     static const String EventRotated;
-    /** Event fired when a child Window has been added.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the child window that was added.
+    /** Event fired when a child Element has been added.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the child element that was added.
      */
     static const String EventChildAdded;
-    /** Event fired when a child window has been removed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the child window that was removed.
+    /** Event fired when a child element has been removed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the child element that was removed.
      */
     static const String EventChildRemoved;
-    /** Event fired when the z-order of the window has changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose z order position has
+    /** Event fired when the z-order of the element has changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the Element whose z order position has
      * changed.
      */
     static const String EventZOrderChanged;
-    /** Event fired when the non-client setting for the Window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose non-client setting was
+    /** Event fired when the non-client setting for the Element is changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::element set to the Element whose non-client setting was
      * changed.
      */
     static const String EventNonClientChanged;
     
     /*!
-    \brief Node caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
+    \brief Element caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
     */
     class CachedRectf
     {
@@ -368,7 +370,7 @@ public:
     virtual ~Element();
 
     /*!
-    \brief Retrieves parent of this node, 0 means that this Node is a root of a tree it represents
+    \brief Retrieves parent of this element, 0 means that this Element is a root of a tree it represents
     */
     inline Element* getParentElement() const
     {
@@ -377,74 +379,75 @@ public:
 
     /*!
     \brief
-        Set the window area.
+        Set the Element area.
 
-        Sets the area occupied by this window.  The defined area is offset from
-        the top-left corner of this windows parent window or from the top-left
-        corner of the display if this window has no parent (i.e. it is the root
-        window).
+        Sets the area occupied by this Element. The defined area is offset from
+        one of the corners of this Element's parent element (depending on alignments)
+        or from the top-left corner of the display if this element has no parent
+        (i.e. it is the root element).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param pos
-        UVector2 describing the new position (top-left corner) of the window
+        UVector2 describing the new position (top-left corner) of the element
         area.
 
     \param size
-        UVector2 describing the new size of the window area.
+        UVector2 describing the new size of the element area.
      */
     virtual void setArea(const UVector2& pos, const USize& size);
 
     /*!
     \brief
-        Set the window area.
+        Set the Element area.
 
-        Sets the area occupied by this window.  The defined area is offset from
-        the top-left corner of this windows parent window or from the top-left
-        corner of the display if this window has no parent (i.e. it is the root
-        window).
+        Sets the area occupied by this Element. The defined area is offset from
+        one of the corners of this Element's parent element (depending on alignments)
+        or from the top-left corner of the display if this element has no parent
+        (i.e. it is the root element).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param xpos
-        UDim describing the new x co-ordinate (left edge) of the window area.
+        UDim describing the new x co-ordinate (left edge) of the element area.
 
     \param ypos
-        UDim describing the new y co-ordinate (top-edge) of the window area.
+        UDim describing the new y co-ordinate (top-edge) of the element area.
 
     \param width
-        UDim describing the new width of the window area.
+        UDim describing the new width of the element area.
 
     \param height
-        UDim describing the new height of the window area.
+        UDim describing the new height of the element area.
      */
-    inline void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height)
+    inline void setArea(const UDim& xpos, const UDim& ypos,
+                        const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
     }
     
     /*!
     \brief
-        Set the window area.
+        Set the Element area.
 
-        Sets the area occupied by this window.  The defined area is offset from
-        the top-left corner of this windows parent window or from the top-left
-        corner of the display if this window has no parent (i.e. it is the root
-        window).
+        Sets the area occupied by this Element. The defined area is offset from
+        one of the corners of this Element's parent element (depending on alignments)
+        or from the top-left corner of the display if this element has no parent
+        (i.e. it is the root element).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param area
-        URect describing the new area rectangle of the window area.
+        URect describing the new area rectangle of the element area.
      */
     inline void setArea(const URect& area)
     {
@@ -453,20 +456,20 @@ public:
 
     /*!
     \brief
-        Return the windows area.
+        Return the element's area.
 
-        Returns the area occupied by this window.  The defined area is offset
-        from the top-left corner of this windows parent window or from the
-        top-left corner of the display if this window has no parent
-        (i.e. it is the root window).
+        Sets the area occupied by this Element. The defined area is offset from
+        one of the corners of this Element's parent element (depending on alignments)
+        or from the top-left corner of the display if this element has no parent
+        (i.e. it is the root element).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \return
-        URect describing the rectangle of the window area.
+        URect describing the rectangle of the element area.
      */
     inline const URect& getArea() const
     {
@@ -475,20 +478,20 @@ public:
 
     /*!
     \brief
-        Set the window's position.
+        Set the element's position.
 
-        Sets the position of the area occupied by this window.  The position is
-        offset from the top-left corner of this windows parent window or from
-        the top-left corner of the display if this window has no parent
-        (i.e. it is the root window).
+        Sets the position of the area occupied by this element. The position is offset from
+        one of the corners of this Element's parent element (depending on alignments)
+        or from the top-left corner of the display if this element has no parent
+        (i.e. it is the root element).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param pos
-        UVector2 describing the new position (top-left corner) of the window
+        UVector2 describing the new position (top-left corner) of the element
         area.
      */
     inline void setPosition(const UVector2& pos)
@@ -508,20 +511,20 @@ public:
 
     /*!
     \brief
-        Get the window's position.
+        Get the element's position.
 
-        Gets the position of the area occupied by this window.  The position is
-        offset from the top-left corner of this windows parent window or from
-        the top-left corner of the display if this window has no parent
-        (i.e. it is the root window).
+        Sets the position of the area occupied by this element. The position is offset from
+        one of the corners of this Element's parent element (depending on alignments)
+        or from the top-left corner of the display if this element has no parent
+        (i.e. it is the root element).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \return
-        UVector2 describing the position (top-left corner) of the window area.
+        UVector2 describing the position (top-left corner) of the element area.
      */
     inline const UVector2& getPosition() const
     {
@@ -542,14 +545,11 @@ public:
     \brief
         Set the horizontal alignment.
 
-        Modifies the horizontal alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
+        Modifies the horizontal alignment for the element. This setting affects
+        how the element's position is interpreted relative to its parent.
 
     \param alignment
         One of the HorizontalAlignment enumerated values.
-
-    \return
-        Nothing.
      */
     virtual void setHorizontalAlignment(const HorizontalAlignment alignment);
     
@@ -557,8 +557,8 @@ public:
     \brief
         Get the horizontal alignment.
 
-        Returns the horizontal alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
+        Returns the horizontal alignment for the element. This setting affects
+        how the element's position is interpreted relative to its parent.
 
     \return
         One of the HorizontalAlignment enumerated values.
@@ -572,14 +572,11 @@ public:
     \brief
         Set the vertical alignment.
 
-        Modifies the vertical alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
+        Modifies the vertical alignment for the element. This setting affects
+        how the element's position is interpreted relative to its parent.
 
     \param alignment
         One of the VerticalAlignment enumerated values.
-
-    \return
-        Nothing.
      */
     virtual void setVerticalAlignment(const VerticalAlignment alignment);
     
@@ -587,8 +584,8 @@ public:
     \brief
         Get the vertical alignment.
 
-        Returns the vertical alignment for the window.  This setting affects how
-        the windows position is interpreted relative to its parent.
+        Returns the vertical alignment for the element.  This setting affects how
+        the element's position is interpreted relative to its parent.
 
     \return
         One of the VerticalAlignment enumerated values.
@@ -600,17 +597,17 @@ public:
 
     /*!
     \brief
-        Set the window's size.
+        Set the element's size.
 
-        Sets the size of the area occupied by this window.
+        Sets the size of the area occupied by this element.
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param size
-        USize describing the new size of the window area.
+        USize describing the new size of the element's area.
      */
     inline void setSize(const USize& size)
     {
@@ -619,17 +616,17 @@ public:
 
     /*!
     \brief
-        Get the window's size.
+        Get the element's size.
 
-        Gets the size of the area occupied by this window.
+        Gets the size of the area occupied by this element.
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \return
-        USize describing the size of the window area.
+        USize describing the size of the element's area.
      */
     inline USize getSize() const
     {
@@ -658,37 +655,37 @@ public:
 
     /*!
     \brief
-        Set the window's minimum size.
+        Set the element's minimum size.
 
-        Sets the minimum size that this windows area may occupy (whether size
+        Sets the minimum size that this element's area may occupy (whether size
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param size
-        USize describing the new minimum size of the window area.
+        USize describing the new minimum size of the element's area.
      */
     void setMinSize(const USize& size);
     
     /*!
     \brief
-        Get the window's minimum size.
+        Get the element's minimum size.
 
-        Gets the minimum size that this windows area may occupy (whether size
+        Gets the minimum size that this element's area may occupy (whether size
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \return
-        UVector2 describing the minimum size of the window area.
+        UVector2 describing the minimum size of the element's area.
      */
     inline const USize& getMinSize() const
     {
@@ -697,37 +694,37 @@ public:
 
     /*!
     \brief
-        Set the window's maximum size.
+        Set the element's maximum size.
 
-        Sets the maximum size that this windows area may occupy (whether size
+        Sets the maximum size that this element area may occupy (whether size
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \param size
-        USize describing the new maximum size of the window area.
+        USize describing the new maximum size of the element's area.
      */
     void setMaxSize(const USize& size);
 
     /*!
     \brief
-        Get the window's maximum size.
+        Get the element's maximum size.
 
-        Gets the maximum size that this windows area may occupy (whether size
+        Gets the maximum size that this element area may occupy (whether size
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
     \note
-        This method makes use of "Unified Dimensions".  These contain both
+        This method makes use of "Unified Dimensions". These contain both
         parent relative and absolute pixel components, which are used in
         determining the final value used.
 
     \return
-        UVector2 describing the maximum size of the window area.
+        UVector2 describing the maximum size of the element's area.
      */
     inline const USize& getMaxSize() const
     {
@@ -764,7 +761,7 @@ public:
     \brief
         Retrieves target aspect ratio
 
-    \see Window::setAspectRatio
+    \see Element::setAspectRatio
     */
     inline float getAspectRatio() const
     {
@@ -773,7 +770,7 @@ public:
     
     /*!
     \brief
-        Sets whether this Node is pixel aligned (both position and size, basically the 4 "corners").
+        Sets whether this Element is pixel aligned (both position and size, basically the 4 "corners").
         
     \note
         Pixel aligning is enabled by default and for most widgets it makes a lot of sense and just looks better.
@@ -784,10 +781,10 @@ public:
     
     /*!
     \brief
-        Checks whether this Node is pixel aligned
+        Checks whether this Element is pixel aligned
         
     \see
-        Node::setPixelAligned
+        Element::setPixelAligned
     */
     inline bool isPixelAligned() const
     {
@@ -796,10 +793,10 @@ public:
     
     /*!
     \brief
-        Return the window size in pixels.
+        Return the element's size in pixels.
 
     \return
-        Size object describing this windows size in pixels.
+        Size object describing this element's size in pixels.
     */
     inline const Sizef& getPixelSize() const
     {
@@ -814,7 +811,7 @@ public:
         valid object.
 
     \return
-        Size object that describes the pixel dimensions of this Node object's parent
+        Size object that describes the pixel dimensions of this Element object's parent
     */
     Sizef getParentPixelSize(bool skipAllPixelAlignment = false) const;
 
@@ -834,7 +831,7 @@ public:
     /*!
     \brief retrieves rotation of this widget
 
-    \see Window::setRotation
+    \see Element::setRotation
     */
     inline const Quaternion& getRotation() const
     {
@@ -843,43 +840,43 @@ public:
 
     /*!
     \brief
-        Add the specified Node as a child of this Node. If the Node
-        \a node is already attached to a different Node, it is detached
-        before being added to this Node.
+        Add the specified Element as a child of this Element. If the Element
+        \a element is already attached to a different Element, it is detached
+        before being added to this Element.
 
-    \param node
-        Pointer to the Node object to be added.
+    \param element
+        Pointer to the Element object to be added.
 
     \exception InvalidRequestException
-        thrown if Node \a node is an ancestor of this Node, to prevent
-        cyclic Node structures.
+        thrown if Element \a element is an ancestor of this Element, to prevent
+        cyclic Element structures.
     */
-    void addChild(Element* node);
+    void addChild(Element* element);
 
     /*!
     \brief
-        Remove the Node referenced by the given name path from this Node's
+        Remove the Element referenced by the given name path from this Element's
         child list.
         
     \see
-        Node::addChild
+        Element::addChild
     */
-    void removeChild(Element* node);
+    void removeChild(Element* element);
     
     /*!
     \brief
-        return a pointer to the child window that is attached to 'this' at the
+        return a pointer to the child element that is attached to 'this' at the
         given index.
 
     \param idx
-        Index of the child window whos pointer should be returned.  This value
+        Index of the child element who's pointer should be returned.  This value
         is not bounds checked, client code should ensure that this is less than
         the value returned by getChildCount().
 
     \return
-        Pointer to the child window currently attached at index position \a idx
+        Pointer to the child element currently attached at index position \a idx
     */
-    inline Element* getChildNodeAtIdx(size_t idx) const
+    inline Element* getChildElementAtIdx(size_t idx) const
     {
         return d_children[idx];
     }
@@ -889,34 +886,34 @@ public:
         return d_children.size();
     }
 
-    bool isChild(const Element* node) const;
+    bool isChild(const Element* element) const;
 
     /*!
     \brief
-        return true if the specified Window is some ancestor of this Window.
+        return true if the specified Element is some ancestor of this Element.
 
-    \param window
-        Pointer to the Window object to look for.
+    \param element
+        Pointer to the Element object to look for.
 
     \return
-        - true if \a window was found to be an ancestor (parent, or parent of
-          parent, etc) of this Window.
-        - false if \a window is not an ancestor of this window.
+        - true if \a element was found to be an ancestor (parent, or parent of
+          parent, etc) of this Element.
+        - false if \a element is not an ancestor of this element.
     */
-    bool isAncestor(const Element* node) const;
+    bool isAncestor(const Element* element) const;
     
     /*!
     \brief
-        Set whether the Window is a non-client window.
+        Set whether the Element is non-client.
 
-        A non-client window is clipped, positioned and sized according to the
-        parent window's full area as opposed to just the inner rect area used
-        for normal client windows.
+        A non-client element is clipped, positioned and sized according to the
+        parent element's full area as opposed to just the inner rect area used
+        for normal client element.
 
     \param setting
-        - true if the window should be clipped, positioned and sized according
+        - true if the element should be clipped, positioned and sized according
         to the full area rectangle of it's parent.
-        - false if the window should be clipped, positioned and sized according
+        - false if the element should be clipped, positioned and sized according
         to the inner rect area of it's parent.
     */
     void setNonClient(const bool setting);
@@ -928,7 +925,7 @@ public:
     
     /*!
     \brief
-        Return a Rect that describes the unclipped outer rect area of the Window
+        Return a Rect that describes the unclipped outer rect area of the Element
         in screen pixels.
     */
     inline const CachedRectf& getUnclippedOuterRect() const
@@ -939,13 +936,13 @@ public:
     /*!
     \brief
         Return a Rect object that describes, unclipped, the inner rectangle for
-        this window.  The inner rectangle is typically an area that excludes
+        this element.  The inner rectangle is typically an area that excludes
         some frame or other rendering that should not be touched by subsequent
         rendering.
 
     \return
         Rect object that describes, in unclipped screen pixel co-ordinates, the
-        window object's inner rect area.
+        element object's inner rect area.
     */
     inline const CachedRectf& getUnclippedInnerRect() const
     {
@@ -954,7 +951,7 @@ public:
 
     /*!
     \brief
-        Return a Rect that describes the unclipped area covered by the Window.
+        Return a Rect that describes the unclipped area covered by the Element.
 
         This function can return either the inner or outer area dependant upon
         the boolean values passed in.
@@ -974,7 +971,7 @@ public:
     /*!
     \brief
         Return a Rect that describes the area that is used to position
-        and - for scale values - size child content attached to this Window.
+        and - for scale values - size child content attached to this Element.
 
         By and large the area returned here will be the same as the unclipped
         inner rect (for client content) or the unclipped outer rect (for non
@@ -983,8 +980,8 @@ public:
 
     \note
         The behaviour of this function is modified by overriding the
-        protected Window::getClientChildWindowContentArea_impl and/or
-        Window::getNonClientChildWindowContentArea_impl functions.
+        protected Element::getClientChildContentArea_impl and/or
+        Element::getNonClientChildContentArea_impl functions.
 
     \param non_client
         - true to return the non-client child content area.
@@ -997,13 +994,13 @@ public:
     
     /*!
     \brief
-        Inform the node, and optionally all children, that screen area
+        Inform the element, and optionally all children, that screen area
         rectangles have changed.
 
     \param recursive
         - true to recursively call notifyScreenAreaChanged on attached child
-          Node objects.
-        - false to just process \e this Node.
+          Element objects.
+        - false to just process \e this Element.
     */
     virtual void notifyScreenAreaChanged(bool recursive = true);
 
@@ -1016,30 +1013,30 @@ protected:
 
     /*!
     \brief
-        Implementation method to modify window area while correctly applying
+        Implementation method to modify element area while correctly applying
         min / max size processing, and firing any appropriate events.
 
-    /note
+    \note
         This is the implementation function for setting size and position.
         In order to simplify area management, from this point on, all
-        modifications to window size and position (area rect) should come
+        modifications to element size and position (area rect) should come
         through here.
 
-    /param pos
+    \param pos
         UVector2 object describing the new area position.
 
-    /param size
+    \param size
         USize object describing the new area size.
 
-    /param topLeftSizing
+    \param topLeftSizing
         - true to indicate the the operation is a sizing operation on the top
-          and/or left edges of the area, and so window movement should be
+          and/or left edges of the area, and so element movement should be
           inhibited if size is at max or min.
         - false to indicate the operation is not a strict sizing operation on
-          the top and/or left edges and that the window position may change as
+          the top and/or left edges and that the element position may change as
           required
 
-    /param fireEvents
+    \param fireEvents
         - true if events should be fired as normal.
         - false to inhibit firing of events (required, for example, if you need
           to call this from the onSize/onMove handlers).
@@ -1057,11 +1054,11 @@ protected:
     
     /*!
     \brief
-        Set the parent window for this window object.
+        Set the parent element for this element object.
 
     \param parent
-        Pointer to a Window object that is to be assigned as the parent to this
-        Window.
+        Pointer to a Element object that is to be assigned as the parent to this
+        Element.
 
     \return
         Nothing
@@ -1070,24 +1067,24 @@ protected:
 
     /*!
     \brief
-        Add given window to child list at an appropriate position
+        Add given element to child list at an appropriate position
     */
-    virtual void addChild_impl(Element* node);
+    virtual void addChild_impl(Element* element);
 
     /*!
     \brief
-        Remove given window from child list
+        Remove given element from child list
     */
-    virtual void removeChild_impl(Element* node);
+    virtual void removeChild_impl(Element* element);
     
-    //! Default implementation of function to return Window outer rect area.
+    //! Default implementation of function to return Element's outer rect area.
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
-    //! Default implementation of function to return Window inner rect area.
+    //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
 
-    // constrain given USize to window's min size, return if size changed.
+    // constrain given USize to element's min size, return if size changed.
     bool constrainToMinSize(const Sizef& base_sz, USize& sz) const;
-    // constrain given USize to window's max size, return if size changed.
+    // constrain given USize to element's max size, return if size changed.
     bool constrainToMaxSize(const Sizef& base_sz, USize& sz) const;
     
     /*************************************************************************
@@ -1095,99 +1092,99 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Handler called when the node's size changes.
+        Handler called when the element's size changes.
 
     \param e
-        ElementEventArgs object whose 'node' pointer field is set to the node
+        ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
     */
     virtual void onSized(ElementEventArgs& e);
     
     /*!
     \brief
-        Handler called when this node's parent node has been resized.  If
-        this node is the root / GUI Sheet window, this call will be made when
+        Handler called when this element's parent element has been resized.  If
+        this element is the root / GUI Sheet element, this call will be made when
         the display size changes.
 
     \param e
-        ElementEventArgs object whose 'node' pointer field is set the the
-        node that caused the event; this is typically either this node's
-        parent window, or NULL to indicate the screen size has changed.
+        ElementEventArgs object whose 'element' pointer field is set the the
+        element that caused the event; this is typically either this element's
+        parent element, or NULL to indicate the screen size has changed.
     */
     virtual void onParentSized(ElementEventArgs& e);
 
     /*!
     \brief
-        Handler called when the node's position changes.
+        Handler called when the element's position changes.
 
     \param e
-        ElementEventArgs object whose 'node' pointer field is set to the node
+        ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
     */
     virtual void onMoved(ElementEventArgs& e);
 
     /*!
     \brief
-        Handler called when the horizontal alignment setting for the window is
+        Handler called when the horizontal alignment setting for the element is
         changed.
 
     \param e
         ElementEventArgs object initialised as follows:
-        - node field is set to point to the Node object whos alignment has
+        - element field is set to point to the element object who's alignment has
           changed (typically 'this').
     */
     virtual void onHorizontalAlignmentChanged(ElementEventArgs& e);
     
     /*!
     \brief
-        Handler called when the vertical alignment setting for the node is
+        Handler called when the vertical alignment setting for the element is
         changed.
 
     \param e
         ElementEventArgs object initialised as follows:
-        - node field is set to point to the Node object whos alignment has
+        - element field is set to point to the element object who's alignment has
           changed (typically 'this').
     */
     virtual void onVerticalAlignmentChanged(ElementEventArgs& e);
     
     /*!
     \brief
-        Handler called when the node's rotation is changed.
+        Handler called when the element's rotation is changed.
 
     \param e
-        ElementEventArgs object whose 'node' pointer field is set to the node
+        ElementEventArgs object whose 'element' pointer field is set to the element
         that triggered the event.
     */
     virtual void onRotated(ElementEventArgs& e);
     
     /*!
     \brief
-        Handler called when a child window is added to this window.
+        Handler called when a child element is added to this element.
 
     \param e
-        ElementEventArgs object whose 'window' pointer field is set to the window
+        ElementEventArgs object whose 'element' pointer field is set to the element
         that has been added.
     */
     virtual void onChildAdded(ElementEventArgs& e);
 
     /*!
     \brief
-        Handler called when a child window is removed from this window.
+        Handler called when a child element is removed from this element.
 
     \param e
-        ElementEventArgs object whose 'window' pointer field is set the window
+        ElementEventArgs object whose 'element' pointer field is set the element
         that has been removed.
     */
     virtual void onChildRemoved(ElementEventArgs& e);
     
     /*!
     \brief
-        Handler called when the window's non-client setting, affecting it's
+        Handler called when the element's non-client setting, affecting it's
         position and size relative to it's parent is changed.
 
     \param e
-        ElementEventArgs object whose 'window' pointer field is set to the window
-        that triggered the event.  For this event the trigger window is always
+        ElementEventArgs object whose 'element' pointer field is set to the element
+        that triggered the event. For this event the trigger element is always
         'this'.
     */
     virtual void onNonClientChanged(ElementEventArgs& e);
@@ -1195,27 +1192,27 @@ protected:
     /*************************************************************************
         Implementation Data
     *************************************************************************/
-    //! definition of type used for the list of attached child windows.
+    //! definition of type used for the list of attached child elements.
     typedef std::vector<Element*
         CEGUI_VECTOR_ALLOC(Element*)> ChildList;
 
-    //! The list of child Window objects attached to this.
+    //! The list of child element objects attached to this.
     ChildList d_children;
-    //! Holds pointer to the parent window.
+    //! Holds pointer to the parent element.
     Element* d_parent;
     
-    //! true if Window is in non-client (outside InnerRect) area of parent.
+    //! true if element is in non-client (outside InnerRect) area of parent.
     bool d_nonClient;
     
-    //! This Window objects area as defined by a URect.
+    //! This element objects area as defined by a URect.
     URect d_area;
     //! Specifies the base for horizontal alignment.
     HorizontalAlignment d_horizontalAlignment;
     //! Specifies the base for vertical alignment.
     VerticalAlignment d_verticalAlignment;
-    //! current minimum size for the window.
+    //! current minimum size for the element.
     USize d_minSize;
-    //! current maximum size for the window.
+    //! current maximum size for the element.
     USize d_maxSize;
     //! How to satisfy current aspect ratio
     AspectMode d_aspectMode;
@@ -1223,9 +1220,9 @@ protected:
     float d_aspectRatio;
     //! If true, the position and size are pixel aligned
     bool d_pixelAligned;
-    //! Current constrained pixel size of the window.
+    //! Current constrained pixel size of the element.
     Sizef d_pixelSize;
-    //! Rotation of this window (relative to the parent)
+    //! Rotation of this element (relative to the parent)
     Quaternion d_rotation;
     
     //! outer area rect in screen pixels
@@ -1235,7 +1232,7 @@ protected:
 
 private:
     /*************************************************************************
-        May not copy or assign Node objects
+        May not copy or assign Element objects
     *************************************************************************/
     Element(const Element&);
     
@@ -1249,4 +1246,4 @@ private:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUINode_h_
+#endif  // end of guard _CEGUIElement_h_
