@@ -90,6 +90,9 @@ Element::Element(const Element&):
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size)
 {
+    // TODO: calculatePixelSize already deals with min size and max size
+    //       Do we really need to handle it here as well?
+    
     // Limit the value we set to something that's within the constraints
     // specified via the min and max size settings.
 
@@ -102,7 +105,7 @@ void Element::setArea(const UVector2& pos, const USize& size)
     constrainToMinSize(base_sz, newsz);
     constrainToMaxSize(base_sz, newsz);
 
-    setArea_impl(pos, newsz);
+    setArea_impl(pos, size);
 }
 
 //----------------------------------------------------------------------------//
@@ -149,10 +152,10 @@ void Element::setMinSize(const USize& size)
 {
     d_minSize = size;
 
-    // Apply set minimum size to the windows set size.
+    // Apply set minimum size to the element's set size.
     // We can't use code in setArea[_impl] to adjust the set size, because
     // that code has to ensure that it's possible for a size constrained
-    // window to 'recover' it's original (scaled) sizing when the constraint
+    // element to 'recover' it's original (scaled) sizing when the constraint
     // no longer needs to be applied.
 
     // get size of 'base' - i.e. the size of the parent region.
@@ -171,10 +174,10 @@ void Element::setMaxSize(const USize& size)
 {
     d_maxSize = size;
 
-    // Apply set maximum size to the windows set size.
+    // Apply set maximum size to the element's set size.
     // We can't use code in setArea[_impl] to adjust the set size, because
     // that code has to ensure that it's possible for a size constrained
-    // window to 'recover' it's original (scaled) sizing when the constraint
+    // element to 'recover' it's original (scaled) sizing when the constraint
     // no longer needs to be applied.
 
     // get size of 'base' - i.e. the size of the parent region.
@@ -239,8 +242,6 @@ void Element::setPixelAligned(const bool setting)
 //----------------------------------------------------------------------------//
 Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
 {
-    // TODO: skip all pixel alignment!
-    
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
     const Sizef absMin(CoordConverter::asAbsolute(d_minSize,
@@ -346,34 +347,34 @@ void Element::setRotation(const Quaternion& rotation)
 }
 
 //----------------------------------------------------------------------------//
-void Element::addChild(Element* node)
+void Element::addChild(Element* element)
 {
-    // don't add null window or ourself as a child
+    // don't add null element or ourself as a child
     // TODO: IMO we should throw exceptions in both of these cases
-    if (!node || node == this)
+    if (!element || element == this)
         return;
 
-    addChild_impl(node);
-    ElementEventArgs args(node);
+    addChild_impl(element);
+    ElementEventArgs args(element);
     onChildAdded(args);
 }
 
 //----------------------------------------------------------------------------//
-void Element::removeChild(Element* node)
+void Element::removeChild(Element* element)
 {
-    removeChild_impl(node);
-    ElementEventArgs args(node);
+    removeChild_impl(element);
+    ElementEventArgs args(element);
     onChildRemoved(args);
 }
 
 //----------------------------------------------------------------------------//
-bool Element::isChild(const Element* node) const
+bool Element::isChild(const Element* element) const
 {
-    return std::find(d_children.begin(), d_children.end(), node) != d_children.end();
+    return std::find(d_children.begin(), d_children.end(), element) != d_children.end();
 }
 
 //----------------------------------------------------------------------------//
-bool Element::isAncestor(const Element* node) const
+bool Element::isAncestor(const Element* element) const
 {
     if (!d_parent)
     {
@@ -381,7 +382,7 @@ bool Element::isAncestor(const Element* node) const
         return false;
     }
     
-    return d_parent == node || d_parent->isAncestor(node);
+    return d_parent == element || d_parent->isAncestor(element);
 }
 
 //----------------------------------------------------------------------------//
@@ -415,32 +416,32 @@ void Element::addElementProperties()
     const String propertyOrigin("Element");
     
     CEGUI_DEFINE_PROPERTY(Element, URect,
-        "Area", "Property to get/set the windows unified area rectangle. Value is a \"URect\".",
+        "Area", "Property to get/set the unified area rectangle. Value is a \"URect\".",
         &Element::setArea, &Element::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
     );
 
     CEGUI_DEFINE_PROPERTY_NO_XML(Element, UVector2,
-        "Position", "Property to get/set the windows unified position. Value is a \"UVector2\".",
+        "Position", "Property to get/set the unified position. Value is a \"UVector2\".",
         &Element::setPosition, &Element::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
     );
     
     CEGUI_DEFINE_PROPERTY_NO_XML(Element, USize,
-        "Size", "Property to get/set the windows unified size.  Value is a \"USize\".",
+        "Size", "Property to get/set the unified size. Value is a \"USize\".",
         &Element::setSize, &Element::getSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
     CEGUI_DEFINE_PROPERTY(Element, USize,
-        "MinSize", "Property to get/set the windows unified minimum size.  Value is a \"USize\".",
+        "MinSize", "Property to get/set the unified minimum size. Value is a \"USize\".",
         &Element::setMinSize, &Element::getMinSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
     CEGUI_DEFINE_PROPERTY(Element, USize,
-        "MaxSize", "Property to get/set the windows unified maximum size.  Value is a \"USize\".",
+        "MaxSize", "Property to get/set the unified maximum size. Value is a \"USize\".",
         &Element::setMaxSize, &Element::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
     );
     
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
-        "AspectMode", "Property to get/set the 'aspect mode' setting for the Window. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
+        "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
         &Element::setAspectMode, &Element::getAspectMode, AM_IGNORE
     );
 
@@ -450,19 +451,19 @@ void Element::addElementProperties()
     );
     
     CEGUI_DEFINE_PROPERTY(Element, bool,
-        "PixelAligned", "Property to get/set the Node's size and position should be pixel aligned.  "
+        "PixelAligned", "Property to get/set whether the Element's size and position should be pixel aligned. "
         "Value is either \"True\" or \"False\".",
         &Element::setPixelAligned, &Element::isPixelAligned, true
     );
     
     CEGUI_DEFINE_PROPERTY(Element, Quaternion,
-        "Rotation", "Property to get/set the windows rotation factors.  Value is "
-        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float] (Quaternion)\".",
+        "Rotation", "Property to get/set the Element's rotation. Value is a quaternion: "
+        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\".",
         &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
     );
     
     CEGUI_DEFINE_PROPERTY(Element, bool,
-        "NonClient", "Property to get/set the 'non-client' setting for the Window.  "
+        "NonClient", "Property to get/set whether the Element is 'non-client'. "
         "Value is either \"True\" or \"False\".",
         &Element::setNonClient, &Element::isNonClient, false
     );
@@ -477,8 +478,8 @@ void Element::setArea_impl(const UVector2& pos, const USize& size,
     d_unclippedOuterRect.invalidateCache();
     d_unclippedInnerRect.invalidateCache();
 
-    // notes of what we did
-    bool moved = false, sized;
+    // have we moved the element?
+    bool moved = false;
 
     // save original size so we can work out how to behave later on
     const Sizef oldSize(d_pixelSize);
@@ -486,7 +487,8 @@ void Element::setArea_impl(const UVector2& pos, const USize& size,
     d_area.setSize(size);
     d_pixelSize = calculatePixelSize();
 
-    sized = (d_pixelSize != oldSize);
+    // have we resized the element?
+    const bool sized = (d_pixelSize != oldSize);
 
     // If this is a top/left edge sizing op, only modify position if the size
     // actually changed.  If it is not a sizing op, then position may always
@@ -526,43 +528,43 @@ void Element::setParent(Element* parent)
 }
 
 //----------------------------------------------------------------------------//
-void Element::addChild_impl(Element* node)
+void Element::addChild_impl(Element* element)
 {
-    // if node is attached elsewhere, detach it first (will fire normal events)
-    Element* const old_parent = node->getParentElement();
+    // if element is attached elsewhere, detach it first (will fire normal events)
+    Element* const old_parent = element->getParentElement();
     if (old_parent)
-        old_parent->removeChild(node);
+        old_parent->removeChild(element);
     
-    // add node to child list
-    d_children.push_back(node);
+    // add element to child list
+    d_children.push_back(element);
 
-    // set the parent window
-    node->setParent(this);
+    // set the parent element
+    element->setParent(this);
 
-    // update area rects and content for the added window
-    node->notifyScreenAreaChanged(true);
+    // update area rects and content for the added element
+    element->notifyScreenAreaChanged(true);
     
     // correctly call parent sized notification if needed.
     if (!old_parent || old_parent->getPixelSize() != getPixelSize())
     {
         ElementEventArgs args(this);
-        node->onParentSized(args);
+        element->onParentSized(args);
     }
 }
 
 //----------------------------------------------------------------------------//
-void Element::removeChild_impl(Element* node)
+void Element::removeChild_impl(Element* element)
 {
-    // find this window in the child list
-    ChildList::iterator it = std::find(d_children.begin(), d_children.end(), node);
+    // find this element in the child list
+    ChildList::iterator it = std::find(d_children.begin(), d_children.end(), element);
 
-    // if the window was found in the child list
+    // if the element was found in the child list
     if (it != d_children.end())
     {
-        // remove window from child list
+        // remove element from child list
         d_children.erase(it);
-        // reset windows parent so it's no longer this window.
-        node->setParent(0);
+        // reset element's parent so it's no longer this element.
+        element->setParent(0);
     }
 }
 
@@ -706,7 +708,7 @@ void Element::onSized(ElementEventArgs& e)
 {
     // screen area changes when we're resized.
     // NB: Called non-recursive since the onParentSized notifications will deal
-    // more selectively with child Window cases.
+    // more selectively with child element cases.
     notifyScreenAreaChanged(false);
 
     // inform children their parent has been re-sized
@@ -720,11 +722,10 @@ void Element::onSized(ElementEventArgs& e)
     fireEvent(EventSized, e, EventNamespace);
 }
 
-
 //----------------------------------------------------------------------------//
 void Element::onParentSized(ElementEventArgs& e)
 {
-    // set window area back on itself to cause minimum and maximum size
+    // set element area back on itself to cause minimum and maximum size
     // constraints to be applied as required.  (fire no events though)
 
     setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
@@ -795,7 +796,8 @@ void Element::onChildRemoved(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Element::onNonClientChanged(ElementEventArgs& e)
 {
-    // TODO: Trigger update of size and position information if needed
+    // TODO: Be less wasteful with this update
+    setArea(getArea());
 
     fireEvent(EventNonClientChanged, e, EventNamespace);
 }
