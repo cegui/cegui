@@ -54,6 +54,23 @@ BOOST_AUTO_TEST_CASE(RelativeSizing)
     delete root;
 }
 
+BOOST_AUTO_TEST_CASE(RelativePositioning)
+{
+    CEGUI::Element* root = new CEGUI::Element();
+    root->setSize(CEGUI::USize(100.0f * CEGUI::UDim::px(), 100 * CEGUI::UDim::px()));
+    CEGUI::Element* child = new CEGUI::Element();
+    child->setPosition(CEGUI::UVector2(50.0f * CEGUI::UDim::percent(), 50.0f * CEGUI::UDim::percent()));
+    child->setSize(CEGUI::USize(10.0f * CEGUI::UDim::px(), 10 * CEGUI::UDim::px()));
+    root->addChild(child);
+    
+    BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(50.0f, 50.0f, 60.0f, 60.0f));
+    
+    delete child;
+    delete root;
+}
+
+// TODO: RelativeRotation!
+
 BOOST_AUTO_TEST_CASE(HorizontalLeftAlignment)
 {
     CEGUI::Element* root = new CEGUI::Element();
