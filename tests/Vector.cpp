@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIVector.h"
+#include "CEGUI/Vector.h"
 
 #include <boost/test/unit_test.hpp>
 
