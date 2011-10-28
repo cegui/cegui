@@ -196,4 +196,22 @@ BOOST_AUTO_TEST_CASE(AspectLocking)
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 200));
 }
 
+BOOST_AUTO_TEST_CASE(PixelAlignment)
+{
+    CEGUI::Element* root = new CEGUI::Element();
+    root->setPosition(CEGUI::UVector2(0.2f * CEGUI::UDim::px(), 0.2f * CEGUI::UDim::px()));
+    root->setSize(CEGUI::USize(100.0f * CEGUI::UDim::px(), 100.0f * CEGUI::UDim::px()));
+    
+    // even though it is the default at the point of writing the test, we have to make sure this fact doesn't change!
+    BOOST_CHECK(root->isPixelAligned());
+    
+    // todo: should have tolerances or something, or does boost do that automatically?
+    BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 0, 100, 100));
+    
+    root->setPixelAligned(false);
+    
+    // todo: should have tolerances or something, or does boost do that automatically?
+    BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0.2f, 0.2f, 100.2f, 100.2f));
+}
+
 BOOST_AUTO_TEST_SUITE_END()
