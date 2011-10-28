@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUINode.h
+    filename:   CEGUI/Element.h
     created:    18/8/2011
     author:     Martin Preisler
 
@@ -28,8 +28,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUINode_h_
-#define _CEGUINode_h_
+#ifndef _CEGUIElement_h_
+#define _CEGUIElement_h_
 
 #include "CEGUI/Base.h"
 #include "CEGUI/PropertySet.h"
@@ -204,16 +204,16 @@ public:
 /*!
 \brief
     EventArgs based class that is used for objects passed to handlers triggered for events
-    concerning some Node object.
+    concerning some Element object.
 */
-class CEGUIEXPORT NodeEventArgs : public EventArgs
+class CEGUIEXPORT ElementEventArgs : public EventArgs
 {
 public:
-    NodeEventArgs(Node* node):
+    ElementEventArgs(Element* node):
         node(node)
     {}
 
-    Node* node;     //!< pointer to a Node object of relevance to the event.
+    Element* node;     //!< pointer to a Node object of relevance to the event.
 };
 
 /*!
@@ -223,19 +223,19 @@ public:
     Methods retrieving Node (like getParentNode) have Node suffix so that deriving
     classes can easily make their getParent and return the proper type (Window* for example)
 */
-class CEGUIEXPORT Node :
+class CEGUIEXPORT Element :
     public PropertySet,
     public EventSet,
-    public AllocatedObject<Node>
+    public AllocatedObject<Element>
 {
 public:
     //! Namespace for global events
     static const String EventNamespace;
 
     // generated internally by Node
-    /** Event fired when the Node size has changed.
-     * Handlers are passed a const NodeEventArgs reference with
-     * NodeEventArgs::node set to the Node whose size was changed.
+    /** Event fired when the Element size has changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::node set to the Node whose size was changed.
      */
     static const String EventSized;
     /** Event fired when the parent of this Window has been re-sized.
@@ -244,9 +244,9 @@ public:
      * was resized, not the window whose parent was resized.
      */
     static const String EventParentSized;
-    /** Event fired when the Node position has changed.
-     * Handlers are passed a const NodeEventArgs reference with
-     * NodeEventArgs::node set to the Node whose position was changed.
+    /** Event fired when the Element position has changed.
+     * Handlers are passed a const ElementEventArgs reference with
+     * ElementEventArgs::node set to the Node whose position was changed.
      */
     static const String EventMoved;
     /** Event fired when the horizontal alignment for the window is changed.
@@ -296,10 +296,10 @@ public:
     {
     public:
         //! the bool parameter - if true all will PixelAlignment settings be overridden and no pixel alignment will take place
-        typedef Rectf (Node::*DataGenerator)(bool) const;
+        typedef Rectf (Element::*DataGenerator)(bool) const;
         
-        CachedRectf(Node const* node, DataGenerator generator):
-            d_node(node),
+        CachedRectf(Element const* element, DataGenerator generator):
+            d_element(element),
             d_generator(generator),
             // we don't have to initialise d_cachedData, it will get regenerated and reset anyways
             d_cacheValid(false)
@@ -327,7 +327,7 @@ public:
                 return get();
             }
             
-            return CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(skipAllPixelAlignment);
+            return CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(skipAllPixelAlignment);
         }
         
         inline void invalidateCache() const
@@ -344,13 +344,13 @@ public:
         {
             // false, since when we are caching we don't want to skip anything, we want everything to act
             // exactly as it was setup
-            d_cachedData = CEGUI_CALL_MEMBER_FN(*d_node, d_generator)(false);
+            d_cachedData = CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(false);
             
             d_cacheValid = true;
         }
         
     private:
-        Node const* d_node;
+        Element const* d_element;
         DataGenerator d_generator;
         
         mutable Rectf d_cachedData;
@@ -360,17 +360,17 @@ public:
     /*!
     \brief Constructor
     */
-    Node();
+    Element();
 
     /*!
     \brief Destructor
     */
-    virtual ~Node();
+    virtual ~Element();
 
     /*!
     \brief Retrieves parent of this node, 0 means that this Node is a root of a tree it represents
     */
-    inline Node* getParentNode() const
+    inline Element* getParentElement() const
     {
         return d_parent;
     }
@@ -854,7 +854,7 @@ public:
         thrown if Node \a node is an ancestor of this Node, to prevent
         cyclic Node structures.
     */
-    void addChild(Node* node);
+    void addChild(Element* node);
 
     /*!
     \brief
@@ -864,7 +864,7 @@ public:
     \see
         Node::addChild
     */
-    void removeChild(Node* node);
+    void removeChild(Element* node);
     
     /*!
     \brief
@@ -879,7 +879,7 @@ public:
     \return
         Pointer to the child window currently attached at index position \a idx
     */
-    inline Node* getChildNodeAtIdx(size_t idx) const
+    inline Element* getChildNodeAtIdx(size_t idx) const
     {
         return d_children[idx];
     }
@@ -889,7 +889,7 @@ public:
         return d_children.size();
     }
 
-    bool isChild(const Node* node) const;
+    bool isChild(const Element* node) const;
 
     /*!
     \brief
@@ -903,7 +903,7 @@ public:
           parent, etc) of this Window.
         - false if \a window is not an ancestor of this window.
     */
-    bool isAncestor(const Node* node) const;
+    bool isAncestor(const Element* node) const;
     
     /*!
     \brief
@@ -1010,9 +1010,9 @@ public:
 protected:
     /*!
     \brief
-        Add standard CEGUI::Node properties.
+        Add standard CEGUI::Element properties.
     */
-    void addNodeProperties();
+    void addElementProperties();
 
     /*!
     \brief
@@ -1066,19 +1066,19 @@ protected:
     \return
         Nothing
     */
-    virtual void setParent(Node* parent);
+    virtual void setParent(Element* parent);
 
     /*!
     \brief
         Add given window to child list at an appropriate position
     */
-    virtual void addChild_impl(Node* node);
+    virtual void addChild_impl(Element* node);
 
     /*!
     \brief
         Remove given window from child list
     */
-    virtual void removeChild_impl(Node* node);
+    virtual void removeChild_impl(Element* node);
     
     //! Default implementation of function to return Window outer rect area.
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
@@ -1098,10 +1098,10 @@ protected:
         Handler called when the node's size changes.
 
     \param e
-        NodeEventArgs object whose 'node' pointer field is set to the node
+        ElementEventArgs object whose 'node' pointer field is set to the node
         that triggered the event.
     */
-    virtual void onSized(NodeEventArgs& e);
+    virtual void onSized(ElementEventArgs& e);
     
     /*!
     \brief
@@ -1110,21 +1110,21 @@ protected:
         the display size changes.
 
     \param e
-        NodeEventArgs object whose 'node' pointer field is set the the
+        ElementEventArgs object whose 'node' pointer field is set the the
         node that caused the event; this is typically either this node's
         parent window, or NULL to indicate the screen size has changed.
     */
-    virtual void onParentSized(NodeEventArgs& e);
+    virtual void onParentSized(ElementEventArgs& e);
 
     /*!
     \brief
         Handler called when the node's position changes.
 
     \param e
-        WindowEventArgs object whose 'node' pointer field is set to the node
+        ElementEventArgs object whose 'node' pointer field is set to the node
         that triggered the event.
     */
-    virtual void onMoved(NodeEventArgs& e);
+    virtual void onMoved(ElementEventArgs& e);
 
     /*!
     \brief
@@ -1132,11 +1132,11 @@ protected:
         changed.
 
     \param e
-        NodeEventArgs object initialised as follows:
+        ElementEventArgs object initialised as follows:
         - node field is set to point to the Node object whos alignment has
           changed (typically 'this').
     */
-    virtual void onHorizontalAlignmentChanged(NodeEventArgs& e);
+    virtual void onHorizontalAlignmentChanged(ElementEventArgs& e);
     
     /*!
     \brief
@@ -1144,41 +1144,41 @@ protected:
         changed.
 
     \param e
-        NodeEventArgs object initialised as follows:
+        ElementEventArgs object initialised as follows:
         - node field is set to point to the Node object whos alignment has
           changed (typically 'this').
     */
-    virtual void onVerticalAlignmentChanged(NodeEventArgs& e);
+    virtual void onVerticalAlignmentChanged(ElementEventArgs& e);
     
     /*!
     \brief
         Handler called when the node's rotation is changed.
 
     \param e
-        NodeEventArgs object whose 'node' pointer field is set to the node
+        ElementEventArgs object whose 'node' pointer field is set to the node
         that triggered the event.
     */
-    virtual void onRotated(NodeEventArgs& e);
+    virtual void onRotated(ElementEventArgs& e);
     
     /*!
     \brief
         Handler called when a child window is added to this window.
 
     \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
+        ElementEventArgs object whose 'window' pointer field is set to the window
         that has been added.
     */
-    virtual void onChildAdded(NodeEventArgs& e);
+    virtual void onChildAdded(ElementEventArgs& e);
 
     /*!
     \brief
         Handler called when a child window is removed from this window.
 
     \param e
-        WindowEventArgs object whose 'window' pointer field is set the window
+        ElementEventArgs object whose 'window' pointer field is set the window
         that has been removed.
     */
-    virtual void onChildRemoved(NodeEventArgs& e);
+    virtual void onChildRemoved(ElementEventArgs& e);
     
     /*!
     \brief
@@ -1186,23 +1186,23 @@ protected:
         position and size relative to it's parent is changed.
 
     \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
+        ElementEventArgs object whose 'window' pointer field is set to the window
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onNonClientChanged(NodeEventArgs& e);
+    virtual void onNonClientChanged(ElementEventArgs& e);
     
     /*************************************************************************
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child windows.
-    typedef std::vector<Node*
-        CEGUI_VECTOR_ALLOC(Node*)> ChildList;
+    typedef std::vector<Element*
+        CEGUI_VECTOR_ALLOC(Element*)> ChildList;
 
     //! The list of child Window objects attached to this.
     ChildList d_children;
     //! Holds pointer to the parent window.
-    Node* d_parent;
+    Element* d_parent;
     
     //! true if Window is in non-client (outside InnerRect) area of parent.
     bool d_nonClient;
@@ -1237,9 +1237,9 @@ private:
     /*************************************************************************
         May not copy or assign Node objects
     *************************************************************************/
-    Node(const Node&);
+    Element(const Element&);
     
-    Node& operator=(const Node&) {return *this;}
+    Element& operator=(const Element&) {return *this;}
 };
 
 } // End of  CEGUI namespace section

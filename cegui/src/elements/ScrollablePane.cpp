@@ -470,7 +470,7 @@ void ScrollablePane::removeChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onSized(NodeEventArgs& e)
+void ScrollablePane::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
     configureScrollbars();

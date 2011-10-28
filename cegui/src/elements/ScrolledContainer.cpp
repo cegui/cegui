@@ -44,7 +44,7 @@ ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     d_contentArea(0, 0, 0, 0),
     d_autosizePane(true),
     
-    d_clientChildContentArea(this, static_cast<Node::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
+    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
 {
     addScrolledContainerProperties();
     setMouseInputPropagationEnabled(true);
@@ -95,13 +95,13 @@ void ScrolledContainer::setContentArea(const Rectf& area)
 }
 
 //----------------------------------------------------------------------------//
-const Node::CachedRectf& ScrolledContainer::getClientChildContentArea() const
+const Element::CachedRectf& ScrolledContainer::getClientChildContentArea() const
 {
     return d_clientChildContentArea;
 }
 
 //----------------------------------------------------------------------------//
-const Node::CachedRectf& ScrolledContainer::getNonClientChildContentArea() const
+const Element::CachedRectf& ScrolledContainer::getNonClientChildContentArea() const
 {
     return d_clientChildContentArea;
 }
@@ -228,7 +228,7 @@ Rectf ScrolledContainer::getClientChildContentArea_impl(bool skipAllPixelAlignme
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onChildAdded(NodeEventArgs& e)
+void ScrolledContainer::onChildAdded(ElementEventArgs& e)
 {
     Window::onChildAdded(e);
 
@@ -249,7 +249,7 @@ void ScrolledContainer::onChildAdded(NodeEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onChildRemoved(NodeEventArgs& e)
+void ScrolledContainer::onChildRemoved(ElementEventArgs& e)
 {
     Window::onChildRemoved(e);
 
@@ -270,7 +270,7 @@ void ScrolledContainer::onChildRemoved(NodeEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onParentSized(NodeEventArgs& e)
+void ScrolledContainer::onParentSized(ElementEventArgs& e)
 {
     Window::onParentSized(e);
 

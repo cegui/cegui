@@ -1055,7 +1055,7 @@ void Tree::onBranchClosed(TreeEventArgs& e)
 /*************************************************************************
     Handler for when we are sized
 *************************************************************************/
-void Tree::onSized(NodeEventArgs& e)
+void Tree::onSized(ElementEventArgs& e)
 {
     // base class handling
     Window::onSized(e);

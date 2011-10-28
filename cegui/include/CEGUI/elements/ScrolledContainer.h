@@ -180,9 +180,9 @@ protected:
     Rectf getInnerRectClipper_impl() const;
 
     Rectf getHitTestRect_impl() const;
-    void onChildAdded(NodeEventArgs& e);
-    void onChildRemoved(NodeEventArgs& e);
-    void onParentSized(NodeEventArgs& e);
+    void onChildAdded(ElementEventArgs& e);
+    void onChildRemoved(ElementEventArgs& e);
+    void onParentSized(ElementEventArgs& e);
 
     //! type definition for collection used to track event connections.
     typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;

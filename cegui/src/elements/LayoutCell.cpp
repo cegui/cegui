@@ -44,7 +44,7 @@ const String LayoutCell::WidgetTypeName("LayoutCell");
 LayoutCell::LayoutCell(const String& type, const String& name):
         Window(type, name),
         
-        d_clientChildContentArea(this, static_cast<Node::CachedRectf::DataGenerator>(&LayoutCell::getClientChildContentArea_impl))
+        d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutCell::getClientChildContentArea_impl))
 {
     // cell should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
@@ -59,7 +59,7 @@ LayoutCell::LayoutCell(const String& type, const String& name):
 LayoutCell::~LayoutCell(void)
 {}
 
-const Node::CachedRectf& LayoutCell::getClientChildContentArea() const
+const Element::CachedRectf& LayoutCell::getClientChildContentArea() const
 {
     if (!d_parent)
     {

@@ -45,7 +45,7 @@ LayoutContainer::LayoutContainer(const String& type, const String& name):
     Window(type, name),
 
     d_needsLayouting(false),
-    d_clientChildContentArea(this, static_cast<Node::CachedRectf::DataGenerator>(&LayoutContainer::getClientChildContentArea_impl))
+    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutContainer::getClientChildContentArea_impl))
 {
     // layout should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
@@ -94,7 +94,7 @@ void LayoutContainer::update(float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-const Node::CachedRectf& LayoutContainer::getClientChildContentArea() const
+const Element::CachedRectf& LayoutContainer::getClientChildContentArea() const
 {
     return d_clientChildContentArea;
 }
