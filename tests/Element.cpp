@@ -89,6 +89,9 @@ BOOST_AUTO_TEST_CASE(HorizontalLeftAlignment)
     child->setPosition(CEGUI::UVector2(10.0f * CEGUI::UDim::px(), 0.0f * CEGUI::UDim::px()));
     
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(10, 0, 60, 0));
+    
+    delete child;
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(HorizontalCentreAlignment)
@@ -109,6 +112,9 @@ BOOST_AUTO_TEST_CASE(HorizontalCentreAlignment)
     child->setPosition(CEGUI::UVector2(10.0f * CEGUI::UDim::px(), 0.0f * CEGUI::UDim::px()));
     
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(35, 0, 85, 0));
+    
+    delete child;
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(HorizontalRightAlignment)
@@ -129,6 +135,9 @@ BOOST_AUTO_TEST_CASE(HorizontalRightAlignment)
     child->setPosition(CEGUI::UVector2(-10.0f * CEGUI::UDim::px(), 0.0f * CEGUI::UDim::px()));
     
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(40, 0, 90, 0));
+    
+    delete child;
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(VerticalTopAlignment)
@@ -149,6 +158,9 @@ BOOST_AUTO_TEST_CASE(VerticalTopAlignment)
     child->setPosition(CEGUI::UVector2(0.0f * CEGUI::UDim::px(), 5.0f * CEGUI::UDim::px()));
     
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 5, 0, 55));
+    
+    delete child;
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(VerticalCentreAlignment)
@@ -169,6 +181,9 @@ BOOST_AUTO_TEST_CASE(VerticalCentreAlignment)
     child->setPosition(CEGUI::UVector2(0.0f * CEGUI::UDim::px(), 5.0f * CEGUI::UDim::px()));
     
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 30, 0, 80));
+    
+    delete child;
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(VerticalBottomAlignment)
@@ -189,6 +204,9 @@ BOOST_AUTO_TEST_CASE(VerticalBottomAlignment)
     child->setPosition(CEGUI::UVector2(0.0f * CEGUI::UDim::px(), -5.0f * CEGUI::UDim::px()));
     
     BOOST_CHECK_EQUAL(child->getUnclippedOuterRect().get(), CEGUI::Rectf(0, 45, 0, 95));
+    
+    delete child;
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(AspectLocking)
@@ -211,6 +229,8 @@ BOOST_AUTO_TEST_CASE(AspectLocking)
     
     // todo: should have tolerances or something, or does boost do that automatically?
     BOOST_CHECK_EQUAL(root->getPixelSize(), CEGUI::Sizef(100, 200));
+    
+    delete root;
 }
 
 BOOST_AUTO_TEST_CASE(PixelAlignment)
@@ -229,6 +249,8 @@ BOOST_AUTO_TEST_CASE(PixelAlignment)
     
     // todo: should have tolerances or something, or does boost do that automatically?
     BOOST_CHECK_EQUAL(root->getUnclippedOuterRect().get(), CEGUI::Rectf(0.2f, 0.2f, 100.2f, 100.2f));
+    
+    delete root;
 }
 
 BOOST_AUTO_TEST_SUITE_END()
