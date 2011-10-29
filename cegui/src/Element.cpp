@@ -36,6 +36,7 @@
 #include "CEGUI/System.h"
 
 #include <algorithm>
+#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -139,7 +140,7 @@ void Element::setMinSize(const USize& size)
 
     // TODO: Perhaps we could be more selective and skip this if min size won't
     //       affect the size
-    setSize(size);
+    setSize(getSize());
 }
 
 //----------------------------------------------------------------------------//
@@ -149,7 +150,7 @@ void Element::setMaxSize(const USize& size)
     
     // TODO: Perhaps we could be more selective and skip this if min size won't
     //       affect the size
-    setSize(size);
+    setSize(getSize());
 }
 
 //----------------------------------------------------------------------------//
