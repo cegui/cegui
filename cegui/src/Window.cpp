@@ -602,7 +602,7 @@ Rectf Window::getHitTestRect_impl() const
 bool Window::isHit(const Vector2f& position, const bool allow_disabled) const
 {
     // cannot be hit if we are disabled.
-    if (!allow_disabled && isDisabled())
+    if (!allow_disabled && isEffectiveDisabled())
         return false;
 
     const Rectf test_area(getHitTestRect());
