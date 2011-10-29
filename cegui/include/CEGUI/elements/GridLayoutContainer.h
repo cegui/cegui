@@ -320,9 +320,9 @@ protected:
     bool isDummy(Window* wnd) const;
 
     /// @copydoc Window::addChild_impl
-    virtual void addChild_impl(Window* wnd);
+    virtual void addChild_impl(Element* element);
     /// @copydoc Window::removeChild_impl
-    virtual void removeChild_impl(Window* wnd);
+    virtual void removeChild_impl(Element* element);
 
 private:
     void addGridLayoutContainerProperties(void);

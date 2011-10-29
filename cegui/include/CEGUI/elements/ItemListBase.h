@@ -583,10 +583,9 @@ private:
 
 
 	/*!
-	\brief
-		Add given window to child list at an appropriate position
+	\copydoc Element::addChild_impl
 	*/
-	virtual void	addChild_impl(Window* wnd);
+	virtual void addChild_impl(Element* element);
 
 	/*!
 	\brief

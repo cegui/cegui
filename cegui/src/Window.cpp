@@ -1213,13 +1213,13 @@ void Window::cleanupChildren(void)
 }
 
 //----------------------------------------------------------------------------//
-void Window::addChild_impl(Element* node)
+void Window::addChild_impl(Element* element)
 {
-    Window* wnd = dynamic_cast<Window*>(node);
+    Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
     {
-        CEGUI_THROW(AlreadyExistsException("Window::addChild - You can't add nodes of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+        CEGUI_THROW(AlreadyExistsException("Window::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
     }
     
     const Window* const existing = getChild_impl(wnd->getName());
@@ -1248,9 +1248,9 @@ void Window::addChild_impl(Element* node)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild_impl(Element* node)
+void Window::removeChild_impl(Element* element)
 {
-    Window* wnd = static_cast<Window*>(node);
+    Window* wnd = static_cast<Window*>(element);
     
     // remove from draw list
     removeWindowFromDrawList(*wnd);

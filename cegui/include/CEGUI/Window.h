@@ -3278,16 +3278,14 @@ protected:
     virtual void cleanupChildren(void);
 
     /*!
-    \brief
-        Add given window to child list at an appropriate position
+    \copydoc Element::addChild_impl
     */
-    virtual void addChild_impl(Element* node);
+    virtual void addChild_impl(Element* element);
 
     /*!
-    \brief
-        Remove given window from child list
+    \copydoc Element::removeChild_impl
     */
-    virtual void removeChild_impl(Element* node);
+    virtual void removeChild_impl(Element* element);
 
     /*!
     \brief
