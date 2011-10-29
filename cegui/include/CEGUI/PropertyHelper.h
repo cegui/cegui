@@ -302,6 +302,37 @@ public:
     }
 };
 
+#if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
+
+template<>
+class PropertyHelper<String::value_type>
+{
+public:
+    typedef String::value_type return_type;
+    typedef return_type safe_method_return_type;
+    typedef const String::value_type pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("char");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        return str[0];
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        return String("") + val;
+    }
+};
+
+#endif
+
 template<>
 class PropertyHelper<unsigned long>
 {
