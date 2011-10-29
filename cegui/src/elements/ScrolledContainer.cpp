@@ -106,8 +106,11 @@ const Element::CachedRectf& ScrolledContainer::getNonClientChildContentArea() co
     return d_clientChildContentArea;
 }
 
+//----------------------------------------------------------------------------//
 void ScrolledContainer::notifyScreenAreaChanged(bool recursive)
 {
+    d_clientChildContentArea.invalidateCache();
+
     Window::notifyScreenAreaChanged(recursive);
 }
 
@@ -301,6 +304,14 @@ void ScrolledContainer::addScrolledContainerProperties(void)
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         0, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
     );
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledContainer::setArea_impl(const UVector2& pos, const USize& size,
+                                     bool topLeftSizing, bool fireEvents)
+{
+    d_clientChildContentArea.invalidateCache();
+    Window::setArea_impl(pos, size, topLeftSizing, fireEvents);
 }
 
 //----------------------------------------------------------------------------//

@@ -179,6 +179,8 @@ protected:
     void drawSelf(const RenderingContext&) {};
     Rectf getInnerRectClipper_impl() const;
 
+    void setArea_impl(const UVector2& pos, const USize& size,
+                      bool topLeftSizing = false, bool fireEvents = true);
     Rectf getHitTestRect_impl() const;
     void onChildAdded(ElementEventArgs& e);
     void onChildRemoved(ElementEventArgs& e);
