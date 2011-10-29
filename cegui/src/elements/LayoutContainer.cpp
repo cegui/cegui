@@ -146,8 +146,15 @@ size_t LayoutContainer::getIdxOfChild(Window* wnd) const
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::addChild_impl(Window* wnd)
+void LayoutContainer::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("LayoutContainer::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     Window::addChild_impl(wnd);
 
     // we have to subscribe to the EventSized for layout updates
@@ -160,8 +167,10 @@ void LayoutContainer::addChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void LayoutContainer::removeChild_impl(Window* wnd)
+void LayoutContainer::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(element);
+    
     // we want to get rid of the subscription, because the child window could
     // get removed and added somewhere else, we would be wastefully updating
     // layouts if it was sized inside other Window

@@ -515,8 +515,15 @@ bool GridLayoutContainer::isDummy(Window* wnd) const
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::addChild_impl(Window* wnd)
+void GridLayoutContainer::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("GridLayoutContainer::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     if (isDummy(wnd))
     {
         LayoutContainer::addChild_impl(wnd);
@@ -570,8 +577,10 @@ void GridLayoutContainer::addChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void GridLayoutContainer::removeChild_impl(Window* wnd)
+void GridLayoutContainer::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(element);
+    
     if (!isDummy(wnd) && !WindowManager::getSingleton().isLocked())
     {
         // before we remove the child, we must add new dummy and place it

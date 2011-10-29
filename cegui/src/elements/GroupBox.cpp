@@ -59,8 +59,15 @@ void GroupBox::initialiseComponents()
 	Window::initialiseComponents();
 }
 
-void GroupBox::addChild_impl(Window* wnd)
+void GroupBox::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("GroupBox::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     // Only add it when it's not the __auto_contentpane__ (auto-child) itself
 	if (wnd && wnd->getName() == ContentPaneName)
 	{
@@ -76,8 +83,10 @@ void GroupBox::addChild_impl(Window* wnd)
 	}
 }
 
-void GroupBox::removeChild_impl(Window* wnd)
+void GroupBox::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(wnd);
+    
 	if (wnd)
 	{   // Auto pane itself?
         if (wnd->getName() == ContentPaneName)

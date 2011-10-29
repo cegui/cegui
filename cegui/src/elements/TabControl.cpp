@@ -453,8 +453,15 @@ void TabControl::addTabControlProperties(void)
 /*************************************************************************
 Internal version of adding a child window
 *************************************************************************/
-void TabControl::addChild_impl(Window* wnd)
+void TabControl::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("TabControl::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     if (wnd->isAutoWindow())
     {
         // perform normal addChild
@@ -469,8 +476,10 @@ void TabControl::addChild_impl(Window* wnd)
 /*************************************************************************
 Internal version of removing a child window
 *************************************************************************/
-void TabControl::removeChild_impl(Window* wnd)
+void TabControl::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(element);
+    
     // protect against possible null pointers
     if (!wnd) return;
 

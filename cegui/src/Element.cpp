@@ -232,7 +232,7 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     if (absMin.d_width > absMax.d_width)
     {
         absMin.d_width = absMax.d_width;
-        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of weight larger than what MaxSize resulted in");
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of width larger than what MaxSize resulted in");
     }
     
     if (absMin.d_height > absMax.d_height)

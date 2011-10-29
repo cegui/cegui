@@ -495,8 +495,9 @@ protected:
 	*************************************************************************/
 	void	addTabControlProperties(void);
 
-    void    addChild_impl(Window* wnd);
-    void    removeChild_impl(Window* wnd);
+    void    addChild_impl(Element* element);
+    void    removeChild_impl(Element* element);
+    
     Window* getChild_impl(const String& name_path) const;
 
     /*************************************************************************

@@ -103,8 +103,15 @@ Rectf LayoutCell::getClientChildContentArea_impl(bool skipAllPixelAlignment) con
 }
 
 //----------------------------------------------------------------------------//
-void LayoutCell::addChild_impl(Window* wnd)
+void LayoutCell::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("LayoutCell::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     Window::addChild_impl(wnd);
 
     // we have to subscribe to the EventSized for layout updates
@@ -114,8 +121,10 @@ void LayoutCell::addChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void LayoutCell::removeChild_impl(Window* wnd)
+void LayoutCell::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(element);
+    
     // we want to get rid of the subscription, because the child window could
     // get removed and added somewhere else, we would be wastefully updating
     // layouts if it was sized inside other Window
