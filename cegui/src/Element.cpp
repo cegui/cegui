@@ -34,6 +34,7 @@
 #include "CEGUI/Element.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/System.h"
+#include "CEGUI/Logger.h"
 
 #include <algorithm>
 
@@ -205,9 +206,9 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
 {
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
-    const Sizef absMin(CoordConverter::asAbsolute(d_minSize,
+    Sizef absMin(CoordConverter::asAbsolute(d_minSize,
         System::getSingleton().getRenderer()->getDisplaySize(), false));
-    const Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
+    Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
         System::getSingleton().getRenderer()->getDisplaySize(), false));
 
     Sizef base_size;
@@ -226,6 +227,20 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
 
     Sizef ret = CoordConverter::asAbsolute(d_area.getSize(), base_size, false);
 
+    // in case absMin components are larger than absMax ones,
+    // max size takes precedence
+    if (absMin.d_width > absMax.d_width)
+    {
+        absMin.d_width = absMax.d_width;
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of weight larger than what MaxSize resulted in");
+    }
+    
+    if (absMin.d_height > absMax.d_height)
+    {
+        absMin.d_height = absMax.d_height;
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of height larger than what MaxSize resulted in");
+    }
+    
     // limit new pixel size to: minSize <= newSize <= maxSize
     ret.clamp(absMin, absMax);
 

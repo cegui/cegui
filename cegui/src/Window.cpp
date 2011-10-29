@@ -1924,6 +1924,7 @@ void Window::setArea_impl(const UVector2& pos, const USize& size,
 
     //if (moved || sized)
     // FIXME: This is potentially wasteful
+    
     System::getSingleton().updateWindowContainingMouse();
 
     // update geometry position and clipping if nothing from above appears to
