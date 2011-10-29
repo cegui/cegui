@@ -160,7 +160,9 @@ Image& ImageManager::create(const String& type, const String& name)
 //----------------------------------------------------------------------------//
 Image& ImageManager::create(const XMLAttributes& attributes)
 {
-    const String& type(attributes.getValueAsString(ImageTypeAttribute, "BasicImage"));
+    static const String type_default("BasicImage");
+    
+    const String& type(attributes.getValueAsString(ImageTypeAttribute, type_default));
     const String& name(attributes.getValueAsString(ImageNameAttribute));
 
     if (name.empty())
