@@ -90,21 +90,6 @@ Element::Element(const Element&):
 //----------------------------------------------------------------------------//
 void Element::setArea(const UVector2& pos, const USize& size)
 {
-    // TODO: calculatePixelSize already deals with min size and max size
-    //       Do we really need to handle it here as well?
-    
-    // Limit the value we set to something that's within the constraints
-    // specified via the min and max size settings.
-
-    // get size of 'base' - i.e. the size of the parent region.
-    const Sizef base_sz((d_parent && !d_nonClient) ?
-                         d_parent->getUnclippedInnerRect().get().getSize() :
-                         getParentPixelSize());
-
-    USize newsz(size);
-    constrainToMinSize(base_sz, newsz);
-    constrainToMaxSize(base_sz, newsz);
-
     setArea_impl(pos, size);
 }
 
@@ -152,43 +137,19 @@ void Element::setMinSize(const USize& size)
 {
     d_minSize = size;
 
-    // Apply set minimum size to the element's set size.
-    // We can't use code in setArea[_impl] to adjust the set size, because
-    // that code has to ensure that it's possible for a size constrained
-    // element to 'recover' it's original (scaled) sizing when the constraint
-    // no longer needs to be applied.
-
-    // get size of 'base' - i.e. the size of the parent region.
-    const Sizef base_sz((d_parent && !d_nonClient) ?
-                         d_parent->getUnclippedInnerRect().get().getSize() :
-                         getParentPixelSize());
-
-    USize wnd_sz(getSize());
-
-    if (constrainToMinSize(base_sz, wnd_sz))
-        setSize(wnd_sz);
+    // TODO: Perhaps we could be more selective and skip this if min size won't
+    //       affect the size
+    setSize(size);
 }
 
 //----------------------------------------------------------------------------//
 void Element::setMaxSize(const USize& size)
 {
     d_maxSize = size;
-
-    // Apply set maximum size to the element's set size.
-    // We can't use code in setArea[_impl] to adjust the set size, because
-    // that code has to ensure that it's possible for a size constrained
-    // element to 'recover' it's original (scaled) sizing when the constraint
-    // no longer needs to be applied.
-
-    // get size of 'base' - i.e. the size of the parent region.
-    const Sizef base_sz((d_parent && !d_nonClient) ?
-                         d_parent->getUnclippedInnerRect().get().getSize() :
-                         getParentPixelSize());
-
-    USize wnd_sz(getSize());
-
-    if (constrainToMaxSize(base_sz, wnd_sz))
-        setSize(wnd_sz);
+    
+    // TODO: Perhaps we could be more selective and skip this if min size won't
+    //       affect the size
+    setSize(size);
 }
 
 //----------------------------------------------------------------------------//
@@ -245,9 +206,9 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
     const Sizef absMin(CoordConverter::asAbsolute(d_minSize,
-        System::getSingleton().getRenderer()->getDisplaySize()));
+        System::getSingleton().getRenderer()->getDisplaySize(), false));
     const Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
-        System::getSingleton().getRenderer()->getDisplaySize()));
+        System::getSingleton().getRenderer()->getDisplaySize(), false));
 
     Sizef base_size;
     if (skipAllPixelAlignment)
@@ -483,7 +444,7 @@ void Element::setArea_impl(const UVector2& pos, const USize& size,
 
     // save original size so we can work out how to behave later on
     const Sizef oldSize(d_pixelSize);
-
+    
     d_area.setSize(size);
     d_pixelSize = calculatePixelSize();
 
@@ -629,78 +590,6 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 Rectf Element::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
     return skipAllPixelAlignment ? getUnclippedOuterRect().getFresh(true) : getUnclippedOuterRect().get();
-}
-
-//----------------------------------------------------------------------------//
-bool Element::constrainToMinSize(const Sizef& base_sz, USize& sz) const
-{
-    const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
-    const Sizef min_sz(CoordConverter::asAbsolute(d_minSize,
-        System::getSingleton().getRenderer()->getDisplaySize()));
-
-    bool size_changed = false;
-
-    // check width is not less than the minimum
-    if (pixel_sz.d_width < min_sz.d_width)
-    {
-        sz.d_width.d_offset = ceguimin(sz.d_width.d_offset, d_minSize.d_width.d_offset);
-
-        sz.d_width.d_scale = (base_sz.d_width != 0.0f) ?
-            (min_sz.d_width - sz.d_width.d_offset) / base_sz.d_width :
-            0.0f;
-
-        size_changed = true;
-    }
-
-    // check height is not less than the minimum
-    if (pixel_sz.d_height < min_sz.d_height)
-    {
-        sz.d_height.d_offset = ceguimin(sz.d_height.d_offset, d_minSize.d_height.d_offset);
-
-        sz.d_height.d_scale = (base_sz.d_height != 0.0f) ?
-            (min_sz.d_height - sz.d_height.d_offset) / base_sz.d_height :
-            0.0f;
-
-        size_changed = true;
-    }
-
-    return size_changed;
-}
-
-//----------------------------------------------------------------------------//
-bool Element::constrainToMaxSize(const Sizef& base_sz, USize& sz) const
-{
-    const Sizef pixel_sz(CoordConverter::asAbsolute(sz, base_sz));
-    const Sizef max_sz(CoordConverter::asAbsolute(d_maxSize,
-        System::getSingleton().getRenderer()->getDisplaySize()));
-
-    bool size_changed = false;
-
-    // check width is not greater than the maximum
-    if (pixel_sz.d_width > max_sz.d_width)
-    {
-        sz.d_width.d_offset = ceguimax(sz.d_width.d_offset, d_maxSize.d_width.d_offset);
-
-        sz.d_width.d_scale = (base_sz.d_width != 0.0f) ?
-            (max_sz.d_width - sz.d_width.d_offset) / base_sz.d_width :
-            0.0f;
-
-        size_changed = true;
-    }
-
-    // check height is not greater than the maximum
-    if (pixel_sz.d_height > max_sz.d_height)
-    {
-        sz.d_height.d_offset = ceguimax(sz.d_height.d_offset, d_maxSize.d_height.d_offset);
-
-        sz.d_height.d_scale = (base_sz.d_height != 0.0f) ?
-            (max_sz.d_height - sz.d_height.d_offset) / base_sz.d_height :
-            0.0f;
-
-        size_changed = true;
-    }
-
-    return size_changed;
 }
 
 //----------------------------------------------------------------------------//

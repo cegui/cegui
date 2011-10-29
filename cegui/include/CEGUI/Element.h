@@ -1081,11 +1081,6 @@ protected:
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
-
-    // constrain given USize to element's min size, return if size changed.
-    bool constrainToMinSize(const Sizef& base_sz, USize& sz) const;
-    // constrain given USize to element's max size, return if size changed.
-    bool constrainToMaxSize(const Sizef& base_sz, USize& sz) const;
     
     /*************************************************************************
         Event trigger methods
