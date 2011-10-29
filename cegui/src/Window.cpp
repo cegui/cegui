@@ -53,7 +53,6 @@
 #include <iterator>
 #include <cmath>
 #include <stdio.h>
-#include <iostream>
 
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
@@ -1234,8 +1233,6 @@ void Window::addChild_impl(Element* node)
             "Window named: " + wnd->getName() + " to window at: " +
             getNamePath() + " since a Window with that name is already "
             "attached."));
-
-    std::cout << getName().c_str() << std::endl;
         
     Element::addChild_impl(wnd);
 
