@@ -936,8 +936,9 @@ void Editbox::addEditboxProperties(void)
           &Editbox::setTextMasked, &Editbox::isTextMasked, false /* TODO: Inconsistency */
     );
     
-    CEGUI_DEFINE_PROPERTY(Editbox, uint,
-          "MaskCodepoint","Property to get/set the utf32 codepoint value used for masking text.  Value is \"[uint]\".",
+    CEGUI_DEFINE_PROPERTY(Editbox, String::value_type,
+          "MaskCodepoint","Property to get/set the utf32 codepoint value used for masking text. "
+          "Value is either \"[uint]\" (number = codepoint) if CEGUI is compiled with utf32 string or \"[char]\" (just the symbol) if CEGUI is compiled with std::string.",
           &Editbox::setMaskCodePoint, &Editbox::getMaskCodePoint, 42
     );
     
