@@ -36,7 +36,6 @@
 #include "CEGUI/System.h"
 
 #include <algorithm>
-#include <iostream>
 
 // Start of CEGUI namespace section
 namespace CEGUI
