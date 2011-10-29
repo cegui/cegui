@@ -538,7 +538,7 @@ public:
     
     inline const UDim& getYPosition() const
     {
-        return getPosition().d_x;
+        return getPosition().d_y;
     }
     
     /*!
