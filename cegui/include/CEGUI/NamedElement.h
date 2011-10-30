@@ -164,6 +164,19 @@ public:
         Element.
     */
     NamedElement* getChildElement(const String& name_path) const;
+    
+    using Element::removeChild;
+    /*!
+    \brief
+        Remove the Element referenced by the given name path from this Element's
+        child list.
+
+    \param name_path
+        String the name path that references the the Element to be removed.
+        If the Element specified is not attached to this Window,
+        UnknownObjectException is thrown
+    */
+    void removeChild(const String& name_path);
 
 protected:
     /*!
