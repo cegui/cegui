@@ -811,12 +811,12 @@ void TabControl::removeTab_impl(Window* window)
     invalidate();
 }
 
-Window* TabControl::getChild_impl(const String& name_path) const
+NamedElement* TabControl::getChildByNamePath_impl(const String& name_path) const
 {
     if (name_path.substr(0, 7) == "__auto_")
-        return Window::getChild_impl(name_path);
+        return NamedElement::getChildByNamePath_impl(name_path);
     else
-        return Window::getChild_impl(ContentPaneName + '/' + name_path);
+        return NamedElement::getChildByNamePath_impl(ContentPaneName + '/' + name_path);
 }
 
 } // End of  CEGUI namespace section

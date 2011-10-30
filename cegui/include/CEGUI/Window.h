@@ -31,7 +31,7 @@
 #define _CEGUIWindow_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/Element.h"
+#include "CEGUI/NamedElement.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"
@@ -148,7 +148,7 @@ public:
     classes.
 */
 class CEGUIEXPORT Window :
-    public Element,
+    public NamedElement,
     public AllocatedObject<Window>
 {
 public:
@@ -471,24 +471,6 @@ public:
 
     /*!
     \brief
-        return a String object holding the name of this Window.
-
-    \return
-        String object holding the unique Window name.
-    */
-    const String& getName(void) const  {return d_name;}
-
-    /*
-    \brief
-        return a String object that describes the name path for this Window.
-
-        A name path is a string that describes a path down the window
-        hierarchy using window names and the forward slash '/' as a separator.
-    */
-    String getNamePath() const;
-
-    /*!
-    \brief
         returns whether or not this Window is set to be destroyed when its
         parent window is destroyed.
 
@@ -609,30 +591,7 @@ public:
     */
     uint getID(void) const {return d_ID;}
 
-    using Element::isChild;
-    /*!
-    \brief
-        returns whether the specified name path references a Window that is
-        currently attached to this Window.
-
-        A name path is a string that describes a path down the window
-        hierarchy using window names and the forward slash '/' as a separator.
-        \par
-        For example, if this window has a child attached to it named "Panel"
-        which has its own children attached named "Okay" and "Cancel",
-        you can check for the window "Okay" from this window by using the
-        name path "Panel/Okay".  To check for "Panel", you would simply pass
-        the name "Panel".
-
-    \param name_path
-        String object holding the name path of the child window to test.
-
-    \return
-         - true if the window referenced by \a name_path is attached.
-         - false if the window referenced by \a name_path is not attached.
-    */
-    bool isChild(const String& name_path) const;
-
+    using NamedElement::isChild;
     /*!
     \brief
         returns whether at least one window with the given ID code is attached
@@ -701,7 +660,10 @@ public:
         thrown if \a name_path does not reference a Window attached to this
         Window.
     */
-    Window* getChild(const String& name_path) const;
+    inline Window* getChild(const String& name_path) const
+    {
+        return static_cast<Window*>(getChildElement(name_path));
+    }
 
     /*!
     \brief
@@ -765,21 +727,7 @@ public:
     const Window* getActiveChild(void) const;
 
     using Element::isAncestor;
-    /*!
-    \brief
-        return true if the specified Window is some ancestor of this Window
-
-    \param name
-        String object holding the name of the Window to check for.
-
-    \return
-        - true if a Window named \a name is an ancestor (parent, or parent of
-          parent, etc) of this Window.
-        - false if a Window named \a name is in no way an ancestor of this
-          window.
-    */
-    bool isAncestor(const String& name) const;
-
+    using NamedElement::isAncestor;
     /*!
     \brief
         return true if any Window with the given ID is some ancestor of this
@@ -1391,18 +1339,6 @@ public:
 
     /*!
     \brief
-        Renames the window.
-
-    \param new_name
-        String object holding the new name for the window.
-
-    \exception AlreadyExistsException
-        thrown if a Window named \a new_name already exists in the system.
-    */
-    void rename(const String& new_name);
-
-    /*!
-    \brief
         Initialises the Window based object ready for use.
 
     \note
@@ -1649,22 +1585,7 @@ public:
     */
     void setFont(const String& name);
 
-    using Element::removeChild;
-    /*!
-    \brief
-        Remove the Window referenced by the given name path from this Windows
-        child list.
-
-    \param name_path
-        String the name path that references the the Window to be removed.
-        If the Window specified is not attached to this Window, nothing
-        happens.
-
-    \return
-        Nothing.
-    */
-    void removeChild(const String& name);
-
+    using NamedElement::removeChild;
     /*!
     \brief
         Remove the first child Window with the specified ID.  If there is more
@@ -3392,9 +3313,6 @@ protected:
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
-    
-    //! implementation function to get window at name_path, returns 0 if none.
-    virtual Window* getChild_impl(const String& name_path) const;
 
     /*************************************************************************
         Properties for Window base class
@@ -3456,8 +3374,6 @@ protected:
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;
-    //! The name of the window (GUI system unique).
-    String d_name;
     //! Type name of the window as defined in a Falagard mapping.
     String d_falagardType;
     //! true when this window is an auto-window (it's name contains __auto_)
@@ -3605,7 +3521,7 @@ private:
     /*************************************************************************
         May not copy or assign Window objects
     *************************************************************************/
-    Window(const Window&): Element() {}
+    Window(const Window&): NamedElement() {}
     Window& operator=(const Window&) {return *this;}
 
     //! Not intended for public use, only used as a "Font" property getter

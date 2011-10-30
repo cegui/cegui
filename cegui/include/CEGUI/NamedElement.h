@@ -142,6 +142,21 @@ public:
     
     /*!
     \brief
+        return true if the specified element name is a name of some ancestor of this Element
+
+    \param name
+        String object holding the name to check for.
+
+    \return
+        - true if an element named \a name is an ancestor (parent, or parent of
+          parent, etc) of this element.
+        - false if an element named \a name is in no way an ancestor of this
+          element.
+    */
+    bool isAncestor(const String& name) const;
+    
+    /*!
+    \brief
         return the attached child element that the given name path references.
 
         A name path is a string that describes a path down the element

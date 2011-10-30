@@ -498,7 +498,7 @@ protected:
     void    addChild_impl(Element* element);
     void    removeChild_impl(Element* element);
     
-    Window* getChild_impl(const String& name_path) const;
+    NamedElement* getChildByNamePath_impl(const String& name_path) const;
 
     /*************************************************************************
     Event handlers
