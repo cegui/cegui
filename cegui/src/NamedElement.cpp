@@ -121,6 +121,19 @@ NamedElement* NamedElement::getChildElement(const String& name_path) const
 }
 
 //----------------------------------------------------------------------------//
+void NamedElement::removeChild(const String& name_path)
+{
+    NamedElement* e = getChildByNamePath_impl(name_path);
+
+    if (e)
+        removeChild(e);
+    else
+        CEGUI_THROW(UnknownObjectException("NamedElement::removeChild - The Element object "
+            "referenced by '" + name_path + "' is not attached to Element at '"
+            + getNamePath() + "'."));
+}
+
+//----------------------------------------------------------------------------//
 NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) const
 {
     const size_t sep = name_path.find_first_of('/');
