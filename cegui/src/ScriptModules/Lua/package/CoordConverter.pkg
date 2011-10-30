@@ -14,18 +14,6 @@ class CoordConverter
     static Rect<float> asAbsolute(const URect& r, const Size<float>& base);
     static Rect<float> asRelative(const URect& r, const Size<float>& base);
 
-    static float windowToScreenX(const Window& window, const UDim& x);
-    static float windowToScreenX(const Window& window, const float x);
-
-    static float windowToScreenY(const Window& window, const UDim& y);
-    static float windowToScreenY(const Window& window, const float y);
-
-    static Vector2<float> windowToScreen(const Window& window, const UVector2& vec);
-    static Vector2<float> windowToScreen(const Window& window, const Vector2<float>& vec);
-
-    static Rect<float> windowToScreen(const Window& window, const URect& rect);
-    static Rect<float> windowToScreen(const Window& window, const Rect<float>& rect);
-
     static float screenToWindowX(const Window& window, const UDim& x);
     static float screenToWindowX(const Window& window, const float x);
 

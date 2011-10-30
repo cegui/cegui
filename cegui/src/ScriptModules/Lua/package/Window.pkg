@@ -1,25 +1,4 @@
 /****************************************
-	Vertical alignment modes
-*****************************************/
-enum VerticalAlignment
-{
-	VA_TOP,
-	VA_CENTRE,
-	VA_BOTTOM
-};
-
-
-/****************************************
-	Horizontal alignment modes
-*****************************************/
-enum HorizontalAlignment
-{
-	HA_LEFT,
-	HA_CENTRE,
-	HA_RIGHT
-};
-
-/****************************************
 	Window update call modes
 *****************************************/
 enum WindowUpdateMode
@@ -32,292 +11,239 @@ enum WindowUpdateMode
 /****************************************
 	Window
 *****************************************/
-class Window //: public EventSet
+class Window : public NamedElement
 {
-	string getType() const;
-	string getName() const;
-    string getNamePath() const;
-    tolua_throws|CEGUI::Exception,error| void rename(utf8string new_name);
+    string getType(void) const;
 
-    bool isAutoWindow() const;
+    bool isAutoWindow(void) const;
 
-	bool isDestroyedByParent() const;
-	bool isAlwaysOnTop() const;
-	bool isDisabled() const;
-	bool isEffectiveDisabled() const;
-	bool isVisible() const;
-	bool isEffectiveVisible() const;
-	bool isActive() const;
-	bool isClippedByParent() const;
+    bool isDestroyedByParent(void) const;
+    bool isAlwaysOnTop(void) const;
+    bool isDisabled() const;
+    bool isEffectiveDisabled() const;
+    bool isVisible() const;
+    bool isEffectiveVisible() const;
+    bool isActive(void) const;
+    bool isClippedByParent(void) const;
 
-	void setDestroyedByParent(bool setting);
-	void setAlwaysOnTop(bool setting);
-	void setEnabled(bool setting);
-	void enable();
-	void disable();
-	void setVisible(bool setting);
-	void show();
-	void hide();
-	void activate();
-	void deactivate();
+    void setDestroyedByParent(bool setting);
+    void setAlwaysOnTop(bool setting);
+    void setEnabled(bool setting);
+    void setDisabled(bool setting);
+    void enable(void);
+    void disable(void);
+    void setVisible(bool setting);
+    void show(void);
+    void hide(void);
+    void activate(void);
+    void deactivate(void);
+    void setClippedByParent(bool setting);
 
-	void setClippedByParent(bool setting);
-
-	unsigned int getID() const;
-	void setID(unsigned int ID);
-
-	unsigned int getChildCount() const;
-
-	bool isChild(unsigned int ID) const;
-	bool isChild(utf8string name) const;
-	bool isChild(const Window* window) const;
-	bool isChildRecursive(unsigned int ID) const;
-
-	void addChild(Window* window);
-
-	void removeChild(unsigned int ID);
-	void removeChild(utf8string name);
-	void removeChild(Window* window);
-
-    Window* createChild(utf8string type, utf8string name);
-    void destroyChild(Window* wnd);
-    void destroyChild(utf8string name_path);
-
-	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(unsigned int ID) const;
-	tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(utf8string name) const;
-    Window* getChildRecursive(unsigned int ID) const;
-	Window* getChildAtIdx(unsigned int ID) const;
-	Window* getChildAtPosition(const Vector2<float>& pos) const;
-    Window* getTargetChildAtPosition(const Vector2<float>& pos) const;
-
-    Window* getActiveChild() const;
-    Window* getActiveSibling();
-
-    Window* getParent() const;
+    unsigned int getID(void) const;
+    void setID(unsigned int ID);
 
     const Window* getRootWindow() const;
     Window* getRootWindow();
 
-	bool isAncestor(unsigned int ID) const;
-	bool isAncestor(utf8string name) const;
-	bool isAncestor(const Window* window) const;
+    Window* getParent() const;
 
-	void setFont(utf8string name);
-	void setFont(Font* font);
-	Font* getFont() const;
+    Window* getActiveSibling();
+    Window* getActiveChild(void);
+    const Window* getActiveChild(void) const;
 
-	void setText(utf8string text);
+    bool isChild(unsigned int ID) const;
+    bool isChildRecursive(unsigned int ID) const;
+    bool isAncestor(unsigned int ID) const;
+
+    Window* getChildAtIdx(unsigned long idx) const;   
+    tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(utf8string name_path) const;
+    tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(unsigned int ID) const;
+    Window* getChildRecursive(unsigned int ID) const;
+
+    Window* createChild(utf8string type, utf8string name = "");
+    void destroyChild(Window* wnd);
+    void destroyChild(utf8string name_path);
+    void removeChild(unsigned int ID);
+
+    const Font* getFont(bool useDefault = true) const;
+    void setFont(const Font* font);
+    void setFont(utf8string name);
+
+    string getText(void) const;
+    string getTextVisual() const;
+    void setText(utf8string text);
     void insertText(utf8string text, unsigned long position);
     void appendText(utf8string text);
-	string getText() const;
 
-	bool inheritsAlpha() const;
-	float getAlpha() const;
-	float getEffectiveAlpha() const;
-	void setAlpha(float a);
-	void setInheritsAlpha(bool setting);
+    bool inheritsAlpha(void) const;
+    void setInheritsAlpha(bool setting);
 
-	void invalidate();
+    float getEffectiveAlpha(void) const;
+    float getAlpha(void) const;
+    void setAlpha(const float alpha);
 
-	bool isZOrderingEnabled() const;
-	void setZOrderingEnabled(bool setting);
+    const Rect<float>& getOuterRectClipper() const;
+    const Rect<float>& getInnerRectClipper() const;
+    const Rect<float>& getClipRect(bool non_client = false) const;
+    const Rect<float>& getHitTestRect() const;
 
-    Rect<float> getUnclippedOuterRect() const;
-    Rect<float> getUnclippedInnerRect() const;
-    Rect<float> getUnclippedRect(bool inner) const;
-    Rect<float> getOuterRectClipper() const;
-    Rect<float> getInnerRectClipper() const;
-    Rect<float> getClipRect(bool non_client = false) const;
-    Rect<float> getHitTestRect() const;
+    Window* getCaptureWindow(void);
+    bool isCapturedByThis(void) const;
+    bool isCapturedByAncestor(void) const;
+    bool isCapturedByChild(void) const;
 
-    Size<float> getPixelSize() const;
-    Size<float> getParentPixelSize() const;
-    float getParentPixelWidth() const;
-    float getParentPixelHeight() const;
+    bool isHit(const Vector2<float>& position, bool allow_disabled = false) const;
 
-	static Window* getCaptureWindow();
-	void setRestoreOldCapture(bool setting);
-	bool restoresOldCapture() const;
+    Window* getChildAtPosition(const Vector2<float>& position) const;
+    Window* getTargetChildAtPosition(const Vector2<float>& position, bool allow_disabled = false) const;
 
-	bool distributesCapturedInputs() const;
-	void setDistributesCapturedInputs(bool setting);
+    const Image* getMouseCursor(bool useDefault = true) const;
+    void setMouseCursor(const Image* image);
+    void setMouseCursor(MouseCursorImage image);
+    void setMouseCursor(utf8string name);
 
-	bool captureInput();
-	void releaseInput();
+    //void* getUserData(void) const;
+    //void setUserData(void* user_data);
 
-	bool isCapturedByThis() const;
-	bool isCapturedByAncestor() const;
-	bool isCapturedByChild() const;
+    bool restoresOldCapture(void) const;
+    void setRestoreOldCapture(bool setting);
+    bool captureInput(void);
+    void releaseInput(void);
 
-	bool isHit(const Vector2<float>& pos) const;
+    unsigned long getZIndex() const;
+    bool isZOrderingEnabled(void) const;
+    void setZOrderingEnabled(bool setting);
 
-	bool isRiseOnClickEnabled() const;
-	void setRiseOnClickEnabled(bool setting);
+    void moveToFront();
+    void moveToBack();
 
-	const Image* getMouseCursor() const;
-	void setMouseCursor(MouseCursorImage cursor);
-	void setMouseCursor(const Image* image);
-	void setMouseCursor(utf8string name);
-
-	void moveToFront();
-	void moveToBack();
     void moveInFront(const Window* window);
     void moveBehind(const Window* window);
 
-	bool wantsMultiClickEvents() const;
-	bool isMouseAutoRepeatEnabled() const;
-	float getAutoRepeatDelay() const;
-	float getAutoRepeatRate() const;
-	void setWantsMultiClickEvents(bool setting);
-	void setMouseAutoRepeatEnabled(bool setting);
-	void setAutoRepeatDelay(float delay);
-	void setAutoRepeatRate(float rate);
+    bool isInFront(const Window& wnd) const;
+    bool isBehind(const Window& wnd) const;
 
-	//void destroy();
+    bool wantsMultiClickEvents(void) const;
+    void setWantsMultiClickEvents(bool setting);
 
-	bool isUsingDefaultTooltip() const;
-	Tooltip* getTooltip() const;
-	string getTooltipType() const;
-	string getTooltipText() const;
-	bool inheritsTooltipText() const;
+    bool isMouseAutoRepeatEnabled(void) const;
+    float getAutoRepeatDelay(void) const;
+    float getAutoRepeatRate(void) const;
 
-	void setTooltip(Tooltip* tooltip);
-	void setTooltipType(utf8string tooltipType);
-	void setTooltipText(utf8string tip);
-	void setInheritsTooltipText(bool setting);
+    void setMouseAutoRepeatEnabled(bool setting);
+    void setAutoRepeatDelay(float delay);
+    void setAutoRepeatRate(float rate);
+
+    bool isMouseInputPropagationEnabled() const;
+    void setMouseInputPropagationEnabled(const bool enabled);
+
+    bool isMousePassThroughEnabled(void) const;
+    void setMousePassThroughEnabled(bool setting);
+
+    bool distributesCapturedInputs(void) const;
+    void setDistributesCapturedInputs(bool setting);
+
+    bool isUsingDefaultTooltip(void) const;
+
+    Tooltip* getTooltip(void) const;
+    void setTooltip(Tooltip* tooltip);
+
+    string getTooltipType(void) const;
+    void setTooltipType(utf8string tooltipType);
+
+    string getTooltipText(void) const;
+    void setTooltipText(utf8string tip);
+    void setInheritsTooltipText(bool setting);
+
+    bool inheritsTooltipText(void) const;
+
+    bool isRiseOnClickEnabled(void) const;
+    void setRiseOnClickEnabled(bool setting);
+
+    GeometryBuffer& getGeometryBuffer();
+
+    string getLookNFeel() const;
+    tolua_throws|CEGUI::Exception,error| void setLookNFeel(utf8string look);
+
+    void setFalagardType(utf8string type, utf8string rendererType = "");
+
+    tolua_throws|CEGUI::Exception,error| void void setWindowRenderer(utf8string name);
+    //WindowRenderer* getWindowRenderer(void) const;
+    string getWindowRendererName() const;
+
+    bool getModalState(void) const;
+    void setModalState(bool state);
+    
+    bool isUserStringDefined(utf8string name) const;
+    tolua_throws|CEGUI::UnknownObjectException,nil| string getUserString(utf8string name) const;
+    void setUserString(utf8string name, utf8string value);
 
     bool isDragDropTarget() const;
     void setDragDropTarget(bool setting);
-	void notifyDragDropItemEnters(DragContainer* item);
-	void notifyDragDropItemLeaves(DragContainer* item);
-	void notifyDragDropItemDropped(DragContainer* item);
+    void notifyDragDropItemEnters(DragContainer* item);
+    void notifyDragDropItemLeaves(DragContainer* item);
+    void notifyDragDropItemDropped(DragContainer* item);
 
-	VerticalAlignment getVerticalAlignment() const;
-	HorizontalAlignment getHorizontalAlignment() const;
-
-    // these actually have a const, but tolua++ chokes on that
-    void setVerticalAlignment(VerticalAlignment alignment);
-    void setHorizontalAlignment(HorizontalAlignment alignment);
-
-	string getLookNFeel() const;
-    tolua_throws|CEGUI::Exception,error| void setLookNFeel(utf8string lnf);
-
-    tolua_throws|CEGUI::Exception,error| void setWindowRenderer(utf8string name);
-    string getWindowRendererName() const;
-
-	bool getModalState() const;
-	void setModalState(bool state);
-
-    tolua_throws|CEGUI::UnknownObjectException,nil| string getUserString(utf8string name) const;
-    bool isUserStringDefined(utf8string name) const;
-    void setUserString(utf8string name, utf8string value);
-
-    void beginInitialisation();
-    void endInitialisation();
-
-	// unified stuff
-	void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
-	void setArea(const UVector2& pos, const USize& size);
-	void setArea(const URect& area);
-	void setPosition(const UVector2& pos);
-	void setXPosition(const UDim& x);
-	void setYPosition(const UDim& y);
-	void setSize(const USize& size);
-	void setWidth(const UDim& width);
-	void setHeight(const UDim& height);
-	void setMaxSize(const USize& size);
-	void setMinSize(const USize& size);
-
-	const URect& getArea() const;
-	const UVector2& getPosition() const;
-	const UDim& getXPosition() const;
-	const UDim& getYPosition() const;
-	USize getSize() const;
-	UDim getWidth() const;
-	UDim getHeight() const;
-	const USize& getMaxSize() const;
-	const USize& getMinSize() const;
-
-    // event pass through
-    bool isMousePassThroughEnabled() const;
-    void setMousePassThroughEnabled(bool setting);
-
-    // xml writing
-    bool isWritingXMLAllowed() const;
+    bool isWritingXMLAllowed(void) const;
     void setWritingXMLAllowed(bool allow);
 
-    // rotation
-    const Quaternion& getRotation() const;
-    void setRotation(const Quaternion& rotation);
+    void banPropertyFromXML(utf8string property_name);
+    void unbanPropertyFromXML(utf8string property_name);
+    bool isPropertyBannedFromXML(utf8string property_name) const;
+    void banPropertyFromXML(const Property* property);
+    void unbanPropertyFromXML(const Property* property);
+    bool isPropertyBannedFromXML(const Property* property) const;
 
-    // rendering surface related
+    //void getRenderingContext_impl(RenderingContext& ctx) const;
+
     RenderingSurface& getTargetRenderingSurface() const;
-    void getRenderingContext(RenderingContext& ctx) const;
     RenderingSurface* getRenderingSurface() const;
     void setRenderingSurface(RenderingSurface* surface);
     bool isUsingAutoRenderingSurface() const;
     void setUsingAutoRenderingSurface(bool setting);
     void invalidateRenderingSurface();
 
-    // behave as client / non-client child
-    bool isNonClientWindow() const;
-    void setNonClientWindow(const bool setting);
+    void invalidate(void);
+    void invalidate(const bool recursive);
 
-    GeometryBuffer& getGeometryBuffer();
+    //void destroy(void);
+
+    //void initialiseComponents(void);
+    //void performChildWindowLayout();
+    //void render();
+    //void update(float elapsed);
+    
+    //bool performCopy(Clipboard& clipboard);
+    //bool performCut(Clipboard& clipboard);
+    //bool performPaste(Clipboard& clipboard);
+
+    //void writeXMLToStream(XMLSerializer& xml_stream) const;
+
+    //void beginInitialisation(void);
+    //void endInitialisation(void);
+
+    //const RenderedString& getRenderedString() const;
+    //RenderedStringParser* getCustomRenderedStringParser() const;
+    //void setCustomRenderedStringParser(RenderedStringParser* parser);
+    //virtual RenderedStringParser& getRenderedStringParser() const;
+    
+    //const BidiVisualMapping* getBidiVisualMapping() const;
+
+    void notifyScreenAreaChanged(bool recursive = true);
 
     bool isTextParsingEnabled() const;
-    void setTextParsingEnabled(bool setting);
+    void setTextParsingEnabled(const bool setting);
+
+    const UBox& getMargin() const;
+    void setMargin(const UBox& margin);
 
     Vector2<float> getUnprojectedPosition(const Vector2<float>& pos) const;
 
-    void banPropertyFromXML(utf8string property_name);
-    void unbanPropertyFromXML(utf8string property_name);
-    bool isPropertyBannedFromXML(utf8string property_name) const;
-
-    void setUpdateMode(WindowUpdateMode mode);
     WindowUpdateMode getUpdateMode() const;
+    void setUpdateMode(const WindowUpdateMode mode);
 
-    void setAspectMode(AspectMode mode);
-    AspectMode getAspectMode() const;
-    void setAspectRatio(float ratio);
-    float getAspectRatio() const;
+    Window* clone(const bool deepCopy = true) const;
 
-    void setMouseInputPropagationEnabled(bool enabled);
-    bool isMouseInputPropagationEnabled() const;
-
-    Window* clone(bool deepCopy = true) const;
-
-    unsigned int getZIndex() const;
-    bool isInFront(const Window& wnd) const;
-    bool isBehind(const Window& wnd) const;
-
-	//////////////////////////////////////////////
-	// PropertySet
-	void setProperty(utf8string name, utf8string value);
-	string getProperty(utf8string name) const;
-	string getPropertyDefault(utf8string name) const;
-	string getPropertyHelp(utf8string name) const;
-
-	bool isPropertyPresent(utf8string name) const;
-	bool isPropertyDefault(utf8string name) const;
-
-    tolua_outside PropertyIterator ceguiLua_getPropertyIterator @ getPropertyIterator() const;
-
-	//////////////////////////////////////////////
-	// EventSet
-	void addEvent(utf8string name);
-	void removeEvent(utf8string name);
-	void removeAllEvents();
-	bool isEventPresent(utf8string name);
-
-    tolua_throws|CEGUI::UnknownObjectException,error| tolua_outside EventConnection LuaFunctorSubscribeEvent @ subscribeEvent(utf8string name, lua_Object funcIndex, lua_Object selfIndex=LUA_NOREF, lua_Object error_handler = LUA_NOREF, lua_State*);
-
-	tolua_throws|CEGUI::UnknownObjectException,error| EventConnection subscribeScriptedEvent @ subscribeEvent(utf8string name, utf8string callback_name);
-	
-	void fireEvent(utf8string name, EventArgs& args, utf8string eventnamespace="");
-
-	bool isMuted() const;
-	void setMutedState(bool setting);
-
-    tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
+    void clonePropertiesTo(Window& target) const;
+    void cloneChildWidgetsTo(Window& target) const;
 };
