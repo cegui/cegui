@@ -165,33 +165,8 @@ static const float		DefaultNativeVertRes	= 480.0f;		//!< Default native vertical
 typedef std::ostream OutStream;     //!< Output stream class.
 }  // end of CEGUI namespace section
 
-
-//////////////////////////////////////////////////////////////////////////
-// Comment this line to remove the alignment of elements to pixel
-// boundaries.  This may give you a performance boost at the expense
-// of visual quality
-//////////////////////////////////////////////////////////////////////////
-#define CEGUI_ALIGN_ELEMENTS_TO_PIXELS 1
-
-/*!
-\brief
-	Macro used to return a float value rounded to the nearest integer.
-
-	This macro is used throughout the library to ensure that elements are
-	kept at integer pixel positions on the display.
-
-\param x
-	Expression to be rounded to nearest whole number
-
-\return
-	\a x after having been rounded
-*/
-#if defined(CEGUI_ALIGN_ELEMENTS_TO_PIXELS)
-#	define PixelAligned(x)	( (float)(int)(( x ) + (( x ) > 0.0f ? 0.5f : -0.5f)) )
-#else
-#	define PixelAligned(x)	( x )
-#endif
-
+// improve readability - http://www.parashift.com/c++-faq-lite/pointers-to-members.html#faq-33.6
+#define CEGUI_CALL_MEMBER_FN(object, ptrToMember) ((object).*(ptrToMember)) 
 
 /*************************************************************************
 	Bring in forward references to all GUI base system classes

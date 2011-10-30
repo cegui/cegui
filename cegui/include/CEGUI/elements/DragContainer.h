@@ -434,7 +434,7 @@ namespace CEGUI
         virtual void onCaptureLost(WindowEventArgs& e);
         virtual void onAlphaChanged(WindowEventArgs& e);
         virtual void onClippingChanged(WindowEventArgs& e);/*Window::drawSelf(z);*/
-        virtual void onMoved(WindowEventArgs& e);
+        virtual void onMoved(ElementEventArgs& e);
 
         /*************************************************************************
         	New Event handler methods

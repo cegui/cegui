@@ -31,7 +31,7 @@
 #define _CEGUIWindow_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/NamedElement.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"
@@ -59,51 +59,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    Enumerated type used when specifying vertical alignments.
- */
-enum VerticalAlignment
-{
-    /**
-     * Window's position specifies an offset of it's top edge from the top edge
-     * of it's parent.
-     */
-    VA_TOP,
-    /**
-     * Window's position specifies an offset of it's vertical centre from the
-     * vertical centre of it's parent.
-     */
-    VA_CENTRE,
-    /**
-     * Window's position specifies an offset of it's bottom edge from the
-     * bottom edge of it's parent.
-     */
-    VA_BOTTOM
-};
-
-/*!
-\brief
-    Enumerated type used when specifying horizontal alignments.
- */
-enum HorizontalAlignment
-{
-    /**
-     * Window's position specifies an offset of it's left edge from the left
-     * edge of it's parent.
-     */
-    HA_LEFT,
-    /**
-     * Window's position specifies an offset of it's horizontal centre from the
-     * horizontal centre of it's parent.
-     */
-    HA_CENTRE,
-    /**
-     * Window's position specifies an offset of it's right edge from the right
-     * edge of it's parent.
-     */
-    HA_RIGHT
-};
 
 /*!
 \brief
@@ -121,117 +76,6 @@ enum WindowUpdateMode
     WUM_NEVER,
     //! Only call the Window::update function for this window if it is visible.
     WUM_VISIBLE
-};
-
-
-template<>
-class PropertyHelper<CEGUI::VerticalAlignment>
-{
-public:
-    typedef VerticalAlignment return_type;
-    typedef return_type safe_method_return_type;
-    typedef VerticalAlignment pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("VerticalAlignment");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-    
-      if (str == "Centre")
-      {
-          return VA_CENTRE;
-      }
-      else if (str == "Bottom")
-      {
-          return VA_BOTTOM;
-      }
-      else
-      {
-          return VA_TOP;
-      }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == VA_CENTRE)
-        {
-            return "Centre";
-        }
-        else if (val == VA_BOTTOM)
-        {
-            return "Bottom";
-        }
-        else if (val == VA_TOP)
-        {
-            return "Top";
-        }
-        else
-        {
-            assert(false && "Invalid vertical alignment");
-            return "Centre";
-        }
-    }
-};
-
-template<>
-class PropertyHelper<HorizontalAlignment>
-{
-public:
-    typedef HorizontalAlignment return_type;
-    typedef return_type safe_method_return_type;
-    typedef HorizontalAlignment pass_type;
-    typedef String string_return_type;
-
-    static const String& getDataTypeName()
-    {
-        static String type("HorizontalAlignment");
-
-        return type;
-    }
-
-    static return_type fromString(const String& str)
-    {
-    
-        if (str == "Centre")
-        {
-            return HA_CENTRE;
-        }
-        else if (str == "Right")
-        {
-            return HA_RIGHT;
-        }
-        else
-        {
-            return HA_LEFT;
-        }
-    }
-
-    static string_return_type toString(pass_type val)
-    {
-        if (val == HA_CENTRE)
-        {
-            return "Centre";
-        }
-        else if (val == HA_RIGHT)
-        {
-            return "Right";
-        }
-        else if (val == HA_LEFT)
-        {
-            return "Left";
-        }
-        else
-        {
-            assert(false && "Invalid horizontal alignment");
-            return "Centre";
-        }
-    }
 };
 
 template<>
@@ -304,8 +148,7 @@ public:
     classes.
 */
 class CEGUIEXPORT Window :
-    public PropertySet,
-    public EventSet,
+    public NamedElement,
     public AllocatedObject<Window>
 {
 public:
@@ -320,22 +163,7 @@ public:
      * Handlers are passed a const UpdateEventArgs reference.
      */
     static const String EventUpdated;
-    /** Event fired when the parent of this Window has been re-sized.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window pointing to the <em>parent window</em> that
-     * was resized, not the window whose parent was resized.
-     */
-    static const String EventParentSized;
-    /** Event fired when the Window size has changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose size was changed.
-     */
-    static const String EventSized;
-    /** Event fired when the Window position has changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose position was changed.
-     */
-    static const String EventMoved;
+    
     /** Event fired when the text string for the Window has changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window whose text was changed.
@@ -445,27 +273,11 @@ public:
      * WindowEventArgs::window set to the Window whose rendering has ended.
      */
     static const String EventRenderingEnded;
-    /** Event fired when a child Window has been added.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the child window that was added.
-     */
-    static const String EventChildAdded;
-    /** Event fired when a child window has been removed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the child window that was removed.
-     */
-    static const String EventChildRemoved;
     /** Event fired when destruction of the Window is about to begin.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Window that is about to be destroyed.
      */
     static const String EventDestructionStarted;
-    /** Event fired when the z-order of the window has changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose z order position has
-     * changed.
-     */
-    static const String EventZOrderChanged;
     /** Event fired when a DragContainer is dragged in to the window's area.
      * Handlers are passed a const DragDropEventArgs reference with
      * WindowEventArgs::window set to the window over which a DragContainer has
@@ -489,18 +301,6 @@ public:
      * the DragContainer that was dropped within the receiving window's area.
      */
     static const String EventDragDropItemDropped;
-    /** Event fired when the vertical alignment for the window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the window whose vertical alignment
-     * setting was changed.
-     */
-    static const String EventVerticalAlignmentChanged;
-    /** Event fired when the horizontal alignment for the window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the window whose horizontal alignment
-     * setting was changed.
-     */
-    static const String EventHorizontalAlignmentChanged;
     /** Event fired when a WindowRenderer object is attached to the window.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the window that had the WindowRenderer
@@ -513,17 +313,6 @@ public:
      * detached from it.
      */
     static const String EventWindowRendererDetached;
-    /** Event fired when the rotation factor(s) for the window are changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose rotation was changed.
-     */
-    static const String EventRotated;
-    /** Event fired when the non-client setting for the Window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose non-client setting was
-     * changed.
-     */
-    static const String EventNonClientChanged;
     /** Event fired when the Window's setting controlling parsing of it's text
      * string is changed.
      * Handlers are passed a const WindowEventArgs reference with
@@ -676,24 +465,6 @@ public:
 
     /*!
     \brief
-        return a String object holding the name of this Window.
-
-    \return
-        String object holding the unique Window name.
-    */
-    const String& getName(void) const  {return d_name;}
-
-    /*
-    \brief
-        return a String object that describes the name path for this Window.
-
-        A name path is a string that describes a path down the window
-        hierarchy using window names and the forward slash '/' as a separator.
-    */
-    String getNamePath() const;
-
-    /*!
-    \brief
         returns whether or not this Window is set to be destroyed when its
         parent window is destroyed.
 
@@ -814,40 +585,7 @@ public:
     */
     uint getID(void) const {return d_ID;}
 
-    /*!
-    \brief
-        return the number of child Window objects currently attached to this
-        Window.
-
-    \return
-        size_t value equal to the number of Window objects directly attached
-        to this Window as children.
-    */
-    size_t getChildCount(void) const  {return d_children.size();}
-
-    /*!
-    \brief
-        returns whether the specified name path references a Window that is
-        currently attached to this Window.
-
-        A name path is a string that describes a path down the window
-        hierarchy using window names and the forward slash '/' as a separator.
-        \par
-        For example, if this window has a child attached to it named "Panel"
-        which has its own children attached named "Okay" and "Cancel",
-        you can check for the window "Okay" from this window by using the
-        name path "Panel/Okay".  To check for "Panel", you would simply pass
-        the name "Panel".
-
-    \param name_path
-        String object holding the name path of the child window to test.
-
-    \return
-         - true if the window referenced by \a name_path is attached.
-         - false if the window referenced by \a name_path is not attached.
-    */
-    bool isChild(const String& name_path) const;
-
+    using NamedElement::isChild;
     /*!
     \brief
         returns whether at least one window with the given ID code is attached
@@ -888,19 +626,11 @@ public:
     */
     bool isChildRecursive(uint ID) const;
 
-    /*!
-    \brief
-        return true if the given Window is a child of this window.
-
-    \param window
-        Pointer to the Window object to look for.
-
-    \return
-        - true if Window object \a window is attached to this window as a child.
-        - false if Window object \a window is not a child of this Window.
-    */
-    bool isChild(const Window* window) const;
-
+    inline Window* getChildAtIdx(size_t idx) const
+    {
+        return static_cast<Window*>(getChildElementAtIdx(idx));
+    }
+    
     /*!
     \brief
         return the attached child window that the given name path references.
@@ -924,7 +654,10 @@ public:
         thrown if \a name_path does not reference a Window attached to this
         Window.
     */
-    Window* getChild(const String& name_path) const;
+    inline Window* getChild(const String& name_path) const
+    {
+        return static_cast<Window*>(getChildElement(name_path));
+    }
 
     /*!
     \brief
@@ -974,21 +707,6 @@ public:
 
     /*!
     \brief
-        return a pointer to the child window that is attached to 'this' at the
-        given index.
-
-    \param idx
-        Index of the child window whos pointer should be returned.  This value
-        is not bounds checked, client code should ensure that this is less than
-        the value returned by getChildCount().
-
-    \return
-        Pointer to the child window currently attached at index position \a idx
-    */
-    Window* getChildAtIdx(size_t idx) const {return d_children[idx];}
-
-    /*!
-    \brief
         return a pointer to the Window that currently has input focus starting
         with this Window.
 
@@ -1002,21 +720,7 @@ public:
     Window* getActiveChild(void);
     const Window* getActiveChild(void) const;
 
-    /*!
-    \brief
-        return true if the specified Window is some ancestor of this Window
-
-    \param name
-        String object holding the name of the Window to check for.
-
-    \return
-        - true if a Window named \a name is an ancestor (parent, or parent of
-          parent, etc) of this Window.
-        - false if a Window named \a name is in no way an ancestor of this
-          window.
-    */
-    bool isAncestor(const String& name) const;
-
+    using NamedElement::isAncestor;
     /*!
     \brief
         return true if any Window with the given ID is some ancestor of this
@@ -1031,20 +735,6 @@ public:
         - false if no ancestor window has the ID code \a ID.
     */
     bool isAncestor(uint ID) const;
-
-    /*!
-    \brief
-        return true if the specified Window is some ancestor of this Window.
-
-    \param window
-        Pointer to the Window object to look for.
-
-    \return
-        - true if \a window was found to be an ancestor (parent, or parent of
-          parent, etc) of this Window.
-        - false if \a window is not an ancestor of this window.
-    */
-    bool isAncestor(const Window* window) const;
 
     /*!
     \brief
@@ -1115,39 +805,6 @@ public:
 
     /*!
     \brief
-        Return a Rect that describes the unclipped outer rect area of the Window
-        in screen pixels.
-    */
-    const Rectf& getUnclippedOuterRect() const;
-
-    /*!
-    \brief
-        Return a Rect object that describes, unclipped, the inner rectangle for
-        this window.  The inner rectangle is typically an area that excludes
-        some frame or other rendering that should not be touched by subsequent
-        rendering.
-
-    \return
-        Rect object that describes, in unclipped screen pixel co-ordinates, the
-        window object's inner rect area.
-    */
-    const Rectf& getUnclippedInnerRect() const;
-
-    /*!
-    \brief
-        Return a Rect that describes the unclipped area covered by the Window.
-
-        This function can return either the inner or outer area dependant upon
-        the boolean values passed in.
-
-    \param inner
-        - true if the inner rect area should be returned.
-        - false if the outer rect area should be returned.
-    */
-    const Rectf& getUnclippedRect(const bool inner) const;
-
-    /*!
-    \brief
         Return a Rect that describes the rendering clipping rect based upon the
         outer rect area of the window.
 
@@ -1205,27 +862,6 @@ public:
         clipper rects should not to be used if reliable results are desired).
     */
     const Rectf& getHitTestRect() const;
-
-    /*!
-    \brief
-        Return a Rect that describes the area that is used to position
-        and - for scale values - size child content attached to this Window.
-
-        By and large the area returned here will be the same as the unclipped
-        inner rect (for client content) or the unclipped outer rect (for non
-        client content), although certain advanced uses will require
-        alternative Rects to be returned.
-
-    \note
-        The behaviour of this function is modified by overriding the
-        protected Window::getClientChildWindowContentArea_impl and/or
-        Window::getNonClientChildWindowContentArea_impl functions.
-
-    \param non_client
-        - true to return the non-client child content area.
-        - false to return the client child content area (default).
-    */
-    Rectf getChildWindowContentArea(const bool non_client = false) const;
 
     /*!
     \brief
@@ -1330,7 +966,10 @@ public:
         Pointer to the Window object that is the parent of this Window.
         This value can be NULL, in which case the Window is a GUI sheet / root.
     */
-    Window* getParent(void) const   {return d_parent;}
+    inline Window* getParent() const
+    {
+        return static_cast<Window*>(getParentElement());
+    }
 
     /*!
     \brief
@@ -1347,15 +986,6 @@ public:
         be drawn for this window.
     */
     const Image* getMouseCursor(bool useDefault = true) const;
-
-    /*!
-    \brief
-        Return the window size in pixels.
-
-    \return
-        Size object describing this windows size in pixels.
-    */
-    Sizef getPixelSize(void) const    { return d_pixelSize; }
 
     /*!
     \brief
@@ -1542,30 +1172,6 @@ public:
 
     /*!
     \brief
-        Get the vertical alignment.
-
-        Returns the vertical alignment for the window.  This setting affects how
-        the windows position is interpreted relative to its parent.
-
-    \return
-        One of the VerticalAlignment enumerated values.
-     */
-    VerticalAlignment getVerticalAlignment() const  {return d_vertAlign;}
-
-    /*!
-    \brief
-        Get the horizontal alignment.
-
-        Returns the horizontal alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
-
-    \return
-        One of the HorizontalAlignment enumerated values.
-     */
-    HorizontalAlignment getHorizontalAlignment() const  {return d_horzAlign;}
-
-    /*!
-    \brief
         Return the GeometryBuffer object for this Window.
 
     \return
@@ -1637,39 +1243,6 @@ public:
         currently active, or 0 if no immediate child of our parent is active.
     */
     Window* getActiveSibling();
-
-    /*!
-    \brief
-        Return the pixel size of the parent element.  This always returns a
-        valid object.
-
-    \return
-        Size object that describes the pixel dimensions of this Window objects
-        parent
-    */
-    Sizef getParentPixelSize(void) const;
-
-    /*!
-    \brief
-        Return the pixel Width of the parent element.  This always returns a
-        valid number.
-
-    \return
-        float value that is equal to the pixel width of this Window objects
-        parent
-    */
-    float getParentPixelWidth(void) const;
-
-    /*!
-    \brief
-        Return the pixel Height of the parent element.  This always returns a
-        valid number.
-
-    \return
-        float value that is equal to the pixel height of this Window objects
-        parent
-    */
-    float getParentPixelHeight(void) const;
 
     /*!
     \brief
@@ -1756,34 +1329,6 @@ public:
     */
     const Window* getRootWindow() const;
     Window* getRootWindow();
-
-    /*!
-    \brief
-        Return whether the Window is a non-client window.
-
-        A non-client window is clipped, positioned and sized according to the
-        parent window's full area as opposed to just the inner rect area used
-        for normal client windows.
-
-    \return
-        - true if the window should is clipped, positioned and sized according
-        to the full area rectangle of it's parent.
-        - false if the window is be clipped, positioned and sized according
-        to the inner rect area of it's parent.
-    */
-    bool isNonClientWindow() const;
-
-    /*!
-    \brief
-        Renames the window.
-
-    \param new_name
-        String object holding the new name for the window.
-
-    \exception AlreadyExistsException
-        thrown if a Window named \a new_name already exists in the system.
-    */
-    void rename(const String& new_name);
 
     /*!
     \brief
@@ -2033,52 +1578,7 @@ public:
     */
     void setFont(const String& name);
 
-    /*!
-    \brief
-        Add the specified Window as a child of this Window.  If the Window
-        \a window is already attached to a Window, it is detached before
-        being added to this Window.
-
-    \param window
-        Pointer to the Window object to be added.
-
-    \return
-        Nothing
-
-    \exception InvalidRequestException
-        thrown if Window \a window is an ancestor of this Window, to prevent
-        cyclic Window structures.
-    */
-    void addChild(Window* window);
-
-    /*!
-    \brief
-        Remove the Window referenced by the given name path from this Windows
-        child list.
-
-    \param name_path
-        String the name path that references the the Window to be removed.
-        If the Window specified is not attached to this Window, nothing
-        happens.
-
-    \return
-        Nothing.
-    */
-    void removeChild(const String& name);
-
-    /*!
-    \brief
-        Remove the specified Window form this windows child list.
-
-    \param window
-        Pointer to the Window object to be removed.  If the \a window is not
-        attached to this Window, then nothing happens.
-
-    \return
-        Nothing.
-    */
-    void removeChild(Window* window);
-
+    using NamedElement::removeChild;
     /*!
     \brief
         Remove the first child Window with the specified ID.  If there is more
@@ -2095,20 +1595,20 @@ public:
     void removeChild(uint ID);
 
     /*!
-	\brief
-		Creates a child window attached to this window.
-	
-	\param type
-		String that describes the type of Window to be created.  A valid
+    \brief
+        Creates a child window attached to this window.
+    
+    \param type
+        String that describes the type of Window to be created.  A valid
         WindowFactory for the specified type must be registered.
 
-	\param name
-		String that holds the name that is to be given to the new window.  If
+    \param name
+        String that holds the name that is to be given to the new window.  If
         this string is empty, a name will be generated for the window.
 
-	\return
-		Pointer to the newly created child Window object.
-	*/
+    \return
+        Pointer to the newly created child Window object.
+    */
     Window* createChild(const String& type, const String& name = "");
 
     /*!
@@ -2128,7 +1628,7 @@ public:
         Name path that references the window to destroy
     */
     void destroyChild(const String& name_path);
-
+    
     /*!
     \brief
         Move the Window to the top of the z order.
@@ -2190,6 +1690,42 @@ public:
         The sibling window that this window will be moved behind.
     */
     void moveBehind(const Window* const window);
+    
+    /*!
+    \brief
+        Return the (visual) z index of the window on it's parent.
+        
+        The z index is a number that indicates the order that windows will be
+        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
+        front of lower numbers.
+
+        The number returned will not be stable, and generally should be used to
+        compare with the z index of sibling windows (and only sibling windows)
+        to discover the current z ordering of those windows.
+    */
+    size_t getZIndex() const;
+
+    /*!
+    \brief
+        Return whether /a this Window is in front of the given window.
+
+    \note
+        Here 'in front' just means that one window is drawn after the other, it
+        is not meant to imply that the windows are overlapping nor that one
+        window is obscured by the other.
+    */
+    bool isInFront(const Window& wnd) const;
+
+    /*!
+    \brief
+        Return whether /a this Window is behind the given window.
+
+    \note
+        Here 'behind' just means that one window is drawn before the other, it
+        is not meant to imply that the windows are overlapping nor that one
+        window is obscured by the other.
+    */
+    bool isBehind(const Window& wnd) const;
 
     /*!
     \brief
@@ -2356,7 +1892,7 @@ public:
         Nothing.
     */
     void setUserData(void* user_data)   {d_userData = user_data;}
-
+    
     /*!
     \brief
         Set whether z-order changes are enabled or disabled for this Window.
@@ -2380,7 +1916,7 @@ public:
         Nothing.
     */
     void    setZOrderingEnabled(bool setting);
-
+    
     /*!
     \brief
         Set whether this window will receive multi-click events or multiple
@@ -2577,36 +2113,6 @@ public:
 
     /*!
     \brief
-        Set the vertical alignment.
-
-        Modifies the vertical alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
-
-    \param alignment
-        One of the VerticalAlignment enumerated values.
-
-    \return
-        Nothing.
-     */
-    void setVerticalAlignment(const VerticalAlignment alignment);
-
-    /*!
-    \brief
-        Set the horizontal alignment.
-
-        Modifies the horizontal alignment for the window.  This setting affects
-        how the windows position is interpreted relative to its parent.
-
-    \param alignment
-        One of the HorizontalAlignment enumerated values.
-
-    \return
-        Nothing.
-     */
-    void setHorizontalAlignment(const HorizontalAlignment alignment);
-
-    /*!
-    \brief
         Set the LookNFeel that shoule be used for this window.
 
     \param look
@@ -2664,378 +2170,6 @@ public:
         Nothing.
     */
     void setUserString(const String& name, const String& value);
-
-    /*!
-    \brief
-        Set the window area.
-
-        Sets the area occupied by this window.  The defined area is offset from
-        the top-left corner of this windows parent window or from the top-left
-        corner of the display if this window has no parent (i.e. it is the root
-        window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param xpos
-        UDim describing the new x co-ordinate (left edge) of the window area.
-
-    \param ypos
-        UDim describing the new y co-ordinate (top-edge) of the window area.
-
-    \param width
-        UDim describing the new width of the window area.
-
-    \param height
-        UDim describing the new height of the window area.
-     */
-    void setArea(const UDim& xpos, const UDim& ypos, const UDim& width, const UDim& height);
-
-    /*!
-    \brief
-        Set the window area.
-
-        Sets the area occupied by this window.  The defined area is offset from
-        the top-left corner of this windows parent window or from the top-left
-        corner of the display if this window has no parent (i.e. it is the root
-        window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param pos
-        UVector2 describing the new position (top-left corner) of the window
-        area.
-
-    \param size
-        UVector2 describing the new size of the window area.
-     */
-    void setArea(const UVector2& pos, const USize& size);
-
-    /*!
-    \brief
-        Set the window area.
-
-        Sets the area occupied by this window.  The defined area is offset from
-        the top-left corner of this windows parent window or from the top-left
-        corner of the display if this window has no parent (i.e. it is the root
-        window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param area
-        URect describing the new area rectangle of the window area.
-     */
-    void setArea(const URect& area);
-
-    /*!
-    \brief
-        Set the window's position.
-
-        Sets the position of the area occupied by this window.  The position is
-        offset from the top-left corner of this windows parent window or from
-        the top-left corner of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param pos
-        UVector2 describing the new position (top-left corner) of the window
-        area.
-     */
-    void setPosition(const UVector2& pos);
-
-    /*!
-    \brief
-        Set the window's X position.
-
-        Sets the x position (left edge) of the area occupied by this window.
-        The position is offset from the left edge of this windows parent window
-        or from the left edge of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param x
-        UDim describing the new x position of the window area.
-     */
-    void setXPosition(const UDim& x);
-
-    /*!
-    \brief
-        Set the window's Y position.
-
-        Sets the y position (top edge) of the area occupied by this window.
-        The position is offset from the top edge of this windows parent window
-        or from the top edge of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param y
-        UDim describing the new y position of the window area.
-     */
-    void setYPosition(const UDim& y);
-
-    /*!
-    \brief
-        Set the window's size.
-
-        Sets the size of the area occupied by this window.
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param size
-        USize describing the new size of the window area.
-     */
-    void setSize(const USize& size);
-
-    /*!
-    \brief
-        Set the window's width.
-
-        Sets the width of the area occupied by this window.
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param width
-        UDim describing the new width of the window area.
-     */
-    void setWidth(const UDim& width);
-
-    /*!
-    \brief
-        Set the window's height.
-
-        Sets the height of the area occupied by this window.
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param height
-        UDim describing the new height of the window area.
-     */
-    void setHeight(const UDim& height);
-
-    /*!
-    \brief
-        Set the window's maximum size.
-
-        Sets the maximum size that this windows area may occupy (whether size
-        changes occur by user interaction, general system operation, or by
-        direct setting by client code).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param size
-        USize describing the new maximum size of the window area.
-     */
-    void setMaxSize(const USize& size);
-
-    /*!
-    \brief
-        Set the window's minimum size.
-
-        Sets the minimum size that this windows area may occupy (whether size
-        changes occur by user interaction, general system operation, or by
-        direct setting by client code).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param size
-        USize describing the new minimum size of the window area.
-     */
-    void setMinSize(const USize& size);
-
-    /*!
-    \brief
-        Return the windows area.
-
-        Returns the area occupied by this window.  The defined area is offset
-        from the top-left corner of this windows parent window or from the
-        top-left corner of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        URect describing the rectangle of the window area.
-     */
-    const URect& getArea() const;
-
-    /*!
-    \brief
-        Get the window's position.
-
-        Gets the position of the area occupied by this window.  The position is
-        offset from the top-left corner of this windows parent window or from
-        the top-left corner of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UVector2 describing the position (top-left corner) of the window area.
-     */
-    const UVector2& getPosition() const;
-
-    /*!
-    \brief
-        Get the window's X position.
-
-        Gets the x position (left edge) of the area occupied by this window.
-        The position is offset from the left edge of this windows parent window
-        or from the left edge of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UDim describing the x position of the window area.
-     */
-    const UDim& getXPosition() const;
-
-    /*!
-    \brief
-        Get the window's Y position.
-
-        Gets the y position (top edge) of the area occupied by this window.
-        The position is offset from the top edge of this windows parent window
-        or from the top edge of the display if this window has no parent
-        (i.e. it is the root window).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UDim describing the y position of the window area.
-     */
-    const UDim& getYPosition() const;
-
-    /*!
-    \brief
-        Get the window's size.
-
-        Gets the size of the area occupied by this window.
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        USize describing the size of the window area.
-     */
-    USize getSize() const;
-
-    /*!
-    \brief
-        Get the window's width.
-
-        Gets the width of the area occupied by this window.
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UDim describing the width of the window area.
-     */
-    UDim getWidth() const;
-
-    /*!
-    \brief
-        Get the window's height.
-
-        Gets the height of the area occupied by this window.
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UDim describing the height of the window area.
-     */
-    UDim getHeight() const;
-
-    /*!
-    \brief
-        Get the window's maximum size.
-
-        Gets the maximum size that this windows area may occupy (whether size
-        changes occur by user interaction, general system operation, or by
-        direct setting by client code).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UVector2 describing the maximum size of the window area.
-     */
-    const USize& getMaxSize() const;
-
-    /*!
-    \brief
-        Get the window's minimum size.
-
-        Gets the minimum size that this windows area may occupy (whether size
-        changes occur by user interaction, general system operation, or by
-        direct setting by client code).
-
-    \note
-        This method makes use of "Unified Dimensions".  These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \return
-        UVector2 describing the minimum size of the window area.
-     */
-    const USize& getMinSize() const;
 
     /*!
     \brief
@@ -3178,7 +2312,7 @@ public:
         The factory name of the currently assigned WindowRenderer.
         If no WindowRenderer is assigned an empty string is returned.
     */
-    String getWindowRendererName(void) const;
+    const String& getWindowRendererName() const;
 
     /*!
     \brief
@@ -3196,7 +2330,7 @@ public:
           Window objects.
         - false to just process \e this Window.
     */
-    void notifyScreenAreaChanged(bool recursive = true);
+    virtual void notifyScreenAreaChanged(bool recursive = true);
 
     /*!
     \brief
@@ -3295,42 +2429,6 @@ public:
     */
     void setUsingAutoRenderingSurface(bool setting);
 
-    /*!
-    \brief sets rotation of this widget
-
-    \param rotation
-        A Quaternion describing the rotation
-
-    CEGUI used Euler angles previously. Whilst this is easy to use and seems
-    intuitive, it causes Gimbal locks when animating and is just the worse
-    solution than using Quaternions. You can still use Euler angles, see
-    the \a Quaternion class for more info about that.
-    */
-    void setRotation(const Quaternion& rotation);
-
-    /*!
-    \brief retrieves rotation of this widget
-
-    \see Window::setRotation
-    */
-    const Quaternion& getRotation() const;
-
-    /*!
-    \brief
-        Set whether the Window is a non-client window.
-
-        A non-client window is clipped, positioned and sized according to the
-        parent window's full area as opposed to just the inner rect area used
-        for normal client windows.
-
-    \param setting
-        - true if the window should be clipped, positioned and sized according
-        to the full area rectangle of it's parent.
-        - false if the window should be clipped, positioned and sized according
-        to the inner rect area of it's parent.
-    */
-    void setNonClientWindow(const bool setting);
-
     //! Return the parsed RenderedString object for this window.
     const RenderedString& getRenderedString() const;
     //! Return a pointer to any custom RenderedStringParser set, or 0 if none.
@@ -3414,37 +2512,6 @@ public:
 
     /*!
     \brief
-        Sets current aspect mode and recalculates the area rect
-
-    \param
-        mode the new aspect mode to set
-    */
-    void setAspectMode(AspectMode mode);
-
-    /*!
-    \brief
-        Retrieves currently used aspect mode
-    */
-    AspectMode getAspectMode() const;
-
-    /*!
-    \brief
-        Sets target aspect ratio
-
-    This is ignored if AspectMode is AM_IGNORE.
-    */
-    void setAspectRatio(float ratio);
-
-    /*!
-    \brief
-        Retrieves target aspect ratio
-
-    \see Window::setAspectRatio
-    */
-    float getAspectRatio() const;
-
-    /*!
-    \brief
         Set whether mouse input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
@@ -3484,42 +2551,6 @@ public:
     //! copies this widget's child widgets to given target widget
     virtual void cloneChildWidgetsTo(Window& target) const;
 
-    /*!
-    \brief
-        Return the (visual) z index of the window on it's parent.
-        
-        The z index is a number that indicates the order that windows will be
-        drawn (but is not a 'z co-ordinate', as such).  Higher numbers are in
-        front of lower numbers.
-
-        The number returned will not be stable, and generally should be used to
-        compare with the z index of sibling windows (and only sibling windows)
-        to discover the current z ordering of those windows.
-    */
-    size_t getZIndex() const;
-
-    /*!
-    \brief
-        Return whether /a this Window is in front of the given window.
-
-    \note
-        Here 'in front' just means that one window is drawn after the other, it
-        is not meant to imply that the windows are overlapping nor that one
-        window is obscured by the other.
-    */
-    bool isInFront(const Window& wnd) const;
-
-    /*!
-    \brief
-        Return whether /a this Window is behind the given window.
-
-    \note
-        Here 'behind' just means that one window is drawn before the other, it
-        is not meant to imply that the windows are overlapping nor that one
-        window is obscured by the other.
-    */
-    bool isBehind(const Window& wnd) const;
-
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3537,7 +2568,7 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onSized(WindowEventArgs& e);
+    virtual void onSized(ElementEventArgs& e);
 
     /*!
     \brief
@@ -3548,7 +2579,9 @@ protected:
         that triggered the event.  For this event the trigger window is always
         'this'.
     */
-    virtual void onMoved(WindowEventArgs& e);
+    virtual void onMoved(ElementEventArgs& e);
+    
+    virtual void onRotated(ElementEventArgs& e);
 
     /*!
     \brief
@@ -3783,7 +2816,7 @@ protected:
         window that caused the event; this is typically either this window's
         parent window, or NULL to indicate the screen size has changed.
     */
-    virtual void onParentSized(WindowEventArgs& e);
+    virtual void onParentSized(ElementEventArgs& e);
 
     /*!
     \brief
@@ -3793,7 +2826,7 @@ protected:
         WindowEventArgs object whose 'window' pointer field is set to the window
         that has been added.
     */
-    virtual void onChildAdded(WindowEventArgs& e);
+    virtual void onChildAdded(ElementEventArgs& e);
 
     /*!
     \brief
@@ -3803,7 +2836,7 @@ protected:
         WindowEventArgs object whose 'window' pointer field is set the window
         that has been removed.
     */
-    virtual void onChildRemoved(WindowEventArgs& e);
+    virtual void onChildRemoved(ElementEventArgs& e);
 
     /*!
     \brief
@@ -4002,30 +3035,6 @@ protected:
 
     /*!
     \brief
-        Handler called when the vertical alignment setting for the window is
-        changed.
-
-    \param e
-        WindowEventArgs object initialised as follows:
-        - window field is set to point to the Window object whos alignment has
-          changed (typically 'this').
-    */
-    virtual void onVerticalAlignmentChanged(WindowEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when the horizontal alignment setting for the window is
-        changed.
-
-    \param e
-        WindowEventArgs object initialised as follows:
-        - window field is set to point to the Window object whos alignment has
-          changed (typically 'this').
-    */
-    virtual void onHorizontalAlignmentChanged(WindowEventArgs& e);
-
-    /*!
-    \brief
         Handler called when a new window renderer object is attached.
 
     \param e
@@ -4045,29 +3054,6 @@ protected:
           window renderer. (typically 'this').
     */
     virtual void onWindowRendererDetached(WindowEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when the window's rotation factor is changed.
-
-    \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
-        that triggered the event.  For this event the trigger window is always
-        'this'.
-    */
-    virtual void onRotated(WindowEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when the window's non-client setting, affecting it's
-        position and size relative to it's parent is changed.
-
-    \param e
-        WindowEventArgs object whose 'window' pointer field is set to the window
-        that triggered the event.  For this event the trigger window is always
-        'this'.
-    */
-    virtual void onNonClientChanged(WindowEventArgs& e);
 
     /*!
     \brief
@@ -4155,7 +3141,7 @@ protected:
     \return
         Nothing
     */
-    void setParent(Window* parent);
+    virtual void setParent(Element* parent);
 
     /*!
     \brief
@@ -4197,6 +3183,9 @@ protected:
     //! Helper to intialise the needed clipping for geometry and render surface.
     void initialiseClippers(const RenderingContext& ctx);
 
+    //! \copydoc Element::setArea_impl
+    virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing = false, bool fireEvents = true);
+    
     /*!
     \brief
         Cleanup child windows
@@ -4204,16 +3193,14 @@ protected:
     virtual void cleanupChildren(void);
 
     /*!
-    \brief
-        Add given window to child list at an appropriate position
+    \copydoc Element::addChild_impl
     */
-    virtual void addChild_impl(Window* wnd);
+    virtual void addChild_impl(Element* element);
 
     /*!
-    \brief
-        Remove given window from child list
+    \copydoc Element::removeChild_impl
     */
-    virtual void removeChild_impl(Window* wnd);
+    virtual void removeChild_impl(Element* element);
 
     /*!
     \brief
@@ -4225,7 +3212,7 @@ protected:
     \brief
         Add standard CEGUI::Window properties.
     */
-    void    addStandardProperties(void);
+    void    addWindowProperties(void);
 
     /*!
     \brief
@@ -4236,39 +3223,6 @@ protected:
         nothing to be done.
     */
     virtual bool moveToFront_impl(bool wasClicked);
-
-    /*!
-    \brief
-        Implementation method to modify window area while correctly applying
-        min / max size processing, and firing any appropriate events.
-
-    /note
-        This is the implementation function for setting size and position.
-        In order to simplify area management, from this point on, all
-        modifications to window size and position (area rect) should come
-        through here.
-
-    /param pos
-        UVector2 object describing the new area position.
-
-    /param size
-        USize object describing the new area size.
-
-    /param topLeftSizing
-        - true to indicate the the operation is a sizing operation on the top
-          and/or left edges of the area, and so window movement should be
-          inhibited if size is at max or min.
-        - false to indicate the operation is not a strict sizing operation on
-          the top and/or left edges and that the window position may change as
-          required
-
-    /param fireEvents
-        - true if events should be fired as normal.
-        - false to inhibit firing of events (required, for example, if you need
-          to call this from the onSize/onMove handlers).
-     */
-    void setArea_impl(const UVector2& pos, const USize& size,
-                      bool topLeftSizing = false, bool fireEvents = true);
 
     /*!
     \brief
@@ -4303,7 +3257,7 @@ protected:
         Nothing.
     */
     void removeWindowFromDrawList(const Window& wnd);
-
+    
     /*!
     \brief
         Return whether the window is at the top of the Z-Order.  This will
@@ -4333,9 +3287,6 @@ protected:
     //! helper function to invalidate window and optionally child windows.
     void invalidate_impl(const bool recursive);
 
-    //! helper to return whether the inner rect size has changed
-    bool isInnerRectSizeChanged() const;
-
     /*!
     \brief
         Helper function to return the ancestor Window of /a wnd that is attached
@@ -4344,32 +3295,17 @@ protected:
      */
     const Window* getWindowAttachedToCommonAncestor(const Window& wnd) const;
 
-    //! Default implementation of function to return Window outer rect area.
-    virtual Rectf getUnclippedOuterRect_impl() const;
-    //! Default implementation of function to return Window inner rect area.
-    virtual Rectf getUnclippedInnerRect_impl(void) const;
+    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Window outer clipper area.
     virtual Rectf getOuterRectClipper_impl() const;
     //! Default implementation of function to return Window inner clipper area.
     virtual Rectf getInnerRectClipper_impl() const;
     //! Default implementation of function to return Window hit-test area.
     virtual Rectf getHitTestRect_impl() const;
-    //! Default implementation of function to return non-client content area
-    virtual Rectf getNonClientChildWindowContentArea_impl() const;
-    //! Default implementation of function to return client content area
-    virtual Rectf getClientChildWindowContentArea_impl() const;
-
+    
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
-
-    // constrain given USize to window's min size, return if size changed.
-    bool constrainToMinSize(const Sizef& base_sz, USize& sz);
-    // constrain given USize to window's max size, return if size changed.
-    bool constrainToMaxSize(const Sizef& base_sz, USize& sz);
-    
-    //! implementation function to get window at name_path, returns 0 if none.
-    virtual Window* getChild_impl(const String& name_path) const;
 
     /*************************************************************************
         Properties for Window base class
@@ -4419,8 +3355,6 @@ protected:
         Implementation Data
     *************************************************************************/
     //! definition of type used for the list of attached child windows.
-    typedef std::vector<Window*
-        CEGUI_VECTOR_ALLOC(Window*)> ChildList;
     //! definition of type used for the list of child windows to be drawn
     typedef std::vector<Window*
         CEGUI_VECTOR_ALLOC(Window*)> ChildDrawList;
@@ -4433,8 +3367,6 @@ protected:
 
     //! type of Window (also the name of the WindowFactory that created us)
     const String d_type;
-    //! The name of the window (GUI system unique).
-    String d_name;
     //! Type name of the window as defined in a Falagard mapping.
     String d_falagardType;
     //! true when this window is an auto-window (it's name contains __auto_)
@@ -4451,19 +3383,13 @@ protected:
     //! true when Window is the active Window (receiving inputs).
     bool d_active;
 
-    //! The list of child Window objects attached to this.
-    ChildList d_children;
     //! Child window objects arranged in rendering order.
     ChildDrawList d_drawList;
-    //! Holds pointer to the parent window.
-    Window* d_parent;
     //! true when Window will be auto-destroyed by parent.
     bool d_destroyedByParent;
 
     //! true when Window will be clipped by parent Window area Rect.
     bool d_clippedByParent;
-    //! true if Window is in non-client (outside InnerRect) area of parent.
-    bool d_nonClientContent;
 
     //! Name of the Look assigned to this window (if any).
     String d_lookName;
@@ -4567,25 +3493,6 @@ protected:
     //! collection of properties not to be written to XML for this window.
     BannedXMLPropertySet d_bannedXMLProperties;
 
-    //! This Window objects area as defined by a URect.
-    URect d_area;
-    //! Current constrained pixel size of the window.
-    Sizef d_pixelSize;
-    //! current minimum size for the window.
-    USize d_minSize;
-    //! current maximum size for the window.
-    USize d_maxSize;
-    //! Specifies the base for horizontal alignment.
-    HorizontalAlignment d_horzAlign;
-    //! Specifies the base for vertical alignment.
-    VerticalAlignment d_vertAlign;
-    //! Rotation of this window (relative to the parent)
-    Quaternion d_rotation;
-
-    //! outer area rect in screen pixels
-    mutable Rectf d_outerUnclippedRect;
-    //! inner area rect in screen pixels
-    mutable Rectf d_innerUnclippedRect;
     //! outer area clipping rect in screen pixels
     mutable Rectf d_outerRectClipper;
     //! inner area clipping rect in screen pixels
@@ -4593,19 +3500,12 @@ protected:
     //! area rect used for hit-testing against this window
     mutable Rectf d_hitTestRect;
 
-    mutable bool d_outerUnclippedRectValid;
-    mutable bool d_innerUnclippedRectValid;
     mutable bool d_outerRectClipperValid;
     mutable bool d_innerRectClipperValid;
     mutable bool d_hitTestRectValid;
 
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
-
-    //! How to satisfy current aspect ratio
-    AspectMode d_aspectMode;
-    //! The target aspect ratio
-    float d_aspectRatio;
 
     //! specifies whether mouse inputs should be propagated to parent(s)
     bool d_propagateMouseInputs;
@@ -4614,7 +3514,7 @@ private:
     /*************************************************************************
         May not copy or assign Window objects
     *************************************************************************/
-    Window(const Window&) : PropertySet(), EventSet() {}
+    Window(const Window&): NamedElement() {}
     Window& operator=(const Window&) {return *this;}
 
     //! Not intended for public use, only used as a "Font" property getter

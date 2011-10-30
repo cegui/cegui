@@ -102,10 +102,11 @@ namespace CEGUI
     Rectf FalagardScrollablePane::getUnclippedInnerRect() const
     {
         if (!d_widgetLookAssigned)
-            return d_window->getUnclippedOuterRect();
+            return d_window->getUnclippedOuterRect().get();
 
-        const Rectf lr(getViewableArea());
-        return CoordConverter::windowToScreen(*d_window, lr);
+        Rectf lr(getViewableArea());
+        lr.offset(d_window->getUnclippedOuterRect().get().d_min);
+        return lr;
     }
 
 } // End of  CEGUI namespace section

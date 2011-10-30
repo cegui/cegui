@@ -140,7 +140,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rectf constrainArea;
 
-				if ((d_parent == 0) || (d_parent->getParent() == 0))
+				if ((d_parent == 0) || (getParent()->getParent() == 0))
 				{
                     Rectf screen(Vector2f(0, 0),
                                   System::getSingleton().getRenderer()->getDisplaySize());
@@ -148,7 +148,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				}
 				else 
 				{
-					constrainArea = d_parent->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
+					constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
 				}
 
 				MouseCursor::getSingleton().setConstraintArea(&constrainArea);
@@ -225,7 +225,7 @@ void Titlebar::onFontChanged(WindowEventArgs& e)
 
 	if (d_parent)
 	{
-		d_parent->performChildWindowLayout();
+		getParent()->performChildWindowLayout();
 	}
 }
 

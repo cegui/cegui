@@ -42,7 +42,9 @@ const String LayoutCell::WidgetTypeName("LayoutCell");
 
 //----------------------------------------------------------------------------//
 LayoutCell::LayoutCell(const String& type, const String& name):
-        Window(type, name)
+        Window(type, name),
+        
+        d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&LayoutCell::getClientChildContentArea_impl))
 {
     // cell should take the whole window by default I think
     setSize(USize(cegui_reldim(1), cegui_reldim(1)));
@@ -57,27 +59,59 @@ LayoutCell::LayoutCell(const String& type, const String& name):
 LayoutCell::~LayoutCell(void)
 {}
 
-//----------------------------------------------------------------------------//
-Rectf LayoutCell::getUnclippedInnerRect_impl(void) const
-{
-    return d_parent ?
-           d_parent->getUnclippedInnerRect() :
-           Window::getUnclippedInnerRect_impl();
-}
-
-//----------------------------------------------------------------------------//
-Rectf LayoutCell::getClientChildWindowContentArea_impl() const
+const Element::CachedRectf& LayoutCell::getClientChildContentArea() const
 {
     if (!d_parent)
-        return Window::getClientChildWindowContentArea_impl();
+    {
+        return Window::getClientChildContentArea();
+    }
     else
-        return Rectf(getUnclippedOuterRect().getPosition(),
-                    d_parent->getUnclippedInnerRect().getSize());
+    {
+        return d_clientChildContentArea;
+    }
 }
 
 //----------------------------------------------------------------------------//
-void LayoutCell::addChild_impl(Window* wnd)
+void LayoutCell::notifyScreenAreaChanged(bool recursive)
 {
+    d_clientChildContentArea.invalidateCache();
+    
+    Window::notifyScreenAreaChanged(recursive);
+}
+
+//----------------------------------------------------------------------------//
+Rectf LayoutCell::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
+{
+    return d_parent ?
+           (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get()) :
+           Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
+}
+
+//----------------------------------------------------------------------------//
+Rectf LayoutCell::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
+{
+    if (!d_parent)
+    {
+        return skipAllPixelAlignment ? Window::getClientChildContentArea().getFresh(true) : Window::getClientChildContentArea().get();
+    }
+    else
+    {
+        return skipAllPixelAlignment ?
+            Rectf(getUnclippedOuterRect().getFresh(true).getPosition(), d_parent->getUnclippedInnerRect().getFresh(true).getSize()) :
+            Rectf(getUnclippedOuterRect().get().getPosition(), d_parent->getUnclippedInnerRect().get().getSize());
+    }
+}
+
+//----------------------------------------------------------------------------//
+void LayoutCell::addChild_impl(Element* element)
+{
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("LayoutCell::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     Window::addChild_impl(wnd);
 
     // we have to subscribe to the EventSized for layout updates
@@ -87,8 +121,10 @@ void LayoutCell::addChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void LayoutCell::removeChild_impl(Window* wnd)
+void LayoutCell::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(element);
+    
     // we want to get rid of the subscription, because the child window could
     // get removed and added somewhere else, we would be wastefully updating
     // layouts if it was sized inside other Window

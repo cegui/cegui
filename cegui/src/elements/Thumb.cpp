@@ -88,7 +88,7 @@ void Thumb::setVertRange(float min, float max)
 	d_vertMin = min;
 
 	// validate current position.
-	const float cp = CoordConverter::asRelative(getYPosition(), getParentPixelHeight());
+	const float cp = CoordConverter::asRelative(getYPosition(), getParentPixelSize().d_height);
 
 	if (cp < min)
 	{

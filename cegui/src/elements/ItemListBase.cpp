@@ -345,7 +345,7 @@ void ItemListBase::onListContentsChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ItemListBase::onParentSized(WindowEventArgs& e)
+void ItemListBase::onParentSized(ElementEventArgs& e)
 {
     Window::onParentSized(e);
 
@@ -450,9 +450,9 @@ void ItemListBase::addItemListBaseProperties(void)
 /*************************************************************************
 	Internal version of adding a child window.
 *************************************************************************/
-void ItemListBase::addChild_impl(Window* wnd)
+void ItemListBase::addChild_impl(Element* element)
 {
-    ItemEntry* item = dynamic_cast<ItemEntry*>(wnd);
+    ItemEntry* item = dynamic_cast<ItemEntry*>(element);
     
     // if this is an ItemEntry we add it like one, but only if it is not already in the list!
     if (item)
@@ -490,7 +490,7 @@ void ItemListBase::addChild_impl(Window* wnd)
 	// otherwise it's base class processing
     else
     {
-        Window::addChild_impl(wnd);
+        Window::addChild_impl(element);
     }
 }
 

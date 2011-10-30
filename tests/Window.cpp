@@ -26,8 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIWindow.h"
-#include "CEGUIWindowManager.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/WindowManager.h"
 
 #include <boost/test/unit_test.hpp>
 #include <boost/timer.hpp>
@@ -120,7 +120,7 @@ BOOST_AUTO_TEST_CASE(UnifiedDimensions)
      * Basic relative UDim tests
      */
     BOOST_CHECK_EQUAL(d_insideInsideRoot->getPixelSize(), CEGUI::Sizef(200, 150));
-    BOOST_CHECK_EQUAL(d_insideInsideRoot->getUnclippedOuterRect(), CEGUI::Rectf(200, 100, 400, 250));
+    BOOST_CHECK_EQUAL(d_insideInsideRoot->getUnclippedOuterRect().get(), CEGUI::Rectf(200, 100, 400, 250));
 }
 
 BOOST_AUTO_TEST_CASE(HitTesting)

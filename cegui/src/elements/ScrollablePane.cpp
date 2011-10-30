@@ -425,10 +425,14 @@ bool ScrollablePane::handleAutoSizePaneChanged(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::addChild_impl(Window* wnd)
+void ScrollablePane::addChild_impl(Element* element)
 {
-    // null is not a valid window pointer!
-    assert(wnd != 0);
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("ScrollablePane::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
     
     // See if this is an internally generated window
     // (will have AutoWidgetNameSuffix in the name)
@@ -447,10 +451,9 @@ void ScrollablePane::addChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::removeChild_impl(Window* wnd)
+void ScrollablePane::removeChild_impl(Element* element)
 {
-    // null is not a valid window pointer!
-    assert(wnd != 0);
+    Window* wnd = static_cast<Window*>(element);
     
     // See if this is an internally generated window
     // (will have AutoWidgetNameSuffix in the name)
@@ -470,7 +473,7 @@ void ScrollablePane::removeChild_impl(Window* wnd)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onSized(WindowEventArgs& e)
+void ScrollablePane::onSized(ElementEventArgs& e)
 {
     Window::onSized(e);
     configureScrollbars();

@@ -32,7 +32,7 @@
 #include <boost/test/unit_test.hpp>
 #include <iostream>
 
-#include "RendererModules/Null/CEGUINullRenderer.h"
+#include "CEGUI/RendererModules/Null/Renderer.h"
 
 /**
 \brief This fixture sets CEGUI up with NullRenderer

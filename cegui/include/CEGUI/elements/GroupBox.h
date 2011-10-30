@@ -112,16 +112,14 @@ namespace CEGUI
 		virtual void initialiseComponents();
 
 		/*!
-		\brief
-			Add given window to child list at an appropriate position.
+		\copydoc Window::addChild_impl
 		*/
-		virtual void addChild_impl(Window* wnd);
+		virtual void addChild_impl(Element* element);
 
 		/*!
-		\brief
-			Remove our child again when necessary.
+		\copydoc Window::removeChild_impl
 		*/
-		virtual void removeChild_impl(Window* wnd);
+		virtual void removeChild_impl(Element* element);
 
 
 	};

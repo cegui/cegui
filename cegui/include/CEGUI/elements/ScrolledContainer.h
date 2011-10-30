@@ -133,10 +133,17 @@ public:
         that could contain all the attached windows.
     */
     Rectf getChildExtentsArea(void) const;
+    
+    virtual const CachedRectf& getClientChildContentArea() const;
+    virtual const CachedRectf& getNonClientChildContentArea() const;
 
+    virtual void notifyScreenAreaChanged(bool recursive);
+    
 protected:
     // Overridden from Window.
-    virtual Rectf getUnclippedInnerRect_impl() const;
+    virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
+    
+    Rectf getClientChildContentArea_impl(bool skipAllPixelAlignment) const;
     
     /*!
     \brief
@@ -171,13 +178,13 @@ protected:
     // overridden from Window.
     void drawSelf(const RenderingContext&) {};
     Rectf getInnerRectClipper_impl() const;
-    Rectf getNonClientChildWindowContentArea_impl() const;
-    Rectf getClientChildWindowContentArea_impl() const;
 
+    void setArea_impl(const UVector2& pos, const USize& size,
+                      bool topLeftSizing = false, bool fireEvents = true);
     Rectf getHitTestRect_impl() const;
-    void onChildAdded(WindowEventArgs& e);
-    void onChildRemoved(WindowEventArgs& e);
-    void onParentSized(WindowEventArgs& e);
+    void onChildAdded(ElementEventArgs& e);
+    void onChildRemoved(ElementEventArgs& e);
+    void onParentSized(ElementEventArgs& e);
 
     //! type definition for collection used to track event connections.
     typedef std::multimap<Window*, Event::Connection>  ConnectionTracker;
@@ -187,6 +194,8 @@ protected:
     Rectf d_contentArea;
     //! true if the pane auto-sizes itself.
     bool d_autosizePane;
+    
+    CachedRectf d_clientChildContentArea;
 
 private:
     void addScrolledContainerProperties(void);

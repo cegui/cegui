@@ -38,6 +38,7 @@
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/RenderedStringWordWrapper.h"
 #include "CEGUI/TplWindowRendererProperty.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -180,7 +181,7 @@ namespace CEGUI
                 absarea.d_min.d_y -= vertScrollbar->getScrollPosition();
             // no scroll bar, so centre text instead.
             else
-                absarea.d_min.d_y += PixelAligned((absarea.getHeight() - textHeight) * 0.5f);
+                absarea.d_min.d_y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
 
             break;
 
