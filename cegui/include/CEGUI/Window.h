@@ -3269,6 +3269,7 @@ protected:
     //! Helper to intialise the needed clipping for geometry and render surface.
     void initialiseClippers(const RenderingContext& ctx);
 
+    //! \copydoc Element::setArea_impl
     virtual void setArea_impl(const UVector2& pos, const USize& size, bool topLeftSizing = false, bool fireEvents = true);
     
     /*!
