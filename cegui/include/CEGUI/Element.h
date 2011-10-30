@@ -790,6 +790,18 @@ public:
     {
         return d_pixelAligned;
     }
+
+    /*!
+    \brief
+        Return the element's absolute (or screen, depending no the type of the element) position in pixels.
+
+    \return
+        Vector2f object describing this element's absolute position in pixels.
+    */
+    inline const Vector2f& getPixelPosition() const
+    {
+        return getUnclippedOuterRect().get().d_min;
+    }
     
     /*!
     \brief
