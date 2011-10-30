@@ -25,6 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
 #include "CEGUI/PixmapFont.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BasicImage.h"
@@ -197,11 +198,12 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
 void PixmapFont::defineMapping(const String& value)
 {
     char img[33];
-    String::value_type codepoint;
+    utf32 codepoint;
     float adv;
     if (sscanf (value.c_str(), " %u , %g , %32s", &codepoint, &adv, img) != 3)
         CEGUI_THROW(InvalidRequestException(
             "Bad glyph Mapping specified: " + value));
+    
     defineMapping(codepoint, img, adv);
 }
 

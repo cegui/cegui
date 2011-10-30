@@ -693,7 +693,7 @@ Rectf Window::getHitTestRect_impl() const
 bool Window::isHit(const Vector2f& position, const bool allow_disabled) const
 {
     // cannot be hit if we are disabled.
-    if (!allow_disabled && isDisabled())
+    if (!allow_disabled && isEffectiveDisabled())
         return false;
 
     const Rectf test_area(getHitTestRect());
@@ -2155,6 +2155,21 @@ void Window::setArea_impl(const UVector2& pos, const USize& size,
 
     d_pixelSize = CoordConverter::asAbsolute(size, base_size);
 
+    
+    // in case absMin components are larger than absMax ones,
+    // max size takes precedence
+    if (absMin.d_width > absMax.d_width)
+    {
+        absMin.d_width = absMax.d_width;
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of weight larger than what MaxSize resulted in");
+    }
+    
+    if (absMin.d_height > absMax.d_height)
+    {
+        absMin.d_height = absMax.d_height;
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of height larger than what MaxSize resulted in");
+    }
+    
     // limit new pixel size to: minSize <= newSize <= maxSize
     d_pixelSize.clamp(absMin, absMax);
 
