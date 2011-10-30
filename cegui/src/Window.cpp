@@ -1146,6 +1146,10 @@ void Window::addChild_impl(Element* element)
     {
         CEGUI_THROW(AlreadyExistsException("Window::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
     }
+    
+    // if the element is already a child of this Window, this is a NOOP
+    if (isChild(element))
+        return;
         
     NamedElement::addChild_impl(wnd);
 
