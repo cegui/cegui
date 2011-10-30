@@ -134,6 +134,25 @@ void NamedElement::removeChild(const String& name_path)
 }
 
 //----------------------------------------------------------------------------//
+void NamedElement::addChild_impl(Element* element)
+{
+    NamedElement* named_element = dynamic_cast<NamedElement*>(element);
+    
+    if (named_element)
+    {
+        const NamedElement* const existing = getChildByNamePath_impl(named_element->getName());
+        
+        if (existing && named_element != existing)
+            CEGUI_THROW(AlreadyExistsException("NamedElement::addChild_impl - Failed to add "
+                "Element named: " + named_element->getName() + " to element at: " +
+                getNamePath() + " since an Element with that name is already "
+                "attached."));
+    }
+            
+    Element::addChild_impl(element);
+}
+
+//----------------------------------------------------------------------------//
 NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) const
 {
     const size_t sep = name_path.find_first_of('/');
