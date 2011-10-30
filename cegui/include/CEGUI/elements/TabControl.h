@@ -498,7 +498,8 @@ protected:
     void    addChild_impl(Element* element);
     void    removeChild_impl(Element* element);
     
-    NamedElement* getChildByNamePath_impl(const String& name_path) const;
+    //! \copydoc Window::getChildByNamePath_impl
+    virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
 
     /*************************************************************************
     Event handlers

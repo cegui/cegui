@@ -108,6 +108,8 @@ public:
         tc->addTab(winMgr.loadLayoutFromFile("TabPage1.layout"));
         tc->addTab(winMgr.loadLayoutFromFile("TabPage2.layout"));
 
+        WindowManager::getSingleton().DEBUG_dumpWindowNames("asd");
+        
         static_cast<PushButton *> (
             background->getChild("Frame/TabControl/Page1/AddTab"))->subscribeEvent (
             PushButton::EventClicked,

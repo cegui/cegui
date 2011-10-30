@@ -202,7 +202,7 @@ protected:
     \brief
         retrieves a child at \a name_path or 0 if none such exists
     */
-    NamedElement* getChildByNamePath_impl(const String& name_path) const;
+    virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
     
     /*!
     \brief
