@@ -108,13 +108,6 @@ public:
         tc->addTab(winMgr.loadLayoutFromFile("TabPage1.layout"));
         tc->addTab(winMgr.loadLayoutFromFile("TabPage2.layout"));
 
-        // What did it load?
-        WindowManager::WindowIterator it =  CEGUI::WindowManager::getSingleton().getIterator();
-        for(; !it.isAtEnd() ; ++it) {
-            const String windowName(it.getCurrentValue()->getNamePath());
-            printf("Name: %s\n", windowName.c_str());
-        }
-
         static_cast<PushButton *> (
             background->getChild("Frame/TabControl/Page1/AddTab"))->subscribeEvent (
             PushButton::EventClicked,

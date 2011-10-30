@@ -100,12 +100,16 @@ public:
         return Size(d_width + s.d_width, d_height + s.d_height);
     }
 
-    inline void clamp(Size min, Size max)
+    inline void clamp(const Size& min, const Size& max)
     {
+        assert(min.d_width <= max.d_width);
+        assert(min.d_height <= max.d_height);
+        
         if (d_width < min.d_width)
             d_width = min.d_width;
         else if (d_width > max.d_width)
             d_width = max.d_width;
+        
         if (d_height < min.d_height)
             d_height = min.d_height;
         else if (d_height > max.d_height)
