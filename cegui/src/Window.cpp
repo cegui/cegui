@@ -3471,9 +3471,8 @@ void Window::banPropertyFromXML(const String& property_name)
     // check if the insertion failed
     if (!d_bannedXMLProperties.insert(property_name).second)
         // just log the incidence
-        AlreadyExistsException("Window::banPropertyFromXML: The property '" +
-            property_name + "' is already banned in window '" +
-            d_name + "'");
+        CEGUI_LOGINSANE("Window::banPropertyFromXML: The property '" +
+            property_name + "' is already banned in window '" + d_name + "'");
 }
 
 //----------------------------------------------------------------------------//
