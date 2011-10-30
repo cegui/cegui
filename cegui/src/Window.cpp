@@ -92,7 +92,6 @@ const String Window::EventDragDropItemLeaves("DragDropItemLeaves");
 const String Window::EventDragDropItemDropped("DragDropItemDropped");
 const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
-const String Window::EventNonClientChanged( "NonClientChanged" );
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
 const String Window::EventMouseEntersArea("MouseEntersArea");

@@ -147,6 +147,11 @@ def filterDeclarations(mb):
     # CEGUIDynamicModule.h
     # not doable in python
     
+    # CEGUI/Element.h
+    element = CEGUI_ns.class_("Element")
+    element.include()
+    element.class_("CachedRectf").constructors().exclude()
+    
     # CEGUIEvent.h
     event = CEGUI_ns.class_("Event")
     event.include()
@@ -400,6 +405,10 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     
     mouseCursorImageEnum = CEGUI_ns.enum("MouseCursorImage")
     mouseCursorImageEnum.include()
+    
+    # CEGUI/NamedElement.h
+    namedElement = CEGUI_ns.class_("NamedElement")
+    namedElement.include()
     
     # CEGUINamedXMLResourceManager.h
     xmlResourceExistsActionEnum = CEGUI_ns.enum("XMLResourceExistsAction")

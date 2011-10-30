@@ -92,6 +92,10 @@
 
 #include "Editbox.pypp.hpp"
 
+#include "Element.pypp.hpp"
+
+#include "ElementEventArgs.pypp.hpp"
+
 #include "Event.pypp.hpp"
 
 #include "EventArgs.pypp.hpp"
@@ -203,6 +207,10 @@
 #include "MultiLineEditbox.pypp.hpp"
 
 #include "NamedArea.pypp.hpp"
+
+#include "NamedElement.pypp.hpp"
+
+#include "NamedElementEventArgs.pypp.hpp"
 
 #include "NamedXMLResourceManagerFont.pypp.hpp"
 
@@ -587,6 +595,10 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertySet_class();
 
+    register_Element_class();
+
+    register_NamedElement_class();
+
     register_Window_class();
 
     register_ButtonBase_class();
@@ -670,6 +682,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_DragDropEventArgs_class();
 
     register_Editbox_class();
+
+    register_ElementEventArgs_class();
 
     register_Connection_class();
 
@@ -776,6 +790,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_MultiLineEditbox_class();
 
     register_NamedArea_class();
+
+    register_NamedElementEventArgs_class();
 
     register_NamedXMLResourceManagerScheme_class();
 

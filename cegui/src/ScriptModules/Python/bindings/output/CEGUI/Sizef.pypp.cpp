@@ -17,7 +17,7 @@ void register_Sizef_class(){
         { //::CEGUI::Size< float >::clamp
         
             typedef CEGUI::Size< float > exported_class_t;
-            typedef void ( exported_class_t::*clamp_function_type )( ::CEGUI::Size< float >,::CEGUI::Size< float > ) ;
+            typedef void ( exported_class_t::*clamp_function_type )( ::CEGUI::Size< float > const &,::CEGUI::Size< float > const & ) ;
             
             Sizef_exposer.def( 
                 "clamp"

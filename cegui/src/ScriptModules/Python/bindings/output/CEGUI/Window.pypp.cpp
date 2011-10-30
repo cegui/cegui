@@ -15,20 +15,20 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
     
     }
 
-    virtual void addChild_impl( ::CEGUI::Window * wnd ){
+    virtual void addChild_impl( ::CEGUI::Element * element ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
-            func_addChild_impl( boost::python::ptr(wnd) );
+            func_addChild_impl( boost::python::ptr(element) );
         else{
-            this->CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+            this->CEGUI::Window::addChild_impl( boost::python::ptr(element) );
         }
     }
     
-    virtual void default_addChild_impl( ::CEGUI::Window * wnd ){
-        CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+    virtual void default_addChild_impl( ::CEGUI::Element * element ){
+        CEGUI::Window::addChild_impl( boost::python::ptr(element) );
     }
 
-    void addStandardProperties(  ){
-        CEGUI::Window::addStandardProperties(  );
+    void addWindowProperties(  ){
+        CEGUI::Window::addWindowProperties(  );
     }
 
     void addWindowToDrawList( ::CEGUI::Window & wnd, bool at_back=false ){
@@ -91,14 +91,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::clonePropertiesTo( boost::ref(target) );
     }
 
-    bool constrainToMaxSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
-        return CEGUI::Window::constrainToMaxSize( boost::ref(base_sz), boost::ref(sz) );
-    }
-
-    bool constrainToMinSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
-        return CEGUI::Window::constrainToMinSize( boost::ref(base_sz), boost::ref(sz) );
-    }
-
     virtual void destroy(  ) {
         if( bp::override func_destroy = this->get_override( "destroy" ) )
             func_destroy(  );
@@ -139,30 +131,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::generateAutoRepeatEvent( button );
     }
 
-    virtual ::CEGUI::Window * getChild_impl( ::CEGUI::String const & name_path ) const {
-        if( bp::override func_getChild_impl = this->get_override( "getChild_impl" ) )
-            return func_getChild_impl( boost::ref(name_path) );
-        else{
-            return this->CEGUI::Window::getChild_impl( boost::ref(name_path) );
-        }
-    }
-    
-    virtual ::CEGUI::Window * default_getChild_impl( ::CEGUI::String const & name_path ) const {
-        return CEGUI::Window::getChild_impl( boost::ref(name_path) );
-    }
-
-    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
-            return func_getClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getClientChildWindowContentArea_impl( );
-    }
-
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
         if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
             return func_getHitTestRect_impl(  );
@@ -185,18 +153,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
     
     virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
         return CEGUI::Window::getInnerRectClipper_impl( );
-    }
-
-    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
-            return func_getNonClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
     }
 
     virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
@@ -227,28 +183,16 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::getRenderingContext_impl( boost::ref(ctx) );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl( bool skipAllPixelAlignment ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
-            return func_getUnclippedInnerRect_impl(  );
+            return func_getUnclippedInnerRect_impl( skipAllPixelAlignment );
         else{
-            return this->CEGUI::Window::getUnclippedInnerRect_impl(  );
+            return this->CEGUI::Window::getUnclippedInnerRect_impl( skipAllPixelAlignment );
         }
     }
     
-    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
-        return CEGUI::Window::getUnclippedInnerRect_impl( );
-    }
-
-    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl(  ) const {
-        if( bp::override func_getUnclippedOuterRect_impl = this->get_override( "getUnclippedOuterRect_impl" ) )
-            return func_getUnclippedOuterRect_impl(  );
-        else{
-            return this->CEGUI::Window::getUnclippedOuterRect_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl(  ) const {
-        return CEGUI::Window::getUnclippedOuterRect_impl( );
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl( bool skipAllPixelAlignment ) const {
+        return CEGUI::Window::getUnclippedInnerRect_impl( skipAllPixelAlignment );
     }
 
     ::CEGUI::Window const * getWindowAttachedToCommonAncestor( ::CEGUI::Window const & wnd ) const {
@@ -287,10 +231,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
-    bool isInnerRectSizeChanged(  ) const {
-        return CEGUI::Window::isInnerRectSizeChanged(  );
-    }
-
     bool isPropertyAtDefault( ::CEGUI::Property const * property ) const {
         return CEGUI::Window::isPropertyAtDefault( boost::python::ptr(property) );
     }
@@ -313,6 +253,18 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
 
     void notifyClippingChanged(  ){
         CEGUI::Window::notifyClippingChanged(  );
+    }
+
+    virtual void notifyScreenAreaChanged( bool recursive=true ) {
+        if( bp::override func_notifyScreenAreaChanged = this->get_override( "notifyScreenAreaChanged" ) )
+            func_notifyScreenAreaChanged( recursive );
+        else{
+            this->CEGUI::Window::notifyScreenAreaChanged( recursive );
+        }
+    }
+    
+    void default_notifyScreenAreaChanged( bool recursive=true ) {
+        CEGUI::Window::notifyScreenAreaChanged( recursive );
     }
 
     virtual void onActivated( ::CEGUI::ActivationEventArgs & e ){
@@ -387,7 +339,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::onCharacter( boost::ref(e) );
     }
 
-    virtual void onChildAdded( ::CEGUI::WindowEventArgs & e ){
+    virtual void onChildAdded( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onChildAdded = this->get_override( "onChildAdded" ) )
             func_onChildAdded( boost::ref(e) );
         else{
@@ -395,11 +347,11 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    virtual void default_onChildAdded( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onChildAdded( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onChildAdded( boost::ref(e) );
     }
 
-    virtual void onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void onChildRemoved( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onChildRemoved = this->get_override( "onChildRemoved" ) )
             func_onChildRemoved( boost::ref(e) );
         else{
@@ -407,7 +359,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    virtual void default_onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onChildRemoved( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onChildRemoved( boost::ref(e) );
     }
 
@@ -529,18 +481,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
     
     virtual void default_onHidden( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Window::onHidden( boost::ref(e) );
-    }
-
-    virtual void onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onHorizontalAlignmentChanged = this->get_override( "onHorizontalAlignmentChanged" ) )
-            func_onHorizontalAlignmentChanged( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
     }
 
     virtual void onIDChanged( ::CEGUI::WindowEventArgs & e ){
@@ -735,7 +675,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::onMouseWheel( boost::ref(e) );
     }
 
-    virtual void onMoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void onMoved( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onMoved = this->get_override( "onMoved" ) )
             func_onMoved( boost::ref(e) );
         else{
@@ -743,20 +683,8 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    virtual void default_onMoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onMoved( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onMoved( boost::ref(e) );
-    }
-
-    virtual void onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
-            func_onNonClientChanged( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onNonClientChanged( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onNonClientChanged( boost::ref(e) );
     }
 
     virtual void onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
@@ -771,7 +699,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
     }
 
-    virtual void onParentSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void onParentSized( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
             func_onParentSized( boost::ref(e) );
         else{
@@ -779,7 +707,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    virtual void default_onParentSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onParentSized( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onParentSized( boost::ref(e) );
     }
 
@@ -807,7 +735,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::onRenderingStarted( boost::ref(e) );
     }
 
-    virtual void onRotated( ::CEGUI::WindowEventArgs & e ){
+    virtual void onRotated( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onRotated = this->get_override( "onRotated" ) )
             func_onRotated( boost::ref(e) );
         else{
@@ -815,7 +743,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    virtual void default_onRotated( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onRotated( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onRotated( boost::ref(e) );
     }
 
@@ -831,7 +759,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::onShown( boost::ref(e) );
     }
 
-    virtual void onSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void onSized( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onSized = this->get_override( "onSized" ) )
             func_onSized( boost::ref(e) );
         else{
@@ -839,7 +767,7 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         }
     }
     
-    virtual void default_onSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onSized( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onSized( boost::ref(e) );
     }
 
@@ -865,18 +793,6 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
     
     virtual void default_onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Window::onTextParsingChanged( boost::ref(e) );
-    }
-
-    virtual void onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onVerticalAlignmentChanged = this->get_override( "onVerticalAlignmentChanged" ) )
-            func_onVerticalAlignmentChanged( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
     }
 
     virtual void onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
@@ -995,23 +911,31 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::releaseRenderingWindow(  );
     }
 
-    virtual void removeChild_impl( ::CEGUI::Window * wnd ){
+    virtual void removeChild_impl( ::CEGUI::Element * element ){
         if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
-            func_removeChild_impl( boost::python::ptr(wnd) );
+            func_removeChild_impl( boost::python::ptr(element) );
         else{
-            this->CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+            this->CEGUI::Window::removeChild_impl( boost::python::ptr(element) );
         }
     }
     
-    virtual void default_removeChild_impl( ::CEGUI::Window * wnd ){
-        CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+    virtual void default_removeChild_impl( ::CEGUI::Element * element ){
+        CEGUI::Window::removeChild_impl( boost::python::ptr(element) );
     }
 
     void removeWindowFromDrawList( ::CEGUI::Window const & wnd ){
         CEGUI::Window::removeWindowFromDrawList( boost::ref(wnd) );
     }
 
-    void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+    virtual void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+        if( bp::override func_setArea_impl = this->get_override( "setArea_impl" ) )
+            func_setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+        else{
+            this->CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+        }
+    }
+    
+    virtual void default_setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
         CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
     }
 
@@ -1039,7 +963,15 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::setMargin( boost::ref(margin) );
     }
 
-    void setParent( ::CEGUI::Window * parent ){
+    virtual void setParent( ::CEGUI::Element * parent ){
+        if( bp::override func_setParent = this->get_override( "setParent" ) )
+            func_setParent( boost::python::ptr(parent) );
+        else{
+            this->CEGUI::Window::setParent( boost::python::ptr(parent) );
+        }
+    }
+    
+    virtual void default_setParent( ::CEGUI::Element * parent ){
         CEGUI::Window::setParent( boost::python::ptr(parent) );
     }
 
@@ -1135,6 +1067,14 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::writeXMLToStream( boost::ref(xml_stream) );
     }
 
+    void addElementProperties(  ){
+        CEGUI::Element::addElementProperties(  );
+    }
+
+    void addNamedElementProperties(  ){
+        CEGUI::NamedElement::addNamedElementProperties(  );
+    }
+
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -1151,8 +1091,132 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
     }
 
+    virtual ::CEGUI::NamedElement * getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
+        if( bp::override func_getChildByNamePath_impl = this->get_override( "getChildByNamePath_impl" ) )
+            return func_getChildByNamePath_impl( boost::ref(name_path) );
+        else{
+            return this->CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
+        }
+    }
+    
+    virtual ::CEGUI::NamedElement * default_getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
+        return CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
+    }
+
     ::CEGUI::ScriptModule * getScriptModule(  ) const {
         return CEGUI::EventSet::getScriptModule(  );
+    }
+
+    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl( bool skipAllPixelAlignment ) const {
+        if( bp::override func_getUnclippedOuterRect_impl = this->get_override( "getUnclippedOuterRect_impl" ) )
+            return func_getUnclippedOuterRect_impl( skipAllPixelAlignment );
+        else{
+            return this->CEGUI::Element::getUnclippedOuterRect_impl( skipAllPixelAlignment );
+        }
+    }
+    
+    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl( bool skipAllPixelAlignment ) const {
+        return CEGUI::Element::getUnclippedOuterRect_impl( skipAllPixelAlignment );
+    }
+
+    bool isInnerRectSizeChanged(  ) const {
+        return CEGUI::Element::isInnerRectSizeChanged(  );
+    }
+
+    virtual void onHorizontalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
+        if( bp::override func_onHorizontalAlignmentChanged = this->get_override( "onHorizontalAlignmentChanged" ) )
+            func_onHorizontalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Element::onHorizontalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Element::onHorizontalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void onNameChanged( ::CEGUI::NamedElementEventArgs & e ){
+        if( bp::override func_onNameChanged = this->get_override( "onNameChanged" ) )
+            func_onNameChanged( boost::ref(e) );
+        else{
+            this->CEGUI::NamedElement::onNameChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNameChanged( ::CEGUI::NamedElementEventArgs & e ){
+        CEGUI::NamedElement::onNameChanged( boost::ref(e) );
+    }
+
+    virtual void onNonClientChanged( ::CEGUI::ElementEventArgs & e ){
+        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
+            func_onNonClientChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Element::onNonClientChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNonClientChanged( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Element::onNonClientChanged( boost::ref(e) );
+    }
+
+    virtual void onVerticalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
+        if( bp::override func_onVerticalAlignmentChanged = this->get_override( "onVerticalAlignmentChanged" ) )
+            func_onVerticalAlignmentChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Element::onVerticalAlignmentChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onVerticalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Element::onVerticalAlignmentChanged( boost::ref(e) );
+    }
+
+    virtual void setArea( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size ) {
+        if( bp::override func_setArea = this->get_override( "setArea" ) )
+            func_setArea( boost::ref(pos), boost::ref(size) );
+        else{
+            this->CEGUI::Element::setArea( boost::ref(pos), boost::ref(size) );
+        }
+    }
+    
+    void default_setArea( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size ) {
+        CEGUI::Element::setArea( boost::ref(pos), boost::ref(size) );
+    }
+
+    virtual void setHorizontalAlignment( ::CEGUI::HorizontalAlignment const alignment ) {
+        if( bp::override func_setHorizontalAlignment = this->get_override( "setHorizontalAlignment" ) )
+            func_setHorizontalAlignment( alignment );
+        else{
+            this->CEGUI::Element::setHorizontalAlignment( alignment );
+        }
+    }
+    
+    void default_setHorizontalAlignment( ::CEGUI::HorizontalAlignment const alignment ) {
+        CEGUI::Element::setHorizontalAlignment( alignment );
+    }
+
+    virtual void setName( ::CEGUI::String const & name ) {
+        if( bp::override func_setName = this->get_override( "setName" ) )
+            func_setName( boost::ref(name) );
+        else{
+            this->CEGUI::NamedElement::setName( boost::ref(name) );
+        }
+    }
+    
+    void default_setName( ::CEGUI::String const & name ) {
+        CEGUI::NamedElement::setName( boost::ref(name) );
+    }
+
+    virtual void setVerticalAlignment( ::CEGUI::VerticalAlignment const alignment ) {
+        if( bp::override func_setVerticalAlignment = this->get_override( "setVerticalAlignment" ) )
+            func_setVerticalAlignment( alignment );
+        else{
+            this->CEGUI::Element::setVerticalAlignment( alignment );
+        }
+    }
+    
+    void default_setVerticalAlignment( ::CEGUI::VerticalAlignment const alignment ) {
+        CEGUI::Element::setVerticalAlignment( alignment );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -1196,7 +1260,7 @@ Window_getUserData ( ::CEGUI::Window & me) {
 void register_Window_class(){
 
     { //::CEGUI::Window
-        typedef bp::class_< Window_wrapper, bp::bases< CEGUI::PropertySet, CEGUI::EventSet >, boost::noncopyable > Window_exposer_t;
+        typedef bp::class_< Window_wrapper, bp::bases< CEGUI::NamedElement >, boost::noncopyable > Window_exposer_t;
         Window_exposer_t Window_exposer = Window_exposer_t( "Window", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "*!\n\
             \n\
                 Constructor for Window base class\n\
@@ -1225,53 +1289,26 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::addChild
-        
-            typedef void ( ::CEGUI::Window::*addChild_function_type )( ::CEGUI::Window * ) ;
-            
-            Window_exposer.def( 
-                "addChild"
-                , addChild_function_type( &::CEGUI::Window::addChild )
-                , ( bp::arg("window") )
-                , "*!\n\
-                \n\
-                    Add the specified Window as a child of this Window.  If the Window\n\
-                     window is already attached to a Window, it is detached before\n\
-                    being added to this Window.\n\
-            \n\
-                @param window\n\
-                    Pointer to the Window object to be added.\n\
-            \n\
-                @return\n\
-                    Nothing\n\
-            \n\
-                @exception InvalidRequestException\n\
-                    thrown if Window  window is an ancestor of this Window, to prevent\n\
-                    cyclic Window structures.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::addChild_impl
         
-            typedef void ( Window_wrapper::*addChild_impl_function_type )( ::CEGUI::Window * ) ;
+            typedef void ( Window_wrapper::*addChild_impl_function_type )( ::CEGUI::Element * ) ;
             
             Window_exposer.def( 
                 "addChild_impl"
                 , addChild_impl_function_type( &Window_wrapper::default_addChild_impl )
-                , ( bp::arg("wnd") )
+                , ( bp::arg("element") )
                 , "*!\n\
-            \n\
-                Add given window to child list at an appropriate position\n\
+            opydoc Element.addChild_impl\n\
             *\n" );
         
         }
-        { //::CEGUI::Window::addStandardProperties
+        { //::CEGUI::Window::addWindowProperties
         
-            typedef void ( Window_wrapper::*addStandardProperties_function_type )(  ) ;
+            typedef void ( Window_wrapper::*addWindowProperties_function_type )(  ) ;
             
             Window_exposer.def( 
-                "addStandardProperties"
-                , addStandardProperties_function_type( &Window_wrapper::addStandardProperties )
+                "addWindowProperties"
+                , addWindowProperties_function_type( &Window_wrapper::addWindowProperties )
                 , "*!\n\
             \n\
                 Add standard CEGUI.Window properties.\n\
@@ -1465,29 +1502,6 @@ void register_Window_class(){
                 , ( bp::arg("target") ) );
         
         }
-        { //::CEGUI::Window::constrainToMaxSize
-        
-            typedef bool ( Window_wrapper::*constrainToMaxSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
-            
-            Window_exposer.def( 
-                "constrainToMaxSize"
-                , constrainToMaxSize_function_type( &Window_wrapper::constrainToMaxSize )
-                , ( bp::arg("base_sz"), bp::arg("sz") )
-                , "constrain given USize to window's min size, return if size changed.\n\
-            constrain given USize to window's max size, return if size changed.\n" );
-        
-        }
-        { //::CEGUI::Window::constrainToMinSize
-        
-            typedef bool ( Window_wrapper::*constrainToMinSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
-            
-            Window_exposer.def( 
-                "constrainToMinSize"
-                , constrainToMinSize_function_type( &Window_wrapper::constrainToMinSize )
-                , ( bp::arg("base_sz"), bp::arg("sz") )
-                , "constrain given USize to window's min size, return if size changed.\n" );
-        
-        }
         { //::CEGUI::Window::createChild
         
             typedef ::CEGUI::Window * ( ::CEGUI::Window::*createChild_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
@@ -1498,20 +1512,20 @@ void register_Window_class(){
                 , ( bp::arg("type"), bp::arg("name")="" )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-               \n\
-                  Creates a child window attached to this window.\n\
-               \n\
-               @param type\n\
-                  String that describes the type of Window to be created.  A valid\n\
+                \n\
+                    Creates a child window attached to this window.\n\
+                \n\
+                @param type\n\
+                    String that describes the type of Window to be created.  A valid\n\
                     WindowFactory for the specified type must be registered.\n\
             \n\
-               @param name\n\
-                  String that holds the name that is to be given to the new window.  If\n\
+                @param name\n\
+                    String that holds the name that is to be given to the new window.  If\n\
                     this string is empty, a name will be generated for the window.\n\
             \n\
-               @return\n\
-                  Pointer to the newly created child Window object.\n\
-               *\n" );
+                @return\n\
+                    Pointer to the newly created child Window object.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::deactivate
@@ -1768,61 +1782,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getArea
-        
-            typedef ::CEGUI::URect const & ( ::CEGUI::Window::*getArea_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getArea"
-                , getArea_function_type( &::CEGUI::Window::getArea )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Return the windows area.\n\
-            \n\
-                    Returns the area occupied by this window.  The defined area is offset\n\
-                    from the top-left corner of this windows parent window or from the\n\
-                    top-left corner of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    URect describing the rectangle of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getAspectMode
-        
-            typedef ::CEGUI::AspectMode ( ::CEGUI::Window::*getAspectMode_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getAspectMode"
-                , getAspectMode_function_type( &::CEGUI::Window::getAspectMode )
-                , "*!\n\
-            \n\
-                Retrieves currently used aspect mode\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::Window::getAspectRatio
-        
-            typedef float ( ::CEGUI::Window::*getAspectRatio_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getAspectRatio"
-                , getAspectRatio_function_type( &::CEGUI::Window::getAspectRatio )
-                , "*!\n\
-                \n\
-                    Retrieves target aspect ratio\n\
-            \n\
-                @see Window.setAspectRatio\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::getAutoRepeatDelay
         
             typedef float ( ::CEGUI::Window::*getAutoRepeatDelay_function_type )(  ) const;
@@ -1961,20 +1920,7 @@ void register_Window_class(){
                 "getChildAtIdx"
                 , getChildAtIdx_function_type( &::CEGUI::Window::getChildAtIdx )
                 , ( bp::arg("idx") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    return a pointer to the child window that is attached to 'this' at the\n\
-                    given index.\n\
-            \n\
-                @param idx\n\
-                    Index of the child window whos pointer should be returned.  This value\n\
-                    is not bounds checked, client code should ensure that this is less than\n\
-                    the value returned by getChildCount().\n\
-            \n\
-                @return\n\
-                    Pointer to the child window currently attached at index position  idx\n\
-                *\n" );
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::Window::getChildAtPosition
@@ -1997,24 +1943,6 @@ void register_Window_class(){
                 @return\n\
                     Pointer to the child Window that was hit according to the location\n\
                      position, or 0 if no child of this window was hit.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getChildCount
-        
-            typedef ::size_t ( ::CEGUI::Window::*getChildCount_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getChildCount"
-                , getChildCount_function_type( &::CEGUI::Window::getChildCount )
-                , "*!\n\
-                \n\
-                    return the number of child Window objects currently attached to this\n\
-                    Window.\n\
-            \n\
-                @return\n\
-                    size_t value equal to the number of Window objects directly attached\n\
-                    to this Window as children.\n\
                 *\n" );
         
         }
@@ -2048,58 +1976,6 @@ void register_Window_class(){
                     the ID code  ID.\n\
                     If no child is found with the ID code  ID, 0 is returned.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getChildWindowContentArea
-        
-            typedef ::CEGUI::Rectf ( ::CEGUI::Window::*getChildWindowContentArea_function_type )( bool const ) const;
-            
-            Window_exposer.def( 
-                "getChildWindowContentArea"
-                , getChildWindowContentArea_function_type( &::CEGUI::Window::getChildWindowContentArea )
-                , ( bp::arg("non_client")=(bool const)(false) )
-                , "*!\n\
-                \n\
-                    Return a Rect that describes the area that is used to position\n\
-                    and - for scale values - size child content attached to this Window.\n\
-            \n\
-                    By and large the area returned here will be the same as the unclipped\n\
-                    inner rect (for client content) or the unclipped outer rect (for non\n\
-                    client content), although certain advanced uses will require\n\
-                    alternative Rects to be returned.\n\
-            \n\
-                \note\n\
-                    The behaviour of this function is modified by overriding the\n\
-                    protected Window.getClientChildWindowContentArea_impl andor\n\
-                    Window.getNonClientChildWindowContentArea_impl functions.\n\
-            \n\
-                @param non_client\n\
-                    - true to return the non-client child content area.\n\
-                    - false to return the client child content area (default).\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getChild_impl
-        
-            typedef ::CEGUI::Window * ( Window_wrapper::*getChild_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            Window_exposer.def( 
-                "getChild_impl"
-                , getChild_impl_function_type( &Window_wrapper::default_getChild_impl )
-                , ( bp::arg("name_path") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "! implementation function to get window at name_path, returns 0 if none.\n" );
-        
-        }
-        { //::CEGUI::Window::getClientChildWindowContentArea_impl
-        
-            typedef ::CEGUI::Rectf ( Window_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getClientChildWindowContentArea_impl"
-                , getClientChildWindowContentArea_impl_function_type( &Window_wrapper::default_getClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return non-client content area\n\
-            ! Default implementation of function to return client content area\n" );
         
         }
         { //::CEGUI::Window::getClipRect
@@ -2202,29 +2078,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getHeight
-        
-            typedef ::CEGUI::UDim ( ::CEGUI::Window::*getHeight_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getHeight"
-                , getHeight_function_type( &::CEGUI::Window::getHeight )
-                , "*!\n\
-                \n\
-                    Get the window's height.\n\
-            \n\
-                    Gets the height of the area occupied by this window.\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UDim describing the height of the window area.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::getHitTestRect
         
             typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getHitTestRect_function_type )(  ) const;
@@ -2254,25 +2107,6 @@ void register_Window_class(){
                 , getHitTestRect_impl_function_type( &Window_wrapper::default_getHitTestRect_impl )
                 , "! Default implementation of function to return Window inner clipper area.\n\
             ! Default implementation of function to return Window hit-test area.\n" );
-        
-        }
-        { //::CEGUI::Window::getHorizontalAlignment
-        
-            typedef ::CEGUI::HorizontalAlignment ( ::CEGUI::Window::*getHorizontalAlignment_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getHorizontalAlignment"
-                , getHorizontalAlignment_function_type( &::CEGUI::Window::getHorizontalAlignment )
-                , "*!\n\
-                \n\
-                    Get the horizontal alignment.\n\
-            \n\
-                    Returns the horizontal alignment for the window.  This setting affects\n\
-                    how the windows position is interpreted relative to its parent.\n\
-            \n\
-                @return\n\
-                    One of the HorizontalAlignment enumerated values.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::getID
@@ -2354,58 +2188,6 @@ void register_Window_class(){
             ! retrieves currently set margin\n" );
         
         }
-        { //::CEGUI::Window::getMaxSize
-        
-            typedef ::CEGUI::USize const & ( ::CEGUI::Window::*getMaxSize_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getMaxSize"
-                , getMaxSize_function_type( &::CEGUI::Window::getMaxSize )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Get the window's maximum size.\n\
-            \n\
-                    Gets the maximum size that this windows area may occupy (whether size\n\
-                    changes occur by user interaction, general system operation, or by\n\
-                    direct setting by client code).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UVector2 describing the maximum size of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getMinSize
-        
-            typedef ::CEGUI::USize const & ( ::CEGUI::Window::*getMinSize_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getMinSize"
-                , getMinSize_function_type( &::CEGUI::Window::getMinSize )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Get the window's minimum size.\n\
-            \n\
-                    Gets the minimum size that this windows area may occupy (whether size\n\
-                    changes occur by user interaction, general system operation, or by\n\
-                    direct setting by client code).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UVector2 describing the minimum size of the window area.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::getModalState
         
             typedef bool ( ::CEGUI::Window::*getModalState_function_type )(  ) const;
@@ -2447,50 +2229,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getName
-        
-            typedef ::CEGUI::String const & ( ::CEGUI::Window::*getName_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getName"
-                , getName_function_type( &::CEGUI::Window::getName )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    return a String object holding the name of this Window.\n\
-            \n\
-                @return\n\
-                    String object holding the unique Window name.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getNamePath
-        
-            typedef ::CEGUI::String ( ::CEGUI::Window::*getNamePath_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getNamePath"
-                , getNamePath_function_type( &::CEGUI::Window::getNamePath )
-                , "*\n\
-                \n\
-                    return a String object that describes the name path for this Window.\n\
-            \n\
-                    A name path is a string that describes a path down the window\n\
-                    hierarchy using window names and the forward slash '' as a separator.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
-        
-            typedef ::CEGUI::Rectf ( Window_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getNonClientChildWindowContentArea_impl"
-                , getNonClientChildWindowContentArea_impl_function_type( &Window_wrapper::default_getNonClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return Window hit-test area.\n\
-            ! Default implementation of function to return non-client content area\n" );
-        
-        }
         { //::CEGUI::Window::getOuterRectClipper
         
             typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getOuterRectClipper_function_type )(  ) const;
@@ -2520,8 +2258,7 @@ void register_Window_class(){
             Window_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &Window_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window inner rect area.\n\
-            ! Default implementation of function to return Window outer clipper area.\n" );
+                , "! Default implementation of function to return Window outer clipper area.\n" );
         
         }
         { //::CEGUI::Window::getParent
@@ -2551,103 +2288,6 @@ void register_Window_class(){
                 , getParentElementClipIntersection_function_type( &Window_wrapper::getParentElementClipIntersection )
                 , ( bp::arg("unclipped_area") )
                 , "! helper function for calculating clipping rectangles.\n" );
-        
-        }
-        { //::CEGUI::Window::getParentPixelHeight
-        
-            typedef float ( ::CEGUI::Window::*getParentPixelHeight_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getParentPixelHeight"
-                , getParentPixelHeight_function_type( &::CEGUI::Window::getParentPixelHeight )
-                , "*!\n\
-                \n\
-                    Return the pixel Height of the parent element.  This always returns a\n\
-                    valid number.\n\
-            \n\
-                @return\n\
-                    float value that is equal to the pixel height of this Window objects\n\
-                    parent\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getParentPixelSize
-        
-            typedef ::CEGUI::Sizef ( ::CEGUI::Window::*getParentPixelSize_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getParentPixelSize"
-                , getParentPixelSize_function_type( &::CEGUI::Window::getParentPixelSize )
-                , "*!\n\
-                \n\
-                    Return the pixel size of the parent element.  This always returns a\n\
-                    valid object.\n\
-            \n\
-                @return\n\
-                    Size object that describes the pixel dimensions of this Window objects\n\
-                    parent\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getParentPixelWidth
-        
-            typedef float ( ::CEGUI::Window::*getParentPixelWidth_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getParentPixelWidth"
-                , getParentPixelWidth_function_type( &::CEGUI::Window::getParentPixelWidth )
-                , "*!\n\
-                \n\
-                    Return the pixel Width of the parent element.  This always returns a\n\
-                    valid number.\n\
-            \n\
-                @return\n\
-                    float value that is equal to the pixel width of this Window objects\n\
-                    parent\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getPixelSize
-        
-            typedef ::CEGUI::Sizef ( ::CEGUI::Window::*getPixelSize_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getPixelSize"
-                , getPixelSize_function_type( &::CEGUI::Window::getPixelSize )
-                , "*!\n\
-                \n\
-                    Return the window size in pixels.\n\
-            \n\
-                @return\n\
-                    Size object describing this windows size in pixels.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getPosition
-        
-            typedef ::CEGUI::UVector2 const & ( ::CEGUI::Window::*getPosition_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getPosition"
-                , getPosition_function_type( &::CEGUI::Window::getPosition )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Get the window's position.\n\
-            \n\
-                    Gets the position of the area occupied by this window.  The position is\n\
-                    offset from the top-left corner of this windows parent window or from\n\
-                    the top-left corner of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UVector2 describing the position (top-left corner) of the window area.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::getRenderedString
@@ -2751,44 +2391,6 @@ void register_Window_class(){
                     A pointer to the root window of the hierarchy that this window is\n\
                     attached to.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getRotation
-        
-            typedef ::CEGUI::Quaternion const & ( ::CEGUI::Window::*getRotation_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getRotation"
-                , getRotation_function_type( &::CEGUI::Window::getRotation )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                 retrieves rotation of this widget\n\
-            \n\
-                @see Window.setRotation\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::getSize
-        
-            typedef ::CEGUI::USize ( ::CEGUI::Window::*getSize_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getSize"
-                , getSize_function_type( &::CEGUI::Window::getSize )
-                , "*!\n\
-                \n\
-                    Get the window's size.\n\
-            \n\
-                    Gets the size of the area occupied by this window.\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    USize describing the size of the window area.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::getTargetChildAtPosition
@@ -2932,83 +2534,14 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getUnclippedInnerRect
-        
-            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getUnclippedInnerRect_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getUnclippedInnerRect"
-                , getUnclippedInnerRect_function_type( &::CEGUI::Window::getUnclippedInnerRect )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Return a Rect object that describes, unclipped, the inner rectangle for\n\
-                    this window.  The inner rectangle is typically an area that excludes\n\
-                    some frame or other rendering that should not be touched by subsequent\n\
-                    rendering.\n\
-            \n\
-                @return\n\
-                    Rect object that describes, in unclipped screen pixel co-ordinates, the\n\
-                    window object's inner rect area.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( Window_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Window_wrapper::*getUnclippedInnerRect_impl_function_type )( bool ) const;
             
             Window_exposer.def( 
                 "getUnclippedInnerRect_impl"
                 , getUnclippedInnerRect_impl_function_type( &Window_wrapper::default_getUnclippedInnerRect_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
-            ! Default implementation of function to return Window inner rect area.\n" );
-        
-        }
-        { //::CEGUI::Window::getUnclippedOuterRect
-        
-            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getUnclippedOuterRect_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getUnclippedOuterRect"
-                , getUnclippedOuterRect_function_type( &::CEGUI::Window::getUnclippedOuterRect )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-            \n\
-                Return a Rect that describes the unclipped outer rect area of the Window\n\
-                in screen pixels.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::Window::getUnclippedOuterRect_impl
-        
-            typedef ::CEGUI::Rectf ( Window_wrapper::*getUnclippedOuterRect_impl_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getUnclippedOuterRect_impl"
-                , getUnclippedOuterRect_impl_function_type( &Window_wrapper::default_getUnclippedOuterRect_impl )
-                , "! Default implementation of function to return Window outer rect area.\n" );
-        
-        }
-        { //::CEGUI::Window::getUnclippedRect
-        
-            typedef ::CEGUI::Rectf const & ( ::CEGUI::Window::*getUnclippedRect_function_type )( bool const ) const;
-            
-            Window_exposer.def( 
-                "getUnclippedRect"
-                , getUnclippedRect_function_type( &::CEGUI::Window::getUnclippedRect )
-                , ( bp::arg("inner") )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Return a Rect that describes the unclipped area covered by the Window.\n\
-            \n\
-                    This function can return either the inner or outer area dependant upon\n\
-                    the boolean values passed in.\n\
-            \n\
-                @param inner\n\
-                    - true if the inner rect area should be returned.\n\
-                    - false if the outer rect area should be returned.\n\
-                *\n" );
+                , ( bp::arg("skipAllPixelAlignment") ) );
         
         }
         { //::CEGUI::Window::getUnprojectedPosition
@@ -3072,48 +2605,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getVerticalAlignment
-        
-            typedef ::CEGUI::VerticalAlignment ( ::CEGUI::Window::*getVerticalAlignment_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getVerticalAlignment"
-                , getVerticalAlignment_function_type( &::CEGUI::Window::getVerticalAlignment )
-                , "*!\n\
-                \n\
-                    Get the vertical alignment.\n\
-            \n\
-                    Returns the vertical alignment for the window.  This setting affects how\n\
-                    the windows position is interpreted relative to its parent.\n\
-            \n\
-                @return\n\
-                    One of the VerticalAlignment enumerated values.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getWidth
-        
-            typedef ::CEGUI::UDim ( ::CEGUI::Window::*getWidth_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getWidth"
-                , getWidth_function_type( &::CEGUI::Window::getWidth )
-                , "*!\n\
-                \n\
-                    Get the window's width.\n\
-            \n\
-                    Gets the width of the area occupied by this window.\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UDim describing the width of the window area.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::getWindowAttachedToCommonAncestor
         
             typedef ::CEGUI::Window const * ( Window_wrapper::*getWindowAttachedToCommonAncestor_function_type )( ::CEGUI::Window const & ) const;
@@ -3151,11 +2642,12 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getWindowRendererName
         
-            typedef ::CEGUI::String ( ::CEGUI::Window::*getWindowRendererName_function_type )(  ) const;
+            typedef ::CEGUI::String const & ( ::CEGUI::Window::*getWindowRendererName_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getWindowRendererName"
                 , getWindowRendererName_function_type( &::CEGUI::Window::getWindowRendererName )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
                     Get the factory name of the currently assigned WindowRenderer.\n\
@@ -3165,60 +2657,6 @@ void register_Window_class(){
                     The factory name of the currently assigned WindowRenderer.\n\
                     If no WindowRenderer is assigned an empty string is returned.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getXPosition
-        
-            typedef ::CEGUI::UDim const & ( ::CEGUI::Window::*getXPosition_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getXPosition"
-                , getXPosition_function_type( &::CEGUI::Window::getXPosition )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Get the window's X position.\n\
-            \n\
-                    Gets the x position (left edge) of the area occupied by this window.\n\
-                    The position is offset from the left edge of this windows parent window\n\
-                    or from the left edge of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UDim describing the x position of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::getYPosition
-        
-            typedef ::CEGUI::UDim const & ( ::CEGUI::Window::*getYPosition_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getYPosition"
-                , getYPosition_function_type( &::CEGUI::Window::getYPosition )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                \n\
-                    Get the window's Y position.\n\
-            \n\
-                    Gets the y position (top edge) of the area occupied by this window.\n\
-                    The position is offset from the top edge of this windows parent window\n\
-                    or from the top edge of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @return\n\
-                    UDim describing the y position of the window area.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::getZIndex
@@ -3457,29 +2895,6 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::isAncestor
         
-            typedef bool ( ::CEGUI::Window::*isAncestor_function_type )( ::CEGUI::String const & ) const;
-            
-            Window_exposer.def( 
-                "isAncestor"
-                , isAncestor_function_type( &::CEGUI::Window::isAncestor )
-                , ( bp::arg("name") )
-                , "*!\n\
-                \n\
-                    return true if the specified Window is some ancestor of this Window\n\
-            \n\
-                @param name\n\
-                    String object holding the name of the Window to check for.\n\
-            \n\
-                @return\n\
-                    - true if a Window named  name is an ancestor (parent, or parent of\n\
-                      parent, etc) of this Window.\n\
-                    - false if a Window named  name is in no way an ancestor of this\n\
-                      window.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::isAncestor
-        
             typedef bool ( ::CEGUI::Window::*isAncestor_function_type )( ::CEGUI::uint ) const;
             
             Window_exposer.def( 
@@ -3498,28 +2913,6 @@ void register_Window_class(){
                     - true if an ancestor (parent, or parent of parent, etc) was found with\n\
                       the ID code  ID.\n\
                     - false if no ancestor window has the ID code  ID.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::isAncestor
-        
-            typedef bool ( ::CEGUI::Window::*isAncestor_function_type )( ::CEGUI::Window const * ) const;
-            
-            Window_exposer.def( 
-                "isAncestor"
-                , isAncestor_function_type( &::CEGUI::Window::isAncestor )
-                , ( bp::arg("window") )
-                , "*!\n\
-                \n\
-                    return true if the specified Window is some ancestor of this Window.\n\
-            \n\
-                @param window\n\
-                    Pointer to the Window object to look for.\n\
-            \n\
-                @return\n\
-                    - true if  window was found to be an ancestor (parent, or parent of\n\
-                      parent, etc) of this Window.\n\
-                    - false if  window is not an ancestor of this window.\n\
                 *\n" );
         
         }
@@ -3610,37 +3003,6 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::isChild
         
-            typedef bool ( ::CEGUI::Window::*isChild_function_type )( ::CEGUI::String const & ) const;
-            
-            Window_exposer.def( 
-                "isChild"
-                , isChild_function_type( &::CEGUI::Window::isChild )
-                , ( bp::arg("name_path") )
-                , "*!\n\
-                \n\
-                    returns whether the specified name path references a Window that is\n\
-                    currently attached to this Window.\n\
-            \n\
-                    A name path is a string that describes a path down the window\n\
-                    hierarchy using window names and the forward slash '' as a separator.\n\
-                    \n\
-                    For example, if this window has a child attached to it named Panel\n\
-                    which has its own children attached named Okay and Cancel,\n\
-                    you can check for the window Okay from this window by using the\n\
-                    name path PanelOkay.  To check for Panel, you would simply pass\n\
-                    the name Panel.\n\
-            \n\
-                @param name_path\n\
-                    String object holding the name path of the child window to test.\n\
-            \n\
-                @return\n\
-                     - true if the window referenced by  name_path is attached.\n\
-                     - false if the window referenced by  name_path is not attached.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::isChild
-        
             typedef bool ( ::CEGUI::Window::*isChild_function_type )( ::CEGUI::uint ) const;
             
             Window_exposer.def( 
@@ -3662,27 +3024,6 @@ void register_Window_class(){
                 @return\n\
                     - true if at least one child window was found with the ID code  ID\n\
                     - false if no child window was found with the ID code  ID.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::isChild
-        
-            typedef bool ( ::CEGUI::Window::*isChild_function_type )( ::CEGUI::Window const * ) const;
-            
-            Window_exposer.def( 
-                "isChild"
-                , isChild_function_type( &::CEGUI::Window::isChild )
-                , ( bp::arg("window") )
-                , "*!\n\
-                \n\
-                    return true if the given Window is a child of this window.\n\
-            \n\
-                @param window\n\
-                    Pointer to the Window object to look for.\n\
-            \n\
-                @return\n\
-                    - true if Window object  window is attached to this window as a child.\n\
-                    - false if Window object  window is not a child of this Window.\n\
                 *\n" );
         
         }
@@ -3868,16 +3209,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::isInnerRectSizeChanged
-        
-            typedef bool ( Window_wrapper::*isInnerRectSizeChanged_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "isInnerRectSizeChanged"
-                , isInnerRectSizeChanged_function_type( &Window_wrapper::isInnerRectSizeChanged )
-                , "! helper to return whether the inner rect size has changed\n" );
-        
-        }
         { //::CEGUI::Window::isMouseAutoRepeatEnabled
         
             typedef bool ( ::CEGUI::Window::*isMouseAutoRepeatEnabled_function_type )(  ) const;
@@ -3933,29 +3264,6 @@ void register_Window_class(){
                 @return\n\
                     true if mouse pass through is enabled.\n\
                     false if mouse pass through is not enabled.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::isNonClientWindow
-        
-            typedef bool ( ::CEGUI::Window::*isNonClientWindow_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "isNonClientWindow"
-                , isNonClientWindow_function_type( &::CEGUI::Window::isNonClientWindow )
-                , "*!\n\
-                \n\
-                    Return whether the Window is a non-client window.\n\
-            \n\
-                    A non-client window is clipped, positioned and sized according to the\n\
-                    parent window's full area as opposed to just the inner rect area used\n\
-                    for normal client windows.\n\
-            \n\
-                @return\n\
-                    - true if the window should is clipped, positioned and sized according\n\
-                    to the full area rectangle of it's parent.\n\
-                    - false if the window is be clipped, positioned and sized according\n\
-                    to the inner rect area of it's parent.\n\
                 *\n" );
         
         }
@@ -4354,21 +3662,13 @@ void register_Window_class(){
         { //::CEGUI::Window::notifyScreenAreaChanged
         
             typedef void ( ::CEGUI::Window::*notifyScreenAreaChanged_function_type )( bool ) ;
+            typedef void ( Window_wrapper::*default_notifyScreenAreaChanged_function_type )( bool ) ;
             
             Window_exposer.def( 
                 "notifyScreenAreaChanged"
-                , notifyScreenAreaChanged_function_type( &::CEGUI::Window::notifyScreenAreaChanged )
-                , ( bp::arg("recursive")=(bool)(true) )
-                , "*!\n\
-                \n\
-                    Inform the window, and optionally all children, that screen area\n\
-                    rectangles have changed.\n\
-            \n\
-                @param recursive\n\
-                    - true to recursively call notifyScreenAreaChanged on attached child\n\
-                      Window objects.\n\
-                    - false to just process  e this Window.\n\
-                *\n" );
+                , notifyScreenAreaChanged_function_type(&::CEGUI::Window::notifyScreenAreaChanged)
+                , default_notifyScreenAreaChanged_function_type(&Window_wrapper::default_notifyScreenAreaChanged)
+                , ( bp::arg("recursive")=(bool)(true) ) );
         
         }
         { //::CEGUI::Window::onActivated
@@ -4488,7 +3788,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::onChildAdded
         
-            typedef void ( Window_wrapper::*onChildAdded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Window_wrapper::*onChildAdded_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Window_exposer.def( 
                 "onChildAdded"
@@ -4506,7 +3806,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::onChildRemoved
         
-            typedef void ( Window_wrapper::*onChildRemoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Window_wrapper::*onChildRemoved_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Window_exposer.def( 
                 "onChildRemoved"
@@ -4713,26 +4013,6 @@ void register_Window_class(){
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\
                     that triggered the event.  For this event the trigger window is always\n\
                     'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onHorizontalAlignmentChanged
-        
-            typedef void ( Window_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Window_exposer.def( 
-                "onHorizontalAlignmentChanged"
-                , onHorizontalAlignmentChanged_function_type( &Window_wrapper::default_onHorizontalAlignmentChanged )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the horizontal alignment setting for the window is\n\
-                    changed.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object initialised as follows:\n\
-                    - window field is set to point to the Window object whos alignment has\n\
-                      changed (typically 'this').\n\
                 *\n" );
         
         }
@@ -5037,7 +4317,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::onMoved
         
-            typedef void ( Window_wrapper::*onMoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Window_wrapper::*onMoved_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Window_exposer.def( 
                 "onMoved"
@@ -5046,26 +4326,6 @@ void register_Window_class(){
                 , "*!\n\
                 \n\
                     Handler called when the window's position changes.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
-                    'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onNonClientChanged
-        
-            typedef void ( Window_wrapper::*onNonClientChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Window_exposer.def( 
-                "onNonClientChanged"
-                , onNonClientChanged_function_type( &Window_wrapper::default_onNonClientChanged )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the window's non-client setting, affecting it's\n\
-                    position and size relative to it's parent is changed.\n\
             \n\
                 @param e\n\
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\
@@ -5096,7 +4356,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::onParentSized
         
-            typedef void ( Window_wrapper::*onParentSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Window_wrapper::*onParentSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Window_exposer.def( 
                 "onParentSized"
@@ -5155,21 +4415,12 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::onRotated
         
-            typedef void ( Window_wrapper::*onRotated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Window_wrapper::*onRotated_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Window_exposer.def( 
                 "onRotated"
                 , onRotated_function_type( &Window_wrapper::default_onRotated )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the window's rotation factor is changed.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
-                    'this'.\n\
-                *\n" );
+                , ( bp::arg("e") ) );
         
         }
         { //::CEGUI::Window::onShown
@@ -5193,7 +4444,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::onSized
         
-            typedef void ( Window_wrapper::*onSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Window_wrapper::*onSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Window_exposer.def( 
                 "onSized"
@@ -5249,26 +4500,6 @@ void register_Window_class(){
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\
                     that triggered the event.  For this event the trigger window is always\n\
                     'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onVerticalAlignmentChanged
-        
-            typedef void ( Window_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Window_exposer.def( 
-                "onVerticalAlignmentChanged"
-                , onVerticalAlignmentChanged_function_type( &Window_wrapper::default_onVerticalAlignmentChanged )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the vertical alignment setting for the window is\n\
-                    changed.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object initialised as follows:\n\
-                    - window field is set to point to the Window object whos alignment has\n\
-                      changed (typically 'this').\n\
                 *\n" );
         
         }
@@ -5453,50 +4684,6 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::removeChild
         
-            typedef void ( ::CEGUI::Window::*removeChild_function_type )( ::CEGUI::String const & ) ;
-            
-            Window_exposer.def( 
-                "removeChild"
-                , removeChild_function_type( &::CEGUI::Window::removeChild )
-                , ( bp::arg("name") )
-                , "*!\n\
-                \n\
-                    Remove the Window referenced by the given name path from this Windows\n\
-                    child list.\n\
-            \n\
-                @param name_path\n\
-                    String the name path that references the the Window to be removed.\n\
-                    If the Window specified is not attached to this Window, nothing\n\
-                    happens.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::removeChild
-        
-            typedef void ( ::CEGUI::Window::*removeChild_function_type )( ::CEGUI::Window * ) ;
-            
-            Window_exposer.def( 
-                "removeChild"
-                , removeChild_function_type( &::CEGUI::Window::removeChild )
-                , ( bp::arg("window") )
-                , "*!\n\
-                \n\
-                    Remove the specified Window form this windows child list.\n\
-            \n\
-                @param window\n\
-                    Pointer to the Window object to be removed.  If the  window is not\n\
-                    attached to this Window, then nothing happens.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::removeChild
-        
             typedef void ( ::CEGUI::Window::*removeChild_function_type )( ::CEGUI::uint ) ;
             
             Window_exposer.def( 
@@ -5520,15 +4707,14 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::removeChild_impl
         
-            typedef void ( Window_wrapper::*removeChild_impl_function_type )( ::CEGUI::Window * ) ;
+            typedef void ( Window_wrapper::*removeChild_impl_function_type )( ::CEGUI::Element * ) ;
             
             Window_exposer.def( 
                 "removeChild_impl"
                 , removeChild_impl_function_type( &Window_wrapper::default_removeChild_impl )
-                , ( bp::arg("wnd") )
+                , ( bp::arg("element") )
                 , "*!\n\
-            \n\
-                Remove given window from child list\n\
+            opydoc Element.removeChild_impl\n\
             *\n" );
         
         }
@@ -5550,26 +4736,6 @@ void register_Window_class(){
             \n\
                 @return\n\
                     Nothing.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::rename
-        
-            typedef void ( ::CEGUI::Window::*rename_function_type )( ::CEGUI::String const & ) ;
-            
-            Window_exposer.def( 
-                "rename"
-                , rename_function_type( &::CEGUI::Window::rename )
-                , ( bp::arg("new_name") )
-                , "*!\n\
-                \n\
-                    Renames the window.\n\
-            \n\
-                @param new_name\n\
-                    String object holding the new name for the window.\n\
-            \n\
-                @exception AlreadyExistsException\n\
-                    thrown if a Window named  new_name already exists in the system.\n\
                 *\n" );
         
         }
@@ -5665,171 +4831,15 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::setArea
-        
-            typedef void ( ::CEGUI::Window::*setArea_function_type )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & ) ;
-            
-            Window_exposer.def( 
-                "setArea"
-                , setArea_function_type( &::CEGUI::Window::setArea )
-                , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the window area.\n\
-            \n\
-                    Sets the area occupied by this window.  The defined area is offset from\n\
-                    the top-left corner of this windows parent window or from the top-left\n\
-                    corner of the display if this window has no parent (i.e. it is the root\n\
-                    window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param xpos\n\
-                    UDim describing the new x co-ordinate (left edge) of the window area.\n\
-            \n\
-                @param ypos\n\
-                    UDim describing the new y co-ordinate (top-edge) of the window area.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the window area.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setArea
-        
-            typedef void ( ::CEGUI::Window::*setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const & ) ;
-            
-            Window_exposer.def( 
-                "setArea"
-                , setArea_function_type( &::CEGUI::Window::setArea )
-                , ( bp::arg("pos"), bp::arg("size") )
-                , "*!\n\
-                \n\
-                    Set the window area.\n\
-            \n\
-                    Sets the area occupied by this window.  The defined area is offset from\n\
-                    the top-left corner of this windows parent window or from the top-left\n\
-                    corner of the display if this window has no parent (i.e. it is the root\n\
-                    window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param pos\n\
-                    UVector2 describing the new position (top-left corner) of the window\n\
-                    area.\n\
-            \n\
-                @param size\n\
-                    UVector2 describing the new size of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setArea
-        
-            typedef void ( ::CEGUI::Window::*setArea_function_type )( ::CEGUI::URect const & ) ;
-            
-            Window_exposer.def( 
-                "setArea"
-                , setArea_function_type( &::CEGUI::Window::setArea )
-                , ( bp::arg("area") )
-                , "*!\n\
-                \n\
-                    Set the window area.\n\
-            \n\
-                    Sets the area occupied by this window.  The defined area is offset from\n\
-                    the top-left corner of this windows parent window or from the top-left\n\
-                    corner of the display if this window has no parent (i.e. it is the root\n\
-                    window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param area\n\
-                    URect describing the new area rectangle of the window area.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::setArea_impl
         
             typedef void ( Window_wrapper::*setArea_impl_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const &,bool,bool ) ;
             
             Window_exposer.def( 
                 "setArea_impl"
-                , setArea_impl_function_type( &Window_wrapper::setArea_impl )
+                , setArea_impl_function_type( &Window_wrapper::default_setArea_impl )
                 , ( bp::arg("pos"), bp::arg("size"), bp::arg("topLeftSizing")=(bool)(false), bp::arg("fireEvents")=(bool)(true) )
-                , "*!\n\
-                \n\
-                    Implementation method to modify window area while correctly applying\n\
-                    min  max size processing, and firing any appropriate events.\n\
-            \n\
-                note\n\
-                    This is the implementation function for setting size and position.\n\
-                    In order to simplify area management, from this point on, all\n\
-                    modifications to window size and position (area rect) should come\n\
-                    through here.\n\
-            \n\
-                param pos\n\
-                    UVector2 object describing the new area position.\n\
-            \n\
-                param size\n\
-                    USize object describing the new area size.\n\
-            \n\
-                param topLeftSizing\n\
-                    - true to indicate the the operation is a sizing operation on the top\n\
-                      andor left edges of the area, and so window movement should be\n\
-                      inhibited if size is at max or min.\n\
-                    - false to indicate the operation is not a strict sizing operation on\n\
-                      the top andor left edges and that the window position may change as\n\
-                      required\n\
-            \n\
-                param fireEvents\n\
-                    - true if events should be fired as normal.\n\
-                    - false to inhibit firing of events (required, for example, if you need\n\
-                      to call this from the onSizeonMove handlers).\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setAspectMode
-        
-            typedef void ( ::CEGUI::Window::*setAspectMode_function_type )( ::CEGUI::AspectMode ) ;
-            
-            Window_exposer.def( 
-                "setAspectMode"
-                , setAspectMode_function_type( &::CEGUI::Window::setAspectMode )
-                , ( bp::arg("mode") )
-                , "*!\n\
-                \n\
-                    Sets current aspect mode and recalculates the area rect\n\
-            \n\
-                @param\n\
-                    mode the new aspect mode to set\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::setAspectRatio
-        
-            typedef void ( ::CEGUI::Window::*setAspectRatio_function_type )( float ) ;
-            
-            Window_exposer.def( 
-                "setAspectRatio"
-                , setAspectRatio_function_type( &::CEGUI::Window::setAspectRatio )
-                , ( bp::arg("ratio") )
-                , "*!\n\
-                \n\
-                    Sets target aspect ratio\n\
-            \n\
-                This is ignored if AspectMode is AM_IGNORE.\n\
-                *\n" );
+                , "! opydoc Element.setArea_impl\n" );
         
         }
         { //::CEGUI::Window::setAutoRepeatDelay
@@ -6080,53 +5090,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::setHeight
-        
-            typedef void ( ::CEGUI::Window::*setHeight_function_type )( ::CEGUI::UDim const & ) ;
-            
-            Window_exposer.def( 
-                "setHeight"
-                , setHeight_function_type( &::CEGUI::Window::setHeight )
-                , ( bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the window's height.\n\
-            \n\
-                    Sets the height of the area occupied by this window.\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setHorizontalAlignment
-        
-            typedef void ( ::CEGUI::Window::*setHorizontalAlignment_function_type )( ::CEGUI::HorizontalAlignment const ) ;
-            
-            Window_exposer.def( 
-                "setHorizontalAlignment"
-                , setHorizontalAlignment_function_type( &::CEGUI::Window::setHorizontalAlignment )
-                , ( bp::arg("alignment") )
-                , "*!\n\
-                \n\
-                    Set the horizontal alignment.\n\
-            \n\
-                    Modifies the horizontal alignment for the window.  This setting affects\n\
-                    how the windows position is interpreted relative to its parent.\n\
-            \n\
-                @param alignment\n\
-                    One of the HorizontalAlignment enumerated values.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::setID
         
             typedef void ( ::CEGUI::Window::*setID_function_type )( ::CEGUI::uint ) ;
@@ -6215,58 +5178,6 @@ void register_Window_class(){
                 , setMargin_function_type(&::CEGUI::Window::setMargin)
                 , default_setMargin_function_type(&Window_wrapper::default_setMargin)
                 , ( bp::arg("margin") ) );
-        
-        }
-        { //::CEGUI::Window::setMaxSize
-        
-            typedef void ( ::CEGUI::Window::*setMaxSize_function_type )( ::CEGUI::USize const & ) ;
-            
-            Window_exposer.def( 
-                "setMaxSize"
-                , setMaxSize_function_type( &::CEGUI::Window::setMaxSize )
-                , ( bp::arg("size") )
-                , "*!\n\
-                \n\
-                    Set the window's maximum size.\n\
-            \n\
-                    Sets the maximum size that this windows area may occupy (whether size\n\
-                    changes occur by user interaction, general system operation, or by\n\
-                    direct setting by client code).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param size\n\
-                    USize describing the new maximum size of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setMinSize
-        
-            typedef void ( ::CEGUI::Window::*setMinSize_function_type )( ::CEGUI::USize const & ) ;
-            
-            Window_exposer.def( 
-                "setMinSize"
-                , setMinSize_function_type( &::CEGUI::Window::setMinSize )
-                , ( bp::arg("size") )
-                , "*!\n\
-                \n\
-                    Set the window's minimum size.\n\
-            \n\
-                    Sets the minimum size that this windows area may occupy (whether size\n\
-                    changes occur by user interaction, general system operation, or by\n\
-                    direct setting by client code).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param size\n\
-                    USize describing the new minimum size of the window area.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::setModalState
@@ -6422,37 +5333,13 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::setNonClientWindow
-        
-            typedef void ( ::CEGUI::Window::*setNonClientWindow_function_type )( bool const ) ;
-            
-            Window_exposer.def( 
-                "setNonClientWindow"
-                , setNonClientWindow_function_type( &::CEGUI::Window::setNonClientWindow )
-                , ( bp::arg("setting") )
-                , "*!\n\
-                \n\
-                    Set whether the Window is a non-client window.\n\
-            \n\
-                    A non-client window is clipped, positioned and sized according to the\n\
-                    parent window's full area as opposed to just the inner rect area used\n\
-                    for normal client windows.\n\
-            \n\
-                @param setting\n\
-                    - true if the window should be clipped, positioned and sized according\n\
-                    to the full area rectangle of it's parent.\n\
-                    - false if the window should be clipped, positioned and sized according\n\
-                    to the inner rect area of it's parent.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Window::setParent
         
-            typedef void ( Window_wrapper::*setParent_function_type )( ::CEGUI::Window * ) ;
+            typedef void ( Window_wrapper::*setParent_function_type )( ::CEGUI::Element * ) ;
             
             Window_exposer.def( 
                 "setParent"
-                , setParent_function_type( &Window_wrapper::setParent )
+                , setParent_function_type( &Window_wrapper::default_setParent )
                 , ( bp::arg("parent") )
                 , "*!\n\
                 \n\
@@ -6465,34 +5352,6 @@ void register_Window_class(){
                 @return\n\
                     Nothing\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setPosition
-        
-            typedef void ( ::CEGUI::Window::*setPosition_function_type )( ::CEGUI::UVector2 const & ) ;
-            
-            Window_exposer.def( 
-                "setPosition"
-                , setPosition_function_type( &::CEGUI::Window::setPosition )
-                , ( bp::arg("pos") )
-                , "*!\n\
-                \n\
-                    Set the window's position.\n\
-            \n\
-                    Sets the position of the area occupied by this window.  The position is\n\
-                    offset from the top-left corner of this windows parent window or from\n\
-                    the top-left corner of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param pos\n\
-                    UVector2 describing the new position (top-left corner) of the window\n\
-                    area.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::setRenderingSurface
@@ -6583,51 +5442,6 @@ void register_Window_class(){
             \n\
                 @return\n\
                     Nothing.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setRotation
-        
-            typedef void ( ::CEGUI::Window::*setRotation_function_type )( ::CEGUI::Quaternion const & ) ;
-            
-            Window_exposer.def( 
-                "setRotation"
-                , setRotation_function_type( &::CEGUI::Window::setRotation )
-                , ( bp::arg("rotation") )
-                , "*!\n\
-                 sets rotation of this widget\n\
-            \n\
-                @param rotation\n\
-                    A Quaternion describing the rotation\n\
-            \n\
-                CEGUI used Euler angles previously. Whilst this is easy to use and seems\n\
-                intuitive, it causes Gimbal locks when animating and is just the worse\n\
-                solution than using Quaternions. You can still use Euler angles, see\n\
-                the  Quaternion class for more info about that.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::setSize
-        
-            typedef void ( ::CEGUI::Window::*setSize_function_type )( ::CEGUI::USize const & ) ;
-            
-            Window_exposer.def( 
-                "setSize"
-                , setSize_function_type( &::CEGUI::Window::setSize )
-                , ( bp::arg("size") )
-                , "*!\n\
-                \n\
-                    Set the window's size.\n\
-            \n\
-                    Sets the size of the area occupied by this window.\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param size\n\
-                    USize describing the new size of the window area.\n\
                  *\n" );
         
         }
@@ -6839,29 +5653,6 @@ void register_Window_class(){
             " );
         
         }
-        { //::CEGUI::Window::setVerticalAlignment
-        
-            typedef void ( ::CEGUI::Window::*setVerticalAlignment_function_type )( ::CEGUI::VerticalAlignment const ) ;
-            
-            Window_exposer.def( 
-                "setVerticalAlignment"
-                , setVerticalAlignment_function_type( &::CEGUI::Window::setVerticalAlignment )
-                , ( bp::arg("alignment") )
-                , "*!\n\
-                \n\
-                    Set the vertical alignment.\n\
-            \n\
-                    Modifies the vertical alignment for the window.  This setting affects\n\
-                    how the windows position is interpreted relative to its parent.\n\
-            \n\
-                @param alignment\n\
-                    One of the VerticalAlignment enumerated values.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::setVisible
         
             typedef void ( ::CEGUI::Window::*setVisible_function_type )( bool ) ;
@@ -6912,30 +5703,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::setWidth
-        
-            typedef void ( ::CEGUI::Window::*setWidth_function_type )( ::CEGUI::UDim const & ) ;
-            
-            Window_exposer.def( 
-                "setWidth"
-                , setWidth_function_type( &::CEGUI::Window::setWidth )
-                , ( bp::arg("width") )
-                , "*!\n\
-                \n\
-                    Set the window's width.\n\
-            \n\
-                    Sets the width of the area occupied by this window.\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the window area.\n\
-                 *\n" );
-        
-        }
         { //::CEGUI::Window::setWindowRenderer
         
             typedef void ( ::CEGUI::Window::*setWindowRenderer_function_type )( ::CEGUI::String const & ) ;
@@ -6969,60 +5736,6 @@ void register_Window_class(){
             \n\
                 Sets whether this window is allowed to write XML\n\
             *\n" );
-        
-        }
-        { //::CEGUI::Window::setXPosition
-        
-            typedef void ( ::CEGUI::Window::*setXPosition_function_type )( ::CEGUI::UDim const & ) ;
-            
-            Window_exposer.def( 
-                "setXPosition"
-                , setXPosition_function_type( &::CEGUI::Window::setXPosition )
-                , ( bp::arg("x") )
-                , "*!\n\
-                \n\
-                    Set the window's X position.\n\
-            \n\
-                    Sets the x position (left edge) of the area occupied by this window.\n\
-                    The position is offset from the left edge of this windows parent window\n\
-                    or from the left edge of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param x\n\
-                    UDim describing the new x position of the window area.\n\
-                 *\n" );
-        
-        }
-        { //::CEGUI::Window::setYPosition
-        
-            typedef void ( ::CEGUI::Window::*setYPosition_function_type )( ::CEGUI::UDim const & ) ;
-            
-            Window_exposer.def( 
-                "setYPosition"
-                , setYPosition_function_type( &::CEGUI::Window::setYPosition )
-                , ( bp::arg("y") )
-                , "*!\n\
-                \n\
-                    Set the window's Y position.\n\
-            \n\
-                    Sets the y position (top edge) of the area occupied by this window.\n\
-                    The position is offset from the top edge of this windows parent window\n\
-                    or from the top edge of the display if this window has no parent\n\
-                    (i.e. it is the root window).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions.  These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param y\n\
-                    UDim describing the new y position of the window area.\n\
-                 *\n" );
         
         }
         { //::CEGUI::Window::setZOrderingEnabled
@@ -7254,12 +5967,6 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventCharacterKey"
                         , bp::make_getter( &CEGUI::Window::EventCharacterKey
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventChildAdded"
-                        , bp::make_getter( &CEGUI::Window::EventChildAdded
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventChildRemoved"
-                        , bp::make_getter( &CEGUI::Window::EventChildRemoved
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventClippedByParentChanged"
                         , bp::make_getter( &CEGUI::Window::EventClippedByParentChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -7292,9 +5999,6 @@ void register_Window_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventHidden"
                         , bp::make_getter( &CEGUI::Window::EventHidden
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventHorizontalAlignmentChanged"
-                        , bp::make_getter( &CEGUI::Window::EventHorizontalAlignmentChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventIDChanged"
                         , bp::make_getter( &CEGUI::Window::EventIDChanged
@@ -7350,29 +6054,14 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventMouseWheel"
                         , bp::make_getter( &CEGUI::Window::EventMouseWheel
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventMoved"
-                        , bp::make_getter( &CEGUI::Window::EventMoved
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventNonClientChanged"
-                        , bp::make_getter( &CEGUI::Window::EventNonClientChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventParentSized"
-                        , bp::make_getter( &CEGUI::Window::EventParentSized
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventRenderingEnded"
                         , bp::make_getter( &CEGUI::Window::EventRenderingEnded
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventRenderingStarted"
                         , bp::make_getter( &CEGUI::Window::EventRenderingStarted
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventRotated"
-                        , bp::make_getter( &CEGUI::Window::EventRotated
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventShown"
                         , bp::make_getter( &CEGUI::Window::EventShown
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventSized"
-                        , bp::make_getter( &CEGUI::Window::EventSized
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventTextChanged"
                         , bp::make_getter( &CEGUI::Window::EventTextChanged
@@ -7383,21 +6072,41 @@ void register_Window_class(){
         Window_exposer.add_static_property( "EventUpdated"
                         , bp::make_getter( &CEGUI::Window::EventUpdated
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventVerticalAlignmentChanged"
-                        , bp::make_getter( &CEGUI::Window::EventVerticalAlignmentChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventWindowRendererAttached"
                         , bp::make_getter( &CEGUI::Window::EventWindowRendererAttached
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventWindowRendererDetached"
                         , bp::make_getter( &CEGUI::Window::EventWindowRendererDetached
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Window_exposer.add_static_property( "EventZOrderChanged"
-                        , bp::make_getter( &CEGUI::Window::EventZOrderChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "TooltipNameSuffix"
                         , bp::make_getter( &CEGUI::Window::TooltipNameSuffix
                                 , bp::return_value_policy< bp::return_by_value >() ) );
+        { //::CEGUI::Element::addElementProperties
+        
+            typedef void ( Window_wrapper::*addElementProperties_function_type )(  ) ;
+            
+            Window_exposer.def( 
+                "addElementProperties"
+                , addElementProperties_function_type( &Window_wrapper::addElementProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.Element properties.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::addNamedElementProperties
+        
+            typedef void ( Window_wrapper::*addNamedElementProperties_function_type )(  ) ;
+            
+            Window_exposer.def( 
+                "addNamedElementProperties"
+                , addNamedElementProperties_function_type( &Window_wrapper::addNamedElementProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.NamedElement properties.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::EventSet::fireEvent
         
             typedef void ( ::CEGUI::EventSet::*fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
@@ -7421,6 +6130,41 @@ void register_Window_class(){
                 , "! Implementation event firing member\n" );
         
         }
+        { //::CEGUI::NamedElement::getChildByNamePath_impl
+        
+            typedef ::CEGUI::NamedElement * ( Window_wrapper::*getChildByNamePath_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            Window_exposer.def( 
+                "getChildByNamePath_impl"
+                , getChildByNamePath_impl_function_type( &Window_wrapper::default_getChildByNamePath_impl )
+                , ( bp::arg("name_path") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+                retrieves a child at  name_path or 0 if none such exists\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Element::getClientChildContentArea
+        
+            typedef ::CEGUI::Element::CachedRectf const & ( ::CEGUI::Element::*getClientChildContentArea_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getClientChildContentArea"
+                , getClientChildContentArea_function_type(&::CEGUI::Element::getClientChildContentArea)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
+        { //::CEGUI::Element::getNonClientChildContentArea
+        
+            typedef ::CEGUI::Element::CachedRectf const & ( ::CEGUI::Element::*getNonClientChildContentArea_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getNonClientChildContentArea"
+                , getNonClientChildContentArea_function_type(&::CEGUI::Element::getNonClientChildContentArea)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::EventSet::getScriptModule
         
             typedef ::CEGUI::ScriptModule * ( Window_wrapper::*getScriptModule_function_type )(  ) const;
@@ -7431,6 +6175,217 @@ void register_Window_class(){
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "! Implementation event firing member\n\
             ! Helper to return the script module pointer or throw.\n" );
+        
+        }
+        { //::CEGUI::Element::getUnclippedOuterRect_impl
+        
+            typedef ::CEGUI::Rectf ( Window_wrapper::*getUnclippedOuterRect_impl_function_type )( bool ) const;
+            
+            Window_exposer.def( 
+                "getUnclippedOuterRect_impl"
+                , getUnclippedOuterRect_impl_function_type( &Window_wrapper::default_getUnclippedOuterRect_impl )
+                , ( bp::arg("skipAllPixelAlignment") )
+                , "! Default implementation of function to return Element's outer rect area.\n" );
+        
+        }
+        { //::CEGUI::Element::isInnerRectSizeChanged
+        
+            typedef bool ( Window_wrapper::*isInnerRectSizeChanged_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "isInnerRectSizeChanged"
+                , isInnerRectSizeChanged_function_type( &Window_wrapper::isInnerRectSizeChanged )
+                , "! helper to return whether the inner rect size has changed\n" );
+        
+        }
+        { //::CEGUI::Element::onHorizontalAlignmentChanged
+        
+            typedef void ( Window_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::ElementEventArgs & ) ;
+            
+            Window_exposer.def( 
+                "onHorizontalAlignmentChanged"
+                , onHorizontalAlignmentChanged_function_type( &Window_wrapper::default_onHorizontalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the horizontal alignment setting for the element is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    ElementEventArgs object initialised as follows:\n\
+                    - element field is set to point to the element object who's alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::onNameChanged
+        
+            typedef void ( Window_wrapper::*onNameChanged_function_type )( ::CEGUI::NamedElementEventArgs & ) ;
+            
+            Window_exposer.def( 
+                "onNameChanged"
+                , onNameChanged_function_type( &Window_wrapper::default_onNameChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the element's name changes.\n\
+            \n\
+                @param e\n\
+                    NamedElementEventArgs object whose 'element' pointer field is set to the element\n\
+                    that triggered the event. For this event the trigger element is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Element::onNonClientChanged
+        
+            typedef void ( Window_wrapper::*onNonClientChanged_function_type )( ::CEGUI::ElementEventArgs & ) ;
+            
+            Window_exposer.def( 
+                "onNonClientChanged"
+                , onNonClientChanged_function_type( &Window_wrapper::default_onNonClientChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the element's non-client setting, affecting it's\n\
+                    position and size relative to it's parent is changed.\n\
+            \n\
+                @param e\n\
+                    ElementEventArgs object whose 'element' pointer field is set to the element\n\
+                    that triggered the event. For this event the trigger element is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Element::onVerticalAlignmentChanged
+        
+            typedef void ( Window_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::ElementEventArgs & ) ;
+            
+            Window_exposer.def( 
+                "onVerticalAlignmentChanged"
+                , onVerticalAlignmentChanged_function_type( &Window_wrapper::default_onVerticalAlignmentChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the vertical alignment setting for the element is\n\
+                    changed.\n\
+            \n\
+                @param e\n\
+                    ElementEventArgs object initialised as follows:\n\
+                    - element field is set to point to the element object who's alignment has\n\
+                      changed (typically 'this').\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Element::setArea
+        
+            typedef void ( ::CEGUI::Element::*setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const & ) ;
+            typedef void ( Window_wrapper::*default_setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const & ) ;
+            
+            Window_exposer.def( 
+                "setArea"
+                , setArea_function_type(&::CEGUI::Element::setArea)
+                , default_setArea_function_type(&Window_wrapper::default_setArea)
+                , ( bp::arg("pos"), bp::arg("size") ) );
+        
+        }
+        { //::CEGUI::Element::setArea
+        
+            typedef void ( ::CEGUI::Element::*setArea_function_type )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & ) ;
+            
+            Window_exposer.def( 
+                "setArea"
+                , setArea_function_type( &::CEGUI::Element::setArea )
+                , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
+                , "*!\n\
+                \n\
+                    Set the Element area.\n\
+            \n\
+                    Sets the area occupied by this Element. The defined area is offset from\n\
+                    one of the corners of this Element's parent element (depending on alignments)\n\
+                    or from the top-left corner of the display if this element has no parent\n\
+                    (i.e. it is the root element).\n\
+            \n\
+                \note\n\
+                    This method makes use of Unified Dimensions. These contain both\n\
+                    parent relative and absolute pixel components, which are used in\n\
+                    determining the final value used.\n\
+            \n\
+                @param xpos\n\
+                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
+            \n\
+                @param ypos\n\
+                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
+            \n\
+                @param width\n\
+                    UDim describing the new width of the element area.\n\
+            \n\
+                @param height\n\
+                    UDim describing the new height of the element area.\n\
+                 *\n" );
+        
+        }
+        { //::CEGUI::Element::setArea
+        
+            typedef void ( ::CEGUI::Element::*setArea_function_type )( ::CEGUI::URect const & ) ;
+            
+            Window_exposer.def( 
+                "setArea"
+                , setArea_function_type( &::CEGUI::Element::setArea )
+                , ( bp::arg("area") )
+                , "*!\n\
+                \n\
+                    Set the Element area.\n\
+            \n\
+                    Sets the area occupied by this Element. The defined area is offset from\n\
+                    one of the corners of this Element's parent element (depending on alignments)\n\
+                    or from the top-left corner of the display if this element has no parent\n\
+                    (i.e. it is the root element).\n\
+            \n\
+                \note\n\
+                    This method makes use of Unified Dimensions. These contain both\n\
+                    parent relative and absolute pixel components, which are used in\n\
+                    determining the final value used.\n\
+            \n\
+                @param area\n\
+                    URect describing the new area rectangle of the element area.\n\
+                 *\n" );
+        
+        }
+        { //::CEGUI::Element::setHorizontalAlignment
+        
+            typedef void ( ::CEGUI::Element::*setHorizontalAlignment_function_type )( ::CEGUI::HorizontalAlignment const ) ;
+            typedef void ( Window_wrapper::*default_setHorizontalAlignment_function_type )( ::CEGUI::HorizontalAlignment const ) ;
+            
+            Window_exposer.def( 
+                "setHorizontalAlignment"
+                , setHorizontalAlignment_function_type(&::CEGUI::Element::setHorizontalAlignment)
+                , default_setHorizontalAlignment_function_type(&Window_wrapper::default_setHorizontalAlignment)
+                , ( bp::arg("alignment") ) );
+        
+        }
+        { //::CEGUI::NamedElement::setName
+        
+            typedef void ( ::CEGUI::NamedElement::*setName_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( Window_wrapper::*default_setName_function_type )( ::CEGUI::String const & ) ;
+            
+            Window_exposer.def( 
+                "setName"
+                , setName_function_type(&::CEGUI::NamedElement::setName)
+                , default_setName_function_type(&Window_wrapper::default_setName)
+                , ( bp::arg("name") ) );
+        
+        }
+        { //::CEGUI::Element::setVerticalAlignment
+        
+            typedef void ( ::CEGUI::Element::*setVerticalAlignment_function_type )( ::CEGUI::VerticalAlignment const ) ;
+            typedef void ( Window_wrapper::*default_setVerticalAlignment_function_type )( ::CEGUI::VerticalAlignment const ) ;
+            
+            Window_exposer.def( 
+                "setVerticalAlignment"
+                , setVerticalAlignment_function_type(&::CEGUI::Element::setVerticalAlignment)
+                , default_setVerticalAlignment_function_type(&Window_wrapper::default_setVerticalAlignment)
+                , ( bp::arg("alignment") ) );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

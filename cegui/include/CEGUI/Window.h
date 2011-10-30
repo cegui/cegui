@@ -313,12 +313,6 @@ public:
      * detached from it.
      */
     static const String EventWindowRendererDetached;
-    /** Event fired when the non-client setting for the Window is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window whose non-client setting was
-     * changed.
-     */
-    static const String EventNonClientChanged;
     /** Event fired when the Window's setting controlling parsing of it's text
      * string is changed.
      * Handlers are passed a const WindowEventArgs reference with
