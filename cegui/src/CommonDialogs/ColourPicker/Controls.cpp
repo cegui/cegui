@@ -132,7 +132,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
     d_colourPickerControlsTextureTarget(0),
     d_colourPickerImageOffset(2),
     d_colourPickerPickingImageHeight(260),
-    d_colourPickerPickingImageWidth(26),
+    d_colourPickerPickingImageWidth(260),
     d_colourPickerColourSliderImageWidth(1),
     d_colourPickerColourSliderImageHeight(260),
     d_colourPickerAlphaSliderImageWidth(260),
