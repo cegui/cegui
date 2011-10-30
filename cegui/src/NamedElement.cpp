@@ -108,6 +108,27 @@ bool NamedElement::isChild(const String& name_path) const
 }
 
 //----------------------------------------------------------------------------//
+bool NamedElement::isAncestor(const String& name) const
+{
+    Element const* current = this;
+    
+    while (true)
+    {
+        const Element* parent = current->getParentElement();
+        
+        if (!parent)
+            return false;
+        
+        const NamedElement* named_parent = dynamic_cast<const NamedElement*>(parent);
+        
+        if (named_parent && named_parent->getName() == name)
+            return true;
+        
+        current = parent;
+    }
+}
+
+//----------------------------------------------------------------------------//
 NamedElement* NamedElement::getChildElement(const String& name_path) const
 {
     NamedElement* e = getChildByNamePath_impl(name_path);

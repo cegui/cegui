@@ -160,11 +160,10 @@ void Window::LookNFeelProperty::writeXMLToStream(const PropertyReceiver* receive
 
 //----------------------------------------------------------------------------//
 Window::Window(const String& type, const String& name):
-    Element(),
+    NamedElement(name),
 
     // basic types and initial window name
     d_type(type),
-    d_name(name),
     d_autoWindow(d_name.rfind(AutoWidgetNameSuffix) != String::npos),
 
     // basic state
@@ -282,19 +281,6 @@ const String& Window::getType(void) const
 }
 
 //----------------------------------------------------------------------------//
-String Window::getNamePath() const
-{
-    String path("");
-
-    if (getParent())
-        path = getParent()->getNamePath() + '/';
-
-    path += getName();
-
-    return path;
-}
-
-//----------------------------------------------------------------------------//
 bool Window::isDisabled() const
 {
     return !d_enabled;
@@ -331,12 +317,6 @@ bool Window::isActive(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isChild(const String& name_path) const
-{
-    return getChild_impl(name_path) != 0;
-}
-
-//----------------------------------------------------------------------------//
 bool Window::isChild(uint ID) const
 {
     const size_t child_count = getChildCount();
@@ -358,37 +338,6 @@ bool Window::isChildRecursive(uint ID) const
             return true;
 
     return false;
-}
-
-//----------------------------------------------------------------------------//
-Window* Window::getChild(const String& name_path) const
-{
-    Window* w = getChild_impl(name_path);
-
-    if (w)
-        return w;
-
-    CEGUI_THROW(UnknownObjectException("Window::getChild - The Window object "
-        "referenced by '" + name_path + "' is not attached to Window at '"
-        + getNamePath() + "'."));
-}
-
-//----------------------------------------------------------------------------//
-Window* Window::getChild_impl(const String& name_path) const
-{
-    const size_t sep = name_path.find_first_of('/');
-    const String base_child(name_path.substr(0, sep));
-
-    const size_t child_count = d_children.size();
-
-    for (size_t i = 0; i < child_count; ++i)
-        if (getChildAtIdx(i)->getName() == base_child)
-            if (sep != String::npos && sep < name_path.length() - 1)
-                return getChildAtIdx(i)->getChild_impl(name_path.substr(sep + 1));
-            else
-                return getChildAtIdx(i);
-
-    return 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -451,21 +400,6 @@ const Window* Window::getActiveChild(void) const
 
     // no child was active, therefore we are the topmost active window
     return this;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::isAncestor(const String& name) const
-{
-    // if we have no ancestor then 'name' can't be ancestor
-    if (!d_parent)
-        return false;
-
-    // check our immediate parent
-    if (getParent()->getName() == name)
-        return true;
-
-    // not out parent, check back up the family line
-    return getParent()->isAncestor(name);
 }
 
 //----------------------------------------------------------------------------//
@@ -824,15 +758,6 @@ void Window::setFont(const String& name)
 }
 
 //----------------------------------------------------------------------------//
-void Window::removeChild(const String& name_path)
-{
-    Window* w = getChild_impl(name_path);
-
-    if (w)
-        removeChild(w);
-}
-
-//----------------------------------------------------------------------------//
 void Window::removeChild(uint ID)
 {
     const size_t child_count = getChildCount();
@@ -868,7 +793,7 @@ void Window::destroyChild(Window* wnd)
 //----------------------------------------------------------------------------//
 void Window::destroyChild(const String& name_path)
 {
-    destroyChild(getChild_impl(name_path));
+    destroyChild(getChild(name_path));
 }
 
 //----------------------------------------------------------------------------//
@@ -1221,20 +1146,8 @@ void Window::addChild_impl(Element* element)
     {
         CEGUI_THROW(AlreadyExistsException("Window::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
     }
-    
-    const Window* const existing = getChild_impl(wnd->getName());
-
-    if (existing == wnd)
-        return;
-
-    // ensure only one immediate child will exist with a given name.
-    if (existing)
-        CEGUI_THROW(AlreadyExistsException("Window::addChild - Failed to add "
-            "Window named: " + wnd->getName() + " to window at: " +
-            getNamePath() + " since a Window with that name is already "
-            "attached."));
         
-    Element::addChild_impl(wnd);
+    NamedElement::addChild_impl(wnd);
 
     addWindowToDrawList(*wnd);
 
@@ -2236,23 +2149,6 @@ Window* Window::getActiveSibling()
 
     // return whatever we discovered
     return activeWnd;
-}
-
-//----------------------------------------------------------------------------//
-void Window::rename(const String& new_name)
-{
-    if (d_parent && getParent()->isChild(new_name))
-        CEGUI_THROW(AlreadyExistsException("Window::rename - Failed to rename "
-            "Window at: " + getNamePath() + " as: " + new_name + ".  A Window "
-            "a window with that name is already attached."));
-
-    // log this under informative level
-    Logger::getSingleton().logEvent("Renamed window at: " + getNamePath() +
-                                    " as: " + new_name,
-                                    Informative);
-
-    // finally, set our new name
-    d_name = new_name;
 }
 
 //----------------------------------------------------------------------------//

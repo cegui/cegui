@@ -282,7 +282,7 @@ public:
                 CEGUI_TRY
                 {
                     pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-                    pg->rename(String(pgname.str()));
+                    pg->setName(String(pgname.str()));
                 }
                 CEGUI_CATCH (CEGUI::Exception&)
                 {
