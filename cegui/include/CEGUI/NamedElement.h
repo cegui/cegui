@@ -140,6 +140,7 @@ public:
     */
     bool isChild(const String& name_path) const;
     
+    using Element::isAncestor;
     /*!
     \brief
         return true if the specified element name is a name of some ancestor of this Element

@@ -726,7 +726,6 @@ public:
     Window* getActiveChild(void);
     const Window* getActiveChild(void) const;
 
-    using Element::isAncestor;
     using NamedElement::isAncestor;
     /*!
     \brief
