@@ -118,10 +118,10 @@ void DirectFBGeometryBuffer::setPivot(const Vector3& p)
 //----------------------------------------------------------------------------//
 void DirectFBGeometryBuffer::setClippingRegion(const Rect& region)
 {
-    d_clipRect.d_top    = ceguimax(0.0f, PixelAligned(region.d_top));
-    d_clipRect.d_bottom = ceguimax(0.0f, PixelAligned(region.d_bottom));
-    d_clipRect.d_left   = ceguimax(0.0f, PixelAligned(region.d_left));
-    d_clipRect.d_right  = ceguimax(0.0f, PixelAligned(region.d_right));
+    d_clipRect.top(ceguimax(0.0f, region.top()));
+    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
+    d_clipRect.left(ceguimax(0.0f, region.left()));
+    d_clipRect.right(ceguimax(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//

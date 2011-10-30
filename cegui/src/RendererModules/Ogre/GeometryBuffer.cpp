@@ -196,10 +196,10 @@ void OgreGeometryBuffer::setPivot(const Vector3f& p)
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::setClippingRegion(const Rectf& region)
 {
-    d_clipRect.top(ceguimax(0.0f, PixelAligned(region.top())));
-    d_clipRect.bottom(ceguimax(0.0f, PixelAligned(region.bottom())));
-    d_clipRect.left(ceguimax(0.0f, PixelAligned(region.left())));
-    d_clipRect.right(ceguimax(0.0f, PixelAligned(region.right())));
+    d_clipRect.top(ceguimax(0.0f, region.top()));
+    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
+    d_clipRect.left(ceguimax(0.0f, region.left()));
+    d_clipRect.right(ceguimax(0.0f, region.right()));
 }
 
 //----------------------------------------------------------------------------//
