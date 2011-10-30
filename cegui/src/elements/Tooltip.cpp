@@ -87,7 +87,7 @@ namespace CEGUI
 
         MouseCursor& cursor = MouseCursor::getSingleton();
         Rectf screen(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
-        Rectf tipRect(getUnclippedOuterRect());
+        Rectf tipRect(getUnclippedOuterRect().get());
         const Image* mouseImage = cursor.getImage();
 
         Vector2f mousePos(cursor.getPosition());

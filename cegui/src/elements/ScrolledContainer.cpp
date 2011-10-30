@@ -42,7 +42,9 @@ const String ScrolledContainer::EventAutoSizeSettingChanged("AutoSizeSettingChan
 ScrolledContainer::ScrolledContainer(const String& type, const String& name) :
     Window(type, name),
     d_contentArea(0, 0, 0, 0),
-    d_autosizePane(true)
+    d_autosizePane(true),
+    
+    d_clientChildContentArea(this, static_cast<Element::CachedRectf::DataGenerator>(&ScrolledContainer::getClientChildContentArea_impl))
 {
     addScrolledContainerProperties();
     setMouseInputPropagationEnabled(true);
@@ -90,6 +92,26 @@ void ScrolledContainer::setContentArea(const Rectf& area)
         onContentChanged(args);
    }
 
+}
+
+//----------------------------------------------------------------------------//
+const Element::CachedRectf& ScrolledContainer::getClientChildContentArea() const
+{
+    return d_clientChildContentArea;
+}
+
+//----------------------------------------------------------------------------//
+const Element::CachedRectf& ScrolledContainer::getNonClientChildContentArea() const
+{
+    return d_clientChildContentArea;
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledContainer::notifyScreenAreaChanged(bool recursive)
+{
+    d_clientChildContentArea.invalidateCache();
+
+    Window::notifyScreenAreaChanged(recursive);
 }
 
 //----------------------------------------------------------------------------//
@@ -164,59 +186,65 @@ bool ScrolledContainer::handleChildMoved(const EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getUnclippedInnerRect_impl() const
+Rectf ScrolledContainer::getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const
 {
     return d_parent ?
-        d_parent->getUnclippedInnerRect() :
-        Window::getUnclippedInnerRect_impl();
+        (skipAllPixelAlignment ? d_parent->getUnclippedInnerRect().getFresh(true) : d_parent->getUnclippedInnerRect().get()) :
+        Window::getUnclippedInnerRect_impl(skipAllPixelAlignment);
 }
 
 //----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getInnerRectClipper_impl() const
 {
     return d_parent ?
-        d_parent->getInnerRectClipper() :
+        getParent()->getInnerRectClipper() :
         Window::getInnerRectClipper_impl();
 }
 
 //----------------------------------------------------------------------------//
 Rectf ScrolledContainer::getHitTestRect_impl() const
 {
-    return d_parent ? d_parent->getHitTestRect() :
+    return d_parent ? getParent()->getHitTestRect() :
                       Window::getHitTestRect_impl();
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getNonClientChildWindowContentArea_impl() const
+Rectf ScrolledContainer::getClientChildContentArea_impl(bool skipAllPixelAlignment) const
 {
     if (!d_parent)
-        return Window::getNonClientChildWindowContentArea_impl();
+    {
+        return skipAllPixelAlignment ? Window::getUnclippedInnerRect().getFresh(true) : Window::getUnclippedInnerRect().get();
+    }
     else
-        return Rectf(getUnclippedOuterRect().getPosition(),
-                    d_parent->getUnclippedInnerRect().getSize());
+    {
+        if (skipAllPixelAlignment)
+        {
+            return Rectf(getUnclippedOuterRect().getFresh(true).getPosition(),
+                         getParent()->getUnclippedInnerRect().getFresh(true).getSize());
+        }
+        else
+        {
+            return Rectf(getUnclippedOuterRect().get().getPosition(),
+                         getParent()->getUnclippedInnerRect().get().getSize());
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
-Rectf ScrolledContainer::getClientChildWindowContentArea_impl() const
-{
-    return getNonClientChildWindowContentArea_impl();
-}
-
-//----------------------------------------------------------------------------//
-void ScrolledContainer::onChildAdded(WindowEventArgs& e)
+void ScrolledContainer::onChildAdded(ElementEventArgs& e)
 {
     Window::onChildAdded(e);
 
     // subscribe to some events on this child
-    d_eventConnections.insert(std::make_pair(e.window,
-        e.window->subscribeEvent(Window::EventSized,
+    d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
+        static_cast<Window*>(e.element)->subscribeEvent(Window::EventSized,
             Event::Subscriber(&ScrolledContainer::handleChildSized, this))));
-    d_eventConnections.insert(std::make_pair(e.window,
-        e.window->subscribeEvent(Window::EventMoved,
+    d_eventConnections.insert(std::make_pair(static_cast<Window*>(e.element),
+        static_cast<Window*>(e.element)->subscribeEvent(Window::EventMoved,
             Event::Subscriber(&ScrolledContainer::handleChildMoved, this))));
 
     // force window to update what it thinks it's screen / pixel areas are.
-    e.window->notifyScreenAreaChanged(false);
+    static_cast<Window*>(e.element)->notifyScreenAreaChanged(false);
 
     // perform notification.
     WindowEventArgs args(this);
@@ -224,13 +252,13 @@ void ScrolledContainer::onChildAdded(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onChildRemoved(WindowEventArgs& e)
+void ScrolledContainer::onChildRemoved(ElementEventArgs& e)
 {
     Window::onChildRemoved(e);
 
     // disconnect from events for this window.
     ConnectionTracker::iterator conn;
-    while ((conn = d_eventConnections.find(e.window)) != d_eventConnections.end())
+    while ((conn = d_eventConnections.find(static_cast<Window*>(e.element))) != d_eventConnections.end())
     {
         conn->second->disconnect();
         d_eventConnections.erase(conn);
@@ -245,7 +273,7 @@ void ScrolledContainer::onChildRemoved(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrolledContainer::onParentSized(WindowEventArgs& e)
+void ScrolledContainer::onParentSized(ElementEventArgs& e)
 {
     Window::onParentSized(e);
 
@@ -276,6 +304,14 @@ void ScrolledContainer::addScrolledContainerProperties(void)
         "  Value is \"l:[float] t:[float] r:[float] b:[float]\" (where l is left, t is top, r is right, and b is bottom).",
         0, &ScrolledContainer::getChildExtentsArea, Rectf::zero()
     );
+}
+
+//----------------------------------------------------------------------------//
+void ScrolledContainer::setArea_impl(const UVector2& pos, const USize& size,
+                                     bool topLeftSizing, bool fireEvents)
+{
+    d_clientChildContentArea.invalidateCache();
+    Window::setArea_impl(pos, size, topLeftSizing, fireEvents);
 }
 
 //----------------------------------------------------------------------------//

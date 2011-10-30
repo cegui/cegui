@@ -81,6 +81,11 @@ public:
         return UDim(d_scale * val, d_offset * val);
     }
     
+    inline friend UDim operator*(const float val, const UDim& u)
+    {
+        return UDim(val * u.d_scale, val * u.d_offset);
+    }
+    
     inline UDim operator*(const UDim& other) const
     {
         return UDim(d_scale * other.d_scale, d_offset * other.d_offset);

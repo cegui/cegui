@@ -351,20 +351,28 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         return CEGUI::Editbox::validateWindowRenderer( boost::ref(name) );
     }
 
-    virtual void addChild_impl( ::CEGUI::Window * wnd ){
+    virtual void addChild_impl( ::CEGUI::Element * element ){
         if( bp::override func_addChild_impl = this->get_override( "addChild_impl" ) )
-            func_addChild_impl( boost::python::ptr(wnd) );
+            func_addChild_impl( boost::python::ptr(element) );
         else{
-            this->CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+            this->CEGUI::Window::addChild_impl( boost::python::ptr(element) );
         }
     }
     
-    virtual void default_addChild_impl( ::CEGUI::Window * wnd ){
-        CEGUI::Window::addChild_impl( boost::python::ptr(wnd) );
+    virtual void default_addChild_impl( ::CEGUI::Element * element ){
+        CEGUI::Window::addChild_impl( boost::python::ptr(element) );
     }
 
-    void addStandardProperties(  ){
-        CEGUI::Window::addStandardProperties(  );
+    void addElementProperties(  ){
+        CEGUI::Element::addElementProperties(  );
+    }
+
+    void addNamedElementProperties(  ){
+        CEGUI::NamedElement::addNamedElementProperties(  );
+    }
+
+    void addWindowProperties(  ){
+        CEGUI::Window::addWindowProperties(  );
     }
 
     void addWindowToDrawList( ::CEGUI::Window & wnd, bool at_back=false ){
@@ -427,14 +435,6 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::clonePropertiesTo( boost::ref(target) );
     }
 
-    bool constrainToMaxSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
-        return CEGUI::Window::constrainToMaxSize( boost::ref(base_sz), boost::ref(sz) );
-    }
-
-    bool constrainToMinSize( ::CEGUI::Sizef const & base_sz, ::CEGUI::USize & sz ){
-        return CEGUI::Window::constrainToMinSize( boost::ref(base_sz), boost::ref(sz) );
-    }
-
     virtual void destroy(  ) {
         if( bp::override func_destroy = this->get_override( "destroy" ) )
             func_destroy(  );
@@ -491,28 +491,16 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::generateAutoRepeatEvent( button );
     }
 
-    virtual ::CEGUI::Window * getChild_impl( ::CEGUI::String const & name_path ) const {
-        if( bp::override func_getChild_impl = this->get_override( "getChild_impl" ) )
-            return func_getChild_impl( boost::ref(name_path) );
+    virtual ::CEGUI::NamedElement * getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
+        if( bp::override func_getChildByNamePath_impl = this->get_override( "getChildByNamePath_impl" ) )
+            return func_getChildByNamePath_impl( boost::ref(name_path) );
         else{
-            return this->CEGUI::Window::getChild_impl( boost::ref(name_path) );
+            return this->CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
         }
     }
     
-    virtual ::CEGUI::Window * default_getChild_impl( ::CEGUI::String const & name_path ) const {
-        return CEGUI::Window::getChild_impl( boost::ref(name_path) );
-    }
-
-    virtual ::CEGUI::Rectf getClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getClientChildWindowContentArea_impl = this->get_override( "getClientChildWindowContentArea_impl" ) )
-            return func_getClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getClientChildWindowContentArea_impl( );
+    virtual ::CEGUI::NamedElement * default_getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
+        return CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
     }
 
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
@@ -537,18 +525,6 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
     
     virtual ::CEGUI::Rectf default_getInnerRectClipper_impl(  ) const {
         return CEGUI::Window::getInnerRectClipper_impl( );
-    }
-
-    virtual ::CEGUI::Rectf getNonClientChildWindowContentArea_impl(  ) const {
-        if( bp::override func_getNonClientChildWindowContentArea_impl = this->get_override( "getNonClientChildWindowContentArea_impl" ) )
-            return func_getNonClientChildWindowContentArea_impl(  );
-        else{
-            return this->CEGUI::Window::getNonClientChildWindowContentArea_impl(  );
-        }
-    }
-    
-    virtual ::CEGUI::Rectf default_getNonClientChildWindowContentArea_impl(  ) const {
-        return CEGUI::Window::getNonClientChildWindowContentArea_impl( );
     }
 
     virtual ::CEGUI::Rectf getOuterRectClipper_impl(  ) const {
@@ -583,28 +559,28 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         return CEGUI::EventSet::getScriptModule(  );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl(  ) const {
+    virtual ::CEGUI::Rectf getUnclippedInnerRect_impl( bool skipAllPixelAlignment ) const {
         if( bp::override func_getUnclippedInnerRect_impl = this->get_override( "getUnclippedInnerRect_impl" ) )
-            return func_getUnclippedInnerRect_impl(  );
+            return func_getUnclippedInnerRect_impl( skipAllPixelAlignment );
         else{
-            return this->CEGUI::Window::getUnclippedInnerRect_impl(  );
+            return this->CEGUI::Window::getUnclippedInnerRect_impl( skipAllPixelAlignment );
         }
     }
     
-    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl(  ) const {
-        return CEGUI::Window::getUnclippedInnerRect_impl( );
+    virtual ::CEGUI::Rectf default_getUnclippedInnerRect_impl( bool skipAllPixelAlignment ) const {
+        return CEGUI::Window::getUnclippedInnerRect_impl( skipAllPixelAlignment );
     }
 
-    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl(  ) const {
+    virtual ::CEGUI::Rectf getUnclippedOuterRect_impl( bool skipAllPixelAlignment ) const {
         if( bp::override func_getUnclippedOuterRect_impl = this->get_override( "getUnclippedOuterRect_impl" ) )
-            return func_getUnclippedOuterRect_impl(  );
+            return func_getUnclippedOuterRect_impl( skipAllPixelAlignment );
         else{
-            return this->CEGUI::Window::getUnclippedOuterRect_impl(  );
+            return this->CEGUI::Element::getUnclippedOuterRect_impl( skipAllPixelAlignment );
         }
     }
     
-    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl(  ) const {
-        return CEGUI::Window::getUnclippedOuterRect_impl( );
+    virtual ::CEGUI::Rectf default_getUnclippedOuterRect_impl( bool skipAllPixelAlignment ) const {
+        return CEGUI::Element::getUnclippedOuterRect_impl( skipAllPixelAlignment );
     }
 
     ::CEGUI::Window const * getWindowAttachedToCommonAncestor( ::CEGUI::Window const & wnd ) const {
@@ -644,7 +620,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
     }
 
     bool isInnerRectSizeChanged(  ) const {
-        return CEGUI::Window::isInnerRectSizeChanged(  );
+        return CEGUI::Element::isInnerRectSizeChanged(  );
     }
 
     bool isPropertyAtDefault( ::CEGUI::Property const * property ) const {
@@ -669,6 +645,18 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
 
     void notifyClippingChanged(  ){
         CEGUI::Window::notifyClippingChanged(  );
+    }
+
+    virtual void notifyScreenAreaChanged( bool recursive=true ) {
+        if( bp::override func_notifyScreenAreaChanged = this->get_override( "notifyScreenAreaChanged" ) )
+            func_notifyScreenAreaChanged( recursive );
+        else{
+            this->CEGUI::Window::notifyScreenAreaChanged( recursive );
+        }
+    }
+    
+    void default_notifyScreenAreaChanged( bool recursive=true ) {
+        CEGUI::Window::notifyScreenAreaChanged( recursive );
     }
 
     virtual void onActivated( ::CEGUI::ActivationEventArgs & e ){
@@ -719,7 +707,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onCaptureGained( boost::ref(e) );
     }
 
-    virtual void onChildAdded( ::CEGUI::WindowEventArgs & e ){
+    virtual void onChildAdded( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onChildAdded = this->get_override( "onChildAdded" ) )
             func_onChildAdded( boost::ref(e) );
         else{
@@ -727,11 +715,11 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    virtual void default_onChildAdded( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onChildAdded( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onChildAdded( boost::ref(e) );
     }
 
-    virtual void onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void onChildRemoved( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onChildRemoved = this->get_override( "onChildRemoved" ) )
             func_onChildRemoved( boost::ref(e) );
         else{
@@ -739,7 +727,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    virtual void default_onChildRemoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onChildRemoved( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onChildRemoved( boost::ref(e) );
     }
 
@@ -863,16 +851,16 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onHidden( boost::ref(e) );
     }
 
-    virtual void onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+    virtual void onHorizontalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onHorizontalAlignmentChanged = this->get_override( "onHorizontalAlignmentChanged" ) )
             func_onHorizontalAlignmentChanged( boost::ref(e) );
         else{
-            this->CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+            this->CEGUI::Element::onHorizontalAlignmentChanged( boost::ref(e) );
         }
     }
     
-    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onHorizontalAlignmentChanged( boost::ref(e) );
+    virtual void default_onHorizontalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Element::onHorizontalAlignmentChanged( boost::ref(e) );
     }
 
     virtual void onIDChanged( ::CEGUI::WindowEventArgs & e ){
@@ -995,7 +983,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onMouseWheel( boost::ref(e) );
     }
 
-    virtual void onMoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void onMoved( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onMoved = this->get_override( "onMoved" ) )
             func_onMoved( boost::ref(e) );
         else{
@@ -1003,20 +991,32 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    virtual void default_onMoved( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onMoved( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onMoved( boost::ref(e) );
     }
 
-    virtual void onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
-            func_onNonClientChanged( boost::ref(e) );
+    virtual void onNameChanged( ::CEGUI::NamedElementEventArgs & e ){
+        if( bp::override func_onNameChanged = this->get_override( "onNameChanged" ) )
+            func_onNameChanged( boost::ref(e) );
         else{
-            this->CEGUI::Window::onNonClientChanged( boost::ref(e) );
+            this->CEGUI::NamedElement::onNameChanged( boost::ref(e) );
         }
     }
     
-    virtual void default_onNonClientChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onNonClientChanged( boost::ref(e) );
+    virtual void default_onNameChanged( ::CEGUI::NamedElementEventArgs & e ){
+        CEGUI::NamedElement::onNameChanged( boost::ref(e) );
+    }
+
+    virtual void onNonClientChanged( ::CEGUI::ElementEventArgs & e ){
+        if( bp::override func_onNonClientChanged = this->get_override( "onNonClientChanged" ) )
+            func_onNonClientChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Element::onNonClientChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onNonClientChanged( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Element::onNonClientChanged( boost::ref(e) );
     }
 
     virtual void onParentDestroyChanged( ::CEGUI::WindowEventArgs & e ){
@@ -1031,7 +1031,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
     }
 
-    virtual void onParentSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void onParentSized( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
             func_onParentSized( boost::ref(e) );
         else{
@@ -1039,7 +1039,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    virtual void default_onParentSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onParentSized( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onParentSized( boost::ref(e) );
     }
 
@@ -1067,7 +1067,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onRenderingStarted( boost::ref(e) );
     }
 
-    virtual void onRotated( ::CEGUI::WindowEventArgs & e ){
+    virtual void onRotated( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onRotated = this->get_override( "onRotated" ) )
             func_onRotated( boost::ref(e) );
         else{
@@ -1075,7 +1075,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    virtual void default_onRotated( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onRotated( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onRotated( boost::ref(e) );
     }
 
@@ -1091,7 +1091,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onShown( boost::ref(e) );
     }
 
-    virtual void onSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void onSized( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onSized = this->get_override( "onSized" ) )
             func_onSized( boost::ref(e) );
         else{
@@ -1099,7 +1099,7 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         }
     }
     
-    virtual void default_onSized( ::CEGUI::WindowEventArgs & e ){
+    virtual void default_onSized( ::CEGUI::ElementEventArgs & e ){
         CEGUI::Window::onSized( boost::ref(e) );
     }
 
@@ -1115,16 +1115,16 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::onTextParsingChanged( boost::ref(e) );
     }
 
-    virtual void onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
+    virtual void onVerticalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
         if( bp::override func_onVerticalAlignmentChanged = this->get_override( "onVerticalAlignmentChanged" ) )
             func_onVerticalAlignmentChanged( boost::ref(e) );
         else{
-            this->CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+            this->CEGUI::Element::onVerticalAlignmentChanged( boost::ref(e) );
         }
     }
     
-    virtual void default_onVerticalAlignmentChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onVerticalAlignmentChanged( boost::ref(e) );
+    virtual void default_onVerticalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Element::onVerticalAlignmentChanged( boost::ref(e) );
     }
 
     virtual void onWindowRendererAttached( ::CEGUI::WindowEventArgs & e ){
@@ -1207,24 +1207,56 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::releaseRenderingWindow(  );
     }
 
-    virtual void removeChild_impl( ::CEGUI::Window * wnd ){
+    virtual void removeChild_impl( ::CEGUI::Element * element ){
         if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
-            func_removeChild_impl( boost::python::ptr(wnd) );
+            func_removeChild_impl( boost::python::ptr(element) );
         else{
-            this->CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+            this->CEGUI::Window::removeChild_impl( boost::python::ptr(element) );
         }
     }
     
-    virtual void default_removeChild_impl( ::CEGUI::Window * wnd ){
-        CEGUI::Window::removeChild_impl( boost::python::ptr(wnd) );
+    virtual void default_removeChild_impl( ::CEGUI::Element * element ){
+        CEGUI::Window::removeChild_impl( boost::python::ptr(element) );
     }
 
     void removeWindowFromDrawList( ::CEGUI::Window const & wnd ){
         CEGUI::Window::removeWindowFromDrawList( boost::ref(wnd) );
     }
 
-    void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+    virtual void setArea( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size ) {
+        if( bp::override func_setArea = this->get_override( "setArea" ) )
+            func_setArea( boost::ref(pos), boost::ref(size) );
+        else{
+            this->CEGUI::Element::setArea( boost::ref(pos), boost::ref(size) );
+        }
+    }
+    
+    void default_setArea( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size ) {
+        CEGUI::Element::setArea( boost::ref(pos), boost::ref(size) );
+    }
+
+    virtual void setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
+        if( bp::override func_setArea_impl = this->get_override( "setArea_impl" ) )
+            func_setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+        else{
+            this->CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+        }
+    }
+    
+    virtual void default_setArea_impl( ::CEGUI::UVector2 const & pos, ::CEGUI::USize const & size, bool topLeftSizing=false, bool fireEvents=true ){
         CEGUI::Window::setArea_impl( boost::ref(pos), boost::ref(size), topLeftSizing, fireEvents );
+    }
+
+    virtual void setHorizontalAlignment( ::CEGUI::HorizontalAlignment const alignment ) {
+        if( bp::override func_setHorizontalAlignment = this->get_override( "setHorizontalAlignment" ) )
+            func_setHorizontalAlignment( alignment );
+        else{
+            this->CEGUI::Element::setHorizontalAlignment( alignment );
+        }
+    }
+    
+    void default_setHorizontalAlignment( ::CEGUI::HorizontalAlignment const alignment ) {
+        CEGUI::Element::setHorizontalAlignment( alignment );
     }
 
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
@@ -1251,8 +1283,40 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Window::setMargin( boost::ref(margin) );
     }
 
-    void setParent( ::CEGUI::Window * parent ){
+    virtual void setName( ::CEGUI::String const & name ) {
+        if( bp::override func_setName = this->get_override( "setName" ) )
+            func_setName( boost::ref(name) );
+        else{
+            this->CEGUI::NamedElement::setName( boost::ref(name) );
+        }
+    }
+    
+    void default_setName( ::CEGUI::String const & name ) {
+        CEGUI::NamedElement::setName( boost::ref(name) );
+    }
+
+    virtual void setParent( ::CEGUI::Element * parent ){
+        if( bp::override func_setParent = this->get_override( "setParent" ) )
+            func_setParent( boost::python::ptr(parent) );
+        else{
+            this->CEGUI::Window::setParent( boost::python::ptr(parent) );
+        }
+    }
+    
+    virtual void default_setParent( ::CEGUI::Element * parent ){
         CEGUI::Window::setParent( boost::python::ptr(parent) );
+    }
+
+    virtual void setVerticalAlignment( ::CEGUI::VerticalAlignment const alignment ) {
+        if( bp::override func_setVerticalAlignment = this->get_override( "setVerticalAlignment" ) )
+            func_setVerticalAlignment( alignment );
+        else{
+            this->CEGUI::Element::setVerticalAlignment( alignment );
+        }
+    }
+    
+    void default_setVerticalAlignment( ::CEGUI::VerticalAlignment const alignment ) {
+        CEGUI::Element::setVerticalAlignment( alignment );
     }
 
     virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
@@ -2274,25 +2338,50 @@ void register_Editbox_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::addChild_impl
         
-            typedef void ( Editbox_wrapper::*addChild_impl_function_type )( ::CEGUI::Window * ) ;
+            typedef void ( Editbox_wrapper::*addChild_impl_function_type )( ::CEGUI::Element * ) ;
             
             Editbox_exposer.def( 
                 "addChild_impl"
                 , addChild_impl_function_type( &Editbox_wrapper::default_addChild_impl )
-                , ( bp::arg("wnd") )
+                , ( bp::arg("element") )
                 , "*!\n\
-            \n\
-                Add given window to child list at an appropriate position\n\
+            opydoc Element.addChild_impl\n\
             *\n" );
         
         }
-        { //::CEGUI::Window::addStandardProperties
+        { //::CEGUI::Element::addElementProperties
         
-            typedef void ( Editbox_wrapper::*addStandardProperties_function_type )(  ) ;
+            typedef void ( Editbox_wrapper::*addElementProperties_function_type )(  ) ;
             
             Editbox_exposer.def( 
-                "addStandardProperties"
-                , addStandardProperties_function_type( &Editbox_wrapper::addStandardProperties )
+                "addElementProperties"
+                , addElementProperties_function_type( &Editbox_wrapper::addElementProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.Element properties.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::addNamedElementProperties
+        
+            typedef void ( Editbox_wrapper::*addNamedElementProperties_function_type )(  ) ;
+            
+            Editbox_exposer.def( 
+                "addNamedElementProperties"
+                , addNamedElementProperties_function_type( &Editbox_wrapper::addNamedElementProperties )
+                , "*!\n\
+            \n\
+                Add standard CEGUI.NamedElement properties.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Window::addWindowProperties
+        
+            typedef void ( Editbox_wrapper::*addWindowProperties_function_type )(  ) ;
+            
+            Editbox_exposer.def( 
+                "addWindowProperties"
+                , addWindowProperties_function_type( &Editbox_wrapper::addWindowProperties )
                 , "*!\n\
             \n\
                 Add standard CEGUI.Window properties.\n\
@@ -2406,29 +2495,6 @@ void register_Editbox_class(){
                 , ( bp::arg("target") ) );
         
         }
-        { //::CEGUI::Window::constrainToMaxSize
-        
-            typedef bool ( Editbox_wrapper::*constrainToMaxSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
-            
-            Editbox_exposer.def( 
-                "constrainToMaxSize"
-                , constrainToMaxSize_function_type( &Editbox_wrapper::constrainToMaxSize )
-                , ( bp::arg("base_sz"), bp::arg("sz") )
-                , "constrain given USize to window's min size, return if size changed.\n\
-            constrain given USize to window's max size, return if size changed.\n" );
-        
-        }
-        { //::CEGUI::Window::constrainToMinSize
-        
-            typedef bool ( Editbox_wrapper::*constrainToMinSize_function_type )( ::CEGUI::Sizef const &,::CEGUI::USize & ) ;
-            
-            Editbox_exposer.def( 
-                "constrainToMinSize"
-                , constrainToMinSize_function_type( &Editbox_wrapper::constrainToMinSize )
-                , ( bp::arg("base_sz"), bp::arg("sz") )
-                , "constrain given USize to window's min size, return if size changed.\n" );
-        
-        }
         { //::CEGUI::Window::destroy
         
             typedef void ( ::CEGUI::Window::*destroy_function_type )(  ) ;
@@ -2509,27 +2575,29 @@ void register_Editbox_class(){
             *\n" );
         
         }
-        { //::CEGUI::Window::getChild_impl
+        { //::CEGUI::NamedElement::getChildByNamePath_impl
         
-            typedef ::CEGUI::Window * ( Editbox_wrapper::*getChild_impl_function_type )( ::CEGUI::String const & ) const;
+            typedef ::CEGUI::NamedElement * ( Editbox_wrapper::*getChildByNamePath_impl_function_type )( ::CEGUI::String const & ) const;
             
             Editbox_exposer.def( 
-                "getChild_impl"
-                , getChild_impl_function_type( &Editbox_wrapper::default_getChild_impl )
+                "getChildByNamePath_impl"
+                , getChildByNamePath_impl_function_type( &Editbox_wrapper::default_getChildByNamePath_impl )
                 , ( bp::arg("name_path") )
                 , bp::return_value_policy< bp::reference_existing_object >()
-                , "! implementation function to get window at name_path, returns 0 if none.\n" );
+                , "*!\n\
+            \n\
+                retrieves a child at  name_path or 0 if none such exists\n\
+            *\n" );
         
         }
-        { //::CEGUI::Window::getClientChildWindowContentArea_impl
+        { //::CEGUI::Element::getClientChildContentArea
         
-            typedef ::CEGUI::Rectf ( Editbox_wrapper::*getClientChildWindowContentArea_impl_function_type )(  ) const;
+            typedef ::CEGUI::Element::CachedRectf const & ( ::CEGUI::Element::*getClientChildContentArea_function_type )(  ) const;
             
             Editbox_exposer.def( 
-                "getClientChildWindowContentArea_impl"
-                , getClientChildWindowContentArea_impl_function_type( &Editbox_wrapper::default_getClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return non-client content area\n\
-            ! Default implementation of function to return client content area\n" );
+                "getClientChildContentArea"
+                , getClientChildContentArea_function_type(&::CEGUI::Element::getClientChildContentArea)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::Window::getHitTestRect_impl
@@ -2554,15 +2622,14 @@ void register_Editbox_class(){
             ! Default implementation of function to return Window inner clipper area.\n" );
         
         }
-        { //::CEGUI::Window::getNonClientChildWindowContentArea_impl
+        { //::CEGUI::Element::getNonClientChildContentArea
         
-            typedef ::CEGUI::Rectf ( Editbox_wrapper::*getNonClientChildWindowContentArea_impl_function_type )(  ) const;
+            typedef ::CEGUI::Element::CachedRectf const & ( ::CEGUI::Element::*getNonClientChildContentArea_function_type )(  ) const;
             
             Editbox_exposer.def( 
-                "getNonClientChildWindowContentArea_impl"
-                , getNonClientChildWindowContentArea_impl_function_type( &Editbox_wrapper::default_getNonClientChildWindowContentArea_impl )
-                , "! Default implementation of function to return Window hit-test area.\n\
-            ! Default implementation of function to return non-client content area\n" );
+                "getNonClientChildContentArea"
+                , getNonClientChildContentArea_function_type(&::CEGUI::Element::getNonClientChildContentArea)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::Window::getOuterRectClipper_impl
@@ -2572,8 +2639,7 @@ void register_Editbox_class(){
             Editbox_exposer.def( 
                 "getOuterRectClipper_impl"
                 , getOuterRectClipper_impl_function_type( &Editbox_wrapper::default_getOuterRectClipper_impl )
-                , "! Default implementation of function to return Window inner rect area.\n\
-            ! Default implementation of function to return Window outer clipper area.\n" );
+                , "! Default implementation of function to return Window outer clipper area.\n" );
         
         }
         { //::CEGUI::Window::getParentElementClipIntersection
@@ -2623,23 +2689,23 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::getUnclippedInnerRect_impl
         
-            typedef ::CEGUI::Rectf ( Editbox_wrapper::*getUnclippedInnerRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Editbox_wrapper::*getUnclippedInnerRect_impl_function_type )( bool ) const;
             
             Editbox_exposer.def( 
                 "getUnclippedInnerRect_impl"
                 , getUnclippedInnerRect_impl_function_type( &Editbox_wrapper::default_getUnclippedInnerRect_impl )
-                , "! Default implementation of function to return Window outer rect area.\n\
-            ! Default implementation of function to return Window inner rect area.\n" );
+                , ( bp::arg("skipAllPixelAlignment") ) );
         
         }
-        { //::CEGUI::Window::getUnclippedOuterRect_impl
+        { //::CEGUI::Element::getUnclippedOuterRect_impl
         
-            typedef ::CEGUI::Rectf ( Editbox_wrapper::*getUnclippedOuterRect_impl_function_type )(  ) const;
+            typedef ::CEGUI::Rectf ( Editbox_wrapper::*getUnclippedOuterRect_impl_function_type )( bool ) const;
             
             Editbox_exposer.def( 
                 "getUnclippedOuterRect_impl"
                 , getUnclippedOuterRect_impl_function_type( &Editbox_wrapper::default_getUnclippedOuterRect_impl )
-                , "! Default implementation of function to return Window outer rect area.\n" );
+                , ( bp::arg("skipAllPixelAlignment") )
+                , "! Default implementation of function to return Element's outer rect area.\n" );
         
         }
         { //::CEGUI::Window::getWindowAttachedToCommonAncestor
@@ -2704,7 +2770,7 @@ void register_Editbox_class(){
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
         
         }
-        { //::CEGUI::Window::isInnerRectSizeChanged
+        { //::CEGUI::Element::isInnerRectSizeChanged
         
             typedef bool ( Editbox_wrapper::*isInnerRectSizeChanged_function_type )(  ) const;
             
@@ -2780,6 +2846,18 @@ void register_Editbox_class(){
                 Recursively inform all children that the clipping has changed and screen rects\n\
                 needs to be recached.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::Window::notifyScreenAreaChanged
+        
+            typedef void ( ::CEGUI::Window::*notifyScreenAreaChanged_function_type )( bool ) ;
+            typedef void ( Editbox_wrapper::*default_notifyScreenAreaChanged_function_type )( bool ) ;
+            
+            Editbox_exposer.def( 
+                "notifyScreenAreaChanged"
+                , notifyScreenAreaChanged_function_type(&::CEGUI::Window::notifyScreenAreaChanged)
+                , default_notifyScreenAreaChanged_function_type(&Editbox_wrapper::default_notifyScreenAreaChanged)
+                , ( bp::arg("recursive")=(bool)(true) ) );
         
         }
         { //::CEGUI::Window::onActivated
@@ -2859,7 +2937,7 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::onChildAdded
         
-            typedef void ( Editbox_wrapper::*onChildAdded_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onChildAdded_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onChildAdded"
@@ -2877,7 +2955,7 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::onChildRemoved
         
-            typedef void ( Editbox_wrapper::*onChildRemoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onChildRemoved_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onChildRemoved"
@@ -3087,9 +3165,9 @@ void register_Editbox_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::onHorizontalAlignmentChanged
+        { //::CEGUI::Element::onHorizontalAlignmentChanged
         
-            typedef void ( Editbox_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onHorizontalAlignmentChanged_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onHorizontalAlignmentChanged"
@@ -3097,12 +3175,12 @@ void register_Editbox_class(){
                 , ( bp::arg("e") )
                 , "*!\n\
                 \n\
-                    Handler called when the horizontal alignment setting for the window is\n\
+                    Handler called when the horizontal alignment setting for the element is\n\
                     changed.\n\
             \n\
                 @param e\n\
-                    WindowEventArgs object initialised as follows:\n\
-                    - window field is set to point to the Window object whos alignment has\n\
+                    ElementEventArgs object initialised as follows:\n\
+                    - element field is set to point to the element object who's alignment has\n\
                       changed (typically 'this').\n\
                 *\n" );
         
@@ -3297,7 +3375,7 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::onMoved
         
-            typedef void ( Editbox_wrapper::*onMoved_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onMoved_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onMoved"
@@ -3314,9 +3392,28 @@ void register_Editbox_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::onNonClientChanged
+        { //::CEGUI::NamedElement::onNameChanged
         
-            typedef void ( Editbox_wrapper::*onNonClientChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onNameChanged_function_type )( ::CEGUI::NamedElementEventArgs & ) ;
+            
+            Editbox_exposer.def( 
+                "onNameChanged"
+                , onNameChanged_function_type( &Editbox_wrapper::default_onNameChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when the element's name changes.\n\
+            \n\
+                @param e\n\
+                    NamedElementEventArgs object whose 'element' pointer field is set to the element\n\
+                    that triggered the event. For this event the trigger element is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Element::onNonClientChanged
+        
+            typedef void ( Editbox_wrapper::*onNonClientChanged_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onNonClientChanged"
@@ -3324,12 +3421,12 @@ void register_Editbox_class(){
                 , ( bp::arg("e") )
                 , "*!\n\
                 \n\
-                    Handler called when the window's non-client setting, affecting it's\n\
+                    Handler called when the element's non-client setting, affecting it's\n\
                     position and size relative to it's parent is changed.\n\
             \n\
                 @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
+                    ElementEventArgs object whose 'element' pointer field is set to the element\n\
+                    that triggered the event. For this event the trigger element is always\n\
                     'this'.\n\
                 *\n" );
         
@@ -3356,7 +3453,7 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::onParentSized
         
-            typedef void ( Editbox_wrapper::*onParentSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onParentSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onParentSized"
@@ -3415,21 +3512,12 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::onRotated
         
-            typedef void ( Editbox_wrapper::*onRotated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onRotated_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onRotated"
                 , onRotated_function_type( &Editbox_wrapper::default_onRotated )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the window's rotation factor is changed.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
-                    'this'.\n\
-                *\n" );
+                , ( bp::arg("e") ) );
         
         }
         { //::CEGUI::Window::onShown
@@ -3453,7 +3541,7 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::onSized
         
-            typedef void ( Editbox_wrapper::*onSized_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onSized"
@@ -3493,9 +3581,9 @@ void register_Editbox_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::onVerticalAlignmentChanged
+        { //::CEGUI::Element::onVerticalAlignmentChanged
         
-            typedef void ( Editbox_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Editbox_wrapper::*onVerticalAlignmentChanged_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
             Editbox_exposer.def( 
                 "onVerticalAlignmentChanged"
@@ -3503,12 +3591,12 @@ void register_Editbox_class(){
                 , ( bp::arg("e") )
                 , "*!\n\
                 \n\
-                    Handler called when the vertical alignment setting for the window is\n\
+                    Handler called when the vertical alignment setting for the element is\n\
                     changed.\n\
             \n\
                 @param e\n\
-                    WindowEventArgs object initialised as follows:\n\
-                    - window field is set to point to the Window object whos alignment has\n\
+                    ElementEventArgs object initialised as follows:\n\
+                    - element field is set to point to the element object who's alignment has\n\
                       changed (typically 'this').\n\
                 *\n" );
         
@@ -3641,15 +3729,14 @@ void register_Editbox_class(){
         }
         { //::CEGUI::Window::removeChild_impl
         
-            typedef void ( Editbox_wrapper::*removeChild_impl_function_type )( ::CEGUI::Window * ) ;
+            typedef void ( Editbox_wrapper::*removeChild_impl_function_type )( ::CEGUI::Element * ) ;
             
             Editbox_exposer.def( 
                 "removeChild_impl"
                 , removeChild_impl_function_type( &Editbox_wrapper::default_removeChild_impl )
-                , ( bp::arg("wnd") )
+                , ( bp::arg("element") )
                 , "*!\n\
-            \n\
-                Remove given window from child list\n\
+            opydoc Element.removeChild_impl\n\
             *\n" );
         
         }
@@ -3674,44 +3761,102 @@ void register_Editbox_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Element::setArea
+        
+            typedef void ( ::CEGUI::Element::*setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const & ) ;
+            typedef void ( Editbox_wrapper::*default_setArea_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const & ) ;
+            
+            Editbox_exposer.def( 
+                "setArea"
+                , setArea_function_type(&::CEGUI::Element::setArea)
+                , default_setArea_function_type(&Editbox_wrapper::default_setArea)
+                , ( bp::arg("pos"), bp::arg("size") ) );
+        
+        }
+        { //::CEGUI::Element::setArea
+        
+            typedef void ( ::CEGUI::Element::*setArea_function_type )( ::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const &,::CEGUI::UDim const & ) ;
+            
+            Editbox_exposer.def( 
+                "setArea"
+                , setArea_function_type( &::CEGUI::Element::setArea )
+                , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
+                , "*!\n\
+                \n\
+                    Set the Element area.\n\
+            \n\
+                    Sets the area occupied by this Element. The defined area is offset from\n\
+                    one of the corners of this Element's parent element (depending on alignments)\n\
+                    or from the top-left corner of the display if this element has no parent\n\
+                    (i.e. it is the root element).\n\
+            \n\
+                \note\n\
+                    This method makes use of Unified Dimensions. These contain both\n\
+                    parent relative and absolute pixel components, which are used in\n\
+                    determining the final value used.\n\
+            \n\
+                @param xpos\n\
+                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
+            \n\
+                @param ypos\n\
+                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
+            \n\
+                @param width\n\
+                    UDim describing the new width of the element area.\n\
+            \n\
+                @param height\n\
+                    UDim describing the new height of the element area.\n\
+                 *\n" );
+        
+        }
+        { //::CEGUI::Element::setArea
+        
+            typedef void ( ::CEGUI::Element::*setArea_function_type )( ::CEGUI::URect const & ) ;
+            
+            Editbox_exposer.def( 
+                "setArea"
+                , setArea_function_type( &::CEGUI::Element::setArea )
+                , ( bp::arg("area") )
+                , "*!\n\
+                \n\
+                    Set the Element area.\n\
+            \n\
+                    Sets the area occupied by this Element. The defined area is offset from\n\
+                    one of the corners of this Element's parent element (depending on alignments)\n\
+                    or from the top-left corner of the display if this element has no parent\n\
+                    (i.e. it is the root element).\n\
+            \n\
+                \note\n\
+                    This method makes use of Unified Dimensions. These contain both\n\
+                    parent relative and absolute pixel components, which are used in\n\
+                    determining the final value used.\n\
+            \n\
+                @param area\n\
+                    URect describing the new area rectangle of the element area.\n\
+                 *\n" );
+        
+        }
         { //::CEGUI::Window::setArea_impl
         
             typedef void ( Editbox_wrapper::*setArea_impl_function_type )( ::CEGUI::UVector2 const &,::CEGUI::USize const &,bool,bool ) ;
             
             Editbox_exposer.def( 
                 "setArea_impl"
-                , setArea_impl_function_type( &Editbox_wrapper::setArea_impl )
+                , setArea_impl_function_type( &Editbox_wrapper::default_setArea_impl )
                 , ( bp::arg("pos"), bp::arg("size"), bp::arg("topLeftSizing")=(bool)(false), bp::arg("fireEvents")=(bool)(true) )
-                , "*!\n\
-                \n\
-                    Implementation method to modify window area while correctly applying\n\
-                    min  max size processing, and firing any appropriate events.\n\
-            \n\
-                note\n\
-                    This is the implementation function for setting size and position.\n\
-                    In order to simplify area management, from this point on, all\n\
-                    modifications to window size and position (area rect) should come\n\
-                    through here.\n\
-            \n\
-                param pos\n\
-                    UVector2 object describing the new area position.\n\
-            \n\
-                param size\n\
-                    USize object describing the new area size.\n\
-            \n\
-                param topLeftSizing\n\
-                    - true to indicate the the operation is a sizing operation on the top\n\
-                      andor left edges of the area, and so window movement should be\n\
-                      inhibited if size is at max or min.\n\
-                    - false to indicate the operation is not a strict sizing operation on\n\
-                      the top andor left edges and that the window position may change as\n\
-                      required\n\
-            \n\
-                param fireEvents\n\
-                    - true if events should be fired as normal.\n\
-                    - false to inhibit firing of events (required, for example, if you need\n\
-                      to call this from the onSizeonMove handlers).\n\
-                 *\n" );
+                , "! opydoc Element.setArea_impl\n" );
+        
+        }
+        { //::CEGUI::Element::setHorizontalAlignment
+        
+            typedef void ( ::CEGUI::Element::*setHorizontalAlignment_function_type )( ::CEGUI::HorizontalAlignment const ) ;
+            typedef void ( Editbox_wrapper::*default_setHorizontalAlignment_function_type )( ::CEGUI::HorizontalAlignment const ) ;
+            
+            Editbox_exposer.def( 
+                "setHorizontalAlignment"
+                , setHorizontalAlignment_function_type(&::CEGUI::Element::setHorizontalAlignment)
+                , default_setHorizontalAlignment_function_type(&Editbox_wrapper::default_setHorizontalAlignment)
+                , ( bp::arg("alignment") ) );
         
         }
         { //::CEGUI::Window::setLookNFeel
@@ -3738,13 +3883,25 @@ void register_Editbox_class(){
                 , ( bp::arg("margin") ) );
         
         }
+        { //::CEGUI::NamedElement::setName
+        
+            typedef void ( ::CEGUI::NamedElement::*setName_function_type )( ::CEGUI::String const & ) ;
+            typedef void ( Editbox_wrapper::*default_setName_function_type )( ::CEGUI::String const & ) ;
+            
+            Editbox_exposer.def( 
+                "setName"
+                , setName_function_type(&::CEGUI::NamedElement::setName)
+                , default_setName_function_type(&Editbox_wrapper::default_setName)
+                , ( bp::arg("name") ) );
+        
+        }
         { //::CEGUI::Window::setParent
         
-            typedef void ( Editbox_wrapper::*setParent_function_type )( ::CEGUI::Window * ) ;
+            typedef void ( Editbox_wrapper::*setParent_function_type )( ::CEGUI::Element * ) ;
             
             Editbox_exposer.def( 
                 "setParent"
-                , setParent_function_type( &Editbox_wrapper::setParent )
+                , setParent_function_type( &Editbox_wrapper::default_setParent )
                 , ( bp::arg("parent") )
                 , "*!\n\
                 \n\
@@ -3757,6 +3914,18 @@ void register_Editbox_class(){
                 @return\n\
                     Nothing\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Element::setVerticalAlignment
+        
+            typedef void ( ::CEGUI::Element::*setVerticalAlignment_function_type )( ::CEGUI::VerticalAlignment const ) ;
+            typedef void ( Editbox_wrapper::*default_setVerticalAlignment_function_type )( ::CEGUI::VerticalAlignment const ) ;
+            
+            Editbox_exposer.def( 
+                "setVerticalAlignment"
+                , setVerticalAlignment_function_type(&::CEGUI::Element::setVerticalAlignment)
+                , default_setVerticalAlignment_function_type(&Editbox_wrapper::default_setVerticalAlignment)
+                , ( bp::arg("alignment") ) );
         
         }
         { //::CEGUI::EventSet::subscribeScriptedEvent

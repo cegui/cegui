@@ -26,10 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIEventSet.h"
-#include "CEGUIGlobalEventSet.h"
-#include "CEGUIEventArgs.h"
-#include "CEGUIExceptions.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/GlobalEventSet.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/Exceptions.h"
 
 #include <boost/test/unit_test.hpp>
 #include <boost/timer.hpp>

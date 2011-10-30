@@ -1,6 +1,6 @@
 // include the header that makes these files generate valid code
 $#include "required.h"
-$#include "CEGUIPropertyHelper.h"
+$#include "CEGUI/PropertyHelper.h"
 
 // start the CEGUI namespace and include everything inside that
 namespace CEGUI
@@ -24,6 +24,8 @@ $pfile "InputEvent.pkg"
 $pfile "EventSet.pkg"
 
 $pfile "MouseCursor.pkg"
+$pfile "Element.pkg"
+$pfile "NamedElement.pkg"
 $pfile "Window.pkg"
 $pfile "CoordConverter.pkg"
 $pfile "System.pkg"

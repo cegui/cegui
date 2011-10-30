@@ -29,6 +29,7 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/elements/ProgressBar.h"
+#include "CEGUI/CoordConverter.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section
@@ -76,7 +77,7 @@ namespace CEGUI
         ProgressBar* w = (ProgressBar*)d_window;
         if (d_vertical)
         {
-            float height = PixelAligned(progressClipper.getHeight() * w->getProgress());
+            float height = CoordConverter::alignToPixels(progressClipper.getHeight() * w->getProgress());
 
             if (d_reversed)
             {
@@ -89,7 +90,7 @@ namespace CEGUI
         }
         else
         {
-            float width = PixelAligned(progressClipper.getWidth() * w->getProgress());
+            float width = CoordConverter::alignToPixels(progressClipper.getWidth() * w->getProgress());
 
             if (d_reversed)
             {

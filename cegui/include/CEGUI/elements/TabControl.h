@@ -495,9 +495,11 @@ protected:
 	*************************************************************************/
 	void	addTabControlProperties(void);
 
-    void    addChild_impl(Window* wnd);
-    void    removeChild_impl(Window* wnd);
-    Window* getChild_impl(const String& name_path) const;
+    void    addChild_impl(Element* element);
+    void    removeChild_impl(Element* element);
+    
+    //! \copydoc Window::getChildByNamePath_impl
+    virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
 
     /*************************************************************************
     Event handlers

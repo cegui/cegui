@@ -180,7 +180,7 @@ void InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e)
 
     const Sizef square_size(squarePixelSize());
 
-    Rectf item_area(item->getUnclippedOuterRect());
+    Rectf item_area(item->getUnclippedOuterRect().get());
     item_area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
 
     const int drop_x = gridXLocationFromPixelPosition(item_area.left());
@@ -221,7 +221,7 @@ void InventoryReceiver::populateGeometryBuffer()
 //------------------------------------------------------------------------------//
 Rectf InventoryReceiver::gridBasePixelRect() const
 {
-    return getChildWindowContentArea();
+    return getChildContentArea().get();
 }
 
 //------------------------------------------------------------------------------//

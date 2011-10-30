@@ -547,8 +547,15 @@ void MenuItem::updateSelf(float elapsed)
 /*************************************************************************
     Internal version of adding a child window.
 *************************************************************************/
-void MenuItem::addChild_impl(Window* wnd)
+void MenuItem::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("MenuItem::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     ItemEntry::addChild_impl(wnd);
 
     PopupMenu* pop = dynamic_cast<PopupMenu*>(wnd);

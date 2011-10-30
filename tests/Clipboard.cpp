@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUIClipboard.h"
+#include "CEGUI/Clipboard.h"
 
 #include <boost/test/unit_test.hpp>
 

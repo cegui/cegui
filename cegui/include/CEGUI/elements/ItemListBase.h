@@ -548,7 +548,7 @@ protected:
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
-    virtual void onParentSized(WindowEventArgs& e);
+    virtual void onParentSized(ElementEventArgs& e);
 	//virtual void    onChildRemoved(WindowEventArgs& e);
     //virtual void    onDestructionStarted(WindowEventArgs& e);
 
@@ -583,10 +583,9 @@ private:
 
 
 	/*!
-	\brief
-		Add given window to child list at an appropriate position
+	\copydoc Element::addChild_impl
 	*/
-	virtual void	addChild_impl(Window* wnd);
+	virtual void addChild_impl(Element* element);
 
 	/*!
 	\brief

@@ -564,9 +564,10 @@ protected:
     bool handleAutoSizePaneChanged(const EventArgs& e);
 
     // Overridden from Window
-    void addChild_impl(Window* wnd);
-    void removeChild_impl(Window* wnd);
-    void onSized(WindowEventArgs& e);
+    void addChild_impl(Element* element);
+    void removeChild_impl(Element* element);
+    
+    void onSized(ElementEventArgs& e);
     void onMouseWheel(MouseEventArgs& e);
 
     //! true if vertical scrollbar should always be displayed

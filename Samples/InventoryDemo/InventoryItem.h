@@ -78,7 +78,7 @@ public:
 
 protected:
     // base class overrides
-    void onMoved(WindowEventArgs& e);
+    void onMoved(ElementEventArgs& e);
     void onDragDropTargetChanged(DragDropEventArgs& e);
     void populateGeometryBuffer();
     Rectf gridBasePixelRect() const;

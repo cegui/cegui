@@ -397,7 +397,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
         return;
 
     float ww = getPixelSize().d_width;
-    float x = CoordConverter::asAbsolute(tb->getXPosition(), ww);
+    float x = CoordConverter::asAbsolute(tb->getPosition().d_x, ww);
     float w = tb->getPixelSize().d_width;
     float lx = 0, rx = ww;
 
@@ -412,7 +412,7 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     if (isChild(ButtonScrollRight))
     {
         scrollRightBtn = getChild(ButtonScrollRight);
-        rx = CoordConverter::asAbsolute(scrollRightBtn->getXPosition(), ww);
+        rx = CoordConverter::asAbsolute(scrollRightBtn->getPosition().d_x, ww);
         scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
@@ -453,8 +453,15 @@ void TabControl::addTabControlProperties(void)
 /*************************************************************************
 Internal version of adding a child window
 *************************************************************************/
-void TabControl::addChild_impl(Window* wnd)
+void TabControl::addChild_impl(Element* element)
 {
+    Window* wnd = dynamic_cast<Window*>(element);
+    
+    if (!wnd)
+    {
+        CEGUI_THROW(AlreadyExistsException("TabControl::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+    }
+    
     if (wnd->isAutoWindow())
     {
         // perform normal addChild
@@ -469,8 +476,10 @@ void TabControl::addChild_impl(Window* wnd)
 /*************************************************************************
 Internal version of removing a child window
 *************************************************************************/
-void TabControl::removeChild_impl(Window* wnd)
+void TabControl::removeChild_impl(Element* element)
 {
+    Window* wnd = static_cast<Window*>(element);
+    
     // protect against possible null pointers
     if (!wnd) return;
 
@@ -510,25 +519,31 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
     TabButton* btn = d_tabButtonVector [index];
     // relative height is always 1.0 for buttons since they are embedded in a
     // panel of the correct height already
-    btn->setHeight(cegui_reldim(1.0f));
-    btn->setYPosition(cegui_absdim(0.0f));
+    UVector2 position(cegui_absdim(0.0f), cegui_absdim(0.0f));
+    USize size(cegui_absdim(0.0f), cegui_reldim(1.0f));
+    
     // x position is based on previous button
     if (!index)
+    {
         // First button
-        btn->setXPosition(cegui_absdim(d_firstTabOffset));
+        position.d_x = cegui_absdim(d_firstTabOffset);
+    }
     else
     {
-		Window* prevButton = d_tabButtonVector [index - 1];
+        Window* prevButton = d_tabButtonVector [index - 1];
 
-		// position is prev pos + width
-        btn->setXPosition(prevButton->getArea().d_max.d_x);
+        // position is prev pos + width
+        position.d_x = prevButton->getArea().d_max.d_x;
     }
+   
     // Width is based on font size (expressed as absolute)
     const Font* fnt = btn->getFont();
-    btn->setWidth(cegui_absdim(fnt->getTextExtent(btn->getText())) +
-                        getTabTextPadding() + getTabTextPadding());
+    size.d_width = cegui_absdim(fnt->getTextExtent(btn->getText())) + getTabTextPadding() + getTabTextPadding();
+    
+    btn->setPosition(position);
+    btn->setSize(size);
 
-    float left_x = btn->getXPosition ().d_offset;
+    const float left_x = position.d_x.d_offset;
     btn->setVisible ((left_x < getPixelSize ().d_width) &&
                      (left_x + btn->getPixelSize ().d_width > 0));
     btn->invalidate();
@@ -796,12 +811,12 @@ void TabControl::removeTab_impl(Window* window)
     invalidate();
 }
 
-Window* TabControl::getChild_impl(const String& name_path) const
+NamedElement* TabControl::getChildByNamePath_impl(const String& name_path) const
 {
     if (name_path.substr(0, 7) == "__auto_")
-        return Window::getChild_impl(name_path);
+        return NamedElement::getChildByNamePath_impl(name_path);
     else
-        return Window::getChild_impl(ContentPaneName + '/' + name_path);
+        return NamedElement::getChildByNamePath_impl(ContentPaneName + '/' + name_path);
 }
 
 } // End of  CEGUI namespace section

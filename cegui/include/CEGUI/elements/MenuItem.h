@@ -330,10 +330,9 @@ private:
     void addMenuItemProperties(void);
 
     /*!
-    \brief
-        Add given window to child list at an appropriate position
+    \copydoc Window::addChild_impl
     */
-    virtual void    addChild_impl(Window* wnd);
+    virtual void addChild_impl(Element* element);
 };
 
 } // End of  CEGUI namespace section
