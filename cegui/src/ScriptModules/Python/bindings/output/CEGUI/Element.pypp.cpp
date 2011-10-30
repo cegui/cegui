@@ -672,6 +672,24 @@ void register_Element_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Element::getPixelPosition
+        
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::Element::*getPixelPosition_function_type )(  ) const;
+            
+            Element_exposer.def( 
+                "getPixelPosition"
+                , getPixelPosition_function_type( &::CEGUI::Element::getPixelPosition )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Return the element's absolute (or screen, depending no the type of the element) position in\
+                    pixels.\n\
+            \n\
+                @return\n\
+                    Vector2f object describing this element's absolute position in pixels.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Element::getPixelSize
         
             typedef ::CEGUI::Sizef const & ( ::CEGUI::Element::*getPixelSize_function_type )(  ) const;
