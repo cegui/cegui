@@ -41,7 +41,7 @@ BOOST_AUTO_TEST_CASE(Children)
     CEGUI::NamedElement* child2 = new CEGUI::NamedElement("child");
     root->addChild(child1);
     BOOST_CHECK_THROW(root->addChild(child2), CEGUI::AlreadyExistsException);
-    root->removeChild(child1);
+    root->removeChild("child");
     BOOST_CHECK_THROW(root->removeChild("child"), CEGUI::UnknownObjectException);
     root->addChild(child2);
     BOOST_CHECK_THROW(root->addChild(child1), CEGUI::AlreadyExistsException);
