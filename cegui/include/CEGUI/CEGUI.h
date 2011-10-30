@@ -49,6 +49,7 @@
 #include "CEGUI/DefaultRenderedStringParser.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/DynamicModule.h"
+#include "CEGUI/Element.h"
 #include "CEGUI/Event.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/EventSet.h"
@@ -72,6 +73,7 @@
 #include "CEGUI/LinkedEvent.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/MouseCursor.h"
+#include "CEGUI/NamedElement.h"
 #include "CEGUI/Property.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/PropertySet.h"
@@ -128,4 +130,3 @@
 #include "CEGUI/elements/All.h"
 
 #endif	// end of guard _CEGUI_h_
-
