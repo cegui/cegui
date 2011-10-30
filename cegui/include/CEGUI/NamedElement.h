@@ -179,6 +179,9 @@ public:
     void removeChild(const String& name_path);
 
 protected:
+    //! \copydoc Element::addChild_impl
+    virtual void addChild_impl(Element* element);
+    
     /*!
     \brief
         retrieves a child at \a name_path or 0 if none such exists
