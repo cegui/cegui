@@ -40,7 +40,7 @@
             <Window Name="Text1" Type="TaharezLook/StaticText">
                 <Property Name="Text" Value="This is a re-creation of the original 'Demo7' preview application, it shows many of the CEGUI widgets." />
                 <Property Name="FrameEnabled" Value="False" />
-                <Property Name="HorzFormatting" Value="WordWrapCentred" />
+                <Property Name="HorzFormatting" Value="WordWrapCentreAligned" />
                 <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
                 <Property Name="Area" Value="{{0.5,0},{0.03,0},{0.95,0},{0.53,0}}" />
                 <Property Name="BackgroundEnabled" Value="False" />
