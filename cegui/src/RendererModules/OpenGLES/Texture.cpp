@@ -34,47 +34,53 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner) :
+OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
     d_texelScaling(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     generateOpenGLESTexture();
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& filename,
-                             const String& resourceGroup) :
+OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
+                                 const String& filename,
+                                 const String& resourceGroup) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     generateOpenGLESTexture();
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const Sizef& size) :
+OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
+                                 const Sizef& size) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     generateOpenGLESTexture();
     setTextureSize(size);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, GLuint tex,
-                             const Sizef& size) :
+OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
+                                 GLuint tex, const Sizef& size) :
     d_ogltexture(tex),
     d_size(size),
     d_grabBuffer(0),
     d_dataSize(size),
-    d_owner(owner)
+    d_owner(owner),
+    d_name(name)
 {
     updateCachedScaleValues();
 }
@@ -83,6 +89,12 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, GLuint tex,
 OpenGLESTexture::~OpenGLESTexture()
 {
     cleanupOpenGLESTexture();
+}
+
+//----------------------------------------------------------------------------//
+const String& OpenGLESTexture::getName() const
+{
+    return d_name;
 }
 
 //----------------------------------------------------------------------------//
@@ -138,9 +150,25 @@ void OpenGLESTexture::loadFromFile(const String& filename,
                                 " failed to load image '" + filename + "'.");
 }
 
-//----------------------------------------------------------------------------//
-void OpenGLESTexture::blitFromMemory(void* sourceData, const Rectf& area)
+
+void OpenGLESTexture::loadFromMemory(const void* buffer,
+                                     const Sizef& buffer_size,
+                                     PixelFormat pixel_format)
 {
+    GLint comps;
+    GLenum format;
+    switch (pixel_format)
+    {
+    case PF_RGB:
+        comps = 3;
+        format = GL_RGB;
+        break;
+    case PF_RGBA:
+        comps = 4;
+        format = GL_RGBA;
+        break;
+    };
+
     setTextureSize(buffer_size);
     // store size of original data we are loading
     d_dataSize = buffer_size;
@@ -156,7 +184,31 @@ void OpenGLESTexture::blitFromMemory(void* sourceData, const Rectf& area)
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                     static_cast<GLsizei>(buffer_size.d_width),
                     static_cast<GLsizei>(buffer_size.d_height),
-                    GL_RGBA, GL_UNSIGNED_BYTE, buffer);
+                    format, GL_UNSIGNED_BYTE, buffer);
+
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESTexture::blitFromMemory(void* sourceData, const Rectf& area)
+{
+    // store size of original data we are loading
+    d_dataSize = area.getSize();
+    setTextureSize(d_dataSize);
+    // update scale values
+    updateCachedScaleValues();
+
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
+    // do the real work of getting the data into the texture
+    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+                    static_cast<GLsizei>(d_dataSize.d_width),
+                    static_cast<GLsizei>(d_dataSize.d_height),
+                    GL_RGBA, GL_UNSIGNED_BYTE, sourceData);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
@@ -322,7 +374,7 @@ GLuint OpenGLESTexture::getOpenGLESTexture() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::setOpenGLESTexture(GLuint tex, const Size& size)
+void OpenGLESTexture::setOpenGLESTexture(GLuint tex, const Sizef& size)
 {
     if (d_ogltexture != tex)
     {

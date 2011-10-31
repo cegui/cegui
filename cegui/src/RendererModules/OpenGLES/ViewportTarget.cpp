@@ -50,7 +50,7 @@ OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner) :
 
 //----------------------------------------------------------------------------//
 OpenGLESViewportTarget::OpenGLESViewportTarget(OpenGLESRenderer& owner,
-    const Rect& area) :
+                                               const Rectf& area) :
         OpenGLESRenderTarget(owner)
 {
     setArea(area);

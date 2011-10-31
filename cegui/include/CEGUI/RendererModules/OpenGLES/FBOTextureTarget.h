@@ -74,6 +74,8 @@ protected:
     void initialiseRenderTexture();
     //! resize the texture
     void resizeRenderTexture();
+    //! generate a texture name
+    String generateTextureName();
 	
 	//! Saving fbo before activation
 	GLint d_oldFbo;
@@ -83,6 +85,8 @@ protected:
     GLuint d_texture;
     //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
     OpenGLESTexture* d_CEGUITexture;
+    //! static member var used to generate unique texture names.
+    static uint s_textureNumber;
 };
 
 } // End of  CEGUI namespace section
