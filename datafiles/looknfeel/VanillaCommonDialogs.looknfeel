@@ -777,7 +777,7 @@
 			<Property name="Text" value="Previous" />
 			<Property name="FrameEnabled" value="False" />
 			<Property name="BackgroundEnabled" value="False" />
-			<Property name="HorzFormatting" value="HorzCentred" />
+			<Property name="HorzFormatting" value="CentreAligned" />
 		</Child>
 
 		<Child type="Vanilla/StaticText" nameSuffix="__auto_oldcolourdescription__">
@@ -816,7 +816,7 @@
 			<Property name="Text" value="Current" />
 			<Property name="FrameEnabled" value="False" />
 			<Property name="BackgroundEnabled" value="False" />
-			<Property name="HorzFormatting" value="HorzCentred" />
+			<Property name="HorzFormatting" value="CentreAligned" />
 		</Child>
 
 		<!--
@@ -924,7 +924,7 @@
 			<VertAlignment type="BottomAligned" />
 			<HorzAlignment type="LeftAligned" />
 			<Property name="Text" value="255" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="MaxTextLength" value="3" />
 			<Property name="ValidationString" value="^$|[1][0-9][0-9]|[0-2][5][0-5]|[0-2][0-4][0-9]|[0-9]{1,2}" />
 		</Child>
@@ -977,7 +977,7 @@
 			</Area>
 			<VertAlignment type="BottomAligned" />
 			<HorzAlignment type="LeftAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="255" />
 			<Property name="MaxTextLength" value="3" />
 			<Property name="ValidationString" value="^$|[1][0-9][0-9]|[0-2][5][0-5]|[0-2][0-4][0-9]|[0-9]{1,2}" />
@@ -1031,7 +1031,7 @@
 			</Area>
 			<VertAlignment type="BottomAligned" />
 			<HorzAlignment type="LeftAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="255" />
 			<Property name="MaxTextLength" value="3" />
 			<Property name="ValidationString" value="^$|[1][0-9][0-9]|[0-2][5][0-5]|[0-2][0-4][0-9]|[0-9]{1,2}" />
@@ -1066,7 +1066,7 @@
 			<HorzAlignment type="LeftAligned" />
 			<Property name="Text" value="FFFFFFFF" />
 			<Property name="MaxTextLength" value="8" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="ValidationString" value="[0-9a-fA-F]{0,8}" />
 		</Child>
 
@@ -1125,7 +1125,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="RightAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="255.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+" />
@@ -1187,7 +1187,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="RightAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="100.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+" />
@@ -1250,7 +1250,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="RightAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="255.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+" />
@@ -1318,7 +1318,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="RightAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="100.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+"/>
@@ -1380,7 +1380,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="RightAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="130.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+" />
@@ -1442,7 +1442,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="RightAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="130.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+" />
@@ -1542,7 +1542,7 @@
 			</Area>
 			<VertAlignment type="TopAligned" />
 			<HorzAlignment type="LeftAligned" />
-			<Property name="TextFormatting" value="HorzCentred" />
+			<Property name="TextFormatting" value="CentreAligned" />
 			<Property name="Text" value="0.000" />
 			<Property name="MaxTextLength" value="8" />
 			<Property name="ValidationString" value="[-+]?[0-9]*\.?[0-9]+" />
