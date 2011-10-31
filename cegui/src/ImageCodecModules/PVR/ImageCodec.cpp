@@ -203,8 +203,8 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
                                     decompressed_texture);
 
             result->loadFromMemory(decompressed_texture,
-                                   Size(static_cast<float>(size_x),
-                                        static_cast<float>(size_y)),
+                                   Sizef(static_cast<float>(size_x),
+                                         static_cast<float>(size_y)),
                                    cefmt);
             delete[] decompressed_texture;
         }
@@ -214,8 +214,8 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         // Perform raw data load from textureData
         // ToDo: add support for non 32-bit RGBA formats
         result->loadFromMemory(texture_data,
-                               Size(static_cast<float>(size_x),
-                                    static_cast<float>(size_y)),
+                               Sizef(static_cast<float>(size_x),
+                                     static_cast<float>(size_y)),
                                cefmt);
     }
 

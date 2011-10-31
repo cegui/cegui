@@ -22,3 +22,7 @@ if (CEGUI_BUILD_IMAGECODEC_TGA)
     add_subdirectory(TGA)
 endif()
 
+if (CEGUI_BUILD_IMAGECODEC_PVR)
+    add_subdirectory(PVR)
+endif()
+

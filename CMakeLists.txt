@@ -69,6 +69,7 @@ find_package(DevIL)
 find_package(FreeImage)
 find_package(SILLY)
 find_package(Corona)
+find_package(PVRTools)
 
 find_package(Lua51)
 find_package(TOLUAPP)
@@ -127,6 +128,7 @@ cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_FREEIMAGE "Specifies whether to b
 cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_CORONA "Specifies whether to build the Corona based ImageCodec module" TRUE "CORONA_FOUND" FALSE )
 option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based ImageCodec module" TRUE )
 option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" TRUE )
+cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" TRUE "PVRTOOLS_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" TRUE "OPENGL_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" TRUE "OGRE_FOUND" FALSE )
@@ -231,6 +233,7 @@ set( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec )
 set( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec )
 set( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec )
 set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
+set( CEGUI_PVR_IMAGECODEC_LIBNAME CEGUIPVRImageCodec )
 
 # WindowRenderer set module names
 set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase )
