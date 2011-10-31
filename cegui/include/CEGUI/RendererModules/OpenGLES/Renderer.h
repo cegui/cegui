@@ -34,6 +34,7 @@
 #include "CEGUI/Vector.h"
 #include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <vector>
+#include <map>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOPENGLESRENDERER_EXPORTS
@@ -130,11 +131,15 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Sizef& size);
+    Texture& createTexture(const String& name);
+    Texture& createTexture(const String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String& name) const;
     void beginRendering();
     void endRendering();
     void setDisplaySize(const Sizef& sz);
@@ -157,7 +162,7 @@ public:
         Texture object that wraps the OpenGLES texture \a tex, and whose size is
         specified to be \a sz.
     */
-    Texture& createTexture(GLuint tex, const Sizef& sz);
+    Texture& createTexture(const String& name, GLuint tex, const Sizef& sz);
 
     /*!
     \brief
@@ -247,6 +252,9 @@ private:
     //! initialise OGLTextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory(const TextureTargetType tt_type);
 
+    //! Log about the fact we destroyed a named texture.
+    void logTextureDestruction(const String& name);
+
 	//! Replacement for glPushAttrib =(
 	struct RenderStates
 	{
@@ -277,9 +285,10 @@ private:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<OpenGLESTexture*> TextureList;
+    typedef std::map<String, OpenGLESTexture*, StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, OpenGLESTexture*)> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default

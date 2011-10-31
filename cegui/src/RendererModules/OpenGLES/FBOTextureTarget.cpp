@@ -29,12 +29,13 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include "CEGUI/RendererModules/OpenGLES/Renderer.h"
 #include "CEGUI/RendererModules/OpenGLES/Texture.h"
 
 #ifndef __APPLE__
-#include "egl/egl.h"
+#include "EGL/egl.h"
 #endif
 
 // Start of CEGUI namespace section
@@ -78,18 +79,30 @@ PFNGLGENERATEMIPMAPOES glGenerateMipmapEXT = NULL;
 const float OpenGLESFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
+uint OpenGLESFBOTextureTarget::s_textureNumber = 0;
+
+//----------------------------------------------------------------------------//
 OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner) :
     OpenGLESRenderTarget(owner),
     d_texture(0)
 {
     // this essentially creates a 'null' CEGUI::Texture
     d_CEGUITexture = &static_cast<OpenGLESTexture&>(
-        d_owner.createTexture(d_texture, d_area.getSize()));
+        d_owner.createTexture(generateTextureName(), d_texture, d_area.getSize()));
 
     initialiseRenderTexture();
 
     // setup area and cause the initial texture to be generated.
-    declareRenderSize(Size(DEFAULT_SIZE, DEFAULT_SIZE));
+    declareRenderSize(Sizef(DEFAULT_SIZE, DEFAULT_SIZE));
+}
+
+//----------------------------------------------------------------------------//
+String OpenGLESFBOTextureTarget::generateTextureName()
+{
+    String tmp("_gles_tt_tex_");
+    tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));
+
+    return tmp;
 }
 
 //----------------------------------------------------------------------------//
@@ -106,7 +119,7 @@ void OpenGLESFBOTextureTarget::declareRenderSize(const Sizef& sz)
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
         return;
 
-    setArea(Rect(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
+    setArea(Rectf(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     resizeRenderTexture();
 }
 

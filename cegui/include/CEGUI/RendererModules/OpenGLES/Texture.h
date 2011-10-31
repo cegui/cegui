@@ -95,30 +95,36 @@ public:
     void restoreTexture();
 
     // implement abstract members from base class.
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const String& getName() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
+                        PixelFormat pixel_format);
     void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
 
 protected:
     // Friends (to allow construction and destruction)
-    friend Texture& OpenGLESRenderer::createTexture(void);
-    friend Texture& OpenGLESRenderer::createTexture(const String&, const String&);
-    friend Texture& OpenGLESRenderer::createTexture(const Sizef&);
-    friend Texture& OpenGLESRenderer::createTexture(GLuint, const Sizef&);
+    friend Texture& OpenGLESRenderer::createTexture(const String&);
+    friend Texture& OpenGLESRenderer::createTexture(const String&, const String&, const String&);
+    friend Texture& OpenGLESRenderer::createTexture(const String&, const Sizef&);
+    friend Texture& OpenGLESRenderer::createTexture(const String&, GLuint, const Sizef&);
+    friend void OpenGLESRenderer::destroyTexture(const String&);
     friend void OpenGLESRenderer::destroyTexture(Texture&);
 
     //! Basic constructor.
-    OpenGLESTexture(OpenGLESRenderer& owner);
+    OpenGLESTexture(OpenGLESRenderer& owner, const String& name);
     //! Constructor that creates a Texture from an image file.
-    OpenGLESTexture(OpenGLESRenderer& owner,
+    OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
                   const String& filename, const String& resourceGroup);
     //! Constructor that creates a Texture with a given size.
-    OpenGLESTexture(OpenGLESRenderer& owner, const Sizef& size);
+    OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
+                    const Sizef& size);
     //! Constructor that wraps an existing GL texture.
-    OpenGLESTexture(OpenGLESRenderer& owner, GLuint tex, const Sizef& size);
+    OpenGLESTexture(OpenGLESRenderer& owner, const String& name, GLuint tex,
+                    const Sizef& size);
     //! Destructor.
     virtual ~OpenGLESTexture();
 
@@ -143,6 +149,8 @@ protected:
     Vector2f d_texelScaling;
     //! OpenGLESRenderer that created and owns this OpenGLESTexture
     OpenGLESRenderer& d_owner;
+    //! Name of the texture given when it was created.
+    const String d_name;
 };
 
 } // End of  CEGUI namespace section

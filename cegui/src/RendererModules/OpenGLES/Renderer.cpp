@@ -35,6 +35,7 @@
 #include "CEGUI/RendererModules/OpenGLES/GeometryBuffer.h"
 #include "CEGUI/RenderingRoot.h"
 #include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
+#include "CEGUI/Logger.h"
 
 #include <sstream>
 #include <algorithm>
@@ -151,7 +152,7 @@ OpenGLESRenderer::OpenGLESRenderer(const TextureTargetType tt_type) :
     // initialise display size
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    d_displaySize = Size(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
+    d_displaySize = Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
 
     initialiseTextureTargetFactory(tt_type);
 
@@ -254,49 +255,64 @@ void OpenGLESRenderer::destroyAllTextureTargets()
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLESRenderer::createTexture()
+Texture& OpenGLESRenderer::createTexture(const String& name)
 {
-    OpenGLESTexture* tex = new OpenGLESTexture(*this);
-    d_textures.push_back(tex);
+    OpenGLESTexture* tex = new OpenGLESTexture(*this, name);
+    d_textures[name] = tex;
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLESRenderer::createTexture(const String& filename,
-    const String& resourceGroup)
+Texture& OpenGLESRenderer::createTexture(const String& name,
+                                         const String& filename,
+                                         const String& resourceGroup)
 {
-    OpenGLESTexture* tex = new OpenGLESTexture(*this, filename, resourceGroup);
-    d_textures.push_back(tex);
+    OpenGLESTexture* tex = new OpenGLESTexture(*this, name, filename,
+                                               resourceGroup);
+    d_textures[name] = tex;
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLESRenderer::createTexture(const Sizef& size)
+Texture& OpenGLESRenderer::createTexture(const String& name, const Sizef& size)
 {
-    OpenGLESTexture* tex = new OpenGLESTexture(*this, size);
-    d_textures.push_back(tex);
+    OpenGLESTexture* tex = new OpenGLESTexture(*this, name, size);
+    d_textures[name] = tex;
     return *tex;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESRenderer::destroyTexture(const String& name)
+{
+    TextureMap::iterator i = d_textures.find(name);
+
+    if (d_textures.end() != i)
+    {
+        logTextureDestruction(name);
+        delete i->second;
+        d_textures.erase(i);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESRenderer::logTextureDestruction(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[OpenGLESRenderer] Destroyed texture: " + name);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESRenderer::destroyTexture(Texture& texture)
 {
-    TextureList::iterator i = std::find(d_textures.begin(),
-                                        d_textures.end(),
-                                        &texture);
-
-    if (d_textures.end() != i)
-    {
-        d_textures.erase(i);
-        delete &static_cast<OpenGLESTexture&>(texture);
-    }
+    destroyTexture(texture.getName());
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESRenderer::destroyAllTextures()
 {
     while (!d_textures.empty())
-        destroyTexture(**d_textures.begin());
+        destroyTexture(d_textures.begin()->first);
 }
 
 //----------------------------------------------------------------------------//
@@ -403,10 +419,11 @@ const String& OpenGLESRenderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLESRenderer::createTexture(GLuint tex, const Sizef& sz)
+Texture& OpenGLESRenderer::createTexture(const String& name, GLuint tex,
+                                         const Sizef& sz)
 {
-    OpenGLESTexture* t = new OpenGLESTexture(*this, tex, sz);
-    d_textures.push_back(t);
+    OpenGLESTexture* t = new OpenGLESTexture(*this, name, tex, sz);
+    d_textures[name] = t;
     return *t;
 }
 
@@ -418,7 +435,7 @@ void OpenGLESRenderer::setDisplaySize(const Sizef& sz)
         d_displaySize = sz;
 
         // update the default target's area
-        Rect area(d_defaultTarget->getArea());
+        Rectf area(d_defaultTarget->getArea());
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
@@ -465,10 +482,10 @@ void OpenGLESRenderer::cleanupExtraStates()
 //----------------------------------------------------------------------------//
 void OpenGLESRenderer::grabTextures()
 {
-    TextureList::iterator i = d_textures.begin();
+    TextureMap::iterator i = d_textures.begin();
     while (i != d_textures.end())
     {
-        (*i)->grabTexture();
+        i->second->grabTexture();
         i++;
     }
 }
@@ -476,10 +493,10 @@ void OpenGLESRenderer::grabTextures()
 //----------------------------------------------------------------------------//
 void OpenGLESRenderer::restoreTextures()
 {
-    TextureList::iterator i = d_textures.begin();
+    TextureMap::iterator i = d_textures.begin();
     while (i != d_textures.end())
     {
-        (*i)->restoreTexture();
+        i->second->restoreTexture();
         i++;
     }
 }
