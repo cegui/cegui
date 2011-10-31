@@ -619,10 +619,8 @@
 
 		<Property name="AlwaysOnTop" value="True" />
         <Property name="Size" value="{{0,460},{0,460}}" />
-<!-- Commented because at the moment CEGUI messes up the layout with the alignment set.
         <Property name="HorizontalAlignment" value="Centre" />
         <Property name="VerticalAlignment" value="Centre" />
--->
 		<Child type="Vanilla/Titlebar" nameSuffix="__auto_titlebar__">
 			<Area>
 				<Dim type="LeftEdge" >
