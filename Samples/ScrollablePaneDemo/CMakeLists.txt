@@ -1,2 +1,2 @@
-cegui_add_sample(CEGUIScollablePaneDemo)
+cegui_add_sample(CEGUIScrollablePaneDemo)
 
