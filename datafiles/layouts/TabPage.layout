@@ -4,7 +4,7 @@
 <Window Name="" Type="DefaultWindow">
     <Window Name="Text" Type="TaharezLook/StaticText">
         <Property Name="FrameEnabled" Value="False" />
-        <Property Name="HorzFormatting" Value="WordWrapCentred" />
+        <Property Name="HorzFormatting" Value="WordWrapCentreAligned" />
         <Property Name="VertFormatting" Value="CentreAligned" />
         <Property Name="Area" Value="{{0.5,0},{0.1,0},{0.9,0},{0.4,0}}" />
         <Property Name="BackgroundEnabled" Value="False" />
