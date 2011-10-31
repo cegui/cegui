@@ -28,9 +28,9 @@
 #ifndef _CEGUIOpenGLESGeometryBuffer_h_
 #define _CEGUIOpenGLESGeometryBuffer_h_
 
-#include "../../GeometryBuffer.h"
-#include "CEGUI/OpenGLESRenderer.h"
-#include "../../Rect.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGLES/Renderer.h"
+#include "CEGUI/Rect.h"
 
 #include <utility>
 #include <vector>
@@ -57,10 +57,10 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
-    void setTranslation(const Vector3& t);
-    void setRotation(const Vector3& r);
-    void setPivot(const Vector3& p);
-    void setClippingRegion(const Rect& region);
+    void setTranslation(const Vector3f& t);
+    void setRotation(const Vector3f& r);
+    void setPivot(const Vector3f& p);
+    void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
@@ -102,13 +102,13 @@ protected:
     //! container where added geometry is stored.
     VertexList d_vertices;
     //! rectangular clip region
-    Rect d_clipRect;
+    Rectf d_clipRect;
     //! translation vector
-    Vector3 d_translation;
+    Vector3f d_translation;
     //! rotation vector
-    Vector3 d_rotation;
+    Vector3f d_rotation;
     //! pivot point for rotation
-    Vector3 d_pivot;
+    Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache

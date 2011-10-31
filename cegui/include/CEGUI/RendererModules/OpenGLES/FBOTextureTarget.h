@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLESFBOTextureTarget_h_
 #define _CEGUIOpenGLESFBOTextureTarget_h_
 
-#include "CEGUI/OpenGLESRenderTarget.h"
-#include "../../TextureTarget.h"
-#include "../../Rect.h"
-#include "CEGUI/OpenGLES.h"
+#include "CEGUI/RendererModules/OpenGLES/RenderTarget.h"
+#include "CEGUI/TextureTarget.h"
+#include "CEGUI/Rect.h"
+#include "CEGUI/RendererModules/OpenGLES/GLES.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -44,8 +44,9 @@ namespace CEGUI
 class OpenGLESTexture;
 
 //! OpenGLESFBOTextureTarget - allows rendering to an OpenGLES texture via FBO.
-class OPENGLES_GUIRENDERER_API OpenGLESFBOTextureTarget : public OpenGLESRenderTarget,
-                                                      public TextureTarget
+class OPENGLES_GUIRENDERER_API OpenGLESFBOTextureTarget :
+    public OpenGLESRenderTarget,
+    public TextureTarget
 {
 public:
     OpenGLESFBOTextureTarget(OpenGLESRenderer& owner);
@@ -59,14 +60,13 @@ public:
     // implementation of TextureTarget interface
     void clear();
     Texture& getTexture() const;
-    void declareRenderSize(const Size& sz);
+    void declareRenderSize(const Sizef& sz);
     bool isRenderingInverted() const;
 
 	//! initialize FBO extension functions pointers
 	static void initializedFBOExtension();
 
 protected:
-
     //! default size of created texture objects
     static const float DEFAULT_SIZE;
 

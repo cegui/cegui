@@ -28,7 +28,7 @@
 #include "CEGUI/RendererModules/OpenGLES/RenderTarget.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/OpenGLES/GeometryBuffer.h"
-#include "CEGUI/OpenGLES.h"
+#include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <cmath>
 
 #include "glu.h"
@@ -60,14 +60,14 @@ void OpenGLESRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESRenderTarget::setArea(const Rect& area)
+void OpenGLESRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Rect& OpenGLESRenderTarget::getArea() const
+const Rectf& OpenGLESRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -75,8 +75,8 @@ const Rect& OpenGLESRenderTarget::getArea() const
 //----------------------------------------------------------------------------//
 void OpenGLESRenderTarget::activate()
 {
-	glViewport(static_cast<GLsizei>(d_area.d_left),
-               static_cast<GLsizei>(d_area.d_top),
+	glViewport(static_cast<GLsizei>(d_area.left()),
+               static_cast<GLsizei>(d_area.top()),
                static_cast<GLsizei>(d_area.getWidth()),
                static_cast<GLsizei>(d_area.getHeight()));
 
@@ -94,7 +94,7 @@ void OpenGLESRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void OpenGLESRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2& p_in, Vector2& p_out) const
+    const Vector2f& p_in, Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -103,8 +103,8 @@ void OpenGLESRenderTarget::unprojectPoint(const GeometryBuffer& buff,
         static_cast<const OpenGLESGeometryBuffer&>(buff);
 
     const GLint vp[4] = {
-        static_cast<GLint>(d_area.d_left),
-        static_cast<GLint>(d_area.d_top),
+        static_cast<GLint>(d_area.left()),
+        static_cast<GLint>(d_area.top()),
         static_cast<GLint>(d_area.getWidth()),
         static_cast<GLint>(d_area.getHeight())
     };

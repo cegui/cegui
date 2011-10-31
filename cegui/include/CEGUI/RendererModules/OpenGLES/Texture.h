@@ -28,10 +28,10 @@
 #ifndef _CEGUIOpenGLESTexture_h_
 #define _CEGUIOpenGLESTexture_h_
 
-#include "../../Base.h"
-#include "../../Renderer.h"
-#include "../../Texture.h"
-#include "CEGUI/OpenGLESRenderer.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/RendererModules/OpenGLES/Renderer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -45,7 +45,7 @@ public:
         set the openGL texture that this Texture is based on to the specified
         texture, with the specified size.
     */
-    void setOpenGLESTexture(GLuint tex, const Size& size);
+    void setOpenGLESTexture(GLuint tex, const Sizef& size);
 
     /*!
     \brief
@@ -76,7 +76,7 @@ public:
     \return
         Nothing.
     */
-    void setTextureSize(const Size& sz);
+    void setTextureSize(const Sizef& sz);
 
     /*!
     \brief
@@ -99,17 +99,15 @@ public:
     const Size& getOriginalDataSize() const;
     const Vector2& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
-                        PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
 
 protected:
     // Friends (to allow construction and destruction)
     friend Texture& OpenGLESRenderer::createTexture(void);
     friend Texture& OpenGLESRenderer::createTexture(const String&, const String&);
-    friend Texture& OpenGLESRenderer::createTexture(const Size&);
-    friend Texture& OpenGLESRenderer::createTexture(GLuint, const Size&);
+    friend Texture& OpenGLESRenderer::createTexture(const Sizef&);
+    friend Texture& OpenGLESRenderer::createTexture(GLuint, const Sizef&);
     friend void OpenGLESRenderer::destroyTexture(Texture&);
 
     //! Basic constructor.
@@ -118,9 +116,9 @@ protected:
     OpenGLESTexture(OpenGLESRenderer& owner,
                   const String& filename, const String& resourceGroup);
     //! Constructor that creates a Texture with a given size.
-    OpenGLESTexture(OpenGLESRenderer& owner, const Size& size);
+    OpenGLESTexture(OpenGLESRenderer& owner, const Sizef& size);
     //! Constructor that wraps an existing GL texture.
-    OpenGLESTexture(OpenGLESRenderer& owner, GLuint tex, const Size& size);
+    OpenGLESTexture(OpenGLESRenderer& owner, GLuint tex, const Sizef& size);
     //! Destructor.
     virtual ~OpenGLESTexture();
 
@@ -136,13 +134,13 @@ protected:
     //! The OpenGLES texture we're wrapping.
     GLuint d_ogltexture;
     //! Size of the texture.
-    Size d_size;
+    Sizef d_size;
     //! cached image data for restoring the texture.
     uint8* d_grabBuffer;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2f d_texelScaling;
     //! OpenGLESRenderer that created and owns this OpenGLESTexture
     OpenGLESRenderer& d_owner;
 };

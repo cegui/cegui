@@ -57,6 +57,7 @@ find_package(Irrlicht)
 find_package(Ogre)
 find_package(OIS)
 find_package(DirectFB)
+find_package(OpenGLES)
 
 find_package(EXPAT)
 find_package(XercesC)
@@ -135,6 +136,7 @@ cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to bui
 cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" TRUE "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" TRUE "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" FALSE )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" TRUE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" TRUE "OPENGLES_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" TRUE "LUA51_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" FALSE "LUA51_FOUND" FALSE )
@@ -213,6 +215,7 @@ set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
 set( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
 set( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
 set( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
+set( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
 
 # XML parser module names
 set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser )

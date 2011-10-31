@@ -57,7 +57,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& filename
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const Size& size) :
+OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const Sizef& size) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
@@ -69,7 +69,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const Size& size) :
 
 //----------------------------------------------------------------------------//
 OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, GLuint tex,
-                             const Size& size) :
+                             const Sizef& size) :
     d_ogltexture(tex),
     d_size(size),
     d_grabBuffer(0),
@@ -86,19 +86,19 @@ OpenGLESTexture::~OpenGLESTexture()
 }
 
 //----------------------------------------------------------------------------//
-const Size& OpenGLESTexture::getSize() const
+const Sizef& OpenGLESTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& OpenGLESTexture::getOriginalDataSize() const
+const Sizef& OpenGLESTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OpenGLESTexture::getTexelScaling() const
+const Vector2f& OpenGLESTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -139,23 +139,8 @@ void OpenGLESTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
-                    PixelFormat pixel_format)
+void OpenGLESTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
-    GLint comps;
-    GLenum format;
-    switch (pixel_format)
-    {
-    case PF_RGB:
-        comps = 3;
-        format = GL_RGB;
-        break;
-    case PF_RGBA:
-        comps = 4;
-        format = GL_RGBA;
-        break;
-    };
-
     setTextureSize(buffer_size);
     // store size of original data we are loading
     d_dataSize = buffer_size;
@@ -171,18 +156,10 @@ void OpenGLESTexture::loadFromMemory(const void* buffer, const Size& buffer_size
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                     static_cast<GLsizei>(buffer_size.d_width),
                     static_cast<GLsizei>(buffer_size.d_height),
-                    format, GL_UNSIGNED_BYTE, buffer);
+                    GL_RGBA, GL_UNSIGNED_BYTE, buffer);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLESTexture::blitFromMemory(void* sourceData, const Rect& area)
-{
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "OpenGLESTexture::blitFromMemory: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -194,9 +171,9 @@ void OpenGLESTexture::blitToMemory(void* targetData)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::setTextureSize(const Size& sz)
+void OpenGLESTexture::setTextureSize(const Sizef& sz)
 {
-    const Size size(d_owner.getAdjustedTextureSize(sz));
+    const Sizef size(d_owner.getAdjustedTextureSize(sz));
 
     // make sure size is within boundaries
     GLfloat maxSize;
