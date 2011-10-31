@@ -100,7 +100,7 @@ OpenGLESFBOTextureTarget::~OpenGLESFBOTextureTarget()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESFBOTextureTarget::declareRenderSize(const Size& sz)
+void OpenGLESFBOTextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
@@ -209,7 +209,7 @@ void OpenGLESFBOTextureTarget::resizeRenderTexture()
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
-    const Size sz(d_area.getSize());
+    const Sizef sz(d_area.getSize());
 
     // set the texture to the required size
     glBindTexture(GL_TEXTURE_2D, d_texture);

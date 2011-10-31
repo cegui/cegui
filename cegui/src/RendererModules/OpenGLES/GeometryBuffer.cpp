@@ -56,8 +56,8 @@ void OpenGLESGeometryBuffer::draw() const
     // setup clip region
     GLint vp[4];
     glGetIntegerv(GL_VIEWPORT, vp);
-    glScissor(static_cast<GLint>(d_clipRect.d_left),
-              static_cast<GLint>(vp[3] - d_clipRect.d_bottom),
+    glScissor(static_cast<GLint>(d_clipRect.left()),
+              static_cast<GLint>(vp[3] - d_clipRect.bottom()),
               static_cast<GLint>(d_clipRect.getWidth()),
               static_cast<GLint>(d_clipRect.getHeight()));
 
@@ -100,28 +100,28 @@ void OpenGLESGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setTranslation(const Vector3& v)
+void OpenGLESGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setRotation(const Vector3& r)
+void OpenGLESGeometryBuffer::setRotation(const Vector3f& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setPivot(const Vector3& p)
+void OpenGLESGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = Vector3(p.d_x, p.d_y, p.d_z);
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setClippingRegion(const Rect& region)
+void OpenGLESGeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect = region;
 }

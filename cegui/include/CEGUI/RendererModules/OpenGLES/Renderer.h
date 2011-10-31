@@ -28,11 +28,11 @@
 #ifndef _CEGUIOpenGLESRenderer_h_
 #define _CEGUIOpenGLESRenderer_h_
 
-#include "../../Base.h"
-#include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
-#include "CEGUI/OpenGLES.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <vector>
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
@@ -100,8 +100,8 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    static OpenGLESRenderer& create(const Size& display_size,
-                                  const TextureTargetType tt_type = TTT_AUTO);
+    static OpenGLESRenderer& create(const Sizef& display_size,
+                                    const TextureTargetType tt_type = TTT_AUTO);
 
     /*!
     \brief
@@ -132,14 +132,14 @@ public:
     void destroyAllTextureTargets();
     Texture& createTexture();
     Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const Sizef& size);
     void destroyTexture(Texture& texture);
     void destroyAllTextures();
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -157,7 +157,7 @@ public:
         Texture object that wraps the OpenGLES texture \a tex, and whose size is
         specified to be \a sz.
     */
-    Texture& createTexture(GLuint tex, const Size& sz);
+    Texture& createTexture(GLuint tex, const Sizef& sz);
 
     /*!
     \brief
@@ -199,7 +199,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    Size getAdjustedTextureSize(const Size& sz) const;
+    Sizef getAdjustedTextureSize(const Sizef& sz) const;
 
     /*!
     \brief
@@ -230,7 +230,7 @@ private:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
     */
-    OpenGLESRenderer(const Size& display_size, const TextureTargetType tt_type);
+    OpenGLESRenderer(const Sizef& display_size, const TextureTargetType tt_type);
 
     /*!
     \brief
@@ -261,9 +261,9 @@ private:
     //! String holding the renderer identification text.
     static String d_rendererID;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default rendering root object
     RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
@@ -295,3 +295,4 @@ private:
 #endif
 
 #endif // end of guard _CEGUIOpenGLESRenderer_h_
+

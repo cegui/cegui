@@ -25,10 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/RendererModules/OpenGLES/Renderer.h"
 #include "CEGUI/RendererModules/OpenGLES/Texture.h"
 #include "CEGUI/Exceptions.h"
@@ -101,8 +97,8 @@ OpenGLESRenderer& OpenGLESRenderer::create(const TextureTargetType tt_type)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESRenderer& OpenGLESRenderer::create(const Size& display_size,
-                                       const TextureTargetType tt_type)
+OpenGLESRenderer& OpenGLESRenderer::create(const Sizef& display_size,
+                                           const TextureTargetType tt_type)
 {
     return *new OpenGLESRenderer(display_size, tt_type);
 }
@@ -164,8 +160,8 @@ OpenGLESRenderer::OpenGLESRenderer(const TextureTargetType tt_type) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESRenderer::OpenGLESRenderer(const Size& display_size,
-                               const TextureTargetType tt_type) :
+OpenGLESRenderer::OpenGLESRenderer(const Sizef& display_size,
+                                   const TextureTargetType tt_type) :
     d_displaySize(display_size),
     d_displayDPI(96, 96),
     d_initExtraStates(false)
@@ -275,7 +271,7 @@ Texture& OpenGLESRenderer::createTexture(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLESRenderer::createTexture(const Size& size)
+Texture& OpenGLESRenderer::createTexture(const Sizef& size)
 {
     OpenGLESTexture* tex = new OpenGLESTexture(*this, size);
     d_textures.push_back(tex);
@@ -383,13 +379,13 @@ void OpenGLESRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Size& OpenGLESRenderer::getDisplaySize() const
+const Sizef& OpenGLESRenderer::getDisplaySize() const
 {
     return d_displaySize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& OpenGLESRenderer::getDisplayDPI() const
+const Vector2f& OpenGLESRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }
@@ -407,7 +403,7 @@ const String& OpenGLESRenderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLESRenderer::createTexture(GLuint tex, const Size& sz)
+Texture& OpenGLESRenderer::createTexture(GLuint tex, const Sizef& sz)
 {
     OpenGLESTexture* t = new OpenGLESTexture(*this, tex, sz);
     d_textures.push_back(t);
@@ -415,7 +411,7 @@ Texture& OpenGLESRenderer::createTexture(GLuint tex, const Size& sz)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESRenderer::setDisplaySize(const Size& sz)
+void OpenGLESRenderer::setDisplaySize(const Sizef& sz)
 {
     if (sz != d_displaySize)
     {
@@ -508,9 +504,9 @@ void OpenGLESRenderer::initialiseTextureTargetFactory(
 }
 
 //----------------------------------------------------------------------------//
-Size OpenGLESRenderer::getAdjustedTextureSize(const Size& sz) const
+Sizef OpenGLESRenderer::getAdjustedTextureSize(const Sizef& sz) const
 {
-    Size out(sz);
+    Sizef out(sz);
     out.d_width = getNextPOTSize(out.d_width);
     out.d_height = getNextPOTSize(out.d_height);
     return out;

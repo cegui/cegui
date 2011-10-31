@@ -28,7 +28,9 @@
 #ifndef _CEGUIOpenGLES_h_
 #define _CEGUIOpenGLES_h_
 
-#include "OpenGLES/ES1/gl.h"
-#include "OpenGLES/ES1/glext.h"
+#include "GLES/gl.h"
+#include "GLES/glext.h"
+//#include "OpenGLES/ES1/gl.h"
+//#include "OpenGLES/ES1/glext.h"
 
 #endif  // end of guard _CEGUIOpenGLES_h_

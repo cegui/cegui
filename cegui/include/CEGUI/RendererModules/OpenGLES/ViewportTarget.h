@@ -28,8 +28,8 @@
 #ifndef _CEGUIOpenGLESViewportTarget_h_
 #define _CEGUIOpenGLESViewportTarget_h_
 
-#include "CEGUI/OpenGLESRenderTarget.h"
-#include "../../Rect.h"
+#include "CEGUI/RendererModules/OpenGLES/RenderTarget.h"
+#include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -58,7 +58,7 @@ public:
         Rect object describing the initial viewport area that should be used for
         the RenderTarget.
     */
-    OpenGLESViewportTarget(OpenGLESRenderer& owner, const Rect& area);
+    OpenGLESViewportTarget(OpenGLESRenderer& owner, const Rectf& area);
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

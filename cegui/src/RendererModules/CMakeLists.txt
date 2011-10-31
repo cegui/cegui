@@ -30,3 +30,8 @@ if (CEGUI_BUILD_RENDERER_NULL)
     add_subdirectory(Null)
 endif()
 
+if (CEGUI_BUILD_RENDERER_OPENGLES)
+    add_subdirectory(OpenGLES)
+endif()
+
+
