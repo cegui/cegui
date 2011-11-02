@@ -1,9 +1,9 @@
 /***********************************************************************
-    filename: 	CEGUIColourPickerTypes.cpp
-    created:	20th February 2010
-    author:		Lukas E Meindl
+    filename:   CEGUIColourPickerTypes.cpp
+    created:    20th February 2010
+    author:     Lukas E Meindl
 
-    purpose:	Implementation of the ColourPicker colour type classes
+    purpose:    Implementation of the ColourPicker colour type classes
 *************************************************************************/
 /***************************************************************************
 *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
@@ -30,44 +30,65 @@
 #include "CEGUI/CommonDialogs/ColourPicker/Types.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Conversions.h"
 
-//----------------------------------------------------------------------------//
-using namespace ColourPickerConversions;
+using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
-RGB_Colour::RGB_Colour(Lab_Colour colour)
+RGB_Colour::RGB_Colour(const Lab_Colour& colour)
 {
-    *this = toRGB(colour);
+    *this = ColourPickerConversions::toRGB(colour);
 }
 
 //----------------------------------------------------------------------------//
-Lab_Colour::Lab_Colour(const RGB_Colour& rgbColour)
+RGB_Colour::RGB_Colour(const HSV_Colour& colour)
 {
-    *this = Lab_Colour(rgbColour.r, rgbColour.g, rgbColour.b);
+    *this = ColourPickerConversions::toRGB(colour);
 }
 
 //----------------------------------------------------------------------------//
-Lab_Colour::Lab_Colour(unsigned char R, unsigned char G, unsigned char B)
+RGB_Colour::RGB_Colour(const CEGUI::Colour& colour)
 {
-    float X = toX(R, G, B);
-    float Y = toY(R, G, B);
-    float Z = toZ(R, G, B);
+    *this = ColourPickerConversions::toRGB(colour);
+}
 
-    L = toL(Y);
-    a = toA(X, Y);
-    b = toB(Y, Z);
+
+//----------------------------------------------------------------------------//
+Lab_Colour::Lab_Colour(const RGB_Colour& colour)
+{
+    *this = ColourPickerConversions::toLab(colour);
 }
 
 //----------------------------------------------------------------------------//
-HSV_Colour::HSV_Colour(unsigned char R, unsigned char G, unsigned char B)
+Lab_Colour::Lab_Colour(const HSV_Colour& colour)
 {
-    *this = toHSV(RGB_Colour(R, G, B));
+    *this = ColourPickerConversions::toLab(ColourPickerConversions::toRGB(colour));
+}
+
+
+//----------------------------------------------------------------------------//
+Lab_Colour::Lab_Colour(const CEGUI::Colour& colour)
+{
+    *this = ColourPickerConversions::toLab(ColourPickerConversions::toRGB(colour));
 }
 
 //----------------------------------------------------------------------------//
-HSV_Colour::HSV_Colour(const RGB_Colour& rgbColour)
+HSV_Colour::HSV_Colour(const RGB_Colour& colour)
 {
-    *this = toHSV(rgbColour);
+    *this = ColourPickerConversions::toHSV(colour);
 }
+
+//----------------------------------------------------------------------------//
+HSV_Colour::HSV_Colour(const Lab_Colour& colour)
+{
+    *this = ColourPickerConversions::toHSV(ColourPickerConversions::toRGB(colour));
+}
+
+//----------------------------------------------------------------------------//
+HSV_Colour::HSV_Colour(const CEGUI::Colour& colour)
+{
+    *this = ColourPickerConversions::toHSV(ColourPickerConversions::toRGB(colour));
+}
+
+
 
 //----------------------------------------------------------------------------//
 RGB_Colour RGB_Colour::operator*(const float& number) const

@@ -42,8 +42,6 @@
 #include "CEGUI/Texture.h"
 #include "CEGUI/PropertyHelper.h"
 
-using namespace ColourPickerConversions;
-
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -87,7 +85,7 @@ ColourPicker::~ColourPicker(void)
         }
         else
             WindowManager::getSingleton().
-                destroyWindow(d_colourPickerControlsWindow);
+            destroyWindow(d_colourPickerControlsWindow);
     }
 }
 
@@ -121,7 +119,7 @@ void ColourPicker::setColour(const Colour& newColour)
     Colour selectedColourNoAlpha = d_selectedColour;
     selectedColourNoAlpha.setAlpha(1.0f);
     String colourRectString(PropertyHelper<ColourRect>::toString(
-        ColourRect(selectedColourNoAlpha)));
+                                ColourRect(selectedColourNoAlpha)));
 
     this->setProperty("Colour", colourRectString);
 }
@@ -152,7 +150,7 @@ void ColourPicker::initialiseColourPickerControlsWindow()
         std::map<Window*, int>::iterator iter = s_colourPickerWindows.begin();
 
         while (iter != s_colourPickerWindows.end() &&
-               iter->first->getType() == colourPickerControlsStyle)
+                iter->first->getType() == colourPickerControlsStyle)
         {
             ++iter;
         }
@@ -198,7 +196,7 @@ void ColourPicker::onColourRectClicked(WindowEventArgs& e)
         if (d_colourPickerControlsWindow->getParent() == 0)
         {
             System::getSingleton().getGUISheet()->
-                addChild(d_colourPickerControlsWindow);
+            addChild(d_colourPickerControlsWindow);
 
             d_colourPickerControlsWindow->setCallingColourPicker(this);
             d_colourPickerControlsWindow->setColours(d_selectedColour);
@@ -211,7 +209,7 @@ void ColourPicker::onColourRectClicked(WindowEventArgs& e)
             if (d_colourPickerControlsWindow->getParent() != 0)
             {
                 d_colourPickerControlsWindow->getParent()->
-                    removeChild(d_colourPickerControlsWindow);
+                removeChild(d_colourPickerControlsWindow);
 
                 d_colourPickerControlsWindow->setCallingColourPicker(0);
                 fireEvent(EventClosedPicker, e, EventNamespace);
