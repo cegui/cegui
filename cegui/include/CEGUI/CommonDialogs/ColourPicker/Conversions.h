@@ -1,9 +1,9 @@
 /***********************************************************************
-    filename: 	CEGUIColourPickerConversions.h
-    created:	20th February 2010
-    author:		Lukas E Meindl
+    filename:   CEGUIColourPickerConversions.h
+    created:    20th February 2010
+    author:     Lukas E Meindl
 
-    purpose:	Header of the class used to provide conversions between
+    purpose:    Header of the class used to provide conversions between
                 the ColourPicker colour types
 *************************************************************************/
 /***************************************************************************
@@ -31,64 +31,127 @@
 #ifndef _CEGUIColourPickerConversions_h_
 #define _CEGUIColourPickerConversions_h_
 
+#include "CEGUI/CommonDialogs/Module.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Types.h"
 #include "CEGUI/Colour.h"
 
-namespace ColourPickerConversions
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
+// Start of CEGUI namespace section
+namespace CEGUI
 {
-//Umrechnung von RGB auf XYZ
-float toX(unsigned char R, unsigned char G, unsigned char B);
-float toY(unsigned char R, unsigned char G, unsigned char B);
-float toZ(unsigned char R, unsigned char G, unsigned char B);
-float toX(float R, float G, float B);
-float toY(float R, float G, float B);
-float toZ(float R, float G, float B);
-//Berechnung der L a und b Komponenten aus dem Lab-Farbraum
-float toL(float Y);
-float toA(float X, float Y);
-float toB(float Y, float Z);
-//Umrechnung auf HSV
-HSV_Colour toHSV(RGB_Colour colour);
 
-//Umrechnungen
-RGB_Colour toRGB(const Lab_Colour& colour);
-RGB_Colour toRGB(float L, float a, float b);
-RGB_Colour toRGB(const CEGUI::Colour& colour);
-RGB_Colour toRGB(const HSV_Colour& colour);
-CEGUI::Colour toCeguiColour(const RGB_Colour& colourRGB);
+class CEGUI_COMMONDIALOGS_API ColourPickerConversions
+{
+public:
+    //! Function for converting an RGB_Colour to a Lab_Colour
+    static Lab_Colour toLab(RGB_Colour colour);
 
-//Lineare interpolation von Farben
-RGB_Colour linearInterpolationRGB(float interPolBalance,
-                                  const RGB_Colour& start,
-                                  const RGB_Colour& end);
-unsigned char linearInterpolationAlpha(float interPolBalance,
-                                       unsigned char startAlpha,
-                                       unsigned char endAlpha);
-Lab_Colour linearInterpolationLab(float interPolBalance,
-                                  const Lab_Colour& start,
-                                  const Lab_Colour& end);
-HSV_Colour linearInterpolationHSV(float interPolBalance,
-                                  const HSV_Colour& start,
-                                  const HSV_Colour& end);
+    //! Function for converting an RGB_Colour to an HSV_Colour
+    static HSV_Colour toHSV(RGB_Colour colour);
 
-void clampInterpolationValue(float& interPolBalance);
+    //! Function for converting a Lab_Colour to an RGB_Colour
+    static RGB_Colour toRGB(const Lab_Colour& colour);
 
-//Normierten Bezugsgrößen für Lab Berechnung
-//Für CIELab (D65)
-const float Xn = 0.95047f;
-const float Yn = 1.00000f;
-const float Zn = 1.08883f;
+    //! Function for converting a Lab_Colour to an RGB_Colour
+    static RGB_Colour toRGB(float L, float a, float b);
 
-//Vergleichswert für die Kalkulation von Lab bei geringen P/Pn Werten
-//(P/Pn < LAB_COMPARE_VALUE_CONST)
-const float LAB_COMPARE_VALUE_CONST = 0.00885645167903563081717167575546f;
+    //! Function for converting a CEGUI Colour to an RGB_Colour
+    static RGB_Colour toRGB(const CEGUI::Colour& colour);
 
-//Helferfunktionen für Lab Einzelkomponentenberechnung
-float normCalc(float div);
-float XNormCalc(float X);
-float YNormCalc(float Y);
-float ZNormCalc(float Z);
+    //! Function for converting a HSV to an RGB_Colour
+    static RGB_Colour toRGB(const HSV_Colour& colour);
+
+    //! Conversion from RGB_Colour to CEGUI::Colour
+    static CEGUI::Colour toCeguiColour(const RGB_Colour& colourRGB);
+
+private:
+    //! Function for calculating X based on the RGB components
+    static float toX(unsigned char R, unsigned char G, unsigned char B);
+
+    //! Function for calculating Y based on the RGB components
+    static float toY(unsigned char R, unsigned char G, unsigned char B);
+
+    //! Function for calculating Z based on the RGB components
+    static float toZ(unsigned char R, unsigned char G, unsigned char B);
+
+    //! Function for calculating X based on the RGB components
+    static float toX(float R, float G, float B);
+
+    //! Function for calculating Y based on the RGB components
+    static float toY(float R, float G, float B);
+
+    //! Function for calculating Z based on the RGB components
+    static float toZ(float R, float G, float B);
+
+    //! Function for calculating L (of CIELab) based on the Y components
+    static float toL(float Y);
+
+    //! Function for calculating a (of CIELab) based on the X and Y components
+    static float toA(float X, float Y);
+
+    //! Function for calculating b (of CIELab) based on the Y and Z components
+    static float toB(float Y, float Z);
+
+    //! Linear interpolation helper function for RGB_Colour
+    static RGB_Colour linearInterpolationRGB(float interPolBalance,
+            const RGB_Colour& start,
+            const RGB_Colour& end);
+
+    //! Linear interpolation helper function for Alpha
+    static unsigned char linearInterpolationAlpha(float interPolBalance,
+            unsigned char startAlpha,
+            unsigned char endAlpha);
+
+    //! Linear interpolation helper function for Lab_Colour
+    static Lab_Colour linearInterpolationLab(float interPolBalance,
+            const Lab_Colour& start,
+            const Lab_Colour& end);
+
+    //! Linear interpolation helper function for HSV_Colour
+    static HSV_Colour linearInterpolationHSV(float interPolBalance,
+            const HSV_Colour& start,
+            const HSV_Colour& end);
+
+    //! Clamp function for clamping interpolation values between 0.0 and 1.0
+    static void clampInterpolationValue(float& interPolBalance);
+
+    //! Helperfunction for the conversion from XYZ to CIELab
+    static float normCalc(float div);
+
+    //! Helperfunction for the conversion from XYZ to CIELab
+    static float XNormCalc(float X);
+
+    //! Helperfunction for the conversion from XYZ to CIELab
+    static float YNormCalc(float Y);
+
+    //! Helperfunction for the conversion from XYZ to CIELab
+    static float ZNormCalc(float Z);
+
+    //! Helperfunction for clamping values
+    static void clamp(float& value, float min_val, float max_val);
+
+    //Normierten Bezugsgrößen für Lab Berechnung
+    //Für CIELab (D65)
+    static const float Xn;
+    static const float Yn;
+    static const float Zn;
+
+    /** Compare value during the calculation of Lab necessary to check for low
+     * values of P/Pn (P/Pn < LAB_COMPARE_VALUE_CONST)
+     */
+    static const float LAB_COMPARE_VALUE_CONST;
+};
 }
+
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
 
 #endif
 

@@ -55,8 +55,6 @@
 #include <algorithm>
 #include <math.h>
 
-using namespace ColourPickerConversions;
-
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -384,18 +382,18 @@ void ColourPickerControls::initColourPickerControlsImageSet()
                     static_cast<float>(d_colourPickerPickingImageHeight))));
 
     image = static_cast<BasicImage*>(
-        &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
-            ColourPickerControlsColourSliderTextureImageName));
+                &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+                        ColourPickerControlsColourSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
     image->setArea(
         Rectf(Vector2f(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
-                       Sizef(static_cast<float>(d_colourPickerColourSliderImageWidth),
-                             static_cast<float>(d_colourPickerColourSliderImageHeight))));
+              Sizef(static_cast<float>(d_colourPickerColourSliderImageWidth),
+                    static_cast<float>(d_colourPickerColourSliderImageHeight))));
 
     image = static_cast<BasicImage*>(
-        &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
-            ColourPickerControlsAlphaSliderTextureImageName));
+                &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+                        ColourPickerControlsAlphaSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
     image->setArea(
@@ -422,7 +420,7 @@ void ColourPickerControls::deinitColourPickerControlsTexture()
             d_colourPickerControlsTextureTarget->getTexture().getName(), false);
 
         System::getSingleton().getRenderer()->
-            destroyTextureTarget(d_colourPickerControlsTextureTarget);
+        destroyTextureTarget(d_colourPickerControlsTextureTarget);
     }
 }
 
@@ -604,7 +602,7 @@ void ColourPickerControls::setPreviousColour(const Colour& previousColour)
 //----------------------------------------------------------------------------//
 void ColourPickerControls::setColours(const Colour& newColour)
 {
-    d_selectedColourRGB = toRGB(newColour);
+    d_selectedColourRGB = RGB_Colour(newColour);
     d_selectedColourLAB = Lab_Colour(d_selectedColourRGB);
     d_selectedColourHSV = HSV_Colour(d_selectedColourRGB);
     d_selectedColour = newColour;
@@ -614,11 +612,11 @@ void ColourPickerControls::setColours(const Colour& newColour)
 void ColourPickerControls::setColours(const Lab_Colour& newColourLAB)
 {
     d_selectedColourLAB = newColourLAB;
-    d_selectedColourRGB = toRGB(newColourLAB);
+    d_selectedColourRGB = RGB_Colour(newColourLAB);
     d_selectedColourHSV = HSV_Colour(d_selectedColourRGB);
 
     float alpha = d_selectedColour.getAlpha();
-    d_selectedColour = toCeguiColour(d_selectedColourRGB);
+    d_selectedColour = ColourPickerConversions::toCeguiColour(d_selectedColourRGB);
     d_selectedColour.setAlpha(alpha);
 }
 
@@ -630,19 +628,19 @@ void ColourPickerControls::setColours(const RGB_Colour& newColourRGB)
     d_selectedColourHSV = HSV_Colour(newColourRGB);
 
     float alpha = d_selectedColour.getAlpha();
-    d_selectedColour = toCeguiColour(d_selectedColourRGB);
+    d_selectedColour = ColourPickerConversions::toCeguiColour(d_selectedColourRGB);
     d_selectedColour.setAlpha(alpha);
 }
 
 //----------------------------------------------------------------------------//
 void ColourPickerControls::setColours(const HSV_Colour& newColourHSV)
 {
-    d_selectedColourRGB = toRGB(newColourHSV);
+    d_selectedColourRGB = RGB_Colour(newColourHSV);
     d_selectedColourLAB = Lab_Colour(d_selectedColourRGB);
     d_selectedColourHSV = newColourHSV;
 
     float alpha = d_selectedColour.getAlpha();
-    d_selectedColour = toCeguiColour(d_selectedColourRGB);
+    d_selectedColour = ColourPickerConversions::toCeguiColour(d_selectedColourRGB);
     d_selectedColour.setAlpha(alpha);
 }
 
@@ -890,11 +888,11 @@ bool ColourPickerControls::handleRGBEditboxTextChanged(const EventArgs&)
         return true;
 
     int colourR = PropertyHelper<int>::fromString(
-        getColourEditBoxR()->getText());
+                      getColourEditBoxR()->getText());
     int colourG = PropertyHelper<int>::fromString(
-        getColourEditBoxG()->getText());
+                      getColourEditBoxG()->getText());
     int colourB = PropertyHelper<int>::fromString(
-        getColourEditBoxB()->getText());
+                      getColourEditBoxB()->getText());
     RGB_Colour newColour(colourR, colourG, colourB);
 
     setColours(newColour);
@@ -1026,7 +1024,7 @@ bool ColourPickerControls::handleAcceptButtonClicked(const EventArgs&)
 bool ColourPickerControls::handleRadioButtonModeSelection(const EventArgs& args)
 {
     RadioButton* radioButton = static_cast<RadioButton*>(
-        static_cast<const WindowEventArgs&>(args).window);
+                                   static_cast<const WindowEventArgs&>(args).window);
 
     if (getLabRadioButtonL() == radioButton)
         d_sliderMode = SliderMode_Lab_L;
@@ -1200,7 +1198,7 @@ void ColourPickerControls::onAcceptButtonClicked(WindowEventArgs& e)
 void ColourPickerControls::refreshColourPickingImage()
 {
     if (d_sliderMode &
-        (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
+            (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
     {
         for (int y = 0; y < d_colourPickerPickingImageHeight; ++y)
         {
@@ -1212,7 +1210,7 @@ void ColourPickerControls::refreshColourPickingImage()
                     getColourPickingPositionColourLAB(static_cast<float>(x),
                                                       static_cast<float>(y));
 
-                d_colourPickingTexture[i] = toRGB(colour);
+                d_colourPickingTexture[i] = RGB_Colour(colour);
             }
         }
     }
@@ -1229,7 +1227,7 @@ void ColourPickerControls::refreshColourPickingImage()
                     getColourPickingPositionColourHSV(static_cast<float>(x),
                                                       static_cast<float>(y));
 
-                d_colourPickingTexture[i] = toRGB(colour);
+                d_colourPickingTexture[i] = RGB_Colour(colour);
             }
         }
     }
@@ -1239,7 +1237,7 @@ void ColourPickerControls::refreshColourPickingImage()
 void ColourPickerControls::refreshColourSliderImage()
 {
     if (d_sliderMode &
-        (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
+            (SliderMode_Lab_L | SliderMode_Lab_A | SliderMode_Lab_B))
     {
         for (int y = 0; y < d_colourPickerPickingImageHeight; ++y)
         {
@@ -1251,7 +1249,7 @@ void ColourPickerControls::refreshColourSliderImage()
                 Lab_Colour colour = getColourSliderPositionColourLAB(
                     y / static_cast<float>(d_colourPickerPickingImageHeight - 1));
 
-                d_colourPickingTexture[i] = toRGB(colour);
+                d_colourPickingTexture[i] = RGB_Colour(colour);
             }
         }
     }
@@ -1268,7 +1266,7 @@ void ColourPickerControls::refreshColourSliderImage()
                 HSV_Colour colour = getColourSliderPositionColourHSV(
                     y / static_cast<float>(d_colourPickerPickingImageHeight - 1));
 
-                d_colourPickingTexture[i] = toRGB(colour);
+                d_colourPickingTexture[i] = RGB_Colour(colour);
             }
         }
     }
@@ -1282,7 +1280,7 @@ void ColourPickerControls::refreshAlphaSliderImage()
         for (int x = 0; x < d_colourPickerAlphaSliderImageWidth; ++x)
         {
             int i = x + d_colourPickerControlsTextureSize *
-                    (y + d_colourPickerImageOffset + d_colourPickerPickingImageHeight);
+                (y + d_colourPickerImageOffset + d_colourPickerPickingImageHeight);
 
             RGB_Colour curColour = getAlphaSliderPositionColour(x, y);
             d_colourPickingTexture[i] = curColour;
@@ -1402,9 +1400,9 @@ void ColourPickerControls::refreshColourPickerCursorPosition(
     Vector2f position = mouseEventArgs.position;
 
     float x = CoordConverter::screenToWindowX(
-        *mouseEventArgs.window, position.d_x);
+                  *mouseEventArgs.window, position.d_x);
     float y = CoordConverter::screenToWindowY(
-        *mouseEventArgs.window, position.d_y);
+                  *mouseEventArgs.window, position.d_y);
     positionColourPickerCursorAbsolute(x, y);
 
     if (d_sliderMode &
@@ -1646,4 +1644,5 @@ void ColourPickerControls::refreshColourRects()
 //----------------------------------------------------------------------------//
 
 }
+
 

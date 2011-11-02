@@ -1,9 +1,9 @@
 /***********************************************************************
-    filename: 	CEGUIColourPickerConversions.cpp
-    created:	20th February 2010
-    author:		Lukas E Meindl
+    filename:   CEGUIColourPickerConversions.cpp
+    created:    20th February 2010
+    author:     Lukas E Meindl
 
-    purpose:	Implementation of the class used to provide conversions
+    purpose:    Implementation of the class used to provide conversions
                 between the ColourPicker colour types
 *************************************************************************/
 /***************************************************************************
@@ -30,72 +30,80 @@
 ***************************************************************************/
 #include "CEGUI/CommonDialogs/ColourPicker/Conversions.h"
 #include <math.h>
+#include <algorithm>
 
-namespace ColourPickerConversions
+namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-void clamp(float& value, float min_val, float max_val)
+const float ColourPickerConversions::Xn(0.95047f);
+const float ColourPickerConversions::Yn(1.00000f);
+const float ColourPickerConversions::Zn(1.08883f);
+
+const float ColourPickerConversions::LAB_COMPARE_VALUE_CONST(0.00885645167903563081717167575546f);
+
+//----------------------------------------------------------------------------//
+void ColourPickerConversions::clamp(float& value, float min_val, float max_val)
 {
     value = value < min_val ? min_val : (value > max_val ? max_val : value);
 }
 
 //----------------------------------------------------------------------------//
-float toX(unsigned char R, unsigned char G, unsigned char B)
+float ColourPickerConversions::toX(unsigned char R, unsigned char G, unsigned char B)
 {
     return toX(R / 255.0f, G / 255.0f, B / 255.0f);
 }
 
 //----------------------------------------------------------------------------//
-float toY(unsigned char R, unsigned char G, unsigned char B)
+float ColourPickerConversions::toY(unsigned char R, unsigned char G, unsigned char B)
 {
     return toY(R / 255.0f, G / 255.0f, B / 255.0f);
 }
 
 //----------------------------------------------------------------------------//
-float toZ(unsigned char R, unsigned char G, unsigned char B)
+float ColourPickerConversions::toZ(unsigned char R, unsigned char G, unsigned char B)
 {
     return toZ(R / 255.0f, G / 255.0f, B / 255.0f);
 }
 
 //----------------------------------------------------------------------------//
-float toX(float R, float G, float B)
+float ColourPickerConversions::toX(float R, float G, float B)
 {
     return (0.4124564f * R + 0.3575761f * G + 0.1804375f * B);
 }
 
 //----------------------------------------------------------------------------//
-float toY(float R, float G, float B)
+float ColourPickerConversions::toY(float R, float G, float B)
 {
     return (0.2126729f * R + 0.7151522f * G + 0.0721750f * B);
 }
 
 //----------------------------------------------------------------------------//
-float toZ(float R, float G, float B)
+float ColourPickerConversions::toZ(float R, float G, float B)
 {
     return (0.0193339f * R + 0.1191920f * G + 0.9503041f * B);
 }
 
 //----------------------------------------------------------------------------//
-float toL(float Y)
+float ColourPickerConversions::toL(float Y)
 {
     return (116.0f * YNormCalc(Y) - 16.0f);
 }
 
 //----------------------------------------------------------------------------//
-float toA(float X, float Y)
+float ColourPickerConversions::toA(float X, float Y)
 {
     return (500.0f * (XNormCalc(X) - YNormCalc(Y)));
 }
 
 //----------------------------------------------------------------------------//
-float toB(float Y, float Z)
+float ColourPickerConversions::toB(float Y, float Z)
 {
     return (200.0f * (YNormCalc(Y) - ZNormCalc(Z)));
 }
 
 //----------------------------------------------------------------------------//
-float XNormCalc(float X)
+float ColourPickerConversions::XNormCalc(float X)
 {
     float div = (X / Xn);
     return normCalc(div);
@@ -103,21 +111,21 @@ float XNormCalc(float X)
 }
 
 //----------------------------------------------------------------------------//
-float YNormCalc(float Y)
+float ColourPickerConversions::YNormCalc(float Y)
 {
     float div = (Y / Yn);
     return normCalc(div);
 }
 
 //----------------------------------------------------------------------------//
-float ZNormCalc(float Z)
+float ColourPickerConversions::ZNormCalc(float Z)
 {
     float div = (Z / Zn);
     return normCalc(div);
 }
 
 //----------------------------------------------------------------------------//
-float normCalc(float div)
+float ColourPickerConversions::normCalc(float div)
 {
     if (div < LAB_COMPARE_VALUE_CONST)
         return ((24389.0f / 27.0f * div + 16.0f) / 116.0f);
@@ -126,13 +134,13 @@ float normCalc(float div)
 }
 
 //----------------------------------------------------------------------------//
-RGB_Colour toRGB(const Lab_Colour& colour)
+RGB_Colour ColourPickerConversions::toRGB(const Lab_Colour& colour)
 {
     return toRGB(colour.L, colour.a, colour.b);
 }
 
 //----------------------------------------------------------------------------//
-RGB_Colour toRGB(float L, float a, float b)
+RGB_Colour ColourPickerConversions::toRGB(float L, float a, float b)
 {
     float vy = (L + 16.0f) / 116.0f;
     float vx = a / 500.0f + vy;
@@ -176,7 +184,7 @@ RGB_Colour toRGB(float L, float a, float b)
 }
 
 //----------------------------------------------------------------------------//
-RGB_Colour toRGB(const CEGUI::Colour& colour)
+RGB_Colour ColourPickerConversions::toRGB(const CEGUI::Colour& colour)
 {
     return RGB_Colour(static_cast<unsigned char>(colour.getRed() * 255.0f),
                       static_cast<unsigned char>(colour.getGreen() * 255.0f),
@@ -184,7 +192,7 @@ RGB_Colour toRGB(const CEGUI::Colour& colour)
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::Colour toCeguiColour(const RGB_Colour& colourRGB)
+CEGUI::Colour ColourPickerConversions::toCeguiColour(const RGB_Colour& colourRGB)
 {
     return CEGUI::Colour(colourRGB.r / 255.0f,
                          colourRGB.g / 255.0f,
@@ -192,28 +200,28 @@ CEGUI::Colour toCeguiColour(const RGB_Colour& colourRGB)
 }
 
 //----------------------------------------------------------------------------//
-RGB_Colour linearInterpolationRGB(float interPolBalance,
-                                  const RGB_Colour& start,
-                                  const RGB_Colour& end)
+RGB_Colour ColourPickerConversions::linearInterpolationRGB(float interPolBalance,
+        const RGB_Colour& start,
+        const RGB_Colour& end)
 {
     RGB_Colour colour;
 
     clampInterpolationValue(interPolBalance);
 
     colour.r = static_cast<unsigned char>(
-        (1 - interPolBalance) * start.r + (interPolBalance * end.r));
+                   (1 - interPolBalance) * start.r + (interPolBalance * end.r));
     colour.g = static_cast<unsigned char>(
-        (1 - interPolBalance) * start.g + (interPolBalance * end.g));
+                   (1 - interPolBalance) * start.g + (interPolBalance * end.g));
     colour.b = static_cast<unsigned char>(
-        (1 - interPolBalance) * start.b + (interPolBalance * end.b));
+                   (1 - interPolBalance) * start.b + (interPolBalance * end.b));
 
     return colour;
 }
 
 //----------------------------------------------------------------------------//
-Lab_Colour linearInterpolationLab(float interPolBalance,
-                                  const Lab_Colour& start,
-                                  const Lab_Colour& end)
+Lab_Colour ColourPickerConversions::linearInterpolationLab(float interPolBalance,
+        const Lab_Colour& start,
+        const Lab_Colour& end)
 {
     Lab_Colour colour;
 
@@ -227,9 +235,9 @@ Lab_Colour linearInterpolationLab(float interPolBalance,
 }
 
 //----------------------------------------------------------------------------//
-HSV_Colour linearInterpolationHSV(float interPolBalance,
-                                  const HSV_Colour& start,
-                                  const HSV_Colour& end)
+HSV_Colour ColourPickerConversions::linearInterpolationHSV(float interPolBalance,
+        const HSV_Colour& start,
+        const HSV_Colour& end)
 {
     HSV_Colour colour;
 
@@ -243,27 +251,25 @@ HSV_Colour linearInterpolationHSV(float interPolBalance,
 }
 
 //----------------------------------------------------------------------------//
-unsigned char linearInterpolationAlpha(float interPolBalance,
-                                       unsigned char startAlpha,
-                                       unsigned char endAlpha)
+unsigned char ColourPickerConversions::linearInterpolationAlpha(float interPolBalance,
+        unsigned char startAlpha,
+        unsigned char endAlpha)
 {
     clampInterpolationValue(interPolBalance);
 
     return static_cast<unsigned char>(
-        (1 - interPolBalance) * startAlpha + (interPolBalance * endAlpha));
+               (1 - interPolBalance) * startAlpha + (interPolBalance * endAlpha));
 }
 
 //----------------------------------------------------------------------------//
-void clampInterpolationValue(float& interPolBalance)
+void ColourPickerConversions::clampInterpolationValue(float& interPolBalance)
 {
-    if (interPolBalance < 0.0)
-        interPolBalance = 0.0;
-    else if (interPolBalance > 1.0)
-        interPolBalance = 1.0;
+    interPolBalance = std::max(0.f, interPolBalance);
+    interPolBalance = std::min(1.f, interPolBalance);
 }
 
 //----------------------------------------------------------------------------//
-RGB_Colour toRGB(const HSV_Colour& colour)
+RGB_Colour ColourPickerConversions::toRGB(const HSV_Colour& colour)
 {
     float r, g, b;
 
@@ -316,9 +322,23 @@ RGB_Colour toRGB(const HSV_Colour& colour)
                       static_cast<unsigned char>(g * 255),
                       static_cast<unsigned char>(b * 255));
 }
+//----------------------------------------------------------------------------//
+
+Lab_Colour ColourPickerConversions::toLab(RGB_Colour colour)
+{
+    float X = toX(colour.r, colour.g, colour.b);
+    float Y = toY(colour.r, colour.g, colour.b);
+    float Z = toZ(colour.r, colour.g, colour.b);
+
+    float L = toL(Y);
+    float a = toA(X, Y);
+    float b = toB(Y, Z);
+
+    return Lab_Colour(L, a, b);
+}
 
 //----------------------------------------------------------------------------//
-HSV_Colour toHSV(RGB_Colour colour)
+HSV_Colour ColourPickerConversions::toHSV(RGB_Colour colour)
 {
     float r = colour.r / 255.0f;
     float g = colour.g / 255.0f;
