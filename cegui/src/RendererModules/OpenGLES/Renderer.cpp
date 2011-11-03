@@ -316,6 +316,18 @@ void OpenGLESRenderer::destroyAllTextures()
 }
 
 //----------------------------------------------------------------------------//
+Texture& OpenGLESRenderer::getTexture(const String& name) const
+{
+    TextureMap::const_iterator i = d_textures.find(name);
+    
+    if (i == d_textures.end())
+        CEGUI_THROW(UnknownObjectException("OpenGLESRenderer::getTexture: "
+            "No texture named '" + name + "' is available."));
+
+    return *i->second;
+}
+
+//----------------------------------------------------------------------------//
 void OpenGLESRenderer::beginRendering()
 {
     //save current attributes
