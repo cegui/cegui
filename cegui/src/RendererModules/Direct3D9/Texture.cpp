@@ -434,6 +434,11 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
                                       const Sizef& buffer_size,
                                       PixelFormat pixel_format)
 {
+    if (!isPixelFormatSupported(pixel_format))
+        CEGUI_THROW(InvalidRequestException(
+            "Direct3D9Texture::loadFromMemory: Data was supplied in an "
+            "unsupported pixel format."));
+
     cleanupDirect3D9Texture();
 
     // create a texture
@@ -447,9 +452,6 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
     case PF_RGBA:
         pixfmt = D3DFMT_A8B8G8R8;
         break;
-    default:
-        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromMemory failed: "
-            "Invalid PixelFormat value specified."));
     }
 
     Sizef tex_sz(d_owner.getAdjustedSize(buffer_size));
@@ -623,6 +625,12 @@ void Direct3D9Texture::postD3DReset()
                       d_savedSurfaceDesc.Pool, &d_texture, 0);
 
     d_savedSurfaceDescValid = false;
+}
+
+//----------------------------------------------------------------------------//
+bool Direct3D9Texture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return fmt == PF_RGBA || fmt == PF_RGB;
 }
 
 //----------------------------------------------------------------------------//

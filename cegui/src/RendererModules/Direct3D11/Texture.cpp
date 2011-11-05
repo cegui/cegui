@@ -170,6 +170,11 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
                                        const Sizef& buffer_size,
                                        PixelFormat pixel_format)
 {
+    if (!isPixelFormatSupported(pixel_format))
+        CEGUI_THROW(InvalidRequestException(
+            "Direct3D11Texture::loadFromMemory: Data was supplied in an "
+            "unsupported pixel format."));
+
     cleanupDirect3D11Texture();
 
     const void* img_src = buffer;
@@ -453,6 +458,12 @@ void Direct3D11Texture::initialiseShaderResourceView()
     srvd.Texture2D.MipLevels = tex_desc.MipLevels;
     d_device.d_device->CreateShaderResourceView(resource, &srvd, &d_resourceView);
     resource->Release();
+}
+
+//----------------------------------------------------------------------------//
+bool Direct3D11Texture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return fmt == PF_RGBA || fmt == PF_RGB;
 }
 
 //----------------------------------------------------------------------------//

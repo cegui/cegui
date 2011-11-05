@@ -150,11 +150,15 @@ void OpenGLESTexture::loadFromFile(const String& filename,
                                 " failed to load image '" + filename + "'.");
 }
 
-
+//----------------------------------------------------------------------------//
 void OpenGLESTexture::loadFromMemory(const void* buffer,
                                      const Sizef& buffer_size,
                                      PixelFormat pixel_format)
 {
+    if (!isPixelFormatSupported(pixel_format))
+        CEGUI_THROW(InvalidRequestException("OpenGLESTexture::loadFromMemory: "
+            "Data was supplied in an unsupported pixel format."));
+
     GLint comps;
     GLenum format;
     switch (pixel_format)
@@ -387,5 +391,13 @@ void OpenGLESTexture::setOpenGLESTexture(GLuint tex, const Sizef& size)
     d_dataSize = d_size = size;
     updateCachedScaleValues();
 }
+
+//----------------------------------------------------------------------------//
+bool OpenGLESTexture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return fmt == PF_RGBA || fmt == PF_RGB;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

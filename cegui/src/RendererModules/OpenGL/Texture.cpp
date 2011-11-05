@@ -155,6 +155,10 @@ void OpenGLTexture::loadFromFile(const String& filename,
 void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                     PixelFormat pixel_format)
 {
+    if (!isPixelFormatSupported(pixel_format))
+        CEGUI_THROW(InvalidRequestException("OpenGLTexture::loadFromMemory: "
+            "Data was supplied in an unsupported pixel format."));
+
     GLint comps;
     GLenum format;
     switch (pixel_format)
@@ -394,5 +398,13 @@ void OpenGLTexture::setOpenGLTexture(GLuint tex, const Sizef& size)
     d_dataSize = d_size = size;
     updateCachedScaleValues();
 }
+
+//----------------------------------------------------------------------------//
+bool OpenGLTexture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return fmt == PF_RGBA || fmt == PF_RGB;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

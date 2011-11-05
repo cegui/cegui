@@ -91,13 +91,7 @@ void NullTexture::loadFromFile(const String& filename,
 void NullTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
                                  PixelFormat pixel_format)
 {
-    const size_t pixel_size = pixel_format == PF_RGBA ? 4 : 3;
-    const size_t byte_size = buffer_size.d_width * buffer_size.d_height *
-                                pixel_size;
-
-    d_size.d_width = buffer_size.d_width;
-    d_size.d_height = buffer_size.d_height;
-    d_dataSize = buffer_size;
+    d_size = d_dataSize = buffer_size;
 }
 
 //----------------------------------------------------------------------------//
@@ -148,5 +142,13 @@ NullTexture::NullTexture(const String& name, const Sizef& sz) :
 NullTexture::~NullTexture()
 {
 }
+
+//----------------------------------------------------------------------------//
+bool NullTexture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

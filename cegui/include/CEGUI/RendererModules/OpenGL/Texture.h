@@ -109,6 +109,7 @@ public:
                         PixelFormat pixel_format);
     void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
+    bool isPixelFormatSupported(const PixelFormat fmt) const;
 
 protected:
     // Friends (to allow construction and destruction)

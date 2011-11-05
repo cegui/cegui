@@ -118,6 +118,10 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 {
     using namespace Ogre;
 
+    if (!isPixelFormatSupported(pixel_format))
+        CEGUI_THROW(InvalidRequestException("OgreTexture::loadFromMemory: Data "
+            "was supplied in an unsupported pixel format."));
+
     // get rid of old texture
     freeOgreTexture();
 
@@ -322,6 +326,12 @@ void OgreTexture::setOgreTexture(Ogre::TexturePtr texture, bool take_ownership)
 Ogre::TexturePtr OgreTexture::getOgreTexture() const
 {
     return d_texture;
+}
+
+//----------------------------------------------------------------------------//
+bool OgreTexture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return fmt == PF_RGBA || fmt == PF_RGB;
 }
 
 //----------------------------------------------------------------------------//

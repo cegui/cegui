@@ -120,6 +120,11 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 {
     using namespace irr;
 
+    if (!isPixelFormatSupported(pixel_format))
+        CEGUI_THROW(InvalidRequestException(
+            "IrrlichtTexture::loadFromMemory: Data was supplied in an "
+            "unsupported pixel format."));
+
     freeIrrlichtTexture();
     createIrrlichtTexture(buffer_size);
 
@@ -365,6 +370,12 @@ void IrrlichtTexture::updateCachedScaleValues()
     // if texture is taller (and source data was not stretched), scale
     // is based on the size of the resulting texture.
     d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+}
+
+//----------------------------------------------------------------------------//
+bool IrrlichtTexture::isPixelFormatSupported(const PixelFormat fmt) const
+{
+    return fmt == PF_RGBA || fmt == PF_RGB;
 }
 
 //----------------------------------------------------------------------------//
