@@ -138,6 +138,20 @@ protected:
     //! clean up the GL texture, or the grab buffer if it had been grabbed
     void cleanupOpenGLESTexture();
 
+    //! initialise the internal format flags for the given CEGUI::PixelFormat.
+    void initPixelFormatFields(const PixelFormat fmt);
+
+    //! internal texture resize function (does not reset format or other fields)
+    void setTextureSize_impl(const Sizef& sz);
+
+    //! load uncompressed data from buffer to GL texture.
+    void loadUncompressedTextureBuffer(const Sizef& buffer_size,
+                                       const void* buffer) const;
+
+    //! load uncompressed data from buffer to GL texture.
+    void loadCompressedTextureBuffer(const Sizef& buffer_size,
+                                     const void* buffer) const;
+
     //! The OpenGLES texture we're wrapping.
     GLuint d_ogltexture;
     //! Size of the texture.
@@ -152,6 +166,12 @@ protected:
     OpenGLESRenderer& d_owner;
     //! Name of the texture given when it was created.
     const String d_name;
+    //! Texture format
+    GLenum d_format;
+    //! Texture subpixel format
+    GLenum d_subpixelFormat;
+    //! Whether Texture format is a compressed format
+    bool d_isCompressed;
 };
 
 } // End of  CEGUI namespace section

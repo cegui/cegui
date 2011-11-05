@@ -42,6 +42,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name) :
     d_owner(owner),
     d_name(name)
 {
+    initPixelFormatFields(PF_RGBA);
     generateOpenGLESTexture();
 }
 
@@ -55,6 +56,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
+    initPixelFormatFields(PF_RGBA);
     generateOpenGLESTexture();
     loadFromFile(filename, resourceGroup);
 }
@@ -68,6 +70,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
+    initPixelFormatFields(PF_RGBA);
     generateOpenGLESTexture();
     setTextureSize(size);
 }
@@ -82,6 +85,7 @@ OpenGLESTexture::OpenGLESTexture(OpenGLESRenderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
+    initPixelFormatFields(PF_RGBA);
     updateCachedScaleValues();
 }
 
@@ -158,22 +162,10 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
     if (!isPixelFormatSupported(pixel_format))
         CEGUI_THROW(InvalidRequestException("OpenGLESTexture::loadFromMemory: "
             "Data was supplied in an unsupported pixel format."));
+    
+    initPixelFormatFields(pixel_format);
+    setTextureSize_impl(buffer_size);
 
-    GLint comps;
-    GLenum format;
-    switch (pixel_format)
-    {
-    case PF_RGB:
-        comps = 3;
-        format = GL_RGB;
-        break;
-    case PF_RGBA:
-        comps = 4;
-        format = GL_RGBA;
-        break;
-    };
-
-    setTextureSize(buffer_size);
     // store size of original data we are loading
     d_dataSize = buffer_size;
     // update scale values
@@ -185,13 +177,43 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
 
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                    static_cast<GLsizei>(buffer_size.d_width),
-                    static_cast<GLsizei>(buffer_size.d_height),
-                    format, GL_UNSIGNED_BYTE, buffer);
+
+    if (d_isCompressed)
+        loadCompressedTextureBuffer(buffer_size, buffer);
+    else
+        loadUncompressedTextureBuffer(buffer_size, buffer);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
+                                                    const void* buffer) const
+{
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+                    static_cast<GLsizei>(buffer_size.d_width),
+                    static_cast<GLsizei>(buffer_size.d_height),
+                    d_format, d_subpixelFormat, buffer);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
+                                                  const void* buffer) const
+{
+    // Calculate buffer size in bytes
+    GLsizei image_space = 
+        static_cast<GLsizei>(buffer_size.d_width * buffer_size.d_height);
+
+    GLsizei num_bits =
+        (d_format == GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG ? 4 : 2);
+
+    GLsizei image_size = (image_space * num_bits + 7) / 8;
+
+    glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
+                           static_cast<GLsizei>(buffer_size.d_width),
+                           static_cast<GLsizei>(buffer_size.d_height),
+                           0, image_size, buffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -229,80 +251,58 @@ void OpenGLESTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::setTextureSize(const Sizef& sz)
 {
+    initPixelFormatFields(PF_RGBA);
+
+    setTextureSize_impl(sz);
+
+    d_dataSize = d_size;
+    updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
+{
     const Sizef size(d_owner.getAdjustedTextureSize(sz));
 
-    // make sure size is within boundaries
-    GLfloat maxSize;
-    glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
-    if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        throw RendererException("OpenGLESTexture::setTextureSize: size too big");
+    if (!d_isCompressed)
+    {
+        // make sure size is within boundaries
+        GLfloat maxSize = static_cast<GLfloat>(d_owner.getMaxTextureSize());
+        if ((size.d_width > maxSize) || (size.d_height > maxSize))
+            throw RendererException(
+                "OpenGLESTexture::setTextureSize_impl: size too big");
 
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+        // save old texture binding
+        GLuint old_tex;
+        glGetIntegerv(GL_TEXTURE_BINDING_2D,
+                      reinterpret_cast<GLint*>(&old_tex));
 
-    // set texture to required size
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                 static_cast<GLsizei>(size.d_width),
-                 static_cast<GLsizei>(size.d_height),
-                 0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
+        // set texture to required size
+        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                     static_cast<GLsizei>(size.d_width),
+                     static_cast<GLsizei>(size.d_height),
+                     0, d_format , d_subpixelFormat, 0);
 
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+        // restore previous texture binding.
+        glBindTexture(GL_TEXTURE_2D, old_tex);
+    }
 
-    d_dataSize = d_size = size;
-    updateCachedScaleValues();
+    d_size = size;
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::grabTexture()
 {
-	assert(0 && "glGetTexImage() is unsupported");    
-
-	// save old texture binding
-    //GLuint old_tex;
-    //glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    //// bind the texture we want to grab
-    //glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    //// allocate the buffer for storing the image data
-    //d_grabBuffer = new uint8[static_cast<int>(4*d_size.d_width*d_size.d_height)];
-    //glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
-    //// delete the texture
-    //glDeleteTextures(1, &d_ogltexture);
-
-    //// restore previous texture binding.
-    //glBindTexture(GL_TEXTURE_2D, old_tex);
+    CEGUI_THROW(RendererException(
+        "OpenGLESTexture::grabTexture: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::restoreTexture()
 {
-    if (d_grabBuffer)
-    {
-        generateOpenGLESTexture();
-
-        // save old texture binding
-        GLuint old_tex;
-        glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-        // bind the texture to restore to
-        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-        // reload the saved image data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                     static_cast<GLsizei>(d_size.d_width),
-                     static_cast<GLsizei>(d_size.d_height),
-                     0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
-
-        // restore previous texture binding.
-        glBindTexture(GL_TEXTURE_2D, old_tex);
-
-        // free the grabbuffer
-        delete [] d_grabBuffer;
-        d_grabBuffer = 0;
-    }
+    CEGUI_THROW(RendererException(
+        "OpenGLESTexture::restoreTexture: unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -346,8 +346,8 @@ void OpenGLESTexture::generateOpenGLESTexture()
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     // restore previous texture binding.
@@ -357,18 +357,8 @@ void OpenGLESTexture::generateOpenGLESTexture()
 //----------------------------------------------------------------------------//
 void OpenGLESTexture::cleanupOpenGLESTexture()
 {
-    // if the grabbuffer is not empty then free it
-    if (d_grabBuffer)
-    {
-        delete[] d_grabBuffer;
-        d_grabBuffer = 0;
-    }
-    // otherwise delete any OpenGLES texture associated with this object.
-    else
-    {
-        glDeleteTextures(1, &d_ogltexture);
-        d_ogltexture = 0;
-    }
+    glDeleteTextures(1, &d_ogltexture);
+    d_ogltexture = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -395,7 +385,62 @@ void OpenGLESTexture::setOpenGLESTexture(GLuint tex, const Sizef& size)
 //----------------------------------------------------------------------------//
 bool OpenGLESTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    switch (fmt)
+    {
+    case PF_RGBA:
+    case PF_RGB:
+    case PF_RGBA_4444:
+    case PF_RGB_565:
+        return true;
+
+    case PF_PVRTC4:
+    case PF_PVRTC2:
+        return d_owner.isGLExtensionSupported("GL_IMG_texture_compression_pvrtc");
+
+    default:
+        return false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESTexture::initPixelFormatFields(const PixelFormat fmt)
+{
+    d_isCompressed = false;
+
+    switch (fmt)
+    {
+    case PF_RGBA:
+        d_format = GL_RGBA;
+        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        break;
+
+    case PF_RGB:
+        d_format = GL_RGB;
+        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        break;
+
+    case PF_RGB_565:
+        d_format = GL_RGB;
+        d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
+        break;
+
+    case PF_RGBA_4444:
+        d_format = GL_RGBA;
+        d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
+        break;
+
+    case PF_PVRTC4:
+        d_format = GL_RGBA; // not really, but set for completeness.
+        d_subpixelFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+        d_isCompressed = true;
+        break;
+
+    case PF_PVRTC2:
+        d_format = GL_RGBA; // not really, but set for completeness.
+        d_subpixelFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+        d_isCompressed = true;
+        break;
+    }
 }
 
 //----------------------------------------------------------------------------//
