@@ -430,14 +430,14 @@ void OpenGLESTexture::initPixelFormatFields(const PixelFormat fmt)
         break;
 
     case PF_PVRTC4:
-        d_format = GL_RGBA; // not really, but set for completeness.
-        d_subpixelFormat = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+        d_format = GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG;
+        d_subpixelFormat = GL_UNSIGNED_BYTE; // not really, but set for completeness.
         d_isCompressed = true;
         break;
 
     case PF_PVRTC2:
-        d_format = GL_RGBA; // not really, but set for completeness.
-        d_subpixelFormat = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+        d_format = GL_COMPRESSED_RGBA_PVRTC_2BPPV1_IMG;
+        d_subpixelFormat = GL_UNSIGNED_BYTE; // not really, but set for completeness.
         d_isCompressed = true;
         break;
     }
