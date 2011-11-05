@@ -2550,6 +2550,7 @@
 ~@member_function_t@getOriginalDataSize@::CEGUI::Sizef const & ( ::CEGUI::Texture::* )(  ) const::CEGUI::Sizef const & ( ::CEGUI::Texture::* )(  ) const
 ~@member_function_t@tellp@::std::wstreampos ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )(  ) ::std::wstreampos ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )(  ) 
 ~@member_function_t@tellp@::std::streampos ( ::std::basic_ostream<char,std::char_traits<char> >::* )(  ) ::std::streampos ( ::std::basic_ostream<char,std::char_traits<char> >::* )(  ) 
+~@member_function_t@isPixelFormatSupported@bool ( ::CEGUI::Texture::* )( ::CEGUI::Texture::PixelFormat const ) constbool ( ::CEGUI::Texture::* )( ::CEGUI::Texture::PixelFormat const ) const
 ~@member_function_t@getEventObject@::CEGUI::Event * ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,bool ) ::CEGUI::Event * ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,bool ) 
 ~@member_function_t@_M_initialize_numpunct@void ( ::std::numpunct<wchar_t>::* )( ::std::__c_locale ) void ( ::std::numpunct<wchar_t>::* )( ::std::__c_locale ) 
 ~@member_function_t@_M_initialize_numpunct@void ( ::std::numpunct<char>::* )( ::std::__c_locale ) void ( ::std::numpunct<char>::* )( ::std::__c_locale ) 
