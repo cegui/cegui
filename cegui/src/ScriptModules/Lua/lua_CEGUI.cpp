@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Sun Oct 30 18:40:19 2011.
+** Generated automatically by tolua++-1.0.93 on Sat Nov  5 17:34:27 2011.
 */
 
 #ifndef __cplusplus
@@ -29152,6 +29152,40 @@ static int tolua_CEGUI_CEGUI_Texture_loadFromFile00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'loadFromFile'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isPixelFormatSupported of class  CEGUI::Texture */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_isPixelFormatSupported00
+static int tolua_CEGUI_CEGUI_Texture_isPixelFormatSupported00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Texture",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Texture* self = (const CEGUI::Texture*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Texture::PixelFormat fmt = ((CEGUI::Texture::PixelFormat) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isPixelFormatSupported'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isPixelFormatSupported(fmt);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isPixelFormatSupported'.",&tolua_err);
  return 0;
 #endif
 }
@@ -60787,10 +60821,15 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_beginmodule(tolua_S,"Texture");
    tolua_constant(tolua_S,"PF_RGB",CEGUI::Texture::PF_RGB);
    tolua_constant(tolua_S,"PF_RGBA",CEGUI::Texture::PF_RGBA);
+   tolua_constant(tolua_S,"PF_RGBA_4444",CEGUI::Texture::PF_RGBA_4444);
+   tolua_constant(tolua_S,"PF_RGB_565",CEGUI::Texture::PF_RGB_565);
+   tolua_constant(tolua_S,"PF_PVRTC2",CEGUI::Texture::PF_PVRTC2);
+   tolua_constant(tolua_S,"PF_PVRTC4",CEGUI::Texture::PF_PVRTC4);
    tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_Texture_getSize00);
    tolua_function(tolua_S,"getOriginalDataSize",tolua_CEGUI_CEGUI_Texture_getOriginalDataSize00);
    tolua_function(tolua_S,"getTexelScaling",tolua_CEGUI_CEGUI_Texture_getTexelScaling00);
    tolua_function(tolua_S,"loadFromFile",tolua_CEGUI_CEGUI_Texture_loadFromFile00);
+   tolua_function(tolua_S,"isPixelFormatSupported",tolua_CEGUI_CEGUI_Texture_isPixelFormatSupported00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"KeyFrame","CEGUI::KeyFrame","",NULL);
   tolua_beginmodule(tolua_S,"KeyFrame");
