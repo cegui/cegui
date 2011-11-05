@@ -64,7 +64,15 @@ public:
         //! Each pixel is 3 bytes. RGB in that order.
         PF_RGB,
         //! Each pixel is 4 bytes. RGBA in that order.
-        PF_RGBA
+        PF_RGBA,
+        //! Each pixel is 2 bytes. RGBA in that order.
+        PF_RGBA_4444,
+        //! Each pixel is 2 bytes. RGB in that order.
+        PF_RGBA_565,
+        //! PVR texture compression. Each pixel is 2 bits.
+        PF_PVRTC2,
+        //! PVR texture compression. Each pixel is 4 bits.
+        PF_PVRTC4
     };
 
     /*!
@@ -177,6 +185,30 @@ public:
     	You have to (correctly) preallocate the target buffer!
     */
     virtual void blitToMemory(void* targetData) = 0;
+
+    /*!
+    \brief
+        Return whether the specified pixel format is supported by the system for
+        the CEGUI::Texture implementation.
+
+        The result of this call will vary according to the implementaion API
+        and the capabilities of the hardware.
+
+    \note
+        Whether the CEGUI system as a whole will make use of support for any
+        given pixel format will depend upon that format being recognised and
+        supported by both the renderer module implementation and the ImageCodec
+        module that is used to load texture data.
+
+    \param fmt
+        One of the PixelFormat enumerated values specifying the pixel format
+        that is to be tested.
+
+    \return
+        - true if the specified PixelFormat is supported.
+        - false if the specified PixelFormat is not supported.
+    */
+    virtual bool isPixelFormatSupported(const PixelFormat fmt) const = 0;
 };
 
 } // End of  CEGUI namespace section
