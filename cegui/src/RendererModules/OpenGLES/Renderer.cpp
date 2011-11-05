@@ -164,7 +164,7 @@ void OpenGLESRenderer::destroy(OpenGLESRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLESRenderer::IsGLExtensionSupported( const char* extension )
+bool OpenGLESRenderer::isGLExtensionSupported( const char* extension )
 {
 	const GLubyte *extensions = NULL;
 	const GLubyte *start;
@@ -570,7 +570,7 @@ void OpenGLESRenderer::restoreTextures()
 void OpenGLESRenderer::initialiseTextureTargetFactory(
     const TextureTargetType tt_type)
 {
-    if (IsGLExtensionSupported("GL_OES_framebuffer_object"))
+    if (isGLExtensionSupported("GL_OES_framebuffer_object"))
     {
         d_rendererID += "  TextureTarget support enabled via"
 						"GL_OES_framebuffer_object extension.";
