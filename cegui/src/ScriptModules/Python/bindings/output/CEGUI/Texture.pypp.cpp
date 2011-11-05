@@ -41,6 +41,11 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
+    virtual bool isPixelFormatSupported( ::CEGUI::Texture::PixelFormat const fmt ) const {
+        bp::override func_isPixelFormatSupported = this->get_override( "isPixelFormatSupported" );
+        return func_isPixelFormatSupported( fmt );
+    }
+
     virtual void loadFromFile( ::CEGUI::String const & filename, ::CEGUI::String const & resourceGroup ){
         bp::override func_loadFromFile = this->get_override( "loadFromFile" );
         func_loadFromFile( boost::ref(filename), boost::ref(resourceGroup) );
@@ -62,6 +67,10 @@ void register_Texture_class(){
         bp::enum_< CEGUI::Texture::PixelFormat>("PixelFormat")
             .value("PF_RGB", CEGUI::Texture::PF_RGB)
             .value("PF_RGBA", CEGUI::Texture::PF_RGBA)
+            .value("PF_RGBA_4444", CEGUI::Texture::PF_RGBA_4444)
+            .value("PF_RGB_565", CEGUI::Texture::PF_RGB_565)
+            .value("PF_PVRTC2", CEGUI::Texture::PF_PVRTC2)
+            .value("PF_PVRTC4", CEGUI::Texture::PF_PVRTC4)
             .export_values()
             ;
         { //::CEGUI::Texture::blitFromMemory
@@ -175,6 +184,38 @@ void register_Texture_class(){
                 @return\n\
                     Reference to a Vector2 object that describes the scaling values required\n\
                     to accurately map pixel positions to texture co-ordinates.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Texture::isPixelFormatSupported
+        
+            typedef bool ( ::CEGUI::Texture::*isPixelFormatSupported_function_type )( ::CEGUI::Texture::PixelFormat const ) const;
+            
+            Texture_exposer.def( 
+                "isPixelFormatSupported"
+                , bp::pure_virtual( isPixelFormatSupported_function_type(&::CEGUI::Texture::isPixelFormatSupported) )
+                , ( bp::arg("fmt") )
+                , "*!\n\
+                \n\
+                    Return whether the specified pixel format is supported by the system for\n\
+                    the CEGUI.Texture implementation.\n\
+            \n\
+                    The result of this call will vary according to the implementaion API\n\
+                    and the capabilities of the hardware.\n\
+            \n\
+                \note\n\
+                    Whether the CEGUI system as a whole will make use of support for any\n\
+                    given pixel format will depend upon that format being recognised and\n\
+                    supported by both the renderer module implementation and the ImageCodec\n\
+                    module that is used to load texture data.\n\
+            \n\
+                @param fmt\n\
+                    One of the PixelFormat enumerated values specifying the pixel format\n\
+                    that is to be tested.\n\
+            \n\
+                @return\n\
+                    - true if the specified PixelFormat is supported.\n\
+                    - false if the specified PixelFormat is not supported.\n\
                 *\n" );
         
         }

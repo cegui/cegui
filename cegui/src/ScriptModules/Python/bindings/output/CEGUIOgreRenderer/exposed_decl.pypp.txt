@@ -2088,8 +2088,7 @@
 ~@member_function_t@name@char const * ( ::std::type_info::* )(  ) constchar const * ( ::std::type_info::* )(  ) const
 ~@member_function_t@isMuted@bool ( ::CEGUI::EventSet::* )(  ) constbool ( ::CEGUI::EventSet::* )(  ) const
 ~@member_function_t@setPivot@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) 
-~@member_function_t@setstate@void ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::_Ios_Iostate ) void ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::_Ios_Iostate ) 
-~@member_function_t@setstate@void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::_Ios_Iostate ) void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::_Ios_Iostate ) 
+~@member_function_t@setData@void ( ::CEGUI::RawDataContainer::* )( ::CEGUI::uint8 * ) void ( ::CEGUI::RawDataContainer::* )( ::CEGUI::uint8 * ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
 ~@member_function_t@subscribeEvent@::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) ::CEGUI::RefCounted<CEGUI::BoundSlot> ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,unsigned int,::CEGUI::SubscriberSlot ) 
@@ -2294,6 +2293,7 @@
 ~@member_function_t@tellp@::std::wstreampos ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )(  ) ::std::wstreampos ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )(  ) 
 ~@member_function_t@tellp@::std::streampos ( ::std::basic_ostream<char,std::char_traits<char> >::* )(  ) ::std::streampos ( ::std::basic_ostream<char,std::char_traits<char> >::* )(  ) 
 +@member_function_t@setDefaultRootRenderTarget@void ( ::CEGUI::OgreRenderer::* )( ::Ogre::RenderTarget & ) void ( ::CEGUI::OgreRenderer::* )( ::Ogre::RenderTarget & ) 
+~@member_function_t@isPixelFormatSupported@bool ( ::CEGUI::Texture::* )( ::CEGUI::Texture::PixelFormat const ) constbool ( ::CEGUI::Texture::* )( ::CEGUI::Texture::PixelFormat const ) const
 ~@member_function_t@getEventObject@::CEGUI::Event * ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,bool ) ::CEGUI::Event * ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,bool ) 
 ~@member_function_t@_M_initialize_numpunct@void ( ::std::numpunct<wchar_t>::* )( ::std::__c_locale ) void ( ::std::numpunct<wchar_t>::* )( ::std::__c_locale ) 
 ~@member_function_t@_M_initialize_numpunct@void ( ::std::numpunct<char>::* )( ::std::__c_locale ) void ( ::std::numpunct<char>::* )( ::std::__c_locale ) 
@@ -2677,7 +2677,8 @@
 ~@member_function_t@fill@wchar_t ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t ) wchar_t ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t ) 
 ~@member_function_t@fill@char ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) constchar ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) const
 ~@member_function_t@fill@char ( ::std::basic_ios<char, std::char_traits<char> >::* )( char ) char ( ::std::basic_ios<char, std::char_traits<char> >::* )( char ) 
-~@member_function_t@setData@void ( ::CEGUI::RawDataContainer::* )( ::CEGUI::uint8 * ) void ( ::CEGUI::RawDataContainer::* )( ::CEGUI::uint8 * ) 
+~@member_function_t@setstate@void ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::_Ios_Iostate ) void ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::_Ios_Iostate ) 
+~@member_function_t@setstate@void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::_Ios_Iostate ) void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::_Ios_Iostate ) 
 ~@member_function_t@setRenderEffect@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::RenderEffect * ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::RenderEffect * ) 
 ~@member_function_t@isRenderingWindow@bool ( ::CEGUI::RenderingSurface::* )(  ) constbool ( ::CEGUI::RenderingSurface::* )(  ) const
 ~@member_function_t@isValid@bool ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) constbool ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) const

@@ -2228,7 +2228,7 @@
 ~@typedef_t@PFNGLGETNTEXIMAGEARBPROC@::PFNGLGETNTEXIMAGEARBPROC
 ~@typedef_t@PFNGLWINDOWPOS2FMESAPROC@::PFNGLWINDOWPOS2FMESAPROC
 ~@typedef_t@PFNGLPOINTPARAMETERFARBPROC@::PFNGLPOINTPARAMETERFARBPROC
-~@typedef_t@PFNGLPROGRAMUNIFORM4I64NVPROC@::PFNGLPROGRAMUNIFORM4I64NVPROC
+~@typedef_t@PFNGLDELETEASYNCMARKERSSGIXPROC@::PFNGLDELETEASYNCMARKERSSGIXPROC
 ~@typedef_t@PFNGLVERTEX3HNVPROC@::PFNGLVERTEX3HNVPROC
 ~@typedef_t@_Const_Base_ptr@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::OpenGLTexture* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > >::_Const_Base_ptr
 ~@typedef_t@_Const_Base_ptr@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Const_Base_ptr
@@ -3069,7 +3069,7 @@
 ~@typedef_t@PFNGLCHECKFRAMEBUFFERSTATUSPROC@::PFNGLCHECKFRAMEBUFFERSTATUSPROC
 ~@typedef_t@PFNGLSECONDARYCOLOR3FVPROC@::PFNGLSECONDARYCOLOR3FVPROC
 ~@typedef_t@PFNGLGETOCCLUSIONQUERYUIVNVPROC@::PFNGLGETOCCLUSIONQUERYUIVNVPROC
-~@typedef_t@PFNGLDELETEASYNCMARKERSSGIXPROC@::PFNGLDELETEASYNCMARKERSSGIXPROC
+~@typedef_t@PFNGLPROGRAMUNIFORM4I64NVPROC@::PFNGLPROGRAMUNIFORM4I64NVPROC
 ~@typedef_t@PFNGLGETPROGRAMENVPARAMETERIIVNVPROC@::PFNGLGETPROGRAMENVPARAMETERIIVNVPROC
 ~@typedef_t@PFNGLBUFFERPARAMETERIAPPLEPROC@::PFNGLBUFFERPARAMETERIAPPLEPROC
 ~@typedef_t@PFNGLVERTEXATTRIB4FARBPROC@::PFNGLVERTEXATTRIB4FARBPROC
@@ -4596,6 +4596,7 @@
 ~@member_function_t@getOriginalDataSize@::CEGUI::Sizef const & ( ::CEGUI::Texture::* )(  ) const::CEGUI::Sizef const & ( ::CEGUI::Texture::* )(  ) const
 ~@member_function_t@tellp@::std::wstreampos ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )(  ) ::std::wstreampos ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )(  ) 
 ~@member_function_t@tellp@::std::streampos ( ::std::basic_ostream<char,std::char_traits<char> >::* )(  ) ::std::streampos ( ::std::basic_ostream<char,std::char_traits<char> >::* )(  ) 
+~@member_function_t@isPixelFormatSupported@bool ( ::CEGUI::Texture::* )( ::CEGUI::Texture::PixelFormat const ) constbool ( ::CEGUI::Texture::* )( ::CEGUI::Texture::PixelFormat const ) const
 ~@member_function_t@getEventObject@::CEGUI::Event * ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,bool ) ::CEGUI::Event * ( ::CEGUI::EventSet::* )( ::CEGUI::String const &,bool ) 
 ~@member_function_t@_M_initialize_numpunct@void ( ::std::numpunct<wchar_t>::* )( ::std::__c_locale ) void ( ::std::numpunct<wchar_t>::* )( ::std::__c_locale ) 
 ~@member_function_t@_M_initialize_numpunct@void ( ::std::numpunct<char>::* )( ::std::__c_locale ) void ( ::std::numpunct<char>::* )( ::std::__c_locale ) 
