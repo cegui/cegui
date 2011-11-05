@@ -18,3 +18,11 @@ if (CEGUI_BUILD_LUA_MODULE)
     add_subdirectory(Demo8)
 endif()
 
+# Simple test for GLES renderer.
+#
+# Commented since it's does not use the samples framework and is merely included
+# such that recreation from scratch is not required in the future.  Aka, it's
+# one of CrazyEddie's hacks that he wants to keep around :-p
+#if (CEGUI_BUILD_RENDERER_OPENGLES)
+#    add_subdirectory(GLESTest)
+#endif()
