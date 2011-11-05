@@ -82,6 +82,73 @@ public:
 
     /*!
     \brief
+        Convenience function that creates the required objects to initialise the
+        CEGUI system.
+
+        The created Renderer will use the current OpenGL ES viewport as it's
+        default surface size.
+
+        This will create and initialise the following objects for you:
+        - CEGUI::OpenGLESRenderer
+        - CEGUI::DefaultResourceProvider
+        - CEGUI::System
+
+    \param tt_type
+        Specifies one of the TextureTargetType enumerated values indicating the
+        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+
+    \return
+        Reference to the CEGUI::OpenGLESRenderer object that was created.
+    */
+    static OpenGLESRenderer& bootstrapSystem(
+                                const TextureTargetType tt_type = TTT_AUTO);
+
+    /*!
+    \brief
+        Convenience function that creates the required objects to initialise the
+        CEGUI system.
+
+        The created Renderer will use /a display_size as the default surface
+        size.
+
+        This will create and initialise the following objects for you:
+        - CEGUI::OpenGLESRenderer
+        - CEGUI::DefaultResourceProvider
+        - CEGUI::System
+
+    \param display_size
+        Size object describing the initial display dimensions.
+
+    \param tt_type
+        Specifies one of the TextureTargetType enumerated values indicating the
+        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+
+    \return
+        Reference to the CEGUI::OpenGLESRenderer object that was created.
+    */
+    static OpenGLESRenderer& bootstrapSystem(
+                                const Sizef& display_size,
+                                const TextureTargetType tt_type = TTT_AUTO);
+
+    /*!
+    \brief
+        Convenience function to cleanup the CEGUI system and related objects
+        that were created by calling the bootstrapSystem function.
+
+        This function will destroy the following objects for you:
+        - CEGUI::System
+        - CEGUI::DefaultResourceProvider
+        - CEGUI::OpenGLRenderer
+
+    \note
+        If you did not initialise CEGUI by calling the bootstrapSystem function,
+        you should \e not call this, but rather delete any objects you created
+        manually.
+    */
+    static void destroySystem();
+
+    /*!
+    \brief
         Create an OpenGLESRenderer object.
 
     \param tt_type

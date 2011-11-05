@@ -36,6 +36,8 @@
 #include "CEGUI/RenderingRoot.h"
 #include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/System.h"
+#include "CEGUI/DefaultResourceProvider.h"
 
 #include <sstream>
 #include <algorithm>
@@ -90,6 +92,57 @@ class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 //----------------------------------------------------------------------------//
 String OpenGLESRenderer::d_rendererID(
 "CEGUI::OpenGLESRenderer - Official OpenGLES based 2nd generation renderer module.");
+
+//----------------------------------------------------------------------------//
+OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
+                                        const TextureTargetType tt_type)
+{
+    if (System::getSingletonPtr())
+        CEGUI_THROW(InvalidRequestException(
+            "OpenGLESRenderer::bootstrapSystem: CEGUI::System object is already "
+            "initialised."));
+
+    OpenGLESRenderer& renderer(create(tt_type));
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
+    System::create(renderer, rp);
+
+    return renderer;
+}
+
+//----------------------------------------------------------------------------//
+OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
+                                        const Sizef& display_size,
+                                        const TextureTargetType tt_type)
+{
+    if (System::getSingletonPtr())
+        CEGUI_THROW(InvalidRequestException(
+            "OpenGLESRenderer::bootstrapSystem: CEGUI::System object is already "
+            "initialised."));
+
+    OpenGLESRenderer& renderer(create(display_size, tt_type));
+    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
+    System::create(renderer, rp);
+
+    return renderer;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLESRenderer::destroySystem()
+{
+    System* sys;
+    if (!(sys = System::getSingletonPtr()))
+        CEGUI_THROW(InvalidRequestException("OpenGLESRenderer::destroySystem: "
+            "CEGUI::System object is not created or was already destroyed."));
+
+    OpenGLESRenderer* renderer = 
+        static_cast<OpenGLESRenderer*>(sys->getRenderer());
+    DefaultResourceProvider* rp =
+        static_cast<DefaultResourceProvider*>(sys->getResourceProvider());
+
+    System::destroy();
+    delete rp;
+    destroy(*renderer);
+}
 
 //----------------------------------------------------------------------------//
 OpenGLESRenderer& OpenGLESRenderer::create(const TextureTargetType tt_type)
