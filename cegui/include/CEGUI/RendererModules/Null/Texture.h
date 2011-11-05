@@ -53,6 +53,7 @@ public:
                                 PixelFormat pixel_format);
     void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
+    bool isPixelFormatSupported(const PixelFormat fmt) const;
 
 protected:
     // we all need a little help from out friends ;)

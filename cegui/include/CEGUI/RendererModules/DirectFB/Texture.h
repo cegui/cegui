@@ -51,6 +51,7 @@ public:
                         PixelFormat pixel_format);
     void blitFromMemory(void* sourceData, const Rect& area);
     void blitToMemory(void* targetData);
+    bool isPixelFormatSupported(const PixelFormat fmt) const;
 
 protected:
     // friends to allow renderer to construct and destroy texture objects

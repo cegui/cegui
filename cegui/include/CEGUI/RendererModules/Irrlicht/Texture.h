@@ -78,6 +78,7 @@ public:
                         PixelFormat pixel_format);
     void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
+    bool isPixelFormatSupported(const PixelFormat fmt) const;
 
 protected:
     // friends in order that Renderer module can create / destroy textures
