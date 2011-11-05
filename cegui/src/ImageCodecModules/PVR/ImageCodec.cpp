@@ -4,7 +4,7 @@
     author:     Andrew Shevchenko
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -98,17 +98,13 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     }
 
     CEGUI::Texture::PixelFormat cefmt;
-
     bool is_compressed_format = false;
-    // Should be kept for further pixel format supporting.
-    bool convert_endianness = false;
 
     switch (pvr_header->dwpfFlags & PVRTEX_PIXELTYPE)
     {
     case OGL_RGBA_4444:
-        Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format RGBA_4444 not supported.", Errors);
-        return 0;
+        cefmt = CEGUI::Texture::PF_RGBA_4444;
+        break;
 
     case OGL_RGBA_5551:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
@@ -116,9 +112,8 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
         return 0;
 
     case OGL_RGB_565:
-        Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format RGB_565 not supported.", Errors);
-        return 0;
+        cefmt = CEGUI::Texture::PF_RGB_565;
+        break;
 
     case OGL_RGB_555:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
@@ -150,58 +145,46 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
 
     case MGLPT_PVRTC2:
     case OGL_PVRTC2:
-        cefmt = CEGUI::Texture::PF_RGBA;
+        cefmt = CEGUI::Texture::PF_PVRTC2;
         is_compressed_format = true;
         break;
 
     case MGLPT_PVRTC4:
     case OGL_PVRTC4:
-        cefmt = CEGUI::Texture::PF_RGBA;
+        cefmt = CEGUI::Texture::PF_PVRTC4;
         is_compressed_format = true;
         break;
 
     default:
         Logger::getSingletonPtr()->logEvent("PVRImageCodec::load - "
-            "pixel format not supported.", Errors);
+            "wrong pvr pixel format.", Errors);
         return 0;
     }
 
-    PVRTuint32* texture_data = reinterpret_cast<PVRTuint32*>(
-        new PVRTuint8[pvr_header->dwTextureDataSize]);
-    memcpy(texture_data,
-           data.getDataPtr() + pvr_header->dwHeaderSize,
-           pvr_header->dwTextureDataSize);
-
-    if (convert_endianness)
-    {
-        PVRTuint16* data = reinterpret_cast<PVRTuint16*>(texture_data);
-        for (uint i = 0; i <  pvr_header->dwTextureDataSize / sizeof(PVRTuint16); ++i)
-            PVRTByteSwap(reinterpret_cast<PVRTuint8*>(data++), sizeof(PVRTuint16));
-    }
-
+    const void* texture_data =
+        reinterpret_cast<const void*>(data.getDataPtr() + pvr_header->dwHeaderSize);
     const uint size_x = pvr_header->dwWidth;
     const uint size_y = pvr_header->dwHeight;
 
     if (is_compressed_format)
     {
-        /*
-        if (IsPVRTCSupported)
+        if (result->isPixelFormatSupported(cefmt))
         {
-            // Futher compressed texture usage
+            result->loadFromMemory(texture_data,
+                                   Sizef(static_cast<float>(size_x),
+                                         static_cast<float>(size_y)),
+                                   cefmt);
         }
         else
-        */
         {
             // Convert PVRTC to 32-bit RGBA
             PVRTuint8* decompressed_texture = new PVRTuint8[size_x * size_y * 4];
 
-            if ((pvr_header->dwpfFlags & PVRTEX_PIXELTYPE) == OGL_PVRTC2)
-                PVRTDecompressPVRTC(texture_data, 1, size_x, size_y,
-                                    decompressed_texture);
-            else
-                PVRTDecompressPVRTC(texture_data, 0, size_x, size_y,
-                                    decompressed_texture);
+            int bit_mode = (pvr_header->dwpfFlags & PVRTEX_PIXELTYPE) == OGL_PVRTC2;
+            PVRTDecompressPVRTC(texture_data, bit_mode, size_x, size_y,
+                                decompressed_texture);
 
+            cefmt = CEGUI::Texture::PF_RGBA; // Redefine to uncompressed format
             result->loadFromMemory(decompressed_texture,
                                    Sizef(static_cast<float>(size_x),
                                          static_cast<float>(size_y)),
@@ -212,18 +195,16 @@ Texture* PVRImageCodec::load(const RawDataContainer& data, Texture* result)
     else
     {
         // Perform raw data load from textureData
-        // ToDo: add support for non 32-bit RGBA formats
         result->loadFromMemory(texture_data,
                                Sizef(static_cast<float>(size_x),
                                      static_cast<float>(size_y)),
                                cefmt);
     }
 
-    delete[] texture_data;
 
     return result;
 }
 
 //----------------------------------------------------------------------------//
 
-} // End of CEGUI namespace section 
+} // End of CEGUI namespace section
