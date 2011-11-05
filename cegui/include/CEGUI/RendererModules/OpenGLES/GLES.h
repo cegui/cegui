@@ -28,9 +28,12 @@
 #ifndef _CEGUIOpenGLES_h_
 #define _CEGUIOpenGLES_h_
 
-#include "GLES/gl.h"
-#include "GLES/glext.h"
-//#include "OpenGLES/ES1/gl.h"
-//#include "OpenGLES/ES1/glext.h"
+#ifdef __APPLE__
+#   include <OpenGLES/ES1/gl.h>
+#   include <OpenGLES/ES1/glext.h>
+#else
+#   include <GLES/gl.h>
+#   include <GLES/glext.h>
+#endif
 
 #endif  // end of guard _CEGUIOpenGLES_h_

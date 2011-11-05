@@ -43,37 +43,37 @@ namespace CEGUI
 {
 
 // Where should it be?
-typedef GLboolean (GL_APIENTRY *PFNGLISRENDERBUFFEROES)(GLuint renderbuffer);
-typedef void (GL_APIENTRY *PFNGLBINDRENDERBUFFEROES)(GLenum target, GLuint renderbuffer);
-typedef void (GL_APIENTRY *PFNGLDELETERENDERBUFFERSOES)(GLsizei n, const GLuint *renderbuffers);
-typedef void (GL_APIENTRY *PFNGLGENRENDERBUFFERSOES)(GLsizei n, GLuint *renderbuffers);
-typedef void (GL_APIENTRY *PFNGLRENDERBUFFERSTORAGEOES)(GLenum target, GLenum internalformat,GLsizei width, GLsizei height);
-typedef void (GL_APIENTRY *PFNGLGETRENDERBUFFERPARAMETERIVOES)(GLenum target, GLenum pname, GLint* params);
-typedef GLboolean (GL_APIENTRY *PFNGLISFRAMEBUFFEROES)(GLuint framebuffer);
-typedef void (GL_APIENTRY *PFNGLBINDFRAMEBUFFEROES)(GLenum target, GLuint framebuffer);
-typedef void (GL_APIENTRY *PFNGLDELETEFRAMEBUFFERSOES)(GLsizei n, const GLuint *framebuffers);
-typedef void (GL_APIENTRY *PFNGLGENFRAMEBUFFERSOES)(GLsizei n, GLuint *framebuffers);
-typedef GLenum (GL_APIENTRY *PFNGLCHECKFRAMEBUFFERSTATUSOES)(GLenum target);
-typedef void (GL_APIENTRY *PFNGLFRAMEBUFFERTEXTURE2DOES)(GLenum target, GLenum attachment,GLenum textarget, GLuint texture,GLint level);
-typedef void (GL_APIENTRY *PFNGLFRAMEBUFFERRENDERBUFFEROES)(GLenum target, GLenum attachment,GLenum renderbuffertarget, GLuint renderbuffer);
-typedef void (GL_APIENTRY *PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVOES)(GLenum target, GLenum attachment,GLenum pname, GLint *params);
-typedef void (GL_APIENTRY *PFNGLGENERATEMIPMAPOES)(GLenum target);
+typedef GLboolean (GL_APIENTRY *PFNGLISRENDERBUFFEROES)(GLuint);
+typedef void (GL_APIENTRY *PFNGLBINDRENDERBUFFEROES)(GLenum, GLuint);
+typedef void (GL_APIENTRY *PFNGLDELETERENDERBUFFERSOES)(GLsizei, const GLuint*);
+typedef void (GL_APIENTRY *PFNGLGENRENDERBUFFERSOES)(GLsizei, GLuint*);
+typedef void (GL_APIENTRY *PFNGLRENDERBUFFERSTORAGEOES)(GLenum, GLenum, GLsizei, GLsizei);
+typedef void (GL_APIENTRY *PFNGLGETRENDERBUFFERPARAMETERIVOES)(GLenum, GLenum, GLint*);
+typedef GLboolean (GL_APIENTRY *PFNGLISFRAMEBUFFEROES)(GLuint);
+typedef void (GL_APIENTRY *PFNGLBINDFRAMEBUFFEROES)(GLenum, GLuint);
+typedef void (GL_APIENTRY *PFNGLDELETEFRAMEBUFFERSOES)(GLsizei, const GLuint*);
+typedef void (GL_APIENTRY *PFNGLGENFRAMEBUFFERSOES)(GLsizei, GLuint*);
+typedef GLenum (GL_APIENTRY *PFNGLCHECKFRAMEBUFFERSTATUSOES)(GLenum);
+typedef void (GL_APIENTRY *PFNGLFRAMEBUFFERTEXTURE2DOES)(GLenum, GLenum, GLenum, GLuint, GLint);
+typedef void (GL_APIENTRY *PFNGLFRAMEBUFFERRENDERBUFFEROES)(GLenum, GLenum, GLenum, GLuint);
+typedef void (GL_APIENTRY *PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVOES)(GLenum, GLenum, GLenum, GLint*);
+typedef void (GL_APIENTRY *PFNGLGENERATEMIPMAPOES)(GLenum);
 
-PFNGLISRENDERBUFFEROES glIsRenderbufferEXT = NULL;
-PFNGLBINDRENDERBUFFEROES glBindRenderbufferEXT = NULL;
-PFNGLDELETERENDERBUFFERSOES glDeleteRenderbuffersEXT = NULL;
-PFNGLGENRENDERBUFFERSOES glGenRenderbuffersEXT = NULL;
-PFNGLRENDERBUFFERSTORAGEOES glRenderbufferStorageEXT = NULL;
-PFNGLGETRENDERBUFFERPARAMETERIVOES glGetRenderbufferParameterivEXT = NULL;
-PFNGLISFRAMEBUFFEROES glIsFramebufferEXT = NULL;
-PFNGLBINDFRAMEBUFFEROES glBindFramebufferEXT = NULL;
-PFNGLDELETEFRAMEBUFFERSOES glDeleteFramebuffersEXT = NULL;
-PFNGLGENFRAMEBUFFERSOES glGenFramebuffersEXT = NULL;
-PFNGLCHECKFRAMEBUFFERSTATUSOES glCheckFramebufferStatusEXT = NULL;
-PFNGLFRAMEBUFFERTEXTURE2DOES glFramebufferTexture2DEXT = NULL;
-PFNGLFRAMEBUFFERRENDERBUFFEROES glFramebufferRenderbufferEXT = NULL;
-PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVOES glGetFramebufferAttachmentParameterivEXT = NULL;
-PFNGLGENERATEMIPMAPOES glGenerateMipmapEXT = NULL;	
+PFNGLISRENDERBUFFEROES glIsRenderbufferEXT = 0;
+PFNGLBINDRENDERBUFFEROES glBindRenderbufferEXT = 0;
+PFNGLDELETERENDERBUFFERSOES glDeleteRenderbuffersEXT = 0;
+PFNGLGENRENDERBUFFERSOES glGenRenderbuffersEXT = 0;
+PFNGLRENDERBUFFERSTORAGEOES glRenderbufferStorageEXT = 0;
+PFNGLGETRENDERBUFFERPARAMETERIVOES glGetRenderbufferParameterivEXT = 0;
+PFNGLISFRAMEBUFFEROES glIsFramebufferEXT = 0;
+PFNGLBINDFRAMEBUFFEROES glBindFramebufferEXT = 0;
+PFNGLDELETEFRAMEBUFFERSOES glDeleteFramebuffersEXT = 0;
+PFNGLGENFRAMEBUFFERSOES glGenFramebuffersEXT = 0;
+PFNGLCHECKFRAMEBUFFERSTATUSOES glCheckFramebufferStatusEXT = 0;
+PFNGLFRAMEBUFFERTEXTURE2DOES glFramebufferTexture2DEXT = 0;
+PFNGLFRAMEBUFFERRENDERBUFFEROES glFramebufferRenderbufferEXT = 0;
+PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVOES glGetFramebufferAttachmentParameterivEXT = 0;
+PFNGLGENERATEMIPMAPOES glGenerateMipmapEXT = 0;	
 	
 //----------------------------------------------------------------------------//
 const float OpenGLESFBOTextureTarget::DEFAULT_SIZE = 128.0f;
@@ -252,21 +252,36 @@ void OpenGLESFBOTextureTarget::initializedFBOExtension()
 		throw InvalidRequestException("This platform does not support FBO");
 
 #ifndef __APPLE__
-	glIsRenderbufferEXT = (PFNGLISRENDERBUFFEROES)eglGetProcAddress("glIsRenderbufferOES") ;
-	glBindRenderbufferEXT = (PFNGLBINDRENDERBUFFEROES)eglGetProcAddress("glBindRenderbufferOES");
-	glDeleteRenderbuffersEXT = (PFNGLDELETERENDERBUFFERSOES)eglGetProcAddress("glDeleteRenderbuffersOES");
-	glGenRenderbuffersEXT = (PFNGLGENRENDERBUFFERSOES)eglGetProcAddress("glGenRenderbuffersOES");
-	glRenderbufferStorageEXT = (PFNGLRENDERBUFFERSTORAGEOES)eglGetProcAddress("glRenderbufferStorageOES");
-	glGetRenderbufferParameterivEXT = (PFNGLGETRENDERBUFFERPARAMETERIVOES)eglGetProcAddress("glGetRenderbufferParameterivOES");
-	glIsFramebufferEXT = (PFNGLISFRAMEBUFFEROES)eglGetProcAddress("glIsFramebufferOES");
-	glBindFramebufferEXT = (PFNGLBINDFRAMEBUFFEROES)eglGetProcAddress("glBindFramebufferOES");
-	glDeleteFramebuffersEXT = (PFNGLDELETEFRAMEBUFFERSOES)eglGetProcAddress("glDeleteFramebuffersOES");
-	glGenFramebuffersEXT = (PFNGLGENFRAMEBUFFERSOES)eglGetProcAddress("glGenFramebuffersOES");
-	glCheckFramebufferStatusEXT = (PFNGLCHECKFRAMEBUFFERSTATUSOES)eglGetProcAddress("glCheckFramebufferStatusOES");
-	glFramebufferTexture2DEXT = (PFNGLFRAMEBUFFERTEXTURE2DOES)eglGetProcAddress("glFramebufferTexture2DOES");
-	glFramebufferRenderbufferEXT = (PFNGLFRAMEBUFFERRENDERBUFFEROES)eglGetProcAddress("glFramebufferRenderbufferOES");
-	glGetFramebufferAttachmentParameterivEXT = (PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVOES)eglGetProcAddress("glGetFramebufferAttachmentParameterivOES");
-	glGenerateMipmapEXT = (PFNGLGENERATEMIPMAPOES)eglGetProcAddress("glGenerateMipmapOES");
+	glIsRenderbufferEXT =
+        (PFNGLISRENDERBUFFEROES)eglGetProcAddress("glIsRenderbufferOES") ;
+	glBindRenderbufferEXT =
+        (PFNGLBINDRENDERBUFFEROES)eglGetProcAddress("glBindRenderbufferOES");
+	glDeleteRenderbuffersEXT =
+        (PFNGLDELETERENDERBUFFERSOES)eglGetProcAddress("glDeleteRenderbuffersOES");
+	glGenRenderbuffersEXT =
+        (PFNGLGENRENDERBUFFERSOES)eglGetProcAddress("glGenRenderbuffersOES");
+	glRenderbufferStorageEXT =
+        (PFNGLRENDERBUFFERSTORAGEOES)eglGetProcAddress("glRenderbufferStorageOES");
+	glGetRenderbufferParameterivEXT =
+        (PFNGLGETRENDERBUFFERPARAMETERIVOES)eglGetProcAddress("glGetRenderbufferParameterivOES");
+	glIsFramebufferEXT =
+        (PFNGLISFRAMEBUFFEROES)eglGetProcAddress("glIsFramebufferOES");
+	glBindFramebufferEXT =
+        (PFNGLBINDFRAMEBUFFEROES)eglGetProcAddress("glBindFramebufferOES");
+	glDeleteFramebuffersEXT =
+        (PFNGLDELETEFRAMEBUFFERSOES)eglGetProcAddress("glDeleteFramebuffersOES");
+	glGenFramebuffersEXT =
+        (PFNGLGENFRAMEBUFFERSOES)eglGetProcAddress("glGenFramebuffersOES");
+	glCheckFramebufferStatusEXT =
+        (PFNGLCHECKFRAMEBUFFERSTATUSOES)eglGetProcAddress("glCheckFramebufferStatusOES");
+	glFramebufferTexture2DEXT =
+        (PFNGLFRAMEBUFFERTEXTURE2DOES)eglGetProcAddress("glFramebufferTexture2DOES");
+	glFramebufferRenderbufferEXT =
+        (PFNGLFRAMEBUFFERRENDERBUFFEROES)eglGetProcAddress("glFramebufferRenderbufferOES");
+	glGetFramebufferAttachmentParameterivEXT =
+        (PFNGLGETFRAMEBUFFERATTACHMENTPARAMETERIVOES)eglGetProcAddress("glGetFramebufferAttachmentParameterivOES");
+	glGenerateMipmapEXT =
+        (PFNGLGENERATEMIPMAPOES)eglGetProcAddress("glGenerateMipmapOES");
 #else
 	glIsRenderbufferEXT = ::glIsRenderbufferOES;
 	glBindRenderbufferEXT = ::glBindRenderbufferOES;
