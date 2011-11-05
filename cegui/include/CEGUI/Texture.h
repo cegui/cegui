@@ -68,7 +68,7 @@ public:
         //! Each pixel is 2 bytes. RGBA in that order.
         PF_RGBA_4444,
         //! Each pixel is 2 bytes. RGB in that order.
-        PF_RGBA_565,
+        PF_RGB_565,
         //! PVR texture compression. Each pixel is 2 bits.
         PF_PVRTC2,
         //! PVR texture compression. Each pixel is 4 bits.
