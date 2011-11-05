@@ -188,7 +188,7 @@ public:
     \param extension
         Provided extension string identification
     */
-	static bool IsGLExtensionSupported( const char* extension );
+	static bool isGLExtensionSupported( const char* extension );
 
     // implement Renderer interface
     RenderingRoot& getDefaultRenderingRoot();

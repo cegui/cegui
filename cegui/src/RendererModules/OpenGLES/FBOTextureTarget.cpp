@@ -248,7 +248,7 @@ bool OpenGLESFBOTextureTarget::isRenderingInverted() const
 //----------------------------------------------------------------------------//
 void OpenGLESFBOTextureTarget::initializedFBOExtension()
 {
-	if (!OpenGLESRenderer::IsGLExtensionSupported("GL_OES_framebuffer_object"))
+	if (!OpenGLESRenderer::isGLExtensionSupported("GL_OES_framebuffer_object"))
 		throw InvalidRequestException("This platform does not support FBO");
 
 #ifndef __APPLE__
