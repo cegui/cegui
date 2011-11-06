@@ -82,10 +82,6 @@ find_package(GTK2 COMPONENTS gtk)
 # set for consistency with other deps
 set (GTK2_INCLUDE_DIR ${GTK2_INCLUDE_DIRS})
 
-if (APPLE)
-    find_library(CARBON_FWK NAMES Carbon)
-endif()
-
 
 ################################################################################
 # Define the configurable options

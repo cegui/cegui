@@ -31,7 +31,7 @@ if (WIN32)
     )
 elseif (APPLE)
     list (APPEND CORE_SOURCE_FILES
-        ./src/MacCEGuiRendererSelector.cpp
+        ./src/MacCEGuiRendererSelector.mm
     )
 elseif (CEGUI_SAMPLES_USE_GTK2)
     list (APPEND CORE_SOURCE_FILES
@@ -115,7 +115,15 @@ if (CEGUI_SAMPLES_USE_GTK2)
 endif()
 
 if (APPLE)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CARBON_FWK})
+    set (CEGUI_EXTRA_FRAMEWORKS "-framework Cocoa")
+
+    if (CEGUI_SAMPLES_USE_OGRE)
+        set (CEGUI_EXTRA_FRAMEWORKS "${CEGUI_EXTRA_FRAMEWORKS} -framework IOKit -framework Carbon")
+    endif()
+
+    set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
+        LINK_FLAGS ${CEGUI_EXTRA_FRAMEWORKS}
+    )
 endif()
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
