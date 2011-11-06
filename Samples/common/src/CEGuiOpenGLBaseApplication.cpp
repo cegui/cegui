@@ -112,12 +112,15 @@ CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()
 
     d_appInstance = this;
 
+// with apple we already did this as part of the renderer selector (don't ask!)
+#ifndef __APPLE__
     // fake args for glutInit
     int argc = 1;
     const char* argv = "SampleApp";
 
     // Do GLUT init
     glutInit(&argc, (char**)&argv);
+#endif
     glutInitDisplayMode(GLUT_DOUBLE|GLUT_RGBA);
     glutInitWindowSize(800, 600);
     glutInitWindowPosition(100, 100);

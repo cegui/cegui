@@ -30,20 +30,23 @@
 
 #include "CEGuiRendererSelector.h"
 
-class RendererSelectorDialog;
+class MacCEGuiRendererSelector_pimpl;
 
 //! RendererSelector for Apple Mac via Carbon
 class MacCEGuiRendererSelector : public CEGuiRendererSelector
 {
 public:
+    MacCEGuiRendererSelector();
+    ~MacCEGuiRendererSelector();
+
     // Implement CEGuiRendererSelector interface.
     bool invokeDialog();
 
 private:
-    int populateRendererMenu(RendererSelectorDialog& dialog);
+    int populateRendererMenu();
 
-    //! array of CEGuiRendererTypes that map to entries in the pop up.
-    CEGuiRendererType d_rendererTypes[4];
+    // implementation
+    MacCEGuiRendererSelector_pimpl* d_pimpl;
 };
 
 #endif  // end of guard _MacCEGuiRendererSelector_h_
