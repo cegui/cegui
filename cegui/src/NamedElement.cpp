@@ -57,6 +57,9 @@ NamedElement::~NamedElement()
 //----------------------------------------------------------------------------//
 void NamedElement::setName(const String& name)
 {
+    if (d_name == name)
+        return;
+    
     if (getParentElement())
     {
         NamedElement* parent = dynamic_cast<NamedElement*>(getParentElement());
