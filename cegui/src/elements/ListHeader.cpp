@@ -1083,7 +1083,7 @@ void ListHeader::destroyListSegment(ListHeaderSegment* segment) const
     if (d_windowRenderer != 0)
     {
         ListHeaderWindowRenderer* wr = (ListHeaderWindowRenderer*)d_windowRenderer;
-        return wr->destroyListSegment(segment);
+        wr->destroyListSegment(segment);
     }
     else
     {
