@@ -190,8 +190,6 @@ protected:
     */
     virtual void onLookNFeelUnassigned() {}
 
-    void operator=(const WindowRenderer&) {}
-
     /*************************************************************************
         Implementation data
     **************************************************************************/
@@ -209,6 +207,9 @@ protected:
     // Window is friend so it can manipulate our 'd_window' member directly.
     // We don't want users fiddling with this so no public interface.
     friend class Window;
+
+private:
+    WindowRenderer& operator=(const WindowRenderer&) { return *this; }
 };
 
 /*!
