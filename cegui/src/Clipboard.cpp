@@ -129,14 +129,14 @@ void Clipboard::getData(String& mimeType, const void*& buffer, size_t& size)
 void Clipboard::setText(const String& text)
 {
     // could be just ASCII if std::string is used as CEGUI::String
-    const char* utf8 = text.c_str();
+    const char* utf8_bytes = text.c_str();
     
     // we don't want the actual string length, that might not be the buffer size
     // in case of utf8!
     // this gets us the number of bytes until \0 is encountered
-    const size_t size = strlen(utf8);
+    const size_t size = strlen(utf8_bytes);
     
-    setData("text/plain", static_cast<const void*>(utf8), size);
+    setData("text/plain", static_cast<const void*>(utf8_bytes), size);
 }
 
 //----------------------------------------------------------------------------//

@@ -621,8 +621,8 @@ int LuaScriptModule::executeScriptGlobal_impl(const String& function_name,
     {
         // log that return value is invalid. return -1 and move on.
         lua_settop(d_state,top);
-        ScriptException("Unable to get Lua global : '" + function_name +
-                        "' return value as it's not a number");
+        CEGUI_THROW(ScriptException("Unable to get Lua global : '" + function_name +
+                        "' return value as it's not a number"));
         return -1;
     }
 

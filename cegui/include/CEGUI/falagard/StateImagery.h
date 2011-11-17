@@ -52,7 +52,9 @@ namespace CEGUI
         \brief
             Constructor
         */
-        StateImagery() {}
+        StateImagery():
+        	d_clipToDisplay(false)
+        {}
 
         /*!
         \brief
