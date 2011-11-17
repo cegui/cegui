@@ -85,7 +85,7 @@ void GroupBox::addChild_impl(Element* element)
 
 void GroupBox::removeChild_impl(Element* element)
 {
-    Window* wnd = static_cast<Window*>(wnd);
+    Window* wnd = static_cast<Window*>(element);
     
 	if (wnd)
 	{   // Auto pane itself?
