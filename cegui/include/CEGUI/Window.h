@@ -2454,7 +2454,17 @@ public:
     const BidiVisualMapping* getBidiVisualMapping() const
         {return d_bidiVisualMapping;}
 
-    //! Add the named property to the XML ban list for this window.
+    /*!
+    \brief Add the named property to the XML ban list for this window.
+
+    \param property_name Name of the property you want to ban
+
+    Essentially a property that is banned from XML will never end up being saved to it.
+    This is very useful if 2 properties overlap (XPosition and Position for example).
+
+    Please note that properties that are not writable (read-only properties) are
+    implicitly/automatically banned from XML, no need to ban them manually.
+    */
     void banPropertyFromXML(const String& property_name);
 
     //! Remove the named property from the XML ban list for this window.

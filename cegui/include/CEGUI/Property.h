@@ -214,7 +214,8 @@ public:
         - true if the property is readable.
         - false if the property isn't readable.
     */
-    virtual bool isReadable() const{return true;}
+    virtual bool isReadable() const;
+
     /*!
     \brief
         Returns whether the property is writable.
@@ -223,7 +224,8 @@ public:
         - true if the property is writable.
         - false if the property isn't writable.
     */
-    virtual bool isWritable() const{return true;}
+    virtual bool isWritable() const;
+
 protected:
 	String d_name;		//!< String that stores the Property name.
 	String d_help;		//!< String that stores the Property help text.
