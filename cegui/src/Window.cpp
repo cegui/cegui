@@ -2799,6 +2799,16 @@ const String& Window::getWindowRendererName() const
 //----------------------------------------------------------------------------//
 void Window::banPropertyFromXML(const String& property_name)
 {
+	Property* instance = getPropertyInstance(property_name);
+	if (!instance->isWritable())
+	{
+		Logger::getSingleton().logEvent("Property '" + property_name + "' "
+				"is not writable so it's implicitly banned from XML. No need "
+				"to ban it manually", Warnings);
+
+		return;
+	}
+
     // check if the insertion failed
     if (!d_bannedXMLProperties.insert(property_name).second)
         // just log the incidence
@@ -2818,7 +2828,18 @@ bool Window::isPropertyBannedFromXML(const String& property_name) const
     const BannedXMLPropertySet::const_iterator i =
         d_bannedXMLProperties.find(property_name);
 
-    return (i != d_bannedXMLProperties.end());
+    // generally, there will always less banned properties than all properties,
+    // so it makes sense to check that first before querying the property instance
+    if (i != d_bannedXMLProperties.end())
+    {
+    	return true;
+    }
+
+    // read-only properties are implicitly banned (such stored information
+    // wouldn't be of any value in the XML anyways, no way to apply it to the
+    // widget
+    Property* instance = getPropertyInstance(property_name);
+	return (!instance->isWritable());
 }
 
 //----------------------------------------------------------------------------//
@@ -2896,7 +2917,7 @@ bool Window::isPropertyAtDefault(const Property* property) const
                     propinit->getInitialiserValue());
     }
 
-    // we dont have a looknfeel with a new value for this property so we rely
+    // we don't have a looknfeel with a new value for this property so we rely
     // on the hardcoded default
     return property->isDefault(this);
 }
