@@ -1,0 +1,5 @@
+#!/usr/bin/env sh
+
+cppcheck -j `cat /proc/cpuinfo | grep processor | wc -l` --enable=all -f \
+-I cegui/include cegui/ 2> cppcheck-output
+
