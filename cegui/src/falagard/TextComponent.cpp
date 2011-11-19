@@ -417,4 +417,14 @@ namespace CEGUI
         return d_bidiVisualMapping->getTextVisual();
     }
 
+    float TextComponent::getHorizontalTextExtent() const
+    {
+        return d_formattedRenderedString->getHorizontalExtent();
+    }
+
+    float TextComponent::getVerticalTextExtent() const
+    {
+        return d_formattedRenderedString->getVerticalExtent();
+    }
+
 } // End of  CEGUI namespace section

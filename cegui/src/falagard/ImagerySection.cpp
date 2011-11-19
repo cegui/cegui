@@ -308,4 +308,10 @@ namespace CEGUI
         xml_stream.closeTag();
     }
 
+    ImagerySection::TextComponentIterator
+    ImagerySection::getTextComponentIterator() const
+    {
+        return TextComponentIterator(d_texts.begin(), d_texts.end());
+    }
+
 } // End of  CEGUI namespace section
