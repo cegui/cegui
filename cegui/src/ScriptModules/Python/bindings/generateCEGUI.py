@@ -669,6 +669,9 @@ typedef bool ( ::CEGUI::Window::*isChild_ptr_function_type )( const ::CEGUI::Ele
 
 typedef bool ( ::CEGUI::Window::*isAncestor_string_function_type )( const ::CEGUI::String& ) const;
 typedef bool ( ::CEGUI::Window::*isAncestor_ptr_function_type )( const ::CEGUI::Element* ) const;
+
+typedef void ( ::CEGUI::Window::*removeChild_string_function_type )( const ::CEGUI::String& );
+typedef void ( ::CEGUI::Window::*removeChild_ptr_function_type )( ::CEGUI::Element* );
 """
     )
     window.add_registration_code("""def ("setUserData", &::Window_setUserData);""")
@@ -679,6 +682,9 @@ typedef bool ( ::CEGUI::Window::*isAncestor_ptr_function_type )( const ::CEGUI::
     
     window.add_registration_code("""def ("isAncestor", isAncestor_string_function_type(&::CEGUI::Window::isAncestor));""")
     window.add_registration_code("""def ("isAncestor", isAncestor_ptr_function_type(&::CEGUI::Window::isAncestor));""")
+    
+    window.add_registration_code("""def ("removeChild", removeChild_string_function_type(&::CEGUI::Window::removeChild));""")
+    window.add_registration_code("""def ("removeChild", removeChild_ptr_function_type(&::CEGUI::Window::removeChild));""")
     
     # CEGUIWindowFactory.h
     windowFactory = CEGUI_ns.class_("WindowFactory")
