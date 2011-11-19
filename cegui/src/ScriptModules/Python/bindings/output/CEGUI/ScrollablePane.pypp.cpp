@@ -43,6 +43,18 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         CEGUI::ScrollablePane::destroy( );
     }
 
+    virtual ::CEGUI::NamedElement * getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
+        if( bp::override func_getChildByNamePath_impl = this->get_override( "getChildByNamePath_impl" ) )
+            return func_getChildByNamePath_impl( boost::ref(name_path) );
+        else{
+            return this->CEGUI::ScrollablePane::getChildByNamePath_impl( boost::ref(name_path) );
+        }
+    }
+    
+    virtual ::CEGUI::NamedElement * default_getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
+        return CEGUI::ScrollablePane::getChildByNamePath_impl( boost::ref(name_path) );
+    }
+
     ::CEGUI::ScrolledContainer * getScrolledContainer(  ) const {
         return CEGUI::ScrollablePane::getScrolledContainer(  );
     }
@@ -305,18 +317,6 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
 
     void generateAutoRepeatEvent( ::CEGUI::MouseButton button ){
         CEGUI::Window::generateAutoRepeatEvent( button );
-    }
-
-    virtual ::CEGUI::NamedElement * getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
-        if( bp::override func_getChildByNamePath_impl = this->get_override( "getChildByNamePath_impl" ) )
-            return func_getChildByNamePath_impl( boost::ref(name_path) );
-        else{
-            return this->CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
-        }
-    }
-    
-    virtual ::CEGUI::NamedElement * default_getChildByNamePath_impl( ::CEGUI::String const & name_path ) const {
-        return CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
     }
 
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
@@ -1387,6 +1387,18 @@ void register_ScrollablePane_class(){
                 , default_destroy_function_type(&ScrollablePane_wrapper::default_destroy) );
         
         }
+        { //::CEGUI::ScrollablePane::getChildByNamePath_impl
+        
+            typedef ::CEGUI::NamedElement * ( ScrollablePane_wrapper::*getChildByNamePath_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            ScrollablePane_exposer.def( 
+                "getChildByNamePath_impl"
+                , getChildByNamePath_impl_function_type( &ScrollablePane_wrapper::default_getChildByNamePath_impl )
+                , ( bp::arg("name_path") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! opydoc Window.getChildByNamePath_impl\n" );
+        
+        }
         { //::CEGUI::ScrollablePane::getContentPane
         
             typedef ::CEGUI::ScrolledContainer const * ( ::CEGUI::ScrollablePane::*getContentPane_function_type )(  ) const;
@@ -2381,21 +2393,6 @@ void register_ScrollablePane_class(){
                 , "*!\n\
             \n\
                 Fires off a repeated mouse button down event for this window.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::NamedElement::getChildByNamePath_impl
-        
-            typedef ::CEGUI::NamedElement * ( ScrollablePane_wrapper::*getChildByNamePath_impl_function_type )( ::CEGUI::String const & ) const;
-            
-            ScrollablePane_exposer.def( 
-                "getChildByNamePath_impl"
-                , getChildByNamePath_impl_function_type( &ScrollablePane_wrapper::default_getChildByNamePath_impl )
-                , ( bp::arg("name_path") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-            \n\
-                retrieves a child at  name_path or 0 if none such exists\n\
             *\n" );
         
         }
