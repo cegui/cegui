@@ -1256,6 +1256,9 @@ Window_getUserData ( ::CEGUI::Window & me) {
     Py_INCREF( (PyObject *) data );     // I'm passing a reference to this object so better inc the ref :)
     return  (PyObject *) data;
     }
+    
+typedef bool ( ::CEGUI::Window::*isChild_string_function_type )( const ::CEGUI::String& ) const;
+typedef bool ( ::CEGUI::Window::*isChild_ptr_function_type )( const ::CEGUI::Element* ) const;
 
 void register_Window_class(){
 
@@ -1381,7 +1384,17 @@ void register_Window_class(){
                 "banPropertyFromXML"
                 , banPropertyFromXML_function_type( &::CEGUI::Window::banPropertyFromXML )
                 , ( bp::arg("property_name") )
-                , "! Add the named property to the XML ban list for this window.\n" );
+                , "*!\n\
+                 Add the named property to the XML ban list for this window.\n\
+            \n\
+                @param property_name Name of the property you want to ban\n\
+            \n\
+                Essentially a property that is banned from XML will never end up being saved to it.\n\
+                This is very useful if 2 properties overlap (XPosition and Position for example).\n\
+            \n\
+                Please note that properties that are not writable (read-only properties) are\n\
+                implicitlyautomatically banned from XML, no need to ban them manually.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::banPropertyFromXML
@@ -6415,6 +6428,8 @@ void register_Window_class(){
         Window_exposer.staticmethod( "getCaptureWindow" );
         Window_exposer.def ("setUserData", &::Window_setUserData);;
         Window_exposer.def ("getUserData", &::Window_getUserData);;
+        Window_exposer.def ("isChild", isChild_string_function_type(&::CEGUI::Window::isChild));;
+        Window_exposer.def ("isChild", isChild_ptr_function_type(&::CEGUI::Window::isChild));;
     }
 
 }
