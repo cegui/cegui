@@ -666,12 +666,19 @@ Window_getUserData ( ::CEGUI::Window & me) {
     
 typedef bool ( ::CEGUI::Window::*isChild_string_function_type )( const ::CEGUI::String& ) const;
 typedef bool ( ::CEGUI::Window::*isChild_ptr_function_type )( const ::CEGUI::Element* ) const;
+
+typedef bool ( ::CEGUI::Window::*isAncestor_string_function_type )( const ::CEGUI::String& ) const;
+typedef bool ( ::CEGUI::Window::*isAncestor_ptr_function_type )( const ::CEGUI::Element* ) const;
 """
     )
     window.add_registration_code("""def ("setUserData", &::Window_setUserData);""")
     window.add_registration_code("""def ("getUserData", &::Window_getUserData);""")
+    
     window.add_registration_code("""def ("isChild", isChild_string_function_type(&::CEGUI::Window::isChild));""")
     window.add_registration_code("""def ("isChild", isChild_ptr_function_type(&::CEGUI::Window::isChild));""")
+    
+    window.add_registration_code("""def ("isAncestor", isAncestor_string_function_type(&::CEGUI::Window::isAncestor));""")
+    window.add_registration_code("""def ("isAncestor", isAncestor_ptr_function_type(&::CEGUI::Window::isAncestor));""")
     
     # CEGUIWindowFactory.h
     windowFactory = CEGUI_ns.class_("WindowFactory")

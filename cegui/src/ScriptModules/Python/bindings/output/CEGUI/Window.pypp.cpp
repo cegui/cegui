@@ -1260,6 +1260,9 @@ Window_getUserData ( ::CEGUI::Window & me) {
 typedef bool ( ::CEGUI::Window::*isChild_string_function_type )( const ::CEGUI::String& ) const;
 typedef bool ( ::CEGUI::Window::*isChild_ptr_function_type )( const ::CEGUI::Element* ) const;
 
+typedef bool ( ::CEGUI::Window::*isAncestor_string_function_type )( const ::CEGUI::String& ) const;
+typedef bool ( ::CEGUI::Window::*isAncestor_ptr_function_type )( const ::CEGUI::Element* ) const;
+
 void register_Window_class(){
 
     { //::CEGUI::Window
@@ -6430,6 +6433,8 @@ void register_Window_class(){
         Window_exposer.def ("getUserData", &::Window_getUserData);;
         Window_exposer.def ("isChild", isChild_string_function_type(&::CEGUI::Window::isChild));;
         Window_exposer.def ("isChild", isChild_ptr_function_type(&::CEGUI::Window::isChild));;
+        Window_exposer.def ("isAncestor", isAncestor_string_function_type(&::CEGUI::Window::isAncestor));;
+        Window_exposer.def ("isAncestor", isAncestor_ptr_function_type(&::CEGUI::Window::isAncestor));;
     }
 
 }
