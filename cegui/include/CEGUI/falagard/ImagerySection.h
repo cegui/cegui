@@ -267,6 +267,18 @@ namespace CEGUI
         TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
         String              d_colourPropertyName;   //!< name of property to fetch colours from.
         bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
+
+    public:
+        typedef ConstVectorIterator<TextList> TextComponentIterator;
+
+        /*!
+        \brief
+            Return a ImagerySection::TextComponentIterator object to iterate
+            over the TextComponent elements currently added to the
+            ImagerySection.
+        */
+        TextComponentIterator getTextComponentIterator() const;
+
     };
 
 } // End of  CEGUI namespace section
