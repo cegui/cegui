@@ -607,5 +607,13 @@ void ScrollablePane::destroy(void)
 }
 
 //----------------------------------------------------------------------------//
+NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) const
+{
+    if (name_path.substr(0, 7) == "__auto_")
+        return Window::getChildByNamePath_impl(name_path);
+	else
+        return Window::getChildByNamePath_impl(ScrolledContainerName + '/' + name_path);
+}
+//----------------------------------------------------------------------------//
     
 } // End of  CEGUI namespace section

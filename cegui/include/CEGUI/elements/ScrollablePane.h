@@ -570,6 +570,9 @@ protected:
     void onSized(ElementEventArgs& e);
     void onMouseWheel(MouseEventArgs& e);
 
+    //! \copydoc Window::getChildByNamePath_impl
+    NamedElement* getChildByNamePath_impl(const String& name_path) const;
+
     //! true if vertical scrollbar should always be displayed
     bool d_forceVertScroll;
     //! true if horizontal scrollbar should always be displayed
