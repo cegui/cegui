@@ -239,6 +239,13 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+
+        //! return number of TextComponents in the ImagerySection.
+        size_t getTextComponentCount() const;
+
+        //! return a reference to a TextComponent (via index).
+        const TextComponent& getTextComponent(const size_t idx) const;
+
     protected:
         /*!
         \brief
