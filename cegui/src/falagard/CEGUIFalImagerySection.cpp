@@ -28,6 +28,7 @@
 #include "falagard/CEGUIFalImagerySection.h"
 #include "CEGUIPropertyHelper.h"
 #include <iostream>
+#include "CEGUIExceptions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -306,6 +307,20 @@ namespace CEGUI
 
         // output closing tag
         xml_stream.closeTag();
+    }
+
+    size_t ImagerySection::getTextComponentCount() const
+    {
+        return d_texts.size();
+    }
+
+    const TextComponent& ImagerySection::getTextComponent(const size_t idx) const
+    {
+        if (idx >= d_texts.size())
+            CEGUI_THROW(InvalidRequestException(
+                "ImagerySection::getTextComponent: index out of range."));
+
+        return d_texts[idx];
     }
 
 } // End of  CEGUI namespace section
