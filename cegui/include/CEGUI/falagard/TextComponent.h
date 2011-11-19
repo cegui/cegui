@@ -235,6 +235,12 @@ namespace CEGUI
         */
         void setFontPropertySource(const String& property);
 
+        //! return the horizontal pixel extent of the formatted rendered string.
+        float getHorizontalTextExtent() const;
+
+        //! return the vertical pixel extent of the formatted rendered string.
+        float getVerticalTextExtent() const;
+
     protected:
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
