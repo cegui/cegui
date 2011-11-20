@@ -1331,7 +1331,6 @@ void Window::addWindowProperties(void)
         &Window::setInheritsAlpha, &Window::inheritsAlpha, true
     );
 
-
     CEGUI_DEFINE_PROPERTY(Window, Image*,
         "MouseCursorImage","Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
         &Window::setMouseCursor, &Window::property_getMouseCursor, 0
@@ -1400,16 +1399,6 @@ void Window::addWindowProperties(void)
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "RiseOnClickEnabled", "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"True\" or \"False\".",
         &Window::setRiseOnClickEnabled, &Window::isRiseOnClickEnabled, true
-    );
-
-    CEGUI_DEFINE_PROPERTY(Window, VerticalAlignment,
-        "VerticalAlignment", "Property to get/set the windows vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
-        &Window::setVerticalAlignment, &Window::getVerticalAlignment, VA_TOP
-    );
-    
-    CEGUI_DEFINE_PROPERTY(Window, HorizontalAlignment,
-        "HorizontalAlignment", "Property to get/set the windows horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
-        &Window::setHorizontalAlignment, &Window::getHorizontalAlignment, HA_LEFT
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,

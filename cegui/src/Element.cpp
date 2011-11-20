@@ -401,6 +401,16 @@ void Element::addElementProperties()
         &Element::setPosition, &Element::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
     );
     
+    CEGUI_DEFINE_PROPERTY(Element, VerticalAlignment,
+        "VerticalAlignment", "Property to get/set the vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
+        &Element::setVerticalAlignment, &Element::getVerticalAlignment, VA_TOP
+    );
+
+    CEGUI_DEFINE_PROPERTY(Element, HorizontalAlignment,
+        "HorizontalAlignment", "Property to get/set the horizontal alignment.  Value is one of \"Left\", \"Centre\" or \"Right\".",
+        &Element::setHorizontalAlignment, &Element::getHorizontalAlignment, HA_LEFT
+    );
+
     CEGUI_DEFINE_PROPERTY_NO_XML(Element, USize,
         "Size", "Property to get/set the unified size. Value is a \"USize\".",
         &Element::setSize, &Element::getSize, USize(UDim(0, 0), UDim(0, 0))
