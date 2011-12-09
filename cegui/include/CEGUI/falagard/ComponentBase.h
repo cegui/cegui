@@ -156,6 +156,15 @@ namespace CEGUI
 
         /*!
         \brief
+            Get the name of the property where vertical formatting option can be obtained.
+
+        \return
+            String containing the name of the property.
+        */
+        const String& getVertFormattingPropertySource() const;
+
+        /*!
+        \brief
             Set the name of the property where vertical formatting option can be obtained.
 
         \param property
@@ -165,6 +174,15 @@ namespace CEGUI
             Nothing.
         */
         void setVertFormattingPropertySource(const String& property);
+
+        /*!
+        \brief
+            Get the name of the property where horizontal formatting option can be obtained.
+
+        \param property
+            String containing the name of the property.
+        */
+        const String& getHorzFormattingPropertySource() const;
 
         /*!
         \brief
