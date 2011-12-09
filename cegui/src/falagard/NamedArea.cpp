@@ -40,6 +40,11 @@ namespace CEGUI
         return d_name;
     }
 
+    void NamedArea::setName(const String& name)
+    {
+        d_name = name;
+    }
+
     const ComponentArea& NamedArea::getArea() const
     {
         return d_area;
