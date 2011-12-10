@@ -33,14 +33,12 @@
 namespace CEGUI
 {
     ImagerySection::ImagerySection() :
-        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-        d_colourProperyIsRect(false)
+        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
     {}
 
     ImagerySection::ImagerySection(const String& name) :
         d_name(name),
-        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-        d_colourProperyIsRect(false)
+        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
     {}
 
     void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
@@ -159,11 +157,6 @@ namespace CEGUI
         d_colourPropertyName = property;
     }
 
-    void ImagerySection::setMasterColoursPropertyIsColourRect(bool setting)
-    {
-        d_colourProperyIsRect = setting;
-    }
-
     void ImagerySection::initMasterColourRect(const Window& wnd, ColourRect& cr) const
     {
         // if colours come via a colour property
@@ -266,11 +259,7 @@ namespace CEGUI
         // output modulative colours for this section
         if (!d_colourPropertyName.empty())
         {
-            if (d_colourProperyIsRect)
-                xml_stream.openTag("ColourRectProperty");
-            else
-                xml_stream.openTag("ColourProperty");
-
+            xml_stream.openTag("ColourRectProperty");
             xml_stream.attribute("name", d_colourPropertyName)
                 .closeTag();
         }

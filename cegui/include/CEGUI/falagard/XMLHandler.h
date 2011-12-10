@@ -364,12 +364,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Method that handles the opening ColourProperty XML element.
-        */
-        void elementColourPropertyStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
             Method that handles the opening ColourRectProperty XML element.
         */
         void elementColourRectPropertyStart(const XMLAttributes& attributes);

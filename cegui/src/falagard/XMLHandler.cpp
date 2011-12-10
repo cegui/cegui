@@ -181,7 +181,7 @@ namespace CEGUI
         registerElementStartHandler(PropertyDimElement, &Falagard_xmlHandler::elementPropertyDimStart);
         registerElementStartHandler(ExpressionDimElement, &Falagard_xmlHandler::elementExpressionDimStart);
         registerElementStartHandler(TextElement, &Falagard_xmlHandler::elementTextStart);
-        registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourPropertyStart);
+        registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
         registerElementStartHandler(ColourRectPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
         registerElementStartHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaStart);
         registerElementStartHandler(PropertyDefinitionElement, &Falagard_xmlHandler::elementPropertyDefinitionStart);
@@ -702,40 +702,6 @@ namespace CEGUI
     }
 
     /*************************************************************************
-        Method that handles the opening ColourProperty XML element.
-    *************************************************************************/
-    void Falagard_xmlHandler::elementColourPropertyStart(const XMLAttributes& attributes)
-    {
-        // need to decide what to apply colours to
-        if (d_framecomponent)
-        {
-            d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_framecomponent->setColoursPropertyIsColourRect(false);
-        }
-        else if (d_imagerycomponent)
-        {
-            d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerycomponent->setColoursPropertyIsColourRect(false);
-        }
-        else if (d_textcomponent)
-        {
-            d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_textcomponent->setColoursPropertyIsColourRect(false);
-        }
-        else if (d_imagerysection)
-        {
-            d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerysection->setMasterColoursPropertyIsColourRect(false);
-        }
-        else if (d_section)
-        {
-            d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_section->setOverrideColoursPropertyIsColourRect(false);
-            d_section->setUsingOverrideColours(true);
-        }
-    }
-
-    /*************************************************************************
         Method that handles the opening ColourRectProperty XML element.
     *************************************************************************/
     void Falagard_xmlHandler::elementColourRectPropertyStart(const XMLAttributes& attributes)
@@ -744,27 +710,22 @@ namespace CEGUI
         if (d_framecomponent)
         {
             d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_framecomponent->setColoursPropertyIsColourRect(true);
         }
         else if (d_imagerycomponent)
         {
             d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerycomponent->setColoursPropertyIsColourRect(true);
         }
         else if (d_textcomponent)
         {
             d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_textcomponent->setColoursPropertyIsColourRect(true);
         }
         else if (d_imagerysection)
         {
             d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerysection->setMasterColoursPropertyIsColourRect(true);
         }
         else if (d_section)
         {
             d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_section->setOverrideColoursPropertyIsColourRect(true);
             d_section->setUsingOverrideColours(true);
         }
     }
