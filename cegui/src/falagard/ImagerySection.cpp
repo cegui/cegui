@@ -144,6 +144,16 @@ namespace CEGUI
         return d_name;
     }
 
+    void ImagerySection::setName(const String& name )
+    {
+        d_name = name;
+    }
+
+    const String& ImagerySection::getMasterColoursPropertySource() const
+    {
+        return d_colourPropertyName;
+    }
+
     void ImagerySection::setMasterColoursPropertySource(const String& property)
     {
         d_colourPropertyName = property;
@@ -159,20 +169,8 @@ namespace CEGUI
         // if colours come via a colour property
         if (!d_colourPropertyName.empty())
         {
-            // if property accesses a ColourRect
-            if (d_colourProperyIsRect)
-            {
-                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
-            }
-            // property accesses a colour
-            else
-            {
-                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
-                cr.d_top_left     = val;
-                cr.d_top_right    = val;
-                cr.d_bottom_left  = val;
-                cr.d_bottom_right = val;
-            }
+            // if property accesses a ColourRect or a colour
+            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
         }
         // use explicit ColourRect.
         else
@@ -308,10 +306,20 @@ namespace CEGUI
         xml_stream.closeTag();
     }
 
+    ImagerySection::ImageryComponentIterator
+    ImagerySection::getImageryComponentIterator() const
+    {
+        return ImageryComponentIterator(d_images.begin(), d_images.end());
+    }
     ImagerySection::TextComponentIterator
     ImagerySection::getTextComponentIterator() const
     {
         return TextComponentIterator(d_texts.begin(), d_texts.end());
+    }
+    ImagerySection::FrameComponentIterator
+    ImagerySection::getFrameComponentIterator() const
+    {
+        return FrameComponentIterator(d_frames.begin(), d_frames.end());
     }
 
 } // End of  CEGUI namespace section

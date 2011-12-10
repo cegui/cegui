@@ -192,6 +192,27 @@ namespace CEGUI
 
         /*!
         \brief
+            Sets the name of this ImagerySection.
+
+        \param name
+            String object holding the name of the ImagerySection.
+
+        \return
+            Nothing.
+        */
+        void setName(const String& name);
+
+        /*!
+        \brief
+            Get the name of the property where master colour values can be obtained.
+
+        \return
+            String containing the name of the property.
+        */
+        const String& getMasterColoursPropertySource() const;
+
+        /*!
+        \brief
             Set the name of the property where master colour values can be obtained.
 
         \param property
@@ -269,8 +290,16 @@ namespace CEGUI
         bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
 
     public:
+        typedef ConstVectorIterator<ImageryList> ImageryComponentIterator;
         typedef ConstVectorIterator<TextList> TextComponentIterator;
-
+        typedef ConstVectorIterator<FrameList> FrameComponentIterator;
+        /*!
+        \brief
+            Return a ImagerySection::ImageryComponentIterator object to iterate
+            over the ImageryComponent elements currently added to the
+            ImagerySection.
+        */
+        ImageryComponentIterator getImageryComponentIterator() const;
         /*!
         \brief
             Return a ImagerySection::TextComponentIterator object to iterate
@@ -278,6 +307,13 @@ namespace CEGUI
             ImagerySection.
         */
         TextComponentIterator getTextComponentIterator() const;
+        /*!
+        \brief
+            Return a ImagerySection::FrameComponentIterator object to iterate
+            over the FrameComponent elements currently added to the
+            ImagerySection.
+        */
+        FrameComponentIterator getFrameComponentIterator() const;
 
     };
 
