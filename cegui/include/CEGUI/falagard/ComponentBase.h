@@ -143,19 +143,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Set whether the colours property source represents a full ColourRect.
-
-        \param setting
-            - true if the colours property will access a ColourRect object.
-            - false if the colours property will access a colour object.
-
-        \return
-            Nothing.
-        */
-        void setColoursPropertyIsColourRect(bool setting = true);
-
-        /*!
-        \brief
             Get the name of the property where vertical formatting option can be obtained.
 
         \return
@@ -261,7 +248,6 @@ namespace CEGUI
         ComponentArea   d_area;                 //!< Destination area for this component.
         ColourRect      d_colours;              //!< base colours to be applied when rendering the image component.
         String          d_colourPropertyName;   //!< name of property to fetch colours from.
-        bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
         String          d_vertFormatPropertyName;   //!< name of property to fetch vertical formatting setting from.
         String          d_horzFormatPropertyName;   //!< name of property to fetch horizontal formatting setting from.
     };

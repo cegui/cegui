@@ -41,8 +41,7 @@ namespace CEGUI
     // Static string holding parent link identifier
     static const String S_parentIdentifier("__parent__");
     SectionSpecification::SectionSpecification() :
-        d_usingColourOverride(false),
-        d_colourProperyIsRect(false)
+        d_usingColourOverride(false)
     {}
 
     SectionSpecification::SectionSpecification(const String& owner,
@@ -53,7 +52,6 @@ namespace CEGUI
         d_owner(owner),
         d_sectionName(sectionName),
         d_usingColourOverride(false),
-        d_colourProperyIsRect(false),
         d_renderControlProperty(controlPropertySource),
         d_renderControlValue(controlPropertyValue),
         d_renderControlWidget(controlPropertyWidget)
@@ -69,7 +67,6 @@ namespace CEGUI
         d_sectionName(sectionName),
         d_coloursOverride(cols),
         d_usingColourOverride(true),
-        d_colourProperyIsRect(false),
         d_renderControlProperty(controlPropertySource),
         d_renderControlValue(controlPropertyValue),
         d_renderControlWidget(controlPropertyWidget)
@@ -201,11 +198,6 @@ namespace CEGUI
         }
     }
 
-    void SectionSpecification::setOverrideColoursPropertyIsColourRect(bool setting)
-    {
-        d_colourProperyIsRect = setting;
-    }
-
     const String& SectionSpecification::getRenderControlPropertySource() const
     {
         return d_renderControlProperty;
@@ -238,11 +230,7 @@ namespace CEGUI
             // output modulative colours for this section
             if (!d_colourPropertyName.empty())
             {
-                if (d_colourProperyIsRect)
-                    xml_stream.openTag("ColourRectProperty");
-                else
-                    xml_stream.openTag("ColourProperty");
-
+                xml_stream.openTag("ColourRectProperty");
                 xml_stream.attribute("name", d_colourPropertyName)
                     .closeTag();
             }

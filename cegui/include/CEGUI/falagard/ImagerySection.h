@@ -225,19 +225,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Set whether the master colours property source represents a full ColourRect.
-
-        \param setting
-            - true if the master colours property will access a ColourRect object.
-            - false if the master colours property will access a colour object.
-
-        \return
-            Nothing.
-        */
-        void setMasterColoursPropertyIsColourRect(bool setting = true);
-
-        /*!
-        \brief
             Return smallest Rect that could contain all imagery within this section.
         */
         Rectf getBoundingRect(const Window& wnd) const;
@@ -287,7 +274,6 @@ namespace CEGUI
         ImageryList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
         TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
         String              d_colourPropertyName;   //!< name of property to fetch colours from.
-        bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
 
     public:
         typedef ConstVectorIterator<ImageryList> ImageryComponentIterator;

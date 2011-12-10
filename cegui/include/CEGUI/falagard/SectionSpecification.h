@@ -253,19 +253,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Set whether the override colours property source represents a full ColourRect.
-
-        \param setting
-            - true if the override colours property will access a ColourRect object.
-            - false if the override colours property will access a colour object.
-
-        \return
-            Nothing.
-        */
-        void setOverrideColoursPropertyIsColourRect(bool setting = true);
-
-        /*!
-        \brief
             Get the name of the property that controls whether to actually
             render this section.
 
@@ -382,7 +369,6 @@ namespace CEGUI
         ColourRect      d_coloursOverride;      //!< Colours to use when override is enabled.
         bool            d_usingColourOverride;  //!< true if colour override is enabled.
         String          d_colourPropertyName;   //!< name of property to fetch colours from.
-        bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
         //! Name of a property to control whether to draw this section.
         String d_renderControlProperty;
         //! Comparison value to test against d_renderControlProperty.
