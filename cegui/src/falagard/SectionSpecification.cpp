@@ -40,7 +40,10 @@ namespace CEGUI
 
     // Static string holding parent link identifier
     static const String S_parentIdentifier("__parent__");
-
+    SectionSpecification::SectionSpecification() :
+        d_usingColourOverride(false),
+        d_colourProperyIsRect(false)
+    {}
 
     SectionSpecification::SectionSpecification(const String& owner,
                                                const String& sectionName,
@@ -164,6 +167,11 @@ namespace CEGUI
         d_usingColourOverride = setting;
     }
 
+    const String& SectionSpecification::getOverrideColoursPropertySource() const
+    {
+        return d_colourPropertyName;
+    }
+
     void SectionSpecification::setOverrideColoursPropertySource(const String& property)
     {
         d_colourPropertyName = property;
@@ -183,20 +191,8 @@ namespace CEGUI
         // if override comes via a colour property
         else if (!d_colourPropertyName.empty())
         {
-            // if property accesses a ColourRect
-            if (d_colourProperyIsRect)
-            {
-                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
-            }
-            // property accesses a colour
-            else
-            {
-                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
-                cr.d_top_left     = val;
-                cr.d_top_right    = val;
-                cr.d_bottom_left  = val;
-                cr.d_bottom_right = val;
-            }
+            // if property accesses a ColourRect or a colour
+            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
         }
         // override is an explicitly defined ColourRect.
         else
@@ -208,6 +204,11 @@ namespace CEGUI
     void SectionSpecification::setOverrideColoursPropertyIsColourRect(bool setting)
     {
         d_colourProperyIsRect = setting;
+    }
+
+    const String& SectionSpecification::getRenderControlPropertySource() const
+    {
+        return d_renderControlProperty;
     }
 
     void SectionSpecification::setRenderControlPropertySource(const String& property)
@@ -291,9 +292,21 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
+const String& SectionSpecification::getRenderControlValue() const
+{
+    return d_renderControlValue;
+}
+
+//----------------------------------------------------------------------------//
 void SectionSpecification::setRenderControlValue(const String& value)
 {
     d_renderControlValue = value;
+}
+
+//----------------------------------------------------------------------------//
+const String& SectionSpecification::getRenderControlWidget() const
+{
+    return d_renderControlWidget;
 }
 
 //----------------------------------------------------------------------------//
