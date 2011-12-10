@@ -68,6 +68,10 @@ namespace CEGUI
         return d_layerPriority;
     }
 
+    void LayerSpecification::setLayerPriority(uint priority)
+    {
+        d_layerPriority = priority;
+    }
     bool LayerSpecification::operator<(const LayerSpecification& other) const
     {
         return d_layerPriority < other.d_layerPriority;
@@ -89,4 +93,9 @@ namespace CEGUI
         xml_stream.closeTag();
     }
 
+    LayerSpecification::SectionIterator
+    LayerSpecification::getSectionIterator() const
+    {
+        return SectionIterator(d_sections.begin(), d_sections.end());
+    }
 } // End of  CEGUI namespace section
