@@ -459,12 +459,51 @@ private:
 
     // functions to populate containers with collections of objects that we
     // gain through inheritence.
-    void appendChildWidgetComponents(WidgetComponentPtrMap& map) const;
-    void appendPropertyDefinitions(PropertyDefinitionPtrMap& map) const;
-    void appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map) const;
-    void appendPropertyInitialisers(PropertyInitialiserPtrMap& map) const;
-    void appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map) const;
-    void appendAnimationNames(AnimationNameSet& set) const;
+    void appendChildWidgetComponents(WidgetComponentPtrMap& map, bool inherits = true) const;
+    void appendPropertyDefinitions(PropertyDefinitionPtrMap& map, bool inherits = true) const;
+    void appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map, bool inherits = true) const;
+    void appendPropertyInitialisers(PropertyInitialiserPtrMap& map, bool inherits = true) const;
+    void appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map, bool inherits = true) const;
+    void appendAnimationNames(AnimationNameSet& set, bool inherits = true) const;
+public:
+    /*************************************************************************
+        Iterator stuff
+    *************************************************************************/
+
+    typedef std::set<String, StringFastLessCompare
+            CEGUI_SET_ALLOC(String)> StringSet;
+
+
+    typedef ConstMapIterator<StateList> StateIterator;
+    typedef ConstMapIterator<ImageryList> ImageryIterator;
+    typedef ConstMapIterator<NamedAreaList> NamedAreaIterator;
+    typedef ConstMapIterator<WidgetComponentPtrMap> WidgetComponentIterator;
+    typedef ConstMapIterator<PropertyDefinitionPtrMap> PropertyDefinitionIterator;
+    typedef ConstMapIterator<PropertyLinkDefinitionPtrMap> PropertyLinkDefinitionIterator;
+    typedef ConstMapIterator<PropertyInitialiserPtrMap> PropertyInitialiserIterator;
+    typedef ConstMapIterator<EventLinkDefinitionPtrMap> EventLinkDefinitionIterator;
+    typedef ConstVectorIterator<AnimationNameSet> AnimationNameIterator;
+
+    StringSet getStateNames(bool inherits = false) const;
+    StringSet getImageryNames(bool inherits = false) const;
+    StringSet getNamedAreaNames(bool inherits = false) const;
+
+    StringSet getWidgetNames(bool inherits = false) const;
+    StringSet getPropertyDefinitionNames(bool inherits = false) const;
+    StringSet getPropertyLinkDefinitionNames(bool inherits = false) const;
+    StringSet getPropertyInitialiserNames(bool inherits = false) const;
+    StringSet getEventLinkDefinitionNames(bool inherits = false) const;
+    StringSet getAnimationNames(bool inherits = false) const;
+
+    StateIterator getStateIterator(bool inherits = false) const;
+    ImageryIterator getImageryIterator(bool inherits = false) const;
+    NamedAreaIterator getNamedAreaIterator(bool inherits = false) const;
+    WidgetComponentIterator getWidgetComponentIterator(bool inherits = false) const;
+    PropertyDefinitionIterator getPropertyDefinitionIterator(bool inherits = false) const;
+    PropertyLinkDefinitionIterator getPropertyLinkDefinitionIterator(bool inherits = false) const;
+    PropertyInitialiserIterator getPropertyInitialiserIterator(bool inherits = false) const;
+    EventLinkDefinitionIterator getEventLinkDefinitionIterator(bool inherits = false) const;
+    AnimationNameIterator getAnimationNameIterator(bool inherits = false) const;
 };
 
 } // End of  CEGUI namespace section
