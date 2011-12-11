@@ -29,6 +29,7 @@
 #define _CEGUIFalEventLinkDefinition_h_
 
 #include "../String.h"
+#include "../IteratorBase.h"
 
 #include <vector>
 
@@ -57,6 +58,8 @@ public:
     //! clean this event from \a window.
     void cleanUpWidget(Window& window) const;
 
+
+    void setName(const String& name);
     //! return the name of the Event defined here.
     const String& getName() const;
 
@@ -65,24 +68,18 @@ protected:
     Window* getTargetWindow(Window& start_wnd,
                             const String& name) const;
 
-    //! Internal struct used to keep track of target events.
-    struct Target
-    {
-        //! name of the target widget.
-        String d_widgetName;
-        //! the event to link with on the target widget.
-        String d_targetEvent;
-    };
-
     //! String holding the name of the event being defined
     String d_eventName;
 
+    typedef std::pair<String,String> StringPair;
     //! type used for the collection of target events.
-    typedef std::vector<Target
-        CEGUI_VECTOR_ALLOC(Target)> LinkTargetCollection;
+    typedef std::vector<StringPair CEGUI_VECTOR_ALLOC(StringPair)> LinkTargetCollection;
 
     //! collection of targets for this EventLinkDefinition.
     LinkTargetCollection d_targets;
+public:
+    typedef ConstVectorIterator<LinkTargetCollection> LinkTargetIterator;
+    LinkTargetIterator getLinkTargetIterator() const;
 };
 
 } // End of  CEGUI namespace section
