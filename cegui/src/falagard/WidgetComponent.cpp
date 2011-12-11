@@ -221,4 +221,10 @@ namespace CEGUI
         return 0;
     }
 
+
+    WidgetComponent::PropertyIterator WidgetComponent::getPropertyIterator() const
+    {
+        return PropertyIterator(d_properties.begin(),d_properties.end());
+    }
+
 } // End of  CEGUI namespace section
