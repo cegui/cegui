@@ -65,7 +65,7 @@ namespace CEGUI
         const LinkTargetCollection::const_iterator i(d_targets.begin());
 
         const Window* const target_wnd =
-            getTargetWindow(receiver, (*i).d_widgetName);
+            getTargetWindow(receiver, i->first);
 
         // if no target, or target (currently) invalid, return the default value
         if (d_targets.empty() || !target_wnd)
@@ -73,9 +73,9 @@ namespace CEGUI
 
         // otherwise return the value of the property for first target, since
         // this is considered the 'master' target for get operations.
-        return target_wnd->getProperty((*i).d_targetProperty.empty() ?
+        return target_wnd->getProperty(i->second.empty() ?
                                                 d_name :
-                                                (*i).d_targetProperty);
+                                                i->second);
     }
 
     void PropertyLinkDefinition::set(PropertyReceiver* receiver, const String& value)
@@ -83,14 +83,13 @@ namespace CEGUI
         LinkTargetCollection::iterator i = d_targets.begin();
         for ( ; i != d_targets.end(); ++i)
         {
-            Window* target_wnd = getTargetWindow(receiver,
-                                                 (*i).d_widgetName);
+            Window* target_wnd = getTargetWindow(receiver, i->first);
 
             // only try to set property if target is currently valid.
             if (target_wnd)
-                target_wnd->setProperty((*i).d_targetProperty.empty() ?
+                target_wnd->setProperty(i->second.empty() ?
                                                 d_name :
-                                                (*i).d_targetProperty, value);
+                                                i->second, value);
         }
 
         // base handles things like ensuring redraws and such happen
@@ -103,7 +102,7 @@ namespace CEGUI
             return static_cast<const Window*>(receiver);
 
         return getTargetWindow(receiver,
-                               (*d_targets.begin()).d_widgetName);
+                               d_targets.begin()->first);
     }
 
     Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver)
@@ -116,8 +115,7 @@ namespace CEGUI
     void PropertyLinkDefinition::addLinkTarget(const String& widget,
                                                const String& property)
     {
-        const LinkTarget t = { widget, property };
-        d_targets.push_back(t);
+        d_targets.push_back(std::make_pair(widget,property));
     }
 
     void PropertyLinkDefinition::clearLinkTargets()
@@ -166,11 +164,11 @@ namespace CEGUI
         // if there is one target only, write it out as attributes
         if (d_targets.size() == 1)
         {
-            if (!(*i).d_widgetName.empty())
-                xml_stream.attribute("widget", (*i).d_widgetName);
+            if (!i->first.empty())
+                xml_stream.attribute("widget", i->first);
 
-            if (!(*i).d_targetProperty.empty())
-                xml_stream.attribute("targetProperty", (*i).d_targetProperty);
+            if (!i->second.empty())
+                xml_stream.attribute("targetProperty", i->second);
         }
         // we have multiple targets, so write them as PropertyLinkTarget tags
         else
@@ -179,11 +177,11 @@ namespace CEGUI
             {
                 xml_stream.openTag("PropertyLinkTarget");
 
-                if (!(*i).d_widgetName.empty())
-                    xml_stream.attribute("widget", (*i).d_widgetName);
+                if (!i->first.empty())
+                    xml_stream.attribute("widget", i->first);
 
-                if (!(*i).d_targetProperty.empty())
-                    xml_stream.attribute("property", (*i).d_targetProperty);
+                if (!i->second.empty())
+                    xml_stream.attribute("property", i->second);
 
                 xml_stream.closeTag();
             }
@@ -197,11 +195,17 @@ bool PropertyLinkDefinition::isTargetProperty(const String& widget,
     LinkTargetCollection::const_iterator i = d_targets.begin();
     for (; i != d_targets.end(); ++i)
     {
-        if (property == (*i).d_targetProperty && widget == (*i).d_widgetName)
+        if (property == i->second && widget == i->first)
             return true;
     }
 
     return false;
 }
+//----------------------------------------------------------------------------//
 
+PropertyLinkDefinition::LinkTargetIterator
+PropertyLinkDefinition::getLinkTargetIterator() const
+{
+    return LinkTargetIterator(d_targets.begin(),d_targets.end());
+}
 } // End of  CEGUI namespace section

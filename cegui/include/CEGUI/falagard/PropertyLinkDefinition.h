@@ -29,6 +29,8 @@
 #define _CEGUIFalPropertyLinkDefinition_h_
 
 #include "./PropertyDefinitionBase.h"
+#include "../IteratorBase.h"
+
 #include <vector>
 
 #if defined (_MSC_VER)
@@ -94,21 +96,18 @@ namespace CEGUI
         Window* getTargetWindow(PropertyReceiver* receiver,
                                 const String& name);
 
-        //! Internal struct used to keep track of targets.
-        struct LinkTarget
-        {
-            //! name of the target widget.
-            String d_widgetName;
-            //! the property to use on the target widget.
-            String d_targetProperty;
-        };
-
+        typedef std::pair<String,String> StringPair;
         //! type used for the collection of targets.
-        typedef std::vector<LinkTarget
-            CEGUI_VECTOR_ALLOC(LinkTarget)> LinkTargetCollection;
+        typedef std::vector<StringPair CEGUI_VECTOR_ALLOC(StringPair)> LinkTargetCollection;
 
         //! collection of targets for this PropertyLinkDefinition.
         LinkTargetCollection d_targets;
+    public:
+        typedef ConstVectorIterator<LinkTargetCollection> LinkTargetIterator;
+
+        LinkTargetIterator getLinkTargetIterator() const;
+
+
     };
 
 } // End of  CEGUI namespace section
