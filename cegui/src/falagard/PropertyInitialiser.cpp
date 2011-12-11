@@ -48,11 +48,20 @@ namespace CEGUI
         {}
     }
 
+    void PropertyInitialiser::setTargetPropertyName(const String& name)
+    {
+        d_propertyName = name;
+    }
+
     const String& PropertyInitialiser::getTargetPropertyName() const
     {
         return d_propertyName;
     }
 
+    void PropertyInitialiser::setInitialiserValue(const String& value)
+    {
+        d_propertyValue = value;
+    }
     const String& PropertyInitialiser::getInitialiserValue() const
     {
         return d_propertyValue;
