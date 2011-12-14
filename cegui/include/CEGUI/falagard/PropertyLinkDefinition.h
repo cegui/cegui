@@ -49,7 +49,7 @@ namespace CEGUI
     class CEGUIEXPORT PropertyLinkDefinition : public PropertyDefinitionBase
     {
     public:
-        PropertyLinkDefinition(const String& propertyName, const String& widgetName, const String& targetProperty, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+        PropertyLinkDefinition(const String& propertyName, const String& widgetName, const String& targetProperty, const String& initialValue, const String& origin, bool redrawOnWrite, bool layoutOnWrite);
 
         //! add a new link target to \a property on \a widget (name).
         void addLinkTarget(const String& widget, const String& property);

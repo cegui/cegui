@@ -37,11 +37,12 @@ namespace CEGUI
 {
     PropertyDefinition::PropertyDefinition(const String& name,
                                            const String& initialValue,
+                                           const String& origin,
                                            bool redrawOnWrite,
                                            bool layoutOnWrite)
       : PropertyDefinitionBase(name,
                                "Falagard custom property definition - gets/sets a named user string.",
-                               initialValue, redrawOnWrite,
+                               initialValue, origin, redrawOnWrite,
                                layoutOnWrite),
         d_userStringName(name + "_fal_auto_prop__")
     {
@@ -50,9 +51,10 @@ namespace CEGUI
     PropertyDefinition::PropertyDefinition(const String& name,
                                            const String& initialValue,
                                            const String& help,
+                                           const String& origin,
                                            bool redrawOnWrite,
                                            bool layoutOnWrite)
-        : PropertyDefinitionBase(name, help, initialValue, redrawOnWrite,
+        : PropertyDefinitionBase(name, help, initialValue, origin, redrawOnWrite,
                                  layoutOnWrite),
           d_userStringName(name + "_fal_auto_prop__")
     {

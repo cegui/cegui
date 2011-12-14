@@ -42,7 +42,7 @@ namespace CEGUI
     class CEGUIEXPORT PropertyDefinitionBase : public Property
     {
     public:
-        PropertyDefinitionBase(const String& name, const String& help, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+        PropertyDefinitionBase(const String& name, const String& help, const String& initialValue, const String& origin, bool redrawOnWrite, bool layoutOnWrite);
 
         /*!
         \brief
