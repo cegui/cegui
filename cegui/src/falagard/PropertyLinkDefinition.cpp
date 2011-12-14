@@ -42,6 +42,7 @@ namespace CEGUI
                                 const String& widgetName,
                                 const String& targetProperty,
                                 const String& initialValue,
+                                const String& origin,
                                 bool redrawOnWrite,
                                 bool layoutOnWrite)
 
@@ -51,6 +52,7 @@ namespace CEGUI
                                      "defined on one or more child windows, or "
                                      "the parent window.",
                                  initialValue,
+                                 origin,
                                  redrawOnWrite,
                                  layoutOnWrite)
     {

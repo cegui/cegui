@@ -45,11 +45,11 @@ namespace CEGUI
             This version of the constructor is deprecated in favour of the
             version taking a help string.
         */
-        PropertyDefinition(const String& name, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
+        PropertyDefinition(const String& name, const String& initialValue, const String& origin, bool redrawOnWrite, bool layoutOnWrite);
 
         //! Constructor.
         PropertyDefinition(const String& name, const String& initialValue,
-                           const String& help, bool redrawOnWrite,
+                           const String& help, const String& origin, bool redrawOnWrite,
                            bool layoutOnWrite);
 
         // abstract members from Property

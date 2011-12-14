@@ -754,6 +754,7 @@ namespace CEGUI
             attributes.getValueAsString(HelpStringAttribute,
                                         "Falagard custom property definition - "
                                         "gets/sets a named user string."),
+            d_widgetlook->getName(),
             attributes.getValueAsBool(RedrawOnWriteAttribute, false),
             attributes.getValueAsBool(LayoutOnWriteAttribute, false)
         );
@@ -779,6 +780,7 @@ namespace CEGUI
             widget,
             target,
             attributes.getValueAsString(InitialValueAttribute),
+            d_widgetlook->getName(),
             attributes.getValueAsBool(RedrawOnWriteAttribute, false),
             attributes.getValueAsBool(LayoutOnWriteAttribute, false)
         );

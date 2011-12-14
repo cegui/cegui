@@ -34,10 +34,11 @@ namespace CEGUI
     PropertyDefinitionBase::PropertyDefinitionBase(const String& name,
                                                    const String& help,
                                                    const String& initialValue,
+                                                   const String& origin,
                                                    bool redrawOnWrite,
                                                    bool layoutOnWrite)
 
-      : Property(name, help, initialValue),
+      : Property(name, help, initialValue, true, "Unknown", origin),
         d_writeCausesRedraw(redrawOnWrite),
         d_writeCausesLayout(layoutOnWrite)
     {
