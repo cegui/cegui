@@ -282,7 +282,7 @@ public:
     \return
         Nothing.
     */
-    void addPropertyDefinition(const PropertyDefinition& propdef);
+    void addPropertyDefinition(Property* propdef);
 
     /*!
     \brief
@@ -294,7 +294,7 @@ public:
     \return
         Nothing.
     */
-    void addPropertyLinkDefinition(const PropertyLinkDefinition& propdef);
+    void addPropertyLinkDefinition(Property* propdef);
 
     /*!
     \brief
@@ -367,10 +367,10 @@ public:
     /** Typedefs for property related lists. */
     typedef std::vector<PropertyInitialiser
         CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertyList;
-    typedef std::vector<PropertyDefinition
-        CEGUI_VECTOR_ALLOC(PropertyDefinition)> PropertyDefinitionList;
-    typedef std::vector<PropertyLinkDefinition
-        CEGUI_VECTOR_ALLOC(PropertyLinkDefinition)> PropertyLinkDefinitionList;
+    typedef std::vector<Property*
+        CEGUI_VECTOR_ALLOC(Property*)> PropertyDefinitionList;
+    typedef std::vector<Property*
+        CEGUI_VECTOR_ALLOC(Property*)> PropertyLinkDefinitionList;
 
     /** Obtains list of properties definitions.
      * @access public
@@ -446,10 +446,10 @@ private:
     // objects that come via inheritence.
     typedef std::map<String, const WidgetComponent*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, const WidgetComponent*)> WidgetComponentPtrMap;
-    typedef std::map<String, PropertyDefinition*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyDefinition*)> PropertyDefinitionPtrMap;
-    typedef std::map<String, PropertyLinkDefinition*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, PropertyLinkDefinition*)> PropertyLinkDefinitionPtrMap;
+    typedef std::map<String, Property*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, Property*)> PropertyDefinitionPtrMap;
+    typedef std::map<String, Property*, StringFastLessCompare
+        CEGUI_MAP_ALLOC(String, Property*)> PropertyLinkDefinitionPtrMap;
     typedef std::map<String, const PropertyInitialiser*, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, const PropertyInitialiser*)> PropertyInitialiserPtrMap;
     typedef std::map<String, const EventLinkDefinition*, StringFastLessCompare

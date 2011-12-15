@@ -39,7 +39,7 @@ namespace CEGUI
 {
 
     // Static string holding parent link identifier
-    static const String S_parentIdentifier("__parent__");
+    const String S_parentIdentifier("__parent__");
     SectionSpecification::SectionSpecification() :
         d_usingColourOverride(false)
     {}

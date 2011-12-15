@@ -29,6 +29,8 @@
 #   include "config.h"
 #endif
 
+#include "CEGUI/ColourRect.h"
+
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
@@ -45,6 +47,14 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
+
+#include "CEGUI/elements/Thumb.h"
+#include "CEGUI/elements/TabControl.h"
+#include "CEGUI/elements/Spinner.h"
+#include "CEGUI/elements/ItemListBase.h"
+#include "CEGUI/elements/ListHeaderSegment.h"
+#include "CEGUI/elements/MultiColumnList.h"
+
 #include <sstream>
 
 // Start of CEGUI namespace section
@@ -741,25 +751,101 @@ namespace CEGUI
         CEGUI_LOGINSANE("-----> Creating named area: " + d_namedArea->getName());
     }
 
+typedef std::pair<float,float> Range;
+
+#define eachType(m) \
+if(type == "Colour")\
+    m(Colour)\
+else if(type == "ColourRect")\
+    m(ColourRect)\
+else if(type == "UBox")\
+    m(UBox)\
+else if(type == "URect")\
+    m(URect)\
+else if(type == "USize")\
+    m(USize)\
+else if(type == "UDim")\
+    m(UDim)\
+else if(type == "UVector2")\
+    m(UVector2)\
+else if(type == "Sizef")\
+    m(Sizef)\
+else if(type == "Vector2f")\
+    m(Vector2f)\
+else if(type == "Vector3f")\
+    m(Vector3f)\
+else if(type == "Rectf")\
+    m(Rectf)\
+else if(type == "Font*")\
+    m(Font*)\
+else if(type == "Image*")\
+    m(Image*)\
+else if(type == "Quaternion")\
+    m(Quaternion)\
+else if(type == "AspectMode")\
+    m(AspectMode)\
+else if(type == "HorizontalAlignment")\
+    m(HorizontalAlignment)\
+else if(type == "VerticalAlignment")\
+    m(VerticalAlignment)\
+else if(type == "HorizontalTextFormatting")\
+    m(HorizontalTextFormatting)\
+else if(type == "VerticalTextFormatting")\
+    m(VerticalTextFormatting)\
+else if(type == "WindowUpdateMode")\
+    m(WindowUpdateMode)\
+else if(type == "bool")\
+    m(bool)\
+else if(type == "uint")\
+    m(uint)\
+else if(type == "unsigned long")\
+    m(unsigned long)\
+else if(type == "uint")\
+    m(uint)\
+else if(type == "int")\
+    m(int)\
+else if(type == "float")\
+    m(float)\
+else if(type == "double")\
+    m(double)\
+else if(type == "TabPanePosition")\
+    m(TabControl::TabPanePosition)\
+else if(type == "TextInputMode")\
+    m(Spinner::TextInputMode)\
+else if(type == "SortMode")\
+    m(ItemListBase::SortMode)\
+else if(type == "SortDirection")\
+    m(ListHeaderSegment::SortDirection)\
+else if(type == "SelectionMode")\
+    m(MultiColumnList::SelectionMode)\
+else if(type == "std::pair<float,float>")\
+    m(Range)\
+else\
+    m(String)
+
+
     /*************************************************************************
         Method that handles the opening PropertyDefinition XML element.
     *************************************************************************/
     void Falagard_xmlHandler::elementPropertyDefinitionStart(const XMLAttributes& attributes)
     {
         assert(d_widgetlook);
+        Property* prop;
+        const String name(attributes.getValueAsString(NameAttribute));
+        const String init(attributes.getValueAsString(InitialValueAttribute));
+        const String help(attributes.getValueAsString(HelpStringAttribute,
+                                "Falagard custom property definition - "
+                                "gets/sets a named user string."));
+        const String type(attributes.getValueAsString(TypeAttribute,"Generic"));
+        bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
+        bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
 
-        PropertyDefinition prop(
-            attributes.getValueAsString(NameAttribute),
-            attributes.getValueAsString(InitialValueAttribute),
-            attributes.getValueAsString(HelpStringAttribute,
-                                        "Falagard custom property definition - "
-                                        "gets/sets a named user string."),
-            d_widgetlook->getName(),
-            attributes.getValueAsBool(RedrawOnWriteAttribute, false),
-            attributes.getValueAsBool(LayoutOnWriteAttribute, false)
-        );
+        #define propertyDefinitionStartfunc(T) prop = CEGUI_NEW_AO PropertyDefinition<T>(name, init, help, d_widgetlook->getName(), redraw, layout);
 
-        CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
+        eachType(propertyDefinitionStartfunc)
+
+
+        CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop->getName() + " Default Value: " + init);
 
         d_widgetlook->addPropertyDefinition(prop);
     }
@@ -774,19 +860,22 @@ namespace CEGUI
 
         const String widget(attributes.getValueAsString(WidgetAttribute));
         const String target(attributes.getValueAsString(TargetPropertyAttribute));
+        const String name(attributes.getValueAsString(NameAttribute));
+        const String init(attributes.getValueAsString(InitialValueAttribute));
+        const String type(attributes.getValueAsString(TypeAttribute,"Generic"));
 
-        d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition(
-            attributes.getValueAsString(NameAttribute),
-            widget,
-            target,
-            attributes.getValueAsString(InitialValueAttribute),
-            d_widgetlook->getName(),
-            attributes.getValueAsBool(RedrawOnWriteAttribute, false),
-            attributes.getValueAsBool(LayoutOnWriteAttribute, false)
-        );
+        bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
+        bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
+
+        #define propertyLinkDefinitionStartfunc(T) \
+                d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<T>(\
+                    name, widget, target, init, d_widgetlook->getName(), redraw, layout\
+                );
+
+        eachType(propertyLinkDefinitionStartfunc)
 
         CEGUI_LOGINSANE("-----> Adding PropertyLinkDefiniton. Name: " +
-                        d_propertyLink->getName());
+                        name);
 
         if (!widget.empty() || !target.empty())
         {
@@ -1103,12 +1192,10 @@ namespace CEGUI
     void Falagard_xmlHandler::elementPropertyLinkDefinitionEnd()
     {
         assert(d_propertyLink);
-        d_widgetlook->addPropertyLinkDefinition(*d_propertyLink);
+        d_widgetlook->addPropertyLinkDefinition(d_propertyLink);
 
         CEGUI_LOGINSANE("<----- End of PropertyLinkDefiniton. Name: " +
                         d_propertyLink->getName());
-
-        CEGUI_DELETE_AO d_propertyLink;
         d_propertyLink = 0;
     }
 
@@ -1121,7 +1208,14 @@ namespace CEGUI
         
         if (!w.empty() || !p.empty())
         {
-            d_propertyLink->addLinkTarget(w, p);
+            const String type(d_propertyLink->getDataType());
+
+
+            #define propertyLinkTargetStartfunc(T) \
+                    dynamic_cast<PropertyLinkDefinition<T>* >(d_propertyLink)->addLinkTarget(w, p);
+
+            eachType(propertyLinkTargetStartfunc)
+
             CEGUI_LOGINSANE("-------> Adding link target to property: " + p +
                         " on widget: " + w);
         }
