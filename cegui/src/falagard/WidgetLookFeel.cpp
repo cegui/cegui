@@ -188,7 +188,6 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
         widget.setProperty(pldi->first,
                            pldi->second->getDefault(&widget));
     }
-
     // apply properties to the parent window
     PropertyInitialiserPtrMap pim;
     appendPropertyInitialisers(pim);
@@ -367,7 +366,7 @@ void WidgetLookFeel::layoutChildWidgets(const Window& owner) const
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::addPropertyDefinition(const PropertyDefinition& propdef)
+void WidgetLookFeel::addPropertyDefinition(Property* propdef)
 {
     d_propertyDefinitions.push_back(propdef);
 }
@@ -379,8 +378,7 @@ void WidgetLookFeel::clearPropertyDefinitions()
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::addPropertyLinkDefinition(
-                            const PropertyLinkDefinition& propdef)
+void WidgetLookFeel::addPropertyLinkDefinition(Property* propdef)
 {
     d_propertyLinkDefinitions.push_back(propdef);
 }
@@ -538,7 +536,7 @@ WidgetLookFeel::getPropertyDefinitionNames(bool inherits) const
         i != d_propertyDefinitions.end();
         ++i)
     {
-        result.insert(i->getName());
+        result.insert((*i)->getName());
     }
     if (!d_inheritedLookName.empty() && inherits)
     {
@@ -567,7 +565,7 @@ WidgetLookFeel::getPropertyLinkDefinitionNames(bool inherits) const
         i != d_propertyLinkDefinitions.end();
         ++i)
     {
-        result.insert(i->getName());
+        result.insert((*i)->getName());
     }
     if (!d_inheritedLookName.empty() && inherits)
     {
@@ -682,7 +680,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
              curr != d_propertyDefinitions.end();
              ++curr)
         {
-            (*curr).writeXMLToStream(xml_stream);
+            (*curr)->writeXMLToStream(0, xml_stream);
         }
     }
 
@@ -692,7 +690,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
              curr != d_propertyLinkDefinitions.end();
              ++curr)
         {
-            (*curr).writeXMLToStream(xml_stream);
+            (*curr)->writeXMLToStream(0, xml_stream);
         }
     }
 
@@ -829,7 +827,7 @@ void WidgetLookFeel::appendPropertyDefinitions(PropertyDefinitionPtrMap& map, bo
          i != d_propertyDefinitions.end();
          ++i)
     {
-        map[(*i).getName()] = &(*i);
+        map[(*i)->getName()] = (*i);
     }
 
 }
@@ -845,7 +843,7 @@ void WidgetLookFeel::appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap&
          i != d_propertyLinkDefinitions.end();
          ++i)
     {
-        map[(*i).getName()] = &(*i);
+        map[(*i)->getName()] = (*i);
     }
 }
 

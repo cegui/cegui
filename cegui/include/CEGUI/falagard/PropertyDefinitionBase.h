@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalPropertyDefinitionBase_h_
 #define _CEGUIFalPropertyDefinitionBase_h_
 
-#include "../Property.h"
+#include "../TypedProperty.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -39,11 +39,18 @@ namespace CEGUI
         available on all widgets that use the WidgetLook that the property
         definition is a part of.
     */
-    class CEGUIEXPORT PropertyDefinitionBase : public Property
+    template <typename T>
+    class PropertyDefinitionBase : public TypedProperty<T>
     {
     public:
-        PropertyDefinitionBase(const String& name, const String& help, const String& initialValue, const String& origin, bool redrawOnWrite, bool layoutOnWrite);
-
+        typedef typename TypedProperty<T>::Helper Helper;
+        PropertyDefinitionBase(const String& name, const String& help, const String& initialValue,
+                const String& origin, bool redrawOnWrite, bool layoutOnWrite)
+        : TypedProperty<T>(name, help, origin, Helper::fromString(initialValue)),
+                d_writeCausesRedraw(redrawOnWrite),
+                d_writeCausesLayout(layoutOnWrite)
+                {}
+        virtual ~PropertyDefinitionBase() {}
         /*!
         \brief
             Sets the value of the property.
@@ -64,7 +71,7 @@ namespace CEGUI
 
         \exception InvalidRequestException  Thrown when the Property was unable to interpret the content of \a value.
         */
-        void set(PropertyReceiver* receiver, const String& value);
+//        void set(PropertyReceiver* receiver, const String& value);
 
         /*!
         \brief
@@ -78,9 +85,26 @@ namespace CEGUI
         \return
             Nothing.
         */
-        virtual void writeXMLToStream(XMLSerializer& xml_stream) const;
+        virtual void writeXMLToStream(const CEGUI::PropertyReceiver*, XMLSerializer& xml_stream) const
+        {
+            // write out the element type
+            writeXMLElementType(xml_stream);
+            // write attributes
+            writeXMLAttributes(xml_stream);
+            // close tag
+            xml_stream.closeTag();
+        }
 
     protected:
+        virtual void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
+        {
+            if (d_writeCausesLayout)
+                static_cast<Window*>(receiver)->performChildWindowLayout();
+
+            if (d_writeCausesRedraw)
+                static_cast<Window*>(receiver)->invalidate();
+        }
+
         /*!
         \brief
             Write out the text of the XML element type.  Note that you should
@@ -103,7 +127,20 @@ namespace CEGUI
         \param xml_stream
             Stream where xml data should be output.
         */
-        virtual void writeXMLAttributes(XMLSerializer& xml_stream) const;
+        virtual void writeXMLAttributes(XMLSerializer& xml_stream) const
+        {
+           // write the name of the property
+           xml_stream.attribute("name", TypedProperty<T>::d_name);
+           // write initial value, if any
+           if (!TypedProperty<T>::d_default.empty())
+               xml_stream.attribute("initialValue", TypedProperty<T>::d_default);
+           // write option to redraw when property is written
+           if (d_writeCausesRedraw)
+               xml_stream.attribute("redrawOnWrite", "true");
+           // write option to loayout children when property is written
+           if (d_writeCausesLayout)
+               xml_stream.attribute("layoutOnWrite", "true");
+         }
 
         bool d_writeCausesRedraw;
         bool d_writeCausesLayout;

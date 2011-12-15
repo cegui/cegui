@@ -433,7 +433,7 @@ public:
 
     static const String& getDataTypeName()
     {
-        static String type("SortMode");
+        static String type("TextInputMode");
 
         return type;
     }
