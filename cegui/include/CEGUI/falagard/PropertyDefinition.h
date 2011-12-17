@@ -45,8 +45,8 @@ template <typename T>
 
         //! Constructor.
         PropertyDefinition(const String& name, const String& initialValue,
-                           const String& help, const String& origin, bool redrawOnWrite,
-                           bool layoutOnWrite)
+                           const String& help, const String& origin,
+                           bool redrawOnWrite = false, bool layoutOnWrite = false)
         : PropertyDefinitionBase<T>(name, help, initialValue, origin, redrawOnWrite,
                                    layoutOnWrite),
             d_userStringName(name + "_fal_auto_prop__")
@@ -85,7 +85,7 @@ template <typename T>
                 return Helper::fromString(TypedProperty<T>::d_default);
             }
         }
-        void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
+        virtual void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
         {
             static_cast<Window*>(receiver)->setUserString(d_userStringName, Helper::toString(value));
             PropertyDefinitionBase<T>::setNative_impl(receiver, value);

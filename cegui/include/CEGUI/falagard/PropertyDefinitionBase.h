@@ -45,7 +45,7 @@ namespace CEGUI
     public:
         typedef typename TypedProperty<T>::Helper Helper;
         PropertyDefinitionBase(const String& name, const String& help, const String& initialValue,
-                const String& origin, bool redrawOnWrite, bool layoutOnWrite)
+                const String& origin, bool redrawOnWrite = false, bool layoutOnWrite = false)
         : TypedProperty<T>(name, help, origin, Helper::fromString(initialValue)),
                 d_writeCausesRedraw(redrawOnWrite),
                 d_writeCausesLayout(layoutOnWrite)
@@ -93,6 +93,20 @@ namespace CEGUI
             writeXMLAttributes(xml_stream);
             // close tag
             xml_stream.closeTag();
+        }
+
+        bool isRedrawOnWrite() {
+            return d_writeCausesRedraw;
+        }
+        void setRedrawOnWrite(bool value) {
+            d_writeCausesRedraw = value;
+        }
+
+        bool isLayoutOnWrite() {
+            return d_writeCausesLayout;
+        }
+        void setLayoutOnWrite(bool value) {
+            d_writeCausesLayout = value;
         }
 
     protected:
