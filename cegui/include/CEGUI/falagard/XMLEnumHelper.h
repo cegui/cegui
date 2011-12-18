@@ -35,6 +35,135 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+
+template<>
+class PropertyHelper<VerticalFormatting>
+{
+public:
+    typedef VerticalFormatting return_type;
+    typedef return_type safe_method_return_type;
+    typedef VerticalFormatting pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("VerticalFormatting");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "CentreAligned")
+        {
+            return VF_CENTRE_ALIGNED;
+        }
+        else if (str == "BottomAligned")
+        {
+            return VF_BOTTOM_ALIGNED;
+        }
+        else if (str == "Tiled")
+        {
+            return VF_TILED;
+        }
+        else if (str == "Stretched")
+        {
+            return VF_STRETCHED;
+        }
+        else
+        {
+            return VF_TOP_ALIGNED;
+        }
+
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        switch (val)
+        {
+        case VF_BOTTOM_ALIGNED:
+            return String("BottomAligned");
+            break;
+        case VF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        case VF_TILED:
+            return String("Tiled");
+            break;
+        case VF_STRETCHED:
+            return String("Stretched");
+            break;
+        default:
+            return String("TopAligned");
+            break;
+        }
+    }
+};
+
+
+template<>
+class PropertyHelper<HorizontalFormatting>
+{
+public:
+    typedef HorizontalFormatting return_type;
+    typedef return_type safe_method_return_type;
+    typedef HorizontalFormatting pass_type;
+    typedef String string_return_type;
+
+    static const String& getDataTypeName()
+    {
+        static String type("HorizontalFormatting");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        if (str == "CentreAligned")
+        {
+            return HF_CENTRE_ALIGNED;
+        }
+        else if (str == "RightAligned")
+        {
+            return HF_RIGHT_ALIGNED;
+        }
+        else if (str == "Tiled")
+        {
+            return HF_TILED;
+        }
+        else if (str == "Stretched")
+        {
+            return HF_STRETCHED;
+        }
+        else
+        {
+            return HF_LEFT_ALIGNED;
+        }
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        switch (val)
+        {
+        case HF_RIGHT_ALIGNED:
+            return String("RightAligned");
+            break;
+        case HF_CENTRE_ALIGNED:
+            return String("CentreAligned");
+            break;
+        case HF_TILED:
+            return String("Tiled");
+            break;
+        case HF_STRETCHED:
+            return String("Stretched");
+            break;
+        default:
+            return String("LeftAligned");
+            break;
+        }
+    }
+};
     /*!
     \brief
         Utility helper class primarily intended for use by the falagard xml parser.

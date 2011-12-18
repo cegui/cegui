@@ -832,6 +832,10 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<ListHeaderSegment::SortDirection>(name, init, help, d_widgetlook->getName(), redraw, layout);
         else if(type == "SelectionMode")
             prop = CEGUI_NEW_AO PropertyDefinition<MultiColumnList::SelectionMode>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "VerticalFormatting")
+            prop = CEGUI_NEW_AO PropertyDefinition<VerticalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "HorizontalFormatting")
+            prop = CEGUI_NEW_AO PropertyDefinition<HorizontalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
         else if(type == "std::pair<float,float>")
             prop = CEGUI_NEW_AO PropertyDefinition<std::pair<float,float> >(name, init, help, d_widgetlook->getName(), redraw, layout);
         else
@@ -967,6 +971,14 @@ namespace CEGUI
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
                     MultiColumnList::SelectionMode>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout);
+        else if (type == "VerticalFormatting")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<VerticalFormatting>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw, layout
+            );
+        else if (type == "HorizontalFormatting")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<HorizontalFormatting>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw, layout
+            );
         else if (type == "std::pair<float,float>")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Range>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout);
@@ -1376,6 +1388,10 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<ListHeaderSegment::SortDirection>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "SelectionMode")
                 dynamic_cast<PropertyLinkDefinition<MultiColumnList::SelectionMode>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "VerticalFormatting")
+                dynamic_cast<PropertyLinkDefinition<VerticalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "HorizontalFormatting")
+                dynamic_cast<PropertyLinkDefinition<HorizontalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "std::pair<float,float>")
                 dynamic_cast<PropertyLinkDefinition<Range>* >(d_propertyLink)->addLinkTarget(w, p);
             else
