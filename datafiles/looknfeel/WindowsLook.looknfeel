@@ -6,10 +6,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Button">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -296,10 +296,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Checkbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -400,9 +400,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/SystemButton">
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
@@ -619,10 +619,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Combobox">
-        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF000000" />
-        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FFFFFFFF" />
-        <PropertyLinkDefinition name="ActiveEditSelectionColour" widget="__auto_editbox__" targetProperty="ActiveSelectionColour" initialValue="FF607FFF" />
-        <PropertyLinkDefinition name="InactiveEditSelectionColour" widget="__auto_editbox__" targetProperty="InactiveSelectionColour" initialValue="FF808080" />
+        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF000000" type="ColourRect"/>
+        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FFFFFFFF" type="ColourRect"/>
+        <PropertyLinkDefinition name="ActiveEditSelectionColour" widget="__auto_editbox__" targetProperty="ActiveSelectionColour" initialValue="FF607FFF" type="ColourRect"/>
+        <PropertyLinkDefinition name="InactiveEditSelectionColour" widget="__auto_editbox__" targetProperty="InactiveSelectionColour" initialValue="FF808080" type="ColourRect"/>
         <Child  type="WindowsLook/Editbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -668,11 +668,11 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Editbox">
-        <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" redrawOnWrite="true" />
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>
@@ -769,8 +769,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/FrameWindow">
-        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF000000" />
-        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" />
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF000000" type="ColourRect"/>
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
         <Property name="NSSizingCursorImage" value="WindowsLook/MouseNoSoCursor" />
         <Property name="EWSizingCursorImage" value="WindowsLook/MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="WindowsLook/MouseNwSeCursor" />
@@ -1162,8 +1162,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/IconButton">
-        <PropertyDefinition name="IconImage" redrawOnWrite="true" />
-        <PropertyDefinition name="IconColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="IconImage" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="IconColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="icon">
             <ImageryComponent>
@@ -1456,10 +1456,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/ListboxItem">
-		<PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
-		<PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-		<PropertyDefinition name="SelectionBrush" initialValue="WindowsLook/Background" redrawOnWrite="true" />
-		<PropertyDefinition name="SelectionColour" initialValue="FF3030FF" redrawOnWrite="true" />
+		<PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="SelectionBrush" initialValue="WindowsLook/Background" redrawOnWrite="true" type="Image*"/>
+		<PropertyDefinition name="SelectionColour" initialValue="FF3030FF" redrawOnWrite="true" type="ColourRect"/>
 		<Property name="Selectable" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />
 		<NamedArea name="ContentSize">
@@ -1557,8 +1557,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Menubar">
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" redrawOnWrite="true" />
-        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" />
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" type="float"/>
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -1638,12 +1638,12 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/MenuItem">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverColour" initialValue="FFA7C7FF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedColour" initialValue="FF87A7DF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedOffColour" initialValue="7F87A7DF" redrawOnWrite="true" />
-        <PropertyDefinition name="OpenedColour" initialValue="FFEFEFEF" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverColour" initialValue="FFA7C7FF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedColour" initialValue="FF87A7DF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedOffColour" initialValue="7F87A7DF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="OpenedColour" initialValue="FFEFEFEF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ContentSize">
             <Area>
@@ -2210,11 +2210,11 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/MultiLineEditbox">
-        <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" />
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" type="ColourRect"/>
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar" />
         <Property name="SelectionBrushImage" value="WindowsLook/Background" />
         <NamedArea name="TextArea">
@@ -2359,8 +2359,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/PopupMenu">
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFF4F3F5 tr:FFF2F2FF bl:FFF4F3F5 br:FFF4F3F5" redrawOnWrite="true" />
-        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" />
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFF4F3F5 tr:FFF2F2FF bl:FFF4F3F5 br:FFF4F3F5" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" type="float"/>
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -2556,10 +2556,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/RadioButton">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -3554,11 +3554,11 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Static">
-		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" />
-        <PropertyDefinition name="TextPadding" initialValue="0" redrawOnWrite="true" />
-        <PropertyDefinition name="HorzFormatting" initialValue="LeftAligned" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" />
+		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="TextPadding" initialValue="0" redrawOnWrite="true" type="float"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="LeftAligned" redrawOnWrite="true" type="HorzFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VertFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="label">
@@ -3647,11 +3647,11 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/StaticImage">
-		<PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" />
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" />
+		<PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="image_withframe">
@@ -3757,8 +3757,8 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/StaticText">
-        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" />
+        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
@@ -3973,11 +3973,11 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/TabButton">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000010" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000010" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -4400,7 +4400,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Titlebar">
-        <PropertyDefinition name="CaptionColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="CaptionColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
