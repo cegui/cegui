@@ -161,10 +161,13 @@ namespace CEGUI
         \brief
             Return the name of the WidgetLookFeel object containing the target section.
 
-        \return
+        \param name
             String object holding the name of the WidgetLookFeel that contains the target ImagerySection.
+
+        \return
+            Nothing.
         */
-        void getOwnerWidgetLookFeel(const String& owner);
+        void setOwnerWidgetLookFeel(const String& owner);
 
         /*!
         \brief

@@ -144,6 +144,17 @@ namespace CEGUI
         return d_sectionName;
     }
 
+
+    void SectionSpecification::setOwnerWidgetLookFeel(const String& owner)
+    {
+        d_owner = owner;
+    }
+
+    void SectionSpecification::setSectionName(const String& name)
+    {
+        d_sectionName = name;
+    }
+
     const ColourRect& SectionSpecification::getOverrideColours() const
     {
         return d_coloursOverride;
