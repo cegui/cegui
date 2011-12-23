@@ -244,6 +244,10 @@ namespace CEGUI
         WidgetLookList  d_widgetLooks;
 
         static String d_defaultResourceGroup;   //!< holds default resource group
+    public:
+        typedef ConstMapIterator<WidgetLookList> WidgetLookIterator;
+        WidgetLookIterator getWidgetLookIterator() const;
+
     };
 
 } // End of  CEGUI namespace section

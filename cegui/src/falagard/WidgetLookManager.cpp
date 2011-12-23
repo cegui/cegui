@@ -223,4 +223,11 @@ namespace CEGUI
         xml.closeTag();
     }
 
+    WidgetLookManager::WidgetLookIterator
+    WidgetLookManager::getWidgetLookIterator() const
+    {
+        return WidgetLookIterator(d_widgetLooks.begin(),d_widgetLooks.end());
+    }
+
+
 } // End of  CEGUI namespace section
