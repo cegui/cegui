@@ -121,6 +121,16 @@ void register_TextComponent_class(){
                     *\n" );
         
         }
+        { //::CEGUI::TextComponent::getHorizontalTextExtent
+        
+            typedef float ( ::CEGUI::TextComponent::*getHorizontalTextExtent_function_type )(  ) const;
+            
+            TextComponent_exposer.def( 
+                "getHorizontalTextExtent"
+                , getHorizontalTextExtent_function_type( &::CEGUI::TextComponent::getHorizontalTextExtent )
+                , "! return the horizontal pixel extent of the formatted rendered string.\n" );
+        
+        }
         { //::CEGUI::TextComponent::getText
         
             typedef ::CEGUI::String const & ( ::CEGUI::TextComponent::*getText_function_type )(  ) const;
@@ -182,6 +192,16 @@ void register_TextComponent_class(){
                     @return\n\
                         One of the VerticalTextFormatting enumerated values.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getVerticalTextExtent
+        
+            typedef float ( ::CEGUI::TextComponent::*getVerticalTextExtent_function_type )(  ) const;
+            
+            TextComponent_exposer.def( 
+                "getVerticalTextExtent"
+                , getVerticalTextExtent_function_type( &::CEGUI::TextComponent::getVerticalTextExtent )
+                , "! return the vertical pixel extent of the formatted rendered string.\n" );
         
         }
         { //::CEGUI::TextComponent::isFontFetchedFromProperty
