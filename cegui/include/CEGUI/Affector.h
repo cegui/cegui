@@ -83,6 +83,15 @@ public:
 
     /*!
     \brief
+    	Retrieves the parent animation of this keyframe
+    */
+    inline Animation* getParent() const
+    {
+    	return d_parent;
+    }
+
+    /*!
+    \brief
         Sets the application method
 
     \par
