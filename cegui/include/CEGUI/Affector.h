@@ -177,6 +177,12 @@ public:
 
     /*!
     \brief
+        Checks whether there is a key frame at given position
+    */
+    bool hasKeyFrameAtPosition(float position) const;
+
+    /*!
+    \brief
         Retrieves a KeyFrame with given index
     */
     KeyFrame* getKeyFrameAtIdx(size_t index) const;

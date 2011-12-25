@@ -193,6 +193,20 @@ void register_Affector_class(){
             *\n" );
         
         }
+        { //::CEGUI::Affector::hasKeyFrameAtPosition
+        
+            typedef bool ( ::CEGUI::Affector::*hasKeyFrameAtPosition_function_type )( float ) const;
+            
+            Affector_exposer.def( 
+                "hasKeyFrameAtPosition"
+                , hasKeyFrameAtPosition_function_type( &::CEGUI::Affector::hasKeyFrameAtPosition )
+                , ( bp::arg("position") )
+                , "*!\n\
+            \n\
+                Checks whether there is a key frame at given position\n\
+            *\n" );
+        
+        }
         { //::CEGUI::Affector::moveKeyFrameToPosition
         
             typedef void ( ::CEGUI::Affector::*moveKeyFrameToPosition_function_type )( ::CEGUI::KeyFrame *,float ) ;

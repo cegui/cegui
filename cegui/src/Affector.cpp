@@ -160,6 +160,12 @@ KeyFrame* Affector::getKeyFrameAtPosition(float position) const
 }
 
 //----------------------------------------------------------------------------//
+bool Affector::hasKeyFrameAtPosition(float position) const
+{
+	return d_keyFrames.find(position) != d_keyFrames.end();
+}
+
+//----------------------------------------------------------------------------//
 KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
 {
     if (index >= d_keyFrames.size())
@@ -183,6 +189,16 @@ size_t Affector::getNumKeyFrames() const
 //----------------------------------------------------------------------------//
 void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
 {
+	if (keyframe->getPosition() == newPosition)
+		return;
+
+    if (d_keyFrames.find(newPosition) != d_keyFrames.end())
+    {
+        CEGUI_THROW(InvalidRequestException(
+                    "Affector::moveKeyFrameToPosition: There is already a key frame at "
+        		    "position: "+ PropertyHelper<float>::toString(newPosition) + "."));
+	}
+
     for (KeyFrameMap::iterator it = d_keyFrames.begin(); it != d_keyFrames.end(); ++it)
     {
         if (it->second == keyframe)
