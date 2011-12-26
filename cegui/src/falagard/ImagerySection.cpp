@@ -102,6 +102,16 @@ namespace CEGUI
         d_images.push_back(img);
     }
 
+    void ImagerySection::removeImageryComponent(const ImageryComponent& img)
+    {
+        for(ImageryList::iterator image = d_images.begin();
+                image < d_images.end();
+            ++image)
+            if(image->getImage() == img.getImage())
+                d_images.erase(image);
+    }
+
+
     void ImagerySection::clearImageryComponents()
     {
         d_images.clear();
@@ -111,6 +121,17 @@ namespace CEGUI
     {
         d_texts.push_back(text);
     }
+
+    void ImagerySection::removeTextComponent(const TextComponent& text)
+    {
+        for(TextList::iterator t = d_texts.begin();
+                t < d_texts.end();
+            ++t)
+            if(t->getText() == text.getText() &&
+                    t->getFont() == text.getFont())
+                d_texts.erase(t);
+    }
+
 
     void ImagerySection::clearTextComponents()
     {
@@ -125,6 +146,24 @@ namespace CEGUI
     void ImagerySection::addFrameComponent(const FrameComponent& frame)
     {
         d_frames.push_back(frame);
+    }
+
+    void ImagerySection::removeFrameComponent(const FrameComponent& frame)
+    {
+        for(FrameList::iterator f = d_frames.begin();
+                f < d_frames.end();
+            ++f)
+        {
+            bool result = true;
+
+            for(uint i = 0; i < FIC_FRAME_IMAGE_COUNT && result;++i)
+            {
+                result &= frame.getImage(FrameImageComponent(i)) == f->getImage(FrameImageComponent(i));
+            }
+            if(result)
+                d_frames.erase(f);
+
+        }
     }
 
     const ColourRect& ImagerySection::getMasterColours() const

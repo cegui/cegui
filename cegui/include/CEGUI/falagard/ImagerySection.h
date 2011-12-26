@@ -108,7 +108,7 @@ namespace CEGUI
             Nothing
         */
         void addImageryComponent(const ImageryComponent& img);
-
+        void removeImageryComponent(const ImageryComponent& img);
         /*!
         \brief
             Clear all ImageryComponents from this ImagerySection.
@@ -129,7 +129,7 @@ namespace CEGUI
             Nothing
         */
         void addTextComponent(const TextComponent& text);
-
+        void removeTextComponent(const TextComponent& text);
         /*!
         \brief
             Clear all TextComponents from this ImagerySection.
@@ -159,6 +159,7 @@ namespace CEGUI
             Nothing
         */
         void addFrameComponent(const FrameComponent& frame);
+        void removeFrameComponent(const FrameComponent& frame);
 
         /*!
         \brief
