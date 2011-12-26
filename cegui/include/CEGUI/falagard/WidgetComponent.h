@@ -81,6 +81,7 @@ namespace CEGUI
         void setHorizontalWidgetAlignment(HorizontalAlignment alignment);
 
         void addPropertyInitialiser(const PropertyInitialiser& initialiser);
+        void removePropertyInitialiser(const String& name);
         void clearPropertyInitialisers();
 
         void layout(const Window& owner) const;
