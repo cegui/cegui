@@ -30,6 +30,23 @@ void register_AnimationInstance_class(){
                 *\n" );
         
         }
+        { //::CEGUI::AnimationInstance::apply
+        
+            typedef void ( ::CEGUI::AnimationInstance::*apply_function_type )(  ) ;
+            
+            AnimationInstance_exposer.def( 
+                "apply"
+                , apply_function_type( &::CEGUI::AnimationInstance::apply )
+                , "*!\n\
+                \n\
+                  Applies this animation instance\n\
+            \n\
+                \n\
+                  You should not need to use this directly unless your requirements are very special.\n\
+                  CEGUI calls this automatically in most cases.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::AnimationInstance::getDefinition
         
             typedef ::CEGUI::Animation * ( ::CEGUI::AnimationInstance::*getDefinition_function_type )(  ) const;
