@@ -260,6 +260,11 @@ size_t AnimationManager::getNumAnimations() const
 //----------------------------------------------------------------------------//
 AnimationInstance* AnimationManager::instantiateAnimation(Animation* animation)
 {
+	if (!animation)
+	{
+		CEGUI_THROW(InvalidRequestException("AnimationManager::instantiateAnimation - I refuse to instantiate NULL animation, please provide a valid pointer."));
+	}
+
     AnimationInstance* ret = CEGUI_NEW_AO AnimationInstance(animation);
     d_animationInstances.insert(std::make_pair(animation, ret));
 
