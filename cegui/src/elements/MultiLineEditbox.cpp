@@ -1136,9 +1136,9 @@ void MultiLineEditbox::handlePageDown(uint sysKeys)
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
     size_t newline = caretLine + nbLine;
-    if (d_lines.size() > 0)
+    if (!d_lines.empty())
     {
-        newline = newline < d_lines.size() - 1 ? newline : d_lines.size() -1;
+        newline = std::min(newline,d_lines.size() - 1);
     }
     setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
     if (sysKeys & Shift)
