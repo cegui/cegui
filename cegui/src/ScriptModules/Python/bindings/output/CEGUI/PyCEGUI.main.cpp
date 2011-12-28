@@ -30,8 +30,6 @@
 
 #include "BasicRenderedStringParser.pypp.hpp"
 
-#include "BidiVisualMapping.pypp.hpp"
-
 #include "BoundSlot.pypp.hpp"
 
 #include "ButtonBase.pypp.hpp"
@@ -356,8 +354,6 @@
 
 #include "StdPairFloatFloat.pypp.hpp"
 
-#include "StrIndexList.pypp.hpp"
-
 #include "Subscriber.pypp.hpp"
 
 #include "System.pypp.hpp"
@@ -535,8 +531,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     
     CEGUI_String_from_python();
 
-    register_StrIndexList_class();
-
     register_vector_less__CEGUI_scope_UDim__greater__class();
 
     register_LBItemList_class();
@@ -586,8 +580,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_RenderedStringParser_class();
 
     register_BasicRenderedStringParser_class();
-
-    register_BidiVisualMapping_class();
 
     register_BoundSlot_class();
 

@@ -15,13 +15,6 @@ void register_enumerations(){
         .export_values()
         ;
 
-    bp::enum_< CEGUI::BidiCharType>("BidiCharType")
-        .value("BCT_RIGHT_TO_LEFT", CEGUI::BCT_RIGHT_TO_LEFT)
-        .value("BCT_LEFT_TO_RIGHT", CEGUI::BCT_LEFT_TO_RIGHT)
-        .value("BCT_NEUTRAL", CEGUI::BCT_NEUTRAL)
-        .export_values()
-        ;
-
     bp::enum_< CEGUI::BlendMode>("BlendMode")
         .value("BM_INVALID", CEGUI::BM_INVALID)
         .value("BM_NORMAL", CEGUI::BM_NORMAL)
