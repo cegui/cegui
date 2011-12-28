@@ -85,7 +85,7 @@ Texture* FreeImageImageCodec::load(const RawDataContainer& data, Texture* result
 
     CEGUI_TRY
     {
-        mem = FreeImage_OpenMemory((BYTE*)data.getDataPtr(), len);
+        mem = FreeImage_OpenMemory(static_cast<BYTE*>(const_cast<uint8*>(data.getDataPtr())), len);
         if (mem == 0)
             CEGUI_THROW(MemoryException("Unable to open memory stream, FreeImage_OpenMemory failed"));
 
