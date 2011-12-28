@@ -406,7 +406,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
              curr != d_propertyDefinitions.end();
              ++curr)
         {
-            (*curr).writeXMLToStream(xml_stream);
+            (*curr).writeXMLToStream(0, xml_stream);
         }
     }
 
@@ -416,7 +416,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
              curr != d_propertyLinkDefinitions.end();
              ++curr)
         {
-            (*curr).writeXMLToStream(xml_stream);
+            (*curr).writeXMLToStream(0, xml_stream);
         }
     }
 
