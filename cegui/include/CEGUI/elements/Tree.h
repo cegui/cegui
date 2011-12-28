@@ -32,6 +32,7 @@
 #include "../Window.h"
 #include "../WindowManager.h"
 #include "./TreeItem.h"
+#include "./Scrollbar.h"
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -621,7 +622,7 @@ protected:
         Pointer to a Scrollbar to be used for scrolling the tree vertically.
      */
     virtual Scrollbar* createVertScrollbar(const String& name) const
-        { return (Scrollbar*)getChild(name); }
+        { return static_cast<Scrollbar*>(getChild(name)); }
 
     /*!
      \brief
@@ -635,7 +636,7 @@ protected:
         Pointer to a Scrollbar to be used for scrolling the tree horizontally.
      */
     virtual Scrollbar* createHorzScrollbar(const String& name) const
-        { return (Scrollbar*)getChild(name); }
+        { return static_cast<Scrollbar*>(getChild(name)); }
 
     /*!
      \brief
