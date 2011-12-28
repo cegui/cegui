@@ -99,7 +99,7 @@ def excludeAllPrivate(cls):
 def addStringConverters(mb):
     mb.add_declaration_code(
 """
-struct CEGUI_String_to_python
+struct CEGUI_String_to_python : public boost::python::converter::expected_from_python_type<CEGUI::String>
 {
     static PyObject* convert(const CEGUI::String& s)
     {
@@ -123,7 +123,8 @@ struct CEGUI_String_from_python
       boost::python::converter::registry::push_back(
         &convertible,
         &construct,
-        boost::python::type_id<CEGUI::String>());
+        boost::python::type_id<CEGUI::String>(),
+        &boost::python::converter::expected_from_python_type<CEGUI::String>::get_pytype);
     }
     
     static void* convertible(PyObject* obj_ptr)
@@ -177,7 +178,8 @@ struct CEGUI_String_from_python
 """
 boost::python::to_python_converter<
     CEGUI::String,
-    CEGUI_String_to_python>();
+    CEGUI_String_to_python,
+    true>();
 
 CEGUI_String_from_python();
 """, tail = False # force converters to be there first
