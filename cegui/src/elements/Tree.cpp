@@ -1076,7 +1076,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     
     if (e.button == LeftButton)
     {
-        bool modified = false;
+        //bool modified = false;
         
         Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
@@ -1085,7 +1085,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
         
         if (item != 0)
         {
-            modified = true;
+            //modified = true;
             TreeEventArgs args(this);
             args.treeItem = item;
             populateGeometryBuffer();
