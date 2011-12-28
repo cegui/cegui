@@ -840,8 +840,8 @@ protected:
     LBItemList d_listItems;
     //! holds pointer to the last selected item (used in range selections)
     TreeItem* d_lastSelected;
-    ImagerySection* d_openButtonImagery;
-    ImagerySection* d_closeButtonImagery;
+    const ImagerySection* d_openButtonImagery;
+    const ImagerySection* d_closeButtonImagery;
 
 private:
     /*************************************************************************
