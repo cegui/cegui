@@ -56,9 +56,9 @@ MenuItem::MenuItem(const String& type, const String& name)
       d_opened(false),
       d_popupClosing(false),
       d_popupOpening(false),
-      d_popup(0),
       d_autoPopupTimeout(0.0f),
-      d_autoPopupTimeElapsed(0.0f)
+      d_autoPopupTimeElapsed(0.0f),
+      d_popup(0)
 {
     // menuitems dont want multi-click events
     setWantsMultiClickEvents(false);
