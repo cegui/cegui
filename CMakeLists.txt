@@ -447,3 +447,42 @@ add_subdirectory(datafiles)
 if (CEGUI_BUILD_TESTS)
     add_subdirectory(tests)
 endif()
+
+################################################################################
+# CPack (mostly for source tarballs)
+################################################################################
+set(CPACK_PACKAGE_DESCRIPTION_SUMMARY "Crazy Eddie's Gui System")
+set(CPACK_PACKAGE_VENDOR "CEGUI team")
+set(CPACK_PACKAGE_DESCRIPTION_FILE "${CMAKE_SOURCE_DIR}/doc/README")
+set(CPACK_RESOURCE_FILE_LICENSE "${CMAKE_SOURCE_DIR}/doc/COPYING")
+set(CPACK_PACKAGE_VERSION_MAJOR "${CEGUI_VERSION_MAJOR}")
+set(CPACK_PACKAGE_VERSION_MINOR "${CEGUI_VERSION_MINOR}")
+set(CPACK_PACKAGE_VERSION_PATCH "${CEGUI_VERSION_PATCH}")
+
+set(CPACK_SOURCE_GENERATOR TBZ2 ZIP)
+
+set(CPACK_SOURCE_PACKAGE_FILE_NAME "cegui-${CEGUI_VERSION}" CACHE INTERNAL "tarball basename")
+
+set(CPACK_SOURCE_IGNORE_FILES
+# repository history should not be in source tarballs
+"\\\\.hg.*"
+# most likely not needed in the tarball
+"promo/"
+"cppcheck-output"
+"perform-cppcheck"
+
+# the rest is modelled after .hgignore
+"build/"
+"~$"
+
+"Thumbs.db"
+"\\\\.directory"
+
+"\\\\.kdev4"
+"\\\\.settings"
+"\\\\.project"
+"\\\\.cproject"
+"\\\\.pydevproject"
+)
+
+include(CPack)
