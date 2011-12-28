@@ -772,7 +772,7 @@ void Tree::configureScrollbars(void)
     //
     
     float itemHeight;
-    if (d_listItems.size() > 0)
+    if (!d_listItems.empty())
         itemHeight = d_listItems[0]->getPixelSize().d_height;
     else
         itemHeight = 10;
@@ -795,7 +795,7 @@ void Tree::configureScrollbars(void)
 void Tree::selectRange(size_t start, size_t end)
 {
     // only continue if list has some items
-    if (d_listItems.size() > 0)
+    if (!d_listItems.empty())
     {
         // if start is out of range, start at begining.
         if (start > d_listItems.size())
@@ -1076,7 +1076,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     
     if (e.button == LeftButton)
     {
-        bool modified = false;
+        //bool modified = false;
         
         Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
@@ -1085,7 +1085,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
         
         if (item != 0)
         {
-            modified = true;
+            //modified = true;
             TreeEventArgs args(this);
             args.treeItem = item;
             populateGeometryBuffer();
