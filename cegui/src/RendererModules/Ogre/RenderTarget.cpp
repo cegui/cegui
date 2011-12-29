@@ -47,6 +47,7 @@ OgreRenderTarget::OgreRenderTarget(OgreRenderer& owner,
     d_matrix(Ogre::Matrix3::ZERO),
     d_matrixValid(false),
     d_viewportValid(false),
+    d_viewDistance(0),
     d_ogreViewportDimensions(0, 0, 0, 0)
 {
 }
