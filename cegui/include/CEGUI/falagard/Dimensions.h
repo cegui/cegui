@@ -200,6 +200,7 @@ namespace CEGUI
     class CEGUIEXPORT AbsoluteDim : public BaseDim
     {
     public:
+        AbsoluteDim() {};
         /*!
         \brief
             Constructor.
@@ -208,13 +209,16 @@ namespace CEGUI
             float value to be assigned to the AbsoluteDim.
         */
         AbsoluteDim(float val);
-
+        /*!
+        \brief
+            Get the current value of the AbsoluteDim.
+        */
+        float getValue() const;
         /*!
         \brief
             Set the current value of the AbsoluteDim.
         */
         void setValue(float val);
-
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
@@ -236,6 +240,7 @@ namespace CEGUI
     class CEGUIEXPORT ImageDim : public BaseDim
     {
     public:
+        ImageDim() {};
         /*!
         \brief
             Constructor.
@@ -251,6 +256,15 @@ namespace CEGUI
 
         /*!
         \brief
+            Gets the source image information for this ImageDim.
+
+        \return
+            String object holding the name of the image.
+        */
+        const String& getSourceImage() const;
+
+        /*!
+        \brief
             Sets the source image information for this ImageDim.
 
         \param name
@@ -260,6 +274,16 @@ namespace CEGUI
             Nothing.
         */
         void setSourceImage(const String& name);
+
+        /*!
+        \brief
+            Gets the source dimension type for this WidgetDim.
+
+        \return
+            DimensionType value indicating which dimension of the described image that this WidgetDim
+            is to represent.
+        */
+        DimensionType getSourceDimension() const;
 
         /*!
         \brief
@@ -300,6 +324,7 @@ namespace CEGUI
     class CEGUIEXPORT WidgetDim : public BaseDim
     {
     public:
+        WidgetDim() {};
         /*!
         \brief
             Constructor.
@@ -315,6 +340,16 @@ namespace CEGUI
 
         /*!
         \brief
+            Get the name suffix to use for this WidgetDim.
+
+        \return
+            String object holding the name suffix for a window/widget.
+        */
+        const String& getWidgetName() const;
+
+
+        /*!
+        \brief
             Set the name suffix to use for this WidgetDim.
 
         \param name
@@ -324,6 +359,16 @@ namespace CEGUI
             Nothing.
         */
         void setWidgetName(const String& name);
+
+        /*!
+        \brief
+            Gets the source dimension type for this WidgetDim.
+
+        \return
+            DimensionType value indicating which dimension of the described image that this WidgetDim
+            is to represent.
+        */
+        DimensionType getSourceDimension() const;
 
         /*!
         \brief
@@ -359,6 +404,7 @@ namespace CEGUI
     class CEGUIEXPORT UnifiedDim : public BaseDim
     {
     public:
+        UnifiedDim(){};
         /*!
         \brief
             Constructor.
@@ -372,6 +418,42 @@ namespace CEGUI
             to operate against.
         */
         UnifiedDim(const UDim& value, DimensionType dim);
+
+
+        /*!
+        \brief
+            Get the current value of the UnifiedDim.
+        */
+        const UDim& getValue() const;
+        /*!
+        \brief
+            Set the current value of the UnifiedDim.
+        */
+        void setValue(const UDim& val);
+
+
+        /*!
+        \brief
+            Gets the source dimension type for this WidgetDim.
+
+        \return
+            DimensionType value indicating which dimension of the described image that this WidgetDim
+            is to represent.
+        */
+        DimensionType getSourceDimension() const;
+
+        /*!
+        \brief
+            Sets the source dimension type for this WidgetDim.
+
+        \param dim
+            DimensionType value indicating which dimension of the described image that this WidgetDim
+            is to represent.
+
+        \return
+            Nothing.
+        */
+        void setSourceDimension(DimensionType dim);
 
     protected:
         // Implementation of the base class interface
@@ -393,6 +475,7 @@ namespace CEGUI
     class CEGUIEXPORT FontDim : public BaseDim
     {
     public:
+        FontDim() {};
         /*!
         \brief
             Constructor.
@@ -416,6 +499,66 @@ namespace CEGUI
             constant pixel padding value to be added.
         */
         FontDim(const String& name, const String& font, const String& text, FontMetricType metric, float padding = 0);
+
+        /*!
+        \brief
+            Get the current name of the FontDim.
+        */
+        const String& getName() const;
+
+        /*!
+        \brief
+            Set the current name of the FontDim.
+        */
+        void setName(const String& name);
+
+        /*!
+        \brief
+            Get the current font of the FontDim.
+        */
+        const String& getFont() const;
+
+        /*!
+        \brief
+            Set the current font of the FontDim.
+        */
+        void setFont(const String& font);
+
+        /*!
+        \brief
+            Get the current text of the FontDim.
+        */
+        const String& getText() const;
+
+        /*!
+        \brief
+            Set the current text of the FontDim.
+        */
+        void setText(const String& text);
+
+        /*!
+        \brief
+            Get the current metric of the FontDim.
+        */
+        FontMetricType getMetric() const;
+
+        /*!
+        \brief
+            Set the current metric of the FontDim.
+        */
+        void setMetric(FontMetricType metric);
+
+        /*!
+        \brief
+            Get the current padding of the FontDim.
+        */
+        float getPadding() const;
+
+        /*!
+        \brief
+            Set the current padding of the FontDim.
+        */
+        void setPadding(float padding);
 
     protected:
         // Implementation of the base class interface
@@ -441,6 +584,7 @@ namespace CEGUI
     class CEGUIEXPORT PropertyDim : public BaseDim
     {
     public:
+        PropertyDim() {};
         /*!
         \brief
             Constructor.
@@ -467,6 +611,74 @@ namespace CEGUI
             to be thrown.
         */
         PropertyDim(const String& name, const String& property, DimensionType type);
+        /*!
+        \brief
+            Get the name suffix to use for this WidgetDim.
+
+        \return
+            String object holding the name suffix for a window/widget.
+        */
+        const String& getWidgetName() const;
+
+
+        /*!
+        \brief
+            Set the name suffix to use for this WidgetDim.
+
+        \param name
+            String object holding the name suffix for a window/widget.
+
+        \return
+            Nothing.
+        */
+        void setWidgetName(const String& name);
+
+        /*!
+        \brief
+            Get the name of the property to use for this WidgetDim.
+
+        \return
+            String object holding the name of the property.
+        */
+        const String& getPropertyName() const;
+
+
+        /*!
+        \brief
+            Set the name of the property to use for this WidgetDim.
+
+        \param property
+            String object holding the name of the property.
+
+        \return
+            Nothing.
+        */
+        void setPropertyName(const String& property);
+
+
+
+        /*!
+        \brief
+            Gets the source dimension type for this WidgetDim.
+
+        \return
+            DimensionType value indicating which dimension of the described image that this WidgetDim
+            is to represent.
+        */
+        DimensionType getSourceDimension() const;
+
+        /*!
+        \brief
+            Sets the source dimension type for this WidgetDim.
+
+        \param dim
+            DimensionType value indicating which dimension of the described image that this WidgetDim
+            is to represent.
+
+        \return
+            Nothing.
+        */
+        void setSourceDimension(DimensionType dim);
 
     protected:
         // Implementation of the base class interface

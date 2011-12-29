@@ -49,6 +49,8 @@ namespace CEGUI
         public AllocatedObject<SectionSpecification>
     {
     public:
+        SectionSpecification();
+
         /*!
         \brief
             Constructor
@@ -157,12 +159,35 @@ namespace CEGUI
 
         /*!
         \brief
+            Return the name of the WidgetLookFeel object containing the target section.
+
+        \param name
+            String object holding the name of the WidgetLookFeel that contains the target ImagerySection.
+
+        \return
+            Nothing.
+        */
+        void setOwnerWidgetLookFeel(const String& owner);
+
+        /*!
+        \brief
             Return the name of the target ImagerySection.
 
         \return
             String object holding the name of the target ImagerySection.
         */
         const String& getSectionName() const;
+        /*!
+        \brief
+            Return the name of the target ImagerySection.
+
+        \param name
+            String object holding the name of the target ImagerySection.
+
+        \return
+            Nothing.
+        */
+        void setSectionName(const String& name);
 
         /*!
         \brief
@@ -208,6 +233,14 @@ namespace CEGUI
             Nothing.
         */
         void setUsingOverrideColours(bool setting = true);
+        /*!
+        \brief
+            Get the name of the property where override colour values can be obtained.
+
+        \return
+            String containing the name of the property.
+        */
+        const String& getOverrideColoursPropertySource() const;
 
         /*!
         \brief
@@ -223,16 +256,13 @@ namespace CEGUI
 
         /*!
         \brief
-            Set whether the override colours property source represents a full ColourRect.
-
-        \param setting
-            - true if the override colours property will access a ColourRect object.
-            - false if the override colours property will access a colour object.
+            Get the name of the property that controls whether to actually
+            render this section.
 
         \return
-            Nothing.
+            String containing the name of the property.
         */
-        void setOverrideColoursPropertyIsColourRect(bool setting = true);
+        const String& getRenderControlPropertySource() const;
 
         /*!
         \brief
@@ -249,6 +279,19 @@ namespace CEGUI
 
         /*!
         \brief
+            Get the test value used when determining whether to render this
+            section.
+
+            The value set here will be compared to the current value of the
+            property named as the render control property, if they match the
+            secion will be drawn, otherwise the section will not be drawn.  If
+            this value is set to the empty string, the control property will
+            instead be treated as a boolean property.
+        */
+        const String& getRenderControlValue() const;
+
+        /*!
+        \brief
             Set the test value used when determining whether to render this
             section.
             
@@ -259,6 +302,22 @@ namespace CEGUI
             instead be treated as a boolean property.
         */
         void setRenderControlValue(const String& value);
+
+        /*!
+        \brief
+            Get the widget what will be used as the source of the property
+            named as the control property.
+
+            The value of this setting will be interpreted as follows:
+            - empty string: The target widget being drawn will be the source of
+              the property value.
+            - '__parent__': The parent of the widget being drawn will be the
+              source of the property value.
+            - any other value: The value will be taken as a name and
+              a child window with the specified name will be the source of the
+              property value.
+        */
+        const String& getRenderControlWidget() const;
 
         /*!
         \brief
@@ -313,7 +372,6 @@ namespace CEGUI
         ColourRect      d_coloursOverride;      //!< Colours to use when override is enabled.
         bool            d_usingColourOverride;  //!< true if colour override is enabled.
         String          d_colourPropertyName;   //!< name of property to fetch colours from.
-        bool            d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
         //! Name of a property to control whether to draw this section.
         String d_renderControlProperty;
         //! Comparison value to test against d_renderControlProperty.

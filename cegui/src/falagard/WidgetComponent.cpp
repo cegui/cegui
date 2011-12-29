@@ -149,6 +149,15 @@ namespace CEGUI
         d_properties.push_back(initialiser);
     }
 
+    void WidgetComponent::removePropertyInitialiser(const String& name)
+    {
+        for(PropertiesList::iterator i = d_properties.begin();
+                i < d_properties.end();
+                ++i)
+            if(i->getTargetPropertyName() == name)
+                d_properties.erase(i);
+    }
+
     void WidgetComponent::clearPropertyInitialisers()
     {
         d_properties.clear();
@@ -219,6 +228,12 @@ namespace CEGUI
             ++i;
         }
         return 0;
+    }
+
+
+    WidgetComponent::PropertyIterator WidgetComponent::getPropertyIterator() const
+    {
+        return PropertyIterator(d_properties.begin(),d_properties.end());
     }
 
 } // End of  CEGUI namespace section

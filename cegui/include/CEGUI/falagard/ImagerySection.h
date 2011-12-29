@@ -108,7 +108,7 @@ namespace CEGUI
             Nothing
         */
         void addImageryComponent(const ImageryComponent& img);
-
+        void removeImageryComponent(const ImageryComponent& img);
         /*!
         \brief
             Clear all ImageryComponents from this ImagerySection.
@@ -129,7 +129,7 @@ namespace CEGUI
             Nothing
         */
         void addTextComponent(const TextComponent& text);
-
+        void removeTextComponent(const TextComponent& text);
         /*!
         \brief
             Clear all TextComponents from this ImagerySection.
@@ -159,6 +159,7 @@ namespace CEGUI
             Nothing
         */
         void addFrameComponent(const FrameComponent& frame);
+        void removeFrameComponent(const FrameComponent& frame);
 
         /*!
         \brief
@@ -192,6 +193,27 @@ namespace CEGUI
 
         /*!
         \brief
+            Sets the name of this ImagerySection.
+
+        \param name
+            String object holding the name of the ImagerySection.
+
+        \return
+            Nothing.
+        */
+        void setName(const String& name);
+
+        /*!
+        \brief
+            Get the name of the property where master colour values can be obtained.
+
+        \return
+            String containing the name of the property.
+        */
+        const String& getMasterColoursPropertySource() const;
+
+        /*!
+        \brief
             Set the name of the property where master colour values can be obtained.
 
         \param property
@@ -201,19 +223,6 @@ namespace CEGUI
             Nothing.
         */
         void setMasterColoursPropertySource(const String& property);
-
-        /*!
-        \brief
-            Set whether the master colours property source represents a full ColourRect.
-
-        \param setting
-            - true if the master colours property will access a ColourRect object.
-            - false if the master colours property will access a colour object.
-
-        \return
-            Nothing.
-        */
-        void setMasterColoursPropertyIsColourRect(bool setting = true);
 
         /*!
         \brief
@@ -266,11 +275,18 @@ namespace CEGUI
         ImageryList         d_images;           //!< Collection of ImageryComponent objects to be drawn for this ImagerySection.
         TextList            d_texts;            //!< Collection of TextComponent objects to be drawn for this ImagerySection.
         String              d_colourPropertyName;   //!< name of property to fetch colours from.
-        bool                d_colourProperyIsRect;  //!< true if the colour property will fetch a full ColourRect.
 
     public:
+        typedef ConstVectorIterator<ImageryList> ImageryComponentIterator;
         typedef ConstVectorIterator<TextList> TextComponentIterator;
-
+        typedef ConstVectorIterator<FrameList> FrameComponentIterator;
+        /*!
+        \brief
+            Return a ImagerySection::ImageryComponentIterator object to iterate
+            over the ImageryComponent elements currently added to the
+            ImagerySection.
+        */
+        ImageryComponentIterator getImageryComponentIterator() const;
         /*!
         \brief
             Return a ImagerySection::TextComponentIterator object to iterate
@@ -278,6 +294,13 @@ namespace CEGUI
             ImagerySection.
         */
         TextComponentIterator getTextComponentIterator() const;
+        /*!
+        \brief
+            Return a ImagerySection::FrameComponentIterator object to iterate
+            over the FrameComponent elements currently added to the
+            ImagerySection.
+        */
+        FrameComponentIterator getFrameComponentIterator() const;
 
     };
 

@@ -81,6 +81,7 @@ namespace CEGUI
         void setHorizontalWidgetAlignment(HorizontalAlignment alignment);
 
         void addPropertyInitialiser(const PropertyInitialiser& initialiser);
+        void removePropertyInitialiser(const String& name);
         void clearPropertyInitialisers();
 
         void layout(const Window& owner) const;
@@ -112,7 +113,17 @@ namespace CEGUI
     private:
         typedef std::vector<PropertyInitialiser
             CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;
+    public:
+        /*************************************************************************
+            Iterator stuff
+        *************************************************************************/
+        typedef ConstVectorIterator<PropertiesList> PropertyIterator;
 
+        /*!
+         * Return a WidgetComponent::PropertyIterator that iterates over the PropertyInitialiser inside this WidgetComponent.
+         */
+        PropertyIterator getPropertyIterator() const;
+    private:
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
         String   d_baseType;                 //!< Type of widget to be created.
         String   d_imageryName;              //!< Name of a WidgetLookFeel to be used for the widget.

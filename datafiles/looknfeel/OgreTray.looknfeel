@@ -42,9 +42,9 @@
 :::: Titlebar
 -->
     <WidgetLook name="OgreTray/Titlebar">
-        <PropertyDefinition name="CaptionColour" initialValue="FFe5ffb2" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" />
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" />
+        <PropertyDefinition name="CaptionColour" initialValue="FFe5ffb2" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned"  type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned"  type="HorzFormatting"/>
         <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -96,8 +96,8 @@
 :::: Frame Window
 -->
     <WidgetLook name="OgreTray/FrameWindow">
-        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFe5ffb2" />
-        <PropertyLinkDefinition name="CaptionFont" widget="__auto_titlebar__" targetProperty="Font" />
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFe5ffb2" type="ColourRect"/>
+        <PropertyLinkDefinition name="CaptionFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
         <Property name="NSSizingCursorImage" value="OgreTrayImages/MouseArrow" />
         <Property name="EWSizingCursorImage" value="OgreTrayImages/MouseArrow" />
         <Property name="NWSESizingCursorImage" value="OgreTrayImages/MouseArrow" />
@@ -834,9 +834,9 @@
 :::: (Not essential, but shows something unusual!)
 -->
     <WidgetLook name="OgreTray/CaptionedStaticText">
-        <PropertyLinkDefinition name="CaptionColour" widget="__auto_caption__" targetProperty="TextColour" initialValue="FF000000" />
-        <PropertyLinkDefinition name="CaptionFont" widget="__auto_caption__" targetProperty="Font" />
-        <PropertyLinkDefinition name="CaptionText" widget="__auto_caption__" targetProperty="Text" />
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_caption__" targetProperty="TextColour" initialValue="FF000000" type="ColourRect"/>
+        <PropertyLinkDefinition name="CaptionFont" widget="__auto_caption__" targetProperty="Font" type="Font*"/>
+        <PropertyLinkDefinition name="CaptionText" widget="__auto_caption__" targetProperty="Text" type="String"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
@@ -1166,9 +1166,9 @@
 :::: Multi-purpose frame using the MiniTray imagery.
 -->
     <WidgetLook name="OgreTray/MiniTray">
-        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" />
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" />
+        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
         <ImagerySection name="frame">
             <FrameComponent>
                 <Area>
@@ -1222,10 +1222,10 @@
 :::: PushButton
 -->
     <WidgetLook name="OgreTray/PushButton">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -1411,8 +1411,8 @@
 :::: Editbox
 -->
     <WidgetLook name="OgreTray/Editbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -1526,11 +1526,11 @@
 :::: Multiline Editbox
 -->
     <WidgetLook name="OgreTray/MultiLineEditbox">
-        <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" />
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="ReadOnlyBGColour" initialValue="FFDFDFDF" type="ColourRect"/>
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="SelectionBrushImage" value="OgreTrayImages/MiniTextBoxOverM" />
         <NamedArea name="TextArea">
             <Area>
@@ -1931,8 +1931,8 @@
 :::: Combobox (standard type)
 -->
     <WidgetLook name="OgreTray/Combobox">
-        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF000000" />
-        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" />
+        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF000000" type="ColourRect"/>
+        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" type="ColourRect"/>
         <Child  type="OgreTray/Editbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
@@ -1976,8 +1976,8 @@
 :::: DropMenu - Specialised combobox: readonly with single click mode and no visible button.
 -->
     <WidgetLook name="OgreTray/DropDownMenu">
-        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF000000" />
-        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" />
+        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FF000000" type="ColourRect"/>
+        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" type="ColourRect"/>
         <Property name="ReadOnly" value="True" />
         <Property name="SingleClickMode" value="True" />
         <Child  type="OgreTray/Editbox" nameSuffix="__auto_editbox__">
@@ -2014,9 +2014,9 @@
 :::: Grouping container with a title and correct 'inner rect' content area
 -->
     <WidgetLook name="OgreTray/Group">
-        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="TopAligned" />
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" />
+        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="TopAligned" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
         <NamedArea name="inner_rect">
             <Area>
                 <Dim type="LeftEdge" >
@@ -2118,10 +2118,10 @@
 :::: Checkbox
 -->
     <WidgetLook name="OgreTray/Checkbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -2245,10 +2245,10 @@
 :::: checkbox widgetlook if we really wanted to.
 -->
     <WidgetLook name="OgreTray/RadioButton">
-        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -2440,9 +2440,9 @@
 :::: StaticImage (normal version)
 -->
     <WidgetLook name="OgreTray/StaticImage">
-        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" />
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="image_withframe">
@@ -2521,11 +2521,11 @@
 :::: StaticImage (alternate version, image /is/ background, frame overlays it slightly & blends)
 -->
     <WidgetLook name="OgreTray/AltStaticImage">
-        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" />
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" />
-        <PropertyDefinition name="FrameEnabled" initialValue="True" redrawOnWrite="true" />
-        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
+        <PropertyDefinition name="FrameEnabled" initialValue="True" redrawOnWrite="true" type="bool"/>
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image*"/>
         <ImagerySection name="image">
             <ImageryComponent>
                 <Area>
@@ -2847,8 +2847,8 @@
 :::: ListboxItem
 -->
     <WidgetLook name="OgreTray/ListboxItem">
-        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Selectable" value="True" />
         <NamedArea name="ContentSize">
             <Area>
@@ -3700,8 +3700,8 @@
 :::: MenuItem
 -->
     <WidgetLook name="OgreTray/MenuItem">
-        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedOffColour" initialValue="FF779977" redrawOnWrite="true" />
+        <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedOffColour" initialValue="FF779977" redrawOnWrite="true" type="ColourRect"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ContentSize">
             <Area>
@@ -3940,8 +3940,8 @@
 :::: Menubar
 -->
     <WidgetLook name="OgreTray/Menubar">
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" redrawOnWrite="true" />
-        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" />
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" type="uint"/>
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -4177,8 +4177,8 @@
 :::: Tab Button Pane
 -->
     <WidgetLook name="OgreTray/TabButtonPane">
-        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -4214,8 +4214,8 @@
 :::: Tab content pane
 -->
     <WidgetLook name="OgreTray/TabContentPane">
-        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
