@@ -45,8 +45,9 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
     d_effect(0),
     d_matrixValid(false)
 {
-    for(unsigned int i = 0; i < 16;++i)
-        d_matrix[i]=0.0;
+    //d_matrix does not need to be initialised here, we have d_matrixValid
+    //for(unsigned int i = 0; i < 16;++i)
+    //    d_matrix[i]=0.0;
 }
 
 //----------------------------------------------------------------------------//
