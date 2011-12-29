@@ -40,6 +40,7 @@ IrrlichtRenderTarget::IrrlichtRenderTarget(IrrlichtRenderer& owner,
     d_owner(owner),
     d_driver(driver),
     d_area(0, 0, 0, 0),
+    d_viewDistance(0),
     d_matrixValid(false),
     d_xViewDir(driver.getDriverType() != irr::video::EDT_OPENGL ? 1.0f : -1.0f)
 {
