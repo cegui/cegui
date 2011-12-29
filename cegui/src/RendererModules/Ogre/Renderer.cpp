@@ -82,6 +82,9 @@ struct OgreRenderer_impl
         d_ogreRoot(Ogre::Root::getSingletonPtr()),
         d_previousVP(0),
         d_activeBlendMode(BM_INVALID),
+        d_renderSystem(0),
+        d_defaultTarget(0),
+        d_defaultRoot(0),
         d_makeFrameControlCalls(true)
         {}
 
