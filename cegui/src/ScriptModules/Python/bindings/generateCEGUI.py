@@ -78,9 +78,10 @@ def filterDeclarations(mb):
     basicRenderedStringParser.include()
     
     # CEGUIBiDiVisualMapping.h
-    CEGUI_ns.enum("BidiCharType").include()
-    bidiVisualMapping = CEGUI_ns.class_("BidiVisualMapping")
-    bidiVisualMapping.include()
+    # Not exposed since this might be disabled at configure time
+    #CEGUI_ns.enum("BidiCharType").include()
+    #bidiVisualMapping = CEGUI_ns.class_("BidiVisualMapping")
+    #bidiVisualMapping.include()
     
     # CEGUIBoundSlot.h
     boundSlot = CEGUI_ns.class_("BoundSlot")
@@ -646,6 +647,8 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     
     window = CEGUI_ns.class_("Window")
     window.include()
+    # BidiVisualMapping is excluded from python
+    window.mem_fun("getBidiVisualMapping").exclude()
     # python doesn't like void*
     window.mem_fun("setUserData").exclude()
     window.mem_fun("getUserData").exclude()

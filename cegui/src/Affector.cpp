@@ -160,6 +160,12 @@ KeyFrame* Affector::getKeyFrameAtPosition(float position) const
 }
 
 //----------------------------------------------------------------------------//
+bool Affector::hasKeyFrameAtPosition(float position) const
+{
+	return d_keyFrames.find(position) != d_keyFrames.end();
+}
+
+//----------------------------------------------------------------------------//
 KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
 {
     if (index >= d_keyFrames.size())
@@ -183,7 +189,29 @@ size_t Affector::getNumKeyFrames() const
 //----------------------------------------------------------------------------//
 void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
 {
-    moveKeyFrameToPosition(keyframe->getPosition(), newPosition);
+	if (keyframe->getPosition() == newPosition)
+		return;
+
+    if (d_keyFrames.find(newPosition) != d_keyFrames.end())
+    {
+        CEGUI_THROW(InvalidRequestException(
+                    "Affector::moveKeyFrameToPosition: There is already a key frame at "
+        		    "position: "+ PropertyHelper<float>::toString(newPosition) + "."));
+	}
+
+    for (KeyFrameMap::iterator it = d_keyFrames.begin(); it != d_keyFrames.end(); ++it)
+    {
+        if (it->second == keyframe)
+        {
+            d_keyFrames.erase(it);
+            d_keyFrames.insert(std::make_pair(newPosition, keyframe));
+
+            keyframe->notifyPositionChanged(newPosition);
+            return;
+        }
+    }
+
+    CEGUI_THROW(UnknownObjectException("Affector::moveKeyFrameToPosition - passed key frame wasn't found within this affector"));
 }
 
 //----------------------------------------------------------------------------//
@@ -191,12 +219,7 @@ void Affector::moveKeyFrameToPosition(float oldPosition, float newPosition)
 {
     KeyFrame* kf = getKeyFrameAtPosition(oldPosition);
 
-    // no need to check for existance, getKeyFrameAtPosition already
-    // does that for us (and throws an exception when kf is not found)
-    d_keyFrames.erase(d_keyFrames.find(oldPosition));
-    d_keyFrames.insert(std::make_pair(newPosition, kf));
-
-    kf->notifyPositionChanged(newPosition);
+    moveKeyFrameToPosition(kf, newPosition);
 }
 
 //----------------------------------------------------------------------------//

@@ -223,6 +223,21 @@ void register_ImagerySection_class(){
                     *\n" );
         
         }
+        { //::CEGUI::ImagerySection::getTextComponentIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::TextComponent > > ( ::CEGUI::ImagerySection::*getTextComponentIterator_function_type )(  ) const;
+            
+            ImagerySection_exposer.def( 
+                "getTextComponentIterator"
+                , getTextComponentIterator_function_type( &::CEGUI::ImagerySection::getTextComponentIterator )
+                , "*!\n\
+            \n\
+                Return a ImagerySection.TextComponentIterator object to iterate\n\
+                over the TextComponent elements currently added to the\n\
+                ImagerySection.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::ImagerySection::initMasterColourRect
         
             typedef void ( ImagerySection_wrapper::*initMasterColourRect_function_type )( ::CEGUI::Window const &,::CEGUI::ColourRect & ) const;

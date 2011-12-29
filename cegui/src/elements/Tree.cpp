@@ -101,8 +101,8 @@ void Tree::initialise(void)
     const WidgetLookFeel &wlf = WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
     const ImagerySection &tempOpenImagery = wlf.getImagerySection("OpenTreeButton");
     const ImagerySection &tempCloseImagery = wlf.getImagerySection("CloseTreeButton");
-    d_openButtonImagery = (ImagerySection *)&tempOpenImagery;
-    d_closeButtonImagery = (ImagerySection *)&tempCloseImagery;
+    d_openButtonImagery = &tempOpenImagery;
+    d_closeButtonImagery = &tempCloseImagery;
     
     // create the component sub-widgets
     d_vertScrollbar = createVertScrollbar("__auto_vscrollbar__");

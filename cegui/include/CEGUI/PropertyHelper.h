@@ -569,10 +569,19 @@ public:
 
     static return_type fromString(const String& str)
     {
-        Quaternion val(1, 0, 0, 0);
-        sscanf(str.c_str(), " w:%g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
+        if (strchr(str.c_str(), 'w') || strchr(str.c_str(), 'W'))
+        {
+            Quaternion val(1, 0, 0, 0);
+            sscanf(str.c_str(), " w:%g x:%g y:%g z:%g", &val.d_w, &val.d_x, &val.d_y, &val.d_z);
 
-        return val;
+            return val;
+        }
+        else
+        {
+            float x, y, z;
+            sscanf(str.c_str(), " x:%g y:%g z:%g", &x, &y, &z);
+            return Quaternion::eulerAnglesDegrees(x, y, z);
+        }
     }
 
     static string_return_type toString(pass_type val)

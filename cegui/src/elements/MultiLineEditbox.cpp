@@ -760,12 +760,16 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
         
         WindowEventArgs args(this);
         onTextChanged(args);
+
+        return true;
     }
     else
     {
         // Trigger text box full event
         WindowEventArgs args(this);
         onEditboxFullEvent(args);
+
+        return false;
     }
 }
 

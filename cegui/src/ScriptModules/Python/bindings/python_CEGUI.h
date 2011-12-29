@@ -6,6 +6,30 @@
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 
+namespace boost
+{
+	/*
+	 * Workaround that allows users to inherit CEGUI classes with methods
+	 * that deal with strings (almost all classes)
+	 *
+	 * The situation:
+	 * boost python can't recognize boost::ref(const CEGUI::String&) and doesn't
+	 * auto convert it to python unicode string. This works for all types that are
+	 * registered normally (CEGUI::String is always converted, the class is unknown
+	 * in python).
+	 *
+	 * The solution:
+	 * Make an overloaded version of boost::ref that just returns what it gets.
+	 *
+	 * Is this horrible?
+	 * YES!
+	 */
+	inline const CEGUI::String& ref(const CEGUI::String& v)
+	{
+		return v;
+	}
+}
+
 namespace CEGUI
 {
 

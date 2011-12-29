@@ -1836,17 +1836,6 @@ void register_Window_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::getBidiVisualMapping
-        
-            typedef ::CEGUI::BidiVisualMapping const * ( ::CEGUI::Window::*getBidiVisualMapping_function_type )(  ) const;
-            
-            Window_exposer.def( 
-                "getBidiVisualMapping"
-                , getBidiVisualMapping_function_type( &::CEGUI::Window::getBidiVisualMapping )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "! return the pointer to the BidiVisualMapping for this window, if any.\n" );
-        
-        }
         { //::CEGUI::Window::getCaptureWindow
         
             typedef ::CEGUI::Window * ( *getCaptureWindow_function_type )(  );
