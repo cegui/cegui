@@ -41,8 +41,11 @@ const double OpenGLRenderTarget::d_yfov_tan = 0.267949192431123;
 OpenGLRenderTarget::OpenGLRenderTarget(OpenGLRenderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
+    d_viewDistance(0),
     d_matrixValid(false)
 {
+    for(unsigned int i = 0; i < 16;++i)
+        d_matrix[i]=0.0;
 }
 
 //----------------------------------------------------------------------------//
