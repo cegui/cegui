@@ -547,23 +547,19 @@ void OpenGLESRenderer::cleanupExtraStates()
 //----------------------------------------------------------------------------//
 void OpenGLESRenderer::grabTextures()
 {
-    TextureMap::iterator i = d_textures.begin();
-    while (i != d_textures.end())
-    {
+    for(TextureMap::iterator i = d_textures.begin();
+        i != d_textures.end();
+        ++i)
         i->second->grabTexture();
-        i++;
-    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLESRenderer::restoreTextures()
 {
-    TextureMap::iterator i = d_textures.begin();
-    while (i != d_textures.end())
-    {
+    for(TextureMap::iterator i = d_textures.begin();
+        i != d_textures.end();
+        ++i)
         i->second->restoreTexture();
-        i++;
-    }
 }
 
 //----------------------------------------------------------------------------//
