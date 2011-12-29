@@ -35,8 +35,7 @@
 namespace CEGUI
 {
     FalagardComponentBase::FalagardComponentBase() :
-        d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-        d_colourProperyIsRect(false)
+        d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
     {}
 
     FalagardComponentBase::~ FalagardComponentBase()
@@ -91,30 +90,13 @@ namespace CEGUI
         d_colourPropertyName = property;
     }
 
-    void FalagardComponentBase::setColoursPropertyIsColourRect(bool setting)
-    {
-        d_colourProperyIsRect = setting;
-    }
-
     void FalagardComponentBase::initColoursRect(const Window& wnd, const ColourRect* modCols, ColourRect& cr) const
     {
         // if colours come via a colour property
         if (!d_colourPropertyName.empty())
         {
-            // if property accesses a ColourRect
-            if (d_colourProperyIsRect)
-            {
-                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
-            }
-            // property accesses a colour
-            else
-            {
-                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
-                cr.d_top_left     = val;
-                cr.d_top_right    = val;
-                cr.d_bottom_left  = val;
-                cr.d_bottom_right = val;
-            }
+            // if property accesses a ColourRect or a colour
+            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
         }
         // use explicit ColourRect.
         else
@@ -129,9 +111,19 @@ namespace CEGUI
     }
 
 
+    const String& FalagardComponentBase::getVertFormattingPropertySource() const
+    {
+        return d_vertFormatPropertyName;
+    }
+
     void FalagardComponentBase::setVertFormattingPropertySource(const String& property)
     {
         d_vertFormatPropertyName = property;
+    }
+
+    const String& FalagardComponentBase::getHorzFormattingPropertySource() const
+    {
+        return d_horzFormatPropertyName;
     }
 
     void FalagardComponentBase::setHorzFormattingPropertySource(const String& property)
@@ -144,11 +136,7 @@ namespace CEGUI
 
         if (!d_colourPropertyName.empty())
         {
-            if (d_colourProperyIsRect)
-                xml_stream.openTag("ColourRectProperty");
-            else
-                xml_stream.openTag("ColourProperty");
-
+            xml_stream.openTag("ColourRectProperty");
             xml_stream.attribute("name", d_colourPropertyName)
                 .closeTag();
         }

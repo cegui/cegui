@@ -39,8 +39,10 @@ namespace CEGUI
 {
 
     // Static string holding parent link identifier
-    static const String S_parentIdentifier("__parent__");
-
+    const String S_parentIdentifier("__parent__");
+    SectionSpecification::SectionSpecification() :
+        d_usingColourOverride(false)
+    {}
 
     SectionSpecification::SectionSpecification(const String& owner,
                                                const String& sectionName,
@@ -50,7 +52,6 @@ namespace CEGUI
         d_owner(owner),
         d_sectionName(sectionName),
         d_usingColourOverride(false),
-        d_colourProperyIsRect(false),
         d_renderControlProperty(controlPropertySource),
         d_renderControlValue(controlPropertyValue),
         d_renderControlWidget(controlPropertyWidget)
@@ -66,7 +67,6 @@ namespace CEGUI
         d_sectionName(sectionName),
         d_coloursOverride(cols),
         d_usingColourOverride(true),
-        d_colourProperyIsRect(false),
         d_renderControlProperty(controlPropertySource),
         d_renderControlValue(controlPropertyValue),
         d_renderControlWidget(controlPropertyWidget)
@@ -144,6 +144,17 @@ namespace CEGUI
         return d_sectionName;
     }
 
+
+    void SectionSpecification::setOwnerWidgetLookFeel(const String& owner)
+    {
+        d_owner = owner;
+    }
+
+    void SectionSpecification::setSectionName(const String& name)
+    {
+        d_sectionName = name;
+    }
+
     const ColourRect& SectionSpecification::getOverrideColours() const
     {
         return d_coloursOverride;
@@ -162,6 +173,11 @@ namespace CEGUI
     void SectionSpecification::setUsingOverrideColours(bool setting)
     {
         d_usingColourOverride = setting;
+    }
+
+    const String& SectionSpecification::getOverrideColoursPropertySource() const
+    {
+        return d_colourPropertyName;
     }
 
     void SectionSpecification::setOverrideColoursPropertySource(const String& property)
@@ -183,20 +199,8 @@ namespace CEGUI
         // if override comes via a colour property
         else if (!d_colourPropertyName.empty())
         {
-            // if property accesses a ColourRect
-            if (d_colourProperyIsRect)
-            {
-                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
-            }
-            // property accesses a colour
-            else
-            {
-                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
-                cr.d_top_left     = val;
-                cr.d_top_right    = val;
-                cr.d_bottom_left  = val;
-                cr.d_bottom_right = val;
-            }
+            // if property accesses a ColourRect or a colour
+            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
         }
         // override is an explicitly defined ColourRect.
         else
@@ -205,9 +209,9 @@ namespace CEGUI
         }
     }
 
-    void SectionSpecification::setOverrideColoursPropertyIsColourRect(bool setting)
+    const String& SectionSpecification::getRenderControlPropertySource() const
     {
-        d_colourProperyIsRect = setting;
+        return d_renderControlProperty;
     }
 
     void SectionSpecification::setRenderControlPropertySource(const String& property)
@@ -237,11 +241,7 @@ namespace CEGUI
             // output modulative colours for this section
             if (!d_colourPropertyName.empty())
             {
-                if (d_colourProperyIsRect)
-                    xml_stream.openTag("ColourRectProperty");
-                else
-                    xml_stream.openTag("ColourProperty");
-
+                xml_stream.openTag("ColourRectProperty");
                 xml_stream.attribute("name", d_colourPropertyName)
                     .closeTag();
             }
@@ -291,9 +291,21 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
+const String& SectionSpecification::getRenderControlValue() const
+{
+    return d_renderControlValue;
+}
+
+//----------------------------------------------------------------------------//
 void SectionSpecification::setRenderControlValue(const String& value)
 {
     d_renderControlValue = value;
+}
+
+//----------------------------------------------------------------------------//
+const String& SectionSpecification::getRenderControlWidget() const
+{
+    return d_renderControlWidget;
 }
 
 //----------------------------------------------------------------------------//

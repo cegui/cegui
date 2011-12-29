@@ -71,6 +71,11 @@ namespace CEGUI
         return d_stateName;
     }
 
+    void StateImagery::setName(const String& name)
+    {
+        d_stateName = name;
+    }
+
     bool StateImagery::isClippedToDisplay() const
     {
         return d_clipToDisplay;
@@ -94,6 +99,12 @@ namespace CEGUI
             (*curr).writeXMLToStream(xml_stream);
         // write closing </StateImagery> tag
         xml_stream.closeTag();
+    }
+
+    StateImagery::LayerIterator
+    StateImagery::getLayerIterator() const
+    {
+        return LayerIterator(d_layers.begin(),d_layers.end());
     }
 
 } // End of  CEGUI namespace section

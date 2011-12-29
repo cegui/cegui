@@ -56,6 +56,18 @@ namespace CEGUI
 
         /*!
         \brief
+            set the name for this NamedArea.
+
+        \param area
+            String object holding the name of this NamedArea.
+
+        \return
+            Nothing.
+        */
+        void setName(const String& name);
+
+        /*!
+        \brief
             Return the ComponentArea of this NamedArea
 
         \return
@@ -81,9 +93,6 @@ namespace CEGUI
 
         \param out_stream
             Stream where xml data should be output.
-
-        \param indentLevel
-            Current XML indentation level
 
         \return
             Nothing.

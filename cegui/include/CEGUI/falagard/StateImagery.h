@@ -124,6 +124,15 @@ namespace CEGUI
 
         /*!
         \brief
+            Set the name of this state.
+
+        \return
+            String object holding the name of the StateImagery object.
+        */
+        void setName(const String& name);
+
+        /*!
+        \brief
             Return whether this state imagery should be clipped to the display rather than the target window.
 
             Clipping to the display effectively implies that the imagery should be rendered unclipped.
@@ -168,6 +177,11 @@ namespace CEGUI
         CEGUI::String   d_stateName;    //!< Name of this state.
         LayersList      d_layers;       //!< Collection of LayerSpecification objects to be drawn for this state.
         bool            d_clipToDisplay; //!< true if Imagery for this state should be clipped to the display instead of winodw (effectively, not clipped).
+    public:
+        typedef ConstVectorIterator<LayersList> LayerIterator;
+
+        LayerIterator getLayerIterator() const;
+
     };
 
 } // End of  CEGUI namespace section

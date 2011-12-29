@@ -52,8 +52,7 @@ EventLinkDefinition::~EventLinkDefinition()
 void EventLinkDefinition::addLinkTarget(const String& widget,
                                         const String& event)
 {
-    const Target t = { widget, event };
-    d_targets.push_back(t);
+    d_targets.push_back(std::make_pair(widget, event));
 }
 
 //----------------------------------------------------------------------------//
@@ -70,10 +69,10 @@ void EventLinkDefinition::initialiseWidget(Window& window) const
     LinkTargetCollection::const_iterator i = d_targets.begin();
     for ( ; i != d_targets.end(); ++i)
     {
-        Window* target = getTargetWindow(window, (*i).d_widgetName);
+        Window* target = getTargetWindow(window, i->first);
 
         if (target)
-            e->addLinkedTarget(*target->getEventObject((*i).d_targetEvent,true));
+            e->addLinkedTarget(*target->getEventObject(i->second, true));
     }
 }
 
@@ -84,7 +83,13 @@ void EventLinkDefinition::cleanUpWidget(Window& window) const
 }
 
 //----------------------------------------------------------------------------//
-const String& EventLinkDefinition:: getName() const
+void EventLinkDefinition::setName(const String& name)
+{
+    d_eventName = name;
+}
+
+//----------------------------------------------------------------------------//
+const String& EventLinkDefinition::getName() const
 {
     return d_eventName;
 }
@@ -100,6 +105,12 @@ Window* EventLinkDefinition::getTargetWindow(Window& start_wnd,
         return start_wnd.getParent();
 
     return start_wnd.getChild(name);
+}
+
+//----------------------------------------------------------------------------//
+EventLinkDefinition::LinkTargetIterator EventLinkDefinition::getLinkTargetIterator() const
+{
+    return LinkTargetIterator(d_targets.begin(),d_targets.end());
 }
 
 //----------------------------------------------------------------------------//

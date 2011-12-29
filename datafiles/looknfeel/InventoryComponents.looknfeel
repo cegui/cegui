@@ -2,7 +2,7 @@
 <Falagard version="7">
 
     <WidgetLook name="TaharezLook/InventoryReceiver">
-        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image*"/>
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>
@@ -23,7 +23,7 @@
     </WidgetLook>
 
     <WidgetLook name="TaharezLook/InventoryItem">
-        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image*"/>
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>

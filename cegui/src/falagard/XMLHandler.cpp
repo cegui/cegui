@@ -29,6 +29,8 @@
 #   include "config.h"
 #endif
 
+#include "CEGUI/ColourRect.h"
+
 #include "CEGUI/falagard/XMLHandler.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
@@ -45,6 +47,14 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
+
+#include "CEGUI/elements/Thumb.h"
+#include "CEGUI/elements/TabControl.h"
+#include "CEGUI/elements/Spinner.h"
+#include "CEGUI/elements/ItemListBase.h"
+#include "CEGUI/elements/ListHeaderSegment.h"
+#include "CEGUI/elements/MultiColumnList.h"
+
 #include <sstream>
 
 // Start of CEGUI namespace section
@@ -181,7 +191,7 @@ namespace CEGUI
         registerElementStartHandler(PropertyDimElement, &Falagard_xmlHandler::elementPropertyDimStart);
         registerElementStartHandler(ExpressionDimElement, &Falagard_xmlHandler::elementExpressionDimStart);
         registerElementStartHandler(TextElement, &Falagard_xmlHandler::elementTextStart);
-        registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourPropertyStart);
+        registerElementStartHandler(ColourPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
         registerElementStartHandler(ColourRectPropertyElement, &Falagard_xmlHandler::elementColourRectPropertyStart);
         registerElementStartHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaStart);
         registerElementStartHandler(PropertyDefinitionElement, &Falagard_xmlHandler::elementPropertyDefinitionStart);
@@ -702,40 +712,6 @@ namespace CEGUI
     }
 
     /*************************************************************************
-        Method that handles the opening ColourProperty XML element.
-    *************************************************************************/
-    void Falagard_xmlHandler::elementColourPropertyStart(const XMLAttributes& attributes)
-    {
-        // need to decide what to apply colours to
-        if (d_framecomponent)
-        {
-            d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_framecomponent->setColoursPropertyIsColourRect(false);
-        }
-        else if (d_imagerycomponent)
-        {
-            d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerycomponent->setColoursPropertyIsColourRect(false);
-        }
-        else if (d_textcomponent)
-        {
-            d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_textcomponent->setColoursPropertyIsColourRect(false);
-        }
-        else if (d_imagerysection)
-        {
-            d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerysection->setMasterColoursPropertyIsColourRect(false);
-        }
-        else if (d_section)
-        {
-            d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_section->setOverrideColoursPropertyIsColourRect(false);
-            d_section->setUsingOverrideColours(true);
-        }
-    }
-
-    /*************************************************************************
         Method that handles the opening ColourRectProperty XML element.
     *************************************************************************/
     void Falagard_xmlHandler::elementColourRectPropertyStart(const XMLAttributes& attributes)
@@ -744,27 +720,22 @@ namespace CEGUI
         if (d_framecomponent)
         {
             d_framecomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_framecomponent->setColoursPropertyIsColourRect(true);
         }
         else if (d_imagerycomponent)
         {
             d_imagerycomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerycomponent->setColoursPropertyIsColourRect(true);
         }
         else if (d_textcomponent)
         {
             d_textcomponent->setColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_textcomponent->setColoursPropertyIsColourRect(true);
         }
         else if (d_imagerysection)
         {
             d_imagerysection->setMasterColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_imagerysection->setMasterColoursPropertyIsColourRect(true);
         }
         else if (d_section)
         {
             d_section->setOverrideColoursPropertySource(attributes.getValueAsString(NameAttribute));
-            d_section->setOverrideColoursPropertyIsColourRect(true);
             d_section->setUsingOverrideColours(true);
         }
     }
@@ -786,18 +757,91 @@ namespace CEGUI
     void Falagard_xmlHandler::elementPropertyDefinitionStart(const XMLAttributes& attributes)
     {
         assert(d_widgetlook);
+        Property* prop;
 
-        PropertyDefinition prop(
-            attributes.getValueAsString(NameAttribute),
-            attributes.getValueAsString(InitialValueAttribute),
-            attributes.getValueAsString(HelpStringAttribute,
-                                        "Falagard custom property definition - "
-                                        "gets/sets a named user string."),
-            attributes.getValueAsBool(RedrawOnWriteAttribute, false),
-            attributes.getValueAsBool(LayoutOnWriteAttribute, false)
-        );
+        const String name(attributes.getValueAsString(NameAttribute));
+        const String init(attributes.getValueAsString(InitialValueAttribute));
+        const String help(attributes.getValueAsString(HelpStringAttribute,
+                                "Falagard custom property definition - "
+                                "gets/sets a named user string."));
+        const String type(attributes.getValueAsString(TypeAttribute,"Generic"));
+        bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
+        bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
 
-        CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + prop.getName() + " Default Value: " + attributes.getValueAsString(InitialValueAttribute));
+        if(type == "Colour")
+            prop = CEGUI_NEW_AO PropertyDefinition<Colour>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "ColourRect")
+            prop = CEGUI_NEW_AO PropertyDefinition<ColourRect>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "UBox")
+            prop = CEGUI_NEW_AO PropertyDefinition<UBox>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "URect")
+            prop = CEGUI_NEW_AO PropertyDefinition<URect>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "USize")
+            prop = CEGUI_NEW_AO PropertyDefinition<USize>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "UDim")
+            prop = CEGUI_NEW_AO PropertyDefinition<UDim>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "UVector2")
+            prop = CEGUI_NEW_AO PropertyDefinition<UVector2>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Sizef")
+            prop = CEGUI_NEW_AO PropertyDefinition<Sizef>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Vector2f")
+            prop = CEGUI_NEW_AO PropertyDefinition<Vector2f>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Vector3f")
+            prop = CEGUI_NEW_AO PropertyDefinition<Vector3f>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Rectf")
+            prop = CEGUI_NEW_AO PropertyDefinition<Rectf>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Font*")
+            prop = CEGUI_NEW_AO PropertyDefinition<Font*>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Image*")
+            prop = CEGUI_NEW_AO PropertyDefinition<Image*>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Quaternion")
+            prop = CEGUI_NEW_AO PropertyDefinition<Quaternion>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "AspectMode")
+            prop = CEGUI_NEW_AO PropertyDefinition<AspectMode>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "HorizontalAlignment")
+            prop = CEGUI_NEW_AO PropertyDefinition<HorizontalAlignment>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "VerticalAlignment")
+            prop = CEGUI_NEW_AO PropertyDefinition<VerticalAlignment>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "HorizontalTextFormatting")
+            prop = CEGUI_NEW_AO PropertyDefinition<HorizontalTextFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "VerticalTextFormatting")
+            prop = CEGUI_NEW_AO PropertyDefinition<VerticalTextFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "WindowUpdateMode")
+            prop = CEGUI_NEW_AO PropertyDefinition<WindowUpdateMode>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "bool")
+            prop = CEGUI_NEW_AO PropertyDefinition<bool>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "uint")
+            prop = CEGUI_NEW_AO PropertyDefinition<uint>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "unsigned long")
+            prop = CEGUI_NEW_AO PropertyDefinition<unsigned long>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "uint")
+            prop = CEGUI_NEW_AO PropertyDefinition<uint>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "int")
+            prop = CEGUI_NEW_AO PropertyDefinition<int>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "float")
+            prop = CEGUI_NEW_AO PropertyDefinition<float>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "double")
+            prop = CEGUI_NEW_AO PropertyDefinition<double>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "TabPanePosition")
+            prop = CEGUI_NEW_AO PropertyDefinition<TabControl::TabPanePosition>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "TextInputMode")
+            prop = CEGUI_NEW_AO PropertyDefinition<Spinner::TextInputMode>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "SortMode")
+            prop = CEGUI_NEW_AO PropertyDefinition<ItemListBase::SortMode>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "SortDirection")
+            prop = CEGUI_NEW_AO PropertyDefinition<ListHeaderSegment::SortDirection>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "SelectionMode")
+            prop = CEGUI_NEW_AO PropertyDefinition<MultiColumnList::SelectionMode>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "VerticalFormatting")
+            prop = CEGUI_NEW_AO PropertyDefinition<VerticalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "HorizontalFormatting")
+            prop = CEGUI_NEW_AO PropertyDefinition<HorizontalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "std::pair<float,float>")
+            prop = CEGUI_NEW_AO PropertyDefinition<std::pair<float,float> >(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else
+            prop = CEGUI_NEW_AO PropertyDefinition<String>(name, init, help, d_widgetlook->getName(), redraw, layout);
+
+        CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + name + " Default Value: " + init);
 
         d_widgetlook->addPropertyDefinition(prop);
     }
@@ -812,18 +856,138 @@ namespace CEGUI
 
         const String widget(attributes.getValueAsString(WidgetAttribute));
         const String target(attributes.getValueAsString(TargetPropertyAttribute));
+        const String name(attributes.getValueAsString(NameAttribute));
+        const String init(attributes.getValueAsString(InitialValueAttribute));
+        const String type(attributes.getValueAsString(TypeAttribute,"Generic"));
 
-        d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition(
-            attributes.getValueAsString(NameAttribute),
-            widget,
-            target,
-            attributes.getValueAsString(InitialValueAttribute),
-            attributes.getValueAsBool(RedrawOnWriteAttribute, false),
-            attributes.getValueAsBool(LayoutOnWriteAttribute, false)
-        );
+        bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
+        bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
+        typedef std::pair<float,float> Range;
+
+        if (type == "Colour")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Colour>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "ColourRect")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<ColourRect>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "UBox")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<UBox>(name, widget,
+                    target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "URect")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<URect>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "USize")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<USize>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "UDim")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<UDim>(name, widget,
+                    target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "UVector2")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<UVector2>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Sizef")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Sizef>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Vector2f")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector2f>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Vector3f")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector3f>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Rectf")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Rectf>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Font*")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Font*>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Image*")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Image*>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "Quaternion")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Quaternion>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "AspectMode")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<AspectMode>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "HorizontalAlignment")
+            d_propertyLink =CEGUI_NEW_AO PropertyLinkDefinition<HorizontalAlignment>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout
+            );
+        else if (type == "VerticalAlignment")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<VerticalAlignment>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw,
+                    layout);
+        else if (type == "HorizontalTextFormatting")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    HorizontalTextFormatting>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "VerticalTextFormatting")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    VerticalTextFormatting>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "WindowUpdateMode")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<WindowUpdateMode>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw,
+                    layout);
+        else if (type == "bool")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<bool>(name, widget,
+                    target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "uint")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<uint>(name, widget,
+                    target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "unsigned long")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<unsigned long>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw,
+                    layout);
+        else if (type == "uint")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<uint>(name, widget,
+                    target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "int")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<int>(name, widget,
+                    target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "float")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<float>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "double")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<double>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else if (type == "TabPanePosition")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    TabControl::TabPanePosition>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "TextInputMode")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    Spinner::TextInputMode>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "SortMode")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    ItemListBase::SortMode>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "SortDirection")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    ListHeaderSegment::SortDirection>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "SelectionMode")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
+                    MultiColumnList::SelectionMode>(name, widget, target, init,
+                    d_widgetlook->getName(), redraw, layout);
+        else if (type == "VerticalFormatting")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<VerticalFormatting>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw, layout
+            );
+        else if (type == "HorizontalFormatting")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<HorizontalFormatting>(
+                    name, widget, target, init, d_widgetlook->getName(), redraw, layout
+            );
+        else if (type == "std::pair<float,float>")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Range>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
+        else
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<String>(name,
+                    widget, target, init, d_widgetlook->getName(), redraw, layout);
 
         CEGUI_LOGINSANE("-----> Adding PropertyLinkDefiniton. Name: " +
-                        d_propertyLink->getName());
+                        name);
 
         if (!widget.empty() || !target.empty())
         {
@@ -1140,12 +1304,10 @@ namespace CEGUI
     void Falagard_xmlHandler::elementPropertyLinkDefinitionEnd()
     {
         assert(d_propertyLink);
-        d_widgetlook->addPropertyLinkDefinition(*d_propertyLink);
+        d_widgetlook->addPropertyLinkDefinition(d_propertyLink);
 
         CEGUI_LOGINSANE("<----- End of PropertyLinkDefiniton. Name: " +
                         d_propertyLink->getName());
-
-        CEGUI_DELETE_AO d_propertyLink;
         d_propertyLink = 0;
     }
 
@@ -1158,7 +1320,83 @@ namespace CEGUI
         
         if (!w.empty() || !p.empty())
         {
-            d_propertyLink->addLinkTarget(w, p);
+            const String type(d_propertyLink->getDataType());
+
+            typedef std::pair<float,float> Range;
+
+            if(type == "Colour")
+                dynamic_cast<PropertyLinkDefinition<Colour>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "ColourRect")
+                dynamic_cast<PropertyLinkDefinition<ColourRect>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "UBox")
+                dynamic_cast<PropertyLinkDefinition<UBox>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "URect")
+                dynamic_cast<PropertyLinkDefinition<URect>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "USize")
+                dynamic_cast<PropertyLinkDefinition<USize>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "UDim")
+                dynamic_cast<PropertyLinkDefinition<UDim>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "UVector2")
+                dynamic_cast<PropertyLinkDefinition<UVector2>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Sizef")
+                dynamic_cast<PropertyLinkDefinition<Sizef>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Vector2f")
+                dynamic_cast<PropertyLinkDefinition<Vector2f>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Vector3f")
+                dynamic_cast<PropertyLinkDefinition<Vector3f>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Rectf")
+                dynamic_cast<PropertyLinkDefinition<Rectf>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Font*")
+                dynamic_cast<PropertyLinkDefinition<Font*>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Image*")
+                dynamic_cast<PropertyLinkDefinition<Image*>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "Quaternion")
+                dynamic_cast<PropertyLinkDefinition<Quaternion>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "AspectMode")
+                dynamic_cast<PropertyLinkDefinition<AspectMode>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "HorizontalAlignment")
+                dynamic_cast<PropertyLinkDefinition<HorizontalAlignment>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "VerticalAlignment")
+                dynamic_cast<PropertyLinkDefinition<VerticalAlignment>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "HorizontalTextFormatting")
+                dynamic_cast<PropertyLinkDefinition<HorizontalTextFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "VerticalTextFormatting")
+                dynamic_cast<PropertyLinkDefinition<VerticalTextFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "WindowUpdateMode")
+                dynamic_cast<PropertyLinkDefinition<WindowUpdateMode>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "bool")
+                dynamic_cast<PropertyLinkDefinition<bool>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "uint")
+                dynamic_cast<PropertyLinkDefinition<uint>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "unsigned long")
+                dynamic_cast<PropertyLinkDefinition<unsigned long>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "uint")
+                dynamic_cast<PropertyLinkDefinition<uint>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "int")
+                dynamic_cast<PropertyLinkDefinition<int>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "float")
+                dynamic_cast<PropertyLinkDefinition<float>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "double")
+                dynamic_cast<PropertyLinkDefinition<double>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "TabPanePosition")
+                dynamic_cast<PropertyLinkDefinition<TabControl::TabPanePosition>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "TextInputMode")
+                dynamic_cast<PropertyLinkDefinition<Spinner::TextInputMode>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "SortMode")
+                dynamic_cast<PropertyLinkDefinition<ItemListBase::SortMode>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "SortDirection")
+                dynamic_cast<PropertyLinkDefinition<ListHeaderSegment::SortDirection>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "SelectionMode")
+                dynamic_cast<PropertyLinkDefinition<MultiColumnList::SelectionMode>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "VerticalFormatting")
+                dynamic_cast<PropertyLinkDefinition<VerticalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "HorizontalFormatting")
+                dynamic_cast<PropertyLinkDefinition<HorizontalFormatting>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "std::pair<float,float>")
+                dynamic_cast<PropertyLinkDefinition<Range>* >(d_propertyLink)->addLinkTarget(w, p);
+            else
+                dynamic_cast<PropertyLinkDefinition<String>* >(d_propertyLink)->addLinkTarget(w, p);
+
             CEGUI_LOGINSANE("-------> Adding link target to property: " + p +
                         " on widget: " + w);
         }

@@ -32,50 +32,12 @@ namespace CEGUI
 {
     VerticalFormatting FalagardXMLHelper::stringToVertFormat(const String& str)
     {
-        if (str == "CentreAligned")
-        {
-            return VF_CENTRE_ALIGNED;
-        }
-        else if (str == "BottomAligned")
-        {
-            return VF_BOTTOM_ALIGNED;
-        }
-        else if (str == "Tiled")
-        {
-            return VF_TILED;
-        }
-        else if (str == "Stretched")
-        {
-            return VF_STRETCHED;
-        }
-        else
-        {
-            return VF_TOP_ALIGNED;
-        }
+        return PropertyHelper<VerticalFormatting>::fromString(str);
     }
 
     HorizontalFormatting FalagardXMLHelper::stringToHorzFormat(const String& str)
     {
-        if (str == "CentreAligned")
-        {
-            return HF_CENTRE_ALIGNED;
-        }
-        else if (str == "RightAligned")
-        {
-            return HF_RIGHT_ALIGNED;
-        }
-        else if (str == "Tiled")
-        {
-            return HF_TILED;
-        }
-        else if (str == "Stretched")
-        {
-            return HF_STRETCHED;
-        }
-        else
-        {
-            return HF_LEFT_ALIGNED;
-        }
+        return PropertyHelper<HorizontalFormatting>::fromString(str);
     }
 
     VerticalAlignment FalagardXMLHelper::stringToVertAlignment(const String& str)
@@ -293,46 +255,12 @@ namespace CEGUI
 
     String FalagardXMLHelper::vertFormatToString(VerticalFormatting format)
     {
-        switch (format)
-        {
-        case VF_BOTTOM_ALIGNED:
-            return String("BottomAligned");
-            break;
-        case VF_CENTRE_ALIGNED:
-            return String("CentreAligned");
-            break;
-        case VF_TILED:
-            return String("Tiled");
-            break;
-        case VF_STRETCHED:
-            return String("Stretched");
-            break;
-        default:
-            return String("TopAligned");
-            break;
-        }
+        return PropertyHelper<VerticalFormatting>::toString(format);
     }
 
     String FalagardXMLHelper::horzFormatToString(HorizontalFormatting format)
     {
-        switch (format)
-        {
-        case HF_RIGHT_ALIGNED:
-            return String("RightAligned");
-            break;
-        case HF_CENTRE_ALIGNED:
-            return String("CentreAligned");
-            break;
-        case HF_TILED:
-            return String("Tiled");
-            break;
-        case HF_STRETCHED:
-            return String("Stretched");
-            break;
-        default:
-            return String("LeftAligned");
-            break;
-        }
+        return PropertyHelper<HorizontalFormatting>::toString(format);
     }
 
     String FalagardXMLHelper::vertAlignmentToString(VerticalAlignment alignment)
