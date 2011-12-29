@@ -444,7 +444,8 @@ void Element::addElementProperties()
     
     CEGUI_DEFINE_PROPERTY(Element, Quaternion,
         "Rotation", "Property to get/set the Element's rotation. Value is a quaternion: "
-        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\".",
+        "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\""
+        "or \"x:[x_float] y:[y_float] z:[z_float]\" to convert from Euler angles (in degrees).",
         &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
     );
     

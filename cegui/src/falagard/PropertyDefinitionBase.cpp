@@ -52,7 +52,7 @@ namespace CEGUI
             static_cast<Window*>(receiver)->invalidate();
     }
 
-    void PropertyDefinitionBase::writeXMLToStream(XMLSerializer& xml_stream) const
+    void PropertyDefinitionBase::writeXMLToStream(const PropertyReceiver* /*receiver*/, XMLSerializer& xml_stream) const
     {
         // write out the element type
         writeXMLElementType(xml_stream);

@@ -360,10 +360,17 @@ public:
     */
     void unsubscribeAutoConnections();
 
-private:
-    //! applies this animation instance
+    /*!
+    \brief
+    	Applies this animation instance
+
+    \par
+    	You should not need to use this directly unless your requirements are very special.
+    	CEGUI calls this automatically in most cases.
+	*/
     void apply();
 
+private:
     //! this is called when animation starts
     void onAnimationStarted();
     //! this is called when animation stops

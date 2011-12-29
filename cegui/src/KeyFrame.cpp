@@ -59,7 +59,7 @@ void KeyFrame::moveToPosition(float newPosition)
 {
     assert(d_parent);
 
-    d_parent->moveKeyFrameToPosition(d_position, newPosition);
+    d_parent->moveKeyFrameToPosition(this, newPosition);
 }
 
 //----------------------------------------------------------------------------//

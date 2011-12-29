@@ -83,6 +83,15 @@ public:
 
     /*!
     \brief
+    	Retrieves the parent animation of this keyframe
+    */
+    inline Animation* getParent() const
+    {
+    	return d_parent;
+    }
+
+    /*!
+    \brief
         Sets the application method
 
     \par
@@ -165,6 +174,12 @@ public:
         Retrieves a KeyFrame at given position
     */
     KeyFrame* getKeyFrameAtPosition(float position) const;
+
+    /*!
+    \brief
+        Checks whether there is a key frame at given position
+    */
+    bool hasKeyFrameAtPosition(float position) const;
 
     /*!
     \brief

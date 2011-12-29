@@ -165,6 +165,20 @@ void register_Affector_class(){
             *\n" );
         
         }
+        { //::CEGUI::Affector::getParent
+        
+            typedef ::CEGUI::Animation * ( ::CEGUI::Affector::*getParent_function_type )(  ) const;
+            
+            Affector_exposer.def( 
+                "getParent"
+                , getParent_function_type( &::CEGUI::Affector::getParent )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+            \n\
+              Retrieves the parent animation of this keyframe\n\
+            *\n" );
+        
+        }
         { //::CEGUI::Affector::getTargetProperty
         
             typedef ::CEGUI::String const & ( ::CEGUI::Affector::*getTargetProperty_function_type )(  ) const;
@@ -176,6 +190,20 @@ void register_Affector_class(){
                 , "*!\n\
             \n\
                 Gets the property that will be affected\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Affector::hasKeyFrameAtPosition
+        
+            typedef bool ( ::CEGUI::Affector::*hasKeyFrameAtPosition_function_type )( float ) const;
+            
+            Affector_exposer.def( 
+                "hasKeyFrameAtPosition"
+                , hasKeyFrameAtPosition_function_type( &::CEGUI::Affector::hasKeyFrameAtPosition )
+                , ( bp::arg("position") )
+                , "*!\n\
+            \n\
+                Checks whether there is a key frame at given position\n\
             *\n" );
         
         }
