@@ -39,6 +39,7 @@ Direct3D9RenderTarget::Direct3D9RenderTarget(Direct3D9Renderer& owner) :
     d_owner(owner),
     d_device(owner.getDevice()),
     d_area(0, 0, 0, 0),
+    d_viewDistance(0),
     d_matrixValid(false)
 {
 }
