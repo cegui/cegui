@@ -36,6 +36,7 @@ Direct3D11RenderTarget::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
     d_owner(owner),
     d_device(d_owner.getDirect3DDevice()),
     d_area(0, 0, 0, 0),
+    d_viewDistance(0),
     d_matrixValid(false)
 {
 }
