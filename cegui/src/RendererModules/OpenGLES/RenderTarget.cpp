@@ -41,8 +41,11 @@ const double OpenGLESRenderTarget::d_yfov_tan = 0.267949192431123;
 OpenGLESRenderTarget::OpenGLESRenderTarget(OpenGLESRenderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
+    d_viewDistance(0),
     d_matrixValid(false)
 {
+    for(unsigned int i = 0; i < 16;++i)
+        d_matrix[i]=0.0;
 }
 
 //----------------------------------------------------------------------------//
@@ -138,10 +141,10 @@ void OpenGLESRenderTarget::unprojectPoint(const GeometryBuffer& buff,
     in_z = -d_viewDistance;
 
 	double gb_matrixd[16], d_matrixd[16];
-	for (uint i = 0; i < 16; i++)
+	for (uint i = 0; i < 16; ++i)
 	{
 		gb_matrixd[i] = (double)gb.getMatrix()[i];
-		d_matrixd[i] = (double)d_matrixd[i];
+		d_matrixd[i] = (double)d_matrix[i];
 	}
 
     gluUnProject(in_x, in_y, in_z, gb_matrixd, d_matrixd, vp,
