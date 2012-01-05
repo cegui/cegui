@@ -161,6 +161,56 @@ public:
     //! Destroy the System object.
     static void destroy();
 
+    /*!
+    \brief
+        Retrieves CEGUI's major version as an integer
+
+    \note
+        API/headers major version is a macro called CEGUI_MAJOR_VERSION,
+        this returns the version your application is linking to
+    */
+    static unsigned int getMajorVersion();
+
+    /*!
+    \brief
+        Retrieves CEGUI's minor version as an integer
+
+    \note
+        API/headers minor version is a macro called CEGUI_MINOR_VERSION,
+        this returns the version your application is linking to
+    */
+    static unsigned int getMinorVersion();
+
+    /*!
+    \brief
+        Retrieves CEGUI's patch version as an integer
+
+    \note
+        API/headers patch version is a macro called CEGUI_PATCH_VERSION,
+        this returns the version your application is linking to
+    */
+    static unsigned int getPatchVersion();
+
+    /*!
+    \brief
+        Retrieves CEGUI's "short" version ("1.2.3" for example)
+
+    \note
+        API/headers version can be constructed using CEGUI_*_VERSION macros,
+        this returns the version your application is linking to
+    */
+    static const String& getVersion();
+
+    /*!
+    \brief
+        Retrieves CEGUI's "verbose" version, includes info about compiler, platform, etc...
+
+    \note
+        API/headers verbose version can be constructed using various compiler specific macros,
+        this returns the version your application is linking to
+    */
+    static const String& getVerboseVersion();
+
 	/*!
 	\brief
 		Return a pointer to the Renderer object being used by the system
@@ -1275,9 +1325,6 @@ private:
     //! cleanup image codec 
     void cleanupImageCodec();
 
-    //! Set the CEGUI version string that gets output to the log.
-    void initialiseVersionString();
-
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
 
@@ -1359,8 +1406,6 @@ private:
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
 	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
 	Window*		d_modalTarget;		//!< Pointer to the window that is the current modal target. NULL is there is no modal target.
-
-	String d_strVersion;    //!< CEGUI version
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
 
