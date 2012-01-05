@@ -287,7 +287,6 @@ System::System(Renderer& renderer,
     // initialise any default resource groups specified in the config.
     config.initialiseDefaultResourceGroups();
 
-    initialiseVersionString();
     outputLogHeader();
 
     // beginning main init
@@ -388,6 +387,102 @@ System::~System(void)
     CEGUI_DELETE_AO d_clipboard;
 }
 
+//---------------------------------------------------------------------------//
+unsigned int System::getMajorVersion()
+{
+    return CEGUI_VERSION_MAJOR;
+}
+
+//---------------------------------------------------------------------------//
+unsigned int System::getMinorVersion()
+{
+    return CEGUI_VERSION_MINOR;
+}
+
+//---------------------------------------------------------------------------//
+unsigned int System::getPatchVersion()
+{
+    return CEGUI_VERSION_PATCH;
+}
+
+//---------------------------------------------------------------------------//
+const String& System::getVersion()
+{
+    static String ret(STRINGIZE(CEGUI_VERSION_MAJOR) "." STRINGIZE(CEGUI_VERSION_MINOR) "." STRINGIZE(CEGUI_VERSION_PATCH));
+    return ret;
+}
+
+//---------------------------------------------------------------------------//
+const String& System::getVerboseVersion()
+{
+    static String ret("");
+
+    if (ret.empty())
+    {
+        ret = PropertyHelper<uint>::toString(CEGUI_VERSION_MAJOR) + "." +
+              PropertyHelper<uint>::toString(CEGUI_VERSION_MINOR) + "." +
+              PropertyHelper<uint>::toString(CEGUI_VERSION_PATCH);
+
+        ret += " (Build: " __DATE__;
+
+#if defined(CEGUI_STATIC)
+        ret += " Static";
+#endif
+
+#if defined(DEBUG) || defined(_DEBUG)
+        ret += " Debug";
+#endif
+
+#if defined(__linux__)
+        ret += " GNU/Linux";
+#elif defined (__FreeBSD__)
+        ret += " FreeBSD";
+#elif defined (__APPLE__)
+        ret += " Apple Mac";
+#elif defined (_WIN32) || defined (__WIN32__)
+        ret += " Microsoft Windows";
+#endif
+
+#ifdef __GNUG__
+        ret += " g++ " __VERSION__;
+
+#ifdef _LP64
+        ret += " 64 bit";
+#else
+        ret += " 32 bit";
+#endif
+
+#elif defined(_MSC_VER)
+        ret += " MSVC++ ";
+#if _MSC_VER <= 1200
+        ret += "Dinosaur Edition!";
+#elif _MSC_VER == 1300
+        ret += "7.0";
+#elif _MSC_VER == 1310
+        ret += "7.1";
+#elif _MSC_VER == 1400
+        ret += "8.0";
+#elif _MSC_VER == 1500
+        ret += "9.0";
+#elif _MSC_VER == 1600
+        ret += "10.0";
+#elif _MSC_VER > 1600
+        ret += "Great Scott!";
+#endif
+
+#ifdef _WIN64
+        ret += " 64 bit";
+#else
+        ret += " 32 bit";
+#endif
+
+#endif
+
+        ret += ")";
+    }
+
+    return ret;
+}
 
 /*************************************************************************
 	Render the GUI for this frame
@@ -1452,7 +1547,7 @@ void System::outputLogHeader()
     l.logEvent("********************************************************************************");
     l.logEvent("* -------- START OF ESSENTIAL SECTION TO BE POSTED ON THE FORUM       -------- *");
     l.logEvent("********************************************************************************");
-    l.logEvent("---- Version " + d_strVersion + " ----");
+    l.logEvent("---- Version: " + getVerboseVersion() + " ----");
     l.logEvent("---- Renderer module is: " + d_renderer->getIdentifierString() + " ----");
     l.logEvent("---- XML Parser module is: " + d_xmlParser->getIdentifierString() + " ----");
     l.logEvent("---- Image Codec module is: " + d_imageCodec->getIdentifierString() + " ----");
@@ -1826,71 +1921,6 @@ void System::setDefaultImageCodecName(const String& codecName)
 const String& System::getDefaultImageCodecName()
 {
     return d_defaultImageCodecName;
-}
-
-//----------------------------------------------------------------------------//
-void System::initialiseVersionString()
-{
-    d_strVersion = PropertyHelper<uint>::toString(CEGUI_VERSION_MAJOR) + "." +
-       PropertyHelper<uint>::toString(CEGUI_VERSION_MINOR) + "." +
-       PropertyHelper<uint>::toString(CEGUI_VERSION_PATCH);
-
-    d_strVersion += " (Build: " __DATE__;
-
-#if defined(CEGUI_STATIC)
-    d_strVersion += " Static";
-#endif
-
-#if defined(DEBUG) || defined(_DEBUG)
-    d_strVersion += " Debug";
-#endif
-
-#if defined(__linux__)
-    d_strVersion += " GNU/Linux";
-#elif defined (__FreeBSD__)
-    d_strVersion += " FreeBSD";
-#elif defined (__APPLE__)
-    d_strVersion += " Apple Mac";
-#elif defined (_WIN32) || defined (__WIN32__)
-    d_strVersion += " Microsoft Windows";
-#endif
-
-#ifdef __GNUG__
-    d_strVersion += " g++ " __VERSION__;
-
-#ifdef _LP64
-    d_strVersion += " 64 bit";
-#else
-    d_strVersion += " 32 bit";
-#endif
-
-#elif defined(_MSC_VER)
-    d_strVersion += " MSVC++ ";
-#if _MSC_VER <= 1200
-    d_strVersion += "Dinosaur Edition!";
-#elif _MSC_VER == 1300
-    d_strVersion += "7.0";
-#elif _MSC_VER == 1310
-    d_strVersion += "7.1";
-#elif _MSC_VER == 1400
-    d_strVersion += "8.0";
-#elif _MSC_VER == 1500
-    d_strVersion += "9.0";
-#elif _MSC_VER == 1600
-    d_strVersion += "10.0";
-#elif _MSC_VER > 1600
-    d_strVersion += "Great Scott!";
-#endif
-
-#ifdef _WIN64
-    d_strVersion += " 64 bit";
-#else
-    d_strVersion += " 32 bit";
-#endif
-
-#endif
-
-    d_strVersion += ")";
 }
 
 //----------------------------------------------------------------------------//
