@@ -209,7 +209,8 @@ void NamedElement::addNamedElementProperties()
 {
     const String propertyOrigin("NamedElement");
     
-    CEGUI_DEFINE_PROPERTY(NamedElement, String,
+    // "Name" is already stored in <Window> element
+    CEGUI_DEFINE_PROPERTY_NO_XML(NamedElement, String,
         "Name", "Property to get/set the name of the Element. Make sure it's unique in its parent if any.",
         &NamedElement::setName, &NamedElement::getName, ""
     );
