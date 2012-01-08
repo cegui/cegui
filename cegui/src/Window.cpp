@@ -3689,7 +3689,12 @@ bool Window::isBehind(const Window& wnd) const
 //----------------------------------------------------------------------------//
 const Font* Window::property_getFont() const
 {
-    return getFont();
+    // This is changed behaviour when compared to 0.7, we return the Font set
+    // for this window but we don't return name of the default font when
+    // no font is set. This is IMO more practical. User can always use
+    // getFont() directly to get 0.7 behaviour.
+    
+    return getFont(false);
 }
 
 //----------------------------------------------------------------------------//
