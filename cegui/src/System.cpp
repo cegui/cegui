@@ -1088,7 +1088,7 @@ bool System::injectMousePosition(float x_pos, float y_pos)
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
-    AnimationManager::getSingleton().stepInstances(timeElapsed);
+    AnimationManager::getSingleton().autoStepInstances(timeElapsed);
 
     // if no visible active sheet, input can't be handled
     if (!d_activeSheet || !d_activeSheet->isEffectiveVisible())

@@ -348,12 +348,13 @@ size_t AnimationManager::getNumAnimationInstances() const
 }
 
 //----------------------------------------------------------------------------//
-void AnimationManager::stepInstances(float delta)
+void AnimationManager::autoStepInstances(float delta)
 {
     for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
          it != d_animationInstances.end(); ++it)
     {
-        it->second->step(delta);
+    	if (it->second->isAutoSteppingEnabled())
+    		it->second->step(delta);
     }
 }
 
