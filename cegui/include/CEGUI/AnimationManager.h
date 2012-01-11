@@ -213,8 +213,12 @@ public:
         Internal method, gets called by CEGUI::System automatically.
 
         Only use if you know what you're doing!
+
+    \par
+    	Steps animation instances with auto stepping enabled forward
+    	by given delta.
     */
-    void stepInstances(float delta);
+    void autoStepInstances(float delta);
 
     /*!
     \brief
