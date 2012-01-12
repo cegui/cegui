@@ -44,6 +44,26 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::AnimationManager::autoStepInstances
+        
+            typedef void ( ::CEGUI::AnimationManager::*autoStepInstances_function_type )( float ) ;
+            
+            AnimationManager_exposer.def( 
+                "autoStepInstances"
+                , autoStepInstances_function_type( &::CEGUI::AnimationManager::autoStepInstances )
+                , ( bp::arg("delta") )
+                , "*!\n\
+                \n\
+                    Internal method, gets called by CEGUI.System automatically.\n\
+            \n\
+                    Only use if you know what you're doing!\n\
+            \n\
+                \n\
+                  Steps animation instances with auto stepping enabled forward\n\
+                  by given delta.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::AnimationManager::createAnimation
         
             typedef ::CEGUI::Animation * ( ::CEGUI::AnimationManager::*createAnimation_function_type )( ::CEGUI::String const & ) ;
@@ -358,22 +378,6 @@ void register_AnimationManager_class(){
             \n\
                 @param resourceGroup\n\
                     String describing the default resource group identifier to be used.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::AnimationManager::stepInstances
-        
-            typedef void ( ::CEGUI::AnimationManager::*stepInstances_function_type )( float ) ;
-            
-            AnimationManager_exposer.def( 
-                "stepInstances"
-                , stepInstances_function_type( &::CEGUI::AnimationManager::stepInstances )
-                , ( bp::arg("delta") )
-                , "*!\n\
-                \n\
-                    Internal method, gets called by CEGUI.System automatically.\n\
-            \n\
-                    Only use if you know what you're doing!\n\
                 *\n" );
         
         }

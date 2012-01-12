@@ -331,6 +331,40 @@ void register_System_class(){
             *\n" );
         
         }
+        { //::CEGUI::System::getMajorVersion
+        
+            typedef unsigned int ( *getMajorVersion_function_type )(  );
+            
+            System_exposer.def( 
+                "getMajorVersion"
+                , getMajorVersion_function_type( &::CEGUI::System::getMajorVersion )
+                , "*!\n\
+                \n\
+                    Retrieves CEGUI's major version as an integer\n\
+            \n\
+                \note\n\
+                    APIheaders major version is a macro called CEGUI_MAJOR_VERSION,\n\
+                    this returns the version your application is linking to\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::System::getMinorVersion
+        
+            typedef unsigned int ( *getMinorVersion_function_type )(  );
+            
+            System_exposer.def( 
+                "getMinorVersion"
+                , getMinorVersion_function_type( &::CEGUI::System::getMinorVersion )
+                , "*!\n\
+                \n\
+                    Retrieves CEGUI's minor version as an integer\n\
+            \n\
+                \note\n\
+                    APIheaders minor version is a macro called CEGUI_MINOR_VERSION,\n\
+                    this returns the version your application is linking to\n\
+                *\n" );
+        
+        }
         { //::CEGUI::System::getModalTarget
         
             typedef ::CEGUI::Window * ( ::CEGUI::System::*getModalTarget_function_type )(  ) const;
@@ -405,6 +439,23 @@ void register_System_class(){
                @return\n\
                   Size object describing the current multi-click tolerance area size.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::System::getPatchVersion
+        
+            typedef unsigned int ( *getPatchVersion_function_type )(  );
+            
+            System_exposer.def( 
+                "getPatchVersion"
+                , getPatchVersion_function_type( &::CEGUI::System::getPatchVersion )
+                , "*!\n\
+                \n\
+                    Retrieves CEGUI's patch version as an integer\n\
+            \n\
+                \note\n\
+                    APIheaders patch version is a macro called CEGUI_PATCH_VERSION,\n\
+                    this returns the version your application is linking to\n\
+                *\n" );
         
         }
         { //::CEGUI::System::getRenderer
@@ -506,6 +557,42 @@ void register_System_class(){
             \n\
                 @return\n\
                     uint value representing a combination of the SystemKey bits.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::System::getVerboseVersion
+        
+            typedef ::CEGUI::String const & ( *getVerboseVersion_function_type )(  );
+            
+            System_exposer.def( 
+                "getVerboseVersion"
+                , getVerboseVersion_function_type( &::CEGUI::System::getVerboseVersion )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Retrieves CEGUI's verbose version, includes info about compiler, platform, etc...\n\
+            \n\
+                \note\n\
+                    APIheaders verbose version can be constructed using various compiler specific macros,\n\
+                    this returns the version your application is linking to\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::System::getVersion
+        
+            typedef ::CEGUI::String const & ( *getVersion_function_type )(  );
+            
+            System_exposer.def( 
+                "getVersion"
+                , getVersion_function_type( &::CEGUI::System::getVersion )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                \n\
+                    Retrieves CEGUI's short version (1.2.3 for example)\n\
+            \n\
+                \note\n\
+                    APIheaders version can be constructed using CEGUI_*_VERSION macros,\n\
+                    this returns the version your application is linking to\n\
                 *\n" );
         
         }
@@ -1685,7 +1772,12 @@ void register_System_class(){
         System_exposer.staticmethod( "destroy" );
         System_exposer.staticmethod( "getDefaultImageCodecName" );
         System_exposer.staticmethod( "getDefaultXMLParserName" );
+        System_exposer.staticmethod( "getMajorVersion" );
+        System_exposer.staticmethod( "getMinorVersion" );
+        System_exposer.staticmethod( "getPatchVersion" );
         System_exposer.staticmethod( "getSingleton" );
+        System_exposer.staticmethod( "getVerboseVersion" );
+        System_exposer.staticmethod( "getVersion" );
         System_exposer.staticmethod( "setDefaultImageCodecName" );
         System_exposer.staticmethod( "setDefaultXMLParserName" );
     }
