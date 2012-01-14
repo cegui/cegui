@@ -31,6 +31,7 @@
 %option noyywrap
 %option batch
 %option 8bit
+%option never-interactive
 
 %{
 #include "./ExpressionDim_impl.h"
