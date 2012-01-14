@@ -194,6 +194,31 @@ void register_AnimationManager_class(){
             *\n" );
         
         }
+        { //::CEGUI::AnimationManager::getAnimationDefinitionAsString
+        
+            typedef ::CEGUI::String ( ::CEGUI::AnimationManager::*getAnimationDefinitionAsString_function_type )( ::CEGUI::Animation const & ) const;
+            
+            AnimationManager_exposer.def( 
+                "getAnimationDefinitionAsString"
+                , getAnimationDefinitionAsString_function_type( &::CEGUI::AnimationManager::getAnimationDefinitionAsString )
+                , ( bp::arg("animation") )
+                , "*!\n\
+                \n\
+                    Writes given animation definition and returns the result as String\n\
+            \n\
+                @param animation\n\
+                    Animation definition to write\n\
+            \n\
+                @Warning: \n\
+                    This is a convenience function and isn't designed to be fast at all! Use the other\
+                    alternatives\n\
+                    if you want performance.\n\
+            \n\
+                @return\n\
+                    String containing the resulting XML\n\
+                *\n" );
+        
+        }
         { //::CEGUI::AnimationManager::getAnimationInstanceAtIdx
         
             typedef ::CEGUI::AnimationInstance * ( ::CEGUI::AnimationManager::*getAnimationInstanceAtIdx_function_type )( ::size_t ) const;
@@ -378,6 +403,26 @@ void register_AnimationManager_class(){
             \n\
                 @param resourceGroup\n\
                     String describing the default resource group identifier to be used.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::AnimationManager::writeAnimationDefinitionToStream
+        
+            typedef void ( ::CEGUI::AnimationManager::*writeAnimationDefinitionToStream_function_type )( ::CEGUI::Animation const &,::CEGUI::OutStream & ) const;
+            
+            AnimationManager_exposer.def( 
+                "writeAnimationDefinitionToStream"
+                , writeAnimationDefinitionToStream_function_type( &::CEGUI::AnimationManager::writeAnimationDefinitionToStream )
+                , ( bp::arg("animation"), bp::arg("out_stream") )
+                , "*!\n\
+                \n\
+                    Writes given animation definition to the given OutStream.\n\
+            \n\
+                @param animation\n\
+                    Animation definition to write\n\
+            \n\
+                @param out_stream\n\
+                    OutStream (std.ostream based) object where data is to be sent.\n\
                 *\n" );
         
         }

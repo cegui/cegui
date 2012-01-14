@@ -389,6 +389,23 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
 }
 
 //---------------------------------------------------------------------------//
+void AnimationManager::writeAnimationDefinitionToStream(const Animation& animation, OutStream& out_stream) const
+{
+    XMLSerializer xml(out_stream);
+
+    animation.writeXMLToStream(xml);
+}
+
+//---------------------------------------------------------------------------//
+String AnimationManager::getAnimationDefinitionAsString(const Animation& animation) const
+{
+    std::ostringstream str;
+    writeAnimationDefinitionToStream(animation, str);
+
+    return String(str.str());
+}
+
+//---------------------------------------------------------------------------//
 String AnimationManager::generateUniqueAnimationName()
 {
     // build name

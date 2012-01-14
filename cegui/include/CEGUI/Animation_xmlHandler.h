@@ -38,8 +38,11 @@ namespace CEGUI
 class CEGUIEXPORT Animation_xmlHandler : public ChainedXMLHandler
 {
 public:
+	//! String holding the element handled by this class.
+    static const String ElementName;
+
     Animation_xmlHandler();
-    ~Animation_xmlHandler();
+    virtual ~Animation_xmlHandler();
 
     // XMLHandler overrides
     const String& getSchemaName() const;
@@ -60,9 +63,19 @@ public:
     //! String holding the element handled by this class.
     static const String ElementName;
 
+    static const String NameAttribute;
+    static const String DurationAttribute;
+
+    static const String ReplayModeAttribute;
+    static const String ReplayModeOnce;
+    static const String ReplayModeLoop;
+    static const String ReplayModeBounce;
+
+    static const String AutoStartAttribute;
+
     AnimationDefinitionHandler(const XMLAttributes& attributes,
                                const String& name_prefix);
-    ~AnimationDefinitionHandler();
+    virtual ~AnimationDefinitionHandler();
 
 protected:
     // implement ChainedXMLHandler interface.
@@ -82,9 +95,17 @@ public:
     //! String holding the element handled by this class.
     static const String ElementName;
 
+    static const String TargetPropertyAttribute;
+    static const String InterpolatorAttribute;
+
+    static const String ApplicationMethodAttribute;
+    static const String ApplicationMethodAbsolute;
+    static const String ApplicationMethodRelative;
+    static const String ApplicationMethodRelativeMultiply;
+
     AnimationAffectorHandler(const XMLAttributes& attributes,
                              Animation& anim);
-    ~AnimationAffectorHandler();
+    virtual ~AnimationAffectorHandler();
 
 protected:
     // implement ChainedXMLHandler interface.
@@ -104,9 +125,19 @@ public:
     //! String holding the element handled by this class.
     static const String ElementName;
 
+    static const String PositionAttribute;
+    static const String ValueAttribute;
+    static const String SourcePropertyAttribute;
+
+    static const String ProgressionAttribute;
+    static const String ProgressionLinear;
+    static const String ProgressionDiscrete;
+    static const String ProgressionQuadraticAccelerating;
+    static const String ProgressionQuadraticDecelerating;
+
     AnimationKeyFrameHandler(const XMLAttributes& attributes,
                              Affector& affector);
-    ~AnimationKeyFrameHandler();
+    virtual ~AnimationKeyFrameHandler();
 
 protected:
     // implement ChainedXMLHandler interface.
@@ -123,9 +154,12 @@ public:
     //! String holding the element handled by this class.
     static const String ElementName;
 
+    static const String EventAttribute;
+    static const String ActionAttribute;
+
     AnimationSubscriptionHandler(const XMLAttributes& attributes,
                                  Animation& anim);
-    ~AnimationSubscriptionHandler();
+    virtual ~AnimationSubscriptionHandler();
 
 protected:
     // implement ChainedXMLHandler interface.

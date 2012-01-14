@@ -30,6 +30,9 @@
 #include "CEGUI/KeyFrame.h"
 #include "CEGUI/AnimationInstance.h"
 #include "CEGUI/Affector.h"
+#include "CEGUI/Animation_xmlHandler.h"
+#include "CEGUI/XMLSerializer.h"
+#include "CEGUI/PropertyHelper.h"
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -155,7 +158,46 @@ void KeyFrame::notifyPositionChanged(float newPosition)
     d_position = newPosition;
 }
 
+void KeyFrame::writeXMLToStream(XMLSerializer& xml_stream) const
+{
+    xml_stream.openTag(AnimationKeyFrameHandler::ElementName);
+
+    xml_stream.attribute(AnimationKeyFrameHandler::PositionAttribute, PropertyHelper<float>::toString(getPosition()));
+
+    if (!d_sourceProperty.empty())
+    {
+        xml_stream.attribute(AnimationKeyFrameHandler::SourcePropertyAttribute, getSourceProperty());
+    }
+    else
+    {
+        xml_stream.attribute(AnimationKeyFrameHandler::ValueAttribute, getValue());
+    }
+
+    String progression;
+    switch(getProgression())
+    {
+    case P_Linear:
+        progression = AnimationKeyFrameHandler::ProgressionLinear;
+        break;
+    case P_Discrete:
+        progression = AnimationKeyFrameHandler::ProgressionDiscrete;
+        break;
+    case P_QuadraticAccelerating:
+        progression = AnimationKeyFrameHandler::ProgressionQuadraticAccelerating;
+        break;
+    case P_QuadraticDecelerating:
+        progression = AnimationKeyFrameHandler::ProgressionQuadraticDecelerating;
+        break;
+
+    default:
+        assert(0 && "How did we get here?");
+        break;
+    }
+    xml_stream.attribute(AnimationKeyFrameHandler::ProgressionAttribute, progression);
+
+    xml_stream.closeTag();
+}
+
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-

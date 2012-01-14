@@ -35,6 +35,7 @@
 #include "CEGUI/AnimationInstance.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/Animation_xmlHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -367,6 +368,46 @@ void Affector::apply(AnimationInstance* instance)
     {
         assert(0);
     }
+}
+
+void Affector::writeXMLToStream(XMLSerializer& xml_stream) const
+{
+    xml_stream.openTag(AnimationAffectorHandler::ElementName);
+
+    String applicationMethod;
+    switch(getApplicationMethod())
+    {
+    case AM_Absolute:
+        applicationMethod = AnimationAffectorHandler::ApplicationMethodAbsolute;
+        break;
+    case AM_Relative:
+        applicationMethod = AnimationAffectorHandler::ApplicationMethodRelative;
+        break;
+    case AM_RelativeMultiply:
+        applicationMethod = AnimationAffectorHandler::ApplicationMethodRelativeMultiply;
+        break;
+
+    default:
+        assert(0 && "How did we get here?");
+        break;
+    }
+
+    xml_stream.attribute(AnimationAffectorHandler::ApplicationMethodAttribute, applicationMethod);
+
+    xml_stream.attribute(AnimationAffectorHandler::TargetPropertyAttribute, getTargetProperty());
+
+    if (getInterpolator())
+    {
+        xml_stream.attribute(AnimationAffectorHandler::InterpolatorAttribute, getInterpolator()->getType());
+    }
+
+    for (KeyFrameMap::const_iterator it = d_keyFrames.begin();
+         it != d_keyFrames.end(); ++it)
+    {
+        it->second->writeXMLToStream(xml_stream);
+    }
+
+    xml_stream.closeTag();
 }
 
 //----------------------------------------------------------------------------//

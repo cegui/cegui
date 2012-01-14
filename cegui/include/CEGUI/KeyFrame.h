@@ -190,6 +190,15 @@ public:
     */
     void notifyPositionChanged(float newPosition);
 
+    /*!
+	\brief
+		Writes an xml representation of this KeyFrame to \a out_stream.
+
+	\param xml_stream
+		Stream where xml data should be output.
+	*/
+	void writeXMLToStream(XMLSerializer& xml_stream) const;
+
 private:
     //! parent affector
     Affector* d_parent;
