@@ -230,6 +230,15 @@ public:
     */
     void apply(AnimationInstance* instance);
 
+    /*!
+    \brief
+        Writes an xml representation of this Affector to \a out_stream.
+
+    \param xml_stream
+        Stream where xml data should be output.
+    */
+    void writeXMLToStream(XMLSerializer& xml_stream) const;
+
 private:
     //! parent animation definition
     Animation* d_parent;

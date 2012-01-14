@@ -3440,9 +3440,10 @@
 ~@class_declaration_t@Window@::CEGUI::Window
 ~@class_declaration_t@Animation@::CEGUI::Animation
 ~@class_declaration_t@GLUtesselator@::GLUtesselator
-~@class_declaration_t@Logger@::CEGUI::Logger
+~@class_declaration_t@XMLSerializer@::CEGUI::XMLSerializer
 ~@class_declaration_t@Scheme@::CEGUI::Scheme
 ~@class_declaration_t@__numpunct_cache< wchar_t >@::std::__numpunct_cache< wchar_t >
+~@class_declaration_t@Logger@::CEGUI::Logger
 ~@class_declaration_t@sigevent@::sigevent
 ~@class_declaration_t@basic_istringstream< char, std::char_traits< char >, std::allocator< char > >@::std::basic_istringstream< char, std::char_traits< char >, std::allocator< char > >
 ~@class_declaration_t@TreeEventArgs@::CEGUI::TreeEventArgs
