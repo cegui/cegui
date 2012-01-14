@@ -3766,7 +3766,7 @@ extern int CEGUI_yylex (void);
 #undef YY_DECL
 #endif
 
-#line 232 "ExpressionDimScanner.l"
+#line 233 "ExpressionDimScanner.l"
 
 
 #line 3773 "ExpressionDimScanner.h"

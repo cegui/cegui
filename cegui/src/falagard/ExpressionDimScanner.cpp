@@ -3921,7 +3921,7 @@ char *CEGUI_yytext;
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#line 36 "ExpressionDimScanner.l"
+#line 37 "ExpressionDimScanner.l"
 #include "./ExpressionDim_impl.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/Logger.h"
@@ -4109,7 +4109,7 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
     
-#line 49 "ExpressionDimScanner.l"
+#line 50 "ExpressionDimScanner.l"
 
 #line 4115 "ExpressionDimScanner.cpp"
 
@@ -4184,7 +4184,7 @@ do_action:	/* This label is used only to access EOF actions. */
 
 case 1:
 YY_RULE_SETUP
-#line 50 "ExpressionDimScanner.l"
+#line 51 "ExpressionDimScanner.l"
 {
     CEGUI::AbsoluteDim* dim = new CEGUI::AbsoluteDim(atof(CEGUI_yytext));
     pushDim(ctx, dim);
@@ -4193,7 +4193,7 @@ YY_RULE_SETUP
 case 2:
 /* rule 2 can match eol */
 YY_RULE_SETUP
-#line 55 "ExpressionDimScanner.l"
+#line 56 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4212,7 +4212,7 @@ YY_RULE_SETUP
 case 3:
 /* rule 3 can match eol */
 YY_RULE_SETUP
-#line 70 "ExpressionDimScanner.l"
+#line 71 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4231,7 +4231,7 @@ YY_RULE_SETUP
 case 4:
 /* rule 4 can match eol */
 YY_RULE_SETUP
-#line 85 "ExpressionDimScanner.l"
+#line 86 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4250,7 +4250,7 @@ YY_RULE_SETUP
 case 5:
 /* rule 5 can match eol */
 YY_RULE_SETUP
-#line 100 "ExpressionDimScanner.l"
+#line 101 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4268,7 +4268,7 @@ YY_RULE_SETUP
 case 6:
 /* rule 6 can match eol */
 YY_RULE_SETUP
-#line 114 "ExpressionDimScanner.l"
+#line 115 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4293,7 +4293,7 @@ YY_RULE_SETUP
 case 7:
 /* rule 7 can match eol */
 YY_RULE_SETUP
-#line 135 "ExpressionDimScanner.l"
+#line 136 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4315,7 +4315,7 @@ YY_RULE_SETUP
 case 8:
 /* rule 8 can match eol */
 YY_RULE_SETUP
-#line 153 "ExpressionDimScanner.l"
+#line 154 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4336,7 +4336,7 @@ YY_RULE_SETUP
 case 9:
 /* rule 9 can match eol */
 YY_RULE_SETUP
-#line 170 "ExpressionDimScanner.l"
+#line 171 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4357,7 +4357,7 @@ YY_RULE_SETUP
 case 10:
 /* rule 10 can match eol */
 YY_RULE_SETUP
-#line 187 "ExpressionDimScanner.l"
+#line 188 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4377,7 +4377,7 @@ YY_RULE_SETUP
 case 11:
 /* rule 11 can match eol */
 YY_RULE_SETUP
-#line 203 "ExpressionDimScanner.l"
+#line 204 "ExpressionDimScanner.l"
 {
     prepareString(CEGUI_yytext);
 
@@ -4395,7 +4395,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 218 "ExpressionDimScanner.l"
+#line 219 "ExpressionDimScanner.l"
 {
     ctx->d_stack.push_back(
         std::make_pair(
@@ -4406,12 +4406,12 @@ YY_RULE_SETUP
 case 13:
 /* rule 13 can match eol */
 YY_RULE_SETUP
-#line 225 "ExpressionDimScanner.l"
+#line 226 "ExpressionDimScanner.l"
 
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 227 "ExpressionDimScanner.l"
+#line 228 "ExpressionDimScanner.l"
 {
     CEGUI::Logger::getSingleton().logEvent("ExpressionDim::scanString: An "
         "error has occurred during lexical analysis of the expression.  "
@@ -4420,7 +4420,7 @@ YY_RULE_SETUP
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 232 "ExpressionDimScanner.l"
+#line 233 "ExpressionDimScanner.l"
 ECHO;
 	YY_BREAK
 #line 4427 "ExpressionDimScanner.cpp"
@@ -4968,10 +4968,6 @@ static void CEGUI_yy_load_buffer_state  (void)
 	CEGUI_yyfree((void *) b  );
 }
 
-#ifndef __cplusplus
-extern int isatty (int );
-#endif /* __cplusplus */
-    
 /* Initializes or reinitializes a buffer.
  * This function is sometimes called more than once on the same buffer,
  * such as during a CEGUI_yyrestart() or at EOF.
@@ -4995,7 +4991,7 @@ extern int isatty (int );
         b->yy_bs_column = 0;
     }
 
-        b->yy_is_interactive = file ? (isatty( fileno(file) ) > 0) : 0;
+        b->yy_is_interactive = 0;
     
 	errno = oerrno;
 }
@@ -5416,7 +5412,7 @@ void CEGUI_yyfree (void * ptr )
 
 #define YYTABLES_NAME "yytables"
 
-#line 232 "ExpressionDimScanner.l"
+#line 233 "ExpressionDimScanner.l"
 
 
 
