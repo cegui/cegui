@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,11 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "../../include/CEGUI/falagard/ExpressionDim.h"
-#include "CEGUI/ExpressionDim_impl.h"
+#include "CEGUI/falagard/ExpressionDim.h"
+#include "./ExpressionDim_impl.h"
 
 #define YY_DECL int lexScan(CEGUI::ExpressionDim_impl* ctx)
-#include "CEGUI/ExpressionDimScanner.h"
+#include "./ExpressionDimScanner.h"
 
 YY_DECL;
 
@@ -94,7 +94,7 @@ float ExpressionDim::getValue_impl(const Window& wnd) const
 
 //----------------------------------------------------------------------------//
 float ExpressionDim::getValue_impl(const Window& wnd,
-                                   const Rect& container) const
+                                   const Rectf& container) const
 {
     if (!d_pimpl->d_performedScan)
         scanString();

@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,20 +27,20 @@
  ***************************************************************************/
 %skeleton "lalr1.cc"
 %require "2.3"
-%output="CEGUIFalExpressionDimParser.cpp"
+%output="ExpressionDimParser.cpp"
 %name-prefix="CEGUI::ED_"
 %define "namespace" "CEGUI"
 %define "parser_class_name" "ExpressionDimParser"
 %defines
 
-%{
-#include "../../include/falagard/CEGUIFalDimensions.h"
-#include "../../include/CEGUILogger.h"
+%code requires {
+#include "CEGUI/falagard/Dimensions.h"
+#include "CEGUI/Logger.h"
 
 namespace CEGUI {
 struct ExpressionDim_impl;
 }
-%}
+}
 
 %parse-param { ExpressionDim_impl* ctx }
 %lex-param { CEGUI::ExpressionDim_impl* ctx }
@@ -62,7 +62,7 @@ ExpressionDimParser::token_type ED_lex(ExpressionDimParser::semantic_type* yylva
                                        ExpressionDim_impl* ctx);
 
 }
-#include "CEGUIFalExpressionDim_impl.h"
+#include "./ExpressionDim_impl.h"
 %}
 
 %%
@@ -77,7 +77,7 @@ exp:    DIMVAL {
         | exp '-' exp       { $<val>$ = $<val>1 - $<val>3;      }
         | exp '*' exp       { $<val>$ = $<val>1 * $<val>3;      }
         | exp '/' exp       { $<val>$ = $<val>1 / $<val>3;      }
-        | '(' exp ')'       { $<val>$ = $<val>2                 }
+        | '(' exp ')'       { $<val>$ = $<val>2;                }
 ;
 %%
 

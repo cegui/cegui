@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalExpressionDim_h_
 #define _CEGUIFalExpressionDim_h_
 
-#include "./Dimensions.h"
+#include "CEGUI/falagard/Dimensions.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,7 +53,7 @@ public:
 protected:
     // Implementation of the base class interface
     float getValue_impl(const Window& wnd) const;
-    float getValue_impl(const Window& wnd, const Rect& container) const;
+    float getValue_impl(const Window& wnd, const Rectf& container) const;
     void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
     void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
     BaseDim* clone_impl() const;
