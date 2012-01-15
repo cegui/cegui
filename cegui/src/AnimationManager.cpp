@@ -388,6 +388,22 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
     }
 }
 
+void AnimationManager::loadAnimationsFromString(const String& source)
+{
+    Animation_xmlHandler handler;
+
+    // do parse (which uses handler to create actual data)
+    CEGUI_TRY
+    {
+        System::getSingleton().getXMLParser()->parseXMLString(handler, source, XMLSchemaName);
+    }
+    CEGUI_CATCH(...)
+    {
+        Logger::getSingleton().logEvent("AnimationManager::loadAnimationsFromString - loading of animations from string failed.", Errors);
+        CEGUI_RETHROW;
+    }
+}
+
 //---------------------------------------------------------------------------//
 void AnimationManager::writeAnimationDefinitionToStream(const Animation& animation, OutStream& out_stream) const
 {

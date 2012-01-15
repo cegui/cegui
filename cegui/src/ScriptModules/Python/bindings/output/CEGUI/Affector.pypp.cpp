@@ -329,12 +329,12 @@ void register_Affector_class(){
                 , writeXMLToStream_function_type( &::CEGUI::Affector::writeXMLToStream )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-               \n\
-                  Writes an xml representation of this Affector to  out_stream.\n\
+                \n\
+                    Writes an xml representation of this Affector to  out_stream.\n\
             \n\
-               @param xml_stream\n\
-                  Stream where xml data should be output.\n\
-               *\n" );
+                @param xml_stream\n\
+                    Stream where xml data should be output.\n\
+                *\n" );
         
         }
     }

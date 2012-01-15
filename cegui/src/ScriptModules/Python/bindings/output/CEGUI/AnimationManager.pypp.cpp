@@ -352,6 +352,24 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::AnimationManager::loadAnimationsFromString
+        
+            typedef void ( ::CEGUI::AnimationManager::*loadAnimationsFromString_function_type )( ::CEGUI::String const & ) ;
+            
+            AnimationManager_exposer.def( 
+                "loadAnimationsFromString"
+                , loadAnimationsFromString_function_type( &::CEGUI::AnimationManager::loadAnimationsFromString )
+                , ( bp::arg("source") )
+                , "*!\n\
+               \n\
+                  Parses XML source containing animation specifications to create\n\
+                  and initialise Animation objects.\n\
+            \n\
+               @param source\n\
+                  String object holding the XML source to be processed.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::AnimationManager::loadAnimationsFromXML
         
             typedef void ( ::CEGUI::AnimationManager::*loadAnimationsFromXML_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
