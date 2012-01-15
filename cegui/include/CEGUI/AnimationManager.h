@@ -237,6 +237,16 @@ public:
 
     /*!
     \brief
+        Parses XML source containing animation specifications to create
+        and initialise Animation objects.
+
+    \param source
+        String object holding the XML source to be processed.
+    */
+    void loadAnimationsFromString(const String& source);
+
+    /*!
+    \brief
         Writes given animation definition to the given OutStream.
 
     \param animation
