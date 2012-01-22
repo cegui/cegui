@@ -7,9 +7,9 @@ Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
 following systems:
 
 - Various flavors of Linux using gcc.
-- Microsoft Windows using Visual C++ versions 7.1 through 10 (both express and
-professional versions where applicable).
-- Apple Mac OS X running Xcode (tested on version 10.5.8 with Xcode 3.1).
+- Microsoft Windows using Visual C++ - both express and professional versions
+where applicable. (Tested on Windows XP with MSVC++ 2010).
+- Apple Mac OS X running Xcode (tested on version 10.7.2 with Xcode 4.2.1).
 
 It is very possible that the system will compile with other compilers and run on
 other systems, though those mentioned above have been tested.

@@ -78,6 +78,7 @@ EXTRA_DIST = premake/README \
              Xcode/FirstWindow-Info.plist \
              Xcode/FontDemo-Info.plist \
              Xcode/InstancedWindows-Info.plist \
+             Xcode/InventoryDemo-Info.plist \
              Xcode/Minesweeper-Info.plist \
              Xcode/RendererSelector.xib \
              Xcode/ScrollablePaneDemo-Info.plist \
