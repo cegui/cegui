@@ -386,12 +386,12 @@ AC_DEFUN([CEGUI_ENABLE_OGRE_RENDERER], [
             cegui_saved_CFLAGS="$CPPFLAGS"
             CPPFLAGS="$CPPFLAGS $OIS_CFLAGS"
             AC_LANG_PUSH(C++)
-            AC_COMPILE_IFELSE(
+            AC_COMPILE_IFELSE([AC_LANG_SOURCE([
             [
                 #include <OIS.h>
                 OIS::InputManager* im = 0;
                 int main(int argc, char** argv) {im->numKeyboards(); return 0;}
-            ],
+            ]])],
             [AC_DEFINE([CEGUI_OLD_OIS_API],[1],[Define if your OIS uses the older numKeyboards like APIs rather than the newer getNumberOfDevices API])
             ])
             AC_LANG_POP(C++)
@@ -497,7 +497,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
-        AC_PREPROC_IFELSE([#include <irrlicht.h>], [cegui_irr_h_found=yes; cegui_irr_flags="$cegui_path"; break],[cegui_irr_h_found=no])
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([[#include <irrlicht.h>]])], [cegui_irr_h_found=yes; cegui_irr_flags="$cegui_path"; break],[cegui_irr_h_found=no])
     done
 
     for cegui_path in $cegui_lib_paths; do
@@ -513,7 +513,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
         AC_MSG_NOTICE([Trying to determine Irrlicht SDK version])
 
         dnl ** Test for Irr SDK 1.4 or 1.5.x **
-        AC_COMPILE_IFELSE(
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([
         [
             #include <irrlicht.h>
             class test : public irr::io::IReadFile
@@ -526,13 +526,13 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
                 const irr::c8* getFileName() const {return 0;}
             };
             int main(int argc, char** argv) { test x; return 0; }
-        ],
+        ]])],
         [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[14],[Defines irrlicht SDK version.  14 is 1.4 or 1.5.x and 16 is 1.6 or later.])
         gotirrsdkver=yes])
 
         dnl ** Test for Irr SDK 1.6 (and above?) **
         if test x$gotirrsdkver = xno; then
-        AC_COMPILE_IFELSE(
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([
         [
             #include <irrlicht.h>
             class test : public irr::io::IReadFile
@@ -547,7 +547,7 @@ AC_DEFUN([CEGUI_CHECK_IRRLICHT],[
                 irr::io::path filename;
             };
             int main(int argc, char** argv) { test x; return 0; }
-        ],
+        ]])],
         [AC_DEFINE([CEGUI_IRR_SDK_VERSION],[16],[Defines irrlicht SDK version.  14 is 1.4 or 1.5.x and 16 is 1.6 or later.])
         gotirrsdkver=yes],
         [AC_MSG_NOTICE([Unable to determine Irrlicht sdk version.])
@@ -685,8 +685,8 @@ AC_DEFUN([CEGUI_CHECK_XERCES],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
-        AC_PREPROC_IFELSE(
-            [#include <xercesc/sax2/DefaultHandler.hpp>],
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([
+            [#include <xercesc/sax2/DefaultHandler.hpp>]])],
             [cegui_xerces_h_found=yes; cegui_xerces_flags="$cegui_path"; break],
             [cegui_xerces_h_found=no])
     done
@@ -735,8 +735,8 @@ AC_DEFUN([CEGUI_CHECK_EXPAT],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
-        AC_PREPROC_IFELSE(
-            [#include <expat.h>],
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([
+            [#include <expat.h>]])],
             [cegui_expat_h_found=yes; cegui_expat_flags="$cegui_path"; break],
             [cegui_expat_h_found=no])
     done
@@ -782,8 +782,8 @@ AC_DEFUN([CEGUI_CHECK_RAPIDXML],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
-        AC_PREPROC_IFELSE(
-            [#include <rapidxml.hpp>],
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([
+            [#include <rapidxml.hpp>]])],
             [cegui_rapidxml_h_found=yes; cegui_rapidxml_flags="$cegui_path"; break],
             [cegui_rapidxml_h_found=no])
     done
@@ -889,8 +889,8 @@ AC_DEFUN([CEGUI_CHECK_TOLUAPP],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS $Lua_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS $Lua_CFLAGS")
-        AC_PREPROC_IFELSE(
-            [#include <tolua++.h>],
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([
+            [#include <tolua++.h>]])],
             [cegui_tolua_h_found=yes; cegui_tolua_flags="$cegui_path"; break],
             [cegui_tolua_h_found=no])
     done
@@ -948,8 +948,8 @@ AC_DEFUN([CEGUI_CHECK_TINYXML],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
-        AC_PREPROC_IFELSE(
-            [#include <tinyxml.h>],
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([
+            [#include <tinyxml.h>]])],
             [cegui_tinyxml_h_found=yes; cegui_tinyxml_flags="$cegui_path"; break],
             [cegui_tinyxml_h_found=no])
     done
@@ -1003,8 +1003,8 @@ AC_DEFUN([CEGUI_CHECK_GLEW],[
 
     for cegui_path in $cegui_inc_paths; do
         ifelse($cegui_path, [.], CPPFLAGS="$cegui_saved_CFLAGS", CPPFLAGS="-I$cegui_path $cegui_saved_CFLAGS")
-        AC_PREPROC_IFELSE(
-            [#include <GL/glew.h>],
+        AC_PREPROC_IFELSE([AC_LANG_SOURCE([
+            [#include <GL/glew.h>]])],
             [cegui_glew_h_found=yes; cegui_glew_flags="$cegui_path"; break],
             [cegui_glew_h_found=no])
     done
