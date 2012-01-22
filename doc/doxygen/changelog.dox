@@ -3,6 +3,52 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.6</b>
+- Bug Fix: Backported the TinyXML API version check and related code conditionals from default (cmake) branch to here (autotools).
+- Bug Fix: Make ScrolledContainer not issue the content changed notification when in the destruction phase.  This fixes issues in clients of ScrolledContainer that respond to this notification.  Via patch from Erik Ogenvik.
+- Bug Fix: include of cstddef header was missing for ptrdiff_t useage.  see: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=3&t=5546
+- Bug Fix: remove incorrect instances of 'size_t' from lua package files.  See: http://www.cegui.org.uk/mantis/view.php?id=441
+- Bug Fix: Ensure MCL keeps selection in single-select mode(s).
+- Bug Fix: Issue where empty variable would break configure script.
+- Bug Fix: Python detection should firstly not specify an exact version, and secondly should look for 2.7 as a possible version.
+- Bug Fix: make.bat file for regenerating the lua binding on Windows had the wrong output path
+- Bug Fix: Apply patch from ianstangoe to save/restore viewport and projection matrix in Ogre renderer.  See: http://www.cegui.org.uk/mantis/view.php?id=430
+- Bug Fix: Some include guards were incorrect.
+- Bug Fix: Remove offset from label area in Vanilla/Button that was throwing off centred text.  This issue is what originated this ticked: http://www.cegui.org.uk/mantis/view.php?id=426
+- Bug Fix: Resolve issue where content attached to a FrameWindow that is initially in the 'rolled up' state does not immediately display when the FrameWindow is subsequently unrolled.  http://www.cegui.org.uk/mantis/view.php?id=409
+- Bug Fix: Add bounds checking to ensure clipping regions will always be valid as scissor rects (all sides >=0).  Insurance against future like this one: http://www.cegui.org.uk/mantis/view.php?id=403
+- Bug Fix: resolve issue where a totally clipped Window attached to a parent with a RenderingWindow surface would generate an invalid clipping rect for it's GeometryBuffer.  This is the likely source of the issues in this ticket: http://www.cegui.org.uk/mantis/view.php?id=403
+- Bug Fix: Ensure GeometryBuffer clip rects are initialised to something when creating those objects.
+- Bug Fix: issue where '0' was tested as a default mouse cursor value instead of MouseCursorImageLLDefaultMouseCursor (-1)
+- Bug Fix: resolve issue I introduced which could set mouse image to address -1 and cause a seg fault.
+- Bug Fix: Resolve issue where FrameWindow::isTitleBarEnabled and
+- Bug Fix: FrameWindow::isCloseButtonEnabled used inherited state thus causing incorrect image and incorrect inner rect areas to be used when FrameWindow was disabled.  http://www.cegui.org.uk/mantis/view.php?id=411
+- Bug Fix: Resolve issue where initial call of MouseCursor::constrainPosition would access uninitialised d_position member variable.  http://www.cegui.org.uk/mantis/view.php?id=401
+- Bug Fix: Detect __HAIKU__ as a *nix variant.  Thanks to michaelvoliveira for a patch.  http://www.cegui.org.uk/mantis/view.php?id=417
+- Bug Fix: Issue where Window::setMouseCursor did not update the cursor image immediately if the cursor was already within the window's area.  http://www.cegui.org.uk/mantis/view.php?id=412
+- Bug Fix: Issue where we would try to (re)create Tooltip as part of system destruction when WindowManager is in locked state.  http://www.cegui.org.uk/mantis/view.php?id=423
+- Bug Fix: ScrolledContainer should pass mouse events back to it's parent in order that things like mouse scroll wheel works.
+- Bug Fix: Divisoin by zero / NaN issue with slider where the thumb would end up never getting a correct position.  Thanks to Erik Hjortsberg.
+- Bug Fix: Resolve issue where a destroyed window could leave references to it's GeometryBuffer in some RenderingSurface queue.
+- Bug Fix: errors in the VanillaWindows.layout example file.
+- Bug Fix: Issues of deleting a class instance that was only forward referenced.
+- Bug Fix: The config option to exclude PCRE did not exclude a PCRE specific header.
+
+- Modified: Move to system default compiler and system default OS X SDK in order that ppl are not forced into having specific versions of the dev tools installed (and by 'people', I mean me :-p)
+
+- Added: Functions that allow people to do useful things in WindowRenderer implementations (and other places).
+- Added: InventoryDemo.
+- Added: Null animation name support
+- Added: isAnimationPresent
+- Added: Eol extension + it's settings so Windows developers don't pollute the repo with CR LF
+- Added: RadioButton to Vanilla, via patches from Ident.
+- Added: Checkbox to Vanilla skin, via patches from Ident. 
+- Added: Window::getZIndex, Window::isInFront and Window::isBehind functions to enable client code to discover z-ordering of windows.
+
+- Documentation: Update docs to reference the mercurial repositories rather than subversion.
+- Documentation: Fix typo in ImageDim example.  Thanks to Ident.
+
+
 <b>Release 0.7.5</b>
 - Added: Initial version of the officially supported Python extension modules:
     - PyCEGUI - Support for the core CEGUI library.

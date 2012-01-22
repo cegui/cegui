@@ -7,7 +7,7 @@ Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
 following systems:
 
 - Various flavors of Linux using gcc.
-- Microsoft Windows using Visual C++ versions 7.1 through 9 (both express and
+- Microsoft Windows using Visual C++ versions 7.1 through 10 (both express and
 professional versions where applicable).
 - Apple Mac OS X running Xcode (tested on version 10.5.8 with Xcode 3.1).
 
@@ -52,7 +52,10 @@ changes you desire.
 Next you should execute one of the provided 'build_*.bat' batch files.  These do
 not actually build the code, but rather they invoke premake to generate an
 appropriate solution file and project files for the selected version of MSVC++
-(so for example, build_vs2008.bat generates the solution for MSVC++ 2008).
+(so for example, build_vs2008.bat generates the solution for MSVC++ 2008).  If
+there is no batch file for your specific version of MSVC++ you should use the
+batch file for the nearest version - MSVC++ will load and upgrade the solution
+as needed.
 
 Once this has run all you need to do is load the generated solution (CEGUI.sln)
 into MSVC++, select an appropriate build configuration (Debug, Release, etc) and
