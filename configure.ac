@@ -7,7 +7,7 @@ dnl we should define these numbers (we could pick up the same info by other mean
 dnl though this leaves nobody in any doubt about where this is being defined).
 m4_define([CEGUI_MAJ_VER], 0)
 m4_define([CEGUI_MIN_VER], 7)
-m4_define([CEGUI_REL_VER], 6)
+m4_define([CEGUI_REL_VER], 7)
 
 dnl Construct the final version number out of the sub-version values specified above
 m4_define([CEGUI_RELEASE_VERSION], [CEGUI_MAJ_VER.CEGUI_MIN_VER.CEGUI_REL_VER])
