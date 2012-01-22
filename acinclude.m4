@@ -64,6 +64,17 @@ AC_DEFUN([CEGUI_CHECK_XML_PARSERS],[
 
     if test x$cegui_use_external_tinyxml = xyes; then
         CEGUI_CHECK_TINYXML([tinyxml], [cegui_found_tinyxml=yes], [cegui_found_tinyxml=no])
+        dnl Discover what API version we have
+        AC_LANG_PUSH([C++])
+        AC_COMPILE_IFELSE([AC_LANG_SOURCE([
+            [#include <tinyxml.h>
+             int main() {
+                int i = TiXmlElement::TINYXML_ELEMENT;
+                return 0;
+             }]])],
+            [AC_DEFINE(CEGUI_TINYXML_HAS_2_6_API, 1, [Set this if your tiny xml version is 2.6 or higher])],
+            [])
+        AC_LANG_POP([C++])
     else
         cegui_found_tinyxml=no
     fi

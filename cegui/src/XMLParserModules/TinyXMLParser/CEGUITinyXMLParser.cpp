@@ -38,6 +38,16 @@
 #include "CEGUIExceptions.h"
 #include CEGUI_TINYXML_H
 
+//---------------------------------------------------------------------------//
+// These are to support the <=2.5 and >=2.6 API versions
+#ifdef CEGUI_TINYXML_HAS_2_6_API
+#   define CEGUI_TINYXML_ELEMENT TINYXML_ELEMENT
+#   define CEGUI_TINYXML_TEXT TINYXML_TEXT
+#else
+#   define CEGUI_TINYXML_ELEMENT ELEMENT
+#   define CEGUI_TINYXML_TEXT TEXT
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -131,10 +141,10 @@ namespace CEGUI
         {
             switch(childNode->Type())
             {
-            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::ELEMENT:
+            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::CEGUI_TINYXML_ELEMENT:
                 processElement(childNode->ToElement());
                 break;
-            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::TEXT:
+            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::CEGUI_TINYXML_TEXT:
                 if (childNode->ToText()->Value() != '\0')
                     d_handler->text((utf8*)childNode->ToText()->Value());
                 break;
