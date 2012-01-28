@@ -348,12 +348,13 @@ size_t AnimationManager::getNumAnimationInstances() const
 }
 
 //----------------------------------------------------------------------------//
-void AnimationManager::stepInstances(float delta)
+void AnimationManager::autoStepInstances(float delta)
 {
     for (AnimationInstanceMap::const_iterator it = d_animationInstances.begin();
          it != d_animationInstances.end(); ++it)
     {
-        it->second->step(delta);
+    	if (it->second->isAutoSteppingEnabled())
+    		it->second->step(delta);
     }
 }
 
@@ -385,6 +386,39 @@ void AnimationManager::loadAnimationsFromXML(const String& filename,
 
         CEGUI_RETHROW;
     }
+}
+
+void AnimationManager::loadAnimationsFromString(const String& source)
+{
+    Animation_xmlHandler handler;
+
+    // do parse (which uses handler to create actual data)
+    CEGUI_TRY
+    {
+        System::getSingleton().getXMLParser()->parseXMLString(handler, source, XMLSchemaName);
+    }
+    CEGUI_CATCH(...)
+    {
+        Logger::getSingleton().logEvent("AnimationManager::loadAnimationsFromString - loading of animations from string failed.", Errors);
+        CEGUI_RETHROW;
+    }
+}
+
+//---------------------------------------------------------------------------//
+void AnimationManager::writeAnimationDefinitionToStream(const Animation& animation, OutStream& out_stream) const
+{
+    XMLSerializer xml(out_stream);
+
+    animation.writeXMLToStream(xml);
+}
+
+//---------------------------------------------------------------------------//
+String AnimationManager::getAnimationDefinitionAsString(const Animation& animation) const
+{
+    std::ostringstream str;
+    writeAnimationDefinitionToStream(animation, str);
+
+    return String(str.str());
 }
 
 //---------------------------------------------------------------------------//

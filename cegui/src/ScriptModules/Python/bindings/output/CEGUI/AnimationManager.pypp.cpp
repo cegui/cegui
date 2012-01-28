@@ -44,6 +44,26 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::AnimationManager::autoStepInstances
+        
+            typedef void ( ::CEGUI::AnimationManager::*autoStepInstances_function_type )( float ) ;
+            
+            AnimationManager_exposer.def( 
+                "autoStepInstances"
+                , autoStepInstances_function_type( &::CEGUI::AnimationManager::autoStepInstances )
+                , ( bp::arg("delta") )
+                , "*!\n\
+                \n\
+                    Internal method, gets called by CEGUI.System automatically.\n\
+            \n\
+                    Only use if you know what you're doing!\n\
+            \n\
+                \n\
+                  Steps animation instances with auto stepping enabled forward\n\
+                  by given delta.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::AnimationManager::createAnimation
         
             typedef ::CEGUI::Animation * ( ::CEGUI::AnimationManager::*createAnimation_function_type )( ::CEGUI::String const & ) ;
@@ -172,6 +192,31 @@ void register_AnimationManager_class(){
             \n\
                 Retrieves animation by index\n\
             *\n" );
+        
+        }
+        { //::CEGUI::AnimationManager::getAnimationDefinitionAsString
+        
+            typedef ::CEGUI::String ( ::CEGUI::AnimationManager::*getAnimationDefinitionAsString_function_type )( ::CEGUI::Animation const & ) const;
+            
+            AnimationManager_exposer.def( 
+                "getAnimationDefinitionAsString"
+                , getAnimationDefinitionAsString_function_type( &::CEGUI::AnimationManager::getAnimationDefinitionAsString )
+                , ( bp::arg("animation") )
+                , "*!\n\
+                \n\
+                    Writes given animation definition and returns the result as String\n\
+            \n\
+                @param animation\n\
+                    Animation definition to write\n\
+            \n\
+                @Warning: \n\
+                    This is a convenience function and isn't designed to be fast at all! Use the other\
+                    alternatives\n\
+                    if you want performance.\n\
+            \n\
+                @return\n\
+                    String containing the resulting XML\n\
+                *\n" );
         
         }
         { //::CEGUI::AnimationManager::getAnimationInstanceAtIdx
@@ -307,6 +352,24 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::AnimationManager::loadAnimationsFromString
+        
+            typedef void ( ::CEGUI::AnimationManager::*loadAnimationsFromString_function_type )( ::CEGUI::String const & ) ;
+            
+            AnimationManager_exposer.def( 
+                "loadAnimationsFromString"
+                , loadAnimationsFromString_function_type( &::CEGUI::AnimationManager::loadAnimationsFromString )
+                , ( bp::arg("source") )
+                , "*!\n\
+               \n\
+                  Parses XML source containing animation specifications to create\n\
+                  and initialise Animation objects.\n\
+            \n\
+               @param source\n\
+                  String object holding the XML source to be processed.\n\
+               *\n" );
+        
+        }
         { //::CEGUI::AnimationManager::loadAnimationsFromXML
         
             typedef void ( ::CEGUI::AnimationManager::*loadAnimationsFromXML_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
@@ -361,19 +424,23 @@ void register_AnimationManager_class(){
                 *\n" );
         
         }
-        { //::CEGUI::AnimationManager::stepInstances
+        { //::CEGUI::AnimationManager::writeAnimationDefinitionToStream
         
-            typedef void ( ::CEGUI::AnimationManager::*stepInstances_function_type )( float ) ;
+            typedef void ( ::CEGUI::AnimationManager::*writeAnimationDefinitionToStream_function_type )( ::CEGUI::Animation const &,::CEGUI::OutStream & ) const;
             
             AnimationManager_exposer.def( 
-                "stepInstances"
-                , stepInstances_function_type( &::CEGUI::AnimationManager::stepInstances )
-                , ( bp::arg("delta") )
+                "writeAnimationDefinitionToStream"
+                , writeAnimationDefinitionToStream_function_type( &::CEGUI::AnimationManager::writeAnimationDefinitionToStream )
+                , ( bp::arg("animation"), bp::arg("out_stream") )
                 , "*!\n\
                 \n\
-                    Internal method, gets called by CEGUI.System automatically.\n\
+                    Writes given animation definition to the given OutStream.\n\
             \n\
-                    Only use if you know what you're doing!\n\
+                @param animation\n\
+                    Animation definition to write\n\
+            \n\
+                @param out_stream\n\
+                    OutStream (std.ostream based) object where data is to be sent.\n\
                 *\n" );
         
         }

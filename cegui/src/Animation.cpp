@@ -32,6 +32,9 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/AnimationInstance.h"
 #include "CEGUI/EventSet.h"
+#include "CEGUI/XMLSerializer.h"
+#include "CEGUI/Animation_xmlHandler.h"
+#include "CEGUI/PropertyHelper.h"
 #include <algorithm>
 
 // Start of CEGUI namespace section
@@ -288,6 +291,52 @@ void Animation::apply(AnimationInstance* instance)
     {
         (*it)->apply(instance);
     }
+}
+
+//----------------------------------------------------------------------------//
+void Animation::writeXMLToStream(XMLSerializer& xml_stream, const String& name_override) const
+{
+    xml_stream.openTag(AnimationDefinitionHandler::ElementName);
+
+    xml_stream.attribute(AnimationDefinitionHandler::NameAttribute, name_override.empty() ? getName() : name_override);
+    xml_stream.attribute(AnimationDefinitionHandler::DurationAttribute, PropertyHelper<float>::toString(getDuration()));
+
+    String replayMode;
+    switch(getReplayMode())
+    {
+        case RM_Once:
+            replayMode = AnimationDefinitionHandler::ReplayModeOnce;
+            break;
+        case RM_Loop:
+            replayMode = AnimationDefinitionHandler::ReplayModeLoop;
+            break;
+        case RM_Bounce:
+            replayMode = AnimationDefinitionHandler::ReplayModeBounce;
+            break;
+        default:
+            assert(0 && "How did we get here?");
+            break;
+    }
+
+    xml_stream.attribute(AnimationDefinitionHandler::ReplayModeAttribute, replayMode);
+    xml_stream.attribute(AnimationDefinitionHandler::AutoStartAttribute, PropertyHelper<bool>::toString(getAutoStart()));
+
+    for (AffectorList::const_iterator it = d_affectors.begin(); it != d_affectors.end(); ++it)
+    {
+        (*it)->writeXMLToStream(xml_stream);
+    }
+
+    for (SubscriptionMap::const_iterator it = d_autoSubscriptions.begin(); it != d_autoSubscriptions.end(); ++it)
+    {
+        xml_stream.openTag(AnimationSubscriptionHandler::ElementName);
+
+        xml_stream.attribute(AnimationSubscriptionHandler::EventAttribute, it->first);
+        xml_stream.attribute(AnimationSubscriptionHandler::ActionAttribute, it->second);
+
+        xml_stream.closeTag();
+    }
+
+    xml_stream.closeTag();
 }
 
 //----------------------------------------------------------------------------//

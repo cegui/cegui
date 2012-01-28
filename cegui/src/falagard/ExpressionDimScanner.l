@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,18 +25,18 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-%option header-file="CEGUIFalExpressionDimScanner.h"
-%option outfile="CEGUIFalExpressionDimScanner.cpp"
+%option header-file="ExpressionDimScanner.h"
+%option outfile="ExpressionDimScanner.cpp"
 %option prefix="CEGUI_yy"
 %option noyywrap
 %option batch
 %option 8bit
+%option never-interactive
 
 %{
-#include "CEGUIFalExpressionDimParser.hpp"
-#include "CEGUIFalExpressionDim_impl.h"
-#include "../../include/falagard/CEGUIFalXMLEnumHelper.h"
-#include "../../include/CEGUILogger.h"
+#include "./ExpressionDim_impl.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
+#include "CEGUI/Logger.h"
 
 #define YY_DECL int lexScan(CEGUI::ExpressionDim_impl* ctx)
 
@@ -71,14 +71,12 @@ SPACING     [ \t]*
 "imagedim("[^,)]+","[^,)]+","[^,)]+")" {
     prepareString(yytext);
 
-    char imageset[128];
-    char image[128];
+    char image[256];
     char type[32];
 
-    sscanf(&yytext[8], "( %127s %127s %31s )", imageset, image, type);
+    sscanf(&yytext[8], "( %255s %31s )", image, type);
 
     CEGUI::ImageDim* dim = new CEGUI::ImageDim(
-        imageset,
         image,
         CEGUI::FalagardXMLHelper::stringToDimensionType(type));
 

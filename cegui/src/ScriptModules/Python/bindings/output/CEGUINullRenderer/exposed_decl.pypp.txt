@@ -1423,6 +1423,7 @@
 ~@class_declaration_t@Logger@::CEGUI::Logger
 ~@class_declaration_t@Scheme@::CEGUI::Scheme
 ~@class_declaration_t@__numpunct_cache< wchar_t >@::std::__numpunct_cache< wchar_t >
+~@class_declaration_t@XMLSerializer@::CEGUI::XMLSerializer
 ~@class_declaration_t@basic_istringstream< char, std::char_traits< char >, std::allocator< char > >@::std::basic_istringstream< char, std::char_traits< char >, std::allocator< char > >
 ~@class_declaration_t@TreeEventArgs@::CEGUI::TreeEventArgs
 ~@class_declaration_t@_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >@::std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >

@@ -63,7 +63,8 @@ AnimationInstance::AnimationInstance(Animation* definition):
     // default behaviour is to never skip
     d_maxStepDeltaSkip(-1.0f),
     // default behaviour is to never clamp
-    d_maxStepDeltaClamp(-1.0f)
+    d_maxStepDeltaClamp(-1.0f),
+    d_autoSteppingEnabled(true)
 {}
 
 //----------------------------------------------------------------------------//
@@ -274,6 +275,18 @@ void AnimationInstance::togglePause(bool skipNextStep)
 bool AnimationInstance::isRunning() const
 {
     return d_running;
+}
+
+//----------------------------------------------------------------------------//
+void AnimationInstance::setAutoSteppingEnabled(bool enabled)
+{
+	d_autoSteppingEnabled = enabled;
+}
+
+//----------------------------------------------------------------------------//
+bool AnimationInstance::isAutoSteppingEnabled() const
+{
+	return d_autoSteppingEnabled;
 }
 
 //----------------------------------------------------------------------------//

@@ -39,50 +39,40 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// Static XML element name member strings for the sub-handlers
+
 const String AnimationDefinitionHandler::ElementName("AnimationDefinition");
 const String AnimationAffectorHandler::ElementName("Affector");
 const String AnimationKeyFrameHandler::ElementName("KeyFrame");
 const String AnimationSubscriptionHandler::ElementName("Subscription");
 
-//----------------------------------------------------------------------------//
-// Internal strings for XML element names
-static const String AnimationsElement("Animations");
+const String Animation_xmlHandler::ElementName("Animations");
 
-//----------------------------------------------------------------------------//
-// Internal strings for the XML attribute names
-static const String NameAttribute("name");
-static const String DurationAttribute("duration");
-static const String ReplayModeAttribute("replayMode");
-static const String AutoStartAttribute("autoStart");
-static const String ApplicationMethodAttribute("applicationMethod");
-static const String PropertyAttribute("property");
-static const String InterpolatorAttribute("interpolator");
-static const String PositionAttribute("position");
-static const String ValueAttribute("value");
-static const String SourcePropertyAttribute("sourceProperty");
-static const String ProgressionAttribute("progression");
-static const String EventAttribute("event");
-static const String ActionAttribute("action");
+const String AnimationDefinitionHandler::NameAttribute("name");
+const String AnimationDefinitionHandler::DurationAttribute("duration");
+const String AnimationDefinitionHandler::ReplayModeAttribute("replayMode");
+const String AnimationDefinitionHandler::ReplayModeOnce("once");
+const String AnimationDefinitionHandler::ReplayModeLoop("loop");
+const String AnimationDefinitionHandler::ReplayModeBounce("bounce");
+const String AnimationDefinitionHandler::AutoStartAttribute("autoStart");
 
-//----------------------------------------------------------------------------//
-// Internal strings for the XML enumeration for replay modes
-static const String ReplayModeOnce("once");
-static const String ReplayModeLoop("loop");
-static const String ReplayModeBounce("bounce");
+const String AnimationAffectorHandler::InterpolatorAttribute("interpolator");
+const String AnimationAffectorHandler::TargetPropertyAttribute("property");
+const String AnimationAffectorHandler::ApplicationMethodAttribute("applicationMethod");
+const String AnimationAffectorHandler::ApplicationMethodAbsolute("absolute");
+const String AnimationAffectorHandler::ApplicationMethodRelative("relative");
+const String AnimationAffectorHandler::ApplicationMethodRelativeMultiply("relative multiply");
 
-//----------------------------------------------------------------------------//
-// Internal strings for the XML enumeration for application methods.
-static const String ApplicationMethodAbsolute("absolute");
-static const String ApplicationMethodRelative("relative");
-static const String ApplicationMethodRelativeMultiply("relative multiply");
+const String AnimationKeyFrameHandler::PositionAttribute("position");
+const String AnimationKeyFrameHandler::ValueAttribute("value");
+const String AnimationKeyFrameHandler::SourcePropertyAttribute("sourceProperty");
+const String AnimationKeyFrameHandler::ProgressionAttribute("progression");
+const String AnimationKeyFrameHandler::ProgressionLinear("linear");
+const String AnimationKeyFrameHandler::ProgressionDiscrete("discrete");
+const String AnimationKeyFrameHandler::ProgressionQuadraticAccelerating("quadratic accelerating");
+const String AnimationKeyFrameHandler::ProgressionQuadraticDecelerating("quadratic decelerating");
 
-//----------------------------------------------------------------------------//
-// Internal strings for the XML enumeration for progression types.
-static const String ProgressionLinear("linear");
-static const String ProgressionDiscrete("discrete");
-static const String ProgressionQuadraticAccelerating("quadratic accelerating");
-static const String ProgressionQuadraticDecelerating("quadratic decelerating");
+const String AnimationSubscriptionHandler::EventAttribute("event");
+const String AnimationSubscriptionHandler::ActionAttribute("action");
 
 //----------------------------------------------------------------------------//
 Animation_xmlHandler::Animation_xmlHandler()
@@ -108,7 +98,7 @@ const String& Animation_xmlHandler::getDefaultResourceGroup() const
 void Animation_xmlHandler::elementStartLocal(const String& element,
                                              const XMLAttributes& attributes)
 {
-    if (element == AnimationsElement)
+    if (element == ElementName)
     {
         Logger::getSingleton().logEvent("===== Begin Animations parsing =====");
     }
@@ -124,7 +114,7 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
 //----------------------------------------------------------------------------//
 void Animation_xmlHandler::elementEndLocal(const String& element)
 {
-    if (element == AnimationsElement)
+    if (element == ElementName)
     {
         Logger::getSingleton().logEvent("===== End Animations parsing =====");
     }
@@ -206,14 +196,14 @@ AnimationAffectorHandler::AnimationAffectorHandler(
 {
     Logger::getSingleton().logEvent(
         "\tAdding affector for property: " +
-        attributes.getValueAsString(PropertyAttribute) +
+        attributes.getValueAsString(TargetPropertyAttribute) +
         "  Interpolator: " +
         attributes.getValueAsString(InterpolatorAttribute) +
         "  Application method: " +
         attributes.getValueAsString(ApplicationMethodAttribute, "absolute"));
 
     d_affector = anim.createAffector(
-        attributes.getValueAsString(PropertyAttribute),
+        attributes.getValueAsString(TargetPropertyAttribute),
         attributes.getValueAsString(InterpolatorAttribute));
 
     if (attributes.getValueAsString(ApplicationMethodAttribute) ==

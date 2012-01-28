@@ -292,7 +292,26 @@ public:
 
     /*!
     \brief
-        Internal method, steps the animation forward by the given delta
+    	Controls whether auto stepping is enabled
+
+    \par
+    	If auto stepping is enabled, CEGUI will step this animation instance forward
+    	whenever CEGUI::System::injectTimePulse is called
+     */
+    void setAutoSteppingEnabled(bool enabled);
+
+    /*!
+    \brief
+    	Checks whether auto stepping is enabled
+    */
+    bool isAutoSteppingEnabled() const;
+
+    /*!
+    \brief
+        Steps the animation forward by the given delta
+
+    \par
+    	You don't need to call this unless AutoStepping is disabled (it is enabled by default)
     */
     void step(float delta);
 
@@ -414,6 +433,8 @@ private:
     float d_maxStepDeltaSkip;
     //! always clamp step delta to this value
     float d_maxStepDeltaClamp;
+    //! true if auto stepping is enabled
+    bool d_autoSteppingEnabled;
 
     typedef std::map<String, String, std::less<String>
         CEGUI_MAP_ALLOC(String, String)> PropertyValueMap;

@@ -359,6 +359,26 @@ void register_Animation_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Animation::writeXMLToStream
+        
+            typedef void ( ::CEGUI::Animation::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer &,::CEGUI::String const & ) const;
+            
+            Animation_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type( &::CEGUI::Animation::writeXMLToStream )
+                , ( bp::arg("xml_stream"), bp::arg("name_override")="" )
+                , "*!\n\
+                \n\
+                    Writes an xml representation of this Animation definition to  out_stream.\n\
+            \n\
+                @param xml_stream\n\
+                    Stream where xml data should be output.\n\
+                @param name_override\n\
+                  If given, this value overrides the name attribute written to the stream.\n\
+                  This is useful when writing out looknfeels\n\
+                *\n" );
+        
+        }
     }
 
 }

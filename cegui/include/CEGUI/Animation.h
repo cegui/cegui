@@ -259,6 +259,18 @@ public:
     */
     void apply(AnimationInstance* instance);
 
+    /*!
+    \brief
+        Writes an xml representation of this Animation definition to \a out_stream.
+
+    \param xml_stream
+        Stream where xml data should be output.
+    \param name_override
+    	If given, this value overrides the name attribute written to the stream.
+    	This is useful when writing out looknfeels
+    */
+    void writeXMLToStream(XMLSerializer& xml_stream, const String& name_override = "") const;
+
 private:
     //! name of this animation
     String d_name;

@@ -213,8 +213,12 @@ public:
         Internal method, gets called by CEGUI::System automatically.
 
         Only use if you know what you're doing!
+
+    \par
+    	Steps animation instances with auto stepping enabled forward
+    	by given delta.
     */
-    void stepInstances(float delta);
+    void autoStepInstances(float delta);
 
     /*!
     \brief
@@ -230,6 +234,44 @@ public:
     */
     void loadAnimationsFromXML(const String& filename,
                                const String& resourceGroup = "");
+
+    /*!
+    \brief
+        Parses XML source containing animation specifications to create
+        and initialise Animation objects.
+
+    \param source
+        String object holding the XML source to be processed.
+    */
+    void loadAnimationsFromString(const String& source);
+
+    /*!
+    \brief
+        Writes given animation definition to the given OutStream.
+
+    \param animation
+        Animation definition to write
+
+    \param out_stream
+        OutStream (std::ostream based) object where data is to be sent.
+    */
+    void writeAnimationDefinitionToStream(const Animation& animation, OutStream& out_stream) const;
+
+    /*!
+    \brief
+        Writes given animation definition and returns the result as String
+
+    \param animation
+        Animation definition to write
+
+    \warning
+        This is a convenience function and isn't designed to be fast at all! Use the other alternatives
+        if you want performance.
+
+    \return
+        String containing the resulting XML
+    */
+    String getAnimationDefinitionAsString(const Animation& animation) const;
 
     /*!
     \brief

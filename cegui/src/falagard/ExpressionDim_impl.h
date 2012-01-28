@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,8 +28,8 @@
 #ifndef _CEGUIFalExpressionDim_impl_h
 #define _CEGUIFalExpressionDim_impl_h_
 
-#include "../../include/CEGUI/falagard/Dimensions.h"
-#include "CEGUI/ExpressionDimParser.hpp"
+#include "CEGUI/falagard/Dimensions.h"
+#include "./ExpressionDimParser.hpp"
 #include <vector>
 #include <utility>
 
@@ -65,7 +65,7 @@ struct ExpressionDim_impl
     //! CEGUI::Window for the current parse.
     const Window* d_window;
     //! CEGUI::Rect area for the current parse (may be 0).
-    const Rect* d_area;
+    const Rectf* d_area;
     //! The final value from the last parse.
     float d_parsedValue;
 };

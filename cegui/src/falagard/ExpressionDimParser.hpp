@@ -1,23 +1,23 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+
+/* A Bison parser, made by GNU Bison 2.4.1.  */
 
 /* Skeleton interface for Bison LALR(1) parsers in C++
-
-   Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
-
-   This program is free software; you can redistribute it and/or modify
+   
+      Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software
+   Foundation, Inc.
+   
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
-
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -28,7 +28,7 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-
+   
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
@@ -37,29 +37,44 @@
 #ifndef PARSER_HEADER_H
 # define PARSER_HEADER_H
 
-#include <string>
-#include <iostream>
-#include "stack.hh"
+/* "%code requires" blocks.  */
 
-namespace CEGUI
-{
-  class position;
-  class location;
-}
+/* Line 35 of lalr1.cc  */
+#line 36 "ExpressionDimParser.y"
 
-/* First part of user declarations.  */
-#line 36 "CEGUIFalExpressionDimParser.y"
-
-#include "../../include/falagard/CEGUIFalDimensions.h"
-#include "../../include/CEGUILogger.h"
+#include "CEGUI/falagard/Dimensions.h"
+#include "CEGUI/Logger.h"
 
 namespace CEGUI {
 struct ExpressionDim_impl;
 }
 
 
-/* Line 35 of lalr1.cc.  */
-#line 63 "CEGUIFalExpressionDimParser.hpp"
+
+/* Line 35 of lalr1.cc  */
+#line 56 "ExpressionDimParser.hpp"
+
+
+#include <string>
+#include <iostream>
+#include "stack.hh"
+
+
+/* Line 35 of lalr1.cc  */
+#line 32 "ExpressionDimParser.y"
+namespace CEGUI {
+
+/* Line 35 of lalr1.cc  */
+#line 69 "ExpressionDimParser.hpp"
+  class position;
+  class location;
+
+/* Line 35 of lalr1.cc  */
+#line 32 "ExpressionDimParser.y"
+} // CEGUI
+
+/* Line 35 of lalr1.cc  */
+#line 78 "ExpressionDimParser.hpp"
 
 #include "location.hh"
 
@@ -100,8 +115,13 @@ do {							\
 } while (false)
 #endif
 
-namespace CEGUI
-{
+
+/* Line 35 of lalr1.cc  */
+#line 32 "ExpressionDimParser.y"
+namespace CEGUI {
+
+/* Line 35 of lalr1.cc  */
+#line 125 "ExpressionDimParser.hpp"
 
   /// A Bison parser.
   class ExpressionDimParser
@@ -110,14 +130,19 @@ namespace CEGUI
     /// Symbol semantic values.
 #ifndef YYSTYPE
     union semantic_type
-#line 48 "CEGUIFalExpressionDimParser.y"
-{
+    {
+
+/* Line 35 of lalr1.cc  */
+#line 48 "ExpressionDimParser.y"
+
     float val;
     BaseDim* dim;
-}
-/* Line 35 of lalr1.cc.  */
-#line 120 "CEGUIFalExpressionDimParser.hpp"
-	;
+
+
+
+/* Line 35 of lalr1.cc  */
+#line 145 "ExpressionDimParser.hpp"
+    };
 #else
     typedef YYSTYPE semantic_type;
 #endif
@@ -144,6 +169,7 @@ namespace CEGUI
     /// \returns  0 iff parsing succeeded.
     virtual int parse ();
 
+#if YYDEBUG
     /// The current debugging stream.
     std::ostream& debug_stream () const;
     /// Set the current debugging stream.
@@ -155,6 +181,7 @@ namespace CEGUI
     debug_level_type debug_level () const;
     /// Set the current debugging level.
     void set_debug_level (debug_level_type l);
+#endif
 
   private:
     /// Report a syntax error.
@@ -164,7 +191,7 @@ namespace CEGUI
 
     /// Generate an error message.
     /// \param state   the state where the error occurred.
-    /// \param tok     the look-ahead token.
+    /// \param tok     the lookahead token.
     virtual std::string yysyntax_error_ (int yystate);
 
 #if YYDEBUG
@@ -182,7 +209,7 @@ namespace CEGUI
     virtual void yy_symbol_print_ (int yytype,
 				   const semantic_type* yyvaluep,
 				   const location_type* yylocationp);
-#endif /* ! YYDEBUG */
+#endif
 
 
     /// State numbers.
@@ -259,6 +286,10 @@ namespace CEGUI
     virtual void yy_reduce_print_ (int r);
     /// Print the state stack on the debug stream.
     virtual void yystack_print_ ();
+
+    /* Debugging.  */
+    int yydebug_;
+    std::ostream* yycdebug_;
 #endif
 
     /// Convert a scanner token number \a t to a symbol number.
@@ -290,15 +321,17 @@ namespace CEGUI
     static const unsigned int yyuser_token_number_max_;
     static const token_number_type yyundef_token_;
 
-    /* Debugging.  */
-    int yydebug_;
-    std::ostream* yycdebug_;
-
-
     /* User arguments.  */
     ExpressionDim_impl* ctx;
   };
-}
+
+/* Line 35 of lalr1.cc  */
+#line 32 "ExpressionDimParser.y"
+} // CEGUI
+
+/* Line 35 of lalr1.cc  */
+#line 334 "ExpressionDimParser.hpp"
+
 
 
 #endif /* ! defined PARSER_HEADER_H */
