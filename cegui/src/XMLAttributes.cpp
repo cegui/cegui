@@ -117,17 +117,17 @@ namespace CEGUI
 
         const String& val = getValue(attrName);
 
-        if (val == "false" || val == "0")
+        if (val == "false" || val == "False" || val == "0")
         {
             return false;
         }
-        else if (val == "true" || val == "1")
+        else if (val == "true" || val == "True" || val == "1")
         {
             return true;
         }
         else
         {
-            CEGUI_THROW(InvalidRequestException("XMLAttributes::getValueAsInteger - failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to bool."));
+            CEGUI_THROW(InvalidRequestException("XMLAttributes::getValueAsBool - failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to bool."));
         }
     }
 

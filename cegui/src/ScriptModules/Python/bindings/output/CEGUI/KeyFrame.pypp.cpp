@@ -237,6 +237,23 @@ void register_KeyFrame_class(){
                 *\n" );
         
         }
+        { //::CEGUI::KeyFrame::writeXMLToStream
+        
+            typedef void ( ::CEGUI::KeyFrame::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            KeyFrame_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type( &::CEGUI::KeyFrame::writeXMLToStream )
+                , ( bp::arg("xml_stream") )
+                , "*!\n\
+               \n\
+                  Writes an xml representation of this KeyFrame to  out_stream.\n\
+            \n\
+               @param xml_stream\n\
+                  Stream where xml data should be output.\n\
+               *\n" );
+        
+        }
     }
 
 }

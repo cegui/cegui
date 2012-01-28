@@ -293,7 +293,7 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 	}
 	CEGUI_CATCH(...)
 	{
-        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from file '" + filename +"' failed.", Errors);
+        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromFile - loading of layout from file '" + filename +"' failed.", Errors);
         CEGUI_RETHROW;
 	}
 
@@ -318,7 +318,7 @@ Window* WindowManager::loadLayoutFromString(const String& source, PropertyCallba
     }
     CEGUI_CATCH(...)
     {
-        Logger::getSingleton().logEvent("WindowManager::loadWindowLayout - loading of layout from string failed.", Errors);
+        Logger::getSingleton().logEvent("WindowManager::loadLayoutFromString - loading of layout from string failed.", Errors);
         CEGUI_RETHROW;
     }
 

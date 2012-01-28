@@ -130,6 +130,7 @@ class WRFactoryRegisterer;
 class XMLAttributes;
 class XMLHandler;
 class XMLParser;
+class XMLSerializer;
 
 /*************************************************************************
     Forward declare window / widget classes.

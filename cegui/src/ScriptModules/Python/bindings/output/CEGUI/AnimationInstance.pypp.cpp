@@ -256,6 +256,19 @@ void register_AnimationInstance_class(){
             *\n" );
         
         }
+        { //::CEGUI::AnimationInstance::isAutoSteppingEnabled
+        
+            typedef bool ( ::CEGUI::AnimationInstance::*isAutoSteppingEnabled_function_type )(  ) const;
+            
+            AnimationInstance_exposer.def( 
+                "isAutoSteppingEnabled"
+                , isAutoSteppingEnabled_function_type( &::CEGUI::AnimationInstance::isAutoSteppingEnabled )
+                , "*!\n\
+            \n\
+              Checks whether auto stepping is enabled\n\
+            *\n" );
+        
+        }
         { //::CEGUI::AnimationInstance::isRunning
         
             typedef bool ( ::CEGUI::AnimationInstance::*isRunning_function_type )(  ) const;
@@ -307,6 +320,24 @@ void register_AnimationInstance_class(){
             \n\
                 Internal method, saves given property (called before it's affected)\n\
             *\n" );
+        
+        }
+        { //::CEGUI::AnimationInstance::setAutoSteppingEnabled
+        
+            typedef void ( ::CEGUI::AnimationInstance::*setAutoSteppingEnabled_function_type )( bool ) ;
+            
+            AnimationInstance_exposer.def( 
+                "setAutoSteppingEnabled"
+                , setAutoSteppingEnabled_function_type( &::CEGUI::AnimationInstance::setAutoSteppingEnabled )
+                , ( bp::arg("enabled") )
+                , "*!\n\
+                \n\
+                  Controls whether auto stepping is enabled\n\
+            \n\
+                \n\
+                  If auto stepping is enabled, CEGUI will step this animation instance forward\n\
+                  whenever CEGUI.System.injectTimePulse is called\n\
+                 *\n" );
         
         }
         { //::CEGUI::AnimationInstance::setEventReceiver
@@ -492,9 +523,12 @@ void register_AnimationInstance_class(){
                 , step_function_type( &::CEGUI::AnimationInstance::step )
                 , ( bp::arg("delta") )
                 , "*!\n\
+                \n\
+                    Steps the animation forward by the given delta\n\
             \n\
-                Internal method, steps the animation forward by the given delta\n\
-            *\n" );
+                \n\
+                  You don't need to call this unless AutoStepping is disabled (it is enabled by default)\n\
+                *\n" );
         
         }
         { //::CEGUI::AnimationInstance::stop

@@ -1,23 +1,23 @@
-/* A Bison parser, made by GNU Bison 2.3.  */
+
+/* A Bison parser, made by GNU Bison 2.4.1.  */
 
 /* Skeleton implementation for Bison LALR(1) parsers in C++
-
-   Copyright (C) 2002, 2003, 2004, 2005, 2006 Free Software Foundation, Inc.
-
-   This program is free software; you can redistribute it and/or modify
+   
+      Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software
+   Foundation, Inc.
+   
+   This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
-   the Free Software Foundation; either version 2, or (at your option)
-   any later version.
-
+   the Free Software Foundation, either version 3 of the License, or
+   (at your option) any later version.
+   
    This program is distributed in the hope that it will be useful,
    but WITHOUT ANY WARRANTY; without even the implied warranty of
    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
    GNU General Public License for more details.
-
+   
    You should have received a copy of the GNU General Public License
-   along with this program; if not, write to the Free Software
-   Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.  */
+   along with this program.  If not, see <http://www.gnu.org/licenses/>.  */
 
 /* As a special exception, you may create a larger work that contains
    part or all of the Bison parser skeleton and distribute that work
@@ -28,28 +28,37 @@
    special exception, which will cause the skeleton and the resulting
    Bison output files to be licensed under the GNU General Public
    License without this special exception.
-
+   
    This special exception was added by the Free Software Foundation in
    version 2.2 of Bison.  */
 
 // Take the name prefix into account.
 #define yylex   CEGUI::ED_lex
 
-#include "CEGUI/ExpressionDimParser.hpp"
+/* First part of user declarations.  */
+
+
+/* Line 311 of lalr1.cc  */
+#line 43 "ExpressionDimParser.cpp"
+
+
+#include "ExpressionDimParser.hpp"
 
 /* User implementation prologue.  */
-#line 59 "CEGUIFalExpressionDimParser.y"
+
+/* Line 317 of lalr1.cc  */
+#line 59 "ExpressionDimParser.y"
 
 namespace CEGUI {
 ExpressionDimParser::token_type ED_lex(ExpressionDimParser::semantic_type* yylval,
                                        ExpressionDim_impl* ctx);
 
 }
-#include "CEGUI/ExpressionDim_impl.h"
+#include "./ExpressionDim_impl.h"
 
 
-/* Line 317 of lalr1.cc.  */
-#line 53 "CEGUIFalExpressionDimParser.cpp"
+/* Line 317 of lalr1.cc  */
+#line 62 "ExpressionDimParser.cpp"
 
 #ifndef YY_
 # if YYENABLE_NLS
@@ -66,13 +75,11 @@ ExpressionDimParser::token_type ED_lex(ExpressionDimParser::semantic_type* yylva
 /* Suppress unused-variable warnings by "using" E.  */
 #define YYUSE(e) ((void) (e))
 
-/* A pseudo ostream that takes yydebug_ into account.  */
-# define YYCDEBUG							\
-  for (bool yydebugcond_ = yydebug_; yydebugcond_; yydebugcond_ = false)	\
-    (*yycdebug_)
-
 /* Enable debugging if requested.  */
 #if YYDEBUG
+
+/* A pseudo ostream that takes yydebug_ into account.  */
+# define YYCDEBUG if (yydebug_) (*yycdebug_)
 
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)	\
 do {							\
@@ -98,18 +105,28 @@ do {					\
 
 #else /* !YYDEBUG */
 
+# define YYCDEBUG if (false) std::cerr
 # define YY_SYMBOL_PRINT(Title, Type, Value, Location)
 # define YY_REDUCE_PRINT(Rule)
 # define YY_STACK_PRINT()
 
 #endif /* !YYDEBUG */
 
+#define yyerrok		(yyerrstatus_ = 0)
+#define yyclearin	(yychar = yyempty_)
+
 #define YYACCEPT	goto yyacceptlab
 #define YYABORT		goto yyabortlab
 #define YYERROR		goto yyerrorlab
+#define YYRECOVERING()  (!!yyerrstatus_)
 
-namespace CEGUI
-{
+
+/* Line 380 of lalr1.cc  */
+#line 32 "ExpressionDimParser.y"
+namespace CEGUI {
+
+/* Line 380 of lalr1.cc  */
+#line 130 "ExpressionDimParser.cpp"
 #if YYERROR_VERBOSE
 
   /* Return YYSTR after stripping away unnecessary quotes and
@@ -153,8 +170,11 @@ namespace CEGUI
 
   /// Build a parser object.
   ExpressionDimParser::ExpressionDimParser (ExpressionDim_impl* ctx_yyarg)
-    : yydebug_ (false),
+    :
+#if YYDEBUG
+      yydebug_ (false),
       yycdebug_ (&std::cerr),
+#endif
       ctx (ctx_yyarg)
   {
   }
@@ -192,7 +212,7 @@ namespace CEGUI
     yy_symbol_value_print_ (yytype, yyvaluep, yylocationp);
     *yycdebug_ << ')';
   }
-#endif /* ! YYDEBUG */
+#endif
 
   void
   ExpressionDimParser::yydestruct_ (const char* yymsg,
@@ -220,6 +240,7 @@ namespace CEGUI
     yylocation_stack_.pop (n);
   }
 
+#if YYDEBUG
   std::ostream&
   ExpressionDimParser::debug_stream () const
   {
@@ -244,12 +265,12 @@ namespace CEGUI
   {
     yydebug_ = l;
   }
-
+#endif
 
   int
   ExpressionDimParser::parse ()
   {
-    /// Look-ahead and look-ahead in internal form.
+    /// Lookahead and lookahead in internal form.
     int yychar = yyempty_;
     int yytoken = 0;
 
@@ -262,12 +283,12 @@ namespace CEGUI
     int yynerrs_ = 0;
     int yyerrstatus_ = 0;
 
-    /// Semantic value of the look-ahead.
+    /// Semantic value of the lookahead.
     semantic_type yylval;
-    /// Location of the look-ahead.
+    /// Location of the lookahead.
     location_type yylloc;
     /// The locations where the error started and ended.
-    location yyerror_range[2];
+    location_type yyerror_range[2];
 
     /// $$.
     semantic_type yyval;
@@ -293,17 +314,22 @@ namespace CEGUI
   yynewstate:
     yystate_stack_.push (yystate);
     YYCDEBUG << "Entering state " << yystate << std::endl;
+
+    /* Accept?  */
+    if (yystate == yyfinal_)
+      goto yyacceptlab;
+
     goto yybackup;
 
     /* Backup.  */
   yybackup:
 
-    /* Try to take a decision without look-ahead.  */
+    /* Try to take a decision without lookahead.  */
     yyn = yypact_[yystate];
     if (yyn == yypact_ninf_)
       goto yydefault;
 
-    /* Read a look-ahead token.  */
+    /* Read a lookahead token.  */
     if (yychar == yyempty_)
       {
 	YYCDEBUG << "Reading a token: ";
@@ -339,16 +365,11 @@ namespace CEGUI
 	goto yyreduce;
       }
 
-    /* Accept?  */
-    if (yyn == yyfinal_)
-      goto yyacceptlab;
-
-    /* Shift the look-ahead token.  */
+    /* Shift the lookahead token.  */
     YY_SYMBOL_PRINT ("Shifting", yytoken, &yylval, &yylloc);
 
-    /* Discard the token being shifted unless it is eof.  */
-    if (yychar != yyeof_)
-      yychar = yyempty_;
+    /* Discard the token being shifted.  */
+    yychar = yyempty_;
 
     yysemantic_stack_.push (yylval);
     yylocation_stack_.push (yylloc);
@@ -394,47 +415,63 @@ namespace CEGUI
     switch (yyn)
       {
 	  case 2:
-#line 69 "CEGUIFalExpressionDimParser.y"
-    { ctx->d_parsedValue = (yysemantic_stack_[(1) - (1)].val); ;}
+
+/* Line 678 of lalr1.cc  */
+#line 69 "ExpressionDimParser.y"
+    { ctx->d_parsedValue = (yysemantic_stack_[(1) - (1)].val); }
     break;
 
   case 3:
-#line 72 "CEGUIFalExpressionDimParser.y"
+
+/* Line 678 of lalr1.cc  */
+#line 72 "ExpressionDimParser.y"
     {
         (yyval.val) = ctx->d_area ?
                     (yysemantic_stack_[(1) - (1)].dim)->getValue(*ctx->d_window, *ctx->d_area) :
-                    (yysemantic_stack_[(1) - (1)].dim)->getValue(*ctx->d_window); ;}
+                    (yysemantic_stack_[(1) - (1)].dim)->getValue(*ctx->d_window); }
     break;
 
   case 4:
-#line 76 "CEGUIFalExpressionDimParser.y"
-    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) + (yysemantic_stack_[(3) - (3)].val);      ;}
+
+/* Line 678 of lalr1.cc  */
+#line 76 "ExpressionDimParser.y"
+    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) + (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 5:
-#line 77 "CEGUIFalExpressionDimParser.y"
-    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) - (yysemantic_stack_[(3) - (3)].val);      ;}
+
+/* Line 678 of lalr1.cc  */
+#line 77 "ExpressionDimParser.y"
+    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) - (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 6:
-#line 78 "CEGUIFalExpressionDimParser.y"
-    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) * (yysemantic_stack_[(3) - (3)].val);      ;}
+
+/* Line 678 of lalr1.cc  */
+#line 78 "ExpressionDimParser.y"
+    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) * (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 7:
-#line 79 "CEGUIFalExpressionDimParser.y"
-    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) / (yysemantic_stack_[(3) - (3)].val);      ;}
+
+/* Line 678 of lalr1.cc  */
+#line 79 "ExpressionDimParser.y"
+    { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) / (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 8:
-#line 80 "CEGUIFalExpressionDimParser.y"
-    { (yyval.val) = (yysemantic_stack_[(3) - (2)].val)                 ;}
+
+/* Line 678 of lalr1.cc  */
+#line 80 "ExpressionDimParser.y"
+    { (yyval.val) = (yysemantic_stack_[(3) - (2)].val);                }
     break;
 
 
-    /* Line 675 of lalr1.cc.  */
-#line 437 "CEGUIFalExpressionDimParser.cpp"
-	default: break;
+
+/* Line 678 of lalr1.cc  */
+#line 473 "ExpressionDimParser.cpp"
+	default:
+          break;
       }
     YY_SYMBOL_PRINT ("-> $$ =", yyr1_[yyn], &yyval, &yyloc);
 
@@ -469,7 +506,7 @@ namespace CEGUI
     yyerror_range[0] = yylloc;
     if (yyerrstatus_ == 3)
       {
-	/* If just tried and failed to reuse look-ahead token after an
+	/* If just tried and failed to reuse lookahead token after an
 	 error, discard it.  */
 
 	if (yychar <= yyeof_)
@@ -485,7 +522,7 @@ namespace CEGUI
 	  }
       }
 
-    /* Else will try to reuse look-ahead token after shifting the error
+    /* Else will try to reuse lookahead token after shifting the error
        token.  */
     goto yyerrlab1;
 
@@ -542,19 +579,16 @@ namespace CEGUI
 	YY_STACK_PRINT ();
       }
 
-    if (yyn == yyfinal_)
-      goto yyacceptlab;
-
     yyerror_range[1] = yylloc;
     // Using YYLLOC is tempting, but would change the location of
-    // the look-ahead.  YYLOC is available though.
+    // the lookahead.  YYLOC is available though.
     YYLLOC_DEFAULT (yyloc, (yyerror_range - 1), 2);
     yysemantic_stack_.push (yylval);
     yylocation_stack_.push (yyloc);
 
     /* Shift the error token.  */
     YY_SYMBOL_PRINT ("Shifting", yystos_[yyn],
-		   &yysemantic_stack_[0], &yylocation_stack_[0]);
+		     &yysemantic_stack_[0], &yylocation_stack_[0]);
 
     yystate = yyn;
     goto yynewstate;
@@ -570,7 +604,7 @@ namespace CEGUI
     goto yyreturn;
 
   yyreturn:
-    if (yychar != yyeof_ && yychar != yyempty_)
+    if (yychar != yyempty_)
       yydestruct_ ("Cleanup: discarding lookahead", yytoken, &yylval, &yylloc);
 
     /* Do not reclaim the symbols of the rule which action triggered
@@ -779,7 +813,7 @@ namespace CEGUI
     int yynrhs = yyr2_[yyrule];
     /* Print the symbols being reduced, and their result.  */
     *yycdebug_ << "Reducing stack by rule " << yyrule - 1
-	       << " (line " << yylno << "), ";
+	       << " (line " << yylno << "):" << std::endl;
     /* The symbols being reduced.  */
     for (int yyi = 0; yyi < yynrhs; yyi++)
       YY_SYMBOL_PRINT ("   $" << yyi + 1 << " =",
@@ -842,9 +876,17 @@ namespace CEGUI
   const unsigned int ExpressionDimParser::yyuser_token_number_max_ = 258;
   const ExpressionDimParser::token_number_type ExpressionDimParser::yyundef_token_ = 2;
 
-} // namespace CEGUI
 
-#line 82 "CEGUIFalExpressionDimParser.y"
+/* Line 1054 of lalr1.cc  */
+#line 32 "ExpressionDimParser.y"
+} // CEGUI
+
+/* Line 1054 of lalr1.cc  */
+#line 886 "ExpressionDimParser.cpp"
+
+
+/* Line 1056 of lalr1.cc  */
+#line 82 "ExpressionDimParser.y"
 
 
 namespace CEGUI
