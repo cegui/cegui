@@ -62,8 +62,8 @@ namespace CEGUI
         void set(PropertyReceiver* receiver, const String& value);
 
     protected:
-        void writeXMLElementType(XMLSerializer& xml_stream) const;
-        void writeXMLAttributes(XMLSerializer& xml_stream) const;
+        void writeFalagardXMLElementType(XMLSerializer& xml_stream) const;
+        void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const;
 
         /*!
         \brief

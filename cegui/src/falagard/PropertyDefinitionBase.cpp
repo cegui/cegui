@@ -52,17 +52,17 @@ namespace CEGUI
             static_cast<Window*>(receiver)->invalidate();
     }
 
-    void PropertyDefinitionBase::writeXMLToStream(const PropertyReceiver* /*receiver*/, XMLSerializer& xml_stream) const
+    void PropertyDefinitionBase::writeXMLToFalagardStream(XMLSerializer& xml_stream) const
     {
         // write out the element type
-        writeXMLElementType(xml_stream);
+        writeFalagardXMLElementType(xml_stream);
         // write attributes
-        writeXMLAttributes(xml_stream);
+        writeFalagardXMLAttributes(xml_stream);
         // close tag
         xml_stream.closeTag();
     }
 
-    void PropertyDefinitionBase::writeXMLAttributes(XMLSerializer& xml_stream) const
+    void PropertyDefinitionBase::writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
     {
         // write the name of the property
         xml_stream.attribute("name", d_name);
