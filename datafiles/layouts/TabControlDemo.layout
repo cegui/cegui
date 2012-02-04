@@ -3,14 +3,14 @@
 <GUILayout version="4">
     <Window Type="TaharezLook/FrameWindow" Name="Frame" >
         <Property Name="Text" Value="Tab Control Demo" />
-        <Property Name="Tooltip" Value="This is a demonstration of TabControl abilities." />
+        <Property Name="TooltipText" Value="This is a demonstration of TabControl abilities." />
         <Property Name="TitlebarFont" Value="DejaVuSans-10" />
         <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
         <Property Name="MinSize" Value="{{0,128},{0,128}}" />
         <Property Name="TitlebarEnabled" Value="True" />
         <Property Name="Area" Value="{{0.1,0},{0.1,0},{0.9,0},{0.9,0}}" />
         <Window Type="TaharezLook/TabControl" Name="TabControl" >
-            <Property Name="Tooltip" Value="This is the tab control" />
+            <Property Name="TooltipText" Value="This is the tab control" />
             <Property Name="TabHeight" Value="{0,-1}" />
             <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
             <Property Name="TabPanePosition" Value="Bottom" />
