@@ -27,33 +27,33 @@ struct PropertyDefinitionBase_wrapper : CEGUI::PropertyDefinitionBase, bp::wrapp
         CEGUI::PropertyDefinitionBase::set( boost::python::ptr(receiver), boost::ref(value) );
     }
 
-    virtual void writeXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
-        if( bp::override func_writeXMLAttributes = this->get_override( "writeXMLAttributes" ) )
-            func_writeXMLAttributes( boost::ref(xml_stream) );
+    virtual void writeFalagardXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
+        if( bp::override func_writeFalagardXMLAttributes = this->get_override( "writeFalagardXMLAttributes" ) )
+            func_writeFalagardXMLAttributes( boost::ref(xml_stream) );
         else{
-            this->CEGUI::PropertyDefinitionBase::writeXMLAttributes( boost::ref(xml_stream) );
+            this->CEGUI::PropertyDefinitionBase::writeFalagardXMLAttributes( boost::ref(xml_stream) );
         }
     }
     
-    virtual void default_writeXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
-        CEGUI::PropertyDefinitionBase::writeXMLAttributes( boost::ref(xml_stream) );
+    virtual void default_writeFalagardXMLAttributes( ::CEGUI::XMLSerializer & xml_stream ) const {
+        CEGUI::PropertyDefinitionBase::writeFalagardXMLAttributes( boost::ref(xml_stream) );
     }
 
-    virtual void writeXMLElementType( ::CEGUI::XMLSerializer & xml_stream ) const {
-        bp::override func_writeXMLElementType = this->get_override( "writeXMLElementType" );
-        func_writeXMLElementType( boost::ref(xml_stream) );
+    virtual void writeFalagardXMLElementType( ::CEGUI::XMLSerializer & xml_stream ) const {
+        bp::override func_writeFalagardXMLElementType = this->get_override( "writeFalagardXMLElementType" );
+        func_writeFalagardXMLElementType( boost::ref(xml_stream) );
     }
 
-    virtual void writeXMLToStream( ::CEGUI::PropertyReceiver const * receiver, ::CEGUI::XMLSerializer & xml_stream ) const  {
-        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
-            func_writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
+    virtual void writeXMLToFalagardStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToFalagardStream = this->get_override( "writeXMLToFalagardStream" ) )
+            func_writeXMLToFalagardStream( boost::ref(xml_stream) );
         else{
-            this->CEGUI::PropertyDefinitionBase::writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
+            this->CEGUI::PropertyDefinitionBase::writeXMLToFalagardStream( boost::ref(xml_stream) );
         }
     }
     
-    void default_writeXMLToStream( ::CEGUI::PropertyReceiver const * receiver, ::CEGUI::XMLSerializer & xml_stream ) const  {
-        CEGUI::PropertyDefinitionBase::writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
+    void default_writeXMLToFalagardStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::PropertyDefinitionBase::writeXMLToFalagardStream( boost::ref(xml_stream) );
     }
 
     virtual ::CEGUI::String get( ::CEGUI::PropertyReceiver const * receiver ) const {
@@ -109,6 +109,18 @@ struct PropertyDefinitionBase_wrapper : CEGUI::PropertyDefinitionBase, bp::wrapp
         return CEGUI::Property::isWritable( );
     }
 
+    virtual void writeXMLToStream( ::CEGUI::PropertyReceiver const * receiver, ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
+            func_writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
+        else{
+            this->CEGUI::Property::writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
+        }
+    }
+    
+    void default_writeXMLToStream( ::CEGUI::PropertyReceiver const * receiver, ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::Property::writeXMLToStream( boost::python::ptr(receiver), boost::ref(xml_stream) );
+    }
+
 };
 
 void register_PropertyDefinitionBase_class(){
@@ -134,13 +146,13 @@ void register_PropertyDefinitionBase_class(){
                 , ( bp::arg("receiver"), bp::arg("value") ) );
         
         }
-        { //::CEGUI::PropertyDefinitionBase::writeXMLAttributes
+        { //::CEGUI::PropertyDefinitionBase::writeFalagardXMLAttributes
         
-            typedef void ( PropertyDefinitionBase_wrapper::*writeXMLAttributes_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( PropertyDefinitionBase_wrapper::*writeFalagardXMLAttributes_function_type )( ::CEGUI::XMLSerializer & ) const;
             
             PropertyDefinitionBase_exposer.def( 
-                "writeXMLAttributes"
-                , writeXMLAttributes_function_type( &PropertyDefinitionBase_wrapper::default_writeXMLAttributes )
+                "writeFalagardXMLAttributes"
+                , writeFalagardXMLAttributes_function_type( &PropertyDefinitionBase_wrapper::default_writeFalagardXMLAttributes )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
                     \n\
@@ -154,13 +166,13 @@ void register_PropertyDefinitionBase_class(){
                     *\n" );
         
         }
-        { //::CEGUI::PropertyDefinitionBase::writeXMLElementType
+        { //::CEGUI::PropertyDefinitionBase::writeFalagardXMLElementType
         
-            typedef void ( PropertyDefinitionBase_wrapper::*writeXMLElementType_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( PropertyDefinitionBase_wrapper::*writeFalagardXMLElementType_function_type )( ::CEGUI::XMLSerializer & ) const;
             
             PropertyDefinitionBase_exposer.def( 
-                "writeXMLElementType"
-                , writeXMLElementType_function_type( &PropertyDefinitionBase_wrapper::writeXMLElementType )
+                "writeFalagardXMLElementType"
+                , writeFalagardXMLElementType_function_type( &PropertyDefinitionBase_wrapper::writeFalagardXMLElementType )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
                     \n\
@@ -174,16 +186,16 @@ void register_PropertyDefinitionBase_class(){
                     *\n" );
         
         }
-        { //::CEGUI::PropertyDefinitionBase::writeXMLToStream
+        { //::CEGUI::PropertyDefinitionBase::writeXMLToFalagardStream
         
-            typedef void ( ::CEGUI::PropertyDefinitionBase::*writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
-            typedef void ( PropertyDefinitionBase_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
+            typedef void ( ::CEGUI::PropertyDefinitionBase::*writeXMLToFalagardStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( PropertyDefinitionBase_wrapper::*default_writeXMLToFalagardStream_function_type )( ::CEGUI::XMLSerializer & ) const;
             
             PropertyDefinitionBase_exposer.def( 
-                "writeXMLToStream"
-                , writeXMLToStream_function_type(&::CEGUI::PropertyDefinitionBase::writeXMLToStream)
-                , default_writeXMLToStream_function_type(&PropertyDefinitionBase_wrapper::default_writeXMLToStream)
-                , ( bp::arg("receiver"), bp::arg("xml_stream") ) );
+                "writeXMLToFalagardStream"
+                , writeXMLToFalagardStream_function_type(&::CEGUI::PropertyDefinitionBase::writeXMLToFalagardStream)
+                , default_writeXMLToFalagardStream_function_type(&PropertyDefinitionBase_wrapper::default_writeXMLToFalagardStream)
+                , ( bp::arg("xml_stream") ) );
         
         }
         { //::CEGUI::Property::get
@@ -250,6 +262,18 @@ void register_PropertyDefinitionBase_class(){
                 "isWritable"
                 , isWritable_function_type(&::CEGUI::Property::isWritable)
                 , default_isWritable_function_type(&PropertyDefinitionBase_wrapper::default_isWritable) );
+        
+        }
+        { //::CEGUI::Property::writeXMLToStream
+        
+            typedef void ( ::CEGUI::Property::*writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
+            typedef void ( PropertyDefinitionBase_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::PropertyReceiver const *,::CEGUI::XMLSerializer & ) const;
+            
+            PropertyDefinitionBase_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type(&::CEGUI::Property::writeXMLToStream)
+                , default_writeXMLToStream_function_type(&PropertyDefinitionBase_wrapper::default_writeXMLToStream)
+                , ( bp::arg("receiver"), bp::arg("xml_stream") ) );
         
         }
     }

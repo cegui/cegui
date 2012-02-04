@@ -97,7 +97,7 @@ namespace CEGUI
         PropertyDefinitionBase::set(receiver, value);
     }
 
-    void PropertyDefinition::writeXMLElementType(XMLSerializer& xml_stream) const
+    void PropertyDefinition::writeFalagardXMLElementType(XMLSerializer& xml_stream) const
     {
         xml_stream.openTag("PropertyDefinition");
     }

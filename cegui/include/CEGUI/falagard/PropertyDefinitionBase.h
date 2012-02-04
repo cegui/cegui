@@ -71,19 +71,17 @@ namespace CEGUI
             Writes an xml representation of the PropertyDefinitionBase based
             object to \a out_stream.
 
-		\param receiver
-			Property receiver is usually used by CEGUI::Property derived classes to get the value,
-			however for property definitions it is usually unused and 0 may be passed in its place!
-
-			The parameter is there mostly for the signature to match CEGUI::Property::writeXMLToStream
-
         \param xml_stream
             Stream where xml data should be output.
+
+        \internal
+            The reason why this is called writeXMLToFalagardStream is to differentiate it
+            from Property::writeXMLToStream
 
         \return
             Nothing.
         */
-        virtual void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
+        virtual void writeXMLToFalagardStream(XMLSerializer& xml_stream) const;
 
     protected:
         /*!
@@ -96,7 +94,7 @@ namespace CEGUI
         \param xml_stream
             Stream where xml data should be output.
         */
-        virtual void writeXMLElementType(XMLSerializer& xml_stream) const = 0;
+        virtual void writeFalagardXMLElementType(XMLSerializer& xml_stream) const = 0;
 
         /*!
         \brief
@@ -108,7 +106,7 @@ namespace CEGUI
         \param xml_stream
             Stream where xml data should be output.
         */
-        virtual void writeXMLAttributes(XMLSerializer& xml_stream) const;
+        virtual void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const;
 
         bool d_writeCausesRedraw;
         bool d_writeCausesLayout;

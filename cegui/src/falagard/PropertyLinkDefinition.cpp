@@ -147,14 +147,14 @@ namespace CEGUI
                 getTargetWindow(receiver, name));
     }
 
-    void PropertyLinkDefinition::writeXMLElementType(XMLSerializer& xml_stream) const
+    void PropertyLinkDefinition::writeFalagardXMLElementType(XMLSerializer& xml_stream) const
     {
         xml_stream.openTag("PropertyLinkDefinition");
     }
 
-    void PropertyLinkDefinition::writeXMLAttributes(XMLSerializer& xml_stream) const
+    void PropertyLinkDefinition::writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
     {
-        PropertyDefinitionBase::writeXMLAttributes(xml_stream);
+        PropertyDefinitionBase::writeFalagardXMLAttributes(xml_stream);
 
         // HACK: Here we abuse some intimate knowledge in that we know it's
         // safe to write our sub-elements out although the function is named

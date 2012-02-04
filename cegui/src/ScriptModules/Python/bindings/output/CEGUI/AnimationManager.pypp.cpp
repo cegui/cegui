@@ -361,13 +361,13 @@ void register_AnimationManager_class(){
                 , loadAnimationsFromString_function_type( &::CEGUI::AnimationManager::loadAnimationsFromString )
                 , ( bp::arg("source") )
                 , "*!\n\
-               \n\
-                  Parses XML source containing animation specifications to create\n\
-                  and initialise Animation objects.\n\
+                \n\
+                    Parses XML source containing animation specifications to create\n\
+                    and initialise Animation objects.\n\
             \n\
-               @param source\n\
-                  String object holding the XML source to be processed.\n\
-               *\n" );
+                @param source\n\
+                    String object holding the XML source to be processed.\n\
+                *\n" );
         
         }
         { //::CEGUI::AnimationManager::loadAnimationsFromXML
