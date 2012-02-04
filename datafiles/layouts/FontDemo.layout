@@ -7,23 +7,23 @@
         <Property Name="MinSize" Value="{{0,128},{0,128}}" />
         <Property Name="Size" Value="{{0.8,0},{0.8,0}}" />
         <Property Name="Text" Value="Font Demo" />
-        <Property Name="Tooltip" Value="This is a simple demonstration of what the font subsystem can do." />
+        <Property Name="TooltipText" Value="This is a simple demonstration of what the font subsystem can do." />
 
         <Window Name="FontSample" Type="TaharezLook/MultiLineEditbox">
             <Property Name="Area" Value="{{0.05,0},{0.05,0},{0.75,0},{0.5,0}}" />
-            <Property Name="Tooltip" Value="This window shows a sample of the selected font" />
+            <Property Name="TooltipText" Value="This window shows a sample of the selected font" />
 			<Property Name="WordWrap" Value="True" />
         </Window>
 
         <Window Name="LangList" Type="TaharezLook/Listbox">
             <Property Name="Area" Value="{{0.8,0},{0.05,0},{0.95,0},{0.5,0}}" />
-            <Property Name="Tooltip" Value="Contains a list of languages to select sample text from" />
+            <Property Name="TooltipText" Value="Contains a list of languages to select sample text from" />
 			<Property Name="Font" Value="DejaVuSans-10" />
         </Window>
 
         <Window Name="FontList" Type="TaharezLook/Listbox">
             <Property Name="Area" Value="{{0.05,0},{0.55,0},{0.45,0},{0.95,0}}" />
-            <Property Name="Tooltip" Value="This listbox shows a list of available fonts to experiment with" />
+            <Property Name="TooltipText" Value="This listbox shows a list of available fonts to experiment with" />
         </Window>
 
         <Window Name="FontDesc" Type="TaharezLook/StaticText">
@@ -37,13 +37,13 @@
         <Window Name="AutoScaled" Type="TaharezLook/Checkbox">
             <Property Name="Text" Value="Auto scale font to current resolution" />
             <Property Name="Area" Value="{{0.5,0},{0.7,0},{0.95,0},{0.75,0}}" />
-            <Property Name="Tooltip" Value="Choose between autoscaled/non-autoscaled font versions" />
+            <Property Name="TooltipText" Value="Choose between autoscaled/non-autoscaled font versions" />
         </Window>
 
         <Window Name="Antialiased" Type="TaharezLook/Checkbox">
             <Property Name="Text" Value="Antialias the font for smoother look" />
             <Property Name="Area" Value="{{0.5,0},{0.8,0},{0.95,0},{0.85,0}}" />
-            <Property Name="Tooltip" Value="Choose between antialiased/non-antialiased font versions" />
+            <Property Name="TooltipText" Value="Choose between antialiased/non-antialiased font versions" />
         </Window>
 
         <Window Name="PointSize" Type="TaharezLook/HorizontalScrollbar">
@@ -52,7 +52,7 @@
             <Property Name="StepSize" Value="1" />
             <Property Name="OverlapSize" Value="0" />
             <Property Name="Area" Value="{{0.5,0},{0.9,0},{0.95,0},{0.9,12}}" />
-            <Property Name="Tooltip" Value="Changes font point size" />
+            <Property Name="TooltipText" Value="Changes font point size" />
         </Window>
     </Window>
 </Window>

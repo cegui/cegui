@@ -28,7 +28,7 @@
 			<Property Name="Position" Value="{{0.02,0},{-0.02,0}}" />
 			<Property Name="ReadOnly" Value="True" />
 			<Property Name="Text" Value="" />
-			<Property Name="Tooltip" Value="World Location X" />
+			<Property Name="TooltipText" Value="World Location X" />
 		</Window>
 	</Window>
 </GUILayout>

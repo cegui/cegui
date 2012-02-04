@@ -18,30 +18,30 @@
         <Window Name="AddTab" Type="TaharezLook/Button">
             <Property Name="Text" Value="Add a new tab" />
             <Property Name="Area" Value="{{0.05,0},{0.35,0},{0.45,0},{0.45,0}}" />
-            <Property Name="Tooltip" Value="Switch active page to selected" />
+            <Property Name="TooltipText" Value="Switch active page to selected" />
         </Window>
 
         <Window Name="PageList" Type="TaharezLook/Listbox">
             <Property Name="Area" Value="{{0.55,0},{0.1,0},{0.95,0},{0.48,0}}" />
-            <Property Name="Tooltip" Value="A list of available tabs to experiment with" />
+            <Property Name="TooltipText" Value="A list of available tabs to experiment with" />
         </Window>
 
         <Window Name="Go" Type="TaharezLook/Button">
             <Property Name="Text" Value="Goto" />
             <Property Name="Area" Value="{{0.55,0},{0.5,0},{0.67,0},{0.57,0}}" />
-            <Property Name="Tooltip" Value="Switch active page to selected" />
+            <Property Name="TooltipText" Value="Switch active page to selected" />
         </Window>
 
         <Window Name="Show" Type="TaharezLook/Button">
             <Property Name="Text" Value="Show" />
             <Property Name="Area" Value="{{0.69,0},{0.5,0},{0.81,0},{0.57,0}}" />
-            <Property Name="Tooltip" Value="Make the selected tab visible in the tab pane" />
+            <Property Name="TooltipText" Value="Make the selected tab visible in the tab pane" />
         </Window>
 
         <Window Name="Del" Type="TaharezLook/Button">
             <Property Name="Text" Value="Del" />
             <Property Name="Area" Value="{{0.83,0},{0.5,0},{0.95,0},{0.57,0}}" />
-            <Property Name="Tooltip" Value="Delete the selected pane" />
+            <Property Name="TooltipText" Value="Delete the selected pane" />
         </Window>
 
         <Window Name="TabHeightDesc" Type="TaharezLook/StaticText">
