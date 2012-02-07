@@ -45,6 +45,17 @@ WidgetLookFeel::WidgetLookFeel(const String& name, const String& inherits) :
 {
 }
 
+WidgetLookFeel::~WidgetLookFeel()
+{
+    for (PropertyDefinitionList::reverse_iterator it = d_propertyDefinitions.rbegin();
+        it < d_propertyDefinitions.rend(); ++it)
+        CEGUI_DELETE_AO (*it);
+
+    for (PropertyLinkDefinitionList::reverse_iterator it = d_propertyLinkDefinitions.rbegin();
+        it < d_propertyLinkDefinitions.rend(); ++it)
+        CEGUI_DELETE_AO (*it);
+}
+
 //---------------------------------------------------------------------------//
 const StateImagery& WidgetLookFeel::getStateImagery(
                                         const CEGUI::String& state) const

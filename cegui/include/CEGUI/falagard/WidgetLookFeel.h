@@ -59,6 +59,7 @@ public:
     WidgetLookFeel(const String& name, const String& inherits);
     WidgetLookFeel() {}
 
+    virtual ~WidgetLookFeel();
     /*!
     \brief
         Return a const reference to the StateImagery object for the specified
