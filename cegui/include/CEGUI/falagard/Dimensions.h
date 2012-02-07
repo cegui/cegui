@@ -213,12 +213,12 @@ namespace CEGUI
         \brief
             Get the current value of the AbsoluteDim.
         */
-        float getValue() const;
+        float getBaseValue() const;
         /*!
         \brief
             Set the current value of the AbsoluteDim.
         */
-        void setValue(float val);
+        void setBaseValue(float val);
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
@@ -424,12 +424,12 @@ namespace CEGUI
         \brief
             Get the current value of the UnifiedDim.
         */
-        const UDim& getValue() const;
+        const UDim& getBaseValue() const;
         /*!
         \brief
             Set the current value of the UnifiedDim.
         */
-        void setValue(const UDim& val);
+        void setBaseValue(const UDim& val);
 
 
         /*!

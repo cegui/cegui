@@ -178,12 +178,12 @@ namespace CEGUI
         d_val(val)
     {}
 
-    float AbsoluteDim::getValue() const
+    float AbsoluteDim::getBaseValue() const
     {
         return d_val;
     }
 
-    void AbsoluteDim::setValue(float val)
+    void AbsoluteDim::setBaseValue(float val)
     {
         d_val = val;
     }
@@ -731,12 +731,12 @@ namespace CEGUI
     {
     }
 
-    const UDim& UnifiedDim::getValue() const
+    const UDim& UnifiedDim::getBaseValue() const
     {
         return d_value;
     }
 
-    void UnifiedDim::setValue(const UDim& dim)
+    void UnifiedDim::setBaseValue(const UDim& dim)
     {
         d_value = dim;
     }
