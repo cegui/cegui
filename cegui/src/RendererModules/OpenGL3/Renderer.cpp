@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   CEGUIOpenGL3Renderer.cpp
-    created:    Sun Jan 11 2009
-    author:     Paul D Turner
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -170,8 +170,8 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
     d_shaderStandard(0),
-	d_activeRenderTarget(0),
-	d_openGLStateChanger(0)
+    d_activeRenderTarget(0),
+    d_openGLStateChanger(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -189,7 +189,7 @@ OpenGL3Renderer::OpenGL3Renderer() :
 
     d_defaultTarget = new OpenGL3ViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
-	d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -199,7 +199,7 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
     d_shaderStandard(0),
-	d_openGLStateChanger(0)
+    d_openGLStateChanger(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -213,7 +213,7 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 
     d_defaultTarget = new OpenGL3ViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
-	d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
+    d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -226,7 +226,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
     delete d_defaultRoot;
     delete d_defaultTarget;
     delete d_textureTargetFactory;
-	delete d_openGLStateChanger;
+    delete d_openGLStateChanger;
 }
 
 //----------------------------------------------------------------------------//
@@ -410,7 +410,7 @@ void OpenGL3Renderer::beginRendering()
 
     d_shaderStandard->bind();
 
-	d_openGLStateChanger->reset();
+    d_openGLStateChanger->reset();
 }
 
 
@@ -624,14 +624,14 @@ void OpenGL3Renderer::setViewProjectionMatrix(glm::mat4 viewProjectionMatrix)
 //----------------------------------------------------------------------------//
 const CEGUI::Rectf& OpenGL3Renderer::getActiveViewPort()
 {
-	return d_activeRenderTarget->getArea();
+    return d_activeRenderTarget->getArea();
 }
 
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::setActiveRenderTarget(OpenGL3RenderTarget* renderTarget)
 {
-	d_activeRenderTarget = renderTarget;
+    d_activeRenderTarget = renderTarget;
 }
 
 
@@ -639,13 +639,13 @@ void OpenGL3Renderer::setActiveRenderTarget(OpenGL3RenderTarget* renderTarget)
 //----------------------------------------------------------------------------//
 OpenGL3RenderTarget* OpenGL3Renderer::getActiveRenderTarget()
 {
-	return d_activeRenderTarget;
+    return d_activeRenderTarget;
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 {
-	return d_openGLStateChanger;
+    return d_openGLStateChanger;
 }
 
 
@@ -657,16 +657,16 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
     ShaderManager* shaderManager = ShaderManager::getInstance();
     shaderManager->initialiseShaders();
     d_shaderStandard = shaderManager->getShader(SHADER_ID_STANDARDSHADER);
-    int texLoc = d_shaderStandard->get_uniform_location("texture0");
+    int texLoc = d_shaderStandard->getUniformLocation("texture0");
     d_shaderStandard->bind();
     glUniform1i(texLoc, 0);
     d_shaderStandard->unbind();
 
-    d_shaderStandardPosLoc = d_shaderStandard->get_attrib_location("inPosition");
-    d_shaderStandardTexCoordLoc = d_shaderStandard->get_attrib_location("inTexCoord");
-    d_shaderStandardColourLoc = d_shaderStandard->get_attrib_location("inColour");
+    d_shaderStandardPosLoc = d_shaderStandard->getAttribLocation("inPosition");
+    d_shaderStandardTexCoordLoc = d_shaderStandard->getAttribLocation("inTexCoord");
+    d_shaderStandardColourLoc = d_shaderStandard->getAttribLocation("inColour");
 
-    d_shaderStandardMatrixLoc = d_shaderStandard->get_uniform_location("modelViewPerspMatrix");
+    d_shaderStandardMatrixLoc = d_shaderStandard->getUniformLocation("modelViewPerspMatrix");
 }
 
 //----------------------------------------------------------------------------//

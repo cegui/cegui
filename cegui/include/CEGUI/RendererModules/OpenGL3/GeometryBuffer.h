@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   CEGUIOpenGLGeometryBuffer.h
-    created:    Thu Jan 8 2009
-    author:     Paul D Turner
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -127,9 +127,9 @@ protected:
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
     //! OpenGL vao used for the vertices
-    unsigned int                    m_verticesVAO;
+    unsigned int                    d_verticesVAO;
     //! OpenGL vbo containing all vertex data
-    unsigned int                    m_verticesVBO;
+    unsigned int                    d_verticesVBO;
     //! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
     CEGUI::Shader*&                 d_shader;
     //! Position variable location inside the shader, for OpenGL
@@ -140,9 +140,9 @@ protected:
     const int                       d_shaderColourLoc;
     //! Matrix uniform location inside the shader, for OpenGL
     const int                       d_shaderStandardMatrixLoc;
-	//! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
-	OpenGL3StateChangeWrapper*		d_glStateChanger;
-	unsigned int					d_bufferSize;
+    //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
+    OpenGL3StateChangeWrapper*      d_glStateChanger;
+    unsigned int                    d_bufferSize;
 };
 
 
