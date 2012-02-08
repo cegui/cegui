@@ -53,7 +53,7 @@ public:
     Delay() : Property("Delay", "Property to get/set the current delay used by the timer. Value is a float.", "0.000000") {}
     CEGUI::String get(const CEGUI::PropertyReceiver* receiver) const;
     void set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value);
-
+    CEGUI::Property* clone() const;
 };
   
 }

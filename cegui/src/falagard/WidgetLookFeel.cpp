@@ -45,6 +45,60 @@ WidgetLookFeel::WidgetLookFeel(const String& name, const String& inherits) :
 {
 }
 
+//---------------------------------------------------------------------------//
+WidgetLookFeel::WidgetLookFeel(const WidgetLookFeel& other) :
+    d_lookName(other.d_lookName),
+    d_inheritedLookName(other.d_inheritedLookName),
+    d_imagerySections(other.d_imagerySections),
+    d_childWidgets(other.d_childWidgets),
+    d_stateImagery(other.d_stateImagery),
+    d_properties(other.d_properties),
+    d_namedAreas(other.d_namedAreas),
+    d_animations(other.d_animations),
+    d_animationInstances(other.d_animationInstances),
+    d_eventLinkDefinitions(other.d_eventLinkDefinitions)
+{
+    for (PropertyDefinitionList::iterator i = other.d_propertyDefinitions.begin();
+        i < other.d_propertyDefinitions.end();
+        ++i)
+    {
+        d_propertyDefinitions.push_back((*i)->clone());
+    }
+    
+    for (PropertyLinkDefinitionList::iterator i = other.d_propertyLinkDefinitions.begin();
+        i < other.d_propertyLinkDefinitions.end();
+        ++i)
+    {
+        d_propertyLinkDefinitions.push_back((*i)->clone());
+    }
+}
+
+//---------------------------------------------------------------------------//
+WidgetLookFeel& WidgetLookFeel::operator=(const WidgetLookFeel& other)
+{
+    WidgetLookFeel tmp(other);
+    swap(tmp);
+    return *this;
+}
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::swap(WidgetLookFeel& other)
+{
+    std::swap(d_lookName, other.d_lookName);
+    std::swap(d_inheritedLookName, other.d_inheritedLookName);
+    std::swap(d_imagerySections, other.d_imagerySections);
+    std::swap(d_childWidgets, other.d_childWidgets);
+    std::swap(d_stateImagery, other.d_stateImagery);
+    std::swap(d_properties, other.d_properties);
+    std::swap(d_namedAreas, other.d_namedAreas);
+    std::swap(d_propertyDefinitions, other.d_propertyDefinitions);
+    std::swap(d_propertyLinkDefinitions, other.d_propertyLinkDefinitions);
+    std::swap(d_animations, other.d_animations);
+    std::swap(d_animationInstances, other.d_animationInstances);
+    std::swap(d_eventLinkDefinitions, other.d_eventLinkDefinitions);
+}
+
+//---------------------------------------------------------------------------//
 WidgetLookFeel::~WidgetLookFeel()
 {
     for (PropertyDefinitionList::reverse_iterator it = d_propertyDefinitions.rbegin();

@@ -58,6 +58,7 @@ public:
     // implement property interface
     String get(const PropertyReceiver* receiver) const;
     void set(PropertyReceiver* receiver, const String& value);
+    Property* clone() const;
 };
 
 } // End of XercesParserProperties namespace section

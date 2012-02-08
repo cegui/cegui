@@ -50,9 +50,17 @@ template <typename T>
         : PropertyDefinitionBase<T>(name, help, initialValue, origin, redrawOnWrite,
                                    layoutOnWrite),
             d_userStringName(name + "_fal_auto_prop__")
-      {
-      }
+        {
+        }
+
         virtual ~PropertyDefinition() {}
+
+
+        virtual Property* clone() const
+        {
+            return CEGUI_NEW_AO PropertyDefinition<T>(*this);
+        }
+
     protected:
         typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const
         {

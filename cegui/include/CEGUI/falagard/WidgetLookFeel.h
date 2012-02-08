@@ -58,6 +58,8 @@ class CEGUIEXPORT WidgetLookFeel :
 public:
     WidgetLookFeel(const String& name, const String& inherits);
     WidgetLookFeel() {}
+    WidgetLookFeel(const WidgetLookFeel& other);
+    WidgetLookFeel& operator=(const WidgetLookFeel& other);
 
     virtual ~WidgetLookFeel();
     /*!
@@ -468,6 +470,9 @@ private:
     void appendPropertyInitialisers(PropertyInitialiserPtrMap& map, bool inherits = true) const;
     void appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map, bool inherits = true) const;
     void appendAnimationNames(AnimationNameSet& set, bool inherits = true) const;
+
+    void swap(WidgetLookFeel& other);
+
 public:
     /*************************************************************************
         Iterator stuff
