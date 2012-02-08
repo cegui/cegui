@@ -48,6 +48,11 @@ public:
                           defaultValue, writesXML)
     {}
 
+    virtual Property* clone() const
+    {
+        return CEGUI_NEW_AO TplWindowProperty<C, T>(*this);
+    }
+
 protected:
     //! \copydoc TypedProperty::setNative_impl
     void setNative_impl(PropertyReceiver* receiver,

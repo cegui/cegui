@@ -226,6 +226,8 @@ public:
     */
     virtual bool isWritable() const;
 
+    virtual Property* clone() const = 0;
+
 protected:
 	String d_name;		//!< String that stores the Property name.
 	String d_help;		//!< String that stores the Property help text.

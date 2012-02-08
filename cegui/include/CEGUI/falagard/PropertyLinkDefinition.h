@@ -96,6 +96,11 @@ namespace CEGUI
             return false;
         }
 
+        virtual Property* clone() const
+        {
+            return CEGUI_NEW_AO PropertyLinkDefinition<T>(*this);
+        }
+
     protected:
         // override members from PropertyDefinitionBase
         typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const

@@ -39,6 +39,10 @@ void Delay::set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value)
 {
     static_cast<Timer*>(receiver)->setDelay(CEGUI::PropertyHelper<float>::fromString(value));
 }
+CEGUI::Property* Delay::clone() const
+{
+    return CEGUI_NEW_AO Delay(*this);
+}
 
 }
 /*************************************************************************
