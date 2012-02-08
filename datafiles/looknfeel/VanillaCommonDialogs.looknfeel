@@ -1,7 +1,7 @@
 <?xml version="1.0" ?>
 <Falagard version="7">
 	<WidgetLook name="Vanilla/VerticalImageSliderThumb">
-		<PropertyDefinition name="ScrollThumbColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" />
+		<PropertyDefinition name="ScrollThumbColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect"/>
 
 		<Property name="VertFree" value="True" />
 		<Property name="MouseInputPropagationEnabled" value="True" />
@@ -53,11 +53,11 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/VerticalImageSlider">
-		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" />
-		<PropertyDefinition name="TopEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
-		<PropertyDefinition name="BottomEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
+		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" type="Image*"/>
+		<PropertyDefinition name="TopEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
+		<PropertyDefinition name="BottomEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
 
-		<PropertyLinkDefinition name="ScrollThumbColours" widget="__auto_thumb__" targetProperty="ScrollThumbColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true"/>
+		<PropertyLinkDefinition name="ScrollThumbColours" widget="__auto_thumb__" targetProperty="ScrollThumbColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true" type="ColourRect"/>
 
 		<Property name="VerticalSlider" value="True" />
 		<Property name="MouseAutoRepeatEnabled" value="True" />
@@ -231,7 +231,7 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/HorizontalImageSliderThumb">
-		<PropertyDefinition name="ScrollThumbColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" />
+		<PropertyDefinition name="ScrollThumbColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect"/>
 
 		<Property name="HorzFree" value="True" />
 		<Property name="MouseInputPropagationEnabled" value="True" />
@@ -283,11 +283,11 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/HorizontalImageSlider">
-		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" />
-		<PropertyDefinition name="TopEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
-		<PropertyDefinition name="BottomEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
+		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" type="Image*"/>
+		<PropertyDefinition name="TopEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
+		<PropertyDefinition name="BottomEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
 
-		<PropertyLinkDefinition name="ScrollThumbColours" widget="__auto_thumb__" targetProperty="ScrollThumbColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true"/>
+		<PropertyLinkDefinition name="ScrollThumbColours" widget="__auto_thumb__" targetProperty="ScrollThumbColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true" type="ColourRect"/>
 
 		<Property name="VerticalSlider" value="False" />
 		<Property name="MouseAutoRepeatEnabled" value="True" />
@@ -462,7 +462,7 @@
 
 	<WidgetLook name="Vanilla/FrameColourRect">
 
-		<PropertyDefinition name="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true"/>
+		<PropertyDefinition name="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
 
 		<ImagerySection name="withframe">
 			<FrameComponent>
@@ -508,7 +508,7 @@
 
 	<WidgetLook name="Vanilla/ColourPicker">
 		<PropertyDefinition name="ColourPickerControlsStyle" initialValue="Vanilla/ColourPickerControls" />
-		<PropertyDefinition name="ShareColourPickerControlsWidget" initialValue="True" />
+		<PropertyDefinition name="ShareColourPickerControlsWidget" initialValue="True" type="bool"/>
 
 		<PropertyLinkDefinition name="Colour" widget="__auto_colourrect__" targetProperty="Colour" initialValue="tl:FFFF0000 tr:FFFF0000 bl:FFFF0000 br:FFFF0000" redrawOnWrite="true"/>
 
@@ -537,15 +537,15 @@
 
 	<WidgetLook name="Vanilla/ColourPickerControls">
 		<PropertyDefinition name="ColourPickerCursorStyle" initialValue="Vanilla/StaticImage" />
-		<PropertyDefinition name="ColourPickerCursorImage" initialValue="Vanilla-Images/ColourPickerCursor" />
-		<PropertyDefinition name="BackgroundColours" initialValue="tl:D3FFFFFF tr:D3FFFFFF bl:D3FFFFFF br:D3FFFFFF" redrawOnWrite="true"/>
-		<PropertyDefinition name="ColourPickerImageSliderWidth" initialValue="20" redrawOnWrite="true" />
+		<PropertyDefinition name="ColourPickerCursorImage" initialValue="Vanilla-Images/ColourPickerCursor" type="Image*"/>
+		<PropertyDefinition name="BackgroundColours" initialValue="tl:D3FFFFFF tr:D3FFFFFF bl:D3FFFFFF br:D3FFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="ColourPickerImageSliderWidth" initialValue="20" redrawOnWrite="true" type="uint"/>
 
-		<PropertyLinkDefinition name="PreviousColour" widget="__auto_oldcolourrect__" targetProperty="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" />
-		<PropertyLinkDefinition name="NewColour" widget="__auto_newcolourrect__" targetProperty="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" />
-		<PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF4A4A4A" />
+		<PropertyLinkDefinition name="PreviousColour" widget="__auto_oldcolourrect__" targetProperty="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect"/>
+		<PropertyLinkDefinition name="NewColour" widget="__auto_newcolourrect__" targetProperty="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect"/>
+		<PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF4A4A4A" type="ColourRect"/>
 
-		<PropertyLinkDefinition name="ColourPickerFontType" initialValue="DejaVuSans-10-NoScale">
+		<PropertyLinkDefinition name="ColourPickerFontType" initialValue="DejaVuSans-10-NoScale" type="Font*">
 			<PropertyLinkTarget widget="__auto_cancelbutton__" property="Font" />
 			<PropertyLinkTarget widget="__auto_acceptbutton__" property="Font" />
 			<PropertyLinkTarget widget="__auto_titlebar__" property="Font" />
@@ -580,7 +580,7 @@
 			
 		</PropertyLinkDefinition>
 
-		<PropertyLinkDefinition name="ColourPickerFontColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000">
+		<PropertyLinkDefinition name="ColourPickerFontColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect">
 			<PropertyLinkTarget widget="__auto_hexadecimalstatictext__" property="TextColours" />
 			<PropertyLinkTarget widget="__auto_newcolourdescription__" property="TextColours" />
 			<PropertyLinkTarget widget="__auto_oldcolourdescription__" property="TextColours" />
@@ -590,7 +590,7 @@
 			<PropertyLinkTarget widget="__auto_alphastatictext__" property="TextColours" />
 		</PropertyLinkDefinition>
 
-		<PropertyLinkDefinition name="RadioButtonNormalTextColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000">
+		<PropertyLinkDefinition name="RadioButtonNormalTextColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect">
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonH__" property="NormalTextColour" />
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonS__" property="NormalTextColour" />
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonV__" property="NormalTextColour" />
@@ -599,7 +599,7 @@
 			<PropertyLinkTarget widget="__auto_Labradiobuttonb__" property="NormalTextColour" />
 		</PropertyLinkDefinition>
 
-		<PropertyLinkDefinition name="RadioButtonHoverTextColours" initialValue="tl:FF434343 tr:FF434343 bl:FF434343 br:FF434343">
+		<PropertyLinkDefinition name="RadioButtonHoverTextColours" initialValue="tl:FF434343 tr:FF434343 bl:FF434343 br:FF434343" type="ColourRect">
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonH__" property="HoverTextColour" />
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonS__" property="HoverTextColour" />
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonV__" property="HoverTextColour" />
@@ -608,7 +608,7 @@
 			<PropertyLinkTarget widget="__auto_Labradiobuttonb__" property="HoverTextColour" />
 		</PropertyLinkDefinition>
 
-		<PropertyLinkDefinition name="RadioButtonPushedTextColours" initialValue="tl:FF636363 tr:FF636363 bl:FF636363 br:FF636363">
+		<PropertyLinkDefinition name="RadioButtonPushedTextColours" initialValue="tl:FF636363 tr:FF636363 bl:FF636363 br:FF636363" type="ColourRect">
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonH__" property="PushedTextColour" />
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonS__" property="PushedTextColour" />
 			<PropertyLinkTarget widget="__auto_HSVradiobuttonV__" property="PushedTextColour" />

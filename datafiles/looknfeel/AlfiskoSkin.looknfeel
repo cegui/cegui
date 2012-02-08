@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
 <Falagard version="7">
     <WidgetLook name="AlfiskoSkin/Button">
-        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" />
-        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" />
+        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VertFormatting"/>
+        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -213,12 +213,12 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/ImageButton">
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
-        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
         <ImagerySection name="normal">
             <ImageryComponent>
                 <ImageProperty name="NormalImage" />
@@ -265,7 +265,7 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/RadioButton">
-		<PropertyDefinition name="LabelColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="LabelColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -362,7 +362,7 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/Checkbox">
-		<PropertyDefinition name="LabelColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="LabelColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -459,7 +459,7 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/Titlebar">
-        <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="active">
             <FrameComponent>
                 <Image type="TopLeftCorner" name="AlfiskoSkin/TitlebarActiveTL" />
@@ -606,8 +606,8 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/FrameWindow">
-        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" />
-        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" />
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" type="ColourRect"/>
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
         <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
@@ -806,10 +806,10 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/Editbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FFB6D142" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FFB6D142" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>
@@ -1716,10 +1716,10 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/MultiLineEditbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FFB6D142" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FFB6D142" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar" />
         <Property name="SelectionBrushImage" value="AlfiskoSkin/GenericBrush" />
         <NamedArea name="TextArea">
@@ -2166,7 +2166,7 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/MenuItem">
-        <PropertyDefinition name="LabelTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="LabelTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ContentSize">
             <Area>

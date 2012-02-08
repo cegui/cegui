@@ -508,7 +508,7 @@ public:
 
     static const String& getDataTypeName()
     {
-        static String type("SortMode");
+        static String type("SortDirection");
 
         return type;
     }

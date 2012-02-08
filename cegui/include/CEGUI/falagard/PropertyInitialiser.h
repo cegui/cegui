@@ -42,6 +42,7 @@ namespace CEGUI
         public AllocatedObject<PropertyInitialiser>
     {
     public:
+        PropertyInitialiser() {};
         /*!
         \brief
             Constructor
@@ -65,6 +66,17 @@ namespace CEGUI
             Nothing.
         */
         void apply(PropertySet& target) const;
+        /*!
+        \brief
+            Sets the name of the property targetted by this PropertyInitialiser.
+
+        \param name
+            String object holding the name of the target property.
+
+        \return
+            Nothing.
+        */
+        void setTargetPropertyName(const String& name);
 
         /*!
         \brief
@@ -74,6 +86,18 @@ namespace CEGUI
             String object holding the name of the target property.
         */
         const String& getTargetPropertyName() const;
+
+        /*!
+        \brief
+            Sets the value string to be set on the property targetted by this PropertyInitialiser.
+
+        \return
+            String object holding the value string.
+
+        \return
+            Nothing.
+        */
+        void setInitialiserValue(const String& value);
 
         /*!
         \brief

@@ -29,6 +29,8 @@
 #define _CEGUIFalPropertyLinkDefinition_h_
 
 #include "./PropertyDefinitionBase.h"
+#include "../IteratorBase.h"
+
 #include <vector>
 
 #if defined (_MSC_VER)
@@ -39,31 +41,139 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    extern const String S_parentIdentifier;
+
     /*!
     \brief
         Class representing a property that links to another property defined on
         an attached child widget.
     */
-    class CEGUIEXPORT PropertyLinkDefinition : public PropertyDefinitionBase
+    template <typename T>
+    class PropertyLinkDefinition : public PropertyDefinitionBase<T>
     {
     public:
-        PropertyLinkDefinition(const String& propertyName, const String& widgetName, const String& targetProperty, const String& initialValue, bool redrawOnWrite, bool layoutOnWrite);
-
+        typedef typename TypedProperty<T>::Helper Helper;
+        PropertyLinkDefinition(const String& propertyName, const String& widgetName,
+                const String& targetProperty, const String& initialValue,
+                const String& origin, bool redrawOnWrite, bool layoutOnWrite)
+        : PropertyDefinitionBase<T>(propertyName,
+                                         "Falagard property link definition - links a "
+                                             "property on this window to properties "
+                                             "defined on one or more child windows, or "
+                                             "the parent window.",
+                                         initialValue,
+                                         origin,
+                                         redrawOnWrite,
+                                         layoutOnWrite)
+            {
+                // add initial target if it was specified via constructor
+                // (typically meaning it came via XML attributes)
+                if (!widgetName.empty() || !targetProperty.empty())
+                    addLinkTarget(widgetName, targetProperty);
+            }
+        virtual ~PropertyLinkDefinition() {}
         //! add a new link target to \a property on \a widget (name).
-        void addLinkTarget(const String& widget, const String& property);
+        void addLinkTarget(const String& widget, const String& property)
+        {
+            d_targets.push_back(std::make_pair(widget,property));
+        }
         //! clear all link targets from this link definition.
-        void clearLinkTargets();
+        void clearLinkTargets()
+        {
+            d_targets.clear();
+        }
 
         // return whether a the given widget / property pair is a target of this property link.
-        bool isTargetProperty(const String& widget, const String& property) const;
+        bool isTargetProperty(const String& widget, const String& property) const
+        {
+            LinkTargetCollection::const_iterator i = d_targets.begin();
+            for (; i != d_targets.end(); ++i)
+            {
+                if (property == i->second && widget == i->first)
+                    return true;
+            }
 
-        // override members from PropertyDefinitionBase
-        String get(const PropertyReceiver* receiver) const;
-        void set(PropertyReceiver* receiver, const String& value);
+            return false;
+        }
 
     protected:
-        void writeFalagardXMLElementType(XMLSerializer& xml_stream) const;
-        void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const;
+        // override members from PropertyDefinitionBase
+        typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const
+        {
+            const LinkTargetCollection::const_iterator i(d_targets.begin());
+
+            const Window* const target_wnd =
+                getTargetWindow(receiver, i->first);
+
+            // if no target, or target (currently) invalid, return the default value
+            if (d_targets.empty() || !target_wnd)
+                return Helper::fromString(TypedProperty<T>::d_default);
+
+            // otherwise return the value of the property for first target, since
+            // this is considered the 'master' target for get operations.
+            return Helper::fromString(target_wnd->getProperty(i->second.empty() ?
+                    TypedProperty<T>::d_name : i->second));
+        }
+        void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
+        {
+            LinkTargetCollection::iterator i = d_targets.begin();
+            for ( ; i != d_targets.end(); ++i)
+            {
+                Window* target_wnd = getTargetWindow(receiver, i->first);
+
+                // only try to set property if target is currently valid.
+                if (target_wnd)
+                    target_wnd->setProperty(i->second.empty() ?
+                            TypedProperty<T>::d_name : i->second, Helper::toString(value));
+            }
+
+            // base handles things like ensuring redraws and such happen
+            PropertyDefinitionBase<T>::setNative_impl(receiver, value);
+        }
+
+
+        void writeFalagardXMLElementType(XMLSerializer& xml_stream) const
+        {
+            xml_stream.openTag("PropertyLinkDefinition");
+        }
+
+        void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
+        {
+            PropertyDefinitionBase<T>::writeFalagardXMLAttributes(xml_stream);
+
+            // HACK: Here we abuse some intimate knowledge in that we know it's
+            // safe to write our sub-elements out although the function is named
+            // for writing attributes.  The alternative was to repeat code from the
+            // base class, also demonstrating intimate knowledge ;)
+
+            LinkTargetCollection::const_iterator i(d_targets.begin());
+
+            // if there is one target only, write it out as attributes
+            if (d_targets.size() == 1)
+            {
+                if (!i->first.empty())
+                    xml_stream.attribute("widget", i->first);
+
+                if (!i->second.empty())
+                    xml_stream.attribute("targetProperty", i->second);
+            }
+            // we have multiple targets, so write them as PropertyLinkTarget tags
+            else
+            {
+                for ( ; i != d_targets.end(); ++i)
+                {
+                    xml_stream.openTag("PropertyLinkTarget");
+
+                    if (!i->first.empty())
+                        xml_stream.attribute("widget", i->first);
+
+                    if (!i->second.empty())
+                        xml_stream.attribute("property", i->second);
+
+                    xml_stream.closeTag();
+                }
+            }
+        }
 
         /*!
         \brief
@@ -73,42 +183,44 @@ namespace CEGUI
         \exception UnknownObjectException
             thrown if no such target window exists within the system.
 
-        \deprecated
-            This will be removed in 0.8.x.  Use the version taking a suffix
-            string instead!
         */
-        const Window* getTargetWindow(const PropertyReceiver* receiver) const;
-
-        /*!
-        \deprecated
-            This will be removed in 0.8.x.  Use the version taking a suffix
-            string instead!
-        */
-        Window* getTargetWindow(PropertyReceiver* receiver);
-
         //! Return a pointer to the target window with the given name.
         const Window* getTargetWindow(const PropertyReceiver* receiver,
-                                      const String& name) const;
+                                      const String& name) const
+        {
+            if (name.empty())
+                return static_cast<const Window*>(receiver);
+
+            // handle link back to parent.  Return receiver if no parent.
+            if (name== S_parentIdentifier)
+                return static_cast<const Window*>(receiver)->getParent();
+
+            return static_cast<const Window*>(receiver)->getChild(name);
+        }
 
         //! Return a pointer to the target window with the given name.
         Window* getTargetWindow(PropertyReceiver* receiver,
-                                const String& name);
-
-        //! Internal struct used to keep track of targets.
-        struct LinkTarget
+                                const String& name)
         {
-            //! name of the target widget.
-            String d_widgetName;
-            //! the property to use on the target widget.
-            String d_targetProperty;
-        };
+            return const_cast<Window*>(static_cast<const PropertyLinkDefinition<T>*>(this)->
+                    getTargetWindow(receiver, name));
+        }
 
+        typedef std::pair<String,String> StringPair;
         //! type used for the collection of targets.
-        typedef std::vector<LinkTarget
-            CEGUI_VECTOR_ALLOC(LinkTarget)> LinkTargetCollection;
+        typedef std::vector<StringPair CEGUI_VECTOR_ALLOC(StringPair)> LinkTargetCollection;
 
         //! collection of targets for this PropertyLinkDefinition.
         LinkTargetCollection d_targets;
+    public:
+        typedef ConstVectorIterator<LinkTargetCollection> LinkTargetIterator;
+
+        LinkTargetIterator getLinkTargetIterator() const
+        {
+            return LinkTargetIterator(d_targets.begin(),d_targets.end());
+        }
+
+
     };
 
 } // End of  CEGUI namespace section

@@ -2873,7 +2873,7 @@ bool Window::isPropertyAtDefault(const Property* property) const
             WidgetLookFeel::PropertyLinkDefinitionList::const_iterator i = pldl.begin();
             for (; i != pldl.end(); ++i)
             {
-                if ((*i).isTargetProperty(getName(), property->getName()))
+                if ((*i)->getName() == property->getName())
                     return true;
             }
 

@@ -178,7 +178,12 @@ namespace CEGUI
         d_val(val)
     {}
 
-    void AbsoluteDim::setValue(float val)
+    float AbsoluteDim::getBaseValue() const
+    {
+        return d_val;
+    }
+
+    void AbsoluteDim::setBaseValue(float val)
     {
         d_val = val;
     }
@@ -217,9 +222,19 @@ namespace CEGUI
         d_what(dim)
     {}
 
+    const String& ImageDim::getSourceImage() const
+    {
+        return d_image;
+    }
+
     void ImageDim::setSourceImage(const String& name)
     {
         d_image = name;
+    }
+
+    DimensionType ImageDim::getSourceDimension() const
+    {
+        return d_what;
     }
 
     void ImageDim::setSourceDimension(DimensionType dim)
@@ -306,9 +321,19 @@ namespace CEGUI
         d_what(dim)
     {}
 
+    const String& WidgetDim::getWidgetName() const
+    {
+        return d_widgetName;
+    }
+
     void WidgetDim::setWidgetName(const String& name)
     {
         d_widgetName = name;
+    }
+
+    DimensionType WidgetDim::getSourceDimension() const
+    {
+        return d_what;
     }
 
     void WidgetDim::setSourceDimension(DimensionType dim)
@@ -414,6 +439,57 @@ namespace CEGUI
     {
     }
 
+    const String& FontDim::getName() const
+    {
+        return d_childName;
+    }
+
+    void FontDim::setName(const String& name)
+    {
+        d_childName = name;
+    }
+
+    const String& FontDim::getFont() const
+    {
+        return d_font;
+    }
+
+    void FontDim::setFont(const String& font)
+    {
+        d_font = font;
+    }
+
+    const String& FontDim::getText() const
+    {
+        return d_text;
+    }
+
+    void FontDim::setText(const String& text)
+    {
+        d_text = text;
+    }
+
+    FontMetricType FontDim::getMetric() const
+    {
+        return d_metric;
+    }
+
+    void FontDim::setMetric(FontMetricType metric)
+    {
+        d_metric = metric;
+    }
+
+    float FontDim::getPadding() const
+    {
+        return d_padding;
+    }
+
+    void FontDim::setPadding(float padding)
+    {
+        d_padding = padding;
+    }
+
+
     float FontDim::getValue_impl(const Window& wnd) const
     {
         // get window to use.
@@ -488,6 +564,41 @@ namespace CEGUI
 		d_type (type)
     {
     }
+
+
+
+    const String& PropertyDim::getWidgetName() const
+    {
+        return d_childName;
+    }
+
+    void PropertyDim::setWidgetName(const String& name)
+    {
+        d_childName = name;
+    }
+
+
+    const String& PropertyDim::getPropertyName() const
+    {
+        return d_property;
+    }
+
+    void PropertyDim::setPropertyName(const String& property)
+    {
+        d_property = property;
+    }
+
+
+    DimensionType PropertyDim::getSourceDimension() const
+    {
+        return d_type;
+    }
+
+    void PropertyDim::setSourceDimension(DimensionType dim)
+    {
+        d_type = dim;
+    }
+
 
     float PropertyDim::getValue_impl(const Window& wnd) const
     {
@@ -618,6 +729,27 @@ namespace CEGUI
         d_value(value),
         d_what(dim)
     {
+    }
+
+    const UDim& UnifiedDim::getBaseValue() const
+    {
+        return d_value;
+    }
+
+    void UnifiedDim::setBaseValue(const UDim& dim)
+    {
+        d_value = dim;
+    }
+
+
+    DimensionType UnifiedDim::getSourceDimension() const
+    {
+        return d_what;
+    }
+
+    void UnifiedDim::setSourceDimension(DimensionType dim)
+    {
+        d_what = dim;
     }
 
     float UnifiedDim::getValue_impl(const Window& wnd) const
