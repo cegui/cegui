@@ -48,6 +48,7 @@ namespace CEGUI
 {
 class OpenGL3Texture;
 class Shader;
+class OpenGL3StateChangeWrapper;
 
 /*!
 \brief
@@ -59,7 +60,7 @@ public:
     //! Constructor
     OpenGLGeometryBuffer(OpenGL3Renderer& owner);
 
-	void initialiseOpenGLBuffers();
+    void initialiseOpenGLBuffers();
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
@@ -70,8 +71,8 @@ public:
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
 
-	void updateOpenGLBuffers();
-	void setActiveTexture(Texture* texture);
+    void updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count);
+    void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
     uint getVertexCount() const;
@@ -125,20 +126,23 @@ protected:
     mutable glm::mat4 d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
-	//! OpenGL vao used for the vertices
-	unsigned int					m_verticesVAO;
-	//! OpenGL vbo containing all vertex data
-	unsigned int					m_verticesVBO;
-	//! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
-	CEGUI::Shader*&					d_shader;
-	//! Position variable location inside the shader, for OpenGL
-	const int						d_shaderPosLoc;
-	//! TexCoord variable location inside the shader, for OpenGL
-	const int						d_shaderTexCoordLoc;
-	//! Color variable location inside the shader, for OpenGL
-	const int						d_shaderColourLoc;
-	//! Matrix uniform location inside the shader, for OpenGL
-	const int						d_shaderStandardMatrixLoc;
+    //! OpenGL vao used for the vertices
+    unsigned int                    m_verticesVAO;
+    //! OpenGL vbo containing all vertex data
+    unsigned int                    m_verticesVBO;
+    //! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
+    CEGUI::Shader*&                 d_shader;
+    //! Position variable location inside the shader, for OpenGL
+    const int                       d_shaderPosLoc;
+    //! TexCoord variable location inside the shader, for OpenGL
+    const int                       d_shaderTexCoordLoc;
+    //! Color variable location inside the shader, for OpenGL
+    const int                       d_shaderColourLoc;
+    //! Matrix uniform location inside the shader, for OpenGL
+    const int                       d_shaderStandardMatrixLoc;
+	//! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
+	OpenGL3StateChangeWrapper*		d_glStateChanger;
+	unsigned int					d_bufferSize;
 };
 
 

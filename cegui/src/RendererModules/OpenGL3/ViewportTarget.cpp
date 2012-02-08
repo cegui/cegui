@@ -35,7 +35,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLViewportTarget::OpenGLViewportTarget(OpenGL3Renderer& owner) :
+OpenGL3ViewportTarget::OpenGL3ViewportTarget(OpenGL3Renderer& owner) :
     OpenGL3RenderTarget(owner)
 {
     // viewport area defaults to whatever the current OpenGL viewport is set to
@@ -44,12 +44,11 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGL3Renderer& owner) :
 
     Rectf init_area(Vector2f(static_cast<float>(vp[0]), static_cast<float>(vp[1])),
                         Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3])));
-
     setArea(init_area);
 }
 
 //----------------------------------------------------------------------------//
-OpenGLViewportTarget::OpenGLViewportTarget(OpenGL3Renderer& owner,
+OpenGL3ViewportTarget::OpenGL3ViewportTarget(OpenGL3Renderer& owner,
     const Rectf& area) :
         OpenGL3RenderTarget(owner)
 {
@@ -57,7 +56,7 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGL3Renderer& owner,
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLViewportTarget::isImageryCache() const
+bool OpenGL3ViewportTarget::isImageryCache() const
 {
     return false;
 }

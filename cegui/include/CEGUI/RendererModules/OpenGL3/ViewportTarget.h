@@ -39,26 +39,26 @@ namespace CEGUI
     OpenGL implementation of a RenderTarget that represents am on-scren
     viewport.
 */
-class OPENGL_GUIRENDERER_API OpenGLViewportTarget : public OpenGL3RenderTarget
+class OPENGL_GUIRENDERER_API OpenGL3ViewportTarget : public OpenGL3RenderTarget
 {
 public:
     /*!
     \brief
-        Construct a default OpenGLViewportTarget that uses the currently
+        Construct a default OpenGL3ViewportTarget that uses the currently
         defined OpenGL viewport as it's initial area.
     */
-    OpenGLViewportTarget(OpenGL3Renderer& owner);
+    OpenGL3ViewportTarget(OpenGL3Renderer& owner);
 
     /*!
     \brief
-        Construct a OpenGLViewportTarget that uses the specified Rect as it's
+        Construct a OpenGL3ViewportTarget that uses the specified Rect as it's
         initial area.
 
     \param area
         Rect object describing the initial viewport area that should be used for
         the RenderTarget.
     */
-    OpenGLViewportTarget(OpenGL3Renderer& owner, const Rectf& area);
+    OpenGL3ViewportTarget(OpenGL3Renderer& owner, const Rectf& area);
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

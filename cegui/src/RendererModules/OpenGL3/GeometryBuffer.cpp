@@ -36,13 +36,14 @@
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RendererModules/OpenGL3/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL3/Shader.h"
+#include "CEGUI/RendererModules/OpenGL3/StateChangeWrapper.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-	//----------------------------------------------------------------------------//
+    //----------------------------------------------------------------------------//
 OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGL3Renderer& owner) :
     d_owner(&owner),
     d_activeTexture(0),
@@ -52,13 +53,15 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGL3Renderer& owner) :
     d_pivot(0, 0, 0),
     d_effect(0),
     d_matrixValid(false),
-	d_shader(owner.getShaderStandard()),
-	d_shaderPosLoc(owner.getShaderStandardPositionLoc()),
-	d_shaderTexCoordLoc(owner.getShaderStandardTexCoordLoc()),
-	d_shaderColourLoc(owner.getShaderStandardColourLoc()),
-	d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc())
+    d_shader(owner.getShaderStandard()),
+    d_shaderPosLoc(owner.getShaderStandardPositionLoc()),
+    d_shaderTexCoordLoc(owner.getShaderStandardTexCoordLoc()),
+    d_shaderColourLoc(owner.getShaderStandardColourLoc()),
+    d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc()),
+	d_glStateChanger(owner.getOpenGLStateChanger()),
+	d_bufferSize(0)
 {
-	initialiseOpenGLBuffers();
+    initialiseOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -70,11 +73,10 @@ void OpenGLGeometryBuffer::appendVertex(const Vertex& vertex)
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::draw() const
 {
-    // setup clip region
-    GLint vp[4];
-    glGetIntegerv(GL_VIEWPORT, vp);
-    glScissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(vp[3] - d_clipRect.bottom()),
+    CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
+
+    d_glStateChanger->scissor(static_cast<GLint>(d_clipRect.left()),
+              static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
               static_cast<GLint>(d_clipRect.getWidth()),
               static_cast<GLint>(d_clipRect.getHeight()));
 
@@ -82,18 +84,18 @@ void OpenGLGeometryBuffer::draw() const
     if (!d_matrixValid)
         updateMatrix();
 
-	// Send ModelViewProjection matrix to shader
-	glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix() * d_matrix;
-	glUniformMatrix4fv(d_shaderStandardMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+    // Send ModelViewProjection matrix to shader
+    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix() * d_matrix;
+    glUniformMatrix4fv(d_shaderStandardMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
 
-	// Bind our vao
-	glBindVertexArray(m_verticesVAO);
+    // Bind our vao
+    d_glStateChanger->bindVertexArray(m_verticesVAO);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
-	 size_t pos = 0;
+     size_t pos = 0;
     for (int pass = 0; pass < pass_count; ++pass)
     {
         // set up RenderEffect
@@ -105,19 +107,19 @@ void OpenGLGeometryBuffer::draw() const
         BatchList::const_iterator i = d_batches.begin();
         for ( ; i != d_batches.end(); ++i)
         {
-			const BatchInfo& currentBatch = *i;
+            const BatchInfo& currentBatch = *i;
 
             glBindTexture(GL_TEXTURE_2D, currentBatch.first);
 
             // draw the geometry
-			unsigned int numVertices = (*i).second;
+            unsigned int numVertices = (*i).second;
             glDrawArrays(GL_TRIANGLES, pos, numVertices);
 
             pos += numVertices;
         }
     }
 
-	
+    
 
     // clean up RenderEffect
     if (d_effect)
@@ -182,7 +184,7 @@ void OpenGLGeometryBuffer::appendGeometry(const Vertex* const vbuff,
         d_vertices.push_back(vd);
     }
 
-	updateOpenGLBuffers();
+    updateOpenGLBuffers(vbuff, vertex_count);
 }
 
 //----------------------------------------------------------------------------//
@@ -197,7 +199,7 @@ void OpenGLGeometryBuffer::reset()
     d_batches.clear();
     d_vertices.clear();
     d_activeTexture = 0;
-	updateOpenGLBuffers();
+    updateOpenGLBuffers(0, 0);
 }
 
 //----------------------------------------------------------------------------//
@@ -254,69 +256,85 @@ const glm::mat4 OpenGLGeometryBuffer::getMatrix() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::updateMatrix() const
 {
-	d_matrix = glm::mat4(1.f);
+    d_matrix = glm::mat4(1.f);
 
     const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                 d_translation.d_y + d_pivot.d_y,
-								d_translation.d_z + d_pivot.d_z);
+                                d_translation.d_z + d_pivot.d_z);
 
-	d_matrix = glm::translate(d_matrix, final_trans);
+    d_matrix = glm::translate(d_matrix, final_trans);
 
-	glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
-	glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
+    glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
+    glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
 
     d_matrix = d_matrix * rotation_matrix;
 
-	glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-	glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
-	d_matrix =  d_matrix * translMatrix;
+    glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+    glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
+    d_matrix =  d_matrix * translMatrix;
 
     d_matrixValid = true;
 }
 
 void OpenGLGeometryBuffer::initialiseOpenGLBuffers()
 {
-	glGenVertexArrays(1, &m_verticesVAO);
-	glBindVertexArray(m_verticesVAO);
+    glGenVertexArrays(1, &m_verticesVAO);
+    glBindVertexArray(m_verticesVAO);
 
 
-	// Generate and bind position vbo
-	glGenBuffers(1, &m_verticesVBO);
-	glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+    // Generate and bind position vbo
+    glGenBuffers(1, &m_verticesVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
 
 
-	glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_STREAM_DRAW);
 
-	d_shader->bind();
-	
-	GLsizei stride = 9 * sizeof(GL_FLOAT);
+    d_shader->bind();
+    
+    GLsizei stride = 9 * sizeof(GL_FLOAT);
 
-	glVertexAttribPointer(d_shaderTexCoordLoc, 2, GL_FLOAT, GL_FALSE, stride, 0);
-	glEnableVertexAttribArray(d_shaderTexCoordLoc);
+    glVertexAttribPointer(d_shaderTexCoordLoc, 2, GL_FLOAT, GL_FALSE, stride, 0);
+    glEnableVertexAttribArray(d_shaderTexCoordLoc);
 
-	glVertexAttribPointer(d_shaderColourLoc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GL_FLOAT)));
-	glEnableVertexAttribArray(d_shaderColourLoc);
+    glVertexAttribPointer(d_shaderColourLoc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(d_shaderColourLoc);
 
-	glVertexAttribPointer(d_shaderPosLoc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(6 * sizeof(GL_FLOAT)));
-	glEnableVertexAttribArray(d_shaderPosLoc);
+    glVertexAttribPointer(d_shaderPosLoc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(6 * sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(d_shaderPosLoc);
 
-	d_shader->unbind();
+    d_shader->unbind();
 
-	// Unbind Vertex Attribute Array (VAO)
-	glBindVertexArray(0);
+    // Unbind Vertex Attribute Array (VAO)
+    glBindVertexArray(0);
 
-	// Unbind array and element array buffers
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
+    // Unbind array and element array buffers
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void OpenGLGeometryBuffer::updateOpenGLBuffers()
+void OpenGLGeometryBuffer::updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count)
 {
-	glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+	bool needNewBuffer = false;
+	unsigned int vertexCount = d_vertices.size();
 
-	//TODO dynamic updates with maxsizes of 2^x
+	if(d_bufferSize < vertexCount)
+	{
+		needNewBuffer = true;
+		d_bufferSize = vertexCount;
+	}
 
-	GLsizei dataSize = d_vertices.size() * sizeof(GLVertex);
-	glBufferData(GL_ARRAY_BUFFER, dataSize, d_vertices.data(), GL_DYNAMIC_DRAW);
+
+	d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+
+	GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
+
+	if(needNewBuffer)
+	{
+		glBufferData(GL_ARRAY_BUFFER, dataSize, d_vertices.data(), GL_STREAM_DRAW);
+	}
+	else
+	{
+		glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, d_vertices.data());
+	}
 }
 
 //----------------------------------------------------------------------------//

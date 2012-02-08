@@ -32,6 +32,7 @@
 #include "../../Renderer.h"
 #include "../../Size.h"
 #include "../../Vector.h"
+#include "../../Rect.h"
 #include <GL/glew.h>
 #include <vector>
 #include <map>
@@ -57,11 +58,13 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-	class Shader;
-	class OpenGL3Texture;
-	class OpenGLTextureTarget;
-	class OpenGLGeometryBuffer;
-	class OGLTextureTargetFactory;
+    class Shader;
+    class OpenGL3Texture;
+    class OpenGLTextureTarget;
+    class OpenGLGeometryBuffer;
+    class OGLTextureTargetFactory;
+	class OpenGL3RenderTarget;
+	class OpenGL3StateChangeWrapper;
 
 /*!
 \brief
@@ -264,80 +267,118 @@ public:
     */
     static float getNextPOTSize(const float f);
 
-	//! set the render states for the specified BlendMode.
-	void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
+    //! set the render states for the specified BlendMode.
+    void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
+
+    /*!
+    \brief
+    Helper to return the reference to the pointer to the standard shader of the Renderer
+
+    \return
+    Reference to the pointer to the standard shader of the Renderer
+    */
+    Shader*& getShaderStandard();
+
+    /*!
+    \brief
+    Helper to return the attribute location of the position variable in the standard shader
+
+    \return
+    Attribute location of the position variable in the standard shader
+    */
+    const int getShaderStandardPositionLoc();
+
+
+    /*!
+    \brief
+    Helper to return the attribute location of the texture coordinate variable in the standard shader
+
+    \return
+    Attribute location of the texture coordinate variable in the standard shader
+    */
+    const int getShaderStandardTexCoordLoc();
+
+
+    /*!
+    \brief
+    Helper to return the attribute location of the colour variable in the standard shader
+
+    \return
+    Attribute location of the colour variable in the standard shader
+    */
+    const int getShaderStandardColourLoc();
+
+
+    /*!
+    \brief
+    Helper to return the uniform location of the matrix variable in the standard shader
+
+    \return
+    Uniform location of the matrix variable in the standard shader
+    */
+    const int getShaderStandardMatrixUniformLoc();
+
+
+    /*!
+    \brief
+    Helper to return view projection matrix.
+
+    \return
+    The view projection matrix.
+    */
+    const glm::mat4& getViewProjectionMatrix();
+
+
+    /*!
+    \brief
+    Helper to set the view projection matrix.
+
+    \param viewProjectionMatrix
+    The view projection matrix.
+    */
+    void setViewProjectionMatrix(glm::mat4 viewProjectionMatrix);
 
 	/*!
-	\brief
-	Helper to return the reference to the pointer to the standard shader of the Renderer
+    \brief
+    Helper to get the viewport.
 
-	\return
-	Reference to the pointer to the standard shader of the Renderer
-	*/
-	Shader*& getShaderStandard();
+    \return
+    The viewport.
+    */
+	const CEGUI::Rectf& getActiveViewPort();
+
+	
+	/*!
+    \brief
+    Helper to set the active render target.
+
+    \param renderTarget
+    The active RenderTarget.
+    */
+	void setActiveRenderTarget(OpenGL3RenderTarget* renderTarget);
+
+		
+	/*!
+    \brief
+    Helper to get the active render target.
+
+    \return
+    The active RenderTarget.
+    */
+	OpenGL3RenderTarget* getActiveRenderTarget();
 
 	/*!
-	\brief
-	Helper to return the attribute location of the position variable in the standard shader
+    \brief
+    Helper to get the wrapper used to check for redundant OpenGL state changes.
 
-	\return
-	Attribute location of the position variable in the standard shader
-	*/
-	const int getShaderStandardPositionLoc();
-
-
-	/*!
-	\brief
-	Helper to return the attribute location of the texture coordinate variable in the standard shader
-
-	\return
-	Attribute location of the texture coordinate variable in the standard shader
-	*/
-	const int getShaderStandardTexCoordLoc();
-
-
-	/*!
-	\brief
-	Helper to return the attribute location of the colour variable in the standard shader
-
-	\return
-	Attribute location of the colour variable in the standard shader
-	*/
-	const int getShaderStandardColourLoc();
-
-
-		/*!
-	\brief
-	Helper to return the uniform location of the matrix variable in the standard shader
-
-	\return
-	Uniform location of the matrix variable in the standard shader
-	*/
-	const int getShaderStandardMatrixUniformLoc();
-
-
-			/*!
-	\brief
-	Helper to return view projection matrix.
-
-	\return
-	The view projection matrix.
-	*/
-	const glm::mat4& getViewProjectionMatrix();
-
-
-			/*!
-	\brief
-	Helper to set the view projection matrix.
-
-	\param viewProjectionMatrix
-	The view projection matrix.
-	*/
-	void setViewProjectionMatrix(glm::mat4 viewProjectionMatrix);
+    \return
+    The active OpenGL state change wrapper object.
+    */
+	OpenGL3StateChangeWrapper* getOpenGLStateChanger();
 
 
 
-	//! Gets the reference to the pointer
+    //! Gets the reference to the pointer
 private:
     /*!
     \brief
@@ -362,7 +403,7 @@ private:
     */
     OpenGL3Renderer(const Sizef& display_size);
 
-	void initialiseOpenGLShaders();
+    void initialiseOpenGLShaders();
 
     /*!
     \brief
@@ -409,21 +450,25 @@ private:
     //! option of whether to initialise extra states that may not be at default
     bool d_initExtraStates;
     //! pointer to a helper that creates TextureTargets supported by the system.
-	OGLTextureTargetFactory* d_textureTargetFactory;
-	//! What blend mode we think is active.
-	BlendMode d_activeBlendMode;
-	//! The OpenGL shader we will use usually
-	Shader*			d_shaderStandard;
-	//! Position variable location inside the shader, for OpenGL
-	int				d_shaderStandardPosLoc;
-	//! TexCoord variable location inside the shader, for OpenGL
-	int				d_shaderStandardTexCoordLoc;
-	//! Color variable location inside the shader, for OpenGL
-	int				d_shaderStandardColourLoc;
-	//! Matrix uniform location inside the shader, for OpenGL
-	int				d_shaderStandardMatrixLoc;
-	//! View projection matrix
-	glm::mat4		d_viewProjectionMatrix;
+    OGLTextureTargetFactory* d_textureTargetFactory;
+    //! What blend mode we think is active.
+    BlendMode d_activeBlendMode;
+    //! The OpenGL shader we will use usually
+    Shader*         d_shaderStandard;
+    //! Position variable location inside the shader, for OpenGL
+    int             d_shaderStandardPosLoc;
+    //! TexCoord variable location inside the shader, for OpenGL
+    int             d_shaderStandardTexCoordLoc;
+    //! Color variable location inside the shader, for OpenGL
+    int             d_shaderStandardColourLoc;
+    //! Matrix uniform location inside the shader, for OpenGL
+    int             d_shaderStandardMatrixLoc;
+    //! View projection matrix
+    glm::mat4       d_viewProjectionMatrix;
+	//! The active RenderTarget
+    OpenGL3RenderTarget* d_activeRenderTarget;
+	//! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
+	OpenGL3StateChangeWrapper* d_openGLStateChanger;
 };
 
 } // End of  CEGUI namespace section

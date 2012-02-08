@@ -85,7 +85,9 @@ void OpenGL3RenderTarget::activate()
     if (!d_matrixValid)
         updateMatrix();
 
-	d_owner.setViewProjectionMatrix(d_matrix);
+    d_owner.setViewProjectionMatrix(d_matrix);
+
+	d_owner.setActiveRenderTarget(this);
 }
 
 //----------------------------------------------------------------------------//
@@ -112,14 +114,14 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
 
     GLdouble in_x, in_y, in_z = 0.0;
 
-	glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
+    glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
 
-	// unproject the ends of the ray
-	glm::vec3 unprojected1;
-	glm::vec3 unprojected2;
-	in_x = vp[2] * 0.5;
-	in_y = vp[3] * 0.5;
-	in_z = -d_viewDistance;
+    // unproject the ends of the ray
+    glm::vec3 unprojected1;
+    glm::vec3 unprojected2;
+    in_x = vp[2] * 0.5;
+    in_y = vp[3] * 0.5;
+    in_z = -d_viewDistance;
     unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
     in_x = p_in.d_x;
     in_y = vp[3] - p_in.d_y;
@@ -128,8 +130,8 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
 
     // project points to orientate them with GeometryBuffer plane
     glm::vec3 projected1;
-	glm::vec3 projected2;
-	glm::vec3 projected3;
+    glm::vec3 projected2;
+    glm::vec3 projected3;
     in_x = 0.0;
     in_y = 0.0;
     projected1 = glm::project(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
@@ -144,9 +146,9 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     const glm::vec3 pv1 = projected2 - projected1;
     const glm::vec3 pv2 = projected3 - projected1;
     // given the vectors, calculate the plane normal
-	const glm::vec3 planeNormal = glm::cross(pv1, pv2);
+    const glm::vec3 planeNormal = glm::cross(pv1, pv2);
     // calculate plane
-	const glm::vec3 planeNormalNormalized = glm::normalize(planeNormal);
+    const glm::vec3 planeNormalNormalized = glm::normalize(planeNormal);
     const double pl_d = - glm::dot(projected1, planeNormalNormalized);
     // calculate vector of picking ray
     const glm::vec3 rv = unprojected1 - unprojected2;
@@ -160,7 +162,7 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     p_out.d_x = static_cast<float>(is_x);
     p_out.d_y = static_cast<float>(is_y);
 
-	p_out = p_in; // CrazyEddie wanted this
+    p_out = p_in; // CrazyEddie wanted this
 }
 
 //----------------------------------------------------------------------------//
@@ -173,15 +175,15 @@ void OpenGL3RenderTarget::updateMatrix() const
     const float midy = h * 0.5f;
     d_viewDistance = midx / (aspect * d_yfov_tan);
 
-	glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
-	glm::vec3 center = glm::vec3(midx, midy, 1);
-	glm::vec3 up = glm::vec3(0, -1, 0);
+    glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
+    glm::vec3 center = glm::vec3(midx, midy, 1);
+    glm::vec3 up = glm::vec3(0, -1, 0);
 
     glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
-	d_matrix = projectionMatrix * viewMatrix;
+    d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
 }

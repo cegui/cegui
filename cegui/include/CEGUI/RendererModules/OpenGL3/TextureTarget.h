@@ -32,8 +32,8 @@
 #include "../../TextureTarget.h"
 
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4250)
+#   pragma warning(push)
+#   pragma warning(disable : 4250)
 #endif
 
 // Start of CEGUI namespace section
@@ -93,7 +93,7 @@ protected:
 } // End of  CEGUI namespace section
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#   pragma warning(pop)
 #endif
 
 #endif  // end of guard _CEGUIOpenGLTextureTarget_h_
