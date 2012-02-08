@@ -100,7 +100,7 @@ public:
         Nothing.
     */
     void addImagerySection(const ImagerySection& section);
-    void renameImagerySection(const String& oldName, const String& newName)
+    void renameImagerySection(const String& oldName, const String& newName);
 
     /*!
     \brief
