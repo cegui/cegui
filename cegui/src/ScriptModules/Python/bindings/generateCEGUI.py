@@ -1117,20 +1117,23 @@ void Iterator_previous(::CEGUI::%s& t)
     namedArea.include()
     
     # falagard/CEGUIFalPropertyDefinition.h
-    propertyDefinition = CEGUI_ns.class_("PropertyDefinition")
-    propertyDefinition.include()
+# FIXME: This is now a template and CE did not know what to do!
+#    propertyDefinition = CEGUI_ns.class_("PropertyDefinition")
+#    propertyDefinition.include()
     
     # falagard/CEGUIFalPropertyDefinitionBase.h
-    propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
-    propertyDefinitionBase.include()
+# FIXME: This is now a template and CE did not know what to do!
+#    propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
+#    propertyDefinitionBase.include()
     
     # falagard/CEGUIFalPropertyInitialiser.h
     propertyInitialiser = CEGUI_ns.class_("PropertyInitialiser")
     propertyInitialiser.include()
     
     # falagard/CEGUIFalPropertyLinkDefinition.h
-    propertyLinkDefinition = CEGUI_ns.class_("PropertyLinkDefinition")
-    propertyLinkDefinition.include()
+# FIXME: This is now a template and CE did not know what to do!
+#    propertyLinkDefinition = CEGUI_ns.class_("PropertyLinkDefinition")
+#    propertyLinkDefinition.include()
     
     # falagard/CEGUIFalSectionSpecification.h
     sectionSpecification = CEGUI_ns.class_("SectionSpecification")

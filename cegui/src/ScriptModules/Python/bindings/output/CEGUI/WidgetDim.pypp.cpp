@@ -15,6 +15,13 @@ struct WidgetDim_wrapper : CEGUI::WidgetDim, bp::wrapper< CEGUI::WidgetDim > {
         
     }
 
+    WidgetDim_wrapper( )
+    : CEGUI::WidgetDim( )
+      , bp::wrapper< CEGUI::WidgetDim >(){
+        // null constructor
+    
+    }
+
     WidgetDim_wrapper(::CEGUI::String const & name, ::CEGUI::DimensionType dim )
     : CEGUI::WidgetDim( boost::ref(name), dim )
       , bp::wrapper< CEGUI::WidgetDim >(){
@@ -97,7 +104,9 @@ void register_WidgetDim_class(){
                 appending the name suffix specified for the WidgetDim to the name of the window passed to\n\
                 getValue, we then find the windowwidget with that name - the final value of the dimension\n\
                 is taken from this windowwidget.\n\
-            *\n", bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("dim") ), "*!\n\
+            *\n", bp::init< >() );
+        bp::scope WidgetDim_scope( WidgetDim_exposer );
+        WidgetDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("dim") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
@@ -109,7 +118,6 @@ void register_WidgetDim_class(){
                     ImageDim\n\
                     is to represent.\n\
                 *\n") );
-        bp::scope WidgetDim_scope( WidgetDim_exposer );
         { //::CEGUI::WidgetDim::clone_impl
         
             typedef ::CEGUI::BaseDim * ( WidgetDim_wrapper::*clone_impl_function_type )(  ) const;
@@ -118,6 +126,24 @@ void register_WidgetDim_class(){
                 "clone_impl"
                 , clone_impl_function_type( &WidgetDim_wrapper::default_clone_impl )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::WidgetDim::getSourceDimension
+        
+            typedef ::CEGUI::DimensionType ( ::CEGUI::WidgetDim::*getSourceDimension_function_type )(  ) const;
+            
+            WidgetDim_exposer.def( 
+                "getSourceDimension"
+                , getSourceDimension_function_type( &::CEGUI::WidgetDim::getSourceDimension )
+                , "*!\n\
+                    \n\
+                        Gets the source dimension type for this WidgetDim.\n\
+            \n\
+                    @return\n\
+                        DimensionType value indicating which dimension of the described image that this\
+                        WidgetDim\n\
+                        is to represent.\n\
+                    *\n" );
         
         }
         { //::CEGUI::WidgetDim::getValue_impl
@@ -140,6 +166,23 @@ void register_WidgetDim_class(){
                 , getValue_impl_function_type( &WidgetDim_wrapper::default_getValue_impl )
                 , ( bp::arg("wnd"), bp::arg("container") )
                 , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::WidgetDim::getWidgetName
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::WidgetDim::*getWidgetName_function_type )(  ) const;
+            
+            WidgetDim_exposer.def( 
+                "getWidgetName"
+                , getWidgetName_function_type( &::CEGUI::WidgetDim::getWidgetName )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Get the name suffix to use for this WidgetDim.\n\
+            \n\
+                    @return\n\
+                        String object holding the name suffix for a windowwidget.\n\
+                    *\n" );
         
         }
         { //::CEGUI::WidgetDim::setSourceDimension

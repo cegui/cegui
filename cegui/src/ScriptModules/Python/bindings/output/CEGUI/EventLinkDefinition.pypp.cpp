@@ -68,6 +68,15 @@ void register_EventLinkDefinition_class(){
             ! clear all link targets from this link definition.\n" );
         
         }
+        { //::CEGUI::EventLinkDefinition::getLinkTargetIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< std::pair<CEGUI::String, CEGUI::String> > > ( ::CEGUI::EventLinkDefinition::*getLinkTargetIterator_function_type )(  ) const;
+            
+            EventLinkDefinition_exposer.def( 
+                "getLinkTargetIterator"
+                , getLinkTargetIterator_function_type( &::CEGUI::EventLinkDefinition::getLinkTargetIterator ) );
+        
+        }
         { //::CEGUI::EventLinkDefinition::getName
         
             typedef ::CEGUI::String const & ( ::CEGUI::EventLinkDefinition::*getName_function_type )(  ) const;
@@ -100,6 +109,16 @@ void register_EventLinkDefinition_class(){
                 , initialiseWidget_function_type( &::CEGUI::EventLinkDefinition::initialiseWidget )
                 , ( bp::arg("window") )
                 , "! initialise  window with an event link as specified here.\n" );
+        
+        }
+        { //::CEGUI::EventLinkDefinition::setName
+        
+            typedef void ( ::CEGUI::EventLinkDefinition::*setName_function_type )( ::CEGUI::String const & ) ;
+            
+            EventLinkDefinition_exposer.def( 
+                "setName"
+                , setName_function_type( &::CEGUI::EventLinkDefinition::setName )
+                , ( bp::arg("name") ) );
         
         }
     }

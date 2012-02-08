@@ -85,7 +85,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::addPropertyDefinition
         
-            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyDefinition_function_type )( ::CEGUI::PropertyDefinition const & ) ;
+            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyDefinition_function_type )( ::CEGUI::Property * ) ;
             
             WidgetLookFeel_exposer.def( 
                 "addPropertyDefinition"
@@ -125,7 +125,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::addPropertyLinkDefinition
         
-            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyLinkDefinition_function_type )( ::CEGUI::PropertyLinkDefinition const & ) ;
+            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyLinkDefinition_function_type )( ::CEGUI::Property * ) ;
             
             WidgetLookFeel_exposer.def( 
                 "addPropertyLinkDefinition"
@@ -365,6 +365,66 @@ void register_WidgetLookFeel_class(){
                 *\n" );
         
         }
+        { //::CEGUI::WidgetLookFeel::getAnimationNameIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > > ( ::CEGUI::WidgetLookFeel::*getAnimationNameIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getAnimationNameIterator"
+                , getAnimationNameIterator_function_type( &::CEGUI::WidgetLookFeel::getAnimationNameIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getAnimationNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getAnimationNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getAnimationNames"
+                , getAnimationNames_function_type( &::CEGUI::WidgetLookFeel::getAnimationNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getEventLinkDefinitionIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, const CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, const CEGUI::EventLinkDefinition*> > > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getEventLinkDefinitionIterator"
+                , getEventLinkDefinitionIterator_function_type( &::CEGUI::WidgetLookFeel::getEventLinkDefinitionIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getEventLinkDefinitionNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getEventLinkDefinitionNames"
+                , getEventLinkDefinitionNames_function_type( &::CEGUI::WidgetLookFeel::getEventLinkDefinitionNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getImageryIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::ImagerySection> > > > ( ::CEGUI::WidgetLookFeel::*getImageryIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getImageryIterator"
+                , getImageryIterator_function_type( &::CEGUI::WidgetLookFeel::getImageryIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getImageryNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getImageryNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getImageryNames"
+                , getImageryNames_function_type( &::CEGUI::WidgetLookFeel::getImageryNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
         { //::CEGUI::WidgetLookFeel::getImagerySection
         
             typedef ::CEGUI::ImagerySection const & ( ::CEGUI::WidgetLookFeel::*getImagerySection_function_type )( ::CEGUI::String const & ) const;
@@ -422,6 +482,26 @@ void register_WidgetLookFeel_class(){
                 *\n" );
         
         }
+        { //::CEGUI::WidgetLookFeel::getNamedAreaIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::NamedArea, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::NamedArea> > > > ( ::CEGUI::WidgetLookFeel::*getNamedAreaIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getNamedAreaIterator"
+                , getNamedAreaIterator_function_type( &::CEGUI::WidgetLookFeel::getNamedAreaIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getNamedAreaNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getNamedAreaNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getNamedAreaNames"
+                , getNamedAreaNames_function_type( &::CEGUI::WidgetLookFeel::getNamedAreaNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
         { //::CEGUI::WidgetLookFeel::getProperties
         
             typedef ::std::vector< CEGUI::PropertyInitialiser > const & ( ::CEGUI::WidgetLookFeel::*getProperties_function_type )(  ) const;
@@ -436,9 +516,29 @@ void register_WidgetLookFeel_class(){
              *\n" );
         
         }
+        { //::CEGUI::WidgetLookFeel::getPropertyDefinitionIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getPropertyDefinitionIterator"
+                , getPropertyDefinitionIterator_function_type( &::CEGUI::WidgetLookFeel::getPropertyDefinitionIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getPropertyDefinitionNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getPropertyDefinitionNames"
+                , getPropertyDefinitionNames_function_type( &::CEGUI::WidgetLookFeel::getPropertyDefinitionNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitions
         
-            typedef ::std::vector< CEGUI::PropertyDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::Property* > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitions"
@@ -451,9 +551,49 @@ void register_WidgetLookFeel_class(){
              *\n" );
         
         }
+        { //::CEGUI::WidgetLookFeel::getPropertyInitialiserIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, const CEGUI::PropertyInitialiser*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, const CEGUI::PropertyInitialiser*> > > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getPropertyInitialiserIterator"
+                , getPropertyInitialiserIterator_function_type( &::CEGUI::WidgetLookFeel::getPropertyInitialiserIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getPropertyInitialiserNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getPropertyInitialiserNames"
+                , getPropertyInitialiserNames_function_type( &::CEGUI::WidgetLookFeel::getPropertyInitialiserNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getPropertyLinkDefinitionIterator"
+                , getPropertyLinkDefinitionIterator_function_type( &::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getPropertyLinkDefinitionNames"
+                , getPropertyLinkDefinitionNames_function_type( &::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitions
         
-            typedef ::std::vector< CEGUI::PropertyLinkDefinition > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::Property* > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitions"
@@ -483,6 +623,46 @@ void register_WidgetLookFeel_class(){
                 @return\n\
                     StateImagery object for the requested state.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getStateIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::StateImagery> > > > ( ::CEGUI::WidgetLookFeel::*getStateIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getStateIterator"
+                , getStateIterator_function_type( &::CEGUI::WidgetLookFeel::getStateIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getStateNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getStateNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getStateNames"
+                , getStateNames_function_type( &::CEGUI::WidgetLookFeel::getStateNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getWidgetComponentIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, const CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, const CEGUI::WidgetComponent*> > > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentIterator_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getWidgetComponentIterator"
+                , getWidgetComponentIterator_function_type( &::CEGUI::WidgetLookFeel::getWidgetComponentIterator )
+                , ( bp::arg("inherits")=(bool)(false) ) );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::getWidgetNames
+        
+            typedef ::std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > ( ::CEGUI::WidgetLookFeel::*getWidgetNames_function_type )( bool ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "getWidgetNames"
+                , getWidgetNames_function_type( &::CEGUI::WidgetLookFeel::getWidgetNames )
+                , ( bp::arg("inherits")=(bool)(false) ) );
         
         }
         { //::CEGUI::WidgetLookFeel::initialiseWidget
@@ -569,6 +749,36 @@ void register_WidgetLookFeel_class(){
                 @return\n\
                     Nothing.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::renameImagerySection
+        
+            typedef void ( ::CEGUI::WidgetLookFeel::*renameImagerySection_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            WidgetLookFeel_exposer.def( 
+                "renameImagerySection"
+                , renameImagerySection_function_type( &::CEGUI::WidgetLookFeel::renameImagerySection )
+                , ( bp::arg("oldName"), bp::arg("newName") )
+                , "*!\n\
+                \n\
+                    Add an ImagerySection to the WidgetLookFeel.\n\
+            \n\
+                @param section\n\
+                    ImagerySection object to be added.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::renameNamedArea
+        
+            typedef void ( ::CEGUI::WidgetLookFeel::*renameNamedArea_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            WidgetLookFeel_exposer.def( 
+                "renameNamedArea"
+                , renameNamedArea_function_type( &::CEGUI::WidgetLookFeel::renameNamedArea )
+                , ( bp::arg("oldName"), bp::arg("newName") ) );
         
         }
         { //::CEGUI::WidgetLookFeel::writeXMLToStream

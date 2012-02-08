@@ -10,7 +10,7 @@ void register_LayerSpecification_class(){
 
     { //::CEGUI::LayerSpecification
         typedef bp::class_< CEGUI::LayerSpecification > LayerSpecification_exposer_t;
-        LayerSpecification_exposer_t LayerSpecification_exposer = LayerSpecification_exposer_t( "LayerSpecification", bp::init< CEGUI::uint >(( bp::arg("priority") ), "*!\n\
+        LayerSpecification_exposer_t LayerSpecification_exposer = LayerSpecification_exposer_t( "LayerSpecification", bp::init< bp::optional< CEGUI::uint > >(( bp::arg("priority")=(::CEGUI::uint)(0) ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
@@ -76,6 +76,15 @@ void register_LayerSpecification_class(){
                     *\n" );
         
         }
+        { //::CEGUI::LayerSpecification::getSectionIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::SectionSpecification > > ( ::CEGUI::LayerSpecification::*getSectionIterator_function_type )(  ) const;
+            
+            LayerSpecification_exposer.def( 
+                "getSectionIterator"
+                , getSectionIterator_function_type( &::CEGUI::LayerSpecification::getSectionIterator ) );
+        
+        }
         LayerSpecification_exposer.def( bp::self < bp::self );
         { //::CEGUI::LayerSpecification::render
         
@@ -117,6 +126,30 @@ void register_LayerSpecification_class(){
             \n\
                     @return\n\
                         Nothing.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::LayerSpecification::setLayerPriority
+        
+            typedef void ( ::CEGUI::LayerSpecification::*setLayerPriority_function_type )( ::CEGUI::uint ) ;
+            
+            LayerSpecification_exposer.def( 
+                "setLayerPriority"
+                , setLayerPriority_function_type( &::CEGUI::LayerSpecification::setLayerPriority )
+                , ( bp::arg("priority") )
+                , "*!\n\
+                    \n\
+                        Return the priority of this layer.\n\
+            \n\
+                    @return\n\
+                        uint value descibing the priority of this LayerSpecification.\n\
+                    *\n\
+                    *!\n\
+                    \n\
+                        Sets the priority of this layer.\n\
+            \n\
+                    @return\n\
+                        uint value descibing the priority of this LayerSpecification.\n\
                     *\n" );
         
         }

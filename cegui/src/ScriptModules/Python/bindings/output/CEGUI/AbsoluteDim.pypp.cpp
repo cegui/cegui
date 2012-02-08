@@ -15,6 +15,13 @@ struct AbsoluteDim_wrapper : CEGUI::AbsoluteDim, bp::wrapper< CEGUI::AbsoluteDim
         
     }
 
+    AbsoluteDim_wrapper( )
+    : CEGUI::AbsoluteDim( )
+      , bp::wrapper< CEGUI::AbsoluteDim >(){
+        // null constructor
+    
+    }
+
     AbsoluteDim_wrapper(float val )
     : CEGUI::AbsoluteDim( val )
       , bp::wrapper< CEGUI::AbsoluteDim >(){
@@ -91,14 +98,15 @@ void register_AbsoluteDim_class(){
         AbsoluteDim_exposer_t AbsoluteDim_exposer = AbsoluteDim_exposer_t( "AbsoluteDim", "*!\n\
         \n\
             Dimension type that represents an absolute pixel value.  Implements BaseDim interface.\n\
-        *\n", bp::init< float >(( bp::arg("val") ), "*!\n\
+        *\n", bp::init< >() );
+        bp::scope AbsoluteDim_scope( AbsoluteDim_exposer );
+        AbsoluteDim_exposer.def( bp::init< float >(( bp::arg("val") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
                 @param val\n\
                     float value to be assigned to the AbsoluteDim.\n\
                 *\n") );
-        bp::scope AbsoluteDim_scope( AbsoluteDim_exposer );
         bp::implicitly_convertible< float, CEGUI::AbsoluteDim >();
         { //::CEGUI::AbsoluteDim::clone_impl
         
@@ -108,6 +116,26 @@ void register_AbsoluteDim_class(){
                 "clone_impl"
                 , clone_impl_function_type( &AbsoluteDim_wrapper::default_clone_impl )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::AbsoluteDim::getBaseValue
+        
+            typedef float ( ::CEGUI::AbsoluteDim::*getBaseValue_function_type )(  ) const;
+            
+            AbsoluteDim_exposer.def( 
+                "getBaseValue"
+                , getBaseValue_function_type( &::CEGUI::AbsoluteDim::getBaseValue )
+                , "*!\n\
+                    \n\
+                        Constructor.\n\
+            \n\
+                    @param val\n\
+                        float value to be assigned to the AbsoluteDim.\n\
+                    *\n\
+                    *!\n\
+                    \n\
+                        Get the current value of the AbsoluteDim.\n\
+                    *\n" );
         
         }
         { //::CEGUI::AbsoluteDim::getValue_impl
@@ -132,15 +160,19 @@ void register_AbsoluteDim_class(){
                 , "Implementation of the base class interface\n" );
         
         }
-        { //::CEGUI::AbsoluteDim::setValue
+        { //::CEGUI::AbsoluteDim::setBaseValue
         
-            typedef void ( ::CEGUI::AbsoluteDim::*setValue_function_type )( float ) ;
+            typedef void ( ::CEGUI::AbsoluteDim::*setBaseValue_function_type )( float ) ;
             
             AbsoluteDim_exposer.def( 
-                "setValue"
-                , setValue_function_type( &::CEGUI::AbsoluteDim::setValue )
+                "setBaseValue"
+                , setBaseValue_function_type( &::CEGUI::AbsoluteDim::setBaseValue )
                 , ( bp::arg("val") )
                 , "*!\n\
+            \n\
+                Get the current value of the AbsoluteDim.\n\
+            *\n\
+            *!\n\
             \n\
                 Set the current value of the AbsoluteDim.\n\
             *\n" );

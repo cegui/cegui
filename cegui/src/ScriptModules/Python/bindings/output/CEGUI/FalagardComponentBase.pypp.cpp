@@ -81,6 +81,40 @@ void register_FalagardComponentBase_class(){
                     *\n" );
         
         }
+        { //::CEGUI::FalagardComponentBase::getHorzFormattingPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::FalagardComponentBase::*getHorzFormattingPropertySource_function_type )(  ) const;
+            
+            FalagardComponentBase_exposer.def( 
+                "getHorzFormattingPropertySource"
+                , getHorzFormattingPropertySource_function_type( &::CEGUI::FalagardComponentBase::getHorzFormattingPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Get the name of the property where horizontal formatting option can be obtained.\n\
+            \n\
+                    @param property\n\
+                        String containing the name of the property.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FalagardComponentBase::getVertFormattingPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::FalagardComponentBase::*getVertFormattingPropertySource_function_type )(  ) const;
+            
+            FalagardComponentBase_exposer.def( 
+                "getVertFormattingPropertySource"
+                , getVertFormattingPropertySource_function_type( &::CEGUI::FalagardComponentBase::getVertFormattingPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Get the name of the property where vertical formatting option can be obtained.\n\
+            \n\
+                    @return\n\
+                        String containing the name of the property.\n\
+                    *\n" );
+        
+        }
         { //::CEGUI::FalagardComponentBase::initColoursRect
         
             typedef void ( FalagardComponentBase_wrapper::*initColoursRect_function_type )( ::CEGUI::Window const &,::CEGUI::ColourRect const *,::CEGUI::ColourRect & ) const;
@@ -185,27 +219,6 @@ void register_FalagardComponentBase_class(){
             \n\
                     @param cols\n\
                         ColourRect object describing the colours to be used by this ImageryComponent.\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::FalagardComponentBase::setColoursPropertyIsColourRect
-        
-            typedef void ( ::CEGUI::FalagardComponentBase::*setColoursPropertyIsColourRect_function_type )( bool ) ;
-            
-            FalagardComponentBase_exposer.def( 
-                "setColoursPropertyIsColourRect"
-                , setColoursPropertyIsColourRect_function_type( &::CEGUI::FalagardComponentBase::setColoursPropertyIsColourRect )
-                , ( bp::arg("setting")=(bool)(true) )
-                , "*!\n\
-                    \n\
-                        Set whether the colours property source represents a full ColourRect.\n\
-            \n\
-                    @param setting\n\
-                        - true if the colours property will access a ColourRect object.\n\
-                        - false if the colours property will access a colour object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
                     *\n" );
         
         }

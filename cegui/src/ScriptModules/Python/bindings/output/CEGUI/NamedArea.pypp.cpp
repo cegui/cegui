@@ -68,6 +68,26 @@ void register_NamedArea_class(){
                     *\n" );
         
         }
+        { //::CEGUI::NamedArea::setName
+        
+            typedef void ( ::CEGUI::NamedArea::*setName_function_type )( ::CEGUI::String const & ) ;
+            
+            NamedArea_exposer.def( 
+                "setName"
+                , setName_function_type( &::CEGUI::NamedArea::setName )
+                , ( bp::arg("name") )
+                , "*!\n\
+                    \n\
+                        set the name for this NamedArea.\n\
+            \n\
+                    @param area\n\
+                        String object holding the name of this NamedArea.\n\
+            \n\
+                    @return\n\
+                        Nothing.\n\
+                    *\n" );
+        
+        }
         { //::CEGUI::NamedArea::writeXMLToStream
         
             typedef void ( ::CEGUI::NamedArea::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
@@ -82,9 +102,6 @@ void register_NamedArea_class(){
             \n\
                     @param out_stream\n\
                         Stream where xml data should be output.\n\
-            \n\
-                    @param indentLevel\n\
-                        Current XML indentation level\n\
             \n\
                     @return\n\
                         Nothing.\n\
