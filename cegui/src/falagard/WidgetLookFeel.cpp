@@ -109,6 +109,23 @@ void WidgetLookFeel::addImagerySection(const ImagerySection& section)
 
     d_imagerySections[section.getName()] = section;
 }
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::renameImagerySection(const String& oldName, const String& newName)
+{
+	ImageryList::iterator oldsection = d_imagerySections.find(oldName);
+    if (oldsection == d_imagerySections.end())
+        CEGUI_THROW(UnknownObjectException(
+            "WidgetLookFeel::renameImagerySection - unknown imagery section: '" + oldName +
+            "' in look '" + d_lookName + "'."));
+    if (d_imagerySections.find(newName) != d_imagerySections.end())
+        CEGUI_THROW(UnknownObjectException(
+            "WidgetLookFeel::renameImagerySection - imagery section: '" + newName +
+            "' exist in look '" + d_lookName + "'."));
+
+    oldsection->second.setName(newName);
+    d_imagerySections[newName] = d_imagerySections[oldName];
+    d_imagerySections.erase(oldsection);
+}
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::addWidgetComponent(const WidgetComponent& widget)
@@ -324,6 +341,25 @@ void WidgetLookFeel::addNamedArea(const NamedArea& area)
     d_namedAreas[area.getName()] = area;
 }
 
+
+//---------------------------------------------------------------------------//
+void WidgetLookFeel::renameNamedArea(const String& oldName, const String& newName)
+{
+    NamedAreaList::iterator oldarea = d_namedAreas.find(oldName);
+    NamedAreaList::const_iterator newarea = d_namedAreas.find(newName);
+    if (oldarea == d_namedAreas.end())
+        CEGUI_THROW(UnknownObjectException(
+            "WidgetLookFeel::renameNamedArea - unknown named area: '" + oldName +
+            "' in look '" + d_lookName + "'."));
+    if (newarea != d_namedAreas.end())
+        CEGUI_THROW(UnknownObjectException(
+            "WidgetLookFeel::renameNamedArea - named area: '" + newName +
+            "' exist in look '" + d_lookName + "'."));
+
+    oldarea->second.setName(newName);
+    d_namedAreas[newName] = d_namedAreas[oldName];
+    d_namedAreas.erase(oldarea);
+}
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::clearNamedAreas()
 {

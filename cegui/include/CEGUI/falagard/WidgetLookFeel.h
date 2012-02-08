@@ -100,6 +100,7 @@ public:
         Nothing.
     */
     void addImagerySection(const ImagerySection& section);
+    void renameImagerySection(const String& oldName, const String& newName)
 
     /*!
     \brief
@@ -245,6 +246,7 @@ public:
     */
     const NamedArea& getNamedArea(const String& name) const;
 
+    void renameNamedArea(const String& oldName, const String& newName);
     /*!
     \brief
         return whether a NamedArea object with the specified name exists for
