@@ -59,6 +59,15 @@ void register_StateImagery_class(){
                     *\n" );
         
         }
+        { //::CEGUI::StateImagery::getLayerIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::multiset< CEGUI::LayerSpecification > > ( ::CEGUI::StateImagery::*getLayerIterator_function_type )(  ) const;
+            
+            StateImagery_exposer.def( 
+                "getLayerIterator"
+                , getLayerIterator_function_type( &::CEGUI::StateImagery::getLayerIterator ) );
+        
+        }
         { //::CEGUI::StateImagery::getName
         
             typedef ::CEGUI::String const & ( ::CEGUI::StateImagery::*getName_function_type )(  ) const;
@@ -162,6 +171,23 @@ void register_StateImagery_class(){
             \n\
                     @return\n\
                         Nothing.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::StateImagery::setName
+        
+            typedef void ( ::CEGUI::StateImagery::*setName_function_type )( ::CEGUI::String const & ) ;
+            
+            StateImagery_exposer.def( 
+                "setName"
+                , setName_function_type( &::CEGUI::StateImagery::setName )
+                , ( bp::arg("name") )
+                , "*!\n\
+                    \n\
+                        Set the name of this state.\n\
+            \n\
+                    @return\n\
+                        String object holding the name of the StateImagery object.\n\
                     *\n" );
         
         }

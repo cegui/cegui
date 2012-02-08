@@ -15,6 +15,13 @@ struct ImageDim_wrapper : CEGUI::ImageDim, bp::wrapper< CEGUI::ImageDim > {
         
     }
 
+    ImageDim_wrapper( )
+    : CEGUI::ImageDim( )
+      , bp::wrapper< CEGUI::ImageDim >(){
+        // null constructor
+    
+    }
+
     ImageDim_wrapper(::CEGUI::String const & name, ::CEGUI::DimensionType dim )
     : CEGUI::ImageDim( boost::ref(name), dim )
       , bp::wrapper< CEGUI::ImageDim >(){
@@ -91,7 +98,9 @@ void register_ImageDim_class(){
         ImageDim_exposer_t ImageDim_exposer = ImageDim_exposer_t( "ImageDim", "*!\n\
         \n\
             Dimension type that represents some dimension of a named Image.  Implements BaseDim interface.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("dim") ), "*!\n\
+        *\n", bp::init< >() );
+        bp::scope ImageDim_scope( ImageDim_exposer );
+        ImageDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("dim") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
@@ -103,7 +112,6 @@ void register_ImageDim_class(){
                     ImageDim\n\
                     is to represent.\n\
                 *\n") );
-        bp::scope ImageDim_scope( ImageDim_exposer );
         { //::CEGUI::ImageDim::clone_impl
         
             typedef ::CEGUI::BaseDim * ( ImageDim_wrapper::*clone_impl_function_type )(  ) const;
@@ -112,6 +120,41 @@ void register_ImageDim_class(){
                 "clone_impl"
                 , clone_impl_function_type( &ImageDim_wrapper::default_clone_impl )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::ImageDim::getSourceDimension
+        
+            typedef ::CEGUI::DimensionType ( ::CEGUI::ImageDim::*getSourceDimension_function_type )(  ) const;
+            
+            ImageDim_exposer.def( 
+                "getSourceDimension"
+                , getSourceDimension_function_type( &::CEGUI::ImageDim::getSourceDimension )
+                , "*!\n\
+                    \n\
+                        Gets the source dimension type for this WidgetDim.\n\
+            \n\
+                    @return\n\
+                        DimensionType value indicating which dimension of the described image that this\
+                        WidgetDim\n\
+                        is to represent.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImageDim::getSourceImage
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ImageDim::*getSourceImage_function_type )(  ) const;
+            
+            ImageDim_exposer.def( 
+                "getSourceImage"
+                , getSourceImage_function_type( &::CEGUI::ImageDim::getSourceImage )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Gets the source image information for this ImageDim.\n\
+            \n\
+                    @return\n\
+                        String object holding the name of the image.\n\
+                    *\n" );
         
         }
         { //::CEGUI::ImageDim::getValue_impl

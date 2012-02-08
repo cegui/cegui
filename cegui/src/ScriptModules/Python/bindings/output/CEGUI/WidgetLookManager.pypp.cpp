@@ -135,6 +135,15 @@ void register_WidgetLookManager_class(){
                     *\n" );
         
         }
+        { //::CEGUI::WidgetLookManager::getWidgetLookIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetLookFeel> > > > ( ::CEGUI::WidgetLookManager::*getWidgetLookIterator_function_type )(  ) const;
+            
+            WidgetLookManager_exposer.def( 
+                "getWidgetLookIterator"
+                , getWidgetLookIterator_function_type( &::CEGUI::WidgetLookManager::getWidgetLookIterator ) );
+        
+        }
         { //::CEGUI::WidgetLookManager::isWidgetLookAvailable
         
             typedef bool ( ::CEGUI::WidgetLookManager::*isWidgetLookAvailable_function_type )( ::CEGUI::String const & ) const;

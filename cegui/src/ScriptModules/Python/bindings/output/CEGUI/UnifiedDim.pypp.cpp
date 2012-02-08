@@ -15,6 +15,13 @@ struct UnifiedDim_wrapper : CEGUI::UnifiedDim, bp::wrapper< CEGUI::UnifiedDim > 
         
     }
 
+    UnifiedDim_wrapper( )
+    : CEGUI::UnifiedDim( )
+      , bp::wrapper< CEGUI::UnifiedDim >(){
+        // null constructor
+    
+    }
+
     UnifiedDim_wrapper(::CEGUI::UDim const & value, ::CEGUI::DimensionType dim )
     : CEGUI::UnifiedDim( boost::ref(value), dim )
       , bp::wrapper< CEGUI::UnifiedDim >(){
@@ -91,7 +98,9 @@ void register_UnifiedDim_class(){
         UnifiedDim_exposer_t UnifiedDim_exposer = UnifiedDim_exposer_t( "UnifiedDim", "*!\n\
         \n\
             Dimension type that represents an Unified dimension.  Implements BaseDim interface.\n\
-        *\n", bp::init< CEGUI::UDim const &, CEGUI::DimensionType >(( bp::arg("value"), bp::arg("dim") ), "*!\n\
+        *\n", bp::init< >() );
+        bp::scope UnifiedDim_scope( UnifiedDim_exposer );
+        UnifiedDim_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::DimensionType >(( bp::arg("value"), bp::arg("dim") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
@@ -103,7 +112,6 @@ void register_UnifiedDim_class(){
                     because we need to know what part of the base Window that the UDim scale component is\n\
                     to operate against.\n\
                 *\n") );
-        bp::scope UnifiedDim_scope( UnifiedDim_exposer );
         { //::CEGUI::UnifiedDim::clone_impl
         
             typedef ::CEGUI::BaseDim * ( UnifiedDim_wrapper::*clone_impl_function_type )(  ) const;
@@ -112,6 +120,38 @@ void register_UnifiedDim_class(){
                 "clone_impl"
                 , clone_impl_function_type( &UnifiedDim_wrapper::default_clone_impl )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::UnifiedDim::getBaseValue
+        
+            typedef ::CEGUI::UDim const & ( ::CEGUI::UnifiedDim::*getBaseValue_function_type )(  ) const;
+            
+            UnifiedDim_exposer.def( 
+                "getBaseValue"
+                , getBaseValue_function_type( &::CEGUI::UnifiedDim::getBaseValue )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+            \n\
+                Get the current value of the UnifiedDim.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::UnifiedDim::getSourceDimension
+        
+            typedef ::CEGUI::DimensionType ( ::CEGUI::UnifiedDim::*getSourceDimension_function_type )(  ) const;
+            
+            UnifiedDim_exposer.def( 
+                "getSourceDimension"
+                , getSourceDimension_function_type( &::CEGUI::UnifiedDim::getSourceDimension )
+                , "*!\n\
+                    \n\
+                        Gets the source dimension type for this WidgetDim.\n\
+            \n\
+                    @return\n\
+                        DimensionType value indicating which dimension of the described image that this\
+                        WidgetDim\n\
+                        is to represent.\n\
+                    *\n" );
         
         }
         { //::CEGUI::UnifiedDim::getValue_impl
@@ -134,6 +174,46 @@ void register_UnifiedDim_class(){
                 , getValue_impl_function_type( &UnifiedDim_wrapper::default_getValue_impl )
                 , ( bp::arg("wnd"), bp::arg("container") )
                 , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::UnifiedDim::setBaseValue
+        
+            typedef void ( ::CEGUI::UnifiedDim::*setBaseValue_function_type )( ::CEGUI::UDim const & ) ;
+            
+            UnifiedDim_exposer.def( 
+                "setBaseValue"
+                , setBaseValue_function_type( &::CEGUI::UnifiedDim::setBaseValue )
+                , ( bp::arg("val") )
+                , "*!\n\
+            \n\
+                Get the current value of the UnifiedDim.\n\
+            *\n\
+            *!\n\
+            \n\
+                Set the current value of the UnifiedDim.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::UnifiedDim::setSourceDimension
+        
+            typedef void ( ::CEGUI::UnifiedDim::*setSourceDimension_function_type )( ::CEGUI::DimensionType ) ;
+            
+            UnifiedDim_exposer.def( 
+                "setSourceDimension"
+                , setSourceDimension_function_type( &::CEGUI::UnifiedDim::setSourceDimension )
+                , ( bp::arg("dim") )
+                , "*!\n\
+                    \n\
+                        Sets the source dimension type for this WidgetDim.\n\
+            \n\
+                    @param dim\n\
+                        DimensionType value indicating which dimension of the described image that this\
+                        WidgetDim\n\
+                        is to represent.\n\
+            \n\
+                    @return\n\
+                        Nothing.\n\
+                    *\n" );
         
         }
         { //::CEGUI::UnifiedDim::writeXMLElementAttributes_impl

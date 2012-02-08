@@ -189,6 +189,42 @@ void register_ImagerySection_class(){
             *\n" );
         
         }
+        { //::CEGUI::ImagerySection::getFrameComponentIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::FrameComponent > > ( ::CEGUI::ImagerySection::*getFrameComponentIterator_function_type )(  ) const;
+            
+            ImagerySection_exposer.def( 
+                "getFrameComponentIterator"
+                , getFrameComponentIterator_function_type( &::CEGUI::ImagerySection::getFrameComponentIterator )
+                , "*!\n\
+            \n\
+                Return a ImagerySection.TextComponentIterator object to iterate\n\
+                over the TextComponent elements currently added to the\n\
+                ImagerySection.\n\
+            *\n\
+            *!\n\
+            \n\
+                Return a ImagerySection.FrameComponentIterator object to iterate\n\
+                over the FrameComponent elements currently added to the\n\
+                ImagerySection.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::getImageryComponentIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::ImageryComponent > > ( ::CEGUI::ImagerySection::*getImageryComponentIterator_function_type )(  ) const;
+            
+            ImagerySection_exposer.def( 
+                "getImageryComponentIterator"
+                , getImageryComponentIterator_function_type( &::CEGUI::ImagerySection::getImageryComponentIterator )
+                , "*!\n\
+            \n\
+                Return a ImagerySection.ImageryComponentIterator object to iterate\n\
+                over the ImageryComponent elements currently added to the\n\
+                ImagerySection.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::ImagerySection::getMasterColours
         
             typedef ::CEGUI::ColourRect const & ( ::CEGUI::ImagerySection::*getMasterColours_function_type )(  ) const;
@@ -203,6 +239,23 @@ void register_ImagerySection_class(){
             \n\
                     @return\n\
                         ColourRect describing the master colour values in use for this ImagerySection.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::getMasterColoursPropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::ImagerySection::*getMasterColoursPropertySource_function_type )(  ) const;
+            
+            ImagerySection_exposer.def( 
+                "getMasterColoursPropertySource"
+                , getMasterColoursPropertySource_function_type( &::CEGUI::ImagerySection::getMasterColoursPropertySource )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Get the name of the property where master colour values can be obtained.\n\
+            \n\
+                    @return\n\
+                        String containing the name of the property.\n\
                     *\n" );
         
         }
@@ -232,6 +285,12 @@ void register_ImagerySection_class(){
                 , getTextComponentIterator_function_type( &::CEGUI::ImagerySection::getTextComponentIterator )
                 , "*!\n\
             \n\
+                Return a ImagerySection.ImageryComponentIterator object to iterate\n\
+                over the ImageryComponent elements currently added to the\n\
+                ImagerySection.\n\
+            *\n\
+            *!\n\
+            \n\
                 Return a ImagerySection.TextComponentIterator object to iterate\n\
                 over the TextComponent elements currently added to the\n\
                 ImagerySection.\n\
@@ -255,6 +314,66 @@ void register_ImagerySection_class(){
                         This will try and get values from multiple places:\n\
                             - a property attached to  wnd\n\
                             - or the integral d_masterColours value.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::removeFrameComponent
+        
+            typedef void ( ::CEGUI::ImagerySection::*removeFrameComponent_function_type )( ::CEGUI::FrameComponent const & ) ;
+            
+            ImagerySection_exposer.def( 
+                "removeFrameComponent"
+                , removeFrameComponent_function_type( &::CEGUI::ImagerySection::removeFrameComponent )
+                , ( bp::arg("frame") )
+                , "*!\n\
+                    \n\
+                        Add a FrameComponent to this ImagerySection.\n\
+            \n\
+                    @param frame\n\
+                        FrameComponent to be added to the section (a copy is made)\n\
+            \n\
+                    @return\n\
+                        Nothing\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::removeImageryComponent
+        
+            typedef void ( ::CEGUI::ImagerySection::*removeImageryComponent_function_type )( ::CEGUI::ImageryComponent const & ) ;
+            
+            ImagerySection_exposer.def( 
+                "removeImageryComponent"
+                , removeImageryComponent_function_type( &::CEGUI::ImagerySection::removeImageryComponent )
+                , ( bp::arg("img") )
+                , "*!\n\
+                    \n\
+                        Add an ImageryComponent to this ImagerySection.\n\
+            \n\
+                    @param img\n\
+                        ImageryComponent to be added to the section (a copy is made)\n\
+            \n\
+                    @return\n\
+                        Nothing\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::removeTextComponent
+        
+            typedef void ( ::CEGUI::ImagerySection::*removeTextComponent_function_type )( ::CEGUI::TextComponent const & ) ;
+            
+            ImagerySection_exposer.def( 
+                "removeTextComponent"
+                , removeTextComponent_function_type( &::CEGUI::ImagerySection::removeTextComponent )
+                , ( bp::arg("text") )
+                , "*!\n\
+                    \n\
+                        Add a TextComponent to this ImagerySection.\n\
+            \n\
+                    @param text\n\
+                        TextComponent to be added to the section (a copy is made)\n\
+            \n\
+                    @return\n\
+                        Nothing\n\
                     *\n" );
         
         }
@@ -330,27 +449,6 @@ void register_ImagerySection_class(){
                     *\n" );
         
         }
-        { //::CEGUI::ImagerySection::setMasterColoursPropertyIsColourRect
-        
-            typedef void ( ::CEGUI::ImagerySection::*setMasterColoursPropertyIsColourRect_function_type )( bool ) ;
-            
-            ImagerySection_exposer.def( 
-                "setMasterColoursPropertyIsColourRect"
-                , setMasterColoursPropertyIsColourRect_function_type( &::CEGUI::ImagerySection::setMasterColoursPropertyIsColourRect )
-                , ( bp::arg("setting")=(bool)(true) )
-                , "*!\n\
-                    \n\
-                        Set whether the master colours property source represents a full ColourRect.\n\
-            \n\
-                    @param setting\n\
-                        - true if the master colours property will access a ColourRect object.\n\
-                        - false if the master colours property will access a colour object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
-        
-        }
         { //::CEGUI::ImagerySection::setMasterColoursPropertySource
         
             typedef void ( ::CEGUI::ImagerySection::*setMasterColoursPropertySource_function_type )( ::CEGUI::String const & ) ;
@@ -365,6 +463,26 @@ void register_ImagerySection_class(){
             \n\
                     @param property\n\
                         String containing the name of the property.\n\
+            \n\
+                    @return\n\
+                        Nothing.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::setName
+        
+            typedef void ( ::CEGUI::ImagerySection::*setName_function_type )( ::CEGUI::String const & ) ;
+            
+            ImagerySection_exposer.def( 
+                "setName"
+                , setName_function_type( &::CEGUI::ImagerySection::setName )
+                , ( bp::arg("name") )
+                , "*!\n\
+                    \n\
+                        Sets the name of this ImagerySection.\n\
+            \n\
+                    @param name\n\
+                        String object holding the name of the ImagerySection.\n\
             \n\
                     @return\n\
                         Nothing.\n\

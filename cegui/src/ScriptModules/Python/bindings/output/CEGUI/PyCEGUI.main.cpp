@@ -8,6 +8,8 @@
 
 #include "indexing_suite/vector.hpp"
 
+#include "indexing_suite/set.hpp"
+
 #include "python_CEGUI.h"
 
 #include "AbsoluteDim.pypp.hpp"
@@ -23,6 +25,8 @@
 #include "AnimationInstance.pypp.hpp"
 
 #include "AnimationManager.pypp.hpp"
+
+#include "BannedXMLPropertySet.pypp.hpp"
 
 #include "BaseDim.pypp.hpp"
 
@@ -71,6 +75,8 @@
 #include "ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd.pypp.hpp"
 
 #include "ConstBaseIterator_e31fba8abb652b91e7a416a794506e4f.pypp.hpp"
+
+#include "ConstBaseIterator_e78994bfd2b781a573fdd2cd7ca2ceae.pypp.hpp"
 
 #include "CoordConverter.pypp.hpp"
 
@@ -170,6 +176,8 @@
 
 #include "LineList.pypp.hpp"
 
+#include "LinkTargetIterator.pypp.hpp"
+
 #include "LinkedEventArgs.pypp.hpp"
 
 #include "ListHeader.pypp.hpp"
@@ -220,12 +228,6 @@
 
 #include "Property.pypp.hpp"
 
-#include "PropertyDefinition.pypp.hpp"
-
-#include "PropertyDefinitionBase.pypp.hpp"
-
-#include "PropertyDefinitionList.pypp.hpp"
-
 #include "PropertyDim.pypp.hpp"
 
 #include "PropertyHelper.pypp.hpp"
@@ -236,9 +238,7 @@
 
 #include "PropertyIterator.pypp.hpp"
 
-#include "PropertyLinkDefinition.pypp.hpp"
-
-#include "PropertyLinkDefinitionList.pypp.hpp"
+#include "PropertyList.pypp.hpp"
 
 #include "PropertyReceiver.pypp.hpp"
 
@@ -539,13 +539,13 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ComponentList_class();
 
-    register_PropertyLinkDefinitionList_class();
-
     register_PropertyInitialiserVector_class();
 
-    register_PropertyDefinitionList_class();
+    register_PropertyList_class();
 
     register_LineList_class();
+
+    register_BannedXMLPropertySet_class();
 
     register_BaseDim_class();
 
@@ -635,6 +635,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b_class();
 
+    register_ConstBaseIterator_e78994bfd2b781a573fdd2cd7ca2ceae_class();
+
     register_EventIterator_class();
 
     register_FontIterator_class();
@@ -652,6 +654,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_LoadableUIElementIterator_class();
 
     register_WindowIterator_class();
+
+    register_LinkTargetIterator_class();
 
     register_CoordConverter_class();
 
@@ -795,17 +799,11 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_Property_class();
 
-    register_PropertyDefinitionBase_class();
-
-    register_PropertyDefinition_class();
-
     register_PropertyDim_class();
 
     register_PropertyHelper_class();
 
     register_PropertyInitialiser_class();
-
-    register_PropertyLinkDefinition_class();
 
     register_PushButton_class();
 

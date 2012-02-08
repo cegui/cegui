@@ -101,6 +101,19 @@ void register_WidgetComponent_class(){
                 , getHorizontalWidgetAlignment_function_type( &::CEGUI::WidgetComponent::getHorizontalWidgetAlignment ) );
         
         }
+        { //::CEGUI::WidgetComponent::getPropertyIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::PropertyInitialiser > > ( ::CEGUI::WidgetComponent::*getPropertyIterator_function_type )(  ) const;
+            
+            WidgetComponent_exposer.def( 
+                "getPropertyIterator"
+                , getPropertyIterator_function_type( &::CEGUI::WidgetComponent::getPropertyIterator )
+                , "*!\n\
+             * Return a WidgetComponent.PropertyIterator that iterates over the PropertyInitialiser inside this\
+             WidgetComponent.\n\
+             *\n" );
+        
+        }
         { //::CEGUI::WidgetComponent::getVerticalWidgetAlignment
         
             typedef ::CEGUI::VerticalAlignment ( ::CEGUI::WidgetComponent::*getVerticalWidgetAlignment_function_type )(  ) const;
@@ -148,6 +161,16 @@ void register_WidgetComponent_class(){
                 "layout"
                 , layout_function_type( &::CEGUI::WidgetComponent::layout )
                 , ( bp::arg("owner") ) );
+        
+        }
+        { //::CEGUI::WidgetComponent::removePropertyInitialiser
+        
+            typedef void ( ::CEGUI::WidgetComponent::*removePropertyInitialiser_function_type )( ::CEGUI::String const & ) ;
+            
+            WidgetComponent_exposer.def( 
+                "removePropertyInitialiser"
+                , removePropertyInitialiser_function_type( &::CEGUI::WidgetComponent::removePropertyInitialiser )
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::WidgetComponent::setBaseWidgetType
