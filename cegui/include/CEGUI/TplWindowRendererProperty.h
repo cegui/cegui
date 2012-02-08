@@ -41,13 +41,13 @@ class TplWindowRendererProperty : public TplProperty<C, T>
 {
 public:
     TplWindowRendererProperty(
-        const String& name, const String& help,
+        const String& name, const String& help, const String& origin,
         typename TplProperty<C, T>::Setter setter,
         typename TplProperty<C, T>::GetterFunctor getter,
         typename TplProperty<C, T>::Helper::pass_type defaultValue = T(),
         bool writesXML = true) :
 
-        TplProperty<C, T>(name, help, "Unknown",
+        TplProperty<C, T>(name, help, origin,
                           setter, getter,
                           defaultValue, writesXML)
     {}
@@ -86,7 +86,7 @@ Example of usage inside addStandardProperties or similar method.
 #define CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
     static ::CEGUI::TplWindowRendererProperty<class_type, property_native_type> sProperty(\
-            name, help, setter, getter, default_value);\
+            name, help, TypeName, setter, getter, default_value);\
     \
     this->registerProperty(&sProperty);\
 }
@@ -106,7 +106,7 @@ Example of usage inside addStandardProperties or similar method.
 #define CEGUI_DEFINE_WINDOW_RENDERER_PROPERTY_NO_XML(class_type, property_native_type, name, help, setter, getter, default_value)\
 {\
     static ::CEGUI::TplWindowRendererProperty<class_type, property_native_type> sProperty(\
-            name, help, setter, getter, default_value, false);\
+            name, help, TypeName, setter, getter, default_value, false);\
     \
     this->registerProperty(&sProperty,true);\
 }

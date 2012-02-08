@@ -33,14 +33,12 @@
 namespace CEGUI
 {
     ImagerySection::ImagerySection() :
-        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-        d_colourProperyIsRect(false)
+        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
     {}
 
     ImagerySection::ImagerySection(const String& name) :
         d_name(name),
-        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
-        d_colourProperyIsRect(false)
+        d_masterColours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
     {}
 
     void ImagerySection::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
@@ -104,6 +102,16 @@ namespace CEGUI
         d_images.push_back(img);
     }
 
+    void ImagerySection::removeImageryComponent(const ImageryComponent& img)
+    {
+        for(ImageryList::iterator image = d_images.begin();
+                image < d_images.end();
+            ++image)
+            if(image->getImage() == img.getImage())
+                d_images.erase(image);
+    }
+
+
     void ImagerySection::clearImageryComponents()
     {
         d_images.clear();
@@ -113,6 +121,17 @@ namespace CEGUI
     {
         d_texts.push_back(text);
     }
+
+    void ImagerySection::removeTextComponent(const TextComponent& text)
+    {
+        for(TextList::iterator t = d_texts.begin();
+                t < d_texts.end();
+            ++t)
+            if(t->getText() == text.getText() &&
+                    t->getFont() == text.getFont())
+                d_texts.erase(t);
+    }
+
 
     void ImagerySection::clearTextComponents()
     {
@@ -127,6 +146,24 @@ namespace CEGUI
     void ImagerySection::addFrameComponent(const FrameComponent& frame)
     {
         d_frames.push_back(frame);
+    }
+
+    void ImagerySection::removeFrameComponent(const FrameComponent& frame)
+    {
+        for(FrameList::iterator f = d_frames.begin();
+                f < d_frames.end();
+            ++f)
+        {
+            bool result = true;
+
+            for(uint i = 0; i < FIC_FRAME_IMAGE_COUNT && result;++i)
+            {
+                result &= frame.getImage(FrameImageComponent(i)) == f->getImage(FrameImageComponent(i));
+            }
+            if(result)
+                d_frames.erase(f);
+
+        }
     }
 
     const ColourRect& ImagerySection::getMasterColours() const
@@ -144,14 +181,19 @@ namespace CEGUI
         return d_name;
     }
 
+    void ImagerySection::setName(const String& name )
+    {
+        d_name = name;
+    }
+
+    const String& ImagerySection::getMasterColoursPropertySource() const
+    {
+        return d_colourPropertyName;
+    }
+
     void ImagerySection::setMasterColoursPropertySource(const String& property)
     {
         d_colourPropertyName = property;
-    }
-
-    void ImagerySection::setMasterColoursPropertyIsColourRect(bool setting)
-    {
-        d_colourProperyIsRect = setting;
     }
 
     void ImagerySection::initMasterColourRect(const Window& wnd, ColourRect& cr) const
@@ -159,20 +201,8 @@ namespace CEGUI
         // if colours come via a colour property
         if (!d_colourPropertyName.empty())
         {
-            // if property accesses a ColourRect
-            if (d_colourProperyIsRect)
-            {
-                cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
-            }
-            // property accesses a colour
-            else
-            {
-                Colour val(PropertyHelper<Colour>::fromString(wnd.getProperty(d_colourPropertyName)));
-                cr.d_top_left     = val;
-                cr.d_top_right    = val;
-                cr.d_bottom_left  = val;
-                cr.d_bottom_right = val;
-            }
+            // if property accesses a ColourRect or a colour
+            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
         }
         // use explicit ColourRect.
         else
@@ -268,11 +298,7 @@ namespace CEGUI
         // output modulative colours for this section
         if (!d_colourPropertyName.empty())
         {
-            if (d_colourProperyIsRect)
-                xml_stream.openTag("ColourRectProperty");
-            else
-                xml_stream.openTag("ColourProperty");
-
+            xml_stream.openTag("ColourRectProperty");
             xml_stream.attribute("name", d_colourPropertyName)
                 .closeTag();
         }
@@ -308,10 +334,20 @@ namespace CEGUI
         xml_stream.closeTag();
     }
 
+    ImagerySection::ImageryComponentIterator
+    ImagerySection::getImageryComponentIterator() const
+    {
+        return ImageryComponentIterator(d_images.begin(), d_images.end());
+    }
     ImagerySection::TextComponentIterator
     ImagerySection::getTextComponentIterator() const
     {
         return TextComponentIterator(d_texts.begin(), d_texts.end());
+    }
+    ImagerySection::FrameComponentIterator
+    ImagerySection::getFrameComponentIterator() const
+    {
+        return FrameComponentIterator(d_frames.begin(), d_frames.end());
     }
 
 } // End of  CEGUI namespace section

@@ -50,7 +50,7 @@ namespace CEGUI
     class TextComponent;
     class NamedArea;
     class FrameComponent;
-    class PropertyLinkDefinition;
+    template<typename T> class PropertyLinkDefinition;
     class EventLinkDefinition;
 
     /*!
@@ -364,12 +364,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Method that handles the opening ColourProperty XML element.
-        */
-        void elementColourPropertyStart(const XMLAttributes& attributes);
-
-        /*!
-        \brief
             Method that handles the opening ColourRectProperty XML element.
         */
         void elementColourRectPropertyStart(const XMLAttributes& attributes);
@@ -583,7 +577,7 @@ namespace CEGUI
         std::vector<BaseDim*
             CEGUI_VECTOR_ALLOC(BaseDim*)> d_dimStack;
 
-        PropertyLinkDefinition* d_propertyLink;
+        Property* d_propertyLink;
         EventLinkDefinition* d_eventLink;
     };
 

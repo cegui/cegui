@@ -6,16 +6,16 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Button">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
-        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" />
-        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" />
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true"  type="ColourRect"/>
+        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VertFormatting"/>
+        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true"  type="Image*"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
         <ImagerySection name="label">
@@ -122,10 +122,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/RadioButton">
-		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -227,10 +227,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Checkbox">
-		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
+		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -332,10 +332,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Editbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>
@@ -417,7 +417,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Titlebar">
-        <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="NonClient" value="True" />
         <ImagerySection name="main">
             <ImageryComponent>
@@ -525,9 +525,9 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/FrameWindow">
-        <PropertyDefinition name="ClientAreaColour" initialValue="FF141B38" redrawOnWrite="true" />
-        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" />
-        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" />
+        <PropertyDefinition name="ClientAreaColour" initialValue="FF141B38" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" type="ColourRect"/>
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
         <Property name="NSSizingCursorImage" value="TaharezLook/MouseNoSoCursor" />
         <Property name="EWSizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="TaharezLook/MouseNwSeCursor" />
@@ -789,14 +789,14 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/GroupBox">
-        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" />
+        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFDFDFDF tr:FFDFDFDF bl:FFDFDFDF br:FFDFDFDF" redrawOnWrite="true" type="ColourRect"/>
 
-        <PropertyDefinition name="BackgroundTextColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true" />
+        <PropertyDefinition name="BackgroundTextColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true" type="ColourRect"/>
 
-	    <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" />
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="TextBackground" initialValue="FF888888" redrawOnWrite="true" />
+	    <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="TextBackground" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
 
         <Child type="DefaultWindow" nameSuffix="__auto_contentpane__">
             <Area>
@@ -1746,10 +1746,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ComboEditbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
         <NamedArea name="TextArea">
             <Area>
@@ -1821,10 +1821,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Combobox">
-        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FFFFFFFF" />
-        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" />
-        <PropertyLinkDefinition name="ActiveEditSelectionColour" widget="__auto_editbox__" targetProperty="ActiveSelectionColour" initialValue="FF6060FF" />
-        <PropertyLinkDefinition name="InactiveEditSelectionColour" widget="__auto_editbox__" targetProperty="InactiveSelectionColour" initialValue="FF808080" />
+        <PropertyLinkDefinition name="NormalEditTextColour" widget="__auto_editbox__" targetProperty="NormalTextColour" initialValue="FFFFFFFF" type="ColourRect"/>
+        <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" type="ColourRect"/>
+        <PropertyLinkDefinition name="ActiveEditSelectionColour" widget="__auto_editbox__" targetProperty="ActiveSelectionColour" initialValue="FF6060FF" type="ColourRect"/>
+        <PropertyLinkDefinition name="InactiveEditSelectionColour" widget="__auto_editbox__" targetProperty="InactiveSelectionColour" initialValue="FF808080" type="ColourRect"/>
         <Child  type="TaharezLook/ComboEditbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="RightEdge" >
@@ -1965,11 +1965,11 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/StaticImage">
-		<PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" />
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" />
+		<PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
+		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="image_withframe">
@@ -2056,8 +2056,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/StaticText">
-		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
+		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="FrameEnabled" value="True" />
         <Property name="BackgroundEnabled" value="True" />
         <NamedArea name="WithFrameTextRenderArea">
@@ -2554,10 +2554,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/MultiLineEditbox">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" />
-        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" />
-        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
         <Property name="SelectionBrushImage" value="TaharezLook/MultiLineEditboxSelectionBrush" />
         <NamedArea name="TextArea">
@@ -2847,11 +2847,11 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabButton">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFC0C0C0" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverTextColour" initialValue="FFE0E0E0" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FFE0E0E0" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFC0C0C0" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverTextColour" initialValue="FFE0E0E0" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FFE0E0E0" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="label">
             <TextComponent>
                 <VertFormat type="CentreAligned" />
@@ -3022,8 +3022,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabContentPane">
-        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="EnableBottom" initialValue="0" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3103,8 +3103,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/TabButtonPane">
-        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
-        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" />
+        <PropertyDefinition name="EnableTop" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
+        <PropertyDefinition name="EnableBottom" initialValue="1" redrawOnWrite="true" layoutOnWrite="true" type="uint"/>
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3281,11 +3281,11 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/MenuItem">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <NamedArea name="ContentSize">
             <Area>
@@ -3508,8 +3508,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/PopupMenu">
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" />
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BorderWidth" initialValue="0" layoutOnWrite="true" type="uint"/>
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -3586,8 +3586,8 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Menubar">
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" />
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="BorderWidth" initialValue="5" layoutOnWrite="true" type="uint"/>
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -3878,10 +3878,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ImageButton">
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" />
         <ImagerySection name="normal">
@@ -4057,10 +4057,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ListboxItem">
-        <PropertyDefinition name="TextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" />
-        <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" />
+        <PropertyDefinition name="TextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Selectable" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />
         <NamedArea name="ContentSize">
