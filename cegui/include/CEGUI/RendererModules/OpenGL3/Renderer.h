@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   CEGUIOpenGL3Renderer.h
-    created:    Sun Jan 11 2009
-    author:     Paul D Turner
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -63,8 +63,8 @@ namespace CEGUI
     class OpenGLTextureTarget;
     class OpenGLGeometryBuffer;
     class OGLTextureTargetFactory;
-	class OpenGL3RenderTarget;
-	class OpenGL3StateChangeWrapper;
+    class OpenGL3RenderTarget;
+    class OpenGL3StateChangeWrapper;
 
 /*!
 \brief
@@ -338,43 +338,43 @@ public:
     */
     void setViewProjectionMatrix(glm::mat4 viewProjectionMatrix);
 
-	/*!
+    /*!
     \brief
     Helper to get the viewport.
 
     \return
     The viewport.
     */
-	const CEGUI::Rectf& getActiveViewPort();
+    const CEGUI::Rectf& getActiveViewPort();
 
-	
-	/*!
+    
+    /*!
     \brief
     Helper to set the active render target.
 
     \param renderTarget
     The active RenderTarget.
     */
-	void setActiveRenderTarget(OpenGL3RenderTarget* renderTarget);
+    void setActiveRenderTarget(OpenGL3RenderTarget* renderTarget);
 
-		
-	/*!
+        
+    /*!
     \brief
     Helper to get the active render target.
 
     \return
     The active RenderTarget.
     */
-	OpenGL3RenderTarget* getActiveRenderTarget();
+    OpenGL3RenderTarget* getActiveRenderTarget();
 
-	/*!
+    /*!
     \brief
     Helper to get the wrapper used to check for redundant OpenGL state changes.
 
     \return
     The active OpenGL state change wrapper object.
     */
-	OpenGL3StateChangeWrapper* getOpenGLStateChanger();
+    OpenGL3StateChangeWrapper* getOpenGLStateChanger();
 
 
 
@@ -465,10 +465,10 @@ private:
     int             d_shaderStandardMatrixLoc;
     //! View projection matrix
     glm::mat4       d_viewProjectionMatrix;
-	//! The active RenderTarget
+    //! The active RenderTarget
     OpenGL3RenderTarget* d_activeRenderTarget;
-	//! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
-	OpenGL3StateChangeWrapper* d_openGLStateChanger;
+    //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
+    OpenGL3StateChangeWrapper* d_openGLStateChanger;
 };
 
 } // End of  CEGUI namespace section

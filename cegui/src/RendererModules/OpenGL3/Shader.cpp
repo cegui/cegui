@@ -1,5 +1,33 @@
+/***********************************************************************
+    filename:   Shader.cpp
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl
+*************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining
+ *   a copy of this software and associated documentation files (the
+ *   "Software"), to deal in the Software without restriction, including
+ *   without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to
+ *   permit persons to whom the Software is furnished to do so, subject to
+ *   the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be
+ *   included in all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *   OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************/
+
 #include "CEGUI/RendererModules/OpenGL3/Shader.h"
-#include "cegui/Logger.h"
+#include "CEGUI/Logger.h"
 #include <GL/glew.h>
 
 #include <sstream>
@@ -8,51 +36,51 @@ namespace CEGUI
 {
 
     Shader::Shader(const std::string& vertex_shader_source, const std::string& fragment_shader_source) :
-createdSucessfully(false),
-    m_program(0),
-    m_geometryShader(0),
-    m_vertexShader(0),
-    m_fragmentShader(0),
-    m_shaderName("")
+d_createdSucessfully(false),
+    d_program(0),
+    d_geometryShader(0),
+    d_vertexShader(0),
+    d_fragmentShader(0),
+    d_shaderName("")
 {
     // Compile the shaders
 
-    m_vertexShader = compile(GL_VERTEX_SHADER, vertex_shader_source, m_shaderName + ".vert");
-    if (m_vertexShader == 0)
+    d_vertexShader = compile(GL_VERTEX_SHADER, vertex_shader_source, d_shaderName + ".vert");
+    if (d_vertexShader == 0)
         return;
     
     checkGLErrors();
 
     if(fragment_shader_source.length() > 0)
     {
-        m_fragmentShader = compile(GL_FRAGMENT_SHADER, fragment_shader_source, m_shaderName + ".frag");
+        d_fragmentShader = compile(GL_FRAGMENT_SHADER, fragment_shader_source, d_shaderName + ".frag");
 
-        if (m_fragmentShader == 0)
+        if (d_fragmentShader == 0)
             return;
     }
 
     checkGLErrors();
 
-    m_program = glCreateProgram(); 
+    d_program = glCreateProgram(); 
 }
 
 Shader::~Shader()
 {
-    if(m_program != NULL)
-        glDeleteProgram(m_program);
-    if(m_vertexShader != NULL)
-        glDeleteShader(m_vertexShader);
-    if(m_fragmentShader != NULL)
-        glDeleteShader(m_fragmentShader);
-    if(m_geometryShader != NULL)
-        glDeleteShader(m_geometryShader);
+    if(d_program != NULL)
+        glDeleteProgram(d_program);
+    if(d_vertexShader != NULL)
+        glDeleteShader(d_vertexShader);
+    if(d_fragmentShader != NULL)
+        glDeleteShader(d_fragmentShader);
+    if(d_geometryShader != NULL)
+        glDeleteShader(d_geometryShader);
 }
 
 
 // Bind the shader to the OGL state-machine
 void Shader::bind() const
 {
-    glUseProgram(m_program);
+    glUseProgram(d_program);
 }
 
 // Unbind the shader
@@ -62,30 +90,30 @@ void Shader::unbind() const
 }
 
 // Query the location of a vertex attribute inside the shader.
-int Shader::get_attrib_location(const std::string &name) const
+int Shader::getAttribLocation(const std::string &name) const
 {
-    return glGetAttribLocation(m_program, name.c_str());
+    return glGetAttribLocation(d_program, name.c_str());
 }
 
 // Query the location of a uniform variable inside the shader.
-int Shader::get_uniform_location(const std::string &name) const
+int Shader::getUniformLocation(const std::string &name) const
 {
-    return glGetUniformLocation(m_program, name.c_str());
+    return glGetUniformLocation(d_program, name.c_str());
 }
 
 // Define the name of the variable inside the shader which represents the final color for each fragment.
-void Shader::bind_frag_data_location(const std::string &name)
+void Shader::bindFragDataLocation(const std::string &name)
 {
-    if(m_program > 0)
+    if(d_program > 0)
     {
-        glBindFragDataLocation(m_program, 0, name.c_str() );
+        glBindFragDataLocation(d_program, 0, name.c_str() );
         link();
     }
 }
 
 bool Shader::isCreatedSuccessfully()
 {
-    return createdSucessfully;
+    return d_createdSucessfully;
 }
 
 
@@ -135,49 +163,49 @@ void Shader::link()
 {
 
     // Attach shaders and link
-    glAttachShader(m_program, m_vertexShader);
+    glAttachShader(d_program, d_vertexShader);
 
-    if(m_geometryShader != 0)
-        glAttachShader(m_program, m_geometryShader);
+    if(d_geometryShader != 0)
+        glAttachShader(d_program, d_geometryShader);
 
-    if(m_fragmentShader !=0)
-        glAttachShader(m_program, m_fragmentShader);
+    if(d_fragmentShader !=0)
+        glAttachShader(d_program, d_fragmentShader);
 
-    glLinkProgram(m_program);
+    glLinkProgram(d_program);
 
     // Check for problems
 
     int status;
 
-    glGetProgramiv(m_program, GL_LINK_STATUS, &status);
+    glGetProgramiv(d_program, GL_LINK_STATUS, &status);
 
     if (status != GL_TRUE)
     {
         CEGUI::Logger::getSingleton().logEvent("Shader linking has failed.");
         
-        outputProgramLog(m_program);
+        outputProgramLog(d_program);
 
-        glDeleteProgram(m_program);
-        m_program = 0;
+        glDeleteProgram(d_program);
+        d_program = 0;
     }
 
     checkGLErrors();
 
-    if (m_program == 0)
+    if (d_program == 0)
         return;
 
-    createdSucessfully = true;
+    d_createdSucessfully = true;
     checkGLErrors();
 
 
-    glBindFragDataLocation(m_program, 0, "out0"); // GL_COLOR_ATTACHMENT0
-    glBindFragDataLocation(m_program, 1, "out1"); // GL_COLOR_ATTACHMENT1
-    glBindFragDataLocation(m_program, 2, "out2"); // ...
-    glBindFragDataLocation(m_program, 3, "out3");
-    glBindFragDataLocation(m_program, 4, "out4");
-    glBindFragDataLocation(m_program, 5, "out5");
-    glBindFragDataLocation(m_program, 6, "out6");
-    glBindFragDataLocation(m_program, 7, "out7");
+    glBindFragDataLocation(d_program, 0, "out0"); // GL_COLOR_ATTACHMENT0
+    glBindFragDataLocation(d_program, 1, "out1"); // GL_COLOR_ATTACHMENT1
+    glBindFragDataLocation(d_program, 2, "out2"); // ...
+    glBindFragDataLocation(d_program, 3, "out3");
+    glBindFragDataLocation(d_program, 4, "out4");
+    glBindFragDataLocation(d_program, 5, "out5");
+    glBindFragDataLocation(d_program, 6, "out6");
+    glBindFragDataLocation(d_program, 7, "out7");
     checkGLErrors();
 }
 

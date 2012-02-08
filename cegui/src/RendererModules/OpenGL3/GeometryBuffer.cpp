@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   CEGUIOpenGLGeometryBuffer.cpp
-    created:    Thu Jan 8 2009
-    author:     Paul D Turner
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -58,8 +58,8 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGL3Renderer& owner) :
     d_shaderTexCoordLoc(owner.getShaderStandardTexCoordLoc()),
     d_shaderColourLoc(owner.getShaderStandardColourLoc()),
     d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc()),
-	d_glStateChanger(owner.getOpenGLStateChanger()),
-	d_bufferSize(0)
+    d_glStateChanger(owner.getOpenGLStateChanger()),
+    d_bufferSize(0)
 {
     initialiseOpenGLBuffers();
 }
@@ -92,7 +92,7 @@ void OpenGLGeometryBuffer::draw() const
     d_owner->setupRenderingBlendMode(d_blendMode);
 
     // Bind our vao
-    d_glStateChanger->bindVertexArray(m_verticesVAO);
+    d_glStateChanger->bindVertexArray(d_verticesVAO);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
      size_t pos = 0;
@@ -278,16 +278,16 @@ void OpenGLGeometryBuffer::updateMatrix() const
 
 void OpenGLGeometryBuffer::initialiseOpenGLBuffers()
 {
-    glGenVertexArrays(1, &m_verticesVAO);
-    glBindVertexArray(m_verticesVAO);
+    glGenVertexArrays(1, &d_verticesVAO);
+    glBindVertexArray(d_verticesVAO);
 
 
     // Generate and bind position vbo
-    glGenBuffers(1, &m_verticesVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+    glGenBuffers(1, &d_verticesVBO);
+    glBindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
 
-    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 
     d_shader->bind();
     
@@ -313,28 +313,28 @@ void OpenGLGeometryBuffer::initialiseOpenGLBuffers()
 
 void OpenGLGeometryBuffer::updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count)
 {
-	bool needNewBuffer = false;
-	unsigned int vertexCount = d_vertices.size();
+    bool needNewBuffer = false;
+    unsigned int vertexCount = d_vertices.size();
 
-	if(d_bufferSize < vertexCount)
-	{
-		needNewBuffer = true;
-		d_bufferSize = vertexCount;
-	}
+    if(d_bufferSize < vertexCount)
+    {
+        needNewBuffer = true;
+        d_bufferSize = vertexCount;
+    }
 
 
-	d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, m_verticesVBO);
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-	GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
+    GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
 
-	if(needNewBuffer)
-	{
-		glBufferData(GL_ARRAY_BUFFER, dataSize, d_vertices.data(), GL_STREAM_DRAW);
-	}
-	else
-	{
-		glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, d_vertices.data());
-	}
+    if(needNewBuffer)
+    {
+        glBufferData(GL_ARRAY_BUFFER, dataSize, d_vertices.data(), GL_DYNAMIC_DRAW);
+    }
+    else
+    {
+        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, d_vertices.data());
+    }
 }
 
 //----------------------------------------------------------------------------//
