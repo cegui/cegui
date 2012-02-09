@@ -1,7 +1,7 @@
 /******************************************************************************
   PropertyDefinition
 ******************************************************************************/
-
+/* Commented for many reasons, but mostly because this class is now a template.
 class PropertyDefinition : public PropertyDefinitionBase
 {
   //string get(const PropertyReceiver* receiver) const;
@@ -11,3 +11,5 @@ class PropertyDefinition : public PropertyDefinitionBase
 
   PropertyDefinition(utf8string name, utf8string initialValue, bool redrawOnWrite, bool layoutOnWrite);
 };
+*/
+

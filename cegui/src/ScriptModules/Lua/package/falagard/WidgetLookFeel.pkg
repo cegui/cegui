@@ -22,8 +22,8 @@ class WidgetLookFeel
     const NamedArea& getNamedArea(utf8string name) const;
     bool isNamedAreaDefined(utf8string name) const;
     void layoutChildWidgets(const Window& owner) const;
-    void addPropertyDefinition(const PropertyDefinition& propdef);
-    void addPropertyLinkDefinition(const PropertyLinkDefinition& propdef);
+//    void addPropertyDefinition(const PropertyDefinition& propdef);
+//    void addPropertyLinkDefinition(const PropertyLinkDefinition& propdef);
     void clearPropertyDefinitions();
     void clearPropertyLinkDefinitions();
     //void writeXMLToStream(XMLSerializer& out_stream) const;

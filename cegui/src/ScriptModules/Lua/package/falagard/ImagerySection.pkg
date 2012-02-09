@@ -16,7 +16,6 @@ class ImagerySection
   void setMasterColours(const ColourRect& cols);
   string getName() const;
   void setMasterColoursPropertySource(utf8string property);
-  void setMasterColoursPropertyIsColourRect(bool setting = true);
   Rect<float> getBoundingRect(const Window& wnd) const;
   Rect<float> getBoundingRect(const Window& wnd, const Rect<float>& rect) const;
   //void writeXMLToStream(OutStream& out_stream) const;

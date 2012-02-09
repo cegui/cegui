@@ -11,7 +11,6 @@ class FalagardComponentBase
   const ColourRect& getColours() const;
   void setColours(const ColourRect& cols);
   void setColoursPropertySource(utf8string property);
-  void setColoursPropertyIsColourRect(bool setting = true);
   void setVertFormattingPropertySource(utf8string property);
   void setHorzFormattingPropertySource(utf8string property);
 };
