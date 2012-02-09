@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLTexture_h_
-#define _CEGUIOpenGLTexture_h_
+#ifndef _CEGUIOpenGL3Texture_h_
+#define _CEGUIOpenGL3Texture_h_
 
 #include "../../Base.h"
 #include "../../Renderer.h"
@@ -42,7 +42,7 @@
 namespace CEGUI
 {
 //! Texture implementation for the OpenGL3Renderer.
-class OPENGL_GUIRENDERER_API OpenGL3Texture : public Texture
+class OPENGL3_GUIRENDERER_API OpenGL3Texture : public Texture
 {
 public:
     /*!

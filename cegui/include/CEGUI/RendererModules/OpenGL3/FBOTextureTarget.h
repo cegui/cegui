@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLFBOTextureTarget_h_
-#define _CEGUIOpenGLFBOTextureTarget_h_
+#ifndef _CEGUIOpenGL3FBOTextureTarget_h_
+#define _CEGUIOpenGL3FBOTextureTarget_h_
 
 #include "CEGUI/RendererModules/OpenGL3/TextureTarget.h"
 #include "../../Rect.h"
@@ -42,12 +42,12 @@ namespace CEGUI
 {
 class OpenGL3Texture;
 
-//! OpenGLFBOTextureTarget - allows rendering to an OpenGL texture via FBO.
-class OPENGL_GUIRENDERER_API OpenGLFBOTextureTarget : public OpenGLTextureTarget
+//! ~OpenGL3FBOTextureTarget - allows rendering to an OpenGL texture via FBO.
+class OPENGL3_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGL3TextureTarget
 {
 public:
-    OpenGLFBOTextureTarget(OpenGL3Renderer& owner);
-    virtual ~OpenGLFBOTextureTarget();
+    OpenGL3FBOTextureTarget(OpenGL3Renderer& owner);
+    virtual ~OpenGL3FBOTextureTarget();
 
     // overrides from OpenGL3RenderTarget
     void activate();
@@ -55,7 +55,7 @@ public:
     // implementation of TextureTarget interface
     void clear();
     void declareRenderSize(const Sizef& sz);
-    // specialise functions from OpenGLTextureTarget
+    // specialise functions from OpenGL3TextureTarget
     void grabTexture();
     void restoreTexture();
 

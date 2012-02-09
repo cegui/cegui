@@ -32,10 +32,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-uint OpenGLTextureTarget::s_textureNumber = 0;
+uint OpenGL3TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-OpenGLTextureTarget::OpenGLTextureTarget(OpenGL3Renderer& owner) :
+OpenGL3TextureTarget::OpenGL3TextureTarget(OpenGL3Renderer& owner) :
     OpenGL3RenderTarget(owner),
     d_texture(0)
 {
@@ -43,31 +43,31 @@ OpenGLTextureTarget::OpenGLTextureTarget(OpenGL3Renderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTextureTarget::~OpenGLTextureTarget()
+OpenGL3TextureTarget::~OpenGL3TextureTarget()
 {
     d_owner.destroyTexture(*d_CEGUITexture);
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLTextureTarget::isImageryCache() const
+bool OpenGL3TextureTarget::isImageryCache() const
 {
     return true;
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGLTextureTarget::getTexture() const
+Texture& OpenGL3TextureTarget::getTexture() const
 {
     return *d_CEGUITexture;
 }
 
 //----------------------------------------------------------------------------//
-bool OpenGLTextureTarget::isRenderingInverted() const
+bool OpenGL3TextureTarget::isRenderingInverted() const
 {
     return true;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTextureTarget::grabTexture()
+void OpenGL3TextureTarget::grabTexture()
 {
     if (d_CEGUITexture)
     {
@@ -78,14 +78,14 @@ void OpenGLTextureTarget::grabTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTextureTarget::restoreTexture()
+void OpenGL3TextureTarget::restoreTexture()
 {
     if (!d_CEGUITexture)
         createCEGUITexture();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTextureTarget::createCEGUITexture()
+void OpenGL3TextureTarget::createCEGUITexture()
 {
     d_CEGUITexture = &static_cast<OpenGL3Texture&>(
         d_owner.createTexture(generateTextureName(),
@@ -93,7 +93,7 @@ void OpenGLTextureTarget::createCEGUITexture()
 }
 
 //----------------------------------------------------------------------------//
-String OpenGLTextureTarget::generateTextureName()
+String OpenGL3TextureTarget::generateTextureName()
 {
     String tmp("_ogl_tt_tex_");
     tmp.append(PropertyHelper<uint>::toString(s_textureNumber++));

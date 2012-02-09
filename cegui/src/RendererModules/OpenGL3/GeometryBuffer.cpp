@@ -44,8 +44,8 @@
 namespace CEGUI
 {
     //----------------------------------------------------------------------------//
-OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGL3Renderer& owner) :
-    d_owner(&owner),
+    OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner) :
+d_owner(&owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
@@ -65,13 +65,19 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGL3Renderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::appendVertex(const Vertex& vertex)
+OpenGL3GeometryBuffer::~OpenGL3GeometryBuffer()
+{
+    deinitialiseOpenGLBuffers();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::appendVertex(const Vertex& vertex)
 {
     appendGeometry(&vertex, 1);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::draw() const
+void OpenGL3GeometryBuffer::draw() const
 {
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 
@@ -127,28 +133,28 @@ void OpenGLGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setTranslation(const Vector3f& v)
+void OpenGL3GeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setRotation(const Quaternion& r)
+void OpenGL3GeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setPivot(const Vector3f& p)
+void OpenGL3GeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setClippingRegion(const Rectf& region)
+void OpenGL3GeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect.top(ceguimax(0.0f, region.top()));
     d_clipRect.left(ceguimax(0.0f, region.left()));
@@ -157,7 +163,7 @@ void OpenGLGeometryBuffer::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::appendGeometry(const Vertex* const vbuff,
+void OpenGL3GeometryBuffer::appendGeometry(const Vertex* const vbuff,
     uint vertex_count)
 {
     performBatchManagement();
@@ -188,13 +194,13 @@ void OpenGLGeometryBuffer::appendGeometry(const Vertex* const vbuff,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setActiveTexture(Texture* texture)
+void OpenGL3GeometryBuffer::setActiveTexture(Texture* texture)
 {
     d_activeTexture = static_cast<OpenGL3Texture*>(texture);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::reset()
+void OpenGL3GeometryBuffer::reset()
 {
     d_batches.clear();
     d_vertices.clear();
@@ -203,25 +209,25 @@ void OpenGLGeometryBuffer::reset()
 }
 
 //----------------------------------------------------------------------------//
-Texture* OpenGLGeometryBuffer::getActiveTexture() const
+Texture* OpenGL3GeometryBuffer::getActiveTexture() const
 {
     return d_activeTexture;
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLGeometryBuffer::getVertexCount() const
+uint OpenGL3GeometryBuffer::getVertexCount() const
 {
     return d_vertices.size();
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLGeometryBuffer::getBatchCount() const
+uint OpenGL3GeometryBuffer::getBatchCount() const
 {
     return d_batches.size();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::performBatchManagement()
+void OpenGL3GeometryBuffer::performBatchManagement()
 {
     const GLuint gltex = d_activeTexture ?
                             d_activeTexture->getOpenGLTexture() : 0;
@@ -233,19 +239,19 @@ void OpenGLGeometryBuffer::performBatchManagement()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setRenderEffect(RenderEffect* effect)
+void OpenGL3GeometryBuffer::setRenderEffect(RenderEffect* effect)
 {
     d_effect = effect;
 }
 
 //----------------------------------------------------------------------------//
-RenderEffect* OpenGLGeometryBuffer::getRenderEffect()
+RenderEffect* OpenGL3GeometryBuffer::getRenderEffect()
 {
     return d_effect;
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4 OpenGLGeometryBuffer::getMatrix() const
+const glm::mat4 OpenGL3GeometryBuffer::getMatrix() const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -254,7 +260,7 @@ const glm::mat4 OpenGLGeometryBuffer::getMatrix() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::updateMatrix() const
+void OpenGL3GeometryBuffer::updateMatrix() const
 {
     d_matrix = glm::mat4(1.f);
 
@@ -276,7 +282,7 @@ void OpenGLGeometryBuffer::updateMatrix() const
     d_matrixValid = true;
 }
 
-void OpenGLGeometryBuffer::initialiseOpenGLBuffers()
+void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 {
     glGenVertexArrays(1, &d_verticesVAO);
     glBindVertexArray(d_verticesVAO);
@@ -311,7 +317,13 @@ void OpenGLGeometryBuffer::initialiseOpenGLBuffers()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void OpenGLGeometryBuffer::updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count)
+void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
+{
+    glDeleteVertexArrays(1, &d_verticesVAO);
+    glDeleteBuffers(1, &d_verticesVBO);
+}
+
+void OpenGL3GeometryBuffer::updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count)
 {
     bool needNewBuffer = false;
     unsigned int vertexCount = d_vertices.size();

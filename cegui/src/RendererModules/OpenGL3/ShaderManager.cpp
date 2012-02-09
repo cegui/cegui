@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   ShaderManager.cpp
+    filename:   OpenGL3ShaderManager.cpp
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -37,18 +37,18 @@
 
 namespace CEGUI
 {
-    ShaderManager::ShaderManager()
+    OpenGL3ShaderManager::OpenGL3ShaderManager()
     {
         d_shadersInitialised = false;
     }
 
-    ShaderManager::~ShaderManager()
+    OpenGL3ShaderManager::~OpenGL3ShaderManager()
     {
         deinitialiseShaders();
         d_shadersInitialised = false;
     }
 
-    Shader* ShaderManager::getShader(unsigned int id)
+    OpenGL3Shader* OpenGL3ShaderManager::getShader(unsigned int id)
     {
         if(d_shaders.find(id) != d_shaders.end())
             return d_shaders[id];
@@ -56,16 +56,16 @@ namespace CEGUI
             return 0;
     }
 
-    void ShaderManager::loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader)
+    void OpenGL3ShaderManager::loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader)
     {
         if(d_shaders.find(id) == d_shaders.end())
         {   
-            d_shaders[id] = new Shader(vertexShader, fragmentShader);
+            d_shaders[id] = new OpenGL3Shader(vertexShader, fragmentShader);
             d_shaders[id]->link();
         }
     }
 
-    bool ShaderManager::initialiseShaders()
+    bool OpenGL3ShaderManager::initialiseShaders()
     {
         if(!d_shadersInitialised)
         {
@@ -84,7 +84,7 @@ namespace CEGUI
         return true;
     }
 
-    void ShaderManager::deinitialiseShaders()
+    void OpenGL3ShaderManager::deinitialiseShaders()
     {
         for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
         {

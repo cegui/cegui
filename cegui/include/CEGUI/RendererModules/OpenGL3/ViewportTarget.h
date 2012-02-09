@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLViewportTarget_h_
-#define _CEGUIOpenGLViewportTarget_h_
+#ifndef _CEGUIOpenGL3ViewportTarget_h_
+#define _CEGUIOpenGL3ViewportTarget_h_
 
 #include "CEGUI/RendererModules/OpenGL3/RenderTarget.h"
 #include "../../Rect.h"
@@ -39,7 +39,7 @@ namespace CEGUI
     OpenGL implementation of a RenderTarget that represents am on-scren
     viewport.
 */
-class OPENGL_GUIRENDERER_API OpenGL3ViewportTarget : public OpenGL3RenderTarget
+class OPENGL3_GUIRENDERER_API OpenGL3ViewportTarget : public OpenGL3RenderTarget
 {
 public:
     /*!

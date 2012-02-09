@@ -102,8 +102,8 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     if (!d_matrixValid)
         updateMatrix();
 
-    const OpenGLGeometryBuffer& gb =
-        static_cast<const OpenGLGeometryBuffer&>(buff);
+    const OpenGL3GeometryBuffer& gb =
+        static_cast<const OpenGL3GeometryBuffer&>(buff);
 
     const GLint vp[4] = {
         static_cast<GLint>(d_area.left()),

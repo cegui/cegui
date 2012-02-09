@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLGeometryBuffer_h_
-#define _CEGUIOpenGLGeometryBuffer_h_
+#ifndef _CEGUIOpenGL3GeometryBuffer_h_
+#define _CEGUIOpenGL3GeometryBuffer_h_
 
 #include "../../GeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL3/Renderer.h"
@@ -47,20 +47,22 @@
 namespace CEGUI
 {
 class OpenGL3Texture;
-class Shader;
+class OpenGL3Shader;
 class OpenGL3StateChangeWrapper;
 
 /*!
 \brief
     OpenGL based implementation of the GeometryBuffer interface.
 */
-class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public GeometryBuffer
+class OPENGL3_GUIRENDERER_API OpenGL3GeometryBuffer : public GeometryBuffer
 {
 public:
     //! Constructor
-    OpenGLGeometryBuffer(OpenGL3Renderer& owner);
+    OpenGL3GeometryBuffer(OpenGL3Renderer& owner);
+    virtual ~OpenGL3GeometryBuffer();
 
     void initialiseOpenGLBuffers();
+    void deinitialiseOpenGLBuffers();
 
     // implementation of abstract members from GeometryBuffer
     void draw() const;
@@ -131,7 +133,7 @@ protected:
     //! OpenGL vbo containing all vertex data
     unsigned int                    d_verticesVBO;
     //! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
-    CEGUI::Shader*&                 d_shader;
+    CEGUI::OpenGL3Shader*&                 d_shader;
     //! Position variable location inside the shader, for OpenGL
     const int                       d_shaderPosLoc;
     //! TexCoord variable location inside the shader, for OpenGL
@@ -142,6 +144,7 @@ protected:
     const int                       d_shaderStandardMatrixLoc;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
     OpenGL3StateChangeWrapper*      d_glStateChanger;
+    //! Size of the buffer that is currently in use
     unsigned int                    d_bufferSize;
 };
 

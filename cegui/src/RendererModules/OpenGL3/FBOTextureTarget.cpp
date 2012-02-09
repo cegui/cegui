@@ -38,11 +38,11 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
+const float OpenGL3FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGL3Renderer& owner) :
-    OpenGLTextureTarget(owner)
+OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
+    OpenGL3TextureTarget(owner)
 {
     initialiseRenderTexture();
 
@@ -51,13 +51,13 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGL3Renderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLFBOTextureTarget::~OpenGLFBOTextureTarget()
+OpenGL3FBOTextureTarget::~OpenGL3FBOTextureTarget()
 {
     glDeleteFramebuffers(1, &d_frameBuffer);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::declareRenderSize(const Sizef& sz)
+void OpenGL3FBOTextureTarget::declareRenderSize(const Sizef& sz)
 {
     // exit if current size is enough
     if ((d_area.getWidth() >= sz.d_width) && (d_area.getHeight() >=sz.d_height))
@@ -68,7 +68,7 @@ void OpenGLFBOTextureTarget::declareRenderSize(const Sizef& sz)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::activate()
+void OpenGL3FBOTextureTarget::activate()
 {
     // switch to rendering to the texture
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
@@ -77,7 +77,7 @@ void OpenGLFBOTextureTarget::activate()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::deactivate()
+void OpenGL3FBOTextureTarget::deactivate()
 {
     OpenGL3RenderTarget::deactivate();
 
@@ -86,7 +86,7 @@ void OpenGLFBOTextureTarget::deactivate()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::clear()
+void OpenGL3FBOTextureTarget::clear()
 {
     // save old clear colour
     GLfloat old_col[4];
@@ -105,7 +105,7 @@ void OpenGLFBOTextureTarget::clear()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::initialiseRenderTexture()
+void OpenGL3FBOTextureTarget::initialiseRenderTexture()
 {
     // save old texture binding
     GLuint old_tex;
@@ -140,7 +140,7 @@ void OpenGLFBOTextureTarget::initialiseRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::resizeRenderTexture()
+void OpenGL3FBOTextureTarget::resizeRenderTexture()
 {
     // save old texture binding
     GLuint old_tex;
@@ -164,18 +164,18 @@ void OpenGLFBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::grabTexture()
+void OpenGL3FBOTextureTarget::grabTexture()
 {
     glDeleteFramebuffers(1, &d_frameBuffer);
     d_frameBuffer = 0;
 
-    OpenGLTextureTarget::grabTexture();
+    OpenGL3TextureTarget::grabTexture();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLFBOTextureTarget::restoreTexture()
+void OpenGL3FBOTextureTarget::restoreTexture()
 {
-    OpenGLTextureTarget::restoreTexture();
+    OpenGL3TextureTarget::restoreTexture();
 
     initialiseRenderTexture();
     resizeRenderTexture();
