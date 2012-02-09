@@ -12,6 +12,12 @@ if (CEGUI_SAMPLES_USE_OPENGL)
     )
 endif()
 
+if (CEGUI_SAMPLES_USE_OPENGL3)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOpenGL3BaseApplication.cpp
+    )
+endif()
+
 if (CEGUI_SAMPLES_USE_OGRE)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiOgreBaseApplication.cpp
@@ -84,6 +90,12 @@ if (CEGUI_SAMPLES_USE_OPENGL)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut.lib)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut_static.lib)
     endif()
+endif()
+
+if (CEGUI_SAMPLES_USE_OPENGL3)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL3_RENDERER_LIBNAME})
 endif()
 
 if (CEGUI_SAMPLES_USE_OGRE)
