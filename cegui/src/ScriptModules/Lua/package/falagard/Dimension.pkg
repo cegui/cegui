@@ -18,7 +18,8 @@ class BaseDim
 ******************************************************************************/
 class AbsoluteDim : public BaseDim
 {
-  void setValue(float val);
+  void setBaseValue(float val);
+  float getBaseValue() const;
   AbsoluteDim(float val);
 };
 
@@ -28,7 +29,11 @@ class AbsoluteDim : public BaseDim
 class ImageDim : public BaseDim 
 {
   void setSourceImage(utf8string name);
+  string getSourceImage() const;
+
   void setSourceDimension(DimensionType dim);
+  DimensionType getSourceDimension() const;
+
   ImageDim(utf8string name, DimensionType dim);
 };
 
@@ -38,7 +43,11 @@ class ImageDim : public BaseDim
 class WidgetDim : public BaseDim
 {
   void setWidgetName(utf8string name);
-  void setSourceDimension(DimensionType dim); 
+  string getWidgetName() const;
+
+  void setSourceDimension(DimensionType dim);
+  DimensionType getSourceDimension() const;
+
   WidgetDim(utf8string name, DimensionType dim);
 };
 
@@ -47,6 +56,12 @@ class WidgetDim : public BaseDim
 ******************************************************************************/
 class UnifiedDim : public BaseDim 
 {
+  const UDim& getBaseValue() const;
+  void setBaseValue(const UDim& val);
+
+  DimensionType getSourceDimension() const;
+  void setSourceDimension(DimensionType dim);
+
   UnifiedDim(const UDim& value, DimensionType dim);
 };
 
@@ -55,6 +70,21 @@ class UnifiedDim : public BaseDim
 ******************************************************************************/
 class FontDim : public BaseDim
 {
+  string getName() const;
+  void setName(utf8string name);
+
+  string getFont() const;
+  void setFont(utf8string font);
+
+  string getText() const;
+  void setText(utf8string text);
+
+  FontMetricType getMetric() const;
+  void setMetric(FontMetricType metric);
+
+  float getPadding() const;
+  void setPadding(float padding);
+
   FontDim(utf8string name, utf8string font, utf8string text, FontMetricType metric, float padding = 0);
 };
 
@@ -63,6 +93,15 @@ class FontDim : public BaseDim
 ******************************************************************************/
 class PropertyDim : public BaseDim
 {
+  string getWidgetName() const;
+  void setWidgetName(utf8string name);
+
+  string getPropertyName() const;
+  void setPropertyName(utf8string property);
+
+  DimensionType getSourceDimension() const;
+  void setSourceDimension(DimensionType dim);
+
   PropertyDim(utf8string name, utf8string property, DimensionType type);
 };
 

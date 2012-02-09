@@ -27,10 +27,13 @@ class AnimationManager
 
     unsigned int getNumAnimationInstances() const;
 
-    void stepInstances(float delta);
+    void autoStepInstances(float delta);
 
     void loadAnimationsFromXML(utf8string filename,
                                utf8string resourceGroup = "");
+
+    void loadAnimationsFromString(utf8string source);
+    string getAnimationDefinitionAsString(const Animation& animation) const;
 
     static void setDefaultResourceGroup(utf8string resourceGroup);
     static string getDefaultResourceGroup();

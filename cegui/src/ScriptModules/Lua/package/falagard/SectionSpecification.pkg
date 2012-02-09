@@ -14,7 +14,6 @@ class SectionSpecification
   bool isUsingOverrideColours() const;
   void setUsingOverrideColours(bool setting = true);
   void setOverrideColoursPropertySource(utf8string property);
-  void setOverrideColoursPropertyIsColourRect(bool setting = true);  
   void setRenderControlPropertySource(utf8string property);
   // void writeXMLToStream(OutStream& out_stream) const;
   SectionSpecification(utf8string owner, utf8string sectionName, const string controlPropertySource, const string controlPropertyValue, const string controlPropertyWidget);
