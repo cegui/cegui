@@ -695,4 +695,3 @@ void initialiseGLExtensions()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
-
