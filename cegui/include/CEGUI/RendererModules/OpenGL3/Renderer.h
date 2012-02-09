@@ -41,12 +41,12 @@
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOPENGL3RENDERER_EXPORTS
-#       define OPENGL_GUIRENDERER_API __declspec(dllexport)
+#       define OPENGL3_GUIRENDERER_API __declspec(dllexport)
 #   else
-#       define OPENGL_GUIRENDERER_API __declspec(dllimport)
+#       define OPENGL3_GUIRENDERER_API __declspec(dllimport)
 #   endif
 #else
-#   define OPENGL_GUIRENDERER_API
+#   define OPENGL3_GUIRENDERER_API
 #endif
 
 #if defined(_MSC_VER)
@@ -58,11 +58,12 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class Shader;
+    class OpenGL3Shader;
+    class OpenGL3ShaderManager;
     class OpenGL3Texture;
-    class OpenGLTextureTarget;
-    class OpenGLGeometryBuffer;
-    class OGLTextureTargetFactory;
+    class OpenGL3TextureTarget;
+    class OpenGL3GeometryBuffer;
+    class OGL3TextureTargetFactory;
     class OpenGL3RenderTarget;
     class OpenGL3StateChangeWrapper;
 
@@ -70,7 +71,7 @@ namespace CEGUI
 \brief
     Renderer class to interface with OpenGL
 */
-class OPENGL_GUIRENDERER_API OpenGL3Renderer : public Renderer
+class OPENGL3_GUIRENDERER_API OpenGL3Renderer : public Renderer
 {
 public:
     /*!
@@ -277,7 +278,7 @@ public:
     \return
     Reference to the pointer to the standard shader of the Renderer
     */
-    Shader*& getShaderStandard();
+    OpenGL3Shader*& getShaderStandard();
 
     /*!
     \brief
@@ -414,7 +415,7 @@ private:
     //! init the extra GL states enabled via enableExtraStateSettings
     void setupExtraStates();
 
-    //! initialise OGLTextureTargetFactory that will generate TextureTargets
+    //! initialise OGL3TextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
 
     //! helper to safely log the creation of a named texture
@@ -437,7 +438,7 @@ private:
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
     //! container type used to hold GeometryBuffers we create.
-    typedef std::vector<OpenGLGeometryBuffer*> GeometryBufferList;
+    typedef std::vector<OpenGL3GeometryBuffer*> GeometryBufferList;
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
@@ -450,11 +451,11 @@ private:
     //! option of whether to initialise extra states that may not be at default
     bool d_initExtraStates;
     //! pointer to a helper that creates TextureTargets supported by the system.
-    OGLTextureTargetFactory* d_textureTargetFactory;
+    OGL3TextureTargetFactory* d_textureTargetFactory;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
     //! The OpenGL shader we will use usually
-    Shader*         d_shaderStandard;
+    OpenGL3Shader*         d_shaderStandard;
     //! Position variable location inside the shader, for OpenGL
     int             d_shaderStandardPosLoc;
     //! TexCoord variable location inside the shader, for OpenGL
@@ -466,10 +467,10 @@ private:
     //! View projection matrix
     glm::mat4       d_viewProjectionMatrix;
     //! The active RenderTarget
-    OpenGL3RenderTarget*		d_activeRenderTarget;
+    OpenGL3RenderTarget*        d_activeRenderTarget;
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
-    OpenGL3StateChangeWrapper*	d_openGLStateChanger;
-	ShaderManager*				d_shaderManager;
+    OpenGL3StateChangeWrapper*  d_openGLStateChanger;
+    OpenGL3ShaderManager*               d_shaderManager;
 };
 
 } // End of  CEGUI namespace section

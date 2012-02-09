@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   ShaderManager.h
+    filename:   OpenGL3ShaderManager.h
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -40,30 +40,30 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class Shader;
+    class OpenGL3Shader;
 
-    enum ShaderID
+    enum OpenGL3ShaderID
     {
         SHADER_ID_STANDARDSHADER,
 
         SHADER_ID_COUNT
-	};
+    };
 
-	class ShaderManager
-	{
-	public:
-		ShaderManager();
-		virtual ~ShaderManager();
+    class OpenGL3ShaderManager
+    {
+    public:
+        OpenGL3ShaderManager();
+        virtual ~OpenGL3ShaderManager();
 
-		Shader* getShader(unsigned int id);
-		void loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader);
+        OpenGL3Shader* getShader(unsigned int id);
+        void loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader);
 
-		bool initialiseShaders();
-		void deinitialiseShaders();
+        bool initialiseShaders();
+        void deinitialiseShaders();
 
-	private:
+    private:
 
-        typedef std::map<unsigned int, Shader*> shaderContainerType;
+        typedef std::map<unsigned int, OpenGL3Shader*> shaderContainerType;
         shaderContainerType d_shaders;
 
         bool d_shadersInitialised;

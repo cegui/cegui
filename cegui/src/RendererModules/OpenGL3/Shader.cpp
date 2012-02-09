@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   Shader.cpp
+    filename:   OpenGL3Shader.cpp
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -35,7 +35,7 @@
 namespace CEGUI
 {
 
-    Shader::Shader(const std::string& vertex_shader_source, const std::string& fragment_shader_source) :
+    OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source, const std::string& fragment_shader_source) :
 d_createdSucessfully(false),
     d_program(0),
     d_geometryShader(0),
@@ -64,45 +64,45 @@ d_createdSucessfully(false),
     d_program = glCreateProgram(); 
 }
 
-Shader::~Shader()
+OpenGL3Shader::~OpenGL3Shader()
 {
-    if(d_program != NULL)
+    if(d_program != 0)
         glDeleteProgram(d_program);
-    if(d_vertexShader != NULL)
+    if(d_vertexShader != 0)
         glDeleteShader(d_vertexShader);
-    if(d_fragmentShader != NULL)
+    if(d_fragmentShader != 0)
         glDeleteShader(d_fragmentShader);
-    if(d_geometryShader != NULL)
+    if(d_geometryShader != 0)
         glDeleteShader(d_geometryShader);
 }
 
 
 // Bind the shader to the OGL state-machine
-void Shader::bind() const
+void OpenGL3Shader::bind() const
 {
     glUseProgram(d_program);
 }
 
 // Unbind the shader
-void Shader::unbind() const
+void OpenGL3Shader::unbind() const
 {
     glUseProgram(0);
 }
 
 // Query the location of a vertex attribute inside the shader.
-int Shader::getAttribLocation(const std::string &name) const
+int OpenGL3Shader::getAttribLocation(const std::string &name) const
 {
     return glGetAttribLocation(d_program, name.c_str());
 }
 
 // Query the location of a uniform variable inside the shader.
-int Shader::getUniformLocation(const std::string &name) const
+int OpenGL3Shader::getUniformLocation(const std::string &name) const
 {
     return glGetUniformLocation(d_program, name.c_str());
 }
 
 // Define the name of the variable inside the shader which represents the final color for each fragment.
-void Shader::bindFragDataLocation(const std::string &name)
+void OpenGL3Shader::bindFragDataLocation(const std::string &name)
 {
     if(d_program > 0)
     {
@@ -111,13 +111,13 @@ void Shader::bindFragDataLocation(const std::string &name)
     }
 }
 
-bool Shader::isCreatedSuccessfully()
+bool OpenGL3Shader::isCreatedSuccessfully()
 {
     return d_createdSucessfully;
 }
 
 
-int Shader::compile (int type, const string &source, const string &fileName)
+int OpenGL3Shader::compile (int type, const string &source, const string &fileName)
 {
     // Create shader object
     checkGLErrors();
@@ -127,7 +127,7 @@ int Shader::compile (int type, const string &source, const string &fileName)
     {
         stringstream stringStream;
         stringStream << "Could not create shader object of type:" << type << ".";
-        CEGUI::Logger::getSingleton().logEvent(stringStream.str());
+        CEGUI_THROW(RendererException(stringStream.str()));
         return 0;
     }
 
@@ -159,7 +159,7 @@ int Shader::compile (int type, const string &source, const string &fileName)
     return shader;    
 }
 
-void Shader::link()
+void OpenGL3Shader::link()
 {
 
     // Attach shaders and link
@@ -181,8 +181,6 @@ void Shader::link()
 
     if (status != GL_TRUE)
     {
-        CEGUI::Logger::getSingleton().logEvent("Shader linking has failed.");
-        
         outputProgramLog(d_program);
 
         glDeleteProgram(d_program);
@@ -211,7 +209,7 @@ void Shader::link()
 
 #define LOG_BUFFER_SIZE 8096
 
-void Shader::outputProgramLog(int program)
+void OpenGL3Shader::outputProgramLog(int program)
 {
     char logBuffer[LOG_BUFFER_SIZE];
     GLsizei length;
@@ -219,12 +217,15 @@ void Shader::outputProgramLog(int program)
     logBuffer[0] = '\0';
     glGetProgramInfoLog(program, LOG_BUFFER_SIZE, &length, logBuffer);
 
-    if (length > 0) {
-        CEGUI::Logger::getSingleton().logEvent(logBuffer);
+    if (length > 0)
+    {
+        stringstream sstream;
+        sstream << "OpenGL3Shader linking has failed.\n" << logBuffer;
+        CEGUI_THROW(RendererException(sstream.str()));
     }
 };
 
-void Shader::outputShaderLog(int shader)
+void OpenGL3Shader::outputShaderLog(int shader)
 {
     char logBuffer[LOG_BUFFER_SIZE];
     GLsizei length;
@@ -235,8 +236,8 @@ void Shader::outputShaderLog(int shader)
     if (length > 0)
     {
         stringstream ss;
-        ss << "Shader compilation has failed.\n" << logBuffer;
-        CEGUI::Logger::getSingleton().logEvent(ss.str());
+        ss << "OpenGL3Shader compilation has failed.\n" << logBuffer;
+          CEGUI_THROW(RendererException(ss.str()));
     }
 };
 
@@ -270,7 +271,7 @@ void my_get_errors(const char *location)
             stringStream << "GL_ERROR: Unknown error." << endl;
         }
 
-         CEGUI_THROW(RendererException(stringStream.str().c_str()));
+        CEGUI::Logger::getSingleton().logEvent(stringStream.str());
     }
 }
 

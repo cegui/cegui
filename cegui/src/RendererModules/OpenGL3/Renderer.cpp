@@ -78,11 +78,11 @@ void APIENTRY activeTextureDummy(GLenum) {}
 // 'null' factory if no suitable TextureTargets are available.
 //
 // base factory class - mainly used as a polymorphic interface
-class OGLTextureTargetFactory
+class OGL3TextureTargetFactory
 {
 public:
-    OGLTextureTargetFactory() {}
-    virtual ~OGLTextureTargetFactory() {}
+    OGL3TextureTargetFactory() {}
+    virtual ~OGL3TextureTargetFactory() {}
     virtual TextureTarget* create(OpenGL3Renderer&) const
         { return 0; }
     virtual void destroy(TextureTarget* target) const
@@ -91,7 +91,7 @@ public:
 
 // template specialised class that does the real work for us
 template<typename T>
-class OGLTemplateTargetFactory : public OGLTextureTargetFactory
+class OGLTemplateTargetFactory : public OGL3TextureTargetFactory
 {
     virtual TextureTarget* create(OpenGL3Renderer& r) const
         { return new T(r); }
@@ -172,7 +172,7 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_shaderStandard(0),
     d_activeRenderTarget(0),
     d_openGLStateChanger(0),
-	d_shaderManager(0)
+    d_shaderManager(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -201,7 +201,7 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     d_activeBlendMode(BM_INVALID),
     d_shaderStandard(0),
     d_openGLStateChanger(0),
-	d_shaderManager(0)
+    d_shaderManager(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -229,6 +229,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
     delete d_defaultTarget;
     delete d_textureTargetFactory;
     delete d_openGLStateChanger;
+    delete d_shaderManager;
 }
 
 //----------------------------------------------------------------------------//
@@ -240,7 +241,7 @@ RenderingRoot& OpenGL3Renderer::getDefaultRenderingRoot()
 //----------------------------------------------------------------------------//
 GeometryBuffer& OpenGL3Renderer::createGeometryBuffer()
 {
-    OpenGLGeometryBuffer* b= new OpenGLGeometryBuffer(*this);
+    OpenGL3GeometryBuffer* b= new OpenGL3GeometryBuffer(*this);
     d_geometryBuffers.push_back(b);
     return *b;
 }
@@ -500,7 +501,7 @@ void OpenGL3Renderer::grabTextures()
     // perform grab operations for texture targets
     TextureTargetList::iterator target_iterator = d_textureTargets.begin();
     for (; target_iterator != d_textureTargets.end(); ++target_iterator)
-        static_cast<OpenGLTextureTarget*>(*target_iterator)->grabTexture();
+        static_cast<OpenGL3TextureTarget*>(*target_iterator)->grabTexture();
 
     // perform grab on regular textures
     TextureMap::iterator texture_iterator = d_textures.begin();
@@ -519,7 +520,7 @@ void OpenGL3Renderer::restoreTextures()
     // perform restore operations for texture targets
     TextureTargetList::iterator target_iterator = d_textureTargets.begin();
     for (; target_iterator != d_textureTargets.end(); ++target_iterator)
-        static_cast<OpenGLTextureTarget*>(*target_iterator)->restoreTexture();
+        static_cast<OpenGL3TextureTarget*>(*target_iterator)->restoreTexture();
 }
 
 //----------------------------------------------------------------------------//
@@ -527,7 +528,7 @@ void OpenGL3Renderer::initialiseTextureTargetFactory()
 {
     //Use OGL core implementation for FBOs
     d_rendererID += "  TextureTarget support enabled via FBO OGL 3.2 core implementation.";
-    d_textureTargetFactory = new OGLTemplateTargetFactory<OpenGLFBOTextureTarget>;
+    d_textureTargetFactory = new OGLTemplateTargetFactory<OpenGL3FBOTextureTarget>;
 }
 
 //----------------------------------------------------------------------------//
@@ -581,7 +582,7 @@ void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
 
 
 //----------------------------------------------------------------------------//
-Shader*& OpenGL3Renderer::getShaderStandard()
+OpenGL3Shader*& OpenGL3Renderer::getShaderStandard()
 {
     return d_shaderStandard;
 }
@@ -656,7 +657,7 @@ OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
-	d_shaderManager = new ShaderManager();
+    d_shaderManager = new OpenGL3ShaderManager();
     d_shaderManager->initialiseShaders();
     d_shaderStandard = d_shaderManager->getShader(SHADER_ID_STANDARDSHADER);
     int texLoc = d_shaderStandard->getUniformLocation("texture0");

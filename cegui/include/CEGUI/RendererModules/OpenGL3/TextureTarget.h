@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLTextureTarget_h_
-#define _CEGUIOpenGLTextureTarget_h_
+#ifndef _CEGUIOpenGL3TextureTarget_h_
+#define _CEGUIOpenGL3TextureTarget_h_
 
 #include "CEGUI/RendererModules/OpenGL3/RenderTarget.h"
 #include "../../TextureTarget.h"
@@ -41,17 +41,17 @@ namespace CEGUI
 {
 /*!
 \brief
-    OpenGLTextureTarget - Common base class for all OpenGL render targets
+    OpenGL3TextureTarget - Common base class for all OpenGL render targets
     based on some form of RTT support.
 */
-class OPENGL_GUIRENDERER_API OpenGLTextureTarget : public OpenGL3RenderTarget,
+class OPENGL3_GUIRENDERER_API OpenGL3TextureTarget : public OpenGL3RenderTarget,
                                                    public TextureTarget
 {
 public:
     //! constructor.
-    OpenGLTextureTarget(OpenGL3Renderer& owner);
+    OpenGL3TextureTarget(OpenGL3Renderer& owner);
     //! destructor
-    virtual ~OpenGLTextureTarget();
+    virtual ~OpenGL3TextureTarget();
 
     // implementation of RenderTarget interface
     bool isImageryCache() const;

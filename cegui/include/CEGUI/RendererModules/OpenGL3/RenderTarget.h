@@ -47,7 +47,7 @@ namespace CEGUI
 \brief
     Intermediate OpenGL implementation of a RenderTarget.
 */
-class OPENGL_GUIRENDERER_API OpenGL3RenderTarget : public virtual RenderTarget
+class OPENGL3_GUIRENDERER_API OpenGL3RenderTarget : public virtual RenderTarget
 {
 public:
     //! Constructor
