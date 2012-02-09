@@ -55,7 +55,9 @@ find_package(ZLIB)
 
 find_package(OpenGL)
 find_package(GLEW)
+find_package(GLM)
 find_package(GLUT)
+find_package(GLFW)
 find_package(DirectXSDK)
 find_package(D3DX11Effects)
 find_package(Irrlicht)
@@ -132,6 +134,7 @@ option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA onl
 cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" TRUE "PVRTOOLS_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" TRUE "OPENGL_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" TRUE "OPENGL_FOUND;GLM_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" TRUE "OGRE_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" TRUE "IRRLICHT_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module" FALSE "DIRECTFB_FOUND" FALSE )
@@ -158,7 +161,8 @@ set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is 
     2: Use external fribidi library."
 )
 
-cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" TRUE "CEGUI_BUILD_RENDERER_OPENGL;GLUT_FOUND" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer (via GLUT)" TRUE "CEGUI_BUILD_RENDERER_OPENGL;GLUT_FOUND" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer (via glfw)" TRUE "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" FALSE )
 cmake_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" TRUE "CEGUI_BUILD_RENDERER_OGRE;OIS_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" TRUE "CEGUI_BUILD_RENDERER_IRRLICHT" FALSE )
@@ -212,6 +216,7 @@ set( CEGUI_BASE_LIBNAME CEGUIBase )
 
 # Renderer module names.
 set( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
+set( CEGUI_OPENGL3_RENDERER_LIBNAME CEGUIOpenGL3Renderer )
 set( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
 set( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
 set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )

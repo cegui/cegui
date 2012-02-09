@@ -392,6 +392,7 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
                 obj->addComboboxOption(combo, "Microsoft Direct3D 9 Renderer", Direct3D9GuiRendererType);
                 obj->addComboboxOption(combo, "Microsoft Direct3D 10 Renderer", Direct3D10GuiRendererType);
                 obj->addComboboxOption(combo, "OpenGL Renderer", OpenGLGuiRendererType);
+				obj->addComboboxOption(combo, "OpenGL 3.2 Core Renderer", OpenGL3GuiRendererType);
                 obj->addComboboxOption(combo, "Irrlicht Engine Renderer", IrrlichtGuiRendererType);
             }
 
