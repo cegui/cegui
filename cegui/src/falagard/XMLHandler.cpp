@@ -48,12 +48,12 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
 
-#include "CEGUI/elements/Thumb.h"
-#include "CEGUI/elements/TabControl.h"
-#include "CEGUI/elements/Spinner.h"
-#include "CEGUI/elements/ItemListBase.h"
-#include "CEGUI/elements/ListHeaderSegment.h"
-#include "CEGUI/elements/MultiColumnList.h"
+#include "CEGUI/widgets/Thumb.h"
+#include "CEGUI/widgets/TabControl.h"
+#include "CEGUI/widgets/Spinner.h"
+#include "CEGUI/widgets/ItemListBase.h"
+#include "CEGUI/widgets/ListHeaderSegment.h"
+#include "CEGUI/widgets/MultiColumnList.h"
 
 #include <sstream>
 

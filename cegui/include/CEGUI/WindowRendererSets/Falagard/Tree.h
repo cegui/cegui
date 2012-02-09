@@ -30,7 +30,7 @@ author:		Jonathan Welch (Based on Code by David Durant)
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
 #include "CEGUI/WindowFactory.h"
-#include "CEGUI/elements/Tree.h"
+#include "CEGUI/widgets/Tree.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

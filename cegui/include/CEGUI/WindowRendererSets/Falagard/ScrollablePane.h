@@ -29,7 +29,7 @@
 #define _FalScrollablePane_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/ScrollablePane.h"
+#include "CEGUI/widgets/ScrollablePane.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

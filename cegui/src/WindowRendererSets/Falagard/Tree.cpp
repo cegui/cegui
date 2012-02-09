@@ -29,7 +29,7 @@ author:		Jonathan Welch (Based on Code by David Durant)
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/widgets/Scrollbar.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

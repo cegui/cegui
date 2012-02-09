@@ -29,7 +29,7 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/TplWindowRendererProperty.h"

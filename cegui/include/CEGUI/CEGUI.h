@@ -127,6 +127,6 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 
 // gui elements
-#include "CEGUI/elements/All.h"
+#include "CEGUI/widgets/All.h"
 
 #endif	// end of guard _CEGUI_h_

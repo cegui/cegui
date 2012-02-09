@@ -29,7 +29,7 @@
 #define _FalTabControl_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/TabControl.h"
+#include "CEGUI/widgets/TabControl.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

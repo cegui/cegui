@@ -29,7 +29,7 @@
 #define _FalTooltip_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/Tooltip.h"
+#include "CEGUI/widgets/Tooltip.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

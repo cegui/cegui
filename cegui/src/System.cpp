@@ -59,7 +59,7 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
-#include "CEGUI/elements/All.h"
+#include "CEGUI/widgets/All.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
 #endif

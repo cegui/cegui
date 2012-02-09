@@ -28,7 +28,7 @@
 #include "CEGUI/WindowRendererSets/Falagard/PopupMenu.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/elements/PopupMenu.h"
+#include "CEGUI/widgets/PopupMenu.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

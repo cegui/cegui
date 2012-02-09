@@ -29,7 +29,7 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
-#include "CEGUI/elements/TabButton.h"
+#include "CEGUI/widgets/TabButton.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 // Start of CEGUI namespace section
 namespace CEGUI

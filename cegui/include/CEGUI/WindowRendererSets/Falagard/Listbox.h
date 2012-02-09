@@ -29,7 +29,7 @@
 #define _FalListbox_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/Listbox.h"
+#include "CEGUI/widgets/Listbox.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

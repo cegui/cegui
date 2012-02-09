@@ -27,12 +27,12 @@
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/elements/PushButton.h"
-#include "CEGUI/elements/Editbox.h"
-#include "CEGUI/elements/RadioButton.h"
-#include "CEGUI/elements/Titlebar.h"
-#include "CEGUI/elements/Slider.h"
-#include "CEGUI/elements/Thumb.h"
+#include "CEGUI/widgets/PushButton.h"
+#include "CEGUI/widgets/Editbox.h"
+#include "CEGUI/widgets/RadioButton.h"
+#include "CEGUI/widgets/Titlebar.h"
+#include "CEGUI/widgets/Slider.h"
+#include "CEGUI/widgets/Thumb.h"
 
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/WindowManager.h"

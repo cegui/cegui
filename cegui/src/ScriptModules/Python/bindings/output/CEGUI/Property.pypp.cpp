@@ -15,6 +15,11 @@ struct Property_wrapper : CEGUI::Property, bp::wrapper< CEGUI::Property > {
     
     }
 
+    virtual ::CEGUI::Property * clone(  ) const {
+        bp::override func_clone = this->get_override( "clone" );
+        return func_clone(  );
+    }
+
     virtual ::CEGUI::String get( ::CEGUI::PropertyReceiver const * receiver ) const {
         bp::override func_get = this->get_override( "get" );
         return func_get( boost::python::ptr(receiver) );
@@ -115,6 +120,16 @@ void register_Property_class(){
                String describing the origin class of this Property (Window, FrameWindow, ...)\n\
            *\n") );
         bp::scope Property_scope( Property_exposer );
+        { //::CEGUI::Property::clone
+        
+            typedef ::CEGUI::Property * ( ::CEGUI::Property::*clone_function_type )(  ) const;
+            
+            Property_exposer.def( 
+                "clone"
+                , bp::pure_virtual( clone_function_type(&::CEGUI::Property::clone) )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::Property::get
         
             typedef ::CEGUI::String ( ::CEGUI::Property::*get_function_type )( ::CEGUI::PropertyReceiver const * ) const;

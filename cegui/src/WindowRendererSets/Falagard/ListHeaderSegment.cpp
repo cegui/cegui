@@ -28,7 +28,7 @@
 #include "CEGUI/WindowRendererSets/Falagard/ListHeaderSegment.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/elements/ListHeaderSegment.h"
+#include "CEGUI/widgets/ListHeaderSegment.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

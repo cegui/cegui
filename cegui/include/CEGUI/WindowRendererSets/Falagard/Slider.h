@@ -29,7 +29,7 @@
 #define _FalSlider_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/Slider.h"
+#include "CEGUI/widgets/Slider.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

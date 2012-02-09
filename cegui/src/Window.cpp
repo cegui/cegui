@@ -41,7 +41,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
-#include "CEGUI/elements/Tooltip.h"
+#include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/WidgetComponent.h"

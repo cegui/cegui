@@ -28,7 +28,7 @@
 #include "CEGUI/WindowRendererSets/Falagard/ItemListbox.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/elements/ItemListbox.h"
+#include "CEGUI/widgets/ItemListbox.h"
 #include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section

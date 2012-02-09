@@ -29,7 +29,7 @@
 #define _FalEditbox_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/Editbox.h"
+#include "CEGUI/widgets/Editbox.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

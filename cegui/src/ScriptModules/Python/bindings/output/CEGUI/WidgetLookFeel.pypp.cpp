@@ -13,6 +13,7 @@ void register_WidgetLookFeel_class(){
         WidgetLookFeel_exposer_t WidgetLookFeel_exposer = WidgetLookFeel_exposer_t( "WidgetLookFeel", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("name"), bp::arg("inherits") )) );
         bp::scope WidgetLookFeel_scope( WidgetLookFeel_exposer );
         WidgetLookFeel_exposer.def( bp::init< >() );
+        WidgetLookFeel_exposer.def( bp::init< CEGUI::WidgetLookFeel const & >(( bp::arg("other") )) );
         { //::CEGUI::WidgetLookFeel::addAnimationName
         
             typedef void ( ::CEGUI::WidgetLookFeel::*addAnimationName_function_type )( ::CEGUI::String const & ) ;
@@ -749,6 +750,17 @@ void register_WidgetLookFeel_class(){
                 @return\n\
                     Nothing.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::WidgetLookFeel::operator=
+        
+            typedef ::CEGUI::WidgetLookFeel & ( ::CEGUI::WidgetLookFeel::*assign_function_type )( ::CEGUI::WidgetLookFeel const & ) ;
+            
+            WidgetLookFeel_exposer.def( 
+                "assign"
+                , assign_function_type( &::CEGUI::WidgetLookFeel::operator= )
+                , ( bp::arg("other") )
+                , bp::return_self< >() );
         
         }
         { //::CEGUI::WidgetLookFeel::renameImagerySection
