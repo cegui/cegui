@@ -8,6 +8,13 @@ file (GLOB MODULE_HEADER_FILES ../../include/CEGUI/CommonDialogs/*.h)
 file (GLOB COLOUR_PICKER_HEADER_FILES ../../include/CEGUI/CommonDialogs/ColourPicker/*.h)
 set (CORE_HEADER_FILES ${MODULE_HEADER_FILES} ${COLOUR_PICKER_HEADER_FILES})
 
-cegui_add_library(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES)
+# we do not use the common header install function since we need to install to
+# multiple sub-dirs.
+cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
+
+if (UNIX AND NOT APPLE AND NOT WIN32)
+    install(FILES ${MODULE_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/CommonDialogs)
+    install(FILES ${COLOUR_PICKER_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/CommonDialogs/ColourPicker)
+endif()
 
