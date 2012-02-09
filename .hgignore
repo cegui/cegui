@@ -24,3 +24,4 @@ xcuserdata/
 
 cppcheck-output
 
+glob:CEGUI-DEPS-0.8.x-beta3
