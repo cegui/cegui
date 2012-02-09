@@ -29,12 +29,9 @@ author:     Paul D Turner
 #define _CEGuiOpenGL3BaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
-#include "cegui//MouseCursor.h"
+#include "CEGUI/MouseCursor.h"
 #include <GL/glew.h>
-#include "gl/glfw.h"
-// remove Microsoft idiocy
-#undef max
-#undef min
+#include <GL/glfw.h>
 
 class CEGuiOpenGL3BaseApplication : public CEGuiBaseApplication
 {

@@ -42,8 +42,6 @@ author:     Paul D Turner
 #include "CEGuiSample.h"
 #include "CEGUI/CEGUI.h"
 
-#include "gl/glfw.h"
-
 #include <stdexcept>
 #include <sstream>
 

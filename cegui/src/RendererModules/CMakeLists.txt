@@ -2,6 +2,10 @@ if (CEGUI_BUILD_RENDERER_OPENGL)
     add_subdirectory(OpenGL)
 endif()
 
+if (CEGUI_BUILD_RENDERER_OPENGL3)
+    add_subdirectory(OpenGL3)
+endif()
+
 if (CEGUI_BUILD_RENDERER_DIRECT3D9)
     add_subdirectory(Direct3D9)
 endif()
