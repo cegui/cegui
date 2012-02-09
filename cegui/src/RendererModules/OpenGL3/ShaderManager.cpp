@@ -37,23 +37,6 @@
 
 namespace CEGUI
 {
-
-    ShaderManager *ShaderManager::d_instance = 0;
-
-    ShaderManager *ShaderManager::getInstance()
-    {
-        if(d_instance != 0)
-            return d_instance;
-        else
-            return d_instance = new ShaderManager();
-    }
-
-    void ShaderManager::destroy()
-    {
-        if(d_instance)
-            delete d_instance;
-    }
-
     ShaderManager::ShaderManager()
     {
         d_shadersInitialised = false;
