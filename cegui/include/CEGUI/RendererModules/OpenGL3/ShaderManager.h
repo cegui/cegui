@@ -47,25 +47,21 @@ namespace CEGUI
         SHADER_ID_STANDARDSHADER,
 
         SHADER_ID_COUNT
-    };
+	};
 
-    class ShaderManager {
-    public:
-        virtual ~ShaderManager();
+	class ShaderManager
+	{
+	public:
+		ShaderManager();
+		virtual ~ShaderManager();
 
-        static ShaderManager *getInstance();
-        static void destroy();
+		Shader* getShader(unsigned int id);
+		void loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader);
 
-        Shader* getShader(unsigned int id);
-        void loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader);
+		bool initialiseShaders();
+		void deinitialiseShaders();
 
-        bool initialiseShaders();
-        void deinitialiseShaders();
-
-    private:
-        ShaderManager();
-
-        static ShaderManager *d_instance;
+	private:
 
         typedef std::map<unsigned int, Shader*> shaderContainerType;
         shaderContainerType d_shaders;

@@ -171,7 +171,8 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_activeBlendMode(BM_INVALID),
     d_shaderStandard(0),
     d_activeRenderTarget(0),
-    d_openGLStateChanger(0)
+    d_openGLStateChanger(0),
+	d_shaderManager(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -199,7 +200,8 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
     d_shaderStandard(0),
-    d_openGLStateChanger(0)
+    d_openGLStateChanger(0),
+	d_shaderManager(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -654,9 +656,9 @@ OpenGL3StateChangeWrapper* OpenGL3Renderer::getOpenGLStateChanger()
 void OpenGL3Renderer::initialiseOpenGLShaders()
 {
     checkGLErrors();
-    ShaderManager* shaderManager = ShaderManager::getInstance();
-    shaderManager->initialiseShaders();
-    d_shaderStandard = shaderManager->getShader(SHADER_ID_STANDARDSHADER);
+	d_shaderManager = new ShaderManager();
+    d_shaderManager->initialiseShaders();
+    d_shaderStandard = d_shaderManager->getShader(SHADER_ID_STANDARDSHADER);
     int texLoc = d_shaderStandard->getUniformLocation("texture0");
     d_shaderStandard->bind();
     glUniform1i(texLoc, 0);

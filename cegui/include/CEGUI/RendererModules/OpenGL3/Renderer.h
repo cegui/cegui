@@ -466,9 +466,10 @@ private:
     //! View projection matrix
     glm::mat4       d_viewProjectionMatrix;
     //! The active RenderTarget
-    OpenGL3RenderTarget* d_activeRenderTarget;
+    OpenGL3RenderTarget*		d_activeRenderTarget;
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
-    OpenGL3StateChangeWrapper* d_openGLStateChanger;
+    OpenGL3StateChangeWrapper*	d_openGLStateChanger;
+	ShaderManager*				d_shaderManager;
 };
 
 } // End of  CEGUI namespace section
