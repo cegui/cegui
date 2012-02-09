@@ -29,7 +29,7 @@
 #define _FalMultiColumnList_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/MultiColumnList.h"
+#include "CEGUI/widgets/MultiColumnList.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 
 // Start of CEGUI namespace section

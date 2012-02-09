@@ -26,8 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Falagard/Listbox.h"
-#include "CEGUI/elements/Scrollbar.h"
-#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/widgets/Scrollbar.h"
+#include "CEGUI/widgets/ListboxItem.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 

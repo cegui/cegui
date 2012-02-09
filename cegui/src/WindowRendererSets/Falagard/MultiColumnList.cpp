@@ -30,9 +30,9 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/CoordConverter.h"
-#include "CEGUI/elements/Scrollbar.h"
-#include "CEGUI/elements/ListHeader.h"
-#include "CEGUI/elements/ListboxItem.h"
+#include "CEGUI/widgets/Scrollbar.h"
+#include "CEGUI/widgets/ListHeader.h"
+#include "CEGUI/widgets/ListboxItem.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

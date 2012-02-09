@@ -29,7 +29,7 @@
 #define _FalScrollbar_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/Scrollbar.h"
+#include "CEGUI/widgets/Scrollbar.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

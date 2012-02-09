@@ -29,7 +29,7 @@
 #define _FalButton_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/ButtonBase.h"
+#include "CEGUI/widgets/ButtonBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

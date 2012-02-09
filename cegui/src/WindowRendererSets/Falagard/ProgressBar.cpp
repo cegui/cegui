@@ -28,7 +28,7 @@
 #include "CEGUI/WindowRendererSets/Falagard/ProgressBar.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/elements/ProgressBar.h"
+#include "CEGUI/widgets/ProgressBar.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 

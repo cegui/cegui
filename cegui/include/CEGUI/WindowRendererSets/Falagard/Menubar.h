@@ -29,7 +29,7 @@
 #define _FalMenubar_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/ItemListBase.h"
+#include "CEGUI/widgets/ItemListBase.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

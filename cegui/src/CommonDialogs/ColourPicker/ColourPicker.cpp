@@ -27,8 +27,8 @@
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/elements/PushButton.h"
-#include "CEGUI/elements/Editbox.h"
+#include "CEGUI/widgets/PushButton.h"
+#include "CEGUI/widgets/Editbox.h"
 
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/WindowManager.h"

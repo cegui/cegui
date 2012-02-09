@@ -29,7 +29,7 @@
 #define _FalMultiLineEditbox_h_
 
 #include "CEGUI/WindowRendererSets/Falagard/Module.h"
-#include "CEGUI/elements/MultiLineEditbox.h"
+#include "CEGUI/widgets/MultiLineEditbox.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

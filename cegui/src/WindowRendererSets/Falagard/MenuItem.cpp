@@ -28,8 +28,8 @@
 #include "CEGUI/WindowRendererSets/Falagard/MenuItem.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/elements/MenuItem.h"
-#include "CEGUI/elements/Menubar.h"
+#include "CEGUI/widgets/MenuItem.h"
+#include "CEGUI/widgets/Menubar.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

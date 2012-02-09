@@ -26,10 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Falagard/FrameWindow.h"
-#include "CEGUI/elements/FrameWindow.h"
+#include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
-#include "CEGUI/elements/Titlebar.h"
+#include "CEGUI/widgets/Titlebar.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

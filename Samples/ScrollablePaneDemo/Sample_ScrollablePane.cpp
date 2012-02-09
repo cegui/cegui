@@ -34,8 +34,8 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
 
-#include "CEGUI/elements/ScrollablePane.h"
-#include "CEGUI/elements/ScrolledContainer.h"
+#include "CEGUI/widgets/ScrollablePane.h"
+#include "CEGUI/widgets/ScrolledContainer.h"
 
 #include "CEGuiSample.h"
 #include "CEGuiBaseApplication.h"
