@@ -29,7 +29,7 @@
 #   include "config.h"
 #endif
 
-#include "glew/gl/glew.h"
+#include <GL/glew.h>
 
 #include "CEGUI/RendererModules/OpenGL3/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL3/Renderer.h"
