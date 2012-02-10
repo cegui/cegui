@@ -35,43 +35,43 @@ author:     Paul D Turner
 class CEGuiOpenGL3BaseApplication : public CEGuiBaseApplication
 {
 public:
-	//! Constructor.
-	CEGuiOpenGL3BaseApplication();
+    //! Constructor.
+    CEGuiOpenGL3BaseApplication();
 
-	//! Destructor.
-	~CEGuiOpenGL3BaseApplication();
+    //! Destructor.
+    ~CEGuiOpenGL3BaseApplication();
 
 protected:
-	// implementation of base class abstract methods.
-	bool execute_impl(CEGuiSample* sampleApp);
-	void cleanup_impl();
-	void beginRendering(const float elapsed);
-	void endRendering();
+    // implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
+    void beginRendering(const float elapsed);
+    void endRendering();
 
-	/*************************************************************************
-	Implementation Methods
-	*************************************************************************/
-	static void initGLFW();
+    /*************************************************************************
+    Implementation Methods
+    *************************************************************************/
+    static void initGLFW();
 
-	static void drawFrame(void);
+    static void drawFrame(void);
 
-	static void GLFWCALL glfwKeyCallback(int key, int action);
-	static void GLFWCALL glfwCharCallback(int character, int action);
-	static void GLFWCALL glfwMouseButtonCallback(int key, int action);
-	static void GLFWCALL glfwMouseWheelCallback(int position);
-	static void GLFWCALL glfwMousePosCallback(int x, int y );
+    static void GLFWCALL glfwKeyCallback(int key, int action);
+    static void GLFWCALL glfwCharCallback(int character, int action);
+    static void GLFWCALL glfwMouseButtonCallback(int key, int action);
+    static void GLFWCALL glfwMouseWheelCallback(int position);
+    static void GLFWCALL glfwMousePosCallback(int x, int y );
 
-	static void GLFWCALL glfwWindowResizeCallback(int width, int height);
+    static void GLFWCALL glfwWindowResizeCallback(int width, int height);
 
-	static unsigned int GlfwToCeguiKey(int glfwKey);
-	static CEGUI::MouseButton GlfwToCeguiMouseButton(int glfwButton);
+    static unsigned int GlfwToCeguiKey(int glfwKey);
+    static CEGUI::MouseButton GlfwToCeguiMouseButton(int glfwButton);
 
-	/*************************************************************************
-	Data fields
-	*************************************************************************/
-	static CEGuiOpenGL3BaseApplication* d_appInstance;
-	static double  d_frameTime;
-	static int  d_modifiers;
+    /*************************************************************************
+    Data fields
+    *************************************************************************/
+    static CEGuiOpenGL3BaseApplication* d_appInstance;
+    static double  d_frameTime;
+    static int  d_modifiers;
 };
 
 
