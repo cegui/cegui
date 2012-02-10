@@ -3,7 +3,7 @@
 ################################################################################
 include(FindPackageHandleStandardArgs)
 
-find_path(GLM_H_PATH NAMES glm.hpp PATH_SUFFIXES glm)
+find_path(GLM_H_PATH NAMES glm/glm.hpp glm.hpp)
 mark_as_advanced(GLM_H_PATH)
 
 find_package_handle_standard_args(GLM DEFAULT_MSG GLM_H_PATH)

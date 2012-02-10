@@ -30,7 +30,6 @@ author:     Paul D Turner
 
 #include "CEGuiBaseApplication.h"
 #include "CEGUI/MouseCursor.h"
-#include <GL/glew.h>
 #include <GL/glfw.h>
 
 class CEGuiOpenGL3BaseApplication : public CEGuiBaseApplication
