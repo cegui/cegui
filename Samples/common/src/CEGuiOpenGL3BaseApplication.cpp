@@ -297,17 +297,18 @@ void CEGuiOpenGL3BaseApplication::initGLFW()
 		throw CEGUI::RendererException(
 			"Failed to initialise OpenGL window.");
 		glfwTerminate();
-		return;
-	}
+        return;
+    }
 
-	glfwSetWindowTitle("Crazy Eddie's GUI Mk-2 - Sample Application");
+    glfwSetWindowTitle("Crazy Eddie's GUI Mk-2 - Sample Application");
 
-	//Deactivate VSYNC
-	glfwSwapInterval(0);
+    //Deactivate VSYNC
+    glfwSwapInterval(0);
 
-	// Disable the mouse position
-	//glfwDisable(GLFW_MOUSE_CURSOR);
-
+    // Disable the mouse position in Non_Debug mode
+#ifndef DEBUG
+    glfwDisable(GLFW_MOUSE_CURSOR);
+#endif
 	// Clear Errors by GLFW, even if Setup is correct.
 	glGetError();
 }
