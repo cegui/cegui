@@ -448,7 +448,7 @@ const String& OpenGL3Renderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGL3Renderer::createTexture(const String& name, GLuint tex,
+Texture& OpenGL3Renderer::createTexture(const String& name, unsigned int tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())

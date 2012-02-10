@@ -304,13 +304,9 @@ void CEGuiOpenGL3BaseApplication::initGLFW()
 
 	//Deactivate VSYNC
 	glfwSwapInterval(0);
-	std::stringstream stringStream;
-	stringStream << "OpenGL " << glGetString(GL_VERSION) << " GLSL " << glGetString(GL_SHADING_LANGUAGE_VERSION);
-
-	//%CEGUI::Logger::getSingleton().logEvent(stringStream.str());
 
 	// Disable the mouse position
-	glfwDisable(GLFW_MOUSE_CURSOR);
+	//glfwDisable(GLFW_MOUSE_CURSOR);
 
 	// Clear Errors by GLFW, even if Setup is correct.
 	glGetError();

@@ -85,7 +85,7 @@ protected:
     void createCEGUITexture();
 
     //! Associated OpenGL texture ID
-    GLuint d_texture;
+    unsigned int d_texture;
     //! we use this to wrap d_texture so it can be used by the core CEGUI lib.
     OpenGL3Texture* d_CEGUITexture;
 };

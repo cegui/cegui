@@ -33,7 +33,7 @@
 #include "../../Size.h"
 #include "../../Vector.h"
 #include "../../Rect.h"
-#include <GL/glew.h>
+
 #include <vector>
 #include <map>
 
@@ -217,7 +217,7 @@ public:
         - AlreadyExistsException - thrown if a Texture object named \a name
           already exists within the system.
     */
-    Texture& createTexture(const String& name, GLuint tex, const Sizef& sz);
+    Texture& createTexture(const String& name, unsigned int tex, const Sizef& sz);
 
     /*!
     \brief
