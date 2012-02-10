@@ -53,6 +53,7 @@ Each item in here has a comment to describe what it's for.
 // Comment/Uncomment these lines to control renderer use in samples.
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_SAMPLES_USE_OPENGL
+#cmakedefine CEGUI_SAMPLES_USE_OPENGL3
 #cmakedefine CEGUI_SAMPLES_USE_DIRECT3D9
 #cmakedefine CEGUI_SAMPLES_USE_DIRECT3D10
 #cmakedefine CEGUI_SAMPLES_USE_OGRE
