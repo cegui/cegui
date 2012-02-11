@@ -2369,6 +2369,10 @@ ListHeader* MultiColumnList::getListHeader() const
     return static_cast<ListHeader*>(getChild(ListHeaderName));
 }
 
+bool MultiColumnList::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const MultiColumnListWindowRenderer*>(renderer) != 0;
+}
 
 /*************************************************************************
     Write xml properties for this MultiColumnList to a stream.

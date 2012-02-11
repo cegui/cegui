@@ -356,6 +356,11 @@ namespace CEGUI
         d_elapsed = 0;
     }
 
+    bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
+	{
+		return dynamic_cast<const TooltipWindowRenderer*>(renderer) != 0;
+	}
+
     void Tooltip::updateSelf(float elapsed)
     {
         // base class processing.

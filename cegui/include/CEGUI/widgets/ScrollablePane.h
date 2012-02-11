@@ -466,10 +466,7 @@ protected:
     ScrolledContainer* getScrolledContainer() const;
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "ScrollablePane");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     /*************************************************************************
         Event triggers

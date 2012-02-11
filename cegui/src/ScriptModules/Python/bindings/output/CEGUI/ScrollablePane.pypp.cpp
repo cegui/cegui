@@ -191,16 +191,16 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         CEGUI::ScrollablePane::updateContainerPosition(  );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::ScrollablePane::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::ScrollablePane::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::ScrollablePane::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::ScrollablePane::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     void addElementProperties(  ){
@@ -2148,12 +2148,12 @@ void register_ScrollablePane_class(){
         }
         { //::CEGUI::ScrollablePane::validateWindowRenderer
         
-            typedef bool ( ScrollablePane_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( ScrollablePane_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             ScrollablePane_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &ScrollablePane_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "validate window renderer\n" );
         
         }

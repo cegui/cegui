@@ -161,16 +161,16 @@ struct ItemListBase_wrapper : CEGUI::ItemListBase, bp::wrapper< CEGUI::ItemListB
         CEGUI::ItemListBase::sizeToContent_impl( );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::ItemListBase::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::ItemListBase::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::ItemListBase::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::ItemListBase::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     void addElementProperties(  ){
@@ -1933,12 +1933,12 @@ void register_ItemListBase_class(){
         }
         { //::CEGUI::ItemListBase::validateWindowRenderer
         
-            typedef bool ( ItemListBase_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( ItemListBase_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             ItemListBase_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &ItemListBase_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "validate window renderer\n" );
         
         }

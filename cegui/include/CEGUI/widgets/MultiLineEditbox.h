@@ -671,10 +671,7 @@ protected:
     bool handle_vertScrollbarVisibilityChanged(const EventArgs&);
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == EventNamespace);
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
 	/*************************************************************************
 		New event handlers

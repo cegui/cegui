@@ -342,6 +342,12 @@ void ScrollablePane::updateContainerPosition(void)
 }
 
 //----------------------------------------------------------------------------//
+bool ScrollablePane::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const ScrollablePaneWindowRenderer*>(renderer) != 0;
+}
+
+//----------------------------------------------------------------------------//
 void ScrollablePane::onContentPaneChanged(WindowEventArgs& e)
 {
     fireEvent(EventContentPaneChanged, e, EventNamespace);

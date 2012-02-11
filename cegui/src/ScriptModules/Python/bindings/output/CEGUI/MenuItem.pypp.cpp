@@ -1207,16 +1207,16 @@ struct MenuItem_wrapper : CEGUI::MenuItem, bp::wrapper< CEGUI::MenuItem > {
         CEGUI::Window::updateGeometryRenderSettings(  );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::ItemEntry::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::ItemEntry::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::ItemEntry::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::ItemEntry::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual bool writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -3439,12 +3439,12 @@ void register_MenuItem_class(){
         }
         { //::CEGUI::ItemEntry::validateWindowRenderer
         
-            typedef bool ( MenuItem_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( MenuItem_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             MenuItem_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &MenuItem_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "*************************************************************************\n\
                     Abstract Implementation Functions\n\
                 *************************************************************************\n\

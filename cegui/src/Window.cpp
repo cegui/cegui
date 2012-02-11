@@ -2741,19 +2741,11 @@ WindowRenderer* Window::getWindowRenderer(void) const
 //----------------------------------------------------------------------------//
 void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
-    if (!validateWindowRenderer(d_windowRenderer->getClass()))
+    if (!validateWindowRenderer(d_windowRenderer))
         CEGUI_THROW(InvalidRequestException(
             "Window::onWindowRendererAttached: The "
             "window renderer '" + d_windowRenderer->getName() + "' is not "
             "compatible with this widget type (" + getType() + ")"));
-        
-    // FIXME: This needs to be checked but differently!
-    /*if (!testClassName(d_windowRenderer->getClass()))
-        CEGUI_THROW(InvalidRequestException(
-            "Window::onWindowRendererAttached: The "
-            "window renderer '" + d_windowRenderer->getName() + "' is not "
-            "compatible with this widget type (" + getType() + "). It requires "
-            "a '" + d_windowRenderer->getClass() + "' based window type."));*/
 
     d_windowRenderer->d_window = this;
     d_windowRenderer->onAttach();
@@ -2769,7 +2761,7 @@ void Window::onWindowRendererDetached(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::validateWindowRenderer(const String&) const
+bool Window::validateWindowRenderer(const WindowRenderer* renderer) const
 {
     return true;
 }

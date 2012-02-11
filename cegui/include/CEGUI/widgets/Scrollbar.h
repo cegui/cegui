@@ -555,10 +555,7 @@ protected:
     bool handleThumbTrackEnded(const EventArgs& e);
 
     //! validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "Scrollbar");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     // New event handlers for slider widget
     //! Handler triggered when the scroll position changes
