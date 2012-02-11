@@ -3,8 +3,8 @@
     <WidgetLook name="AlfiskoSkin/Label">
         <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="Colour" />
         <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
-        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalFormatting" />
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalFormatting" />
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -34,8 +34,8 @@
     </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/Button">
-        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VerticalFormatting"/>
-        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorizontalFormatting"/>
+        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
+        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
