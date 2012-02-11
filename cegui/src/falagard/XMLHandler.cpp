@@ -764,9 +764,10 @@ namespace CEGUI
         const String help(attributes.getValueAsString(HelpStringAttribute,
                                 "Falagard custom property definition - "
                                 "gets/sets a named user string."));
-        const String type(attributes.getValueAsString(TypeAttribute,"Generic"));
+        const String type(attributes.getValueAsString(TypeAttribute, "Generic"));
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
+        typedef std::pair<float, float> Range;
 
         if(type == "Colour")
             prop = CEGUI_NEW_AO PropertyDefinition<Colour>(name, init, help, d_widgetlook->getName(), redraw, layout);
@@ -836,10 +837,18 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<VerticalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
         else if(type == "HorizontalFormatting")
             prop = CEGUI_NEW_AO PropertyDefinition<HorizontalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout);
-        else if(type == "std::pair<float,float>")
-            prop = CEGUI_NEW_AO PropertyDefinition<std::pair<float,float> >(name, init, help, d_widgetlook->getName(), redraw, layout);
+        else if(type == "Range")
+            prop = CEGUI_NEW_AO PropertyDefinition<Range>(name, init, help, d_widgetlook->getName(), redraw, layout);
         else
+        {
+            if (type != "Generic" && type != "String")
+            {
+                // type was specified but wasn't recognised
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property definition (name: '" + name + "').", Warnings);
+            }
+
             prop = CEGUI_NEW_AO PropertyDefinition<String>(name, init, help, d_widgetlook->getName(), redraw, layout);
+        }
 
         CEGUI_LOGINSANE("-----> Adding PropertyDefiniton. Name: " + name + " Default Value: " + init);
 
@@ -858,11 +867,11 @@ namespace CEGUI
         const String target(attributes.getValueAsString(TargetPropertyAttribute));
         const String name(attributes.getValueAsString(NameAttribute));
         const String init(attributes.getValueAsString(InitialValueAttribute));
-        const String type(attributes.getValueAsString(TypeAttribute,"Generic"));
+        const String type(attributes.getValueAsString(TypeAttribute, "Generic"));
 
         bool redraw(attributes.getValueAsBool(RedrawOnWriteAttribute, false));
         bool layout(attributes.getValueAsBool(LayoutOnWriteAttribute, false));
-        typedef std::pair<float,float> Range;
+        typedef std::pair<float, float> Range;
 
         if (type == "Colour")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Colour>(name,
@@ -979,13 +988,20 @@ namespace CEGUI
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<HorizontalFormatting>(
                     name, widget, target, init, d_widgetlook->getName(), redraw, layout
             );
-        else if (type == "std::pair<float,float>")
+        else if (type == "Range")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Range>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout);
         else
+        {
+            if (type != "Generic" && type != "String")
+            {
+                // type was specified but wasn't recognised
+                Logger::getSingleton().logEvent("Type '" + type + "' wasn't recognized in property link definition (name: '" + name + "').", Warnings);
+            }
+
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<String>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout);
-
+        }
         CEGUI_LOGINSANE("-----> Adding PropertyLinkDefiniton. Name: " +
                         name);
 
