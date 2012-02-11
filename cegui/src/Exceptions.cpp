@@ -35,6 +35,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+bool Exception::d_stdErrEnabled(true);
+
 //----------------------------------------------------------------------------//
 Exception::Exception(const String& message, const String& name,
                      const String& filename, int line) :
@@ -50,8 +53,12 @@ Exception::Exception(const String& message, const String& name,
     if (logger)
         logger->logEvent(d_what, Errors);
 
-    // always output to stderr, since nobody seems to look in their log file!
-    std::cerr << what() << std::endl;
+    if (d_stdErrEnabled)
+    {
+    	// output to stderr unless it's explicitly disabled
+    	// nobody seems to look in their log file!
+    	std::cerr << what() << std::endl;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -63,6 +70,18 @@ Exception::~Exception(void) throw()
 const char* Exception::what() const throw()
 {
     return d_what.c_str();
+}
+
+//----------------------------------------------------------------------------//
+void Exception::setStdErrEnabled(bool enabled)
+{
+	d_stdErrEnabled = enabled;
+}
+
+//----------------------------------------------------------------------------//
+bool Exception::isStdErrEnabled()
+{
+	return d_stdErrEnabled;
 }
 
 //----------------------------------------------------------------------------//
