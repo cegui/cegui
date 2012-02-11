@@ -507,10 +507,10 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/ColourPicker">
-		<PropertyDefinition name="ColourPickerControlsStyle" initialValue="Vanilla/ColourPickerControls" />
+		<PropertyDefinition name="ColourPickerControlsStyle" initialValue="Vanilla/ColourPickerControls" type="String" />
 		<PropertyDefinition name="ShareColourPickerControlsWidget" initialValue="True" type="bool"/>
 
-		<PropertyLinkDefinition name="Colour" widget="__auto_colourrect__" targetProperty="Colour" initialValue="tl:FFFF0000 tr:FFFF0000 bl:FFFF0000 br:FFFF0000" redrawOnWrite="true"/>
+		<PropertyLinkDefinition name="Colour" widget="__auto_colourrect__" targetProperty="Colour" initialValue="tl:FFFF0000 tr:FFFF0000 bl:FFFF0000 br:FFFF0000" redrawOnWrite="true" type="ColourRect"/>
 
 		<Child type="Vanilla/FrameColourRect" nameSuffix="__auto_colourrect__">
 			<Area>
@@ -536,7 +536,7 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/ColourPickerControls">
-		<PropertyDefinition name="ColourPickerCursorStyle" initialValue="Vanilla/StaticImage" />
+		<PropertyDefinition name="ColourPickerCursorStyle" initialValue="Vanilla/StaticImage" type="String" />
 		<PropertyDefinition name="ColourPickerCursorImage" initialValue="Vanilla-Images/ColourPickerCursor" type="Image*"/>
 		<PropertyDefinition name="BackgroundColours" initialValue="tl:D3FFFFFF tr:D3FFFFFF bl:D3FFFFFF br:D3FFFFFF" redrawOnWrite="true" type="ColourRect"/>
 		<PropertyDefinition name="ColourPickerImageSliderWidth" initialValue="20" redrawOnWrite="true" type="uint"/>
