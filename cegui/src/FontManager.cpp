@@ -85,7 +85,7 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
                                       XMLResourceExistsAction action)
 {
 #ifdef CEGUI_HAS_FREETYPE
-    Logger::getSingleton().logEvent("Attempting to create FreeType font '" +
+    CEGUI_LOGINSANE("Attempting to create FreeType font '" +
         font_name + "' using font file '" + font_filename + "'.");
 
     // create new object ahead of time
@@ -111,7 +111,7 @@ Font& FontManager::createPixmapFont(const String& font_name,
                                     const float native_vert_res,
                                     XMLResourceExistsAction action)
 {
-    Logger::getSingleton().logEvent("Attempting to create Pixmap font '" +
+    CEGUI_LOGINSANE("Attempting to create Pixmap font '" +
         font_name + "' using imageset file '" + imageset_filename + "'.");
 
     // create new object ahead of time
