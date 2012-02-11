@@ -4,6 +4,8 @@
     <Imageset Filename="AlfiskoSkin.imageset" />
     <LookNFeel Filename="AlfiskoSkin.looknfeel" />
     <WindowRendererSet Filename="CEGUIFalagardWRBase" />
+
+    <FalagardMapping WindowType="AlfiskoSkin/Label" TargetType="DefaultWindow" Renderer="Falagard/Default" LookNFeel="AlfiskoSkin/Label" />
     <FalagardMapping WindowType="AlfiskoSkin/Button" TargetType="CEGUI/PushButton" Renderer="Falagard/Button" LookNFeel="AlfiskoSkin/Button" />
     <FalagardMapping WindowType="AlfiskoSkin/ImageButton" TargetType="CEGUI/PushButton" Renderer="Falagard/Button" LookNFeel="AlfiskoSkin/ImageButton" />
     <FalagardMapping WindowType="AlfiskoSkin/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="AlfiskoSkin/RadioButton" />
