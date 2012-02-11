@@ -120,6 +120,11 @@ void ItemEntry::onSelectionChanged(WindowEventArgs& e)
     fireEvent(EventSelectionChanged, e, EventNamespace);
 }
 
+bool ItemEntry::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const ItemEntryWindowRenderer*>(renderer) != 0;
+}
+
 /*************************************************************************
     Handle 'MouseClicked' event
 *************************************************************************/

@@ -3163,11 +3163,14 @@ protected:
     \brief
         Function used in checking if a WindowRenderer is valid for this window.
 
+    \param renderer
+    	Window renderer that will be checked (it can be null!)
+
     \return
         Returns true if the given WindowRenderer class name is valid for this window.
         False if not.
     */
-    virtual bool validateWindowRenderer(const String& name) const;
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     /*!
     \brief

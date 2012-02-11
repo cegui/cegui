@@ -201,10 +201,7 @@ protected:
 		Implementation Functions
 	*************************************************************************/
     // validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "ItemEntry");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     /*************************************************************************
         New Event Handlers

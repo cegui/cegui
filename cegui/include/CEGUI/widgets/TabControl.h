@@ -416,10 +416,7 @@ protected:
     int writeChildWindowsXML(XMLSerializer& xml_stream) const;
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "TabControl");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     /*!
     \brief

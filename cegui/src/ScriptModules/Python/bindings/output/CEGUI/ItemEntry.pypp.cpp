@@ -39,16 +39,16 @@ struct ItemEntry_wrapper : CEGUI::ItemEntry, bp::wrapper< CEGUI::ItemEntry > {
         CEGUI::ItemEntry::onSelectionChanged( boost::ref(e) );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::ItemEntry::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::ItemEntry::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::ItemEntry::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::ItemEntry::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual void addChild_impl( ::CEGUI::Element * element ){
@@ -1455,12 +1455,12 @@ void register_ItemEntry_class(){
         }
         { //::CEGUI::ItemEntry::validateWindowRenderer
         
-            typedef bool ( ItemEntry_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( ItemEntry_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             ItemEntry_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &ItemEntry_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "*************************************************************************\n\
                     Abstract Implementation Functions\n\
                 *************************************************************************\n\

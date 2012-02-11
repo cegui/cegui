@@ -323,16 +323,16 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         return CEGUI::MultiLineEditbox::performPaste( boost::ref(clipboard) );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::MultiLineEditbox::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::MultiLineEditbox::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::MultiLineEditbox::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::MultiLineEditbox::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual void addChild_impl( ::CEGUI::Element * element ){
@@ -2489,12 +2489,12 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::MultiLineEditbox::validateWindowRenderer
         
-            typedef bool ( MultiLineEditbox_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( MultiLineEditbox_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             MultiLineEditbox_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &MultiLineEditbox_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "validate window renderer\n" );
         
         }

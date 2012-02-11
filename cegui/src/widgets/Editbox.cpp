@@ -832,6 +832,12 @@ void Editbox::handleEnd(uint sysKeys)
 }
 
 //----------------------------------------------------------------------------//
+bool Editbox::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const EditboxWindowRenderer*>(renderer) != 0;
+}
+
+//----------------------------------------------------------------------------//
 void Editbox::onReadOnlyChanged(WindowEventArgs& e)
 {
     invalidate();

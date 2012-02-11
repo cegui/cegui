@@ -1527,6 +1527,10 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 	++e.handled;
 }
 
+bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != 0;
+}
 
 /*************************************************************************
 	Handler called when the read-only state of the edit box changes

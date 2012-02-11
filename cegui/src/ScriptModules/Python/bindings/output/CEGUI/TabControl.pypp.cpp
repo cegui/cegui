@@ -211,16 +211,16 @@ struct TabControl_wrapper : CEGUI::TabControl, bp::wrapper< CEGUI::TabControl > 
         CEGUI::TabControl::selectTab_impl( boost::python::ptr(wnd) );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::TabControl::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::TabControl::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::TabControl::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::TabControl::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual int writeChildWindowsXML( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -2132,12 +2132,12 @@ void register_TabControl_class(){
         }
         { //::CEGUI::TabControl::validateWindowRenderer
         
-            typedef bool ( TabControl_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( TabControl_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             TabControl_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &TabControl_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "validate window renderer\n" );
         
         }

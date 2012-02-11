@@ -1447,10 +1447,7 @@ protected:
 	bool	resetList_impl(void);
 
     // overrides function in base class.
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "MultiColumnList");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     // overrides function in base class.
     int writePropertiesXML(XMLSerializer& xml_stream) const;
