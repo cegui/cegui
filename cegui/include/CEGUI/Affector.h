@@ -92,6 +92,15 @@ public:
 
     /*!
     \brief
+        Retrieves index with which this affector is retrievable in parent Animation
+
+    \note
+        The index is only valid as long as the list of affectors is unchanged in animation!
+    */
+    size_t getIdxInParent() const;
+
+    /*!
+    \brief
         Sets the application method
 
     \par

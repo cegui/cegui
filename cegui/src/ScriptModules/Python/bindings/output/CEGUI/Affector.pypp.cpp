@@ -108,6 +108,22 @@ void register_Affector_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Affector::getIdxInParent
+        
+            typedef ::size_t ( ::CEGUI::Affector::*getIdxInParent_function_type )(  ) const;
+            
+            Affector_exposer.def( 
+                "getIdxInParent"
+                , getIdxInParent_function_type( &::CEGUI::Affector::getIdxInParent )
+                , "*!\n\
+                \n\
+                    Retrieves index with which this affector is retrievable in parent Animation\n\
+            \n\
+                \note\n\
+                    The index is only valid as long as the list of affectors is unchanged in animation!\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Affector::getInterpolator
         
             typedef ::CEGUI::Interpolator * ( ::CEGUI::Affector::*getInterpolator_function_type )(  ) const;
