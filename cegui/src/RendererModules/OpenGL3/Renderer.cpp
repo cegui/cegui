@@ -65,7 +65,7 @@ namespace CEGUI
 #   define APIENTRY
 #endif
 //! Function to perform extensions initialisation.
-void initialiseGLExtensions();
+static void initialiseGLExtensions();
 //! Dummy function for if real ones are not present (saves testing each render)
 void APIENTRY activeTextureDummy(GLenum) {}
 
