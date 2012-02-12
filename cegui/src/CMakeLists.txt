@@ -38,14 +38,7 @@ if (NOT CEGUI_USE_MINIBIDI)
     list (REMOVE_ITEM CORE_SOURCE_FILES MinibidiVisualMapping.cpp)
 endif ()
 
-if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
-    list (APPEND CORE_SOURCE_FILES minizip/unzip.cpp)
-    list (APPEND CORE_SOURCE_FILES minizip/ioapi.cpp)
-
-    if (WIN32)
-        list (APPEND CORE_SOURCE_FILES minizip/iowin32.cpp)
-    endif()
-else()
+if (NOT CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
     list (REMOVE_ITEM CORE_SOURCE_FILES MinizipResourceProvider.cpp)
 endif()
 
@@ -74,7 +67,7 @@ if (CEGUI_USE_FRIBIDI)
 endif ()
 
 if (CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} ZLIB)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} MINIZIP)
 endif ()
 
 if (WIN32)
