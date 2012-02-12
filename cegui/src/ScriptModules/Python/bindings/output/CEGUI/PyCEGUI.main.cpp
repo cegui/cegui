@@ -110,6 +110,8 @@
 
 #include "EventSet.pypp.hpp"
 
+#include "Exception.pypp.hpp"
+
 #include "FalagardComponentBase.pypp.hpp"
 
 #include "FalagardMappingIterator.pypp.hpp"
@@ -688,6 +690,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Event_class();
 
     register_EventLinkDefinition_class();
+
+    register_Exception_class();
 
     register_FalagardComponentBase_class();
 

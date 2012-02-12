@@ -135,16 +135,16 @@ struct Slider_wrapper : CEGUI::Slider, bp::wrapper< CEGUI::Slider > {
         CEGUI::Slider::updateThumb( );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::Slider::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::Slider::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::Slider::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::Slider::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual void addChild_impl( ::CEGUI::Element * element ){
@@ -1682,12 +1682,12 @@ void register_Slider_class(){
         }
         { //::CEGUI::Slider::validateWindowRenderer
         
-            typedef bool ( Slider_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( Slider_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             Slider_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &Slider_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "validate window renderer\n" );
         
         }

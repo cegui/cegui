@@ -647,6 +647,11 @@ void ItemListBase::sortList(bool relayout)
     }
 }
 
+bool ItemListBase::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const ItemListBaseWindowRenderer*>(renderer) != 0;
+}
+
 /************************************************************************
     Get the real function pointer to use for the sorting operation
 ************************************************************************/

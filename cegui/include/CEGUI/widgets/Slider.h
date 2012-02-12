@@ -341,10 +341,7 @@ protected:
 	bool	handleThumbTrackEnded(const EventArgs& e);
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "Slider");
-    }
+	virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
 
 	/*************************************************************************

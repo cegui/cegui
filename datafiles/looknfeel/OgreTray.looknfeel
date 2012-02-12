@@ -43,8 +43,8 @@
 -->
     <WidgetLook name="OgreTray/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FFe5ffb2" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned"  type="VertFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned"  type="HorzFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
         <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -1167,8 +1167,8 @@
 -->
     <WidgetLook name="OgreTray/MiniTray">
         <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VertFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
         <ImagerySection name="frame">
             <FrameComponent>
                 <Area>
@@ -2015,8 +2015,8 @@
 -->
     <WidgetLook name="OgreTray/Group">
         <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="TopAligned" type="VertFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="TopAligned" type="VerticalTextFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
         <NamedArea name="inner_rect">
             <Area>
                 <Dim type="LeftEdge" >
@@ -2441,8 +2441,8 @@
 -->
     <WidgetLook name="OgreTray/StaticImage">
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="image_withframe">
@@ -2522,8 +2522,8 @@
 -->
     <WidgetLook name="OgreTray/AltStaticImage">
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
         <PropertyDefinition name="FrameEnabled" initialValue="True" redrawOnWrite="true" type="bool"/>
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image*"/>
         <ImagerySection name="image">

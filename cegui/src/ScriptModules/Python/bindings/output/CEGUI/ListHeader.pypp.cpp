@@ -195,16 +195,16 @@ struct ListHeader_wrapper : CEGUI::ListHeader, bp::wrapper< CEGUI::ListHeader > 
         return CEGUI::ListHeader::segmentSizedHandler( boost::ref(e) );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::ListHeader::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::ListHeader::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::ListHeader::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::ListHeader::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual void addChild_impl( ::CEGUI::Element * element ){
@@ -2579,12 +2579,12 @@ void register_ListHeader_class(){
         }
         { //::CEGUI::ListHeader::validateWindowRenderer
         
-            typedef bool ( ListHeader_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( ListHeader_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             ListHeader_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &ListHeader_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "validate window renderer\n" );
         
         }

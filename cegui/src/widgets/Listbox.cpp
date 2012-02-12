@@ -1145,6 +1145,11 @@ Rectf Listbox::getListRenderArea() const
     }
 }
 
+bool Listbox::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const ListboxWindowRenderer*>(renderer) != 0;
+}
+
 /*************************************************************************
     Function to resort the list data.
 *************************************************************************/

@@ -100,7 +100,7 @@ void Animation_xmlHandler::elementStartLocal(const String& element,
 {
     if (element == ElementName)
     {
-        Logger::getSingleton().logEvent("===== Begin Animations parsing =====");
+        CEGUI_LOGINSANE("===== Begin Animations parsing =====");
     }
     else if (element == AnimationDefinitionHandler::ElementName)
     {
@@ -116,7 +116,7 @@ void Animation_xmlHandler::elementEndLocal(const String& element)
 {
     if (element == ElementName)
     {
-        Logger::getSingleton().logEvent("===== End Animations parsing =====");
+        CEGUI_LOGINSANE("===== End Animations parsing =====");
     }
     else
         Logger::getSingleton().logEvent("Animation_xmlHandler::elementEnd: "
@@ -133,7 +133,7 @@ AnimationDefinitionHandler::AnimationDefinitionHandler(
     const String anim_name(name_prefix +
                            attributes.getValueAsString(NameAttribute));
 
-    Logger::getSingleton().logEvent(
+    CEGUI_LOGINSANE(
         "Defining animation named: " +
         anim_name +
         "  Duration: " +
@@ -194,7 +194,7 @@ AnimationAffectorHandler::AnimationAffectorHandler(
                                             Animation& anim) :
     d_affector(0)
 {
-    Logger::getSingleton().logEvent(
+    CEGUI_LOGINSANE(
         "\tAdding affector for property: " +
         attributes.getValueAsString(TargetPropertyAttribute) +
         "  Interpolator: " +
@@ -267,7 +267,7 @@ AnimationKeyFrameHandler::AnimationKeyFrameHandler(
         log_event.append("  Progression: " +
             attributes.getValueAsString(ProgressionAttribute, ProgressionLinear));
 
-    Logger::getSingleton().logEvent(log_event);
+    CEGUI_LOGINSANE(log_event);
 
     KeyFrame::Progression progression;
     if (progressionStr == ProgressionDiscrete)
@@ -322,7 +322,7 @@ AnimationSubscriptionHandler::AnimationSubscriptionHandler(
                                         const XMLAttributes& attributes,
                                         Animation& anim)
 {
-    Logger::getSingleton().logEvent(
+    CEGUI_LOGINSANE(
         "\tAdding subscription to event: " +
         attributes.getValueAsString(EventAttribute) + 
         "  Action: " +

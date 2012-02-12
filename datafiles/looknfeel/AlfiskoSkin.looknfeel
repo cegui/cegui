@@ -1,8 +1,41 @@
 <?xml version="1.0" ?>
 <Falagard version="7">
+    <WidgetLook name="AlfiskoSkin/Label">
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <ImagerySection name="Label">
+            <TextComponent>
+                <Area>
+	            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+	            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+	            <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+	            <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
     <WidgetLook name="AlfiskoSkin/Button">
-        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VertFormatting"/>
-        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorzFormatting"/>
+        <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
+        <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -217,8 +250,8 @@
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
-        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
         <ImagerySection name="normal">
             <ImageryComponent>
                 <ImageProperty name="NormalImage" />
@@ -2271,10 +2304,5 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-
-
-
 </Falagard>
-
-
 

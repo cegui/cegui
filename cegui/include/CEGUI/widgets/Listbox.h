@@ -676,10 +676,7 @@ protected:
 
 
     // validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "Listbox");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     /*!
     \brief

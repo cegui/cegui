@@ -683,6 +683,11 @@ int TabControl::writeChildWindowsXML(XMLSerializer& xml_stream) const
     return childOutputCount;
 }
 
+bool TabControl::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const TabControlWindowRenderer*>(renderer) != 0;
+}
+
 /*************************************************************************
     create and return a pointer to a TabButton widget for use as a
     clickable tab header

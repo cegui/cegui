@@ -144,6 +144,10 @@ void Slider::setCurrentValue(float value)
 
 }
 
+bool Slider::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const SliderWindowRenderer*>(renderer) != 0;
+}
 
 /*************************************************************************
 	Handler triggered when the slider value changes
