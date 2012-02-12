@@ -76,7 +76,7 @@ size_t Affector::getIdxInParent() const
         ++i;
     }
 
-    throw UnknownObjectException("Affector::getIdxInParent(): Affector wasn't found in parent, therefore its index is unknown!");
+    CEGUI_THROW(UnknownObjectException("Affector::getIdxInParent(): Affector wasn't found in parent, therefore its index is unknown!"));
 }
 
 //----------------------------------------------------------------------------//

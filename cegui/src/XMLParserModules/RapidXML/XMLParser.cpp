@@ -89,10 +89,9 @@ RapidXMLDocument::RapidXMLDocument(XMLHandler& handler,
     {
         // error detected, cleanup out buffers
         delete[] buf;
-        // throw exception
-        throw FileIOException("RapidXMLParser: an error occurred while "
+        CEGUI_THROW(FileIOException("RapidXMLParser: an error occurred while "
                               "parsing the XML data - check it for "
-                              "potential errors!.");
+                              "potential errors!."));
     }
 
     rapidxml::xml_node<>* currElement = doc.first_node();

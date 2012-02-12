@@ -137,9 +137,9 @@ void OpenGLESTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System (needed to access ImageCodec)
     System* sys = System::getSingletonPtr();
     if (!sys)
-        throw RendererException("OpenGLESTexture::loadFromFile - "
-                                "CEGUI::System object has not been created: "
-                                "unable to access ImageCodec.");
+        CEGUI_THROW(RendererException("OpenGLESTexture::loadFromFile - "
+                                      "CEGUI::System object has not been created: "
+                                      "unable to access ImageCodec."));
 
     Texture* res = sys->getImageCodec().load(texFile, this);
 
@@ -149,9 +149,9 @@ void OpenGLESTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        throw RendererException("OpenGLESTexture::loadFromFile - " +
-                                sys->getImageCodec().getIdentifierString()+
-                                " failed to load image '" + filename + "'.");
+        CEGUI_THROW(RendererException("OpenGLESTexture::loadFromFile - " +
+                                      sys->getImageCodec().getIdentifierString()+
+                                      " failed to load image '" + filename + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -269,8 +269,8 @@ void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
         // make sure size is within boundaries
         GLfloat maxSize = static_cast<GLfloat>(d_owner.getMaxTextureSize());
         if ((size.d_width > maxSize) || (size.d_height > maxSize))
-            throw RendererException(
-                "OpenGLESTexture::setTextureSize_impl: size too big");
+            CEGUI_THROW(RendererException(
+                        "OpenGLESTexture::setTextureSize_impl: size too big"));
 
         // save old texture binding
         GLuint old_tex;

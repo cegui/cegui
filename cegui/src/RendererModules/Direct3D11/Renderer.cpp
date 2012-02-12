@@ -364,8 +364,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
 	if (FAILED(D3DX11CreateEffectFromMemory(ShaderBlob->GetBufferPointer(), ShaderBlob->GetBufferSize(),0, 
 		d_device.d_device, &d_effect) ))
 	{
-		std::string msg("Direct3D11Renderer: failed to create effect!");
-		throw RendererException(msg);
+		CEGUI_THROW(RendererException("Direct3D11Renderer: failed to create effect!"));
 	}
 
 	if(ShaderBlob) 

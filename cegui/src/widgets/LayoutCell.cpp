@@ -152,7 +152,7 @@ bool LayoutCell::handleChildAdded(const EventArgs& e)
 {
     if (getChildCount() > 0)
     {
-        throw InvalidRequestException("You can't add more than one widget to a layout cell!");
+        CEGUI_THROW(InvalidRequestException("You can't add more than one widget to a layout cell!"));
     }
 
     //markNeedsLayouting();

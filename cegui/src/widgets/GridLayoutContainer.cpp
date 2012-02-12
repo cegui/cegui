@@ -542,11 +542,11 @@ void GridLayoutContainer::addChild_impl(Element* element)
             if ((d_nextGridX == std::numeric_limits<size_t>::max()) &&
                 (d_nextGridY == std::numeric_limits<size_t>::max()))
             {
-                throw InvalidRequestException(
+                CEGUI_THROW(InvalidRequestException(
                     "GridLayoutContainer::addChild_impl: Unable to add child "
                     "without explicit grid position because auto positioning is "
                     "disabled.  Consider using the "
-                    "GridLayoutContainer::addChildToPosition functions.");
+                    "GridLayoutContainer::addChildToPosition functions."));
             }
 
             idx = mapFromGridToIdx(d_nextGridX, d_nextGridY,
