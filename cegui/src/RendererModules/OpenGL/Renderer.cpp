@@ -70,7 +70,7 @@ namespace CEGUI
 #   define APIENTRY
 #endif
 //! Function to perform extentsions initialisation.
-void initialiseGLExtensions();
+static void initialiseGLExtensions();
 //! Pointer to a function to use as glActiveTexture
 PFNGLACTIVETEXTUREPROC CEGUI_activeTexture;
 //! Pointer to a function to use as glClientActiveTexture
