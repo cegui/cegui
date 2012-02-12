@@ -688,7 +688,7 @@ void initialiseGLExtensions()
 
         CEGUI_THROW(RendererException(err_string.str().c_str()));
     }
-    //Clear the fucking useless error glew produces as of version 1.7.0
+    //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
     glGetError();
 }
 
