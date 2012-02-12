@@ -56,7 +56,6 @@ find_package(Minizip)
 find_package(OpenGL)
 find_package(GLEW)
 find_package(GLM)
-find_package(GLUT)
 find_package(GLFW)
 find_package(DirectXSDK)
 find_package(D3DX11Effects)
@@ -161,8 +160,8 @@ set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is 
     2: Use external fribidi library."
 )
 
-cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer (via GLUT)" TRUE "CEGUI_BUILD_RENDERER_OPENGL;GLUT_FOUND" FALSE )
-cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer (via glfw)" TRUE "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" TRUE "CEGUI_BUILD_RENDERER_OPENGL;GLFW_FOUND" FALSE )
+cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer" TRUE "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" FALSE )
 cmake_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" TRUE "CEGUI_BUILD_RENDERER_OGRE;OIS_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" TRUE "CEGUI_BUILD_RENDERER_IRRLICHT" FALSE )

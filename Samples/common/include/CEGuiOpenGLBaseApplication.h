@@ -28,46 +28,16 @@
 #ifndef _CEGuiOpenGLBaseApplication_h_
 #define _CEGuiOpenGLBaseApplication_h_
 
-#include "CEGuiBaseApplication.h"
-// remove Microsoft idiocy
-#undef max
-#undef min
+#include "CEGuiGLFWSharedBase.h"
 
-class CEGuiOpenGLBaseApplication : public CEGuiBaseApplication
+class CEGuiOpenGLBaseApplication : public CEGuiGLFWSharedBase
 {
 public:
-    //! Constructor.
     CEGuiOpenGLBaseApplication();
-
-    //! Destructor.
     ~CEGuiOpenGLBaseApplication();
 
 protected:
-    // implementation of base class abstract methods.
-    bool execute_impl(CEGuiSample* sampleApp);
-    void cleanup_impl();
-    void beginRendering(const float elapsed);
-    void endRendering();
-
-    /*************************************************************************
-        Implementation Methods
-    *************************************************************************/
-    static void drawFrame(void);
-    static void reshape(int w, int h);
-    static void mouseMotion(int x, int y);
-    static void mouseButton(int button, int state, int x, int y);
-    static void keyChar(unsigned char key, int x, int y);
-    static void keySpecial(int key, int x, int y);
-    static void handleModifierKeys(void);
-    static void handleMouseWheel_freeglut(int wheel, int dir, int x, int y);
-
-    /*************************************************************************
-        Data fields
-    *************************************************************************/
-    static CEGuiOpenGLBaseApplication* d_appInstance;
-    static int  d_frameTime;
-    static int  d_modifiers;
+    static void setGLFWWindowCreationHints();
 };
-
 
 #endif  // end of guard _CEGuiOpenGLBaseApplication_h_

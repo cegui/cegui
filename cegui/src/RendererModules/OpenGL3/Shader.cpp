@@ -31,6 +31,7 @@
 #include <GL/glew.h>
 
 #include <sstream>
+#include <iostream>
 
 namespace CEGUI
 {
@@ -271,7 +272,10 @@ void my_get_errors(const char *location)
             stringStream << "GL_ERROR: Unknown error." << endl;
         }
 
-        CEGUI::Logger::getSingleton().logEvent(stringStream.str());
+        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
+            logger->logEvent(stringStream.str());
+        else
+            std::cerr << stringStream << std::endl;
     }
 }
 

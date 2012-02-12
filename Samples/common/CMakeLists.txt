@@ -6,6 +6,12 @@ set( CORE_SOURCE_FILES
     ./src/CEGuiSample.cpp
 )
 
+if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiGLFWSharedBase.cpp
+    )
+endif()
+
 if (CEGUI_SAMPLES_USE_OPENGL)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiOpenGLBaseApplication.cpp
@@ -80,21 +86,16 @@ endif()
 
 cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
 
-if (CEGUI_SAMPLES_USE_OPENGL)
+if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} GLUT)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
+    cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
+endif()
 
-    # This works around an issue in the prebuilt deps and can be removed once those are fixed :)
-    if (WIN32)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut.lib)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut_static.lib)
-    endif()
+if (CEGUI_SAMPLES_USE_OPENGL)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
 endif()
 
 if (CEGUI_SAMPLES_USE_OPENGL3)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL3_RENDERER_LIBNAME})
 endif()
 

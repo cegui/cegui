@@ -28,51 +28,16 @@ author:     Paul D Turner
 #ifndef _CEGuiOpenGL3BaseApplication_h_
 #define _CEGuiOpenGL3BaseApplication_h_
 
-#include "CEGuiBaseApplication.h"
-#include "CEGUI/MouseCursor.h"
-#include <GL/glfw.h>
+#include "CEGuiGLFWSharedBase.h"
 
-class CEGuiOpenGL3BaseApplication : public CEGuiBaseApplication
+class CEGuiOpenGL3BaseApplication : public CEGuiGLFWSharedBase
 {
 public:
-    //! Constructor.
     CEGuiOpenGL3BaseApplication();
-
-    //! Destructor.
     ~CEGuiOpenGL3BaseApplication();
 
 protected:
-    // implementation of base class abstract methods.
-    bool execute_impl(CEGuiSample* sampleApp);
-    void cleanup_impl();
-    void beginRendering(const float elapsed);
-    void endRendering();
-
-    /*************************************************************************
-    Implementation Methods
-    *************************************************************************/
-    static void initGLFW();
-
-    static void drawFrame(void);
-
-    static void GLFWCALL glfwKeyCallback(int key, int action);
-    static void GLFWCALL glfwCharCallback(int character, int action);
-    static void GLFWCALL glfwMouseButtonCallback(int key, int action);
-    static void GLFWCALL glfwMouseWheelCallback(int position);
-    static void GLFWCALL glfwMousePosCallback(int x, int y );
-
-    static void GLFWCALL glfwWindowResizeCallback(int width, int height);
-
-    static unsigned int GlfwToCeguiKey(int glfwKey);
-    static CEGUI::MouseButton GlfwToCeguiMouseButton(int glfwButton);
-
-    /*************************************************************************
-    Data fields
-    *************************************************************************/
-    static CEGuiOpenGL3BaseApplication* d_appInstance;
-    static double  d_frameTime;
-    static int  d_modifiers;
+    static void setGLFWWindowCreationHints();
 };
-
 
 #endif  // end of guard _CEGuiOpenGL3BaseApplication_h_
