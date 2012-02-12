@@ -695,9 +695,9 @@ namespace CEGUI
         ExpressionDim base(attributes.getValueAsString(ValueAttribute, "0.0"));
         doBaseDimStart(&base);
 #else
-        throw InvalidRequestException(
+        CEGUI_THROW(InvalidRequestException(
             "Falagard_xmlHandler::elementExpressionDimStart: CEGUI was built "
-            "without ExpressionDim support.");
+            "without ExpressionDim support."));
 #endif
     }
 
