@@ -1202,9 +1202,11 @@ void Iterator_previous(::CEGUI::%s& t)
 
 def configureExceptions(mb):
     exception = mb.namespace("CEGUI").class_("Exception")
-    # todo: do we want the exception or just the message?
-    #exception.include()
-    exception.translate_exception_to_string("PyExc_RuntimeError",  "exc.getMessage().c_str()")
+    exception.include()
+    exception.mem_funs().exclude()
+    exception.mem_fun("setStdErrEnabled").include()
+    exception.mem_fun("isStdErrEnabled").include()
+    exception.translate_exception_to_string("PyExc_RuntimeError", "exc.what()")
 
 def generateCode():
     ### disable unnecessary warnings

@@ -94,7 +94,33 @@ public:
     // override from std::exception.
     const char* what() const throw();
 
+    /*!
+    \brief
+    	Sets whether every exception construction should output to stderr
+
+    \note
+    	The default is true, all constructed exceptions output to stderr
+
+    	You should only set it to false if you:
+    	1) Know where your log is
+    	2) Know what the log is for
+    	3) Know how to use the info that's in the log
+    */
+    static void setStdErrEnabled(bool enabled);
+
+    /*!
+    \brief
+    	Checks whether newly constructed exceptions will output to stderr
+
+   	\see
+   		Exception::setStdErrEnabled
+    */
+    static bool isStdErrEnabled();
+
 protected:
+    //! if this is true, newly constructed exceptions will output to stderr
+    static bool d_stdErrEnabled;
+
     /*!
     \brief
         Protected constructor that prevents instantiations (users should employ

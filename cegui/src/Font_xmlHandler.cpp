@@ -140,7 +140,7 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
     const String font_type(attributes.getValueAsString(FontTypeAttribute));
 
     // log the start of font creation.
-    Logger::getSingleton().logEvent(
+    CEGUI_LOGINSANE(
         "Started creation of Font from XML specification:");
 
     if (font_type == FontTypeFreeType)
@@ -189,13 +189,12 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
 #ifdef CEGUI_HAS_FREETYPE
-    Logger& logger(Logger::getSingleton());
-    logger.logEvent("---- CEGUI font name: " + name);
-    logger.logEvent("----       Font type: FreeType");
-    logger.logEvent("----     Source file: " + filename +
+    CEGUI_LOGINSANE("---- CEGUI font name: " + name);
+    CEGUI_LOGINSANE("----       Font type: FreeType");
+    CEGUI_LOGINSANE("----     Source file: " + filename +
                     " in resource group: " + (resource_group.empty() ?
                                               "(Default)" : resource_group));
-    logger.logEvent("---- Real point size: " +
+    CEGUI_LOGINSANE("---- Real point size: " +
             attributes.getValueAsString(FontSizeAttribute, "12"));
 
     d_font = CEGUI_NEW_AO FreeTypeFont(name,
@@ -219,12 +218,10 @@ void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
     const String filename(attributes.getValueAsString(FontFilenameAttribute));
     const String resource_group(attributes.getValueAsString(FontResourceGroupAttribute));
 
-    Logger& logger(Logger::getSingleton());
-    logger.logEvent("---- CEGUI font name: " + name);
-    logger.logEvent("----       Font type: Pixmap");
-    logger.logEvent("----     Source file: " + filename +
-                    " in resource group: " + (resource_group.empty() ?
-                                              "(Default)" : resource_group));
+    CEGUI_LOGINSANE("---- CEGUI font name: " + name);
+    CEGUI_LOGINSANE("----       Font type: Pixmap");
+    CEGUI_LOGINSANE("----     Source file: " + filename +
+                    " in resource group: " + (resource_group.empty() ? "(Default)" : resource_group));
 
     d_font = CEGUI_NEW_AO PixmapFont(name, filename, resource_group,
         attributes.getValueAsBool(FontAutoScaledAttribute, false),

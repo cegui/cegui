@@ -121,8 +121,8 @@
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
-        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
 
         <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="label">
@@ -737,9 +737,9 @@
     </WidgetLook>
 
     <WidgetLook name="Vanilla/StaticImage">
-		<PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-		<PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting" />
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting" />
+        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="image_withframe">
@@ -1341,7 +1341,7 @@
 		<PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
 		<PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
 		<PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
-		<PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="Colou" />
+		<PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect" />
 		<ImagerySection name="label">
 			<TextComponent>
 				<Area>

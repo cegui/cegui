@@ -491,10 +491,7 @@ protected:
     void handleEnd(uint sysKeys);
 
     //! validate window renderer
-    virtual bool validateWindowRenderer(const String& name) const
-    {
-        return (name == "Editbox");
-    }
+    virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
     /*!
     \brief

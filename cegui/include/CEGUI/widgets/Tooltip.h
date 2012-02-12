@@ -289,10 +289,7 @@ namespace CEGUI
         void switchToFadeOutState(void);
 
         // validate window renderer
-        virtual bool validateWindowRenderer(const String& name) const
-        {
-            return (name == "Tooltip");
-        }
+        virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
         /*************************************************************************
             Event triggers

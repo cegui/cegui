@@ -279,16 +279,16 @@ struct MultiColumnList_wrapper : CEGUI::MultiColumnList, bp::wrapper< CEGUI::Mul
         CEGUI::MultiColumnList::setSelectForItemsInRow( row_idx, state );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::MultiColumnList::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::MultiColumnList::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::MultiColumnList::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::MultiColumnList::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual int writePropertiesXML( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -3656,12 +3656,12 @@ void register_MultiColumnList_class(){
         }
         { //::CEGUI::MultiColumnList::validateWindowRenderer
         
-            typedef bool ( MultiColumnList_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( MultiColumnList_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             MultiColumnList_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &MultiColumnList_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "overrides function in base class.\n" );
         
         }

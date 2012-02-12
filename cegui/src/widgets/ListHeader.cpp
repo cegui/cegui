@@ -753,6 +753,10 @@ void ListHeader::layoutSegments(void)
 
 }
 
+bool ListHeader::validateWindowRenderer(const WindowRenderer* renderer) const
+{
+	return dynamic_cast<const ListHeaderWindowRenderer*>(renderer) != 0;
+}
 
 /*************************************************************************
 	Handler called when the sort column is changed.

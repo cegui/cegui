@@ -1195,16 +1195,16 @@ struct Titlebar_wrapper : CEGUI::Titlebar, bp::wrapper< CEGUI::Titlebar > {
         CEGUI::Window::updateSelf( elapsed );
     }
 
-    virtual bool validateWindowRenderer( ::CEGUI::String const & name ) const {
+    virtual bool validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
         if( bp::override func_validateWindowRenderer = this->get_override( "validateWindowRenderer" ) )
-            return func_validateWindowRenderer( boost::ref(name) );
+            return func_validateWindowRenderer( boost::python::ptr(renderer) );
         else{
-            return this->CEGUI::Window::validateWindowRenderer( boost::ref(name) );
+            return this->CEGUI::Window::validateWindowRenderer( boost::python::ptr(renderer) );
         }
     }
     
-    virtual bool default_validateWindowRenderer( ::CEGUI::String const & name ) const {
-        return CEGUI::Window::validateWindowRenderer( boost::ref(name) );
+    virtual bool default_validateWindowRenderer( ::CEGUI::WindowRenderer const * renderer ) const {
+        return CEGUI::Window::validateWindowRenderer( boost::python::ptr(renderer) );
     }
 
     virtual bool writeAutoChildWindowXML( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -3169,15 +3169,18 @@ void register_Titlebar_class(){
         }
         { //::CEGUI::Window::validateWindowRenderer
         
-            typedef bool ( Titlebar_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( Titlebar_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;
             
             Titlebar_exposer.def( 
                 "validateWindowRenderer"
                 , validateWindowRenderer_function_type( &Titlebar_wrapper::default_validateWindowRenderer )
-                , ( bp::arg("name") )
+                , ( bp::arg("renderer") )
                 , "*!\n\
                 \n\
                     Function used in checking if a WindowRenderer is valid for this window.\n\
+            \n\
+                @param renderer\n\
+                  Window renderer that will be checked (it can be null!)\n\
             \n\
                 @return\n\
                     Returns true if the given WindowRenderer class name is valid for this window.\n\
