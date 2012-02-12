@@ -83,6 +83,15 @@ public:
 
     /*!
     \brief
+        Retrieves index with which this keyframe is retrievable in parent Affector
+
+    \note
+        The index is only valid as long as the list of affectors is unchanged in animation!
+    */
+    size_t getIdxInParent() const;
+
+    /*!
+    \brief
         Moves this keyframe to a new given position
     */
     void moveToPosition(float newPosition);

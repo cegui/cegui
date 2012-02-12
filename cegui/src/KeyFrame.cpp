@@ -33,6 +33,7 @@
 #include "CEGUI/Animation_xmlHandler.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/PropertyHelper.h"
+#include "CEGUI/Exceptions.h"
 #include <cmath>
 
 // Start of CEGUI namespace section
@@ -55,6 +56,26 @@ KeyFrame::~KeyFrame(void)
 Affector* KeyFrame::getParent() const
 {
     return d_parent;
+}
+
+//----------------------------------------------------------------------------//
+size_t KeyFrame::getIdxInParent() const
+{
+    const Affector* parent = getParent();
+    assert(getParent() && "No parent, no index in parent!");
+
+    size_t i = 0;
+    while (i < parent->getNumKeyFrames())
+    {
+        if (parent->getKeyFrameAtIdx(i) == this)
+        {
+            return i;
+        }
+
+        ++i;
+    }
+
+    throw UnknownObjectException("KeyFrame::getIdxInParent(): KeyFrame wasn't found in parent, therefore its index is unknown!");
 }
 
 //----------------------------------------------------------------------------//

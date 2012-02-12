@@ -34,6 +34,22 @@ void register_KeyFrame_class(){
             *\n" );
         
         }
+        { //::CEGUI::KeyFrame::getIdxInParent
+        
+            typedef ::size_t ( ::CEGUI::KeyFrame::*getIdxInParent_function_type )(  ) const;
+            
+            KeyFrame_exposer.def( 
+                "getIdxInParent"
+                , getIdxInParent_function_type( &::CEGUI::KeyFrame::getIdxInParent )
+                , "*!\n\
+                \n\
+                    Retrieves index with which this keyframe is retrievable in parent Affector\n\
+            \n\
+                \note\n\
+                    The index is only valid as long as the list of affectors is unchanged in animation!\n\
+                *\n" );
+        
+        }
         { //::CEGUI::KeyFrame::getParent
         
             typedef ::CEGUI::Affector * ( ::CEGUI::KeyFrame::*getParent_function_type )(  ) const;

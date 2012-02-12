@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/Affector.h"
 #include "CEGUI/KeyFrame.h"
+#include "CEGUI/Animation.h"
 #include "CEGUI/AnimationManager.h"
 #include "CEGUI/Interpolator.h"
 #include "CEGUI/PropertySet.h"
@@ -56,6 +57,26 @@ Affector::~Affector(void)
     {
         destroyKeyFrame(getKeyFrameAtIdx(0));
     }
+}
+
+//----------------------------------------------------------------------------//
+size_t Affector::getIdxInParent() const
+{
+    const Animation* parent = getParent();
+    assert(getParent() && "No parent, no index in parent!");
+
+    size_t i = 0;
+    while (i < parent->getNumAffectors())
+    {
+        if (parent->getAffectorAtIdx(i) == this)
+        {
+            return i;
+        }
+
+        ++i;
+    }
+
+    throw UnknownObjectException("Affector::getIdxInParent(): Affector wasn't found in parent, therefore its index is unknown!");
 }
 
 //----------------------------------------------------------------------------//
