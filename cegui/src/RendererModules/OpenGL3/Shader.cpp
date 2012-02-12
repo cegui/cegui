@@ -275,7 +275,7 @@ void my_get_errors(const char *location)
         if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
             logger->logEvent(stringStream.str());
         else
-            std::cerr << stringStream << std::endl;
+            std::cerr << stringStream.str() << std::endl;
     }
 }
 
