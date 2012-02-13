@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
+
 #include "CEGUI/RendererModules/OpenGL3/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
@@ -75,7 +76,7 @@ OpenGL3Texture::OpenGL3Texture(OpenGL3Renderer& owner, const String& name,
 
 //----------------------------------------------------------------------------//
 OpenGL3Texture::OpenGL3Texture(OpenGL3Renderer& owner, const String& name,
-                             unsigned int tex, const Sizef& size) :
+                             GLuint tex, const Sizef& size) :
     d_ogltexture(tex),
     d_size(size),
     d_grabBuffer(0),
@@ -180,7 +181,7 @@ void OpenGL3Texture::loadFromMemory(const void* buffer, const Sizef& buffer_size
     updateCachedScaleValues();
 
     // save old texture binding
-    unsigned int old_tex;
+    GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
     // do the real work of getting the data into the texture
@@ -207,7 +208,7 @@ void OpenGL3Texture::setTextureSize(const Sizef& sz)
             "OpenGL3Texture::setTextureSize: size too big"));
 
     // save old texture binding
-    unsigned int old_tex;
+    GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
     // set texture to required size
@@ -378,13 +379,13 @@ void OpenGL3Texture::cleanupOpenGLTexture()
 }
 
 //----------------------------------------------------------------------------//
-unsigned int OpenGL3Texture::getOpenGLTexture() const
+GLuint OpenGL3Texture::getOpenGLTexture() const
 {
     return d_ogltexture;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Texture::setOpenGLTexture(unsigned int tex, const Sizef& size)
+void OpenGL3Texture::setOpenGLTexture(GLuint tex, const Sizef& size)
 {
     if (d_ogltexture != tex)
     {

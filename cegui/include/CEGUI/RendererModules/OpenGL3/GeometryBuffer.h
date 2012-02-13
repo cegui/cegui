@@ -36,8 +36,6 @@
 #include <utility>
 #include <vector>
 
-#include "glm/glm.hpp"
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -83,7 +81,7 @@ public:
     RenderEffect* getRenderEffect();
 
     //! return the GL modelview matrix used for this buffer.
-    const glm::mat4 getMatrix() const;
+    const mat4Pimpl* getMatrix() const;
 
 protected:
     //! perform batch management operations prior to adding new geometry.
@@ -125,27 +123,27 @@ protected:
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache - we use double because gluUnproject takes double
-    mutable glm::mat4 d_matrix;
+    mutable mat4Pimpl*              d_matrix;
     //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
+    mutable bool                    d_matrixValid;
     //! OpenGL vao used for the vertices
-    unsigned int                    d_verticesVAO;
+    GLuint                          d_verticesVAO;
     //! OpenGL vbo containing all vertex data
-    unsigned int                    d_verticesVBO;
+    GLuint                          d_verticesVBO;
     //! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
-    CEGUI::OpenGL3Shader*&                 d_shader;
+    CEGUI::OpenGL3Shader*&          d_shader;
     //! Position variable location inside the shader, for OpenGL
-    const int                       d_shaderPosLoc;
+    const GLint                     d_shaderPosLoc;
     //! TexCoord variable location inside the shader, for OpenGL
-    const int                       d_shaderTexCoordLoc;
+    const GLint                     d_shaderTexCoordLoc;
     //! Color variable location inside the shader, for OpenGL
-    const int                       d_shaderColourLoc;
+    const GLint                     d_shaderColourLoc;
     //! Matrix uniform location inside the shader, for OpenGL
-    const int                       d_shaderStandardMatrixLoc;
+    const GLint                     d_shaderStandardMatrixLoc;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
     OpenGL3StateChangeWrapper*      d_glStateChanger;
     //! Size of the buffer that is currently in use
-    unsigned int                    d_bufferSize;
+    GLuint                          d_bufferSize;
 };
 
 

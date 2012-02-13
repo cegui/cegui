@@ -25,10 +25,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include <GL/glew.h>
 
 #include "CEGUI/RendererModules/OpenGL3/Shader.h"
 #include "CEGUI/Logger.h"
-#include <GL/glew.h>
+
 
 #include <sstream>
 #include <iostream>
@@ -91,13 +92,13 @@ void OpenGL3Shader::unbind() const
 }
 
 // Query the location of a vertex attribute inside the shader.
-int OpenGL3Shader::getAttribLocation(const std::string &name) const
+GLuint OpenGL3Shader::getAttribLocation(const std::string &name) const
 {
     return glGetAttribLocation(d_program, name.c_str());
 }
 
 // Query the location of a uniform variable inside the shader.
-int OpenGL3Shader::getUniformLocation(const std::string &name) const
+GLuint OpenGL3Shader::getUniformLocation(const std::string &name) const
 {
     return glGetUniformLocation(d_program, name.c_str());
 }
@@ -118,7 +119,7 @@ bool OpenGL3Shader::isCreatedSuccessfully()
 }
 
 
-int OpenGL3Shader::compile (int type, const string &source, const string &fileName)
+GLuint OpenGL3Shader::compile(GLuint type, const string &source, const string &fileName)
 {
     // Create shader object
     checkGLErrors();
@@ -144,9 +145,7 @@ int OpenGL3Shader::compile (int type, const string &source, const string &fileNa
     glCompileShader(shader);
 
     // Check for errors
-
-    int status;
-
+    GLint status;
     glGetShaderiv(shader, GL_COMPILE_STATUS, &status);
 
     if (status != GL_TRUE)
@@ -176,8 +175,7 @@ void OpenGL3Shader::link()
 
     // Check for problems
 
-    int status;
-
+    GLint status;
     glGetProgramiv(d_program, GL_LINK_STATUS, &status);
 
     if (status != GL_TRUE)
@@ -210,7 +208,7 @@ void OpenGL3Shader::link()
 
 #define LOG_BUFFER_SIZE 8096
 
-void OpenGL3Shader::outputProgramLog(int program)
+void OpenGL3Shader::outputProgramLog(GLuint program)
 {
     char logBuffer[LOG_BUFFER_SIZE];
     GLsizei length;
@@ -226,7 +224,7 @@ void OpenGL3Shader::outputProgramLog(int program)
     }
 };
 
-void OpenGL3Shader::outputShaderLog(int shader)
+void OpenGL3Shader::outputShaderLog(GLuint shader)
 {
     char logBuffer[LOG_BUFFER_SIZE];
     GLsizei length;

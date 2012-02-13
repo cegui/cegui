@@ -29,8 +29,9 @@
 #define _CEGUIOpenGL3FBOTextureTarget_h_
 
 #include "CEGUI/RendererModules/OpenGL3/TextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL3/GL.h"
 #include "../../Rect.h"
-#include <GL/glew.h>
+
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

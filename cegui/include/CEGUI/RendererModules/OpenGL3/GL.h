@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   OpenGL3ShaderManager.h
-    created:    Wed, 8th Feb 2012
-    author:     Lukas E Meindl
+    filename:   CEGUIOpenGL.h
+    created:    Fri Jan 23 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,51 +25,19 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifndef _CEGUIOpenGL_h_
+#define _CEGUIOpenGL_h_
 
-#ifndef _CEGUIOpenGL3ShaderManager_h_
-#define _CEGUIOpenGL3ShaderManager_h_
-
-#include <map>
-#include <string>
-#include "CEGUI/RendererModules/OpenGL3/GL.h"
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
+#ifndef __APPLE__
+#   if (defined( __WIN32__ ) || defined( _WIN32 ))
+#       include <windows.h>
+#   endif
+#   include <GL/gl.h>
+#   include <GL/glu.h>
+#else
+#   include <OpenGL/gl.h>
+#   include <OpenGL/glu.h>
 #endif
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-    class OpenGL3Shader;
 
-    enum OpenGL3ShaderID
-    {
-        SHADER_ID_STANDARDSHADER,
-
-        SHADER_ID_COUNT
-    };
-
-    class OpenGL3ShaderManager
-    {
-    public:
-        OpenGL3ShaderManager();
-        virtual ~OpenGL3ShaderManager();
-
-        OpenGL3Shader* getShader(GLuint id);
-        void loadShader(GLuint id, std::string vertexShader, std::string fragmentShader);
-
-        bool initialiseShaders();
-        void deinitialiseShaders();
-
-    private:
-
-        typedef std::map<GLuint, OpenGL3Shader*> shaderContainerType;
-        shaderContainerType d_shaders;
-
-        bool d_shadersInitialised;
-    };
-
-}
-
-#endif
+#endif  // end of guard _CEGUIOpenGL_h_
