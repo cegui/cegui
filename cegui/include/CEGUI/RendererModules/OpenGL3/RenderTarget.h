@@ -33,8 +33,6 @@
 #include "../../RenderTarget.h"
 #include "../../Rect.h"
 
-#include "glm/glm.hpp"
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -52,6 +50,7 @@ class OPENGL3_GUIRENDERER_API OpenGL3RenderTarget : public virtual RenderTarget
 public:
     //! Constructor
     OpenGL3RenderTarget(OpenGL3Renderer& owner);
+    virtual ~OpenGL3RenderTarget();
 
     // implement parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
@@ -74,7 +73,7 @@ protected:
     //! tangent of the y FOV half-angle; used to calculate viewing distance.
     static const double d_yfov_tan;
     //! saved copy of projection matrix
-    mutable glm::mat4 d_matrix;
+    mutable mat4Pimpl* d_matrix;
     //! true if saved matrix is up to date
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)

@@ -28,7 +28,8 @@
 #include "CEGUI/RendererModules/OpenGL3/RenderTarget.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/OpenGL3/GeometryBuffer.h"
-#include <GL/glew.h>
+#include "CEGUI/RendererModules/OpenGL3/GlmPimpl.h"
+
 #include <cmath>
 
 #include "glm/glm.hpp"
@@ -45,8 +46,17 @@ OpenGL3RenderTarget::OpenGL3RenderTarget(OpenGL3Renderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
     d_viewDistance(0),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_matrix(0)
 {
+    d_matrix = new mat4Pimpl();
+}
+
+
+    //----------------------------------------------------------------------------//
+OpenGL3RenderTarget::~OpenGL3RenderTarget()
+{
+    delete d_matrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -115,6 +125,8 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     GLdouble in_x, in_y, in_z = 0.0;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
+    const glm::mat4& projMatrix = d_matrix->d_matrix;
+    const glm::mat4& modelMatrix = gb.getMatrix()->d_matrix;
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
@@ -122,11 +134,11 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     in_x = vp[2] * 0.5;
     in_y = vp[3] * 0.5;
     in_z = -d_viewDistance;
-    unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
+    unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = p_in.d_x;
     in_y = vp[3] - p_in.d_y;
     in_z = 0.0;
-    unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
+    unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
     // project points to orientate them with GeometryBuffer plane
     glm::vec3 projected1;
@@ -134,13 +146,13 @@ void OpenGL3RenderTarget::unprojectPoint(const GeometryBuffer& buff,
     glm::vec3 projected3;
     in_x = 0.0;
     in_y = 0.0;
-    projected1 = glm::project(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
+    projected1 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = 1.0;
     in_y = 0.0;
-    projected2 = glm::project(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
+    projected2 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = 0.0;
     in_y = 1.0;
-    projected3 = glm::project(glm::vec3(in_x, in_y, in_z), gb.getMatrix(), d_matrix, viewPort);
+    projected3 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
     // calculate vectors for generating the plane
     const glm::vec3 pv1 = projected2 - projected1;
@@ -183,7 +195,7 @@ void OpenGL3RenderTarget::updateMatrix() const
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
-    d_matrix = projectionMatrix * viewMatrix;
+    d_matrix->d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
 }

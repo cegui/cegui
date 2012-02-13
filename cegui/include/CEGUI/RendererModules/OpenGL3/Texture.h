@@ -50,7 +50,7 @@ public:
         set the openGL texture that this Texture is based on to the specified
         texture, with the specified size.
     */
-    void setOpenGLTexture(unsigned int tex, const Sizef& size);
+    void setOpenGLTexture(GLuint tex, const Sizef& size);
 
     /*!
     \brief
@@ -59,7 +59,7 @@ public:
     \return
         id of the OpenGL texture that this object is using.
     */
-    unsigned int getOpenGLTexture() const;
+    GLuint getOpenGLTexture() const;
 
     /*!
     \brief
@@ -116,7 +116,7 @@ protected:
     friend Texture& OpenGL3Renderer::createTexture(const String&);
     friend Texture& OpenGL3Renderer::createTexture(const String&, const String&, const String&);
     friend Texture& OpenGL3Renderer::createTexture(const String&, const Sizef&);
-    friend Texture& OpenGL3Renderer::createTexture(const String&, unsigned int, const Sizef&);
+    friend Texture& OpenGL3Renderer::createTexture(const String&, GLuint, const Sizef&);
     friend void OpenGL3Renderer::destroyTexture(Texture&);
     friend void OpenGL3Renderer::destroyTexture(const String&);
 
@@ -130,7 +130,7 @@ protected:
                   const Sizef& size);
     //! Constructor that wraps an existing GL texture.
     OpenGL3Texture(OpenGL3Renderer& owner, const String& name,
-                  unsigned int tex, const Sizef& size);
+                  GLuint tex, const Sizef& size);
     //! Destructor.
     virtual ~OpenGL3Texture();
 
@@ -144,7 +144,7 @@ protected:
     void cleanupOpenGLTexture();
 
     //! The OpenGL texture we're wrapping.
-    unsigned int d_ogltexture;
+    GLuint d_ogltexture;
     //! Size of the texture.
     Sizef d_size;
     //! cached image data for restoring the texture.
