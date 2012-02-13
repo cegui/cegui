@@ -14,6 +14,11 @@ if (WIN32 OR APPLE)
     mark_as_advanced(MINIZIP_LIB_STATIC MINIZIP_LIB_STATIC_DBG)
 endif()
 
+if (APPLE)
+    set(MINIZIP_DEFINITIONS USE_FILE32API)
+    mark_as_advanced(MINIZIP_DEFINITIONS)
+endif()
+
 find_package_handle_standard_args(MINIZIP DEFAULT_MSG MINIZIP_LIB MINIZIP_H_PATH)
 
 # set up output vars
