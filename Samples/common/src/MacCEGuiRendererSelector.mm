@@ -31,10 +31,6 @@
 
 #import "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_SAMPLES_USE_OPENGL
-#   import <GLUT/glut.h>
-#endif
-
 //----------------------------------------------------------------------------//
 @interface RendererSelectionDialog : NSObject
 {
@@ -63,23 +59,7 @@
     self = [super init];
     if (self)
     {
-#ifdef CEGUI_SAMPLES_USE_OPENGL
-        // the glutInit call here is a vile hack in order that we can
-        // put up the dialog (which requires a NSApplication instance)
-        // withould later clashing with glut which always attempts to
-        // create a NSApplication instance (crashing or hanging if one
-        // already exists).
-        //
-        // In order to resolve this issue, some day, we will dump GLUT.
-        int argc = 1;
-        const char* argv = "SampleApp";
-
-        // Do GLUT init
-        glutInit(&argc, (char**)&argv);
-#else
         [NSApplication sharedApplication];
-#endif
-
         window = [[NSWindow alloc] initWithContentRect:NSMakeRect(600, 400, 291, 100)
                                              styleMask:NSTitledWindowMask|NSMiniaturizableWindowMask
                                                backing:NSBackingStoreBuffered
@@ -248,6 +228,11 @@ int MacCEGuiRendererSelector::populateRendererMenu()
     {
         d_pimpl->rendererTypes[idx++] = OpenGLGuiRendererType;
         [d_pimpl->dialog addRendererName:@"OpenGL Renderer"];
+    }
+    if (d_rendererAvailability[OpenGL3GuiRendererType])
+    {
+        d_pimpl->rendererTypes[idx++] = OpenGL3GuiRendererType;
+        [d_pimpl->dialog addRendererName:@"OpenGL 3 Renderer"];
     }
     if (d_rendererAvailability[IrrlichtGuiRendererType])
     {
