@@ -196,7 +196,11 @@ void IrrlichtTexture::blitToMemory(void* targetData)
     if (!d_texture)
         return;
 
+#if (IRRLICHT_VERSION_MAJOR <= 1) && (IRRLICHT_VERSION_MINOR < 8)
     const void* src = d_texture->lock(true);
+#else
+    const void* src = d_texture->lock(irr::video::ETLM_WRITE_ONLY);
+#endif
     if (!src)
         CEGUI_THROW(RendererException(
             "[IrrlichtRenderer] ITexture::lock failed."));
