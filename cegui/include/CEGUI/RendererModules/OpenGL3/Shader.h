@@ -71,13 +71,13 @@ namespace CEGUI
         \brief
         Query the location of a vertex attribute inside the shader.
         */
-        int getAttribLocation(const std::string &name) const;
+        GLuint getAttribLocation(const std::string &name) const;
 
         /*!
         \brief
         Query the location of a uniform variable inside the shader.
         */
-        int getUniformLocation(const std::string &name) const;
+        GLuint getUniformLocation(const std::string &name) const;
 
         /*!
         \brief
@@ -91,18 +91,18 @@ namespace CEGUI
         void link();
 
     private:
-        int compile(int type, const string &source, const string &path);
+        GLuint compile(GLuint type, const string &source, const string &path);
 
-        void outputShaderLog(int shader);
-        void outputProgramLog(int program);
+        void outputShaderLog(GLuint shader);
+        void outputProgramLog(GLuint program);
 
         std::string d_shaderName;
         bool d_createdSucessfully;
 
-        int d_vertexShader;
-        int d_fragmentShader;
-        int d_geometryShader;
-        int d_program;
+        GLuint d_vertexShader;
+        GLuint d_fragmentShader;
+        GLuint d_geometryShader;
+        GLuint d_program;
     };
 
 

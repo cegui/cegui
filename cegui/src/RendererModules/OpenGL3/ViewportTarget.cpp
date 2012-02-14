@@ -29,7 +29,6 @@
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Exceptions.h"
-#include <GL/glew.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

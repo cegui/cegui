@@ -31,10 +31,12 @@
 
 #include <GL/glew.h>
 
+
 #include "CEGUI/RendererModules/OpenGL3/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL3/Renderer.h"
 #include "CEGUI/RendererModules/OpenGL3/Texture.h"
 #include "CEGUI/RendererModules/OpenGL3/Shader.h"
+#include "CEGUI/RendererModules/OpenGL3/GlmPimpl.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/DynamicModule.h"
@@ -172,7 +174,8 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_shaderStandard(0),
     d_activeRenderTarget(0),
     d_openGLStateChanger(0),
-    d_shaderManager(0)
+    d_shaderManager(0),
+    d_viewProjectionMatrix(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -191,6 +194,8 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_defaultTarget = new OpenGL3ViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
     d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
+
+    d_viewProjectionMatrix = new mat4Pimpl();
 }
 
 //----------------------------------------------------------------------------//
@@ -216,6 +221,8 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
     d_defaultTarget = new OpenGL3ViewportTarget(*this);
     d_defaultRoot = new RenderingRoot(*d_defaultTarget);
     d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
+
+    d_viewProjectionMatrix = new mat4Pimpl();
 }
 
 //----------------------------------------------------------------------------//
@@ -230,6 +237,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
     delete d_textureTargetFactory;
     delete d_openGLStateChanger;
     delete d_shaderManager;
+    delete d_viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -448,7 +456,7 @@ const String& OpenGL3Renderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
-Texture& OpenGL3Renderer::createTexture(const String& name, unsigned int tex,
+Texture& OpenGL3Renderer::createTexture(const String& name, GLuint tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
@@ -588,40 +596,40 @@ OpenGL3Shader*& OpenGL3Renderer::getShaderStandard()
 }
 
 //----------------------------------------------------------------------------//
-const int OpenGL3Renderer::getShaderStandardPositionLoc()
+const GLint OpenGL3Renderer::getShaderStandardPositionLoc()
 {
     return d_shaderStandardPosLoc;
 }
 
 //----------------------------------------------------------------------------//
-const int OpenGL3Renderer::getShaderStandardTexCoordLoc()
+const GLint OpenGL3Renderer::getShaderStandardTexCoordLoc()
 {
     return d_shaderStandardTexCoordLoc;
 }
 
 //----------------------------------------------------------------------------//
-const int OpenGL3Renderer::getShaderStandardColourLoc()
+const GLint OpenGL3Renderer::getShaderStandardColourLoc()
 {
     return d_shaderStandardColourLoc;
 }
 
 
 //----------------------------------------------------------------------------//
-const int OpenGL3Renderer::getShaderStandardMatrixUniformLoc()
+const GLint OpenGL3Renderer::getShaderStandardMatrixUniformLoc()
 {
     return d_shaderStandardMatrixLoc;
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4& OpenGL3Renderer::getViewProjectionMatrix()
+const mat4Pimpl* OpenGL3Renderer::getViewProjectionMatrix()
 {
     return d_viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::setViewProjectionMatrix(glm::mat4 viewProjectionMatrix)
+void OpenGL3Renderer::setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix)
 {
-    d_viewProjectionMatrix = viewProjectionMatrix;
+    *d_viewProjectionMatrix = *viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -660,7 +668,7 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
     d_shaderManager = new OpenGL3ShaderManager();
     d_shaderManager->initialiseShaders();
     d_shaderStandard = d_shaderManager->getShader(SHADER_ID_STANDARDSHADER);
-    int texLoc = d_shaderStandard->getUniformLocation("texture0");
+    GLuint texLoc = d_shaderStandard->getUniformLocation("texture0");
     d_shaderStandard->bind();
     glUniform1i(texLoc, 0);
     d_shaderStandard->unbind();
