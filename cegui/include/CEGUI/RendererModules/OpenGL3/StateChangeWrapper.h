@@ -29,8 +29,7 @@
 #ifndef _CEGUIOpenGL3StateChangeWrapper_h_
 #define _CEGUIOpenGL3StateChangeWrapper_h_
 
-#include <GL/glew.h>
-
+#include "CEGUI/RendererModules/OpenGL3/GL.h"
 #include "CEGUI/RendererModules/OpenGL3/Renderer.h"
 
 #if defined(_MSC_VER)

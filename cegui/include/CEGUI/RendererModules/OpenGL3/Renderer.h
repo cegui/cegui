@@ -34,10 +34,10 @@
 #include "../../Vector.h"
 #include "../../Rect.h"
 
+#include "CEGUI/RendererModules/OpenGL3/GL.h"
+
 #include <vector>
 #include <map>
-
-#include "glm/glm.hpp"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUIOPENGL3RENDERER_EXPORTS
@@ -54,7 +54,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -66,6 +65,7 @@ namespace CEGUI
     class OGL3TextureTargetFactory;
     class OpenGL3RenderTarget;
     class OpenGL3StateChangeWrapper;
+    struct mat4Pimpl;
 
 /*!
 \brief
@@ -217,7 +217,7 @@ public:
         - AlreadyExistsException - thrown if a Texture object named \a name
           already exists within the system.
     */
-    Texture& createTexture(const String& name, unsigned int tex, const Sizef& sz);
+    Texture& createTexture(const String& name, GLuint tex, const Sizef& sz);
 
     /*!
     \brief
@@ -287,7 +287,7 @@ public:
     \return
     Attribute location of the position variable in the standard shader
     */
-    const int getShaderStandardPositionLoc();
+    const GLint getShaderStandardPositionLoc();
 
 
     /*!
@@ -297,7 +297,7 @@ public:
     \return
     Attribute location of the texture coordinate variable in the standard shader
     */
-    const int getShaderStandardTexCoordLoc();
+    const GLint getShaderStandardTexCoordLoc();
 
 
     /*!
@@ -307,7 +307,7 @@ public:
     \return
     Attribute location of the colour variable in the standard shader
     */
-    const int getShaderStandardColourLoc();
+    const GLint getShaderStandardColourLoc();
 
 
     /*!
@@ -317,7 +317,7 @@ public:
     \return
     Uniform location of the matrix variable in the standard shader
     */
-    const int getShaderStandardMatrixUniformLoc();
+    const GLint getShaderStandardMatrixUniformLoc();
 
 
     /*!
@@ -327,7 +327,7 @@ public:
     \return
     The view projection matrix.
     */
-    const glm::mat4& getViewProjectionMatrix();
+    const mat4Pimpl* getViewProjectionMatrix();
 
 
     /*!
@@ -337,7 +337,7 @@ public:
     \param viewProjectionMatrix
     The view projection matrix.
     */
-    void setViewProjectionMatrix(glm::mat4 viewProjectionMatrix);
+    void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
 
     /*!
     \brief
@@ -457,20 +457,20 @@ private:
     //! The OpenGL shader we will use usually
     OpenGL3Shader*         d_shaderStandard;
     //! Position variable location inside the shader, for OpenGL
-    int             d_shaderStandardPosLoc;
+    GLint           d_shaderStandardPosLoc;
     //! TexCoord variable location inside the shader, for OpenGL
-    int             d_shaderStandardTexCoordLoc;
+    GLint           d_shaderStandardTexCoordLoc;
     //! Color variable location inside the shader, for OpenGL
-    int             d_shaderStandardColourLoc;
+    GLint           d_shaderStandardColourLoc;
     //! Matrix uniform location inside the shader, for OpenGL
-    int             d_shaderStandardMatrixLoc;
+    GLint           d_shaderStandardMatrixLoc;
     //! View projection matrix
-    glm::mat4       d_viewProjectionMatrix;
+    mat4Pimpl*      d_viewProjectionMatrix;
     //! The active RenderTarget
     OpenGL3RenderTarget*        d_activeRenderTarget;
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper*  d_openGLStateChanger;
-    OpenGL3ShaderManager*               d_shaderManager;
+    OpenGL3ShaderManager*       d_shaderManager;
 };
 
 } // End of  CEGUI namespace section

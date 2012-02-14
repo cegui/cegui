@@ -48,7 +48,7 @@ namespace CEGUI
         d_shadersInitialised = false;
     }
 
-    OpenGL3Shader* OpenGL3ShaderManager::getShader(unsigned int id)
+    OpenGL3Shader* OpenGL3ShaderManager::getShader(GLuint id)
     {
         if(d_shaders.find(id) != d_shaders.end())
             return d_shaders[id];
@@ -56,7 +56,7 @@ namespace CEGUI
             return 0;
     }
 
-    void OpenGL3ShaderManager::loadShader(unsigned int id, std::string vertexShader, std::string fragmentShader)
+    void OpenGL3ShaderManager::loadShader(GLuint id, std::string vertexShader, std::string fragmentShader)
     {
         if(d_shaders.find(id) == d_shaders.end())
         {   

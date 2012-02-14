@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
+
 #include "glm/glm.hpp"
 #include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
@@ -37,6 +38,7 @@
 #include "CEGUI/RendererModules/OpenGL3/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL3/Shader.h"
 #include "CEGUI/RendererModules/OpenGL3/StateChangeWrapper.h"
+#include "CEGUI/RendererModules/OpenGL3/GlmPimpl.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -59,14 +61,19 @@ d_owner(&owner),
     d_shaderColourLoc(owner.getShaderStandardColourLoc()),
     d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc()),
     d_glStateChanger(owner.getOpenGLStateChanger()),
-    d_bufferSize(0)
+    d_bufferSize(0),
+    d_matrix(0)
 {
+    d_matrix = new mat4Pimpl();
+
     initialiseOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
 OpenGL3GeometryBuffer::~OpenGL3GeometryBuffer()
 {
+    delete d_matrix;
+
     deinitialiseOpenGLBuffers();
 }
 
@@ -91,7 +98,7 @@ void OpenGL3GeometryBuffer::draw() const
         updateMatrix();
 
     // Send ModelViewProjection matrix to shader
-    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix() * d_matrix;
+    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix()->d_matrix * d_matrix->d_matrix;
     glUniformMatrix4fv(d_shaderStandardMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
 
     // activate desired blending mode
@@ -251,7 +258,7 @@ RenderEffect* OpenGL3GeometryBuffer::getRenderEffect()
 }
 
 //----------------------------------------------------------------------------//
-const glm::mat4 OpenGL3GeometryBuffer::getMatrix() const
+const mat4Pimpl* OpenGL3GeometryBuffer::getMatrix() const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -262,22 +269,23 @@ const glm::mat4 OpenGL3GeometryBuffer::getMatrix() const
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::updateMatrix() const
 {
-    d_matrix = glm::mat4(1.f);
+    glm::mat4& modelMatrix = d_matrix->d_matrix;
+    modelMatrix = glm::mat4(1.f);
 
     const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                 d_translation.d_y + d_pivot.d_y,
                                 d_translation.d_z + d_pivot.d_z);
 
-    d_matrix = glm::translate(d_matrix, final_trans);
+    modelMatrix = glm::translate(modelMatrix, final_trans);
 
     glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
     glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
 
-    d_matrix = d_matrix * rotation_matrix;
+    modelMatrix = modelMatrix * rotation_matrix;
 
     glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
     glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
-    d_matrix =  d_matrix * translMatrix;
+    modelMatrix =  modelMatrix * translMatrix;
 
     d_matrixValid = true;
 }
