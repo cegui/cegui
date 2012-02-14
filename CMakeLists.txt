@@ -132,8 +132,8 @@ option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based Ima
 option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" TRUE )
 cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" TRUE "PVRTOOLS_FOUND" FALSE )
 
-cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" TRUE "OPENGL_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" TRUE "OPENGL_FOUND;GLM_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" TRUE "OPENGL_FOUND;GLEW_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" TRUE "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" TRUE "OGRE_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" TRUE "IRRLICHT_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module" FALSE "DIRECTFB_FOUND" FALSE )
@@ -148,7 +148,6 @@ cmake_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build th
 
 cmake_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" TRUE "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" FALSE )
 
-cmake_dependent_option( CEGUI_BUILD_EMBEDDED_GLEW "Specifies whether to use embedded GLEW when external library was found" FALSE "GLEW_FOUND" TRUE )
 cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TOLUAPP "Specifies whether to use embedded tolua++ when external library was found" FALSE "LUA51_FOUND;TOLUAPP_FOUND" ${LUA51_FOUND} )
 
 cmake_dependent_option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE "CEGUI_BUILD_LUA_MODULE" FALSE )
