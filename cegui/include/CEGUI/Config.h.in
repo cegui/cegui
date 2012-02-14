@@ -97,27 +97,9 @@ setting CMake options and regenerating, rather than editing directly.
 #endif
 
 //////////////////////////////////////////////////////////////////////////
-// The following defines the header, namespace and api macros for TinyXML
+// The following says which TinyXML api version has been found
 //////////////////////////////////////////////////////////////////////////
-#cmakedefine CEGUI_BUILD_EMBEDDED_TINYXML
-
-#ifdef CEGUI_BUILD_EMBEDDED_TINYXML
-#   ifndef CEGUI_TINYXML_H
-#       define CEGUI_TINYXML_H "ceguitinyxml/tinyxml.h"
-#   endif
-#   ifndef CEGUI_TINYXML_NAMESPACE
-#       define CEGUI_TINYXML_NAMESPACE CEGUITinyXML
-#   endif
-#   define CEGUI_TINYXML_HAS_2_6_API 1
-#else
-#   ifndef CEGUI_TINYXML_H
-#       define CEGUI_TINYXML_H <tinyxml.h>
-#   endif
-#   ifndef CEGUI_TINYXML_NAMESPACE
-#       define CEGUI_TINYXML_NAMESPACE
-#   endif
 #cmakedefine CEGUI_TINYXML_HAS_2_6_API 1
-#endif
 
 //////////////////////////////////////////////////////////////////////////
 // The following controls the version of Lua that is going to be used.

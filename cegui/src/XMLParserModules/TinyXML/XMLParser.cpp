@@ -25,10 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/XMLParserModules/TinyXML/XMLParser.h"
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/System.h"
@@ -36,7 +32,7 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
-#include CEGUI_TINYXML_H
+#include <tinyxml.h>
 
 //---------------------------------------------------------------------------//
 // These are to support the <=2.5 and >=2.6 API versions
@@ -51,14 +47,14 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class TinyXMLDocument : public CEGUI_TINYXML_NAMESPACE::TiXmlDocument
+    class TinyXMLDocument : public TiXmlDocument
     {
     public:
         TinyXMLDocument(XMLHandler& handler, const RawDataContainer& source, const String& schemaName);
         ~TinyXMLDocument()
         {}
     protected:
-        void processElement(const CEGUI_TINYXML_NAMESPACE::TiXmlElement* element);
+        void processElement(const TiXmlElement* element);
 
     private:
         XMLHandler* d_handler;
@@ -79,7 +75,7 @@ namespace CEGUI
         buf[size+1] = 0;
 
         // Parse the document
-        CEGUI_TINYXML_NAMESPACE::TiXmlDocument doc;
+        TiXmlDocument doc;
         if (!doc.Parse((const char*)buf))
         {
             // error detected, cleanup out buffers
@@ -90,7 +86,7 @@ namespace CEGUI
                 "parsing the XML document - check it for potential errors!."));
         }
 
-        const CEGUI_TINYXML_NAMESPACE::TiXmlElement* currElement = doc.RootElement();
+        const TiXmlElement* currElement = doc.RootElement();
         if (currElement)
         {
             CEGUI_TRY
@@ -110,12 +106,12 @@ namespace CEGUI
         delete [] buf;
     }
 
-    void TinyXMLDocument::processElement(const CEGUI_TINYXML_NAMESPACE::TiXmlElement* element)
+    void TinyXMLDocument::processElement(const TiXmlElement* element)
     {
         // build attributes block for the element
         XMLAttributes attrs;
 
-        const CEGUI_TINYXML_NAMESPACE::TiXmlAttribute *currAttr = element->FirstAttribute();
+        const TiXmlAttribute *currAttr = element->FirstAttribute();
         while (currAttr)
         {
             attrs.add((encoded_char*)currAttr->Name(), (encoded_char*)currAttr->Value());
@@ -126,15 +122,15 @@ namespace CEGUI
         d_handler->elementStart((encoded_char*)element->Value(), attrs);
 
         // do children
-        const CEGUI_TINYXML_NAMESPACE::TiXmlNode* childNode = element->FirstChild();
+        const TiXmlNode* childNode = element->FirstChild();
         while (childNode)
         {
             switch(childNode->Type())
             {
-            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::CEGUI_TINYXML_ELEMENT:
+            case TiXmlNode::CEGUI_TINYXML_ELEMENT:
                 processElement(childNode->ToElement());
                 break;
-            case CEGUI_TINYXML_NAMESPACE::TiXmlNode::CEGUI_TINYXML_TEXT:
+            case TiXmlNode::CEGUI_TINYXML_TEXT:
                 if (childNode->ToText()->Value() != '\0')
                     d_handler->text((encoded_char*)childNode->ToText()->Value());
                 break;
@@ -166,7 +162,7 @@ namespace CEGUI
     {
         // This used to prevent deletion of line ending in the middle of a text.
         // WhiteSpace cleaning will be available throught the use of String methods directly
-        //CEGUI_TINYXML_NAMESPACE::TiXmlDocument::SetCondenseWhiteSpace(false);
+        //TiXmlDocument::SetCondenseWhiteSpace(false);
         return true;
     }
 

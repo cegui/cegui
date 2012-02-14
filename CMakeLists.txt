@@ -122,7 +122,7 @@ cmake_dependent_option( CEGUI_BUILD_XMLPARSER_EXPAT "Specifies whether to build 
 cmake_dependent_option( CEGUI_BUILD_XMLPARSER_XERCES "Specifies whether to build the Xerces-C++ based XMLParser module" TRUE "XERCESC_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_XMLPARSER_LIBXML2 "Specifies whether to build the libxml2 based XMLParser module" TRUE "LIBXML2_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_XMLPARSER_RAPIDXML "Specifies whether to build the RapidXML based XMLParser module" TRUE "RAPIDXML_FOUND" FALSE )
-option( CEGUI_BUILD_XMLPARSER_TINYXML "Specifies whether to build the TinyXML based XMLParser module" TRUE )
+cmake_dependent_option( CEGUI_BUILD_XMLPARSER_TINYXML "Specifies whether to build the TinyXML based XMLParser module" TRUE "TINYXML_FOUND" FALSE )
 
 cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_SILLY "Specifies whether to build the SILLY based ImageCodec module" TRUE "SILLY_FOUND" FALSE )
 cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" TRUE "IL_FOUND" FALSE )
@@ -148,7 +148,6 @@ cmake_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build th
 
 cmake_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" TRUE "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" FALSE )
 
-cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TINYXML "Specifies whether to use embedded TinyXML when external library was found" FALSE "TINYXML_FOUND" TRUE )
 cmake_dependent_option( CEGUI_BUILD_EMBEDDED_GLEW "Specifies whether to use embedded GLEW when external library was found" FALSE "GLEW_FOUND" TRUE )
 cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TOLUAPP "Specifies whether to use embedded tolua++ when external library was found" FALSE "LUA51_FOUND;TOLUAPP_FOUND" ${LUA51_FOUND} )
 
