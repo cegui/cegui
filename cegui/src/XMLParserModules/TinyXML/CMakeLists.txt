@@ -2,16 +2,9 @@ set (CEGUI_TARGET_NAME ${CEGUI_TINYXML_PARSER_LIBNAME})
 
 cegui_gather_files()
 
-if (CEGUI_BUILD_EMBEDDED_TINYXML)
-    file (GLOB TINYXML_SOURCE_FILES ceguitinyxml/*.cpp)
-    list (APPEND CORE_SOURCE_FILES ${TINYXML_SOURCE_FILES})
-endif()
-
 cegui_add_loadable_module(${CEGUI_TARGET_NAME} CORE_SOURCE_FILES CORE_HEADER_FILES)
 
-if (NOT CEGUI_BUILD_EMBEDDED_TINYXML)
-    cegui_add_dependency(${CEGUI_TARGET_NAME} TINYXML)
-endif()
+cegui_add_dependency(${CEGUI_TARGET_NAME} TINYXML)
 
 cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_BASE_LIBNAME})
 
