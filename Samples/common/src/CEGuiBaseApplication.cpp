@@ -70,7 +70,8 @@ CEGuiBaseApplication::CEGuiBaseApplication() :
     d_FPSGeometry(0),
     d_FPSElapsed(0.0f),
     d_FPSFrames(0),
-    d_FPSValue(0)
+    d_FPSValue(0),
+    d_spinLogo(false)
 {
 }
 
@@ -115,14 +116,14 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
 
     // setup for spinning logo
     d_logoGeometry = &d_renderer->createGeometryBuffer();
-    d_logoGeometry->setPivot(CEGUI::Vector3f(50, 34.75f, 0));
+    d_logoGeometry->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
     positionLogo();
 
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
                                                          "logo.png");
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
-        *d_logoGeometry, CEGUI::Rectf(0, 0, 100, 69.5f), 0, CEGUI::ColourRect(0xFFFFFFFF));
+        *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
     d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
@@ -294,6 +295,9 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::updateLogo(const float elapsed)
 {
+    if (!d_spinLogo)
+        return;
+
     static float rot = 0.0f;
     d_logoGeometry->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
 
@@ -308,7 +312,7 @@ void CEGuiBaseApplication::positionLogo()
 
     d_logoGeometry->setClippingRegion(scrn);
     d_logoGeometry->setTranslation(
-        CEGUI::Vector3f(10.0f, scrn.getSize().d_height - 80.0f, 0.0f));
+        CEGUI::Vector3f(10.0f, scrn.getSize().d_height - 89.0f, 0.0f));
 }
 
 //----------------------------------------------------------------------------//
