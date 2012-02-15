@@ -197,6 +197,8 @@ protected:
     int d_FPSFrames;
     //! Last changed FPS value.
     int d_FPSValue;
+    //! whether to spin the logo
+    bool d_spinLogo;
 };
 
 #endif  // end of guard _CEGuiBaseApplication_h_
