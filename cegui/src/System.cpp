@@ -190,6 +190,7 @@ System::System(Renderer& renderer,
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_defaultFont(0),
+  d_defaultGUIRoot(&d_renderer->getDefaultGUIRoot()),
   d_wndWithMouse(0),
   d_activeSheet(0),
   d_modalTarget(0),
@@ -388,6 +389,18 @@ System::~System(void)
 }
 
 //---------------------------------------------------------------------------//
+void System::signalRedraw()
+{
+    d_defaultGUIRoot->markAsDirty();
+}
+
+//---------------------------------------------------------------------------//
+bool System::isRedrawRequested() const
+{
+    return d_defaultGUIRoot->isDirty();
+}
+
+//---------------------------------------------------------------------------//
 unsigned int System::getMajorVersion()
 {
     return CEGUI_VERSION_MAJOR;
@@ -491,27 +504,8 @@ void System::renderGUI(void)
 {
     d_renderer->beginRendering();
 
-	if (d_gui_redraw)
-	{
-		if (d_activeSheet)
-		{
-            RenderingSurface& rs = d_activeSheet->getTargetRenderingSurface();
-            rs.clearGeometry();
+    d_defaultGUIRoot->drawContent();
 
-            if (rs.isRenderingWindow())
-                static_cast<RenderingWindow&>(rs).getOwner().clearGeometry();
-
-			d_activeSheet->render();
-		}
-        // no sheet, so ensure default surface geometry is cleared
-        else
-            d_renderer->getDefaultGUIRoot().clearGeometry();
-
-		d_gui_redraw = false;
-	}
-
-    d_renderer->getDefaultGUIRoot().draw();
-	MouseCursor::getSingleton().draw();
     d_renderer->endRendering();
 
     // do final destruction on dead-pool windows
@@ -524,16 +518,8 @@ void System::renderGUI(void)
 *************************************************************************/
 Window* System::setGUISheet(Window* sheet)
 {
-	Window* old = d_activeSheet;
-	d_activeSheet = sheet;
-
-    // Force and update for the area Rects for 'sheet' so they're correct according
-    // to the screen size.
-    if (sheet)
-    {
-        ElementEventArgs sheetargs(0);
-        sheet->onParentSized(sheetargs);
-    }
+	Window* old = d_defaultGUIRoot->getRootWindow();
+    d_defaultGUIRoot->setRootWindow(sheet);
 
 	// fire event
 	WindowEventArgs args(old);
@@ -2097,6 +2083,12 @@ RegexMatcher& System::createRegexMatcher() const
 void System::destroyRegexMatcher(RegexMatcher& rm) const
 {
     CEGUI_DELETE_AO &rm;
+}
+
+//----------------------------------------------------------------------------//
+GUIRoot* System::getDefaultGUIRoot() const
+{
+    return d_defaultGUIRoot;
 }
 
 //----------------------------------------------------------------------------//

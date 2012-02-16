@@ -246,7 +246,9 @@ public:
         Retrieves internal CEGUI clipboard, optionally synced with system wide clipboard
     */
     Clipboard* getClipboard() const         {return d_clipboard;}
-    
+
+    GUIRoot* getDefaultGUIRoot() const;
+
 	/*!
 	\brief
 		Set the default font to be used by the system
@@ -290,7 +292,7 @@ public:
 	\return
 		Nothing
 	*/
-	void	signalRedraw()		{d_gui_redraw = true;}
+	void	signalRedraw();
 
 
 	/*!
@@ -300,7 +302,7 @@ public:
 	\return
 		true if a re-draw has been requested
 	*/
-	bool	isRedrawRequested() const		{return d_gui_redraw;}
+	bool	isRedrawRequested() const;
 
 
 	/*!
@@ -1171,6 +1173,9 @@ private:
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
 	bool d_ourResourceProvider;
     Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
+
+    GUIRoot* d_defaultGUIRoot;
+
 	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
 
 	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.

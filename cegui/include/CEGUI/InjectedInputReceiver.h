@@ -28,6 +28,8 @@
 #ifndef _CEGUIInjectedInputReceiver_h_
 #define _CEGUIInjectedInputReceiver_h_
 
+#include "CEGUI/InputEvent.h"
+
 namespace CEGUI
 {
 

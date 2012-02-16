@@ -29,14 +29,63 @@
 #define _CEGUIGUIRoot_h_
 
 #include "CEGUI/RenderingSurface.h"
+#include "CEGUI/InjectedInputReceiver.h"
+#include "CEGUI/MouseCursor.h"
 
 namespace CEGUI
 {
-class CEGUIEXPORT GUIRoot : public RenderingSurface
+class CEGUIEXPORT GUIRoot : public RenderingSurface,
+                                   InjectedInputReceiver
 {
 public:
     GUIRoot(RenderTarget& target);
+    ~GUIRoot();
 
+    Window* getRootWindow() const;
+    void setRootWindow(Window* new_root);
+
+    Sizef getSurfaceSize() const;
+
+    //! call to indicate that some redrawing is required.
+    void markAsDirty();
+    bool isDirty() const;
+
+    void drawContent();
+
+    MouseCursor& getMouseCursor();
+    const MouseCursor& getMouseCursor() const;
+
+    // Implementation of InjectedInputReceiver interface
+    bool injectMouseMove(float delta_x, float delta_y);
+    bool injectMouseLeaves(void);
+    bool injectMouseButtonDown(MouseButton button);
+    bool injectMouseButtonUp(MouseButton button);
+    bool injectKeyDown(uint key_code);
+    bool injectKeyUp(uint key_code);
+    bool injectChar(String::value_type code_point);
+    bool injectMouseWheelChange(float delta);
+    bool injectMousePosition(float x_pos, float y_pos);
+    bool injectTimePulse(float timeElapsed);
+    bool injectMouseButtonClick(const MouseButton button);
+    bool injectMouseButtonDoubleClick(const MouseButton button);
+    bool injectMouseButtonTripleClick(const MouseButton button);
+    bool injectCopyRequest();
+    bool injectCutRequest();
+    bool injectPasteRequest();
+
+protected:
+    //! notify the root that the size of it's surface has changed
+    void notifySurfaceSizeChanged(const Sizef& new_size);
+    //! notify the root that some window has been destroyed.
+    void notifyWindowDestroyed(const Window* window);
+
+    void updateRootWindowAreaRects() const;
+    void drawWindowContentToTarget();
+    void renderWindowHierarchyToSurfaces();
+
+    Window* d_rootWindow;
+    bool d_isDirty;
+    MouseCursor* d_mouseCursor;
 };
 
 }
