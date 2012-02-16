@@ -38,7 +38,6 @@
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
-#include "CEGUI/GUIRoot.h"
 #include "CEGUI/RendererModules/OpenGL/FBOTextureTarget.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -201,7 +200,6 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
         d_rendererID += "  No glBlendFuncSeparate(EXT) support.";
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
-    d_defaultRoot = new GUIRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
@@ -221,7 +219,6 @@ OpenGLRenderer::OpenGLRenderer(const Sizef& display_size,
     initialiseTextureTargetFactory(tt_type);
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
-    d_defaultRoot = new GUIRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
@@ -231,15 +228,14 @@ OpenGLRenderer::~OpenGLRenderer()
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    delete d_defaultRoot;
     delete d_defaultTarget;
     delete d_textureTargetFactory;
 }
 
 //----------------------------------------------------------------------------//
-GUIRoot& OpenGLRenderer::getDefaultGUIRoot()
+RenderTarget& OpenGLRenderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//

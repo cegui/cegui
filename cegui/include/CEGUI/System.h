@@ -247,7 +247,7 @@ public:
     */
     Clipboard* getClipboard() const         {return d_clipboard;}
 
-    GUIRoot* getDefaultGUIRoot() const;
+    GUIRoot& getDefaultGUIRoot() const;
 
 	/*!
 	\brief

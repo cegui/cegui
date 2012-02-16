@@ -86,15 +86,13 @@ class CEGUIEXPORT Renderer :
 public:
     /*!
     \brief
-        Return the default GUIRoot for the renderer.  The default
-        GUIRoot is typically a GUIRoot that targets the entire
-        screen (or rendering window).
+        Returns the default RenderTarget object.  The default render target is
+        is typically one that targets the entire screen (or rendering window).
 
     \return
-        GUIRoot object that targets the default RenderingSurface provided by
-        the Renderer.
+        Reference to a RenderTarget object.
     */
-    virtual GUIRoot& getDefaultGUIRoot() = 0;
+    virtual RenderTarget& getDefaultRenderTarget() = 0;
 
     /*!
     \brief
