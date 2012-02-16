@@ -30,7 +30,7 @@
 #include "CEGUI/RendererModules/Ogre/TextureTarget.h"
 #include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/RendererModules/Ogre/WindowTarget.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
@@ -95,7 +95,7 @@ struct OgreRenderer_impl
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
     //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
+    GUIRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
     OgreWindowTarget* d_defaultTarget;
     //! Container used to track texture targets.
@@ -229,7 +229,7 @@ bool OgreRenderer::isRenderingEnabled() const
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& OgreRenderer::getDefaultRenderingRoot()
+GUIRoot& OgreRenderer::getDefaultGUIRoot()
 {
     return *d_pimpl->d_defaultRoot;
 }
@@ -541,7 +541,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_defaultTarget =
         new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
     d_pimpl->d_defaultRoot =
-        new RenderingRoot(*d_pimpl->d_defaultTarget);
+        new GUIRoot(*d_pimpl->d_defaultTarget);
 
     // hook into the rendering process
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);

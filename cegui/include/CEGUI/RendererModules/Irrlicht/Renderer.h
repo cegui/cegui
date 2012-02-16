@@ -153,7 +153,7 @@ public:
     static float getNextPOTSize(const float f);
 
     // implement Renderer interface
-    RenderingRoot& getDefaultRenderingRoot();
+    GUIRoot& getDefaultGUIRoot();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -203,7 +203,7 @@ protected:
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
+    GUIRoot* d_defaultRoot;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.

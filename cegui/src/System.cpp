@@ -54,7 +54,7 @@
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/XMLParser.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -505,12 +505,12 @@ void System::renderGUI(void)
 		}
         // no sheet, so ensure default surface geometry is cleared
         else
-            d_renderer->getDefaultRenderingRoot().clearGeometry();
+            d_renderer->getDefaultGUIRoot().clearGeometry();
 
 		d_gui_redraw = false;
 	}
 
-    d_renderer->getDefaultRenderingRoot().draw();
+    d_renderer->getDefaultGUIRoot().draw();
 	MouseCursor::getSingleton().draw();
     d_renderer->endRendering();
 

@@ -30,7 +30,7 @@
 #include "CEGUI/RendererModules/Direct3D10/TextureTarget.h"
 #include "CEGUI/RendererModules/Direct3D10/ViewportTarget.h"
 #include "CEGUI/RendererModules/Direct3D10/Texture.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -94,7 +94,7 @@ void Direct3D10Renderer::destroy(Direct3D10Renderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& Direct3D10Renderer::getDefaultRenderingRoot()
+GUIRoot& Direct3D10Renderer::getDefaultGUIRoot()
 {
     return *d_defaultRoot;
 }
@@ -380,7 +380,7 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
     }
 
     d_defaultTarget = new Direct3D10ViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
+    d_defaultRoot = new GUIRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
