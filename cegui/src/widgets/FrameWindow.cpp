@@ -499,26 +499,31 @@ void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 	{
 	case SizingTop:
 	case SizingBottom:
-		MouseCursor::getSingleton().setImage(d_nsSizingCursor);
+		System::getSingleton().getDefaultGUIRoot().
+            getMouseCursor().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
-		MouseCursor::getSingleton().setImage(d_ewSizingCursor);
+		System::getSingleton().getDefaultGUIRoot().
+            getMouseCursor().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
-		MouseCursor::getSingleton().setImage(d_nwseSizingCursor);
+		System::getSingleton().getDefaultGUIRoot().
+            getMouseCursor().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
-		MouseCursor::getSingleton().setImage(d_neswSizingCursor);
+		System::getSingleton().getDefaultGUIRoot().
+            getMouseCursor().setImage(d_neswSizingCursor);
 		break;
 
 	default:
-		MouseCursor::getSingleton().setImage(getMouseCursor());
+		System::getSingleton().getDefaultGUIRoot().
+            getMouseCursor().setImage(getMouseCursor());
 		break;
 	}
 

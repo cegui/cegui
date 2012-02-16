@@ -164,7 +164,6 @@ const String System::EventSingleClickTimeoutChanged( "SingleClickTimeoutChanged"
 const String System::EventMultiClickTimeoutChanged( "MultiClickTimeoutChanged" );
 const String System::EventMultiClickAreaSizeChanged( "MultiClickAreaSizeChanged" );
 const String System::EventDefaultFontChanged( "DefaultFontChanged" );
-const String System::EventDefaultMouseCursorChanged( "DefaultMouseCursorChanged" );
 const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
 const String System::EventRenderedStringParserChanged("RenderedStringParserChanged");
@@ -206,7 +205,6 @@ System::System(Renderer& renderer,
   d_dblclick_timeout(DefaultMultiClickTimeout),
   d_dblclick_size(DefaultMultiClickAreaSize),
   d_clickTrackerPimpl(new MouseClickTrackerImpl),
-  d_defaultMouseCursor(0),
   d_scriptModule(scriptModule),
   d_mouseScalingFactor(1.0f),
   d_xmlParser(xmlParser),
@@ -562,55 +560,6 @@ void System::setDefaultFont(Font* font)
 
 
 /*************************************************************************
-    Set the image to be used as the default mouse cursor.
-*************************************************************************/
-void System::setDefaultMouseCursor(const Image* image)
-{
-    const Image* const default_cursor =
-        reinterpret_cast<const Image*>(DefaultMouseCursor);
-
-    // the default, default, is for nothing!
-    if (image == default_cursor)
-        image = 0;
-
-    // if mouse cursor is set to the current default we *may* need to
-    // update its Image immediately (first, we will investigate further!)
-    //
-    // NB: The reason we do this check, is to allow code to modify the cursor
-    // image directly without a call to this member changing the image back
-    // again.  However, 'normal' updates to the cursor when the mouse enters
-    // a window will, of course, update the mouse image as expected.
-    if (MouseCursor::getSingleton().getImage() == d_defaultMouseCursor)
-    {
-        // does the window containing the mouse use the default cursor?
-        if ((d_wndWithMouse) &&
-            (default_cursor == d_wndWithMouse->getMouseCursor(false)))
-        {
-            // default cursor is active, update the image immediately
-            MouseCursor::getSingleton().setImage(image);
-        }
-    }
-
-    // update our pointer for the default mouse cursor image.
-    d_defaultMouseCursor = image;
-
-    // fire off event.
-    EventArgs args;
-    onDefaultMouseCursorChanged(args);
-}
-
-
-/*************************************************************************
-	Set the image to be used as the default mouse cursor.
-*************************************************************************/
-void System::setDefaultMouseCursor(const String& name)
-{
-	setDefaultMouseCursor(
-        &ImageManager::getSingleton().get(name));
-}
-
-
-/*************************************************************************
 	Return a pointer to the ScriptModule being used for scripting within
 	the GUI system.
 *************************************************************************/
@@ -783,7 +732,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
     ma.button = NoButton;
 
     // move the mouse cursor & update position in args.
-    MouseCursor& mouse(MouseCursor::getSingleton());
+    MouseCursor& mouse(d_defaultGUIRoot->getMouseCursor());
     mouse.offsetPosition(ma.moveDelta);
     ma.position = mouse.getPosition();
 
@@ -802,7 +751,7 @@ bool System::injectMouseLeaves(void)
 	if (d_wndWithMouse)
 	{
 		ma.position = d_wndWithMouse->
-          getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
+          getUnprojectedPosition(d_defaultGUIRoot->getMouseCursor().getPosition());
 		ma.moveDelta = Vector2f(0.0f, 0.0f);
 		ma.button = NoButton;
 		ma.sysKeys = d_sysKeys;
@@ -827,7 +776,7 @@ bool System::injectMouseButtonDown(MouseButton button)
     d_sysKeys |= mouseButtonToSyskey(button);
 
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position = d_defaultGUIRoot->getMouseCursor().getPosition();
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
@@ -908,7 +857,7 @@ bool System::injectMouseButtonUp(MouseButton button)
     d_sysKeys &= ~mouseButtonToSyskey(button);
 
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position = d_defaultGUIRoot->getMouseCursor().getPosition();
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_sysKeys;
@@ -1021,7 +970,7 @@ bool System::injectChar(String::value_type code_point)
 bool System::injectMouseWheelChange(float delta)
 {
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position = d_defaultGUIRoot->getMouseCursor().getPosition();
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_sysKeys;
@@ -1047,7 +996,7 @@ bool System::injectMouseWheelChange(float delta)
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
     const Vector2f new_position(x_pos, y_pos);
-    MouseCursor& mouse(MouseCursor::getSingleton());
+    MouseCursor& mouse(d_defaultGUIRoot->getMouseCursor());
 
     // setup mouse movement event args object.
     MouseEventArgs ma(0);
@@ -1387,15 +1336,6 @@ void System::onDefaultFontChanged(EventArgs& e)
 
 
 /*************************************************************************
-	Handler called when the default system mouse cursor image is changed.
-*************************************************************************/
-void System::onDefaultMouseCursorChanged(EventArgs& e)
-{
-	fireEvent(EventDefaultMouseCursorChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
 	Handler called when the mouse movement scaling factor is changed.
 *************************************************************************/
 void System::onMouseMoveScalingChanged(EventArgs& e)
@@ -1413,7 +1353,6 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
     d_renderer->setDisplaySize(new_size);
     ImageManager::getSingleton().notifyDisplaySizeChanged(new_size);
     FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
-    MouseCursor::getSingleton().notifyDisplaySizeChanged(new_size);
 
 	// notify gui sheet / root if size change, event propagation will ensure everything else
 	// gets updated as required.
@@ -1596,7 +1535,6 @@ void System::createSingletons()
     CEGUI_NEW_AO WindowFactoryManager();
     CEGUI_NEW_AO WindowManager();
     CEGUI_NEW_AO SchemeManager();
-    CEGUI_NEW_AO MouseCursor();
     CEGUI_NEW_AO GlobalEventSet();
     CEGUI_NEW_AO AnimationManager();
     CEGUI_NEW_AO WidgetLookManager();
@@ -1614,7 +1552,6 @@ void System::destroySingletons()
     CEGUI_DELETE_AO AnimationManager::getSingletonPtr();
     CEGUI_DELETE_AO RenderEffectManager::getSingletonPtr();
     CEGUI_DELETE_AO FontManager::getSingletonPtr();
-    CEGUI_DELETE_AO MouseCursor::getSingletonPtr();
     CEGUI_DELETE_AO ImageManager::getSingletonPtr();
     CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
 }
@@ -1786,7 +1723,7 @@ void System::notifyMouseTransition(Window* top, Window* bottom,
 bool System::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
-    const Vector2f mouse_pos(MouseCursor::getSingleton().getPosition());
+    const Vector2f mouse_pos(d_defaultGUIRoot->getMouseCursor().getPosition());
 
     Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
@@ -1962,7 +1899,7 @@ void System::setMouseClickEventGenerationEnabled(const bool enable)
 bool System::injectMouseButtonClick(const MouseButton button)
 {
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position = d_defaultGUIRoot->getMouseCursor().getPosition();
     ma.window = getTargetWindow(ma.position, false);
 
     if (ma.window)
@@ -1985,7 +1922,7 @@ bool System::injectMouseButtonClick(const MouseButton button)
 bool System::injectMouseButtonDoubleClick(const MouseButton button)
 {
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position = d_defaultGUIRoot->getMouseCursor().getPosition();
     ma.window = getTargetWindow(ma.position, false);
 
     if (ma.window && ma.window->wantsMultiClickEvents())
@@ -2008,7 +1945,7 @@ bool System::injectMouseButtonDoubleClick(const MouseButton button)
 bool System::injectMouseButtonTripleClick(const MouseButton button)
 {
     MouseEventArgs ma(0);
-    ma.position = MouseCursor::getSingleton().getPosition();
+    ma.position = d_defaultGUIRoot->getMouseCursor().getPosition();
     ma.window = getTargetWindow(ma.position, false);
 
     if (ma.window && ma.window->wantsMultiClickEvents())
@@ -2049,7 +1986,7 @@ bool System::injectPasteRequest()
 void System::invalidateAllCachedRendering()
 {
     invalidateAllWindows();
-    MouseCursor::getSingleton().invalidate();
+    //MouseCursor::getSingleton().invalidate();
 }
 
 //----------------------------------------------------------------------------//

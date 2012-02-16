@@ -6,7 +6,7 @@
 	purpose:	Implements MouseCursor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,20 +40,18 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-const String MouseCursor::EventNamespace("MouseCursor");
-
 /*************************************************************************
 	Static Data Definitions
 *************************************************************************/
-// singleton instance pointer
-template<> MouseCursor* Singleton<MouseCursor>::ms_Singleton	= 0;
 bool MouseCursor::s_initialPositionSet = false;
 Vector2f MouseCursor::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String MouseCursor::EventImageChanged( "ImageChanged" );
+const String MouseCursor::EventNamespace("MouseCursor");
+const String MouseCursor::EventImageChanged("ImageChanged");
+const String MouseCursor::EventDefaultImageChanged("DefaultImageChanged");
 
 
 /*************************************************************************
@@ -61,6 +59,7 @@ const String MouseCursor::EventImageChanged( "ImageChanged" );
 *************************************************************************/
 MouseCursor::MouseCursor(void) :
     d_cursorImage(0),
+    d_defaultCursorImage(0),
     d_position(0.0f, 0.0f),
     d_visible(true),
     d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer()),
@@ -81,11 +80,6 @@ MouseCursor::MouseCursor(void) :
     	// mouse defaults to middle of the constrained area
         setPosition(Vector2f(screenArea.getWidth() / 2,
                               screenArea.getHeight() / 2));
-
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-	Logger::getSingleton().logEvent(
-       "CEGUI::MouseCursor singleton created. " + String(addr_buff));
 }
 
 
@@ -95,11 +89,6 @@ MouseCursor::MouseCursor(void) :
 MouseCursor::~MouseCursor(void)
 {
     System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometry);
-
-    char addr_buff[32];
-    sprintf(addr_buff, "(%p)", static_cast<void*>(this));
-	Logger::getSingleton().logEvent(
-       "CEGUI::MouseCursor singleton destroyed. " + String(addr_buff));
 }
 
 
@@ -128,6 +117,31 @@ void MouseCursor::setImage(const String& name)
 	setImage(&ImageManager::getSingleton().get(name));
 }
 
+//----------------------------------------------------------------------------//
+void MouseCursor::setDefaultImage(const Image* image)
+{
+    if (image == d_defaultCursorImage)
+        return;
+
+	d_defaultCursorImage = image;
+    d_cachedGeometryValid = d_cursorImage != 0;
+
+	MouseCursorEventArgs args(this);
+	args.image = image;
+	onDefaultImageChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+void MouseCursor::setDefaultImage(const String& name)
+{
+	setDefaultImage(&ImageManager::getSingleton().get(name));
+}
+
+//----------------------------------------------------------------------------//
+const Image* MouseCursor::getDefaultImage() const
+{
+    return d_defaultCursorImage;
+}
 
 /*************************************************************************
 	Draw the mouse cursor
@@ -339,29 +353,18 @@ void MouseCursor::invalidate()
     d_cachedGeometryValid = false;
 }
 
-//////////////////////////////////////////////////////////////////////////
-/*************************************************************************
-
-	Begin event triggers section
-
-*************************************************************************/
-//////////////////////////////////////////////////////////////////////////
-
+//----------------------------------------------------------------------------//
 void MouseCursor::onImageChanged(MouseCursorEventArgs& e)
 {
-	fireEvent(EventImageChanged, e, EventNamespace);
+    fireEvent(EventImageChanged, e, EventNamespace);
 }
 
-
-MouseCursor& MouseCursor::getSingleton(void)
+//----------------------------------------------------------------------------//
+void MouseCursor::onDefaultImageChanged(MouseCursorEventArgs& e)
 {
-	return Singleton<MouseCursor>::getSingleton();
+    fireEvent(EventDefaultImageChanged, e, EventNamespace);
 }
 
-
-MouseCursor* MouseCursor::getSingletonPtr(void)
-{
-	return Singleton<MouseCursor>::getSingletonPtr();
-}
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

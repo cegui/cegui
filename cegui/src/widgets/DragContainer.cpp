@@ -58,7 +58,7 @@ namespace CEGUI
         d_dragThreshold(8.0f),
         d_dragAlpha(0.5f),
         d_dropTarget(0),
-        d_dragCursorImage((const Image*)DefaultMouseCursor),
+        d_dragCursorImage(0),
         d_dropflag(false),
         d_stickyMode(false),
         d_pickedUp(false),
@@ -124,14 +124,8 @@ namespace CEGUI
 
     const Image* DragContainer::getDragCursorImage(void) const
     {
-        if (d_dragCursorImage == (const Image*)DefaultMouseCursor)
-        {
-            return System::getSingleton().getDefaultMouseCursor();
-        }
-        else
-        {
-            return d_dragCursorImage;
-        }
+        return d_dragCursorImage ? d_dragCursorImage :
+            System::getSingleton().getDefaultGUIRoot().getMouseCursor().getDefaultImage();
     }
 
     void DragContainer::setDragCursorImage(const Image* image)
@@ -142,11 +136,6 @@ namespace CEGUI
             WindowEventArgs args(this);
             onDragMouseCursorChanged(args);
         }
-    }
-
-    void DragContainer::setDragCursorImage(MouseCursorImage image)
-    {
-        setDragCursorImage((const Image*)image);
     }
 
     void DragContainer::setDragCursorImage(const String& name)
@@ -250,7 +239,8 @@ namespace CEGUI
 
     void DragContainer::updateActiveMouseCursor(void) const
     {
-        MouseCursor::getSingleton().setImage(d_dragging ? getDragCursorImage() : getMouseCursor());
+        System::getSingleton().getDefaultGUIRoot().getMouseCursor().
+            setImage(d_dragging ? getDragCursorImage() : getMouseCursor());
     }
 
     void DragContainer::onMouseButtonDown(MouseEventArgs& e)
@@ -430,7 +420,8 @@ namespace CEGUI
             bool wasEnabled = d_enabled;
             d_enabled = false;
             // find out which child of root window has the mouse in it
-            Window* eventWindow = root->getTargetChildAtPosition(MouseCursor::getSingleton().getPosition());
+            Window* eventWindow = root->getTargetChildAtPosition(
+                System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition());
             d_enabled = wasEnabled;
 
             // use root itself if no child was hit
@@ -565,7 +556,7 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
 
             // get position of mouse as co-ordinates local to this window.
             const Vector2f localMousePos(CoordConverter::screenToWindow(*this,
-                MouseCursor::getSingleton().getPosition()));
+                System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition()));
             doDragging(localMousePos);
 
             d_pickedUp = true;

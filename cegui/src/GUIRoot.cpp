@@ -32,13 +32,11 @@
 
 namespace CEGUI
 {
-
 //----------------------------------------------------------------------------//
 GUIRoot::GUIRoot(RenderTarget& target) :
     RenderingSurface(target),
     d_rootWindow(0),
-    d_isDirty(false),
-    d_mouseCursor(MouseCursor::getSingletonPtr())
+    d_isDirty(false)
 {
 }
 
@@ -95,10 +93,7 @@ void GUIRoot::drawContent()
 
     draw();
 
-	if (!d_mouseCursor)
-        d_mouseCursor = MouseCursor::getSingletonPtr();
-
-    d_mouseCursor->draw();
+    d_mouseCursor.draw();
 }
 
 //----------------------------------------------------------------------------//
@@ -134,7 +129,7 @@ MouseCursor& GUIRoot::getMouseCursor()
 //----------------------------------------------------------------------------//
 const MouseCursor& GUIRoot::getMouseCursor() const
 {
-    return *d_mouseCursor;
+    return d_mouseCursor;
 }
 
 //----------------------------------------------------------------------------//
@@ -142,6 +137,8 @@ void GUIRoot::notifySurfaceSizeChanged(const Sizef& new_size)
 {
     if (d_rootWindow)
         updateRootWindowAreaRects();
+
+    d_mouseCursor.notifyDisplaySizeChanged(new_size);
 }
 
 //----------------------------------------------------------------------------//

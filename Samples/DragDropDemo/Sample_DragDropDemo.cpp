@@ -53,7 +53,7 @@ bool DragDropDemo::initialiseSample()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set up defaults
-    System::getSingleton().setDefaultMouseCursor("WindowsLook/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
     System::getSingleton().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset

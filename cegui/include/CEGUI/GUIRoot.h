@@ -85,7 +85,7 @@ protected:
 
     Window* d_rootWindow;
     bool d_isDirty;
-    MouseCursor* d_mouseCursor;
+    MouseCursor d_mouseCursor;
 };
 
 }

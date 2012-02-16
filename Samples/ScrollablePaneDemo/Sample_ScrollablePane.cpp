@@ -111,7 +111,7 @@ bool ScrollablePaneSample::initialiseSample()
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_system->setDefaultMouseCursor("WindowsLook/MouseArrow");
+    d_system->getDefaultGUIRoot().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_system->setDefaultTooltip("WindowsLook/Tooltip");

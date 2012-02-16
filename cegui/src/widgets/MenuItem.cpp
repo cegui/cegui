@@ -441,7 +441,7 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // (use mouse position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
                 System::getSingleton().getGUISheet()->getTargetChildAtPosition(
-                    MouseCursor::getSingleton().getPosition()) == this)
+                    System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
@@ -462,8 +462,8 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
     ItemEntry::onCaptureLost(e);
 
     d_pushed = false;
-    updateInternalState(
-        getUnprojectedPosition(MouseCursor::getSingleton().getPosition()));
+    updateInternalState(getUnprojectedPosition(System::getSingleton().
+        getDefaultGUIRoot().getMouseCursor().getPosition()));
     invalidate();
 
     // event was handled by us.

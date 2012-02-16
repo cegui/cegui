@@ -110,7 +110,7 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-        System::getSingleton().setDefaultMouseCursor ("TaharezLook/MouseArrow");
+        System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage ("TaharezLook/MouseArrow");
 
 		// Create a custom font which we use to draw the list items. This custom
 		// font won't get effected by the scaler and such.
