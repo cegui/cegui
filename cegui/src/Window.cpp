@@ -1114,7 +1114,7 @@ void Window::setParent(Element* parent)
         // target surface is eihter the parent's target, or the default root.
         RenderingSurface& tgt = d_parent ?
             getParent()->getTargetRenderingSurface() :
-            System::getSingleton().getRenderer()->getDefaultGUIRoot();
+            System::getSingleton().getDefaultGUIRoot();
 
         tgt.transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
     }
@@ -3072,7 +3072,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     else
     {
         ctx.surface =
-            &System::getSingleton().getRenderer()->getDefaultGUIRoot();
+            &System::getSingleton().getDefaultGUIRoot();
         ctx.owner = 0;
         ctx.offset = Vector2f(0, 0);
         ctx.queue = RQ_BASE;
@@ -3093,7 +3093,7 @@ RenderingSurface& Window::getTargetRenderingSurface() const
     else if (d_parent)
         return getParent()->getTargetRenderingSurface();
     else
-        return System::getSingleton().getRenderer()->getDefaultGUIRoot();
+        return System::getSingleton().getDefaultGUIRoot();
 }
 
 //----------------------------------------------------------------------------//

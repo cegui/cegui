@@ -126,10 +126,10 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
         *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
-    d_renderer->getDefaultGUIRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+    CEGUI::System::getSingleton().getDefaultGUIRoot().clearGeometry(CEGUI::RQ_OVERLAY);
 
     // subscribe handler to render overlay items
-    d_renderer->getDefaultGUIRoot().
+    CEGUI::System::getSingleton().getDefaultGUIRoot().
         subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
             CEGUI::Event::Subscriber(&CEGuiBaseApplication::overlayHandler,
                                      this));
@@ -307,8 +307,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::positionLogo()
 {
-    const CEGUI::Rectf scrn(d_renderer->getDefaultGUIRoot().
-        getRenderTarget().getArea());
+    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
 
     d_logoGeometry->setClippingRegion(scrn);
     d_logoGeometry->setTranslation(

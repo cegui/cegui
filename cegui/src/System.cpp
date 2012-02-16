@@ -190,7 +190,7 @@ System::System(Renderer& renderer,
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_defaultFont(0),
-  d_defaultGUIRoot(&d_renderer->getDefaultGUIRoot()),
+  d_defaultGUIRoot(CEGUI_NEW_AO GUIRoot(d_renderer->getDefaultRenderTarget())),
   d_wndWithMouse(0),
   d_activeSheet(0),
   d_modalTarget(0),
@@ -366,6 +366,8 @@ System::~System(void)
 
 	// cleanup singletons
     destroySingletons();
+
+    CEGUI_DELETE_AO d_defaultGUIRoot;
 
     // cleanup resource provider if we own it
     if (d_ourResourceProvider)
@@ -2086,9 +2088,9 @@ void System::destroyRegexMatcher(RegexMatcher& rm) const
 }
 
 //----------------------------------------------------------------------------//
-GUIRoot* System::getDefaultGUIRoot() const
+GUIRoot& System::getDefaultGUIRoot() const
 {
-    return d_defaultGUIRoot;
+    return *d_defaultGUIRoot;
 }
 
 //----------------------------------------------------------------------------//
