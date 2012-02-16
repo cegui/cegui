@@ -40,6 +40,7 @@
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/System.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
@@ -2565,6 +2566,7 @@ protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
     friend class WindowManager;
+    friend class GUIRoot;
 
     /*************************************************************************
         Event trigger methods
