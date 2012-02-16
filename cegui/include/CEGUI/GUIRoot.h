@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIRenderingRoot.h
+    filename:   GUIRoot.h
     created:    Mon Jan 12 2009
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,21 +25,21 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderingRoot_h_
-#define _CEGUIRenderingRoot_h_
+#ifndef _CEGUIGUIRoot_h_
+#define _CEGUIGUIRoot_h_
 
 #include "CEGUI/RenderingSurface.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIEXPORT RenderingRoot : public RenderingSurface
+class CEGUIEXPORT GUIRoot : public RenderingSurface
 {
 public:
-    //! Constructor.
-    RenderingRoot(RenderTarget& target);
+    GUIRoot(RenderTarget& target);
+
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIRenderingRoot_h_
+#endif
+

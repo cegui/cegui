@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIRenderingRoot.cpp
+    filename:   GUIRoot.cpp
     created:    Mon Jan 12 2009
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,16 +27,16 @@
  ***************************************************************************/
 #include "CEGUI/RenderingRoot.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-RenderingRoot::RenderingRoot(RenderTarget& target) :
+GUIRoot::GUIRoot(RenderTarget& target) :
     RenderingSurface(target)
 {
 }
 
 //----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
+}
+
