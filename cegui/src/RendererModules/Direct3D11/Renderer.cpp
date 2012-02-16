@@ -29,7 +29,7 @@
 #include "CEGUI/RendererModules/Direct3D11/TextureTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/ViewportTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -97,7 +97,7 @@ void Direct3D11Renderer::destroy(Direct3D11Renderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& Direct3D11Renderer::getDefaultRenderingRoot()
+GUIRoot& Direct3D11Renderer::getDefaultGUIRoot()
 {
     return *d_defaultRoot;
 }
@@ -410,7 +410,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     }
 
     d_defaultTarget = new Direct3D11ViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
+    d_defaultRoot = new GUIRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//

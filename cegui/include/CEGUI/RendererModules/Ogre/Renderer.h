@@ -251,16 +251,16 @@ public:
     /*!
     \brief
         Sets the Ogre::RenderTarget that should be targetted by the default
-        RenderingRoot.
+        GUIRoot.
 
     \param target
         Reference to the Ogre::RenderTarget object that is to be used as the
-        target for output from the default RenderingRoot.
+        target for output from the default GUIRoot.
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
     // implement CEGUI::Renderer interface
-    RenderingRoot& getDefaultRenderingRoot();
+    GUIRoot& getDefaultGUIRoot();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();

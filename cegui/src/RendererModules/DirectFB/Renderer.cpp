@@ -30,7 +30,7 @@
 #include "CEGUI/RendererModules/DirectFB/GeometryBuffer.h"
 #include "CEGUI/RendererModules/DirectFB/RenderTarget.h"
 #include "CEGUI/TextureTarget.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/Exceptions.h"
 
 #include <algorithm>
@@ -69,7 +69,7 @@ void DirectFBRenderer::setTargetSurface(IDirectFBSurface& surface)
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& DirectFBRenderer::getDefaultRenderingRoot()
+GUIRoot& DirectFBRenderer::getDefaultGUIRoot()
 {
     return *d_defaultRoot;
 }
@@ -237,7 +237,7 @@ DirectFBRenderer::DirectFBRenderer(IDirectFB& directfb,
     d_targetSurface(&d_rootSurface),
     d_displayDPI(96, 96),
     d_defaultTarget(new DirectFBRenderTarget(*this, d_rootSurface)),
-    d_defaultRoot(new RenderingRoot(*d_defaultTarget))
+    d_defaultRoot(new GUIRoot(*d_defaultTarget))
 {
     int w, h;
     d_rootSurface.GetSize(&d_rootSurface, &w, &h);

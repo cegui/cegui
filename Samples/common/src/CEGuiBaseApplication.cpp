@@ -38,7 +38,7 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIRoot.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/AnimationManager.h"
 #include <stdlib.h>
@@ -126,10 +126,10 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
         *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
-    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+    d_renderer->getDefaultGUIRoot().clearGeometry(CEGUI::RQ_OVERLAY);
 
     // subscribe handler to render overlay items
-    d_renderer->getDefaultRenderingRoot().
+    d_renderer->getDefaultGUIRoot().
         subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
             CEGUI::Event::Subscriber(&CEGuiBaseApplication::overlayHandler,
                                      this));
@@ -307,7 +307,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::positionLogo()
 {
-    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderingRoot().
+    const CEGUI::Rectf scrn(d_renderer->getDefaultGUIRoot().
         getRenderTarget().getArea());
 
     d_logoGeometry->setClippingRegion(scrn);
