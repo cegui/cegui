@@ -60,7 +60,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     // set default mouse image
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");

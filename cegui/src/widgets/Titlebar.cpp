@@ -134,8 +134,9 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 				d_dragging = true;
 				d_dragPoint = CoordConverter::screenToWindow(*this, e.position);
 
-				// store old constraint area
-				d_oldCursorArea = MouseCursor::getSingleton().getConstraintArea();
+                // store old constraint area
+                d_oldCursorArea = System::getSingleton().getDefaultGUIRoot().
+                    getMouseCursor().getConstraintArea();
 
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rectf constrainArea;
@@ -151,7 +152,8 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 					constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
 				}
 
-				MouseCursor::getSingleton().setConstraintArea(&constrainArea);
+                System::getSingleton().getDefaultGUIRoot().getMouseCursor().
+                    setConstraintArea(&constrainArea);
 			}
 		}
 
@@ -212,7 +214,8 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
 	d_dragging = false;
 
 	// restore old constraint area
-	MouseCursor::getSingleton().setConstraintArea(&d_oldCursorArea);
+	System::getSingleton().getDefaultGUIRoot().
+        getMouseCursor().setConstraintArea(&d_oldCursorArea);
 }
 
 

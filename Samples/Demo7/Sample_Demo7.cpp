@@ -273,7 +273,7 @@ bool Demo7Sample::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background

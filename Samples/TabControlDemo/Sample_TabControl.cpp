@@ -75,7 +75,7 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
-        System::getSingleton().setDefaultMouseCursor (SKIN "/MouseArrow");
+        System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage (SKIN "/MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically
         FontManager::getSingleton().createFromFile("DejaVuSans-10.font");

@@ -128,7 +128,7 @@ bool TreeDemoSample::initialiseSample()
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
-   System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME "/MouseArrow");
+   System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");

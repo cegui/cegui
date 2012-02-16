@@ -133,7 +133,7 @@ bool MinesweeperSample::initialiseSample()
     System::getSingleton().setDefaultTooltip("TaharezLook/Tooltip");
 
     // set default mouse image
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // Load font
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");

@@ -101,7 +101,7 @@ void Checkbox::onMouseButtonUp(MouseEventArgs& e)
 			// if mouse was released over this widget
             // (use mouse position, as e.position has been unprojected)
 			if (this == sheet->getTargetChildAtPosition(
-                                    MouseCursor::getSingleton().getPosition()))
+                System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition()))
 			{
 				// toggle selected state
 				setSelected(d_selected ^ true);

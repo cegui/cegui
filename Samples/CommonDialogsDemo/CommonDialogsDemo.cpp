@@ -51,7 +51,7 @@ bool CommonDialogsDemo::initialiseSample()
     // load resources and set up system defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaCommonDialogs.scheme");
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // set up the root window / gui sheet
     WindowManager& winMgr = WindowManager::getSingleton();

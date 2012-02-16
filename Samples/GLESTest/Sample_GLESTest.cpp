@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     initialiseDefaultResourceGroups();
 
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    CEGUI::System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     CEGUI::WindowManager& winMgr(CEGUI::WindowManager::getSingleton());
     CEGUI::Window* root = winMgr.createWindow("DefaultWindow", "root");
     CEGUI::Window* fw = root->createChild("TaharezLook/FrameWindow");

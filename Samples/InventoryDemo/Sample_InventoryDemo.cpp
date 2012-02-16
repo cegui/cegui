@@ -52,7 +52,7 @@ bool InventoryDemo::initialiseSample()
     // basic system init using TaharezLook.
     WindowManager& winMgr = WindowManager::getSingleton();
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
     System::getSingleton().setGUISheet(root);
 

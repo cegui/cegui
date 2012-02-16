@@ -33,8 +33,8 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Singleton.h"
+#include "CEGUI/EventSet.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/MouseCursor.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/ResourceProvider.h"
 #include "CEGUI/InjectedInputReceiver.h"
@@ -100,10 +100,6 @@ public:
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
 	static const String EventDefaultFontChanged;
-    /** Event fired when the default mouse cursor changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventDefaultMouseCursorChanged;
     /** Event fired when the mouse move scaling factor changes.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
@@ -468,59 +464,6 @@ public:
         manually inform the system of such events.
     */
     void setMouseClickEventGenerationEnabled(const bool enable);
-
-	/*!
-	\brief
-		Return the currently set default mouse cursor image
-
-	\return
-		Pointer to the current default image used for the mouse cursor.  May return NULL if default cursor has not been set,
-		or has intentionally been set to NULL - which results in a blank default cursor.
-	*/
-	const Image*	getDefaultMouseCursor(void) const	{return d_defaultMouseCursor;}
-
-
-	/*!
-	\brief
-		Set the image to be used as the default mouse cursor.
-
-	\param image
-		Pointer to an image object that is to be used as the default mouse cursor.  To have no cursor rendered by default, you
-		can specify NULL here.
-
-	\return
-		Nothing.
-	*/
-	void	setDefaultMouseCursor(const Image* image);
-
-
-	/*!
-	\brief
-		Set the image to be used as the default mouse cursor.
-
-	\param image
-		One of the MouseCursorImage enumerated values.
-
-	\return
-		Nothing.
-	*/
-	void	setDefaultMouseCursor(MouseCursorImage image)		{setDefaultMouseCursor((const Image*)image);}
-
-
-	/*!
-	\brief
-		Set the image to be used as the default mouse cursor.
-
-	\param name
-		String object that contains the name of the Image that is to be used.
-
-	\return
-		Nothing.
-
-	\exception UnknownObjectException	thrown if no Image named \a name exists.
-	*/
-	void	setDefaultMouseCursor(const String& name);
-
 
 	/*!
 	\brief

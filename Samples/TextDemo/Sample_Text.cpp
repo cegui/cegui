@@ -42,7 +42,7 @@ bool TextDemo::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     // We need a font
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Font defaulting

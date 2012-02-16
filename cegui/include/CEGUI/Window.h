@@ -1851,18 +1851,6 @@ public:
     \brief
         Set the mouse cursor image to be used when the mouse enters this window.
 
-    \param image
-        One of the MouseCursorImage enumerated values.
-
-    \return
-        Nothing.
-    */
-    void setMouseCursor(MouseCursorImage image);
-
-    /*!
-    \brief
-        Set the mouse cursor image to be used when the mouse enters this window.
-
     \param imageset
         String object that contains the name of the Imageset that contains the
         image to be used.

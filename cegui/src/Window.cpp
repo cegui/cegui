@@ -184,7 +184,7 @@ Window::Window(const String& type, const String& name):
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
-    d_mouseCursor((const Image*)DefaultMouseCursor),
+    d_mouseCursor(0),
 
     // alpha transparency set up
     d_alpha(1.0f),
@@ -1213,10 +1213,10 @@ void Window::onZChange_impl(void)
 //----------------------------------------------------------------------------//
 const Image* Window::getMouseCursor(bool useDefault) const
 {
-    if (d_mouseCursor != (const Image*)DefaultMouseCursor)
+    if (d_mouseCursor)
         return d_mouseCursor;
     else
-        return useDefault ? System::getSingleton().getDefaultMouseCursor() : 0;
+        return useDefault ? System::getSingleton().getDefaultGUIRoot().getMouseCursor().getDefaultImage() : 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1232,21 +1232,7 @@ void Window::setMouseCursor(const Image* image)
     d_mouseCursor = image;
 
     if (System::getSingleton().getWindowContainingMouse() == this)
-    {
-        const Image* const default_cursor =
-            reinterpret_cast<const Image*>(DefaultMouseCursor);
-
-        if (default_cursor == image)
-            image = System::getSingleton().getDefaultMouseCursor();
-
-        MouseCursor::getSingleton().setImage(image);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Window::setMouseCursor(MouseCursorImage image)
-{
-    setMouseCursor((const Image*)image);
+        System::getSingleton().getDefaultGUIRoot().getMouseCursor().setImage(image);
 }
 
 //----------------------------------------------------------------------------//
@@ -1277,8 +1263,8 @@ void Window::setDestroyedByParent(bool setting)
 void Window::generateAutoRepeatEvent(MouseButton button)
 {
     MouseEventArgs ma(this);
-    ma.position =
-        getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
+    ma.position = getUnprojectedPosition(
+        System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition());
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = System::getSingleton().getSystemKeys();
@@ -2442,7 +2428,8 @@ void Window::onMouseLeavesArea(MouseEventArgs& e)
 void Window::onMouseEnters(MouseEventArgs& e)
 {
     // set the mouse cursor
-    MouseCursor::getSingleton().setImage(getMouseCursor());
+    System::getSingleton().getDefaultGUIRoot().
+        getMouseCursor().setImage(getMouseCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
