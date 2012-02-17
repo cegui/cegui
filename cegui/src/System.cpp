@@ -407,10 +407,8 @@ const String& System::getVerboseVersion()
     return ret;
 }
 
-/*************************************************************************
-	Render the GUI for this frame
-*************************************************************************/
-void System::renderGUI(void)
+//----------------------------------------------------------------------------//
+void System::renderAllGUIContexts()
 {
     d_renderer->beginRendering();
 

@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        CEGUI::System::getSingleton().renderGUI();
+        CEGUI::System::getSingleton().renderAllGUIContexts();
 
         eglSwapBuffers(egldpy, surface);
     }

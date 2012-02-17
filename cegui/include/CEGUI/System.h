@@ -250,16 +250,13 @@ public:
 	Font*	getDefaultFont(void) const				{return d_defaultFont;}
 
 
-	/*!
-	\brief
-		Render the GUI
-
-		Depending upon the internal state, this may either re-use rendering from last time, or trigger a full re-draw from all elements.
-
-	\return
-		Nothing
-	*/
-	void	renderGUI(void);
+    /*!
+    \brief
+        Depending upon the internal state, for each GUIContext this may either
+        re-use cached rendering from last time or trigger a full re-draw of all
+        elements.
+    */
+    void renderAllGUIContexts();
 
 
 	/*!
