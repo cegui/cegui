@@ -75,7 +75,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // set the background image
     background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().setGUISheet(background);
+    System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
 
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
@@ -157,7 +157,7 @@ DemoConsole::DemoConsole(CEGUI::Window* parent) :
         subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&DemoConsole::handleSubmit, this));
 
     // decide where to attach the console main window
-    parent = parent ? parent : CEGUI::System::getSingleton().getGUISheet();
+    parent = parent ? parent : CEGUI::System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
     // attach this window if parent is valid
     if (parent)

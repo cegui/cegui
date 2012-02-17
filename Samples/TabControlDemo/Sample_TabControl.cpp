@@ -94,7 +94,7 @@ public:
         // set the background image
         background->setProperty("Image", "BackgroundImage");
         // install this as the root GUI sheet
-        System::getSingleton().setGUISheet(background);
+        System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
 
         // set tooltip styles (by default there is none)
         System::getSingleton().setDefaultTooltip(SKIN "/Tooltip");
@@ -176,7 +176,7 @@ public:
 
     void refreshPageList()
     {
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -222,7 +222,7 @@ public:
         }
 
         // Check if the window exists
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
         if (root->isChild("Frame/TabControl"))
         {
@@ -239,7 +239,7 @@ public:
                             static_cast<const WindowEventArgs&>(e).window);
 
         // Check if the window exists
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
         if (root->isChild("Frame/TabControl"))
         {
@@ -258,7 +258,7 @@ public:
                             static_cast<const WindowEventArgs&>(e).window);
 
         // Check if the window exists
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
         if (root->isChild("Frame/TabControl"))
         {
@@ -272,7 +272,7 @@ public:
 
     bool handleAddTab(const EventArgs&)
     {
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
         // Check if the window exists
         if (root->isChild("Frame/TabControl"))
@@ -322,7 +322,7 @@ public:
 
     bool handleGoto(const EventArgs&)
     {
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -354,7 +354,7 @@ public:
 
     bool handleShow(const EventArgs&)
     {
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -386,7 +386,7 @@ public:
 
     bool handleDel(const EventArgs&)
     {
-        Window* root = System::getSingleton().getGUISheet();
+        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;

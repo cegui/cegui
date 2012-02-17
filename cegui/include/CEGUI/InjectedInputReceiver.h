@@ -103,20 +103,20 @@ public:
         - true if the input was processed by the receiver.
         - false if the input was not processed by the receiver.
     */
-    virtual bool injectKeyDown(uint key_code) = 0;
+    virtual bool injectKeyDown(Key::Scan scan_code) = 0;
 
     /*!
     \brief
         Function that injects a key up event into the receiver.
 
     \param key_code
-        uint value indicating which key was released.
+        Key::Scan value indicating which key was released.
 
     \return
         - true if the input was processed by the receiver.
         - false if the input was not processed by the receiver.
     */
-    virtual bool injectKeyUp(uint key_code) = 0;
+    virtual bool injectKeyUp(Key::Scan scan_code) = 0;
 
     /*!
     \brief

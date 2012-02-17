@@ -125,7 +125,7 @@ bool ScrollablePaneSample::initialiseSample()
     d_root->setProperty("FrameEnabled", "false");
     // root window will take care of hotkeys
     d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
-    d_system->setGUISheet(d_root);
+    d_system->getDefaultGUIRoot().setRootWindow(d_root);
 
     // create a menubar.
     // this will fit in the top of the screen and have options for the demo

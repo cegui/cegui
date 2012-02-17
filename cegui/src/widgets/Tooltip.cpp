@@ -141,7 +141,7 @@ namespace CEGUI
         {
             if (d_target != wnd)
             {
-                System::getSingleton().getGUISheet()->addChild(this);
+                System::getSingleton().getDefaultGUIRoot().getRootWindow()->addChild(this);
                 d_target = wnd;
             }
 

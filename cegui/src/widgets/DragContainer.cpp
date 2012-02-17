@@ -412,7 +412,7 @@ namespace CEGUI
 
         Window* root;
 
-        if (0 != (root = System::getSingleton().getGUISheet()))
+        if (0 != (root = System::getSingleton().getDefaultGUIRoot().getRootWindow()))
         {
             // this hack with the 'enabled' state is so that getChildAtPosition
             // returns something useful instead of a pointer back to 'this'.

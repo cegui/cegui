@@ -290,7 +290,7 @@ bool Demo7Sample::initialiseSample()
     // set the background image
     background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().setGUISheet(background);
+    System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
 
     // load the windows for Demo7 from the layout file.
     Window* sheet = winMgr.loadLayoutFromFile("Demo7Windows.layout");

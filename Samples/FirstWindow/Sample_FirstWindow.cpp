@@ -85,7 +85,7 @@ bool FirstWindowSample::initialiseSample()
 
     // set the GUI root window (also known as the GUI "sheet"), so the gui we set up
     // will be visible.
-    System::getSingleton().setGUISheet(root);
+    System::getSingleton().getDefaultGUIRoot().setRootWindow(root);
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.

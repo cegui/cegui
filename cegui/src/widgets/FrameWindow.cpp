@@ -207,7 +207,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        System::getSingleton().updateWindowContainingMouse();
+        System::getSingleton().getDefaultGUIRoot().updateWindowContainingMouse();
     }
 
 }
@@ -563,7 +563,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 	Window::onMouseMove(e);
 
 	// if we are not the window containing the mouse, do NOT change the cursor
-	if (System::getSingleton().getWindowContainingMouse() != this)
+	if (System::getSingleton().getDefaultGUIRoot().getWindowContainingMouse() != this)
 	{
 		return;
 	}
