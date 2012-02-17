@@ -894,7 +894,7 @@ bool ListHeader::segmentSizedHandler(const EventArgs& e)
 bool ListHeader::segmentMovedHandler(const EventArgs& e)
 {
 	const Vector2f mousePos(getUnprojectedPosition(
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().getPosition()));
+        getGUIContext().getMouseCursor().getPosition()));
 
 	// segment must be dropped within the window
 	if (isHit(mousePos))
@@ -1000,7 +1000,7 @@ bool ListHeader::segmentDragHandler(const EventArgs&)
 
 	// get mouse position as something local
     const Vector2f localMousePos(CoordConverter::screenToWindow(*this,
-        getUnprojectedPosition(System::getSingleton().getDefaultGUIContext().
+        getUnprojectedPosition(getGUIContext().
             getMouseCursor().getPosition())));
 
 	// scroll left?

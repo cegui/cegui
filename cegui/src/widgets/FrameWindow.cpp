@@ -207,7 +207,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        System::getSingleton().getDefaultGUIContext().updateWindowContainingMouse();
+        getGUIContext().updateWindowContainingMouse();
     }
 
 }
@@ -499,30 +499,30 @@ void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 	{
 	case SizingTop:
 	case SizingBottom:
-		System::getSingleton().getDefaultGUIContext().
+		getGUIContext().
             getMouseCursor().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
-		System::getSingleton().getDefaultGUIContext().
+		getGUIContext().
             getMouseCursor().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
-		System::getSingleton().getDefaultGUIContext().
+		getGUIContext().
             getMouseCursor().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
-		System::getSingleton().getDefaultGUIContext().
+		getGUIContext().
             getMouseCursor().setImage(d_neswSizingCursor);
 		break;
 
 	default:
-		System::getSingleton().getDefaultGUIContext().
+		getGUIContext().
             getMouseCursor().setImage(getMouseCursor());
 		break;
 	}
@@ -563,7 +563,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 	Window::onMouseMove(e);
 
 	// if we are not the window containing the mouse, do NOT change the cursor
-	if (System::getSingleton().getDefaultGUIContext().getWindowContainingMouse() != this)
+	if (getGUIContext().getWindowContainingMouse() != this)
 	{
 		return;
 	}

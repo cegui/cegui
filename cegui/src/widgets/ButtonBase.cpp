@@ -74,7 +74,7 @@ void ButtonBase::updateInternalState(const Vector2f& mouse_pos)
 	if (capture_wnd == 0)
 	{
 	    System* sys = System::getSingletonPtr();
-	    if (sys->getDefaultGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos))
+	    if (getGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos))
 	    {
 	        d_hovering = true;
 	    }
@@ -164,7 +164,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 
 	d_pushed = false;
 	updateInternalState(getUnprojectedPosition(
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().getPosition()));
+        getGUIContext().getMouseCursor().getPosition()));
 	invalidate();
 
 	// event was handled by us.
