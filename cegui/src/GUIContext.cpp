@@ -261,31 +261,37 @@ float GUIContext::getMouseMoveScalingFactor() const
 //----------------------------------------------------------------------------//
 void GUIContext::setMouseButtonClickTimeout(float seconds)
 {
+    d_mouseButtonClickTimeout = seconds;
 }
 
 //----------------------------------------------------------------------------//
 float GUIContext::getMouseButtonClickTimeout() const
 {
+    return d_mouseButtonClickTimeout;
 }
 
 //----------------------------------------------------------------------------//
 void GUIContext::setMouseButtonMultiClickTimeout(float seconds)
 {
+    d_mouseButtonMultiClickTimeout = seconds;
 }
 
 //----------------------------------------------------------------------------//
 float GUIContext::getMouseButtonMultiClickTimeout() const
 {
+    return d_mouseButtonMultiClickTimeout;
 }
 
 //----------------------------------------------------------------------------//
 void GUIContext::setMouseButtonMultiClickTolerance(const Sizef& sz)
 {
+    d_mouseButtonMultiClickTolerance = sz;
 }
 
 //----------------------------------------------------------------------------//
 const Sizef& GUIContext::getMouseButtonMultiClickTolerance() const
 {
+    return d_mouseButtonMultiClickTolerance;
 }
 
 //----------------------------------------------------------------------------//
