@@ -226,7 +226,7 @@ void ItemListbox::notifyItemClicked(ItemEntry* li)
     // multiselect enabled
     if (d_multiSelect)
     {
-        uint syskeys = System::getSingleton().getDefaultGUIContext().getSystemKeys().get();
+        uint syskeys = getGUIContext().getSystemKeys().get();
         ItemEntry* last = d_lastSelected;
 
         // no Control? clear others
@@ -421,7 +421,7 @@ void ItemListbox::onKeyDown(KeyEventArgs& e)
     // select all (if allowed) on Ctrl+A
     if (d_multiSelect)
     {
-        uint sysKeys = System::getSingleton().getDefaultGUIContext().getSystemKeys().get();
+        uint sysKeys = getGUIContext().getSystemKeys().get();
         if (e.scancode == Key::A && (sysKeys&Control))
         {
             selectAllItems();

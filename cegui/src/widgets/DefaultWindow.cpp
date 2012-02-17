@@ -86,7 +86,7 @@ void DefaultWindow::onMouseClicked(MouseEventArgs& e)
     // always call the base class handler
     Window::onMouseClicked(e);
     // only adjust the handled state if event was directly injected
-    if (!System::getSingleton().getDefaultGUIContext().isMouseClickEventGenerationEnabled())
+    if (!getGUIContext().isMouseClickEventGenerationEnabled())
         updateMouseEventHandled(e);
 }
 
