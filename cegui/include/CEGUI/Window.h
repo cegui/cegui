@@ -2551,7 +2551,7 @@ public:
     virtual void cloneChildWidgetsTo(Window& target) const;
 
     //! return the GUIContext this window is associated with.
-    GUIContext* getGUIContext() const;
+    GUIContext& getGUIContext() const;
     //! function used internally.  Do not call this from client code.
     void setGUIContext(GUIContext* context);
 
