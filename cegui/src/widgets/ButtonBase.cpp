@@ -74,7 +74,7 @@ void ButtonBase::updateInternalState(const Vector2f& mouse_pos)
 	if (capture_wnd == 0)
 	{
 	    System* sys = System::getSingletonPtr();
-	    if (sys->getWindowContainingMouse() == this && isHit(mouse_pos))
+	    if (sys->getDefaultGUIRoot().getWindowContainingMouse() == this && isHit(mouse_pos))
 	    {
 	        d_hovering = true;
 	    }

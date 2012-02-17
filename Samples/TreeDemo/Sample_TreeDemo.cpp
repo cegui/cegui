@@ -147,7 +147,7 @@ bool TreeDemoSample::initialiseSample()
    // set the background image
    background->setProperty("Image", "BackgroundImage");
    // install this as the root GUI sheet
-   System::getSingleton().setGUISheet(background);
+   System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 

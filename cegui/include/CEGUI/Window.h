@@ -1198,7 +1198,7 @@ public:
         Returns true if this Window is the modal target, otherwise false.
     */
     bool getModalState(void) const
-    {return(System::getSingleton().getModalTarget() == this);}
+    {return(System::getSingleton().getDefaultGUIRoot().getModalWindow() == this);}
 
     /*!
     \brief

@@ -60,7 +60,7 @@ bool DragDropDemo::initialiseSample()
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
     // load the initial layout
-    System::getSingleton().setGUISheet(
+    System::getSingleton().getDefaultGUIRoot().setRootWindow(
         WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
 
     // setup events
@@ -81,7 +81,7 @@ void DragDropDemo::subscribeEvents()
 {
     using namespace CEGUI;
 
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
     WindowManager& wmgr = WindowManager::getSingleton();
 

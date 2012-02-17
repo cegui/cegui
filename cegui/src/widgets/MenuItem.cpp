@@ -94,7 +94,7 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     {
         System* sys = System::getSingletonPtr();
 
-        if (sys->getWindowContainingMouse() == this && isHit(mouse_pos))
+        if (sys->getDefaultGUIRoot().getWindowContainingMouse() == this && isHit(mouse_pos))
         {
             d_hovering = true;
         }
@@ -440,7 +440,7 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // was the button released over this window?
         // (use mouse position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
-                System::getSingleton().getGUISheet()->getTargetChildAtPosition(
+                System::getSingleton().getDefaultGUIRoot().getRootWindow()->getTargetChildAtPosition(
                     System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);

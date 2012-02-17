@@ -106,7 +106,7 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 {
 	if ((e.button == LeftButton) && isPushed())
 	{
-		Window* sheet = System::getSingleton().getGUISheet();
+		Window* sheet = System::getSingleton().getDefaultGUIRoot().getRootWindow();
 
 		if (sheet)
 		{

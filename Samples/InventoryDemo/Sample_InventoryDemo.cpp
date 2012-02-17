@@ -54,7 +54,7 @@ bool InventoryDemo::initialiseSample()
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
-    System::getSingleton().setGUISheet(root);
+    System::getSingleton().getDefaultGUIRoot().setRootWindow(root);
 
     // register custom objects with CEGUI.
     WindowFactoryManager::addFactory<TplWindowFactory<InventoryReceiver> >();

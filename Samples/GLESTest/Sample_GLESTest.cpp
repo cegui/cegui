@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     fw->setSize(CEGUI::USize(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.5, 0)));
     fw->setText("OpenGL ES 1 Test");
 
-    CEGUI::System::getSingleton().setGUISheet(root);
+    CEGUI::System::getSingleton().getDefaultGUIRoot().setRootWindow(root);
 
     // Main looop
     bool running = true;

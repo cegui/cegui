@@ -123,11 +123,10 @@ void CEGuiGLFWSharedBase::glfwWindowResizeCallback(int w, int h)
 }
 
 //----------------------------------------------------------------------------//
-unsigned int CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
+CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
 {
     switch(glfwKey)
     {
-    case GLFW_KEY_UNKNOWN   : return 0;
     case GLFW_KEY_ESC       : return CEGUI::Key::Escape;
     case GLFW_KEY_F1        : return CEGUI::Key::F1;
     case GLFW_KEY_F2        : return CEGUI::Key::F2;
@@ -164,7 +163,7 @@ unsigned int CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
     case GLFW_KEY_HOME      : return CEGUI::Key::Home;
     case GLFW_KEY_END       : return CEGUI::Key::End;
     case GLFW_KEY_KP_ENTER  : return CEGUI::Key::NumpadEnter;
-    default                 : return 0;
+    default                 : return CEGUI::Key::Unknown;
     }
 }
 
@@ -183,7 +182,7 @@ CEGUI::MouseButton CEGuiGLFWSharedBase::GlfwToCeguiMouseButton(int glfwButton)
 //----------------------------------------------------------------------------//
 void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
 {
-    unsigned int ceguiKey = GlfwToCeguiKey(key);
+    CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
 
     if(action == GLFW_PRESS)
         CEGUI::System::getSingleton().injectKeyDown(ceguiKey);

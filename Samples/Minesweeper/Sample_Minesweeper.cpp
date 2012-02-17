@@ -155,7 +155,7 @@ bool MinesweeperSample::initialiseSample()
     background->setProperty("Image", "BackgroundImage");
 
     // install this as the root GUI sheet
-    System::getSingleton().setGUISheet(background);
+    System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
     d_alarm = (Timer*)winMgr.createWindow("Timer");
     background->addChild(d_alarm);
     d_alarm->setDelay(0.5); // Tick each 0.5 seconds

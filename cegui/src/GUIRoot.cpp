@@ -32,17 +32,95 @@
 
 namespace CEGUI
 {
+
+
+
+//! Simple timer class.
+class SimpleTimer
+{
+    double d_baseTime;
+
+public:
+    //! returns time in seconds
+    static double currentTime();
+
+    SimpleTimer() : d_baseTime(currentTime()) {}
+
+    void restart() { d_baseTime = currentTime(); }
+    double elapsed() { return currentTime() - d_baseTime; }
+};
+
+#if defined(__WIN32__) || defined(_WIN32)
+#include <windows.h>
+double SimpleTimer::currentTime()
+{
+    return timeGetTime() / 1000.0;
+}
+
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)  || defined(__HAIKU__)
+#include <sys/time.h>
+double SimpleTimer::currentTime()
+{
+    timeval timeStructure;
+    gettimeofday(&timeStructure, 0);
+    return timeStructure.tv_sec + timeStructure.tv_usec / 1000000.0;
+}
+#else
+#error "SimpleTimer not available for this platform, please implement it"
+#endif
+
+
+/*!
+\brief
+    Implementation structure used in tracking up & down mouse button inputs in
+    order to generate click, double-click, and triple-click events.
+*/
+struct MouseClickTracker
+{
+    MouseClickTracker() :
+        d_click_count(0),
+        d_click_area(0, 0, 0, 0)
+    {}
+
+    //! Timer used to track clicks for this button.
+    SimpleTimer d_timer;
+    //! count of clicks made so far.
+    int d_click_count;
+    //! area used to detect multi-clicks
+    Rectf d_click_area;
+    //! target window for any events generated.
+    Window* d_target_window;
+};
+
+
+//----------------------------------------------------------------------------//
+const float GUIRoot::DefaultMouseButtonClickTimeout = 0.0f;
+const float GUIRoot::DefaultMouseButtonMultiClickTimeout = 0.3333f;
+const Sizef GUIRoot::DefaultMouseButtonMultiClickTolerance(12.0f, 12.0f);
+
+const String GUIRoot::EventGUISheetChanged("RootWindowChanged");
+const String GUIRoot::EventMouseMovementScalingFactorChanged("MouseMovementScalingFactorChanged");
+
 //----------------------------------------------------------------------------//
 GUIRoot::GUIRoot(RenderTarget& target) :
     RenderingSurface(target),
     d_rootWindow(0),
-    d_isDirty(false)
+    d_isDirty(false),
+    d_mouseMovementScalingFactor(1.0f),
+    d_generateMouseClickEvents(true),
+    d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
+    d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
+    d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
+    d_windowContainingMouse(0),
+    d_modalWindow(0),
+    d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount])
 {
 }
 
 //----------------------------------------------------------------------------//
 GUIRoot::~GUIRoot()
 {
+    delete[] d_mouseClickTrackers;
 }
 
 //----------------------------------------------------------------------------//
@@ -68,9 +146,33 @@ void GUIRoot::updateRootWindowAreaRects() const
 }
 
 //----------------------------------------------------------------------------//
+void GUIRoot::setModalWindow(Window* window)
+{
+    d_modalWindow = window;
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIRoot::getModalWindow() const
+{
+    return d_modalWindow;
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIRoot::getWindowContainingMouse() const
+{
+    return d_windowContainingMouse;
+}
+
+//----------------------------------------------------------------------------//
 Sizef GUIRoot::getSurfaceSize() const
 {
     return d_target.getArea().getSize();
+}
+
+//----------------------------------------------------------------------------//
+const SystemKeys& GUIRoot::getSystemKeys() const
+{
+    return d_systemKeys;
 }
 
 //----------------------------------------------------------------------------//
@@ -131,6 +233,63 @@ const MouseCursor& GUIRoot::getMouseCursor() const
 {
     return d_mouseCursor;
 }
+    
+//----------------------------------------------------------------------------//
+void GUIRoot::setMouseMoveScalingFactor(float factor)
+{
+    d_mouseMovementScalingFactor = factor;
+
+    EventArgs args;
+    //onMouseMoveScalingFactorChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+float GUIRoot::getMouseMoveScalingFactor() const
+{
+    return d_mouseMovementScalingFactor;
+}
+
+//----------------------------------------------------------------------------//
+void GUIRoot::setMouseButtonClickTimeout(float seconds)
+{
+}
+
+//----------------------------------------------------------------------------//
+float GUIRoot::getMouseButtonClickTimeout() const
+{
+}
+
+//----------------------------------------------------------------------------//
+void GUIRoot::setMouseButtonMultiClickTimeout(float seconds)
+{
+}
+
+//----------------------------------------------------------------------------//
+float GUIRoot::getMouseButtonMultiClickTimeout() const
+{
+}
+
+//----------------------------------------------------------------------------//
+void GUIRoot::setMouseButtonMultiClickTolerance(const Sizef& sz)
+{
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& GUIRoot::getMouseButtonMultiClickTolerance() const
+{
+}
+
+//----------------------------------------------------------------------------//
+void GUIRoot::setMouseClickEventGenerationEnabled(const bool enable)
+{
+    d_generateMouseClickEvents = enable;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIRoot::isMouseClickEventGenerationEnabled() const
+{
+    return d_generateMouseClickEvents;
+}
 
 //----------------------------------------------------------------------------//
 void GUIRoot::notifySurfaceSizeChanged(const Sizef& new_size)
@@ -146,102 +305,553 @@ void GUIRoot::notifyWindowDestroyed(const Window* window)
 {
     if (window == d_rootWindow)
         d_rootWindow = 0;
+
+    if (window == d_windowContainingMouse)
+        d_windowContainingMouse = 0;
+
+    if (window == d_modalWindow)
+        d_modalWindow = 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseMove(float delta_x, float delta_y)
 {
-    return false;
+    MouseEventArgs ma(0);
+    ma.moveDelta.d_x = delta_x * d_mouseMovementScalingFactor;
+    ma.moveDelta.d_y = delta_y * d_mouseMovementScalingFactor;
+
+    // no movement means no event
+    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
+        return false;
+
+    d_mouseCursor.offsetPosition(ma.moveDelta);
+
+    ma.position = d_mouseCursor.getPosition();
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
+
+    return mouseMoveInjection_impl(ma);
+}
+
+//----------------------------------------------------------------------------//
+bool GUIRoot::mouseMoveInjection_impl(MouseEventArgs& ma)
+{
+    updateWindowContainingMouse();
+
+    // input can't be handled if there is no window to handle it.
+    if (!d_windowContainingMouse)
+        return false;
+
+    // make mouse position sane for this target window
+    ma.position = d_windowContainingMouse->getUnprojectedPosition(ma.position);
+    // inform window about the input.
+    ma.window = d_windowContainingMouse;
+    ma.handled = 0;
+    ma.window->onMouseMove(ma);
+
+    // return whether window handled the input.
+    return ma.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIRoot::updateWindowContainingMouse()
+{
+    MouseEventArgs ma(0);
+    const Vector2f mouse_pos(d_mouseCursor.getPosition());
+
+    Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
+
+    // exit if window containing mouse has not changed.
+    if (curr_wnd_with_mouse == d_windowContainingMouse)
+        return false;
+
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
+
+    Window* oldWindow = d_windowContainingMouse;
+    d_windowContainingMouse = curr_wnd_with_mouse;
+
+    // inform previous window the mouse has left it
+    if (oldWindow)
+    {
+        ma.window = oldWindow;
+        ma.position = oldWindow->getUnprojectedPosition(mouse_pos);
+        oldWindow->onMouseLeaves(ma);
+    }
+
+    // inform window containing mouse that mouse has entered it
+    if (d_windowContainingMouse)
+    {
+        ma.handled = 0;
+        ma.window = d_windowContainingMouse;
+        ma.position = d_windowContainingMouse->getUnprojectedPosition(mouse_pos);
+        d_windowContainingMouse->onMouseEnters(ma);
+    }
+
+    // do the 'area' version of the events
+    Window* root = getCommonAncestor(oldWindow, d_windowContainingMouse);
+
+    if (oldWindow)
+        notifyMouseTransition(root, oldWindow, &Window::onMouseLeavesArea, ma);
+
+    if (d_windowContainingMouse)
+        notifyMouseTransition(root, d_windowContainingMouse, &Window::onMouseEntersArea, ma);
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIRoot::getCommonAncestor(Window* w1, Window* w2)
+{
+    if (!w2)
+        return w2;
+
+    if (w1 == w2)
+        return w1;
+
+    // make sure w1 is always further up
+    if (w1 && w1->isAncestor(w2))
+        return w2;
+
+    while (w1)
+    {
+        if (w2->isAncestor(w1))
+            break;
+
+        w1 = w1->getParent();
+    }
+
+    return w1;
+}
+
+//----------------------------------------------------------------------------//
+void GUIRoot::notifyMouseTransition(Window* top, Window* bottom,
+                                    void (Window::*func)(MouseEventArgs&),
+                                    MouseEventArgs& args)
+{
+    if (top == bottom)
+        return;
+    
+    Window* const parent = bottom->getParent();
+
+    if (parent && parent != top)
+        notifyMouseTransition(top, parent, func, args);
+
+    args.handled = 0;
+    args.window = bottom;
+
+    (bottom->*func)(args);
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIRoot::getTargetWindow(const Vector2f& pt,
+                                 const bool allow_disabled) const
+{
+    // if there is no GUI sheet visible, then there is nowhere to send input
+    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+        return 0;
+
+    Window* dest_window = Window::getCaptureWindow();
+
+    if (!dest_window)
+    {
+        dest_window = d_rootWindow->
+            getTargetChildAtPosition(pt, allow_disabled);
+
+        if (!dest_window)
+            dest_window = d_rootWindow;
+    }
+    else
+    {
+        if (dest_window->distributesCapturedInputs())
+        {
+            Window* child_window = dest_window->
+                getTargetChildAtPosition(pt, allow_disabled);
+
+            if (child_window)
+                dest_window = child_window;
+        }
+    }
+
+    // modal target overrules
+    if (d_modalWindow && dest_window != d_modalWindow)
+        if (!dest_window->isAncestor(d_modalWindow))
+            dest_window = d_modalWindow;
+
+    return dest_window;
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIRoot::getKeyboardTargetWindow() const
+{
+    // if no active sheet, there is no target widow.
+    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+        return 0;
+
+    // handle normal non-modal situations
+    if (!d_modalWindow)
+        return d_rootWindow->getActiveChild();
+
+    // handle possible modal window.
+    Window* const target = d_modalWindow->getActiveChild();
+    return target ? target : d_modalWindow;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseLeaves(void)
 {
-    return false;
+    if (!d_windowContainingMouse)
+        return false;
+
+    MouseEventArgs ma(0);
+    ma.position = d_windowContainingMouse->getUnprojectedPosition(
+        d_mouseCursor.getPosition());
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.button = NoButton;
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = 0;
+    ma.window = d_windowContainingMouse;
+    ma.clickCount = 0;
+
+    d_windowContainingMouse->onMouseLeaves(ma);
+    d_windowContainingMouse = 0;
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseButtonDown(MouseButton button)
 {
-    return false;
+    d_systemKeys.mouseButtonPressed(button);
+
+    MouseEventArgs ma(0);
+    ma.position = d_mouseCursor.getPosition();
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = 0;
+    ma.window = getTargetWindow(ma.position, false);
+    // make mouse position sane for this target window
+    if (ma.window)
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+
+    //
+    // Handling for multi-click generation
+    //
+    MouseClickTracker& tkr = d_mouseClickTrackers[button];
+
+    tkr.d_click_count++;
+
+    // if multi-click requirements are not met
+    if (((d_mouseButtonMultiClickTimeout > 0) && (tkr.d_timer.elapsed() > d_mouseButtonMultiClickTimeout)) ||
+        (!tkr.d_click_area.isPointInRect(ma.position)) ||
+        (tkr.d_target_window != ma.window) ||
+        (tkr.d_click_count > 3))
+    {
+        // reset to single down event.
+        tkr.d_click_count = 1;
+
+        // build new allowable area for multi-clicks
+        tkr.d_click_area.setPosition(ma.position);
+        tkr.d_click_area.setSize(d_mouseButtonMultiClickTolerance);
+        tkr.d_click_area.offset(Vector2f(-(d_mouseButtonMultiClickTolerance.d_width / 2),
+                                         -(d_mouseButtonMultiClickTolerance.d_height / 2)));
+
+        // set target window for click events on this tracker
+        tkr.d_target_window = ma.window;
+    }
+
+    // set click count in the event args
+    ma.clickCount = tkr.d_click_count;
+
+    if (ma.window)
+    {
+        if (d_generateMouseClickEvents && ma.window->wantsMultiClickEvents())
+        {
+            switch (tkr.d_click_count)
+            {
+            case 1:
+                ma.window->onMouseButtonDown(ma);
+                break;
+
+            case 2:
+                ma.window->onMouseDoubleClicked(ma);
+                break;
+
+            case 3:
+                ma.window->onMouseTripleClicked(ma);
+                break;
+            }
+        }
+        // click generation disabled, or current target window does not want
+        // multi-clicks, so just send a mouse down event instead.
+        else
+        {
+            ma.window->onMouseButtonDown(ma);
+        }
+    }
+
+    // reset timer for this tracker.
+    tkr.d_timer.restart();
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseButtonUp(MouseButton button)
 {
-    return false;
+    d_systemKeys.mouseButtonReleased(button);
+
+    MouseEventArgs ma(0);
+    ma.position = d_mouseCursor.getPosition();
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.button = button;
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = 0;
+    ma.window = getTargetWindow(ma.position, false);
+    // make mouse position sane for this target window
+    if (ma.window)
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+
+    // get the tracker that holds the number of down events seen so far for this button
+    MouseClickTracker& tkr = d_mouseClickTrackers[button];
+    // set click count in the event args
+    ma.clickCount = tkr.d_click_count;
+
+    // if there is no window, inputs can not be handled.
+    if (!ma.window)
+        return false;
+
+    // store original window becase we re-use the event args.
+    Window* const tgt_wnd = ma.window;
+
+    // send 'up' input to the window
+    ma.window->onMouseButtonUp(ma);
+    // store whether the 'up' part was handled so we may reuse the EventArgs
+    const uint upHandled = ma.handled;
+
+    // restore target window (because Window::on* may have propagated input)
+    ma.window = tgt_wnd;
+
+    // send MouseClicked event if the requirements for that were met
+    if (d_generateMouseClickEvents &&
+        ((d_mouseButtonClickTimeout == 0) || (tkr.d_timer.elapsed() <= d_mouseButtonClickTimeout)) &&
+        (tkr.d_click_area.isPointInRect(ma.position)) &&
+        (tkr.d_target_window == ma.window))
+    {
+        ma.handled = 0;
+        ma.window->onMouseClicked(ma);
+    }
+
+    return (ma.handled + upHandled) != 0;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectKeyDown(uint key_code)
+bool GUIRoot::injectKeyDown(Key::Scan scan_code)
 {
-    return false;
+    d_systemKeys.keyPressed(scan_code);
+
+    KeyEventArgs args(getKeyboardTargetWindow());
+
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
+
+    args.scancode = scan_code;
+    args.sysKeys = d_systemKeys.get();
+
+    args.window->onKeyDown(args);
+    return args.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectKeyUp(uint key_code)
+bool GUIRoot::injectKeyUp(Key::Scan scan_code)
 {
-    return false;
+    d_systemKeys.keyReleased(scan_code);
+
+    KeyEventArgs args(getKeyboardTargetWindow());
+
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
+
+    args.scancode = scan_code;
+    args.sysKeys = d_systemKeys.get();
+
+    args.window->onKeyUp(args);
+    return args.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectChar(String::value_type code_point)
 {
-    return false;
+    KeyEventArgs args(getKeyboardTargetWindow());
+
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
+
+    args.codepoint = code_point;
+    args.sysKeys = d_systemKeys.get();
+
+    args.window->onCharacter(args);
+    return args.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseWheelChange(float delta)
 {
-    return false;
+    MouseEventArgs ma(0);
+    ma.position = d_mouseCursor.getPosition();
+    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.button = NoButton;
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = delta;
+    ma.clickCount = 0;
+    ma.window = getTargetWindow(ma.position, false);
+    // make mouse position sane for this target window
+    if (ma.window)
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+
+    // if there is no target window, input can not be handled.
+    if (!ma.window)
+        return false;
+
+    ma.window->onMouseWheel(ma);
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMousePosition(float x_pos, float y_pos)
 {
-    return false;
+    const Vector2f new_position(x_pos, y_pos);
+
+    // setup mouse movement event args object.
+    MouseEventArgs ma(0);
+    ma.moveDelta = new_position - d_mouseCursor.getPosition();
+
+    // no movement means no event
+    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
+        return false;
+
+    ma.sysKeys = d_systemKeys.get();
+    ma.wheelChange = 0;
+    ma.clickCount = 0;
+    ma.button = NoButton;
+
+    // move mouse cursor to new position
+    d_mouseCursor.setPosition(new_position);
+    // update position in args (since actual position may be constrained)
+    ma.position = d_mouseCursor.getPosition();
+
+    return mouseMoveInjection_impl(ma);
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectTimePulse(float timeElapsed)
 {
-    return false;
+    // if no visible active sheet, input can't be handled
+    if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
+        return false;
+
+    // else pass to sheet for distribution.
+    d_rootWindow->update(timeElapsed);
+    // this input is then /always/ considered handled.
+    return true;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseButtonClick(const MouseButton button)
 {
-    return false;
+    MouseEventArgs ma(0);
+    ma.position = d_mouseCursor.getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window)
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_systemKeys.get();
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseClicked(ma);
+    }
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseButtonDoubleClick(const MouseButton button)
 {
-    return false;
+    MouseEventArgs ma(0);
+    ma.position = d_mouseCursor.getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window && ma.window->wantsMultiClickEvents())
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_systemKeys.get();
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseDoubleClicked(ma);
+    }
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectMouseButtonTripleClick(const MouseButton button)
 {
-    return false;
+    MouseEventArgs ma(0);
+    ma.position = d_mouseCursor.getPosition();
+    ma.window = getTargetWindow(ma.position, false);
+
+    if (ma.window && ma.window->wantsMultiClickEvents())
+    {
+        // initialise remainder of args struct.
+        ma.moveDelta = Vector2f(0.0f, 0.0f);
+        ma.button = button;
+        ma.sysKeys = d_systemKeys.get();
+        ma.wheelChange = 0;
+        // make mouse position sane for this target window
+        ma.position = ma.window->getUnprojectedPosition(ma.position);
+        // tell the window about the event.
+        ma.window->onMouseTripleClicked(ma);
+    }
+
+    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectCopyRequest()
 {
-    return false;
+    Window* source = getKeyboardTargetWindow();
+    return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectCutRequest()
 {
-    return false;
+    Window* source = getKeyboardTargetWindow();
+    return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIRoot::injectPasteRequest()
 {
-    return false;
+    Window* target = getKeyboardTargetWindow();
+    return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
