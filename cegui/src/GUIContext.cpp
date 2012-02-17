@@ -120,6 +120,9 @@ GUIContext::GUIContext(RenderTarget& target) :
 //----------------------------------------------------------------------------//
 GUIContext::~GUIContext()
 {
+    if (d_rootWindow)
+        d_rootWindow->setGUIContext(0);
+
     delete[] d_mouseClickTrackers;
 }
 
