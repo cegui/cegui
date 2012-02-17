@@ -37,6 +37,7 @@
 #include "CEGUI/Renderer.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/ResourceProvider.h"
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -599,6 +600,9 @@ public:
     //! call this to ensure system-level time based updates occur.
     bool injectTimePulse(float timeElapsed);
 
+    GUIContext& createGUIContext(RenderTarget& rt);
+    void destroyGUIContext(GUIContext& context);
+
 private:
     // unimplemented constructors / assignment
     System(const System& obj);
@@ -646,18 +650,6 @@ private:
         Destructor for System objects.
     */
     ~System(void);
-
-	/*!
-	\brief
-		Return a pointer to the next window that is to receive the input if the given Window did not use it.
-
-	\param w
-		Pointer to the Window that just received the input.
-
-	\return
-		Pointer to the next window to receive the input.
-	*/
-	Window* getNextTargetWindow(Window* w) const;
 
     //! output the standard log header
     void outputLogHeader();
@@ -708,8 +700,6 @@ private:
 	bool d_ourResourceProvider;
     Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 
-    GUIContext* d_defaultGUIContext;
-
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
 
 	// scripting
@@ -743,6 +733,9 @@ private:
     bool d_ourLogger;
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
+
+    typedef std::vector<GUIContext* CEGUI_VECTOR_ALLOC(GUIContext*)> GUIContextCollection;
+    GUIContextCollection d_guiContexts;
 };
 
 } // End of  CEGUI namespace section
