@@ -178,8 +178,8 @@ public:
     {
         Window* root = System::getSingleton().getGUISheet();
         // Check if the windows exists
-        Listbox* lbox = NULL;
-        TabControl* tc = NULL;
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
 
         if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
@@ -290,7 +290,7 @@ public:
                     // Next
                     continue;
 
-                Window* pg = NULL;
+                Window* pg = 0;
                 CEGUI_TRY
                 {
                     pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
@@ -324,8 +324,8 @@ public:
     {
         Window* root = System::getSingleton().getGUISheet();
         // Check if the windows exists
-        Listbox* lbox = NULL;
-        TabControl* tc = NULL;
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
 
         if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
@@ -356,8 +356,8 @@ public:
     {
         Window* root = System::getSingleton().getGUISheet();
         // Check if the windows exists
-        Listbox* lbox = NULL;
-        TabControl* tc = NULL;
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
 
         if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
@@ -388,8 +388,8 @@ public:
     {
         Window* root = System::getSingleton().getGUISheet();
         // Check if the windows exists
-        Listbox* lbox = NULL;
-        TabControl* tc = NULL;
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
 
         if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
