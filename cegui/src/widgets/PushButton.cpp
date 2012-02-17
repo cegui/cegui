@@ -75,14 +75,14 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 {
 	if ((e.button == LeftButton) && isPushed())
 	{
-		Window* sheet = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+		Window* sheet = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
 		if (sheet)
 		{
 			// if mouse was released over this widget
             // (use position from mouse, as e.position has been unprojected)
 			if (this == sheet->getTargetChildAtPosition(
-                System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition()))
+                System::getSingleton().getDefaultGUIContext().getMouseCursor().getPosition()))
 			{
 				// fire event
 				WindowEventArgs args(this);

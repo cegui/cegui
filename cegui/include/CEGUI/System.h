@@ -235,7 +235,7 @@ public:
     */
     Clipboard* getClipboard() const         {return d_clipboard;}
 
-    GUIRoot& getDefaultGUIRoot() const;
+    GUIContext& getDefaultGUIContext() const;
 
 	/*!
 	\brief
@@ -812,7 +812,7 @@ private:
 	bool d_ourResourceProvider;
     Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 
-    GUIRoot* d_defaultGUIRoot;
+    GUIContext* d_defaultGUIContext;
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
 

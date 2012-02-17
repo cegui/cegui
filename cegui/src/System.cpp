@@ -54,7 +54,7 @@
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/XMLParser.h"
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -125,7 +125,7 @@ System::System(Renderer& renderer,
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_defaultFont(0),
-  d_defaultGUIRoot(CEGUI_NEW_AO GUIRoot(d_renderer->getDefaultRenderTarget())),
+  d_defaultGUIContext(CEGUI_NEW_AO GUIContext(d_renderer->getDefaultRenderTarget())),
   d_clipboard(CEGUI_NEW_AO Clipboard()),
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
@@ -285,7 +285,7 @@ System::~System(void)
 	// cleanup singletons
     destroySingletons();
 
-    CEGUI_DELETE_AO d_defaultGUIRoot;
+    CEGUI_DELETE_AO d_defaultGUIContext;
 
     // cleanup resource provider if we own it
     if (d_ourResourceProvider)
@@ -309,13 +309,13 @@ System::~System(void)
 //---------------------------------------------------------------------------//
 void System::signalRedraw()
 {
-    d_defaultGUIRoot->markAsDirty();
+    d_defaultGUIContext->markAsDirty();
 }
 
 //---------------------------------------------------------------------------//
 bool System::isRedrawRequested() const
 {
-    return d_defaultGUIRoot->isDirty();
+    return d_defaultGUIContext->isDirty();
 }
 
 //---------------------------------------------------------------------------//
@@ -422,7 +422,7 @@ void System::renderGUI(void)
 {
     d_renderer->beginRendering();
 
-    d_defaultGUIRoot->drawContent();
+    d_defaultGUIContext->drawContent();
 
     d_renderer->endRendering();
 
@@ -598,7 +598,7 @@ void System::executeScriptString(const String& str) const
 *************************************************************************/
 bool System::injectMouseMove(float delta_x, float delta_y)
 {
-    return d_defaultGUIRoot->injectMouseMove(delta_x, delta_y);
+    return d_defaultGUIContext->injectMouseMove(delta_x, delta_y);
 }
 
 /*************************************************************************
@@ -606,7 +606,7 @@ bool System::injectMouseMove(float delta_x, float delta_y)
 *************************************************************************/
 bool System::injectMouseLeaves(void)
 {
-    return d_defaultGUIRoot->injectMouseLeaves();
+    return d_defaultGUIContext->injectMouseLeaves();
 }
 
 
@@ -615,7 +615,7 @@ bool System::injectMouseLeaves(void)
 *************************************************************************/
 bool System::injectMouseButtonDown(MouseButton button)
 {
-    return d_defaultGUIRoot->injectMouseButtonDown(button);
+    return d_defaultGUIContext->injectMouseButtonDown(button);
 }
 
 
@@ -624,7 +624,7 @@ bool System::injectMouseButtonDown(MouseButton button)
 *************************************************************************/
 bool System::injectMouseButtonUp(MouseButton button)
 {
-    return d_defaultGUIRoot->injectMouseButtonUp(button);
+    return d_defaultGUIContext->injectMouseButtonUp(button);
 }
 
 
@@ -633,7 +633,7 @@ bool System::injectMouseButtonUp(MouseButton button)
 *************************************************************************/
 bool System::injectKeyDown(Key::Scan scan_code)
 {
-    return d_defaultGUIRoot->injectKeyDown(scan_code);
+    return d_defaultGUIContext->injectKeyDown(scan_code);
 }
 
 
@@ -642,7 +642,7 @@ bool System::injectKeyDown(Key::Scan scan_code)
 *************************************************************************/
 bool System::injectKeyUp(Key::Scan scan_code)
 {
-    return d_defaultGUIRoot->injectKeyUp(scan_code);
+    return d_defaultGUIContext->injectKeyUp(scan_code);
 }
 
 
@@ -651,7 +651,7 @@ bool System::injectKeyUp(Key::Scan scan_code)
 *************************************************************************/
 bool System::injectChar(String::value_type code_point)
 {
-    return d_defaultGUIRoot->injectChar(code_point);
+    return d_defaultGUIContext->injectChar(code_point);
 }
 
 
@@ -660,7 +660,7 @@ bool System::injectChar(String::value_type code_point)
 *************************************************************************/
 bool System::injectMouseWheelChange(float delta)
 {
-    return d_defaultGUIRoot->injectMouseWheelChange(delta);
+    return d_defaultGUIContext->injectMouseWheelChange(delta);
 }
 
 
@@ -669,7 +669,7 @@ bool System::injectMouseWheelChange(float delta)
 *************************************************************************/
 bool System::injectMousePosition(float x_pos, float y_pos)
 {
-    return d_defaultGUIRoot->injectMousePosition(x_pos, y_pos);
+    return d_defaultGUIContext->injectMousePosition(x_pos, y_pos);
 }
 
 
@@ -680,7 +680,7 @@ bool System::injectTimePulse(float timeElapsed)
 {
     AnimationManager::getSingleton().autoStepInstances(timeElapsed);
 
-    return d_defaultGUIRoot->injectTimePulse(timeElapsed);
+    return d_defaultGUIContext->injectTimePulse(timeElapsed);
 }
 
 /*************************************************************************
@@ -796,7 +796,7 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
     //
     // FIXME: This is no longer correct, the RenderTarget the sheet is using as
     // FIXME: it's parent element may not be the main screen.
-    d_defaultGUIRoot->notifySurfaceSizeChanged(new_size);
+    d_defaultGUIContext->notifySurfaceSizeChanged(new_size);
 
     invalidateAllWindows();
 
@@ -817,7 +817,7 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
 *************************************************************************/
 void System::notifyWindowDestroyed(const Window* window)
 {
-    d_defaultGUIRoot->notifyWindowDestroyed(window);
+    d_defaultGUIContext->notifyWindowDestroyed(window);
 
     if (d_defaultTooltip == window)
     {
@@ -1194,37 +1194,37 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
 //----------------------------------------------------------------------------//
 bool System::injectMouseButtonClick(const MouseButton button)
 {
-    return d_defaultGUIRoot->injectMouseButtonClick(button);
+    return d_defaultGUIContext->injectMouseButtonClick(button);
 }
 
 //----------------------------------------------------------------------------//
 bool System::injectMouseButtonDoubleClick(const MouseButton button)
 {
-    return d_defaultGUIRoot->injectMouseButtonDoubleClick(button);
+    return d_defaultGUIContext->injectMouseButtonDoubleClick(button);
 }
 
 //----------------------------------------------------------------------------//
 bool System::injectMouseButtonTripleClick(const MouseButton button)
 {
-    return d_defaultGUIRoot->injectMouseButtonTripleClick(button);
+    return d_defaultGUIContext->injectMouseButtonTripleClick(button);
 }
 
 //----------------------------------------------------------------------------//
 bool System::injectCopyRequest()
 {
-    return d_defaultGUIRoot->injectCopyRequest();
+    return d_defaultGUIContext->injectCopyRequest();
 }
 
 //----------------------------------------------------------------------------//
 bool System::injectCutRequest()
 {
-    return d_defaultGUIRoot->injectCutRequest();
+    return d_defaultGUIContext->injectCutRequest();
 }
 
 //----------------------------------------------------------------------------//
 bool System::injectPasteRequest()
 {
-    return d_defaultGUIRoot->injectPasteRequest();
+    return d_defaultGUIContext->injectPasteRequest();
 }
 
 //----------------------------------------------------------------------------//
@@ -1270,9 +1270,9 @@ void System::destroyRegexMatcher(RegexMatcher& rm) const
 }
 
 //----------------------------------------------------------------------------//
-GUIRoot& System::getDefaultGUIRoot() const
+GUIContext& System::getDefaultGUIContext() const
 {
-    return *d_defaultGUIRoot;
+    return *d_defaultGUIContext;
 }
 
 //----------------------------------------------------------------------------//

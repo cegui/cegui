@@ -85,7 +85,7 @@ namespace CEGUI
 
         d_inPositionSelf = true;
 
-        MouseCursor& cursor = System::getSingleton().getDefaultGUIRoot().getMouseCursor();
+        MouseCursor& cursor = System::getSingleton().getDefaultGUIContext().getMouseCursor();
         Rectf screen(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
         Rectf tipRect(getUnclippedOuterRect().get());
         const Image* mouseImage = cursor.getImage();
@@ -141,7 +141,7 @@ namespace CEGUI
         {
             if (d_target != wnd)
             {
-                System::getSingleton().getDefaultGUIRoot().getRootWindow()->addChild(this);
+                System::getSingleton().getDefaultGUIContext().getRootWindow()->addChild(this);
                 d_target = wnd;
             }
 

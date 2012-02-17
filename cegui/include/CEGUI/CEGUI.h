@@ -90,7 +90,7 @@
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/RenderingContext.h"
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/RenderQueue.h"

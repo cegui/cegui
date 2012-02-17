@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   GUIRoot.h
+    filename:   GUIContext.h
     created:    Mon Jan 12 2009
     author:     Paul D Turner
 *************************************************************************/
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIGUIRoot_h_
-#define _CEGUIGUIRoot_h_
+#ifndef _CEGUIGUIContext_h_
+#define _CEGUIGUIContext_h_
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InjectedInputReceiver.h"
@@ -37,7 +37,7 @@ namespace CEGUI
 {
 struct MouseClickTracker;
 
-class CEGUIEXPORT GUIRoot : public RenderingSurface,
+class CEGUIEXPORT GUIContext : public RenderingSurface,
                                    InjectedInputReceiver
 {
 public:
@@ -49,7 +49,7 @@ public:
      * Window.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the @e old root window (the new one is
-     * obtained by calling GUIRoot::getRootWindow).
+     * obtained by calling GUIContext::getRootWindow).
      */
     static const String EventGUISheetChanged;
     /** Name of Event fired when the mouse movement scaling factor changes.
@@ -57,8 +57,8 @@ public:
      */
     static const String EventMouseMovementScalingFactorChanged;
 
-    GUIRoot(RenderTarget& target);
-    ~GUIRoot();
+    GUIContext(RenderTarget& target);
+    ~GUIContext();
 
     Window* getRootWindow() const;
     void setRootWindow(Window* new_root);

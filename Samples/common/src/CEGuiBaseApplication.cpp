@@ -38,7 +38,7 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/AnimationManager.h"
 #include <stdlib.h>
@@ -126,10 +126,10 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
         *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
-    CEGUI::System::getSingleton().getDefaultGUIRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+    CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RQ_OVERLAY);
 
     // subscribe handler to render overlay items
-    CEGUI::System::getSingleton().getDefaultGUIRoot().
+    CEGUI::System::getSingleton().getDefaultGUIContext().
         subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
             CEGUI::Event::Subscriber(&CEGuiBaseApplication::overlayHandler,
                                      this));

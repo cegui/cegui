@@ -60,7 +60,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     // set default mouse image
-    System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
@@ -75,7 +75,7 @@ bool FalagardDemo1Sample::initialiseSample()
     // set the background image
     background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
@@ -157,7 +157,7 @@ DemoConsole::DemoConsole(CEGUI::Window* parent) :
         subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&DemoConsole::handleSubmit, this));
 
     // decide where to attach the console main window
-    parent = parent ? parent : CEGUI::System::getSingleton().getDefaultGUIRoot().getRootWindow();
+    parent = parent ? parent : CEGUI::System::getSingleton().getDefaultGUIContext().getRootWindow();
 
     // attach this window if parent is valid
     if (parent)

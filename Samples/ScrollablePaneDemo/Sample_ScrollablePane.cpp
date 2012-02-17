@@ -111,7 +111,7 @@ bool ScrollablePaneSample::initialiseSample()
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_system->getDefaultGUIRoot().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    d_system->getDefaultGUIContext().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_system->setDefaultTooltip("WindowsLook/Tooltip");
@@ -125,7 +125,7 @@ bool ScrollablePaneSample::initialiseSample()
     d_root->setProperty("FrameEnabled", "false");
     // root window will take care of hotkeys
     d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
-    d_system->getDefaultGUIRoot().setRootWindow(d_root);
+    d_system->getDefaultGUIContext().setRootWindow(d_root);
 
     // create a menubar.
     // this will fit in the top of the screen and have options for the demo

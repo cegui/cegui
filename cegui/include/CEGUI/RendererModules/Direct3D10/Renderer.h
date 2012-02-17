@@ -133,7 +133,7 @@ public:
     void setWorldMatrix(D3DXMATRIX& matrix);
 
     // Implement interface from Renderer
-    GUIRoot& getDefaultGUIRoot();
+    GUIContext& getDefaultGUIContext();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -185,7 +185,7 @@ protected:
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! The default rendering root object
-    GUIRoot* d_defaultRoot;
+    GUIContext* d_defaultRoot;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.

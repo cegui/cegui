@@ -40,7 +40,7 @@
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/System.h"
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
@@ -1198,7 +1198,7 @@ public:
         Returns true if this Window is the modal target, otherwise false.
     */
     bool getModalState(void) const
-    {return(System::getSingleton().getDefaultGUIRoot().getModalWindow() == this);}
+    {return(System::getSingleton().getDefaultGUIContext().getModalWindow() == this);}
 
     /*!
     \brief
@@ -2551,15 +2551,15 @@ public:
     virtual void cloneChildWidgetsTo(Window& target) const;
 
     //! return the GUIContext this window is associated with.
-    GUIRoot* getGUIContext() const;
+    GUIContext* getGUIContext() const;
     //! function used internally.  Do not call this from client code.
-    void setGUIContext(GUIRoot* context);
+    void setGUIContext(GUIContext* context);
 
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
     friend class WindowManager;
-    friend class GUIRoot;
+    friend class GUIContext;
 
     /*************************************************************************
         Event trigger methods
@@ -3519,7 +3519,7 @@ protected:
     bool d_propagateMouseInputs;
 
     //! GUIContext.  Set when this window is used as a root window.
-    GUIRoot* d_guiContext;
+    GUIContext* d_guiContext;
 private:
     /*************************************************************************
         May not copy or assign Window objects
