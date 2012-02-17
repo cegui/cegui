@@ -84,7 +84,6 @@ struct OgreRenderer_impl
         d_activeBlendMode(BM_INVALID),
         d_renderSystem(0),
         d_defaultTarget(0),
-        d_defaultRoot(0),
         d_makeFrameControlCalls(true)
         {}
 
@@ -94,9 +93,7 @@ struct OgreRenderer_impl
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
-    //! The default rendering root object
-    GUIContext* d_defaultRoot;
-    //! The default RenderTarget (used by d_defaultRoot)
+    //! The default RenderTarget
     OgreWindowTarget* d_defaultTarget;
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
@@ -229,9 +226,9 @@ bool OgreRenderer::isRenderingEnabled() const
 }
 
 //----------------------------------------------------------------------------//
-GUIContext& OgreRenderer::getDefaultGUIContext()
+RenderTarget& OgreRenderer::getDefaultRenderTarget()
 {
-    return *d_pimpl->d_defaultRoot;
+    return *d_pimpl->d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -421,7 +418,8 @@ void OgreRenderer::beginRendering()
                 d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
     }
 
-    d_pimpl->d_defaultRoot->getRenderTarget().activate();
+    //FIXME: ???
+    System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
     initialiseRenderStateSettings();
 
     if (d_pimpl->d_makeFrameControlCalls)
@@ -434,7 +432,8 @@ void OgreRenderer::endRendering()
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_endFrame();
 
-    d_pimpl->d_defaultRoot->getRenderTarget().deactivate();
+    //FIXME: ???
+    System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
     if ( d_pimpl->d_previousVP ) 
     {
@@ -511,7 +510,6 @@ OgreRenderer::~OgreRenderer()
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    delete d_pimpl->d_defaultRoot;
     delete d_pimpl->d_defaultTarget;
 
     delete d_pimpl;
@@ -540,8 +538,6 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // create default target & rendering root (surface) that uses it
     d_pimpl->d_defaultTarget =
         new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
-    d_pimpl->d_defaultRoot =
-        new GUIContext(*d_pimpl->d_defaultTarget);
 
     // hook into the rendering process
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);

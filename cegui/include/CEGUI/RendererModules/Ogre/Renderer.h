@@ -260,7 +260,7 @@ public:
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
     // implement CEGUI::Renderer interface
-    GUIContext& getDefaultGUIContext();
+    RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
