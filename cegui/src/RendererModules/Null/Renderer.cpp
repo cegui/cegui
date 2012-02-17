@@ -30,7 +30,7 @@
 #include "CEGUI/RendererModules/Null/TextureTarget.h"
 #include "CEGUI/RendererModules/Null/Texture.h"
 #include "CEGUI/ImageCodec.h"
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -97,7 +97,7 @@ void NullRenderer::destroy(NullRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-GUIRoot& NullRenderer::getDefaultGUIRoot()
+GUIContext& NullRenderer::getDefaultGUIContext()
 {
     return *d_defaultRoot;
 }
@@ -322,7 +322,7 @@ void NullRenderer::constructor_impl()
 {
     // create default target & rendering root (surface) that uses it
     d_defaultTarget = new NullRenderTarget(*this);
-    d_defaultRoot = new GUIRoot(*d_defaultTarget);
+    d_defaultRoot = new GUIContext(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//

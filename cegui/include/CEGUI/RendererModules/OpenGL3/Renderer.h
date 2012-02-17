@@ -171,7 +171,7 @@ public:
     static void destroy(OpenGL3Renderer& renderer);
 
     // implement Renderer interface
-    GUIRoot& getDefaultGUIRoot();
+    GUIContext& getDefaultGUIContext();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -430,7 +430,7 @@ private:
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
     //! The default rendering root object
-    GUIRoot* d_defaultRoot;
+    GUIContext* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.

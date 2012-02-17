@@ -97,7 +97,7 @@ class Renderer;
 class RenderEffect;
 class RenderEffectManager;
 struct RenderingContext;
-class GUIRoot;
+class GUIContext;
 class RenderingSurface;
 class RenderingWindow;
 class RenderQueue;

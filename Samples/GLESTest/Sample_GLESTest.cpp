@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     initialiseDefaultResourceGroups();
 
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    CEGUI::System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     CEGUI::WindowManager& winMgr(CEGUI::WindowManager::getSingleton());
     CEGUI::Window* root = winMgr.createWindow("DefaultWindow", "root");
     CEGUI::Window* fw = root->createChild("TaharezLook/FrameWindow");
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     fw->setSize(CEGUI::USize(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.5, 0)));
     fw->setText("OpenGL ES 1 Test");
 
-    CEGUI::System::getSingleton().getDefaultGUIRoot().setRootWindow(root);
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(root);
 
     // Main looop
     bool running = true;

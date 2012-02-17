@@ -29,7 +29,7 @@
 #include "CEGUI/RendererModules/Direct3D9/Texture.h"
 #include "CEGUI/RendererModules/Direct3D9/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Direct3D9/RenderTarget.h"
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RendererModules/Direct3D9/ViewportTarget.h"
 #include "CEGUI/RendererModules/Direct3D9/TextureTarget.h"
@@ -102,7 +102,7 @@ void Direct3D9Renderer::destroy(Direct3D9Renderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-GUIRoot& Direct3D9Renderer::getDefaultGUIRoot()
+GUIContext& Direct3D9Renderer::getDefaultGUIContext()
 {
     return *d_defaultRoot;
 }
@@ -386,7 +386,7 @@ Direct3D9Renderer::Direct3D9Renderer(LPDIRECT3DDEVICE9 device) :
                        (caps.TextureCaps & D3DPTEXTURECAPS_NONPOW2CONDITIONAL);
 
     d_defaultTarget = new Direct3D9ViewportTarget(*this);
-    d_defaultRoot = new GUIRoot(*d_defaultTarget);
+    d_defaultRoot = new GUIContext(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//

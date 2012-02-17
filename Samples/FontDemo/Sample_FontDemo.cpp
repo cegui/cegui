@@ -129,7 +129,7 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-        System::getSingleton().getDefaultGUIRoot().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+        System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
         // Create a custom font which we use to draw the list items. This custom
         // font won't get effected by the scaler and such.
@@ -154,7 +154,7 @@ public:
         // set the background image
         background->setProperty("Image", "BackgroundImage");
         // install this as the root GUI sheet
-        System::getSingleton().getDefaultGUIRoot().setRootWindow(background);
+        System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
         // set tooltip styles (by default there is none)
         System::getSingleton().setDefaultTooltip("TaharezLook/Tooltip");
@@ -223,7 +223,7 @@ public:
     to query a widget's font. */
     void setFontDesc()
     {
-        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
         MultiLineEditbox* mle = static_cast<MultiLineEditbox*>
                                 (root->getChild("root/FontDemo/FontSample"));
@@ -244,7 +244,7 @@ public:
     /** Called when the used selects a different font from the font list.*/
     bool handleFontSelection(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
         // Access the listbox which sent the event
         Listbox* lbox = static_cast<Listbox*>(
@@ -292,7 +292,7 @@ public:
 
     bool handleAutoScaled(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
         Checkbox* cb = static_cast<Checkbox*>(
                            static_cast<const WindowEventArgs&>(e).window);
@@ -310,7 +310,7 @@ public:
 
     bool handleAntialiased(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
         Checkbox* cb = static_cast<Checkbox*>(
                            static_cast<const WindowEventArgs&>(e).window);
@@ -328,7 +328,7 @@ public:
 
     bool handlePointSize(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
         Scrollbar* sb = static_cast<Scrollbar*>(
                             static_cast<const WindowEventArgs&>(e).window);
@@ -359,7 +359,7 @@ public:
             size_t idx = sel_item ? sel_item->getID() : 0;
             const String fontName(LangList[idx].Font);
 
-            Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+            Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
             // Access the font list
             Listbox* fontList = static_cast<Listbox*>(root->getChild("root/FontDemo/FontList"));
             ListboxItem* lbi = fontList->findItemWithText(fontName, 0);
@@ -381,7 +381,7 @@ public:
     //! Ensure window content and layout is updated.
     void updateTextWindows()
     {
-        Window* root = System::getSingleton().getDefaultGUIRoot().getRootWindow();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
         MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(
                                    root->getChild("root/FontDemo/FontSample"));
         // this is a hack to force the editbox to update it's state, and is

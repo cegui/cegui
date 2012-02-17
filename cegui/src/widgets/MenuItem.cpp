@@ -94,7 +94,7 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     {
         System* sys = System::getSingletonPtr();
 
-        if (sys->getDefaultGUIRoot().getWindowContainingMouse() == this && isHit(mouse_pos))
+        if (sys->getDefaultGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos))
         {
             d_hovering = true;
         }
@@ -440,8 +440,8 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // was the button released over this window?
         // (use mouse position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
-                System::getSingleton().getDefaultGUIRoot().getRootWindow()->getTargetChildAtPosition(
-                    System::getSingleton().getDefaultGUIRoot().getMouseCursor().getPosition()) == this)
+                System::getSingleton().getDefaultGUIContext().getRootWindow()->getTargetChildAtPosition(
+                    System::getSingleton().getDefaultGUIContext().getMouseCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
@@ -463,7 +463,7 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
     d_pushed = false;
     updateInternalState(getUnprojectedPosition(System::getSingleton().
-        getDefaultGUIRoot().getMouseCursor().getPosition()));
+        getDefaultGUIContext().getMouseCursor().getPosition()));
     invalidate();
 
     // event was handled by us.

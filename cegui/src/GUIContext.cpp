@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   GUIRoot.cpp
+    filename:   GUIContext.cpp
     created:    Mon Jan 12 2009
     author:     Paul D Turner
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/GUIRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/Window.h"
@@ -94,15 +94,15 @@ struct MouseClickTracker
 
 
 //----------------------------------------------------------------------------//
-const float GUIRoot::DefaultMouseButtonClickTimeout = 0.0f;
-const float GUIRoot::DefaultMouseButtonMultiClickTimeout = 0.3333f;
-const Sizef GUIRoot::DefaultMouseButtonMultiClickTolerance(12.0f, 12.0f);
+const float GUIContext::DefaultMouseButtonClickTimeout = 0.0f;
+const float GUIContext::DefaultMouseButtonMultiClickTimeout = 0.3333f;
+const Sizef GUIContext::DefaultMouseButtonMultiClickTolerance(12.0f, 12.0f);
 
-const String GUIRoot::EventGUISheetChanged("RootWindowChanged");
-const String GUIRoot::EventMouseMovementScalingFactorChanged("MouseMovementScalingFactorChanged");
+const String GUIContext::EventGUISheetChanged("RootWindowChanged");
+const String GUIContext::EventMouseMovementScalingFactorChanged("MouseMovementScalingFactorChanged");
 
 //----------------------------------------------------------------------------//
-GUIRoot::GUIRoot(RenderTarget& target) :
+GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
     d_rootWindow(0),
     d_isDirty(false),
@@ -118,19 +118,19 @@ GUIRoot::GUIRoot(RenderTarget& target) :
 }
 
 //----------------------------------------------------------------------------//
-GUIRoot::~GUIRoot()
+GUIContext::~GUIContext()
 {
     delete[] d_mouseClickTrackers;
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIRoot::getRootWindow() const
+Window* GUIContext::getRootWindow() const
 {
     return d_rootWindow;
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::setRootWindow(Window* new_root)
+void GUIContext::setRootWindow(Window* new_root)
 {
     if (d_rootWindow == new_root)
         return;
@@ -145,56 +145,56 @@ void GUIRoot::setRootWindow(Window* new_root)
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::updateRootWindowAreaRects() const
+void GUIContext::updateRootWindowAreaRects() const
 {
     ElementEventArgs args(0);
     d_rootWindow->onParentSized(args);
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::setModalWindow(Window* window)
+void GUIContext::setModalWindow(Window* window)
 {
     d_modalWindow = window;
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIRoot::getModalWindow() const
+Window* GUIContext::getModalWindow() const
 {
     return d_modalWindow;
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIRoot::getWindowContainingMouse() const
+Window* GUIContext::getWindowContainingMouse() const
 {
     return d_windowContainingMouse;
 }
 
 //----------------------------------------------------------------------------//
-Sizef GUIRoot::getSurfaceSize() const
+Sizef GUIContext::getSurfaceSize() const
 {
     return d_target.getArea().getSize();
 }
 
 //----------------------------------------------------------------------------//
-const SystemKeys& GUIRoot::getSystemKeys() const
+const SystemKeys& GUIContext::getSystemKeys() const
 {
     return d_systemKeys;
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::markAsDirty()
+void GUIContext::markAsDirty()
 {
     d_isDirty = true;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::isDirty() const
+bool GUIContext::isDirty() const
 {
     return d_isDirty;
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::drawContent()
+void GUIContext::drawContent()
 {
     if (d_isDirty)
         drawWindowContentToTarget();
@@ -205,7 +205,7 @@ void GUIRoot::drawContent()
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::drawWindowContentToTarget()
+void GUIContext::drawWindowContentToTarget()
 {
     if (d_rootWindow)
         renderWindowHierarchyToSurfaces();
@@ -216,7 +216,7 @@ void GUIRoot::drawWindowContentToTarget()
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::renderWindowHierarchyToSurfaces()
+void GUIContext::renderWindowHierarchyToSurfaces()
 {
     RenderingSurface& rs = d_rootWindow->getTargetRenderingSurface();
     rs.clearGeometry();
@@ -228,20 +228,20 @@ void GUIRoot::renderWindowHierarchyToSurfaces()
 }
 
 //----------------------------------------------------------------------------//
-MouseCursor& GUIRoot::getMouseCursor()
+MouseCursor& GUIContext::getMouseCursor()
 {
     return const_cast<MouseCursor&>(
-        static_cast<const GUIRoot*>(this)->getMouseCursor());
+        static_cast<const GUIContext*>(this)->getMouseCursor());
 }
 
 //----------------------------------------------------------------------------//
-const MouseCursor& GUIRoot::getMouseCursor() const
+const MouseCursor& GUIContext::getMouseCursor() const
 {
     return d_mouseCursor;
 }
     
 //----------------------------------------------------------------------------//
-void GUIRoot::setMouseMoveScalingFactor(float factor)
+void GUIContext::setMouseMoveScalingFactor(float factor)
 {
     d_mouseMovementScalingFactor = factor;
 
@@ -250,55 +250,55 @@ void GUIRoot::setMouseMoveScalingFactor(float factor)
 }
 
 //----------------------------------------------------------------------------//
-float GUIRoot::getMouseMoveScalingFactor() const
+float GUIContext::getMouseMoveScalingFactor() const
 {
     return d_mouseMovementScalingFactor;
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::setMouseButtonClickTimeout(float seconds)
+void GUIContext::setMouseButtonClickTimeout(float seconds)
 {
 }
 
 //----------------------------------------------------------------------------//
-float GUIRoot::getMouseButtonClickTimeout() const
+float GUIContext::getMouseButtonClickTimeout() const
 {
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::setMouseButtonMultiClickTimeout(float seconds)
+void GUIContext::setMouseButtonMultiClickTimeout(float seconds)
 {
 }
 
 //----------------------------------------------------------------------------//
-float GUIRoot::getMouseButtonMultiClickTimeout() const
+float GUIContext::getMouseButtonMultiClickTimeout() const
 {
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::setMouseButtonMultiClickTolerance(const Sizef& sz)
+void GUIContext::setMouseButtonMultiClickTolerance(const Sizef& sz)
 {
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& GUIRoot::getMouseButtonMultiClickTolerance() const
+const Sizef& GUIContext::getMouseButtonMultiClickTolerance() const
 {
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::setMouseClickEventGenerationEnabled(const bool enable)
+void GUIContext::setMouseClickEventGenerationEnabled(const bool enable)
 {
     d_generateMouseClickEvents = enable;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::isMouseClickEventGenerationEnabled() const
+bool GUIContext::isMouseClickEventGenerationEnabled() const
 {
     return d_generateMouseClickEvents;
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::notifySurfaceSizeChanged(const Sizef& new_size)
+void GUIContext::notifySurfaceSizeChanged(const Sizef& new_size)
 {
     if (d_rootWindow)
         updateRootWindowAreaRects();
@@ -307,7 +307,7 @@ void GUIRoot::notifySurfaceSizeChanged(const Sizef& new_size)
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::notifyWindowDestroyed(const Window* window)
+void GUIContext::notifyWindowDestroyed(const Window* window)
 {
     if (window == d_rootWindow)
         d_rootWindow = 0;
@@ -320,7 +320,7 @@ void GUIRoot::notifyWindowDestroyed(const Window* window)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseMove(float delta_x, float delta_y)
+bool GUIContext::injectMouseMove(float delta_x, float delta_y)
 {
     MouseEventArgs ma(0);
     ma.moveDelta.d_x = delta_x * d_mouseMovementScalingFactor;
@@ -342,7 +342,7 @@ bool GUIRoot::injectMouseMove(float delta_x, float delta_y)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::mouseMoveInjection_impl(MouseEventArgs& ma)
+bool GUIContext::mouseMoveInjection_impl(MouseEventArgs& ma)
 {
     updateWindowContainingMouse();
 
@@ -362,7 +362,7 @@ bool GUIRoot::mouseMoveInjection_impl(MouseEventArgs& ma)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::updateWindowContainingMouse()
+bool GUIContext::updateWindowContainingMouse()
 {
     MouseEventArgs ma(0);
     const Vector2f mouse_pos(d_mouseCursor.getPosition());
@@ -411,7 +411,7 @@ bool GUIRoot::updateWindowContainingMouse()
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIRoot::getCommonAncestor(Window* w1, Window* w2)
+Window* GUIContext::getCommonAncestor(Window* w1, Window* w2)
 {
     if (!w2)
         return w2;
@@ -435,7 +435,7 @@ Window* GUIRoot::getCommonAncestor(Window* w1, Window* w2)
 }
 
 //----------------------------------------------------------------------------//
-void GUIRoot::notifyMouseTransition(Window* top, Window* bottom,
+void GUIContext::notifyMouseTransition(Window* top, Window* bottom,
                                     void (Window::*func)(MouseEventArgs&),
                                     MouseEventArgs& args)
 {
@@ -454,7 +454,7 @@ void GUIRoot::notifyMouseTransition(Window* top, Window* bottom,
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIRoot::getTargetWindow(const Vector2f& pt,
+Window* GUIContext::getTargetWindow(const Vector2f& pt,
                                  const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
@@ -492,7 +492,7 @@ Window* GUIRoot::getTargetWindow(const Vector2f& pt,
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIRoot::getKeyboardTargetWindow() const
+Window* GUIContext::getKeyboardTargetWindow() const
 {
     // if no active sheet, there is no target widow.
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
@@ -508,7 +508,7 @@ Window* GUIRoot::getKeyboardTargetWindow() const
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseLeaves(void)
+bool GUIContext::injectMouseLeaves(void)
 {
     if (!d_windowContainingMouse)
         return false;
@@ -530,7 +530,7 @@ bool GUIRoot::injectMouseLeaves(void)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseButtonDown(MouseButton button)
+bool GUIContext::injectMouseButtonDown(MouseButton button)
 {
     d_systemKeys.mouseButtonPressed(button);
 
@@ -608,7 +608,7 @@ bool GUIRoot::injectMouseButtonDown(MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseButtonUp(MouseButton button)
+bool GUIContext::injectMouseButtonUp(MouseButton button)
 {
     d_systemKeys.mouseButtonReleased(button);
 
@@ -657,7 +657,7 @@ bool GUIRoot::injectMouseButtonUp(MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectKeyDown(Key::Scan scan_code)
+bool GUIContext::injectKeyDown(Key::Scan scan_code)
 {
     d_systemKeys.keyPressed(scan_code);
 
@@ -675,7 +675,7 @@ bool GUIRoot::injectKeyDown(Key::Scan scan_code)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectKeyUp(Key::Scan scan_code)
+bool GUIContext::injectKeyUp(Key::Scan scan_code)
 {
     d_systemKeys.keyReleased(scan_code);
 
@@ -693,7 +693,7 @@ bool GUIRoot::injectKeyUp(Key::Scan scan_code)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectChar(String::value_type code_point)
+bool GUIContext::injectChar(String::value_type code_point)
 {
     KeyEventArgs args(getKeyboardTargetWindow());
 
@@ -709,7 +709,7 @@ bool GUIRoot::injectChar(String::value_type code_point)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseWheelChange(float delta)
+bool GUIContext::injectMouseWheelChange(float delta)
 {
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
@@ -732,7 +732,7 @@ bool GUIRoot::injectMouseWheelChange(float delta)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMousePosition(float x_pos, float y_pos)
+bool GUIContext::injectMousePosition(float x_pos, float y_pos)
 {
     const Vector2f new_position(x_pos, y_pos);
 
@@ -758,7 +758,7 @@ bool GUIRoot::injectMousePosition(float x_pos, float y_pos)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectTimePulse(float timeElapsed)
+bool GUIContext::injectTimePulse(float timeElapsed)
 {
     // if no visible active sheet, input can't be handled
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
@@ -771,7 +771,7 @@ bool GUIRoot::injectTimePulse(float timeElapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseButtonClick(const MouseButton button)
+bool GUIContext::injectMouseButtonClick(const MouseButton button)
 {
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
@@ -794,7 +794,7 @@ bool GUIRoot::injectMouseButtonClick(const MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseButtonDoubleClick(const MouseButton button)
+bool GUIContext::injectMouseButtonDoubleClick(const MouseButton button)
 {
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
@@ -817,7 +817,7 @@ bool GUIRoot::injectMouseButtonDoubleClick(const MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectMouseButtonTripleClick(const MouseButton button)
+bool GUIContext::injectMouseButtonTripleClick(const MouseButton button)
 {
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
@@ -840,21 +840,21 @@ bool GUIRoot::injectMouseButtonTripleClick(const MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectCopyRequest()
+bool GUIContext::injectCopyRequest()
 {
     Window* source = getKeyboardTargetWindow();
     return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectCutRequest()
+bool GUIContext::injectCutRequest()
 {
     Window* source = getKeyboardTargetWindow();
     return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIRoot::injectPasteRequest()
+bool GUIContext::injectPasteRequest()
 {
     Window* target = getKeyboardTargetWindow();
     return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;

@@ -195,7 +195,7 @@ void ColourPicker::onColourRectClicked(WindowEventArgs& e)
     {
         if (d_colourPickerControlsWindow->getParent() == 0)
         {
-            System::getSingleton().getDefaultGUIRoot().getRootWindow()->
+            System::getSingleton().getDefaultGUIContext().getRootWindow()->
                 addChild(d_colourPickerControlsWindow);
 
             d_colourPickerControlsWindow->setCallingColourPicker(this);
