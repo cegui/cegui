@@ -1002,7 +1002,7 @@ void Window::invalidate(void)
 void Window::invalidate(const bool recursive)
 {
     invalidate_impl(recursive);
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
@@ -2157,7 +2157,7 @@ void Window::onMoved(ElementEventArgs& e)
         getParent()->invalidateRenderingSurface();
         // need to redraw some geometry if parent uses a caching surface
         if (getParent()->getTargetRenderingSurface().isRenderingWindow())
-            System::getSingleton().signalRedraw();
+            getGUIContext().markAsDirty();
     }
 }
 
@@ -2288,7 +2288,7 @@ void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     fireEvent(EventAlwaysOnTopChanged, e, EventNamespace);
 }
 
@@ -2313,7 +2313,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // handle case where mouse is now in a different window
     // (this is a bit of a hack that uses the mouse input injector to handle
     // this for us).
-    System::getSingleton().injectMouseMove(0, 0);
+    getGUIContext().injectMouseMove(0, 0);
 
     fireEvent(EventInputCaptureLost, e, EventNamespace);
 }
@@ -2335,7 +2335,7 @@ void Window::onZChanged(WindowEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
@@ -2392,7 +2392,7 @@ void Window::onChildAdded(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     
     Element::onChildAdded(e);
 }
@@ -2402,7 +2402,7 @@ void Window::onChildRemoved(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
     
@@ -3178,7 +3178,7 @@ void Window::allocateRenderingWindow()
         static_cast<RenderingWindow*>(d_surface)->
             setPosition(getUnclippedOuterRect().get().getPosition());
 
-        System::getSingleton().signalRedraw();
+        getGUIContext().markAsDirty();
     }
 }
 
@@ -3198,7 +3198,7 @@ void Window::releaseRenderingWindow()
         old_surface->getOwner().destroyRenderingWindow(*old_surface);
         System::getSingleton().getRenderer()->destroyTextureTarget(tt);
 
-        System::getSingleton().signalRedraw();
+        getGUIContext().markAsDirty();
     }
 }
 

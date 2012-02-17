@@ -37,7 +37,6 @@
 #include "CEGUI/Renderer.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/ResourceProvider.h"
-#include "CEGUI/InjectedInputReceiver.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -60,7 +59,6 @@ namespace CEGUI
 class CEGUIEXPORT System :
     public Singleton<System>,
     public EventSet,
-    public InjectedInputReceiver,
     public AllocatedObject<System>
 {
 public:
@@ -271,26 +269,6 @@ public:
 		Pointer to a Font object that is the default font in the system.
 	*/
 	Font*	getDefaultFont(void) const				{return d_defaultFont;}
-
-
-	/*!
-	\brief
-		Causes a full re-draw next time renderGUI() is called
-
-	\return
-		Nothing
-	*/
-	void	signalRedraw();
-
-
-	/*!
-	\brief
-		Return a boolean value to indicate whether a full re-draw is requested next time renderGUI() is called.
-
-	\return
-		true if a re-draw has been requested
-	*/
-	bool	isRedrawRequested() const;
 
 
 	/*!
@@ -640,23 +618,8 @@ public:
     //! destroy a RegexMatcher instance returned by System::createRegexMatcher.
     void destroyRegexMatcher(RegexMatcher& rm) const;
 
-	// Implementation of InjectedInputReceiver interface
-    bool injectMouseMove(float delta_x, float delta_y);
-    bool injectMouseLeaves(void);
-    bool injectMouseButtonDown(MouseButton button);
-    bool injectMouseButtonUp(MouseButton button);
-    bool injectKeyDown(Key::Scan scan_code);
-    bool injectKeyUp(Key::Scan scan_code);
-    bool injectChar(String::value_type code_point);
-    bool injectMouseWheelChange(float delta);
-    bool injectMousePosition(float x_pos, float y_pos);
+    //! call this to ensure system-level time based updates occur.
     bool injectTimePulse(float timeElapsed);
-    bool injectMouseButtonClick(const MouseButton button);
-    bool injectMouseButtonDoubleClick(const MouseButton button);
-    bool injectMouseButtonTripleClick(const MouseButton button);
-    bool injectCopyRequest();
-    bool injectCutRequest();
-    bool injectPasteRequest();
 
 private:
     // unimplemented constructors / assignment

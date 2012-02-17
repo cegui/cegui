@@ -86,6 +86,7 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
 
     gui_system.injectTimePulse(elapsed);
+    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
     updateFPS(elapsed);
     updateLogo(elapsed);
 
