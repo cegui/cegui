@@ -95,12 +95,7 @@ const String System::EventNamespace("System");
 template<> System* Singleton<System>::ms_Singleton	= 0;
 
 // event names
-const String System::EventGUISheetChanged( "GUISheetChanged" );
-const String System::EventSingleClickTimeoutChanged( "SingleClickTimeoutChanged" );
-const String System::EventMultiClickTimeoutChanged( "MultiClickTimeoutChanged" );
-const String System::EventMultiClickAreaSizeChanged( "MultiClickAreaSizeChanged" );
 const String System::EventDefaultFontChanged( "DefaultFontChanged" );
-const String System::EventMouseMoveScalingChanged( "MouseMoveScalingChanged" );
 const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
 const String System::EventRenderedStringParserChanged("RenderedStringParserChanged");
 
@@ -610,43 +605,6 @@ System*	System::getSingletonPtr(void)
 }
 
 /*************************************************************************
-	Handler called when the main system GUI Sheet (or root window) is changed
-*************************************************************************/
-void System::onGUISheetChanged(WindowEventArgs& e)
-{
-	fireEvent(EventGUISheetChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the single-click timeout value is changed.
-*************************************************************************/
-void System::onSingleClickTimeoutChanged(EventArgs& e)
-{
-	fireEvent(EventSingleClickTimeoutChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the multi-click timeout value is changed.
-*************************************************************************/
-void System::onMultiClickTimeoutChanged(EventArgs& e)
-{
-	fireEvent(EventMultiClickTimeoutChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the size of the multi-click tolerance area is
-	changed.
-*************************************************************************/
-void System::onMultiClickAreaSizeChanged(EventArgs& e)
-{
-	fireEvent(EventMultiClickAreaSizeChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
 	Handler called when the default system font is changed.
 *************************************************************************/
 void System::onDefaultFontChanged(EventArgs& e)
@@ -675,15 +633,6 @@ void System::onDefaultFontChanged(EventArgs& e)
     }
 
 	fireEvent(EventDefaultFontChanged, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler called when the mouse movement scaling factor is changed.
-*************************************************************************/
-void System::onMouseMoveScalingChanged(EventArgs& e)
-{
-	fireEvent(EventMouseMoveScalingChanged, e, EventNamespace);
 }
 
 

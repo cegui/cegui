@@ -68,32 +68,10 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-    /** Event fired whenever the GUI sheet is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the @e old GUI sheet (the new one is
-     * obtained by querying System).
-     */
-	static const String EventGUISheetChanged;
-    /** Event fired when the single-click timeout is changed.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventSingleClickTimeoutChanged;
-    /** Event fired when the multi-click timeout is changed.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventMultiClickTimeoutChanged;
-    /** Event fired when the size of the multi-click tolerance area is changed.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventMultiClickAreaSizeChanged;
     /** Event fired when the default font changes.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
 	static const String EventDefaultFontChanged;
-    /** Event fired when the mouse move scaling factor changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventMouseMoveScalingChanged;
     /** Event fired for display size changes (as notified by client code).
      * Handlers are passed a const DisplayEventArgs reference with
      * DisplayEventArgs::size set to the pixel size that was notifiied to the
@@ -718,54 +696,9 @@ private:
 	*************************************************************************/
 	/*!
 	\brief
-		Handler called when the main system GUI Sheet (or root window) is changed.
-
-		\a e is a WindowEventArgs with 'window' set to the old root window.
-	*/
-	void	onGUISheetChanged(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the single-click timeout value is changed.
-	*/
-	void	onSingleClickTimeoutChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the multi-click timeout value is changed.
-	*/
-	void	onMultiClickTimeoutChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the size of the multi-click tolerance area is changed.
-	*/
-	void	onMultiClickAreaSizeChanged(EventArgs& e);
-
-
-	/*!
-	\brief
 		Handler called when the default system font is changed.
 	*/
 	void	onDefaultFontChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the default system mouse cursor image is changed.
-	*/
-	void	onDefaultMouseCursorChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the mouse movement scaling factor is changed.
-	*/
-	void	onMouseMoveScalingChanged(EventArgs& e);
-
 
 	/*************************************************************************
 		Implementation Data
