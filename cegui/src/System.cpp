@@ -120,7 +120,6 @@ System::System(Renderer& renderer,
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_defaultFont(0),
-  d_defaultGUIContext(CEGUI_NEW_AO GUIContext(d_renderer->getDefaultRenderTarget())),
   d_clipboard(CEGUI_NEW_AO Clipboard()),
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
@@ -151,6 +150,10 @@ System::System(Renderer& renderer,
 #endif
 
     Logger& logger(Logger::getSingleton());
+
+    // create the first GUIContext using the renderers default target,
+    // this will become the default GUIContext.
+    createGUIContext(d_renderer->getDefaultRenderTarget());
 
     // create default resource provider, unless one was already provided
     if (!d_resourceProvider)
@@ -280,7 +283,13 @@ System::~System(void)
 	// cleanup singletons
     destroySingletons();
 
-    CEGUI_DELETE_AO d_defaultGUIContext;
+    // delete all the GUIContexts
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+         i != d_guiContexts.end();
+         ++i)
+    {
+        CEGUI_DELETE_AO *i;
+    }
 
     // cleanup resource provider if we own it
     if (d_ourResourceProvider)
@@ -405,7 +414,12 @@ void System::renderGUI(void)
 {
     d_renderer->beginRendering();
 
-    d_defaultGUIContext->drawContent();
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+         i != d_guiContexts.end();
+         ++i)
+    {
+        (*i)->drawContent();
+    }
 
     d_renderer->endRendering();
 
@@ -584,15 +598,6 @@ bool System::injectTimePulse(float timeElapsed)
     return true;
 }
 
-/*************************************************************************
-	Return the next window that should receive input in the chain
-*************************************************************************/
-Window* System::getNextTargetWindow(Window* w) const
-{
-	return 0;//(w != d_modalTarget) ? w->getParent() : 0;
-}
-
-
 System&	System::getSingleton(void)
 {
 	return Singleton<System>::getSingleton();
@@ -651,7 +656,12 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
     //
     // FIXME: This is no longer correct, the RenderTarget the sheet is using as
     // FIXME: it's parent element may not be the main screen.
-    d_defaultGUIContext->notifySurfaceSizeChanged(new_size);
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+         i != d_guiContexts.end();
+         ++i)
+    {
+        (*i)->notifySurfaceSizeChanged(new_size);
+    }
 
     invalidateAllWindows();
 
@@ -672,7 +682,12 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
 *************************************************************************/
 void System::notifyWindowDestroyed(const Window* window)
 {
-    d_defaultGUIContext->notifyWindowDestroyed(window);
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+         i != d_guiContexts.end();
+         ++i)
+    {
+        (*i)->notifyWindowDestroyed(window);
+    }
 
     if (d_defaultTooltip == window)
     {
@@ -1091,7 +1106,32 @@ void System::destroyRegexMatcher(RegexMatcher& rm) const
 //----------------------------------------------------------------------------//
 GUIContext& System::getDefaultGUIContext() const
 {
-    return *d_defaultGUIContext;
+    return *d_guiContexts.front();
+}
+
+//----------------------------------------------------------------------------//
+GUIContext& System::createGUIContext(RenderTarget& rt)
+{
+    GUIContext* c = CEGUI_NEW_AO GUIContext(rt);
+    d_guiContexts.push_back(c);
+
+    return *c;
+}
+
+//----------------------------------------------------------------------------//
+void System::destroyGUIContext(GUIContext& context)
+{
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+         i != d_guiContexts.end();
+         ++i)
+    {
+        if (*i == &context)
+        {
+            CEGUI_DELETE_AO *i;
+            d_guiContexts.erase(i);
+            return;
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
