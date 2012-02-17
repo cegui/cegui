@@ -132,6 +132,12 @@ Window* GUIRoot::getRootWindow() const
 //----------------------------------------------------------------------------//
 void GUIRoot::setRootWindow(Window* new_root)
 {
+    if (d_rootWindow == new_root)
+        return;
+
+    d_rootWindow->setGUIContext(0);
+    new_root->setGUIContext(this);
+
     d_rootWindow = new_root;
 
     if (d_rootWindow)

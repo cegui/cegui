@@ -6,7 +6,7 @@
     purpose:    Implements the Window base class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,10 +27,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
@@ -258,7 +254,9 @@ Window::Window(const String& type, const String& name):
     d_updateMode(WUM_VISIBLE),
 
     // Don't propagate mouse inputs by default.
-    d_propagateMouseInputs(false)
+    d_propagateMouseInputs(false),
+
+    d_guiContext(0)
 {
     // add properties
     addWindowProperties();
@@ -3680,6 +3678,24 @@ const Font* Window::property_getFont() const
 const Image* Window::property_getMouseCursor() const
 {
     return getMouseCursor();
+}
+
+//----------------------------------------------------------------------------//
+GUIRoot* Window::getGUIContext() const
+{
+    // GUIContext is always the one on the root window, we do not allow parts
+    // of a hierarchy to be drawn to seperate contexts (which is not much of
+    // a limitation).
+    //
+    // ISSUE: if root has no GUIContext set for it, should we return 0 or
+    //        System::getDefaultGUIContext?  Come to IRC and argue about it!
+    return getParent() ? getParent()->getGUIContext() : d_guiContext;
+}
+
+//----------------------------------------------------------------------------//
+void Window::setGUIContext(GUIRoot* context)
+{
+    d_guiContext = context;
 }
 
 //----------------------------------------------------------------------------//
