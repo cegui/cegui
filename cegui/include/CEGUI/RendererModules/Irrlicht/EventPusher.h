@@ -73,7 +73,7 @@ public :
     bool OnKeyDown(EKEY_CODE key, wchar_t wch, bool /*ctrl*/, bool /*shift*/)
     {
         bool handled = false;
-        CEGUI::System& cegui = CEGUI::System::getSingleton();
+        CEGUI::GUIContext& cegui = CEGUI::System::getSingleton().getDefaultGUIContext();
         handled = cegui.injectKeyDown(getKeyCode(key));
         handled = cegui.injectChar(wch) || handled;
         return handled;
@@ -82,7 +82,7 @@ public :
     bool OnKeyUp(EKEY_CODE key, wchar_t /*wch*/, bool /*ctrl*/, bool /*shift*/)
     {
         bool handled = false;
-        CEGUI::System& cegui = CEGUI::System::getSingleton();
+        CEGUI::GUIContext& cegui = CEGUI::System::getSingleton().getDefaultGUIContext();
         handled = cegui.injectKeyUp(getKeyCode(key));
         return handled;
     }
@@ -96,37 +96,37 @@ public :
         {
             //! Left mouse button was pressed down.
         case EMIE_LMOUSE_PRESSED_DOWN:
-            handled = CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::LeftButton);
             break;
             //! Right mouse button was pressed down.
         case EMIE_RMOUSE_PRESSED_DOWN:
-            handled = CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::RightButton);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::RightButton);
             break;
             //! Middle mouse button was pressed down.
         case EMIE_MMOUSE_PRESSED_DOWN:
-            handled = CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::MiddleButton);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::MiddleButton);
             break;
             //! Left mouse button was left up.
         case EMIE_LMOUSE_LEFT_UP:
-            handled = CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::LeftButton);
             break;
             //! Right mouse button was left up.
         case EMIE_RMOUSE_LEFT_UP:
-            handled = CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::RightButton);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::RightButton);
             break;
             //! Middle mouse button was left up.
         case EMIE_MMOUSE_LEFT_UP:
-            handled = CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::MiddleButton);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::MiddleButton);
             break;
             //! The mouse cursor changed its position.
         case EMIE_MOUSE_MOVED:
-            handled = CEGUI::System::getSingleton().injectMousePosition(
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(
                         static_cast<float>(x), static_cast<float>(y));
             break;
             //! The mouse wheel was moved. Use Wheel value in event data to find out
             //! in what direction and how fast.
         case EMIE_MOUSE_WHEEL:
-            handled = CEGUI::System::getSingleton().injectMouseWheelChange(w);
+            handled = CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(w);
             break;
         default:
             break;
@@ -136,22 +136,22 @@ public :
     }
 
 protected:
-    unsigned char irr2ceCODE[irr::KEY_KEY_CODES_COUNT];
+    CEGUI::Key::Scan irr2ceCODE[irr::KEY_KEY_CODES_COUNT];
 
     void initCodes()
     {
         using namespace irr;
-        memset(irr2ceCODE, 0, KEY_KEY_CODES_COUNT);
+        memset(irr2ceCODE, Key::Unknown, KEY_KEY_CODES_COUNT);
 
-        irr2ceCODE[KEY_LBUTTON   ] = 0;  // Left mouse button
-        irr2ceCODE[KEY_RBUTTON   ] = 0;  // Right mouse button
-        irr2ceCODE[KEY_CANCEL    ] = 0;  // Control-break processing
-        irr2ceCODE[KEY_MBUTTON   ] = 0;  // Middle mouse button (three-button mouse)
-        irr2ceCODE[KEY_XBUTTON1  ] = 0;  // Windows 2000/XP: X1 mouse button
-        irr2ceCODE[KEY_XBUTTON2  ] = 0;  // Windows 2000/XP: X2 mouse button
+        irr2ceCODE[KEY_LBUTTON   ] = Key::Unknown;  // Left mouse button
+        irr2ceCODE[KEY_RBUTTON   ] = Key::Unknown;  // Right mouse button
+        irr2ceCODE[KEY_CANCEL    ] = Key::Unknown;  // Control-break processing
+        irr2ceCODE[KEY_MBUTTON   ] = Key::Unknown;  // Middle mouse button (three-button mouse)
+        irr2ceCODE[KEY_XBUTTON1  ] = Key::Unknown;  // Windows 2000/XP: X1 mouse button
+        irr2ceCODE[KEY_XBUTTON2  ] = Key::Unknown;  // Windows 2000/XP: X2 mouse button
         irr2ceCODE[KEY_BACK      ] = Key::Backspace; //0x08;  // BACKSPACE key
         irr2ceCODE[KEY_TAB       ] = Key::Tab; //0x09;  // TAB key
-        irr2ceCODE[KEY_CLEAR     ] = 0;  // CLEAR key
+        irr2ceCODE[KEY_CLEAR     ] = Key::Unknown;  // CLEAR key
         irr2ceCODE[KEY_RETURN    ] = Key::Return; //0x0D;  // ENTER key
         irr2ceCODE[KEY_SHIFT     ] = Key::LeftShift;  // SHIFT key
         irr2ceCODE[KEY_CONTROL   ] = Key::LeftControl;   // CTRL key
@@ -159,17 +159,17 @@ protected:
         irr2ceCODE[KEY_PAUSE     ] = Key::Pause;   // PAUSE key
         irr2ceCODE[KEY_CAPITAL   ] = Key::Capital;  // CAPS LOCK key
         irr2ceCODE[KEY_KANA      ] = Key::Kana;  // IME Kana mode
-        irr2ceCODE[KEY_HANGUEL   ] = KEY_HANGUEL;  // IME Hanguel mode
-        irr2ceCODE[KEY_HANGUL    ] = KEY_HANGUL;  // IME Hangul mode
-        irr2ceCODE[KEY_JUNJA     ] = 0;  // IME Junja mode
-        irr2ceCODE[KEY_FINAL     ] = 0;  // IME final mode
-        irr2ceCODE[KEY_HANJA     ] = 0;  // IME Hanja mode
-        irr2ceCODE[KEY_KANJI     ] = 0;  // IME Kanji mode
+        irr2ceCODE[KEY_HANGUEL   ] = Key::Unknown;  // IME Hanguel mode
+        irr2ceCODE[KEY_HANGUL    ] = Key::Unknown;  // IME Hangul mode
+        irr2ceCODE[KEY_JUNJA     ] = Key::Unknown;  // IME Junja mode
+        irr2ceCODE[KEY_FINAL     ] = Key::Unknown;  // IME final mode
+        irr2ceCODE[KEY_HANJA     ] = Key::Unknown;  // IME Hanja mode
+        irr2ceCODE[KEY_KANJI     ] = Key::Unknown;  // IME Kanji mode
         irr2ceCODE[KEY_ESCAPE    ] = Key::Escape;  // ESC key
         irr2ceCODE[KEY_CONVERT   ] = Key::Convert;  // IME convert
         irr2ceCODE[KEY_NONCONVERT] = Key::NoConvert;  // IME nonconvert
-        irr2ceCODE[KEY_ACCEPT    ] = 0;  // IME accept
-        irr2ceCODE[KEY_MODECHANGE] = 0;  // IME mode change request
+        irr2ceCODE[KEY_ACCEPT    ] = Key::Unknown;  // IME accept
+        irr2ceCODE[KEY_MODECHANGE] = Key::Unknown;  // IME mode change request
         irr2ceCODE[KEY_SPACE     ] = Key::Space;  // SPACEBAR
         irr2ceCODE[KEY_PRIOR     ] = Key::PageUp;  // PAGE UP key
         irr2ceCODE[KEY_NEXT      ] = Key::PageDown;  // PAGE DOWN key
@@ -179,13 +179,13 @@ protected:
         irr2ceCODE[KEY_UP        ] = Key::ArrowUp;  // UP ARROW key
         irr2ceCODE[KEY_RIGHT     ] = Key::ArrowRight;  // RIGHT ARROW key
         irr2ceCODE[KEY_DOWN      ] = Key::ArrowDown;  // DOWN ARROW key
-        irr2ceCODE[KEY_SELECT    ] = 0;  // SELECT key
+        irr2ceCODE[KEY_SELECT    ] = Key::Unknown;  // SELECT key
         irr2ceCODE[KEY_PRINT     ] = Key::SysRq;  // PRINT key
-        irr2ceCODE[KEY_EXECUT    ] = 0;  // EXECUTE key
-        irr2ceCODE[KEY_SNAPSHOT  ] = 0;  // PRINT SCREEN key
+        irr2ceCODE[KEY_EXECUT    ] = Key::Unknown;  // EXECUTE key
+        irr2ceCODE[KEY_SNAPSHOT  ] = Key::Unknown;  // PRINT SCREEN key
         irr2ceCODE[KEY_INSERT    ] = Key::Insert;//0x2D;  // INS key
         irr2ceCODE[KEY_DELETE    ] = Key::Delete;//0x2E;  // DEL key
-        irr2ceCODE[KEY_HELP      ] = 0;  // HELP key
+        irr2ceCODE[KEY_HELP      ] = Key::Unknown;  // HELP key
         irr2ceCODE[KEY_KEY_0     ] = Key::Zero;   // 0 key
         irr2ceCODE[KEY_KEY_1     ] = Key::One;    // 1 key
         irr2ceCODE[KEY_KEY_2     ] = Key::Two;    // 2 key
@@ -238,7 +238,7 @@ protected:
         irr2ceCODE[KEY_NUMPAD9   ] = Key::Numpad9;  // Numeric keypad 9 key
         irr2ceCODE[KEY_MULTIPLY  ] = Key::Multiply;  // Multiply key
         irr2ceCODE[KEY_ADD       ] = Key::Add;  // Add key
-        irr2ceCODE[KEY_SEPARATOR ] = 0;  // Separator key
+        irr2ceCODE[KEY_SEPARATOR ] = Key::Unknown;  // Separator key
         irr2ceCODE[KEY_SUBTRACT  ] = Key::Subtract;  // Subtract key
         irr2ceCODE[KEY_DECIMAL   ] = Key::Decimal;  // Decimal key
         irr2ceCODE[KEY_DIVIDE    ] = Key::Divide;  // Divide key
@@ -257,15 +257,15 @@ protected:
         irr2ceCODE[KEY_F13       ] = Key::F13;  // F13 key
         irr2ceCODE[KEY_F14       ] = Key::F14;  // F14 key
         irr2ceCODE[KEY_F15       ] = Key::F15;  // F15 key
-        irr2ceCODE[KEY_F16       ] = 0;  // F16 key
-        irr2ceCODE[KEY_F17       ] = 0;  // F17 key
-        irr2ceCODE[KEY_F18       ] = 0;  // F18 key
-        irr2ceCODE[KEY_F19       ] = 0;  // F19 key
-        irr2ceCODE[KEY_F20       ] = 0;  // F20 key
-        irr2ceCODE[KEY_F21       ] = 0;  // F21 key
-        irr2ceCODE[KEY_F22       ] = 0;  // F22 key
-        irr2ceCODE[KEY_F23       ] = 0;  // F23 key
-        irr2ceCODE[KEY_F24       ] = 0;  // F24 key
+        irr2ceCODE[KEY_F16       ] = Key::Unknown;  // F16 key
+        irr2ceCODE[KEY_F17       ] = Key::Unknown;  // F17 key
+        irr2ceCODE[KEY_F18       ] = Key::Unknown;  // F18 key
+        irr2ceCODE[KEY_F19       ] = Key::Unknown;  // F19 key
+        irr2ceCODE[KEY_F20       ] = Key::Unknown;  // F20 key
+        irr2ceCODE[KEY_F21       ] = Key::Unknown;  // F21 key
+        irr2ceCODE[KEY_F22       ] = Key::Unknown;  // F22 key
+        irr2ceCODE[KEY_F23       ] = Key::Unknown;  // F23 key
+        irr2ceCODE[KEY_F24       ] = Key::Unknown;  // F24 key
         irr2ceCODE[KEY_NUMLOCK   ] = Key::NumLock;  // NUM LOCK key
         irr2ceCODE[KEY_SCROLL    ] = Key::ScrollLock;  // SCROLL LOCK key
         irr2ceCODE[KEY_LSHIFT    ] = Key::LeftShift;  // Left SHIFT key
@@ -278,14 +278,14 @@ protected:
         irr2ceCODE[KEY_PLUS      ] = Key::Add;  // Plus Key   (+)
         irr2ceCODE[KEY_MINUS     ] = Key::Minus;  // Minus Key  (-)
         irr2ceCODE[KEY_PERIOD    ] = Key::Period;//0xBE;  // Period Key (.)
-        irr2ceCODE[KEY_ATTN      ] = 0;  // Attn key
-        irr2ceCODE[KEY_CRSEL     ] = 0;  // CrSel key
-        irr2ceCODE[KEY_EXSEL     ] = 0;  // ExSel key
-        irr2ceCODE[KEY_EREOF     ] = 0;  // Erase EOF key
-        irr2ceCODE[KEY_PLAY      ] = 0;  // Play key
-        irr2ceCODE[KEY_ZOOM      ] = 0;  // Zoom key
-        irr2ceCODE[KEY_PA1       ] = 0;  // PA1 key
-        irr2ceCODE[KEY_OEM_CLEAR ] = 0;  // Clear key
+        irr2ceCODE[KEY_ATTN      ] = Key::Unknown;  // Attn key
+        irr2ceCODE[KEY_CRSEL     ] = Key::Unknown;  // CrSel key
+        irr2ceCODE[KEY_EXSEL     ] = Key::Unknown;  // ExSel key
+        irr2ceCODE[KEY_EREOF     ] = Key::Unknown;  // Erase EOF key
+        irr2ceCODE[KEY_PLAY      ] = Key::Unknown;  // Play key
+        irr2ceCODE[KEY_ZOOM      ] = Key::Unknown;  // Zoom key
+        irr2ceCODE[KEY_PA1       ] = Key::Unknown;  // PA1 key
+        irr2ceCODE[KEY_OEM_CLEAR ] = Key::Unknown;  // Clear key
     }
 
     /*! translate the irrlicht keycode to cegui keycode
@@ -295,7 +295,7 @@ protected:
     \return
         the cegui keycode
     */
-    uchar getKeyCode(irr::EKEY_CODE kc)
+    CEGUI::Key::Scan getKeyCode(irr::EKEY_CODE kc)
     {
         return irr2ceCODE[kc];
     }

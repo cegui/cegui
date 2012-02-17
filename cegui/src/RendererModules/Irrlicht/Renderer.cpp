@@ -127,9 +127,9 @@ bool IrrlichtRenderer::injectEvent(const irr::SEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-GUIContext& IrrlichtRenderer::getDefaultGUIContext()
+RenderTarget& IrrlichtRenderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -356,7 +356,6 @@ IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice& device) :
                   static_cast<float>(d_driver->getScreenSize().Height)),
     d_displayDPI(96, 96),
     d_defaultTarget(new IrrlichtWindowTarget(*this, *d_driver)),
-    d_defaultRoot(new GUIContext(*d_defaultTarget)),
     d_maxTextureSize(2048),
     d_eventPusher(new IrrlichtEventPusher(d_device.getCursorControl())),
     d_supportsNSquareTextures(d_driver->queryFeature(irr::video::EVDF_TEXTURE_NSQUARE)),
@@ -376,7 +375,6 @@ IrrlichtRenderer::~IrrlichtRenderer()
     destroyAllTextures();
 
     delete d_eventPusher;
-    delete d_defaultRoot;
     delete d_defaultTarget;
 }
 
