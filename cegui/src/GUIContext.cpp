@@ -135,8 +135,11 @@ void GUIContext::setRootWindow(Window* new_root)
     if (d_rootWindow == new_root)
         return;
 
-    d_rootWindow->setGUIContext(0);
-    new_root->setGUIContext(this);
+    if (d_rootWindow)
+        d_rootWindow->setGUIContext(0);
+
+    if (new_root)
+        new_root->setGUIContext(this);
 
     d_rootWindow = new_root;
 
