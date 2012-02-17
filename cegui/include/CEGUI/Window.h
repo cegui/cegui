@@ -6,7 +6,7 @@
     purpose:    Defines abstract base class for Window objects
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -2550,6 +2550,11 @@ public:
     //! copies this widget's child widgets to given target widget
     virtual void cloneChildWidgetsTo(Window& target) const;
 
+    //! return the GUIContext this window is associated with.
+    GUIRoot* getGUIContext() const;
+    //! function used internally.  Do not call this from client code.
+    void setGUIContext(GUIRoot* context);
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3513,6 +3518,8 @@ protected:
     //! specifies whether mouse inputs should be propagated to parent(s)
     bool d_propagateMouseInputs;
 
+    //! GUIContext.  Set when this window is used as a root window.
+    GUIRoot* d_guiContext;
 private:
     /*************************************************************************
         May not copy or assign Window objects
