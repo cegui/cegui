@@ -652,7 +652,7 @@ bool OgreGUIFrameListener::isCEGUIRenderEnabled() const
 bool OgreGUIFrameListener::frameRenderingQueued(const Ogre::FrameEvent&)
 {
     if (d_enabled)
-        System::getSingleton().renderGUI();
+        System::getSingleton().renderAllGUIContexts();
 
     return true;
 }

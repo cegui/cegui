@@ -91,7 +91,7 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
     updateLogo(elapsed);
 
     beginRendering(elapsed);
-    gui_system.renderGUI();
+    gui_system.renderAllGUIContexts();
     endRendering();
 }
 
