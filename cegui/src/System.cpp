@@ -307,18 +307,6 @@ System::~System(void)
 }
 
 //---------------------------------------------------------------------------//
-void System::signalRedraw()
-{
-    d_defaultGUIContext->markAsDirty();
-}
-
-//---------------------------------------------------------------------------//
-bool System::isRedrawRequested() const
-{
-    return d_defaultGUIContext->isDirty();
-}
-
-//---------------------------------------------------------------------------//
 unsigned int System::getMajorVersion()
 {
     return CEGUI_VERSION_MAJOR;
@@ -592,95 +580,13 @@ void System::executeScriptString(const String& str) const
     }
 }
 
-
-/*************************************************************************
-	Method that injects a mouse movement event into the system
-*************************************************************************/
-bool System::injectMouseMove(float delta_x, float delta_y)
-{
-    return d_defaultGUIContext->injectMouseMove(delta_x, delta_y);
-}
-
-/*************************************************************************
-	Method that injects that the mouse is leaves the application window
-*************************************************************************/
-bool System::injectMouseLeaves(void)
-{
-    return d_defaultGUIContext->injectMouseLeaves();
-}
-
-
-/*************************************************************************
-	Method that injects a mouse button down event into the system.
-*************************************************************************/
-bool System::injectMouseButtonDown(MouseButton button)
-{
-    return d_defaultGUIContext->injectMouseButtonDown(button);
-}
-
-
-/*************************************************************************
-	Method that injects a mouse button up event into the system.
-*************************************************************************/
-bool System::injectMouseButtonUp(MouseButton button)
-{
-    return d_defaultGUIContext->injectMouseButtonUp(button);
-}
-
-
-/*************************************************************************
-	Method that injects a key down event into the system.
-*************************************************************************/
-bool System::injectKeyDown(Key::Scan scan_code)
-{
-    return d_defaultGUIContext->injectKeyDown(scan_code);
-}
-
-
-/*************************************************************************
-	Method that injects a key up event into the system.
-*************************************************************************/
-bool System::injectKeyUp(Key::Scan scan_code)
-{
-    return d_defaultGUIContext->injectKeyUp(scan_code);
-}
-
-
-/*************************************************************************
-	Method that injects a typed character event into the system.
-*************************************************************************/
-bool System::injectChar(String::value_type code_point)
-{
-    return d_defaultGUIContext->injectChar(code_point);
-}
-
-
-/*************************************************************************
-	Method that injects a mouse-wheel / scroll-wheel event into the system.
-*************************************************************************/
-bool System::injectMouseWheelChange(float delta)
-{
-    return d_defaultGUIContext->injectMouseWheelChange(delta);
-}
-
-
-/*************************************************************************
-	Method that injects a new position for the mouse cursor.
-*************************************************************************/
-bool System::injectMousePosition(float x_pos, float y_pos)
-{
-    return d_defaultGUIContext->injectMousePosition(x_pos, y_pos);
-}
-
-
 /*************************************************************************
 	Method to inject time pulses into the system.
 *************************************************************************/
 bool System::injectTimePulse(float timeElapsed)
 {
     AnimationManager::getSingleton().autoStepInstances(timeElapsed);
-
-    return d_defaultGUIContext->injectTimePulse(timeElapsed);
+    return true;
 }
 
 /*************************************************************************
@@ -1189,42 +1095,6 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
         EventArgs args;
         fireEvent(EventRenderedStringParserChanged, args, EventNamespace);
     }
-}
-
-//----------------------------------------------------------------------------//
-bool System::injectMouseButtonClick(const MouseButton button)
-{
-    return d_defaultGUIContext->injectMouseButtonClick(button);
-}
-
-//----------------------------------------------------------------------------//
-bool System::injectMouseButtonDoubleClick(const MouseButton button)
-{
-    return d_defaultGUIContext->injectMouseButtonDoubleClick(button);
-}
-
-//----------------------------------------------------------------------------//
-bool System::injectMouseButtonTripleClick(const MouseButton button)
-{
-    return d_defaultGUIContext->injectMouseButtonTripleClick(button);
-}
-
-//----------------------------------------------------------------------------//
-bool System::injectCopyRequest()
-{
-    return d_defaultGUIContext->injectCopyRequest();
-}
-
-//----------------------------------------------------------------------------//
-bool System::injectCutRequest()
-{
-    return d_defaultGUIContext->injectCutRequest();
-}
-
-//----------------------------------------------------------------------------//
-bool System::injectPasteRequest()
-{
-    return d_defaultGUIContext->injectPasteRequest();
 }
 
 //----------------------------------------------------------------------------//

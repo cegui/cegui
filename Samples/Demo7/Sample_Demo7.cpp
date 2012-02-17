@@ -232,7 +232,7 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 
         // note we just need system to redraw the geometry; we do not need a
         // full redraw of all window/widget content - which is unchanged.
-        System::getSingleton().signalRedraw();
+        System::getSingleton().getDefaultGUIContext().markAsDirty();
         return false;
     }
 

@@ -185,9 +185,9 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
     CEGUI::Key::Scan ceguiKey = GlfwToCeguiKey(key);
 
     if(action == GLFW_PRESS)
-        CEGUI::System::getSingleton().injectKeyDown(ceguiKey);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
     else if (action == GLFW_RELEASE)
-        CEGUI::System::getSingleton().injectKeyUp(ceguiKey);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(ceguiKey);
 }
 
 //----------------------------------------------------------------------------//
@@ -196,7 +196,7 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwCharCallback(int character, int action)
     unsigned int ceguiKey = GlfwToCeguiKey(character);
 
     if(action == GLFW_PRESS)
-        CEGUI::System::getSingleton().injectChar(character);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(character);
 }
 
 //----------------------------------------------------------------------------//
@@ -205,18 +205,18 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMouseButtonCallback(int key, int action)
     CEGUI::MouseButton ceguiMouseButton = GlfwToCeguiMouseButton(key);
 
     if(action == GLFW_PRESS)
-    {
-        CEGUI::System::getSingleton().injectMouseButtonDown(ceguiMouseButton);
-    }
+        CEGUI::System::getSingleton().getDefaultGUIContext().
+            injectMouseButtonDown(ceguiMouseButton);
     else if (action == GLFW_RELEASE)
-        CEGUI::System::getSingleton().injectMouseButtonUp(ceguiMouseButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().
+            injectMouseButtonUp(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
 void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
 {
     static int lastPosition = 0;
-    CEGUI::System::getSingleton().
+    CEGUI::System::getSingleton().getDefaultGUIContext().
         injectMouseWheelChange(static_cast<float>(position - lastPosition));
     lastPosition = position;
 }
@@ -224,8 +224,8 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwMouseWheelCallback(int position)
 //----------------------------------------------------------------------------//
 void GLFWCALL CEGuiGLFWSharedBase::glfwMousePosCallback(int x, int y)
 {
-    CEGUI::System::getSingleton().injectMousePosition(static_cast<float>(x),
-                                                      static_cast<float>(y));
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectMousePosition(static_cast<float>(x), static_cast<float>(y));
 }
 
 //----------------------------------------------------------------------------//
