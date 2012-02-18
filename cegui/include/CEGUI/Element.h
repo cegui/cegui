@@ -1093,7 +1093,10 @@ protected:
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Element's inner rect area.
     virtual Rectf getUnclippedInnerRect_impl(bool skipAllPixelAlignment) const;
-    
+
+    //! return the size of the root container (such as screen size) 
+    virtual const Sizef& getRootContainerSize() const;
+
     /*************************************************************************
         Event trigger methods
     *************************************************************************/

@@ -104,7 +104,7 @@ public:
 
     Window* getWindowContainingMouse() const;
 
-    Sizef getSurfaceSize() const;
+    const Sizef& getSurfaceSize() const;
 
     const SystemKeys& getSystemKeys() const;
 
@@ -220,6 +220,9 @@ protected:
     float d_mouseButtonMultiClickTimeout;
     //! Movement tolerance used when detecting multi-click events.
     Sizef d_mouseButtonMultiClickTolerance;
+
+    //! a cache of the target surface size, allows returning by ref.
+    Sizef d_surfaceSize;
 
     Window* d_windowContainingMouse;
     Window* d_modalWindow;

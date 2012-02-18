@@ -77,6 +77,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
+    d_surfaceSize(target.getArea().getSize()),
     d_windowContainingMouse(0),
     d_modalWindow(0),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
@@ -152,9 +153,9 @@ Window* GUIContext::getWindowContainingMouse() const
 }
 
 //----------------------------------------------------------------------------//
-Sizef GUIContext::getSurfaceSize() const
+const Sizef& GUIContext::getSurfaceSize() const
 {
-    return d_target.getArea().getSize();
+    return d_surfaceSize;
 }
 
 //----------------------------------------------------------------------------//
@@ -306,7 +307,8 @@ bool GUIContext::areaChangedHandler(const EventArgs& args)
     if (d_rootWindow)
         updateRootWindowAreaRects();
 
-    d_mouseCursor.notifyDisplaySizeChanged(getSurfaceSize());
+    d_surfaceSize = d_target.getArea().getSize();
+    d_mouseCursor.notifyDisplaySizeChanged(d_surfaceSize);
 
     return true;
 }
