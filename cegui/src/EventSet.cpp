@@ -80,8 +80,6 @@ void EventSet::removeEvent(const String& name)
 		CEGUI_DELETE_AO pos->second;
 		d_events.erase(pos);
 	}
-
-    // todo: shouldn't this throw exception if not found?
 }
 
 //----------------------------------------------------------------------------//
