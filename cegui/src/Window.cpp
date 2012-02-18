@@ -3704,5 +3704,11 @@ void Window::setGUIContext(GUIContext* context)
 }
 
 //----------------------------------------------------------------------------//
+const Sizef& Window::getRootContainerSize() const
+{
+    getGUIContext().getSurfaceSize();
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
