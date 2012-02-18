@@ -135,8 +135,6 @@ public:
     //! returns whether the window containing the mouse had changed.
     bool updateWindowContainingMouse();
     
-    //! notify the root that the size of it's surface has changed
-    void notifySurfaceSizeChanged(const Sizef& new_size);
     //! notify the root that some window has been destroyed.
     void notifyWindowDestroyed(const Window* window);
 
@@ -172,6 +170,7 @@ protected:
                                void (Window::*func)(MouseEventArgs&),
                                MouseEventArgs& args);
 
+    bool areaChangedHandler(const EventArgs& args);
 
 
     Window* d_rootWindow;
@@ -193,6 +192,8 @@ protected:
 
     SystemKeys d_systemKeys;
     MouseClickTracker* d_mouseClickTrackers;
+
+    Event::ScopedConnection d_areaChangedEventConnection;
 };
 
 }

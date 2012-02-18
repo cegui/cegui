@@ -113,7 +113,10 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
     d_windowContainingMouse(0),
     d_modalWindow(0),
-    d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount])
+    d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
+    d_areaChangedEventConnection(
+        target.subscribeEvent(RenderTarget::EventAreaChanged,
+                              Event::Subscriber(&GUIContext::areaChangedHandler, this)))
 {
 }
 
@@ -310,15 +313,6 @@ bool GUIContext::isMouseClickEventGenerationEnabled() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::notifySurfaceSizeChanged(const Sizef& new_size)
-{
-    if (d_rootWindow)
-        updateRootWindowAreaRects();
-
-    d_mouseCursor.notifyDisplaySizeChanged(new_size);
-}
-
-//----------------------------------------------------------------------------//
 void GUIContext::notifyWindowDestroyed(const Window* window)
 {
     if (window == d_rootWindow)
@@ -329,6 +323,17 @@ void GUIContext::notifyWindowDestroyed(const Window* window)
 
     if (window == d_modalWindow)
         d_modalWindow = 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::areaChangedHandler(const EventArgs& args)
+{
+    if (d_rootWindow)
+        updateRootWindowAreaRects();
+
+    d_mouseCursor.notifyDisplaySizeChanged(getSurfaceSize());
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
