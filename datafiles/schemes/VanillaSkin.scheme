@@ -3,6 +3,8 @@
 	<Imageset Filename="Vanilla.imageset" />
 	<LookNFeel Filename="Vanilla.looknfeel" />
 	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+
+	<FalagardMapping WindowType="Vanilla/Label" TargetType="DefaultWindow" Renderer="Falagard/Default" LookNFeel="Vanilla/Label" />
 	<FalagardMapping WindowType="Vanilla/Titlebar" TargetType="CEGUI/Titlebar" Renderer="Falagard/Titlebar" LookNFeel="Vanilla/Titlebar" />
 	<FalagardMapping WindowType="Vanilla/Button" TargetType="CEGUI/PushButton" Renderer="Falagard/Button" LookNFeel="Vanilla/Button" />
 	<FalagardMapping WindowType="Vanilla/FrameWindow" TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow" LookNFeel="Vanilla/FrameWindow" />
@@ -20,5 +22,5 @@
 	<FalagardMapping WindowType="Vanilla/ProgressBar" TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="Vanilla/ProgressBar" />
 	<FalagardMapping WindowType="Vanilla/Checkbox" TargetType="CEGUI/Checkbox" Renderer="Falagard/ToggleButton" LookNFeel="Vanilla/Checkbox" />
 	<FalagardMapping WindowType="Vanilla/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="Vanilla/RadioButton" />
-
 </GUIScheme>
+

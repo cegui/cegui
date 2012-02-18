@@ -1,5 +1,38 @@
 <?xml version="1.0" ?>
 <Falagard version="7">
+    <WidgetLook name="Vanilla/Label">
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <ImagerySection name="Label">
+            <TextComponent>
+                <Area>
+	            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+	            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+	            <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+	            <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
     <WidgetLook name="Vanilla/Shared">
         <ImagerySection name="Frame">
             <FrameComponent>
