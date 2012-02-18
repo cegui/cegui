@@ -29,12 +29,26 @@
 #define _CEGUIRenderTarget_h_
 
 #include "CEGUI/Base.h"
+#include "CEGUI/EventSet.h"
+#include "CEGUI/EventArgs.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//! EventArgs class passed to subscribers of RenderTarget events.
+class CEGUIEXPORT RenderTargetEventArgs : public EventArgs
+{
+public:
+    RenderTargetEventArgs(RenderTarget& target):
+        target(target)
+    {}
+
+    //! reference to the RenderTarget that triggered the event.
+    RenderTarget& target;
+};
+
 /*!
 \brief
     Defines interface to some surface that can be rendered to.  Concrete
@@ -42,12 +56,18 @@ namespace CEGUI
     normally created via the Renderer object.
 */
 class CEGUIEXPORT RenderTarget :
+    public EventSet,
     public AllocatedObject<RenderTarget>
 {
 public:
-    //! Destructor
-    virtual ~RenderTarget()
-    {}
+    //! Namespace for global events
+    static const String EventNamespace;
+
+    /** Event to be fired when the RenderTarget object's area has changed.
+     * Handlers are passed a const RenderTargetEventArgs reference with
+     * RenderTargetEventArgs::target set to the RenderTarget whose area changed.
+     */
+    static const String EventAreaChanged;
 
     /*!
     \brief
@@ -80,6 +100,11 @@ public:
 
     \param area
         Rect object describing the new area to be assigned to the RenderTarget.
+
+    \note
+        When implementing this function, you should be sure to fire the event
+        RenderTarget::EventAreaChanged so that interested parties can know that
+        the change has occurred.
 
     \exception InvalidRequestException
         May be thrown if the RenderTarget does not support setting or changing
