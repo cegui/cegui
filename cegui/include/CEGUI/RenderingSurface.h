@@ -331,6 +331,11 @@ public:
     RenderTarget& getRenderTarget();
 
 protected:
+    /** draw the surface content. Default impl draws the render queues.
+     * NB: Called between RenderTarget activate and deactivate calls.
+     */
+    virtual void drawContent();
+
     //! draw a rendering queue, firing events before and after.
     void draw(const RenderQueue& queue, RenderQueueEventArgs& args);
 
