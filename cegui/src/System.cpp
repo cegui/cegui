@@ -416,7 +416,7 @@ void System::renderAllGUIContexts()
          i != d_guiContexts.end();
          ++i)
     {
-        (*i)->drawContent();
+        (*i)->draw();
     }
 
     d_renderer->endRendering();
