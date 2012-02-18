@@ -37,8 +37,21 @@ namespace CEGUI
 {
 struct MouseClickTracker;
 
+//! EventArgs class passed to subscribers for (most) GUIContext events.
+class CEGUIEXPORT GUIContextEventArgs : public EventArgs
+{
+public:
+    GUIContextEventArgs(GUIContext& context):
+        context(context)
+    {}
+
+    //! reference to the GUIContext that triggered the event.
+    GUIContext& context;
+};
+
 class CEGUIEXPORT GUIContext : public RenderingSurface,
-                                   InjectedInputReceiver
+                               public InjectedInputReceiver,
+                               public AllocatedObject<GUIContext>
 {
 public:
     static const float DefaultMouseButtonClickTimeout;
@@ -51,11 +64,24 @@ public:
      * WindowEventArgs::window set to the @e old root window (the new one is
      * obtained by calling GUIContext::getRootWindow).
      */
-    static const String EventGUISheetChanged;
-    /** Name of Event fired when the mouse movement scaling factor changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
+    static const String EventRootWindowChanged;
+    /** Name of Event fired when the mouse movement scaling factor is changed.
+     * Handlers are passed a const reference to a GUIContextEventArgs struct.
      */
-    static const String EventMouseMovementScalingFactorChanged;
+    static const String EventMouseMoveScalingFactorChanged;
+    /** Name of Event fired when the mouse click timeout is changed.
+     * Handlers are passed a const reference to a GUIContextEventArgs struct.
+     */
+    static const String EventMouseButtonClickTimeoutChanged;
+    /** Name of Event fired when the mouse multi-click timeout is changed.
+     * Handlers are passed a const reference to a GUIContextEventArgs struct.
+     */
+    static const String EventMouseButtonMultiClickTimeoutChanged;
+    /** Name of Event fired when the mouse multi-click movement tolerance area
+     * size is changed.
+     * Handlers are passed a const reference to a GUIContextEventArgs struct.
+     */
+    static const String EventMouseButtonMultiClickToleranceChanged;
 
     GUIContext(RenderTarget& target);
     ~GUIContext();
@@ -172,6 +198,12 @@ protected:
 
     bool areaChangedHandler(const EventArgs& args);
 
+    // event trigger functions.
+    virtual void onRootWindowChanged(WindowEventArgs& args);
+    virtual void onMouseMoveScalingFactorChanged(GUIContextEventArgs& args);
+    virtual void onMouseButtonClickTimeoutChanged(GUIContextEventArgs& args);
+    virtual void onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args);
+    virtual void onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args);
 
     Window* d_rootWindow;
     bool d_isDirty;
