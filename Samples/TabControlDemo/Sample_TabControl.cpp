@@ -97,7 +97,7 @@ public:
         System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
         // set tooltip styles (by default there is none)
-        System::getSingleton().setDefaultTooltip(SKIN "/Tooltip");
+        System::getSingleton().getDefaultGUIContext().setDefaultTooltipType(SKIN "/Tooltip");
 
         // load some demo windows and attach to the background 'root'
         background->addChild(winMgr.loadLayoutFromFile("TabControlDemo.layout"));

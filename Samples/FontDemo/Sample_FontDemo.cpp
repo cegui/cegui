@@ -157,7 +157,7 @@ public:
         System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
         // set tooltip styles (by default there is none)
-        System::getSingleton().setDefaultTooltip("TaharezLook/Tooltip");
+        System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
 
         // load some demo windows and attach to the background 'root'
         background->addChild(winMgr.loadLayoutFromFile("FontDemo.layout"));
