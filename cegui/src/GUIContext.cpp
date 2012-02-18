@@ -30,47 +30,10 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/SimpleTimer.h"
 
 namespace CEGUI
 {
-
-
-
-//! Simple timer class.
-class SimpleTimer
-{
-    double d_baseTime;
-
-public:
-    //! returns time in seconds
-    static double currentTime();
-
-    SimpleTimer() : d_baseTime(currentTime()) {}
-
-    void restart() { d_baseTime = currentTime(); }
-    double elapsed() { return currentTime() - d_baseTime; }
-};
-
-#if defined(__WIN32__) || defined(_WIN32)
-#include <windows.h>
-double SimpleTimer::currentTime()
-{
-    return timeGetTime() / 1000.0;
-}
-
-#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)  || defined(__HAIKU__)
-#include <sys/time.h>
-double SimpleTimer::currentTime()
-{
-    timeval timeStructure;
-    gettimeofday(&timeStructure, 0);
-    return timeStructure.tv_sec + timeStructure.tv_usec / 1000000.0;
-}
-#else
-#error "SimpleTimer not available for this platform, please implement it"
-#endif
-
-
 /*!
 \brief
     Implementation structure used in tracking up & down mouse button inputs in
@@ -92,7 +55,6 @@ struct MouseClickTracker
     //! target window for any events generated.
     Window* d_target_window;
 };
-
 
 //----------------------------------------------------------------------------//
 const float GUIContext::DefaultMouseButtonClickTimeout = 0.0f;
