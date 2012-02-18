@@ -30,6 +30,7 @@
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/SimpleTimer.h"
 
 namespace CEGUI
@@ -77,6 +78,8 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
+    d_defaultTooltipObject(0),
+    d_weCreatedTooltipObject(false),
     d_surfaceSize(target.getArea().getSize()),
     d_windowContainingMouse(0),
     d_modalWindow(0),
@@ -96,6 +99,8 @@ GUIContext::GUIContext(RenderTarget& target) :
 //----------------------------------------------------------------------------//
 GUIContext::~GUIContext()
 {
+    destroyDefaultTooltipWindowInstance();
+
     if (d_rootWindow)
         d_rootWindow->setGUIContext(0);
 
@@ -145,6 +150,65 @@ Window* GUIContext::getInputCaptureWindow() const
 void GUIContext::setInputCaptureWindow(Window* window)
 {
     d_captureWindow = window;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultTooltipObject(Tooltip* tooltip)
+{
+    destroyDefaultTooltipWindowInstance();
+
+    d_defaultTooltipObject = tooltip;
+
+    if (d_defaultTooltipObject)
+        d_defaultTooltipObject->setWritingXMLAllowed(false);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultTooltipType(const String& tooltip_type)
+{
+    destroyDefaultTooltipWindowInstance();
+
+    d_defaultTooltipType = tooltip_type;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::destroyDefaultTooltipWindowInstance()
+{
+    if (d_defaultTooltipObject && d_weCreatedTooltipObject)
+    {
+        WindowManager::getSingleton().destroyWindow(d_defaultTooltipObject);
+        d_defaultTooltipObject = 0;
+    }
+
+    d_weCreatedTooltipObject = false;
+}
+
+//----------------------------------------------------------------------------//
+Tooltip* GUIContext::getDefaultTooltipObject() const
+{
+    if (!d_defaultTooltipObject && !d_defaultTooltipType.empty())
+        createDefaultTooltipWindowInstance();
+
+    return d_defaultTooltipObject;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::createDefaultTooltipWindowInstance() const
+{
+    WindowManager& winmgr(WindowManager::getSingleton());
+
+    if (winmgr.isLocked())
+        return;
+
+    d_defaultTooltipObject = dynamic_cast<Tooltip*>(
+        winmgr.createWindow(d_defaultTooltipType,
+                            "CEGUI::System::default__auto_tooltip__"));
+
+    if (d_defaultTooltipObject)
+    {
+        d_defaultTooltipObject->setWritingXMLAllowed(false);
+        d_weCreatedTooltipObject = true;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -343,6 +407,12 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
 
     if (window == d_captureWindow)
         d_captureWindow = 0;
+
+    if (window == d_defaultTooltipObject)
+    {
+        d_defaultTooltipObject = 0;
+        d_weCreatedTooltipObject = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
