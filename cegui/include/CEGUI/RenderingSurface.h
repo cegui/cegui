@@ -197,7 +197,7 @@ public:
         queue is to to be cleared.
 
     \note
-        Clearing a rendering queue does destory the attached GeometryBuffers,
+        Clearing a rendering queue does not destroy the attached GeometryBuffers,
         which remain under thier original ownership.
     */
     void clearGeometry(const RenderQueueID queue);
@@ -207,7 +207,7 @@ public:
         Clears all GeometryBuffers from all rendering queues.
 
     \note
-        Clearing the rendering queues does destroy the attached GeometryBuffers,
+        Clearing the rendering queues does not destroy the attached GeometryBuffers,
         which remain under their original ownership.
     */
     void clearGeometry();
