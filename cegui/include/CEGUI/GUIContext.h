@@ -112,8 +112,6 @@ public:
     void markAsDirty();
     bool isDirty() const;
 
-    void drawContent();
-
     MouseCursor& getMouseCursor();
     const MouseCursor& getMouseCursor() const;
 
@@ -179,6 +177,9 @@ public:
     bool injectCutRequest();
     bool injectPasteRequest();
 
+    // public overrides
+    void draw();
+
 protected:
     void updateRootWindowAreaRects() const;
     void drawWindowContentToTarget();
@@ -202,6 +203,9 @@ protected:
     virtual void onMouseButtonClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args);
+
+    // protected overrides
+    void drawContent();
 
     Window* d_rootWindow;
     bool d_isDirty;

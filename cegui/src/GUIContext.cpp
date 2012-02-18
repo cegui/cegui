@@ -176,12 +176,18 @@ bool GUIContext::isDirty() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::drawContent()
+void GUIContext::draw()
 {
     if (d_isDirty)
         drawWindowContentToTarget();
 
-    draw();
+    RenderingSurface::draw();
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::drawContent()
+{
+    RenderingSurface::drawContent();
 
     d_mouseCursor.draw();
 }
