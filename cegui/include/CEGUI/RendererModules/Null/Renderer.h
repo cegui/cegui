@@ -105,7 +105,7 @@ public:
     static void destroy(NullRenderer& renderer);
 
     // implement CEGUI::Renderer interface
-    GUIContext& getDefaultGUIContext();
+    RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -150,9 +150,7 @@ protected:
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
-    //! The default rendering root object
-    GUIContext* d_defaultRoot;
-    //! The default RenderTarget (used by d_defaultRoot)
+    //! The default RenderTarget
     NullRenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
