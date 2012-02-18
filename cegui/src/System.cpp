@@ -668,13 +668,6 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
 *************************************************************************/
 void System::notifyWindowDestroyed(const Window* window)
 {
-    for (GUIContextCollection::iterator i = d_guiContexts.begin();
-         i != d_guiContexts.end();
-         ++i)
-    {
-        (*i)->notifyWindowDestroyed(window);
-    }
-
     if (d_defaultTooltip == window)
     {
         d_defaultTooltip = 0;

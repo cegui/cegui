@@ -28,6 +28,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/WindowManager.h"
 #include "CEGUI/Window.h"
 
 namespace CEGUI
@@ -118,8 +119,13 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_modalWindow(0),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
     d_areaChangedEventConnection(
-        target.subscribeEvent(RenderTarget::EventAreaChanged,
-                              Event::Subscriber(&GUIContext::areaChangedHandler, this)))
+        target.subscribeEvent(
+            RenderTarget::EventAreaChanged,
+            Event::Subscriber(&GUIContext::areaChangedHandler, this))),
+    d_windowDestroyedEventConnection(
+        WindowManager::getSingleton().subscribeEvent(
+            WindowManager::EventWindowDestroyed,
+            Event::Subscriber(&GUIContext::windowDestroyedHandler, this)))
 {
 }
 
@@ -326,19 +332,6 @@ bool GUIContext::isMouseClickEventGenerationEnabled() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::notifyWindowDestroyed(const Window* window)
-{
-    if (window == d_rootWindow)
-        d_rootWindow = 0;
-
-    if (window == d_windowContainingMouse)
-        d_windowContainingMouse = 0;
-
-    if (window == d_modalWindow)
-        d_modalWindow = 0;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs& args)
 {
     if (d_rootWindow)
@@ -347,6 +340,22 @@ bool GUIContext::areaChangedHandler(const EventArgs& args)
     d_mouseCursor.notifyDisplaySizeChanged(getSurfaceSize());
 
     return true;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::windowDestroyedHandler(const EventArgs& args)
+{
+    const Window* const window =
+        static_cast<const WindowEventArgs&>(args).window;
+
+    if (window == d_rootWindow)
+        d_rootWindow = 0;
+
+    if (window == d_windowContainingMouse)
+        d_windowContainingMouse = 0;
+
+    if (window == d_modalWindow)
+        d_modalWindow = 0;
 }
 
 //----------------------------------------------------------------------------//
