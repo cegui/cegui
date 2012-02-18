@@ -98,8 +98,11 @@ const float GUIContext::DefaultMouseButtonClickTimeout = 0.0f;
 const float GUIContext::DefaultMouseButtonMultiClickTimeout = 0.3333f;
 const Sizef GUIContext::DefaultMouseButtonMultiClickTolerance(12.0f, 12.0f);
 
-const String GUIContext::EventGUISheetChanged("RootWindowChanged");
-const String GUIContext::EventMouseMovementScalingFactorChanged("MouseMovementScalingFactorChanged");
+const String GUIContext::EventRootWindowChanged("RootWindowChanged");
+const String GUIContext::EventMouseMoveScalingFactorChanged("MouseMoveScalingFactorChanged");
+const String GUIContext::EventMouseButtonClickTimeoutChanged("MouseButtonClickTimeoutChanged" );
+const String GUIContext::EventMouseButtonMultiClickTimeoutChanged("MouseButtonMultiClickTimeoutChanged" );
+const String GUIContext::EventMouseButtonMultiClickToleranceChanged("MouseButtonMultiClickToleranceChanged" );
 
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
@@ -147,10 +150,11 @@ void GUIContext::setRootWindow(Window* new_root)
     if (new_root)
         new_root->setGUIContext(this);
 
+    WindowEventArgs args(d_rootWindow);
+
     d_rootWindow = new_root;
 
-    if (d_rootWindow)
-        updateRootWindowAreaRects();
+    onRootWindowChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -254,8 +258,8 @@ void GUIContext::setMouseMoveScalingFactor(float factor)
 {
     d_mouseMovementScalingFactor = factor;
 
-    EventArgs args;
-    //onMouseMoveScalingFactorChanged(args);
+    GUIContextEventArgs args(*this);
+    onMouseMoveScalingFactorChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -268,6 +272,9 @@ float GUIContext::getMouseMoveScalingFactor() const
 void GUIContext::setMouseButtonClickTimeout(float seconds)
 {
     d_mouseButtonClickTimeout = seconds;
+
+    GUIContextEventArgs args(*this);
+    onMouseButtonClickTimeoutChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -280,6 +287,9 @@ float GUIContext::getMouseButtonClickTimeout() const
 void GUIContext::setMouseButtonMultiClickTimeout(float seconds)
 {
     d_mouseButtonMultiClickTimeout = seconds;
+
+    GUIContextEventArgs args(*this);
+    onMouseButtonMultiClickTimeoutChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -292,6 +302,9 @@ float GUIContext::getMouseButtonMultiClickTimeout() const
 void GUIContext::setMouseButtonMultiClickTolerance(const Sizef& sz)
 {
     d_mouseButtonMultiClickTolerance = sz;
+
+    GUIContextEventArgs args(*this);
+    onMouseButtonMultiClickToleranceChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -334,6 +347,39 @@ bool GUIContext::areaChangedHandler(const EventArgs& args)
     d_mouseCursor.notifyDisplaySizeChanged(getSurfaceSize());
 
     return true;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onRootWindowChanged(WindowEventArgs& args)
+{
+    if (d_rootWindow)
+        updateRootWindowAreaRects();
+
+    fireEvent(EventRootWindowChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onMouseMoveScalingFactorChanged(GUIContextEventArgs& args)
+{
+    fireEvent(EventMouseMoveScalingFactorChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onMouseButtonClickTimeoutChanged(GUIContextEventArgs& args)
+{
+    fireEvent(EventMouseButtonClickTimeoutChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args)
+{
+    fireEvent(EventMouseButtonMultiClickTimeoutChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args)
+{
+    fireEvent(EventMouseButtonMultiClickToleranceChanged, args);
 }
 
 //----------------------------------------------------------------------------//
