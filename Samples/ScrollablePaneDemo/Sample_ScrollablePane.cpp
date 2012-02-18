@@ -114,7 +114,7 @@ bool ScrollablePaneSample::initialiseSample()
     d_system->getDefaultGUIContext().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
-    d_system->setDefaultTooltip("WindowsLook/Tooltip");
+    d_system->getDefaultGUIContext().setDefaultTooltipType("WindowsLook/Tooltip");
 
     // We need the window manager to set up the test interface :)
     d_wm = WindowManager::getSingletonPtr();
