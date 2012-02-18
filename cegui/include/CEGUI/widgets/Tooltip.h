@@ -114,6 +114,11 @@ namespace CEGUI
          * WindowEventArgs::window set to the Tooltip that has become inactive.
          */
         static const String EventTooltipInactive;
+        /** Event fired when the tooltip changes target window but stays active.
+         * Handlers are passed a const WindowEventArgs reference with
+         * WindowEventArgs::window set to the Tooltip that has transitioned.
+         */
+        static const String EventTooltipTransition;
 
         /************************************************************************
             Object Construction and Destruction
@@ -190,16 +195,6 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the number of seconds that should be taken to fade the tooltip into and out of
-            visibility.
-
-        \return
-            float value representing a number of seconds.
-         */
-        float getFadeTime(void) const;
-
-        /*!
-        \brief
             Set the number of seconds the mouse should hover stationary over the target window before
             the tooltip gets activated.
 
@@ -220,19 +215,6 @@ namespace CEGUI
             float value representing a number of seconds.
          */
         float getDisplayTime(void) const;
-
-        /*!
-        \brief
-            Set the number of seconds that should be taken to fade the tooltip into and out of
-            visibility.
-
-        \param seconds
-            float value representing a number of seconds.
-
-        \return
-            Nothing.
-         */
-        void setFadeTime(float seconds);
 
         /*!
         \brief
@@ -300,9 +282,6 @@ namespace CEGUI
 
         \param e
             WindowEventArgs object.
-
-        \return
-            Nothing.
         */
         virtual void onHoverTimeChanged(WindowEventArgs& e);
 
@@ -312,23 +291,8 @@ namespace CEGUI
 
         \param e
             WindowEventArgs object.
-
-        \return
-            Nothing.
         */
         virtual void onDisplayTimeChanged(WindowEventArgs& e);
-
-        /*!
-        \brief
-            Event trigger method called when the fade timeout gets changed.
-
-        \param e
-            WindowEventArgs object.
-
-        \return
-            Nothing.
-        */
-        virtual void onFadeTimeChanged(WindowEventArgs& e);
 
         /*!
         \brief
@@ -336,9 +300,6 @@ namespace CEGUI
 
         \param e
             WindowEventArgs object.
-
-        \return
-            Nothing.
         */
         virtual void onTooltipActive(WindowEventArgs& e);
 
@@ -348,39 +309,31 @@ namespace CEGUI
 
         \param e
             WindowEventArgs object.
-
-        \return
-            Nothing.
         */
         virtual void onTooltipInactive(WindowEventArgs& e);
+
+        /*!
+        \brief
+            Event trigger method called just after the tooltip changed target window but remained active.
+
+        \param e
+            WindowEventArgs object.
+        */
+        virtual void onTooltipTransition(WindowEventArgs& e);
 
 
         /************************************************************************
             Overridden from Window.
         ************************************************************************/
         void updateSelf(float elapsed);
+        void onHidden(WindowEventArgs& e);
         void onMouseEnters(MouseEventArgs& e);
         void onTextChanged(WindowEventArgs& e);
 
         /************************************************************************
-            Enumerations
-        ************************************************************************/
-        /*!
-        \brief
-            states for tooltip
-         */
-        enum TipState
-        {
-            Inactive,   //!< Tooltip is currently inactive.
-            Active,     //!< Tooltip is currently displayed and active.
-            FadeIn,     //!< Tooltip is currently transitioning from Inactive to Active state.
-            FadeOut     //!< Tooltip is currently transitioning from Active to Inactive state.
-        };
-
-        /************************************************************************
             Data fields
         ************************************************************************/
-        TipState    d_state;        //!< Current tooltip state.
+        bool        d_active;       //!< true if the tooltip is active
         float       d_elapsed;      //!< Used to track state change timings
         const Window* d_target;     //!< Current target Window for this Tooltip.
         float       d_hoverTime;    //!< tool-tip hover time (seconds mouse must stay stationary before tip shows).
@@ -395,10 +348,7 @@ namespace CEGUI
         *************************************************************************/
         void addTooltipProperties(void);
     };
-
-
 } // End of  CEGUI namespace section
-
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
