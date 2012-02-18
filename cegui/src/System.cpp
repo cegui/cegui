@@ -151,10 +151,6 @@ System::System(Renderer& renderer,
 
     Logger& logger(Logger::getSingleton());
 
-    // create the first GUIContext using the renderers default target,
-    // this will become the default GUIContext.
-    createGUIContext(d_renderer->getDefaultRenderTarget());
-
     // create default resource provider, unless one was already provided
     if (!d_resourceProvider)
     {
@@ -211,6 +207,10 @@ System::System(Renderer& renderer,
 
     // create the core system singleton objects
     createSingletons();
+
+    // create the first GUIContext using the renderers default target,
+    // this will become the default GUIContext.
+    createGUIContext(d_renderer->getDefaultRenderTarget());
 
     // add the window factories for the core window types
     addStandardWindowFactories();
@@ -648,18 +648,6 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
     d_renderer->setDisplaySize(new_size);
     ImageManager::getSingleton().notifyDisplaySizeChanged(new_size);
     FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
-
-	// notify gui sheet / root if size change, event propagation will ensure everything else
-	// gets updated as required.
-    //
-    // FIXME: This is no longer correct, the RenderTarget the sheet is using as
-    // FIXME: it's parent element may not be the main screen.
-    for (GUIContextCollection::iterator i = d_guiContexts.begin();
-         i != d_guiContexts.end();
-         ++i)
-    {
-        (*i)->notifySurfaceSizeChanged(new_size);
-    }
 
     invalidateAllWindows();
 
