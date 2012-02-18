@@ -45,8 +45,6 @@ OpenGLRenderTarget::OpenGLRenderTarget(OpenGLRenderer& owner) :
     d_matrixValid(false)
 {
     //d_matrix does not need to be initialised here, we have d_matrixValid
-    //for(unsigned int i = 0; i < 16;++i)
-    //    d_matrix[i]=0.0;
 }
 
 //----------------------------------------------------------------------------//
@@ -66,6 +64,9 @@ void OpenGLRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
+
+    RenderTargetEventArgs args(*this);
+    fireEvent(EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//
