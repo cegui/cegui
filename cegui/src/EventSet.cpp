@@ -155,7 +155,8 @@ void EventSet::fireEvent(const String& name,
                          EventArgs& args,
                          const String& eventNamespace)
 {
-    GlobalEventSet::getSingleton().fireEvent(name, args, eventNamespace);
+    if (GlobalEventSet* ges = GlobalEventSet::getSingletonPtr())
+        ges->fireEvent(name, args, eventNamespace);
 
     fireEvent_impl(name, args);
 }
