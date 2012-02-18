@@ -143,8 +143,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 				if ((d_parent == 0) || (getParent()->getParent() == 0))
 				{
-                    Rectf screen(Vector2f(0, 0),
-                                  System::getSingleton().getRenderer()->getDisplaySize());
+                    Rectf screen(Vector2f(0, 0), getRootContainerSize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}
 				else 

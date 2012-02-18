@@ -269,8 +269,8 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)

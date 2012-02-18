@@ -2558,6 +2558,9 @@ public:
     //! ensure that the window will be rendered to the correct target surface.
     void syncTargetSurface();
 
+    // overridden from Element
+    const Sizef& getRootContainerSize() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3318,9 +3321,6 @@ protected:
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
     
-    // overridden from Element
-    const Sizef& getRootContainerSize() const;
-
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
