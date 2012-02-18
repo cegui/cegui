@@ -160,9 +160,6 @@ public:
     bool isMouseClickEventGenerationEnabled() const;
     //! returns whether the window containing the mouse had changed.
     bool updateWindowContainingMouse();
-    
-    //! notify the root that some window has been destroyed.
-    void notifyWindowDestroyed(const Window* window);
 
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
@@ -197,6 +194,7 @@ protected:
                                MouseEventArgs& args);
 
     bool areaChangedHandler(const EventArgs& args);
+    bool windowDestroyedHandler(const EventArgs& args);
 
     // event trigger functions.
     virtual void onRootWindowChanged(WindowEventArgs& args);
@@ -226,6 +224,7 @@ protected:
     MouseClickTracker* d_mouseClickTrackers;
 
     Event::ScopedConnection d_areaChangedEventConnection;
+    Event::ScopedConnection d_windowDestroyedEventConnection;
 };
 
 }
