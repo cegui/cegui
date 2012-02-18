@@ -541,8 +541,8 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
     if (d_stickyMode)
     {
         // force immediate release of any current input capture (unless it's us)
-        if (d_captureWindow && d_captureWindow != this)
-            d_captureWindow->releaseInput();
+        if (getCaptureWindow() && getCaptureWindow() != this)
+            getCaptureWindow()->releaseInput();
         // activate ourselves and try to capture input
         activate();
         if (captureInput())

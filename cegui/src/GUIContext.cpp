@@ -80,6 +80,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_surfaceSize(target.getArea().getSize()),
     d_windowContainingMouse(0),
     d_modalWindow(0),
+    d_captureWindow(0),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
     d_areaChangedEventConnection(
         target.subscribeEvent(
@@ -132,6 +133,18 @@ void GUIContext::updateRootWindowAreaRects() const
 {
     ElementEventArgs args(0);
     d_rootWindow->onParentSized(args);
+}
+
+//----------------------------------------------------------------------------//
+Window* GUIContext::getInputCaptureWindow() const
+{
+    return d_captureWindow;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setInputCaptureWindow(Window* window)
+{
+    d_captureWindow = window;
 }
 
 //----------------------------------------------------------------------------//
@@ -327,6 +340,9 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
 
     if (window == d_modalWindow)
         d_modalWindow = 0;
+
+    if (window == d_captureWindow)
+        d_captureWindow = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -506,7 +522,7 @@ Window* GUIContext::getTargetWindow(const Vector2f& pt,
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return 0;
 
-    Window* dest_window = Window::getCaptureWindow();
+    Window* dest_window = d_captureWindow;
 
     if (!dest_window)
     {

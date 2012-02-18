@@ -872,7 +872,8 @@ public:
         Pointer to the Window object that currently has inputs captured, or NULL
         if no Window has captured input.
     */
-    static Window* getCaptureWindow(void)   {return d_captureWindow;}
+    Window* getCaptureWindow() const
+        {return getGUIContext().getInputCaptureWindow();}
 
     /*!
     \brief
@@ -3426,8 +3427,6 @@ protected:
     //! true if the Window inherits alpha from the parent Window
     bool d_inheritsAlpha;
 
-    //! Window that has captured inputs
-    static Window* d_captureWindow;
     //! The Window that previously had capture (used for restoreOldCapture mode)
     Window* d_oldCapture;
     //! Restore capture to the previous capture window when releasing capture.

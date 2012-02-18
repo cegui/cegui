@@ -110,7 +110,6 @@ const String Window::TooltipNameSuffix("__auto_tooltip__");
 const String Window::AutoWidgetNameSuffix("__auto_");
 
 //----------------------------------------------------------------------------//
-Window* Window::d_captureWindow     = 0;
 BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
@@ -694,10 +693,10 @@ void Window::activate(void)
     // force complete release of input capture.
     // NB: This is not done via releaseCapture() because that has
     // different behaviour depending on the restoreOldCapture setting.
-    if (d_captureWindow && d_captureWindow != this)
+    if (getCaptureWindow() && getCaptureWindow() != this)
     {
-        Window* const tmpCapture = d_captureWindow;
-        d_captureWindow = 0;
+        Window* const tmpCapture = getCaptureWindow();
+        getGUIContext().setInputCaptureWindow(0);
 
         WindowEventArgs args(0);
         tmpCapture->onCaptureLost(args);
@@ -900,10 +899,10 @@ bool Window::captureInput(void)
     if (!isActive())
         return false;
 
-    if (d_captureWindow != this)
+    if (!isCapturedByThis())
     {
-        Window* const current_capture = d_captureWindow;
-        d_captureWindow = this;
+        Window* const current_capture = getCaptureWindow();
+        getGUIContext().setInputCaptureWindow(this);
         WindowEventArgs args(this);
 
         // inform window which previously had capture that it doesn't anymore.
@@ -929,18 +928,18 @@ void Window::releaseInput(void)
     // restore old captured window if that mode is set
     if (d_restoreOldCapture)
     {
-        d_captureWindow = d_oldCapture;
+        getGUIContext().setInputCaptureWindow(d_oldCapture);
 
         // check for case when there was no previously captured window
         if (d_oldCapture)
         {
             d_oldCapture = 0;
-            d_captureWindow->moveToFront();
+            getCaptureWindow()->moveToFront();
         }
 
     }
     else
-        d_captureWindow = 0;
+        getGUIContext().setInputCaptureWindow(0);
 
     WindowEventArgs args(this);
     onCaptureLost(args);
