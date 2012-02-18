@@ -2555,6 +2555,9 @@ public:
     //! function used internally.  Do not call this from client code.
     void setGUIContext(GUIContext* context);
 
+    //! ensure that the window will be rendered to the correct target surface.
+    void syncTargetSurface();
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
