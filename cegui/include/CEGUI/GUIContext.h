@@ -159,6 +159,9 @@ public:
     //! returns whether the window containing the mouse had changed.
     bool updateWindowContainingMouse();
 
+    Window* getInputCaptureWindow() const;
+    void setInputCaptureWindow(Window* window);
+
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
     bool injectMouseLeaves(void);
@@ -226,6 +229,7 @@ protected:
 
     Window* d_windowContainingMouse;
     Window* d_modalWindow;
+    Window* d_captureWindow;
 
     SystemKeys d_systemKeys;
     MouseClickTracker* d_mouseClickTrackers;
