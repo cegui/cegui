@@ -27,10 +27,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/System.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/DefaultLogger.h"
@@ -125,8 +121,6 @@ System::System(Renderer& renderer,
   d_xmlParser(xmlParser),
   d_ourXmlParser(false),
   d_parserModule(0),
-  d_defaultTooltip(0),
-  d_weOwnTooltip(false),
   d_imageCodec(imageCodec),
   d_ourImageCodec(false),
   d_imageCodecModule(0),
@@ -659,73 +653,6 @@ void System::notifyDisplaySizeChanged(const Sizef& new_size)
         "Display resize:"
         " w=" + PropertyHelper<float>::toString(new_size.d_width) +
         " h=" + PropertyHelper<float>::toString(new_size.d_height));
-}
-
-
-/*************************************************************************
-	Internal method used to inform the System object whenever a window is
-	destroyed, so that System can perform any required housekeeping.
-*************************************************************************/
-void System::notifyWindowDestroyed(const Window* window)
-{
-    if (d_defaultTooltip == window)
-    {
-        d_defaultTooltip = 0;
-        d_weOwnTooltip = false;
-    }
-}
-
-void System::setDefaultTooltip(Tooltip* tooltip)
-{
-    destroySystemOwnedDefaultTooltipWindow();
-
-    d_defaultTooltip = tooltip;
-
-    if (d_defaultTooltip)
-        d_defaultTooltip->setWritingXMLAllowed(false);
-}
-
-void System::setDefaultTooltip(const String& tooltipType)
-{
-    destroySystemOwnedDefaultTooltipWindow();
-
-    d_defaultTooltipType = tooltipType;
-}
-
-//----------------------------------------------------------------------------//
-void System::createSystemOwnedDefaultTooltipWindow() const
-{
-    WindowManager& winmgr(WindowManager::getSingleton());
-
-    if (!winmgr.isLocked())
-    {
-        d_defaultTooltip = static_cast<Tooltip*>(
-            winmgr.createWindow(d_defaultTooltipType,
-                                "CEGUI::System::default__auto_tooltip__"));
-        d_defaultTooltip->setWritingXMLAllowed(false);
-        d_weOwnTooltip = true;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void System::destroySystemOwnedDefaultTooltipWindow()
-{
-    if (d_defaultTooltip && d_weOwnTooltip)
-    {
-        WindowManager::getSingleton().destroyWindow(d_defaultTooltip);
-        d_defaultTooltip = 0;
-    }
-
-    d_weOwnTooltip = false;
-}
-
-//----------------------------------------------------------------------------//
-Tooltip* System::getDefaultTooltip(void) const
-{
-    if (!d_defaultTooltip && !d_defaultTooltipType.empty())
-        createSystemOwnedDefaultTooltipWindow();
-
-    return d_defaultTooltip;
 }
 
 //----------------------------------------------------------------------------//

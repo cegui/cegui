@@ -162,6 +162,39 @@ public:
     Window* getInputCaptureWindow() const;
     void setInputCaptureWindow(Window* window);
 
+    /*!
+    \brief
+        Set the default Tooltip object for this GUIContext. This value may be 0
+        to indicate that no default Tooltip object will be available.
+
+    \param tooltip
+        Pointer to a valid Tooltip based object which should be used as the
+        default tooltip for the GUIContext, or 0 to indicate that no default
+        Tooltip is required.
+
+    \note
+        When passing a pointer to a Tooltip object, ownership of the Tooltip
+        does not pass to the GUIContext.
+    */
+    void setDefaultTooltipObject(Tooltip* tooltip);
+
+    /*!
+    \brief
+        Set the default Tooltip to be used by specifying a Window type.
+
+        The GUIContext will internally attempt to create an instance of the
+        specified window type (which must be derived from the base Tooltip
+        class).  If the Tooltip creation fails, the error is logged and no
+        default Tooltip will be available on the GUIContext.
+
+    \param tooltipType
+        String holding the name of a Tooltip based Window type.
+    */
+    void setDefaultTooltipType(const String& tooltip_type);
+
+    //! Returns a pointer to the context's default tooltip object.  May return 0.
+    Tooltip* getDefaultTooltipObject() const;
+
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
     bool injectMouseLeaves(void);
@@ -187,6 +220,9 @@ protected:
     void updateRootWindowAreaRects() const;
     void drawWindowContentToTarget();
     void renderWindowHierarchyToSurfaces();
+
+    void createDefaultTooltipWindowInstance() const;
+    void destroyDefaultTooltipWindowInstance();
 
     bool mouseMoveInjection_impl(MouseEventArgs& ma);
     Window* getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
@@ -223,6 +259,10 @@ protected:
     float d_mouseButtonMultiClickTimeout;
     //! Movement tolerance used when detecting multi-click events.
     Sizef d_mouseButtonMultiClickTolerance;
+
+    mutable Tooltip* d_defaultTooltipObject;
+    mutable bool d_weCreatedTooltipObject;
+    String d_defaultTooltipType;
 
     //! a cache of the target surface size, allows returning by ref.
     Sizef d_surfaceSize;

@@ -329,16 +329,6 @@ public:
     void executeScriptString(const String& str) const;
 
 
-	/*!
-	\brief
-		Internal method used to inform the System object whenever a window is destroyed, so that System can perform any required
-		housekeeping.
-
-	\note
-		This method is not intended for client code usage.  If you use this method anything can, and probably will, go wrong!
-	*/
-	void	notifyWindowDestroyed(const Window* window);
-
     /*!
     \brief
         Set a new XML parser module to be used.
@@ -378,48 +368,6 @@ public:
      */
     XMLParser* getXMLParser(void) const     { return d_xmlParser; }
 
-
-    /*!
-    \brief
-        Set the system default Tooltip object.  This value may be NULL to indicate that no default Tooltip will be
-        available.
-
-    \param tooltip
-        Pointer to a valid Tooltip based object which should be used as the default tooltip for the system, or NULL to
-        indicate that no system default tooltip is required.  Note that when passing a pointer to a Tooltip object,
-        ownership of the Tooltip does not pass to System.
-
-    \return
-        Nothing.
-    */
-    void setDefaultTooltip(Tooltip* tooltip);
-
-    /*!
-    \brief
-        Set the system default Tooltip to be used by specifying a Window type.
-
-        System will internally attempt to create an instance of the specified window type (which must be
-        derived from the base Tooltip class).  If the Tooltip creation fails, the error is logged and no
-        system default Tooltip will be available.
-
-    \param tooltipType
-        String object holding the name of the Tooltip based Window type which should be used as the Tooltip for
-        the system default.
-
-    \return
-        Nothing.
-    */
-    void setDefaultTooltip(const String& tooltipType);
-
-    /*!
-    \brief
-        return a poiter to the system default tooltip.  May return 0.
-
-    \return
-        Pointer to the current system default tooltip.  May return 0 if
-        no system default tooltip is available.
-     */
-    Tooltip* getDefaultTooltip(void) const;
 
     /*!
     \brief
@@ -675,11 +623,6 @@ private:
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
 
-    //! create a window of type d_defaultTooltipType for use as the Tooltip
-    void createSystemOwnedDefaultTooltipWindow() const;
-    //! destroy the default tooltip window if the system owns it.
-    void destroySystemOwnedDefaultTooltipWindow();
-
 	/*************************************************************************
 		Handlers for System events
 	*************************************************************************/
@@ -706,13 +649,6 @@ private:
     XMLParser*  d_xmlParser;        //!< XMLParser object we use to process xml files.
     bool        d_ourXmlParser;     //!< true when we created the xml parser.
     DynamicModule* d_parserModule;  //! pointer to parser module.
-
-    //! System default tooltip object.
-    mutable Tooltip* d_defaultTooltip;
-    //! true if System created d_defaultTooltip.
-    mutable bool d_weOwnTooltip;
-    //! type of window to create as d_defaultTooltip
-    String d_defaultTooltipType;
 
     static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
 

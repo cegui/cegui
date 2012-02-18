@@ -1717,8 +1717,8 @@ bool Window::isUsingDefaultTooltip(void) const
 //----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip(void) const
 {
-    return isUsingDefaultTooltip() ? System::getSingleton().getDefaultTooltip():
-                                     d_customTip;
+    return isUsingDefaultTooltip() ? 
+        getGUIContext().getDefaultTooltipObject(): d_customTip;
 }
 
 //----------------------------------------------------------------------------//
