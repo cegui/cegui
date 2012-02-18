@@ -43,6 +43,7 @@ namespace CEGUI
     const String Tooltip::EventFadeTimeChanged("FadeTimeChanged");
     const String Tooltip::EventTooltipActive("TooltipActive");
     const String Tooltip::EventTooltipInactive("TooltipInactive");
+    const String Tooltip::EventTooltipTransition("TooltipTransition");
     //////////////////////////////////////////////////////////////////////////
 
     /*************************************************************************
@@ -55,13 +56,12 @@ namespace CEGUI
 
     //////////////////////////////////////////////////////////////////////////
     Tooltip::Tooltip(const String& type, const String& name) :
-            Window(type, name),
-            d_inPositionSelf(false)
-    {
-        d_hoverTime     = 0.4f;
-        d_displayTime   = 7.5f;
-        d_fadeTime      = 0.33f;
+        Window(type, name),
 
+        d_hoverTime(0.4f),
+        d_displayTime(7.5f),
+        d_inPositionSelf(false)
+    {
         addTooltipProperties();
 
         setClippedByParent(false);
@@ -148,12 +148,18 @@ namespace CEGUI
             // set text to that of the tooltip text of the target
             setText(wnd->getTooltipText());
 
-            // set size and potition of the tooltip window.
+            // set size and position of the tooltip window.
             sizeSelf();
             positionSelf();
         }
 
         resetTimer();
+
+        if (d_active)
+        {
+            WindowEventArgs args(this);
+            onTooltipTransition(args);
+        }
     }
 
     const Window* Tooltip::getTargetWindow()
@@ -193,12 +199,7 @@ namespace CEGUI
 
     void Tooltip::resetTimer(void)
     {
-        // only do the reset in active / inactive states, this is so that
-        // the fades are not messed up by having the timer reset on them.
-        if (d_state == Active || d_state == Inactive)
-        {
-            d_elapsed = 0;
-        }
+        d_elapsed = 0;
     }
 
     float Tooltip::getHoverTime(void) const
@@ -233,34 +234,21 @@ namespace CEGUI
         }
     }
 
-    float Tooltip::getFadeTime(void) const
-    {
-        return d_fadeTime;
-    }
-
-    void Tooltip::setFadeTime(float seconds)
-    {
-        if (d_fadeTime != seconds)
-        {
-            d_fadeTime = seconds;
-
-            WindowEventArgs args(this);
-            onFadeTimeChanged(args);
-        }
-    }
-
     void Tooltip::doActiveState(float elapsed)
     {
         // if no target, switch immediately to inactive state.
         if (!d_target || d_target->getTooltipText().empty())
         {
+            // hide immediately since the text is empty
+            hide();
+
             switchToInactiveState();
         }
         // else see if display timeout has been reached
         else if ((d_displayTime > 0) && ((d_elapsed += elapsed) >= d_displayTime))
         {
             // display time is up, switch states
-            switchToFadeOutState();
+            switchToInactiveState();
         }
     }
 
@@ -268,92 +256,32 @@ namespace CEGUI
     {
         if (d_target && !d_target->getTooltipText().empty() && ((d_elapsed += elapsed) >= d_hoverTime))
         {
-            switchToFadeInState();
-        }
-    }
-
-    void Tooltip::doFadeInState(float elapsed)
-    {
-        // if no target, switch immediately to inactive state.
-        if (!d_target || d_target->getTooltipText().empty())
-        {
-            switchToInactiveState();
-        }
-        else
-        {
-            if ((d_elapsed += elapsed) >= d_fadeTime)
-            {
-                setAlpha(1.0f);
-                switchToActiveState();
-            }
-            else
-            {
-                setAlpha((1.0f / d_fadeTime) * d_elapsed);
-            }
-        }
-    }
-
-    void Tooltip::doFadeOutState(float elapsed)
-    {
-        // if no target, switch immediately to inactive state.
-        if (!d_target || d_target->getTooltipText().empty())
-        {
-            switchToInactiveState();
-        }
-        else
-        {
-            if ((d_elapsed += elapsed) >= d_fadeTime)
-            {
-                setAlpha(0.0f);
-                switchToInactiveState();
-            }
-            else
-            {
-                setAlpha(1.0f - (1.0f / d_fadeTime) * d_elapsed);
-            }
+            switchToActiveState();
         }
     }
 
     void Tooltip::switchToInactiveState(void)
     {
-        setAlpha(0.0f);
-        d_state = Inactive;
+        d_active = false;
         d_elapsed = 0;
-
-        if (d_parent)
-            d_parent->removeChild(this);
 
         // fire event before target gets reset in case that information is required in handler.
         WindowEventArgs args(this);
         onTooltipInactive(args);
 
         d_target = 0;
-        hide();
     }
 
     void Tooltip::switchToActiveState(void)
     {
-        d_state = Active;
-        d_elapsed = 0;
-    }
-
-    void Tooltip::switchToFadeInState(void)
-    {
         positionSelf();
-        d_state = FadeIn;
-        d_elapsed = 0;
         show();
 
-        // fire event.  Not really active at the moment, but this is the "right" time
-        // for this event (just prior to anything getting displayed).
+        d_active = true;
+        d_elapsed = 0;
+
         WindowEventArgs args(this);
         onTooltipActive(args);
-    }
-
-    void Tooltip::switchToFadeOutState(void)
-    {
-        d_state = FadeOut;
-        d_elapsed = 0;
     }
 
     bool Tooltip::validateWindowRenderer(const WindowRenderer* renderer) const
@@ -367,28 +295,13 @@ namespace CEGUI
         Window::updateSelf(elapsed);
 
         // do something based upon current Tooltip state.
-        switch (d_state)
+        if (d_active)
         {
-        case Inactive:
-            doInactiveState(elapsed);
-            break;
-
-        case Active:
             doActiveState(elapsed);
-            break;
-
-        case FadeIn:
-            doFadeInState(elapsed);
-            break;
-
-        case FadeOut:
-            doFadeOutState(elapsed);
-            break;
-
-        default:
-            // This should never happen.
-            Logger::getSingleton().logEvent("Tooltip (Name: " + getName() + "of Class: " + getType() + ") is in an unknown state.  Switching to Inactive state.", Errors);
-            switchToInactiveState();
+        }
+        else
+        {
+            doInactiveState(elapsed);
         }
     }
 
@@ -405,11 +318,24 @@ namespace CEGUI
             "DisplayTime", "Property to get/set the display timeout value in seconds.  Value is a float.",
             &Tooltip::setDisplayTime, &Tooltip::getDisplayTime, 7.5f
         );
+    }
 
-        CEGUI_DEFINE_PROPERTY(Tooltip, float,
-            "FadeTime", "Property to get/set duration of the fade effect in seconds.  Value is a float.",
-            &Tooltip::setFadeTime, &Tooltip::getFadeTime, 0.33f
-        );
+    void Tooltip::onHidden(WindowEventArgs& e)
+    {
+        Window::onHidden(e);
+
+        // The animation will take care of fade out or whatnot,
+        // at the end it will hide the tooltip to let us know the transition
+        // is done. At this point we will remove the tooltip from the
+        // previous parent.
+
+        // NOTE: There has to be a fadeout animation! Even if it's a 0 second
+        //       immediate hide animation.
+
+        if (getParent())
+        {
+            getParent()->removeChild(this);
+        }
     }
 
     void Tooltip::onMouseEnters(MouseEventArgs& e)
@@ -424,7 +350,7 @@ namespace CEGUI
         // base class processing
         Window::onTextChanged(e);
 
-        // set size and potition of the tooltip window to consider new text
+        // set size and position of the tooltip window to consider new text
         sizeSelf();
         positionSelf();
 
@@ -442,11 +368,6 @@ namespace CEGUI
         fireEvent(EventDisplayTimeChanged, e, EventNamespace);
     }
 
-    void Tooltip::onFadeTimeChanged(WindowEventArgs& e)
-    {
-        fireEvent(EventFadeTimeChanged, e, EventNamespace);
-    }
-
     void Tooltip::onTooltipActive(WindowEventArgs& e)
     {
         fireEvent(EventTooltipActive, e, EventNamespace);
@@ -457,4 +378,8 @@ namespace CEGUI
         fireEvent(EventTooltipInactive, e, EventNamespace);
     }
 
+    void Tooltip::onTooltipTransition(WindowEventArgs& e)
+    {
+        fireEvent(EventTooltipTransition, e, EventNamespace);
+    }
 } // End of  CEGUI namespace section
