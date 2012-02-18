@@ -480,8 +480,7 @@ Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) cons
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
             getParent()->getClipRect(isNonClient()) :
-            Rectf(Vector2f(0, 0),
-                   System::getSingleton().getRenderer()->getDisplaySize()));
+            Rectf(Vector2f(0, 0), getRootContainerSize()));
 }
 
 //----------------------------------------------------------------------------//
@@ -524,8 +523,7 @@ Rectf Window::getHitTestRect_impl() const
     else
     {
         return getUnclippedOuterRect().get().getIntersection(
-            Rectf(Vector2f(0, 0),
-                 System::getSingleton().getRenderer()->getDisplaySize()));
+            Rectf(Vector2f(0, 0), getRootContainerSize()));
     }
 }
 
@@ -3238,8 +3236,7 @@ void Window::initialiseClippers(const RenderingContext& ctx)
                 getParent()->getInnerRectClipper());
         else
             rendering_window->setClippingRegion(
-                Rectf(Vector2f(0, 0),
-                       System::getSingleton().getRenderer()->getDisplaySize()));
+                Rectf(Vector2f(0, 0), getRootContainerSize()));
 
         d_geometry->setClippingRegion(Rectf(Vector2f(0, 0), d_pixelSize));
     }
