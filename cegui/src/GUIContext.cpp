@@ -121,6 +121,7 @@ void GUIContext::setRootWindow(Window* new_root)
     WindowEventArgs args(d_rootWindow);
 
     d_rootWindow = new_root;
+    d_rootWindow->syncTargetSurface();
 
     onRootWindowChanged(args);
 }
@@ -325,6 +326,8 @@ void GUIContext::onRootWindowChanged(WindowEventArgs& args)
 {
     if (d_rootWindow)
         updateRootWindowAreaRects();
+
+    markAsDirty();
 
     fireEvent(EventRootWindowChanged, args);
 }

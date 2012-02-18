@@ -1100,7 +1100,12 @@ void Window::queueGeometry(const RenderingContext& ctx)
 void Window::setParent(Element* parent)
 {
     Element::setParent(parent);
+    syncTargetSurface();
+}
 
+//----------------------------------------------------------------------------//
+void Window::syncTargetSurface()
+{
     // if we do not have a surface, xfer any surfaces from our children to
     // whatever our target surface now is.
     if (!d_surface)
