@@ -32,7 +32,7 @@
 
 namespace CEGUI
 {
-class SystemKeys
+class CEGUIEXPORT SystemKeys
 {
 public:
     enum SystemKey

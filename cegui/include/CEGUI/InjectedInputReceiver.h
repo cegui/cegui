@@ -34,7 +34,7 @@ namespace CEGUI
 {
 
 //! Input injection interface to be inplemented by classes that take raw inputs
-class InjectedInputReceiver
+class CEGUIEXPORT InjectedInputReceiver
 {
 public:
     virtual ~InjectedInputReceiver() {}
