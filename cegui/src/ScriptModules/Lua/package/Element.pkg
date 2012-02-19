@@ -116,6 +116,8 @@ class Element
     
     void notifyScreenAreaChanged(bool recursive = true);
 
+    const Size<float>& getRootContainerSize() const;
+
 	//////////////////////////////////////////////
 	// PropertySet
 	void setProperty(utf8string name, utf8string value);
