@@ -51,6 +51,18 @@ struct RenderingSurface_wrapper : CEGUI::RenderingSurface, bp::wrapper< CEGUI::R
         CEGUI::RenderingSurface::draw( boost::ref(queue), boost::ref(args) );
     }
 
+    virtual void drawContent(  ){
+        if( bp::override func_drawContent = this->get_override( "drawContent" ) )
+            func_drawContent(  );
+        else{
+            this->CEGUI::RenderingSurface::drawContent(  );
+        }
+    }
+    
+    virtual void default_drawContent(  ){
+        CEGUI::RenderingSurface::drawContent( );
+    }
+
     virtual void invalidate(  ) {
         if( bp::override func_invalidate = this->get_override( "invalidate" ) )
             func_invalidate(  );
@@ -214,7 +226,7 @@ void register_RenderingSurface_class(){
                     queue is to to be cleared.\n\
             \n\
                 \note\n\
-                    Clearing a rendering queue does destory the attached GeometryBuffers,\n\
+                    Clearing a rendering queue does not destroy the attached GeometryBuffers,\n\
                     which remain under thier original ownership.\n\
                 *\n" );
         
@@ -231,7 +243,7 @@ void register_RenderingSurface_class(){
                     Clears all GeometryBuffers from all rendering queues.\n\
             \n\
                 \note\n\
-                    Clearing the rendering queues does destroy the attached GeometryBuffers,\n\
+                    Clearing the rendering queues does not destroy the attached GeometryBuffers,\n\
                     which remain under their original ownership.\n\
                 *\n" );
         
@@ -290,6 +302,18 @@ void register_RenderingSurface_class(){
                 , draw_function_type( &RenderingSurface_wrapper::draw )
                 , ( bp::arg("queue"), bp::arg("args") )
                 , "! draw a rendering queue, firing events before and after.\n" );
+        
+        }
+        { //::CEGUI::RenderingSurface::drawContent
+        
+            typedef void ( RenderingSurface_wrapper::*drawContent_function_type )(  ) ;
+            
+            RenderingSurface_exposer.def( 
+                "drawContent"
+                , drawContent_function_type( &RenderingSurface_wrapper::default_drawContent )
+                , "** draw the surface content. Default impl draws the render queues.\n\
+             * NB: Called between RenderTarget activate and deactivate calls.\n\
+             *\n" );
         
         }
         { //::CEGUI::RenderingSurface::getRenderTarget
