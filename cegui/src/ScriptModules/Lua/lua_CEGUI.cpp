@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Sun Feb 19 11:32:18 2012.
+** Generated automatically by tolua++-1.0.93 on Sun Feb 19 17:29:45 2012.
 */
 
 #ifndef __cplusplus
@@ -24518,33 +24518,6 @@ static int tolua_CEGUI_CEGUI_GUIContext_getMouseCursor00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'getMouseCursor'.",&tolua_err);
  return 0;
 #endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: getMouseCursor of class  CEGUI::GUIContext */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_GUIContext_getMouseCursor01
-static int tolua_CEGUI_CEGUI_GUIContext_getMouseCursor01(lua_State* tolua_S)
-{
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::GUIContext",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
- {
-  const CEGUI::GUIContext* self = (const CEGUI::GUIContext*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getMouseCursor'",NULL);
-#endif
- {
-  const CEGUI::MouseCursor& tolua_ret = (const CEGUI::MouseCursor&)  self->getMouseCursor();
- tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::MouseCursor");
- }
- }
- return 1;
-tolua_lerror:
- return tolua_CEGUI_CEGUI_GUIContext_getMouseCursor00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -63157,7 +63130,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"markAsDirty",tolua_CEGUI_CEGUI_GUIContext_markAsDirty00);
    tolua_function(tolua_S,"isDirty",tolua_CEGUI_CEGUI_GUIContext_isDirty00);
    tolua_function(tolua_S,"getMouseCursor",tolua_CEGUI_CEGUI_GUIContext_getMouseCursor00);
-   tolua_function(tolua_S,"getMouseCursor",tolua_CEGUI_CEGUI_GUIContext_getMouseCursor01);
    tolua_function(tolua_S,"setMouseMoveScalingFactor",tolua_CEGUI_CEGUI_GUIContext_setMouseMoveScalingFactor00);
    tolua_function(tolua_S,"getMouseMoveScalingFactor",tolua_CEGUI_CEGUI_GUIContext_getMouseMoveScalingFactor00);
    tolua_function(tolua_S,"setMouseButtonClickTimeout",tolua_CEGUI_CEGUI_GUIContext_setMouseButtonClickTimeout00);

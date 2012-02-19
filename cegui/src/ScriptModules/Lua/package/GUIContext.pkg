@@ -23,7 +23,7 @@ class GUIContext : public RenderingSurface
     bool isDirty() const;
 
     MouseCursor& getMouseCursor();
-    const MouseCursor& getMouseCursor() const;
+    //const MouseCursor& getMouseCursor() const;
 
     void setMouseMoveScalingFactor(float factor);
     float getMouseMoveScalingFactor() const;
