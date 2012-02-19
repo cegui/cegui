@@ -550,13 +550,13 @@ void register_OpenGLRenderer_class(){
                 *\n" );
         
         }
-        { //::CEGUI::OpenGLRenderer::getDefaultRenderingRoot
+        { //::CEGUI::OpenGLRenderer::getDefaultRenderTarget
         
-            typedef ::CEGUI::RenderingRoot & ( ::CEGUI::OpenGLRenderer::*getDefaultRenderingRoot_function_type )(  ) ;
+            typedef ::CEGUI::RenderTarget & ( ::CEGUI::OpenGLRenderer::*getDefaultRenderTarget_function_type )(  ) ;
             
             OpenGLRenderer_exposer.def( 
-                "getDefaultRenderingRoot"
-                , getDefaultRenderingRoot_function_type(&::CEGUI::OpenGLRenderer::getDefaultRenderingRoot)
+                "getDefaultRenderTarget"
+                , getDefaultRenderTarget_function_type(&::CEGUI::OpenGLRenderer::getDefaultRenderTarget)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }

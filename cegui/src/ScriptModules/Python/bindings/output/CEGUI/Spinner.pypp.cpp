@@ -2217,6 +2217,16 @@ void register_Spinner_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            Spinner_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::EventSet::getScriptModule
         
             typedef ::CEGUI::ScriptModule * ( Spinner_wrapper::*getScriptModule_function_type )(  ) const;

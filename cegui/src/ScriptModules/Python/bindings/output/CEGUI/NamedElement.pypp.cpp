@@ -615,6 +615,16 @@ void register_NamedElement_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
+        { //::CEGUI::Element::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Element::*getRootContainerSize_function_type )(  ) const;
+            
+            NamedElement_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Element::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::EventSet::getScriptModule
         
             typedef ::CEGUI::ScriptModule * ( NamedElement_wrapper::*getScriptModule_function_type )(  ) const;
