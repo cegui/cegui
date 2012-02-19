@@ -41,12 +41,12 @@ namespace CEGUI
 class CEGUIEXPORT RenderTargetEventArgs : public EventArgs
 {
 public:
-    RenderTargetEventArgs(RenderTarget& target):
+    RenderTargetEventArgs(RenderTarget* target):
         target(target)
     {}
 
-    //! reference to the RenderTarget that triggered the event.
-    RenderTarget& target;
+    //! pointer to the RenderTarget that triggered the event.
+    RenderTarget* target;
 };
 
 /*!

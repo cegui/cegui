@@ -63,7 +63,7 @@ void DirectFBRenderTarget::setArea(const Rect& area)
 {
     d_area = area;
 
-    RenderTargetEventArgs args(*this);
+    RenderTargetEventArgs args(this);
     fireEvent(EventAreaChanged, args);
 }
 
