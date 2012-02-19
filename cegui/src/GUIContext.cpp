@@ -413,6 +413,8 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
         d_defaultTooltipObject = 0;
         d_weCreatedTooltipObject = false;
     }
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//

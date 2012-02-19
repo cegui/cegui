@@ -33,6 +33,11 @@
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/SystemKeys.h"
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 struct MouseClickTracker;
@@ -279,6 +284,10 @@ protected:
 };
 
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
 

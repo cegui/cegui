@@ -3702,7 +3702,7 @@ void Window::setGUIContext(GUIContext* context)
 //----------------------------------------------------------------------------//
 const Sizef& Window::getRootContainerSize() const
 {
-    getGUIContext().getSurfaceSize();
+    return getGUIContext().getSurfaceSize();
 }
 
 //----------------------------------------------------------------------------//
