@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
             }
 
             case MotionNotify:
-                CEGUI::System::getSingleton().injectMousePosition(evt.xmotion.x, evt.xmotion.y);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(evt.xmotion.x, evt.xmotion.y);
                 break;
 
             case ButtonPress:
@@ -161,7 +161,7 @@ int main(int argc, char* argv[])
                 else
                     break;
 
-                CEGUI::System::getSingleton().injectMouseButtonDown(btn);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(btn);
                 break;
             }
                 
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
                 else
                     break;
 
-                CEGUI::System::getSingleton().injectMouseButtonUp(btn);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(btn);
                 break;
             }
                 
