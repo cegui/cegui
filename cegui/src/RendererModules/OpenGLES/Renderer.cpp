@@ -33,7 +33,6 @@
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/RendererModules/OpenGLES/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGLES/GeometryBuffer.h"
-#include "CEGUI/RenderingRoot.h"
 #include "CEGUI/RendererModules/OpenGLES/FBOTextureTarget.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
@@ -210,7 +209,6 @@ OpenGLESRenderer::OpenGLESRenderer(const TextureTargetType tt_type) :
     initialiseTextureTargetFactory(tt_type);
 
     d_defaultTarget = new OpenGLESViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
@@ -228,7 +226,6 @@ OpenGLESRenderer::OpenGLESRenderer(const Sizef& display_size,
     initialiseTextureTargetFactory(tt_type);
 
     d_defaultTarget = new OpenGLESViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
@@ -238,15 +235,14 @@ OpenGLESRenderer::~OpenGLESRenderer()
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    delete d_defaultRoot;
     delete d_defaultTarget;
     delete d_textureTargetFactory;
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& OpenGLESRenderer::getDefaultRenderingRoot()
+RenderTarget& OpenGLESRenderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//

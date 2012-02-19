@@ -1,24 +1,15 @@
 /***********************************************************************
-	MouseCursorImage
-***********************************************************************/
-enum MouseCursorImage
-{
-	BlankMouseCursor	= 0,
-	DefaultMouseCursor	= -1
-};
-
-
-
-/***********************************************************************
 	MouseCursor
 ***********************************************************************/
 class MouseCursor : public EventSet
 {
-	static MouseCursor& getSingleton();
-
 	void setImage(const Image* image);
 	void setImage(utf8string name);
 	const Image* getImage() const;
+
+    void setDefaultImage(const Image* image);
+    void setDefaultImage(utf8string name);
+    const Image* getDefaultImage() const;
 
 	void setPosition(const Vector2<float>& pos);
 	void offsetPosition(const Vector2<float>& offset);

@@ -61,6 +61,9 @@ void NullRenderTarget::draw(const RenderQueue& queue)
 void NullRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
+
+    RenderTargetEventArgs args(this);
+    fireEvent(EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//

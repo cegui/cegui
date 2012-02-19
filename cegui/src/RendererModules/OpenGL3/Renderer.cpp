@@ -42,7 +42,7 @@
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/RendererModules/OpenGL3/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGL3/GeometryBuffer.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RendererModules/OpenGL3/FBOTextureTarget.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -192,7 +192,6 @@ OpenGL3Renderer::OpenGL3Renderer() :
     initialiseOpenGLShaders();
 
     d_defaultTarget = new OpenGL3ViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
     d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
 
     d_viewProjectionMatrix = new mat4Pimpl();
@@ -219,7 +218,6 @@ OpenGL3Renderer::OpenGL3Renderer(const Sizef& display_size) :
 
 
     d_defaultTarget = new OpenGL3ViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
     d_openGLStateChanger = new OpenGL3StateChangeWrapper(*this);
 
     d_viewProjectionMatrix = new mat4Pimpl();
@@ -232,7 +230,6 @@ OpenGL3Renderer::~OpenGL3Renderer()
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    delete d_defaultRoot;
     delete d_defaultTarget;
     delete d_textureTargetFactory;
     delete d_openGLStateChanger;
@@ -241,9 +238,9 @@ OpenGL3Renderer::~OpenGL3Renderer()
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& OpenGL3Renderer::getDefaultRenderingRoot()
+RenderTarget& OpenGL3Renderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//

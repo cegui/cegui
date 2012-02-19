@@ -53,14 +53,14 @@ bool DragDropDemo::initialiseSample()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set up defaults
-    System::getSingleton().setDefaultMouseCursor("WindowsLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
     System::getSingleton().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
     // load the initial layout
-    System::getSingleton().setGUISheet(
+    System::getSingleton().getDefaultGUIContext().setRootWindow(
         WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
 
     // setup events
@@ -81,7 +81,7 @@ void DragDropDemo::subscribeEvents()
 {
     using namespace CEGUI;
 
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
     WindowManager& wmgr = WindowManager::getSingleton();
 

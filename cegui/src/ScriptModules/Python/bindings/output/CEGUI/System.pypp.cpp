@@ -71,6 +71,17 @@ void register_System_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
+        { //::CEGUI::System::createGUIContext
+        
+            typedef ::CEGUI::GUIContext & ( ::CEGUI::System::*createGUIContext_function_type )( ::CEGUI::RenderTarget & ) ;
+            
+            System_exposer.def( 
+                "createGUIContext"
+                , createGUIContext_function_type( &::CEGUI::System::createGUIContext )
+                , ( bp::arg("rt") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::System::createRegexMatcher
         
             typedef ::CEGUI::RegexMatcher & ( ::CEGUI::System::*createRegexMatcher_function_type )(  ) const;
@@ -102,6 +113,16 @@ void register_System_class(){
                 "destroy"
                 , destroy_function_type( &::CEGUI::System::destroy )
                 , "! Destroy the System object.\n" );
+        
+        }
+        { //::CEGUI::System::destroyGUIContext
+        
+            typedef void ( ::CEGUI::System::*destroyGUIContext_function_type )( ::CEGUI::GUIContext & ) ;
+            
+            System_exposer.def( 
+                "destroyGUIContext"
+                , destroyGUIContext_function_type( &::CEGUI::System::destroyGUIContext )
+                , ( bp::arg("context") ) );
         
         }
         { //::CEGUI::System::destroyRegexMatcher
@@ -231,6 +252,16 @@ void register_System_class(){
                *\n" );
         
         }
+        { //::CEGUI::System::getDefaultGUIContext
+        
+            typedef ::CEGUI::GUIContext & ( ::CEGUI::System::*getDefaultGUIContext_function_type )(  ) const;
+            
+            System_exposer.def( 
+                "getDefaultGUIContext"
+                , getDefaultGUIContext_function_type( &::CEGUI::System::getDefaultGUIContext )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::System::getDefaultImageCodecName
         
             typedef ::CEGUI::String const & ( *getDefaultImageCodecName_function_type )(  );
@@ -243,43 +274,6 @@ void register_System_class(){
             \n\
                 Get the name of the default image codec.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::System::getDefaultMouseCursor
-        
-            typedef ::CEGUI::Image const * ( ::CEGUI::System::*getDefaultMouseCursor_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getDefaultMouseCursor"
-                , getDefaultMouseCursor_function_type( &::CEGUI::System::getDefaultMouseCursor )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return the currently set default mouse cursor image\n\
-            \n\
-               @return\n\
-                  Pointer to the current default image used for the mouse cursor.  May return NULL if default\
-                  cursor has not been set,\n\
-                  or has intentionally been set to NULL - which results in a blank default cursor.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::getDefaultTooltip
-        
-            typedef ::CEGUI::Tooltip * ( ::CEGUI::System::*getDefaultTooltip_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getDefaultTooltip"
-                , getDefaultTooltip_function_type( &::CEGUI::System::getDefaultTooltip )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    return a poiter to the system default tooltip.  May return 0.\n\
-            \n\
-                @return\n\
-                    Pointer to the current system default tooltip.  May return 0 if\n\
-                    no system default tooltip is available.\n\
-                 *\n" );
         
         }
         { //::CEGUI::System::getDefaultXMLParserName
@@ -298,23 +292,6 @@ void register_System_class(){
                     this name has been changed after instantiating the system, the name\n\
                     returned may not actually correspond to the module in use.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::System::getGUISheet
-        
-            typedef ::CEGUI::Window * ( ::CEGUI::System::*getGUISheet_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getGUISheet"
-                , getGUISheet_function_type( &::CEGUI::System::getGUISheet )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return a pointer to the active GUI sheet (root) window.\n\
-            \n\
-               @return\n\
-                  Pointer to the window object that has been set as the GUI root element.\n\
-               *\n" );
         
         }
         { //::CEGUI::System::getImageCodec
@@ -363,82 +340,6 @@ void register_System_class(){
                     APIheaders minor version is a macro called CEGUI_MINOR_VERSION,\n\
                     this returns the version your application is linking to\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::System::getModalTarget
-        
-            typedef ::CEGUI::Window * ( ::CEGUI::System::*getModalTarget_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getModalTarget"
-                , getModalTarget_function_type( &::CEGUI::System::getModalTarget )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return a pointer to the Window that is currently the modal target.\n\
-            \n\
-               @return\n\
-                  Pointer to the current modal target. NULL if there is no modal target.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::getMouseMoveScaling
-        
-            typedef float ( ::CEGUI::System::*getMouseMoveScaling_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getMouseMoveScaling"
-                , getMouseMoveScaling_function_type( &::CEGUI::System::getMouseMoveScaling )
-                , "*!\n\
-               \n\
-                  return the current mouse movement scaling factor.\n\
-            \n\
-               @return\n\
-                  float value that is equal to the currently set mouse movement scaling factor.  Defaults to\
-                  1.0f.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::getMultiClickTimeout
-        
-            typedef double ( ::CEGUI::System::*getMultiClickTimeout_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getMultiClickTimeout"
-                , getMultiClickTimeout_function_type( &::CEGUI::System::getMultiClickTimeout )
-                , "*!\n\
-               \n\
-                  Return the current timeout for generation of multi-click events.\n\
-            \n\
-                  A multi-click event is a double-click, or a triple-click.  The value returned\n\
-                  here is the maximum allowable time between mouse button down events for which\n\
-                  a multi-click event will be generated.\n\
-            \n\
-               @return\n\
-                  double value equal to the current multi-click timeout value.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::getMultiClickToleranceAreaSize
-        
-            typedef ::CEGUI::Sizef const & ( ::CEGUI::System::*getMultiClickToleranceAreaSize_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getMultiClickToleranceAreaSize"
-                , getMultiClickToleranceAreaSize_function_type( &::CEGUI::System::getMultiClickToleranceAreaSize )
-                , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-               \n\
-                  Return the size of the allowable mouse movement tolerance used when generating multi-click\
-                  events.\n\
-            \n\
-                  This size defines an area with the mouse at the centre.  The mouse must stay within the\
-                  tolerance defined\n\
-                  for a multi-click (double click, or triple click) event to be generated.\n\
-            \n\
-               @return\n\
-                  Size object describing the current multi-click tolerance area size.\n\
-               *\n" );
         
         }
         { //::CEGUI::System::getPatchVersion
@@ -509,24 +410,6 @@ void register_System_class(){
                *\n" );
         
         }
-        { //::CEGUI::System::getSingleClickTimeout
-        
-            typedef double ( ::CEGUI::System::*getSingleClickTimeout_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getSingleClickTimeout"
-                , getSingleClickTimeout_function_type( &::CEGUI::System::getSingleClickTimeout )
-                , "*!\n\
-               \n\
-                  Return the current timeout for generation of single-click events.\n\
-            \n\
-                  A single-click is defined here as a button being pressed and then released.\n\
-            \n\
-               @return\n\
-                  double value equal to the current single-click timeout value.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::System::getSingleton
         
             typedef ::CEGUI::System & ( *getSingleton_function_type )(  );
@@ -542,22 +425,6 @@ void register_System_class(){
                @return\n\
                   Singleton System object\n\
                *\n" );
-        
-        }
-        { //::CEGUI::System::getSystemKeys
-        
-            typedef ::CEGUI::uint ( ::CEGUI::System::*getSystemKeys_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getSystemKeys"
-                , getSystemKeys_function_type( &::CEGUI::System::getSystemKeys )
-                , "*!\n\
-                \n\
-                    Return the current system keys value.\n\
-            \n\
-                @return\n\
-                    uint value representing a combination of the SystemKey bits.\n\
-                *\n" );
         
         }
         { //::CEGUI::System::getVerboseVersion
@@ -596,23 +463,6 @@ void register_System_class(){
                 *\n" );
         
         }
-        { //::CEGUI::System::getWindowContainingMouse
-        
-            typedef ::CEGUI::Window * ( ::CEGUI::System::*getWindowContainingMouse_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getWindowContainingMouse"
-                , getWindowContainingMouse_function_type( &::CEGUI::System::getWindowContainingMouse )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return the Window object that the mouse is presently within\n\
-            \n\
-               @return\n\
-                  Pointer to the Window object that currently contains the mouse cursor, or NULL if none.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::System::getXMLParser
         
             typedef ::CEGUI::XMLParser * ( ::CEGUI::System::*getXMLParser_function_type )(  ) const;
@@ -627,350 +477,6 @@ void register_System_class(){
              *\n" );
         
         }
-        { //::CEGUI::System::injectChar
-        
-            typedef bool ( ::CEGUI::System::*injectChar_function_type )( ::CEGUI::utf32 ) ;
-            
-            System_exposer.def( 
-                "injectChar"
-                , injectChar_function_type( &::CEGUI::System::injectChar )
-                , ( bp::arg("code_point") )
-                , "*!\n\
-               \n\
-                  Method that injects a typed character event into the system.\n\
-            \n\
-               @param code_point\n\
-                  Unicode or ASCII (depends on used String class) code point of the character that was typed.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectCopyRequest
-        
-            typedef bool ( ::CEGUI::System::*injectCopyRequest_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "injectCopyRequest"
-                , injectCopyRequest_function_type( &::CEGUI::System::injectCopyRequest )
-                , "*!\n\
-            \n\
-                Tells the system to perform a clipboard copy on currently active widget\n\
-                \n\
-            @return\n\
-                true if the copy was successful, false if it was denied\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::System::injectCutRequest
-        
-            typedef bool ( ::CEGUI::System::*injectCutRequest_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "injectCutRequest"
-                , injectCutRequest_function_type( &::CEGUI::System::injectCutRequest )
-                , "*!\n\
-            \n\
-                Tells the system to perform a clipboard cut on currently active widget\n\
-             \n\
-            @return\n\
-                true if the cut was successful, false if it was denied\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::System::injectKeyDown
-        
-            typedef bool ( ::CEGUI::System::*injectKeyDown_function_type )( ::CEGUI::uint ) ;
-            
-            System_exposer.def( 
-                "injectKeyDown"
-                , injectKeyDown_function_type( &::CEGUI::System::injectKeyDown )
-                , ( bp::arg("key_code") )
-                , "*!\n\
-               \n\
-                  Method that injects a key down event into the system.\n\
-            \n\
-               @param key_code\n\
-                  uint value indicating which key was pressed.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectKeyUp
-        
-            typedef bool ( ::CEGUI::System::*injectKeyUp_function_type )( ::CEGUI::uint ) ;
-            
-            System_exposer.def( 
-                "injectKeyUp"
-                , injectKeyUp_function_type( &::CEGUI::System::injectKeyUp )
-                , ( bp::arg("key_code") )
-                , "*!\n\
-               \n\
-                  Method that injects a key up event into the system.\n\
-            \n\
-               @param key_code\n\
-                  uint value indicating which key was released.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseButtonClick
-        
-            typedef bool ( ::CEGUI::System::*injectMouseButtonClick_function_type )( ::CEGUI::MouseButton const ) ;
-            
-            System_exposer.def( 
-                "injectMouseButtonClick"
-                , injectMouseButtonClick_function_type( &::CEGUI::System::injectMouseButtonClick )
-                , ( bp::arg("button") )
-                , "*!\n\
-                \n\
-                    Function to directly inject a mouse button click event.\n\
-                    \n\
-                    Here 'click' means a mouse button down event followed by a mouse\n\
-                    button up event.\n\
-            \n\
-                \note\n\
-                    Under normal, default settings, this event is automatically generated by\n\
-                    the system from the regular up and down events you inject.  You may use\n\
-                    this function directly, though you'll probably want to disable the\n\
-                    automatic click event generation first by using the\n\
-                    setMouseClickEventGenerationEnabled function - this setting controls the\n\
-                    auto-generation of events and also determines the default 'handled'\n\
-                    state of the injected click events according to the rules used for\n\
-                    mouse updown events.\n\
-            \n\
-               @param button\n\
-                  One of the MouseButton enumerated values.\n\
-                \n\
-                @return\n\
-                    - true if some window or handler reported that it handled the event.\n\
-                    - false if nobody handled the event.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseButtonDoubleClick
-        
-            typedef bool ( ::CEGUI::System::*injectMouseButtonDoubleClick_function_type )( ::CEGUI::MouseButton const ) ;
-            
-            System_exposer.def( 
-                "injectMouseButtonDoubleClick"
-                , injectMouseButtonDoubleClick_function_type( &::CEGUI::System::injectMouseButtonDoubleClick )
-                , ( bp::arg("button") )
-                , "*!\n\
-                \n\
-                    Function to directly inject a mouse button double-click event.\n\
-                    \n\
-                    Here 'double-click' means a single mouse button had the sequence down,\n\
-                    up, down within a predefined period of time.\n\
-            \n\
-                \note\n\
-                    Under normal, default settings, this event is automatically generated by\n\
-                    the system from the regular up and down events you inject.  You may use\n\
-                    this function directly, though you'll probably want to disable the\n\
-                    automatic click event generation first by using the\n\
-                    setMouseClickEventGenerationEnabled function - this setting controls the\n\
-                    auto-generation of events and also determines the default 'handled'\n\
-                    state of the injected click events according to the rules used for\n\
-                    mouse updown events.\n\
-            \n\
-               @param button\n\
-                  One of the MouseButton enumerated values.\n\
-                \n\
-                @return\n\
-                    - true if some window or handler reported that it handled the event.\n\
-                    - false if nobody handled the event.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseButtonDown
-        
-            typedef bool ( ::CEGUI::System::*injectMouseButtonDown_function_type )( ::CEGUI::MouseButton ) ;
-            
-            System_exposer.def( 
-                "injectMouseButtonDown"
-                , injectMouseButtonDown_function_type( &::CEGUI::System::injectMouseButtonDown )
-                , ( bp::arg("button") )
-                , "*!\n\
-               \n\
-                  Method that injects a mouse button down event into the system.\n\
-            \n\
-               @param button\n\
-                  One of the MouseButton values indicating which button was pressed.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseButtonTripleClick
-        
-            typedef bool ( ::CEGUI::System::*injectMouseButtonTripleClick_function_type )( ::CEGUI::MouseButton const ) ;
-            
-            System_exposer.def( 
-                "injectMouseButtonTripleClick"
-                , injectMouseButtonTripleClick_function_type( &::CEGUI::System::injectMouseButtonTripleClick )
-                , ( bp::arg("button") )
-                , "*!\n\
-                \n\
-                    Function to directly inject a mouse button triple-click event.\n\
-                    \n\
-                    Here 'triple-click' means a single mouse button had the sequence down,\n\
-                    up, down, up, down within a predefined period of time.\n\
-            \n\
-                \note\n\
-                    Under normal, default settings, this event is automatically generated by\n\
-                    the system from the regular up and down events you inject.  You may use\n\
-                    this function directly, though you'll probably want to disable the\n\
-                    automatic click event generation first by using the\n\
-                    setMouseClickEventGenerationEnabled function - this setting controls the\n\
-                    auto-generation of events and also determines the default 'handled'\n\
-                    state of the injected click events according to the rules used for\n\
-                    mouse updown events.\n\
-            \n\
-               @param button\n\
-                  One of the MouseButton enumerated values.\n\
-                \n\
-                @return\n\
-                    - true if some window or handler reported that it handled the event.\n\
-                    - false if nobody handled the event.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseButtonUp
-        
-            typedef bool ( ::CEGUI::System::*injectMouseButtonUp_function_type )( ::CEGUI::MouseButton ) ;
-            
-            System_exposer.def( 
-                "injectMouseButtonUp"
-                , injectMouseButtonUp_function_type( &::CEGUI::System::injectMouseButtonUp )
-                , ( bp::arg("button") )
-                , "*!\n\
-               \n\
-                  Method that injects a mouse button up event into the system.\n\
-            \n\
-               @param button\n\
-                  One of the MouseButton values indicating which button was released.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseLeaves
-        
-            typedef bool ( ::CEGUI::System::*injectMouseLeaves_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "injectMouseLeaves"
-                , injectMouseLeaves_function_type( &::CEGUI::System::injectMouseLeaves )
-                , "*!\n\
-               \n\
-                  Method that injects that the mouse has left the application window\n\
-            \n\
-               @return\n\
-                  - true if the generated mouse move event was handled.\n\
-                  - false if the generated mouse move event was not handled.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseMove
-        
-            typedef bool ( ::CEGUI::System::*injectMouseMove_function_type )( float,float ) ;
-            
-            System_exposer.def( 
-                "injectMouseMove"
-                , injectMouseMove_function_type( &::CEGUI::System::injectMouseMove )
-                , ( bp::arg("delta_x"), bp::arg("delta_y") )
-                , "*************************************************************************\n\
-                  Input injection interface\n\
-               *************************************************************************\n\
-               *!\n\
-               \n\
-                  Method that injects a mouse movement event into the system\n\
-            \n\
-               @param delta_x\n\
-                  amount the mouse moved on the x axis.\n\
-            \n\
-               @param delta_y\n\
-                  amount the mouse moved on the y axis.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectMousePosition
-        
-            typedef bool ( ::CEGUI::System::*injectMousePosition_function_type )( float,float ) ;
-            
-            System_exposer.def( 
-                "injectMousePosition"
-                , injectMousePosition_function_type( &::CEGUI::System::injectMousePosition )
-                , ( bp::arg("x_pos"), bp::arg("y_pos") )
-                , "*!\n\
-               \n\
-                  Method that injects a new position for the mouse cursor.\n\
-            \n\
-               @param x_pos\n\
-                  New absolute pixel position of the mouse cursor on the x axis.\n\
-            \n\
-               @param y_pos\n\
-                  New absolute pixel position of the mouse cursoe in the y axis.\n\
-            \n\
-               @return\n\
-                  - true if the generated mouse move event was handled.\n\
-                  - false if the generated mouse move event was not handled.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectMouseWheelChange
-        
-            typedef bool ( ::CEGUI::System::*injectMouseWheelChange_function_type )( float ) ;
-            
-            System_exposer.def( 
-                "injectMouseWheelChange"
-                , injectMouseWheelChange_function_type( &::CEGUI::System::injectMouseWheelChange )
-                , ( bp::arg("delta") )
-                , "*!\n\
-               \n\
-                  Method that injects a mouse-wheel  scroll-wheel event into the system.\n\
-            \n\
-               @param delta\n\
-                  float value representing the amount the wheel moved.\n\
-            \n\
-               @return\n\
-                  - true if the input was processed by the gui system.\n\
-                  - false if the input was not processed by the gui system.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::injectPasteRequest
-        
-            typedef bool ( ::CEGUI::System::*injectPasteRequest_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "injectPasteRequest"
-                , injectPasteRequest_function_type( &::CEGUI::System::injectPasteRequest )
-                , "*!\n\
-            \n\
-                Tells the system to perform a clipboard paste to the currently active widget\n\
-             \n\
-            @return\n\
-                true if the paste was successful, false if it was denied\n\
-            *\n" );
-        
-        }
         { //::CEGUI::System::injectTimePulse
         
             typedef bool ( ::CEGUI::System::*injectTimePulse_function_type )( float ) ;
@@ -979,17 +485,7 @@ void register_System_class(){
                 "injectTimePulse"
                 , injectTimePulse_function_type( &::CEGUI::System::injectTimePulse )
                 , ( bp::arg("timeElapsed") )
-                , "*!\n\
-               \n\
-                  Method to inject time pulses into the system.\n\
-            \n\
-               @param timeElapsed\n\
-                  float value indicating the amount of time passed, in seconds, since the last time this method\
-                  was called.\n\
-            \n\
-               @return\n\
-                  Currently, this method always returns true.\n\
-               *\n" );
+                , "! call this to ensure system-level time based updates occur.\n" );
         
         }
         { //::CEGUI::System::invalidateAllCachedRendering
@@ -1009,45 +505,6 @@ void register_System_class(){
                     includes Window object's cached geometry, rendering surfaces and\n\
                     rendering windows and the mouse pointer geometry.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::System::isMouseClickEventGenerationEnabled
-        
-            typedef bool ( ::CEGUI::System::*isMouseClickEventGenerationEnabled_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "isMouseClickEventGenerationEnabled"
-                , isMouseClickEventGenerationEnabled_function_type( &::CEGUI::System::isMouseClickEventGenerationEnabled )
-                , "*!\n\
-                \n\
-                    Return whether automatic mouse button click and multi-click (i.e.\n\
-                    double-click and treble-click) event generation is enabled.\n\
-            \n\
-                @return\n\
-                    - true if mouse button click and multi-click events will be\n\
-                    automatically generated by the system from the basic button up and down\n\
-                    event injections.\n\
-                    - false if no automatic generation of events will occur.  In this\n\
-                    instance the user may wish to use the additional event injectors to\n\
-                    manually inform the system of such events.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::System::isRedrawRequested
-        
-            typedef bool ( ::CEGUI::System::*isRedrawRequested_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "isRedrawRequested"
-                , isRedrawRequested_function_type( &::CEGUI::System::isRedrawRequested )
-                , "*!\n\
-               \n\
-                  Return a boolean value to indicate whether a full re-draw is requested next time renderGUI()\
-                  is called.\n\
-            \n\
-               @return\n\
-                  true if a re-draw has been requested\n\
-               *\n" );
         
         }
         { //::CEGUI::System::notifyDisplaySizeChanged
@@ -1077,43 +534,19 @@ void register_System_class(){
                 *\n" );
         
         }
-        { //::CEGUI::System::notifyWindowDestroyed
+        { //::CEGUI::System::renderAllGUIContexts
         
-            typedef void ( ::CEGUI::System::*notifyWindowDestroyed_function_type )( ::CEGUI::Window const * ) ;
+            typedef void ( ::CEGUI::System::*renderAllGUIContexts_function_type )(  ) ;
             
             System_exposer.def( 
-                "notifyWindowDestroyed"
-                , notifyWindowDestroyed_function_type( &::CEGUI::System::notifyWindowDestroyed )
-                , ( bp::arg("window") )
+                "renderAllGUIContexts"
+                , renderAllGUIContexts_function_type( &::CEGUI::System::renderAllGUIContexts )
                 , "*!\n\
-               \n\
-                  Internal method used to inform the System object whenever a window is destroyed, so that\
-                  System can perform any required\n\
-                  housekeeping.\n\
             \n\
-               \note\n\
-                  This method is not intended for client code usage.  If you use this method anything can, and\
-                  probably will, go wrong!\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::renderGUI
-        
-            typedef void ( ::CEGUI::System::*renderGUI_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "renderGUI"
-                , renderGUI_function_type( &::CEGUI::System::renderGUI )
-                , "*!\n\
-               \n\
-                  Render the GUI\n\
-            \n\
-                  Depending upon the internal state, this may either re-use rendering from last time, or trigger\
-                  a full re-draw from all elements.\n\
-            \n\
-               @return\n\
-                  Nothing\n\
-               *\n" );
+                Depending upon the internal state, for each GUIContext this may either\n\
+                re-use cached rendering from last time or trigger a full re-draw of all\n\
+                elements.\n\
+            *\n" );
         
         }
         { //::CEGUI::System::setDefaultCustomRenderedStringParser
@@ -1194,124 +627,6 @@ void register_System_class(){
             *\n" );
         
         }
-        { //::CEGUI::System::setDefaultMouseCursor
-        
-            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::Image const * ) ;
-            
-            System_exposer.def( 
-                "setDefaultMouseCursor"
-                , setDefaultMouseCursor_function_type( &::CEGUI::System::setDefaultMouseCursor )
-                , ( bp::arg("image") )
-                , "*!\n\
-               \n\
-                  Set the image to be used as the default mouse cursor.\n\
-            \n\
-               @param image\n\
-                  Pointer to an image object that is to be used as the default mouse cursor.  To have no cursor\
-                  rendered by default, you\n\
-                  can specify NULL here.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setDefaultMouseCursor
-        
-            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::MouseCursorImage ) ;
-            
-            System_exposer.def( 
-                "setDefaultMouseCursor"
-                , setDefaultMouseCursor_function_type( &::CEGUI::System::setDefaultMouseCursor )
-                , ( bp::arg("image") )
-                , "*!\n\
-               \n\
-                  Set the image to be used as the default mouse cursor.\n\
-            \n\
-               @param image\n\
-                  One of the MouseCursorImage enumerated values.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setDefaultMouseCursor
-        
-            typedef void ( ::CEGUI::System::*setDefaultMouseCursor_function_type )( ::CEGUI::String const & ) ;
-            
-            System_exposer.def( 
-                "setDefaultMouseCursor"
-                , setDefaultMouseCursor_function_type( &::CEGUI::System::setDefaultMouseCursor )
-                , ( bp::arg("name") )
-                , "*!\n\
-               \n\
-                  Set the image to be used as the default mouse cursor.\n\
-            \n\
-               @param name\n\
-                  String object that contains the name of the Image that is to be used.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-            \n\
-               @exception UnknownObjectException   thrown if no Image named  name exists.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setDefaultTooltip
-        
-            typedef void ( ::CEGUI::System::*setDefaultTooltip_function_type )( ::CEGUI::Tooltip * ) ;
-            
-            System_exposer.def( 
-                "setDefaultTooltip"
-                , setDefaultTooltip_function_type( &::CEGUI::System::setDefaultTooltip )
-                , ( bp::arg("tooltip") )
-                , "*!\n\
-                \n\
-                    Set the system default Tooltip object.  This value may be NULL to indicate that no default\
-                    Tooltip will be\n\
-                    available.\n\
-            \n\
-                @param tooltip\n\
-                    Pointer to a valid Tooltip based object which should be used as the default tooltip for the\
-                    system, or NULL to\n\
-                    indicate that no system default tooltip is required.  Note that when passing a pointer to a\
-                    Tooltip object,\n\
-                    ownership of the Tooltip does not pass to System.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::System::setDefaultTooltip
-        
-            typedef void ( ::CEGUI::System::*setDefaultTooltip_function_type )( ::CEGUI::String const & ) ;
-            
-            System_exposer.def( 
-                "setDefaultTooltip"
-                , setDefaultTooltip_function_type( &::CEGUI::System::setDefaultTooltip )
-                , ( bp::arg("tooltipType") )
-                , "*!\n\
-                \n\
-                    Set the system default Tooltip to be used by specifying a Window type.\n\
-            \n\
-                    System will internally attempt to create an instance of the specified window type (which\
-                    must be\n\
-                    derived from the base Tooltip class).  If the Tooltip creation fails, the error is logged\
-                    and no\n\
-                    system default Tooltip will be available.\n\
-            \n\
-                @param tooltipType\n\
-                    String object holding the name of the Tooltip based Window type which should be used as the\
-                    Tooltip for\n\
-                    the system default.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::System::setDefaultXMLParserName
         
             typedef void ( *setDefaultXMLParserName_function_type )( ::CEGUI::String const & );
@@ -1367,27 +682,6 @@ void register_System_class(){
             " );
         
         }
-        { //::CEGUI::System::setGUISheet
-        
-            typedef ::CEGUI::Window * ( ::CEGUI::System::*setGUISheet_function_type )( ::CEGUI::Window * ) ;
-            
-            System_exposer.def( 
-                "setGUISheet"
-                , setGUISheet_function_type( &::CEGUI::System::setGUISheet )
-                , ( bp::arg("sheet") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Set the active GUI sheet (root) window.\n\
-            \n\
-               @param sheet\n\
-                  Pointer to a Window object that will become the new GUI 'root'\n\
-            \n\
-               @return\n\
-                  Pointer to the window that was previously set as the GUI root.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::System::setImageCodec
         
             typedef void ( ::CEGUI::System::*setImageCodec_function_type )( ::CEGUI::String const & ) ;
@@ -1422,122 +716,6 @@ void register_System_class(){
                 *\n" );
         
         }
-        { //::CEGUI::System::setModalTarget
-        
-            typedef void ( ::CEGUI::System::*setModalTarget_function_type )( ::CEGUI::Window * ) ;
-            
-            System_exposer.def( 
-                "setModalTarget"
-                , setModalTarget_function_type( &::CEGUI::System::setModalTarget )
-                , ( bp::arg("target") )
-                , "*!\n\
-               \n\
-                  Internal method to directly set the current modal target.\n\
-            \n\
-               \note\n\
-                  This method is called internally by Window, and must be used by client code.\n\
-                  Doing so will most likely not have the expected results.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setMouseClickEventGenerationEnabled
-        
-            typedef void ( ::CEGUI::System::*setMouseClickEventGenerationEnabled_function_type )( bool const ) ;
-            
-            System_exposer.def( 
-                "setMouseClickEventGenerationEnabled"
-                , setMouseClickEventGenerationEnabled_function_type( &::CEGUI::System::setMouseClickEventGenerationEnabled )
-                , ( bp::arg("enable") )
-                , "*!\n\
-                \n\
-                    Set whether automatic mouse button click and multi-click (i.e.\n\
-                    double-click and treble-click) event generation will occur.\n\
-            \n\
-                @param enable\n\
-                    - true to have mouse button click and multi-click events automatically\n\
-                    generated by the system from the basic button up and down event\n\
-                    injections.\n\
-                    - false if no automatic generation of events should occur.  In this\n\
-                    instance the user may wish to use the additional event injectors to\n\
-                    manually inform the system of such events.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::System::setMouseMoveScaling
-        
-            typedef void ( ::CEGUI::System::*setMouseMoveScaling_function_type )( float ) ;
-            
-            System_exposer.def( 
-                "setMouseMoveScaling"
-                , setMouseMoveScaling_function_type( &::CEGUI::System::setMouseMoveScaling )
-                , ( bp::arg("scaling") )
-                , "*!\n\
-               \n\
-                  Set the current mouse movement scaling factor\n\
-            \n\
-               @param scaling\n\
-                  float value specifying the scaling to be applied to mouse movement inputs.\n\
-            \n\
-               @return\n\
-                  nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setMultiClickTimeout
-        
-            typedef void ( ::CEGUI::System::*setMultiClickTimeout_function_type )( double ) ;
-            
-            System_exposer.def( 
-                "setMultiClickTimeout"
-                , setMultiClickTimeout_function_type( &::CEGUI::System::setMultiClickTimeout )
-                , ( bp::arg("timeout") )
-                , "*!\n\
-               \n\
-                  Set the timeout to be used for the generation of multi-click events.\n\
-            \n\
-                  A multi-click event is a double-click, or a triple-click.  The value\n\
-                    returned here is the maximum allowable time between mouse button down\n\
-                    events for which a multi-click event will be generated.\n\
-            \n\
-               @param timeout\n\
-                  double value equal to the multi-click timeout value to be used from now\n\
-                    onwards.\n\
-            \n\
-                \note\n\
-                    A timeout value of 0 indicates infinity and so no timeout occurrs; as\n\
-                    long as the mouse is in the prescribed area, an appropriate mouse button\n\
-                    event will therefore always be raised.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setMultiClickToleranceAreaSize
-        
-            typedef void ( ::CEGUI::System::*setMultiClickToleranceAreaSize_function_type )( ::CEGUI::Sizef const & ) ;
-            
-            System_exposer.def( 
-                "setMultiClickToleranceAreaSize"
-                , setMultiClickToleranceAreaSize_function_type( &::CEGUI::System::setMultiClickToleranceAreaSize )
-                , ( bp::arg("sz") )
-                , "*!\n\
-               \n\
-                  Set the size of the allowable mouse movement tolerance used when generating multi-click\
-                  events.\n\
-            \n\
-                  This size defines an area with the mouse at the centre.  The mouse must stay within the\
-                  tolerance defined\n\
-                  for a multi-click (double click, or triple click) event to be generated.\n\
-            \n\
-               @param sz\n\
-                  Size object describing the multi-click tolerance area size to be used.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::System::setScriptingModule
         
             typedef void ( ::CEGUI::System::*setScriptingModule_function_type )( ::CEGUI::ScriptModule * ) ;
@@ -1556,35 +734,6 @@ void register_System_class(){
                 @return\n\
                     Nothing\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::System::setSingleClickTimeout
-        
-            typedef void ( ::CEGUI::System::*setSingleClickTimeout_function_type )( double ) ;
-            
-            System_exposer.def( 
-                "setSingleClickTimeout"
-                , setSingleClickTimeout_function_type( &::CEGUI::System::setSingleClickTimeout )
-                , ( bp::arg("timeout") )
-                , "*!\n\
-               \n\
-                  Set the timeout used for generation of single-click events.\n\
-            \n\
-                  A single-click is defined here as a button being pressed and then\n\
-                    released.\n\
-            \n\
-               @param timeout\n\
-                  double value equal to the single-click timeout value to be used from now\n\
-                    onwards.\n\
-            \n\
-                \note\n\
-                    A timeout value of 0 indicates infinity and so no timeout occurrs; as\n\
-                    long as the mouse is in the prescribed area, a mouse button 'clicked'\n\
-                    event will therefore always be raised.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
         
         }
         { //::CEGUI::System::setXMLParser
@@ -1636,78 +785,14 @@ void register_System_class(){
                 *\n" );
         
         }
-        { //::CEGUI::System::signalRedraw
-        
-            typedef void ( ::CEGUI::System::*signalRedraw_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "signalRedraw"
-                , signalRedraw_function_type( &::CEGUI::System::signalRedraw )
-                , "*!\n\
-               \n\
-                  Causes a full re-draw next time renderGUI() is called\n\
-            \n\
-               @return\n\
-                  Nothing\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::updateWindowContainingMouse
-        
-            typedef bool ( ::CEGUI::System::*updateWindowContainingMouse_function_type )(  ) ;
-            
-            System_exposer.def( 
-                "updateWindowContainingMouse"
-                , updateWindowContainingMouse_function_type( &::CEGUI::System::updateWindowContainingMouse )
-                , "*!\n\
-            \n\
-                Perform updates with regards to the window that contains the mouse\n\
-                cursor, firing any required MouseEnters  MouseLeaves events.\n\
-            \n\
-            \note\n\
-                The CEGUI system components call this member as a matter of course,\n\
-                in most cases there will be no need for user  client code to call this\n\
-                member directly.\n\
-            \n\
-            @return\n\
-                - true if the window containing the mouse had changed.\n\
-                - false if the window containing the mouse had not changed.\n\
-            *\n" );
-        
-        }
-        System_exposer.def_readonly( "DefaultMultiClickAreaSize", CEGUI::System::DefaultMultiClickAreaSize );
-        System_exposer.def_readonly( "DefaultMultiClickTimeout", CEGUI::System::DefaultMultiClickTimeout, "*************************************************************************\n\
-           Constants\n\
-        *************************************************************************\n" );
-        System_exposer.def_readonly( "DefaultSingleClickTimeout", CEGUI::System::DefaultSingleClickTimeout, "*************************************************************************\n\
-           Constants\n\
-        *************************************************************************\n" );
         System_exposer.add_static_property( "EventDefaultFontChanged"
                         , bp::make_getter( &CEGUI::System::EventDefaultFontChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        System_exposer.add_static_property( "EventDefaultMouseCursorChanged"
-                        , bp::make_getter( &CEGUI::System::EventDefaultMouseCursorChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         System_exposer.add_static_property( "EventDisplaySizeChanged"
                         , bp::make_getter( &CEGUI::System::EventDisplaySizeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        System_exposer.add_static_property( "EventGUISheetChanged"
-                        , bp::make_getter( &CEGUI::System::EventGUISheetChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        System_exposer.add_static_property( "EventMouseMoveScalingChanged"
-                        , bp::make_getter( &CEGUI::System::EventMouseMoveScalingChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        System_exposer.add_static_property( "EventMultiClickAreaSizeChanged"
-                        , bp::make_getter( &CEGUI::System::EventMultiClickAreaSizeChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        System_exposer.add_static_property( "EventMultiClickTimeoutChanged"
-                        , bp::make_getter( &CEGUI::System::EventMultiClickTimeoutChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         System_exposer.add_static_property( "EventRenderedStringParserChanged"
                         , bp::make_getter( &CEGUI::System::EventRenderedStringParserChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
-        System_exposer.add_static_property( "EventSingleClickTimeoutChanged"
-                        , bp::make_getter( &CEGUI::System::EventSingleClickTimeoutChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::EventSet::fireEvent
         

@@ -77,6 +77,9 @@ void OgreRenderTarget::setArea(const Rectf& area)
     setOgreViewportDimensions(area);
 
     d_matrixValid = false;
+
+    RenderTargetEventArgs args(this);
+    fireEvent(EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//

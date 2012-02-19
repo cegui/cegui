@@ -6,7 +6,7 @@
     purpose:    Implements the Window base class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,10 +27,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/WindowManager.h"
@@ -46,7 +42,7 @@
 #include "CEGUI/falagard/WidgetLookFeel.h"
 #include "CEGUI/falagard/WidgetComponent.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
 #include <algorithm>
@@ -114,7 +110,6 @@ const String Window::TooltipNameSuffix("__auto_tooltip__");
 const String Window::AutoWidgetNameSuffix("__auto_");
 
 //----------------------------------------------------------------------------//
-Window* Window::d_captureWindow     = 0;
 BasicRenderedStringParser Window::d_basicStringParser;
 DefaultRenderedStringParser Window::d_defaultStringParser;
 
@@ -184,7 +179,7 @@ Window::Window(const String& type, const String& name):
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
-    d_mouseCursor((const Image*)DefaultMouseCursor),
+    d_mouseCursor(0),
 
     // alpha transparency set up
     d_alpha(1.0f),
@@ -258,7 +253,9 @@ Window::Window(const String& type, const String& name):
     d_updateMode(WUM_VISIBLE),
 
     // Don't propagate mouse inputs by default.
-    d_propagateMouseInputs(false)
+    d_propagateMouseInputs(false),
+
+    d_guiContext(0)
 {
     // add properties
     addWindowProperties();
@@ -482,8 +479,7 @@ Rectf Window::getParentElementClipIntersection(const Rectf& unclipped_area) cons
     return unclipped_area.getIntersection(
         (d_parent && d_clippedByParent) ?
             getParent()->getClipRect(isNonClient()) :
-            Rectf(Vector2f(0, 0),
-                   System::getSingleton().getRenderer()->getDisplaySize()));
+            Rectf(Vector2f(0, 0), getRootContainerSize()));
 }
 
 //----------------------------------------------------------------------------//
@@ -526,8 +522,7 @@ Rectf Window::getHitTestRect_impl() const
     else
     {
         return getUnclippedOuterRect().get().getIntersection(
-            Rectf(Vector2f(0, 0),
-                 System::getSingleton().getRenderer()->getDisplaySize()));
+            Rectf(Vector2f(0, 0), getRootContainerSize()));
     }
 }
 
@@ -664,7 +659,7 @@ void Window::setEnabled(bool setting)
         onDisabled(args);
     }
 
-    System::getSingleton().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingMouse();
 }
 
 //----------------------------------------------------------------------------//
@@ -684,7 +679,7 @@ void Window::setVisible(bool setting)
     WindowEventArgs args(this);
     d_visible ? onShown(args) : onHidden(args);
 
-    System::getSingleton().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingMouse();
 }
 
 //----------------------------------------------------------------------------//
@@ -698,10 +693,10 @@ void Window::activate(void)
     // force complete release of input capture.
     // NB: This is not done via releaseCapture() because that has
     // different behaviour depending on the restoreOldCapture setting.
-    if (d_captureWindow && d_captureWindow != this)
+    if (getCaptureWindow() && getCaptureWindow() != this)
     {
-        Window* const tmpCapture = d_captureWindow;
-        d_captureWindow = 0;
+        Window* const tmpCapture = getCaptureWindow();
+        getGUIContext().setInputCaptureWindow(0);
 
         WindowEventArgs args(0);
         tmpCapture->onCaptureLost(args);
@@ -904,10 +899,10 @@ bool Window::captureInput(void)
     if (!isActive())
         return false;
 
-    if (d_captureWindow != this)
+    if (!isCapturedByThis())
     {
-        Window* const current_capture = d_captureWindow;
-        d_captureWindow = this;
+        Window* const current_capture = getCaptureWindow();
+        getGUIContext().setInputCaptureWindow(this);
         WindowEventArgs args(this);
 
         // inform window which previously had capture that it doesn't anymore.
@@ -933,18 +928,18 @@ void Window::releaseInput(void)
     // restore old captured window if that mode is set
     if (d_restoreOldCapture)
     {
-        d_captureWindow = d_oldCapture;
+        getGUIContext().setInputCaptureWindow(d_oldCapture);
 
         // check for case when there was no previously captured window
         if (d_oldCapture)
         {
             d_oldCapture = 0;
-            d_captureWindow->moveToFront();
+            getCaptureWindow()->moveToFront();
         }
 
     }
     else
-        d_captureWindow = 0;
+        getGUIContext().setInputCaptureWindow(0);
 
     WindowEventArgs args(this);
     onCaptureLost(args);
@@ -1004,7 +999,7 @@ void Window::invalidate(void)
 void Window::invalidate(const bool recursive)
 {
     invalidate_impl(recursive);
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
 }
 
 //----------------------------------------------------------------------------//
@@ -1102,7 +1097,12 @@ void Window::queueGeometry(const RenderingContext& ctx)
 void Window::setParent(Element* parent)
 {
     Element::setParent(parent);
+    syncTargetSurface();
+}
 
+//----------------------------------------------------------------------------//
+void Window::syncTargetSurface()
+{
     // if we do not have a surface, xfer any surfaces from our children to
     // whatever our target surface now is.
     if (!d_surface)
@@ -1111,10 +1111,9 @@ void Window::setParent(Element* parent)
     // must now ensure /our/ surface is xferred if it is a RenderingWindow.
     else if (d_surface->isRenderingWindow())
     {
-        // target surface is eihter the parent's target, or the default root.
+        // target surface is eihter the parent's target, or the gui context.
         RenderingSurface& tgt = d_parent ?
-            getParent()->getTargetRenderingSurface() :
-            System::getSingleton().getRenderer()->getDefaultRenderingRoot();
+            getParent()->getTargetRenderingSurface() : getGUIContext();
 
         tgt.transferRenderingWindow(static_cast<RenderingWindow&>(*d_surface));
     }
@@ -1207,16 +1206,16 @@ void Window::onZChange_impl(void)
 
     }
 
-    System::getSingleton().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingMouse();
 }
 
 //----------------------------------------------------------------------------//
 const Image* Window::getMouseCursor(bool useDefault) const
 {
-    if (d_mouseCursor != (const Image*)DefaultMouseCursor)
+    if (d_mouseCursor)
         return d_mouseCursor;
     else
-        return useDefault ? System::getSingleton().getDefaultMouseCursor() : 0;
+        return useDefault ? getGUIContext().getMouseCursor().getDefaultImage() : 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1231,22 +1230,8 @@ void Window::setMouseCursor(const Image* image)
 {
     d_mouseCursor = image;
 
-    if (System::getSingleton().getWindowContainingMouse() == this)
-    {
-        const Image* const default_cursor =
-            reinterpret_cast<const Image*>(DefaultMouseCursor);
-
-        if (default_cursor == image)
-            image = System::getSingleton().getDefaultMouseCursor();
-
-        MouseCursor::getSingleton().setImage(image);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void Window::setMouseCursor(MouseCursorImage image)
-{
-    setMouseCursor((const Image*)image);
+    if (getGUIContext().getWindowContainingMouse() == this)
+        getGUIContext().getMouseCursor().setImage(image);
 }
 
 //----------------------------------------------------------------------------//
@@ -1277,11 +1262,11 @@ void Window::setDestroyedByParent(bool setting)
 void Window::generateAutoRepeatEvent(MouseButton button)
 {
     MouseEventArgs ma(this);
-    ma.position =
-        getUnprojectedPosition(MouseCursor::getSingleton().getPosition());
+    ma.position = getUnprojectedPosition(
+        getGUIContext().getMouseCursor().getPosition());
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
-    ma.sysKeys = System::getSingleton().getSystemKeys();
+    ma.sysKeys = getGUIContext().getSystemKeys().get();
     ma.wheelChange = 0;
     onMouseButtonDown(ma);
 }
@@ -1732,8 +1717,8 @@ bool Window::isUsingDefaultTooltip(void) const
 //----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip(void) const
 {
-    return isUsingDefaultTooltip() ? System::getSingleton().getDefaultTooltip():
-                                     d_customTip;
+    return isUsingDefaultTooltip() ? 
+        getGUIContext().getDefaultTooltipObject(): d_customTip;
 }
 
 //----------------------------------------------------------------------------//
@@ -1830,7 +1815,7 @@ void Window::setArea_impl(const UVector2& pos, const USize& size,
     //if (moved || sized)
     // FIXME: This is potentially wasteful
     
-    System::getSingleton().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingMouse();
 
     // update geometry position and clipping if nothing from above appears to
     // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
@@ -1887,11 +1872,11 @@ void Window::setModalState(bool state)
     if (state)
     {
         activate();
-        System::getSingleton().setModalTarget(this);
+        getGUIContext().setModalWindow(this);
     }
     // clear the modal target
     else
-        System::getSingleton().setModalTarget(0);
+        getGUIContext().setModalWindow(0);
 }
 
 //----------------------------------------------------------------------------//
@@ -2174,7 +2159,7 @@ void Window::onMoved(ElementEventArgs& e)
         getParent()->invalidateRenderingSurface();
         // need to redraw some geometry if parent uses a caching surface
         if (getParent()->getTargetRenderingSurface().isRenderingWindow())
-            System::getSingleton().signalRedraw();
+            getGUIContext().markAsDirty();
     }
 }
 
@@ -2305,7 +2290,7 @@ void Window::onAlwaysOnTopChanged(WindowEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     fireEvent(EventAlwaysOnTopChanged, e, EventNamespace);
 }
 
@@ -2330,7 +2315,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // handle case where mouse is now in a different window
     // (this is a bit of a hack that uses the mouse input injector to handle
     // this for us).
-    System::getSingleton().injectMouseMove(0, 0);
+    getGUIContext().injectMouseMove(0, 0);
 
     fireEvent(EventInputCaptureLost, e, EventNamespace);
 }
@@ -2352,7 +2337,7 @@ void Window::onZChanged(WindowEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     fireEvent(EventZOrderChanged, e, EventNamespace);
 }
 
@@ -2409,7 +2394,7 @@ void Window::onChildAdded(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     
     Element::onChildAdded(e);
 }
@@ -2419,7 +2404,7 @@ void Window::onChildRemoved(ElementEventArgs& e)
 {
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
-    System::getSingleton().signalRedraw();
+    getGUIContext().markAsDirty();
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
     
@@ -2442,7 +2427,8 @@ void Window::onMouseLeavesArea(MouseEventArgs& e)
 void Window::onMouseEnters(MouseEventArgs& e)
 {
     // set the mouse cursor
-    MouseCursor::getSingleton().setImage(getMouseCursor());
+    getGUIContext().
+        getMouseCursor().setImage(getMouseCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2456,7 +2442,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
     // perform tooltip control
-    const Window* const mw = System::getSingleton().getWindowContainingMouse();
+    const Window* const mw = getGUIContext().getWindowContainingMouse();
     Tooltip* const tip = getTooltip();
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
@@ -2476,7 +2462,7 @@ void Window::onMouseMove(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseMove(e);
@@ -2496,7 +2482,7 @@ void Window::onMouseWheel(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseWheel(e);
@@ -2540,7 +2526,7 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseButtonDown(e);
@@ -2567,7 +2553,7 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseButtonUp(e);
@@ -2587,7 +2573,7 @@ void Window::onMouseClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseClicked(e);
@@ -2597,7 +2583,7 @@ void Window::onMouseClicked(MouseEventArgs& e)
 
     // if event was directly injected, mark as handled to be consistent with
     // other mouse button injectors
-    if (!System::getSingleton().isMouseClickEventGenerationEnabled())
+    if (!getGUIContext().isMouseClickEventGenerationEnabled())
         ++e.handled;
 }
 
@@ -2608,7 +2594,7 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseDoubleClicked(e);
@@ -2626,7 +2612,7 @@ void Window::onMouseTripleClicked(MouseEventArgs& e)
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != System::getSingleton().getModalTarget())
+        d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onMouseTripleClicked(e);
@@ -2646,7 +2632,7 @@ void Window::onKeyDown(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        this != System::getSingleton().getModalTarget())
+        this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onKeyDown(e);
@@ -2662,7 +2648,7 @@ void Window::onKeyUp(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        this != System::getSingleton().getModalTarget())
+        this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onKeyUp(e);
@@ -2678,7 +2664,7 @@ void Window::onCharacter(KeyEventArgs& e)
     // default we now do that here.  Generally speaking key handling widgets
     // may need to override this behaviour to halt further propogation.
     if (!e.handled && d_parent &&
-        this != System::getSingleton().getModalTarget())
+        this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
         getParent()->onCharacter(e);
@@ -3071,8 +3057,7 @@ void Window::getRenderingContext_impl(RenderingContext& ctx) const
     }
     else
     {
-        ctx.surface =
-            &System::getSingleton().getRenderer()->getDefaultRenderingRoot();
+        ctx.surface = &getGUIContext();
         ctx.owner = 0;
         ctx.offset = Vector2f(0, 0);
         ctx.queue = RQ_BASE;
@@ -3093,7 +3078,7 @@ RenderingSurface& Window::getTargetRenderingSurface() const
     else if (d_parent)
         return getParent()->getTargetRenderingSurface();
     else
-        return System::getSingleton().getRenderer()->getDefaultRenderingRoot();
+        return getGUIContext();
 }
 
 //----------------------------------------------------------------------------//
@@ -3195,7 +3180,7 @@ void Window::allocateRenderingWindow()
         static_cast<RenderingWindow*>(d_surface)->
             setPosition(getUnclippedOuterRect().get().getPosition());
 
-        System::getSingleton().signalRedraw();
+        getGUIContext().markAsDirty();
     }
 }
 
@@ -3215,7 +3200,7 @@ void Window::releaseRenderingWindow()
         old_surface->getOwner().destroyRenderingWindow(*old_surface);
         System::getSingleton().getRenderer()->destroyTextureTarget(tt);
 
-        System::getSingleton().signalRedraw();
+        getGUIContext().markAsDirty();
     }
 }
 
@@ -3250,8 +3235,7 @@ void Window::initialiseClippers(const RenderingContext& ctx)
                 getParent()->getInnerRectClipper());
         else
             rendering_window->setClippingRegion(
-                Rectf(Vector2f(0, 0),
-                       System::getSingleton().getRenderer()->getDisplaySize()));
+                Rectf(Vector2f(0, 0), getRootContainerSize()));
 
         d_geometry->setClippingRegion(Rectf(Vector2f(0, 0), d_pixelSize));
     }
@@ -3693,6 +3677,32 @@ const Font* Window::property_getFont() const
 const Image* Window::property_getMouseCursor() const
 {
     return getMouseCursor();
+}
+
+//----------------------------------------------------------------------------//
+GUIContext& Window::getGUIContext() const
+{
+    // GUIContext is always the one on the root window, we do not allow parts
+    // of a hierarchy to be drawn to seperate contexts (which is not much of
+    // a limitation).
+    //
+    // ISSUE: if root has no GUIContext set for it, should we return 0 or
+    //        System::getDefaultGUIContext?  Come to IRC and argue about it!
+    return getParent() ? getParent()->getGUIContext() :
+                         d_guiContext ? *d_guiContext :
+                                        System::getSingleton().getDefaultGUIContext();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setGUIContext(GUIContext* context)
+{
+    d_guiContext = context;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& Window::getRootContainerSize() const
+{
+    return getGUIContext().getSurfaceSize();
 }
 
 //----------------------------------------------------------------------------//

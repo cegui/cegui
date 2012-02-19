@@ -29,7 +29,6 @@
 #include "CEGUI/RendererModules/Direct3D11/TextureTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/ViewportTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
-#include "CEGUI/RenderingRoot.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -97,9 +96,9 @@ void Direct3D11Renderer::destroy(Direct3D11Renderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& Direct3D11Renderer::getDefaultRenderingRoot()
+RenderTarget& Direct3D11Renderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -321,7 +320,6 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     
     d_displayDPI(96, 96),
     d_defaultTarget(0),
-    d_defaultRoot(0),
     d_effect(0),
     d_normalTechnique(0),
     d_premultipliedTechnique(0),
@@ -410,7 +408,6 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     }
 
     d_defaultTarget = new Direct3D11ViewportTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
 }
 
 //----------------------------------------------------------------------------//
@@ -420,7 +417,6 @@ Direct3D11Renderer::~Direct3D11Renderer()
     destroyAllTextures();
     destroyAllGeometryBuffers();
 
-    delete d_defaultRoot;
     delete d_defaultTarget;
 
     if (d_effect)

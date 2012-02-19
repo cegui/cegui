@@ -1,71 +1,63 @@
 /***********************************************************************
-	System
+    System
 ***********************************************************************/
 class System : public EventSet
 {
-	static System& getSingleton();
+    static unsigned int getMajorVersion();
+    static unsigned int getMinorVersion();
+    static unsigned int getPatchVersion();
 
-	Renderer* getRenderer() const;
+    static const string getVersion();
+    static const string getVerboseVersion();
 
-	void setDefaultFont(utf8string name);
-	void setDefaultFont(Font* font);
-    Font* getDefaultFont() const;
+    static System& getSingleton(void);
+    Renderer* getRenderer(void) const;
 
-	void signalRedraw();
-	bool isRedrawRequested() const;
-	void renderGUI();
+    //Clipboard* getClipboard() const;
 
-	Window* setGUISheet(Window* sheet);
-	Window* getGUISheet() const;
+    GUIContext& getDefaultGUIContext() const;
 
-	void setSingleClickTimeout(double timeout);
-	void setMultiClickTimeout(double timeout);
-	void setMultiClickToleranceAreaSize(const Size<float>& sz);
-	double getSingleClickTimeout() const;
-	double getMultiClickTimeout() const;
-	const Size<float>& getMultiClickToleranceAreaSize() const;
-    bool isMouseClickEventGenerationEnabled() const;
-    void setMouseClickEventGenerationEnabled(bool enable);
+    void setDefaultFont(utf8string name);
+    void setDefaultFont(Font* font);
+    Font* getDefaultFont(void) const;
 
-	void setDefaultMouseCursor(MouseCursorImage image);
-	void setDefaultMouseCursor(const Image* image);
-	void setDefaultMouseCursor(utf8string name);
-	const Image* getDefaultMouseCursor() const;
+    void renderAllGUIContexts();
 
-	Window* getWindowContainingMouse() const;
+    //ScriptModule* getScriptingModule(void) const;
+    //void setScriptingModule(ScriptModule* scriptModule);
+    //ResourceProvider* getResourceProvider(void) const;
 
-	void executeScriptFile(utf8string filename) const;
-	int executeScriptGlobal(utf8string global_name) const;
-	void executeScriptString(utf8string lua_string) const;
+    void executeScriptFile(utf8string filename, utf8string resourceGroup = "") const;
+    int executeScriptGlobal(utf8string function_name) const;
+    void executeScriptString(utf8string str) const;
 
-	float getMouseMoveScaling() const;
-	void setMouseMoveScaling(float scaling);
-
-	void notifyWindowDestroyed(const Window* window);
-
-    // commented because we can't do 'bitwise and' in Lua
-	//unsigned int getSystemKeys() const;
-	tolua_outside bool ceguiLua_System_isSystemKeyDown @ isSystemKeyDown(SystemKey k) const;
-
-	void setDefaultTooltip(Tooltip* tooltip);
-	void setDefaultTooltip(utf8string tooltipType);
-	Tooltip* getDefaultTooltip(void) const;
+    //void setXMLParser(const String& parserName);
+    //void setXMLParser(XMLParser* parser);
+    //XMLParser* getXMLParser(void) const     { return d_xmlParser; }
+    //static void setDefaultXMLParserName(const String& parserName);
+    //static const String getDefaultXMLParserName();
+    
+    //ImageCodec& getImageCodec() const;
+    //void setImageCodec(const String& codecName);
+    //void setImageCodec(ImageCodec& codec);
+    //static void setDefaultImageCodecName(const String& codecName);
+    //static const String& getDefaultImageCodecName();
 
     void notifyDisplaySizeChanged(const Size<float>& new_size);
 
-	bool injectMouseMove(float dx, float dy);
-	bool injectMouseLeaves();
-	bool injectMouseButtonDown(MouseButton btn);
-	bool injectMouseButtonUp(MouseButton btn);
-	bool injectKeyDown(unsigned int keycode);
-	bool injectKeyUp(unsigned int keycode);
-	bool injectChar(unsigned long code_point);
-	bool injectMouseWheelChange(float delta);
-	bool injectMousePosition(float x, float y);
-	bool injectTimePulse(float timeElapsed);
-	bool injectMouseButtonClick(MouseButton btn);
-	bool injectMouseButtonDoubleClick(MouseButton btn);
-	bool injectMouseButtonTripleClick(MouseButton btn);
+    //RenderedStringParser* getDefaultCustomRenderedStringParser() const;
+    //void setDefaultCustomRenderedStringParser(RenderedStringParser* parser);
+
+    void invalidateAllCachedRendering();
+
+    //RegexMatcher& createRegexMatcher() const;
+    //void destroyRegexMatcher(RegexMatcher& rm) const;
+
+    bool injectTimePulse(float timeElapsed);
+
+    GUIContext& createGUIContext(RenderTarget& rt);
+    void destroyGUIContext(GUIContext& context);
 
     tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };
+

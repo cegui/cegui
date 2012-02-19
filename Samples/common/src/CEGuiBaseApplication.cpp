@@ -38,7 +38,7 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/XMLParser.h"
 #include "CEGUI/GeometryBuffer.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/AnimationManager.h"
 #include <stdlib.h>
@@ -86,11 +86,12 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
 
     gui_system.injectTimePulse(elapsed);
+    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
     updateFPS(elapsed);
     updateLogo(elapsed);
 
     beginRendering(elapsed);
-    gui_system.renderGUI();
+    gui_system.renderAllGUIContexts();
     endRendering();
 }
 
@@ -126,10 +127,10 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
         *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
-    d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
+    CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RQ_OVERLAY);
 
     // subscribe handler to render overlay items
-    d_renderer->getDefaultRenderingRoot().
+    CEGUI::System::getSingleton().getDefaultGUIContext().
         subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
             CEGUI::Event::Subscriber(&CEGuiBaseApplication::overlayHandler,
                                      this));
@@ -307,8 +308,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::positionLogo()
 {
-    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderingRoot().
-        getRenderTarget().getArea());
+    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
 
     d_logoGeometry->setClippingRegion(scrn);
     d_logoGeometry->setTranslation(

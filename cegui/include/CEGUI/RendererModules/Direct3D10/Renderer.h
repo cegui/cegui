@@ -133,7 +133,7 @@ public:
     void setWorldMatrix(D3DXMATRIX& matrix);
 
     // Implement interface from Renderer
-    RenderingRoot& getDefaultRenderingRoot();
+    RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -182,10 +182,8 @@ protected:
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
-    //! The default RenderTarget (used by d_defaultRoot)
+    //! The default RenderTarget
     RenderTarget* d_defaultTarget;
-    //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.

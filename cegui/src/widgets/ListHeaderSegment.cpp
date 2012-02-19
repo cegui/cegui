@@ -269,8 +269,8 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -328,7 +328,7 @@ void ListHeaderSegment::initDragMoving(void)
 		d_dragPosition.d_y = 0.0f;
 
 		// setup new cursor
-		MouseCursor::getSingleton().setImage(d_movingMouseCursor);
+		getGUIContext().getMouseCursor().setImage(d_movingMouseCursor);
 
 		// Trigger the event
 		WindowEventArgs args(this);
@@ -349,7 +349,7 @@ void ListHeaderSegment::initSizingHoverState(void)
 		d_splitterHover = true;
 
 		// change the mouse cursor.
-		MouseCursor::getSingleton().setImage(d_sizingMouseCursor);
+		getGUIContext().getMouseCursor().setImage(d_sizingMouseCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
 		invalidate();
@@ -374,7 +374,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-		MouseCursor::getSingleton().setImage(getMouseCursor());
+		getGUIContext().getMouseCursor().setImage(getMouseCursor());
 		invalidate();
 	}
 
@@ -467,7 +467,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-			MouseCursor::getSingleton().setImage(getMouseCursor());
+			getGUIContext().getMouseCursor().setImage(getMouseCursor());
 			invalidate();
 		}
 
@@ -544,7 +544,7 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-			MouseCursor::getSingleton().setImage(getMouseCursor());
+			getGUIContext().getMouseCursor().setImage(getMouseCursor());
 			
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);

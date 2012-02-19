@@ -52,8 +52,7 @@ OpenGL3RenderTarget::OpenGL3RenderTarget(OpenGL3Renderer& owner) :
     d_matrix = new mat4Pimpl();
 }
 
-
-    //----------------------------------------------------------------------------//
+//----------------------------------------------------------------------------//
 OpenGL3RenderTarget::~OpenGL3RenderTarget()
 {
     delete d_matrix;
@@ -76,6 +75,9 @@ void OpenGL3RenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
+
+    RenderTargetEventArgs args(this);
+    fireEvent(EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//

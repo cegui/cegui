@@ -33,11 +33,11 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Singleton.h"
+#include "CEGUI/EventSet.h"
 #include "CEGUI/Renderer.h"
-#include "CEGUI/MouseCursor.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/ResourceProvider.h"
-
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -49,10 +49,6 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Implementation struct that tracks and controls multiclick for mouse buttons.
-struct MouseClickTrackerImpl;
-
-
 /*!
 \brief
 	The System class is the CEGUI class that provides access to all other elements in this system.
@@ -72,41 +68,11 @@ public:
 	/*************************************************************************
 		Constants
 	*************************************************************************/
-	static const double		DefaultSingleClickTimeout;		//!< Default timeout for generation of single click events.
-	static const double		DefaultMultiClickTimeout;		//!< Default timeout for generation of multi-click events.
-	static const Sizef		DefaultMultiClickAreaSize;		//!< Default allowable mouse movement for multi-click event generation.
-
 	// event names
-    /** Event fired whenever the GUI sheet is changed.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the @e old GUI sheet (the new one is
-     * obtained by querying System).
-     */
-	static const String EventGUISheetChanged;
-    /** Event fired when the single-click timeout is changed.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventSingleClickTimeoutChanged;
-    /** Event fired when the multi-click timeout is changed.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventMultiClickTimeoutChanged;
-    /** Event fired when the size of the multi-click tolerance area is changed.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventMultiClickAreaSizeChanged;
     /** Event fired when the default font changes.
      * Handlers are passed a const reference to a generic EventArgs struct.
      */
 	static const String EventDefaultFontChanged;
-    /** Event fired when the default mouse cursor changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventDefaultMouseCursorChanged;
-    /** Event fired when the mouse move scaling factor changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventMouseMoveScalingChanged;
     /** Event fired for display size changes (as notified by client code).
      * Handlers are passed a const DisplayEventArgs reference with
      * DisplayEventArgs::size set to the pixel size that was notifiied to the
@@ -245,7 +211,9 @@ public:
         Retrieves internal CEGUI clipboard, optionally synced with system wide clipboard
     */
     Clipboard* getClipboard() const         {return d_clipboard;}
-    
+
+    GUIContext& getDefaultGUIContext() const;
+
 	/*!
 	\brief
 		Set the default font to be used by the system
@@ -282,251 +250,13 @@ public:
 	Font*	getDefaultFont(void) const				{return d_defaultFont;}
 
 
-	/*!
-	\brief
-		Causes a full re-draw next time renderGUI() is called
-
-	\return
-		Nothing
-	*/
-	void	signalRedraw()		{d_gui_redraw = true;}
-
-
-	/*!
-	\brief
-		Return a boolean value to indicate whether a full re-draw is requested next time renderGUI() is called.
-
-	\return
-		true if a re-draw has been requested
-	*/
-	bool	isRedrawRequested() const		{return d_gui_redraw;}
-
-
-	/*!
-	\brief
-		Render the GUI
-
-		Depending upon the internal state, this may either re-use rendering from last time, or trigger a full re-draw from all elements.
-
-	\return
-		Nothing
-	*/
-	void	renderGUI(void);
-
-
-	/*!
-	\brief
-		Set the active GUI sheet (root) window.
-
-	\param sheet
-		Pointer to a Window object that will become the new GUI 'root'
-
-	\return
-		Pointer to the window that was previously set as the GUI root.
-	*/
-	Window*	setGUISheet(Window* sheet);
-
-
-	/*!
-	\brief
-		Return a pointer to the active GUI sheet (root) window.
-
-	\return
-		Pointer to the window object that has been set as the GUI root element.
-	*/
-	Window*	getGUISheet(void) const		{return d_activeSheet;}
-
-
-	/*!
-	\brief
-		Return the current timeout for generation of single-click events.
-
-		A single-click is defined here as a button being pressed and then released.
-
-	\return
-		double value equal to the current single-click timeout value.
-	*/
-	double	getSingleClickTimeout(void) const		{return d_click_timeout;}
-
-
-	/*!
-	\brief
-		Return the current timeout for generation of multi-click events.
-
-		A multi-click event is a double-click, or a triple-click.  The value returned
-		here is the maximum allowable time between mouse button down events for which
-		a multi-click event will be generated.
-
-	\return
-		double value equal to the current multi-click timeout value.
-	*/
-	double	getMultiClickTimeout(void) const		{return d_dblclick_timeout;}
-
-
-	/*!
-	\brief
-		Return the size of the allowable mouse movement tolerance used when generating multi-click events.
-
-		This size defines an area with the mouse at the centre.  The mouse must stay within the tolerance defined
-		for a multi-click (double click, or triple click) event to be generated.
-
-	\return
-		Size object describing the current multi-click tolerance area size.
-	*/
-	const Sizef&	getMultiClickToleranceAreaSize(void) const		{return d_dblclick_size;}
-
-
-	/*!
-	\brief
-		Set the timeout used for generation of single-click events.
-
-		A single-click is defined here as a button being pressed and then
-        released.
-
-	\param timeout
-		double value equal to the single-click timeout value to be used from now
-        onwards.
-
-    \note
-        A timeout value of 0 indicates infinity and so no timeout occurrs; as
-        long as the mouse is in the prescribed area, a mouse button 'clicked'
-        event will therefore always be raised.
-
-	\return
-		Nothing.
-	*/
-	void	setSingleClickTimeout(double timeout);
-
-
-	/*!
-	\brief
-		Set the timeout to be used for the generation of multi-click events.
-
-		A multi-click event is a double-click, or a triple-click.  The value
-        returned here is the maximum allowable time between mouse button down
-        events for which a multi-click event will be generated.
-
-	\param timeout
-		double value equal to the multi-click timeout value to be used from now
-        onwards.
-
-    \note
-        A timeout value of 0 indicates infinity and so no timeout occurrs; as
-        long as the mouse is in the prescribed area, an appropriate mouse button
-        event will therefore always be raised.
-
-	\return
-		Nothing.
-	*/
-	void setMultiClickTimeout(double timeout);
-
-
-	/*!
-	\brief
-		Set the size of the allowable mouse movement tolerance used when generating multi-click events.
-
-		This size defines an area with the mouse at the centre.  The mouse must stay within the tolerance defined
-		for a multi-click (double click, or triple click) event to be generated.
-
-	\param sz
-		Size object describing the multi-click tolerance area size to be used.
-
-	\return
-		Nothing.
-	*/
-	void setMultiClickToleranceAreaSize(const Sizef&	sz);
-
     /*!
     \brief
-        Return whether automatic mouse button click and multi-click (i.e.
-        double-click and treble-click) event generation is enabled.
-
-    \return
-        - true if mouse button click and multi-click events will be
-        automatically generated by the system from the basic button up and down
-        event injections.
-        - false if no automatic generation of events will occur.  In this
-        instance the user may wish to use the additional event injectors to
-        manually inform the system of such events.
+        Depending upon the internal state, for each GUIContext this may either
+        re-use cached rendering from last time or trigger a full re-draw of all
+        elements.
     */
-    bool isMouseClickEventGenerationEnabled() const;
-    
-    /*!
-    \brief
-        Set whether automatic mouse button click and multi-click (i.e.
-        double-click and treble-click) event generation will occur.
-
-    \param enable
-        - true to have mouse button click and multi-click events automatically
-        generated by the system from the basic button up and down event
-        injections.
-        - false if no automatic generation of events should occur.  In this
-        instance the user may wish to use the additional event injectors to
-        manually inform the system of such events.
-    */
-    void setMouseClickEventGenerationEnabled(const bool enable);
-
-	/*!
-	\brief
-		Return the currently set default mouse cursor image
-
-	\return
-		Pointer to the current default image used for the mouse cursor.  May return NULL if default cursor has not been set,
-		or has intentionally been set to NULL - which results in a blank default cursor.
-	*/
-	const Image*	getDefaultMouseCursor(void) const	{return d_defaultMouseCursor;}
-
-
-	/*!
-	\brief
-		Set the image to be used as the default mouse cursor.
-
-	\param image
-		Pointer to an image object that is to be used as the default mouse cursor.  To have no cursor rendered by default, you
-		can specify NULL here.
-
-	\return
-		Nothing.
-	*/
-	void	setDefaultMouseCursor(const Image* image);
-
-
-	/*!
-	\brief
-		Set the image to be used as the default mouse cursor.
-
-	\param image
-		One of the MouseCursorImage enumerated values.
-
-	\return
-		Nothing.
-	*/
-	void	setDefaultMouseCursor(MouseCursorImage image)		{setDefaultMouseCursor((const Image*)image);}
-
-
-	/*!
-	\brief
-		Set the image to be used as the default mouse cursor.
-
-	\param name
-		String object that contains the name of the Image that is to be used.
-
-	\return
-		Nothing.
-
-	\exception UnknownObjectException	thrown if no Image named \a name exists.
-	*/
-	void	setDefaultMouseCursor(const String& name);
-
-
-	/*!
-	\brief
-		Return the Window object that the mouse is presently within
-
-	\return
-		Pointer to the Window object that currently contains the mouse cursor, or NULL if none.
-	*/
-	Window*	getWindowContainingMouse(void) const	{return d_wndWithMouse;}
+    void renderAllGUIContexts();
 
 
 	/*!
@@ -600,49 +330,6 @@ public:
 
 
     /*!
-	\brief
-		return the current mouse movement scaling factor.
-
-	\return
-		float value that is equal to the currently set mouse movement scaling factor.  Defaults to 1.0f.
-	*/
-	float	getMouseMoveScaling(void) const;
-
-
-	/*!
-	\brief
-		Set the current mouse movement scaling factor
-
-	\param scaling
-		float value specifying the scaling to be applied to mouse movement inputs.
-
-	\return
-		nothing.
-	*/
-	void	setMouseMoveScaling(float scaling);
-
-
-	/*!
-	\brief
-		Internal method used to inform the System object whenever a window is destroyed, so that System can perform any required
-		housekeeping.
-
-	\note
-		This method is not intended for client code usage.  If you use this method anything can, and probably will, go wrong!
-	*/
-	void	notifyWindowDestroyed(const Window* window);
-
-
-    /*!
-    \brief
-        Return the current system keys value.
-
-    \return
-        uint value representing a combination of the SystemKey bits.
-    */
-    uint    getSystemKeys(void) const   { return d_sysKeys; }
-
-    /*!
     \brief
         Set a new XML parser module to be used.
 
@@ -681,67 +368,6 @@ public:
      */
     XMLParser* getXMLParser(void) const     { return d_xmlParser; }
 
-
-    /*!
-    \brief
-        Set the system default Tooltip object.  This value may be NULL to indicate that no default Tooltip will be
-        available.
-
-    \param tooltip
-        Pointer to a valid Tooltip based object which should be used as the default tooltip for the system, or NULL to
-        indicate that no system default tooltip is required.  Note that when passing a pointer to a Tooltip object,
-        ownership of the Tooltip does not pass to System.
-
-    \return
-        Nothing.
-    */
-    void setDefaultTooltip(Tooltip* tooltip);
-
-    /*!
-    \brief
-        Set the system default Tooltip to be used by specifying a Window type.
-
-        System will internally attempt to create an instance of the specified window type (which must be
-        derived from the base Tooltip class).  If the Tooltip creation fails, the error is logged and no
-        system default Tooltip will be available.
-
-    \param tooltipType
-        String object holding the name of the Tooltip based Window type which should be used as the Tooltip for
-        the system default.
-
-    \return
-        Nothing.
-    */
-    void setDefaultTooltip(const String& tooltipType);
-
-    /*!
-    \brief
-        return a poiter to the system default tooltip.  May return 0.
-
-    \return
-        Pointer to the current system default tooltip.  May return 0 if
-        no system default tooltip is available.
-     */
-    Tooltip* getDefaultTooltip(void) const;
-
-	/*!
-	\brief
-		Internal method to directly set the current modal target.
-
-	\note
-		This method is called internally by Window, and must be used by client code.
-		Doing so will most likely not have the expected results.
-	*/
-	void setModalTarget(Window* target)		{d_modalTarget = target;}
-
-	/*!
-	\brief
-		Return a pointer to the Window that is currently the modal target.
-
-	\return
-		Pointer to the current modal target. NULL if there is no modal target.
-	*/
-	Window* getModalTarget(void) const		{return d_modalTarget;}
 
     /*!
     \brief
@@ -800,22 +426,6 @@ public:
     */
     static const String getDefaultXMLParserName();
     
-    /*!
-    \brief
-        Perform updates with regards to the window that contains the mouse
-        cursor, firing any required MouseEnters / MouseLeaves events.
-    
-    \note
-        The CEGUI system components call this member as a matter of course,
-        in most cases there will be no need for user / client code to call this
-        member directly.
-    
-    \return
-        - true if the window containing the mouse had changed.
-        - false if the window containing the mouse had not changed.
-    */
-    bool updateWindowContainingMouse();
-
     /*!
     \brief
         Retrieve the image codec to be used by the system.
@@ -932,254 +542,11 @@ public:
     //! destroy a RegexMatcher instance returned by System::createRegexMatcher.
     void destroyRegexMatcher(RegexMatcher& rm) const;
 
-	/*************************************************************************
-		Input injection interface
-	*************************************************************************/
-	/*!
-	\brief
-		Method that injects a mouse movement event into the system
+    //! call this to ensure system-level time based updates occur.
+    bool injectTimePulse(float timeElapsed);
 
-	\param delta_x
-		amount the mouse moved on the x axis.
-
-	\param delta_y
-		amount the mouse moved on the y axis.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectMouseMove(float delta_x, float delta_y);
-
-
-	/*!
-	\brief
-		Method that injects that the mouse has left the application window
-
-	\return
-		- true if the generated mouse move event was handled.
-		- false if the generated mouse move event was not handled.
-	*/
-	bool	injectMouseLeaves(void);
-
-
-	/*!
-	\brief
-		Method that injects a mouse button down event into the system.
-
-	\param button
-		One of the MouseButton values indicating which button was pressed.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectMouseButtonDown(MouseButton button);
-
-
-	/*!
-	\brief
-		Method that injects a mouse button up event into the system.
-
-	\param button
-		One of the MouseButton values indicating which button was released.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectMouseButtonUp(MouseButton button);
-
-
-	/*!
-	\brief
-		Method that injects a key down event into the system.
-
-	\param key_code
-		uint value indicating which key was pressed.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectKeyDown(uint key_code);
-
-
-	/*!
-	\brief
-		Method that injects a key up event into the system.
-
-	\param key_code
-		uint value indicating which key was released.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectKeyUp(uint key_code);
-
-
-	/*!
-	\brief
-		Method that injects a typed character event into the system.
-
-	\param code_point
-		Unicode or ASCII (depends on used String class) code point of the character that was typed.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectChar(String::value_type code_point);
-
-
-	/*!
-	\brief
-		Method that injects a mouse-wheel / scroll-wheel event into the system.
-
-	\param delta
-		float value representing the amount the wheel moved.
-
-	\return
-		- true if the input was processed by the gui system.
-		- false if the input was not processed by the gui system.
-	*/
-	bool	injectMouseWheelChange(float delta);
-
-
-	/*!
-	\brief
-		Method that injects a new position for the mouse cursor.
-
-	\param x_pos
-		New absolute pixel position of the mouse cursor on the x axis.
-
-	\param y_pos
-		New absolute pixel position of the mouse cursoe in the y axis.
-
-	\return
-		- true if the generated mouse move event was handled.
-		- false if the generated mouse move event was not handled.
-	*/
-	bool	injectMousePosition(float x_pos, float y_pos);
-
-
-	/*!
-	\brief
-		Method to inject time pulses into the system.
-
-	\param timeElapsed
-		float value indicating the amount of time passed, in seconds, since the last time this method was called.
-
-	\return
-		Currently, this method always returns true.
-	*/
-	bool	injectTimePulse(float timeElapsed);
-
-    /*!
-    \brief
-        Function to directly inject a mouse button click event.
-        
-        Here 'click' means a mouse button down event followed by a mouse
-        button up event.
-
-    \note
-        Under normal, default settings, this event is automatically generated by
-        the system from the regular up and down events you inject.  You may use
-        this function directly, though you'll probably want to disable the
-        automatic click event generation first by using the
-        setMouseClickEventGenerationEnabled function - this setting controls the
-        auto-generation of events and also determines the default 'handled'
-        state of the injected click events according to the rules used for
-        mouse up/down events.
-
-	\param button
-		One of the MouseButton enumerated values.
-    
-    \return
-        - true if some window or handler reported that it handled the event.
-        - false if nobody handled the event.
-    */
-    bool injectMouseButtonClick(const MouseButton button);
-
-    /*!
-    \brief
-        Function to directly inject a mouse button double-click event.
-        
-        Here 'double-click' means a single mouse button had the sequence down,
-        up, down within a predefined period of time.
-
-    \note
-        Under normal, default settings, this event is automatically generated by
-        the system from the regular up and down events you inject.  You may use
-        this function directly, though you'll probably want to disable the
-        automatic click event generation first by using the
-        setMouseClickEventGenerationEnabled function - this setting controls the
-        auto-generation of events and also determines the default 'handled'
-        state of the injected click events according to the rules used for
-        mouse up/down events.
-
-	\param button
-		One of the MouseButton enumerated values.
-    
-    \return
-        - true if some window or handler reported that it handled the event.
-        - false if nobody handled the event.
-    */
-    bool injectMouseButtonDoubleClick(const MouseButton button);
-
-    /*!
-    \brief
-        Function to directly inject a mouse button triple-click event.
-        
-        Here 'triple-click' means a single mouse button had the sequence down,
-        up, down, up, down within a predefined period of time.
-
-    \note
-        Under normal, default settings, this event is automatically generated by
-        the system from the regular up and down events you inject.  You may use
-        this function directly, though you'll probably want to disable the
-        automatic click event generation first by using the
-        setMouseClickEventGenerationEnabled function - this setting controls the
-        auto-generation of events and also determines the default 'handled'
-        state of the injected click events according to the rules used for
-        mouse up/down events.
-
-	\param button
-		One of the MouseButton enumerated values.
-    
-    \return
-        - true if some window or handler reported that it handled the event.
-        - false if nobody handled the event.
-    */
-    bool injectMouseButtonTripleClick(const MouseButton button);
-    
-    /*!
-    \brief
-        Tells the system to perform a clipboard copy on currently active widget
-        
-    \return
-        true if the copy was successful, false if it was denied
-    */
-    bool injectCopyRequest();
-    
-    /*!
-    \brief
-        Tells the system to perform a clipboard cut on currently active widget
-     
-    \return
-        true if the cut was successful, false if it was denied
-    */
-    bool injectCutRequest();
-    
-    /*!
-    \brief
-        Tells the system to perform a clipboard paste to the currently active widget
-     
-    \return
-        true if the paste was successful, false if it was denied
-    */
-    bool injectPasteRequest();
+    GUIContext& createGUIContext(RenderTarget& rt);
+    void destroyGUIContext(GUIContext& context);
 
 private:
     // unimplemented constructors / assignment
@@ -1229,75 +596,6 @@ private:
     */
     ~System(void);
 
-	/*!
-	\brief
-		Given Point \a pt, return a pointer to the Window that should receive a mouse input if \a pt is the mouse location.
-
-	\param pt
-		Point object describing a screen location in pixels.
-
-    \param allow_disabled
-        Specifies whether a disabled window may be returned.
-
-	\return
-		Pointer to a Window object that should receive mouse input with the system in its current state and the mouse at location \a pt.
-	*/
-	Window*	getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
-
-
-	/*!
-	\brief
-		Return a pointer to the Window that should receive keyboard input considering the current modal target.
-
-	\return
-		Pointer to a Window object that should receive the keyboard input.
-	*/
-	Window* getKeyboardTargetWindow(void) const;
-
-
-	/*!
-	\brief
-		Return a pointer to the next window that is to receive the input if the given Window did not use it.
-
-	\param w
-		Pointer to the Window that just received the input.
-
-	\return
-		Pointer to the next window to receive the input.
-	*/
-	Window* getNextTargetWindow(Window* w) const;
-
-
-	/*!
-	\brief
-		Translate a MouseButton value into the corresponding SystemKey value
-
-	\param btn
-		MouseButton value describing the value to be converted
-
-	\return
-		SystemKey value that corresponds to the same button as \a btn
-	*/
-	SystemKey	mouseButtonToSyskey(MouseButton btn) const;
-
-
-	/*!
-	\brief
-		Translate a Key::Scan value into the corresponding SystemKey value.
-
-		This takes key direction into account, since we map two keys onto one value.
-
-	\param key
-		Key::Scan value describing the value to be converted
-
-	\param direction
-		true if the key is being pressed, false if the key is being released.
-
-	\return
-		SystemKey value that corresponds to the same key as \a key, or 0 if key was not a system key.
-	*/
-	SystemKey	keyCodeToSyskey(Key::Scan key, bool direction);
-
     //! output the standard log header
     void outputLogHeader();
 
@@ -1316,9 +614,6 @@ private:
     //! handle cleanup of the XML parser
     void cleanupXMLParser();
 
-    //! common function used for injection of mouse positions and movements
-    bool mouseMoveInjection_impl(MouseEventArgs& ma);
-
     //! setup image codec 
     void setupImageCodec(const String& codecName);
 
@@ -1328,71 +623,14 @@ private:
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
 
-    //! return common ancestor of two windows.
-    Window* getCommonAncestor(Window* w1, Window* w2);
-
-    //! call some function for a chain of windows: (top, bottom]
-    void notifyMouseTransition(Window* top, Window* bottom,
-                               void (Window::*func)(MouseEventArgs&),
-                               MouseEventArgs& args);
-    //! create a window of type d_defaultTooltipType for use as the Tooltip
-    void createSystemOwnedDefaultTooltipWindow() const;
-    //! destroy the default tooltip window if the system owns it.
-    void destroySystemOwnedDefaultTooltipWindow();
-
 	/*************************************************************************
 		Handlers for System events
 	*************************************************************************/
 	/*!
 	\brief
-		Handler called when the main system GUI Sheet (or root window) is changed.
-
-		\a e is a WindowEventArgs with 'window' set to the old root window.
-	*/
-	void	onGUISheetChanged(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the single-click timeout value is changed.
-	*/
-	void	onSingleClickTimeoutChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the multi-click timeout value is changed.
-	*/
-	void	onMultiClickTimeoutChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the size of the multi-click tolerance area is changed.
-	*/
-	void	onMultiClickAreaSizeChanged(EventArgs& e);
-
-
-	/*!
-	\brief
 		Handler called when the default system font is changed.
 	*/
 	void	onDefaultFontChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the default system mouse cursor image is changed.
-	*/
-	void	onDefaultMouseCursorChanged(EventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called when the mouse movement scaling factor is changed.
-	*/
-	void	onMouseMoveScalingChanged(EventArgs& e);
-
 
 	/*************************************************************************
 		Implementation Data
@@ -1401,47 +639,16 @@ private:
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
 	bool d_ourResourceProvider;
     Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
-	bool		d_gui_redraw;		//!< True if GUI should be re-drawn, false if render should re-use last times queue.
-
-	Window*		d_wndWithMouse;		//!< Pointer to the window that currently contains the mouse.
-	Window*		d_activeSheet;		//!< The active GUI sheet (root window)
-	Window*		d_modalTarget;		//!< Pointer to the window that is the current modal target. NULL is there is no modal target.
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
-
-	uint		d_sysKeys;			//!< Current set of system keys pressed (in mk1 these were passed in, here we track these ourself).
-	bool		d_lshift;			//!< Tracks state of left shift.
-	bool		d_rshift;			//!< Tracks state of right shift.
-	bool		d_lctrl;			//!< Tracks state of left control.
-	bool		d_rctrl;			//!< Tracks state of right control.
-	bool		d_lalt;				//!< Tracks state of left alt.
-	bool		d_ralt;				//!< Tracks state of right alt.
-
-	double		d_click_timeout;	//!< Timeout value, in seconds, used to generate a single-click (button down then up)
-	double		d_dblclick_timeout;	//!< Timeout value, in seconds, used to generate multi-click events (botton down, then up, then down, and so on).
-	Sizef		d_dblclick_size;	//!< Size of area the mouse can move and still make multi-clicks.
-
-	MouseClickTrackerImpl* const	d_clickTrackerPimpl;		//!< Tracks mouse button click generation.
-
-	// mouse cursor related
-	const Image*	d_defaultMouseCursor;		//!< Image to be used as the default mouse cursor.
 
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.
 	String			d_termScriptName;		//!< Name of the script to run upon system shutdown.
 
-	float	d_mouseScalingFactor;			//!< Scaling applied to mouse movement inputs.
-
     XMLParser*  d_xmlParser;        //!< XMLParser object we use to process xml files.
     bool        d_ourXmlParser;     //!< true when we created the xml parser.
     DynamicModule* d_parserModule;  //! pointer to parser module.
-
-    //! System default tooltip object.
-    mutable Tooltip* d_defaultTooltip;
-    //! true if System created d_defaultTooltip.
-    mutable bool d_weOwnTooltip;
-    //! type of window to create as d_defaultTooltip
-    String d_defaultTooltipType;
 
     static String   d_defaultXMLParserName; //!< Holds name of default XMLParser
 
@@ -1459,8 +666,9 @@ private:
     bool d_ourLogger;
     //! currently set global RenderedStringParser.
     RenderedStringParser* d_customRenderedStringParser;
-    //! true if mouse click events will be automatically generated.
-    bool d_generateMouseClickEvents;
+
+    typedef std::vector<GUIContext* CEGUI_VECTOR_ALLOC(GUIContext*)> GUIContextCollection;
+    GUIContextCollection d_guiContexts;
 };
 
 } // End of  CEGUI namespace section
