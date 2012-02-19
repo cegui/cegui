@@ -66,6 +66,9 @@ void OpenGLESRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
+
+    RenderTargetEventArgs args(*this);
+    fireEvent(EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//

@@ -62,6 +62,9 @@ void DirectFBRenderTarget::draw(const RenderQueue& queue)
 void DirectFBRenderTarget::setArea(const Rect& area)
 {
     d_area = area;
+
+    RenderTargetEventArgs args(*this);
+    fireEvent(EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//
