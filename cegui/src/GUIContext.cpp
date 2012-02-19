@@ -311,7 +311,7 @@ void GUIContext::setMouseMoveScalingFactor(float factor)
 {
     d_mouseMovementScalingFactor = factor;
 
-    GUIContextEventArgs args(*this);
+    GUIContextEventArgs args(this);
     onMouseMoveScalingFactorChanged(args);
 }
 
@@ -326,7 +326,7 @@ void GUIContext::setMouseButtonClickTimeout(float seconds)
 {
     d_mouseButtonClickTimeout = seconds;
 
-    GUIContextEventArgs args(*this);
+    GUIContextEventArgs args(this);
     onMouseButtonClickTimeoutChanged(args);
 }
 
@@ -341,7 +341,7 @@ void GUIContext::setMouseButtonMultiClickTimeout(float seconds)
 {
     d_mouseButtonMultiClickTimeout = seconds;
 
-    GUIContextEventArgs args(*this);
+    GUIContextEventArgs args(this);
     onMouseButtonMultiClickTimeoutChanged(args);
 }
 
@@ -356,7 +356,7 @@ void GUIContext::setMouseButtonMultiClickTolerance(const Sizef& sz)
 {
     d_mouseButtonMultiClickTolerance = sz;
 
-    GUIContextEventArgs args(*this);
+    GUIContextEventArgs args(this);
     onMouseButtonMultiClickToleranceChanged(args);
 }
 

@@ -62,7 +62,7 @@ void NullRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
 
-    RenderTargetEventArgs args(*this);
+    RenderTargetEventArgs args(this);
     fireEvent(EventAreaChanged, args);
 }
 

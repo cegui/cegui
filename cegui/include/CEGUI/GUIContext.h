@@ -41,12 +41,12 @@ struct MouseClickTracker;
 class CEGUIEXPORT GUIContextEventArgs : public EventArgs
 {
 public:
-    GUIContextEventArgs(GUIContext& context):
+    GUIContextEventArgs(GUIContext* context):
         context(context)
     {}
 
-    //! reference to the GUIContext that triggered the event.
-    GUIContext& context;
+    //! pointer to the GUIContext that triggered the event.
+    GUIContext* context;
 };
 
 class CEGUIEXPORT GUIContext : public RenderingSurface,

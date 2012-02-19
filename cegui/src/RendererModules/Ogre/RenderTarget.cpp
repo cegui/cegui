@@ -78,7 +78,7 @@ void OgreRenderTarget::setArea(const Rectf& area)
 
     d_matrixValid = false;
 
-    RenderTargetEventArgs args(*this);
+    RenderTargetEventArgs args(this);
     fireEvent(EventAreaChanged, args);
 }
 
