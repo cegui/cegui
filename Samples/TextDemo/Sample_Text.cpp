@@ -42,7 +42,7 @@ bool TextDemo::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     // We need a font
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Font defaulting
@@ -65,7 +65,7 @@ bool TextDemo::initialiseSample()
     // set the background image
     background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().setGUISheet(background);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
     // Load our layout as a basic
     background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
@@ -107,7 +107,7 @@ void TextDemo::initStaticText()
 
 void TextDemo::initSingleLineEdit()
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
     // Only accepts digits for the age field
     if (root->isChild("Root/TextDemo/editAge"))
     {
@@ -131,7 +131,7 @@ void TextDemo::initMultiLineEdit()
 
 void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
     if (root->isChild(radio))
     {
         RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
@@ -142,7 +142,7 @@ void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 
 void TextDemo::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
     if (root->isChild(widget))
     {
         Window* window = root->getChild(widget);
@@ -152,7 +152,7 @@ void TextDemo::subscribeEvent(const String& widget, const String& event, const E
 
 bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
     // Check
     if (root->isChild(radio))
     {
@@ -164,7 +164,7 @@ bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 
 bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
     // Check
     if (root->isChild(checkbox))
     {
@@ -176,7 +176,7 @@ bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 
 bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
     if (root->isChild("Root/TextDemo/StaticText"))
     {
@@ -208,7 +208,7 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 
 bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = System::getSingleton().getGUISheet();
+    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
     if (root->isChild("Root/TextDemo/editMulti"))
     {

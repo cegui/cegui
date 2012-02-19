@@ -1692,6 +1692,16 @@ void register_Checkbox_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            Checkbox_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::EventSet::getScriptModule
         
             typedef ::CEGUI::ScriptModule * ( Checkbox_wrapper::*getScriptModule_function_type )(  ) const;

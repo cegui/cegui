@@ -9,6 +9,7 @@ namespace Key
 
 enum Scan
 {
+	Unknown         =0x00,
 	Escape          =0x01,
 	One             =0x02,
 	Two             =0x03,
@@ -158,18 +159,3 @@ enum Scan
 
 } // Key
 
-
-
-/***********************************************************************
-	SystemKey
-***********************************************************************/
-enum SystemKey
-{
-	LeftMouse		= 0x01,			//!< The left mouse button.
-	RightMouse		= 0x02,			//!< The right mouse button.
-	Shift			= 0x04,			//!< Either shift key.
-	Control			= 0x08,			//!< Either control key.
-	MiddleMouse		= 0x10,			//!< The middle mouse button.
-	X1Mouse			= 0x20,			//!< The first 'extra' mouse button
-	X2Mouse			= 0x40			//!< The second 'extra' mouse button.
-};

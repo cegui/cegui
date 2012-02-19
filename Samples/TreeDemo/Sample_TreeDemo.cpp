@@ -128,7 +128,7 @@ bool TreeDemoSample::initialiseSample()
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
-   System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME "/MouseArrow");
+   System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
@@ -147,7 +147,7 @@ bool TreeDemoSample::initialiseSample()
    // set the background image
    background->setProperty("Image", "BackgroundImage");
    // install this as the root GUI sheet
-   System::getSingleton().setGUISheet(background);
+   System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 

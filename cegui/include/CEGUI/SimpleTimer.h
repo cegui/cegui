@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIRenderingRoot.h
-    created:    Mon Jan 12 2009
-    author:     Paul D Turner
+    filename:   SimpleTimer.h
+    created:    Sat Feb 18 2012
+    author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,21 +25,30 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIRenderingRoot_h_
-#define _CEGUIRenderingRoot_h_
+#ifndef _CEGUISimpleTimer_h_
+#define _CEGUISimpleTimer_h_
 
-#include "CEGUI/RenderingSurface.h"
+#include "CEGUI/Base.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIEXPORT RenderingRoot : public RenderingSurface
+
+//! Simple timer class.
+class CEGUIEXPORT SimpleTimer
 {
+    double d_baseTime;
+
 public:
-    //! Constructor.
-    RenderingRoot(RenderTarget& target);
+    //! returns time in seconds
+    static double currentTime();
+
+    SimpleTimer() : d_baseTime(currentTime()) {}
+
+    void restart() { d_baseTime = currentTime(); }
+    double elapsed() { return currentTime() - d_baseTime; }
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIRenderingRoot_h_
+#endif
+

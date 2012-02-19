@@ -62,7 +62,7 @@ protected:
 
     static void GLFWCALL glfwWindowResizeCallback(int width, int height);
 
-    static unsigned int GlfwToCeguiKey(int glfwKey);
+    static CEGUI::Key::Scan GlfwToCeguiKey(int glfwKey);
     static CEGUI::MouseButton GlfwToCeguiMouseButton(int glfwButton);
 
     /*************************************************************************

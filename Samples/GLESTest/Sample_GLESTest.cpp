@@ -116,7 +116,7 @@ int main(int argc, char* argv[])
     initialiseDefaultResourceGroups();
 
     CEGUI::SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    CEGUI::System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     CEGUI::WindowManager& winMgr(CEGUI::WindowManager::getSingleton());
     CEGUI::Window* root = winMgr.createWindow("DefaultWindow", "root");
     CEGUI::Window* fw = root->createChild("TaharezLook/FrameWindow");
@@ -124,7 +124,7 @@ int main(int argc, char* argv[])
     fw->setSize(CEGUI::USize(CEGUI::UDim(0.5, 0), CEGUI::UDim(0.5, 0)));
     fw->setText("OpenGL ES 1 Test");
 
-    CEGUI::System::getSingleton().setGUISheet(root);
+    CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(root);
 
     // Main looop
     bool running = true;
@@ -148,7 +148,7 @@ int main(int argc, char* argv[])
             }
 
             case MotionNotify:
-                CEGUI::System::getSingleton().injectMousePosition(evt.xmotion.x, evt.xmotion.y);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(evt.xmotion.x, evt.xmotion.y);
                 break;
 
             case ButtonPress:
@@ -161,7 +161,7 @@ int main(int argc, char* argv[])
                 else
                     break;
 
-                CEGUI::System::getSingleton().injectMouseButtonDown(btn);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(btn);
                 break;
             }
                 
@@ -175,7 +175,7 @@ int main(int argc, char* argv[])
                 else
                     break;
 
-                CEGUI::System::getSingleton().injectMouseButtonUp(btn);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(btn);
                 break;
             }
                 
@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 
         glClear(GL_COLOR_BUFFER_BIT);
 
-        CEGUI::System::getSingleton().renderGUI();
+        CEGUI::System::getSingleton().renderAllGUIContexts();
 
         eglSwapBuffers(egldpy, surface);
     }

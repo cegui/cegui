@@ -1957,30 +1957,6 @@ void register_DragContainer_class(){
         }
         { //::CEGUI::DragContainer::setDragCursorImage
         
-            typedef void ( ::CEGUI::DragContainer::*setDragCursorImage_function_type )( ::CEGUI::MouseCursorImage ) ;
-            
-            DragContainer_exposer.def( 
-                "setDragCursorImage"
-                , setDragCursorImage_function_type( &::CEGUI::DragContainer::setDragCursorImage )
-                , ( bp::arg("image") )
-                , "*!\n\
-                    \n\
-                        Set the Image to be used for the mouse cursor when a drag operation is\n\
-                        in progress.\n\
-            \n\
-                        This method may be used during a drag operation to update the current mouse\n\
-                        cursor image.\n\
-            \n\
-                    @param image\n\
-                        One of the MouseCursorImage enumerated values.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::DragContainer::setDragCursorImage
-        
             typedef void ( ::CEGUI::DragContainer::*setDragCursorImage_function_type )( ::CEGUI::String const & ) ;
             
             DragContainer_exposer.def( 
@@ -2473,6 +2449,16 @@ void register_DragContainer_class(){
                 "getRenderedStringParser"
                 , getRenderedStringParser_function_type(&::CEGUI::Window::getRenderedStringParser)
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            DragContainer_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::EventSet::getScriptModule

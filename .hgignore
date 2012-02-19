@@ -7,12 +7,15 @@ Thumbs.db
 *.tmp
 *~
 
+*.swp
 *.orig
 *.rej
 *.pyc
 
 dependencies/
 build/
+debug/
+release/
 
 xcuserdata/
 *.xcworkspace/

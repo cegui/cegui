@@ -6,7 +6,7 @@
 	purpose:	Defines interface for the MouseCursor class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -32,7 +32,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Singleton.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"
 #include "CEGUI/EventSet.h"
@@ -46,40 +45,19 @@
 #	pragma warning(disable : 4251)
 #endif
 
-
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-	Enumeration of special values used for mouse cursor settings in Window objects.
-*/
-enum MouseCursorImage
-{		
-	BlankMouseCursor	= 0,		//!< No image should be displayed for the mouse cursor.
-	DefaultMouseCursor	= -1		//!< The default mouse cursor image should be displayed.
-};
-
-
-/*!
-\brief
-	Class that allows access to the GUI system mouse cursor.
-
-	The MouseCursor provides functionality to access the position and imagery of the mouse cursor / pointer
-*/
+//!	Class that provides mouse cursor support.
 class CEGUIEXPORT MouseCursor :
     public EventSet,
-    public Singleton<MouseCursor>,
     public AllocatedObject<MouseCursor>
 {
 public:
-	static const String EventNamespace;				//!< Namespace for global events
+    //! Namespace for global events.
+	static const String EventNamespace;
 
-	/*************************************************************************
-		Event name constants
-	*************************************************************************/
-	// generated internally by MouseCursor
-    /** Event fired when the mouse cursor image is changed.
+    /** Name of Event fired when the mouse cursor image is changed.
      * Handlers are passed a const MouseCursorEventArgs reference with
      * MouseCursorEventArgs::mouseCursor set to the MouseCursor that has
      * had it's image changed, and MouseCursorEventArgs::image set to the
@@ -87,6 +65,14 @@ public:
      */
 	static const String EventImageChanged;
 
+    /** Name of Event fired when the Image to be used as a default mouse cursor
+     * image is changed.
+     * Handlers are passed a const MouseCursorEventArgs reference with
+     * MouseCursorEventArgs::mouseCursor set to the MouseCursor that has
+     * had it's default image changed, and MouseCursorEventArgs::image set to
+     * the Image that is now set as the default (may be 0).
+     */
+	static const String EventDefaultImageChanged;
 
 	/*!
 	\brief
@@ -100,26 +86,6 @@ public:
 		Destructor for MouseCursor objects
 	*/
 	~MouseCursor(void);
-
-
-	/*!
-	\brief
-		Return singleton MouseCursor object
-
-	\return
-		Singleton MouseCursor object
-	*/
-	static	MouseCursor&	getSingleton(void);
-
-
-	/*!
-	\brief
-		Return pointer to singleton MouseCursor object
-
-	\return
-		Pointer to singleton MouseCursor object
-	*/
-	static	MouseCursor*	getSingletonPtr(void);
 
 
 	/*!
@@ -151,6 +117,39 @@ public:
 		The current image used to draw mouse cursor.
 	*/
 	const Image*	getImage(void) const	{return d_cursorImage;}
+
+    /*!
+    \brief
+        Set the image to be used as the default mouse cursor.
+
+    \param image
+        Pointer to an image object that is to be used as the default mouse
+        cursor.  To have no cursor rendered by default, you can specify 0 here.
+    */
+    void setDefaultImage(const Image* image);
+
+    /*!
+    \brief
+        Set the image to be used as the default mouse cursor.
+
+    \param name
+        String object that contains the name of the Image that is to be used.
+
+    \exception
+        UnknownObjectException thrown if no Image named \a name exists.
+    */
+    void setDefaultImage(const String& name);
+
+    /*!
+    \brief
+        Return the currently set default mouse cursor image
+
+    \return
+        Pointer to the current default image used for the mouse cursor.  May
+        return 0 if default cursor has not been set, or has intentionally
+        been set to 0 - which results in a blank default cursor.
+    */
+    const Image* getDefaultImage() const;
 
 
 	/*!
@@ -365,11 +364,10 @@ protected:
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
-	/*!
-	\brief
-		event triggered internally when image of mouse cursor changes
-	*/
-	virtual void	onImageChanged(MouseCursorEventArgs& e);
+    //! Event triggered internally when mouse cursor image is changed.
+    virtual void onImageChanged(MouseCursorEventArgs& e);
+    //! Event triggered internally when mouse cursor default image is changed.
+    virtual void onDefaultImageChanged(MouseCursorEventArgs& e);
 
 
 private:
@@ -391,7 +389,10 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	const Image*	d_cursorImage;		//!< Image that is currently set as the mouse cursor.
+    //! Image that is currently set as the mouse cursor.
+	const Image* d_cursorImage;
+    //! Image that will be used as the default image for this mouse cursor.
+	const Image* d_defaultCursorImage;
 	Vector2f d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.

@@ -115,12 +115,6 @@ void register_enumerations(){
         .export_values()
         ;
 
-    bp::enum_< CEGUI::MouseCursorImage>("MouseCursorImage")
-        .value("BlankMouseCursor", CEGUI::BlankMouseCursor)
-        .value("DefaultMouseCursor", CEGUI::DefaultMouseCursor)
-        .export_values()
-        ;
-
     bp::enum_< CEGUI::QuadSplitMode>("QuadSplitMode")
         .value("TopLeftToBottomRight", CEGUI::TopLeftToBottomRight)
         .value("BottomLeftToTopRight", CEGUI::BottomLeftToTopRight)
@@ -139,18 +133,6 @@ void register_enumerations(){
         .value("RQ_USER_4", CEGUI::RQ_USER_4)
         .value("RQ_OVERLAY", CEGUI::RQ_OVERLAY)
         .value("RQ_USER_5", CEGUI::RQ_USER_5)
-        .export_values()
-        ;
-
-    bp::enum_< CEGUI::SystemKey>("SystemKey")
-        .value("LeftMouse", CEGUI::LeftMouse)
-        .value("RightMouse", CEGUI::RightMouse)
-        .value("Shift", CEGUI::Shift)
-        .value("Control", CEGUI::Control)
-        .value("MiddleMouse", CEGUI::MiddleMouse)
-        .value("X1Mouse", CEGUI::X1Mouse)
-        .value("X2Mouse", CEGUI::X2Mouse)
-        .value("Alt", CEGUI::Alt)
         .export_values()
         ;
 

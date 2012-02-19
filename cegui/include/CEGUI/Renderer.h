@@ -86,15 +86,13 @@ class CEGUIEXPORT Renderer :
 public:
     /*!
     \brief
-        Return the default rendering root for the renderer.  The default
-        rendering root is typically a RenderingRoot that targets the entire
-        screen (or rendering window).
+        Returns the default RenderTarget object.  The default render target is
+        is typically one that targets the entire screen (or rendering window).
 
     \return
-        RenderingRoot object that is the default RenderingSurface provided by
-        the Renderer.
+        Reference to a RenderTarget object.
     */
-    virtual RenderingRoot& getDefaultRenderingRoot() = 0;
+    virtual RenderTarget& getDefaultRenderTarget() = 0;
 
     /*!
     \brief
