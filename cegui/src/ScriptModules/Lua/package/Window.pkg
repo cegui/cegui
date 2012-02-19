@@ -99,7 +99,6 @@ class Window : public NamedElement
 
     const Image* getMouseCursor(bool useDefault = true) const;
     void setMouseCursor(const Image* image);
-    void setMouseCursor(MouseCursorImage image);
     void setMouseCursor(utf8string name);
 
     //void* getUserData(void) const;
@@ -246,4 +245,6 @@ class Window : public NamedElement
 
     void clonePropertiesTo(Window& target) const;
     void cloneChildWidgetsTo(Window& target) const;
+
+    GUIContext& getGUIContext() const;
 };

@@ -19,7 +19,10 @@ $pfile "ImageManager.pkg"
 
 $pfile "Iterators.pkg"
 
+$pfile "SimpleTimer.pkg"
+
 $pfile "Key.pkg"
+$pfile "SystemKeys.pkg"
 $pfile "InputEvent.pkg"
 $pfile "EventSet.pkg"
 
@@ -29,6 +32,7 @@ $pfile "NamedElement.pkg"
 $pfile "Window.pkg"
 $pfile "CoordConverter.pkg"
 $pfile "System.pkg"
+$pfile "GUIContext.pkg"
 
 $pfile "WindowManager.pkg"
 $pfile "WindowFactoryManager.pkg"
@@ -44,10 +48,12 @@ $pfile "RenderingContext.pkg"
 $pfile "RenderEffect.pkg"
 $pfile "GeometryBuffer.pkg"
 $pfile "RenderingSurface.pkg"
-$pfile "RenderingRoot.pkg"
+$pfile "RenderTarget.pkg"
 $pfile "RenderingWindow.pkg"
+$pfile "RenderQueue.pkg"
 $pfile "Renderer.pkg"
 $pfile "Texture.pkg"
+$pfile "TextureTarget.pkg"
 
 // Animation system classes
 $pfile "KeyFrame.pkg"
