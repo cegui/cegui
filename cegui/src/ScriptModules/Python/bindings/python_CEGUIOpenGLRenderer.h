@@ -6,3 +6,4 @@
 
 #include "CEGUI/RendererModules/OpenGL/Renderer.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"

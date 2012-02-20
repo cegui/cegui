@@ -39,7 +39,7 @@ namespace CEGUI
     OpenGLES implementation of a RenderTarget that represents am on-scren
     viewport.
 */
-class OPENGLES_GUIRENDERER_API OpenGLESViewportTarget : public OpenGLESRenderTarget
+class OPENGLES_GUIRENDERER_API OpenGLESViewportTarget : public OpenGLESRenderTarget<>
 {
 public:
     /*!

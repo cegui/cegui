@@ -637,7 +637,7 @@ const CEGUI::Rectf& OpenGL3Renderer::getActiveViewPort()
 
 
 //----------------------------------------------------------------------------//
-void OpenGL3Renderer::setActiveRenderTarget(OpenGL3RenderTarget* renderTarget)
+void OpenGL3Renderer::setActiveRenderTarget(RenderTarget* renderTarget)
 {
     d_activeRenderTarget = renderTarget;
 }
@@ -645,7 +645,7 @@ void OpenGL3Renderer::setActiveRenderTarget(OpenGL3RenderTarget* renderTarget)
 
 
 //----------------------------------------------------------------------------//
-OpenGL3RenderTarget* OpenGL3Renderer::getActiveRenderTarget()
+RenderTarget* OpenGL3Renderer::getActiveRenderTarget()
 {
     return d_activeRenderTarget;
 }

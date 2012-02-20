@@ -45,7 +45,8 @@ namespace CEGUI
 class IrrlichtRenderer;
 
 //! Intermediate RenderTarget implementing common parts for Irrlicht engine.
-class IRR_GUIRENDERER_API IrrlichtRenderTarget : public virtual RenderTarget
+template <typename T = RenderTarget>
+class IRR_GUIRENDERER_API IrrlichtRenderTarget : public T
 {
 public:
     //! Constructor

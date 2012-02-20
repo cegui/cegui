@@ -63,3 +63,8 @@ bool OpenGL3ViewportTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of base class
+#include "./RenderTarget.inl"
+

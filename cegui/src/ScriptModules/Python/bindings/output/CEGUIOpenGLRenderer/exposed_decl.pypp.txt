@@ -5,7 +5,8 @@
 ~@casting_operator_t@operator bool@bool ( ::std::basic_ostream<char,std::char_traits<char> >::sentry::* )(  ) constbool ( ::std::basic_ostream<char,std::char_traits<char> >::sentry::* )(  ) const
 ~@destructor_t@~bidirectional_iterator_tag@ ( ::std::bidirectional_iterator_tag::* )(  )  ( ::std::bidirectional_iterator_tag::* )(  ) 
 ~@destructor_t@~_Rb_tree_node_base@ ( ::std::_Rb_tree_node_base::* )(  )  ( ::std::_Rb_tree_node_base::* )(  ) 
-+@destructor_t@~OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget::* )(  )  ( ::CEGUI::OpenGLRenderTarget::* )(  ) 
+~@destructor_t@~OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  )  ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) 
+~@destructor_t@~OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  )  ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) 
 ~@destructor_t@~multimap@ ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  )  ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) 
 ~@destructor_t@~locale@ ( ::std::locale::* )(  )  ( ::std::locale::* )(  ) 
 ~@destructor_t@~new_allocator@ ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )(  )  ( ::__gnu_cxx::new_allocator<std::_Rb_tree_node<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )(  ) 
@@ -304,6 +305,7 @@
 ~@destructor_t@~StringFastLessCompare@ ( ::CEGUI::StringFastLessCompare::* )(  )  ( ::CEGUI::StringFastLessCompare::* )(  ) 
 ~@destructor_t@~_Words@ ( ::std::ios_base::_Words::* )(  )  ( ::std::ios_base::_Words::* )(  ) 
 ~@destructor_t@~nothrow_t@ ( ::std::nothrow_t::* )(  )  ( ::std::nothrow_t::* )(  ) 
++@destructor_t@~OpenGLTextureTarget@ ( ::CEGUI::OpenGLTextureTarget::* )(  )  ( ::CEGUI::OpenGLTextureTarget::* )(  ) 
 ~@destructor_t@~basic_ios@ ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  )  ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) 
 ~@destructor_t@~basic_ios@ ( ::std::basic_ios<char, std::char_traits<char> >::* )(  )  ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) 
 ~@destructor_t@~Key@ ( ::CEGUI::Key::* )(  )  ( ::CEGUI::Key::* )(  ) 
@@ -3491,7 +3493,6 @@
 ~@class_declaration_t@DragContainer@::CEGUI::DragContainer
 ~@class_declaration_t@reverse_iterator< std::_Rb_tree_const_iterator< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > > >@::std::reverse_iterator< std::_Rb_tree_const_iterator< std::pair< const CEGUI::RenderQueueID, CEGUI::RenderQueue > > >
 ~@class_declaration_t@WidgetLookFeel@::CEGUI::WidgetLookFeel
-~@class_declaration_t@OpenGLTextureTarget@::CEGUI::OpenGLTextureTarget
 ~@class_declaration_t@ButtonBase@::CEGUI::ButtonBase
 ~@class_declaration_t@reverse_iterator< std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > >@::std::reverse_iterator< std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > >
 ~@class_declaration_t@TabButton@::CEGUI::TabButton
@@ -3536,7 +3537,6 @@
 ~@class_t@tm@::tm
 ~@class_t@ActivationEventArgs@::CEGUI::ActivationEventArgs
 ~@class_t@vector< CEGUI::OpenGLGeometryBuffer* >@::std::vector< CEGUI::OpenGLGeometryBuffer* >
-~@class_t@__add_unsigned< int >@::__gnu_cxx::__add_unsigned< int >
 ~@class_t@ctype_base@::std::ctype_base
 ~@class_t@__conditional_type< true, __gnu_cxx::__numeric_traits_integer< unsigned long >, __gnu_cxx::__numeric_traits_floating< unsigned long > >@::__gnu_cxx::__conditional_type< true, __gnu_cxx::__numeric_traits_integer< unsigned long >, __gnu_cxx::__numeric_traits_floating< unsigned long > >
 ~@class_t@ScopedConnection@::CEGUI::Event::ScopedConnection
@@ -3567,6 +3567,7 @@
 ~@class_t@vector< CEGUI::RenderingWindow* >@::std::vector< CEGUI::RenderingWindow* >
 ~@class_t@allocator< CEGUI::TextureTarget* >@::std::allocator< CEGUI::TextureTarget* >
 ~@class_t@__is_integer< signed char >@::std::__is_integer< signed char >
+~@class_t@OpenGLRenderTarget< CEGUI::RenderTarget >@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >
 ~@class_t@_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >
 ~@class_t@invalid_argument@::std::invalid_argument
 ~@class_t@AllocatedObject< CEGUI::UDim >@::CEGUI::AllocatedObject< CEGUI::UDim >
@@ -3650,7 +3651,7 @@
 ~@class_t@__truth_type< true >@::std::__truth_type< true >
 ~@class_t@_Rb_tree< unsigned int, std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > >, std::_Select1st< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >@::std::_Rb_tree< unsigned int, std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > >, std::_Select1st< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >
 ~@class_t@__remove_unsigned< unsigned int >@::__gnu_cxx::__remove_unsigned< unsigned int >
-~@class_t@__numeric_traits< char >@::__gnu_cxx::__numeric_traits< char >
+~@class_t@OpenGLRenderTarget< CEGUI::TextureTarget >@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >
 ~@class_t@iterator_traits< CEGUI::String::const_iterator >@::std::iterator_traits< CEGUI::String::const_iterator >
 ~@class_t@Event@::CEGUI::Event
 ~@class_t@rebind< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >@::std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >::rebind< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >
@@ -3705,7 +3706,7 @@
 ~@class_t@EventSet@::CEGUI::EventSet
 ~@class_t@reverse_iterator< CEGUI::String::iterator >@::std::reverse_iterator< CEGUI::String::iterator >
 ~@class_t@iterator_traits< std::_Bit_const_iterator >@::std::iterator_traits< std::_Bit_const_iterator >
-+@class_t@OpenGLRenderTarget@::CEGUI::OpenGLRenderTarget
+~@class_t@BoundSlot@::CEGUI::BoundSlot
 ~@class_t@basic_ios< wchar_t, std::char_traits< wchar_t > >@::std::basic_ios< wchar_t, std::char_traits< wchar_t > >
 ~@class_t@RenderTargetEventArgs@::CEGUI::RenderTargetEventArgs
 ~@class_t@new_allocator< std::_Rb_tree_node< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >@::__gnu_cxx::new_allocator< std::_Rb_tree_node< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >
@@ -3770,7 +3771,7 @@
 ~@class_t@allocator< char >@::std::allocator< char >
 ~@class_t@id@::std::locale::id
 ~@class_t@AllocatedObject< CEGUI::Renderer >@::CEGUI::AllocatedObject< CEGUI::Renderer >
-~@class_t@BoundSlot@::CEGUI::BoundSlot
+~@class_t@__add_unsigned< int >@::__gnu_cxx::__add_unsigned< int >
 ~@class_t@_Words@::std::ios_base::_Words
 ~@class_t@collate_byname< wchar_t >@::std::collate_byname< wchar_t >
 ~@class_t@Vector2< float >@::CEGUI::Vector2< float >
@@ -3819,12 +3820,14 @@
 ~@class_t@AllocatedObject< CEGUI::GeometryBuffer >@::CEGUI::AllocatedObject< CEGUI::GeometryBuffer >
 ~@class_t@sched_param@::sched_param
 ~@class_t@bad_exception@::std::bad_exception
++@class_t@OpenGLTextureTarget@::CEGUI::OpenGLTextureTarget
 ~@class_t@__is_char< char >@::std::__is_char< char >
 ~@class_t@random_access_iterator_tag@::std::random_access_iterator_tag
 ~@class_t@pthread_mutex_t@::pthread_mutex_t
 ~@class_t@__copy_move_backward< false, false, std::random_access_iterator_tag >@::std::__copy_move_backward< false, false, std::random_access_iterator_tag >
 ~@class_t@basic_ostream< char, std::char_traits< char > >@::std::basic_ostream< char, std::char_traits< char > >
 ~@class_t@allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >@::std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >
+~@class_t@__numeric_traits< char >@::__gnu_cxx::__numeric_traits< char >
 ~@class_t@__is_integer< short >@::std::__is_integer< short >
 ~@class_t@__is_integer< unsigned int >@::std::__is_integer< unsigned int >
 ~@class_t@new_allocator< std::_Rb_tree_node< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > >@::__gnu_cxx::new_allocator< std::_Rb_tree_node< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > >
@@ -3837,6 +3840,7 @@
 ~@member_function_t@addRef@void ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) void ( ::CEGUI::RefCounted<CEGUI::BoundSlot>::* )(  ) 
 ~@member_function_t@pubsetbuf@::std::basic_streambuf< wchar_t, std::char_traits< wchar_t > > * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,::std::streamsize ) ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> > * ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t *,::std::streamsize ) 
 ~@member_function_t@pubsetbuf@::std::basic_streambuf< char, std::char_traits< char > > * ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,::std::streamsize ) ::std::basic_streambuf<char, std::char_traits<char> > * ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,::std::streamsize ) 
++@member_function_t@restoreTexture@void ( ::CEGUI::OpenGLTextureTarget::* )(  ) void ( ::CEGUI::OpenGLTextureTarget::* )(  ) 
 ~@member_function_t@sgetc@::wint_t ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) ::wint_t ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )(  ) 
 ~@member_function_t@sgetc@int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) int ( ::std::basic_streambuf<char, std::char_traits<char> >::* )(  ) 
 +@member_function_t@getNextPOTSize@float (*)( float const )float (*)( float const )
@@ -3870,6 +3874,7 @@
 ~@member_function_t@setlen@void ( ::CEGUI::String::* )( ::size_t ) void ( ::CEGUI::String::* )( ::size_t ) 
 ~@member_function_t@seekoff@::std::wstreampos ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) ::std::wstreampos ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) 
 ~@member_function_t@seekoff@::std::streampos ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) ::std::streampos ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) 
+~@member_function_t@notifyDisplaySizeChanged@void ( ::CEGUI::MouseCursor::* )( ::CEGUI::Sizef const & ) void ( ::CEGUI::MouseCursor::* )( ::CEGUI::Sizef const & ) 
 ~@member_function_t@getSystemKeys@::CEGUI::SystemKeys const & ( ::CEGUI::GUIContext::* )(  ) const::CEGUI::SystemKeys const & ( ::CEGUI::GUIContext::* )(  ) const
 ~@member_function_t@_M_destroy@void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::std::allocator< char > const & ) void ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::std::allocator<char> const & ) 
 ~@member_function_t@_M_destroy@void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::std::allocator< wchar_t > const & ) void ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::std::allocator<wchar_t> const & ) 
@@ -3878,7 +3883,8 @@
 ~@member_function_t@_S_get_c_name@char const * (*)(  )char const * (*)(  )
 ~@member_function_t@setSize@void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size< float > const & ) void ( ::CEGUI::Rect<float>::* )( ::CEGUI::Size<float> const & ) 
 ~@member_function_t@setSize@void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) void ( ::CEGUI::Rect<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) 
-+@member_function_t@setArea@void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::Rectf const & ) void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::Rectf const & ) 
+~@member_function_t@setArea@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::Rect< float > const & ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::Rect<float> const & ) 
+~@member_function_t@setArea@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::Rect< float > const & ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::Rect<float> const & ) 
 ~@member_function_t@setArea@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::Rectf const & ) void ( ::CEGUI::RenderTarget::* )( ::CEGUI::Rectf const & ) 
 ~@member_function_t@to_int_type@int (*)( char const & )int (*)( char const & )
 ~@member_function_t@to_int_type@::wint_t (*)( wchar_t const & )::wint_t (*)( wchar_t const & )
@@ -4117,7 +4123,8 @@
 ~@member_function_t@imbue@::std::locale ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::locale const & ) ::std::locale ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::locale const & ) 
 ~@member_function_t@imbue@::std::locale ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::locale const & ) ::std::locale ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::locale const & ) 
 ~@member_function_t@setMouseButtonClickTimeout@void ( ::CEGUI::GUIContext::* )( float ) void ( ::CEGUI::GUIContext::* )( float ) 
-+@member_function_t@getArea@::CEGUI::Rectf const & ( ::CEGUI::OpenGLRenderTarget::* )(  ) const::CEGUI::Rectf const & ( ::CEGUI::OpenGLRenderTarget::* )(  ) const
+~@member_function_t@getArea@::CEGUI::Rect< float > const & ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) const::CEGUI::Rect<float> const & ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) const
+~@member_function_t@getArea@::CEGUI::Rect< float > const & ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) const::CEGUI::Rect<float> const & ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) const
 ~@member_function_t@getArea@::CEGUI::Rectf const & ( ::CEGUI::RenderTarget::* )(  ) const::CEGUI::Rectf const & ( ::CEGUI::RenderTarget::* )(  ) const
 ~@member_function_t@do_toupper@wchar_t ( ::std::ctype<wchar_t>::* )( wchar_t ) constwchar_t ( ::std::ctype<wchar_t>::* )( wchar_t ) const
 ~@member_function_t@do_toupper@wchar_t const * ( ::std::ctype<wchar_t>::* )( wchar_t *,wchar_t const * ) constwchar_t const * ( ::std::ctype<wchar_t>::* )( wchar_t *,wchar_t const * ) const
@@ -4128,6 +4135,7 @@
 ~@member_function_t@_M_move@void (*)( char *,char const *,::std::size_t )void (*)( char *,char const *,::std::size_t )
 ~@member_function_t@_M_move@void (*)( wchar_t *,wchar_t const *,::std::size_t )void (*)( wchar_t *,wchar_t const *,::std::size_t )
 ~@member_function_t@isRenderingInverted@bool ( ::CEGUI::TextureTarget::* )(  ) constbool ( ::CEGUI::TextureTarget::* )(  ) const
++@member_function_t@isRenderingInverted@bool ( ::CEGUI::OpenGLTextureTarget::* )(  ) constbool ( ::CEGUI::OpenGLTextureTarget::* )(  ) const
 ~@member_function_t@_S_format_float@void (*)( ::std::ios_base const &,char *,char )void (*)( ::std::ios_base const &,char *,char )
 ~@member_function_t@equal_range@::std::pair< std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) ::std::pair<std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > >,std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) 
 ~@member_function_t@equal_range@::std::pair< std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) const::std::pair<std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > >,std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > > ( ::std::multimap<unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot>, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( unsigned int const & ) const
@@ -4174,7 +4182,7 @@
 ~@member_function_t@resize@void ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )( ::std::size_t,::CEGUI::GeometryBuffer const * ) void ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )( ::std::size_t,::CEGUI::GeometryBuffer const * ) 
 ~@member_function_t@resize@void ( ::CEGUI::String::* )( ::size_t ) void ( ::CEGUI::String::* )( ::size_t ) 
 ~@member_function_t@resize@void ( ::CEGUI::String::* )( ::size_t,::CEGUI::utf32 ) void ( ::CEGUI::String::* )( ::size_t,::CEGUI::utf32 ) 
-~@member_function_t@notifyDisplaySizeChanged@void ( ::CEGUI::MouseCursor::* )( ::CEGUI::Sizef const & ) void ( ::CEGUI::MouseCursor::* )( ::CEGUI::Sizef const & ) 
++@member_function_t@grabTexture@void ( ::CEGUI::OpenGLTextureTarget::* )(  ) void ( ::CEGUI::OpenGLTextureTarget::* )(  ) 
 ~@member_function_t@removeEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::String const & ) 
 ~@member_function_t@removeEvent@void ( ::CEGUI::EventSet::* )( ::CEGUI::Event & ) void ( ::CEGUI::EventSet::* )( ::CEGUI::Event & ) 
 ~@member_function_t@_M_fill_insert@void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::__gnu_cxx::__normal_iterator< CEGUI::OpenGLGeometryBuffer**, std::vector< CEGUI::OpenGLGeometryBuffer* > >,::std::size_t,::CEGUI::OpenGLGeometryBuffer * const & ) void ( ::std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> >::* )( ::__gnu_cxx::__normal_iterator<CEGUI::OpenGLGeometryBuffer**,std::vector<CEGUI::OpenGLGeometryBuffer*, std::allocator<CEGUI::OpenGLGeometryBuffer*> > >,::std::size_t,::CEGUI::OpenGLGeometryBuffer * const & ) 
@@ -4251,7 +4259,8 @@
 ~@member_function_t@_M_get_Node_allocator@::std::allocator< std::_Rb_tree_node< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > > const & ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const::std::allocator<std::_Rb_tree_node<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > > const & ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const
 ~@member_function_t@write@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > > & ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t const *,::std::streamsize ) ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> > & ( ::std::basic_ostream<wchar_t, std::char_traits<wchar_t> >::* )( wchar_t const *,::std::streamsize ) 
 ~@member_function_t@write@::std::basic_ostream< char, std::char_traits< char > > & ( ::std::basic_ostream<char,std::char_traits<char> >::* )( char const *,::std::streamsize ) ::std::basic_ostream<char,std::char_traits<char> > & ( ::std::basic_ostream<char,std::char_traits<char> >::* )( char const *,::std::streamsize ) 
-+@member_function_t@updateMatrix@void ( ::CEGUI::OpenGLRenderTarget::* )(  ) constvoid ( ::CEGUI::OpenGLRenderTarget::* )(  ) const
+~@member_function_t@updateMatrix@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) constvoid ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) const
+~@member_function_t@updateMatrix@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) constvoid ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) const
 ~@member_function_t@blitFromMemory@void ( ::CEGUI::Texture::* )( void *,::CEGUI::Rectf const & ) void ( ::CEGUI::Texture::* )( void *,::CEGUI::Rectf const & ) 
 ~@member_function_t@calculateCustomOffset@void ( ::CEGUI::MouseCursor::* )(  ) constvoid ( ::CEGUI::MouseCursor::* )(  ) const
 ~@member_function_t@_M_insert_@::std::_Rb_tree_iterator< std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > > ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node_base const *,::std::_Rb_tree_node_base const *,::std::pair< const CEGUI::String, CEGUI::OpenGLTexture* > const & ) ::std::_Rb_tree_iterator<std::pair<const CEGUI::String, CEGUI::OpenGLTexture*> > ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::OpenGLTexture*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::OpenGLTexture*> > >::* )( ::std::_Rb_tree_node_base const *,::std::_Rb_tree_node_base const *,::std::pair<const CEGUI::String,CEGUI::OpenGLTexture*> const & ) 
@@ -4375,11 +4384,13 @@
 ~@member_function_t@clamp@void ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const &,::CEGUI::Size< CEGUI::UDim > const & ) void ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const &,::CEGUI::Size<CEGUI::UDim> const & ) 
 ~@member_function_t@do_transform@::std::wstring ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> > ( ::std::collate<wchar_t>::* )( wchar_t const *,wchar_t const * ) const
 ~@member_function_t@do_transform@::std::string ( ::std::collate<char>::* )( char const *,char const * ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> > ( ::std::collate<char>::* )( char const *,char const * ) const
-+@member_function_t@activate@void ( ::CEGUI::OpenGLRenderTarget::* )(  ) void ( ::CEGUI::OpenGLRenderTarget::* )(  ) 
+~@member_function_t@activate@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) 
+~@member_function_t@activate@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) 
 ~@member_function_t@activate@void ( ::CEGUI::RenderTarget::* )(  ) void ( ::CEGUI::RenderTarget::* )(  ) 
 ~@member_function_t@thousands_sep@wchar_t ( ::std::numpunct<wchar_t>::* )(  ) constwchar_t ( ::std::numpunct<wchar_t>::* )(  ) const
 ~@member_function_t@thousands_sep@char ( ::std::numpunct<char>::* )(  ) constchar ( ::std::numpunct<char>::* )(  ) const
-+@member_function_t@unprojectPoint@void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) constvoid ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) const
+~@member_function_t@unprojectPoint@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2< float > const &,::CEGUI::Vector2< float > & ) constvoid ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> & ) const
+~@member_function_t@unprojectPoint@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2< float > const &,::CEGUI::Vector2< float > & ) constvoid ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2<float> const &,::CEGUI::Vector2<float> & ) const
 ~@member_function_t@unprojectPoint@void ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) constvoid ( ::CEGUI::RenderTarget::* )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) const
 +@member_function_t@beginRendering@void ( ::CEGUI::OpenGLRenderer::* )(  ) void ( ::CEGUI::OpenGLRenderer::* )(  ) 
 ~@member_function_t@beginRendering@void ( ::CEGUI::Renderer::* )(  ) void ( ::CEGUI::Renderer::* )(  ) 
@@ -4478,6 +4489,7 @@
 ~@member_function_t@_M_lower_bound@::std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > > ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )( ::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::Event* > > const *,::std::_Rb_tree_node< std::pair< const CEGUI::String, CEGUI::Event* > > const *,::CEGUI::String const & ) const::std::_Rb_tree_const_iterator<std::pair<const CEGUI::String, CEGUI::Event*> > ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )( ::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::Event*> > const *,::std::_Rb_tree_node<std::pair<const CEGUI::String, CEGUI::Event*> > const *,::CEGUI::String const & ) const
 ~@member_function_t@_M_lower_bound@::std::_Rb_tree_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > *,::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > *,unsigned int const & ) ::std::_Rb_tree_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > *,::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > *,unsigned int const & ) 
 ~@member_function_t@_M_lower_bound@::std::_Rb_tree_const_iterator< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > const *,::std::_Rb_tree_node< std::pair< const unsigned int, CEGUI::RefCounted< CEGUI::BoundSlot > > > const *,unsigned int const & ) const::std::_Rb_tree_const_iterator<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )( ::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > const *,::std::_Rb_tree_node<std::pair<const unsigned int, CEGUI::RefCounted<CEGUI::BoundSlot> > > const *,unsigned int const & ) const
++@member_function_t@generateTextureName@::CEGUI::String (*)(  )::CEGUI::String (*)(  )
 ~@member_function_t@assign@void (*)( char &,char const & )void (*)( char &,char const & )
 ~@member_function_t@assign@char * (*)( char *,::std::size_t,char )char * (*)( char *,::std::size_t,char )
 ~@member_function_t@assign@void (*)( wchar_t &,wchar_t const & )void (*)( wchar_t &,wchar_t const & )
@@ -4723,7 +4735,7 @@
 ~@member_function_t@clear@void ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) void ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) 
 ~@member_function_t@clear@void ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) void ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) 
 ~@member_function_t@clear@void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::_Ios_Iostate ) void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::_Ios_Iostate ) 
-~@member_function_t@clear@void ( ::CEGUI::TextureTarget::* )(  ) void ( ::CEGUI::TextureTarget::* )(  ) 
++@member_function_t@clear@void ( ::CEGUI::TextureTarget::* )(  ) void ( ::CEGUI::TextureTarget::* )(  ) 
 ~@member_function_t@clear@void ( ::CEGUI::String::* )(  ) void ( ::CEGUI::String::* )(  ) 
 +@member_function_t@destroyAllTextures@void ( ::CEGUI::OpenGLRenderer::* )(  ) void ( ::CEGUI::OpenGLRenderer::* )(  ) 
 ~@member_function_t@destroyAllTextures@void ( ::CEGUI::Renderer::* )(  ) void ( ::CEGUI::Renderer::* )(  ) 
@@ -4815,6 +4827,7 @@
 ~@member_function_t@_M_grab@char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::std::allocator< char > const &,::std::allocator< char > const & ) char * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep::* )( ::std::allocator<char> const &,::std::allocator<char> const & ) 
 ~@member_function_t@_M_grab@wchar_t * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::std::allocator< wchar_t > const &,::std::allocator< wchar_t > const & ) wchar_t * ( ::std::basic_string<wchar_t, std::char_traits<wchar_t>, std::allocator<wchar_t> >::_Rep::* )( ::std::allocator<wchar_t> const &,::std::allocator<wchar_t> const & ) 
 ~@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::TextureTarget::* )(  ) const::CEGUI::Texture & ( ::CEGUI::TextureTarget::* )(  ) const
++@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::OpenGLTextureTarget::* )(  ) const::CEGUI::Texture & ( ::CEGUI::OpenGLTextureTarget::* )(  ) const
 +@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::* )( ::CEGUI::String const & ) const::CEGUI::Texture & ( ::CEGUI::OpenGLRenderer::* )( ::CEGUI::String const & ) const
 ~@member_function_t@getTexture@::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) const::CEGUI::Texture & ( ::CEGUI::Renderer::* )( ::CEGUI::String const & ) const
 ~@member_function_t@transferRenderingWindow@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingWindow & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingWindow & ) 
@@ -4922,8 +4935,9 @@
 ~@member_function_t@_M_group_int@void ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::std::size_t,char,::std::ios_base &,char *,char *,int & ) constvoid ( ::std::num_put<char, std::ostreambuf_iterator<char, std::char_traits<char> > >::* )( char const *,::std::size_t,char,::std::ios_base &,char *,char *,int & ) const
 ~@member_function_t@_M_initialize_ctype@void ( ::std::ctype<wchar_t>::* )(  ) void ( ::std::ctype<wchar_t>::* )(  ) 
 ~@member_function_t@relative@::CEGUI::UDim (*)(  )::CEGUI::UDim (*)(  )
++@member_function_t@isImageryCache@bool ( ::CEGUI::OpenGLTextureTarget::* )(  ) constbool ( ::CEGUI::OpenGLTextureTarget::* )(  ) const
 +@member_function_t@isImageryCache@bool ( ::CEGUI::OpenGLViewportTarget::* )(  ) constbool ( ::CEGUI::OpenGLViewportTarget::* )(  ) const
-+@member_function_t@isImageryCache@bool ( ::CEGUI::RenderTarget::* )(  ) constbool ( ::CEGUI::RenderTarget::* )(  ) const
+~@member_function_t@isImageryCache@bool ( ::CEGUI::RenderTarget::* )(  ) constbool ( ::CEGUI::RenderTarget::* )(  ) const
 ~@member_function_t@renderWindowHierarchyToSurfaces@void ( ::CEGUI::GUIContext::* )(  ) void ( ::CEGUI::GUIContext::* )(  ) 
 ~@member_function_t@fail@bool ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) constbool ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )(  ) const
 ~@member_function_t@fail@bool ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) constbool ( ::std::basic_ios<char, std::char_traits<char> >::* )(  ) const
@@ -4936,7 +4950,8 @@
 ~@member_function_t@capacity@::std::size_t ( ::std::vector<CEGUI::RenderingWindow*, std::allocator<CEGUI::RenderingWindow*> >::* )(  ) const::std::size_t ( ::std::vector<CEGUI::RenderingWindow*, std::allocator<CEGUI::RenderingWindow*> >::* )(  ) const
 ~@member_function_t@capacity@::std::size_t ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )(  ) const::std::size_t ( ::std::vector<CEGUI::GeometryBuffer const*, std::allocator<CEGUI::GeometryBuffer const*> >::* )(  ) const
 ~@member_function_t@capacity@::size_t ( ::CEGUI::String::* )(  ) const::size_t ( ::CEGUI::String::* )(  ) const
-+@member_function_t@deactivate@void ( ::CEGUI::OpenGLRenderTarget::* )(  ) void ( ::CEGUI::OpenGLRenderTarget::* )(  ) 
+~@member_function_t@deactivate@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )(  ) 
+~@member_function_t@deactivate@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )(  ) 
 ~@member_function_t@deactivate@void ( ::CEGUI::RenderTarget::* )(  ) void ( ::CEGUI::RenderTarget::* )(  ) 
 ~@member_function_t@getName@::CEGUI::String const & ( ::CEGUI::Texture::* )(  ) const::CEGUI::String const & ( ::CEGUI::Texture::* )(  ) const
 ~@member_function_t@getName@::CEGUI::String const & ( ::CEGUI::Event::* )(  ) const::CEGUI::String const & ( ::CEGUI::Event::* )(  ) const
@@ -5088,7 +5103,7 @@
 ~@member_function_t@_M_leftmost@::std::_Rb_tree_node_base const * ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) const::std::_Rb_tree_node_base const * ( ::std::_Rb_tree<CEGUI::String, std::pair<CEGUI::String const, CEGUI::Event*>, std::_Select1st<std::pair<CEGUI::String const, CEGUI::Event*> >, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Event*> > >::* )(  ) const
 ~@member_function_t@_M_leftmost@::std::_Rb_tree_node_base * & ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) ::std::_Rb_tree_node_base * & ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) 
 ~@member_function_t@_M_leftmost@::std::_Rb_tree_node_base const * ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const::std::_Rb_tree_node_base const * ( ::std::_Rb_tree<unsigned int, std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> >, std::_Select1st<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > >, std::less<unsigned int>, std::allocator<std::pair<unsigned int const, CEGUI::RefCounted<CEGUI::BoundSlot> > > >::* )(  ) const
-~@member_function_t@declareRenderSize@void ( ::CEGUI::TextureTarget::* )( ::CEGUI::Sizef const & ) void ( ::CEGUI::TextureTarget::* )( ::CEGUI::Sizef const & ) 
++@member_function_t@declareRenderSize@void ( ::CEGUI::TextureTarget::* )( ::CEGUI::Sizef const & ) void ( ::CEGUI::TextureTarget::* )( ::CEGUI::Sizef const & ) 
 ~@member_function_t@injectMouseLeaves@bool ( ::CEGUI::InjectedInputReceiver::* )(  ) bool ( ::CEGUI::InjectedInputReceiver::* )(  ) 
 ~@member_function_t@injectMouseLeaves@bool ( ::CEGUI::GUIContext::* )(  ) bool ( ::CEGUI::GUIContext::* )(  ) 
 ~@member_function_t@_M_rep@::std::string::_Rep * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) const::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::_Rep * ( ::std::basic_string<char,std::char_traits<char>,std::allocator<char> >::* )(  ) const
@@ -5167,6 +5182,7 @@
 ~@member_function_t@setg@void ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,char *,char * ) void ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( char *,char *,char * ) 
 ~@member_function_t@_M_cache_locale@void ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::locale const & ) void ( ::std::basic_ios<wchar_t, std::char_traits<wchar_t> >::* )( ::std::locale const & ) 
 ~@member_function_t@_M_cache_locale@void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::locale const & ) void ( ::std::basic_ios<char, std::char_traits<char> >::* )( ::std::locale const & ) 
++@member_function_t@createCEGUITexture@void ( ::CEGUI::OpenGLTextureTarget::* )(  ) void ( ::CEGUI::OpenGLTextureTarget::* )(  ) 
 ~@member_function_t@pubseekoff@::std::wstreampos ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) ::std::wstreampos ( ::std::basic_streambuf<wchar_t, std::char_traits<wchar_t> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) 
 ~@member_function_t@pubseekoff@::std::streampos ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) ::std::streampos ( ::std::basic_streambuf<char, std::char_traits<char> >::* )( ::std::streamoff,::std::_Ios_Seekdir,::std::_Ios_Openmode ) 
 ~@member_function_t@do_decimal_point@wchar_t ( ::std::numpunct<wchar_t>::* )(  ) constwchar_t ( ::std::numpunct<wchar_t>::* )(  ) const
@@ -5645,8 +5661,10 @@
 ~@member_function_t@setTranslation@void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) void ( ::CEGUI::GeometryBuffer::* )( ::CEGUI::Vector3f const & ) 
 ~@member_function_t@draw@void ( ::CEGUI::RenderingSurface::* )(  ) void ( ::CEGUI::RenderingSurface::* )(  ) 
 ~@member_function_t@draw@void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) void ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderQueue const &,::CEGUI::RenderQueueEventArgs & ) 
-+@member_function_t@draw@void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::GeometryBuffer const & ) 
-+@member_function_t@draw@void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::RenderQueue const & ) void ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::RenderQueue const & ) 
+~@member_function_t@draw@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::GeometryBuffer const & ) 
+~@member_function_t@draw@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::RenderQueue const & ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::RenderQueue const & ) 
+~@member_function_t@draw@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::GeometryBuffer const & ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::GeometryBuffer const & ) 
+~@member_function_t@draw@void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::RenderQueue const & ) void ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::RenderQueue const & ) 
 ~@member_function_t@draw@void ( ::CEGUI::RenderQueue::* )(  ) constvoid ( ::CEGUI::RenderQueue::* )(  ) const
 ~@member_function_t@draw@void ( ::CEGUI::MouseCursor::* )(  ) constvoid ( ::CEGUI::MouseCursor::* )(  ) const
 ~@member_function_t@draw@void ( ::CEGUI::GUIContext::* )(  ) void ( ::CEGUI::GUIContext::* )(  ) 
@@ -5889,6 +5907,8 @@
 ~@constructor_t@__numeric_traits@ ( ::__gnu_cxx::__numeric_traits<int>::* )(  )  ( ::__gnu_cxx::__numeric_traits<int>::* )(  ) 
 ~@constructor_t@__is_void@ ( ::std::__is_void<void>::* )( ::std::__is_void< void > const & )  ( ::std::__is_void<void>::* )( ::std::__is_void<void> const & ) 
 ~@constructor_t@__is_void@ ( ::std::__is_void<void>::* )(  )  ( ::std::__is_void<void>::* )(  ) 
++@constructor_t@OpenGLTextureTarget@ ( ::CEGUI::OpenGLTextureTarget::* )( ::CEGUI::OpenGLTextureTarget & )  ( ::CEGUI::OpenGLTextureTarget::* )( ::CEGUI::OpenGLTextureTarget & ) 
++@constructor_t@OpenGLTextureTarget@ ( ::CEGUI::OpenGLTextureTarget::* )( ::CEGUI::OpenGLRenderer & )  ( ::CEGUI::OpenGLTextureTarget::* )( ::CEGUI::OpenGLRenderer & ) 
 ~@constructor_t@range_error@ ( ::std::range_error::* )( ::std::range_error const & )  ( ::std::range_error::* )( ::std::range_error const & ) 
 ~@constructor_t@range_error@ ( ::std::range_error::* )( ::std::string const & )  ( ::std::range_error::* )( ::std::string const & ) 
 ~@constructor_t@ScopedConnection@ ( ::CEGUI::Event::ScopedConnection::* )( ::CEGUI::Event::ScopedConnection const & )  ( ::CEGUI::Event::ScopedConnection::* )( ::CEGUI::Event::ScopedConnection const & ) 
@@ -6169,8 +6189,10 @@
 ~@constructor_t@EventSet@ ( ::CEGUI::EventSet::* )( ::CEGUI::EventSet & )  ( ::CEGUI::EventSet::* )( ::CEGUI::EventSet & ) 
 ~@constructor_t@RenderingSurface@ ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingSurface & )  ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderingSurface & ) 
 ~@constructor_t@RenderingSurface@ ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderTarget & )  ( ::CEGUI::RenderingSurface::* )( ::CEGUI::RenderTarget & ) 
-+@constructor_t@OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::OpenGLRenderTarget & )  ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::OpenGLRenderTarget & ) 
-+@constructor_t@OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::OpenGLRenderer & )  ( ::CEGUI::OpenGLRenderTarget::* )( ::CEGUI::OpenGLRenderer & ) 
+~@constructor_t@OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget > & )  ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget> & ) 
+~@constructor_t@OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::OpenGLRenderer & )  ( ::CEGUI::OpenGLRenderTarget<CEGUI::TextureTarget>::* )( ::CEGUI::OpenGLRenderer & ) 
+~@constructor_t@OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget > & )  ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget> & ) 
+~@constructor_t@OpenGLRenderTarget@ ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::OpenGLRenderer & )  ( ::CEGUI::OpenGLRenderTarget<CEGUI::RenderTarget>::* )( ::CEGUI::OpenGLRenderer & ) 
 ~@constructor_t@RenderTargetEventArgs@ ( ::CEGUI::RenderTargetEventArgs::* )( ::CEGUI::RenderTargetEventArgs const & )  ( ::CEGUI::RenderTargetEventArgs::* )( ::CEGUI::RenderTargetEventArgs const & ) 
 ~@constructor_t@RenderTargetEventArgs@ ( ::CEGUI::RenderTargetEventArgs::* )( ::CEGUI::RenderTarget * )  ( ::CEGUI::RenderTargetEventArgs::* )( ::CEGUI::RenderTarget * ) 
 ~@constructor_t@bad_alloc@ ( ::std::bad_alloc::* )( ::std::bad_alloc const & )  ( ::std::bad_alloc::* )( ::std::bad_alloc const & ) 
@@ -6505,7 +6527,8 @@
 ~@variable_t@_M_widen@::std::ctype< wchar_t >::_M_widen
 ~@variable_t@_M_widen@::std::ctype< char >::_M_widen
 ~@variable_t@d_areaChangedEventConnection@::CEGUI::GUIContext::d_areaChangedEventConnection
-+@variable_t@d_viewDistance@::CEGUI::OpenGLRenderTarget::d_viewDistance
+~@variable_t@d_viewDistance@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >::d_viewDistance
+~@variable_t@d_viewDistance@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >::d_viewDistance
 ~@variable_t@d_top@::CEGUI::UBox::d_top
 ~@variable_t@_M_os@::std::basic_ostream< wchar_t, std::char_traits< wchar_t > >::sentry::_M_os
 ~@variable_t@_M_os@::std::basic_ostream< char, std::char_traits< char > >::sentry::_M_os
@@ -6536,6 +6559,7 @@
 ~@variable_t@_M_out_end@::std::basic_streambuf< char, std::char_traits< char > >::_M_out_end
 ~@variable_t@_M_facets_size@::std::locale::_Impl::_M_facets_size
 ~@variable_t@d_rightAlt@::CEGUI::SystemKeys::d_rightAlt
++@variable_t@s_textureNumber@::CEGUI::OpenGLTextureTarget::s_textureNumber
 +@variable_t@d_textureTargets@::CEGUI::OpenGLRenderer::d_textureTargets
 ~@variable_t@int_n_cs_precedes@::lconv::int_n_cs_precedes
 ~@variable_t@boolalpha@::std::ios_base::boolalpha
@@ -6595,7 +6619,6 @@
 ~@variable_t@d_min@::CEGUI::Rect< CEGUI::UDim >::d_min
 ~@variable_t@d_quickbuff@::CEGUI::String::d_quickbuff
 ~@variable_t@d_mouseClickTrackers@::CEGUI::GUIContext::d_mouseClickTrackers
-~@variable_t@_ZTIN5CEGUI18OpenGLRenderTargetE@::_ZTIN5CEGUI18OpenGLRenderTargetE
 ~@variable_t@tm_year@::tm::tm_year
 ~@variable_t@_ZTISt10bad_typeid@::_ZTISt10bad_typeid
 ~@variable_t@_ZTISt12domain_error@::_ZTISt12domain_error
@@ -6606,7 +6629,7 @@
 ~@variable_t@tm_mday@::tm::tm_mday
 ~@variable_t@__woken_seq@::pthread_cond_t::__woken_seq
 ~@variable_t@environ@::environ
-~@variable_t@_ZTISt7num_getIcSt19istreambuf_iteratorIcSt11char_traitsIcEEE@::_ZTISt7num_getIcSt19istreambuf_iteratorIcSt11char_traitsIcEEE
+~@variable_t@d_systemKeys@::CEGUI::GUIContext::d_systemKeys
 ~@variable_t@d_encodedbuff@::CEGUI::String::d_encodedbuff
 ~@variable_t@_ZTIN10__cxxabiv115__forced_unwindE@::_ZTIN10__cxxabiv115__forced_unwindE
 ~@variable_t@_ZTIN5CEGUI8RendererE@::_ZTIN5CEGUI8RendererE
@@ -6650,8 +6673,10 @@
 ~@variable_t@currency_symbol@::lconv::currency_symbol
 ~@variable_t@mouseCursor@::CEGUI::MouseCursorEventArgs::mouseCursor
 ~@variable_t@_M_toupper@::std::ctype< char >::_M_toupper
++@variable_t@d_texture@::CEGUI::OpenGLTextureTarget::d_texture
 ~@variable_t@d_scale@::CEGUI::UDim::d_scale
 ~@variable_t@thousands_sep@::lconv::thousands_sep
++@variable_t@d_CEGUITexture@::CEGUI::OpenGLTextureTarget::d_CEGUITexture
 ~@variable_t@numeric@::std::locale::numeric
 ~@variable_t@int_p_sign_posn@::lconv::int_p_sign_posn
 ~@variable_t@sysKeys@::CEGUI::MouseEventArgs::sysKeys
@@ -6736,14 +6761,15 @@
 ~@variable_t@EventNamespace@::CEGUI::RenderTarget::EventNamespace
 ~@variable_t@d_buffers@::CEGUI::RenderQueue::d_buffers
 ~@variable_t@d_mouseButtonMultiClickTolerance@::CEGUI::GUIContext::d_mouseButtonMultiClickTolerance
-+@variable_t@d_yfov_tan@::CEGUI::OpenGLRenderTarget::d_yfov_tan
+~@variable_t@d_yfov_tan@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >::d_yfov_tan
+~@variable_t@d_yfov_tan@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >::d_yfov_tan
 ~@variable_t@__broadcast_seq@::pthread_cond_t::__broadcast_seq
 ~@variable_t@int_curr_symbol@::lconv::int_curr_symbol
 ~@variable_t@_M_del@::std::ctype< char >::_M_del
 ~@variable_t@__futex@::pthread_cond_t::__futex
 ~@variable_t@__nr_readers_queued@::pthread_rwlock_t::__nr_readers_queued
 ~@variable_t@DefaultMouseButtonMultiClickTolerance@::CEGUI::GUIContext::DefaultMouseButtonMultiClickTolerance
-~@variable_t@d_systemKeys@::CEGUI::GUIContext::d_systemKeys
+~@variable_t@_ZTISt7num_getIcSt19istreambuf_iteratorIcSt11char_traitsIcEEE@::_ZTISt7num_getIcSt19istreambuf_iteratorIcSt11char_traitsIcEEE
 ~@variable_t@_M_streambuf_state@::std::ios_base::_M_streambuf_state
 ~@variable_t@__cancel_arg@::__pthread_cleanup_frame::__cancel_arg
 ~@variable_t@__cancel_arg@::__pthread_cleanup_class::__cancel_arg
@@ -6776,7 +6802,8 @@
 ~@variable_t@__cancel_type@::__pthread_cleanup_frame::__cancel_type
 ~@variable_t@__cancel_type@::__pthread_cleanup_class::__cancel_type
 ~@variable_t@d_slots@::CEGUI::Event::d_slots
-+@variable_t@d_matrixValid@::CEGUI::OpenGLRenderTarget::d_matrixValid
+~@variable_t@d_matrixValid@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >::d_matrixValid
+~@variable_t@d_matrixValid@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >::d_matrixValid
 ~@variable_t@__canceltype@::_pthread_cleanup_buffer::__canceltype
 ~@variable_t@d_mouseButtonClickTimeout@::CEGUI::GUIContext::d_mouseButtonClickTimeout
 ~@variable_t@d_surfaceSize@::CEGUI::GUIContext::d_surfaceSize
@@ -6791,11 +6818,16 @@
 ~@variable_t@_M_end_of_storage@::std::_Vector_base< CEGUI::RenderingWindow*, std::allocator< CEGUI::RenderingWindow* > >::_Vector_impl::_M_end_of_storage
 ~@variable_t@_M_end_of_storage@::std::_Vector_base< CEGUI::GeometryBuffer const*, std::allocator< CEGUI::GeometryBuffer const* > >::_Vector_impl::_M_end_of_storage
 ~@variable_t@d_buffer@::CEGUI::String::d_buffer
+~@variable_t@_ZTISt21__ctype_abstract_baseIwE@::_ZTISt21__ctype_abstract_baseIwE
 ~@variable_t@d_cursorImage@::CEGUI::MouseCursor::d_cursorImage
 ~@variable_t@d_rootWindow@::CEGUI::GUIContext::d_rootWindow
 ~@variable_t@fixed@::std::ios_base::fixed
 ~@variable_t@__wakeup_seq@::pthread_cond_t::__wakeup_seq
 ~@variable_t@EventMouseButtonMultiClickTimeoutChanged@::CEGUI::GUIContext::EventMouseButtonMultiClickTimeoutChanged
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::OpenGLTexture* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::OpenGLTexture* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
@@ -6838,6 +6870,7 @@
 ~@variable_t@_ZTISt8ios_base@::_ZTISt8ios_base
 ~@variable_t@EventRenderQueueEnded@::CEGUI::RenderingSurface::EventRenderQueueEnded
 ~@variable_t@_M_flags@::std::ios_base::_M_flags
+~@variable_t@_ZTIN5CEGUI18OpenGLRenderTargetINS_12RenderTargetEEE@::_ZTIN5CEGUI18OpenGLRenderTargetINS_12RenderTargetEEE
 ~@variable_t@getdate_err@::getdate_err
 ~@variable_t@floatfield@::std::ios_base::floatfield
 ~@variable_t@_ZTISt13bad_exception@::_ZTISt13bad_exception
@@ -6863,6 +6896,7 @@
 ~@variable_t@id@::std::num_put< wchar_t, std::ostreambuf_iterator< wchar_t, std::char_traits< wchar_t > > >::id
 ~@variable_t@id@::std::num_put< char, std::ostreambuf_iterator< char, std::char_traits< char > > >::id
 ~@variable_t@d_rightShift@::CEGUI::SystemKeys::d_rightShift
+~@variable_t@_ZTIN5CEGUI18OpenGLRenderTargetINS_13TextureTargetEEE@::_ZTIN5CEGUI18OpenGLRenderTargetINS_13TextureTargetEEE
 ~@variable_t@binary@::std::ios_base::binary
 ~@variable_t@__size@::pthread_cond_t::__size
 ~@variable_t@__size@::pthread_condattr_t::__size
@@ -6882,10 +6916,6 @@
 ~@variable_t@__ctype_toupper@::__locale_struct::__ctype_toupper
 ~@variable_t@tm_hour@::tm::tm_hour
 ~@variable_t@__routine@::_pthread_cleanup_buffer::__routine
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
 ~@variable_t@_ZTIN5CEGUI5EventE@::_ZTIN5CEGUI5EventE
 ~@variable_t@__max@::__gnu_cxx::__numeric_traits_integer< long >::__max
 ~@variable_t@__max@::__gnu_cxx::__numeric_traits_integer< char >::__max
@@ -6906,7 +6936,7 @@
 ~@variable_t@_M_narrow_ok@::std::ctype< char >::_M_narrow_ok
 ~@variable_t@n_sep_by_space@::lconv::n_sep_by_space
 ~@variable_t@__readers_wakeup@::pthread_rwlock_t::__readers_wakeup
-~@variable_t@_ZTISt21__ctype_abstract_baseIwE@::_ZTISt21__ctype_abstract_baseIwE
+~@variable_t@_ZTIN5CEGUI19OpenGLTextureTargetE@::_ZTIN5CEGUI19OpenGLTextureTargetE
 ~@variable_t@_ZTIN5CEGUI10GUIContextE@::_ZTIN5CEGUI10GUIContextE
 ~@variable_t@_M_refcount@::std::string::_Rep_base::_M_refcount
 ~@variable_t@_M_refcount@::std::wstring::_Rep_base::_M_refcount
@@ -6918,8 +6948,10 @@
 ~@variable_t@EventDefaultImageChanged@::CEGUI::MouseCursor::EventDefaultImageChanged
 ~@variable_t@internal@::std::ios_base::internal
 ~@variable_t@optopt@::optopt
-+@variable_t@d_owner@::CEGUI::OpenGLRenderTarget::d_owner
-+@variable_t@d_matrix@::CEGUI::OpenGLRenderTarget::d_matrix
+~@variable_t@d_owner@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >::d_owner
+~@variable_t@d_owner@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >::d_owner
+~@variable_t@d_matrix@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >::d_matrix
+~@variable_t@d_matrix@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >::d_matrix
 ~@variable_t@_ZTISt7collateIwE@::_ZTISt7collateIwE
 ~@variable_t@_M_start@::std::_Vector_base< CEGUI::OpenGLGeometryBuffer*, std::allocator< CEGUI::OpenGLGeometryBuffer* > >::_Vector_impl::_M_start
 ~@variable_t@_M_start@::std::_Vector_base< CEGUI::TextureTarget*, std::allocator< CEGUI::TextureTarget* > >::_Vector_impl::_M_start
@@ -7008,7 +7040,8 @@
 ~@variable_t@d_defaultTooltipObject@::CEGUI::GUIContext::d_defaultTooltipObject
 ~@variable_t@_S_c_name@::std::locale::facet::_S_c_name
 ~@variable_t@timezone@::timezone
-+@variable_t@d_area@::CEGUI::OpenGLRenderTarget::d_area
+~@variable_t@d_area@::CEGUI::OpenGLRenderTarget< CEGUI::TextureTarget >::d_area
+~@variable_t@d_area@::CEGUI::OpenGLRenderTarget< CEGUI::RenderTarget >::d_area
 ~@variable_t@EventMouseButtonClickTimeoutChanged@::CEGUI::GUIContext::EventMouseButtonClickTimeoutChanged
 ~@variable_t@tm_mon@::tm::tm_mon
 ~@variable_t@n_cs_precedes@::lconv::n_cs_precedes

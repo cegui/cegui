@@ -4300,6 +4300,10 @@
 ~@variable_t@fixed@::std::ios_base::fixed
 ~@variable_t@__wakeup_seq@::pthread_cond_t::__wakeup_seq
 ~@variable_t@EventMouseButtonMultiClickTimeoutChanged@::CEGUI::GUIContext::EventMouseButtonMultiClickTimeoutChanged
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< unsigned int, std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > >, std::_Select1st< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > >, std::less< unsigned int >, std::allocator< std::pair< unsigned int const, CEGUI::RefCounted< CEGUI::BoundSlot > > > >::_Rb_tree_impl< std::less< unsigned int >, false >::_M_key_compare
@@ -4380,10 +4384,6 @@
 ~@variable_t@__ctype_toupper@::__locale_struct::__ctype_toupper
 ~@variable_t@tm_hour@::tm::tm_hour
 ~@variable_t@__routine@::_pthread_cleanup_buffer::__routine
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
 ~@variable_t@_ZTIN5CEGUI5EventE@::_ZTIN5CEGUI5EventE
 ~@variable_t@__max@::__gnu_cxx::__numeric_traits_integer< long >::__max
 ~@variable_t@__max@::__gnu_cxx::__numeric_traits_integer< char >::__max

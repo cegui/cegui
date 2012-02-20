@@ -56,7 +56,6 @@
 namespace CEGUI
 {
 class OpenGLTexture;
-class OpenGLTextureTarget;
 class OpenGLGeometryBuffer;
 class OGLTextureTargetFactory;
 

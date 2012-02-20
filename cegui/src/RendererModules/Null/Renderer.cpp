@@ -319,7 +319,7 @@ NullRenderer::~NullRenderer()
 void NullRenderer::constructor_impl()
 {
     // create default target & rendering root (surface) that uses it
-    d_defaultTarget = new NullRenderTarget(*this);
+    d_defaultTarget = new NullRenderTarget<>(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -339,3 +339,8 @@ void NullRenderer::setDisplaySize(const Sizef& sz)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of template base class
+#include "./RenderTarget.inl"
+

@@ -104,3 +104,9 @@ String OpenGLTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of base class
+#include "./RenderTarget.inl"
+
+
