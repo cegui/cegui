@@ -44,7 +44,7 @@ Each item in here has a comment to describe what it's for.
 
 // Define the default place where samples will look for datafiles
 #if defined(_WIN32) || defined(__WIN32__)
-#   define CEGUI_SAMPLE_DATAPATH "../datafiles"
+#   define CEGUI_SAMPLE_DATAPATH "${CEGUI_SOURCE_DIR}/datafiles"
 #else
 #   define CEGUI_SAMPLE_DATAPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_DATA_INSTALL_DIR}"
 #endif
