@@ -42,10 +42,10 @@ def filterDeclarations(mb):
     renderer.include()
     renderer.noncopyable = True
     
-    # RendererModules/OpenGL/CEGUIOpenGLRenderTarget.h
-    renderTarget = CEGUI_ns.class_("OpenGLRenderTarget")
-    renderTarget.include()
-    renderTarget.noncopyable = True
+    # RendererModules/OpenGL/CEGUIOpenGLTextureTarget.h
+    textureTarget = CEGUI_ns.class_("OpenGLTextureTarget")
+    textureTarget.include()
+    textureTarget.noncopyable = True
     
     # RendererModules/OpenGL/CEGUIOpenGLViewportTarget.h
     viewportTarget = CEGUI_ns.class_("OpenGLViewportTarget")

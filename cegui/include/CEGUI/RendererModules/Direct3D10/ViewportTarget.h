@@ -34,7 +34,7 @@
 namespace CEGUI
 {
 //! Direct3D10 based RenderTarget that represents the screen or a portion of it.
-class D3D10_GUIRENDERER_API Direct3D10ViewportTarget : public Direct3D10RenderTarget
+class D3D10_GUIRENDERER_API Direct3D10ViewportTarget : public Direct3D10RenderTarget<>
 {
 public:
     /*!

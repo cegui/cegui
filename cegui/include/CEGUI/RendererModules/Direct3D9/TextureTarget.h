@@ -44,8 +44,7 @@ namespace CEGUI
 class Direct3D9Texture;
 
 //! Direct3D9TextureTarget - allows rendering to an Direct3D9 texture via .
-class DIRECT3D9_GUIRENDERER_API Direct3D9TextureTarget : public Direct3D9RenderTarget,
-                                                         public TextureTarget
+class DIRECT3D9_GUIRENDERER_API Direct3D9TextureTarget : public Direct3D9RenderTarget<TextureTarget>
 {
 public:
     Direct3D9TextureTarget(Direct3D9Renderer& owner);

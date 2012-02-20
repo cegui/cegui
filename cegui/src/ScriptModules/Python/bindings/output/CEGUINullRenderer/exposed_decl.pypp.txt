@@ -1437,7 +1437,6 @@
 ~@class_declaration_t@basic_istringstream< char, std::char_traits< char >, std::allocator< char > >@::std::basic_istringstream< char, std::char_traits< char >, std::allocator< char > >
 ~@class_declaration_t@TreeEventArgs@::CEGUI::TreeEventArgs
 ~@class_declaration_t@_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >@::std::_Rb_tree_const_iterator< std::pair< const CEGUI::String, CEGUI::Event* > >
-~@class_declaration_t@NullRenderTarget@::CEGUI::NullRenderTarget
 ~@class_declaration_t@ResourceEventSet@::CEGUI::ResourceEventSet
 ~@class_declaration_t@reverse_iterator< __gnu_cxx::__normal_iterator< CEGUI::RenderingWindow**, std::vector< CEGUI::RenderingWindow* > > >@::std::reverse_iterator< __gnu_cxx::__normal_iterator< CEGUI::RenderingWindow**, std::vector< CEGUI::RenderingWindow* > > >
 ~@class_declaration_t@istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >@::std::istreambuf_iterator< wchar_t, std::char_traits< wchar_t > >
@@ -4710,6 +4709,10 @@
 ~@variable_t@fixed@::std::ios_base::fixed
 ~@variable_t@__wakeup_seq@::pthread_cond_t::__wakeup_seq
 ~@variable_t@EventMouseButtonMultiClickTimeoutChanged@::CEGUI::GUIContext::EventMouseButtonMultiClickTimeoutChanged
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
+~@variable_t@('/home/paul/dev/cegui/src/trunk/cegui/include/CEGUI/GUIContext.h', 60)@::__vmi_class_type_info_pseudo3
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::NullTexture* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::NullTexture* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::NullTexture* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::RenderQueueID, std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue >, std::_Select1st< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > >, std::less< CEGUI::RenderQueueID >, std::allocator< std::pair< CEGUI::RenderQueueID const, CEGUI::RenderQueue > > >::_Rb_tree_impl< std::less< CEGUI::RenderQueueID >, false >::_M_key_compare
 ~@variable_t@_M_key_compare@::std::_Rb_tree< CEGUI::String, std::pair< CEGUI::String const, CEGUI::Event* >, std::_Select1st< std::pair< CEGUI::String const, CEGUI::Event* > >, CEGUI::StringFastLessCompare, std::allocator< std::pair< CEGUI::String const, CEGUI::Event* > > >::_Rb_tree_impl< CEGUI::StringFastLessCompare, false >::_M_key_compare
@@ -4784,10 +4787,6 @@
 ~@variable_t@__ctype_toupper@::__locale_struct::__ctype_toupper
 ~@variable_t@tm_hour@::tm::tm_hour
 ~@variable_t@__routine@::_pthread_cleanup_buffer::__routine
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
-~@variable_t@('/home/paul/dev/cegui/src/multi-root-devel/cegui/include/CEGUI/GUIContext.h', 55)@::__vmi_class_type_info_pseudo3
 ~@variable_t@_ZTIN5CEGUI5EventE@::_ZTIN5CEGUI5EventE
 ~@variable_t@__max@::__gnu_cxx::__numeric_traits_integer< long >::__max
 ~@variable_t@__max@::__gnu_cxx::__numeric_traits_integer< char >::__max

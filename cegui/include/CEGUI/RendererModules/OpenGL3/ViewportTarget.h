@@ -39,7 +39,7 @@ namespace CEGUI
     OpenGL implementation of a RenderTarget that represents am on-scren
     viewport.
 */
-class OPENGL3_GUIRENDERER_API OpenGL3ViewportTarget : public OpenGL3RenderTarget
+class OPENGL3_GUIRENDERER_API OpenGL3ViewportTarget : public OpenGL3RenderTarget<>
 {
 public:
     /*!

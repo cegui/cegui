@@ -42,7 +42,8 @@
 namespace CEGUI
 {
 //! Implementation of an ntermediate RenderTarget for the Direct3D 10 API
-class D3D11_GUIRENDERER_API Direct3D11RenderTarget : public virtual RenderTarget
+template <typename T = RenderTarget>
+class D3D11_GUIRENDERER_API Direct3D11RenderTarget : public T
 {
 public:
     //! Constructor

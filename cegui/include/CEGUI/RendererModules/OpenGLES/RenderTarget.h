@@ -39,7 +39,8 @@ namespace CEGUI
 \brief
     Intermediate OpenGLES implementation of a RenderTarget.
 */
-class OPENGLES_GUIRENDERER_API OpenGLESRenderTarget : public virtual RenderTarget
+template <typename T = RenderTarget>
+class OPENGLES_GUIRENDERER_API OpenGLESRenderTarget : public T
 {
 public:
     //! Constructor

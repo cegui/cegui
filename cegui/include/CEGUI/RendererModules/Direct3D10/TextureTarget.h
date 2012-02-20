@@ -48,8 +48,7 @@ namespace CEGUI
 class Direct3D10Texture;
 
 //! Direct3D10TextureTarget - allows rendering to Direct3D 10 textures.
-class D3D10_GUIRENDERER_API Direct3D10TextureTarget : public Direct3D10RenderTarget,
-                                                      public TextureTarget
+class D3D10_GUIRENDERER_API Direct3D10TextureTarget : public Direct3D10RenderTarget<TextureTarget>
 {
 public:
     Direct3D10TextureTarget(Direct3D10Renderer& owner);

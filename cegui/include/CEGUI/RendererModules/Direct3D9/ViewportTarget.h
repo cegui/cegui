@@ -39,7 +39,7 @@ namespace CEGUI
     Direct3D9 RenderTarget that represents a screen viewport.
 */
 class DIRECT3D9_GUIRENDERER_API Direct3D9ViewportTarget : 
-    public Direct3D9RenderTarget
+    public Direct3D9RenderTarget<>
 {
 public:
     /*!

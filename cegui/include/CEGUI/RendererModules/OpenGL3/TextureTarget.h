@@ -44,8 +44,7 @@ namespace CEGUI
     OpenGL3TextureTarget - Common base class for all OpenGL render targets
     based on some form of RTT support.
 */
-class OPENGL3_GUIRENDERER_API OpenGL3TextureTarget : public OpenGL3RenderTarget,
-                                                   public TextureTarget
+class OPENGL3_GUIRENDERER_API OpenGL3TextureTarget : public OpenGL3RenderTarget<TextureTarget>
 {
 public:
     //! constructor.
