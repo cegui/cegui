@@ -261,7 +261,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     endif()
 
     if (${_INSTALL_HEADERS} AND UNIX AND NOT APPLE AND NOT WIN32)
-        string (REPLACE "cegui/src" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
+        string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
         install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/${_REL_HEADER_DIR}")
     endif()
 endmacro()
@@ -297,29 +297,41 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
         set (_ACTIONMSG "copies of")
     endif()
 
-    file (REMOVE_RECURSE
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
-    )
-    file (MAKE_DIRECTORY
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
-    )
+    # depending on the generator used, we need to examine different things to discover the build type
+    if (CMAKE_GENERATOR STREQUAL "Unix Makefiles")
+        set(_CEGUI_BUILD_CONFIG ${CMAKE_BUILD_TYPE})
+    else()
+        set(_CEGUI_BUILD_CONFIG "$(CONFIGURATION)")
+    endif()
+
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; rm -rf \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks\"
+        COMMENT "Removing old Frameworks in ${_TARGET_NAME}.app")
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; rm -rf \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources\"
+        COMMENT "Removing old Resources in ${_TARGET_NAME}.app")
+
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; mkdir -p \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks\"
+        COMMENT "Creating Frameworks directory ${_TARGET_NAME}.app")
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; mkdir -p \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources\"
+        COMMENT "Creating Resources directory ${_TARGET_NAME}.app")
 
     if (NOT ${_STATIC})
         if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
             add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-                COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+                COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; ce_libglob=\"*${CEGUI_BUILD_SUFFIX}.dylib\"\; else ce_ext=\"\"\; shopt -s extglob\; ce_libglob=\"!\(*${CEGUI_BUILD_SUFFIX}\).dylib\"\; fi\; ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/$$ce_libglob \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks/\"
                 COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
         endif()
 
         add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+            COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; ce_libglob=\"*${CEGUI_BUILD_SUFFIX}.dylib\"\; else ce_ext=\"\"\; shopt -s extglob\; ce_libglob=\"!\(*${CEGUI_BUILD_SUFFIX}\).dylib\"\; fi\; ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$$ce_libglob \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks/\"
             COMMENT "Creating ${_ACTIONMSG} built cegui libraries in ${_TARGET_NAME}.app")
     endif()
 
     add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-        COMMAND ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources/
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources/\"
         COMMENT "Creating ${_ACTIONMSG} sample datafiles ${_TARGET_NAME}.app")
 endmacro()
 
