@@ -74,13 +74,13 @@ void OpenGL3FBOTextureTarget::activate()
     // switch to rendering to the texture
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
-    OpenGL3RenderTarget::activate();
+    OpenGL3TextureTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3FBOTextureTarget::deactivate()
 {
-    OpenGL3RenderTarget::deactivate();
+    OpenGL3TextureTarget::deactivate();
 
     // switch back to rendering to default buffer
     glBindFramebuffer(GL_FRAMEBUFFER, 0);

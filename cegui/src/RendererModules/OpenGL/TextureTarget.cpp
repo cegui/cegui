@@ -36,7 +36,7 @@ uint OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner),
+    OpenGLRenderTarget<TextureTarget>(owner),
     d_texture(0)
 {
     createCEGUITexture();
