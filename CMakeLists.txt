@@ -11,7 +11,7 @@ include(CEGUIMacros)
 include(CMakeDependentOption)
 
 if (APPLE)
-    set( CMAKE_OSX_ARCHITECTURES i386;x86_64 CACHE STRING "Build architectures for Mac OS X")
+    set( CMAKE_OSX_ARCHITECTURES x86_64 CACHE STRING "Build architectures for Mac OS X")
 endif()
 
 # default to Release build (it's what most people will use, except cegui devs)
