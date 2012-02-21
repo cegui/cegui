@@ -42,6 +42,7 @@ class CEGUIEXPORT RenderEffect :
     public AllocatedObject<RenderEffect>
 {
 public:
+    virtual ~RenderEffect() {};
     /*!
     \brief
         Return the number of passes required by this effect.

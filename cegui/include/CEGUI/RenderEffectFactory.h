@@ -28,11 +28,11 @@
 #ifndef _CEGUIRenderEffectFactory_h_
 #define _CEGUIRenderEffectFactory_h_
 
+#include "CEGUI/RenderEffect.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class RenderEffect;
-
 /*!
 \brief
     Interface for factory objects that create RenderEffect instances.
