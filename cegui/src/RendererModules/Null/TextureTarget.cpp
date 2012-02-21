@@ -38,7 +38,7 @@ const float NullTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
 NullTextureTarget::NullTextureTarget(NullRenderer& owner) :
-    NullRenderTarget(owner),
+    NullRenderTarget<TextureTarget>(owner),
     d_CEGUITexture(0)
 {
     d_CEGUITexture = static_cast<NullTexture*>(

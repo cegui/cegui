@@ -45,7 +45,7 @@ uint OgreTextureTarget::s_textureNumber = 0;
 //----------------------------------------------------------------------------//
 OgreTextureTarget::OgreTextureTarget(OgreRenderer& owner,
                                      Ogre::RenderSystem& rs) :
-    OgreRenderTarget(owner, rs),
+    OgreRenderTarget<TextureTarget>(owner, rs),
     d_CEGUITexture(0)
 {
     d_CEGUITexture = static_cast<OgreTexture*>(

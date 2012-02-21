@@ -37,7 +37,7 @@ uint Direct3D11TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D11TextureTarget::Direct3D11TextureTarget(Direct3D11Renderer& owner) :
-    Direct3D11RenderTarget(owner),
+    Direct3D11RenderTarget<TextureTarget>(owner),
     d_texture(0),
     d_renderTargetView(0),
     d_previousRenderTargetView(0),

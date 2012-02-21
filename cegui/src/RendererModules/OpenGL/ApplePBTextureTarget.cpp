@@ -129,14 +129,14 @@ void OpenGLApplePBTextureTarget::activate()
     // is forced to update states for our local context.
     d_owner.setupRenderingBlendMode(BM_INVALID);
 
-    OpenGLRenderTarget::activate();
+    OpenGLTextureTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLApplePBTextureTarget::deactivate()
 {
     glFlush();
-    OpenGLRenderTarget::deactivate();
+    OpenGLTextureTarget::deactivate();
 
     // Clear the blend mode again so the next setupRenderingBlendMode call
     // is forced to update states for the main / previous context.

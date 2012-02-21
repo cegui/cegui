@@ -43,7 +43,7 @@ uint Direct3D9TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D9TextureTarget::Direct3D9TextureTarget(Direct3D9Renderer& owner) :
-    Direct3D9RenderTarget(owner),
+    Direct3D9RenderTarget<TextureTarget>(owner),
     d_texture(0),
     d_surface(0)
 {

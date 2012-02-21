@@ -83,7 +83,7 @@ uint OpenGLESFBOTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLESFBOTextureTarget::OpenGLESFBOTextureTarget(OpenGLESRenderer& owner) :
-    OpenGLESRenderTarget(owner),
+    OpenGLESRenderTarget<TextureTarget>(owner),
     d_texture(0)
 {
     // this essentially creates a 'null' CEGUI::Texture

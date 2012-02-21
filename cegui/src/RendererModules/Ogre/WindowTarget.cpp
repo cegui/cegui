@@ -36,7 +36,7 @@ namespace CEGUI
 OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
                                    Ogre::RenderSystem& rs,
                                    Ogre::RenderTarget& target) :
-    OgreRenderTarget(owner, rs)
+    OgreRenderTarget<>(owner, rs)
 {
     initRenderTarget(target);
 }

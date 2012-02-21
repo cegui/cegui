@@ -33,7 +33,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 IrrlichtWindowTarget::IrrlichtWindowTarget(IrrlichtRenderer& owner,
                                            irr::video::IVideoDriver& driver) :
-    IrrlichtRenderTarget(owner, driver)
+    IrrlichtRenderTarget<>(owner, driver)
 {
     irr::core::dimension2d<irr::s32> sz(d_driver.getScreenSize());
 

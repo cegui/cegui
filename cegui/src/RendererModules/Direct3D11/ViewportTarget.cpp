@@ -32,7 +32,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
-    Direct3D11RenderTarget(owner)
+    Direct3D11RenderTarget<>(owner)
 {
     // initialise renderer size
     D3D11_VIEWPORT vp;
@@ -53,7 +53,7 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
 //----------------------------------------------------------------------------//
 Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner,
                                                    const Rectf& area) :
-    Direct3D11RenderTarget(owner)
+    Direct3D11RenderTarget<>(owner)
 {
     setArea(area);
 }
