@@ -62,9 +62,9 @@ class GUIContext : public RenderingSurface
     bool injectMouseWheelChange(float delta);
     bool injectMousePosition(float x_pos, float y_pos);
     bool injectTimePulse(float timeElapsed);
-    bool injectMouseButtonClick(const MouseButton button);
-    bool injectMouseButtonDoubleClick(const MouseButton button);
-    bool injectMouseButtonTripleClick(const MouseButton button);
+    bool injectMouseButtonClick(MouseButton button);
+    bool injectMouseButtonDoubleClick(MouseButton button);
+    bool injectMouseButtonTripleClick(MouseButton button);
     bool injectCopyRequest();
     bool injectCutRequest();
     bool injectPasteRequest();
