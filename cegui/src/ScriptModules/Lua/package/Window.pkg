@@ -239,7 +239,7 @@ class Window : public NamedElement
     Vector2<float> getUnprojectedPosition(const Vector2<float>& pos) const;
 
     WindowUpdateMode getUpdateMode() const;
-    void setUpdateMode(const WindowUpdateMode mode);
+    void setUpdateMode(WindowUpdateMode mode);
 
     Window* clone(const bool deepCopy = true) const;
 

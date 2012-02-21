@@ -57,10 +57,10 @@ class Element
     const UDim& getXPosition() const;
     const UDim& getYPosition() const;
     
-    void setHorizontalAlignment(const HorizontalAlignment alignment);
+    void setHorizontalAlignment(HorizontalAlignment alignment);
     HorizontalAlignment getHorizontalAlignment() const;
 
-    void setVerticalAlignment(const VerticalAlignment alignment);
+    void setVerticalAlignment(VerticalAlignment alignment);
     VerticalAlignment getVerticalAlignment() const;
 
     void setSize(const USize& size);
@@ -78,7 +78,7 @@ class Element
     void setMaxSize(const USize& size);
     const USize& getMaxSize() const;
 
-    void setAspectMode(const AspectMode mode);
+    void setAspectMode(AspectMode mode);
     AspectMode getAspectMode() const;
 
     void setAspectRatio(float ratio);
