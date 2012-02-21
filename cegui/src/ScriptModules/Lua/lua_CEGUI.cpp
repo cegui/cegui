@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Sun Feb 19 17:29:45 2012.
+** Generated automatically by tolua++-1.0.93 on Tue Feb 21 12:17:18 2012.
 */
 
 #ifndef __cplusplus
@@ -15680,7 +15680,7 @@ static int tolua_CEGUI_CEGUI_Element_setHorizontalAlignment00(lua_State* tolua_S
 #endif
  {
   CEGUI::Element* self = (CEGUI::Element*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::HorizontalAlignment alignment = ((const CEGUI::HorizontalAlignment)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::HorizontalAlignment alignment = ((CEGUI::HorizontalAlignment) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setHorizontalAlignment'",NULL);
 #endif
@@ -15745,7 +15745,7 @@ static int tolua_CEGUI_CEGUI_Element_setVerticalAlignment00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Element* self = (CEGUI::Element*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::VerticalAlignment alignment = ((const CEGUI::VerticalAlignment)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::VerticalAlignment alignment = ((CEGUI::VerticalAlignment) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setVerticalAlignment'",NULL);
 #endif
@@ -16159,7 +16159,7 @@ static int tolua_CEGUI_CEGUI_Element_setAspectMode00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Element* self = (CEGUI::Element*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::AspectMode mode = ((const CEGUI::AspectMode)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::AspectMode mode = ((CEGUI::AspectMode) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setAspectMode'",NULL);
 #endif
@@ -22864,7 +22864,7 @@ static int tolua_CEGUI_CEGUI_Window_setUpdateMode00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::WindowUpdateMode mode = ((const CEGUI::WindowUpdateMode)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::WindowUpdateMode mode = ((CEGUI::WindowUpdateMode) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setUpdateMode'",NULL);
 #endif
@@ -25366,7 +25366,7 @@ static int tolua_CEGUI_CEGUI_GUIContext_injectMouseButtonClick00(lua_State* tolu
 #endif
  {
   CEGUI::GUIContext* self = (CEGUI::GUIContext*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::MouseButton button = ((const CEGUI::MouseButton)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::MouseButton button = ((CEGUI::MouseButton) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'injectMouseButtonClick'",NULL);
 #endif
@@ -25400,7 +25400,7 @@ static int tolua_CEGUI_CEGUI_GUIContext_injectMouseButtonDoubleClick00(lua_State
 #endif
  {
   CEGUI::GUIContext* self = (CEGUI::GUIContext*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::MouseButton button = ((const CEGUI::MouseButton)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::MouseButton button = ((CEGUI::MouseButton) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'injectMouseButtonDoubleClick'",NULL);
 #endif
@@ -25434,7 +25434,7 @@ static int tolua_CEGUI_CEGUI_GUIContext_injectMouseButtonTripleClick00(lua_State
 #endif
  {
   CEGUI::GUIContext* self = (CEGUI::GUIContext*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::MouseButton button = ((const CEGUI::MouseButton)  tolua_tonumber(tolua_S,2,0));
+  CEGUI::MouseButton button = ((CEGUI::MouseButton) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'injectMouseButtonTripleClick'",NULL);
 #endif
