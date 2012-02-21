@@ -112,45 +112,43 @@ set( CEGUI_STRING_CLASS 1 CACHE INT "Which string class should CEGUI use
 2 - std::string without custom allocation,
 3 - std::basic_string allocated according to allocator config" )
 
-cmake_dependent_option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" TRUE "FREETYPE_FOUND" FALSE )
-cmake_dependent_option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" TRUE "PCRE_FOUND" FALSE )
-cmake_dependent_option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" TRUE "MINIZIP_FOUND" FALSE )
+option( CEGUI_HAS_FREETYPE "Specifies whether to include Freetype font support" ${FREETYPE_FOUND} )
+option( CEGUI_HAS_PCRE_REGEX "Specifies whether to include PCRE regexp matching for editbox string validation" ${PCRE_FOUND} )
+option( CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER "Specifies whether to build the minizip based resource provider" ${MINIZIP_FOUND} )
 option( CEGUI_HAS_EXPRESSION_DIM "Specifies whether to build the ExpressionDim support for Falagard" FALSE )
 option( CEGUI_HAS_DEFAULT_LOGGER "Specifies whether to build the DefaultLogger implementation" TRUE)
 
-cmake_dependent_option( CEGUI_BUILD_XMLPARSER_EXPAT "Specifies whether to build the Expat based XMLParser module" TRUE "EXPAT_FOUND" FALSE)
-cmake_dependent_option( CEGUI_BUILD_XMLPARSER_XERCES "Specifies whether to build the Xerces-C++ based XMLParser module" TRUE "XERCESC_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_XMLPARSER_LIBXML2 "Specifies whether to build the libxml2 based XMLParser module" TRUE "LIBXML2_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_XMLPARSER_RAPIDXML "Specifies whether to build the RapidXML based XMLParser module" TRUE "RAPIDXML_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_XMLPARSER_TINYXML "Specifies whether to build the TinyXML based XMLParser module" TRUE "TINYXML_FOUND" FALSE )
+option( CEGUI_BUILD_XMLPARSER_EXPAT "Specifies whether to build the Expat based XMLParser module" ${EXPAT_FOUND} )
+option( CEGUI_BUILD_XMLPARSER_XERCES "Specifies whether to build the Xerces-C++ based XMLParser module" ${XERCESC_FOUND} )
+option( CEGUI_BUILD_XMLPARSER_LIBXML2 "Specifies whether to build the libxml2 based XMLParser module" ${LIBXML2_FOUND} )
+option( CEGUI_BUILD_XMLPARSER_RAPIDXML "Specifies whether to build the RapidXML based XMLParser module" ${RAPIDXML_FOUND} )
+option( CEGUI_BUILD_XMLPARSER_TINYXML "Specifies whether to build the TinyXML based XMLParser module" ${TINYXML_FOUND} )
 
-cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_SILLY "Specifies whether to build the SILLY based ImageCodec module" TRUE "SILLY_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" TRUE "IL_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_FREEIMAGE "Specifies whether to build the FreeImage based ImageCodec module" TRUE "FREEIMAGE_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_CORONA "Specifies whether to build the Corona based ImageCodec module" TRUE "CORONA_FOUND" FALSE )
+option( CEGUI_BUILD_IMAGECODEC_SILLY "Specifies whether to build the SILLY based ImageCodec module" ${SILLY_FOUND} )
+option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" ${IL_FOUND} )
+option( CEGUI_BUILD_IMAGECODEC_FREEIMAGE "Specifies whether to build the FreeImage based ImageCodec module" ${FREEIMAGE_FOUND} )
+option( CEGUI_BUILD_IMAGECODEC_CORONA "Specifies whether to build the Corona based ImageCodec module" ${CORONA_FOUND} )
 option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based ImageCodec module" TRUE )
 option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" TRUE )
-cmake_dependent_option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" TRUE "PVRTOOLS_FOUND" FALSE )
+option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" ${PVRTOOLS_FOUND} )
 
-cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" TRUE "OPENGL_FOUND;GLEW_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" TRUE "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" TRUE "OGRE_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" TRUE "IRRLICHT_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module" FALSE "DIRECTFB_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to build the Direct3D 9 renderer module" TRUE "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 9" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" TRUE "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" FALSE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" TRUE "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" FALSE )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLEW_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL3 "Specifies whether to build the OpenGL 3+ (core profile) renderer module" "OPENGL_FOUND;GLM_FOUND;GLEW_FOUND")
+option( CEGUI_BUILD_RENDERER_OGRE "Specifies whether to build the Ogre renderer module" ${OGRE_FOUND} )
+option( CEGUI_BUILD_RENDERER_IRRLICHT "Specifies whether to build the Irrlicht renderer module" ${IRRLICHT_FOUND} )
+option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB renderer module" ${DIRECTFB_FOUND} )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to build the Direct3D 9 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 9" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" )
+cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" TRUE )
-cmake_dependent_option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" TRUE "OPENGLES_FOUND" FALSE )
+option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
 
-cmake_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" TRUE "LUA51_FOUND" FALSE )
-cmake_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" FALSE "LUA51_FOUND" FALSE )
+option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" ${LUA51_FOUND} )
+option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" ${LUA51_FOUND} )
 
-cmake_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" TRUE "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" FALSE )
+cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" )
 
-cmake_dependent_option( CEGUI_BUILD_EMBEDDED_TOLUAPP "Specifies whether to use embedded tolua++ when external library was found" FALSE "LUA51_FOUND;TOLUAPP_FOUND" ${LUA51_FOUND} )
-
-cmake_dependent_option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE "CEGUI_BUILD_LUA_MODULE" FALSE )
+option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
 set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is enabled and which library should be used:
     0: Disabled.
@@ -158,24 +156,24 @@ set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is 
     2: Use external fribidi library."
 )
 
-cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" TRUE "CEGUI_BUILD_RENDERER_OPENGL;GLFW_FOUND" FALSE )
-cmake_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer" TRUE "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" FALSE )
-cmake_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" TRUE "CEGUI_BUILD_RENDERER_OGRE;OIS_FOUND" FALSE )
+cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" "CEGUI_BUILD_RENDERER_OPENGL;GLFW_FOUND" )
+cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer" "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" )
+cegui_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" "CEGUI_BUILD_RENDERER_OGRE;OIS_FOUND" )
 
-cmake_dependent_option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" TRUE "CEGUI_BUILD_RENDERER_IRRLICHT" FALSE )
-cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECTFB "Specifies whether the sample applications will use the DirectFB renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECTFB" FALSE )
-cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECT3D9 "Specifies whether the sample applications will use the Direct3D 9 renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECT3D9" FALSE )
-cmake_dependent_option( CEGUI_SAMPLES_USE_DIRECT3D10 "Specifies whether the sample applications will use the Direct3D 10 renderer" TRUE "CEGUI_BUILD_RENDERER_DIRECT3D10" FALSE )
+option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" ${CEGUI_BUILD_RENDERER_IRRLICHT} )
+option( CEGUI_SAMPLES_USE_DIRECTFB "Specifies whether the sample applications will use the DirectFB renderer" ${CEGUI_BUILD_RENDERER_DIRECTFB} )
+option( CEGUI_SAMPLES_USE_DIRECT3D9 "Specifies whether the sample applications will use the Direct3D 9 renderer" ${CEGUI_BUILD_RENDERER_DIRECT3D9} )
+option( CEGUI_SAMPLES_USE_DIRECT3D10 "Specifies whether the sample applications will use the Direct3D 10 renderer" ${CEGUI_BUILD_RENDERER_DIRECT3D10} )
 
 if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECTFB)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
 endif()
-cmake_dependent_option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" TRUE "_CEGUI_SAMPLES_ENABLED_DEFAULT" FALSE )
+option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" ${_CEGUI_SAMPLES_ENABLED_DEFAULT} )
 
 if (UNIX AND NOT APPLE AND NOT WIN32)
-    cmake_dependent_option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE "GTK2_FOUND;CEGUI_SAMPLES_ENABLED" FALSE )
+    option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
 endif()
 
 option( CEGUI_HAS_VERSION_SUFFIX "Specifies whether to append a version number to the name of output binaries." FALSE )
@@ -367,12 +365,6 @@ else ()
     set( CEGUI_USE_MINIBIDI FALSE)
     set( CEGUI_USE_FRIBIDI FALSE)
 endif ()
-
-# Point TOLUAPP vars to location of embedded lib if using that option
-if (CEGUI_BUILD_EMBEDDED_TOLUAPP)
-    set (TOLUAPP_LIBRARIES ${CEGUI_TOLUAPP_LIBNAME})
-    set (TOLUAPP_INCLUDE_DIR ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/ScriptModules/Lua/support/tolua++)
-endif()
 
 # set up install sub-directories
 if (UNIX AND NOT APPLE AND NOT WIN32)

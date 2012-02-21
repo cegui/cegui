@@ -543,3 +543,26 @@ macro (cegui_add_test_executable _NAME)
     endif()
 
 endmacro()
+
+################################################################################
+# Creates a cmake option and initializes it to a default value depending on
+# other options.
+#
+# OPTIONAME: The name of the option to create
+# DESC: The option's description
+# DEPS: Dependencies of the option, specified as a list of boolean expressions.
+#       If one of the dependencies evaluates to FALSE, then the option's
+#       default will be set to FALSE, otherwise it will be set to TRUE.
+#       Example for DEPS: "NOT FOO;BAR"
+################################################################################
+macro (cegui_dependent_option OPTIONNAME DESC DEPS)
+    set (${OPTIONNAME}_DEFAULT TRUE)
+    foreach (DEP ${DEPS})
+        # Don't use NOT here, because conditions like 'NOT NOT foo' will break
+        if (${${DEP}})
+        else()
+            set (${OPTIONNAME}_DEFAULT FALSE)
+        endif()
+    endforeach()
+    option (${OPTIONNAME} "${DESC}" ${${OPTIONNAME}_DEFAULT})
+endmacro()
