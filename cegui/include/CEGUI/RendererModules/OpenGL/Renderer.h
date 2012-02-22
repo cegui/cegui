@@ -279,7 +279,7 @@ public:
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
 
-private:
+protected:
     /*!
     \brief
         Constructor for OpenGL Renderer objects

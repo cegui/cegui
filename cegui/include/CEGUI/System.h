@@ -553,6 +553,7 @@ private:
     System(const System& obj);
     System& operator=(const System& obj);
 
+protected:
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
