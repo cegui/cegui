@@ -8,13 +8,13 @@ find_library(GLEW_LIB NAMES GLEW libGLEW PATH_SUFFIXES dynamic)
 find_library(GLEW_LIB_DBG NAMES GLEW_d libGLEW_d PATH_SUFFIXES dynamic)
 mark_as_advanced(GLEW_H_PATH GLEW_LIB GLEW_LIB_DBG)
 
-if (WIN32)
+if (WIN32 OR APPLE)
     find_library(GLEW_LIB_STATIC NAMES GLEW libGLEW PATH_SUFFIXES static)
     find_library(GLEW_LIB_STATIC_DBG NAMES GLEW_d libGLEW_d PATH_SUFFIXES static)
     mark_as_advanced(GLEW_LIB_STATIC GLEW_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(GLEW DEFAULT_MSG GLEW_LIB GLEW_H_PATH)
+cegui_find_package_handle_standard_args(GLEW GLEW_LIB GLEW_H_PATH)
 
 
 # set up output vars

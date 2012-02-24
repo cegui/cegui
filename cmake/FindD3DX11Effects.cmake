@@ -14,7 +14,7 @@ if (WIN32)
     mark_as_advanced(D3DX11EFFECTS_LIB_STATIC D3DX11EFFECTS_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(D3DX11EFFECTS DEFAULT_MSG D3DX11EFFECTS_LIB D3DX11EFFECTS_H_PATH)
+cegui_find_package_handle_standard_args(D3DX11EFFECTS D3DX11EFFECTS_LIB D3DX11EFFECTS_H_PATH)
 
 
 # set up output vars

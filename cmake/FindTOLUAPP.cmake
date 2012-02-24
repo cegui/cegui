@@ -14,7 +14,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(TOLUAPP_LIB_STATIC TOLUAPP_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(TOLUAPP DEFAULT_MSG TOLUAPP_LIB TOLUAPP_H_PATH)
+cegui_find_package_handle_standard_args(TOLUAPP TOLUAPP_LIB TOLUAPP_H_PATH)
 
 
 # set up output vars

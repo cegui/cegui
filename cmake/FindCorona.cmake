@@ -18,7 +18,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(CORONA_LIB_STATIC CORONA_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(CORONA DEFAULT_MSG CORONA_LIB CORONA_H_PATH)
+cegui_find_package_handle_standard_args(CORONA CORONA_LIB CORONA_H_PATH)
 
 # set up output vars
 if (CORONA_FOUND)
