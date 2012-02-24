@@ -14,7 +14,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(LUA_LIB_STATIC LUA_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(LUA51 DEFAULT_MSG LUA_LIB LUA_H_PATH)
+cegui_find_package_handle_standard_args(LUA51 LUA_LIB LUA_H_PATH)
 
 
 # set up output vars

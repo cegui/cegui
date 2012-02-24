@@ -15,7 +15,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(TINYXML_LIB_STATIC TINYXML_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(TINYXML DEFAULT_MSG TINYXML_LIB TINYXML_H_PATH)
+cegui_find_package_handle_standard_args(TINYXML TINYXML_LIB TINYXML_H_PATH)
 
 if (TINYXML_FOUND)
     # what API version do we have here?

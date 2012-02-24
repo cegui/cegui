@@ -1,6 +1,7 @@
 ################################################################################
 # Macro definitions used by CEGUI's cmake build
 ################################################################################
+include(FindPackageHandleStandardArgs)
 
 #
 # gather *.cpp and .h files for the current location
@@ -578,3 +579,64 @@ macro (cegui_dependent_option OPTIONNAME DESC DEPS)
     endforeach()
     option (${OPTIONNAME} "${DESC}" ${${OPTIONNAME}_DEFAULT})
 endmacro()
+
+################################################################################
+# Checks a set of variables and determines whether a package was 'found' or not.
+#
+# This is used to try and handle the plethora of dependency options that are
+# created when using the CEGUI dependencies package in combination with cmake
+# settings and options used here in the main CEGUI build.
+#
+# NOTE: On platforms where the dependency pack is not intended to be used, the
+# extra library configurations are NOT checked, on those platforms we will use
+# the base library only.
+#
+# _PKGNAME: The name of package we're checking for.
+# _LIBBASENAMEVAR: name of the library base name variable.  This name will be
+#                  used in the construction of other variable names which should
+#                  be set for various configurations (eg. BASENAMEVAR_DBG for 
+#                  dynamic debug config, BASENAMEVAR_STATIC for non debug static)
+# Optional other args: all other args will be tested verbatim (they're passed
+#                      along to find_package_handle_standard_args).
+################################################################################
+macro (cegui_find_package_handle_standard_args _PKGNAME _LIBBASENAMEVAR)
+    unset(_FPHSA_LIBS)
+
+    if (WIN32 OR APPLE)
+        if (CMAKE_GENERATOR MATCHES ".*Makefiles")
+            set (_BUILDCFG ${CMAKE_BUILD_TYPE})
+        else()
+            unset (_BUILDCFG)
+        endif()
+
+        if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+            if (NOT _BUILDCFG OR NOT _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC)
+            endif()
+            if (NOT _BUILDCFG OR _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC_DBG)
+            endif()
+        else()
+            if (NOT _BUILDCFG OR NOT _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR})
+            endif()
+            if (NOT _BUILDCFG OR _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_DBG)
+            endif()
+            if (CEGUI_BUILD_STATIC_CONFIGURATION)
+                if (NOT _BUILDCFG OR NOT _BUILDCFG STREQUAL Debug)
+                    list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC)
+                endif()
+                if (NOT _BUILDCFG OR _BUILDCFG STREQUAL Debug)
+                    list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC_DBG)
+                endif()
+            endif()
+        endif()
+    else()
+        set(_FPHSA_LIBS ${_LIBBASENAMEVAR})
+    endif()
+
+    find_package_handle_standard_args(${_PKGNAME} DEFAULT_MSG ${_FPHSA_LIBS} ${ARGN})
+endmacro()
+
+

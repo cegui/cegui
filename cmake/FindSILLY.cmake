@@ -24,7 +24,7 @@ if (UNIX AND NOT APPLE)
     mark_as_advanced(SILLY_DEFINITIONS)
 endif()
 
-find_package_handle_standard_args(SILLY DEFAULT_MSG SILLY_LIB SILLY_H_PATH)
+cegui_find_package_handle_standard_args(SILLY SILLY_LIB SILLY_H_PATH)
 
 
 # set up output vars
