@@ -394,7 +394,14 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
 bool FalagardEditbox::editboxIsFocussed() const
 {
     Editbox* const w = static_cast<Editbox*>(d_window);
-    return (!w->isReadOnly()) && w->hasInputFocus();
+    return w->hasInputFocus();
+}
+
+//----------------------------------------------------------------------------//
+bool FalagardEditbox::editboxIsReadOnly() const
+{
+    Editbox* const w = static_cast<Editbox*>(d_window);
+    return w->isReadOnly();
 }
 
 //----------------------------------------------------------------------------//
@@ -403,7 +410,7 @@ void FalagardEditbox::renderCaret(const ImagerySection& imagery,
                                   const float text_offset,
                                   const float extent_to_caret) const
 {
-    if (editboxIsFocussed() && (!d_blinkCaret || d_showCaret))
+    if ((!d_blinkCaret || d_showCaret) && editboxIsFocussed() && !editboxIsReadOnly())
     {
         Rectf caretRect(text_area);
         caretRect.d_min.d_x += extent_to_caret + text_offset;
