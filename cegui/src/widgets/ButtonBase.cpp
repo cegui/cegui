@@ -58,29 +58,24 @@ ButtonBase::~ButtonBase(void)
 *************************************************************************/
 void ButtonBase::updateInternalState(const Vector2f& mouse_pos)
 {
-    // This code is rewritten and has a slightly different behaviour
-    // it is no longer fully "correct", as overlapping windows will not be
-    // considered if the widget is currently captured.
-    // On the other hand it's alot faster, so I believe it's a worthy
-    // tradeoff
+	const bool oldstate = d_hovering;
 
-	bool oldstate = d_hovering;
+    d_hovering = calculateCurrentHoverState(mouse_pos);
 
-	// assume not hovering 
-	d_hovering = false;
-
-	// if input is captured, but not by 'this', then we never hover highlight
-	const Window* capture_wnd = getCaptureWindow();
-	if (capture_wnd == 0)
-	    d_hovering = (getGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos));
-    else
-        d_hovering = (capture_wnd == this && isHit(mouse_pos));
-
-	// if state has changed, trigger a re-draw
 	if (oldstate != d_hovering)
 		invalidate();
 }
 
+//----------------------------------------------------------------------------//
+bool ButtonBase::calculateCurrentHoverState(const Vector2f& mouse_pos)
+{
+	if (const Window* capture_wnd = getCaptureWindow())
+        return
+            (capture_wnd == this ||
+            (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(mouse_pos);
+    else
+	    return getGUIContext().getWindowContainingMouse() == this;
+}
 
 /*************************************************************************
 	Handler for when the mouse moves
@@ -152,8 +147,7 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 	Window::onCaptureLost(e);
 
 	d_pushed = false;
-	updateInternalState(getUnprojectedPosition(
-        getGUIContext().getMouseCursor().getPosition()));
+    getGUIContext().updateWindowContainingMouse();
 	invalidate();
 
 	// event was handled by us.
