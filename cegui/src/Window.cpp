@@ -1155,10 +1155,6 @@ void Window::addChild_impl(Element* element)
 
     wnd->invalidate(true);
 
-    // restore old capture setting is always inherited
-    wnd->setRestoreOldCapture(d_restoreOldCapture);
-    wnd->banPropertyFromXML("RestoreOldCapture");
-    
     wnd->onZChange_impl();
 }
 
