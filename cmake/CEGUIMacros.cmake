@@ -396,7 +396,7 @@ macro (cegui_add_sample _NAME)
         # we add these to ensure the dynamically loaded modules we will be
         # using are built before the .app's post build step that copies
         # libs into the app bundle.
-        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_FALAGARD_WR_LIBNAME}
+        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
                                               CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
                                               CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}
         )
@@ -417,7 +417,7 @@ macro (cegui_add_sample _NAME)
         target_link_libraries(${CEGUI_TARGET_NAME}_Static
             ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
             ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
-            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
+            ${CEGUI_CORE_WR_LIBNAME}_Static
         )
     endif()
 
@@ -532,7 +532,7 @@ macro (cegui_add_test_executable _NAME)
             ${CEGUI_NULL_RENDERER_LIBNAME}_Static
             ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
             ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
-            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
+            ${CEGUI_CORE_WR_LIBNAME}_Static
         )
     endif()
 

@@ -237,7 +237,7 @@ set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
 set( CEGUI_PVR_IMAGECODEC_LIBNAME CEGUIPVRImageCodec )
 
 # WindowRenderer set module names
-set( CEGUI_FALAGARD_WR_LIBNAME CEGUIFalagardWRBase )
+set( CEGUI_CORE_WR_LIBNAME CEGUICoreWindowRendererSet )
 
 # Scripting module names and related items.
 set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )

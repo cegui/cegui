@@ -126,7 +126,7 @@ note: For Linux and MacOSX packages, see http://www.cegui.org.uk, we provide the
                 CEGUI_BASEDIR + "/build/bin/CEGUIBase.dll",
                 CEGUI_BASEDIR + "/build/bin/CEGUIOpenGLRenderer.dll",
                 CEGUI_BASEDIR + "/build/bin/CEGUINullRenderer.dll",
-                CEGUI_BASEDIR + "/build/lib/CEGUIFalagardWRBase.dll",
+                CEGUI_BASEDIR + "/build/lib/CEGUICoreWindowRendererSet.dll",
                 CEGUI_BASEDIR + "/build/lib/CEGUIFreeImageImageCodec.dll",
                 CEGUI_BASEDIR + "/dependencies/bin/freeimage.dll",
                 CEGUI_BASEDIR + "/build/lib/CEGUIExpatParser.dll",
