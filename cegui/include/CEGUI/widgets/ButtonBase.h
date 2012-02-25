@@ -117,6 +117,8 @@ protected:
 	*/
 	void	updateInternalState(const Vector2f& mouse_pos);
 
+    bool calculateCurrentHoverState(const Vector2f& mouse_pos);
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
