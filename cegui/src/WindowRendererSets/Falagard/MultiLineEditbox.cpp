@@ -186,13 +186,16 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
         // calculate final colours to use.
         ColourRect colours;
         const float alpha = w->getEffectiveAlpha();
-        Colour normalTextCol = getUnselectedTextColour();
-        normalTextCol.setAlpha(normalTextCol.getAlpha() * alpha);
-        Colour selectTextCol = getSelectedTextColour();
-        selectTextCol.setAlpha(selectTextCol.getAlpha() * alpha);
-        Colour selectBrushCol = w->hasInputFocus() ? getActiveSelectionColour() :
-                                                    getInactiveSelectionColour();
-        selectBrushCol.setAlpha(selectBrushCol.getAlpha() * alpha);
+        ColourRect normalTextCol;
+        setColourRectToUnselectedTextColour(normalTextCol);
+        normalTextCol.modulateAlpha(alpha);
+        ColourRect selectTextCol;
+        setColourRectToSelectedTextColour(selectTextCol);
+        selectTextCol.modulateAlpha(alpha);
+        ColourRect selectBrushCol;
+        w->hasInputFocus() ? setColourRectToActiveSelectionColour(selectBrushCol) :
+                             setColourRectToInactiveSelectionColour(selectBrushCol);
+        selectBrushCol.modulateAlpha(alpha);
 
         const MultiLineEditbox::LineList& d_lines = w->getFormattedLines();
         const size_t numLines = d_lines.size();
@@ -220,7 +223,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 ((currLine.d_startIdx + currLine.d_length) <= w->getSelectionStartIndex()) ||
                 (w->getSelectionBrushImage() == 0))
             {
-                colours.setColours(normalTextCol);
+                colours = normalTextCol;
                 // render the complete line.
                 fnt->drawText(w->getGeometryBuffer(), lineText,
                                 lineRect.getPosition(), &dest_area, colours);
@@ -247,7 +250,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                     selStartOffset = fnt->getTextExtent(sect);
 
                     // draw this portion of the text
-                    colours.setColours(normalTextCol);
+                    colours = normalTextCol;
                     fnt->drawText(w->getGeometryBuffer(), sect,
                                     lineRect.getPosition(), &dest_area, colours);
 
@@ -274,11 +277,11 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 lineRect.bottom(lineRect.top() + fnt->getLineSpacing());
 
                 // render the selection area brush for this line
-                colours.setColours(selectBrushCol);
+                colours = selectBrushCol;
                 w->getSelectionBrushImage()->render(w->getGeometryBuffer(), lineRect, &dest_area, colours);
 
                 // draw the text for this section
-                colours.setColours(selectTextCol);
+                colours = selectTextCol;
                 fnt->drawText(w->getGeometryBuffer(), sect,
                                 lineRect.getPosition(), &dest_area, colours);
 
@@ -297,7 +300,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                     sect = lineText.substr(sectIdx, sectLen);
 
                     // render the text for this section.
-                    colours.setColours(normalTextCol);
+                    colours = normalTextCol;
                     fnt->drawText(w->getGeometryBuffer(), sect,
                                     lineRect.getPosition(), &dest_area, colours);
                 }
@@ -309,32 +312,48 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
     }
 }
 
-Colour FalagardMultiLineEditbox::getOptionalPropertyColour(const String& propertyName) const
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setColourRectToUnselectedTextColour(
+                                                ColourRect& colour_rect) const
+{
+    setColourRectToOptionalPropertyColour(UnselectedTextColourPropertyName,
+                                          colour_rect);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setColourRectToSelectedTextColour(
+                                                ColourRect& colour_rect) const
+{
+    setColourRectToOptionalPropertyColour(SelectedTextColourPropertyName,
+                                          colour_rect);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setColourRectToActiveSelectionColour(
+                                                ColourRect& colour_rect) const
+{
+    setColourRectToOptionalPropertyColour(ActiveSelectionColourPropertyName,
+                                          colour_rect);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setColourRectToInactiveSelectionColour(
+                                                ColourRect& colour_rect) const
+{
+    setColourRectToOptionalPropertyColour(InactiveSelectionColourPropertyName,
+                                          colour_rect);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardMultiLineEditbox::setColourRectToOptionalPropertyColour(
+                                                const String& propertyName,
+                                                ColourRect& colour_rect) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper<Colour>::fromString(d_window->getProperty(propertyName));
+        colour_rect = PropertyHelper<ColourRect>::fromString(
+            d_window->getProperty(propertyName));
     else
-        return Colour(0,0,0);
-}
-
-Colour FalagardMultiLineEditbox::getUnselectedTextColour() const
-{
-    return getOptionalPropertyColour(UnselectedTextColourPropertyName);
-}
-
-Colour FalagardMultiLineEditbox::getSelectedTextColour() const
-{
-    return getOptionalPropertyColour(SelectedTextColourPropertyName);
-}
-
-Colour FalagardMultiLineEditbox::getActiveSelectionColour() const
-{
-    return getOptionalPropertyColour(ActiveSelectionColourPropertyName);
-}
-
-Colour FalagardMultiLineEditbox::getInactiveSelectionColour() const
-{
-    return getOptionalPropertyColour(InactiveSelectionColourPropertyName);
+        colour_rect.setColours(0);
 }
 
 //----------------------------------------------------------------------------//

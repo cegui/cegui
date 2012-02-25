@@ -239,7 +239,8 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     ColourRect colours;
     const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
-    const Colour unselectedColour(getUnselectedTextColour());
+    ColourRect unselectedColours;
+    setColourRectToUnselectedTextColour(unselectedColours);
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
@@ -265,7 +266,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
 
     // draw pre-highlight text
     String sect = text.substr(0, w->getSelectionStartIndex());
-    colours.setColours(unselectedColour);
+    colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
                    &text_area, colours);
@@ -275,7 +276,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
 
     // draw highlight text
     sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
-    colours.setColours(getSelectedTextColour());
+    setColourRectToSelectedTextColour(colours);
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
                    &text_area, colours);
@@ -285,7 +286,7 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
-    colours.setColours(unselectedColour);
+    colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
     font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
                    &text_area, colours);
@@ -298,7 +299,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                                      float text_offset)
 {
 #ifdef CEGUI_BIDI_SUPPORT
-    Font* const font = d_window->getFont();
+    const Font* const font = d_window->getFont();
 
     // setup initial rect for text formatting
     Rectf text_part_rect(text_area);
@@ -310,7 +311,8 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     ColourRect colours;
     const float alpha_comp = d_window->getEffectiveAlpha();
     // get unhighlighted text colour (saves accessing property twice)
-    const Colour unselectedColour(getUnselectedTextColour());
+    ColourRect unselectedColour;
+    setColourRectToUnselectedTextColour(unselectedColour);
     // see if the editbox is active or inactive.
     Editbox* const w = static_cast<Editbox*>(d_window);
     const bool active = editboxIsFocussed();
@@ -318,7 +320,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
     if (w->getSelectionLength() == 0)
     {
         // no highlighted text - we can draw the whole thing
-        colours.setColours(unselectedColour);
+        colours = unselectedColour;
         colours.modulateAlpha(alpha_comp);
         font->drawText(w->getGeometryBuffer(), text,
                        text_part_rect.getPosition(), &text_area, colours);
@@ -355,7 +357,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
 
             if (highlighted)
             {
-                colours.setColours(getSelectedTextColour());
+                setColourRectToSelectedTextColour(colours);
                 colours.modulateAlpha(alpha_comp);
 
                 {
@@ -374,7 +376,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
             }
             else
             {
-                colours.setColours(unselectedColour);
+                colours = unselectedColour;
                 colours.modulateAlpha(alpha_comp);
             }
             font->drawText(w->getGeometryBuffer(), currChar,
@@ -430,26 +432,27 @@ size_t FalagardEditbox::getTextIndexFromPosition(const Vector2f& pt) const
 }
 
 //----------------------------------------------------------------------------//
-Colour FalagardEditbox::getOptionalPropertyColour(
-    const String& propertyName) const
+void FalagardEditbox::setColourRectToUnselectedTextColour(ColourRect& cr) const
+{
+    setColourRectToOptionalPropertyColour(UnselectedTextColourPropertyName, cr);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setColourRectToSelectedTextColour(ColourRect& cr) const
+{
+    setColourRectToOptionalPropertyColour(SelectedTextColourPropertyName, cr);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardEditbox::setColourRectToOptionalPropertyColour(
+    const String& propertyName,
+    ColourRect& colour_rect) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        return PropertyHelper<Colour>::fromString(
+        colour_rect = PropertyHelper<ColourRect>::fromString(
             d_window->getProperty(propertyName));
     else
-        return Colour(0, 0, 0);
-}
-
-//----------------------------------------------------------------------------//
-Colour FalagardEditbox::getUnselectedTextColour() const
-{
-    return getOptionalPropertyColour(UnselectedTextColourPropertyName);
-}
-
-//----------------------------------------------------------------------------//
-Colour FalagardEditbox::getSelectedTextColour() const
-{
-    return getOptionalPropertyColour(SelectedTextColourPropertyName);
+        colour_rect.setColours(0);
 }
 
 //----------------------------------------------------------------------------//

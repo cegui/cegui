@@ -136,54 +136,46 @@ protected:
 
     /*!
     \brief
-        return the colour to be used for rendering Editbox text oustside of the
-        selected region.
-
-    \return
-        colour value describing the colour to be used.
+        Set the given ColourRect to the colour to be used for rendering Editbox
+        text oustside of the selected region.
     */
-    Colour getUnselectedTextColour() const;
+    void setColourRectToUnselectedTextColour(ColourRect& colour_rect) const;
 
     /*!
     \brief
-        return the colour to be used for rendering the selection highlight
-        when the editbox is active.
-
-    \return
-        colour value describing the colour to be used.
+        Set the given ColourRect to the colour to be used for rendering Editbox
+        text falling within the selected region.
     */
-    Colour getActiveSelectionColour() const;
+    void setColourRectToSelectedTextColour(ColourRect& colour_rect) const;
 
     /*!
     \brief
-        return the colour to be used for rendering the selection highlight
-        when the editbox is inactive.
-
-    \return
-        colour value describing the colour to be used.
+        Set the given ColouRect to the colours to be used for rendering the
+        selection highlight when the editbox is active.
     */
-    Colour getInactiveSelectionColour() const;
+    void setColourRectToActiveSelectionColour(ColourRect& colour_rect) const;
 
     /*!
     \brief
-        return the colour to be used for rendering Editbox text falling within
-        the selected region.
-
-    \return
-        colour value describing the colour to be used.
+        set the given ColourRect to the colours to be used for rendering the
+        selection highlight when the editbox is inactive.
     */
-    Colour getSelectedTextColour() const;
+    void setColourRectToInactiveSelectionColour(ColourRect& colour_rect) const;
 
     /*!
     \brief
-        Return a colour object fetched from the named property if it exists,
-        else a default colour (black).
+        Set the given ColourRect to the colour(s) fetched from the named
+        property if it exists, else the default colour of black.
 
     \param propertyName
         String object holding the name of the property to be accessed if it
         exists.
+
+    \param colour_rect
+        Reference to a ColourRect that will be set.
     */
-    Colour getOptionalPropertyColour(const String& propertyName) const;
+    void setColourRectToOptionalPropertyColour(const String& propertyName,
+                                               ColourRect& colour_rect) const;
 
     //! true if the caret imagery should blink.
     bool d_blinkCaret;
