@@ -91,6 +91,10 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
         CEGUI::Window::bufferGeometry( boost::ref(ctx) );
     }
 
+    bool calculateCurrentHoverState( ::CEGUI::Vector2f const & mouse_pos ){
+        return CEGUI::ButtonBase::calculateCurrentHoverState( boost::ref(mouse_pos) );
+    }
+
     virtual void cleanupChildren(  ){
         if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
             func_cleanupChildren(  );
@@ -1549,6 +1553,16 @@ void register_RadioButton_class(){
                     easier to override drawSelf without needing to duplicate large sections\n\
                     of the code from the default implementation.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::ButtonBase::calculateCurrentHoverState
+        
+            typedef bool ( RadioButton_wrapper::*calculateCurrentHoverState_function_type )( ::CEGUI::Vector2f const & ) ;
+            
+            RadioButton_exposer.def( 
+                "calculateCurrentHoverState"
+                , calculateCurrentHoverState_function_type( &RadioButton_wrapper::calculateCurrentHoverState )
+                , ( bp::arg("mouse_pos") ) );
         
         }
         { //::CEGUI::Window::cleanupChildren

@@ -8,6 +8,53 @@ namespace bp = boost::python;
 
 struct System_wrapper : CEGUI::System, bp::wrapper< CEGUI::System > {
 
+    System_wrapper(::CEGUI::Renderer & renderer, ::CEGUI::ResourceProvider * resourceProvider, ::CEGUI::XMLParser * xmlParser, ::CEGUI::ImageCodec * imageCodec, ::CEGUI::ScriptModule * scriptModule, ::CEGUI::String const & configFile, ::CEGUI::String const & logFile )
+    : CEGUI::System( boost::ref(renderer), boost::python::ptr(resourceProvider), boost::python::ptr(xmlParser), boost::python::ptr(imageCodec), boost::python::ptr(scriptModule), boost::ref(configFile), boost::ref(logFile) )
+      , bp::wrapper< CEGUI::System >(){
+        // constructor
+    
+    }
+
+    void addStandardWindowFactories(  ){
+        CEGUI::System::addStandardWindowFactories(  );
+    }
+
+    void cleanupImageCodec(  ){
+        CEGUI::System::cleanupImageCodec(  );
+    }
+
+    void cleanupXMLParser(  ){
+        CEGUI::System::cleanupXMLParser(  );
+    }
+
+    void createSingletons(  ){
+        CEGUI::System::createSingletons(  );
+    }
+
+    void destroySingletons(  ){
+        CEGUI::System::destroySingletons(  );
+    }
+
+    void invalidateAllWindows(  ){
+        CEGUI::System::invalidateAllWindows(  );
+    }
+
+    void onDefaultFontChanged( ::CEGUI::EventArgs & e ){
+        CEGUI::System::onDefaultFontChanged( boost::ref(e) );
+    }
+
+    void outputLogHeader(  ){
+        CEGUI::System::outputLogHeader(  );
+    }
+
+    void setupImageCodec( ::CEGUI::String const & codecName ){
+        CEGUI::System::setupImageCodec( boost::ref(codecName) );
+    }
+
+    void setupXMLParser(  ){
+        CEGUI::System::setupXMLParser(  );
+    }
+
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -60,6 +107,37 @@ void register_System_class(){
         typedef bp::class_< System_wrapper, bp::bases< CEGUI::Singleton< CEGUI::System >, CEGUI::EventSet >, boost::noncopyable > System_exposer_t;
         System_exposer_t System_exposer = System_exposer_t( "System", bp::no_init );
         bp::scope System_scope( System_exposer );
+        System_exposer.def( bp::init< CEGUI::Renderer &, CEGUI::ResourceProvider *, CEGUI::XMLParser *, CEGUI::ImageCodec *, CEGUI::ScriptModule *, CEGUI::String const &, CEGUI::String const & >(( bp::arg("renderer"), bp::arg("resourceProvider"), bp::arg("xmlParser"), bp::arg("imageCodec"), bp::arg("scriptModule"), bp::arg("configFile"), bp::arg("logFile") )) );
+        { //::CEGUI::System::addStandardWindowFactories
+        
+            typedef void ( System_wrapper::*addStandardWindowFactories_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "addStandardWindowFactories"
+                , addStandardWindowFactories_function_type( &System_wrapper::addStandardWindowFactories )
+                , "! adds factories for all the basic window types\n" );
+        
+        }
+        { //::CEGUI::System::cleanupImageCodec
+        
+            typedef void ( System_wrapper::*cleanupImageCodec_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "cleanupImageCodec"
+                , cleanupImageCodec_function_type( &System_wrapper::cleanupImageCodec )
+                , "! cleanup image codec \n" );
+        
+        }
+        { //::CEGUI::System::cleanupXMLParser
+        
+            typedef void ( System_wrapper::*cleanupXMLParser_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "cleanupXMLParser"
+                , cleanupXMLParser_function_type( &System_wrapper::cleanupXMLParser )
+                , "! handle cleanup of the XML parser\n" );
+        
+        }
         { //::CEGUI::System::create
         
             typedef ::CEGUI::System & ( *create_function_type )( ::CEGUI::Renderer &,::CEGUI::ResourceProvider *,::CEGUI::XMLParser *,::CEGUI::ImageCodec *,::CEGUI::ScriptModule *,::CEGUI::String const &,::CEGUI::String const & );
@@ -105,6 +183,16 @@ void register_System_class(){
                 *\n" );
         
         }
+        { //::CEGUI::System::createSingletons
+        
+            typedef void ( System_wrapper::*createSingletons_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "createSingletons"
+                , createSingletons_function_type( &System_wrapper::createSingletons )
+                , "! create the other core system singleton objects (except the logger)\n" );
+        
+        }
         { //::CEGUI::System::destroy
         
             typedef void ( *destroy_function_type )(  );
@@ -134,6 +222,16 @@ void register_System_class(){
                 , destroyRegexMatcher_function_type( &::CEGUI::System::destroyRegexMatcher )
                 , ( bp::arg("rm") )
                 , "! destroy a RegexMatcher instance returned by System.createRegexMatcher.\n" );
+        
+        }
+        { //::CEGUI::System::destroySingletons
+        
+            typedef void ( System_wrapper::*destroySingletons_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "destroySingletons"
+                , destroySingletons_function_type( &System_wrapper::destroySingletons )
+                , "! cleanup the core system singleton objects\n" );
         
         }
         { //::CEGUI::System::executeScriptFile
@@ -507,6 +605,16 @@ void register_System_class(){
                 *\n" );
         
         }
+        { //::CEGUI::System::invalidateAllWindows
+        
+            typedef void ( System_wrapper::*invalidateAllWindows_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "invalidateAllWindows"
+                , invalidateAllWindows_function_type( &System_wrapper::invalidateAllWindows )
+                , "! invalidate all windows and any rendering surfaces they may be using.\n" );
+        
+        }
         { //::CEGUI::System::notifyDisplaySizeChanged
         
             typedef void ( ::CEGUI::System::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
@@ -532,6 +640,33 @@ void register_System_class(){
                 @param new_size\n\
                     Size object describing the new display size in pixels.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::System::onDefaultFontChanged
+        
+            typedef void ( System_wrapper::*onDefaultFontChanged_function_type )( ::CEGUI::EventArgs & ) ;
+            
+            System_exposer.def( 
+                "onDefaultFontChanged"
+                , onDefaultFontChanged_function_type( &System_wrapper::onDefaultFontChanged )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               Handlers for System events\n\
+            *************************************************************************\n\
+            *!\n\
+            \n\
+               Handler called when the default system font is changed.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::System::outputLogHeader
+        
+            typedef void ( System_wrapper::*outputLogHeader_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "outputLogHeader"
+                , outputLogHeader_function_type( &System_wrapper::outputLogHeader )
+                , "! output the standard log header\n" );
         
         }
         { //::CEGUI::System::renderAllGUIContexts
@@ -783,6 +918,27 @@ void register_System_class(){
                     Pointer to the XMLParser object to be used by the system, or 0 to cause\n\
                     the system to initialise a default parser.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::System::setupImageCodec
+        
+            typedef void ( System_wrapper::*setupImageCodec_function_type )( ::CEGUI::String const & ) ;
+            
+            System_exposer.def( 
+                "setupImageCodec"
+                , setupImageCodec_function_type( &System_wrapper::setupImageCodec )
+                , ( bp::arg("codecName") )
+                , "! setup image codec \n" );
+        
+        }
+        { //::CEGUI::System::setupXMLParser
+        
+            typedef void ( System_wrapper::*setupXMLParser_function_type )(  ) ;
+            
+            System_exposer.def( 
+                "setupXMLParser"
+                , setupXMLParser_function_type( &System_wrapper::setupXMLParser )
+                , "! handle creation and initialisation of the XML parser.\n" );
         
         }
         System_exposer.add_static_property( "EventDefaultFontChanged"

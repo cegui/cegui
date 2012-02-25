@@ -8,6 +8,20 @@ namespace bp = boost::python;
 
 struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenGLRenderer > {
 
+    OpenGLRenderer_wrapper(::CEGUI::OpenGLRenderer::TextureTargetType const tt_type )
+    : CEGUI::OpenGLRenderer( tt_type )
+      , bp::wrapper< CEGUI::OpenGLRenderer >(){
+        // constructor
+    
+    }
+
+    OpenGLRenderer_wrapper(::CEGUI::Sizef const & display_size, ::CEGUI::OpenGLRenderer::TextureTargetType const tt_type )
+    : CEGUI::OpenGLRenderer( boost::ref(display_size), tt_type )
+      , bp::wrapper< CEGUI::OpenGLRenderer >(){
+        // constructor
+    
+    }
+
     virtual void beginRendering(  ) {
         if( bp::override func_beginRendering = this->get_override( "beginRendering" ) )
             func_beginRendering(  );
@@ -18,6 +32,10 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
     
     void default_beginRendering(  ) {
         CEGUI::OpenGLRenderer::beginRendering( );
+    }
+
+    void cleanupExtraStates(  ){
+        CEGUI::OpenGLRenderer::cleanupExtraStates(  );
     }
 
     virtual ::CEGUI::TextureTarget * createTextureTarget(  ) {
@@ -140,6 +158,18 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
         return CEGUI::OpenGLRenderer::getMaxTextureSize( );
     }
 
+    void initialiseTextureTargetFactory( ::CEGUI::OpenGLRenderer::TextureTargetType const tt_type ){
+        CEGUI::OpenGLRenderer::initialiseTextureTargetFactory( tt_type );
+    }
+
+    static void logTextureCreation( ::CEGUI::String const & name ){
+        CEGUI::OpenGLRenderer::logTextureCreation( boost::ref(name) );
+    }
+
+    static void logTextureDestruction( ::CEGUI::String const & name ){
+        CEGUI::OpenGLRenderer::logTextureDestruction( boost::ref(name) );
+    }
+
     virtual void setDisplaySize( ::CEGUI::Sizef const & sz ) {
         if( bp::override func_setDisplaySize = this->get_override( "setDisplaySize" ) )
             func_setDisplaySize( boost::ref(sz) );
@@ -150,6 +180,10 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
     
     void default_setDisplaySize( ::CEGUI::Sizef const & sz ) {
         CEGUI::OpenGLRenderer::setDisplaySize( boost::ref(sz) );
+    }
+
+    void setupExtraStates(  ){
+        CEGUI::OpenGLRenderer::setupExtraStates(  );
     }
 
 };
@@ -170,6 +204,25 @@ void register_OpenGLRenderer_class(){
             .value("TTT_NONE", CEGUI::OpenGLRenderer::TTT_NONE)
             .export_values()
             ;
+        OpenGLRenderer_exposer.def( bp::init< CEGUI::OpenGLRenderer::TextureTargetType >(( bp::arg("tt_type") ), "*!\n\
+            \n\
+                Constructor for OpenGL Renderer objects\n\
+        \n\
+            @param tt_type\n\
+                Specifies one of the TextureTargetType enumerated values indicating the\n\
+                desired TextureTarget type to be used.\n\
+            *\n") );
+        OpenGLRenderer_exposer.def( bp::init< CEGUI::Sizef const &, CEGUI::OpenGLRenderer::TextureTargetType >(( bp::arg("display_size"), bp::arg("tt_type") ), "*!\n\
+            \n\
+                Constructor for OpenGL Renderer objects.\n\
+        \n\
+            @param display_size\n\
+                Size object describing the initial display resolution.\n\
+        \n\
+            @param tt_type\n\
+                Specifies one of the TextureTargetType enumerated values indicating the\n\
+                desired TextureTarget type to be used.\n\
+            *\n") );
         { //::CEGUI::OpenGLRenderer::beginRendering
         
             typedef void ( ::CEGUI::OpenGLRenderer::*beginRendering_function_type )(  ) ;
@@ -244,6 +297,16 @@ void register_OpenGLRenderer_class(){
                 @return\n\
                     Reference to the CEGUI.OpenGLRenderer object that was created.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::OpenGLRenderer::cleanupExtraStates
+        
+            typedef void ( OpenGLRenderer_wrapper::*cleanupExtraStates_function_type )(  ) ;
+            
+            OpenGLRenderer_exposer.def( 
+                "cleanupExtraStates"
+                , cleanupExtraStates_function_type( &OpenGLRenderer_wrapper::cleanupExtraStates )
+                , "! cleanup the extra GL states enabled via enableExtraStateSettings\n" );
         
         }
         { //::CEGUI::OpenGLRenderer::create
@@ -643,6 +706,40 @@ void register_OpenGLRenderer_class(){
             *\n" );
         
         }
+        { //::CEGUI::OpenGLRenderer::initialiseTextureTargetFactory
+        
+            typedef void ( OpenGLRenderer_wrapper::*initialiseTextureTargetFactory_function_type )( ::CEGUI::OpenGLRenderer::TextureTargetType const ) ;
+            
+            OpenGLRenderer_exposer.def( 
+                "initialiseTextureTargetFactory"
+                , initialiseTextureTargetFactory_function_type( &OpenGLRenderer_wrapper::initialiseTextureTargetFactory )
+                , ( bp::arg("tt_type") )
+                , "! initialise OGLTextureTargetFactory that will generate TextureTargets\n" );
+        
+        }
+        { //::CEGUI::OpenGLRenderer::logTextureCreation
+        
+            typedef void ( *logTextureCreation_function_type )( ::CEGUI::String const & );
+            
+            OpenGLRenderer_exposer.def( 
+                "logTextureCreation"
+                , logTextureCreation_function_type( &OpenGLRenderer_wrapper::logTextureCreation )
+                , ( bp::arg("name") )
+                , "! helper to safely log the creation of a named texture\n" );
+        
+        }
+        { //::CEGUI::OpenGLRenderer::logTextureDestruction
+        
+            typedef void ( *logTextureDestruction_function_type )( ::CEGUI::String const & );
+            
+            OpenGLRenderer_exposer.def( 
+                "logTextureDestruction"
+                , logTextureDestruction_function_type( &OpenGLRenderer_wrapper::logTextureDestruction )
+                , ( bp::arg("name") )
+                , "! helper to safely log the creation of a named texture\n\
+            ! helper to safely log the destruction of a named texture\n" );
+        
+        }
         { //::CEGUI::OpenGLRenderer::restoreTextures
         
             typedef void ( ::CEGUI::OpenGLRenderer::*restoreTextures_function_type )(  ) ;
@@ -669,6 +766,16 @@ void register_OpenGLRenderer_class(){
                 , ( bp::arg("sz") ) );
         
         }
+        { //::CEGUI::OpenGLRenderer::setupExtraStates
+        
+            typedef void ( OpenGLRenderer_wrapper::*setupExtraStates_function_type )(  ) ;
+            
+            OpenGLRenderer_exposer.def( 
+                "setupExtraStates"
+                , setupExtraStates_function_type( &OpenGLRenderer_wrapper::setupExtraStates )
+                , "! init the extra GL states enabled via enableExtraStateSettings\n" );
+        
+        }
         { //::CEGUI::OpenGLRenderer::setupRenderingBlendMode
         
             typedef void ( ::CEGUI::OpenGLRenderer::*setupRenderingBlendMode_function_type )( ::CEGUI::BlendMode const,bool const ) ;
@@ -685,6 +792,8 @@ void register_OpenGLRenderer_class(){
         OpenGLRenderer_exposer.staticmethod( "destroy" );
         OpenGLRenderer_exposer.staticmethod( "destroySystem" );
         OpenGLRenderer_exposer.staticmethod( "getNextPOTSize" );
+        OpenGLRenderer_exposer.staticmethod( "logTextureCreation" );
+        OpenGLRenderer_exposer.staticmethod( "logTextureDestruction" );
     }
 
 }
