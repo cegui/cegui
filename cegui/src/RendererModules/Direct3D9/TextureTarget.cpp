@@ -154,7 +154,7 @@ void Direct3D9TextureTarget::cleanupRenderTexture()
 //----------------------------------------------------------------------------//
 void Direct3D9TextureTarget::enableRenderTexture()
 {
-    LPDIRECT3DSURFACE9 oldSurface;
+    LPDIRECT3DSURFACE9 oldSurface = 0;
     d_device->GetRenderTarget(0, &oldSurface);
 
     if (oldSurface && oldSurface != d_surface)
@@ -170,7 +170,12 @@ void Direct3D9TextureTarget::enableRenderTexture()
 void Direct3D9TextureTarget::disableRenderTexture()
 {
     d_device->SetRenderTarget(0, d_prevColourSurface);
-    d_prevColourSurface->Release();
+
+    if (d_prevColourSurface)
+    {
+        d_prevColourSurface->Release();
+        d_prevColourSurface = 0;
+    }
 }
 
 //----------------------------------------------------------------------------//
