@@ -170,6 +170,7 @@ protected:
                         const Rectf& text_area,
                         float text_offset);
     bool editboxIsFocussed() const;
+    bool editboxIsReadOnly() const;
     void renderCaret(const ImagerySection& imagery,
                      const Rectf& text_area,
                      const float text_offset,
