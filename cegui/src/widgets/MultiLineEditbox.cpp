@@ -1351,16 +1351,17 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 *************************************************************************/
 void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
 {
-    // NB: We are not calling the base class handler here because it propogates
-    // inputs back up the window hierarchy, whereas, as a consumer of key
-    // events, we want such propogation to cease with us regardless of whether
-    // we actually handle the event.
-
     // fire event.
     fireEvent(EventKeyDown, e, Window::EventNamespace);
 
-	if (e.handled == 0 && hasInputFocus() && !isReadOnly())
+	if (e.handled == 0 && hasInputFocus())
 	{
+        if (isReadOnly())
+        {
+            Window::onKeyDown(e);
+            return;
+        }
+
 		WindowEventArgs args(this);
 		switch (e.scancode)
 		{
@@ -1445,8 +1446,8 @@ void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
             handlePageDown(e.sysKeys);
             break;
 
-        // default case is now to leave event as (possibly) unhandled.
         default:
+            Window::onKeyDown(e);
             return;
 		}
 
