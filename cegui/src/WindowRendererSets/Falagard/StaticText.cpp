@@ -421,16 +421,20 @@ namespace CEGUI
 
         Scrollbar* vertScrollbar = getVertScrollbar();
         Scrollbar* horzScrollbar = getHorzScrollbar();
-        if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
+
+        const bool vertScrollbarVisible = vertScrollbar->isEffectiveVisible();
+        const bool horzScrollbarVisible = horzScrollbar->isEffectiveVisible();
+
+        if (vertScrollbarVisible && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
         {
             vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
         }
-        else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
+        else if (horzScrollbarVisible && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
         {
             horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
         }
 
-        return true;
+        return vertScrollbarVisible || horzScrollbarVisible;
     }
 
 
