@@ -65,7 +65,7 @@ namespace CEGUI
 		    norm = true;
 		}
 
-        if (!norm && !wlf.isStateImageryPresent(state))
+        if (!norm && !wlf.isStateImageryPresent(actualStateName(state)))
         {
             state = "Normal";
         }
