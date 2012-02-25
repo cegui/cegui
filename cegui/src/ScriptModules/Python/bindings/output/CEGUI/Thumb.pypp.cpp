@@ -135,6 +135,10 @@ struct Thumb_wrapper : CEGUI::Thumb, bp::wrapper< CEGUI::Thumb > {
         CEGUI::Window::bufferGeometry( boost::ref(ctx) );
     }
 
+    bool calculateCurrentHoverState( ::CEGUI::Vector2f const & mouse_pos ){
+        return CEGUI::ButtonBase::calculateCurrentHoverState( boost::ref(mouse_pos) );
+    }
+
     virtual void cleanupChildren(  ){
         if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
             func_cleanupChildren(  );
@@ -1796,6 +1800,16 @@ void register_Thumb_class(){
                     easier to override drawSelf without needing to duplicate large sections\n\
                     of the code from the default implementation.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::ButtonBase::calculateCurrentHoverState
+        
+            typedef bool ( Thumb_wrapper::*calculateCurrentHoverState_function_type )( ::CEGUI::Vector2f const & ) ;
+            
+            Thumb_exposer.def( 
+                "calculateCurrentHoverState"
+                , calculateCurrentHoverState_function_type( &Thumb_wrapper::calculateCurrentHoverState )
+                , ( bp::arg("mouse_pos") ) );
         
         }
         { //::CEGUI::Window::cleanupChildren
