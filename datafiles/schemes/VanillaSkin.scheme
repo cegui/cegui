@@ -2,7 +2,7 @@
 <GUIScheme Name="VanillaSkin">
 	<Imageset Filename="Vanilla.imageset" />
 	<LookNFeel Filename="Vanilla.looknfeel" />
-	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+	<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
 
 	<FalagardMapping WindowType="Vanilla/Label" TargetType="DefaultWindow" Renderer="Falagard/Default" LookNFeel="Vanilla/Label" />
 	<FalagardMapping WindowType="Vanilla/Titlebar" TargetType="CEGUI/Titlebar" Renderer="Falagard/Titlebar" LookNFeel="Vanilla/Titlebar" />
