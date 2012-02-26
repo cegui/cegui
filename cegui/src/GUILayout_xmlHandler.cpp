@@ -150,7 +150,7 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
 *************************************************************************/
 void GUILayout_xmlHandler::text(const String& text)
 {
-    d_propertyValue += text;
+    d_stringItemValue += text;
 }
 
 /*************************************************************************
@@ -305,7 +305,7 @@ void GUILayout_xmlHandler::elementUserStringStart(const XMLAttributes& attribute
     // Short user string
     if (!userStringValue.empty())
     {
-        d_propertyName.clear();
+        d_stringItemName.clear();
         CEGUI_TRY
         {
             // need a window to be able to set properties!
@@ -326,9 +326,9 @@ void GUILayout_xmlHandler::elementUserStringStart(const XMLAttributes& attribute
     else
     {
         // Store name for later use
-        d_propertyName = userStringName;
+        d_stringItemName = userStringName;
         // reset the property (user string) value buffer
-        d_propertyValue.clear();
+        d_stringItemValue.clear();
     }
 }
 
@@ -350,7 +350,7 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
     // Short property 
     if (!propertyValue.empty())
     {
-        d_propertyName.clear();
+        d_stringItemName.clear();
         CEGUI_TRY
         {
             // need a window to be able to set properties!
@@ -382,9 +382,9 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
     else 
     {
         // Store name for later use 
-        d_propertyName = propertyName;
+        d_stringItemName = propertyName;
         // reset the property value buffer
-        d_propertyValue.clear();
+        d_stringItemValue.clear();
     }
 }
 
@@ -470,7 +470,7 @@ void GUILayout_xmlHandler::elementAutoWindowEnd()
 void GUILayout_xmlHandler::elementUserStringEnd()
 {
     // only do something if this is a "long" user string
-    if (d_propertyName.empty())
+    if (d_stringItemName.empty())
     {
         return;
     }
@@ -482,7 +482,7 @@ void GUILayout_xmlHandler::elementUserStringEnd()
             // get current window being defined.
             Window* curwindow = d_stack.back().first;
 
-            curwindow->setUserString(d_propertyName, d_propertyValue);
+            curwindow->setUserString(d_stringItemName, d_stringItemValue);
         }
     }
     CEGUI_CATCH (Exception&)
@@ -497,7 +497,7 @@ void GUILayout_xmlHandler::elementUserStringEnd()
 void GUILayout_xmlHandler::elementPropertyEnd()
 {
     // only do something if this is a "long" property
-    if (d_propertyName.empty())
+    if (d_stringItemName.empty())
     {
         return;
     }
@@ -515,12 +515,12 @@ void GUILayout_xmlHandler::elementPropertyEnd()
             // set the property.
             if (d_propertyCallback)
                 useit = (*d_propertyCallback)(curwindow,
-                                              d_propertyName,
-                                              d_propertyValue,
+                                              d_stringItemName,
+                                              d_stringItemValue,
                                               d_userData);
             // set the property as needed
             if (useit)
-                curwindow->setProperty(d_propertyName, d_propertyValue);
+                curwindow->setProperty(d_stringItemName, d_stringItemValue);
         }
     }
     CEGUI_CATCH (Exception&)

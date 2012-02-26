@@ -204,8 +204,8 @@ private:
 	WindowStack	d_stack;		//!< Stack used to keep track of what we're doing to which window.
 	PropertyCallback*	d_propertyCallback; //!< Callback for every property loaded
 	void*				d_userData;			//!< User data for the property callback
-    String d_propertyName; //!< Use for long property or user string value
-    String d_propertyValue; //!< Use for long property or user string value
+    String d_stringItemName; //!< Use for long property or user string value
+    String d_stringItemValue; //!< Use for long property or user string value
 };
 
 
