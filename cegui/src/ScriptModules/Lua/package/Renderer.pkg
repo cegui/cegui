@@ -3,15 +3,15 @@
 ***********************************************************************/
 class Renderer
 {
-    RenderingRoot& getDefaultRenderingRoot();
+    RenderTarget& getDefaultRenderTarget();
 
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
 
-    //TextureTarget* createTextureTarget();
-    //void destroyTextureTarget(TextureTarget* target);
-    //void destroyAllTextureTargets();
+    TextureTarget* createTextureTarget();
+    void destroyTextureTarget(TextureTarget* target);
+    void destroyAllTextureTargets();
 
     Texture& createTexture(utf8string name);
     Texture& createTexture(utf8string name, utf8string filename, utf8string resourceGroup);

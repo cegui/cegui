@@ -41,7 +41,8 @@
 namespace CEGUI
 {
 //! Intermediate RenderTarget 
-class NULL_GUIRENDERER_API NullRenderTarget : public virtual RenderTarget
+template<typename T = RenderTarget>
+class NULL_GUIRENDERER_API NullRenderTarget : public T
 {
 public:
     //! Constructor

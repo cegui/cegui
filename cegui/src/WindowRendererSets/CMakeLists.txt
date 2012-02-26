@@ -1,2 +1,2 @@
-add_subdirectory(Falagard)
+add_subdirectory(Core)
 

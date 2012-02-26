@@ -584,13 +584,13 @@ void register_OgreRenderer_class(){
                 , default_endRendering_function_type(&OgreRenderer_wrapper::default_endRendering) );
         
         }
-        { //::CEGUI::OgreRenderer::getDefaultRenderingRoot
+        { //::CEGUI::OgreRenderer::getDefaultRenderTarget
         
-            typedef ::CEGUI::RenderingRoot & ( ::CEGUI::OgreRenderer::*getDefaultRenderingRoot_function_type )(  ) ;
+            typedef ::CEGUI::RenderTarget & ( ::CEGUI::OgreRenderer::*getDefaultRenderTarget_function_type )(  ) ;
             
             OgreRenderer_exposer.def( 
-                "getDefaultRenderingRoot"
-                , getDefaultRenderingRoot_function_type(&::CEGUI::OgreRenderer::getDefaultRenderingRoot)
+                "getDefaultRenderTarget"
+                , getDefaultRenderTarget_function_type(&::CEGUI::OgreRenderer::getDefaultRenderTarget)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -734,11 +734,11 @@ void register_OgreRenderer_class(){
                 , "*!\n\
                 \n\
                     Sets the Ogre.RenderTarget that should be targetted by the default\n\
-                    RenderingRoot.\n\
+                    GUIContext.\n\
             \n\
                 @param target\n\
                     Reference to the Ogre.RenderTarget object that is to be used as the\n\
-                    target for output from the default RenderingRoot.\n\
+                    target for output from the default GUIContext.\n\
                 *\n" );
         
         }

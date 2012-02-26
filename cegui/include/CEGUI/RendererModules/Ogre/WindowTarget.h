@@ -34,7 +34,7 @@
 namespace CEGUI
 {
 //! CEGUI::RenderTarget that targets an existing gre::RenderTarget
-class OGRE_GUIRENDERER_API OgreWindowTarget : public OgreRenderTarget
+class OGRE_GUIRENDERER_API OgreWindowTarget : public OgreRenderTarget<>
 {
 public:
     //! Constructor

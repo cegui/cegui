@@ -56,7 +56,6 @@ namespace CEGUI
 {
 class NullGeometryBuffer;
 class NullTexture;
-class NullRenderTarget;
 
 //! CEGUI::Renderer implementation for no particular engine
 class NULL_GUIRENDERER_API NullRenderer : public Renderer
@@ -105,7 +104,7 @@ public:
     static void destroy(NullRenderer& renderer);
 
     // implement CEGUI::Renderer interface
-    RenderingRoot& getDefaultRenderingRoot();
+    RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -150,10 +149,8 @@ protected:
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
-    //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
-    //! The default RenderTarget (used by d_defaultRoot)
-    NullRenderTarget* d_defaultTarget;
+    //! The default RenderTarget
+    RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.

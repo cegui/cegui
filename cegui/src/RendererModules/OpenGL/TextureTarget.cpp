@@ -36,7 +36,7 @@ uint OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner),
+    OpenGLRenderTarget<TextureTarget>(owner),
     d_texture(0)
 {
     createCEGUITexture();
@@ -104,3 +104,9 @@ String OpenGLTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of base class
+#include "./RenderTarget.inl"
+
+

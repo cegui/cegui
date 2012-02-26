@@ -30,7 +30,6 @@
 #include "CEGUI/RendererModules/Null/TextureTarget.h"
 #include "CEGUI/RendererModules/Null/Texture.h"
 #include "CEGUI/ImageCodec.h"
-#include "CEGUI/RenderingRoot.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -97,9 +96,9 @@ void NullRenderer::destroy(NullRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& NullRenderer::getDefaultRenderingRoot()
+RenderTarget& NullRenderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -313,7 +312,6 @@ NullRenderer::~NullRenderer()
     destroyAllTextureTargets();
     destroyAllTextures();
 
-    delete d_defaultRoot;
     delete d_defaultTarget;
 }
 
@@ -321,8 +319,7 @@ NullRenderer::~NullRenderer()
 void NullRenderer::constructor_impl()
 {
     // create default target & rendering root (surface) that uses it
-    d_defaultTarget = new NullRenderTarget(*this);
-    d_defaultRoot = new RenderingRoot(*d_defaultTarget);
+    d_defaultTarget = new NullRenderTarget<>(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -342,3 +339,8 @@ void NullRenderer::setDisplaySize(const Sizef& sz)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of template base class
+#include "./RenderTarget.inl"
+

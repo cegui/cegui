@@ -56,7 +56,7 @@ bool Demo6Sample::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
@@ -73,7 +73,7 @@ bool Demo6Sample::initialiseSample()
     // set the background image
     background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().setGUISheet(background);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
     // do demo stuff
     createDemoWindows(background);

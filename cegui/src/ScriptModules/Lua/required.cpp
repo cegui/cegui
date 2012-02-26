@@ -85,15 +85,6 @@ void ceguiLua_FileStream_open(FileStream* os, const char* filename)
     os->open(filename, std::ios::binary);
 }
 
-
-/************************************************************************
-    CEGUI::System::getSystemKeys alternative
-*************************************************************************/
-bool ceguiLua_System_isSystemKeyDown(const System* sys, SystemKey k)
-{
-    return (k & sys->getSystemKeys()) != 0;
-}
-
 /************************************************************************
     EventConnection helper class implementation
 *************************************************************************/

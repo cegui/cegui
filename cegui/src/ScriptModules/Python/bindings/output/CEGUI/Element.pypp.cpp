@@ -734,6 +734,16 @@ void register_Element_class(){
                  *\n" );
         
         }
+        { //::CEGUI::Element::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Element::*getRootContainerSize_function_type )(  ) const;
+            
+            Element_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Element::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::Element::getRotation
         
             typedef ::CEGUI::Quaternion const & ( ::CEGUI::Element::*getRotation_function_type )(  ) const;

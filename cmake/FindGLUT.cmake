@@ -21,7 +21,7 @@ if (WIN32)
     mark_as_advanced(GLUT_DEFINITIONS_STATIC GLUT_LIB_STATIC GLUT_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(GLUT DEFAULT_MSG GLUT_LIB GLUT_H_PATH)
+cegui_find_package_handle_standard_args(GLUT GLUT_LIB GLUT_H_PATH)
 
 
 # set up output vars

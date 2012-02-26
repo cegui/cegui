@@ -341,6 +341,10 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     globalEventSet = CEGUI_ns.class_("GlobalEventSet")
     globalEventSet.include()
     
+    # CEGUIGUIContext.h
+    guiContext = CEGUI_ns.class_("GUIContext")
+    guiContext.include()
+
     # CEGUIGUILayout_xmlHandler.h
     # not needed in python
     
@@ -362,9 +366,6 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     
     mouseButtonEnum = CEGUI_ns.enum("MouseButton")
     mouseButtonEnum.include()
-    
-    systemKeyEnum = CEGUI_ns.enum("SystemKey")
-    systemKeyEnum.include()
     
     # CEGUIInterpolator.h
     interpolator = CEGUI_ns.class_("Interpolator")
@@ -403,9 +404,6 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     mouseCursor = CEGUI_ns.class_("MouseCursor")
     mouseCursor.include()
     mouseCursor.noncopyable = True
-    
-    mouseCursorImageEnum = CEGUI_ns.enum("MouseCursorImage")
-    mouseCursorImageEnum.include()
     
     # CEGUI/NamedElement.h
     namedElement = CEGUI_ns.class_("NamedElement")
@@ -516,10 +514,6 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     renderingContext = CEGUI_ns.class_("RenderingContext")
     renderingContext.include()
     
-    # CEGUIRenderingRoot.h
-    renderingRoot = CEGUI_ns.class_("RenderingRoot")
-    renderingRoot.include()
-    
     # CEGUIRenderingSurface.h
     CEGUI_ns.enum("RenderQueueID").include()
     renderingSurface = CEGUI_ns.class_("RenderingSurface")
@@ -555,6 +549,10 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     # CEGUIScriptModule.h
     scriptModule = CEGUI_ns.class_("ScriptModule")
     scriptModule.include()
+    
+    # CEGUISimpleTimer.h
+    simpleTimer = CEGUI_ns.class_("SimpleTimer")
+    simpleTimer.include()
     
     # CEGUISingleton.h
     # handled separately
@@ -593,6 +591,10 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     system.include()
     commonUtils.excludeAllPrivate(system)
     
+    # CEGUISystemKeys.h
+    systemKeys = CEGUI_ns.class_("SystemKeys")
+    systemKeys.include()
+
     # CEGUITexture.h
     texture = CEGUI_ns.class_("Texture")
     texture.include()

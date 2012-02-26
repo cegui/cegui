@@ -63,7 +63,6 @@ namespace CEGUI
     class OpenGL3TextureTarget;
     class OpenGL3GeometryBuffer;
     class OGL3TextureTargetFactory;
-    class OpenGL3RenderTarget;
     class OpenGL3StateChangeWrapper;
     struct mat4Pimpl;
 
@@ -171,7 +170,7 @@ public:
     static void destroy(OpenGL3Renderer& renderer);
 
     // implement Renderer interface
-    RenderingRoot& getDefaultRenderingRoot();
+    RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -356,7 +355,7 @@ public:
     \param renderTarget
     The active RenderTarget.
     */
-    void setActiveRenderTarget(OpenGL3RenderTarget* renderTarget);
+    void setActiveRenderTarget(RenderTarget* renderTarget);
 
         
     /*!
@@ -366,7 +365,7 @@ public:
     \return
     The active RenderTarget.
     */
-    OpenGL3RenderTarget* getActiveRenderTarget();
+    RenderTarget* getActiveRenderTarget();
 
     /*!
     \brief
@@ -429,8 +428,6 @@ private:
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
-    //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
     //! The default RenderTarget (used by d_defaultRoot)
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
@@ -467,7 +464,7 @@ private:
     //! View projection matrix
     mat4Pimpl*      d_viewProjectionMatrix;
     //! The active RenderTarget
-    OpenGL3RenderTarget*        d_activeRenderTarget;
+    RenderTarget*        d_activeRenderTarget;
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper*  d_openGLStateChanger;
     OpenGL3ShaderManager*       d_shaderManager;

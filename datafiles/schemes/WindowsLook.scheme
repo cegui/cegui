@@ -2,7 +2,7 @@
 <GUIScheme Name="WindowsLookSkin">
 	<Imageset Filename="WindowsLook.imageset" />
 	<LookNFeel Filename="WindowsLook.looknfeel" />
-	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+	<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
 
 	<FalagardMapping WindowType="WindowsLook/Label"       TargetType="DefaultWindow"     Renderer="Falagard/Default"      LookNFeel="WindowsLook/Label" />
 	<FalagardMapping WindowType="WindowsLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="WindowsLook/Button" />

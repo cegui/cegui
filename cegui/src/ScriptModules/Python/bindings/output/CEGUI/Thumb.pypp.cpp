@@ -135,6 +135,10 @@ struct Thumb_wrapper : CEGUI::Thumb, bp::wrapper< CEGUI::Thumb > {
         CEGUI::Window::bufferGeometry( boost::ref(ctx) );
     }
 
+    bool calculateCurrentHoverState( ::CEGUI::Vector2f const & mouse_pos ){
+        return CEGUI::ButtonBase::calculateCurrentHoverState( boost::ref(mouse_pos) );
+    }
+
     virtual void cleanupChildren(  ){
         if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
             func_cleanupChildren(  );
@@ -1798,6 +1802,16 @@ void register_Thumb_class(){
                 *\n" );
         
         }
+        { //::CEGUI::ButtonBase::calculateCurrentHoverState
+        
+            typedef bool ( Thumb_wrapper::*calculateCurrentHoverState_function_type )( ::CEGUI::Vector2f const & ) ;
+            
+            Thumb_exposer.def( 
+                "calculateCurrentHoverState"
+                , calculateCurrentHoverState_function_type( &Thumb_wrapper::calculateCurrentHoverState )
+                , ( bp::arg("mouse_pos") ) );
+        
+        }
         { //::CEGUI::Window::cleanupChildren
         
             typedef void ( Thumb_wrapper::*cleanupChildren_function_type )(  ) ;
@@ -2013,6 +2027,16 @@ void register_Thumb_class(){
                 , getRenderingContext_impl_function_type(&::CEGUI::Window::getRenderingContext_impl)
                 , default_getRenderingContext_impl_function_type(&Thumb_wrapper::default_getRenderingContext_impl)
                 , ( bp::arg("ctx") ) );
+        
+        }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            Thumb_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::EventSet::getScriptModule

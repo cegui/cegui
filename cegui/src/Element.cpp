@@ -207,9 +207,9 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
     Sizef absMin(CoordConverter::asAbsolute(d_minSize,
-        System::getSingleton().getRenderer()->getDisplaySize(), false));
+        getRootContainerSize(), false));
     Sizef absMax(CoordConverter::asAbsolute(d_maxSize,
-        System::getSingleton().getRenderer()->getDisplaySize(), false));
+        getRootContainerSize(), false));
 
     Sizef base_size;
     if (skipAllPixelAlignment)
@@ -309,8 +309,14 @@ Sizef Element::getParentPixelSize(bool skipAllPixelAlignment) const
     }
     else
     {
-        return System::getSingleton().getRenderer()->getDisplaySize();
+        return getRootContainerSize();
     }
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& Element::getRootContainerSize() const
+{
+    return System::getSingleton().getRenderer()->getDisplaySize();
 }
 
 //----------------------------------------------------------------------------//
@@ -571,7 +577,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     }
     else
     {
-        parent_rect = Rectf(Vector2f(0, 0), System::getSingleton().getRenderer()->getDisplaySize());
+        parent_rect = Rectf(Vector2f(0, 0), getRootContainerSize());
     }
     
     const Sizef parent_size = parent_rect.getSize();

@@ -99,7 +99,6 @@ class Window : public NamedElement
 
     const Image* getMouseCursor(bool useDefault = true) const;
     void setMouseCursor(const Image* image);
-    void setMouseCursor(MouseCursorImage image);
     void setMouseCursor(utf8string name);
 
     //void* getUserData(void) const;
@@ -240,10 +239,12 @@ class Window : public NamedElement
     Vector2<float> getUnprojectedPosition(const Vector2<float>& pos) const;
 
     WindowUpdateMode getUpdateMode() const;
-    void setUpdateMode(const WindowUpdateMode mode);
+    void setUpdateMode(WindowUpdateMode mode);
 
     Window* clone(const bool deepCopy = true) const;
 
     void clonePropertiesTo(Window& target) const;
     void cloneChildWidgetsTo(Window& target) const;
+
+    GUIContext& getGUIContext() const;
 };

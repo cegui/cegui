@@ -98,20 +98,26 @@ void RenderingSurface::clearGeometry()
 //----------------------------------------------------------------------------//
 void RenderingSurface::draw()
 {
-    RenderQueueEventArgs evt_args(RQ_USER_0);
-
-    RenderQueueList::iterator i = d_queues.begin();
-
     d_target.activate();
 
-    for ( ; d_queues.end() != i; ++i)
+    drawContent();
+
+    d_target.deactivate();
+}
+
+//----------------------------------------------------------------------------//
+void RenderingSurface::drawContent()
+{
+    RenderQueueEventArgs evt_args(RQ_USER_0);
+
+    for (RenderQueueList::iterator i = d_queues.begin();
+         d_queues.end() != i;
+         ++i)
     {
         evt_args.handled = 0;
         evt_args.queueID = i->first;
         draw(i->second, evt_args);
     }
-
-    d_target.deactivate();
 }
 
 //----------------------------------------------------------------------------//

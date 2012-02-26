@@ -9,7 +9,7 @@
 	<Font Filename="DejaVuSans-10-NoScale.font" />
 	<LookNFeel Filename="VanillaCommonDialogs.looknfeel" />
     <WindowSet Filename="CEGUICommonDialogs" />
-	<WindowRendererSet Filename="CEGUIFalagardWRBase" />
+	<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
 	<FalagardMapping WindowType="Vanilla/VerticalImageSliderThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="Vanilla/VerticalImageSliderThumb" />
 	<FalagardMapping WindowType="Vanilla/VerticalImageSlider" TargetType="CEGUI/Slider" Renderer="Falagard/Slider" LookNFeel="Vanilla/VerticalImageSlider" />
 	<FalagardMapping WindowType="Vanilla/HorizontalImageSliderThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="Vanilla/HorizontalImageSliderThumb" />

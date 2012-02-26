@@ -36,7 +36,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner) :
-    OpenGLRenderTarget(owner)
+    OpenGLRenderTarget<>(owner)
 {
     // viewport area defaults to whatever the current OpenGL viewport is set to
     GLint vp[4];
@@ -51,7 +51,7 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner) :
 //----------------------------------------------------------------------------//
 OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner,
     const Rectf& area) :
-        OpenGLRenderTarget(owner)
+        OpenGLRenderTarget<>(owner)
 {
     setArea(area);
 }
@@ -64,4 +64,11 @@ bool OpenGLViewportTarget::isImageryCache() const
 
 //----------------------------------------------------------------------------//
 
+
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of base class
+#include "./RenderTarget.inl"
+
+

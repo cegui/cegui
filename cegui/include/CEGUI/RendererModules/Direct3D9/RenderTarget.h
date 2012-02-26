@@ -45,7 +45,8 @@ namespace CEGUI
 \brief
     Intermediate Direct3D9 implementation of a RenderTarget.
 */
-class DIRECT3D9_GUIRENDERER_API Direct3D9RenderTarget : public virtual RenderTarget
+template <typename T = RenderTarget>
+class DIRECT3D9_GUIRENDERER_API Direct3D9RenderTarget : public T
 {
 public:
     //! Constructor

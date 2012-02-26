@@ -38,7 +38,7 @@ uint Direct3D10TextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
 Direct3D10TextureTarget::Direct3D10TextureTarget(Direct3D10Renderer& owner) :
-    Direct3D10RenderTarget(owner),
+    Direct3D10RenderTarget<TextureTarget>(owner),
     d_texture(0),
     d_renderTargetView(0),
     d_previousRenderTargetView(0),
@@ -196,3 +196,8 @@ String Direct3D10TextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of template base class
+#include "./RenderTarget.inl"
+

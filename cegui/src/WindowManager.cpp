@@ -217,9 +217,6 @@ void WindowManager::destroyWindow(Window* window)
     // add window to dead pool
     d_deathrow.push_back(window);
 
-    // notify system object of the window destruction
-    System::getSingleton().notifyWindowDestroyed(window);
-
     // fire event to notify interested parites about window destruction.
     // TODO: Perhaps this should fire first, so window is still usable?
     WindowEventArgs args(window);
