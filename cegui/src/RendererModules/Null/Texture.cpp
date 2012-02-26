@@ -88,8 +88,9 @@ void NullTexture::loadFromFile(const String& filename,
 }
 
 //----------------------------------------------------------------------------//
-void NullTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
-                                 PixelFormat pixel_format)
+void NullTexture::loadFromMemory(const void* /*buffer*/,
+                                 const Sizef& buffer_size,
+                                 PixelFormat)
 {
     d_size = d_dataSize = buffer_size;
 }
@@ -144,7 +145,7 @@ NullTexture::~NullTexture()
 }
 
 //----------------------------------------------------------------------------//
-bool NullTexture::isPixelFormatSupported(const PixelFormat fmt) const
+bool NullTexture::isPixelFormatSupported(const PixelFormat) const
 {
     return true;
 }

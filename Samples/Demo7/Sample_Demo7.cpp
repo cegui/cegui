@@ -320,8 +320,6 @@ void Demo7Sample::createListContent(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
-    WindowManager& winMgr = WindowManager::getSingleton();
-
     //
     // Combobox setup
     //

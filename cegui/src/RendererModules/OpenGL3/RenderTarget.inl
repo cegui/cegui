@@ -47,9 +47,9 @@ template <typename T>
 OpenGL3RenderTarget<T>::OpenGL3RenderTarget(OpenGL3Renderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
-    d_viewDistance(0),
+    d_matrix(0),
     d_matrixValid(false),
-    d_matrix(0)
+    d_viewDistance(0)
 {
     d_matrix = new mat4Pimpl();
 }
