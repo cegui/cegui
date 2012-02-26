@@ -20,6 +20,7 @@
 				<xsd:element name="AutoWindow" type="AutoWindowType" />
 			</xsd:choice>
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="UserString" type="UserStringType"  minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
 		<xsd:attribute name="Type" type="xsd:string" use="required"/>
 		<xsd:attribute name="Name" type="xsd:string" use="optional" default="" />
@@ -47,7 +48,16 @@
 			</xsd:extension>
 		</xsd:simpleContent> 
 	</xsd:complexType>
-
+	
+	<xsd:complexType name="UserStringType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="Name" type="xsd:string" use="required"/>
+				<xsd:attribute name="Value" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent> 
+	</xsd:complexType>
+	
 	<xsd:complexType name="LayoutImportType">
 		<xsd:attribute name="Filename" type="xsd:string" use="required"/>
 		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
