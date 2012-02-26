@@ -15,7 +15,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(EXPAT_DEFINITIONS EXPAT_LIB_STATIC EXPAT_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(EXPAT DEFAULT_MSG EXPAT_LIB EXPAT_H_PATH)
+cegui_find_package_handle_standard_args(EXPAT EXPAT_LIB EXPAT_H_PATH)
 
 
 # set up output vars

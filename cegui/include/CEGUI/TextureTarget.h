@@ -38,7 +38,7 @@ namespace CEGUI
     Specialisation of RenderTarget interface that should be used as the base
     class for RenderTargets that are implemented using textures.
 */
-class CEGUIEXPORT TextureTarget : public virtual RenderTarget
+class CEGUIEXPORT TextureTarget : public RenderTarget
 {
 public:
     /*!

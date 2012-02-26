@@ -16,6 +16,7 @@ void register_Key_class(){
         *\n" );
         bp::scope Key_scope( Key_exposer );
         bp::enum_< CEGUI::Key::Scan>("Scan")
+            .value("Unknown", CEGUI::Key::Unknown)
             .value("Escape", CEGUI::Key::Escape)
             .value("One", CEGUI::Key::One)
             .value("Two", CEGUI::Key::Two)

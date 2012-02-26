@@ -37,7 +37,8 @@
 namespace CEGUI
 {
 //! Intermediate RenderTarget implementing common parts for Ogre engine.
-class OGRE_GUIRENDERER_API OgreRenderTarget : public virtual RenderTarget
+template <typename T = RenderTarget>
+class OGRE_GUIRENDERER_API OgreRenderTarget : public T
 {
 public:
     //! Constructor

@@ -36,7 +36,7 @@ namespace CEGUI
 OgreWindowTarget::OgreWindowTarget(OgreRenderer& owner,
                                    Ogre::RenderSystem& rs,
                                    Ogre::RenderTarget& target) :
-    OgreRenderTarget(owner, rs)
+    OgreRenderTarget<>(owner, rs)
 {
     initRenderTarget(target);
 }
@@ -79,3 +79,8 @@ void OgreWindowTarget::initRenderTarget(Ogre::RenderTarget& target)
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of template base class
+#include "./RenderTarget.inl"
+

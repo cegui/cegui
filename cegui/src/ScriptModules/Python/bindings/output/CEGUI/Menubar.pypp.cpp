@@ -1772,6 +1772,16 @@ void register_Menubar_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            Menubar_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::EventSet::getScriptModule
         
             typedef ::CEGUI::ScriptModule * ( Menubar_wrapper::*getScriptModule_function_type )(  ) const;

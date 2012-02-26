@@ -15,6 +15,18 @@ struct MouseCursor_wrapper : CEGUI::MouseCursor, bp::wrapper< CEGUI::MouseCursor
     
     }
 
+    virtual void onDefaultImageChanged( ::CEGUI::MouseCursorEventArgs & e ){
+        if( bp::override func_onDefaultImageChanged = this->get_override( "onDefaultImageChanged" ) )
+            func_onDefaultImageChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MouseCursor::onDefaultImageChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onDefaultImageChanged( ::CEGUI::MouseCursorEventArgs & e ){
+        CEGUI::MouseCursor::onDefaultImageChanged( boost::ref(e) );
+    }
+
     virtual void onImageChanged( ::CEGUI::MouseCursorEventArgs & e ){
         if( bp::override func_onImageChanged = this->get_override( "onImageChanged" ) )
             func_onImageChanged( boost::ref(e) );
@@ -76,7 +88,7 @@ struct MouseCursor_wrapper : CEGUI::MouseCursor, bp::wrapper< CEGUI::MouseCursor
 void register_MouseCursor_class(){
 
     { //::CEGUI::MouseCursor
-        typedef bp::class_< MouseCursor_wrapper, bp::bases< CEGUI::EventSet, CEGUI::Singleton< CEGUI::MouseCursor > >, boost::noncopyable > MouseCursor_exposer_t;
+        typedef bp::class_< MouseCursor_wrapper, bp::bases< CEGUI::EventSet >, boost::noncopyable > MouseCursor_exposer_t;
         MouseCursor_exposer_t MouseCursor_exposer = MouseCursor_exposer_t( "MouseCursor", bp::init< >("*!\n\
         \n\
            Constructor for MouseCursor objects\n\
@@ -112,6 +124,25 @@ void register_MouseCursor_class(){
                @return\n\
                   Rect object describing the active area that the mouse cursor is constrained to.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MouseCursor::getDefaultImage
+        
+            typedef ::CEGUI::Image const * ( ::CEGUI::MouseCursor::*getDefaultImage_function_type )(  ) const;
+            
+            MouseCursor_exposer.def( 
+                "getDefaultImage"
+                , getDefaultImage_function_type( &::CEGUI::MouseCursor::getDefaultImage )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return the currently set default mouse cursor image\n\
+            \n\
+                @return\n\
+                    Pointer to the current default image used for the mouse cursor.  May\n\
+                    return 0 if default cursor has not been set, or has intentionally\n\
+                    been set to 0 - which results in a blank default cursor.\n\
+                *\n" );
         
         }
         { //::CEGUI::MouseCursor::getDisplayIndependantPosition
@@ -179,23 +210,6 @@ void register_MouseCursor_class(){
             \n\
                @return\n\
                   Point object describing the mouse cursor position in screen pixels.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::MouseCursor::getSingleton
-        
-            typedef ::CEGUI::MouseCursor & ( *getSingleton_function_type )(  );
-            
-            MouseCursor_exposer.def( 
-                "getSingleton"
-                , getSingleton_function_type( &::CEGUI::MouseCursor::getSingleton )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return singleton MouseCursor object\n\
-            \n\
-               @return\n\
-                  Singleton MouseCursor object\n\
                *\n" );
         
         }
@@ -303,6 +317,21 @@ void register_MouseCursor_class(){
                *\n" );
         
         }
+        { //::CEGUI::MouseCursor::onDefaultImageChanged
+        
+            typedef void ( MouseCursor_wrapper::*onDefaultImageChanged_function_type )( ::CEGUI::MouseCursorEventArgs & ) ;
+            
+            MouseCursor_exposer.def( 
+                "onDefaultImageChanged"
+                , onDefaultImageChanged_function_type( &MouseCursor_wrapper::default_onDefaultImageChanged )
+                , ( bp::arg("e") )
+                , "*************************************************************************\n\
+               New event handlers\n\
+            *************************************************************************\n\
+             ! Event triggered internally when mouse cursor image is changed.\n\
+             ! Event triggered internally when mouse cursor default image is changed.\n" );
+        
+        }
         { //::CEGUI::MouseCursor::onImageChanged
         
             typedef void ( MouseCursor_wrapper::*onImageChanged_function_type )( ::CEGUI::MouseCursorEventArgs & ) ;
@@ -314,10 +343,7 @@ void register_MouseCursor_class(){
                 , "*************************************************************************\n\
                New event handlers\n\
             *************************************************************************\n\
-            *!\n\
-            \n\
-               event triggered internally when image of mouse cursor changes\n\
-            *\n" );
+             ! Event triggered internally when mouse cursor image is changed.\n" );
         
         }
         { //::CEGUI::MouseCursor::setConstraintArea
@@ -342,6 +368,44 @@ void register_MouseCursor_class(){
                @return\n\
                   Nothing.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MouseCursor::setDefaultImage
+        
+            typedef void ( ::CEGUI::MouseCursor::*setDefaultImage_function_type )( ::CEGUI::Image const * ) ;
+            
+            MouseCursor_exposer.def( 
+                "setDefaultImage"
+                , setDefaultImage_function_type( &::CEGUI::MouseCursor::setDefaultImage )
+                , ( bp::arg("image") )
+                , "*!\n\
+                \n\
+                    Set the image to be used as the default mouse cursor.\n\
+            \n\
+                @param image\n\
+                    Pointer to an image object that is to be used as the default mouse\n\
+                    cursor.  To have no cursor rendered by default, you can specify 0 here.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MouseCursor::setDefaultImage
+        
+            typedef void ( ::CEGUI::MouseCursor::*setDefaultImage_function_type )( ::CEGUI::String const & ) ;
+            
+            MouseCursor_exposer.def( 
+                "setDefaultImage"
+                , setDefaultImage_function_type( &::CEGUI::MouseCursor::setDefaultImage )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Set the image to be used as the default mouse cursor.\n\
+            \n\
+                @param name\n\
+                    String object that contains the name of the Image that is to be used.\n\
+            \n\
+                @exception\n\
+                    UnknownObjectException thrown if no Image named  name exists.\n\
+                *\n" );
         
         }
         { //::CEGUI::MouseCursor::setExplicitRenderSize
@@ -507,6 +571,9 @@ void register_MouseCursor_class(){
                *\n" );
         
         }
+        MouseCursor_exposer.add_static_property( "EventDefaultImageChanged"
+                        , bp::make_getter( &CEGUI::MouseCursor::EventDefaultImageChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         MouseCursor_exposer.add_static_property( "EventImageChanged"
                         , bp::make_getter( &CEGUI::MouseCursor::EventImageChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -569,7 +636,6 @@ void register_MouseCursor_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
-        MouseCursor_exposer.staticmethod( "getSingleton" );
         MouseCursor_exposer.staticmethod( "setInitialMousePosition" );
     }
 

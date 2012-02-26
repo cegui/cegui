@@ -28,11 +28,11 @@
 #ifndef _CEGUIImageFactory_h_
 #define _CEGUIImageFactory_h_
 
+#include "CEGUI/Image.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class Image;
-
 /*!
 \brief
     Interface for factory objects that create instances of classes

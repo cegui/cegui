@@ -132,6 +132,10 @@
 
 #include "FrameWindow.pypp.hpp"
 
+#include "GUIContext.pypp.hpp"
+
+#include "GUIContextEventArgs.pypp.hpp"
+
 #include "GeometryBuffer.pypp.hpp"
 
 #include "GlobalEventSet.pypp.hpp"
@@ -272,6 +276,8 @@
 
 #include "RenderTarget.pypp.hpp"
 
+#include "RenderTargetEventArgs.pypp.hpp"
+
 #include "RenderedString.pypp.hpp"
 
 #include "RenderedStringComponent.pypp.hpp"
@@ -287,8 +293,6 @@
 #include "Renderer.pypp.hpp"
 
 #include "RenderingContext.pypp.hpp"
-
-#include "RenderingRoot.pypp.hpp"
 
 #include "RenderingSurface.pypp.hpp"
 
@@ -320,6 +324,8 @@
 
 #include "SequentialLayoutContainer.pypp.hpp"
 
+#include "SimpleTimer.pypp.hpp"
+
 #include "SingletonAnimationManager.pypp.hpp"
 
 #include "SingletonFontManager.pypp.hpp"
@@ -329,8 +335,6 @@
 #include "SingletonImageManager.pypp.hpp"
 
 #include "SingletonLogger.pypp.hpp"
-
-#include "SingletonMouseCursor.pypp.hpp"
 
 #include "SingletonRenderEffectManager.pypp.hpp"
 
@@ -359,6 +363,8 @@
 #include "Subscriber.pypp.hpp"
 
 #include "System.pypp.hpp"
+
+#include "SystemKeys.pypp.hpp"
 
 #include "TabButton.pypp.hpp"
 
@@ -715,6 +721,14 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_FrameWindow_class();
 
+    register_Key_class();
+
+    register_RenderingSurface_class();
+
+    register_GUIContext_class();
+
+    register_GUIContextEventArgs_class();
+
     register_GeometryBuffer_class();
 
     register_SingletonGlobalEventSet_class();
@@ -755,8 +769,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ItemListbox_class();
 
-    register_Key_class();
-
     register_KeyEventArgs_class();
 
     register_LayerSpecification_class();
@@ -778,8 +790,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_MenuItem_class();
 
     register_Menubar_class();
-
-    register_SingletonMouseCursor_class();
 
     register_MouseCursor_class();
 
@@ -835,6 +845,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_RenderTarget_class();
 
+    register_RenderTargetEventArgs_class();
+
     register_RenderedString_class();
 
     register_RenderedStringComponent_class();
@@ -848,10 +860,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Renderer_class();
 
     register_RenderingContext_class();
-
-    register_RenderingSurface_class();
-
-    register_RenderingRoot_class();
 
     register_RenderingWindow_class();
 
@@ -872,6 +880,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_ScrolledContainer_class();
 
     register_SectionSpecification_class();
+
+    register_SimpleTimer_class();
 
     register_SingletonSystem_class();
 
@@ -898,6 +908,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_XMLParser_class();
 
     register_System_class();
+
+    register_SystemKeys_class();
 
     register_TabButton_class();
 

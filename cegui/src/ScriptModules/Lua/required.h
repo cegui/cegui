@@ -31,7 +31,6 @@
 #include "CEGUI/ScriptModules/Lua/ScriptModule.h"
 #include "CEGUI/ScriptModules/Lua/Functor.h"
 #include "CEGUI/RenderingContext.h"
-#include "CEGUI/RenderingRoot.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Vertex.h"
@@ -128,11 +127,6 @@ inline EventIterator ceguiLua_getEventIterator(const T* self)
 typedef std::ofstream FileStream;
 void ceguiLua_FileStream_open(FileStream*, const char* filename);
 
-
-/************************************************************************
-    CEGUI::System::getSystemKeys alternative
-*************************************************************************/
-bool ceguiLua_System_isSystemKeyDown(const System* sys, SystemKey k);
 
 /************************************************************************
     wrapper class for PropertyHelper to de-templatise it.

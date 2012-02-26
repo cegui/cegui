@@ -81,7 +81,7 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         func_endRendering(  );
     }
 
-    virtual ::CEGUI::RenderingRoot & getDefaultRenderingRoot(  ){
+    virtual ::CEGUI::RenderTarget & getDefaultRenderTarget(  ){
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -374,23 +374,21 @@ void register_Renderer_class(){
             *\n" );
         
         }
-        { //::CEGUI::Renderer::getDefaultRenderingRoot
+        { //::CEGUI::Renderer::getDefaultRenderTarget
         
-            typedef ::CEGUI::RenderingRoot & ( ::CEGUI::Renderer::*getDefaultRenderingRoot_function_type )(  ) ;
+            typedef ::CEGUI::RenderTarget & ( ::CEGUI::Renderer::*getDefaultRenderTarget_function_type )(  ) ;
             
             Renderer_exposer.def( 
-                "getDefaultRenderingRoot"
-                , bp::pure_virtual( getDefaultRenderingRoot_function_type(&::CEGUI::Renderer::getDefaultRenderingRoot) )
+                "getDefaultRenderTarget"
+                , bp::pure_virtual( getDefaultRenderTarget_function_type(&::CEGUI::Renderer::getDefaultRenderTarget) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
-                    Return the default rendering root for the renderer.  The default\n\
-                    rendering root is typically a RenderingRoot that targets the entire\n\
-                    screen (or rendering window).\n\
+                    Returns the default RenderTarget object.  The default render target is\n\
+                    is typically one that targets the entire screen (or rendering window).\n\
             \n\
                 @return\n\
-                    RenderingRoot object that is the default RenderingSurface provided by\n\
-                    the Renderer.\n\
+                    Reference to a RenderTarget object.\n\
                 *\n" );
         
         }

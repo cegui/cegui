@@ -97,7 +97,6 @@
     [rendererList release];
     [okay release];
     [cancel release];
-    [window release];
 
     [super dealloc];
 }

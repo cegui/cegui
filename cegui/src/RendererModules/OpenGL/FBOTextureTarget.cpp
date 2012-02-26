@@ -76,13 +76,13 @@ void OpenGLFBOTextureTarget::activate()
     // switch to rendering to the texture
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
 
-    OpenGLRenderTarget::activate();
+    OpenGLTextureTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLFBOTextureTarget::deactivate()
 {
-    OpenGLRenderTarget::deactivate();
+    OpenGLTextureTarget::deactivate();
 
     // switch back to rendering to default buffer
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);

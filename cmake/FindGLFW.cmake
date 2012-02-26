@@ -9,13 +9,17 @@ find_library(GLFW_LIB_DBG NAMES glfw_d PATH_SUFFIXES dynamic)
 mark_as_advanced(GLFW_H_PATH GLFW_LIB GLFW_LIB_DBG)
 
 if (WIN32)
-    find_library(GLFW_LIB_STATIC NAMES glfw PATH_SUFFIXES static)
-    find_library(GLFW_LIB_STATIC_DBG NAMES glfw_d PATH_SUFFIXES static)
     set( GLFW_DEFINITIONS_DYNAMIC "GLFW_DLL" CACHE STRING "preprocessor definitions" )
-    mark_as_advanced(GLFW_DEFINITIONS_DYNAMIC GLFW_LIB_STATIC GLFW_LIB_STATIC_DBG)
+    mark_as_advanced(GLFW_DEFINITIONS_DYNAMIC)
 endif()
 
-find_package_handle_standard_args(GLFW DEFAULT_MSG GLFW_LIB GLFW_H_PATH)
+if (WIN32 OR APPLE)
+    find_library(GLFW_LIB_STATIC NAMES glfw PATH_SUFFIXES static)
+    find_library(GLFW_LIB_STATIC_DBG NAMES glfw_d PATH_SUFFIXES static)
+    mark_as_advanced(GLFW_LIB_STATIC GLFW_LIB_STATIC_DBG)
+endif()
+
+cegui_find_package_handle_standard_args(GLFW GLFW_LIB GLFW_H_PATH)
 
 
 # set up output vars

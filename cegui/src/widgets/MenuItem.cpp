@@ -91,18 +91,9 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     const Window* capture_wnd = getCaptureWindow();
 
     if (capture_wnd == 0)
-    {
-        System* sys = System::getSingletonPtr();
-
-        if (sys->getWindowContainingMouse() == this && isHit(mouse_pos))
-        {
-            d_hovering = true;
-        }
-    }
-    else if (capture_wnd == this && isHit(mouse_pos))
-    {
-        d_hovering = true;
-    }
+        d_hovering = (getGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos));
+    else
+        d_hovering = (capture_wnd == this && isHit(mouse_pos));
 
     // if state has changed, trigger a re-draw
     // and possible make the parent menu open another popup
@@ -440,8 +431,8 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // was the button released over this window?
         // (use mouse position, as e.position in args has been unprojected)
         if (!d_popupWasClosed &&
-                System::getSingleton().getGUISheet()->getTargetChildAtPosition(
-                    MouseCursor::getSingleton().getPosition()) == this)
+                getGUIContext().getRootWindow()->getTargetChildAtPosition(
+                    getGUIContext().getMouseCursor().getPosition()) == this)
         {
             WindowEventArgs we(this);
             onClicked(we);
@@ -462,8 +453,8 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
     ItemEntry::onCaptureLost(e);
 
     d_pushed = false;
-    updateInternalState(
-        getUnprojectedPosition(MouseCursor::getSingleton().getPosition()));
+    updateInternalState(getUnprojectedPosition(
+        getGUIContext().getMouseCursor().getPosition()));
     invalidate();
 
     // event was handled by us.

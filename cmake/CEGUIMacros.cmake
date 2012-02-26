@@ -1,6 +1,7 @@
 ################################################################################
 # Macro definitions used by CEGUI's cmake build
 ################################################################################
+include(FindPackageHandleStandardArgs)
 
 #
 # gather *.cpp and .h files for the current location
@@ -261,7 +262,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     endif()
 
     if (${_INSTALL_HEADERS} AND UNIX AND NOT APPLE AND NOT WIN32)
-        string (REPLACE "cegui/src" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
+        string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
         install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/${_REL_HEADER_DIR}")
     endif()
 endmacro()
@@ -297,29 +298,41 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
         set (_ACTIONMSG "copies of")
     endif()
 
-    file (REMOVE_RECURSE
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
-    )
-    file (MAKE_DIRECTORY
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks
-            ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources
-    )
+    # depending on the generator used, we need to examine different things to discover the build type
+    if (CMAKE_GENERATOR STREQUAL "Unix Makefiles")
+        set(_CEGUI_BUILD_CONFIG ${CMAKE_BUILD_TYPE})
+    else()
+        set(_CEGUI_BUILD_CONFIG "$(CONFIGURATION)")
+    endif()
+
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; rm -rf \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks\"
+        COMMENT "Removing old Frameworks in ${_TARGET_NAME}.app")
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; rm -rf \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources\"
+        COMMENT "Removing old Resources in ${_TARGET_NAME}.app")
+
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; mkdir -p \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks\"
+        COMMENT "Creating Frameworks directory ${_TARGET_NAME}.app")
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; mkdir -p \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources\"
+        COMMENT "Creating Resources directory ${_TARGET_NAME}.app")
 
     if (NOT ${_STATIC})
         if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
             add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-                COMMAND ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+                COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; ce_libglob=\"*${CEGUI_BUILD_SUFFIX}.dylib\"\; else ce_ext=\"\"\; shopt -s extglob\; ce_libglob=\"!\(*${CEGUI_BUILD_SUFFIX}\).dylib\"\; fi\; ${_ACTIONCMD} ${CMAKE_PREFIX_PATH}/lib/dynamic/$$ce_libglob \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks/\"
                 COMMENT "Creating ${_ACTIONMSG} dependency libraries in ${_TARGET_NAME}.app")
         endif()
 
         add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-            COMMAND ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/*.dylib ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Frameworks/
+            COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; ce_libglob=\"*${CEGUI_BUILD_SUFFIX}.dylib\"\; else ce_ext=\"\"\; shopt -s extglob\; ce_libglob=\"!\(*${CEGUI_BUILD_SUFFIX}\).dylib\"\; fi\; ${_ACTIONCMD} ${CMAKE_LIBRARY_OUTPUT_DIRECTORY}/$$ce_libglob \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Frameworks/\"
             COMMENT "Creating ${_ACTIONMSG} built cegui libraries in ${_TARGET_NAME}.app")
     endif()
 
     add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
-        COMMAND ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}.app/Contents/Resources/
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources/\"
         COMMENT "Creating ${_ACTIONMSG} sample datafiles ${_TARGET_NAME}.app")
 endmacro()
 
@@ -383,7 +396,7 @@ macro (cegui_add_sample _NAME)
         # we add these to ensure the dynamically loaded modules we will be
         # using are built before the .app's post build step that copies
         # libs into the app bundle.
-        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_FALAGARD_WR_LIBNAME}
+        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
                                               CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
                                               CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}
         )
@@ -404,7 +417,7 @@ macro (cegui_add_sample _NAME)
         target_link_libraries(${CEGUI_TARGET_NAME}_Static
             ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
             ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
-            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
+            ${CEGUI_CORE_WR_LIBNAME}_Static
         )
     endif()
 
@@ -519,7 +532,7 @@ macro (cegui_add_test_executable _NAME)
             ${CEGUI_NULL_RENDERER_LIBNAME}_Static
             ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
             ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
-            ${CEGUI_FALAGARD_WR_LIBNAME}_Static
+            ${CEGUI_CORE_WR_LIBNAME}_Static
         )
     endif()
 
@@ -543,3 +556,87 @@ macro (cegui_add_test_executable _NAME)
     endif()
 
 endmacro()
+
+################################################################################
+# Creates a cmake option and initializes it to a default value depending on
+# other options.
+#
+# OPTIONAME: The name of the option to create
+# DESC: The option's description
+# DEPS: Dependencies of the option, specified as a list of boolean expressions.
+#       If one of the dependencies evaluates to FALSE, then the option's
+#       default will be set to FALSE, otherwise it will be set to TRUE.
+#       Example for DEPS: "NOT FOO;BAR"
+################################################################################
+macro (cegui_dependent_option OPTIONNAME DESC DEPS)
+    set (${OPTIONNAME}_DEFAULT TRUE)
+    foreach (DEP ${DEPS})
+        # Don't use NOT here, because conditions like 'NOT NOT foo' will break
+        if (${${DEP}})
+        else()
+            set (${OPTIONNAME}_DEFAULT FALSE)
+        endif()
+    endforeach()
+    option (${OPTIONNAME} "${DESC}" ${${OPTIONNAME}_DEFAULT})
+endmacro()
+
+################################################################################
+# Checks a set of variables and determines whether a package was 'found' or not.
+#
+# This is used to try and handle the plethora of dependency options that are
+# created when using the CEGUI dependencies package in combination with cmake
+# settings and options used here in the main CEGUI build.
+#
+# NOTE: On platforms where the dependency pack is not intended to be used, the
+# extra library configurations are NOT checked, on those platforms we will use
+# the base library only.
+#
+# _PKGNAME: The name of package we're checking for.
+# _LIBBASENAMEVAR: name of the library base name variable.  This name will be
+#                  used in the construction of other variable names which should
+#                  be set for various configurations (eg. BASENAMEVAR_DBG for 
+#                  dynamic debug config, BASENAMEVAR_STATIC for non debug static)
+# Optional other args: all other args will be tested verbatim (they're passed
+#                      along to find_package_handle_standard_args).
+################################################################################
+macro (cegui_find_package_handle_standard_args _PKGNAME _LIBBASENAMEVAR)
+    unset(_FPHSA_LIBS)
+
+    if (WIN32 OR APPLE)
+        if (CMAKE_GENERATOR MATCHES ".*Makefiles")
+            set (_BUILDCFG ${CMAKE_BUILD_TYPE})
+        else()
+            unset (_BUILDCFG)
+        endif()
+
+        if (CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
+            if (NOT _BUILDCFG OR NOT _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC)
+            endif()
+            if (NOT _BUILDCFG OR _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC_DBG)
+            endif()
+        else()
+            if (NOT _BUILDCFG OR NOT _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR})
+            endif()
+            if (NOT _BUILDCFG OR _BUILDCFG STREQUAL Debug)
+                list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_DBG)
+            endif()
+            if (CEGUI_BUILD_STATIC_CONFIGURATION)
+                if (NOT _BUILDCFG OR NOT _BUILDCFG STREQUAL Debug)
+                    list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC)
+                endif()
+                if (NOT _BUILDCFG OR _BUILDCFG STREQUAL Debug)
+                    list(APPEND _FPHSA_LIBS ${_LIBBASENAMEVAR}_STATIC_DBG)
+                endif()
+            endif()
+        endif()
+    else()
+        set(_FPHSA_LIBS ${_LIBBASENAMEVAR})
+    endif()
+
+    find_package_handle_standard_args(${_PKGNAME} DEFAULT_MSG ${_FPHSA_LIBS} ${ARGN})
+endmacro()
+
+

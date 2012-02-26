@@ -242,22 +242,6 @@ namespace CEGUI
             This method may be used during a drag operation to update the current mouse
             cursor image.
 
-        \param image
-            One of the MouseCursorImage enumerated values.
-
-        \return
-            Nothing.
-        */
-        void setDragCursorImage(MouseCursorImage image);
-
-        /*!
-        \brief
-            Set the Image to be used for the mouse cursor when a drag operation is
-            in progress.
-
-            This method may be used during a drag operation to update the current mouse
-            cursor image.
-
         \param name
             Image to be used as the mouse cursor when dragging.
 

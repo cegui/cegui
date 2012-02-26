@@ -34,96 +34,12 @@ struct OpenGLViewportTarget_wrapper : CEGUI::OpenGLViewportTarget, bp::wrapper< 
         return CEGUI::OpenGLViewportTarget::isImageryCache( );
     }
 
-    virtual void activate(  ) {
-        if( bp::override func_activate = this->get_override( "activate" ) )
-            func_activate(  );
-        else{
-            this->CEGUI::OpenGLRenderTarget::activate(  );
-        }
-    }
-    
-    void default_activate(  ) {
-        CEGUI::OpenGLRenderTarget::activate( );
-    }
-
-    virtual void deactivate(  ) {
-        if( bp::override func_deactivate = this->get_override( "deactivate" ) )
-            func_deactivate(  );
-        else{
-            this->CEGUI::OpenGLRenderTarget::deactivate(  );
-        }
-    }
-    
-    void default_deactivate(  ) {
-        CEGUI::OpenGLRenderTarget::deactivate( );
-    }
-
-    virtual void draw( ::CEGUI::GeometryBuffer const & buffer ) {
-        if( bp::override func_draw = this->get_override( "draw" ) )
-            func_draw( boost::ref(buffer) );
-        else{
-            this->CEGUI::OpenGLRenderTarget::draw( boost::ref(buffer) );
-        }
-    }
-    
-    void default_draw( ::CEGUI::GeometryBuffer const & buffer ) {
-        CEGUI::OpenGLRenderTarget::draw( boost::ref(buffer) );
-    }
-
-    virtual void draw( ::CEGUI::RenderQueue const & queue ) {
-        if( bp::override func_draw = this->get_override( "draw" ) )
-            func_draw( boost::ref(queue) );
-        else{
-            this->CEGUI::OpenGLRenderTarget::draw( boost::ref(queue) );
-        }
-    }
-    
-    void default_draw( ::CEGUI::RenderQueue const & queue ) {
-        CEGUI::OpenGLRenderTarget::draw( boost::ref(queue) );
-    }
-
-    virtual void setArea( ::CEGUI::Rectf const & area ) {
-        if( bp::override func_setArea = this->get_override( "setArea" ) )
-            func_setArea( boost::ref(area) );
-        else{
-            this->CEGUI::OpenGLRenderTarget::setArea( boost::ref(area) );
-        }
-    }
-    
-    void default_setArea( ::CEGUI::Rectf const & area ) {
-        CEGUI::OpenGLRenderTarget::setArea( boost::ref(area) );
-    }
-
-    virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2f const & p_in, ::CEGUI::Vector2f & p_out ) const  {
-        if( bp::override func_unprojectPoint = this->get_override( "unprojectPoint" ) )
-            func_unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
-        else{
-            this->CEGUI::OpenGLRenderTarget::unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
-        }
-    }
-    
-    void default_unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2f const & p_in, ::CEGUI::Vector2f & p_out ) const  {
-        CEGUI::OpenGLRenderTarget::unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
-    }
-
-    virtual void updateMatrix(  ) const {
-        if( bp::override func_updateMatrix = this->get_override( "updateMatrix" ) )
-            func_updateMatrix(  );
-        else{
-            this->CEGUI::OpenGLRenderTarget::updateMatrix(  );
-        }
-    }
-    
-    virtual void default_updateMatrix(  ) const {
-        CEGUI::OpenGLRenderTarget::updateMatrix( );
-    }
-
 };
 
 void register_OpenGLViewportTarget_class(){
 
     { //::CEGUI::OpenGLViewportTarget
-        typedef bp::class_< OpenGLViewportTarget_wrapper, bp::bases< CEGUI::OpenGLRenderTarget >, boost::noncopyable > OpenGLViewportTarget_exposer_t;
+        typedef bp::class_< OpenGLViewportTarget_wrapper, boost::noncopyable > OpenGLViewportTarget_exposer_t;
         OpenGLViewportTarget_exposer_t OpenGLViewportTarget_exposer = OpenGLViewportTarget_exposer_t( "OpenGLViewportTarget", "*!\n\
         \n\
             OpenGL implementation of a RenderTarget that represents am on-scren\n\
@@ -153,96 +69,6 @@ void register_OpenGLViewportTarget_class(){
                 "isImageryCache"
                 , isImageryCache_function_type(&::CEGUI::OpenGLViewportTarget::isImageryCache)
                 , default_isImageryCache_function_type(&OpenGLViewportTarget_wrapper::default_isImageryCache) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::activate
-        
-            typedef void ( ::CEGUI::OpenGLRenderTarget::*activate_function_type )(  ) ;
-            typedef void ( OpenGLViewportTarget_wrapper::*default_activate_function_type )(  ) ;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "activate"
-                , activate_function_type(&::CEGUI::OpenGLRenderTarget::activate)
-                , default_activate_function_type(&OpenGLViewportTarget_wrapper::default_activate) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::deactivate
-        
-            typedef void ( ::CEGUI::OpenGLRenderTarget::*deactivate_function_type )(  ) ;
-            typedef void ( OpenGLViewportTarget_wrapper::*default_deactivate_function_type )(  ) ;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "deactivate"
-                , deactivate_function_type(&::CEGUI::OpenGLRenderTarget::deactivate)
-                , default_deactivate_function_type(&OpenGLViewportTarget_wrapper::default_deactivate) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::draw
-        
-            typedef void ( ::CEGUI::OpenGLRenderTarget::*draw_function_type )( ::CEGUI::GeometryBuffer const & ) ;
-            typedef void ( OpenGLViewportTarget_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer const & ) ;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "draw"
-                , draw_function_type(&::CEGUI::OpenGLRenderTarget::draw)
-                , default_draw_function_type(&OpenGLViewportTarget_wrapper::default_draw)
-                , ( bp::arg("buffer") ) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::draw
-        
-            typedef void ( ::CEGUI::OpenGLRenderTarget::*draw_function_type )( ::CEGUI::RenderQueue const & ) ;
-            typedef void ( OpenGLViewportTarget_wrapper::*default_draw_function_type )( ::CEGUI::RenderQueue const & ) ;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "draw"
-                , draw_function_type(&::CEGUI::OpenGLRenderTarget::draw)
-                , default_draw_function_type(&OpenGLViewportTarget_wrapper::default_draw)
-                , ( bp::arg("queue") ) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::getArea
-        
-            typedef ::CEGUI::Rectf const & ( ::CEGUI::OpenGLRenderTarget::*getArea_function_type )(  ) const;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "getArea"
-                , getArea_function_type(&::CEGUI::OpenGLRenderTarget::getArea)
-                , bp::return_value_policy< bp::copy_const_reference >() );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::setArea
-        
-            typedef void ( ::CEGUI::OpenGLRenderTarget::*setArea_function_type )( ::CEGUI::Rectf const & ) ;
-            typedef void ( OpenGLViewportTarget_wrapper::*default_setArea_function_type )( ::CEGUI::Rectf const & ) ;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "setArea"
-                , setArea_function_type(&::CEGUI::OpenGLRenderTarget::setArea)
-                , default_setArea_function_type(&OpenGLViewportTarget_wrapper::default_setArea)
-                , ( bp::arg("area") ) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::unprojectPoint
-        
-            typedef void ( ::CEGUI::OpenGLRenderTarget::*unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) const;
-            typedef void ( OpenGLViewportTarget_wrapper::*default_unprojectPoint_function_type )( ::CEGUI::GeometryBuffer const &,::CEGUI::Vector2f const &,::CEGUI::Vector2f & ) const;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "unprojectPoint"
-                , unprojectPoint_function_type(&::CEGUI::OpenGLRenderTarget::unprojectPoint)
-                , default_unprojectPoint_function_type(&OpenGLViewportTarget_wrapper::default_unprojectPoint)
-                , ( bp::arg("buff"), bp::arg("p_in"), bp::arg("p_out") ) );
-        
-        }
-        { //::CEGUI::OpenGLRenderTarget::updateMatrix
-        
-            typedef void ( OpenGLViewportTarget_wrapper::*updateMatrix_function_type )(  ) const;
-            
-            OpenGLViewportTarget_exposer.def( 
-                "updateMatrix"
-                , updateMatrix_function_type( &OpenGLViewportTarget_wrapper::default_updateMatrix )
-                , "! helper that initialises the cached matrix\n" );
         
         }
     }

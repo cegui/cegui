@@ -37,8 +37,7 @@ namespace CEGUI
 float CoordConverter::screenToWindowX(const Window& window, const UDim& x)
 {
     return asAbsolute(x,
-        System::getSingleton().getRenderer()->getDisplaySize().d_width) -
-           getBaseXValue(window);
+        window.getRootContainerSize().d_width) - getBaseXValue(window);
 }
 
 //----------------------------------------------------------------------------//
@@ -46,26 +45,21 @@ float CoordConverter::screenToWindowX(const Window& window, const UDim& x)
 float CoordConverter::screenToWindowY(const Window& window, const UDim& y)
 {
     return asAbsolute(y,
-        System::getSingleton().getRenderer()->getDisplaySize().d_height) -
-           getBaseYValue(window);
+        window.getRootContainerSize().d_height) - getBaseYValue(window);
 }
 
 //----------------------------------------------------------------------------//
 
 Vector2f CoordConverter::screenToWindow(const Window& window, const UVector2& vec)
 {
-    return asAbsolute(vec, 
-        System::getSingleton().getRenderer()->getDisplaySize()) -
-           getBaseValue(window);
+    return asAbsolute(vec, window.getRootContainerSize()) - getBaseValue(window);
 }
 
 //----------------------------------------------------------------------------//
-
 Rectf CoordConverter::screenToWindow(const Window& window, const URect& rect)
 {
     Vector2f base(getBaseValue(window));
-    Rectf pixel(
-        asAbsolute(rect, System::getSingleton().getRenderer()->getDisplaySize()));
+    Rectf pixel(asAbsolute(rect, window.getRootContainerSize()));
 
     // negate base position
     base.d_x = -base.d_x;
@@ -125,8 +119,7 @@ float CoordConverter::getBaseXValue(const Window& window)
 
     const Rectf parent_rect(parent ?
         parent->getChildContentArea(window.isNonClient()).get() :
-        Rectf(Vector2f(0, 0),
-             System::getSingleton().getRenderer()->getDisplaySize())
+        Rectf(Vector2f(0, 0), window.getRootContainerSize())
     );
 
     const float parent_width = parent_rect.getWidth();
@@ -157,8 +150,7 @@ float CoordConverter::getBaseYValue(const Window& window)
 
     const Rectf parent_rect(parent ?
         parent->getChildContentArea(window.isNonClient()).get() :
-        Rectf(Vector2f(0, 0),
-             System::getSingleton().getRenderer()->getDisplaySize())
+        Rectf(Vector2f(0, 0), window.getRootContainerSize())
     );
 
     const float parent_height = parent_rect.getHeight();

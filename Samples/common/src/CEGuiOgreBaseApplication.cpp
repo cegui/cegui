@@ -203,6 +203,7 @@ void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
 
     gui_system.injectTimePulse(elapsed);
+    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
     updateFPS(elapsed);
     updateLogo(elapsed);
 }
@@ -320,10 +321,10 @@ bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
 bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
 {
 
-    CEGUI::System& cegui = CEGUI::System::getSingleton();
+    CEGUI::GUIContext& ctx = CEGUI::System::getSingleton().getDefaultGUIContext();
 
-    cegui.injectMouseMove(e.state.X.rel, e.state.Y.rel);
-    cegui.injectMouseWheelChange(e.state.Z.rel / 120.0f);
+    ctx.injectMouseMove(e.state.X.rel, e.state.Y.rel);
+    ctx.injectMouseWheelChange(e.state.Z.rel / 120.0f);
 
     return true;
 }
@@ -341,13 +342,13 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
     }
 
     // do event injection
-    CEGUI::System& cegui = CEGUI::System::getSingleton();
+    CEGUI::GUIContext& ctx = CEGUI::System::getSingleton().getDefaultGUIContext();
 
     // key down
-    cegui.injectKeyDown(e.key);
+    ctx.injectKeyDown(static_cast<CEGUI::Key::Scan>(e.key));
 
     // now character
-    cegui.injectChar(e.text);
+    ctx.injectChar(e.text);
 
     return true;
 }
@@ -356,14 +357,16 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
 {
-    CEGUI::System::getSingleton().injectKeyUp(e.key);
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectKeyUp(static_cast<CEGUI::Key::Scan>(e.key));
     return true;
 }
 
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().injectMouseButtonDown(convertOISButtonToCegui(id));
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectMouseButtonDown(convertOISButtonToCegui(id));
 
     return true;
 }
@@ -371,7 +374,8 @@ bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseBu
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().injectMouseButtonUp(convertOISButtonToCegui(id));
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectMouseButtonUp(convertOISButtonToCegui(id));
 
     return true;
 }

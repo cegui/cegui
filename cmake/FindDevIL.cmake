@@ -23,10 +23,11 @@ if (WIN32 OR APPLE)
     mark_as_advanced( IL_DEFINITIONS_STATIC IL_LIB_STATIC IL_LIB_STATIC_DBG ILU_LIB_STATIC ILU_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(IL DEFAULT_MSG IL_LIB ILU_LIB IL_H_PATH)
+cegui_find_package_handle_standard_args(IL IL_LIB IL_H_PATH)
+cegui_find_package_handle_standard_args(ILU ILU_LIB)
 
 # set up output vars
-if (IL_FOUND)
+if (IL_FOUND AND ILU_FOUND)
     set (IL_INCLUDE_DIR ${IL_H_PATH})
     set (IL_LIBRARIES ${ILU_LIB} ${IL_LIB})
     if (IL_LIB_DBG AND ILU_LIB_DBG)

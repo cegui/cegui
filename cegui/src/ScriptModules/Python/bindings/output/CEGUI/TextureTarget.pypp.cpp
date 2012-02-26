@@ -54,8 +54,28 @@ struct TextureTarget_wrapper : CEGUI::TextureTarget, bp::wrapper< CEGUI::Texture
         func_draw( boost::ref(queue) );
     }
 
+    virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
+        if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
+            func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+        else{
+            this->CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+        }
+    }
+    
+    void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
+        CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
     virtual ::CEGUI::Rectf const & getArea(  ) const {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
     }
 
     virtual bool isImageryCache(  ) const {
@@ -66,6 +86,30 @@ struct TextureTarget_wrapper : CEGUI::TextureTarget, bp::wrapper< CEGUI::Texture
     virtual void setArea( ::CEGUI::Rectf const & area ){
         bp::override func_setArea = this->get_override( "setArea" );
         func_setArea( boost::ref(area) );
+    }
+
+    virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
+        if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
+            return func_subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+        else{
+            return this->CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+        }
+    }
+    
+    ::CEGUI::RefCounted< CEGUI::BoundSlot > default_subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
+        return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+    }
+
+    virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, unsigned int group, ::CEGUI::String const & subscriber_name ) {
+        if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
+            return func_subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+        else{
+            return this->CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+        }
+    }
+    
+    ::CEGUI::RefCounted< CEGUI::BoundSlot > default_subscribeScriptedEvent( ::CEGUI::String const & name, unsigned int group, ::CEGUI::String const & subscriber_name ) {
+        return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
     }
 
     virtual void unprojectPoint( ::CEGUI::GeometryBuffer const & buff, ::CEGUI::Vector2f const & p_in, ::CEGUI::Vector2f & p_out ) const {
@@ -240,6 +284,29 @@ void register_TextureTarget_class(){
                 *\n" );
         
         }
+        { //::CEGUI::EventSet::fireEvent
+        
+            typedef void ( ::CEGUI::EventSet::*fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
+            typedef void ( TextureTarget_wrapper::*default_fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
+            
+            TextureTarget_exposer.def( 
+                "fireEvent"
+                , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
+                , default_fireEvent_function_type(&TextureTarget_wrapper::default_fireEvent)
+                , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( TextureTarget_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            TextureTarget_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &TextureTarget_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
         { //::CEGUI::RenderTarget::getArea
         
             typedef ::CEGUI::Rectf const & ( ::CEGUI::RenderTarget::*getArea_function_type )(  ) const;
@@ -255,6 +322,18 @@ void register_TextureTarget_class(){
                 @return\n\
                     Rect object describing the currently defined area for this RenderTarget.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( TextureTarget_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            TextureTarget_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &TextureTarget_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
         
         }
         { //::CEGUI::RenderTarget::isImageryCache
@@ -297,10 +376,39 @@ void register_TextureTarget_class(){
                 @param area\n\
                     Rect object describing the new area to be assigned to the RenderTarget.\n\
             \n\
+                \note\n\
+                    When implementing this function, you should be sure to fire the event\n\
+                    RenderTarget.EventAreaChanged so that interested parties can know that\n\
+                    the change has occurred.\n\
+            \n\
                 @exception InvalidRequestException\n\
                     May be thrown if the RenderTarget does not support setting or changing\n\
                     its area, or if the area change can not be satisfied for some reason.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::EventSet::subscribeScriptedEvent
+        
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::*subscribeScriptedEvent_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( TextureTarget_wrapper::*default_subscribeScriptedEvent_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            TextureTarget_exposer.def( 
+                "subscribeScriptedEvent"
+                , subscribeScriptedEvent_function_type(&::CEGUI::EventSet::subscribeScriptedEvent)
+                , default_subscribeScriptedEvent_function_type(&TextureTarget_wrapper::default_subscribeScriptedEvent)
+                , ( bp::arg("name"), bp::arg("subscriber_name") ) );
+        
+        }
+        { //::CEGUI::EventSet::subscribeScriptedEvent
+        
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::*subscribeScriptedEvent_function_type )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ;
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( TextureTarget_wrapper::*default_subscribeScriptedEvent_function_type )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ;
+            
+            TextureTarget_exposer.def( 
+                "subscribeScriptedEvent"
+                , subscribeScriptedEvent_function_type(&::CEGUI::EventSet::subscribeScriptedEvent)
+                , default_subscribeScriptedEvent_function_type(&TextureTarget_wrapper::default_subscribeScriptedEvent)
+                , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
         { //::CEGUI::RenderTarget::unprojectPoint

@@ -207,7 +207,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        System::getSingleton().updateWindowContainingMouse();
+        getGUIContext().updateWindowContainingMouse();
     }
 
 }
@@ -315,8 +315,8 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth - delta;
 
     if (newWidth > maxWidth)
@@ -357,8 +357,8 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
-    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, System::getSingleton().getRenderer()->getDisplaySize().d_width));
+    float maxWidth(CoordConverter::asAbsolute(d_maxSize.d_width, getRootContainerSize().d_width));
+    float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth + delta;
 
     if (newWidth > maxWidth)
@@ -401,8 +401,8 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, getRootContainerSize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, getRootContainerSize().d_height));
     float newHeight = orgHeight - delta;
 
     if (newHeight > maxHeight)
@@ -445,8 +445,8 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     // NB: We are required to do this here due to our virtually unique sizing nature; the
     // normal system for limiting the window size is unable to supply the information we
     // require for updating our internal state used to manage the dragging, etc.
-    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
-    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, System::getSingleton().getRenderer()->getDisplaySize().d_height));
+    float maxHeight(CoordConverter::asAbsolute(d_maxSize.d_height, getRootContainerSize().d_height));
+    float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, getRootContainerSize().d_height));
     float newHeight = orgHeight + delta;
 
     if (newHeight > maxHeight)
@@ -499,26 +499,31 @@ void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 	{
 	case SizingTop:
 	case SizingBottom:
-		MouseCursor::getSingleton().setImage(d_nsSizingCursor);
+		getGUIContext().
+            getMouseCursor().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
-		MouseCursor::getSingleton().setImage(d_ewSizingCursor);
+		getGUIContext().
+            getMouseCursor().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
-		MouseCursor::getSingleton().setImage(d_nwseSizingCursor);
+		getGUIContext().
+            getMouseCursor().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
-		MouseCursor::getSingleton().setImage(d_neswSizingCursor);
+		getGUIContext().
+            getMouseCursor().setImage(d_neswSizingCursor);
 		break;
 
 	default:
-		MouseCursor::getSingleton().setImage(getMouseCursor());
+		getGUIContext().
+            getMouseCursor().setImage(getMouseCursor());
 		break;
 	}
 
@@ -558,7 +563,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 	Window::onMouseMove(e);
 
 	// if we are not the window containing the mouse, do NOT change the cursor
-	if (System::getSingleton().getWindowContainingMouse() != this)
+	if (getGUIContext().getWindowContainingMouse() != this)
 	{
 		return;
 	}

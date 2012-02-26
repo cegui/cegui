@@ -91,6 +91,18 @@ struct RenderingWindow_wrapper : CEGUI::RenderingWindow, bp::wrapper< CEGUI::Ren
         CEGUI::RenderingSurface::draw( boost::ref(queue), boost::ref(args) );
     }
 
+    virtual void drawContent(  ){
+        if( bp::override func_drawContent = this->get_override( "drawContent" ) )
+            func_drawContent(  );
+        else{
+            this->CEGUI::RenderingSurface::drawContent(  );
+        }
+    }
+    
+    virtual void default_drawContent(  ){
+        CEGUI::RenderingSurface::drawContent( );
+    }
+
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
         if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
             func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
@@ -662,6 +674,18 @@ void register_RenderingWindow_class(){
                 , draw_function_type( &RenderingWindow_wrapper::draw )
                 , ( bp::arg("queue"), bp::arg("args") )
                 , "! draw a rendering queue, firing events before and after.\n" );
+        
+        }
+        { //::CEGUI::RenderingSurface::drawContent
+        
+            typedef void ( RenderingWindow_wrapper::*drawContent_function_type )(  ) ;
+            
+            RenderingWindow_exposer.def( 
+                "drawContent"
+                , drawContent_function_type( &RenderingWindow_wrapper::default_drawContent )
+                , "** draw the surface content. Default impl draws the render queues.\n\
+             * NB: Called between RenderTarget activate and deactivate calls.\n\
+             *\n" );
         
         }
         { //::CEGUI::EventSet::fireEvent

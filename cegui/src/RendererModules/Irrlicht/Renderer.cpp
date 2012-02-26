@@ -31,7 +31,7 @@
 #include "CEGUI/RendererModules/Irrlicht/TextureTarget.h"
 #include "CEGUI/RendererModules/Irrlicht/Texture.h"
 #include "CEGUI/RendererModules/Irrlicht/ResourceProvider.h"
-#include "CEGUI/RenderingRoot.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/RendererModules/Irrlicht/EventPusher.h"
 #include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
 
@@ -127,9 +127,9 @@ bool IrrlichtRenderer::injectEvent(const irr::SEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-RenderingRoot& IrrlichtRenderer::getDefaultRenderingRoot()
+RenderTarget& IrrlichtRenderer::getDefaultRenderTarget()
 {
-    return *d_defaultRoot;
+    return *d_defaultTarget;
 }
 
 //----------------------------------------------------------------------------//
@@ -356,7 +356,6 @@ IrrlichtRenderer::IrrlichtRenderer(irr::IrrlichtDevice& device) :
                   static_cast<float>(d_driver->getScreenSize().Height)),
     d_displayDPI(96, 96),
     d_defaultTarget(new IrrlichtWindowTarget(*this, *d_driver)),
-    d_defaultRoot(new RenderingRoot(*d_defaultTarget)),
     d_maxTextureSize(2048),
     d_eventPusher(new IrrlichtEventPusher(d_device.getCursorControl())),
     d_supportsNSquareTextures(d_driver->queryFeature(irr::video::EVDF_TEXTURE_NSQUARE)),
@@ -376,7 +375,6 @@ IrrlichtRenderer::~IrrlichtRenderer()
     destroyAllTextures();
 
     delete d_eventPusher;
-    delete d_defaultRoot;
     delete d_defaultTarget;
 }
 

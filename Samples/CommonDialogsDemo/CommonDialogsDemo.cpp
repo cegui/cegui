@@ -51,12 +51,12 @@ bool CommonDialogsDemo::initialiseSample()
     // load resources and set up system defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaCommonDialogs.scheme");
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // set up the root window / gui sheet
     WindowManager& winMgr = WindowManager::getSingleton();
     Window* root = winMgr.createWindow("DefaultWindow", "Root");
-    System::getSingleton().setGUISheet(root);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
 
     // create container window for the demo
     FrameWindow* wnd = static_cast<FrameWindow*>(

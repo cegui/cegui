@@ -1838,7 +1838,7 @@ void register_Window_class(){
         }
         { //::CEGUI::Window::getCaptureWindow
         
-            typedef ::CEGUI::Window * ( *getCaptureWindow_function_type )(  );
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getCaptureWindow_function_type )(  ) const;
             
             Window_exposer.def( 
                 "getCaptureWindow"
@@ -2067,6 +2067,17 @@ void register_Window_class(){
                     assigned font, and  useDefault is true, then the default system font\n\
                     is returned.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Window::getGUIContext
+        
+            typedef ::CEGUI::GUIContext & ( ::CEGUI::Window::*getGUIContext_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getGUIContext"
+                , getGUIContext_function_type( &::CEGUI::Window::getGUIContext )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! return the GUIContext this window is associated with.\n" );
         
         }
         { //::CEGUI::Window::getGeometryBuffer
@@ -2359,6 +2370,16 @@ void register_Window_class(){
                 return the RenderingSurface currently set for this window.  May return\n\
                 0.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::Window::getRootWindow
@@ -5098,6 +5119,18 @@ void register_Window_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Window::setGUIContext
+        
+            typedef void ( ::CEGUI::Window::*setGUIContext_function_type )( ::CEGUI::GUIContext * ) ;
+            
+            Window_exposer.def( 
+                "setGUIContext"
+                , setGUIContext_function_type( &::CEGUI::Window::setGUIContext )
+                , ( bp::arg("context") )
+                , "! return the GUIContext this window is associated with.\n\
+            ! function used internally.  Do not call this from client code.\n" );
+        
+        }
         { //::CEGUI::Window::setID
         
             typedef void ( ::CEGUI::Window::*setID_function_type )( ::CEGUI::uint ) ;
@@ -5248,26 +5281,6 @@ void register_Window_class(){
                 @param image\n\
                     Pointer to the Image object to use as the mouse cursor image when the\n\
                     mouse enters the area for this Window.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::setMouseCursor
-        
-            typedef void ( ::CEGUI::Window::*setMouseCursor_function_type )( ::CEGUI::MouseCursorImage ) ;
-            
-            Window_exposer.def( 
-                "setMouseCursor"
-                , setMouseCursor_function_type( &::CEGUI::Window::setMouseCursor )
-                , ( bp::arg("image") )
-                , "*!\n\
-                \n\
-                    Set the mouse cursor image to be used when the mouse enters this window.\n\
-            \n\
-                @param image\n\
-                    One of the MouseCursorImage enumerated values.\n\
             \n\
                 @return\n\
                     Nothing.\n\
@@ -5797,6 +5810,16 @@ void register_Window_class(){
                 @return\n\
                     Nothing\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Window::syncTargetSurface
+        
+            typedef void ( ::CEGUI::Window::*syncTargetSurface_function_type )(  ) ;
+            
+            Window_exposer.def( 
+                "syncTargetSurface"
+                , syncTargetSurface_function_type( &::CEGUI::Window::syncTargetSurface )
+                , "! ensure that the window will be rendered to the correct target surface.\n" );
         
         }
         { //::CEGUI::Window::transferChildSurfaces
@@ -6423,7 +6446,6 @@ void register_Window_class(){
                 , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
-        Window_exposer.staticmethod( "getCaptureWindow" );
         Window_exposer.def ("setUserData", &::Window_setUserData);;
         Window_exposer.def ("getUserData", &::Window_getUserData);;
         Window_exposer.def ("isChild", isChild_string_function_type(&::CEGUI::Window::isChild));;

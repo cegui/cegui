@@ -54,12 +54,56 @@ struct RenderTarget_wrapper : CEGUI::RenderTarget, bp::wrapper< CEGUI::RenderTar
         func_unprojectPoint( boost::ref(buff), boost::ref(p_in), boost::ref(p_out) );
     }
 
+    virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
+        if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
+            func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+        else{
+            this->CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+        }
+    }
+    
+    void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
+        CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
+    }
+
+    virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
+        if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
+            return func_subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+        else{
+            return this->CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+        }
+    }
+    
+    ::CEGUI::RefCounted< CEGUI::BoundSlot > default_subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
+        return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+    }
+
+    virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, unsigned int group, ::CEGUI::String const & subscriber_name ) {
+        if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
+            return func_subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+        else{
+            return this->CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+        }
+    }
+    
+    ::CEGUI::RefCounted< CEGUI::BoundSlot > default_subscribeScriptedEvent( ::CEGUI::String const & name, unsigned int group, ::CEGUI::String const & subscriber_name ) {
+        return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+    }
+
 };
 
 void register_RenderTarget_class(){
 
     { //::CEGUI::RenderTarget
-        typedef bp::class_< RenderTarget_wrapper, boost::noncopyable > RenderTarget_exposer_t;
+        typedef bp::class_< RenderTarget_wrapper, bp::bases< CEGUI::EventSet >, boost::noncopyable > RenderTarget_exposer_t;
         RenderTarget_exposer_t RenderTarget_exposer = RenderTarget_exposer_t( "RenderTarget" );
         bp::scope RenderTarget_scope( RenderTarget_exposer );
         { //::CEGUI::RenderTarget::activate
@@ -193,6 +237,11 @@ void register_RenderTarget_class(){
                 @param area\n\
                     Rect object describing the new area to be assigned to the RenderTarget.\n\
             \n\
+                \note\n\
+                    When implementing this function, you should be sure to fire the event\n\
+                    RenderTarget.EventAreaChanged so that interested parties can know that\n\
+                    the change has occurred.\n\
+            \n\
                 @exception InvalidRequestException\n\
                     May be thrown if the RenderTarget does not support setting or changing\n\
                     its area, or if the area change can not be satisfied for some reason.\n\
@@ -212,6 +261,68 @@ void register_RenderTarget_class(){
                 Take point  p_in unproject it and put the result in  p_out.\n\
                 Resulting point is local to GeometryBuffer  buff.\n\
             *\n" );
+        
+        }
+        RenderTarget_exposer.add_static_property( "EventAreaChanged"
+                        , bp::make_getter( &CEGUI::RenderTarget::EventAreaChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        { //::CEGUI::EventSet::fireEvent
+        
+            typedef void ( ::CEGUI::EventSet::*fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
+            typedef void ( RenderTarget_wrapper::*default_fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
+            
+            RenderTarget_exposer.def( 
+                "fireEvent"
+                , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
+                , default_fireEvent_function_type(&RenderTarget_wrapper::default_fireEvent)
+                , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( RenderTarget_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            RenderTarget_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &RenderTarget_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( RenderTarget_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            RenderTarget_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &RenderTarget_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
+        
+        }
+        { //::CEGUI::EventSet::subscribeScriptedEvent
+        
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::*subscribeScriptedEvent_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( RenderTarget_wrapper::*default_subscribeScriptedEvent_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            RenderTarget_exposer.def( 
+                "subscribeScriptedEvent"
+                , subscribeScriptedEvent_function_type(&::CEGUI::EventSet::subscribeScriptedEvent)
+                , default_subscribeScriptedEvent_function_type(&RenderTarget_wrapper::default_subscribeScriptedEvent)
+                , ( bp::arg("name"), bp::arg("subscriber_name") ) );
+        
+        }
+        { //::CEGUI::EventSet::subscribeScriptedEvent
+        
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::*subscribeScriptedEvent_function_type )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ;
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( RenderTarget_wrapper::*default_subscribeScriptedEvent_function_type )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ;
+            
+            RenderTarget_exposer.def( 
+                "subscribeScriptedEvent"
+                , subscribeScriptedEvent_function_type(&::CEGUI::EventSet::subscribeScriptedEvent)
+                , default_subscribeScriptedEvent_function_type(&RenderTarget_wrapper::default_subscribeScriptedEvent)
+                , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
         
         }
     }

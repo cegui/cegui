@@ -348,15 +348,16 @@ void Config_xmlHandler::initialiseDefaultFont() const
 void Config_xmlHandler::initialiseDefaultMouseCursor() const
 {
     if (!d_defaultMouseImage.empty())
-        System::getSingleton().
-            setDefaultMouseCursor(d_defaultMouseImage);
+        System::getSingleton().getDefaultGUIContext().getMouseCursor().
+            setDefaultImage(d_defaultMouseImage);
 }
 
 //----------------------------------------------------------------------------//
 void Config_xmlHandler::initialiseDefaulTooltip() const
 {
     if (!d_defaultTooltipType.empty())
-        System::getSingleton().setDefaultTooltip(d_defaultTooltipType);
+        System::getSingleton().getDefaultGUIContext().
+            setDefaultTooltipType(d_defaultTooltipType);
 }
 
 //----------------------------------------------------------------------------//

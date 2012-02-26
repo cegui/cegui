@@ -64,7 +64,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().setDefaultMouseCursor("TaharezLook/MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -85,7 +85,7 @@ bool FirstWindowSample::initialiseSample()
 
     // set the GUI root window (also known as the GUI "sheet"), so the gui we set up
     // will be visible.
-    System::getSingleton().setGUISheet(root);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.

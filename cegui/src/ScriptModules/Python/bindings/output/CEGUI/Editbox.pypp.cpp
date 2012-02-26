@@ -2675,6 +2675,16 @@ void register_Editbox_class(){
                 , ( bp::arg("ctx") ) );
         
         }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            Editbox_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
+        
+        }
         { //::CEGUI::EventSet::getScriptModule
         
             typedef ::CEGUI::ScriptModule * ( Editbox_wrapper::*getScriptModule_function_type )(  ) const;

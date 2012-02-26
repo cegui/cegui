@@ -15,6 +15,10 @@ struct ButtonBase_wrapper : CEGUI::ButtonBase, bp::wrapper< CEGUI::ButtonBase > 
     
     }
 
+    bool calculateCurrentHoverState( ::CEGUI::Vector2f const & mouse_pos ){
+        return CEGUI::ButtonBase::calculateCurrentHoverState( boost::ref(mouse_pos) );
+    }
+
     virtual void onCaptureLost( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onCaptureLost = this->get_override( "onCaptureLost" ) )
             func_onCaptureLost( boost::ref(e) );
@@ -1264,6 +1268,16 @@ void register_ButtonBase_class(){
            Constructor for ButtonBase objects\n\
         *\n") );
         bp::scope ButtonBase_scope( ButtonBase_exposer );
+        { //::CEGUI::ButtonBase::calculateCurrentHoverState
+        
+            typedef bool ( ButtonBase_wrapper::*calculateCurrentHoverState_function_type )( ::CEGUI::Vector2f const & ) ;
+            
+            ButtonBase_exposer.def( 
+                "calculateCurrentHoverState"
+                , calculateCurrentHoverState_function_type( &ButtonBase_wrapper::calculateCurrentHoverState )
+                , ( bp::arg("mouse_pos") ) );
+        
+        }
         { //::CEGUI::ButtonBase::isHovering
         
             typedef bool ( ::CEGUI::ButtonBase::*isHovering_function_type )(  ) const;
@@ -1717,6 +1731,16 @@ void register_ButtonBase_class(){
                 , getRenderingContext_impl_function_type(&::CEGUI::Window::getRenderingContext_impl)
                 , default_getRenderingContext_impl_function_type(&ButtonBase_wrapper::default_getRenderingContext_impl)
                 , ( bp::arg("ctx") ) );
+        
+        }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            ButtonBase_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::EventSet::getScriptModule

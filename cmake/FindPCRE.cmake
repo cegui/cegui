@@ -15,7 +15,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(PCRE_LIB_STATIC PCRE_LIB_STATIC_DBG PCRE_DEFINITIONS)
 endif()
 
-find_package_handle_standard_args(PCRE DEFAULT_MSG PCRE_LIB PCRE_H_PATH)
+cegui_find_package_handle_standard_args(PCRE PCRE_LIB PCRE_H_PATH)
 
 # set up output vars
 if (PCRE_FOUND)

@@ -43,7 +43,7 @@ uint IrrlichtTextureTarget::s_textureNumber = 0;
 //----------------------------------------------------------------------------//
 IrrlichtTextureTarget::IrrlichtTextureTarget(IrrlichtRenderer& owner,
                                              irr::video::IVideoDriver& driver) :
-    IrrlichtRenderTarget(owner, driver),
+    IrrlichtRenderTarget<TextureTarget>(owner, driver),
     d_texture(0),
     d_CEGUITexture(static_cast<IrrlichtTexture*>(
         &d_owner.createTexture(generateTextureName())))
@@ -161,3 +161,8 @@ String IrrlichtTextureTarget::generateTextureName()
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of template base class
+#include "./RenderTarget.inl"
+

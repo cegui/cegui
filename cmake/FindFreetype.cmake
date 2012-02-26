@@ -15,7 +15,7 @@ if (WIN32 OR APPLE)
     mark_as_advanced(FREETYPE_LIB_STATIC FREETYPE_LIB_STATIC_DBG)
 endif()
 
-find_package_handle_standard_args(FREETYPE DEFAULT_MSG FREETYPE_LIB FREETYPE_H_PATH_ft2build FREETYPE_H_PATH_ftconfig)
+cegui_find_package_handle_standard_args(FREETYPE FREETYPE_LIB FREETYPE_H_PATH_ft2build FREETYPE_H_PATH_ftconfig)
 
 # set up output vars
 if (FREETYPE_FOUND)

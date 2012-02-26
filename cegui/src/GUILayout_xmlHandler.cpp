@@ -46,12 +46,15 @@ const String GUILayout_xmlHandler::NativeVersion( "4" );
 const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );
 const String GUILayout_xmlHandler::WindowElement( "Window" );
 const String GUILayout_xmlHandler::AutoWindowElement( "AutoWindow" );
+const String GUILayout_xmlHandler::UserStringElement( "UserString" );
 const String GUILayout_xmlHandler::PropertyElement( "Property" );
 const String GUILayout_xmlHandler::LayoutImportElement( "LayoutImport" );
 const String GUILayout_xmlHandler::EventElement( "Event" );
 const String GUILayout_xmlHandler::WindowTypeAttribute( "Type" );
 const String GUILayout_xmlHandler::WindowNameAttribute( "Name" );
 const String GUILayout_xmlHandler::AutoWindowNamePathAttribute( "NamePath" );
+const String GUILayout_xmlHandler::UserStringNameAttribute( "Name" );
+const String GUILayout_xmlHandler::UserStringValueAttribute( "Value" );
 const String GUILayout_xmlHandler::PropertyNameAttribute( "Name" );
 const String GUILayout_xmlHandler::PropertyValueAttribute( "Value" );
 const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "Filename" );
@@ -84,6 +87,11 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
     else if (element == AutoWindowElement)
     {
         elementAutoWindowStart(attributes);
+    }
+	// handle UserString element (set user string for window at top of stack)
+	else if (element == UserStringElement)
+    {
+        elementUserStringStart(attributes);
     }
     // handle Property element (set property for window at top of stack)
     else if (element == PropertyElement)
@@ -124,6 +132,11 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
     {
         elementAutoWindowEnd();
     }
+    // handle UserString element
+    else if (element == UserStringElement)
+    {
+        elementUserStringEnd();
+    }
     // handle Property element
     else if (element == PropertyElement)
     {
@@ -137,7 +150,7 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
 *************************************************************************/
 void GUILayout_xmlHandler::text(const String& text)
 {
-    d_propertyValue += text;
+    d_stringItemValue += text;
 }
 
 /*************************************************************************
@@ -275,6 +288,51 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
 }
 
 /*************************************************************************
+    Method that handles the UserString XML element.
+*************************************************************************/
+void GUILayout_xmlHandler::elementUserStringStart(const XMLAttributes& attributes)
+{
+    // Get user string name
+    String userStringName(attributes.getValueAsString(UserStringNameAttribute));
+
+    // Get user string value
+    String userStringValue;
+    if (attributes.exists(UserStringValueAttribute))
+    {
+        userStringValue = attributes.getValueAsString(UserStringValueAttribute);
+    }
+
+    // Short user string
+    if (!userStringValue.empty())
+    {
+        d_stringItemName.clear();
+        CEGUI_TRY
+        {
+            // need a window to be able to set properties!
+            if (!d_stack.empty())
+            {
+                // get current window being defined.
+                Window* curwindow = d_stack.back().first;
+
+                curwindow->setUserString(userStringName, userStringValue);
+            }
+        }
+        CEGUI_CATCH (Exception&)
+        {
+            // Don't do anything here, but the error will have been logged.
+        }
+    }
+    // Long user string
+    else
+    {
+        // Store name for later use
+        d_stringItemName = userStringName;
+        // reset the property (user string) value buffer
+        d_stringItemValue.clear();
+    }
+}
+
+/*************************************************************************
     Method that handles the Property XML element.
 *************************************************************************/
 void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
@@ -292,7 +350,7 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
     // Short property 
     if (!propertyValue.empty())
     {
-        d_propertyName.clear();
+        d_stringItemName.clear();
         CEGUI_TRY
         {
             // need a window to be able to set properties!
@@ -324,9 +382,9 @@ void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
     else 
     {
         // Store name for later use 
-        d_propertyName = propertyName;
+        d_stringItemName = propertyName;
         // reset the property value buffer
-        d_propertyValue.clear();
+        d_stringItemValue.clear();
     }
 }
 
@@ -407,12 +465,39 @@ void GUILayout_xmlHandler::elementAutoWindowEnd()
 }
 
 /*************************************************************************
+    Method that handles the closing UserString XML element.
+*************************************************************************/
+void GUILayout_xmlHandler::elementUserStringEnd()
+{
+    // only do something if this is a "long" user string
+    if (d_stringItemName.empty())
+    {
+        return;
+    }
+    CEGUI_TRY
+    {
+        // need a window to be able to set user strings!
+        if (!d_stack.empty())
+        {
+            // get current window being defined.
+            Window* curwindow = d_stack.back().first;
+
+            curwindow->setUserString(d_stringItemName, d_stringItemValue);
+        }
+    }
+    CEGUI_CATCH (Exception&)
+    {
+        // Don't do anything here, but the error will have been logged.
+    }
+}
+
+/*************************************************************************
     Method that handles the closing Property XML element.
 *************************************************************************/
 void GUILayout_xmlHandler::elementPropertyEnd()
 {
     // only do something if this is a "long" property
-    if (d_propertyName.empty())
+    if (d_stringItemName.empty())
     {
         return;
     }
@@ -430,12 +515,12 @@ void GUILayout_xmlHandler::elementPropertyEnd()
             // set the property.
             if (d_propertyCallback)
                 useit = (*d_propertyCallback)(curwindow,
-                                              d_propertyName,
-                                              d_propertyValue,
+                                              d_stringItemName,
+                                              d_stringItemValue,
                                               d_userData);
             // set the property as needed
             if (useit)
-                curwindow->setProperty(d_propertyName, d_propertyValue);
+                curwindow->setProperty(d_stringItemName, d_stringItemValue);
         }
     }
     CEGUI_CATCH (Exception&)

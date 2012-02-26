@@ -53,6 +53,7 @@ struct CEGUIEXPORT Key
 	// enumeration of scan codes.  Customised from table taken from Ogre, which took them from DirectInput...
 	enum Scan
     {
+        Unknown         =0x00,
         Escape          =0x01,
         One             =0x02,
         Two             =0x03,
@@ -238,7 +239,8 @@ enum SystemKey
 	MiddleMouse		= 0x0010,			//!< The middle mouse button.
 	X1Mouse			= 0x0020,			//!< The first 'extra' mouse button
 	X2Mouse			= 0x0040,			//!< The second 'extra' mouse button.
-	Alt				= 0x0080			//!< Either alt key.
+	Alt				= 0x0080,			//!< Either alt key.
+    InvalidSysKey   = 0x8000
 };
 
 

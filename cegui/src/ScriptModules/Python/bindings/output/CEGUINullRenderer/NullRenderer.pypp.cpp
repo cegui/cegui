@@ -426,13 +426,13 @@ void register_NullRenderer_class(){
                 , default_endRendering_function_type(&NullRenderer_wrapper::default_endRendering) );
         
         }
-        { //::CEGUI::NullRenderer::getDefaultRenderingRoot
+        { //::CEGUI::NullRenderer::getDefaultRenderTarget
         
-            typedef ::CEGUI::RenderingRoot & ( ::CEGUI::NullRenderer::*getDefaultRenderingRoot_function_type )(  ) ;
+            typedef ::CEGUI::RenderTarget & ( ::CEGUI::NullRenderer::*getDefaultRenderTarget_function_type )(  ) ;
             
             NullRenderer_exposer.def( 
-                "getDefaultRenderingRoot"
-                , getDefaultRenderingRoot_function_type(&::CEGUI::NullRenderer::getDefaultRenderingRoot)
+                "getDefaultRenderTarget"
+                , getDefaultRenderTarget_function_type(&::CEGUI::NullRenderer::getDefaultRenderTarget)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }

@@ -35,7 +35,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 OpenGL3ViewportTarget::OpenGL3ViewportTarget(OpenGL3Renderer& owner) :
-    OpenGL3RenderTarget(owner)
+    OpenGL3RenderTarget<>(owner)
 {
     // viewport area defaults to whatever the current OpenGL viewport is set to
     GLint vp[4];
@@ -49,7 +49,7 @@ OpenGL3ViewportTarget::OpenGL3ViewportTarget(OpenGL3Renderer& owner) :
 //----------------------------------------------------------------------------//
 OpenGL3ViewportTarget::OpenGL3ViewportTarget(OpenGL3Renderer& owner,
     const Rectf& area) :
-        OpenGL3RenderTarget(owner)
+        OpenGL3RenderTarget<>(owner)
 {
     setArea(area);
 }
@@ -63,3 +63,8 @@ bool OpenGL3ViewportTarget::isImageryCache() const
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+
+//----------------------------------------------------------------------------//
+// Implementation of base class
+#include "./RenderTarget.inl"
+

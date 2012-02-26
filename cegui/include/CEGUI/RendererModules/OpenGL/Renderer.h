@@ -56,7 +56,6 @@
 namespace CEGUI
 {
 class OpenGLTexture;
-class OpenGLTextureTarget;
 class OpenGLGeometryBuffer;
 class OGLTextureTargetFactory;
 
@@ -180,7 +179,7 @@ public:
     static void destroy(OpenGLRenderer& renderer);
 
     // implement Renderer interface
-    RenderingRoot& getDefaultRenderingRoot();
+    RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
@@ -280,7 +279,7 @@ public:
     //! set the render states for the specified BlendMode.
     void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
 
-private:
+protected:
     /*!
     \brief
         Constructor for OpenGL Renderer objects
@@ -330,9 +329,7 @@ private:
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
     Vector2f d_displayDPI;
-    //! The default rendering root object
-    RenderingRoot* d_defaultRoot;
-    //! The default RenderTarget (used by d_defaultRoot)
+    //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
     typedef std::vector<TextureTarget*> TextureTargetList;

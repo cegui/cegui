@@ -91,6 +91,10 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
         CEGUI::Window::bufferGeometry( boost::ref(ctx) );
     }
 
+    bool calculateCurrentHoverState( ::CEGUI::Vector2f const & mouse_pos ){
+        return CEGUI::ButtonBase::calculateCurrentHoverState( boost::ref(mouse_pos) );
+    }
+
     virtual void cleanupChildren(  ){
         if( bp::override func_cleanupChildren = this->get_override( "cleanupChildren" ) )
             func_cleanupChildren(  );
@@ -1551,6 +1555,16 @@ void register_RadioButton_class(){
                 *\n" );
         
         }
+        { //::CEGUI::ButtonBase::calculateCurrentHoverState
+        
+            typedef bool ( RadioButton_wrapper::*calculateCurrentHoverState_function_type )( ::CEGUI::Vector2f const & ) ;
+            
+            RadioButton_exposer.def( 
+                "calculateCurrentHoverState"
+                , calculateCurrentHoverState_function_type( &RadioButton_wrapper::calculateCurrentHoverState )
+                , ( bp::arg("mouse_pos") ) );
+        
+        }
         { //::CEGUI::Window::cleanupChildren
         
             typedef void ( RadioButton_wrapper::*cleanupChildren_function_type )(  ) ;
@@ -1766,6 +1780,16 @@ void register_RadioButton_class(){
                 , getRenderingContext_impl_function_type(&::CEGUI::Window::getRenderingContext_impl)
                 , default_getRenderingContext_impl_function_type(&RadioButton_wrapper::default_getRenderingContext_impl)
                 , ( bp::arg("ctx") ) );
+        
+        }
+        { //::CEGUI::Window::getRootContainerSize
+        
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Window::*getRootContainerSize_function_type )(  ) const;
+            
+            RadioButton_exposer.def( 
+                "getRootContainerSize"
+                , getRootContainerSize_function_type(&::CEGUI::Window::getRootContainerSize)
+                , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
         { //::CEGUI::EventSet::getScriptModule

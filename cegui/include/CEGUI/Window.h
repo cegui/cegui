@@ -6,7 +6,7 @@
     purpose:    Defines abstract base class for Window objects
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -40,6 +40,7 @@
 #include "CEGUI/PropertySet.h"
 #include "CEGUI/TplWindowProperty.h"
 #include "CEGUI/System.h"
+#include "CEGUI/GUIContext.h"
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
 #include "CEGUI/WindowRenderer.h"
@@ -871,7 +872,8 @@ public:
         Pointer to the Window object that currently has inputs captured, or NULL
         if no Window has captured input.
     */
-    static Window* getCaptureWindow(void)   {return d_captureWindow;}
+    Window* getCaptureWindow() const
+        {return getGUIContext().getInputCaptureWindow();}
 
     /*!
     \brief
@@ -1197,7 +1199,7 @@ public:
         Returns true if this Window is the modal target, otherwise false.
     */
     bool getModalState(void) const
-    {return(System::getSingleton().getModalTarget() == this);}
+    {return(getGUIContext().getModalWindow() == this);}
 
     /*!
     \brief
@@ -1845,18 +1847,6 @@ public:
         Nothing.
     */
     void setMouseCursor(const Image* image);
-
-    /*!
-    \brief
-        Set the mouse cursor image to be used when the mouse enters this window.
-
-    \param image
-        One of the MouseCursorImage enumerated values.
-
-    \return
-        Nothing.
-    */
-    void setMouseCursor(MouseCursorImage image);
 
     /*!
     \brief
@@ -2561,10 +2551,22 @@ public:
     //! copies this widget's child widgets to given target widget
     virtual void cloneChildWidgetsTo(Window& target) const;
 
+    //! return the GUIContext this window is associated with.
+    GUIContext& getGUIContext() const;
+    //! function used internally.  Do not call this from client code.
+    void setGUIContext(GUIContext* context);
+
+    //! ensure that the window will be rendered to the correct target surface.
+    void syncTargetSurface();
+
+    // overridden from Element
+    const Sizef& getRootContainerSize() const;
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
     friend class WindowManager;
+    friend class GUIContext;
 
     /*************************************************************************
         Event trigger methods
@@ -3319,7 +3321,7 @@ protected:
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
-
+    
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
@@ -3425,8 +3427,6 @@ protected:
     //! true if the Window inherits alpha from the parent Window
     bool d_inheritsAlpha;
 
-    //! Window that has captured inputs
-    static Window* d_captureWindow;
     //! The Window that previously had capture (used for restoreOldCapture mode)
     Window* d_oldCapture;
     //! Restore capture to the previous capture window when releasing capture.
@@ -3523,6 +3523,8 @@ protected:
     //! specifies whether mouse inputs should be propagated to parent(s)
     bool d_propagateMouseInputs;
 
+    //! GUIContext.  Set when this window is used as a root window.
+    GUIContext* d_guiContext;
 private:
     /*************************************************************************
         May not copy or assign Window objects

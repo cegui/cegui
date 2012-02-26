@@ -108,7 +108,7 @@ void OpenGLGLXPBTextureTarget::activate()
     // is forced to update states for our local context.
     d_owner.setupRenderingBlendMode(BM_INVALID);
 
-    OpenGLRenderTarget::activate();
+    OpenGLTextureTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
@@ -127,7 +127,7 @@ void OpenGLGLXPBTextureTarget::deactivate()
     // is forced to update states for the main / previous context.
     d_owner.setupRenderingBlendMode(BM_INVALID);
 
-    OpenGLRenderTarget::deactivate();
+    OpenGLTextureTarget::deactivate();
 }
 
 //----------------------------------------------------------------------------//

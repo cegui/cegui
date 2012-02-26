@@ -3,7 +3,7 @@
     <Imageset Filename="OgreTray.imageset" />
     <Font Filename="DejaVuSans-10.font" />
     <LookNFeel Filename="OgreTray.looknfeel" />
-    <WindowRendererSet Filename="CEGUIFalagardWRBase" />
+    <WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
 
     <FalagardMapping WindowType="OgreTray/Label"                TargetType="DefaultWindow"          Renderer="Falagard/Default"             LookNFeel="OgreTray/Label" />
     <FalagardMapping WindowType="OgreTray/Button"               TargetType="CEGUI/PushButton"       Renderer="Falagard/Button"              LookNFeel="OgreTray/PushButton" />

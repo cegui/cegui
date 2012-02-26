@@ -35,7 +35,7 @@
 namespace CEGUI
 {
 //! CEGUI::RenderTarget that targets a window, or a part of a window
-class IRR_GUIRENDERER_API IrrlichtWindowTarget : public IrrlichtRenderTarget
+class IRR_GUIRENDERER_API IrrlichtWindowTarget : public IrrlichtRenderTarget<>
 {
 public:
     //! Constructor
