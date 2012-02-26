@@ -204,6 +204,9 @@ private:
     // XML parsing helper functions.
     void elementImagesetStart(const XMLAttributes& attributes);
     void elementImageStart(const XMLAttributes& attributes);
+    //! throw exception if file version is not supported.
+    void validateImagesetFileVersion(const XMLAttributes& attrs);
+
     //! Default resource group specifically for Imagesets.
     static String d_imagesetDefaultResourceGroup;
 

@@ -5,17 +5,17 @@
      we're not quite there yet.
 -->
 
-<GUIScheme Name="VanillaCommonDialogs">
-	<Font Filename="DejaVuSans-10-NoScale.font" />
-	<LookNFeel Filename="VanillaCommonDialogs.looknfeel" />
-    <WindowSet Filename="CEGUICommonDialogs" />
-	<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
-	<FalagardMapping WindowType="Vanilla/VerticalImageSliderThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="Vanilla/VerticalImageSliderThumb" />
-	<FalagardMapping WindowType="Vanilla/VerticalImageSlider" TargetType="CEGUI/Slider" Renderer="Falagard/Slider" LookNFeel="Vanilla/VerticalImageSlider" />
-	<FalagardMapping WindowType="Vanilla/HorizontalImageSliderThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="Vanilla/HorizontalImageSliderThumb" />
-	<FalagardMapping WindowType="Vanilla/HorizontalImageSlider" TargetType="CEGUI/Slider" Renderer="Falagard/Slider" LookNFeel="Vanilla/HorizontalImageSlider" />
-	<FalagardMapping WindowType="Vanilla/FrameColourRect" TargetType="DefaultWindow" Renderer="Falagard/Default" LookNFeel="Vanilla/FrameColourRect" />
-	<FalagardMapping WindowType="Vanilla/ColourPicker" TargetType="CEGUI/ColourPicker" Renderer="Falagard/Default" LookNFeel="Vanilla/ColourPicker" />
-	<FalagardMapping WindowType="Vanilla/ColourPickerControls" TargetType="CEGUI/ColourPickerControls" Renderer="Falagard/Default" LookNFeel="Vanilla/ColourPickerControls" />
+<GUIScheme version="5" name="VanillaCommonDialogs">
+	<Font filename="DejaVuSans-10-NoScale.font" />
+	<LookNFeel filename="VanillaCommonDialogs.looknfeel" />
+    <WindowSet filename="CEGUICommonDialogs" />
+	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
+	<FalagardMapping windowType="Vanilla/VerticalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Falagard/Button"  lookNFeel="Vanilla/VerticalImageSliderThumb" />
+	<FalagardMapping windowType="Vanilla/VerticalImageSlider" targetType="CEGUI/Slider" renderer="Falagard/Slider" lookNFeel="Vanilla/VerticalImageSlider" />
+	<FalagardMapping windowType="Vanilla/HorizontalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Falagard/Button"  lookNFeel="Vanilla/HorizontalImageSliderThumb" />
+	<FalagardMapping windowType="Vanilla/HorizontalImageSlider" targetType="CEGUI/Slider" renderer="Falagard/Slider" lookNFeel="Vanilla/HorizontalImageSlider" />
+	<FalagardMapping windowType="Vanilla/FrameColourRect" targetType="DefaultWindow" renderer="Falagard/Default" lookNFeel="Vanilla/FrameColourRect" />
+	<FalagardMapping windowType="Vanilla/ColourPicker" targetType="CEGUI/ColourPicker" renderer="Falagard/Default" lookNFeel="Vanilla/ColourPicker" />
+	<FalagardMapping windowType="Vanilla/ColourPickerControls" targetType="CEGUI/ColourPickerControls" renderer="Falagard/Default" lookNFeel="Vanilla/ColourPickerControls" />
 </GUIScheme>
 

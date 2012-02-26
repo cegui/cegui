@@ -1,53 +1,53 @@
 <?xml version="1.0" ?>
-<GUIScheme Name="TaharezLook">
-	<Imageset Filename="TaharezLook.imageset" />
-	<Font Filename="DejaVuSans-10.font" />
-	<LookNFeel Filename="TaharezLook.looknfeel" />
-	<WindowRendererSet Filename="CEGUICoreWindowRendererSet" />
+<GUIScheme version="5" name="TaharezLook">
+	<Imageset filename="TaharezLook.imageset" />
+	<Font filename="DejaVuSans-10.font" />
+	<LookNFeel filename="TaharezLook.looknfeel" />
+	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 
-	<FalagardMapping WindowType="TaharezLook/Label"       TargetType="DefaultWindow"     Renderer="Falagard/Default"      LookNFeel="TaharezLook/Label" />
-	<FalagardMapping WindowType="TaharezLook/Button"      TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/Button" />
-	<FalagardMapping WindowType="TaharezLook/Checkbox"    TargetType="CEGUI/Checkbox"    Renderer="Falagard/ToggleButton" LookNFeel="TaharezLook/Checkbox" />
-	<FalagardMapping WindowType="TaharezLook/ImageButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button"       LookNFeel="TaharezLook/ImageButton" />
-	<FalagardMapping WindowType="TaharezLook/RadioButton" TargetType="CEGUI/RadioButton" Renderer="Falagard/ToggleButton" LookNFeel="TaharezLook/RadioButton" />
-	<FalagardMapping WindowType="TaharezLook/FrameWindow"  TargetType="CEGUI/FrameWindow" Renderer="Falagard/FrameWindow"  LookNFeel="TaharezLook/FrameWindow" />
-	<FalagardMapping WindowType="TaharezLook/Titlebar"     TargetType="CEGUI/Titlebar"    Renderer="Falagard/Titlebar"     LookNFeel="TaharezLook/Titlebar" />
-	<FalagardMapping WindowType="TaharezLook/SystemButton" TargetType="CEGUI/PushButton"  Renderer="Falagard/Button" LookNFeel="TaharezLook/Button" />
-	<FalagardMapping WindowType="TaharezLook/Editbox"          TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"          LookNFeel="TaharezLook/Editbox" />
-	<FalagardMapping WindowType="TaharezLook/MultiLineEditbox" TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox" LookNFeel="TaharezLook/MultiLineEditbox" />
-	<FalagardMapping WindowType="TaharezLook/Menubar"   TargetType="CEGUI/Menubar"   Renderer="Falagard/Menubar"   LookNFeel="TaharezLook/Menubar" />
-	<FalagardMapping WindowType="TaharezLook/PopupMenu" TargetType="CEGUI/PopupMenu" Renderer="Falagard/PopupMenu" LookNFeel="TaharezLook/PopupMenu" />
-	<FalagardMapping WindowType="TaharezLook/MenuItem"  TargetType="CEGUI/MenuItem"  Renderer="Falagard/MenuItem"  LookNFeel="TaharezLook/MenuItem" />
-	<FalagardMapping WindowType="TaharezLook/AlternateProgressBar" TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="TaharezLook/AltProgressBar" />
-	<FalagardMapping WindowType="TaharezLook/ProgressBar"          TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="TaharezLook/ProgressBar" />
-	<FalagardMapping WindowType="TaharezLook/VUMeter"              TargetType="CEGUI/ProgressBar" Renderer="Falagard/ProgressBar" LookNFeel="TaharezLook/VUMeter" />
-	<FalagardMapping WindowType="TaharezLook/VerticalScrollbar"   TargetType="CEGUI/Scrollbar" Renderer="Falagard/Scrollbar" LookNFeel="TaharezLook/VerticalScrollbar" />
-	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbar" TargetType="CEGUI/Scrollbar" Renderer="Falagard/Scrollbar" LookNFeel="TaharezLook/HorizontalScrollbar" />
-	<FalagardMapping WindowType="TaharezLook/VerticalScrollbarThumb"   TargetType="CEGUI/Thumb" Renderer="Falagard/Button" LookNFeel="TaharezLook/VerticalScrollbarThumb" />
-	<FalagardMapping WindowType="TaharezLook/HorizontalScrollbarThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button" LookNFeel="TaharezLook/HorizontalScrollbarThumb" />
-	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbar"      TargetType="CEGUI/Scrollbar" Renderer="Falagard/Scrollbar" LookNFeel="TaharezLook/LargeVerticalScrollbar" />
-	<FalagardMapping WindowType="TaharezLook/LargeVerticalScrollbarThumb" TargetType="CEGUI/Thumb"     Renderer="Falagard/Button"    LookNFeel="TaharezLook/LargeVerticalScrollbarThumb" />
-	<FalagardMapping WindowType="TaharezLook/TabButton"  TargetType="CEGUI/TabButton"  Renderer="Falagard/TabButton"  LookNFeel="TaharezLook/TabButton" />
-	<FalagardMapping WindowType="TaharezLook/TabControl" TargetType="CEGUI/TabControl" Renderer="Falagard/TabControl" LookNFeel="TaharezLook/TabControl" />
-	<FalagardMapping WindowType="TaharezLook/TabContentPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="TaharezLook/TabContentPane" />
-	<FalagardMapping WindowType="TaharezLook/TabButtonPane"    TargetType="DefaultWindow"    Renderer="Falagard/Default"    LookNFeel="TaharezLook/TabButtonPane" />
-	<FalagardMapping WindowType="TaharezLook/ComboDropList" TargetType="CEGUI/ComboDropList" Renderer="Falagard/Listbox" LookNFeel="TaharezLook/ComboDropList" />
-	<FalagardMapping WindowType="TaharezLook/ComboEditbox"  TargetType="CEGUI/Editbox"	 Renderer="Falagard/Editbox" LookNFeel="TaharezLook/ComboEditbox" />
-	<FalagardMapping WindowType="TaharezLook/Combobox"	TargetType="CEGUI/Combobox"	 Renderer="Falagard/Default" LookNFeel="TaharezLook/Combobox" />
-	<FalagardMapping WindowType="TaharezLook/Listbox"           TargetType="CEGUI/Listbox"           Renderer="Falagard/Listbox"           LookNFeel="TaharezLook/Listbox" />
-	<FalagardMapping WindowType="TaharezLook/ListHeader"        TargetType="CEGUI/ListHeader"        Renderer="Falagard/ListHeader"        LookNFeel="TaharezLook/ListHeader" />
-	<FalagardMapping WindowType="TaharezLook/ListHeaderSegment" TargetType="CEGUI/ListHeaderSegment" Renderer="Falagard/ListHeaderSegment" LookNFeel="TaharezLook/ListHeaderSegment" />
-	<FalagardMapping WindowType="TaharezLook/MultiColumnList"   TargetType="CEGUI/MultiColumnList"   Renderer="Falagard/MultiColumnList"   LookNFeel="TaharezLook/MultiColumnList" />
-	<FalagardMapping WindowType="TaharezLook/Slider"      TargetType="CEGUI/Slider"      Renderer="Falagard/Slider"  LookNFeel="TaharezLook/Slider" />
-	<FalagardMapping WindowType="TaharezLook/SliderThumb" TargetType="CEGUI/Thumb" Renderer="Falagard/Button"  LookNFeel="TaharezLook/SliderThumb" />
-	<FalagardMapping WindowType="TaharezLook/ScrollablePane" TargetType="CEGUI/ScrollablePane" Renderer="Falagard/ScrollablePane" LookNFeel="TaharezLook/ScrollablePane" />
-	<FalagardMapping WindowType="TaharezLook/Spinner" TargetType="CEGUI/Spinner" Renderer="Falagard/Default" LookNFeel="TaharezLook/Spinner" />
-	<FalagardMapping WindowType="TaharezLook/Tooltip" TargetType="CEGUI/Tooltip" Renderer="Falagard/Tooltip" LookNFeel="TaharezLook/Tooltip" />
-	<FalagardMapping WindowType="TaharezLook/StaticImage" TargetType="DefaultWindow" Renderer="Falagard/StaticImage" LookNFeel="TaharezLook/StaticImage" />
-	<FalagardMapping WindowType="TaharezLook/StaticText"  TargetType="DefaultWindow" Renderer="Falagard/StaticText"  LookNFeel="TaharezLook/StaticText" />
-	<FalagardMapping WindowType="TaharezLook/ItemListbox" TargetType="CEGUI/ItemListbox" Renderer="Falagard/ItemListbox" LookNFeel="TaharezLook/ItemListbox" />
-	<FalagardMapping WindowType="TaharezLook/ListboxItem" TargetType="CEGUI/ItemEntry"   Renderer="Falagard/ItemEntry"   LookNFeel="TaharezLook/ListboxItem" />
-	<FalagardMapping WindowType="TaharezLook/GroupBox" TargetType="CEGUI/GroupBox"   Renderer="Falagard/Default"   LookNFeel="TaharezLook/GroupBox" />
-      <FalagardMapping WindowType="TaharezLook/Tree" TargetType="CEGUI/Tree"   Renderer="Falagard/Tree"   LookNFeel="TaharezLook/Tree" />
+	<FalagardMapping windowType="TaharezLook/Label"       targetType="DefaultWindow"     renderer="Falagard/Default"      lookNFeel="TaharezLook/Label" />
+	<FalagardMapping windowType="TaharezLook/Button"      targetType="CEGUI/PushButton"  renderer="Falagard/Button"       lookNFeel="TaharezLook/Button" />
+	<FalagardMapping windowType="TaharezLook/Checkbox"    targetType="CEGUI/Checkbox"    renderer="Falagard/ToggleButton" lookNFeel="TaharezLook/Checkbox" />
+	<FalagardMapping windowType="TaharezLook/ImageButton" targetType="CEGUI/PushButton"  renderer="Falagard/Button"       lookNFeel="TaharezLook/ImageButton" />
+	<FalagardMapping windowType="TaharezLook/RadioButton" targetType="CEGUI/RadioButton" renderer="Falagard/ToggleButton" lookNFeel="TaharezLook/RadioButton" />
+	<FalagardMapping windowType="TaharezLook/FrameWindow"  targetType="CEGUI/FrameWindow" renderer="Falagard/FrameWindow"  lookNFeel="TaharezLook/FrameWindow" />
+	<FalagardMapping windowType="TaharezLook/Titlebar"     targetType="CEGUI/Titlebar"    renderer="Falagard/Titlebar"     lookNFeel="TaharezLook/Titlebar" />
+	<FalagardMapping windowType="TaharezLook/SystemButton" targetType="CEGUI/PushButton"  renderer="Falagard/Button" lookNFeel="TaharezLook/Button" />
+	<FalagardMapping windowType="TaharezLook/Editbox"          targetType="CEGUI/Editbox"          renderer="Falagard/Editbox"          lookNFeel="TaharezLook/Editbox" />
+	<FalagardMapping windowType="TaharezLook/MultiLineEditbox" targetType="CEGUI/MultiLineEditbox" renderer="Falagard/MultiLineEditbox" lookNFeel="TaharezLook/MultiLineEditbox" />
+	<FalagardMapping windowType="TaharezLook/Menubar"   targetType="CEGUI/Menubar"   renderer="Falagard/Menubar"   lookNFeel="TaharezLook/Menubar" />
+	<FalagardMapping windowType="TaharezLook/PopupMenu" targetType="CEGUI/PopupMenu" renderer="Falagard/PopupMenu" lookNFeel="TaharezLook/PopupMenu" />
+	<FalagardMapping windowType="TaharezLook/MenuItem"  targetType="CEGUI/MenuItem"  renderer="Falagard/MenuItem"  lookNFeel="TaharezLook/MenuItem" />
+	<FalagardMapping windowType="TaharezLook/AlternateProgressBar" targetType="CEGUI/ProgressBar" renderer="Falagard/ProgressBar" lookNFeel="TaharezLook/AltProgressBar" />
+	<FalagardMapping windowType="TaharezLook/ProgressBar"          targetType="CEGUI/ProgressBar" renderer="Falagard/ProgressBar" lookNFeel="TaharezLook/ProgressBar" />
+	<FalagardMapping windowType="TaharezLook/VUMeter"              targetType="CEGUI/ProgressBar" renderer="Falagard/ProgressBar" lookNFeel="TaharezLook/VUMeter" />
+	<FalagardMapping windowType="TaharezLook/VerticalScrollbar"   targetType="CEGUI/Scrollbar" renderer="Falagard/Scrollbar" lookNFeel="TaharezLook/VerticalScrollbar" />
+	<FalagardMapping windowType="TaharezLook/HorizontalScrollbar" targetType="CEGUI/Scrollbar" renderer="Falagard/Scrollbar" lookNFeel="TaharezLook/HorizontalScrollbar" />
+	<FalagardMapping windowType="TaharezLook/VerticalScrollbarThumb"   targetType="CEGUI/Thumb" renderer="Falagard/Button" lookNFeel="TaharezLook/VerticalScrollbarThumb" />
+	<FalagardMapping windowType="TaharezLook/HorizontalScrollbarThumb" targetType="CEGUI/Thumb" renderer="Falagard/Button" lookNFeel="TaharezLook/HorizontalScrollbarThumb" />
+	<FalagardMapping windowType="TaharezLook/LargeVerticalScrollbar"      targetType="CEGUI/Scrollbar" renderer="Falagard/Scrollbar" lookNFeel="TaharezLook/LargeVerticalScrollbar" />
+	<FalagardMapping windowType="TaharezLook/LargeVerticalScrollbarThumb" targetType="CEGUI/Thumb"     renderer="Falagard/Button"    lookNFeel="TaharezLook/LargeVerticalScrollbarThumb" />
+	<FalagardMapping windowType="TaharezLook/TabButton"  targetType="CEGUI/TabButton"  renderer="Falagard/TabButton"  lookNFeel="TaharezLook/TabButton" />
+	<FalagardMapping windowType="TaharezLook/TabControl" targetType="CEGUI/TabControl" renderer="Falagard/TabControl" lookNFeel="TaharezLook/TabControl" />
+	<FalagardMapping windowType="TaharezLook/TabContentPane"    targetType="DefaultWindow"    renderer="Falagard/Default"    lookNFeel="TaharezLook/TabContentPane" />
+	<FalagardMapping windowType="TaharezLook/TabButtonPane"    targetType="DefaultWindow"    renderer="Falagard/Default"    lookNFeel="TaharezLook/TabButtonPane" />
+	<FalagardMapping windowType="TaharezLook/ComboDropList" targetType="CEGUI/ComboDropList" renderer="Falagard/Listbox" lookNFeel="TaharezLook/ComboDropList" />
+	<FalagardMapping windowType="TaharezLook/ComboEditbox"  targetType="CEGUI/Editbox"	 renderer="Falagard/Editbox" lookNFeel="TaharezLook/ComboEditbox" />
+	<FalagardMapping windowType="TaharezLook/Combobox" targetType="CEGUI/Combobox"	 renderer="Falagard/Default" lookNFeel="TaharezLook/Combobox" />
+	<FalagardMapping windowType="TaharezLook/Listbox"           targetType="CEGUI/Listbox"           renderer="Falagard/Listbox"           lookNFeel="TaharezLook/Listbox" />
+	<FalagardMapping windowType="TaharezLook/ListHeader"        targetType="CEGUI/ListHeader"        renderer="Falagard/ListHeader"        lookNFeel="TaharezLook/ListHeader" />
+	<FalagardMapping windowType="TaharezLook/ListHeaderSegment" targetType="CEGUI/ListHeaderSegment" renderer="Falagard/ListHeaderSegment" lookNFeel="TaharezLook/ListHeaderSegment" />
+	<FalagardMapping windowType="TaharezLook/MultiColumnList"   targetType="CEGUI/MultiColumnList"   renderer="Falagard/MultiColumnList"   lookNFeel="TaharezLook/MultiColumnList" />
+	<FalagardMapping windowType="TaharezLook/Slider"      targetType="CEGUI/Slider"      renderer="Falagard/Slider"  lookNFeel="TaharezLook/Slider" />
+	<FalagardMapping windowType="TaharezLook/SliderThumb" targetType="CEGUI/Thumb" renderer="Falagard/Button"  lookNFeel="TaharezLook/SliderThumb" />
+	<FalagardMapping windowType="TaharezLook/ScrollablePane" targetType="CEGUI/ScrollablePane" renderer="Falagard/ScrollablePane" lookNFeel="TaharezLook/ScrollablePane" />
+	<FalagardMapping windowType="TaharezLook/Spinner" targetType="CEGUI/Spinner" renderer="Falagard/Default" lookNFeel="TaharezLook/Spinner" />
+	<FalagardMapping windowType="TaharezLook/Tooltip" targetType="CEGUI/Tooltip" renderer="Falagard/Tooltip" lookNFeel="TaharezLook/Tooltip" />
+	<FalagardMapping windowType="TaharezLook/StaticImage" targetType="DefaultWindow" renderer="Falagard/StaticImage" lookNFeel="TaharezLook/StaticImage" />
+	<FalagardMapping windowType="TaharezLook/StaticText"  targetType="DefaultWindow" renderer="Falagard/StaticText"  lookNFeel="TaharezLook/StaticText" />
+	<FalagardMapping windowType="TaharezLook/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Falagard/ItemListbox" lookNFeel="TaharezLook/ItemListbox" />
+	<FalagardMapping windowType="TaharezLook/ListboxItem" targetType="CEGUI/ItemEntry"   renderer="Falagard/ItemEntry"   lookNFeel="TaharezLook/ListboxItem" />
+	<FalagardMapping windowType="TaharezLook/GroupBox" targetType="CEGUI/GroupBox"   renderer="Falagard/Default"   lookNFeel="TaharezLook/GroupBox" />
+      <FalagardMapping windowType="TaharezLook/Tree" targetType="CEGUI/Tree"   renderer="Falagard/Tree"   lookNFeel="TaharezLook/Tree" />
 </GUIScheme>
 

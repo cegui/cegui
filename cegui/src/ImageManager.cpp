@@ -67,15 +67,26 @@ public:
 const String ImagesetSchemaName("Imageset.xsd");
 const String ImagesetElement( "Imageset" );
 const String ImageElement( "Image" );
-const String ImagesetImageFileAttribute( "Imagefile" );
-const String ImagesetResourceGroupAttribute( "ResourceGroup" );
-const String ImagesetNameAttribute( "Name" );
-const String ImagesetNativeHorzResAttribute( "NativeHorzRes" );
-const String ImagesetNativeVertResAttribute( "NativeVertRes" );
-const String ImagesetAutoScaledAttribute( "AutoScaled" );
-const String ImageTextureAttribute( "Texture" );
-const String ImageTypeAttribute( "Type" );
-const String ImageNameAttribute( "Name" );
+const String ImagesetImageFileAttribute( "imagefile" );
+const String ImagesetResourceGroupAttribute( "resourceGroup" );
+const String ImagesetNameAttribute( "name" );
+const String ImagesetNativeHorzResAttribute( "nativeHorzRes" );
+const String ImagesetNativeVertResAttribute( "nativeVertRes" );
+const String ImagesetAutoScaledAttribute( "autoScaled" );
+const String ImageTextureAttribute( "texture" );
+const String ImageTypeAttribute( "type" );
+const String ImageNameAttribute( "name" );
+const String ImagesetVersionAttribute( "version" );
+
+//----------------------------------------------------------------------------//
+// note: The assets' versions aren't usually the same as CEGUI version, they
+// are versioned from version 1 onwards!
+//
+// previous versions (though not specified in files until 2)
+// 1 - CEGUI up to and including 0.7.x
+// 2 - CEGUI version 1.x.x (Custom Image support,
+//                          changed case of attr names, added version support)
+const String NativeVersion( "2" );
 
 //----------------------------------------------------------------------------//
 // Internal variables used when parsing XML
@@ -361,6 +372,8 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
     logger.logEvent("[ImageManager] ---- Source texture resource group: " +
                     (resource_group.empty() ? "(Default)" : resource_group));
 
+    validateImagesetFileVersion(attributes);
+
     // create texture from image
     s_texture = &System::getSingleton().getRenderer()->
         createTexture(name, filename,
@@ -374,6 +387,23 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
     // set auto-scaling as needed
     s_autoscaled =
         attributes.getValueAsBool(ImagesetAutoScaledAttribute, false);
+}
+
+//----------------------------------------------------------------------------//
+void ImageManager::validateImagesetFileVersion(const XMLAttributes& attrs)
+{
+    const String version(attrs.getValueAsString(ImagesetVersionAttribute,
+                                                "unknown"));
+
+    if (version == NativeVersion)
+        return;
+
+    CEGUI_THROW(InvalidRequestException(
+        "ImageManager::validateImagesetFileVersion - You are attempting to "
+        "load an imageset of version '" + version + "' but this CEGUI version "
+        "is only meant to load imagesets of version '" + NativeVersion + "'. "
+        "Consider using the migrate.py script bundled with CEGUI Unified "
+        "Editor to migrate your data."));
 }
 
 //----------------------------------------------------------------------------//

@@ -101,6 +101,8 @@ private:
     static const String WindowRendererAttribute;
     //! Attribute specifying the name of a registered RenderEffect.
     static const String RenderEffectAttribute;
+    //! Attribute specifying the datafile version.
+    static const String SchemeVersionAttribute;
 
     //! Function that handles the opening GUIScheme XML element.
     void elementGUISchemeStart(const XMLAttributes& attributes);
@@ -126,6 +128,9 @@ private:
     void elementLookNFeelStart(const XMLAttributes& attributes);
     //! Function that handles the closing GUIScheme XML element.
     void elementGUISchemeEnd();
+
+    //! throw exception if file version is not supported.
+    void validateSchemeFileVersion(const XMLAttributes& attrs);
 
     //! Scheme object that we are constructing
     Scheme* d_scheme;

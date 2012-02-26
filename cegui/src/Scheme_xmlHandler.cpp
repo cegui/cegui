@@ -46,18 +46,31 @@ const String Scheme_xmlHandler::WindowFactoryElement("WindowFactory");
 const String Scheme_xmlHandler::WindowAliasElement("WindowAlias");
 const String Scheme_xmlHandler::FalagardMappingElement("FalagardMapping");
 const String Scheme_xmlHandler::LookNFeelElement("LookNFeel");
-const String Scheme_xmlHandler::NameAttribute("Name");
-const String Scheme_xmlHandler::FilenameAttribute("Filename");
-const String Scheme_xmlHandler::AliasAttribute("Alias");
-const String Scheme_xmlHandler::TargetAttribute("Target");
-const String Scheme_xmlHandler::ResourceGroupAttribute("ResourceGroup");
-const String Scheme_xmlHandler::WindowTypeAttribute("WindowType");
-const String Scheme_xmlHandler::TargetTypeAttribute("TargetType");
-const String Scheme_xmlHandler::LookNFeelAttribute("LookNFeel");
 const String Scheme_xmlHandler::WindowRendererSetElement("WindowRendererSet");
 const String Scheme_xmlHandler::WindowRendererFactoryElement("WindowRendererFactory");
-const String Scheme_xmlHandler::WindowRendererAttribute("Renderer");
-const String Scheme_xmlHandler::RenderEffectAttribute("RenderEffect");
+const String Scheme_xmlHandler::NameAttribute("name");
+const String Scheme_xmlHandler::FilenameAttribute("filename");
+const String Scheme_xmlHandler::AliasAttribute("alias");
+const String Scheme_xmlHandler::TargetAttribute("target");
+const String Scheme_xmlHandler::ResourceGroupAttribute("resourceGroup");
+const String Scheme_xmlHandler::WindowTypeAttribute("windowType");
+const String Scheme_xmlHandler::TargetTypeAttribute("targetType");
+const String Scheme_xmlHandler::LookNFeelAttribute("lookNFeel");
+const String Scheme_xmlHandler::WindowRendererAttribute("renderer");
+const String Scheme_xmlHandler::RenderEffectAttribute("renderEffect");
+const String Scheme_xmlHandler::SchemeVersionAttribute( "version" );
+
+//----------------------------------------------------------------------------//
+// note: The assets' versions aren't usually the same as CEGUI version, they
+// are versioned from version 1 onwards!
+//
+// previous versions (though not specified in files until 5)
+// 1 - CEGUI up to and including 0.3.x
+// 2 - CEGUI version 0.4.x (added initial falagard support)
+// 3 - CEGUI version 0.5.x and 0.6.x (added window renderer support)
+// 4 - CEGUI version 0.7.x (RenderEffect support, relax need to specify font/imageset names)
+// 5 - CEGUI version 1.x.x (changed case of attr names, added version support)
+const String NativeVersion( "5" );
 
 //----------------------------------------------------------------------------//
 Scheme_xmlHandler::Scheme_xmlHandler():
@@ -152,8 +165,28 @@ void Scheme_xmlHandler::elementGUISchemeStart(const XMLAttributes& attributes)
     logger.logEvent("Started creation of Scheme from XML specification:");
     logger.logEvent("---- CEGUI GUIScheme name: " + name);
 
+    validateSchemeFileVersion(attributes);
+
     // create empty scheme with desired name
     d_scheme = CEGUI_NEW_AO Scheme(name);
+}
+
+//----------------------------------------------------------------------------//
+void Scheme_xmlHandler::validateSchemeFileVersion(const XMLAttributes& attrs)
+{
+    const String version(attrs.getValueAsString(SchemeVersionAttribute,
+                                                "unknown"));
+
+    if (version == NativeVersion)
+        return;
+
+    CEGUI_THROW(InvalidRequestException(
+        "Scheme_xmlHandler::validateImagesetFileVersion - You are attempting "
+        "to load a GUI scheme of version '" + version + "' but this CEGUI "
+        "version is only meant to load GUI schemes of version '" +
+        NativeVersion + "'. "
+        "Consider using the migrate.py script bundled with CEGUI Unified "
+        "Editor to migrate your data."));
 }
 
 //----------------------------------------------------------------------------//

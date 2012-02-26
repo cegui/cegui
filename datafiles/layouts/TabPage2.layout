@@ -1,38 +1,38 @@
 <?xml version="1.0" ?>
 <GUILayout version="4">
-    <Window Name="Page2" Type="DefaultWindow">
-        <Property Name="Text" Value="Page two" />
-        <Window Name="Button1" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Push me" />
-            <Property Name="Area" Value="{{0.2,0},{0.1,0},{0.8,0},{0.2,0}}" />
+    <Window name="Page2" type="DefaultWindow">
+        <Property name="Text" value="Page two" />
+        <Window name="Button1" type="TaharezLook/Button">
+            <Property name="Text" value="Push me" />
+            <Property name="Area" value="{{0.2,0},{0.1,0},{0.8,0},{0.2,0}}" />
         </Window>
-        <Window Name="Button2" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Press me" />
-            <Property Name="Area" Value="{{0.2,0},{0.2,0},{0.8,0},{0.3,0}}" />
+        <Window name="Button2" type="TaharezLook/Button">
+            <Property name="Text" value="Press me" />
+            <Property name="Area" value="{{0.2,0},{0.2,0},{0.8,0},{0.3,0}}" />
         </Window>
-        <Window Name="Button3" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Kick me" />
-            <Property Name="Area" Value="{{0.2,0},{0.3,0},{0.8,0},{0.4,0}}" />
+        <Window name="Button3" type="TaharezLook/Button">
+            <Property name="Text" value="Kick me" />
+            <Property name="Area" value="{{0.2,0},{0.3,0},{0.8,0},{0.4,0}}" />
         </Window>
-        <Window Name="Button4" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Break me" />
-            <Property Name="Area" Value="{{0.2,0},{0.4,0},{0.8,0},{0.5,0}}" />
+        <Window name="Button4" type="TaharezLook/Button">
+            <Property name="Text" value="Break me" />
+            <Property name="Area" value="{{0.2,0},{0.4,0},{0.8,0},{0.5,0}}" />
         </Window>
-        <Window Name="Button5" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Catch me" />
-            <Property Name="Area" Value="{{0.2,0},{0.5,0},{0.8,0},{0.6,0}}" />
+        <Window name="Button5" type="TaharezLook/Button">
+            <Property name="Text" value="Catch me" />
+            <Property name="Area" value="{{0.2,0},{0.5,0},{0.8,0},{0.6,0}}" />
         </Window>
-        <Window Name="Button6" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Kiss me" />
-            <Property Name="Area" Value="{{0.2,0},{0.6,0},{0.8,0},{0.7,0}}" />
+        <Window name="Button6" type="TaharezLook/Button">
+            <Property name="Text" value="Kiss me" />
+            <Property name="Area" value="{{0.2,0},{0.6,0},{0.8,0},{0.7,0}}" />
         </Window>
-        <Window Name="Button7" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Lick me" />
-            <Property Name="Area" Value="{{0.2,0},{0.7,0},{0.8,0},{0.8,0}}" />
+        <Window name="Button7" type="TaharezLook/Button">
+            <Property name="Text" value="Lick me" />
+            <Property name="Area" value="{{0.2,0},{0.7,0},{0.8,0},{0.8,0}}" />
         </Window>
-        <Window Name="Button8" Type="TaharezLook/Button">
-            <Property Name="Text" Value="Spit me" />
-            <Property Name="Area" Value="{{0.2,0},{0.8,0},{0.8,0},{0.9,0}}" />
+        <Window name="Button8" type="TaharezLook/Button">
+            <Property name="Text" value="Spit me" />
+            <Property name="Area" value="{{0.2,0},{0.8,0},{0.8,0},{0.9,0}}" />
         </Window>
     </Window>
 </GUILayout>

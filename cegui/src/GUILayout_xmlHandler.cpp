@@ -50,17 +50,17 @@ const String GUILayout_xmlHandler::UserStringElement( "UserString" );
 const String GUILayout_xmlHandler::PropertyElement( "Property" );
 const String GUILayout_xmlHandler::LayoutImportElement( "LayoutImport" );
 const String GUILayout_xmlHandler::EventElement( "Event" );
-const String GUILayout_xmlHandler::WindowTypeAttribute( "Type" );
-const String GUILayout_xmlHandler::WindowNameAttribute( "Name" );
-const String GUILayout_xmlHandler::AutoWindowNamePathAttribute( "NamePath" );
-const String GUILayout_xmlHandler::UserStringNameAttribute( "Name" );
-const String GUILayout_xmlHandler::UserStringValueAttribute( "Value" );
-const String GUILayout_xmlHandler::PropertyNameAttribute( "Name" );
-const String GUILayout_xmlHandler::PropertyValueAttribute( "Value" );
-const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "Filename" );
-const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "ResourceGroup" );
-const String GUILayout_xmlHandler::EventNameAttribute( "Name" );
-const String GUILayout_xmlHandler::EventFunctionAttribute( "Function" );
+const String GUILayout_xmlHandler::WindowTypeAttribute( "type" );
+const String GUILayout_xmlHandler::WindowNameAttribute( "name" );
+const String GUILayout_xmlHandler::AutoWindowNamePathAttribute( "namePath" );
+const String GUILayout_xmlHandler::UserStringNameAttribute( "name" );
+const String GUILayout_xmlHandler::UserStringValueAttribute( "value" );
+const String GUILayout_xmlHandler::PropertyNameAttribute( "name" );
+const String GUILayout_xmlHandler::PropertyValueAttribute( "value" );
+const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "filename" );
+const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "resourceGroup" );
+const String GUILayout_xmlHandler::EventNameAttribute( "name" );
+const String GUILayout_xmlHandler::EventFunctionAttribute( "function" );
 
 const String& GUILayout_xmlHandler::getSchemaName() const
 {
