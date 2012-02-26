@@ -286,7 +286,7 @@ public:
     \return
     Attribute location of the position variable in the standard shader
     */
-    const GLint getShaderStandardPositionLoc();
+    GLint getShaderStandardPositionLoc();
 
 
     /*!
@@ -296,7 +296,7 @@ public:
     \return
     Attribute location of the texture coordinate variable in the standard shader
     */
-    const GLint getShaderStandardTexCoordLoc();
+    GLint getShaderStandardTexCoordLoc();
 
 
     /*!
@@ -306,7 +306,7 @@ public:
     \return
     Attribute location of the colour variable in the standard shader
     */
-    const GLint getShaderStandardColourLoc();
+    GLint getShaderStandardColourLoc();
 
 
     /*!
@@ -316,7 +316,7 @@ public:
     \return
     Uniform location of the matrix variable in the standard shader
     */
-    const GLint getShaderStandardMatrixUniformLoc();
+    GLint getShaderStandardMatrixUniformLoc();
 
 
     /*!

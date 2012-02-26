@@ -70,8 +70,6 @@ public:
     void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
     void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-
-    void updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count);
     void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
@@ -82,6 +80,8 @@ public:
 
     //! return the GL modelview matrix used for this buffer.
     const mat4Pimpl* getMatrix() const;
+
+    void updateOpenGLBuffers();
 
 protected:
     //! perform batch management operations prior to adding new geometry.
