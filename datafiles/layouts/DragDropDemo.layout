@@ -1,95 +1,95 @@
 <?xml version="1.0" ?>
 <GUILayout version="4">
-    <Window Name="Root" Type="DefaultWindow">
+    <Window name="Root" type="DefaultWindow">
 
-        <Window Name="MainWindow" Type="WindowsLook/FrameWindow">
-            <Property Name="Area" Value="{{0.25,0},{0.25,0},{0.75,0},{0.75,0}" />
-            <Property Name="Text" Value="Drag and Drop Demo" />
-            <Property Name="RollUpEnabled" Value="False" />
-            <Property Name="SizingEnabled" Value="False" />
+        <Window name="MainWindow" type="WindowsLook/FrameWindow">
+            <Property name="Area" value="{{0.25,0},{0.25,0},{0.75,0},{0.75,0}" />
+            <Property name="Text" value="Drag and Drop Demo" />
+            <Property name="RollUpEnabled" value="False" />
+            <Property name="SizingEnabled" value="False" />
 
-            <Window Name="Slot1" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.05,0},{0.05,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot1" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.05,0},{0.05,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
 
-                <Window Name="DragContainer1" Type="DragContainer">
-                    <Property Name="Area" Value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
+                <Window name="DragContainer1" type="DragContainer">
+                    <Property name="Area" value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
 
-                    <Window Name="Image" Type="WindowsLook/StaticImage">
-                        <Property Name="Area" Value="{{0,0},{0,0},{1,0},{1,0}" />
-                        <Property Name="Image" Value="DriveIcons/Lime" />
-                        <Property Name="MousePassThroughEnabled" Value="True" />
+                    <Window name="Image" type="WindowsLook/StaticImage">
+                        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}" />
+                        <Property name="Image" value="DriveIcons/Lime" />
+                        <Property name="MousePassThroughEnabled" value="True" />
                     </Window>
 
                 </Window>
 
             </Window>
 
-            <Window Name="Slot2" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.283,0},{0.05,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot2" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.283,0},{0.05,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot3" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.516,0},{0.05,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot3" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.516,0},{0.05,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot4" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.749,0},{0.05,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot4" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.749,0},{0.05,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot5" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.05,0},{0.37,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot5" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.05,0},{0.37,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot6" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.283,0},{0.37,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot6" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.283,0},{0.37,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
 
-                <Window Name="DragContainer2" Type="DragContainer">
-                    <Property Name="Area" Value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
+                <Window name="DragContainer2" type="DragContainer">
+                    <Property name="Area" value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
 
-                    <Window Name="Image" Type="WindowsLook/StaticImage">
-                        <Property Name="Area" Value="{{0,0},{0,0},{1,0},{1,0}" />
-                        <Property Name="Image" Value="DriveIcons/GlobalDrive" />
-                        <Property Name="MousePassThroughEnabled" Value="True" />
+                    <Window name="Image" type="WindowsLook/StaticImage">
+                        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}" />
+                        <Property name="Image" value="DriveIcons/GlobalDrive" />
+                        <Property name="MousePassThroughEnabled" value="True" />
                     </Window>
 
                 </Window>
 
             </Window>
 
-            <Window Name="Slot7" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.516,0},{0.37,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot7" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.516,0},{0.37,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot8" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.749,0},{0.37,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot8" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.749,0},{0.37,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot9" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.05,0},{0.69,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot9" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.05,0},{0.69,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot10" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.283,0},{0.69,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot10" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.283,0},{0.69,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot11" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.516,0},{0.69,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot11" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.516,0},{0.69,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
-            <Window Name="Slot12" Type="WindowsLook/Static">
-                <Property Name="Position" Value="{{0.749,0},{0.69,0}}" />
-                <Property Name="Size" Value="{{0.2,0},{0.26,0}}" />
+            <Window name="Slot12" type="WindowsLook/Static">
+                <Property name="Position" value="{{0.749,0},{0.69,0}}" />
+                <Property name="Size" value="{{0.2,0},{0.26,0}}" />
             </Window>
 
         </Window>

@@ -1,40 +1,40 @@
 <?xml version="1.0" ?>
 <GUILayout version="4">
-    <Window Name="Console" Type="Vanilla/FrameWindow">
-        <Property Name="AlwaysOnTop" Value="True" />
-        <Property Name="MinSize" Value="{{0.2,0},{0.2,0}}" />
-        <Property Name="MaxSize" Value="{{0.8,0},{0.8,0}}" />
-        <Property Name="Position" Value="{{0.5,0},{0.5,0}}" />
-        <Property Name="Size" Value="{{0.5,0},{0.45,0}}" />
-        <Property Name="Text" Value="Console" />
-        <Property Name="CloseButtonEnabled" Value="False" />
+    <Window name="Console" type="Vanilla/FrameWindow">
+        <Property name="AlwaysOnTop" value="True" />
+        <Property name="MinSize" value="{{0.2,0},{0.2,0}}" />
+        <Property name="MaxSize" value="{{0.8,0},{0.8,0}}" />
+        <Property name="Position" value="{{0.5,0},{0.5,0}}" />
+        <Property name="Size" value="{{0.5,0},{0.45,0}}" />
+        <Property name="Text" value="Console" />
+        <Property name="CloseButtonEnabled" value="False" />
 
-        <Window Name="Submit" Type="Vanilla/Button">
-            <Property Name="ID" Value="1" />
-            <Property Name="VerticalAlignment" Value="Bottom" />
-            <Property Name="HorizontalAlignment" Value="Right" />
-            <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="Position" Value="{{0,-7},{0,-7}}" />
-            <Property Name="Size" Value="{{0.25,0},{0,30}}" />
-            <Property Name="Text" Value="Submit" />
+        <Window name="Submit" type="Vanilla/Button">
+            <Property name="ID" value="1" />
+            <Property name="VerticalAlignment" value="Bottom" />
+            <Property name="HorizontalAlignment" value="Right" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="Position" value="{{0,-7},{0,-7}}" />
+            <Property name="Size" value="{{0.25,0},{0,30}}" />
+            <Property name="Text" value="Submit" />
         </Window>
 
-        <Window Name="Editbox" Type="Vanilla/Editbox">
-            <Property Name="ID" Value="2" />
-            <Property Name="VerticalAlignment" Value="Bottom" />
-            <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="Position" Value="{{0,7},{0,-7}}" />
-            <Property Name="Size" Value="{{0.75,-21},{0,30}}" />
-            <Property Name="Text" Value="" />
+        <Window name="Editbox" type="Vanilla/Editbox">
+            <Property name="ID" value="2" />
+            <Property name="VerticalAlignment" value="Bottom" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="Position" value="{{0,7},{0,-7}}" />
+            <Property name="Size" value="{{0.75,-21},{0,30}}" />
+            <Property name="Text" value="" />
         </Window>
 
-        <Window Name="History" Type="Vanilla/MultiLineEditbox">
-            <Property Name="ID" Value="3" />
-            <Property Name="ReadOnly" Value="True" />
-            <Property Name="MaxSize" Value="{{1,0},{1,0}}" />
-            <Property Name="Position" Value="{{0,7},{0,7}}" />
-            <Property Name="Size" Value="{{1,-14},{1,-47}}" />
-            <Property Name="Text">CEGUI Demo Console - F12 toggles this window
+        <Window name="History" type="Vanilla/MultiLineEditbox">
+            <Property name="ID" value="3" />
+            <Property name="ReadOnly" value="True" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="Position" value="{{0,7},{0,7}}" />
+            <Property name="Size" value="{{1,-14},{1,-47}}" />
+            <Property name="Text">CEGUI Demo Console - F12 toggles this window
 
 It's now easy to add multiline text property.
 Line 1

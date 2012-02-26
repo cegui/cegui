@@ -48,21 +48,33 @@ namespace CEGUI
 const String Font_xmlHandler::FontSchemaName("Font.xsd");
 const String Font_xmlHandler::FontElement("Font");
 const String Font_xmlHandler::MappingElement("Mapping");
-const String Font_xmlHandler::FontTypeAttribute("Type");
-const String Font_xmlHandler::FontNameAttribute("Name");
-const String Font_xmlHandler::FontFilenameAttribute("Filename");
-const String Font_xmlHandler::FontResourceGroupAttribute("ResourceGroup");
-const String Font_xmlHandler::FontAutoScaledAttribute("AutoScaled");
-const String Font_xmlHandler::FontNativeHorzResAttribute("NativeHorzRes");
-const String Font_xmlHandler::FontNativeVertResAttribute("NativeVertRes");
-const String Font_xmlHandler::FontLineSpacingAttribute("LineSpacing");
-const String Font_xmlHandler::FontSizeAttribute("Size");
-const String Font_xmlHandler::FontAntiAliasedAttribute("AntiAlias");
+const String Font_xmlHandler::FontTypeAttribute("type");
+const String Font_xmlHandler::FontNameAttribute("name");
+const String Font_xmlHandler::FontFilenameAttribute("filename");
+const String Font_xmlHandler::FontResourceGroupAttribute("resourceGroup");
+const String Font_xmlHandler::FontAutoScaledAttribute("autoScaled");
+const String Font_xmlHandler::FontNativeHorzResAttribute("nativeHorzRes");
+const String Font_xmlHandler::FontNativeVertResAttribute("nativeVertRes");
+const String Font_xmlHandler::FontLineSpacingAttribute("lineSpacing");
+const String Font_xmlHandler::FontSizeAttribute("size");
+const String Font_xmlHandler::FontAntiAliasedAttribute("antiAlias");
+const String Font_xmlHandler::MappingCodepointAttribute("codepoint");
+const String Font_xmlHandler::MappingImageAttribute("image");
+const String Font_xmlHandler::MappingHorzAdvanceAttribute("horzAdvance");
+const String Font_xmlHandler::FontVersionAttribute( "version" );
 const String Font_xmlHandler::FontTypeFreeType("FreeType");
 const String Font_xmlHandler::FontTypePixmap("Pixmap");
-const String Font_xmlHandler::MappingCodepointAttribute("Codepoint");
-const String Font_xmlHandler::MappingImageAttribute("Image");
-const String Font_xmlHandler::MappingHorzAdvanceAttribute("HorzAdvance");
+
+//----------------------------------------------------------------------------//
+// note: The assets' versions aren't usually the same as CEGUI version, they
+// are versioned from version 1 onwards!
+//
+// previous versions (though not specified in files until 3)
+// 1 - CEGUI up to and including 0.4.x
+// 2 - CEGUI versions 0.5.x through 0.7.x (Static/Dynamic types renamed to Pixmap/TrueType
+//                                         Removed facility to pre-declare glyphs and glyph ranges)
+// 3 - CEGUI version 1.x.x (changed case of attr names, added version support)
+const String NativeVersion( "3" );
 
 //----------------------------------------------------------------------------//
 Font_xmlHandler::Font_xmlHandler():
@@ -136,6 +148,8 @@ void Font_xmlHandler::elementEnd(const String& element)
 //----------------------------------------------------------------------------//
 void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
 {
+    validateFontFileVersion(attributes);
+
     // get type of font being created
     const String font_type(attributes.getValueAsString(FontTypeAttribute));
 
@@ -150,6 +164,23 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
     else
         CEGUI_THROW(InvalidRequestException("Font_xmlHandler::elementFontStart: "
             "Encountered unknown font type of '" + font_type + "'"));
+}
+
+//----------------------------------------------------------------------------//
+void Font_xmlHandler::validateFontFileVersion(const XMLAttributes& attrs)
+{
+    const String version(attrs.getValueAsString(FontVersionAttribute,
+                                                "unknown"));
+
+    if (version == NativeVersion)
+        return;
+
+    CEGUI_THROW(InvalidRequestException(
+        "Font_xmlHandler::validateImagesetFileVersion - You are attempting "
+        "to load a font of version '" + version + "' but this CEGUI version is "
+        "only meant to load fonts of version '" + NativeVersion + "'. "
+        "Consider using the migrate.py script bundled with CEGUI Unified "
+        "Editor to migrate your data."));
 }
 
 //----------------------------------------------------------------------------//

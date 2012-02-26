@@ -37,18 +37,18 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-const String ImageTypeAttribute( "Type" );
-const String ImageNameAttribute( "Name" );
-const String ImageTextureAttribute( "Texture" );
-const String ImageXPosAttribute( "XPos" );
-const String ImageYPosAttribute( "YPos" );
-const String ImageWidthAttribute( "Width" );
-const String ImageHeightAttribute( "Height" );
-const String ImageXOffsetAttribute( "XOffset" );
-const String ImageYOffsetAttribute( "YOffset" );
-const String ImageAutoScaledAttribute( "AutoScaled" );
-const String ImageNativeHorzResAttribute( "NativeHorzRes" );
-const String ImageNativeVertResAttribute( "NativeVertRes" );
+const String ImageTypeAttribute( "type" );
+const String ImageNameAttribute( "name" );
+const String ImageTextureAttribute( "texture" );
+const String ImageXPosAttribute( "xPos" );
+const String ImageYPosAttribute( "yPos" );
+const String ImageWidthAttribute( "width" );
+const String ImageHeightAttribute( "height" );
+const String ImageXOffsetAttribute( "xOffset" );
+const String ImageYOffsetAttribute( "yOffset" );
+const String ImageAutoScaledAttribute( "autoScaled" );
+const String ImageNativeHorzResAttribute( "nativeHorzRes" );
+const String ImageNativeVertResAttribute( "nativeVertRes" );
 
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name) :

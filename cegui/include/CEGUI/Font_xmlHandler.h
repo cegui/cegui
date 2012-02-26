@@ -70,6 +70,8 @@ public:
     static const String MappingImageAttribute;
     //! Attribute name that stores the horizontal advance value for a mapping.
     static const String MappingHorzAdvanceAttribute;
+    //! Attribute specifying the datafile version.
+    static const String FontVersionAttribute;
     //! Type name of FreeType fonts.
     static const String FontTypeFreeType;
     //! Type name of Pixmap fonts.
@@ -105,6 +107,9 @@ private:
     void createFreeTypeFont(const XMLAttributes& attributes);
     //! creates a PixmapFont
     void createPixmapFont(const XMLAttributes& attributes);
+
+    //! throw exception if file version is not supported.
+    void validateFontFileVersion(const XMLAttributes& attrs);
 
     //! Font object that we are constructing.
     Font* d_font;
