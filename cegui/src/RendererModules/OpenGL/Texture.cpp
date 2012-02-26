@@ -159,7 +159,6 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
         CEGUI_THROW(InvalidRequestException("OpenGLTexture::loadFromMemory: "
             "Data was supplied in an unsupported pixel format."));
 
-    GLint comps;
     GLenum format;
     switch (pixel_format)
     {

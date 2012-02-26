@@ -92,7 +92,7 @@ void NullRenderTarget<T>::deactivate()
 
 //----------------------------------------------------------------------------//
 template<typename T>
-void NullRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+void NullRenderTarget<T>::unprojectPoint(const GeometryBuffer&,
                                       const Vector2f& p_in, Vector2f& p_out) const
 {
 	p_out = p_in;

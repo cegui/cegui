@@ -393,8 +393,6 @@ void Demo6Sample::initDemoEventWiring(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
-    WindowManager& winMgr = WindowManager::getSingleton();
-
     // subscribe handler that adds a new column
     root->getChild("ControlPanel/ColumnPanel/AddColButton")->
         subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo6Sample::handleAddColumn, this));

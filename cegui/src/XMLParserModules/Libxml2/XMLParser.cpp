@@ -89,7 +89,9 @@ LibxmlParser::~LibxmlParser(void)
 {
 }
 
-void LibxmlParser::parseXML(XMLHandler& handler, const RawDataContainer& source, const String& schemaName)
+void LibxmlParser::parseXML(XMLHandler& handler,
+                            const RawDataContainer& source,
+                            const String& /*schemaName*/)
 {
     xmlDocPtr doc = xmlParseMemory(
         reinterpret_cast<const char*>(source.getDataPtr()),

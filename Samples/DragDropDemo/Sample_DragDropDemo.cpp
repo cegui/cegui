@@ -83,8 +83,6 @@ void DragDropDemo::subscribeEvents()
 
     Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
-    WindowManager& wmgr = WindowManager::getSingleton();
-
     /*
      * Subscribe handler to deal with user closing the frame window
      */
