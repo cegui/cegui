@@ -55,7 +55,7 @@ namespace CEGUI
             Scrollbar based widget with name suffix "__auto_hscrollbar__"
 
     */
-    class FALAGARDBASE_API FalagardScrollablePane : public ScrollablePaneWindowRenderer
+    class COREWRSET_API FalagardScrollablePane : public ScrollablePaneWindowRenderer
     {
     public:
         static const String TypeName;     //! type name for this widget.

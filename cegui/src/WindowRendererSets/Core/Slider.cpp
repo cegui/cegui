@@ -37,7 +37,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardSlider::TypeName("Falagard/Slider");
+    const String FalagardSlider::TypeName("Core/Slider");
 
     FalagardSlider::FalagardSlider(const String& type) :
         SliderWindowRenderer(type),

@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardFrameWindow::TypeName("Falagard/FrameWindow");
+    const String FalagardFrameWindow::TypeName("Core/FrameWindow");
 
     FalagardFrameWindow::FalagardFrameWindow(const String& type) :
         WindowRenderer(type)

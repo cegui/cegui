@@ -48,7 +48,7 @@ namespace CEGUI
             TextArea    - Typically this would be the same area as the TextComponent you define to receive the tooltip text.  This
                             named area is used when deciding how to dynamically size the Tooltip so that text is not clipped.
     */
-    class FALAGARDBASE_API FalagardTooltip : public TooltipWindowRenderer
+    class COREWRSET_API FalagardTooltip : public TooltipWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

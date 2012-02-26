@@ -56,7 +56,7 @@ namespace CEGUI
             Scrollbar based widget with name suffix "__auto_hscrollbar__"
             ListHeader based widget with name suffix "__auto_listheader__"
     */
-    class FALAGARDBASE_API FalagardMultiColumnList : public MultiColumnListWindowRenderer
+    class COREWRSET_API FalagardMultiColumnList : public MultiColumnListWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

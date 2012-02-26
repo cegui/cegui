@@ -34,7 +34,7 @@ author:		Jonathan Welch (Based on Code by David Durant)
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardTree::TypeName("Falagard/Tree");
+    const String FalagardTree::TypeName("Core/Tree");
 
     FalagardTree::FalagardTree(const String& type, const String&) :
         WindowRenderer(type)

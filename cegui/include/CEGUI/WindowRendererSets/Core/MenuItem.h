@@ -58,7 +58,7 @@ namespace CEGUI
             ContentSize
             HasPopupContentSize
     */
-    class FALAGARDBASE_API FalagardMenuItem : public ItemEntryWindowRenderer
+    class COREWRSET_API FalagardMenuItem : public ItemEntryWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

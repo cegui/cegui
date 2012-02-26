@@ -70,7 +70,7 @@ namespace CEGUI
         Scrollbar based widget with name suffix "__auto_hscrollbar__"
 
 */
-class FALAGARDBASE_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRenderer
+class COREWRSET_API FalagardMultiLineEditbox : public MultiLineEditboxWindowRenderer
 {
 public:
     static const String TypeName;     //! type name for this widget.

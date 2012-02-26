@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardToggleButton::TypeName("Falagard/ToggleButton");
+    const String FalagardToggleButton::TypeName("Core/ToggleButton");
 
     FalagardToggleButton::FalagardToggleButton(const String& type) :
         FalagardButton(type)

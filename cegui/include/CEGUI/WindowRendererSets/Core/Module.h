@@ -32,18 +32,18 @@
 #include "CEGUI/WindowRenderer.h"
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   ifdef CEGUIFALAGARDWRBASE_EXPORTS
-#       define FALAGARDBASE_API __declspec(dllexport)
+#   ifdef CEGUICOREWINDOWRENDERERSET_EXPORTS
+#       define COREWRSET_API __declspec(dllexport)
 #   else
-#       define FALAGARDBASE_API __declspec(dllimport)
+#       define COREWRSET_API __declspec(dllimport)
 #   endif
 #else
-#   define FALAGARDBASE_API
+#   define COREWRSET_API
 #endif
 
 //! Function we're required to export.
 extern "C"
-FALAGARDBASE_API CEGUI::FactoryModule& getWindowRendererFactoryModule();
+COREWRSET_API CEGUI::FactoryModule& getWindowRendererFactoryModule();
 
 namespace CEGUI
 {

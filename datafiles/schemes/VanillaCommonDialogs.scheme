@@ -10,12 +10,12 @@
 	<LookNFeel filename="VanillaCommonDialogs.looknfeel" />
     <WindowSet filename="CEGUICommonDialogs" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
-	<FalagardMapping windowType="Vanilla/VerticalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Falagard/Button"  lookNFeel="Vanilla/VerticalImageSliderThumb" />
-	<FalagardMapping windowType="Vanilla/VerticalImageSlider" targetType="CEGUI/Slider" renderer="Falagard/Slider" lookNFeel="Vanilla/VerticalImageSlider" />
-	<FalagardMapping windowType="Vanilla/HorizontalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Falagard/Button"  lookNFeel="Vanilla/HorizontalImageSliderThumb" />
-	<FalagardMapping windowType="Vanilla/HorizontalImageSlider" targetType="CEGUI/Slider" renderer="Falagard/Slider" lookNFeel="Vanilla/HorizontalImageSlider" />
-	<FalagardMapping windowType="Vanilla/FrameColourRect" targetType="DefaultWindow" renderer="Falagard/Default" lookNFeel="Vanilla/FrameColourRect" />
-	<FalagardMapping windowType="Vanilla/ColourPicker" targetType="CEGUI/ColourPicker" renderer="Falagard/Default" lookNFeel="Vanilla/ColourPicker" />
-	<FalagardMapping windowType="Vanilla/ColourPickerControls" targetType="CEGUI/ColourPickerControls" renderer="Falagard/Default" lookNFeel="Vanilla/ColourPickerControls" />
+	<FalagardMapping windowType="Vanilla/VerticalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Core/Button"  lookNFeel="Vanilla/VerticalImageSliderThumb" />
+	<FalagardMapping windowType="Vanilla/VerticalImageSlider" targetType="CEGUI/Slider" renderer="Core/Slider" lookNFeel="Vanilla/VerticalImageSlider" />
+	<FalagardMapping windowType="Vanilla/HorizontalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Core/Button"  lookNFeel="Vanilla/HorizontalImageSliderThumb" />
+	<FalagardMapping windowType="Vanilla/HorizontalImageSlider" targetType="CEGUI/Slider" renderer="Core/Slider" lookNFeel="Vanilla/HorizontalImageSlider" />
+	<FalagardMapping windowType="Vanilla/FrameColourRect" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Vanilla/FrameColourRect" />
+	<FalagardMapping windowType="Vanilla/ColourPicker" targetType="CEGUI/ColourPicker" renderer="Core/Default" lookNFeel="Vanilla/ColourPicker" />
+	<FalagardMapping windowType="Vanilla/ColourPickerControls" targetType="CEGUI/ColourPickerControls" renderer="Core/Default" lookNFeel="Vanilla/ColourPickerControls" />
 </GUIScheme>
 

@@ -73,7 +73,7 @@ namespace CEGUI
     Imagery Sections:
         - Caret
 */
-class FALAGARDBASE_API FalagardEditbox : public EditboxWindowRenderer
+class COREWRSET_API FalagardEditbox : public EditboxWindowRenderer
 {
 public:
     //! type name for this widget.

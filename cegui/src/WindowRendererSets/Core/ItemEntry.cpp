@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardItemEntry::TypeName("Falagard/ItemEntry");
+    const String FalagardItemEntry::TypeName("Core/ItemEntry");
 
     FalagardItemEntry::FalagardItemEntry(const String& type) :
         ItemEntryWindowRenderer(type)

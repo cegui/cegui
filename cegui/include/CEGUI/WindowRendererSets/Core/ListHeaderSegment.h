@@ -55,7 +55,7 @@ namespace CEGUI
             - GhostAscendingSortIcon
             - GhostDescendingSortDown
     */
-    class FALAGARDBASE_API FalagardListHeaderSegment : public WindowRenderer
+    class COREWRSET_API FalagardListHeaderSegment : public WindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

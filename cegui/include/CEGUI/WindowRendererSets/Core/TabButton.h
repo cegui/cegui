@@ -45,7 +45,7 @@ namespace CEGUI
             - Selected  - Rendering for when the tab button is the button for the selected tab.
             - Disabled  - Rendering for when the tab button is disabled.
     */
-    class FALAGARDBASE_API FalagardTabButton : public WindowRenderer
+    class COREWRSET_API FalagardTabButton : public WindowRenderer
     {
     public:
         static const String TypeName;     //! type name for this widget.

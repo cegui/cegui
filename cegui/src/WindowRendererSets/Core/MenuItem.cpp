@@ -35,7 +35,7 @@
 namespace CEGUI
 {
 
-const String FalagardMenuItem::TypeName("Falagard/MenuItem");
+const String FalagardMenuItem::TypeName("Core/MenuItem");
 
 FalagardMenuItem::FalagardMenuItem(const String& type) :
     ItemEntryWindowRenderer(type)

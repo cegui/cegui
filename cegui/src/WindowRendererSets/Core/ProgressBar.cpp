@@ -35,7 +35,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardProgressBar::TypeName("Falagard/ProgressBar");
+    const String FalagardProgressBar::TypeName("Core/ProgressBar");
 
     FalagardProgressBar::FalagardProgressBar(const String& type) :
         WindowRenderer(type, "ProgressBar"),

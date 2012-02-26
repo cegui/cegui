@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardTabControl::TypeName("Falagard/TabControl");
+    const String FalagardTabControl::TypeName("Core/TabControl");
 
     FalagardTabControl::FalagardTabControl(const String& type) :
         TabControlWindowRenderer(type)

@@ -47,7 +47,7 @@ namespace CEGUI
         Named Areas:
             ItemRenderArea
     */
-    class FALAGARDBASE_API FalagardMenubar : public ItemListBaseWindowRenderer
+    class COREWRSET_API FalagardMenubar : public ItemListBaseWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

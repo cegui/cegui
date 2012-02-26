@@ -37,7 +37,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardScrollbar::TypeName("Falagard/Scrollbar");
+    const String FalagardScrollbar::TypeName("Core/Scrollbar");
 
     FalagardScrollbar::FalagardScrollbar(const String& type) :
         ScrollbarWindowRenderer(type),

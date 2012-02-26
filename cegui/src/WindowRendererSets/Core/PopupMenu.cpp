@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardPopupMenu::TypeName("Falagard/PopupMenu");
+    const String FalagardPopupMenu::TypeName("Core/PopupMenu");
 
     FalagardPopupMenu::FalagardPopupMenu(const String& type) :
         ItemListBaseWindowRenderer(type)

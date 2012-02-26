@@ -50,7 +50,7 @@ namespace CEGUI
             ItemRenderAreaVScroll
             ItemRenderAreaHVScroll
     */
-    class FALAGARDBASE_API FalagardItemListbox : public ItemListBaseWindowRenderer
+    class COREWRSET_API FalagardItemListbox : public ItemListBaseWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

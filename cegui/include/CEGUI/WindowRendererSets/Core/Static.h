@@ -54,7 +54,7 @@ namespace CEGUI
             - NoFrameEnabledBackground    - backdrop rendering for enabled state with frame disabled.
             - NoFrameDisabledBackground   - backdrop rendering for disabled state with frame disabled.
     */
-    class FALAGARDBASE_API FalagardStatic : public WindowRenderer
+    class COREWRSET_API FalagardStatic : public WindowRenderer
     {
     public:
         static const String TypeName;     //! type name for this widget.
