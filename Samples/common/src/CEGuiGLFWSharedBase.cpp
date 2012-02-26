@@ -193,8 +193,6 @@ void GLFWCALL CEGuiGLFWSharedBase::glfwKeyCallback(int key, int action)
 //----------------------------------------------------------------------------//
 void GLFWCALL CEGuiGLFWSharedBase::glfwCharCallback(int character, int action)
 {
-    unsigned int ceguiKey = GlfwToCeguiKey(character);
-
     if(action == GLFW_PRESS)
         CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(character);
 }

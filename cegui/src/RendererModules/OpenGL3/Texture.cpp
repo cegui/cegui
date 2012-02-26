@@ -165,11 +165,10 @@ void OpenGL3Texture::loadFromMemory(const void* buffer, const Sizef& buffer_size
     switch (pixel_format)
     {
     case PF_RGB:
-        comps = 3;
         format = GL_RGB;
         break;
+
     case PF_RGBA:
-        comps = 4;
         format = GL_RGBA;
         break;
     };
