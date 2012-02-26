@@ -36,18 +36,21 @@
 
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+static const size_t LOG_BUFFER_SIZE = 8096;
 
-    OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source, const std::string& fragment_shader_source) :
-d_createdSucessfully(false),
-    d_program(0),
-    d_geometryShader(0),
+//----------------------------------------------------------------------------//
+OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
+                             const std::string& fragment_shader_source) :
+    d_createdSucessfully(false),
     d_vertexShader(0),
     d_fragmentShader(0),
-    d_shaderName("")
+    d_geometryShader(0),
+    d_program(0)
 {
     // Compile the shaders
 
-    d_vertexShader = compile(GL_VERTEX_SHADER, vertex_shader_source, d_shaderName + ".vert");
+    d_vertexShader = compile(GL_VERTEX_SHADER, vertex_shader_source);
     if (d_vertexShader == 0)
         return;
     
@@ -55,7 +58,7 @@ d_createdSucessfully(false),
 
     if(fragment_shader_source.length() > 0)
     {
-        d_fragmentShader = compile(GL_FRAGMENT_SHADER, fragment_shader_source, d_shaderName + ".frag");
+        d_fragmentShader = compile(GL_FRAGMENT_SHADER, fragment_shader_source);
 
         if (d_fragmentShader == 0)
             return;
@@ -66,6 +69,7 @@ d_createdSucessfully(false),
     d_program = glCreateProgram(); 
 }
 
+//----------------------------------------------------------------------------//
 OpenGL3Shader::~OpenGL3Shader()
 {
     if(d_program != 0)
@@ -78,32 +82,31 @@ OpenGL3Shader::~OpenGL3Shader()
         glDeleteShader(d_geometryShader);
 }
 
-
-// Bind the shader to the OGL state-machine
+//----------------------------------------------------------------------------//
 void OpenGL3Shader::bind() const
 {
     glUseProgram(d_program);
 }
 
-// Unbind the shader
+//----------------------------------------------------------------------------//
 void OpenGL3Shader::unbind() const
 {
     glUseProgram(0);
 }
 
-// Query the location of a vertex attribute inside the shader.
+//----------------------------------------------------------------------------//
 GLuint OpenGL3Shader::getAttribLocation(const std::string &name) const
 {
     return glGetAttribLocation(d_program, name.c_str());
 }
 
-// Query the location of a uniform variable inside the shader.
+//----------------------------------------------------------------------------//
 GLuint OpenGL3Shader::getUniformLocation(const std::string &name) const
 {
     return glGetUniformLocation(d_program, name.c_str());
 }
 
-// Define the name of the variable inside the shader which represents the final color for each fragment.
+//----------------------------------------------------------------------------//
 void OpenGL3Shader::bindFragDataLocation(const std::string &name)
 {
     if(d_program > 0)
@@ -113,13 +116,14 @@ void OpenGL3Shader::bindFragDataLocation(const std::string &name)
     }
 }
 
+//----------------------------------------------------------------------------//
 bool OpenGL3Shader::isCreatedSuccessfully()
 {
     return d_createdSucessfully;
 }
 
-
-GLuint OpenGL3Shader::compile(GLuint type, const string &source, const string &fileName)
+//----------------------------------------------------------------------------//
+GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
 {
     // Create shader object
     checkGLErrors();
@@ -127,7 +131,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const string &source, const string &f
 
     if (shader == 0)
     {
-        stringstream stringStream;
+        std::stringstream stringStream;
         stringStream << "Could not create shader object of type:" << type << ".";
         CEGUI_THROW(RendererException(stringStream.str()));
         return 0;
@@ -159,6 +163,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const string &source, const string &f
     return shader;    
 }
 
+//----------------------------------------------------------------------------//
 void OpenGL3Shader::link()
 {
 
@@ -206,8 +211,7 @@ void OpenGL3Shader::link()
     checkGLErrors();
 }
 
-#define LOG_BUFFER_SIZE 8096
-
+//----------------------------------------------------------------------------//
 void OpenGL3Shader::outputProgramLog(GLuint program)
 {
     char logBuffer[LOG_BUFFER_SIZE];
@@ -218,12 +222,13 @@ void OpenGL3Shader::outputProgramLog(GLuint program)
 
     if (length > 0)
     {
-        stringstream sstream;
+        std::stringstream sstream;
         sstream << "OpenGL3Shader linking has failed.\n" << logBuffer;
         CEGUI_THROW(RendererException(sstream.str()));
     }
 };
 
+//----------------------------------------------------------------------------//
 void OpenGL3Shader::outputShaderLog(GLuint shader)
 {
     char logBuffer[LOG_BUFFER_SIZE];
@@ -234,40 +239,41 @@ void OpenGL3Shader::outputShaderLog(GLuint shader)
 
     if (length > 0)
     {
-        stringstream ss;
+        std::stringstream ss;
         ss << "OpenGL3Shader compilation has failed.\n" << logBuffer;
           CEGUI_THROW(RendererException(ss.str()));
     }
 };
 
+//----------------------------------------------------------------------------//
 void my_get_errors(const char *location)
 {
     GLenum error = glGetError();
 
     if (error != GL_NO_ERROR)
     {
-        stringstream stringStream;
-        stringStream << "Error at " << location << ": " << endl; 
+        std::stringstream stringStream;
+        stringStream << "Error at " << location << ": " << std::endl; 
 
         switch (error)
         {
         case GL_INVALID_ENUM:
-            stringStream << "GL_INVALID_ENUM: enum argument out of range." << endl;
+            stringStream << "GL_INVALID_ENUM: enum argument out of range." << std::endl;
             break;
         case GL_INVALID_VALUE:
-            stringStream << "GL_INVALID_VALUE: Numeric argument out of range." << endl;
+            stringStream << "GL_INVALID_VALUE: Numeric argument out of range." << std::endl;
             break;
         case GL_INVALID_OPERATION:
-            stringStream << "GL_INVALID_OPERATION: Operation illegal in current state." << endl;
+            stringStream << "GL_INVALID_OPERATION: Operation illegal in current state." << std::endl;
             break;
         case GL_INVALID_FRAMEBUFFER_OPERATION:
-            stringStream << "GL_INVALID_FRAMEBUFFER_OPERATION: Framebuffer object is not complete." << endl;
+            stringStream << "GL_INVALID_FRAMEBUFFER_OPERATION: Framebuffer object is not complete." << std::endl;
             break;
         case GL_OUT_OF_MEMORY:
-            stringStream << "GL_OUT_OF_MEMORY: Not enough memory left to execute command." << endl;
+            stringStream << "GL_OUT_OF_MEMORY: Not enough memory left to execute command." << std::endl;
             break;
         default:
-            stringStream << "GL_ERROR: Unknown error." << endl;
+            stringStream << "GL_ERROR: Unknown error." << std::endl;
         }
 
         if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
@@ -277,5 +283,6 @@ void my_get_errors(const char *location)
     }
 }
 
+//----------------------------------------------------------------------------//
 
 }

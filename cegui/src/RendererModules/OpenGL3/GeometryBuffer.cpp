@@ -45,15 +45,16 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    //----------------------------------------------------------------------------//
-    OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner) :
-d_owner(&owner),
+//----------------------------------------------------------------------------//
+OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner) :
+    d_owner(&owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
     d_translation(0, 0, 0),
     d_rotation(Quaternion::IDENTITY),
     d_pivot(0, 0, 0),
     d_effect(0),
+    d_matrix(0),
     d_matrixValid(false),
     d_shader(owner.getShaderStandard()),
     d_shaderPosLoc(owner.getShaderStandardPositionLoc()),
@@ -61,8 +62,7 @@ d_owner(&owner),
     d_shaderColourLoc(owner.getShaderStandardColourLoc()),
     d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc()),
     d_glStateChanger(owner.getOpenGLStateChanger()),
-    d_bufferSize(0),
-    d_matrix(0)
+    d_bufferSize(0)
 {
     d_matrix = new mat4Pimpl();
 
@@ -197,7 +197,7 @@ void OpenGL3GeometryBuffer::appendGeometry(const Vertex* const vbuff,
         d_vertices.push_back(vd);
     }
 
-    updateOpenGLBuffers(vbuff, vertex_count);
+    updateOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -212,7 +212,7 @@ void OpenGL3GeometryBuffer::reset()
     d_batches.clear();
     d_vertices.clear();
     d_activeTexture = 0;
-    updateOpenGLBuffers(0, 0);
+    updateOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -290,6 +290,7 @@ void OpenGL3GeometryBuffer::updateMatrix() const
     d_matrixValid = true;
 }
 
+//----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 {
     glGenVertexArrays(1, &d_verticesVAO);
@@ -325,13 +326,15 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
+//----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 {
     glDeleteVertexArrays(1, &d_verticesVAO);
     glDeleteBuffers(1, &d_verticesVBO);
 }
 
-void OpenGL3GeometryBuffer::updateOpenGLBuffers(const Vertex* const vbuff, uint vertex_count)
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 {
     bool needNewBuffer = false;
     unsigned int vertexCount = d_vertices.size();

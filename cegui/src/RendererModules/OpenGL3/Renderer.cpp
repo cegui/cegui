@@ -172,10 +172,10 @@ OpenGL3Renderer::OpenGL3Renderer() :
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
     d_shaderStandard(0),
+    d_viewProjectionMatrix(0),
     d_activeRenderTarget(0),
     d_openGLStateChanger(0),
-    d_shaderManager(0),
-    d_viewProjectionMatrix(0)
+    d_shaderManager(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -593,26 +593,26 @@ OpenGL3Shader*& OpenGL3Renderer::getShaderStandard()
 }
 
 //----------------------------------------------------------------------------//
-const GLint OpenGL3Renderer::getShaderStandardPositionLoc()
+GLint OpenGL3Renderer::getShaderStandardPositionLoc()
 {
     return d_shaderStandardPosLoc;
 }
 
 //----------------------------------------------------------------------------//
-const GLint OpenGL3Renderer::getShaderStandardTexCoordLoc()
+GLint OpenGL3Renderer::getShaderStandardTexCoordLoc()
 {
     return d_shaderStandardTexCoordLoc;
 }
 
 //----------------------------------------------------------------------------//
-const GLint OpenGL3Renderer::getShaderStandardColourLoc()
+GLint OpenGL3Renderer::getShaderStandardColourLoc()
 {
     return d_shaderStandardColourLoc;
 }
 
 
 //----------------------------------------------------------------------------//
-const GLint OpenGL3Renderer::getShaderStandardMatrixUniformLoc()
+GLint OpenGL3Renderer::getShaderStandardMatrixUniformLoc()
 {
     return d_shaderStandardMatrixLoc;
 }
