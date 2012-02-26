@@ -265,7 +265,7 @@ bool Demo7Sample::initialiseSample()
         "TaharezLook/WobblyFrameWindow",    // type to create
         "CEGUI/FrameWindow",                // 'base' widget type
         "TaharezLook/FrameWindow",          // WidgetLook to use.
-        "Falagard/FrameWindow",             // WindowRenderer to use.
+        "Core/FrameWindow",                 // WindowRenderer to use.
         "WobblyWindow");                    // effect to use.
 
     // we will use of the WindowManager.
