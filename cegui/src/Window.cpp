@@ -2743,7 +2743,7 @@ void Window::onWindowRendererDetached(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::validateWindowRenderer(const WindowRenderer* renderer) const
+bool Window::validateWindowRenderer(const WindowRenderer*) const
 {
     return true;
 }

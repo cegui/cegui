@@ -111,6 +111,9 @@ void SystemKeys::updateSystemKeyState(SystemKey syskey)
     case Alt:
         (d_leftAlt || d_rightAlt) ? d_current |= Alt : d_current &= ~Alt;
         break;
+
+    default:
+        break;
     }
 }
 
@@ -140,6 +143,9 @@ void SystemKeys::updatePressedStateForKey(Key::Scan key, bool state)
 
     case Key::RightAlt:
         d_rightAlt = state;
+        break;
+
+    default:
         break;
     }
 }

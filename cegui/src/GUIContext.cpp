@@ -379,7 +379,7 @@ bool GUIContext::isMouseClickEventGenerationEnabled() const
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::areaChangedHandler(const EventArgs& args)
+bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     if (d_rootWindow)
         updateRootWindowAreaRects();

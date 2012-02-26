@@ -83,7 +83,7 @@ public:
             d_refGetter(getter)
         {}
         // to set 0 as func
-        GetterFunctor(int val):
+        GetterFunctor(int /*val*/):
             d_plainGetter(0),
             d_constRefGetter(0),
             d_refGetter(0)

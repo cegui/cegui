@@ -288,13 +288,13 @@ void BasicRenderedStringParser::initialiseTagHandlers()
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleColour(RenderedString& rs, const String& value)
+void BasicRenderedStringParser::handleColour(RenderedString&, const String& value)
 {
     d_colours.setColours(PropertyHelper<Colour>::fromString(value));
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleFont(RenderedString& rs, const String& value)
+void BasicRenderedStringParser::handleFont(RenderedString&, const String& value)
 {
     d_fontName = value;
 }
@@ -323,7 +323,7 @@ void BasicRenderedStringParser::handleWindow(RenderedString& rs, const String& v
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleVertAlignment(RenderedString& rs, const String& value)
+void BasicRenderedStringParser::handleVertAlignment(RenderedString&, const String& value)
 {
     if (value == TopAlignedValueName)
         d_vertAlignment = VF_TOP_ALIGNED;
@@ -340,63 +340,63 @@ void BasicRenderedStringParser::handleVertAlignment(RenderedString& rs, const St
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handlePadding(RenderedString& rs,
+void BasicRenderedStringParser::handlePadding(RenderedString&,
                                               const String& value)
 {
     d_padding = PropertyHelper<Rectf >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleTopPadding(RenderedString& rs,
+void BasicRenderedStringParser::handleTopPadding(RenderedString&,
                                                  const String& value)
 {
     d_padding.d_min.d_y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleBottomPadding(RenderedString& rs,
+void BasicRenderedStringParser::handleBottomPadding(RenderedString&,
                                                     const String& value)
 {
     d_padding.d_max.d_y = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleLeftPadding(RenderedString& rs,
+void BasicRenderedStringParser::handleLeftPadding(RenderedString&,
                                                   const String& value)
 {
     d_padding.d_min.d_x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleRightPadding(RenderedString& rs,
+void BasicRenderedStringParser::handleRightPadding(RenderedString&,
                                                    const String& value)
 {
     d_padding.d_max.d_x = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleAspectLock(RenderedString& rs,
+void BasicRenderedStringParser::handleAspectLock(RenderedString&,
                                                  const String& value)
 {
     d_aspectLock = PropertyHelper<bool>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleImageSize(RenderedString& rs,
+void BasicRenderedStringParser::handleImageSize(RenderedString&,
                                                 const String& value)
 {
     d_imageSize = PropertyHelper<Sizef >::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleImageWidth(RenderedString& rs,
+void BasicRenderedStringParser::handleImageWidth(RenderedString&,
                                                  const String& value)
 {
     d_imageSize.d_width = PropertyHelper<float>::fromString(value);
 }
 
 //----------------------------------------------------------------------------//
-void BasicRenderedStringParser::handleImageHeight(RenderedString& rs,
+void BasicRenderedStringParser::handleImageHeight(RenderedString&,
                                                   const String& value)
 {
     d_imageSize.d_height = PropertyHelper<float>::fromString(value);

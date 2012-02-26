@@ -186,7 +186,7 @@ void LayoutContainer::removeChild_impl(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutContainer::handleChildSized(const EventArgs& e)
+bool LayoutContainer::handleChildSized(const EventArgs&)
 {
     markNeedsLayouting();
 
@@ -194,7 +194,7 @@ bool LayoutContainer::handleChildSized(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutContainer::handleChildMarginChanged(const EventArgs& e)
+bool LayoutContainer::handleChildMarginChanged(const EventArgs&)
 {
     markNeedsLayouting();
 
@@ -202,7 +202,7 @@ bool LayoutContainer::handleChildMarginChanged(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutContainer::handleChildAdded(const EventArgs& e)
+bool LayoutContainer::handleChildAdded(const EventArgs&)
 {
     markNeedsLayouting();
 
@@ -210,7 +210,7 @@ bool LayoutContainer::handleChildAdded(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutContainer::handleChildRemoved(const EventArgs& e)
+bool LayoutContainer::handleChildRemoved(const EventArgs&)
 {
     markNeedsLayouting();
 

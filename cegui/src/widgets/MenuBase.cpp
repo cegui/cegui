@@ -167,7 +167,7 @@ void MenuBase::onChildRemoved(ElementEventArgs& e)
     ItemListBase::onChildRemoved(e);
 }
 
-void MenuBase::onHidden(WindowEventArgs& e)
+void MenuBase::onHidden(WindowEventArgs&)
 {
     if (!getAutoCloseNestedPopups())
         return;

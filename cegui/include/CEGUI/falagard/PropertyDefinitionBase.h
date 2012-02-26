@@ -92,8 +92,8 @@ namespace CEGUI
         }
 
     protected:
-
-        virtual void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
+        virtual void setNative_impl(PropertyReceiver* receiver,
+                                    typename Helper::pass_type /*value*/)
         {
             if (d_writeCausesLayout)
                 static_cast<Window*>(receiver)->performChildWindowLayout();
