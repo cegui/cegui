@@ -43,7 +43,7 @@ RenderedStringWidgetComponent::RenderedStringWidgetComponent() :
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent(
-        const String& widget_name) :
+        const String& /*widget_name*/) :
     d_window(0 /* FIXME: WindowManager::getSingleton().getWindow(widget_name)*/ ),
     d_selected(false)
 {
@@ -57,7 +57,7 @@ RenderedStringWidgetComponent::RenderedStringWidgetComponent(Window* widget) :
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::setWindow(const String& widget_name)
+void RenderedStringWidgetComponent::setWindow(const String& /*widget_name*/)
 {
     // FIXME: d_window = WindowManager::getSingleton().getWindow(widget_name);
 }

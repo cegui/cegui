@@ -407,7 +407,7 @@ void AnimationInstance::step(float delta)
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleStart(const CEGUI::EventArgs& e)
+bool AnimationInstance::handleStart(const CEGUI::EventArgs&)
 {
     start();
 
@@ -415,7 +415,7 @@ bool AnimationInstance::handleStart(const CEGUI::EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleStop(const CEGUI::EventArgs& e)
+bool AnimationInstance::handleStop(const CEGUI::EventArgs&)
 {
     stop();
 
@@ -423,7 +423,7 @@ bool AnimationInstance::handleStop(const CEGUI::EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handlePause(const CEGUI::EventArgs& e)
+bool AnimationInstance::handlePause(const CEGUI::EventArgs&)
 {
     pause();
 
@@ -431,7 +431,7 @@ bool AnimationInstance::handlePause(const CEGUI::EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleUnpause(const CEGUI::EventArgs& e)
+bool AnimationInstance::handleUnpause(const CEGUI::EventArgs&)
 {
     unpause();
 
@@ -439,7 +439,7 @@ bool AnimationInstance::handleUnpause(const CEGUI::EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool AnimationInstance::handleTogglePause(const CEGUI::EventArgs& e)
+bool AnimationInstance::handleTogglePause(const CEGUI::EventArgs&)
 {
     togglePause();
 

@@ -113,7 +113,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
             final_filename + " does not exist"));
 
     fseek(file, 0, SEEK_END);
-    const long size = ftell(file);
+    const size_t size = ftell(file);
     fseek(file, 0, SEEK_SET);
 
     unsigned char* const buffer = CEGUI_NEW_ARRAY_PT(unsigned char, size, RawDataContainer);

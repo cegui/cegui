@@ -177,10 +177,11 @@ String QuaternionSlerpInterpolator::interpolateRelative(const String& base,
 }
 
 //----------------------------------------------------------------------------//
-String QuaternionSlerpInterpolator::interpolateRelativeMultiply(const String& base,
-                                            const String& value1,
-                                            const String& value2,
-                                            float position)
+String QuaternionSlerpInterpolator::interpolateRelativeMultiply(
+                                            const String& /*base*/,
+                                            const String& /*value1*/,
+                                            const String& /*value2*/,
+                                            float /*position*/)
 {
     CEGUI_THROW(InvalidRequestException("AM_RelativeMultiply doesn't make sense "
         "with Quaternions! Please use absolute or relative application method."));

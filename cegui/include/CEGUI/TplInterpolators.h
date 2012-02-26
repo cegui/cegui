@@ -157,7 +157,7 @@ public:
     }
     
     //! \copydoc Interpolator::interpolateRelative
-    virtual String interpolateRelative(const String& base,
+    virtual String interpolateRelative(const String& /*base*/,
                                        const String& value1,
                                        const String& value2,
                                        float position)
@@ -173,9 +173,9 @@ public:
     
     //! \copydoc Interpolator::interpolateRelativeMultiply
     virtual String interpolateRelativeMultiply(const String& base,
-                                               const String& value1,
-                                               const String& value2,
-                                               float position)
+                                               const String& /*value1*/,
+                                               const String& /*value2*/,
+                                               float /*position*/)
     {
         typename Helper::return_type bas = Helper::fromString(base);
         /*const float val1 = PropertyHelper<float>::fromString(value1);

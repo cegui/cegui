@@ -38,7 +38,8 @@ Image::~Image()
 }
 
 //----------------------------------------------------------------------------//
-void Image::elementStartLocal(const String& element, const XMLAttributes& attributes)
+void Image::elementStartLocal(const String& element,
+                              const XMLAttributes& /*attributes*/)
 {
      Logger::getSingleton().logEvent(
         "    [Image] Unknown XML tag encountered: " + element);

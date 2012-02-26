@@ -43,8 +43,8 @@ template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRenderer& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
-    d_viewDistance(0),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_viewDistance(0)
 {
     //d_matrix does not need to be initialised here, we have d_matrixValid
 }

@@ -140,7 +140,7 @@ void LayoutCell::removeChild_impl(Element* element)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutCell::handleChildSized(const EventArgs& e)
+bool LayoutCell::handleChildSized(const EventArgs&)
 {
     //markNeedsLayouting();
 
@@ -148,7 +148,7 @@ bool LayoutCell::handleChildSized(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutCell::handleChildAdded(const EventArgs& e)
+bool LayoutCell::handleChildAdded(const EventArgs&)
 {
     if (getChildCount() > 0)
     {
@@ -161,7 +161,7 @@ bool LayoutCell::handleChildAdded(const EventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-bool LayoutCell::handleChildRemoved(const EventArgs& e)
+bool LayoutCell::handleChildRemoved(const EventArgs&)
 {
     //markNeedsLayouting();
 

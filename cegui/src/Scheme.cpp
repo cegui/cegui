@@ -432,15 +432,17 @@ void Scheme::loadFalagardMappings()
 *************************************************************************/
 void Scheme::unloadXMLImagesets()
 {
+/* FIXME ?
     ImageManager& imgr = ImageManager::getSingleton();
 
     // unload all xml based Imagesets
     for (LoadableUIElementList::const_iterator pos = d_imagesets.begin();
         pos != d_imagesets.end(); ++pos)
     {
-//        if (!(*pos).name.empty())
-//            ismgr.destroy((*pos).name);
+        if (!(*pos).name.empty())
+            ismgr.destroy((*pos).name);
     }
+*/
 }
 
 /*************************************************************************
@@ -624,16 +626,17 @@ void Scheme::unloadFalagardMappings()
 *************************************************************************/
 bool Scheme::areXMLImagesetsLoaded() const
 {
+/* FIXME ?
     ImageManager& imgr = ImageManager::getSingleton();
 
     // check imagesets
     for (LoadableUIElementList::const_iterator pos = d_imagesets.begin();
         pos != d_imagesets.end(); ++pos)
     {
-//        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
-//            return false;
+        if ((*pos).name.empty() || !ismgr.isDefined((*pos).name))
+            return false;
     }
-
+*/
     return true;
 }
 
