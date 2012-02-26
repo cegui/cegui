@@ -58,7 +58,7 @@ namespace CEGUI
             - WithFrameImage              - image rendering when frame is enabled
             - NoFrameImage                - image rendering when frame is disabled (defaults to WithFrameImage if not present)
     */
-    class FALAGARDBASE_API FalagardStaticImage : public FalagardStatic
+    class COREWRSET_API FalagardStaticImage : public FalagardStatic
     {
     public:
         static const String TypeName;       //!< type name for this widget.

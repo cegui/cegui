@@ -68,7 +68,7 @@ namespace CEGUI
             NoFrameTextRenderAreaVScroll
             NoFrameTextRenderAreaHVScroll
     */
-    class FALAGARDBASE_API FalagardStaticText : public FalagardStatic
+    class COREWRSET_API FalagardStaticText : public FalagardStatic
     {
     public:
         static const String TypeName;       //!< type name for this widget.

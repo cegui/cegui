@@ -52,7 +52,7 @@ namespace CEGUI
             - SelectedPushedOff - Rendering for when the togglebutton is selected, is pushed and the mouse is not over it.
             - SelectedDisabled  - Rendering for when the togglebutton is selected and is disabled.
     */
-    class FALAGARDBASE_API FalagardToggleButton : public FalagardButton
+    class COREWRSET_API FalagardToggleButton : public FalagardButton
     {
     public:
         static const String TypeName;       //!< type name for this widget.

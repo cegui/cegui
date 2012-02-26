@@ -43,7 +43,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardStaticText::TypeName("Falagard/StaticText");
+    const String FalagardStaticText::TypeName("Core/StaticText");
 
     /*************************************************************************
         Child Widget name constants

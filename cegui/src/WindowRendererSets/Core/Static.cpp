@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardStatic::TypeName("Falagard/Static");
+    const String FalagardStatic::TypeName("Core/Static");
 
     FalagardStatic::FalagardStatic(const String& type) :
         WindowRenderer(type),

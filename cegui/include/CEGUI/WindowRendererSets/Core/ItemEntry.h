@@ -55,7 +55,7 @@ namespace CEGUI
         Named areas:
             - ContentSize
     */
-    class FALAGARDBASE_API FalagardItemEntry : public ItemEntryWindowRenderer
+    class COREWRSET_API FalagardItemEntry : public ItemEntryWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

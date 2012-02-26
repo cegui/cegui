@@ -35,7 +35,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardScrollablePane::TypeName("Falagard/ScrollablePane");
+    const String FalagardScrollablePane::TypeName("Core/ScrollablePane");
 
 
     FalagardScrollablePane::FalagardScrollablePane(const String& type) :

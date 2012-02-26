@@ -47,7 +47,7 @@ namespace CEGUI
             - PushedOff - Rendering for when the button is pushed and mouse is not over it.
             - Disabled  - Rendering for when the button is disabled.
     */
-    class FALAGARDBASE_API FalagardButton : public WindowRenderer
+    class COREWRSET_API FalagardButton : public WindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

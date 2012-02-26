@@ -33,7 +33,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardListHeaderSegment::TypeName("Falagard/ListHeaderSegment");
+    const String FalagardListHeaderSegment::TypeName("Core/ListHeaderSegment");
 
     FalagardListHeaderSegment::FalagardListHeaderSegment(const String& type) :
         WindowRenderer(type)

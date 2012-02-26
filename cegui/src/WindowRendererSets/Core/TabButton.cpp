@@ -34,7 +34,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardTabButton::TypeName("Falagard/TabButton");
+    const String FalagardTabButton::TypeName("Core/TabButton");
 
     FalagardTabButton::FalagardTabButton(const String& type) :
         WindowRenderer(type, "TabButton")

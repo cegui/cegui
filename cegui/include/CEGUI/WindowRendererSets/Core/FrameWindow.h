@@ -59,7 +59,7 @@ namespace CEGUI
             - ClientNoTitleWithFrame
             - ClientNoTitleNoFrame
     */
-    class FALAGARDBASE_API FalagardFrameWindow : public WindowRenderer
+    class COREWRSET_API FalagardFrameWindow : public WindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

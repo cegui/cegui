@@ -31,7 +31,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardDefault::TypeName("Falagard/Default");
+    const String FalagardDefault::TypeName("Core/Default");
 
     FalagardDefault::FalagardDefault(const String& type) :
         WindowRenderer(type)

@@ -54,7 +54,7 @@ namespace CEGUI
             Scrollbar based widget with name suffix "__auto_vscrollbar__"
             Scrollbar based widget with name suffix "__auto_hscrollbar__"
     */
-    class FALAGARDBASE_API FalagardListbox : public ListboxWindowRenderer
+    class COREWRSET_API FalagardListbox : public ListboxWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

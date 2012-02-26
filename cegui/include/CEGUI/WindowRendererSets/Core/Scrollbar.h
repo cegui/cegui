@@ -62,7 +62,7 @@ namespace CEGUI
             Indicates whether this scrollbar will operate in the vertical or
             horizontal direction.  Default is for horizontal.  Optional.
     */
-    class FALAGARDBASE_API FalagardScrollbar : public ScrollbarWindowRenderer
+    class COREWRSET_API FalagardScrollbar : public ScrollbarWindowRenderer
     {
     public:
         static const String TypeName;     //! type name for this widget.

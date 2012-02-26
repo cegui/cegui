@@ -53,7 +53,7 @@ namespace CEGUI
             - Enabled           - basic rendering for enabled state.
             - Disabled          - basic rendering for disabled state.
     */
-    class FALAGARDBASE_API FalagardListHeader : public ListHeaderWindowRenderer
+    class COREWRSET_API FalagardListHeader : public ListHeaderWindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

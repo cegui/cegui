@@ -44,7 +44,7 @@ namespace CEGUI
             - Inactive
             - Disabled
     */
-    class FALAGARDBASE_API FalagardTitlebar : public WindowRenderer
+    class COREWRSET_API FalagardTitlebar : public WindowRenderer
     {
     public:
         static const String TypeName;       //!< type name for this widget.

@@ -63,7 +63,7 @@ namespace CEGUI
               what is considered 'usual'.  Set to "True" to have progress grow
               towards the left or bottom of the progress area.  Optional.
     */
-    class FALAGARDBASE_API FalagardProgressBar : public WindowRenderer
+    class COREWRSET_API FalagardProgressBar : public WindowRenderer
     {
     public:
         static const String TypeName;     //! type name for this widget.

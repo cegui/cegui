@@ -32,7 +32,7 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    const String FalagardButton::TypeName("Falagard/Button");
+    const String FalagardButton::TypeName("Core/Button");
 
     FalagardButton::FalagardButton(const String& type) :
         WindowRenderer(type)

@@ -62,7 +62,7 @@ namespace CEGUI
         imagery can be customised as desired, the general layout of the
         component widgets is, at least for the time being, fixed.
     */
-    class FALAGARDBASE_API FalagardTabControl : public TabControlWindowRenderer
+    class COREWRSET_API FalagardTabControl : public TabControlWindowRenderer
     {
     public:
         static const String TypeName;     //! type name for this widget.
