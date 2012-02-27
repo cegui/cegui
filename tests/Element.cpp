@@ -27,11 +27,28 @@
  ***************************************************************************/
 
 #include "CEGUI/Element.h"
+#include "CEGUI/System.h"
 
 #include <boost/test/unit_test.hpp>
 #include <boost/timer.hpp>
 
-BOOST_AUTO_TEST_SUITE(Element)
+/*
+ * Give the renderer / system an initial size.  Without this default min/max
+ * sizes are always forced to zero.  Perhaps there is a better way to deal
+ * with this situation?
+ *
+ * NB: Put this here instead of global fixture in case we don't want to
+ * pollute that minimal setup by adding this.
+ */
+struct ElementTestsFixture
+{
+    ElementTestsFixture()
+    {
+        CEGUI::System::getSingleton().notifyDisplaySizeChanged(CEGUI::Sizef(800, 600));
+    }
+};
+
+BOOST_FIXTURE_TEST_SUITE(Element, ElementTestsFixture)
 
 BOOST_AUTO_TEST_CASE(RelativeSizing)
 {
