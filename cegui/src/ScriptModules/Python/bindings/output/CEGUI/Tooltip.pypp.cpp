@@ -55,16 +55,16 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
         CEGUI::Tooltip::onDisplayTimeChanged( boost::ref(e) );
     }
 
-    virtual void onFadeTimeChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onFadeTimeChanged = this->get_override( "onFadeTimeChanged" ) )
-            func_onFadeTimeChanged( boost::ref(e) );
+    virtual void onHidden( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onHidden = this->get_override( "onHidden" ) )
+            func_onHidden( boost::ref(e) );
         else{
-            this->CEGUI::Tooltip::onFadeTimeChanged( boost::ref(e) );
+            this->CEGUI::Tooltip::onHidden( boost::ref(e) );
         }
     }
     
-    virtual void default_onFadeTimeChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Tooltip::onFadeTimeChanged( boost::ref(e) );
+    virtual void default_onHidden( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Tooltip::onHidden( boost::ref(e) );
     }
 
     virtual void onHoverTimeChanged( ::CEGUI::WindowEventArgs & e ){
@@ -125,6 +125,18 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
     
     virtual void default_onTooltipInactive( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Tooltip::onTooltipInactive( boost::ref(e) );
+    }
+
+    virtual void onTooltipTransition( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onTooltipTransition = this->get_override( "onTooltipTransition" ) )
+            func_onTooltipTransition( boost::ref(e) );
+        else{
+            this->CEGUI::Tooltip::onTooltipTransition( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTooltipTransition( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Tooltip::onTooltipTransition( boost::ref(e) );
     }
 
     void switchToActiveState(  ){
@@ -677,18 +689,6 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
     
     virtual void default_onFontChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Window::onFontChanged( boost::ref(e) );
-    }
-
-    virtual void onHidden( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onHidden = this->get_override( "onHidden" ) )
-            func_onHidden( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onHidden( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onHidden( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onHidden( boost::ref(e) );
     }
 
     virtual void onHorizontalAlignmentChanged( ::CEGUI::ElementEventArgs & e ){
@@ -1442,23 +1442,6 @@ void register_Tooltip_class(){
                      *\n" );
         
         }
-        { //::CEGUI::Tooltip::getFadeTime
-        
-            typedef float ( ::CEGUI::Tooltip::*getFadeTime_function_type )(  ) const;
-            
-            Tooltip_exposer.def( 
-                "getFadeTime"
-                , getFadeTime_function_type( &::CEGUI::Tooltip::getFadeTime )
-                , "*!\n\
-                    \n\
-                        Return the number of seconds that should be taken to fade the tooltip into and out of\n\
-                        visibility.\n\
-            \n\
-                    @return\n\
-                        float value representing a number of seconds.\n\
-                     *\n" );
-        
-        }
         { //::CEGUI::Tooltip::getHoverTime
         
             typedef float ( ::CEGUI::Tooltip::*getHoverTime_function_type )(  ) const;
@@ -1536,30 +1519,20 @@ void register_Tooltip_class(){
             \n\
                     @param e\n\
                         WindowEventArgs object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
                     *\n" );
         
         }
-        { //::CEGUI::Tooltip::onFadeTimeChanged
+        { //::CEGUI::Tooltip::onHidden
         
-            typedef void ( Tooltip_wrapper::*onFadeTimeChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            typedef void ( Tooltip_wrapper::*onHidden_function_type )( ::CEGUI::WindowEventArgs & ) ;
             
             Tooltip_exposer.def( 
-                "onFadeTimeChanged"
-                , onFadeTimeChanged_function_type( &Tooltip_wrapper::default_onFadeTimeChanged )
+                "onHidden"
+                , onHidden_function_type( &Tooltip_wrapper::default_onHidden )
                 , ( bp::arg("e") )
-                , "*!\n\
-                    \n\
-                        Event trigger method called when the fade timeout gets changed.\n\
-            \n\
-                    @param e\n\
-                        WindowEventArgs object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                , "************************************************************************\n\
+                Overridden from Window.\n\
+            ************************************************************************\n" );
         
         }
         { //::CEGUI::Tooltip::onHoverTimeChanged
@@ -1579,9 +1552,6 @@ void register_Tooltip_class(){
             \n\
                     @param e\n\
                         WindowEventArgs object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
                     *\n" );
         
         }
@@ -1592,10 +1562,7 @@ void register_Tooltip_class(){
             Tooltip_exposer.def( 
                 "onMouseEnters"
                 , onMouseEnters_function_type( &Tooltip_wrapper::default_onMouseEnters )
-                , ( bp::arg("e") )
-                , "************************************************************************\n\
-                Overridden from Window.\n\
-            ************************************************************************\n" );
+                , ( bp::arg("e") ) );
         
         }
         { //::CEGUI::Tooltip::onTextChanged
@@ -1622,9 +1589,6 @@ void register_Tooltip_class(){
             \n\
                     @param e\n\
                         WindowEventArgs object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
                     *\n" );
         
         }
@@ -1642,9 +1606,24 @@ void register_Tooltip_class(){
             \n\
                     @param e\n\
                         WindowEventArgs object.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::Tooltip::onTooltipTransition
+        
+            typedef void ( Tooltip_wrapper::*onTooltipTransition_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            Tooltip_exposer.def( 
+                "onTooltipTransition"
+                , onTooltipTransition_function_type( &Tooltip_wrapper::default_onTooltipTransition )
+                , ( bp::arg("e") )
+                , "*!\n\
+                    \n\
+                        Event trigger method called just after the tooltip changed target window but remained\
+                        active.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
+                    @param e\n\
+                        WindowEventArgs object.\n\
                     *\n" );
         
         }
@@ -1695,27 +1674,6 @@ void register_Tooltip_class(){
                         Set the number of seconds the tooltip should be displayed for before it automatically\n\
                         de-activates itself.  0 indicates that the tooltip should never timesout and auto-\
                         deactivate.\n\
-            \n\
-                    @param seconds\n\
-                        float value representing a number of seconds.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                     *\n" );
-        
-        }
-        { //::CEGUI::Tooltip::setFadeTime
-        
-            typedef void ( ::CEGUI::Tooltip::*setFadeTime_function_type )( float ) ;
-            
-            Tooltip_exposer.def( 
-                "setFadeTime"
-                , setFadeTime_function_type( &::CEGUI::Tooltip::setFadeTime )
-                , ( bp::arg("seconds") )
-                , "*!\n\
-                    \n\
-                        Set the number of seconds that should be taken to fade the tooltip into and out of\n\
-                        visibility.\n\
             \n\
                     @param seconds\n\
                         float value representing a number of seconds.\n\
@@ -1863,6 +1821,9 @@ void register_Tooltip_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Tooltip_exposer.add_static_property( "EventTooltipInactive"
                         , bp::make_getter( &CEGUI::Tooltip::EventTooltipInactive
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Tooltip_exposer.add_static_property( "EventTooltipTransition"
+                        , bp::make_getter( &CEGUI::Tooltip::EventTooltipTransition
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::addChild_impl
         
@@ -2716,25 +2677,6 @@ void register_Tooltip_class(){
                 , "*!\n\
                 \n\
                     Handler called when the window's font is changed.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
-                    'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onHidden
-        
-            typedef void ( Tooltip_wrapper::*onHidden_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Tooltip_exposer.def( 
-                "onHidden"
-                , onHidden_function_type( &Tooltip_wrapper::default_onHidden )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the window is hidden.\n\
             \n\
                 @param e\n\
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\
