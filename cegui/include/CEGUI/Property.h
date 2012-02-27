@@ -62,6 +62,10 @@ class CEGUIEXPORT Property :
     public AllocatedObject<Property>
 {
 public:
+    static const String XMLElementName;
+    static const String NameXMLAttributeName;
+    static const String ValueXMLAttributeName;
+
 	/*!
 	\brief
 		Creates a new Property object.
