@@ -47,7 +47,6 @@ const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );
 const String GUILayout_xmlHandler::WindowElement( "Window" );
 const String GUILayout_xmlHandler::AutoWindowElement( "AutoWindow" );
 const String GUILayout_xmlHandler::UserStringElement( "UserString" );
-const String GUILayout_xmlHandler::PropertyElement( "Property" );
 const String GUILayout_xmlHandler::LayoutImportElement( "LayoutImport" );
 const String GUILayout_xmlHandler::EventElement( "Event" );
 const String GUILayout_xmlHandler::WindowTypeAttribute( "type" );
@@ -55,8 +54,6 @@ const String GUILayout_xmlHandler::WindowNameAttribute( "name" );
 const String GUILayout_xmlHandler::AutoWindowNamePathAttribute( "namePath" );
 const String GUILayout_xmlHandler::UserStringNameAttribute( "name" );
 const String GUILayout_xmlHandler::UserStringValueAttribute( "value" );
-const String GUILayout_xmlHandler::PropertyNameAttribute( "name" );
-const String GUILayout_xmlHandler::PropertyValueAttribute( "value" );
 const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "filename" );
 const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "resourceGroup" );
 const String GUILayout_xmlHandler::EventNameAttribute( "name" );
@@ -94,7 +91,7 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
         elementUserStringStart(attributes);
     }
     // handle Property element (set property for window at top of stack)
-    else if (element == PropertyElement)
+    else if (element == Property::XMLElementName)
     {
         elementPropertyStart(attributes);
     }
@@ -138,7 +135,7 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
         elementUserStringEnd();
     }
     // handle Property element
-    else if (element == PropertyElement)
+    else if (element == Property::XMLElementName)
     {
         elementPropertyEnd();
     }
@@ -338,14 +335,13 @@ void GUILayout_xmlHandler::elementUserStringStart(const XMLAttributes& attribute
 void GUILayout_xmlHandler::elementPropertyStart(const XMLAttributes& attributes)
 {
     // get property name
-    String propertyName(attributes.getValueAsString(PropertyNameAttribute));
+    String propertyName(
+        attributes.getValueAsString(Property::NameXMLAttributeName));
 
     // get property value string
     String propertyValue;
-    if (attributes.exists(PropertyValueAttribute))
-    {
-        propertyValue = attributes.getValueAsString(PropertyValueAttribute);
-    }
+    if (attributes.exists(Property::ValueXMLAttributeName))
+        propertyValue = attributes.getValueAsString(Property::ValueXMLAttributeName);
 
     // Short property 
     if (!propertyValue.empty())

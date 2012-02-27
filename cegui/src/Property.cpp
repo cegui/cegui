@@ -33,6 +33,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+const String Property::XMLElementName("Property");
+const String Property::NameXMLAttributeName("name");
+const String Property::ValueXMLAttributeName("value");
 
 //----------------------------------------------------------------------------//
 bool Property::isDefault(const PropertyReceiver* receiver) const
@@ -51,8 +55,8 @@ void Property::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer&
 {
 	if (d_writeXML)
 	{
-		xml_stream.openTag("Property")
-			.attribute("Name",  d_name);
+		xml_stream.openTag(XMLElementName)
+			.attribute(NameXMLAttributeName,  d_name);
 		// Detect wether it is a long property or not
 		// Long property are needed if
 		const String& value = get(receiver);
@@ -62,7 +66,7 @@ void Property::writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer&
 		}
 		else
 		{
-			xml_stream.attribute("Value", get(receiver));
+			xml_stream.attribute(ValueXMLAttributeName, get(receiver));
 		}
 		xml_stream.closeTag();
 	}
