@@ -2401,9 +2401,9 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
         propString += " id:";
         propString += PropertyHelper<uint>::toString(seg.getID());
         // create the tag
-        xml_stream.openTag("Property")
-            .attribute("Name", "ColumnHeader")
-            .attribute("Value", propString)
+        xml_stream.openTag(Property::XMLElementName)
+            .attribute(Property::NameXMLAttributeName, "ColumnHeader")
+            .attribute(Property::ValueXMLAttributeName, propString)
             .closeTag();
         ++propCnt;
     }
@@ -2414,9 +2414,10 @@ int MultiColumnList::writePropertiesXML(XMLSerializer& xml_stream) const
 			uint sortColumnID = getColumnWithID(getSortColumn());
 			if (sortColumnID != 0)
 			{
-                xml_stream.openTag("Property")
-                    .attribute("Name", "SortColumnID")
-                    .attribute("Value", PropertyHelper<uint>::toString(sortColumnID))
+                xml_stream.openTag(Property::XMLElementName)
+                    .attribute(Property::NameXMLAttributeName, "SortColumnID")
+                    .attribute(Property::ValueXMLAttributeName,
+                               PropertyHelper<uint>::toString(sortColumnID))
                     .closeTag();
 			    ++propCnt;
 			}
