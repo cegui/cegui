@@ -38,6 +38,13 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+// Internal helper to parse part of a string, using backslash as an escape char
+static bool parse_section(String::const_iterator& pos,
+                          const String::const_iterator& end,
+                          String::value_type delim,
+                          String& out);
+
+//----------------------------------------------------------------------------//
 const String BasicRenderedStringParser::ColourTagName("colour");
 const String BasicRenderedStringParser::FontTagName("font");
 const String BasicRenderedStringParser::ImageTagName("image");
@@ -106,62 +113,63 @@ RenderedString BasicRenderedStringParser::parse(const String& input_string,
         d_colours = *initial_colours;
 
     RenderedString rs;
-    String curr_section;
+    String curr_section, tag_string;
 
-    size_t curr_pos = 0;
-
-    while (curr_pos < input_string.length())
+    for (String::const_iterator input_iter(input_string.begin());
+         input_iter != input_string.end();
+         /* no-op*/)
     {
-        size_t cstart_pos = input_string.find_first_of('[', curr_pos);
-
-        // if no control sequence start char, add remaining text verbatim.
-        if (String::npos == cstart_pos)
-        {
-            curr_section += input_string.substr(curr_pos);
-            curr_pos = input_string.length();
-        }
-        else if (cstart_pos == curr_pos || input_string[cstart_pos - 1] != '\\')
-        {
-            // append everything up to the control start to curr_section.
-            curr_section += input_string.substr(curr_pos, cstart_pos - curr_pos);
-
-            // scan forward for end of control sequence
-            size_t cend_pos = input_string.find_first_of(']', cstart_pos);
-            // if not found, treat as plain text
-            if (String::npos == cend_pos)
-            {
-                curr_section += input_string.substr(curr_pos);
-                curr_pos = input_string.length();
-            }
-            // extract control string
-            else
-            {
-                appendRenderedText(rs, curr_section);
-                curr_section.clear();
-
-                String ctrl_string(
-                    input_string.substr(cstart_pos + 1,
-                                        cend_pos - cstart_pos - 1));
-                curr_pos = cend_pos + 1;
-
-                processControlString(rs, ctrl_string);
-                continue;
-            }
-        }
-        else
-        {
-            curr_section += input_string.substr(curr_pos,
-                                                cstart_pos - curr_pos - 1);
-            curr_section += '[';
-            curr_pos = cstart_pos + 1;
-            continue;
-        }
-
+        const bool found_tag = parse_section(input_iter, input_string.end(), '[', curr_section);
         appendRenderedText(rs, curr_section);
-        curr_section.clear();
+
+        if (!found_tag)
+            return rs;
+
+        if (!parse_section(input_iter, input_string.end(), ']', tag_string))
+        {
+            Logger::getSingleton().logEvent(
+                "BasicRenderedStringParser::parse: Ignoring unterminated tag : [" +
+                tag_string);
+
+            return rs;
+        }
+
+        processControlString(rs, tag_string);
     }
 
     return rs;
+}
+
+//----------------------------------------------------------------------------//
+bool parse_section(String::const_iterator& pos, const String::const_iterator& end,
+                   String::value_type delim, String& out)
+{
+    const String::value_type escape('\\');
+    out.resize(0);
+
+    String::const_iterator start_iter(pos);
+
+    for ( ; pos != end; ++pos)
+    {
+        if (*pos == delim)
+        {
+            out.append(start_iter, pos++);
+            return true;
+        }
+
+        if (*pos == escape)
+        {
+            out.append(start_iter, pos++);
+
+            if (pos == end)
+                return false;
+
+            start_iter = pos;
+        }
+    }
+
+    out.append(start_iter, pos);
+    return false;
 }
 
 //----------------------------------------------------------------------------//
