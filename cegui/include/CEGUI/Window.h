@@ -436,6 +436,15 @@ public:
     //! Something that all generated widgets will have in their names.
     static const String AutoWidgetNameSuffix;
 
+    // XML element and attribute names that relate to Window.
+	static const String WindowXMLElementName;
+    static const String AutoWindowXMLElementName;
+    static const String UserStringXMLElementName;
+	static const String WindowTypeXMLAttributeName;
+	static const String WindowNameXMLAttributeName;
+    static const String AutoWindowNamePathXMLAttributeName;
+    static const String UserStringNameXMLAttributeName;
+    static const String UserStringValueXMLAttributeName;
 
     /*!
     \brief

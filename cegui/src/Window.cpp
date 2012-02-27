@@ -106,6 +106,17 @@ const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
 
 //----------------------------------------------------------------------------//
+// XML element and attribute names that relate to Window.
+const String Window::WindowXMLElementName("Window");
+const String Window::AutoWindowXMLElementName("AutoWindow");
+const String Window::UserStringXMLElementName("UserString");
+const String Window::WindowTypeXMLAttributeName("type");
+const String Window::WindowNameXMLAttributeName("name");
+const String Window::AutoWindowNamePathXMLAttributeName("namePath");
+const String Window::UserStringNameXMLAttributeName("name");
+const String Window::UserStringValueXMLAttributeName("value");
+
+//----------------------------------------------------------------------------//
 const String Window::TooltipNameSuffix("__auto_tooltip__");
 const String Window::AutoWidgetNameSuffix("__auto_");
 
@@ -1932,13 +1943,13 @@ void Window::writeXMLToStream(XMLSerializer& xml_stream) const
         return;
 
     // output opening Window tag
-    xml_stream.openTag("Window")
-        .attribute("Type", getType());
+    xml_stream.openTag(WindowXMLElementName)
+        .attribute(WindowTypeXMLAttributeName, getType());
     // write name if not auto-generated
     if (getName().compare(0, WindowManager::GeneratedWindowNameBase.length(),
                           WindowManager::GeneratedWindowNameBase) != 0)
     {
-        xml_stream.attribute("Name", getName());
+        xml_stream.attribute(WindowNameXMLAttributeName, getName());
     }
     // write out properties.
     writePropertiesXML(xml_stream);
@@ -2022,7 +2033,7 @@ bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
     // at all.  Make sure this stream does UTF-8
     std::ostringstream ss;
     XMLSerializer xml(ss);
-    xml.openTag("AutoWindow");
+    xml.openTag(AutoWindowXMLElementName);
     // Create the XML Child Tree
     // write out properties.
     writePropertiesXML(xml);
@@ -2033,9 +2044,9 @@ bool Window::writeAutoChildWindowXML(XMLSerializer& xml_stream) const
         return false;
 
     // output opening AutoWindow tag
-    xml_stream.openTag("AutoWindow");
+    xml_stream.openTag(AutoWindowXMLElementName);
     // write name suffix attribute
-    xml_stream.attribute("NamePath", getName());
+    xml_stream.attribute(AutoWindowNamePathXMLAttributeName, getName());
     // Inefficient : do the XML serialization again
     // write out properties.
     writePropertiesXML(xml_stream);
