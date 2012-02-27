@@ -98,10 +98,6 @@ public:
 	*/
 	Window*	getLayoutRootWindow(void) const;
     
-private:
-	/*************************************************************************
-		Implementation Constants
-	*************************************************************************/
 	static const String GUILayoutElement;				//!< Tag name for GUILayout elements.
 	static const String WindowElement;				//!< Tag name for Window elements.
     static const String AutoWindowElement;              //!< Tag name for AutoWindow elements.
@@ -117,7 +113,9 @@ private:
     static const String LayoutImportResourceGroupAttribute; //!< Attribute name that stores the resource group identifier used when loading imported file.
 	static const String EventNameAttribute;			//!< Attribute name that stores the event name to be subscribed.
 	static const String EventFunctionAttribute;		//!< Attribute name that stores the name of the scripted function to be bound.
+    static const String GUILayoutVersionAttribute;  //!< Attribute name that stores the xml file version.
 
+private:
     /*!
     \brief
         Method that handles the opening GUILayout XML element.

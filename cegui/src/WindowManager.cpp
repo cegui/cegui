@@ -353,8 +353,9 @@ void WindowManager::writeLayoutToStream(const Window& window, OutStream& out_str
 
     XMLSerializer xml(out_stream);
     // output GUILayout start element
-    xml.openTag("GUILayout");
-    xml.attribute("version", GUILayout_xmlHandler::NativeVersion);
+    xml.openTag(GUILayout_xmlHandler::GUILayoutElement);
+    xml.attribute(GUILayout_xmlHandler::GUILayoutVersionAttribute,
+                  GUILayout_xmlHandler::NativeVersion);
     
     // write windows
     window.writeXMLToStream(xml);
