@@ -44,16 +44,8 @@ namespace CEGUI
 const String GUILayout_xmlHandler::NativeVersion( "4" );
 
 const String GUILayout_xmlHandler::GUILayoutElement( "GUILayout" );
-const String GUILayout_xmlHandler::WindowElement( "Window" );
-const String GUILayout_xmlHandler::AutoWindowElement( "AutoWindow" );
-const String GUILayout_xmlHandler::UserStringElement( "UserString" );
 const String GUILayout_xmlHandler::LayoutImportElement( "LayoutImport" );
 const String GUILayout_xmlHandler::EventElement( "Event" );
-const String GUILayout_xmlHandler::WindowTypeAttribute( "type" );
-const String GUILayout_xmlHandler::WindowNameAttribute( "name" );
-const String GUILayout_xmlHandler::AutoWindowNamePathAttribute( "namePath" );
-const String GUILayout_xmlHandler::UserStringNameAttribute( "name" );
-const String GUILayout_xmlHandler::UserStringValueAttribute( "value" );
 const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "filename" );
 const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "resourceGroup" );
 const String GUILayout_xmlHandler::EventNameAttribute( "name" );
@@ -77,17 +69,17 @@ void GUILayout_xmlHandler::elementStart(const String& element, const XMLAttribut
 		elementGUILayoutStart(attributes);
 	}
     // handle Window element (create window and make an entry on our "window stack")
-	else if (element == WindowElement)
+	else if (element == Window::WindowXMLElementName)
     {
         elementWindowStart(attributes);
     }
     // handle AutoWindow element (get an auto child from the window on top of the "window stack")
-    else if (element == AutoWindowElement)
+    else if (element == Window::AutoWindowXMLElementName)
     {
         elementAutoWindowStart(attributes);
     }
 	// handle UserString element (set user string for window at top of stack)
-	else if (element == UserStringElement)
+	else if (element == Window::UserStringXMLElementName)
     {
         elementUserStringStart(attributes);
     }
@@ -121,17 +113,17 @@ void GUILayout_xmlHandler::elementEnd(const String& element)
     //}
 
     // handle Window element
-    if (element == WindowElement)
+    if (element == Window::WindowXMLElementName)
     {
         elementWindowEnd();
     }
     // handle Window element
-    else if (element == AutoWindowElement)
+    else if (element == Window::AutoWindowXMLElementName)
     {
         elementAutoWindowEnd();
     }
     // handle UserString element
-    else if (element == UserStringElement)
+    else if (element == Window::UserStringXMLElementName)
     {
         elementUserStringEnd();
     }
@@ -216,9 +208,11 @@ void GUILayout_xmlHandler::elementGUILayoutStart(const XMLAttributes& attributes
 void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 {
     // get type of window to create
-    String windowType(attributes.getValueAsString(WindowTypeAttribute));
+    const String windowType(
+        attributes.getValueAsString(Window::WindowTypeXMLAttributeName));
     // get name for new window
-    String windowName(attributes.getValueAsString(WindowNameAttribute));
+    const String windowName(
+        attributes.getValueAsString(Window::WindowNameXMLAttributeName));
 
     // attempt to create window
     CEGUI_TRY
@@ -261,7 +255,8 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
 void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attributes)
 {
     // get window name
-    String name_path(attributes.getValueAsString(AutoWindowNamePathAttribute));
+    const String name_path(
+        attributes.getValueAsString(Window::AutoWindowNamePathXMLAttributeName));
 
     CEGUI_TRY
     {
@@ -292,14 +287,14 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
 void GUILayout_xmlHandler::elementUserStringStart(const XMLAttributes& attributes)
 {
     // Get user string name
-    String userStringName(attributes.getValueAsString(UserStringNameAttribute));
+    const String userStringName(
+        attributes.getValueAsString(Window::UserStringNameXMLAttributeName));
 
     // Get user string value
     String userStringValue;
-    if (attributes.exists(UserStringValueAttribute))
-    {
-        userStringValue = attributes.getValueAsString(UserStringValueAttribute);
-    }
+    if (attributes.exists(Window::UserStringValueXMLAttributeName))
+        userStringValue = attributes.getValueAsString(
+            Window::UserStringValueXMLAttributeName);
 
     // Short user string
     if (!userStringValue.empty())

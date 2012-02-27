@@ -99,16 +99,8 @@ public:
 	Window*	getLayoutRootWindow(void) const;
     
 	static const String GUILayoutElement;				//!< Tag name for GUILayout elements.
-	static const String WindowElement;				//!< Tag name for Window elements.
-    static const String AutoWindowElement;              //!< Tag name for AutoWindow elements.
-    static const String UserStringElement;            //!< Tag name for UserString elements.
 	static const String LayoutImportElement;			//!< Tag name for LayoutImport elements.
 	static const String EventElement;					//!< Tag name for Event elements.
-	static const String WindowTypeAttribute;			//!< Attribute name that stores the type of Window to create.
-	static const String WindowNameAttribute;			//!< Attribute name that stores the name of the window to create.
-    static const String AutoWindowNamePathAttribute;  //!< Attribute name that stores the name path of the auto window to get.
-    static const String UserStringNameAttribute;      //!< Attribute name that stores the name of the user string.
-    static const String UserStringValueAttribute;     //!< Attribute name that stores the value to set the user string to.
 	static const String LayoutImportFilenameAttribute;//!< Attribute name that stores the file name of the layout to import.
     static const String LayoutImportResourceGroupAttribute; //!< Attribute name that stores the resource group identifier used when loading imported file.
 	static const String EventNameAttribute;			//!< Attribute name that stores the event name to be subscribed.
