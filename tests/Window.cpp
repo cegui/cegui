@@ -56,13 +56,13 @@ struct LayoutSetupFixture
         d_insideInsideRoot->setSize(CEGUI::USize(CEGUI::UDim(0.5f, 0), CEGUI::UDim(0.5f, 0)));
         d_insideRoot->addChild(d_insideInsideRoot);
         
-        CEGUI::System::getSingleton().setGUISheet(d_root);
+        CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
         CEGUI::System::getSingleton().notifyDisplaySizeChanged(CEGUI::Sizef(800, 600));
     }
     
     ~LayoutSetupFixture()
     {
-        CEGUI::System::getSingleton().setGUISheet(0);
+        CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(0);
         
         CEGUI::WindowManager::getSingleton().destroyWindow(d_root);
     }
