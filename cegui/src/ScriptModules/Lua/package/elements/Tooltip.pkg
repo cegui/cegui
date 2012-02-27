@@ -3,12 +3,20 @@
 ***********************************************************************/
 class Tooltip : public Window
 {
-	void setTargetWindow(Window* wnd);
-	void resetTimer();
-	float getHoverTime() const;
-	void setDisplayTime(float seconds);
-	float getFadeTime() const;
-	void setHoverTime(float seconds);
-	float getDisplayTime() const;
-	void setFadeTime(float seconds);
+    void setTargetWindow(Window* wnd);
+    const Window* getTargetWindow();
+
+    void resetTimer(void);
+
+    void setHoverTime(float seconds);
+    float getHoverTime(void) const;
+
+    void setDisplayTime(float seconds);
+    float getDisplayTime(void) const;
+
+    void positionSelf(void);
+
+    void sizeSelf(void);
+
+    Size<float> getTextSize() const;
 };
