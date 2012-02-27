@@ -58,6 +58,7 @@ const String GUILayout_xmlHandler::LayoutImportFilenameAttribute( "filename" );
 const String GUILayout_xmlHandler::LayoutImportResourceGroupAttribute( "resourceGroup" );
 const String GUILayout_xmlHandler::EventNameAttribute( "name" );
 const String GUILayout_xmlHandler::EventFunctionAttribute( "function" );
+const String GUILayout_xmlHandler::GUILayoutVersionAttribute( "version" );
 
 const String& GUILayout_xmlHandler::getSchemaName() const
 {
@@ -196,7 +197,8 @@ Window* GUILayout_xmlHandler::getLayoutRootWindow(void) const
 *************************************************************************/
 void GUILayout_xmlHandler::elementGUILayoutStart(const XMLAttributes& attributes)
 {
-    const String version = attributes.getValueAsString("version", "unknown");
+    const String version(
+        attributes.getValueAsString(GUILayoutVersionAttribute, "unknown"));
 
     if (version != NativeVersion)
     {
