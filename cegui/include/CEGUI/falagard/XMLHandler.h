@@ -182,6 +182,8 @@ namespace CEGUI
         static const String EventAttribute;
         //! Attribute name that stores the name of an inherited WidgetLook
         static const String InheritsAttribute;
+        //! Attribute name that stores auto-window preference
+        static const String AutoWindowAttribute;
 
         /*************************************************************************
             helper methods

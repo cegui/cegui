@@ -34,11 +34,16 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    WidgetComponent::WidgetComponent(const String& type, const String& look, const String& suffix, const String& renderer) :
+    WidgetComponent::WidgetComponent(const String& type,
+                                     const String& look,
+                                     const String& suffix,
+                                     const String& renderer,
+                                     bool autoWindow) :
         d_baseType(type),
         d_imageryName(look),
         d_name(suffix),
         d_rendererType(renderer),
+        d_autoWindow(autoWindow),
         d_vertAlign(VA_TOP),
         d_horzAlign(HA_LEFT)
     {}
@@ -46,6 +51,7 @@ namespace CEGUI
     void WidgetComponent::create(Window& parent) const
     {
         Window* widget = WindowManager::getSingleton().createWindow(d_baseType, d_name);
+        widget->setAutoWindow(d_autoWindow);
 
         // set the window renderer
         if (!d_rendererType.empty())
@@ -163,6 +169,16 @@ namespace CEGUI
         d_properties.clear();
     }
 
+    void WidgetComponent::setAutoWindow(bool is_auto)
+    {
+        d_autoWindow = is_auto;
+    }
+
+    bool WidgetComponent::isAutoWindow() const
+    {
+        return d_autoWindow;
+    }
+
     void WidgetComponent::layout(const Window& owner) const
     {
         CEGUI_TRY
@@ -194,6 +210,8 @@ namespace CEGUI
         if (!d_rendererType.empty())
             xml_stream.attribute("renderer", d_rendererType);
 
+        if (!d_autoWindow)
+            xml_stream.attribute("autoWindow", "false");
 
         // output target area
         d_area.writeXMLToStream(xml_stream);

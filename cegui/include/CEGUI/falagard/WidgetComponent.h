@@ -51,7 +51,11 @@ namespace CEGUI
     {
     public:
         WidgetComponent() {}
-        WidgetComponent(const String& type, const String& look, const String& suffix, const String& renderer);
+        WidgetComponent(const String& type,
+                        const String& look,
+                        const String& suffix,
+                        const String& renderer,
+                        bool autoWindow);
 
         /*!
         \brief
@@ -83,6 +87,9 @@ namespace CEGUI
         void addPropertyInitialiser(const PropertyInitialiser& initialiser);
         void removePropertyInitialiser(const String& name);
         void clearPropertyInitialisers();
+
+        void setAutoWindow(bool is_auto);
+        bool isAutoWindow() const;
 
         void layout(const Window& owner) const;
 
@@ -129,6 +136,7 @@ namespace CEGUI
         String   d_imageryName;              //!< Name of a WidgetLookFeel to be used for the widget.
         String   d_name;                     //!< name to create this widget with.
         String   d_rendererType;             //!< Name of the window renderer type to assign to the widget.
+        bool     d_autoWindow;               //!< specifies whether to mark component as an auto-window.
         VerticalAlignment    d_vertAlign;    //!< Vertical alignment to be used for this widget.
         HorizontalAlignment  d_horzAlign;    //!< Horizontal alignment to be used for this widget.
         PropertiesList  d_properties;        //!< Collection of PropertyInitialisers to be applied the the widget upon creation.

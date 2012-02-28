@@ -336,20 +336,19 @@ void Scrollbar::addScrollbarProperties(void)
         "Value is either \"True\" or \"False\".",
         &Scrollbar::setEndLockEnabled, &Scrollbar::isEndLockEnabled, false
     );
+}
 
-    // we ban all these properties from xml for auto windows
-    if (isAutoWindow())
-    {
-        banPropertyFromXML("DocumentSize");
-        banPropertyFromXML("PageSize");
-        banPropertyFromXML("StepSize");
-        banPropertyFromXML("OverlapSize");
-        banPropertyFromXML("ScrollPosition");
+//----------------------------------------------------------------------------//
+void Scrollbar::banPropertiesForAutoWindow()
+{
+    Window::banPropertiesForAutoWindow();
 
-        // scrollbars tend to have their visibility toggled alot, so we ban
-        // that as well
-        banPropertyFromXML("Visible");
-    }
+    banPropertyFromXML("DocumentSize");
+    banPropertyFromXML("PageSize");
+    banPropertyFromXML("StepSize");
+    banPropertyFromXML("OverlapSize");
+    banPropertyFromXML("ScrollPosition");
+    banPropertyFromXML("Visible");
 }
 
 //----------------------------------------------------------------------------//

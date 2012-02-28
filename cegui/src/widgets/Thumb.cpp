@@ -341,16 +341,19 @@ void Thumb::addThumbProperties(void)
         "HorzFree", "Property to get/set the state the setting to free the thumb horizontally.  Value is either \"True\" or \"False\".",
         &Thumb::setHorzFree, &Thumb::isHorzFree, false
     );
-
-    // if we're an autowindow we ban some properties from XML
-    if (isAutoWindow())
-    {
-        banPropertyFromXML("VertRange");
-        banPropertyFromXML("HorzRange");
-        banPropertyFromXML("VertFree");
-        banPropertyFromXML("HorzFree");
-    }
 }
 
+//----------------------------------------------------------------------------//
+void Thumb::banPropertiesForAutoWindow()
+{
+    PushButton::banPropertiesForAutoWindow();
+
+    banPropertyFromXML("VertRange");
+    banPropertyFromXML("HorzRange");
+    banPropertyFromXML("VertFree");
+    banPropertyFromXML("HorzFree");
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

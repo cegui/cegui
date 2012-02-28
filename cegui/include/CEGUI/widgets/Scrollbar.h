@@ -574,6 +574,9 @@ protected:
     virtual void onMouseButtonDown(MouseEventArgs& e);
     virtual void onMouseWheel(MouseEventArgs& e);
 
+    // base class overrides
+    void banPropertiesForAutoWindow();
+
     // Implementation Data
     //! The size of the document / data being scrolled thorugh.
     float d_documentSize;

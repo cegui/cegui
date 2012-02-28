@@ -92,6 +92,7 @@ void ScrolledItemListBase::initialiseComponents()
         // IMPORTANT:
         // we must do this before the base class handling or we'll lose the onChildRemoved subscriber!!!
         d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", ContentPaneName);
+        d_pane->setAutoWindow(true);
 
         // set up clipping
         static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);

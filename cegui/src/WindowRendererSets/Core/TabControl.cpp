@@ -62,7 +62,9 @@ namespace CEGUI
             CEGUI_THROW(InvalidRequestException("FalagardTabControl::createTabButton - d_tabButtonType has not been set!"));
         }
 
-        return static_cast<TabButton*>(WindowManager::getSingleton().createWindow(d_tabButtonType, name));
+        Window* button = WindowManager::getSingleton().createWindow(d_tabButtonType, name);
+        button->setAutoWindow(true);
+        return static_cast<TabButton*>(button);
     }
 
     const String& FalagardTabControl::getTabButtonType() const

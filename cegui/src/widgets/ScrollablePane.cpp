@@ -70,6 +70,7 @@ ScrollablePane::ScrollablePane(const String& type, const String& name) :
         WindowManager::getSingleton().createWindow(
             ScrolledContainer::WidgetTypeName,
             ScrolledContainerName));
+    container->setAutoWindow(true);
 
     // add scrolled container widget as child
     addChild(container);
@@ -440,9 +441,7 @@ void ScrollablePane::addChild_impl(Element* element)
         CEGUI_THROW(AlreadyExistsException("ScrollablePane::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
     }
     
-    // See if this is an internally generated window
-    // (will have AutoWidgetNameSuffix in the name)
-    if (wnd->getName().find(AutoWidgetNameSuffix) != String::npos)
+    if (wnd->isAutoWindow())
     {
         // This is an internal widget, so should be added normally.
         Window::addChild_impl(wnd);
@@ -461,9 +460,7 @@ void ScrollablePane::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
     
-    // See if this is an internally generated window
-    // (will have AutoWidgetNameSuffix in the name)
-    if (wnd->getName().find(AutoWidgetNameSuffix) != String::npos)
+    if (wnd->isAutoWindow())
     {
         // This is an internal widget, so should be removed normally.
         Window::removeChild_impl(wnd);
@@ -615,6 +612,8 @@ void ScrollablePane::destroy(void)
 //----------------------------------------------------------------------------//
 NamedElement* ScrollablePane::getChildByNamePath_impl(const String& name_path) const
 {
+    // FIXME: This is horrible
+    //
     if (name_path.substr(0, 7) == "__auto_")
         return Window::getChildByNamePath_impl(name_path);
 	else

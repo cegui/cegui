@@ -190,12 +190,21 @@ The @c \<AreaProperty\> element is intended to allow the system to access a prop
 @section fal_elem_ref_sec_5 \<Child\> Element
 
 @subsection fal_elem_ref_sec_5_1 Purpose:
-The @c \<Child\> element defines a component widget that will be created and added to each instance of any window using the @c \<WidgetLook\> being defined. Some base widgets have requirements for @c \<Child\> element definition that must be provided.
+The @c \<Child\> element defines a component widget that will be created and
+added to each instance of any window using the @c \<WidgetLook\> being defined.
+Some base widgets have requirements for @c \<Child\> element definition that
+must be provided.
 
 @subsection fal_elem_ref_sec_5_2 Attributes:
 @arg @c type  specifies the widget type to create. Required attribute.
-@arg @c nameSuffix  specifies a suffix which will be used when naming the widget. The final name of the child widget will be that of the parent with this suffix appended. Required attribute.
-@arg @c look  specifies the name of a widget look to apply to the child widget. You should only use this if 'type' specifies a Falagard base widget type. Optional attribute.
+@arg @c nameSuffix  specifies a suffix which will be used when naming the
+widget. The final name of the child widget will be that of the parent with
+this suffix appended. Required attribute.
+@arg @c look  specifies the name of a widget look to apply to the child widget.
+You should only use this if 'type' specifies a Falagard base widget type.
+Optional attribute.
+@arg @c autoWindow specifies whether this child window is to be flagged as an
+auto-window. Optional attribute, default value is @c true.
 
 @subsection fal_elem_ref_sec_5_3 Usage:
 Note: the sub-elements should appear in the order that they are defined here.

@@ -143,6 +143,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::HelpStringAttribute("help");
     const String Falagard_xmlHandler::EventAttribute("event");
     const String Falagard_xmlHandler::InheritsAttribute("inherits");
+    const String Falagard_xmlHandler::AutoWindowAttribute("autoWindow");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -391,9 +392,18 @@ namespace CEGUI
     void Falagard_xmlHandler::elementChildStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent == 0);
-        d_childcomponent = CEGUI_NEW_AO WidgetComponent(attributes.getValueAsString(TypeAttribute), attributes.getValueAsString(LookAttribute), attributes.getValueAsString(NameSuffixAttribute), attributes.getValueAsString(RendererAttribute));
+        d_childcomponent = CEGUI_NEW_AO WidgetComponent(
+            attributes.getValueAsString(TypeAttribute),
+            attributes.getValueAsString(LookAttribute),
+            attributes.getValueAsString(NameSuffixAttribute),
+            attributes.getValueAsString(RendererAttribute),
+            attributes.getValueAsBool(AutoWindowAttribute, true));
 
-        CEGUI_LOGINSANE("-----> Start of definition for child widget. Type: " + d_childcomponent->getBaseWidgetType() + " Name: " + d_childcomponent->getWidgetName() + " Look: " + d_childcomponent->getWidgetLookName());
+        CEGUI_LOGINSANE("-----> Start of definition for child widget."
+            " Type: " + d_childcomponent->getBaseWidgetType() + 
+            " Name: " + d_childcomponent->getWidgetName() +
+            " Look: " + d_childcomponent->getWidgetLookName() +
+            " Auto: " + (d_childcomponent->isAutoWindow() ? "Yes" : "No"));
     }
 
     /*************************************************************************
