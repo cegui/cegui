@@ -6,7 +6,7 @@
 	purpose:	Interface to base class for Checkbox Widget
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -57,11 +57,11 @@ public:
 	/*************************************************************************
 		Event name constants
 	*************************************************************************/
-    /** Event fired when then checked state of the Checkbox changes.
+    /** Event fired when then selected state of the Checkbox changes.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Checkbox whose state has changed.
      */
-	static const String EventCheckStateChanged;
+	static const String EventSelectStateChanged;
 
 
 	/*************************************************************************

@@ -6,7 +6,7 @@
 	purpose:	Implementation of Checkbox base class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -39,7 +39,7 @@ const String Checkbox::WidgetTypeName("CEGUI/Checkbox");
 	Event name constants
 *************************************************************************/
 // generated internally by Window
-const String Checkbox::EventCheckStateChanged( "CheckStateChanged" );
+const String Checkbox::EventSelectStateChanged( "SelectStateChanged" );
 
 
 /*************************************************************************
@@ -83,7 +83,7 @@ void Checkbox::setSelected(bool select)
 *************************************************************************/
 void Checkbox::onSelectStateChange(WindowEventArgs& e)
 {
-	fireEvent(EventCheckStateChanged, e, EventNamespace);
+	fireEvent(EventSelectStateChanged, e, EventNamespace);
 }
 
 
