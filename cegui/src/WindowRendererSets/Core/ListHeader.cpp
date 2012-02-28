@@ -73,7 +73,9 @@ namespace CEGUI
             CEGUI_THROW(InvalidRequestException("FalagardListHeader::createNewSegment - Segment widget type has not been set!"));
         }
 
-        return static_cast<ListHeaderSegment*>(WindowManager::getSingleton().createWindow(d_segmentWidgetType, name));
+        Window* segment = WindowManager::getSingleton().createWindow(d_segmentWidgetType, name);
+        segment->setAutoWindow(true);
+        return static_cast<ListHeaderSegment*>(segment);
     }
 
     void FalagardListHeader::destroyListSegment(ListHeaderSegment* segment) const

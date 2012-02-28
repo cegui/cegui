@@ -180,6 +180,7 @@
 		<xsd:attribute name="nameSuffix" type="xsd:string" use="required" />
 		<xsd:attribute name="renderer" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="look" type="xsd:string" use="optional" default="" />
+		<xsd:attribute name="autoWindow" type="xsd:boolean" use="optional" default="true" />
 	</xsd:complexType>
 	<xsd:complexType name="horzFormatType">
 		<xsd:attribute name="type" type="horzFormatEnum" use="required" />

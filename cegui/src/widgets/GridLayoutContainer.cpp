@@ -500,6 +500,7 @@ Window* GridLayoutContainer::createDummy()
     Window* dummy = WindowManager::getSingleton().createWindow("DefaultWindow",
                     DummyName + String(i_buff));
 
+    dummy->setAutoWindow(true);
     dummy->setVisible(false);
     dummy->setSize(USize(UDim(0, 0), UDim(0, 0)));
     dummy->setDestroyedByParent(true);

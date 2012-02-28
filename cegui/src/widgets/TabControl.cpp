@@ -818,6 +818,8 @@ void TabControl::removeTab_impl(Window* window)
 
 NamedElement* TabControl::getChildByNamePath_impl(const String& name_path) const
 {
+    // FIXME: This is horrible
+    //
     if (name_path.substr(0, 7) == "__auto_")
         return Window::getChildByNamePath_impl(name_path);
     else

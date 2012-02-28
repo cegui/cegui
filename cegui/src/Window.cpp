@@ -118,7 +118,6 @@ const String Window::UserStringValueXMLAttributeName("value");
 
 //----------------------------------------------------------------------------//
 const String Window::TooltipNameSuffix("__auto_tooltip__");
-const String Window::AutoWidgetNameSuffix("__auto_");
 
 //----------------------------------------------------------------------------//
 BasicRenderedStringParser Window::d_basicStringParser;
@@ -169,7 +168,7 @@ Window::Window(const String& type, const String& name):
 
     // basic types and initial window name
     d_type(type),
-    d_autoWindow(d_name.rfind(AutoWidgetNameSuffix) != String::npos),
+    d_autoWindow(false),
 
     // basic state
     d_initialising(false),
@@ -1441,20 +1440,13 @@ void Window::addWindowProperties(void)
         &Window::setMouseInputPropagationEnabled, &Window::isMouseInputPropagationEnabled, false
     );
 
-    // we ban some of these properties from xml for auto windows by default
-    if (isAutoWindow())
-    {
-        banPropertyFromXML("DestroyedByParent");
-        banPropertyFromXML("VerticalAlignment");
-        banPropertyFromXML("HorizontalAlignment");
-        banPropertyFromXML("Area");
-        banPropertyFromXML("Position");
-        banPropertyFromXML("Size");
-        banPropertyFromXML("MinSize");
-        banPropertyFromXML("MaxSize");
-        banPropertyFromXML(&d_windowRendererProperty);
-        banPropertyFromXML(&d_lookNFeelProperty);
-    }
+    CEGUI_DEFINE_PROPERTY(Window, bool,
+        "AutoWindow",
+        "Property to access whether the system considers this window to be an "
+        "automatically created sub-component window."
+        "Value is either \"True\" or \"False\".",
+        &Window::setAutoWindow, &Window::isAutoWindow, false
+    );
 }
 
 //----------------------------------------------------------------------------//
@@ -1759,6 +1751,7 @@ void Window::setTooltipType(const String& tooltipType)
             d_customTip = static_cast<Tooltip*>(
                 WindowManager::getSingleton().createWindow(
                     tooltipType, getName() + TooltipNameSuffix));
+            d_customTip->setAutoWindow(true);
             d_weOwnTip = true;
         }
         CEGUI_CATCH (UnknownObjectException&)
@@ -3710,6 +3703,31 @@ void Window::setGUIContext(GUIContext* context)
 const Sizef& Window::getRootContainerSize() const
 {
     return getGUIContext().getSurfaceSize();
+}
+
+//----------------------------------------------------------------------------//
+void Window::setAutoWindow(bool is_auto)
+{
+    d_autoWindow = is_auto;
+
+    if (d_autoWindow)
+        banPropertiesForAutoWindow();
+}
+
+//----------------------------------------------------------------------------//
+void Window::banPropertiesForAutoWindow()
+{
+    banPropertyFromXML("AutoWindow"); // :-D
+    banPropertyFromXML("DestroyedByParent");
+    banPropertyFromXML("VerticalAlignment");
+    banPropertyFromXML("HorizontalAlignment");
+    banPropertyFromXML("Area");
+    banPropertyFromXML("Position");
+    banPropertyFromXML("Size");
+    banPropertyFromXML("MinSize");
+    banPropertyFromXML("MaxSize");
+    banPropertyFromXML(&d_windowRendererProperty);
+    banPropertyFromXML(&d_lookNFeelProperty);
 }
 
 //----------------------------------------------------------------------------//

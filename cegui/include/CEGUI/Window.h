@@ -433,8 +433,6 @@ public:
     *************************************************************************/
     //! Widget name suffix for automatically created tooltip widgets.
     static const String TooltipNameSuffix;
-    //! Something that all generated widgets will have in their names.
-    static const String AutoWidgetNameSuffix;
 
     // XML element and attribute names that relate to Window.
 	static const String WindowXMLElementName;
@@ -1269,8 +1267,10 @@ public:
 
     /*!
     \brief
-        Returns whether this window is an auto-child window.
-        All auto-child windows have "__auto_" in their name, but this is faster.
+        Returns whether this window is an auto window.
+
+        An auto window is typically a Window object created automatically by
+        CEGUI - for example to form part of a multi-element 'compound' widget.
     */
     bool isAutoWindow(void) const   {return d_autoWindow;}
 
@@ -2568,6 +2568,15 @@ public:
     //! ensure that the window will be rendered to the correct target surface.
     void syncTargetSurface();
 
+    /*!
+    \brief
+        Set whether this window is marked as an auto window.
+
+        An auto window is typically a Window object created automatically by
+        CEGUI - for example to form part of a multi-element 'compound' widget.
+    */
+    void setAutoWindow(bool is_auto);
+
     // overridden from Element
     const Sizef& getRootContainerSize() const;
 
@@ -3330,7 +3339,9 @@ protected:
     virtual int writePropertiesXML(XMLSerializer& xml_stream) const;
     virtual int writeChildWindowsXML(XMLSerializer& xml_stream) const;
     virtual bool writeAutoChildWindowXML(XMLSerializer& xml_stream) const;
-    
+
+    virtual void banPropertiesForAutoWindow();
+
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
@@ -3393,7 +3404,7 @@ protected:
     const String d_type;
     //! Type name of the window as defined in a Falagard mapping.
     String d_falagardType;
-    //! true when this window is an auto-window (it's name contains __auto_)
+    //! true when this window is an auto-window
     bool d_autoWindow;
 
     //! true when this window is currently being initialised (creating children etc)

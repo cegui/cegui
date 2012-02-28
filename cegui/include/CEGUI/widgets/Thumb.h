@@ -263,6 +263,9 @@ public:
 
 
 protected:
+    // overridden from base class
+    void banPropertiesForAutoWindow();
+
 	/*************************************************************************
 		New Thumb Events
 	*************************************************************************/
