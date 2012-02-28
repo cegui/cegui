@@ -71,6 +71,18 @@ struct ProgressBar_wrapper : CEGUI::ProgressBar, bp::wrapper< CEGUI::ProgressBar
         CEGUI::Window::allocateRenderingWindow(  );
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Window::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Window::banPropertiesForAutoWindow( );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -1524,6 +1536,15 @@ void register_ProgressBar_class(){
                 "allocateRenderingWindow"
                 , allocateRenderingWindow_function_type( &ProgressBar_wrapper::allocateRenderingWindow )
                 , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::banPropertiesForAutoWindow
+        
+            typedef void ( ProgressBar_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            ProgressBar_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &ProgressBar_wrapper::default_banPropertiesForAutoWindow ) );
         
         }
         { //::CEGUI::Window::beginInitialisation

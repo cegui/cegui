@@ -15,6 +15,18 @@ struct Scrollbar_wrapper : CEGUI::Scrollbar, bp::wrapper< CEGUI::Scrollbar > {
     
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Scrollbar::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Scrollbar::banPropertiesForAutoWindow( );
+    }
+
     float getAdjustDirectionFromPoint( ::CEGUI::Vector2f const & pt ) const {
         return CEGUI::Scrollbar::getAdjustDirectionFromPoint( boost::ref(pt) );
     }
@@ -1350,6 +1362,16 @@ void register_Scrollbar_class(){
             that derived class represents to the user.\n\
         *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "! Constructor for Scrollbar objects\n") );
         bp::scope Scrollbar_scope( Scrollbar_exposer );
+        { //::CEGUI::Scrollbar::banPropertiesForAutoWindow
+        
+            typedef void ( Scrollbar_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            Scrollbar_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &Scrollbar_wrapper::default_banPropertiesForAutoWindow )
+                , "base class overrides\n" );
+        
+        }
         { //::CEGUI::Scrollbar::getAdjustDirectionFromPoint
         
             typedef float ( Scrollbar_wrapper::*getAdjustDirectionFromPoint_function_type )( ::CEGUI::Vector2f const & ) const;

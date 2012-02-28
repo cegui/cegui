@@ -83,6 +83,18 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
         CEGUI::Window::allocateRenderingWindow(  );
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Window::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Window::banPropertiesForAutoWindow( );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -1489,6 +1501,15 @@ void register_RadioButton_class(){
                 "allocateRenderingWindow"
                 , allocateRenderingWindow_function_type( &RadioButton_wrapper::allocateRenderingWindow )
                 , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::banPropertiesForAutoWindow
+        
+            typedef void ( RadioButton_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            RadioButton_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &RadioButton_wrapper::default_banPropertiesForAutoWindow ) );
         
         }
         { //::CEGUI::Window::beginInitialisation
