@@ -96,7 +96,7 @@ void TextDemo::initStaticText()
     // Events
     //
     // Word-wrap checkbox (we can't re-use a handler struct for the last argument!!)
-    subscribeEvent("Root/TextDemo/Wrap", Checkbox::EventCheckStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/Wrap", Checkbox::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
     subscribeEvent("Root/TextDemo/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
     subscribeEvent("Root/TextDemo/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
     subscribeEvent("Root/TextDemo/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
@@ -126,7 +126,7 @@ void TextDemo::initSingleLineEdit()
 void TextDemo::initMultiLineEdit()
 {
     // Scrollbar checkbox
-    subscribeEvent("Root/TextDemo/forceScroll", Checkbox::EventCheckStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
+    subscribeEvent("Root/TextDemo/forceScroll", Checkbox::EventSelectStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
 }
 
 void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)

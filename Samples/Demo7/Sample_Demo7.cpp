@@ -391,7 +391,7 @@ void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
 
     // Subscribe handler that processes changes to the checkbox selection state.
     root->getChild("Window1/Checkbox")->
-        subscribeEvent(Checkbox::EventCheckStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
+        subscribeEvent(Checkbox::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
     root->getChild("Window1/Radio1")->

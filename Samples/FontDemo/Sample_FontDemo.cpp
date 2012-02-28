@@ -200,10 +200,10 @@ public:
         lbox->setItemSelectState(size_t (0), true);
 
         background->getChild("root/FontDemo/AutoScaled")->subscribeEvent(
-            Checkbox::EventCheckStateChanged,
+            Checkbox::EventSelectStateChanged,
             Event::Subscriber(&FontDemo::handleAutoScaled, this));
         background->getChild("root/FontDemo/Antialiased")->subscribeEvent(
-            Checkbox::EventCheckStateChanged,
+            Checkbox::EventSelectStateChanged,
             Event::Subscriber(&FontDemo::handleAntialiased, this));
         background->getChild("root/FontDemo/PointSize")->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
