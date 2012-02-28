@@ -516,8 +516,8 @@ representation of a mathematical expression.  There is currently support
 for the basic arithmetic operations; addition, subtraction, multiplication
 and division, as well as support for parenthesis.  In addition to this, it is
 also possible to use unified dimensions, image dimensions, widget
-dimensions and property dimensions directly within the expression by way of the
-pseudo-functions discussed below.
+dimensions, font metrics, text string extents and property dimensions directly within
+the expression by way of the pseudo-functions discussed below.
 
 @subsubsection fal_elem_ref_expressiondim_1_1 Unified Dimensions
 Unified dimensions can be specified within an expression string by way of the
@@ -533,31 +533,30 @@ component.
 @subsubsection fal_elem_ref_expressiondim_1_2 Image Dimensions
 Image dimensions can be specified within an expression string by way of the
 @c imagedim pseudo-function that has a single signature of:<br>
-- @c imagedim( imageset, image, type )
+- @c imagedim( 'imagename', type )
 - where:
-    - @c imageset is the name of the imageset holding the desired image.
-    - @c image is the name of the desired image on the specified imageset.
+    - @c imagename is the name of the desired image.
     - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
 enumeration indicating the specific dimension to be used.
 
 @subsubsection fal_elem_ref_expressiondim_1_3 Widget Dimensions
 Widget dimensions can be specified within an expression string by way of the
 @c widgetdim pseudo-function that has the following signature options:
-- @c widgetdim( widget, type )
+- @c widgetdim( 'widget', type )
 - @c widgetdim( type )
 - where:
-    - @c widget is the name suffix of a child window to access.
+    - @c widget is the name of a child window to access.
     - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
 enumeration indicating the specific dimension to be used.
 
 @subsubsection fal_elem_ref_expressiondim_1_4 Font Dimensions
 Font dimensions can be specified within an expression string by way of the
 @c fontdim pseudo-function that has the following signature options:
-- @c fontdim( widget, font, type, padding )
+- @c fontdim( 'widget', 'font', type, padding )
 - @c fontdim( type, padding )
 - @c fontdim( type )
 - where:
-    - @c widget is the name suffix of a child window to access.
+    - @c widget is the name of a child window to access.
     - @c font is the name of a font to access.
     - @c type is one of the values defined for the @ref fal_enum_ref_sec_3 "FontMetricType"
 enumeration indicating the specific metric to be used.
@@ -566,11 +565,11 @@ enumeration indicating the specific metric to be used.
 @subsubsection fal_elem_ref_expressiondim_1_5 Property Dimensions
 Property dimensions can be specified within an expression string by way of the
 @c propertydim pseudo-function that has the following signature options:
-- @c propertydim( widget, property, type )
-- @c propertydim( property, type )
-- @c propertydim( property )
+- @c propertydim( 'widget', 'property', type )
+- @c propertydim( 'property', type )
+- @c propertydim( 'property' )
 - where:
-    - @c widget is the name suffix of a child window to access.
+    - @c widget is the name of a child window to access.
     - @c property is the name of a property to access.
     - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
 enumeration indicating the specific dimension to be used.  @c type must be specified if
@@ -578,10 +577,24 @@ the property being accessed is a unified dimension property, if the property bei
 accessed is a simple float value, then @c type should be set to @c Float rather than one
 of the enumerated values.
 
+@subsubsection fal_elem_ref_expressiondim_1_6 String Extents
+Horizontal string extents can be specified within an expression string by way of the
+@c stringextent pseudo-function that has the following signature options:
+- @c stringextent( 'string', 'font' )
+- @c stringextent( 'string' )
+- where:
+    - @c string is text string whose horizontal extent is to be calculated
+    - @c font is the name of a font to use when measuring the extent (the default is
+to use the font from the window that has the looknfeel assigned.
+
+
 Notes for the use of these pseudo-functions:
-- quotation marks are never used around any of the arguments.
+- single quotation marks (') are used around string and name arguments. These strings
+support the backslash as an escape character - for example to specify the ' itself if
+needed, you would use the sequence \' wihin the string.
 - numerical values should be simple floats only (i.e it's not yet possible to embed a
 sub-expression to be passed to a pseudo-function.
+- enumeration values should not be surrounded by quotes
 
 @note The ExpressionDim should currently be considered highly experimental.  There
 is much that can be improved and enhanced to make the support even more useful.

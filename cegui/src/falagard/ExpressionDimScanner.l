@@ -42,24 +42,26 @@
 
 void prepareString(char* str);
 void pushDim(CEGUI::ExpressionDim_impl* ctx, CEGUI::BaseDim* dim);
+char* parse_single_quoted_string(char* in, char* out, size_t out_size);
 %}
 
-VALUE       -?[0-9]+\.?[0-9]*
-SPACING     [ \t]*
+SPACING     [[:space:]]*
+DECIMAL     [[:space:]]*-?[0-9]+\.?[0-9]*[[:space:]]*
+SQSTRING    [[:space:]]*'(\\.|[^'])*'[[:space:]]*
+UQARG       [[:space:]]*[^'",)]+[[:space:]]*
 
 %%
-{VALUE} {
+{DECIMAL} {
     CEGUI::AbsoluteDim* dim = new CEGUI::AbsoluteDim(atof(yytext));
     pushDim(ctx, dim);
 }
 
-"udim("{SPACING}{VALUE}{SPACING}","{SPACING}{VALUE}{SPACING}","{SPACING}[^)]+{SPACING}")" {
-    prepareString(yytext);
-
+"udim"\({DECIMAL},{DECIMAL},{UQARG}\) {
     float scale, offset;
     char type[32];
 
-    sscanf(&yytext[4], "( %g %g %31s )", &scale, &offset, type);
+    prepareString(yytext);
+    sscanf(&yytext[5], " %g %g %31s ", &scale, &offset, type);
 
     CEGUI::UnifiedDim* dim = new CEGUI::UnifiedDim(
         CEGUI::UDim(scale, offset),
@@ -68,13 +70,15 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"imagedim("[^,)]+","[^,)]+","[^,)]+")" {
-    prepareString(yytext);
-
+"imagedim"\({SQSTRING},{UQARG}\) {
     char image[256];
     char type[32];
 
-    sscanf(&yytext[8], "( %255s %31s )", image, type);
+    char* in = &yytext[9];
+    in = parse_single_quoted_string(in, image, 256);
+
+    prepareString(in);
+    sscanf(in, " %31s ", type);
 
     CEGUI::ImageDim* dim = new CEGUI::ImageDim(
         image,
@@ -83,13 +87,15 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"widgetdim("[^,)]+","[^),]+")" {
-    prepareString(yytext);
-
+"widgetdim"\({SQSTRING},{UQARG}\) {
     char widget[256];
     char type[32];
 
-    sscanf(&yytext[9], "( %255s %31s )", widget, type);
+    char* in = &yytext[10];
+    in = parse_single_quoted_string(in, widget, 256);
+
+    prepareString(in);
+    sscanf(in, " %31s ", type);
 
     CEGUI::WidgetDim* dim = new CEGUI::WidgetDim(
         widget,
@@ -98,12 +104,11 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"widgetdim("[^,)]+")" {
-    prepareString(yytext);
-
+"widgetdim"\({UQARG}\) {
     char type[32];
 
-    sscanf(&yytext[9], "( %31s )", type);
+    prepareString(yytext);
+    sscanf(&yytext[10], " %31s ", type);
 
     CEGUI::WidgetDim* dim = new CEGUI::WidgetDim(
         CEGUI::String(""),
@@ -112,16 +117,18 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"fontdim("[^,)]+","[^,)]+","[^,)]+","[^,)]+")" {
-    prepareString(yytext);
-
+"fontdim"\({SQSTRING},{SQSTRING},{UQARG},{DECIMAL}\) {
     char widget[256];
     char font[128];
     char type[32];
     float padding;
 
-    sscanf(&yytext[7], "( %255s %127s %31s %g )",
-           widget, font, type, &padding);
+    char* in = &yytext[8];
+    in = parse_single_quoted_string(in, widget, 256);
+    in = parse_single_quoted_string(in, font, 128);
+
+    prepareString(in);
+    sscanf(in, " %31s %g ", type, &padding);
 
     CEGUI::FontDim* dim = new CEGUI::FontDim(
         widget,
@@ -133,13 +140,12 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"fontdim("[^,)]+","[^,)]+")" {
-    prepareString(yytext);
-
+"fontdim"\({UQARG},{DECIMAL}\) {
     char type[32];
     float padding;
 
-    sscanf(&yytext[7], "( %31s %g )", type, &padding);
+    prepareString(yytext);
+    sscanf(&yytext[8], " %31s %g ", type, &padding);
 
     CEGUI::FontDim* dim = new CEGUI::FontDim(
         CEGUI::String(""),
@@ -151,12 +157,11 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"fontdim("[^,)]+")" {
-    prepareString(yytext);
-
+"fontdim"\({UQARG}\) {
     char type[32];
 
-    sscanf(&yytext[7], "( %31s )", type);
+    prepareString(yytext);
+    sscanf(&yytext[8], " %31s ", type);
 
     CEGUI::FontDim* dim = new CEGUI::FontDim(
         CEGUI::String(""),
@@ -168,14 +173,49 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"propertydim("[^,)]+","[^,)]+","[^,)]+")" {
-    prepareString(yytext);
+"stringextent"\({SQSTRING},{SQSTRING}\) {
+    char text_string[512];
+    char font[128];
 
+    char* in = &yytext[13];
+    in = parse_single_quoted_string(in, text_string, 512);
+    parse_single_quoted_string(in, font, 128);
+
+    CEGUI::FontDim* dim = new CEGUI::FontDim(
+        CEGUI::String(""),
+        CEGUI::String(font),
+        CEGUI::String(text_string),
+        CEGUI::FMT_HORZ_EXTENT,
+        0.0f);
+
+    pushDim(ctx, dim);
+}
+
+"stringextent"\({SQSTRING}\) {
+    char text_string[512];
+    char* in = &yytext[13];
+    parse_single_quoted_string(in, text_string, 512);
+
+    CEGUI::FontDim* dim = new CEGUI::FontDim(
+        CEGUI::String(""),
+        CEGUI::String(""),
+        CEGUI::String(text_string),
+        CEGUI::FMT_HORZ_EXTENT,
+        0.0f);
+
+    pushDim(ctx, dim);
+}
+
+"propertydim"\({SQSTRING},{SQSTRING},{UQARG}\) {
     char widget[256];
-    char property[128];
+    char property[256];
     char type[32];
+    char* in = &yytext[12];
 
-    sscanf(&yytext[11], "( %255s %127s %31s )", widget, property, type);
+    in = parse_single_quoted_string(in, widget, 256);
+    in = parse_single_quoted_string(in, property, 256);
+    prepareString(in);
+    sscanf(in, " %31s ", type);
 
     CEGUI::PropertyDim* dim = new CEGUI::PropertyDim(
         widget,
@@ -185,13 +225,14 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"propertydim("[^,)]+","[^,)]+")" {
-    prepareString(yytext);
-
-    char property[128];
+"propertydim"\({SQSTRING},{UQARG}\) {
+    char property[256];
     char type[32];
+    char* in = &yytext[12];
 
-    sscanf(&yytext[11], "( %127s %31s )", property, type);
+    in = parse_single_quoted_string(in, property, 256);
+    prepareString(in);
+    sscanf(in, " %31s ", type);
 
     CEGUI::PropertyDim* dim = new CEGUI::PropertyDim(
         CEGUI::String(""),
@@ -201,12 +242,10 @@ SPACING     [ \t]*
     pushDim(ctx, dim);
 }
 
-"propertydim("[^,)]+")" {
-    prepareString(yytext);
-
-    char property[128];
-
-    sscanf(&yytext[11], "( %127s )", property);
+"propertydim"\({SQSTRING}\) {
+    char property[256];
+    char* in = &yytext[12];
+    parse_single_quoted_string(in, property, 256);
 
     CEGUI::PropertyDim* dim = new CEGUI::PropertyDim(
         CEGUI::String(""),
@@ -251,3 +290,38 @@ void pushDim(CEGUI::ExpressionDim_impl* ctx, CEGUI::BaseDim* dim)
     ctx->d_stack.push_back(
         std::make_pair(CEGUI::ExpressionDimParser::token::DIMVAL, dim));
 }
+
+char* parse_single_quoted_string(char* in, char* out, size_t out_size)
+{
+    --out_size;
+    size_t out_cnt = 0;
+
+    char* const orig_in = in;
+    in = strchr(in, '\'');
+
+    if (!in)
+    {
+        *out = 0;
+        return orig_in;
+    }
+
+    ++in;
+
+    char c;
+    while (out_cnt < out_size && (c = *in++))
+    {
+        if (c == '\'')
+            break;
+
+        if ((c == '\\') && !(c = *in++))
+            break;
+
+        *out++ = c;
+        ++out_cnt;
+    }
+
+    *out = 0;
+
+    return in;
+}
+
