@@ -49,7 +49,6 @@
 #include "CEGUI/WindowRendererSets/Core/Static.h"
 #include "CEGUI/WindowRendererSets/Core/StaticImage.h"
 #include "CEGUI/WindowRendererSets/Core/StaticText.h"
-#include "CEGUI/WindowRendererSets/Core/SystemButton.h"
 #include "CEGUI/WindowRendererSets/Core/TabButton.h"
 #include "CEGUI/WindowRendererSets/Core/TabControl.h"
 #include "CEGUI/WindowRendererSets/Core/Titlebar.h"
@@ -91,7 +90,6 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardStatic>);
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardStaticImage>);
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardStaticText>);
-    d_registry.push_back(new TplWRFactoryRegisterer<FalagardSystemButton>);
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardTabButton>);
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardTabControl>);
     d_registry.push_back(new TplWRFactoryRegisterer<FalagardTitlebar>);
