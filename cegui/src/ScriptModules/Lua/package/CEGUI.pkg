@@ -68,7 +68,7 @@ $pfile "elements/GUISheet.pkg"
 $pfile "elements/Tree.pkg"
 
 $pfile "elements/ButtonBase.pkg"
-$pfile "elements/Checkbox.pkg"
+$pfile "elements/ToggleButton.pkg"
 $pfile "elements/PushButton.pkg"
 $pfile "elements/Thumb.pkg"
 $pfile "elements/RadioButton.pkg"

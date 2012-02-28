@@ -40,8 +40,6 @@
 
 #include "CentredRenderedString.pypp.hpp"
 
-#include "Checkbox.pypp.hpp"
-
 #include "Clipboard.pypp.hpp"
 
 #include "Colour.pypp.hpp"
@@ -384,6 +382,8 @@
 
 #include "Titlebar.pypp.hpp"
 
+#include "ToggleButton.pypp.hpp"
+
 #include "Tooltip.pypp.hpp"
 
 #include "Tree.pypp.hpp"
@@ -607,8 +607,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_CentredRenderedString_class();
 
-    register_Checkbox_class();
-
     register_Clipboard_class();
 
     register_Colour_class();
@@ -822,6 +820,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_PushButton_class();
 
     register_Quaternion_class();
+
+    register_ToggleButton_class();
 
     register_RadioButton_class();
 

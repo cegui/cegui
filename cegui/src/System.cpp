@@ -688,7 +688,6 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<DragContainer>();
     WindowFactoryManager::addWindowType<ScrolledContainer>();
     WindowFactoryManager::addWindowType<ClippedContainer>();
-    WindowFactoryManager::addWindowType<Checkbox>();
     WindowFactoryManager::addWindowType<PushButton>();
     WindowFactoryManager::addWindowType<RadioButton>();
     WindowFactoryManager::addWindowType<Combobox>();
@@ -713,6 +712,7 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<TabControl>();
     WindowFactoryManager::addWindowType<Thumb>();
     WindowFactoryManager::addWindowType<Titlebar>();
+    WindowFactoryManager::addWindowType<ToggleButton>();
     WindowFactoryManager::addWindowType<Tooltip>();
     WindowFactoryManager::addWindowType<ItemListbox>();
     WindowFactoryManager::addWindowType<GroupBox>();

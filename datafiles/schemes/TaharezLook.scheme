@@ -7,7 +7,7 @@
 
 	<FalagardMapping windowType="TaharezLook/Label"       targetType="DefaultWindow"     renderer="Core/Default"      lookNFeel="TaharezLook/Label" />
 	<FalagardMapping windowType="TaharezLook/Button"      targetType="CEGUI/PushButton"  renderer="Core/Button"       lookNFeel="TaharezLook/Button" />
-	<FalagardMapping windowType="TaharezLook/Checkbox"    targetType="CEGUI/Checkbox"    renderer="Core/ToggleButton" lookNFeel="TaharezLook/Checkbox" />
+	<FalagardMapping windowType="TaharezLook/Checkbox"    targetType="CEGUI/ToggleButton"    renderer="Core/ToggleButton" lookNFeel="TaharezLook/Checkbox" />
 	<FalagardMapping windowType="TaharezLook/ImageButton" targetType="CEGUI/PushButton"  renderer="Core/Button"       lookNFeel="TaharezLook/ImageButton" />
 	<FalagardMapping windowType="TaharezLook/RadioButton" targetType="CEGUI/RadioButton" renderer="Core/ToggleButton" lookNFeel="TaharezLook/RadioButton" />
 	<FalagardMapping windowType="TaharezLook/FrameWindow"  targetType="CEGUI/FrameWindow" renderer="Core/FrameWindow"  lookNFeel="TaharezLook/FrameWindow" />

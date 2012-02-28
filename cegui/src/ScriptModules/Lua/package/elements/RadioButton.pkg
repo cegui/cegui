@@ -1,11 +1,5 @@
-/***********************************************************************
-	RadioButton
-***********************************************************************/
-class RadioButton : public ButtonBase
+class RadioButton : public ToggleButton
 {
-	bool isSelected() const;
-	void setSelected(bool select);
-
 	unsigned long getGroupID() const;
 	void setGroupID(unsigned long group);
 
