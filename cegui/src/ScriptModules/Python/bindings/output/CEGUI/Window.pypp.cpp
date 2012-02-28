@@ -5989,6 +5989,12 @@ void register_Window_class(){
         Window_exposer.add_static_property( "AutoWidgetNameSuffix"
                         , bp::make_getter( &CEGUI::Window::AutoWidgetNameSuffix
                                 , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "AutoWindowNamePathXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Window::AutoWindowNamePathXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "AutoWindowXMLElementName"
+                        , bp::make_getter( &CEGUI::Window::AutoWindowXMLElementName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "EventActivated"
                         , bp::make_getter( &CEGUI::Window::EventActivated
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -6114,6 +6120,24 @@ void register_Window_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "TooltipNameSuffix"
                         , bp::make_getter( &CEGUI::Window::TooltipNameSuffix
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "UserStringNameXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Window::UserStringNameXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "UserStringValueXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Window::UserStringValueXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "UserStringXMLElementName"
+                        , bp::make_getter( &CEGUI::Window::UserStringXMLElementName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "WindowNameXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Window::WindowNameXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "WindowTypeXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Window::WindowTypeXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Window_exposer.add_static_property( "WindowXMLElementName"
+                        , bp::make_getter( &CEGUI::Window::WindowXMLElementName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Element::addElementProperties
         

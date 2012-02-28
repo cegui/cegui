@@ -391,7 +391,7 @@ void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
 
     // Subscribe handler that processes changes to the checkbox selection state.
     root->getChild("Window1/Checkbox")->
-        subscribeEvent(Checkbox::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
+        subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
     root->getChild("Window1/Radio1")->
@@ -469,7 +469,7 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
     // show or hide the FrameWindow containing the multi-line editbox according to the state of the
     // checkbox widget
     static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window3")->
-        setVisible(static_cast<Checkbox*>(static_cast<const WindowEventArgs&>(e).window)->isSelected());
+        setVisible(static_cast<ToggleButton*>(static_cast<const WindowEventArgs&>(e).window)->isSelected());
 
     // event was handled.
     return true;

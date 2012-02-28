@@ -6,7 +6,7 @@
 
 	<FalagardMapping windowType="WindowsLook/Label"       targetType="DefaultWindow"     renderer="Core/Default"      lookNFeel="WindowsLook/Label" />
 	<FalagardMapping windowType="WindowsLook/Button"      targetType="CEGUI/PushButton"  renderer="Core/Button"       lookNFeel="WindowsLook/Button" />
-	<FalagardMapping windowType="WindowsLook/Checkbox"    targetType="CEGUI/Checkbox"    renderer="Core/ToggleButton" lookNFeel="WindowsLook/Checkbox" />
+	<FalagardMapping windowType="WindowsLook/Checkbox"    targetType="CEGUI/ToggleButton"    renderer="Core/ToggleButton" lookNFeel="WindowsLook/Checkbox" />
 	<FalagardMapping windowType="WindowsLook/IconButton"  targetType="CEGUI/PushButton"  renderer="Core/Button"       lookNFeel="WindowsLook/IconButton" />
 	<FalagardMapping windowType="WindowsLook/RadioButton" targetType="CEGUI/RadioButton" renderer="Core/ToggleButton" lookNFeel="WindowsLook/RadioButton" />
 	<FalagardMapping windowType="WindowsLook/FrameWindow"  targetType="CEGUI/FrameWindow" renderer="Core/FrameWindow"  lookNFeel="WindowsLook/FrameWindow" />

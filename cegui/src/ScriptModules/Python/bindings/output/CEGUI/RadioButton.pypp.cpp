@@ -15,32 +15,36 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
     
     }
 
-    void deselectOtherButtonsInGroup(  ) const {
-        CEGUI::RadioButton::deselectOtherButtonsInGroup(  );
+    void addRadioButtonProperties(  ){
+        CEGUI::RadioButton::addRadioButtonProperties(  );
     }
 
-    virtual void onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
-        if( bp::override func_onMouseButtonUp = this->get_override( "onMouseButtonUp" ) )
-            func_onMouseButtonUp( boost::ref(e) );
+    void deselectSiblingRadioButtonsInGroup(  ) const {
+        CEGUI::RadioButton::deselectSiblingRadioButtonsInGroup(  );
+    }
+
+    virtual bool getPostClickSelectState(  ) const {
+        if( bp::override func_getPostClickSelectState = this->get_override( "getPostClickSelectState" ) )
+            return func_getPostClickSelectState(  );
         else{
-            this->CEGUI::RadioButton::onMouseButtonUp( boost::ref(e) );
+            return this->CEGUI::RadioButton::getPostClickSelectState(  );
         }
     }
     
-    virtual void default_onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
-        CEGUI::RadioButton::onMouseButtonUp( boost::ref(e) );
+    virtual bool default_getPostClickSelectState(  ) const {
+        return CEGUI::RadioButton::getPostClickSelectState( );
     }
 
-    virtual void onSelectStateChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onSelectStateChanged = this->get_override( "onSelectStateChanged" ) )
-            func_onSelectStateChanged( boost::ref(e) );
+    virtual void onSelectStateChange( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onSelectStateChange = this->get_override( "onSelectStateChange" ) )
+            func_onSelectStateChange( boost::ref(e) );
         else{
-            this->CEGUI::RadioButton::onSelectStateChanged( boost::ref(e) );
+            this->CEGUI::RadioButton::onSelectStateChange( boost::ref(e) );
         }
     }
     
-    virtual void default_onSelectStateChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::RadioButton::onSelectStateChanged( boost::ref(e) );
+    virtual void default_onSelectStateChange( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::RadioButton::onSelectStateChange( boost::ref(e) );
     }
 
     virtual void addChild_impl( ::CEGUI::Element * element ){
@@ -61,6 +65,10 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
 
     void addNamedElementProperties(  ){
         CEGUI::NamedElement::addNamedElementProperties(  );
+    }
+
+    void addToggleButtonProperties(  ){
+        CEGUI::ToggleButton::addToggleButtonProperties(  );
     }
 
     void addWindowProperties(  ){
@@ -653,6 +661,18 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
     
     virtual void default_onMouseButtonDown( ::CEGUI::MouseEventArgs & e ){
         CEGUI::ButtonBase::onMouseButtonDown( boost::ref(e) );
+    }
+
+    virtual void onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        if( bp::override func_onMouseButtonUp = this->get_override( "onMouseButtonUp" ) )
+            func_onMouseButtonUp( boost::ref(e) );
+        else{
+            this->CEGUI::ToggleButton::onMouseButtonUp( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onMouseButtonUp( ::CEGUI::MouseEventArgs & e ){
+        CEGUI::ToggleButton::onMouseButtonUp( boost::ref(e) );
     }
 
     virtual void onMouseClicked( ::CEGUI::MouseEventArgs & e ){
@@ -1272,30 +1292,25 @@ struct RadioButton_wrapper : CEGUI::RadioButton, bp::wrapper< CEGUI::RadioButton
 void register_RadioButton_class(){
 
     { //::CEGUI::RadioButton
-        typedef bp::class_< RadioButton_wrapper, bp::bases< CEGUI::ButtonBase >, boost::noncopyable > RadioButton_exposer_t;
-        RadioButton_exposer_t RadioButton_exposer = RadioButton_exposer_t( "RadioButton", "*!\n\
-        \n\
-           Base class to provide the logic for Radio Button widgets.\n\
-        \n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "*************************************************************************\n\
-           Construction  Destruction\n\
-        *************************************************************************\n") );
+        typedef bp::class_< RadioButton_wrapper, bp::bases< CEGUI::ToggleButton >, boost::noncopyable > RadioButton_exposer_t;
+        RadioButton_exposer_t RadioButton_exposer = RadioButton_exposer_t( "RadioButton", "! Base class to provide the logic for Radio Button widgets.\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") )) );
         bp::scope RadioButton_scope( RadioButton_exposer );
-        { //::CEGUI::RadioButton::deselectOtherButtonsInGroup
+        { //::CEGUI::RadioButton::addRadioButtonProperties
         
-            typedef void ( RadioButton_wrapper::*deselectOtherButtonsInGroup_function_type )(  ) const;
+            typedef void ( RadioButton_wrapper::*addRadioButtonProperties_function_type )(  ) ;
             
             RadioButton_exposer.def( 
-                "deselectOtherButtonsInGroup"
-                , deselectOtherButtonsInGroup_function_type( &RadioButton_wrapper::deselectOtherButtonsInGroup )
-                , "*************************************************************************\n\
-               Implementation Functions\n\
-            *************************************************************************\n\
-            *!\n\
-            \n\
-               Deselect any selected radio buttons attached to the same parent within the same group\n\
-               (but not do not deselect 'this').\n\
-            *\n" );
+                "addRadioButtonProperties"
+                , addRadioButtonProperties_function_type( &RadioButton_wrapper::addRadioButtonProperties ) );
+        
+        }
+        { //::CEGUI::RadioButton::deselectSiblingRadioButtonsInGroup
+        
+            typedef void ( RadioButton_wrapper::*deselectSiblingRadioButtonsInGroup_function_type )(  ) const;
+            
+            RadioButton_exposer.def( 
+                "deselectSiblingRadioButtonsInGroup"
+                , deselectSiblingRadioButtonsInGroup_function_type( &RadioButton_wrapper::deselectSiblingRadioButtonsInGroup ) );
         
         }
         { //::CEGUI::RadioButton::getGroupID
@@ -1306,12 +1321,23 @@ void register_RadioButton_class(){
                 "getGroupID"
                 , getGroupID_function_type( &::CEGUI::RadioButton::getGroupID )
                 , "*!\n\
-               \n\
-                  return the groupID assigned to this radio button\n\
+                \n\
+                    return the groupID assigned to this radio button\n\
             \n\
-               @return\n\
-                  ulong value that identifies the Radio Button group this widget belongs to.\n\
-               *\n" );
+                @return\n\
+                    ulong value that identifies the Radio Button group this widget\n\
+                    belongs to.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::RadioButton::getPostClickSelectState
+        
+            typedef bool ( RadioButton_wrapper::*getPostClickSelectState_function_type )(  ) const;
+            
+            RadioButton_exposer.def( 
+                "getPostClickSelectState"
+                , getPostClickSelectState_function_type( &RadioButton_wrapper::default_getPostClickSelectState )
+                , "overridden from ToggleButton\n" );
         
         }
         { //::CEGUI::RadioButton::getSelectedButtonInGroup
@@ -1323,66 +1349,28 @@ void register_RadioButton_class(){
                 , getSelectedButtonInGroup_function_type( &::CEGUI::RadioButton::getSelectedButtonInGroup )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-               \n\
-                  Return a pointer to the RadioButton object within the same group as this RadioButton, that\n\
-                  is currently selected.\n\
+                \n\
+                    Return a pointer to the RadioButton object within the same group as this\n\
+                    RadioButton, that is currently selected.\n\
             \n\
-               @return\n\
-                  Pointer to the RadioButton object that is the RadioButton within the same group as this\
-                  RadioButton,\n\
-                  and is attached to the same parent window as this RadioButton, that is currently selected.\n\
-                  Returns NULL if no button within the group is selected, or if 'this' is not attached to a\
-                  parent window.\n\
-               *\n" );
+                @return\n\
+                    Pointer to the RadioButton object that is the RadioButton within the\n\
+                    same group as this RadioButton, and is attached to the same parent\n\
+                    window as this RadioButton, that is currently selected. Returns 0 if no\n\
+                    button within the group is selected, or if 'this' is not attached to a\n\
+                    parent window.\n\
+                *\n" );
         
         }
-        { //::CEGUI::RadioButton::isSelected
+        { //::CEGUI::RadioButton::onSelectStateChange
         
-            typedef bool ( ::CEGUI::RadioButton::*isSelected_function_type )(  ) const;
+            typedef void ( RadioButton_wrapper::*onSelectStateChange_function_type )( ::CEGUI::WindowEventArgs & ) ;
             
             RadioButton_exposer.def( 
-                "isSelected"
-                , isSelected_function_type( &::CEGUI::RadioButton::isSelected )
-                , "*************************************************************************\n\
-                  Accessor Functions\n\
-               ************************************************************************* \n\
-               *!\n\
-               \n\
-                  return true if the radio button is selected (has the checkmark)\n\
-            \n\
-               @return\n\
-                  true if this widget is selected, false if the widget is not selected.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::RadioButton::onMouseButtonUp
-        
-            typedef void ( RadioButton_wrapper::*onMouseButtonUp_function_type )( ::CEGUI::MouseEventArgs & ) ;
-            
-            RadioButton_exposer.def( 
-                "onMouseButtonUp"
-                , onMouseButtonUp_function_type( &RadioButton_wrapper::default_onMouseButtonUp )
+                "onSelectStateChange"
+                , onSelectStateChange_function_type( &RadioButton_wrapper::default_onSelectStateChange )
                 , ( bp::arg("e") )
-                , "*************************************************************************\n\
-               Overridden Event handlers\n\
-            *************************************************************************\n" );
-        
-        }
-        { //::CEGUI::RadioButton::onSelectStateChanged
-        
-            typedef void ( RadioButton_wrapper::*onSelectStateChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            RadioButton_exposer.def( 
-                "onSelectStateChanged"
-                , onSelectStateChanged_function_type( &RadioButton_wrapper::default_onSelectStateChanged )
-                , ( bp::arg("e") )
-                , "*************************************************************************\n\
-               New Radio Button Events\n\
-            *************************************************************************\n\
-            *!\n\
-            \n\
-               event triggered internally when the select state of the button changes.\n\
-            *\n" );
+                , "overridden from ToggleButton\n" );
         
         }
         { //::CEGUI::RadioButton::setGroupID
@@ -1394,45 +1382,15 @@ void register_RadioButton_class(){
                 , setGroupID_function_type( &::CEGUI::RadioButton::setGroupID )
                 , ( bp::arg("group") )
                 , "*!\n\
-               \n\
-                  set the groupID for this radio button\n\
+                \n\
+                    set the groupID for this radio button\n\
             \n\
-               @param group\n\
-                  ulong value specifying the radio button group that this widget belongs to.\n\
-            \n\
-               @return  \n\
-                  Nothing.\n\
-               *\n" );
+                @param group\n\
+                    ulong value specifying the radio button group that this widget\n\
+                    belongs to.\n\
+                *\n" );
         
         }
-        { //::CEGUI::RadioButton::setSelected
-        
-            typedef void ( ::CEGUI::RadioButton::*setSelected_function_type )( bool ) ;
-            
-            RadioButton_exposer.def( 
-                "setSelected"
-                , setSelected_function_type( &::CEGUI::RadioButton::setSelected )
-                , ( bp::arg("select") )
-                , "*************************************************************************\n\
-                  Manipulator Functions\n\
-               *************************************************************************\n\
-               *!\n\
-               \n\
-                  set whether the radio button is selected or not\n\
-            \n\
-               @param select\n\
-                  true to put the radio button in the selected state, false to put the radio button in the\n\
-                  deselected state.  If changing to the selected state, any previously selected radio button\n\
-                  within the same group is automatically deselected.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
-        RadioButton_exposer.add_static_property( "EventSelectStateChanged"
-                        , bp::make_getter( &CEGUI::RadioButton::EventSelectStateChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         { //::CEGUI::Window::addChild_impl
         
             typedef void ( RadioButton_wrapper::*addChild_impl_function_type )( ::CEGUI::Element * ) ;
@@ -1470,6 +1428,15 @@ void register_RadioButton_class(){
             \n\
                 Add standard CEGUI.NamedElement properties.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::ToggleButton::addToggleButtonProperties
+        
+            typedef void ( RadioButton_wrapper::*addToggleButtonProperties_function_type )(  ) ;
+            
+            RadioButton_exposer.def( 
+                "addToggleButtonProperties"
+                , addToggleButtonProperties_function_type( &RadioButton_wrapper::addToggleButtonProperties ) );
         
         }
         { //::CEGUI::Window::addWindowProperties
@@ -2435,6 +2402,17 @@ void register_RadioButton_class(){
                 , "*************************************************************************\n\
                Overridden event handlers\n\
             *************************************************************************\n" );
+        
+        }
+        { //::CEGUI::ToggleButton::onMouseButtonUp
+        
+            typedef void ( RadioButton_wrapper::*onMouseButtonUp_function_type )( ::CEGUI::MouseEventArgs & ) ;
+            
+            RadioButton_exposer.def( 
+                "onMouseButtonUp"
+                , onMouseButtonUp_function_type( &RadioButton_wrapper::default_onMouseButtonUp )
+                , ( bp::arg("e") )
+                , "base class overriddes\n" );
         
         }
         { //::CEGUI::Window::onMouseClicked

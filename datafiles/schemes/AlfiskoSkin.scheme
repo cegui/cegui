@@ -9,7 +9,7 @@
     <FalagardMapping windowType="AlfiskoSkin/Button" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="AlfiskoSkin/Button" />
     <FalagardMapping windowType="AlfiskoSkin/ImageButton" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="AlfiskoSkin/ImageButton" />
     <FalagardMapping windowType="AlfiskoSkin/RadioButton" targetType="CEGUI/RadioButton" renderer="Core/ToggleButton" lookNFeel="AlfiskoSkin/RadioButton" />
-    <FalagardMapping windowType="AlfiskoSkin/Checkbox" targetType="CEGUI/Checkbox" renderer="Core/ToggleButton" lookNFeel="AlfiskoSkin/Checkbox" />
+    <FalagardMapping windowType="AlfiskoSkin/Checkbox" targetType="CEGUI/ToggleButton" renderer="Core/ToggleButton" lookNFeel="AlfiskoSkin/Checkbox" />
     <FalagardMapping windowType="AlfiskoSkin/Titlebar" targetType="CEGUI/Titlebar" renderer="Core/Titlebar" lookNFeel="AlfiskoSkin/Titlebar" />
     <FalagardMapping windowType="AlfiskoSkin/FrameWindow" targetType="CEGUI/FrameWindow" renderer="Core/FrameWindow" lookNFeel="AlfiskoSkin/FrameWindow" />
     <FalagardMapping windowType="AlfiskoSkin/Editbox" targetType="CEGUI/Editbox" renderer="Core/Editbox" lookNFeel="AlfiskoSkin/Editbox" />

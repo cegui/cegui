@@ -303,6 +303,15 @@ void register_Property_class(){
                 , ( bp::arg("receiver"), bp::arg("xml_stream") ) );
         
         }
+        Property_exposer.add_static_property( "NameXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Property::NameXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Property_exposer.add_static_property( "ValueXMLAttributeName"
+                        , bp::make_getter( &CEGUI::Property::ValueXMLAttributeName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Property_exposer.add_static_property( "XMLElementName"
+                        , bp::make_getter( &CEGUI::Property::XMLElementName
+                                , bp::return_value_policy< bp::return_by_value >() ) );
     }
 
 }

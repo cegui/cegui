@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Mon Feb 27 00:11:58 2012.
+** Generated automatically by tolua++-1.0.93 on Tue Feb 28 12:03:12 2012.
 */
 
 #ifndef __cplusplus
@@ -472,6 +472,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::ElementEventArgs");
  tolua_usertype(tolua_S,"CEGUI::EventIterator");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryIterator");
+ tolua_usertype(tolua_S,"CEGUI::ToggleButton");
  tolua_usertype(tolua_S,"CEGUI::AnimationManager");
  tolua_usertype(tolua_S,"CEGUI::UVector2");
  tolua_usertype(tolua_S,"CEGUI::Vertex");
@@ -549,13 +550,12 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
  tolua_usertype(tolua_S,"CEGUI::TextComponent");
  tolua_usertype(tolua_S,"CEGUI::FrameComponent");
- tolua_usertype(tolua_S,"CEGUI::MenuItem");
  tolua_usertype(tolua_S,"CEGUI::Size<float>");
+ tolua_usertype(tolua_S,"CEGUI::MenuItem");
  tolua_usertype(tolua_S,"CEGUI::ListHeader");
- tolua_usertype(tolua_S,"CEGUI::PropertyDim");
  tolua_usertype(tolua_S,"CEGUI::Affector");
+ tolua_usertype(tolua_S,"CEGUI::PropertyDim");
  tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
- tolua_usertype(tolua_S,"CEGUI::Checkbox");
  tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
  tolua_usertype(tolua_S,"CEGUI::Vector3<float>");
  tolua_usertype(tolua_S,"CEGUI::Animation");
@@ -35030,21 +35030,21 @@ static int tolua_CEGUI_CEGUI_ButtonBase_isPushed00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: isSelected of class  CEGUI::Checkbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Checkbox_isSelected00
-static int tolua_CEGUI_CEGUI_Checkbox_isSelected00(lua_State* tolua_S)
+/* method: isSelected of class  CEGUI::ToggleButton */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ToggleButton_isSelected00
+static int tolua_CEGUI_CEGUI_ToggleButton_isSelected00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::Checkbox",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ToggleButton",0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,2,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  const CEGUI::Checkbox* self = (const CEGUI::Checkbox*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::ToggleButton* self = (const CEGUI::ToggleButton*)  tolua_tousertype(tolua_S,1,0);
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isSelected'",NULL);
 #endif
@@ -35062,14 +35062,14 @@ static int tolua_CEGUI_CEGUI_Checkbox_isSelected00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setSelected of class  CEGUI::Checkbox */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Checkbox_setSelected00
-static int tolua_CEGUI_CEGUI_Checkbox_setSelected00(lua_State* tolua_S)
+/* method: setSelected of class  CEGUI::ToggleButton */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ToggleButton_setSelected00
+static int tolua_CEGUI_CEGUI_ToggleButton_setSelected00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"CEGUI::Checkbox",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,1,"CEGUI::ToggleButton",0,&tolua_err) ||
  !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
@@ -35077,7 +35077,7 @@ static int tolua_CEGUI_CEGUI_Checkbox_setSelected00(lua_State* tolua_S)
  else
 #endif
  {
-  CEGUI::Checkbox* self = (CEGUI::Checkbox*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::ToggleButton* self = (CEGUI::ToggleButton*)  tolua_tousertype(tolua_S,1,0);
   bool select = ((bool)  tolua_toboolean(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelected'",NULL);
@@ -35429,71 +35429,6 @@ static int tolua_CEGUI_CEGUI_Thumb_setHorzRange00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setHorzRange'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: isSelected of class  CEGUI::RadioButton */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RadioButton_isSelected00
-static int tolua_CEGUI_CEGUI_RadioButton_isSelected00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::RadioButton",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::RadioButton* self = (const CEGUI::RadioButton*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isSelected'",NULL);
-#endif
- {
-  bool tolua_ret = (bool)  self->isSelected();
- tolua_pushboolean(tolua_S,(bool)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'isSelected'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
-/* method: setSelected of class  CEGUI::RadioButton */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_RadioButton_setSelected00
-static int tolua_CEGUI_CEGUI_RadioButton_setSelected00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"CEGUI::RadioButton",0,&tolua_err) ||
- !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  CEGUI::RadioButton* self = (CEGUI::RadioButton*)  tolua_tousertype(tolua_S,1,0);
-  bool select = ((bool)  tolua_toboolean(tolua_S,2,0));
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setSelected'",NULL);
-#endif
- {
-  self->setSelected(select);
- }
- }
- return 0;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setSelected'.",&tolua_err);
  return 0;
 #endif
 }
@@ -63631,10 +63566,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isHovering",tolua_CEGUI_CEGUI_ButtonBase_isHovering00);
    tolua_function(tolua_S,"isPushed",tolua_CEGUI_CEGUI_ButtonBase_isPushed00);
   tolua_endmodule(tolua_S);
-  tolua_cclass(tolua_S,"Checkbox","CEGUI::Checkbox","CEGUI::ButtonBase",NULL);
-  tolua_beginmodule(tolua_S,"Checkbox");
-   tolua_function(tolua_S,"isSelected",tolua_CEGUI_CEGUI_Checkbox_isSelected00);
-   tolua_function(tolua_S,"setSelected",tolua_CEGUI_CEGUI_Checkbox_setSelected00);
+  tolua_cclass(tolua_S,"ToggleButton","CEGUI::ToggleButton","CEGUI::ButtonBase",NULL);
+  tolua_beginmodule(tolua_S,"ToggleButton");
+   tolua_function(tolua_S,"isSelected",tolua_CEGUI_CEGUI_ToggleButton_isSelected00);
+   tolua_function(tolua_S,"setSelected",tolua_CEGUI_CEGUI_ToggleButton_setSelected00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"PushButton","CEGUI::PushButton","CEGUI::ButtonBase",NULL);
   tolua_beginmodule(tolua_S,"PushButton");
@@ -63652,10 +63587,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setVertRange",tolua_CEGUI_CEGUI_Thumb_setVertRange00);
    tolua_function(tolua_S,"setHorzRange",tolua_CEGUI_CEGUI_Thumb_setHorzRange00);
   tolua_endmodule(tolua_S);
-  tolua_cclass(tolua_S,"RadioButton","CEGUI::RadioButton","CEGUI::ButtonBase",NULL);
+  tolua_cclass(tolua_S,"RadioButton","CEGUI::RadioButton","CEGUI::ToggleButton",NULL);
   tolua_beginmodule(tolua_S,"RadioButton");
-   tolua_function(tolua_S,"isSelected",tolua_CEGUI_CEGUI_RadioButton_isSelected00);
-   tolua_function(tolua_S,"setSelected",tolua_CEGUI_CEGUI_RadioButton_setSelected00);
    tolua_function(tolua_S,"getGroupID",tolua_CEGUI_CEGUI_RadioButton_getGroupID00);
    tolua_function(tolua_S,"setGroupID",tolua_CEGUI_CEGUI_RadioButton_setGroupID00);
    tolua_function(tolua_S,"getSelectedButtonInGroup",tolua_CEGUI_CEGUI_RadioButton_getSelectedButtonInGroup00);

@@ -23,7 +23,7 @@
     <FalagardMapping windowType="OgreTray/Combobox"             targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/Combobox" />
     <FalagardMapping windowType="OgreTray/DropDownMenu"         targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/DropDownMenu" />
     <FalagardMapping windowType="OgreTray/Group"                targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/Group" />
-    <FalagardMapping windowType="OgreTray/Checkbox"             targetType="CEGUI/Checkbox"         renderer="Core/ToggleButton"        lookNFeel="OgreTray/Checkbox" />
+    <FalagardMapping windowType="OgreTray/Checkbox"             targetType="CEGUI/ToggleButton"         renderer="Core/ToggleButton"        lookNFeel="OgreTray/Checkbox" />
     <FalagardMapping windowType="OgreTray/RadioButton"          targetType="CEGUI/RadioButton"      renderer="Core/ToggleButton"        lookNFeel="OgreTray/RadioButton" />
     <FalagardMapping windowType="OgreTray/Slider"               targetType="CEGUI/Slider"           renderer="Core/Slider"              lookNFeel="OgreTray/Slider" />
     <FalagardMapping windowType="OgreTray/StaticImage"          targetType="DefaultWindow"          renderer="Core/StaticImage"         lookNFeel="OgreTray/StaticImage" />

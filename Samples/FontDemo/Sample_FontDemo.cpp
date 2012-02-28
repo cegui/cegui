@@ -200,10 +200,10 @@ public:
         lbox->setItemSelectState(size_t (0), true);
 
         background->getChild("root/FontDemo/AutoScaled")->subscribeEvent(
-            Checkbox::EventSelectStateChanged,
+            ToggleButton::EventSelectStateChanged,
             Event::Subscriber(&FontDemo::handleAutoScaled, this));
         background->getChild("root/FontDemo/Antialiased")->subscribeEvent(
-            Checkbox::EventSelectStateChanged,
+            ToggleButton::EventSelectStateChanged,
             Event::Subscriber(&FontDemo::handleAntialiased, this));
         background->getChild("root/FontDemo/PointSize")->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
@@ -260,14 +260,14 @@ public:
             root->getChild("root/FontDemo/FontSample")->setFont(font);
 
             bool b = font->isPropertyPresent("AutoScaled");
-            Checkbox* cb = static_cast<Checkbox*>(root->getChild("root/FontDemo/AutoScaled"));
+            ToggleButton* cb = static_cast<ToggleButton*>(root->getChild("root/FontDemo/AutoScaled"));
             cb->setEnabled(b);
 
             if (b)
                 cb->setSelected(PropertyHelper<bool>::fromString(font->getProperty("AutoScaled")));
 
             b = font->isPropertyPresent("Antialiased");
-            cb = static_cast<Checkbox*>(root->getChild("root/FontDemo/Antialiased"));
+            cb = static_cast<ToggleButton*>(root->getChild("root/FontDemo/Antialiased"));
             cb->setEnabled(b);
 
             if (b)
@@ -294,7 +294,7 @@ public:
     {
         Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
-        Checkbox* cb = static_cast<Checkbox*>(
+        ToggleButton* cb = static_cast<ToggleButton*>(
                            static_cast<const WindowEventArgs&>(e).window);
 
         MultiLineEditbox* mle = static_cast<MultiLineEditbox*>
@@ -312,7 +312,7 @@ public:
     {
         Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
 
-        Checkbox* cb = static_cast<Checkbox*>(
+        ToggleButton* cb = static_cast<ToggleButton*>(
                            static_cast<const WindowEventArgs&>(e).window);
 
         MultiLineEditbox* mle = static_cast<MultiLineEditbox*>

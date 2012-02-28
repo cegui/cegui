@@ -138,7 +138,6 @@ class XMLSerializer;
     Forward declare window / widget classes.
 *************************************************************************/
 class ButtonBase;
-class Checkbox;
 class ClippedContainer;
 class Combobox;
 class ComboDropList;
@@ -177,6 +176,7 @@ class TabButton;
 class TabControl;
 class Thumb;
 class Titlebar;
+class ToggleButton;
 class Tooltip;
 class Tree;
 class TreeItem;

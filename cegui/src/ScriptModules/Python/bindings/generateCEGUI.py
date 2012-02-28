@@ -854,10 +854,6 @@ void Iterator_previous(::CEGUI::%s& t)
     buttonBase = CEGUI_ns.class_("ButtonBase")
     buttonBase.include()
     
-    # elements/CEGUICheckbox.h
-    checkbox = CEGUI_ns.class_("Checkbox")
-    checkbox.include()
-    
     # elements/CEGUICombobox.h
     combobox = CEGUI_ns.class_("Combobox")
     combobox.include()
@@ -1048,6 +1044,10 @@ void Iterator_previous(::CEGUI::%s& t)
     # elements/CEGUITitlebar.h
     titlebar = CEGUI_ns.class_("Titlebar")
     titlebar.include()
+    
+    # elements/CEGUIToggleButton.h
+    toggleButton = CEGUI_ns.class_("ToggleButton")
+    toggleButton.include()
     
     # elements/CEGUITooltip.h
     tooltip = CEGUI_ns.class_("Tooltip", recursive = False)

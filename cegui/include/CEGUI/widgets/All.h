@@ -28,7 +28,6 @@
 #ifndef _CEGUIAll_h_
 #define _CEGUIAll_h_
 
-#include "./Checkbox.h"
 #include "./ClippedContainer.h"
 #include "./Combobox.h"
 #include "./ComboDropList.h"
@@ -63,6 +62,7 @@
 #include "./TabControl.h"
 #include "./Thumb.h"
 #include "./Titlebar.h"
+#include "./ToggleButton.h"
 #include "./Tooltip.h"
 #include "./Tree.h"
 #include "./TreeItem.h"
