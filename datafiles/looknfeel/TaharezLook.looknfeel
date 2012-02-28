@@ -3273,7 +3273,7 @@
                 <Dim type="Height"><PropertyDim name="TabHeight" type="Height" /></Dim>
             </Area>
         </Child>
-        <Child type="TaharezLook/SystemButton" nameSuffix="__auto_TabPane__ScrollLeft">
+        <Child type="TaharezLook/Button" nameSuffix="__auto_TabPane__ScrollLeft">
             <Area>
                 <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
                 <Dim type="TopEdge">
@@ -3299,7 +3299,7 @@
             <Property name="HoverImage" value="TaharezLook/TabButtonScrollLeftHover" />
             <Property name="PushedImage" value="TaharezLook/TabButtonScrollLeftHover" />
         </Child>
-        <Child type="TaharezLook/SystemButton" nameSuffix="__auto_TabPane__ScrollRight">
+        <Child type="TaharezLook/Button" nameSuffix="__auto_TabPane__ScrollRight">
             <Area>
                 <Dim type="Width">
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height">
