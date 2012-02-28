@@ -21,6 +21,8 @@ class WidgetComponent
   void setHorizontalWidgetAlignment(HorizontalAlignment alignment);
   void addPropertyInitialiser(const PropertyInitialiser& initialiser);
   void clearPropertyInitialisers();
+  void setAutoWindow(bool is_auto);
+  bool isAutoWindow() const;
   void layout(const Window& owner) const;
 
   //void writeXMLToStream(OutStream& out_stream) const;
@@ -28,6 +30,6 @@ class WidgetComponent
   const PropertyInitialiser* findPropertyInitialiser(utf8string propertyName) const;
 
   WidgetComponent();
-  WidgetComponent(utf8string type, utf8string look, utf8string suffix, utf8string renderer);
+  WidgetComponent(utf8string type, utf8string look, utf8string suffix, utf8string renderer, bool autoWindow);
 };
 

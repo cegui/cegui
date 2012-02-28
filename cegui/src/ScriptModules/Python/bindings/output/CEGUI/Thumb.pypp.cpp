@@ -15,6 +15,18 @@ struct Thumb_wrapper : CEGUI::Thumb, bp::wrapper< CEGUI::Thumb > {
     
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Thumb::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Thumb::banPropertiesForAutoWindow( );
+    }
+
     virtual void onCaptureLost( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onCaptureLost = this->get_override( "onCaptureLost" ) )
             func_onCaptureLost( boost::ref(e) );
@@ -1319,6 +1331,16 @@ void register_Thumb_class(){
            Constructor for Thumb objects\n\
         *\n") );
         bp::scope Thumb_scope( Thumb_exposer );
+        { //::CEGUI::Thumb::banPropertiesForAutoWindow
+        
+            typedef void ( Thumb_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            Thumb_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &Thumb_wrapper::default_banPropertiesForAutoWindow )
+                , "overridden from base class\n" );
+        
+        }
         { //::CEGUI::Thumb::getHorzRange
         
             typedef ::std::pair< float, float > ( ::CEGUI::Thumb::*getHorzRange_function_type )(  ) const;

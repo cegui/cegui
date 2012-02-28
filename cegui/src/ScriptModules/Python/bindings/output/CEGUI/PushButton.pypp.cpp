@@ -71,6 +71,18 @@ struct PushButton_wrapper : CEGUI::PushButton, bp::wrapper< CEGUI::PushButton > 
         CEGUI::Window::allocateRenderingWindow(  );
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Window::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Window::banPropertiesForAutoWindow( );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -1402,6 +1414,15 @@ void register_PushButton_class(){
                 "allocateRenderingWindow"
                 , allocateRenderingWindow_function_type( &PushButton_wrapper::allocateRenderingWindow )
                 , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::banPropertiesForAutoWindow
+        
+            typedef void ( PushButton_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            PushButton_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &PushButton_wrapper::default_banPropertiesForAutoWindow ) );
         
         }
         { //::CEGUI::Window::beginInitialisation

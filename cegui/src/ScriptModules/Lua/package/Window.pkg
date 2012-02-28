@@ -15,6 +15,7 @@ class Window : public NamedElement
 {
     string getType(void) const;
 
+    void setAutoWindow(bool is_auto);
     bool isAutoWindow(void) const;
 
     bool isDestroyedByParent(void) const;

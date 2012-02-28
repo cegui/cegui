@@ -179,6 +179,18 @@ struct Slider_wrapper : CEGUI::Slider, bp::wrapper< CEGUI::Slider > {
         CEGUI::Window::allocateRenderingWindow(  );
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Window::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Window::banPropertiesForAutoWindow( );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -1792,6 +1804,15 @@ void register_Slider_class(){
                 "allocateRenderingWindow"
                 , allocateRenderingWindow_function_type( &Slider_wrapper::allocateRenderingWindow )
                 , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::banPropertiesForAutoWindow
+        
+            typedef void ( Slider_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            Slider_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &Slider_wrapper::default_banPropertiesForAutoWindow ) );
         
         }
         { //::CEGUI::Window::beginInitialisation

@@ -95,6 +95,18 @@ struct MenuBase_wrapper : CEGUI::MenuBase, bp::wrapper< CEGUI::MenuBase > {
         CEGUI::Window::allocateRenderingWindow(  );
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Window::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Window::banPropertiesForAutoWindow( );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -1673,6 +1685,15 @@ void register_MenuBase_class(){
                 "allocateRenderingWindow"
                 , allocateRenderingWindow_function_type( &MenuBase_wrapper::allocateRenderingWindow )
                 , "! helper to create and setup the auto RenderingWindow surface\n" );
+        
+        }
+        { //::CEGUI::Window::banPropertiesForAutoWindow
+        
+            typedef void ( MenuBase_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            MenuBase_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &MenuBase_wrapper::default_banPropertiesForAutoWindow ) );
         
         }
         { //::CEGUI::Window::beginInitialisation

@@ -18,7 +18,7 @@ void register_WidgetComponent_class(){
                 This is not finished in the slightest!  There will be many changes here...\n\
             *\n", bp::init< >() );
         bp::scope WidgetComponent_scope( WidgetComponent_exposer );
-        WidgetComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("look"), bp::arg("suffix"), bp::arg("renderer") )) );
+        WidgetComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool >(( bp::arg("type"), bp::arg("look"), bp::arg("suffix"), bp::arg("renderer"), bp::arg("autoWindow") )) );
         { //::CEGUI::WidgetComponent::addPropertyInitialiser
         
             typedef void ( ::CEGUI::WidgetComponent::*addPropertyInitialiser_function_type )( ::CEGUI::PropertyInitialiser const & ) ;
@@ -153,6 +153,15 @@ void register_WidgetComponent_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
+        { //::CEGUI::WidgetComponent::isAutoWindow
+        
+            typedef bool ( ::CEGUI::WidgetComponent::*isAutoWindow_function_type )(  ) const;
+            
+            WidgetComponent_exposer.def( 
+                "isAutoWindow"
+                , isAutoWindow_function_type( &::CEGUI::WidgetComponent::isAutoWindow ) );
+        
+        }
         { //::CEGUI::WidgetComponent::layout
         
             typedef void ( ::CEGUI::WidgetComponent::*layout_function_type )( ::CEGUI::Window const & ) const;
@@ -171,6 +180,16 @@ void register_WidgetComponent_class(){
                 "removePropertyInitialiser"
                 , removePropertyInitialiser_function_type( &::CEGUI::WidgetComponent::removePropertyInitialiser )
                 , ( bp::arg("name") ) );
+        
+        }
+        { //::CEGUI::WidgetComponent::setAutoWindow
+        
+            typedef void ( ::CEGUI::WidgetComponent::*setAutoWindow_function_type )( bool ) ;
+            
+            WidgetComponent_exposer.def( 
+                "setAutoWindow"
+                , setAutoWindow_function_type( &::CEGUI::WidgetComponent::setAutoWindow )
+                , ( bp::arg("is_auto") ) );
         
         }
         { //::CEGUI::WidgetComponent::setBaseWidgetType

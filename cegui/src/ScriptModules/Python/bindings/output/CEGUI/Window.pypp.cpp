@@ -39,6 +39,18 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         CEGUI::Window::allocateRenderingWindow(  );
     }
 
+    virtual void banPropertiesForAutoWindow(  ){
+        if( bp::override func_banPropertiesForAutoWindow = this->get_override( "banPropertiesForAutoWindow" ) )
+            func_banPropertiesForAutoWindow(  );
+        else{
+            this->CEGUI::Window::banPropertiesForAutoWindow(  );
+        }
+    }
+    
+    virtual void default_banPropertiesForAutoWindow(  ){
+        CEGUI::Window::banPropertiesForAutoWindow( );
+    }
+
     virtual void beginInitialisation(  ) {
         if( bp::override func_beginInitialisation = this->get_override( "beginInitialisation" ) )
             func_beginInitialisation(  );
@@ -1380,6 +1392,15 @@ void register_Window_class(){
                 String object holding the text that is to be appended to the Window\n\
                 object's current text string.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::Window::banPropertiesForAutoWindow
+        
+            typedef void ( Window_wrapper::*banPropertiesForAutoWindow_function_type )(  ) ;
+            
+            Window_exposer.def( 
+                "banPropertiesForAutoWindow"
+                , banPropertiesForAutoWindow_function_type( &Window_wrapper::default_banPropertiesForAutoWindow ) );
         
         }
         { //::CEGUI::Window::banPropertyFromXML
@@ -2953,10 +2974,12 @@ void register_Window_class(){
                 "isAutoWindow"
                 , isAutoWindow_function_type( &::CEGUI::Window::isAutoWindow )
                 , "*!\n\
+                \n\
+                    Returns whether this window is an auto window.\n\
             \n\
-                Returns whether this window is an auto-child window.\n\
-                All auto-child windows have __auto_ in their name, but this is faster.\n\
-            *\n" );
+                    An auto window is typically a Window object created automatically by\n\
+                    CEGUI - for example to form part of a multi-element 'compound' widget.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::isBehind
@@ -4914,6 +4937,23 @@ void register_Window_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Window::setAutoWindow
+        
+            typedef void ( ::CEGUI::Window::*setAutoWindow_function_type )( bool ) ;
+            
+            Window_exposer.def( 
+                "setAutoWindow"
+                , setAutoWindow_function_type( &::CEGUI::Window::setAutoWindow )
+                , ( bp::arg("is_auto") )
+                , "*!\n\
+                \n\
+                    Set whether this window is marked as an auto window.\n\
+            \n\
+                    An auto window is typically a Window object created automatically by\n\
+                    CEGUI - for example to form part of a multi-element 'compound' widget.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::setClippedByParent
         
             typedef void ( ::CEGUI::Window::*setClippedByParent_function_type )( bool ) ;
@@ -5986,9 +6026,6 @@ void register_Window_class(){
                 , ( bp::arg("xml_stream") ) );
         
         }
-        Window_exposer.add_static_property( "AutoWidgetNameSuffix"
-                        , bp::make_getter( &CEGUI::Window::AutoWidgetNameSuffix
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Window_exposer.add_static_property( "AutoWindowNamePathXMLAttributeName"
                         , bp::make_getter( &CEGUI::Window::AutoWindowNamePathXMLAttributeName
                                 , bp::return_value_policy< bp::return_by_value >() ) );
