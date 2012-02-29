@@ -535,6 +535,8 @@ public:
 	*/
 	void	setSingleClickEnabled(bool setting);
 
+    //! Select item in list matching editbox text, clear selection if none match
+    void selectListItemWithEditboxText();
 
 	/*************************************************************************
 		Editbox Manipulators
