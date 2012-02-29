@@ -100,6 +100,11 @@ public:
         return Size(d_width + s.d_width, d_height + s.d_height);
     }
 
+    inline Size operator-(const Size& s) const
+    {
+        return Size(d_width - s.d_width, d_height - s.d_height);
+    }
+
     inline void clamp(const Size& min, const Size& max)
     {
         assert(min.d_width <= max.d_width);
