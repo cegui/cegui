@@ -579,6 +579,7 @@ void Combobox::onEditboxFullEvent(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onTextAcceptedEvent(WindowEventArgs& e)
 {
+    selectListItemWithEditboxText();
 	fireEvent(EventTextAccepted, e, EventNamespace);
 }
 
@@ -683,6 +684,8 @@ void Combobox::onTextChanged(WindowEventArgs& e)
         editbox->setText(getText());
 		++e.handled;
 
+        selectListItemWithEditboxText();
+
 		Window::onTextChanged(e);
 	}
 
@@ -695,27 +698,25 @@ void Combobox::onTextChanged(WindowEventArgs& e)
 *************************************************************************/
 bool Combobox::button_PressHandler(const EventArgs&)
 {
-    ComboDropList* droplist = getDropList();
-
-	// if there is an item with the same text as the edit box, pre-select it
-	ListboxItem* item = droplist->findItemWithText(getEditbox()->getText(), 0);
-
-	if (item)
-	{
-		droplist->setItemSelectState(item, true);
-		droplist->ensureItemIsVisible(item);
-	}
-	// no matching item, so select nothing
-	else
-	{
-		droplist->clearAllSelections();
-	}
-
+    selectListItemWithEditboxText();
     showDropList();
 
 	return true;
 }
 
+//----------------------------------------------------------------------------//
+void Combobox::selectListItemWithEditboxText()
+{
+    ComboDropList* const droplist = getDropList();
+
+    if (ListboxItem* item = droplist->findItemWithText(getEditbox()->getText(), 0))
+    {
+        droplist->setItemSelectState(item, true);
+        droplist->ensureItemIsVisible(item);
+    }
+    else
+        droplist->clearAllSelections();
+}
 
 /*************************************************************************
 	Handler for selections made in the drop-list
