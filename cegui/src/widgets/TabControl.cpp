@@ -785,7 +785,7 @@ bool TabControl::handleWheeledPane(const EventArgs& e)
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
-    d_firstTabOffset -= me.wheelChange * delta;
+    d_firstTabOffset += me.wheelChange * delta;
     performChildWindowLayout();
 
     return true;
