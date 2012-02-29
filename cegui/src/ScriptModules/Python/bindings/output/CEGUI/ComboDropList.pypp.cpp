@@ -1525,6 +1525,17 @@ void register_ComboDropList_class(){
                 , ( bp::arg("e") ) );
         
         }
+        { //::CEGUI::ComboDropList::resizeToContent
+        
+            typedef void ( ::CEGUI::ComboDropList::*resizeToContent_function_type )( float,float ) ;
+            
+            ComboDropList_exposer.def( 
+                "resizeToContent"
+                , resizeToContent_function_type( &::CEGUI::ComboDropList::resizeToContent )
+                , ( bp::arg("fit_width"), bp::arg("fit_height") )
+                , "! resize the widget such that the content is shown without scrollbars.\n" );
+        
+        }
         { //::CEGUI::ComboDropList::setArmed
         
             typedef void ( ::CEGUI::ComboDropList::*setArmed_function_type )( bool ) ;

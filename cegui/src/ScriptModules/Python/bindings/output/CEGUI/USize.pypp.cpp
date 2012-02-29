@@ -50,6 +50,7 @@ void register_USize_class(){
         USize_exposer.def( bp::self != bp::self );
         USize_exposer.def( bp::self * bp::other< CEGUI::UDim >() );
         USize_exposer.def( bp::self + bp::self );
+        USize_exposer.def( bp::self - bp::self );
         USize_exposer.def( bp::self == bp::self );
         { //::CEGUI::Size< CEGUI::UDim >::square
         

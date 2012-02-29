@@ -241,6 +241,11 @@ public:
     */
     ComboDropList* getDropList() const;
 
+    //! return whether the drop-list will vertically auto size to content.
+    bool getAutoSizeListHeightToContent() const;
+
+    //! return whether the drop-list will horizontally auto size to content.
+    bool getAutoSizeListWidthToContent() const;
 
 	/*************************************************************************
 		Editbox Accessors
@@ -537,6 +542,23 @@ public:
 
     //! Select item in list matching editbox text, clear selection if none match
     void selectListItemWithEditboxText();
+
+    /*!
+    \brief
+        Sets whether the Combobox drop-down list will automatically resize
+        it's height according to the total height of items added to the list.
+    */
+    void setAutoSizeListHeightToContent(bool auto_size);
+
+    /*!
+    \brief
+        Sets whether the Combobox drop-down list will automatically resize
+        it's width according to the width of the items added to the list.
+    */
+    void setAutoSizeListWidthToContent(bool auto_size);
+
+    //! update drop list size according to auto-size options.
+    void updateAutoSizedDropList();
 
 	/*************************************************************************
 		Editbox Manipulators
@@ -1031,13 +1053,15 @@ protected:
 	virtual	void	onFontChanged(WindowEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
+    void onSized(ElementEventArgs& e);
 
 
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	bool			d_singleClickOperation;		//!< true if user can show and select from list in a single click.
-
+    bool d_autoSizeHeight;
+    bool d_autoSizeWidth;
 
 private:
 	/*************************************************************************

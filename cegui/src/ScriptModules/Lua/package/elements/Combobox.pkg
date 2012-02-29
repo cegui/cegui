@@ -56,4 +56,11 @@ class Combobox : public Window
 	void setCaretIndex(unsigned long caret_pos);
 	void setSelection(unsigned long start_pos, unsigned long end_pos);
 	void setMaxTextLength(unsigned long max_len);
+
+
+    bool getAutoSizeListHeightToContent() const;
+    bool getAutoSizeListWidthToContent() const;
+    void setAutoSizeListHeightToContent(bool auto_size);
+    void setAutoSizeListWidthToContent(bool auto_size);
+    void updateAutoSizedDropList();
 };

@@ -86,10 +86,11 @@ const String Combobox::ButtonName( "__auto_button__" );
 	Constructor for Combobox base class
 *************************************************************************/
 Combobox::Combobox(const String& type, const String& name) :
-	Window(type, name)
+	Window(type, name),
+    d_singleClickOperation(false),
+    d_autoSizeHeight(false),
+    d_autoSizeWidth(false)
 {
-	d_singleClickOperation = false;
-
 	addComboboxProperties();
 }
 
@@ -150,6 +151,8 @@ void Combobox::initialiseComponents(void)
 *************************************************************************/
 void Combobox::showDropList(void)
 {
+    updateAutoSizedDropList();
+
 	// Display the box
     ComboDropList* droplist = getDropList();
 	droplist->show();
@@ -718,6 +721,42 @@ void Combobox::selectListItemWithEditboxText()
         droplist->clearAllSelections();
 }
 
+//----------------------------------------------------------------------------//
+bool Combobox::getAutoSizeListHeightToContent() const
+{
+    return d_autoSizeHeight;
+}
+
+//----------------------------------------------------------------------------//
+bool Combobox::getAutoSizeListWidthToContent() const
+{
+    return d_autoSizeWidth;
+}
+
+//----------------------------------------------------------------------------//
+void Combobox::setAutoSizeListHeightToContent(bool auto_size)
+{
+    d_autoSizeHeight = auto_size;
+
+    if (d_autoSizeHeight && isDropDownListVisible())
+        updateAutoSizedDropList();
+}
+
+//----------------------------------------------------------------------------//
+void Combobox::setAutoSizeListWidthToContent(bool auto_size)
+{
+    d_autoSizeWidth = auto_size;
+
+    if (d_autoSizeWidth && isDropDownListVisible())
+        updateAutoSizedDropList();
+}
+
+//----------------------------------------------------------------------------//
+void Combobox::updateAutoSizedDropList()
+{
+    getDropList()->resizeToContent(d_autoSizeWidth, d_autoSizeHeight);
+}
+
 /*************************************************************************
 	Handler for selections made in the drop-list
 *************************************************************************/
@@ -867,6 +906,22 @@ void Combobox::addComboboxProperties(void)
           "SingleClickMode","Property to get/set the 'single click mode' setting for the combo box.  Value is either \"True\" or \"False\".",
           &Combobox::setSingleClickEnabled, &Combobox::getSingleClickEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "AutoSizeListHeight",
+          "Property to get/set whether the drop down list will vertically "
+          "auto-size itself to fit it's content. "
+          "Value is either \"True\" or \"False\".",
+          &Combobox::setAutoSizeListHeightToContent,
+          &Combobox::getAutoSizeListHeightToContent, false
+    );
+    CEGUI_DEFINE_PROPERTY(Combobox, bool,
+          "AutoSizeListWidth",
+          "Property to get/set whether the drop down list will horizontally "
+          "auto-size itself to fit it's content. "
+          "Value is either \"True\" or \"False\".",
+          &Combobox::setAutoSizeListWidthToContent,
+          &Combobox::getAutoSizeListWidthToContent, false
+    );
 }
 
 
@@ -896,6 +951,15 @@ void Combobox::onActivated(ActivationEventArgs& e)
 		activateEditbox();
 	}
 
+}
+
+//----------------------------------------------------------------------------//
+void Combobox::onSized(ElementEventArgs& e)
+{
+    if (isDropDownListVisible())
+        updateAutoSizedDropList();
+
+    Window::onSized(e);
 }
 
 
@@ -1072,6 +1136,9 @@ bool Combobox::editbox_TextChangedEventHandler(const EventArgs& e)
 
 bool Combobox::listbox_ListContentsChangedHandler(const EventArgs&)
 {
+    if (isDropDownListVisible())
+        updateAutoSizedDropList();
+
 	WindowEventArgs	args(this);
 	onListContentsChanged(args);
 

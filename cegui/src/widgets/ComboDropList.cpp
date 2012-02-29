@@ -88,6 +88,18 @@ void ComboDropList::initialiseComponents(void)
     getHorzScrollbar()->banPropertyFromXML("RestoreOldCapture");
 }
 
+//----------------------------------------------------------------------------//
+void ComboDropList::resizeToContent(float fit_width, float fit_height)
+{
+    if (!d_windowRenderer)
+        CEGUI_THROW(InvalidRequestException(
+            "ComboDropList::resizeToContent: Function requires a valid "
+            "WindowRenderer object to be set."));
+
+    static_cast<ListboxWindowRenderer*>(d_windowRenderer)->
+        resizeListToContent(fit_width, fit_height);
+
+}
 
 /*************************************************************************
 	Handler for when list selection is confirmed.
