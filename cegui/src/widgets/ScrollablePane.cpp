@@ -177,17 +177,31 @@ void ScrollablePane::setHorizontalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getHorizontalScrollPosition(void) const
 {
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-    float docSz = horzScrollbar->getDocumentSize();
-    return (docSz != 0) ? horzScrollbar->getScrollPosition() / docSz : 0.0f;
+    return getScrollbarPositionInUnitRange(getHorzScrollbar());
+}
+
+//----------------------------------------------------------------------------//
+float ScrollablePane::getScrollbarPositionInUnitRange(const Scrollbar* scrollbar)
+{
+    const float range = scrollbar->getDocumentSize() -
+                        scrollbar->getPageSize();
+    return (range > 0) ? scrollbar->getScrollPosition() / range : 0.0f;
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setHorizontalScrollPosition(float position)
 {
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-    horzScrollbar->setScrollPosition(
-                        horzScrollbar->getDocumentSize() * position);
+    setScrollbarPositionInUnitRange(getHorzScrollbar(), position);
+}
+
+//----------------------------------------------------------------------------//
+void ScrollablePane::setScrollbarPositionInUnitRange(Scrollbar* scrollbar,
+                                                     float position)
+{
+    const float range = scrollbar->getDocumentSize() -
+                        scrollbar->getPageSize();
+
+    scrollbar->setScrollPosition(range > 0 ? position * range : 0.0f);
 }
 
 //----------------------------------------------------------------------------//
@@ -219,17 +233,13 @@ void ScrollablePane::setVerticalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getVerticalScrollPosition(void) const
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    float docSz = vertScrollbar->getDocumentSize();
-    return (docSz != 0) ? vertScrollbar->getScrollPosition() / docSz : 0.0f;
+    return getScrollbarPositionInUnitRange(getVertScrollbar());
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setVerticalScrollPosition(float position)
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    vertScrollbar->setScrollPosition(
-                        vertScrollbar->getDocumentSize() * position);
+    setScrollbarPositionInUnitRange(getVertScrollbar(), position);
 }
 
 //----------------------------------------------------------------------------//
