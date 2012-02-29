@@ -81,6 +81,12 @@ namespace CEGUI
         void render();
 
         Rectf getListRenderArea(void) const;
+
+        void resizeListToContent(bool fit_width,
+                                 bool fit_height) const;
+
+    protected:
+        Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
     };
 } // End of  CEGUI namespace section
 

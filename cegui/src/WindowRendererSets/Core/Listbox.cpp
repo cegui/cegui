@@ -30,6 +30,7 @@
 #include "CEGUI/widgets/ListboxItem.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -45,42 +46,88 @@ namespace CEGUI
     Rectf FalagardListbox::getListRenderArea(void) const
     {
     	Listbox* lb = (Listbox*)d_window;
-        // get WidgetLookFeel for the assigned look.
+
+        return getItemRenderingArea(lb->getHorzScrollbar()->isVisible(),
+                                    lb->getVertScrollbar()->isVisible());
+    }
+
+    Rectf FalagardListbox::getItemRenderingArea(bool hscroll,
+                                                bool vscroll) const
+    {
+    	const Listbox* const lb = static_cast<Listbox*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = lb->getVertScrollbar()->isVisible();
-        bool h_visible = lb->getHorzScrollbar()->isVisible();
+        const String area_name("ItemRenderingArea");
+        const String alternate_name("ItemRenderArea");
+        const String scroll_suffix(
+            vscroll ? hscroll ? "HVScroll" : "VScroll" : hscroll ? "HScroll" : "");
 
-        // if either of the scrollbars are visible, we might want to use another text rendering area
-        if (v_visible || h_visible)
-        {
-            String area_name("ItemRenderingArea");
+        if (wlf.isNamedAreaDefined(area_name + scroll_suffix))
+                return wlf.getNamedArea(area_name + scroll_suffix).getArea().getPixelRect(*lb);
 
-            if (h_visible)
-                area_name += "H";
-            if (v_visible)
-                area_name += "V";
-            area_name += "Scroll";
-
-            if (wlf.isNamedAreaDefined(area_name))
-                return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
-
-            // since that did not exist, try optional alternative base name
-            area_name = "ItemRenderArea";
-            if (h_visible)
-                area_name += "H";
-            if (v_visible)
-                area_name += "V";
-            area_name += "Scroll";
-
-            if (wlf.isNamedAreaDefined(area_name))
-                return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
-        }
+        if (wlf.isNamedAreaDefined(alternate_name + scroll_suffix))
+                return wlf.getNamedArea(alternate_name + scroll_suffix).getArea().getPixelRect(*lb);
 
         // default to plain ItemRenderingArea
-        if (wlf.isNamedAreaDefined("ItemRenderingArea"))
-            return wlf.getNamedArea("ItemRenderingArea").getArea().getPixelRect(*lb);
+        if (wlf.isNamedAreaDefined(area_name))
+            return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
         else
-            return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*lb);
+            return wlf.getNamedArea(alternate_name).getArea().getPixelRect(*lb);
+    }
+
+    void FalagardListbox::resizeListToContent(bool fit_width,
+                                              bool fit_height) const
+    {
+    	Listbox* const lb = static_cast<Listbox*>(d_window);
+
+        const Rectf totalArea(lb->getUnclippedOuterRect().get());
+        const Rectf contentArea(getItemRenderingArea(
+            fit_width ? false : lb->getHorzScrollbar()->isVisible(),
+            fit_height ? false : lb->getVertScrollbar()->isVisible()));
+        const Rectf withScrollContentArea(getItemRenderingArea(true, true));
+
+        const Sizef frameSize(totalArea.getSize() - contentArea.getSize());
+        const Sizef withScrollFrameSize(totalArea.getSize() -
+                                        withScrollContentArea.getSize());
+        const Sizef contentSize(lb->getWidestItemWidth(),
+                                lb->getTotalItemsHeight());
+
+        const Sizef parentSize(lb->getParentPixelSize());
+        const Sizef maxSize(parentSize.d_width -
+                            CoordConverter::asAbsolute(lb->getXPosition(),
+                                                       parentSize.d_width),
+                            parentSize.d_height -
+                            CoordConverter::asAbsolute(lb->getYPosition(),
+                                                       parentSize.d_height));
+
+        Sizef requiredSize(frameSize + contentSize + Sizef(1, 1));
+
+        if (fit_height)
+        {
+            if (requiredSize.d_height > maxSize.d_height)
+            {
+                requiredSize.d_height = maxSize.d_height;
+                requiredSize.d_width = ceguimin(
+                    maxSize.d_width,
+                    requiredSize.d_width - frameSize.d_width + withScrollFrameSize.d_width);
+            }
+        }
+
+        if (fit_width)
+        {
+            if (requiredSize.d_width > maxSize.d_width)
+            {
+                requiredSize.d_width = maxSize.d_width;
+                requiredSize.d_height = ceguimin(
+                    maxSize.d_height,
+                    requiredSize.d_height - frameSize.d_height + withScrollFrameSize.d_height);
+            }
+        }
+
+        if (fit_height)
+            lb->setHeight(UDim(0, requiredSize.d_height));
+
+        if (fit_width)
+            lb->setWidth(UDim(0, requiredSize.d_width));
     }
 
     void FalagardListbox::render()

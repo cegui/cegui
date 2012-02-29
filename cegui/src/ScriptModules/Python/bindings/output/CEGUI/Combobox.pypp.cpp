@@ -275,6 +275,18 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Combobox::onReadOnlyChanged( boost::ref(e) );
     }
 
+    virtual void onSized( ::CEGUI::ElementEventArgs & e ){
+        if( bp::override func_onSized = this->get_override( "onSized" ) )
+            func_onSized( boost::ref(e) );
+        else{
+            this->CEGUI::Combobox::onSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onSized( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::Combobox::onSized( boost::ref(e) );
+    }
+
     virtual void onSortModeChanged( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onSortModeChanged = this->get_override( "onSortModeChanged" ) )
             func_onSortModeChanged( boost::ref(e) );
@@ -1159,18 +1171,6 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Window::onShown( boost::ref(e) );
     }
 
-    virtual void onSized( ::CEGUI::ElementEventArgs & e ){
-        if( bp::override func_onSized = this->get_override( "onSized" ) )
-            func_onSized( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onSized( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onSized( ::CEGUI::ElementEventArgs & e ){
-        CEGUI::Window::onSized( boost::ref(e) );
-    }
-
     virtual void onTextParsingChanged( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onTextParsingChanged = this->get_override( "onTextParsingChanged" ) )
             func_onTextParsingChanged( boost::ref(e) );
@@ -1801,6 +1801,26 @@ void register_Combobox_class(){
             \n\
                @exception  InvalidRequestException thrown if  item is not attached to this list box.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::Combobox::getAutoSizeListHeightToContent
+        
+            typedef bool ( ::CEGUI::Combobox::*getAutoSizeListHeightToContent_function_type )(  ) const;
+            
+            Combobox_exposer.def( 
+                "getAutoSizeListHeightToContent"
+                , getAutoSizeListHeightToContent_function_type( &::CEGUI::Combobox::getAutoSizeListHeightToContent )
+                , "! return whether the drop-list will vertically auto size to content.\n" );
+        
+        }
+        { //::CEGUI::Combobox::getAutoSizeListWidthToContent
+        
+            typedef bool ( ::CEGUI::Combobox::*getAutoSizeListWidthToContent_function_type )(  ) const;
+            
+            Combobox_exposer.def( 
+                "getAutoSizeListWidthToContent"
+                , getAutoSizeListWidthToContent_function_type( &::CEGUI::Combobox::getAutoSizeListWidthToContent )
+                , "! return whether the drop-list will horizontally auto size to content.\n" );
         
         }
         { //::CEGUI::Combobox::getCaretIndex
@@ -2589,6 +2609,16 @@ void register_Combobox_class(){
             *\n" );
         
         }
+        { //::CEGUI::Combobox::onSized
+        
+            typedef void ( Combobox_wrapper::*onSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
+            
+            Combobox_exposer.def( 
+                "onSized"
+                , onSized_function_type( &Combobox_wrapper::default_onSized )
+                , ( bp::arg("e") ) );
+        
+        }
         { //::CEGUI::Combobox::onSortModeChanged
         
             typedef void ( Combobox_wrapper::*onSortModeChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
@@ -2728,6 +2758,46 @@ void register_Combobox_class(){
             \n\
                   Note that this will cause 'AutoDelete' items to be deleted.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::Combobox::selectListItemWithEditboxText
+        
+            typedef void ( ::CEGUI::Combobox::*selectListItemWithEditboxText_function_type )(  ) ;
+            
+            Combobox_exposer.def( 
+                "selectListItemWithEditboxText"
+                , selectListItemWithEditboxText_function_type( &::CEGUI::Combobox::selectListItemWithEditboxText )
+                , "! Select item in list matching editbox text, clear selection if none match\n" );
+        
+        }
+        { //::CEGUI::Combobox::setAutoSizeListHeightToContent
+        
+            typedef void ( ::CEGUI::Combobox::*setAutoSizeListHeightToContent_function_type )( bool ) ;
+            
+            Combobox_exposer.def( 
+                "setAutoSizeListHeightToContent"
+                , setAutoSizeListHeightToContent_function_type( &::CEGUI::Combobox::setAutoSizeListHeightToContent )
+                , ( bp::arg("auto_size") )
+                , "*!\n\
+            \n\
+                Sets whether the Combobox drop-down list will automatically resize\n\
+                it's height according to the total height of items added to the list.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Combobox::setAutoSizeListWidthToContent
+        
+            typedef void ( ::CEGUI::Combobox::*setAutoSizeListWidthToContent_function_type )( bool ) ;
+            
+            Combobox_exposer.def( 
+                "setAutoSizeListWidthToContent"
+                , setAutoSizeListWidthToContent_function_type( &::CEGUI::Combobox::setAutoSizeListWidthToContent )
+                , ( bp::arg("auto_size") )
+                , "*!\n\
+            \n\
+                Sets whether the Combobox drop-down list will automatically resize\n\
+                it's width according to the width of the items added to the list.\n\
+            *\n" );
         
         }
         { //::CEGUI::Combobox::setCaretIndex
@@ -3076,6 +3146,16 @@ void register_Combobox_class(){
                @return\n\
                   Nothing\n\
                *\n" );
+        
+        }
+        { //::CEGUI::Combobox::updateAutoSizedDropList
+        
+            typedef void ( ::CEGUI::Combobox::*updateAutoSizedDropList_function_type )(  ) ;
+            
+            Combobox_exposer.def( 
+                "updateAutoSizedDropList"
+                , updateAutoSizedDropList_function_type( &::CEGUI::Combobox::updateAutoSizedDropList )
+                , "! update drop list size according to auto-size options.\n" );
         
         }
         Combobox_exposer.add_static_property( "ButtonName"
@@ -4443,28 +4523,6 @@ void register_Combobox_class(){
                 , "*!\n\
                 \n\
                     Handler called when the window is shown (made visible).\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
-                    'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onSized
-        
-            typedef void ( Combobox_wrapper::*onSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
-            
-            Combobox_exposer.def( 
-                "onSized"
-                , onSized_function_type( &Combobox_wrapper::default_onSized )
-                , ( bp::arg("e") )
-                , "*************************************************************************\n\
-                    Event trigger methods\n\
-                *************************************************************************\n\
-                *!\n\
-                \n\
-                    Handler called when the window's size changes.\n\
             \n\
                 @param e\n\
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\

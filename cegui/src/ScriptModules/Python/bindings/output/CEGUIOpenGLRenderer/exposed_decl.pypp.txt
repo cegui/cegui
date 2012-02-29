@@ -7576,6 +7576,8 @@
 ~@member_operator_t@operator-@::CEGUI::Vector2< CEGUI::UDim > ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2< CEGUI::UDim > const & ) const::CEGUI::Vector2<CEGUI::UDim> ( ::CEGUI::Vector2<CEGUI::UDim>::* )( ::CEGUI::Vector2<CEGUI::UDim> const & ) const
 ~@member_operator_t@operator-@::CEGUI::String::const_iterator ( ::CEGUI::String::const_iterator::* )( long int ) const::CEGUI::String::const_iterator ( ::CEGUI::String::const_iterator::* )( long int ) const
 ~@member_operator_t@operator-@::CEGUI::String::iterator ( ::CEGUI::String::iterator::* )( long int ) const::CEGUI::String::iterator ( ::CEGUI::String::iterator::* )( long int ) const
+~@member_operator_t@operator-@::CEGUI::Size< float > ( ::CEGUI::Size<float>::* )( ::CEGUI::Size< float > const & ) const::CEGUI::Size<float> ( ::CEGUI::Size<float>::* )( ::CEGUI::Size<float> const & ) const
+~@member_operator_t@operator-@::CEGUI::Size< CEGUI::UDim > ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size< CEGUI::UDim > const & ) const::CEGUI::Size<CEGUI::UDim> ( ::CEGUI::Size<CEGUI::UDim>::* )( ::CEGUI::Size<CEGUI::UDim> const & ) const
 ~@member_operator_t@operator-@::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const::CEGUI::UDim ( ::CEGUI::UDim::* )( ::CEGUI::UDim const & ) const
 ~@member_operator_t@operator/@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2< float > const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( ::CEGUI::Vector2<float> const & ) const
 ~@member_operator_t@operator/@::CEGUI::Vector2< float > ( ::CEGUI::Vector2<float>::* )( float const & ) const::CEGUI::Vector2<float> ( ::CEGUI::Vector2<float>::* )( float const & ) const

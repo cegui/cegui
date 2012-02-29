@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Tue Feb 28 17:56:43 2012.
+** Generated automatically by tolua++-1.0.93 on Wed Feb 29 17:48:26 2012.
 */
 
 #ifndef __cplusplus
@@ -44815,6 +44815,167 @@ static int tolua_CEGUI_CEGUI_Combobox_setMaxTextLength00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getAutoSizeListHeightToContent of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_getAutoSizeListHeightToContent00
+static int tolua_CEGUI_CEGUI_Combobox_getAutoSizeListHeightToContent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Combobox",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Combobox* self = (const CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getAutoSizeListHeightToContent'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->getAutoSizeListHeightToContent();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getAutoSizeListHeightToContent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getAutoSizeListWidthToContent of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_getAutoSizeListWidthToContent00
+static int tolua_CEGUI_CEGUI_Combobox_getAutoSizeListWidthToContent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Combobox",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Combobox* self = (const CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getAutoSizeListWidthToContent'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->getAutoSizeListWidthToContent();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getAutoSizeListWidthToContent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setAutoSizeListHeightToContent of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_setAutoSizeListHeightToContent00
+static int tolua_CEGUI_CEGUI_Combobox_setAutoSizeListHeightToContent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Combobox",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Combobox* self = (CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
+  bool auto_size = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setAutoSizeListHeightToContent'",NULL);
+#endif
+ {
+  self->setAutoSizeListHeightToContent(auto_size);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setAutoSizeListHeightToContent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setAutoSizeListWidthToContent of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_setAutoSizeListWidthToContent00
+static int tolua_CEGUI_CEGUI_Combobox_setAutoSizeListWidthToContent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Combobox",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Combobox* self = (CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
+  bool auto_size = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setAutoSizeListWidthToContent'",NULL);
+#endif
+ {
+  self->setAutoSizeListWidthToContent(auto_size);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setAutoSizeListWidthToContent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: updateAutoSizedDropList of class  CEGUI::Combobox */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Combobox_updateAutoSizedDropList00
+static int tolua_CEGUI_CEGUI_Combobox_updateAutoSizedDropList00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Combobox",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Combobox* self = (CEGUI::Combobox*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'updateAutoSizedDropList'",NULL);
+#endif
+ {
+  self->updateAutoSizedDropList();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'updateAutoSizedDropList'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getItemCount of class  CEGUI::Listbox */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Listbox_getItemCount00
 static int tolua_CEGUI_CEGUI_Listbox_getItemCount00(lua_State* tolua_S)
@@ -46024,6 +46185,41 @@ static int tolua_CEGUI_CEGUI_ComboDropList_isAutoArmEnabled00(lua_State* tolua_S
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'isAutoArmEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: resizeToContent of class  CEGUI::ComboDropList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ComboDropList_resizeToContent00
+static int tolua_CEGUI_CEGUI_ComboDropList_resizeToContent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ComboDropList",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ComboDropList* self = (CEGUI::ComboDropList*)  tolua_tousertype(tolua_S,1,0);
+  float fit_width = ((float)  tolua_tonumber(tolua_S,2,0));
+  float fit_height = ((float)  tolua_tonumber(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'resizeToContent'",NULL);
+#endif
+ {
+  self->resizeToContent(fit_width,fit_height);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'resizeToContent'.",&tolua_err);
  return 0;
 #endif
 }
@@ -64037,6 +64233,11 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setCaretIndex",tolua_CEGUI_CEGUI_Combobox_setCaretIndex00);
    tolua_function(tolua_S,"setSelection",tolua_CEGUI_CEGUI_Combobox_setSelection00);
    tolua_function(tolua_S,"setMaxTextLength",tolua_CEGUI_CEGUI_Combobox_setMaxTextLength00);
+   tolua_function(tolua_S,"getAutoSizeListHeightToContent",tolua_CEGUI_CEGUI_Combobox_getAutoSizeListHeightToContent00);
+   tolua_function(tolua_S,"getAutoSizeListWidthToContent",tolua_CEGUI_CEGUI_Combobox_getAutoSizeListWidthToContent00);
+   tolua_function(tolua_S,"setAutoSizeListHeightToContent",tolua_CEGUI_CEGUI_Combobox_setAutoSizeListHeightToContent00);
+   tolua_function(tolua_S,"setAutoSizeListWidthToContent",tolua_CEGUI_CEGUI_Combobox_setAutoSizeListWidthToContent00);
+   tolua_function(tolua_S,"updateAutoSizedDropList",tolua_CEGUI_CEGUI_Combobox_updateAutoSizedDropList00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Listbox","CEGUI::Listbox","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"Listbox");
@@ -64080,6 +64281,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"isArmed",tolua_CEGUI_CEGUI_ComboDropList_isArmed00);
    tolua_function(tolua_S,"setAutoArmEnabled",tolua_CEGUI_CEGUI_ComboDropList_setAutoArmEnabled00);
    tolua_function(tolua_S,"isAutoArmEnabled",tolua_CEGUI_CEGUI_ComboDropList_isAutoArmEnabled00);
+   tolua_function(tolua_S,"resizeToContent",tolua_CEGUI_CEGUI_ComboDropList_resizeToContent00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ListHeaderSegment","CEGUI::ListHeaderSegment","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"ListHeaderSegment");

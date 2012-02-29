@@ -60,14 +60,19 @@ public:
 
     /*!
     \brief
-        Return a Rect object describing, in un-clipped pixels, the window relative area
-        that is to be used for rendering list items.
-
-    \return
-        Rect object describing the area of the Window to be used for rendering
-        list box items.
+        Return a Rect object describing, in un-clipped pixels, the window
+        relative area that is to be used for rendering list items.
     */
     virtual Rectf getListRenderArea(void) const = 0;
+
+    /*!
+     * Resize the Listbox the renderer is attached to such that it's
+     * content can be displayed without needing scrollbars if there is
+     * enough space, otherwise make the Listbox as large as possible
+     * (without moving it).
+     */
+    virtual void resizeListToContent(bool fit_width,
+                                     bool fit_height) const = 0;
 };
 
 /*!
