@@ -1116,6 +1116,82 @@
                 </Dim>
             </Area>
         </NamedArea>
+        <NamedArea name="TextAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="Vanilla-Images/FrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="Vanilla-Images/FrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="Vanilla-Images/FrameRight" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="Vanilla-Images/FrameBottom" dimension="Height">
+                                <DimOperator op="Add">
+                                    <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="TextAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="Vanilla-Images/FrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="Vanilla-Images/FrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="Vanilla-Images/FrameRight" dimension="Width">
+                                <DimOperator op="Add">
+                                    <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="Vanilla-Images/FrameBottom" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="TextAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="Vanilla-Images/FrameLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="Vanilla-Images/FrameTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="Vanilla-Images/FrameRight" dimension="Width">
+                                <DimOperator op="Add">
+                                    <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="Vanilla-Images/FrameBottom" dimension="Height">
+                                <DimOperator op="Add">
+                                    <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
         <Child  type="Vanilla/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
