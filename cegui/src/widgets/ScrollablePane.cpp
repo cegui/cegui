@@ -286,24 +286,32 @@ void ScrollablePane::initialiseComponents(void)
 void ScrollablePane::configureScrollbars(void)
 {
     // controls should all be valid by this stage
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-    
+    Scrollbar* const vertScrollbar = getVertScrollbar();
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
+
+    const bool horzScrollBarWasVisible = horzScrollbar->isVisible();
+    const bool vertScrollBarWasVisible = vertScrollbar->isVisible();
+
     // enable required scrollbars
     vertScrollbar->setVisible(isVertScrollbarNeeded());
     horzScrollbar->setVisible(isHorzScrollbarNeeded());
     
     // Check if the addition of the horizontal scrollbar means we
     // now also need the vertical bar.
-    if (horzScrollbar->isEffectiveVisible())
-    {
+    if (horzScrollbar->isVisible())
         vertScrollbar->setVisible(isVertScrollbarNeeded());
+
+    if (horzScrollBarWasVisible != horzScrollbar->isVisible() ||
+        vertScrollBarWasVisible != vertScrollbar->isVisible())
+    {
+        ElementEventArgs args(this);
+        onSized(args);
     }
-    
+
     performChildWindowLayout();
     
     // get viewable area
-    Rectf viewableArea(getViewableArea());
+    const Rectf viewableArea(getViewableArea());
     
     // set up vertical scroll bar values
     vertScrollbar->setDocumentSize(fabsf(d_contentRect.getHeight()));
@@ -400,15 +408,12 @@ bool ScrollablePane::handleScrollChange(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool ScrollablePane::handleContentAreaChange(const EventArgs&)
 {
-    Scrollbar* vertScrollbar = getVertScrollbar();
-    Scrollbar* horzScrollbar = getHorzScrollbar();
-    
     // get updated extents of the content
-    Rectf contentArea(getScrolledContainer()->getContentArea());
+    const Rectf contentArea(getScrolledContainer()->getContentArea());
     
     // calculate any change on the top and left edges.
-    float xChange = contentArea.d_min.d_x - d_contentRect.d_min.d_x;
-    float yChange = contentArea.d_min.d_y - d_contentRect.d_min.d_y;
+    const float xChange = contentArea.d_min.d_x - d_contentRect.d_min.d_x;
+    const float yChange = contentArea.d_min.d_y - d_contentRect.d_min.d_y;
     
     // store new content extents information
     d_contentRect = contentArea;
@@ -416,7 +421,9 @@ bool ScrollablePane::handleContentAreaChange(const EventArgs&)
     configureScrollbars();
     
     // update scrollbar positions (which causes container pane to be moved as needed).
+    Scrollbar* const horzScrollbar = getHorzScrollbar();
     horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() - xChange);
+    Scrollbar* const vertScrollbar = getVertScrollbar();
     vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() - yChange);
     
     // this call may already have been made if the scroll positions changed.  The call
@@ -489,9 +496,9 @@ void ScrollablePane::removeChild_impl(Element* element)
 //----------------------------------------------------------------------------//
 void ScrollablePane::onSized(ElementEventArgs& e)
 {
-    Window::onSized(e);
     configureScrollbars();
     updateContainerPosition();
+    Window::onSized(e);
     
     ++e.handled;
 }
