@@ -44,12 +44,22 @@ namespace CEGUI
     {
     public:
         typedef typename TypedProperty<T>::Helper Helper;
-        PropertyDefinitionBase(const String& name, const String& help, const String& initialValue,
-                const String& origin, bool redrawOnWrite = false, bool layoutOnWrite = false)
+
+        PropertyDefinitionBase(const String& name,
+                               const String& help,
+                               const String& initialValue,
+                               const String& origin,
+                               bool redrawOnWrite,
+                               bool layoutOnWrite,
+                               const String& fireEvent,
+                               const String& eventNamespace) 
         : TypedProperty<T>(name, help, origin, Helper::fromString(initialValue)),
-                d_writeCausesRedraw(redrawOnWrite),
-                d_writeCausesLayout(layoutOnWrite)
-                {}
+          d_writeCausesRedraw(redrawOnWrite),
+          d_writeCausesLayout(layoutOnWrite),
+          d_eventFiredOnWrite(fireEvent),
+          d_eventNamespace(eventNamespace)
+        {}
+
         virtual ~PropertyDefinitionBase() {}
 
         /*!
@@ -77,18 +87,44 @@ namespace CEGUI
             xml_stream.closeTag();
         }
 
-        bool isRedrawOnWrite() {
+        bool isRedrawOnWrite()
+        {
             return d_writeCausesRedraw;
         }
-        void setRedrawOnWrite(bool value) {
+
+        void setRedrawOnWrite(bool value)
+        {
             d_writeCausesRedraw = value;
         }
 
-        bool isLayoutOnWrite() {
+        bool isLayoutOnWrite()
+        {
             return d_writeCausesLayout;
         }
-        void setLayoutOnWrite(bool value) {
+
+        void setLayoutOnWrite(bool value)
+        {
             d_writeCausesLayout = value;
+        }
+
+        const String& getEventFiredOnWrite() const
+        {
+            return d_eventFiredOnWrite;
+        }
+
+        void setEventFiredOnWrite(const String& eventName)
+        {
+            d_eventFiredOnWrite = eventName;
+        }
+
+        const String& getEventNamespace() const
+        {
+            return d_eventNamespace;
+        }
+
+        void setEventNamespace(const String& eventNamespace)
+        {
+            d_eventNamespace = eventNamespace;
         }
 
     protected:
@@ -100,6 +136,13 @@ namespace CEGUI
 
             if (d_writeCausesRedraw)
                 static_cast<Window*>(receiver)->invalidate();
+
+            if (!d_eventFiredOnWrite.empty())
+            {
+                WindowEventArgs args(static_cast<Window*>(receiver));
+                args.window->fireEvent(d_eventFiredOnWrite, args,
+                                       d_eventNamespace);
+            }
         }
 
         /*!
@@ -126,21 +169,29 @@ namespace CEGUI
         */
         virtual void writeFalagardXMLAttributes(XMLSerializer& xml_stream) const
         {
-           // write the name of the property
-           xml_stream.attribute("name", TypedProperty<T>::d_name);
-           // write initial value, if any
-           if (!TypedProperty<T>::d_default.empty())
-               xml_stream.attribute("initialValue", TypedProperty<T>::d_default);
-           // write option to redraw when property is written
-           if (d_writeCausesRedraw)
-               xml_stream.attribute("redrawOnWrite", "true");
-           // write option to loayout children when property is written
-           if (d_writeCausesLayout)
-               xml_stream.attribute("layoutOnWrite", "true");
+            // write the name of the property
+            xml_stream.attribute("name", TypedProperty<T>::d_name);
+
+            // write initial value, if any
+            if (!TypedProperty<T>::d_default.empty())
+                xml_stream.attribute("initialValue", TypedProperty<T>::d_default);
+
+            // write option to redraw when property is written
+            if (d_writeCausesRedraw)
+                xml_stream.attribute("redrawOnWrite", "true");
+
+            // write option to loayout children when property is written
+            if (d_writeCausesLayout)
+                xml_stream.attribute("layoutOnWrite", "true");
+
+            if (!d_eventFiredOnWrite.empty())
+                xml_stream.attribute("fireEvent", d_eventFiredOnWrite);
          }
 
         bool d_writeCausesRedraw;
         bool d_writeCausesLayout;
+        String d_eventFiredOnWrite;
+        String d_eventNamespace;
     };
 
 } // End of  CEGUI namespace section
