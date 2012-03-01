@@ -245,7 +245,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     ###########################################################################
     #                           INSTALLATION
     ###########################################################################
-    if (${_INSTALL_BIN} AND UNIX AND NOT APPLE AND NOT WIN32)
+    if (${_INSTALL_BIN})
         install(TARGETS ${_LIB_NAME}
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
@@ -261,7 +261,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         endif()
     endif()
 
-    if (${_INSTALL_HEADERS} AND UNIX AND NOT APPLE AND NOT WIN32)
+    if (${_INSTALL_HEADERS})
         string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
         install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/${_REL_HEADER_DIR}")
     endif()
@@ -424,20 +424,18 @@ macro (cegui_add_sample _NAME)
     ###########################################################################
     #                           INSTALLATION
     ###########################################################################
-    if (UNIX AND NOT APPLE AND NOT WIN32)
-        install(TARGETS ${CEGUI_TARGET_NAME}
+    install(TARGETS ${CEGUI_TARGET_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+    )
+
+    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        install(TARGETS ${CEGUI_TARGET_NAME}_Static
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
             ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
     )
-
-        if (CEGUI_BUILD_STATIC_CONFIGURATION)
-            install(TARGETS ${CEGUI_TARGET_NAME}_Static
-                RUNTIME DESTINATION bin
-                LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        )
-        endif()
     endif()
 
 endmacro()
@@ -468,9 +466,7 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES COMPILE_FLAGS "-fvisibility=hidden")
     endif()
 
-    if (UNIX AND NOT APPLE AND NOT WIN32)
-        install(TARGETS ${PYTHON_MODULE_NAME} LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
-    endif()
+    install(TARGETS ${PYTHON_MODULE_NAME} LIBRARY DESTINATION "${CEGUI_PYTHON_INSTALL_DIR}")
 endmacro()
 
 #
@@ -539,20 +535,18 @@ macro (cegui_add_test_executable _NAME)
     ###########################################################################
     #                           INSTALLATION
     ###########################################################################
-    if (UNIX AND NOT APPLE AND NOT WIN32)
-        install(TARGETS ${CEGUI_TARGET_NAME}
+    install(TARGETS ${CEGUI_TARGET_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+    )
+
+    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        install(TARGETS ${CEGUI_TARGET_NAME}_Static
             RUNTIME DESTINATION bin
             LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
             ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
     )
-
-        if (CEGUI_BUILD_STATIC_CONFIGURATION)
-            install(TARGETS ${CEGUI_TARGET_NAME}_Static
-                RUNTIME DESTINATION bin
-                LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-                ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        )
-        endif()
     endif()
 
 endmacro()

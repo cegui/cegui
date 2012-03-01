@@ -367,32 +367,30 @@ else ()
 endif ()
 
 # set up install sub-directories
-if (UNIX AND NOT APPLE AND NOT WIN32)
-    if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib64")
-        set( CEGUI_LIB_INSTALL_DIR lib64 )
-    elseif (CMAKE_SIZEOF_VOID_P EQUAL 4 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib32")
-        set( CEGUI_LIB_INSTALL_DIR lib32 )
-    else()
-        set( CEGUI_LIB_INSTALL_DIR lib )
-    endif()
-
-    option( CEGUI_SLOTTED_INSTALLATION "Specifies whether CEGUI should be installed into version specific sub-directories." TRUE )
-
-    if (CEGUI_SLOTTED_INSTALLATION)
-        set( CEGUI_SLOT_VERSION "-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
-        set( CEGUI_SLOT_INSTALL_SUBDIR "/${CMAKE_PROJECT_NAME}${CEGUI_SLOT_VERSION}" )
-
-        set( CEGUI_DATA_INSTALL_DIR "share${CEGUI_SLOT_INSTALL_SUBDIR}" )
-        set( CEGUI_DOC_INSTALL_DIR "share/doc${CEGUI_SLOT_INSTALL_SUBDIR}" )
-    else()
-        set( CEGUI_DATA_INSTALL_DIR "share/${CMAKE_PROJECT_NAME}" )
-        set( CEGUI_DOC_INSTALL_DIR "share/doc/${CMAKE_PROJECT_NAME}" )
-    endif()
-
-    set( CEGUI_PKGCONFIG_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/pkgconfig" )
-    set( CEGUI_LIB_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}${CEGUI_SLOT_INSTALL_SUBDIR}" )
-    set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_SLOT_INSTALL_SUBDIR}" )
+if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib64")
+    set( CEGUI_LIB_INSTALL_DIR lib64 )
+elseif (CMAKE_SIZEOF_VOID_P EQUAL 4 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib32")
+    set( CEGUI_LIB_INSTALL_DIR lib32 )
+else()
+    set( CEGUI_LIB_INSTALL_DIR lib )
 endif()
+
+option( CEGUI_SLOTTED_INSTALLATION "Specifies whether CEGUI should be installed into version specific sub-directories." TRUE )
+
+if (CEGUI_SLOTTED_INSTALLATION)
+    set( CEGUI_SLOT_VERSION "-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}" )
+    set( CEGUI_SLOT_INSTALL_SUBDIR "/${CMAKE_PROJECT_NAME}${CEGUI_SLOT_VERSION}" )
+
+    set( CEGUI_DATA_INSTALL_DIR "share${CEGUI_SLOT_INSTALL_SUBDIR}" )
+    set( CEGUI_DOC_INSTALL_DIR "share/doc${CEGUI_SLOT_INSTALL_SUBDIR}" )
+else()
+    set( CEGUI_DATA_INSTALL_DIR "share/${CMAKE_PROJECT_NAME}" )
+    set( CEGUI_DOC_INSTALL_DIR "share/doc/${CMAKE_PROJECT_NAME}" )
+endif()
+
+set( CEGUI_PKGCONFIG_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}/pkgconfig" )
+set( CEGUI_LIB_INSTALL_DIR "${CEGUI_LIB_INSTALL_DIR}${CEGUI_SLOT_INSTALL_SUBDIR}" )
+set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_SLOT_INSTALL_SUBDIR}" )
 
 ################################################################################
 # Deal with files we generate from template files
