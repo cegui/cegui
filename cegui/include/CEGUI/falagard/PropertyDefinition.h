@@ -44,12 +44,18 @@ template <typename T>
         typedef typename PropertyDefinitionBase<T>::Helper Helper;
 
         //! Constructor.
-        PropertyDefinition(const String& name, const String& initialValue,
-                           const String& help, const String& origin,
-                           bool redrawOnWrite = false, bool layoutOnWrite = false)
-        : PropertyDefinitionBase<T>(name, help, initialValue, origin, redrawOnWrite,
-                                   layoutOnWrite),
-            d_userStringName(name + "_fal_auto_prop__")
+        PropertyDefinition(const String& name,
+                           const String& initialValue,
+                           const String& help,
+                           const String& origin,
+                           bool redrawOnWrite,
+                           bool layoutOnWrite,
+                           const String& fireEvent,
+                           const String& eventNamespace)
+        : PropertyDefinitionBase<T>(name, help, initialValue, origin,
+                                    redrawOnWrite, layoutOnWrite,
+                                    fireEvent, eventNamespace),
+          d_userStringName(name + "_fal_auto_prop__")
         {
         }
 

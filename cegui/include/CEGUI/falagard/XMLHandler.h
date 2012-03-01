@@ -184,6 +184,8 @@ namespace CEGUI
         static const String InheritsAttribute;
         //! Attribute name that stores auto-window preference
         static const String AutoWindowAttribute;
+        //! Attribute name that stores name of event to fire for property defs
+        static const String FireEventAttribute;
 
         /*************************************************************************
             helper methods

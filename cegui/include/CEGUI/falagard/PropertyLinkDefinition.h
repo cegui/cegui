@@ -53,30 +53,38 @@ namespace CEGUI
     {
     public:
         typedef typename TypedProperty<T>::Helper Helper;
-        PropertyLinkDefinition(const String& propertyName, const String& widgetName,
-                const String& targetProperty, const String& initialValue,
-                const String& origin, bool redrawOnWrite, bool layoutOnWrite)
+        PropertyLinkDefinition(const String& propertyName,
+                               const String& widgetName,
+                               const String& targetProperty,
+                               const String& initialValue,
+                               const String& origin,
+                               bool redrawOnWrite,
+                               bool layoutOnWrite,
+                               const String& fireEvent,
+                               const String& eventNamespace)
         : PropertyDefinitionBase<T>(propertyName,
-                                         "Falagard property link definition - links a "
-                                             "property on this window to properties "
-                                             "defined on one or more child windows, or "
-                                             "the parent window.",
-                                         initialValue,
-                                         origin,
-                                         redrawOnWrite,
-                                         layoutOnWrite)
-            {
-                // add initial target if it was specified via constructor
-                // (typically meaning it came via XML attributes)
-                if (!widgetName.empty() || !targetProperty.empty())
-                    addLinkTarget(widgetName, targetProperty);
-            }
+                                    "Falagard property link definition - links a "
+                                        "property on this window to properties "
+                                        "defined on one or more child windows, or "
+                                        "the parent window.",
+                                    initialValue, origin,
+                                    redrawOnWrite, layoutOnWrite,
+                                    fireEvent, eventNamespace)
+        {
+            // add initial target if it was specified via constructor
+            // (typically meaning it came via XML attributes)
+            if (!widgetName.empty() || !targetProperty.empty())
+                addLinkTarget(widgetName, targetProperty);
+        }
+
         virtual ~PropertyLinkDefinition() {}
+
         //! add a new link target to \a property on \a widget (name).
         void addLinkTarget(const String& widget, const String& property)
         {
             d_targets.push_back(std::make_pair(widget,property));
         }
+
         //! clear all link targets from this link definition.
         void clearLinkTargets()
         {
@@ -129,7 +137,7 @@ namespace CEGUI
                 // only try to set property if target is currently valid.
                 if (target_wnd)
                     target_wnd->setProperty(i->second.empty() ?
-                            TypedProperty<T>::d_name : i->second, Helper::toString(value));
+                        TypedProperty<T>::d_name : i->second, Helper::toString(value));
             }
 
             // base handles things like ensuring redraws and such happen

@@ -29,6 +29,7 @@
         <xsd:attribute name="layoutOnWrite" type="xsd:boolean" use="optional" default="false" />
         <xsd:attribute name="redrawOnWrite" type="xsd:boolean" use="optional" default="false" />
         <xsd:attribute name="help" type="xsd:string" use="optional" default="Falagard custom property definition - gets/sets a named user string." />
+        <xsd:attribute name="fireEvent" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
     <xsd:complexType name="propertyLinkDefinitionType">
 		<xsd:sequence>
@@ -41,6 +42,7 @@
         <xsd:attribute name="initialValue" type="xsd:string" use="optional" default="" />
         <xsd:attribute name="layoutOnWrite" type="xsd:boolean" use="optional" default="false" />
         <xsd:attribute name="redrawOnWrite" type="xsd:boolean" use="optional" default="false" />
+        <xsd:attribute name="fireEvent" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
     <xsd:complexType name="propertyLinkTargetType">
         <xsd:attribute name="widget" type="xsd:string" use="required" />
