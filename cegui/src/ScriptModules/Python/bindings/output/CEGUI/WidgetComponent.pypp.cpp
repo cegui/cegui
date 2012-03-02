@@ -19,6 +19,16 @@ void register_WidgetComponent_class(){
             *\n", bp::init< >() );
         bp::scope WidgetComponent_scope( WidgetComponent_exposer );
         WidgetComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool >(( bp::arg("type"), bp::arg("look"), bp::arg("suffix"), bp::arg("renderer"), bp::arg("autoWindow") )) );
+        { //::CEGUI::WidgetComponent::addEventAction
+        
+            typedef void ( ::CEGUI::WidgetComponent::*addEventAction_function_type )( ::CEGUI::EventAction const & ) ;
+            
+            WidgetComponent_exposer.def( 
+                "addEventAction"
+                , addEventAction_function_type( &::CEGUI::WidgetComponent::addEventAction )
+                , ( bp::arg("event_action") ) );
+        
+        }
         { //::CEGUI::WidgetComponent::addPropertyInitialiser
         
             typedef void ( ::CEGUI::WidgetComponent::*addPropertyInitialiser_function_type )( ::CEGUI::PropertyInitialiser const & ) ;
@@ -27,6 +37,30 @@ void register_WidgetComponent_class(){
                 "addPropertyInitialiser"
                 , addPropertyInitialiser_function_type( &::CEGUI::WidgetComponent::addPropertyInitialiser )
                 , ( bp::arg("initialiser") ) );
+        
+        }
+        { //::CEGUI::WidgetComponent::cleanup
+        
+            typedef void ( ::CEGUI::WidgetComponent::*cleanup_function_type )( ::CEGUI::Window & ) const;
+            
+            WidgetComponent_exposer.def( 
+                "cleanup"
+                , cleanup_function_type( &::CEGUI::WidgetComponent::cleanup )
+                , ( bp::arg("parent") )
+                , "*!\n\
+            \n\
+                Cleanup from the given parent widget, the instance of the child\n\
+                created for this WidgetComponent.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::WidgetComponent::clearEventActions
+        
+            typedef void ( ::CEGUI::WidgetComponent::*clearEventActions_function_type )(  ) ;
+            
+            WidgetComponent_exposer.def( 
+                "clearEventActions"
+                , clearEventActions_function_type( &::CEGUI::WidgetComponent::clearEventActions ) );
         
         }
         { //::CEGUI::WidgetComponent::clearPropertyInitialisers
@@ -48,7 +82,8 @@ void register_WidgetComponent_class(){
                 , ( bp::arg("parent") )
                 , "*!\n\
             \n\
-                Create an instance of this widget component adding it as a child to the given Window.\n\
+                Create an instance of this widget component adding it as a child to\n\
+                the given Window.\n\
             *\n" );
         
         }
@@ -92,6 +127,19 @@ void register_WidgetComponent_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
+        { //::CEGUI::WidgetComponent::getEventActionIterator
+        
+            typedef ::CEGUI::ConstVectorIterator< std::vector< CEGUI::EventAction > > ( ::CEGUI::WidgetComponent::*getEventActionIterator_function_type )(  ) const;
+            
+            WidgetComponent_exposer.def( 
+                "getEventActionIterator"
+                , getEventActionIterator_function_type( &::CEGUI::WidgetComponent::getEventActionIterator )
+                , "*!\n\
+             * Return a WidgetComponent.EventActionIterator that iterates over the\n\
+             * EventAction definitions for this WidgetComponent.\n\
+             *\n" );
+        
+        }
         { //::CEGUI::WidgetComponent::getHorizontalWidgetAlignment
         
             typedef ::CEGUI::HorizontalAlignment ( ::CEGUI::WidgetComponent::*getHorizontalWidgetAlignment_function_type )(  ) const;
@@ -109,8 +157,8 @@ void register_WidgetComponent_class(){
                 "getPropertyIterator"
                 , getPropertyIterator_function_type( &::CEGUI::WidgetComponent::getPropertyIterator )
                 , "*!\n\
-             * Return a WidgetComponent.PropertyIterator that iterates over the PropertyInitialiser inside this\
-             WidgetComponent.\n\
+             * Return a WidgetComponent.PropertyIterator that iterates over the\n\
+             * PropertyInitialiser inside this WidgetComponent.\n\
              *\n" );
         
         }

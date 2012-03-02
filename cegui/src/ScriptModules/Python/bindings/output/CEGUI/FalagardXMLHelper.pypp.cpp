@@ -15,6 +15,16 @@ void register_FalagardXMLHelper_class(){
             Utility helper class primarily intended for use by the falagard xml parser.\n\
         *\n", bp::no_init );
         bp::scope FalagardXMLHelper_scope( FalagardXMLHelper_exposer );
+        { //::CEGUI::FalagardXMLHelper::childEventActionToString
+        
+            typedef ::CEGUI::String ( *childEventActionToString_function_type )( ::CEGUI::ChildEventAction );
+            
+            FalagardXMLHelper_exposer.def( 
+                "childEventActionToString"
+                , childEventActionToString_function_type( &::CEGUI::FalagardXMLHelper::childEventActionToString )
+                , ( bp::arg("action") ) );
+        
+        }
         { //::CEGUI::FalagardXMLHelper::dimensionOperatorToString
         
             typedef ::CEGUI::String ( *dimensionOperatorToString_function_type )( ::CEGUI::DimensionOperator );
@@ -83,6 +93,16 @@ void register_FalagardXMLHelper_class(){
                 "horzTextFormatToString"
                 , horzTextFormatToString_function_type( &::CEGUI::FalagardXMLHelper::horzTextFormatToString )
                 , ( bp::arg("format") ) );
+        
+        }
+        { //::CEGUI::FalagardXMLHelper::stringToChildEventAction
+        
+            typedef ::CEGUI::ChildEventAction ( *stringToChildEventAction_function_type )( ::CEGUI::String const & );
+            
+            FalagardXMLHelper_exposer.def( 
+                "stringToChildEventAction"
+                , stringToChildEventAction_function_type( &::CEGUI::FalagardXMLHelper::stringToChildEventAction )
+                , ( bp::arg("str") ) );
         
         }
         { //::CEGUI::FalagardXMLHelper::stringToDimensionOperator
@@ -215,6 +235,7 @@ void register_FalagardXMLHelper_class(){
                 , ( bp::arg("format") ) );
         
         }
+        FalagardXMLHelper_exposer.staticmethod( "childEventActionToString" );
         FalagardXMLHelper_exposer.staticmethod( "dimensionOperatorToString" );
         FalagardXMLHelper_exposer.staticmethod( "dimensionTypeToString" );
         FalagardXMLHelper_exposer.staticmethod( "fontMetricTypeToString" );
@@ -222,6 +243,7 @@ void register_FalagardXMLHelper_class(){
         FalagardXMLHelper_exposer.staticmethod( "horzAlignmentToString" );
         FalagardXMLHelper_exposer.staticmethod( "horzFormatToString" );
         FalagardXMLHelper_exposer.staticmethod( "horzTextFormatToString" );
+        FalagardXMLHelper_exposer.staticmethod( "stringToChildEventAction" );
         FalagardXMLHelper_exposer.staticmethod( "stringToDimensionOperator" );
         FalagardXMLHelper_exposer.staticmethod( "stringToDimensionType" );
         FalagardXMLHelper_exposer.staticmethod( "stringToFontMetricType" );

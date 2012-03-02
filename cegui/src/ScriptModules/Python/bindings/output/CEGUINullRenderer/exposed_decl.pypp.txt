@@ -1239,6 +1239,7 @@
 ~@class_declaration_t@FrameWindow@::CEGUI::FrameWindow
 ~@class_declaration_t@ClippedContainer@::CEGUI::ClippedContainer
 ~@class_declaration_t@WindowManager@::CEGUI::WindowManager
+~@class_declaration_t@EventAction@::CEGUI::EventAction
 ~@class_declaration_t@MultiColumnList@::CEGUI::MultiColumnList
 ~@class_declaration_t@NativeClipboardProvider@::CEGUI::NativeClipboardProvider
 ~@class_declaration_t@__add_unsigned< bool >@::__gnu_cxx::__add_unsigned< bool >
