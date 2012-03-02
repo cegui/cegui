@@ -145,6 +145,8 @@ namespace CEGUI
         static const String EventLinkTargetElement;     //!< Tag name for event link target elements.
         //! Tag name for specifying a source named area for a component
         static const String NamedAreaSourceElement;
+        //! Tag name for specifying event / action responses for Child components
+        static const String EventActionElement;
         // attribute names
         static const String TopLeftAttribute;           //!< Attribute name that stores colour for top-left corner.
         static const String TopRightAttribute;          //!< Attribute name that stores colour for top-right corner.
@@ -186,6 +188,8 @@ namespace CEGUI
         static const String AutoWindowAttribute;
         //! Attribute name that stores name of event to fire for property defs
         static const String FireEventAttribute;
+        //! Attribute name that stores the name of an action to be taken
+        static const String ActionAttribute;
 
         /*************************************************************************
             helper methods
@@ -452,6 +456,8 @@ namespace CEGUI
 
         //! Function to handle NamedAreaSource elements.
         void elementNamedAreaSourceStart(const XMLAttributes& attributes);
+        //! Function to handle EventAction elements.
+        void elementEventActionStart(const XMLAttributes& attributes);
 
         /*!
         \brief
