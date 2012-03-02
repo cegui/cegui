@@ -13,6 +13,7 @@
 @ref fal_enum_ref_sec_9 <br>
 @ref fal_enum_ref_sec_10 <br>
 @ref fal_enum_ref_sec_11 <br>
+@ref fal_enum_ref_sec_12 <br>
 
 
 @section fal_enum_ref_sec_1 DimensionOperator Enumeration
@@ -91,5 +92,11 @@
 @arg @c "TopAligned"  Text line block is aligned with the top of the prescribed area.
 @arg @c "CentreAligned"  Text line block is vertically centred within the prescribed area.
 @arg @c "BottomAligned"  Text line block is aligned with the bottom of the prescribed area.
+
+@section fal_enum_ref_sec_12 ChildEventAction Enumeration
+@arg @c "Redraw"  When the event is fired on the child widget, the containing
+widget will be redrawn (non-recursive).
+@arg @c "Layout"  When the event is fired on the child widget, the containing
+widget will re-layout it's child widget content.
 
 */

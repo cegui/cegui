@@ -13,6 +13,7 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_8 <br>
 @ref fal_elem_ref_sec_9 <br>
 @ref fal_elem_ref_sec_10 <br>
+@ref fal_elem_ref_eventaction <br>
 @ref fal_elem_ref_eventlinkdefintion <br>
 @ref fal_elem_ref_eventlinktarget <br>
 @ref fal_elem_ref_expressiondim <br>
@@ -210,6 +211,9 @@ auto-window. Optional attribute, default value is @c true.
 Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
+    <li>The @c \<Child\> element may contain any number of @c \<EventAction\>
+        elements that define actions to be taken by the containing widget in
+        response to events being fired on the child widget being defined.</li>
     <li>The @c \<Child\> element must contain an @c \<Area\> element that defines the location of the child widget in relation to the component being defined.</li>
     <li>You may optionally specify a single @c \<VertAlignment\> element to set the vertical alignment for the child.</li>
     <li>You may optionally specify a single @c \<HorzAlignment\> element to set the horizontal alignment for the child.</li>
@@ -458,6 +462,54 @@ and not:
   </DimOperator>
 </AbsoluteDim>
 ...
+@endcode
+
+
+@section fal_elem_ref_eventaction \<EventAction\> Element
+
+@subsection fal_elem_ref_eventaction_1 Purpose:
+The @c \<EventAction\> element is used to specify a predefined action that
+should be performed by the containing widget for the child widget being
+defined, in response to a specified event being fired by the child widget.
+@par This is useful in situations where the containing widget has imagery or
+other content that is tied to some state on the child wiget.  By using the
+facilities provided by \<EventAction\> the containing widget is updated on
+demand in response to changes on the child.
+
+@subsection fal_elem_ref_eventaction_2 Attributes:
+@arg @c event specifies the name of the event on the Child component being
+defined that will trigger the action.  Required attribute.
+@arg @c action specifies one of the values defined for the
+@ref fal_enum_ref_sec_12 "ChildEventAction" enumeration. Required attribute.
+
+@subsection fal_elem_ref_eventaction_3 Usage:
+<ul>
+    <li>The @c \<EventAction\> element may not conatin any sub-elements.</li>
+    <li>The @c \<EventAction\> element may only appear as a sub-element
+        within @c \<Child\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventaction_4 Examples:
+In this example, an EventAction is defined for the thumb of a slider widget.
+The definition indicates that when the @c Moved is fired for the thumb
+widget, the containing slider should redraw itself.  This is useful in scenarios
+where the slider has imagery whose position is dependent upon the position of
+the thumb - by using the \<EventAction\> system, the required updates are fully
+automated.
+@code
+<Falagard>
+  <WidgetLook name="ANewLook/Slider">
+  ...
+    <Child  type="ANewLook/SliderThumb" nameSuffix="__auto_thumb__">
+      <EventAction event="Moved" action="Redraw" />
+      <Area>
+        <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+        ...
+      </Area>
+      ...
+  </WidgetLook>
+  ...
+</Falagard>
 @endcode
 
 
