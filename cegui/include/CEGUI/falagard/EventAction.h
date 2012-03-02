@@ -41,6 +41,12 @@ public:
     EventAction(const String& event_name, ChildEventAction action);
     ~EventAction();
 
+    void setEventName(const String& event_name);
+    const String& getEventName() const;
+
+    void setAction(ChildEventAction action);
+    ChildEventAction getAction() const;
+
     void initialiseWidget(Window& widget) const;
     void cleanupWidget(Window& widget) const;
 

@@ -78,6 +78,30 @@ EventAction::~EventAction()
 }
 
 //----------------------------------------------------------------------------//
+void EventAction::setEventName(const String& event_name)
+{
+    d_eventName = event_name;
+}
+
+//----------------------------------------------------------------------------//
+const String& EventAction::getEventName() const
+{
+    return d_eventName;
+}
+
+//----------------------------------------------------------------------------//
+void EventAction::setAction(ChildEventAction action)
+{
+    d_action = action;
+}
+
+//----------------------------------------------------------------------------//
+ChildEventAction EventAction::getAction() const
+{
+    return d_action;
+}
+
+//----------------------------------------------------------------------------//
 void EventAction::initialiseWidget(Window& widget) const
 {
     Window* parent = widget.getParent();
