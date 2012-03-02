@@ -29,7 +29,10 @@
 #define _CEGUIEventAction_h_
 
 #include "CEGUI/String.h"
+#include "CEGUI/Event.h"
 #include "CEGUI/falagard/Enums.h"
+
+#include <map>
 
 namespace CEGUI
 {
@@ -55,6 +58,11 @@ public:
 protected:
     String d_eventName;
     ChildEventAction d_action;
+
+    String makeConnectionKeyName(const Window& widget) const;
+
+    typedef std::multimap<String, Event::ScopedConnection> ConnectionMap;
+    mutable ConnectionMap d_connections;
 };
 
 }
