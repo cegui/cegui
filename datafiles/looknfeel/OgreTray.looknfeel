@@ -130,7 +130,7 @@
 -->
     <WidgetLook name="OgreTray/FrameWindow">
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFe5ffb2" type="ColourRect"/>
-        <PropertyLinkDefinition name="CaptionFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
+        <PropertyLinkDefinition name="CaptionFont" widget="__auto_titlebar__" targetProperty="Font" type="Font"/>
         <Property name="NSSizingCursorImage" value="OgreTrayImages/MouseArrow" />
         <Property name="EWSizingCursorImage" value="OgreTrayImages/MouseArrow" />
         <Property name="NWSESizingCursorImage" value="OgreTrayImages/MouseArrow" />
@@ -868,7 +868,7 @@
 -->
     <WidgetLook name="OgreTray/CaptionedStaticText">
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_caption__" targetProperty="TextColour" initialValue="FF000000" type="ColourRect"/>
-        <PropertyLinkDefinition name="CaptionFont" widget="__auto_caption__" targetProperty="Font" type="Font*"/>
+        <PropertyLinkDefinition name="CaptionFont" widget="__auto_caption__" targetProperty="Font" type="Font"/>
         <PropertyLinkDefinition name="CaptionText" widget="__auto_caption__" targetProperty="Text" type="String"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
@@ -2558,7 +2558,7 @@
         <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
         <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
         <PropertyDefinition name="FrameEnabled" initialValue="True" redrawOnWrite="true" type="bool"/>
-        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
         <ImagerySection name="image">
             <ImageryComponent>
                 <Area>

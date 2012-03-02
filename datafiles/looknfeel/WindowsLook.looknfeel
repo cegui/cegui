@@ -438,9 +438,9 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/SystemButton">
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <Property name="NonClient" value="True" />
         <ImagerySection name="normal">
@@ -808,7 +808,7 @@
     -->
     <WidgetLook name="WindowsLook/FrameWindow">
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF000000" type="ColourRect"/>
-        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font"/>
         <Property name="NSSizingCursorImage" value="WindowsLook/MouseNoSoCursor" />
         <Property name="EWSizingCursorImage" value="WindowsLook/MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="WindowsLook/MouseNwSeCursor" />
@@ -1200,7 +1200,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/IconButton">
-        <PropertyDefinition name="IconImage" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="IconImage" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="IconColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="WantsMultiClickEvents" value="False" />
         <ImagerySection name="icon">
@@ -1496,7 +1496,7 @@
     <WidgetLook name="WindowsLook/ListboxItem">
         <PropertyDefinition name="TextColour" initialValue="FF000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="SelectionBrush" initialValue="WindowsLook/Background" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="SelectionBrush" initialValue="WindowsLook/Background" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="SelectionColour" initialValue="FF3030FF" redrawOnWrite="true" type="ColourRect"/>
 		<Property name="Selectable" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />
