@@ -100,6 +100,8 @@
 
 #include "Event.pypp.hpp"
 
+#include "EventAction.pypp.hpp"
+
 #include "EventArgs.pypp.hpp"
 
 #include "EventIterator.pypp.hpp"
@@ -692,6 +694,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Connection_class();
 
     register_Event_class();
+
+    register_EventAction_class();
 
     register_EventLinkDefinition_class();
 

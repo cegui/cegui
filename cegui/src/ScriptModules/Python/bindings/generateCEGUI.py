@@ -1093,7 +1093,12 @@ void Iterator_previous(::CEGUI::%s& t)
     CEGUI_ns.enum("FontMetricType").include()
     CEGUI_ns.enum("DimensionOperator").include()
     CEGUI_ns.enum("FrameImageComponent").include()
+    CEGUI_ns.enum("ChildEventAction").include()
 
+    # falagard/EventAction.h
+    eventAction = CEGUI_ns.class_("EventAction")
+    eventAction.include()
+    
     # falagard/CEGUIFalEventLinkDefinition.h
     eventLinkDefinition = CEGUI_ns.class_("EventLinkDefinition")
     eventLinkDefinition.include()

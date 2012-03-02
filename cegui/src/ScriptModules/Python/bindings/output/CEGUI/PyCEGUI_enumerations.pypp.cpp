@@ -22,6 +22,12 @@ void register_enumerations(){
         .export_values()
         ;
 
+    bp::enum_< CEGUI::ChildEventAction>("ChildEventAction")
+        .value("CEA_REDRAW", CEGUI::CEA_REDRAW)
+        .value("CEA_LAYOUT", CEGUI::CEA_LAYOUT)
+        .export_values()
+        ;
+
     bp::enum_< CEGUI::DimensionOperator>("DimensionOperator")
         .value("DOP_NOOP", CEGUI::DOP_NOOP)
         .value("DOP_ADD", CEGUI::DOP_ADD)
