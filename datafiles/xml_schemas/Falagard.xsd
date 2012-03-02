@@ -419,8 +419,8 @@
             <xsd:enumeration value="Vector2f" />
             <xsd:enumeration value="Vector3f" />
             <xsd:enumeration value="Rectf" />
-            <xsd:enumeration value="Font*" />
-            <xsd:enumeration value="Image*" />
+            <xsd:enumeration value="Font" />
+            <xsd:enumeration value="Image" />
             <xsd:enumeration value="Quaternion" />
             <xsd:enumeration value="AspectMode" />
             <xsd:enumeration value="HorizontalAlignment" />

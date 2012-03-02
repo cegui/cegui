@@ -50,10 +50,10 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="VertLabelFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
         <PropertyDefinition name="HorzLabelFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true"  type="Image*"/>
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true"  type="Image"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
         <ImagerySection name="label">
@@ -565,7 +565,7 @@
     <WidgetLook name="TaharezLook/FrameWindow">
         <PropertyDefinition name="ClientAreaColour" initialValue="FF141B38" redrawOnWrite="true" type="ColourRect"/>
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" type="ColourRect"/>
-        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*"/>
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font"/>
         <Property name="NSSizingCursorImage" value="TaharezLook/MouseNoSoCursor" />
         <Property name="EWSizingCursorImage" value="TaharezLook/MouseEsWeCursor" />
         <Property name="NWSESizingCursorImage" value="TaharezLook/MouseNwSeCursor" />
@@ -3938,10 +3938,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ImageButton">
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
         <ImagerySection name="normal">
@@ -4119,7 +4119,7 @@
     <WidgetLook name="TaharezLook/ListboxItem">
         <PropertyDefinition name="TextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="SelectedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="SelectionBrush" initialValue="TaharezLook/ListboxSelectionBrush" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="SelectionColour" initialValue="FF4444AA" redrawOnWrite="true" type="ColourRect"/>
         <Property name="Selectable" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />

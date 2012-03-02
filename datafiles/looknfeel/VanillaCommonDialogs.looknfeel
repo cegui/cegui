@@ -53,7 +53,7 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/VerticalImageSlider">
-		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" type="Image*"/>
+		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" type="Image"/>
 		<PropertyDefinition name="TopEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
 		<PropertyDefinition name="BottomEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
 
@@ -283,7 +283,7 @@
 	</WidgetLook>
 
 	<WidgetLook name="Vanilla/HorizontalImageSlider">
-		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" type="Image*"/>
+		<PropertyDefinition name="ScrollImage" initialValue="Vanilla-Images/DefaultScrollImage" type="Image"/>
 		<PropertyDefinition name="TopEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
 		<PropertyDefinition name="BottomEndColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect"/>
 
@@ -537,7 +537,7 @@
 
 	<WidgetLook name="Vanilla/ColourPickerControls">
 		<PropertyDefinition name="ColourPickerCursorStyle" initialValue="Vanilla/StaticImage" type="String" />
-		<PropertyDefinition name="ColourPickerCursorImage" initialValue="Vanilla-Images/ColourPickerCursor" type="Image*"/>
+		<PropertyDefinition name="ColourPickerCursorImage" initialValue="Vanilla-Images/ColourPickerCursor" type="Image"/>
 		<PropertyDefinition name="BackgroundColours" initialValue="tl:D3FFFFFF tr:D3FFFFFF bl:D3FFFFFF br:D3FFFFFF" redrawOnWrite="true" type="ColourRect"/>
 		<PropertyDefinition name="ColourPickerImageSliderWidth" initialValue="20" redrawOnWrite="true" type="uint"/>
 
@@ -545,7 +545,7 @@
 		<PropertyLinkDefinition name="NewColour" widget="__auto_newcolourrect__" targetProperty="Colour" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect"/>
 		<PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FF4A4A4A" type="ColourRect"/>
 
-		<PropertyLinkDefinition name="ColourPickerFontType" initialValue="DejaVuSans-10-NoScale" type="Font*">
+		<PropertyLinkDefinition name="ColourPickerFontType" initialValue="DejaVuSans-10-NoScale" type="Font">
 			<PropertyLinkTarget widget="__auto_cancelbutton__" property="Font" />
 			<PropertyLinkTarget widget="__auto_acceptbutton__" property="Font" />
 			<PropertyLinkTarget widget="__auto_titlebar__" property="Font" />
