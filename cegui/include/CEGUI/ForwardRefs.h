@@ -54,6 +54,7 @@ class DynamicModule;
 class Element;
 class ElementEventArgs;
 class Event;
+class EventAction;
 class EventArgs;
 class EventSet;
 class Exception;
