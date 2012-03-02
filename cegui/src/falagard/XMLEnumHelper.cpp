@@ -252,6 +252,19 @@ namespace CEGUI
         }
     }
 
+    ChildEventAction Falagard_xmlHandler::stringToChildEventAction(const String& str)
+    {
+        if (str == "Redraw")
+            return CEA_REDRAW;
+
+        if (str == "Layout")
+            return CEA_LAYOUT;
+
+        CEGUI_THROW(InvalidRequestException(
+            "FalagardXMLHelper::stringToChildEventAction: '" + str +
+                "' does not represent a ChildEventAction enumerated value."));
+    }
+
 
     String FalagardXMLHelper::vertFormatToString(VerticalFormatting format)
     {
@@ -453,4 +466,21 @@ namespace CEGUI
             break;
         }
     }
+
+    String FalagardXMLHelper::childEventActionToString(ChildEventAction action)
+    {
+        switch (action)
+        {
+        case CEA_REDRAW:
+            return String("Redraw");
+
+        case CEA_LAYOUT:
+            return String("Layout");
+
+        default:
+            CEGUI_THROW(InvalidRequestException(
+                "FalagardXMLHelper::childEventActionToString: "
+                "Invalid enumeration value given."));
+    }
+
 } // End of  CEGUI namespace section
