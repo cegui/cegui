@@ -181,6 +181,7 @@ public:
         static FontMetricType stringToFontMetricType(const String& str);
         static DimensionOperator stringToDimensionOperator(const String& str);
         static FrameImageComponent stringToFrameImageComponent(const String& str);
+        static ChildEventAction stringToChildEventAction(const String& str);
 
         static String vertFormatToString(VerticalFormatting format);
         static String horzFormatToString(HorizontalFormatting format);
@@ -192,6 +193,7 @@ public:
         static String fontMetricTypeToString(FontMetricType metric);
         static String dimensionOperatorToString(DimensionOperator op);
         static String frameImageComponentToString(FrameImageComponent imageComp);
+        static String childEventActionToString(ChildEventAction action);
 
     private:
         /// disallow construction

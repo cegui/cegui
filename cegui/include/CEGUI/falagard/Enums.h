@@ -147,6 +147,19 @@ namespace CEGUI
         FIC_FRAME_IMAGE_COUNT       //!< Max number of images for a frame.
     };
 
+    /*!
+    \brief
+        Enumeration of actions a WidgetLook can take in response to some event
+        firing on a child WidgetComponent.
+    */
+    enum ChildEventAction
+    {
+        //! The window with the WidgetComponent as child is redrawn.
+        CEA_REDRAW,
+        //! The window with the WidgetComponent as child performs child layout.
+        CEA_LAYOUT
+    };
+
 
 template<>
 class PropertyHelper<VerticalTextFormatting>
