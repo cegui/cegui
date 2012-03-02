@@ -109,6 +109,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::EventLinkDefinitionElement("EventLinkDefinition");
     const String Falagard_xmlHandler::EventLinkTargetElement("EventLinkTarget");
     const String Falagard_xmlHandler::NamedAreaSourceElement("NamedAreaSource");
+    const String Falagard_xmlHandler::EventActionElement("EventAction");
     // attribute names
     const String Falagard_xmlHandler::TopLeftAttribute("topLeft");
     const String Falagard_xmlHandler::TopRightAttribute("topRight");
@@ -145,6 +146,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::InheritsAttribute("inherits");
     const String Falagard_xmlHandler::AutoWindowAttribute("autoWindow");
     const String Falagard_xmlHandler::FireEventAttribute("fireEvent");
+    const String Falagard_xmlHandler::ActionAttribute("action");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -211,6 +213,7 @@ namespace CEGUI
         registerElementStartHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionStart);
         registerElementStartHandler(EventLinkTargetElement, &Falagard_xmlHandler::elementEventLinkTargetStart);
         registerElementStartHandler(NamedAreaSourceElement, &Falagard_xmlHandler::elementNamedAreaSourceStart);
+        registerElementStartHandler(EventActionElement, &Falagard_xmlHandler::elementEventActionStart);
 
         // register element end handlers
         registerElementEndHandler(FalagardElement, &Falagard_xmlHandler::elementFalagardEnd);
@@ -1508,6 +1511,12 @@ namespace CEGUI
 
         d_area->setNamedAreaSouce(look.empty() ? d_widgetlook->getName() : look,
                                   attributes.getValueAsString(NameAttribute));
+    }
+        
+    void Falagard_xmlHandler::elementEventActionStart(const XMLAttributes& attributes)
+    {
+        CEGUI_THROW(InvalidRequestException(
+            "elementEventActionStart: Unimplemented!"));
     }
 
     /*************************************************************************
