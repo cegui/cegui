@@ -78,12 +78,31 @@ namespace CEGUI
         {
             (*curr).apply(*widget);
         }
+
+        // link up the event actions
+        for (EventActionList::const_iterator i = d_eventActions.begin();
+             i != d_eventActions.end();
+             ++i)
+        {
+            (*i).initialiseWidget(*widget);
+        }
     }
 
     void WidgetComponent::cleanup(Window& parent) const
     {
-        if (parent.isChild(getWidgetName()))
-            parent.destroyChild(getWidgetName());
+        if (!parent.isChild(getWidgetName()))
+            return;
+
+        Window* widget = parent.getChild(getWidgetName());
+        // clean up up the event actions
+        for (EventActionList::const_iterator i = d_eventActions.begin();
+             i != d_eventActions.end();
+             ++i)
+        {
+            (*i).cleanupWidget(*widget);
+        }
+
+        parent.destroyChild(widget);
     }
 
     const ComponentArea& WidgetComponent::getComponentArea() const
@@ -184,6 +203,16 @@ namespace CEGUI
     {
         return d_autoWindow;
     }
+        
+    void WidgetComponent::addEventAction(const EventAction& event_action)
+    {
+        d_eventActions.push_back(event_action);
+    }
+
+    void WidgetComponent::clearEventActions()
+    {
+        d_eventActions.clear();
+    }
 
     void WidgetComponent::layout(const Window& owner) const
     {
@@ -218,6 +247,14 @@ namespace CEGUI
 
         if (!d_autoWindow)
             xml_stream.attribute("autoWindow", "false");
+
+        // Output <EventAction> elements
+        for (EventActionList::const_iterator i = d_eventActions.begin();
+             i != d_eventActions.end();
+             ++i)
+        {
+            (*i).writeXMLToStream(xml_stream);
+        }
 
         // output target area
         d_area.writeXMLToStream(xml_stream);
@@ -260,4 +297,10 @@ namespace CEGUI
         return PropertyIterator(d_properties.begin(),d_properties.end());
     }
 
+    WidgetComponent::EventActionIterator
+    WidgetComponent::getEventActionIterator() const
+    {
+        return EventActionIterator(d_eventActions.begin(),
+                                   d_eventActions.end());
+    }
 } // End of  CEGUI namespace section
