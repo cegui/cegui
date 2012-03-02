@@ -173,7 +173,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="widgetComponentType">
 		<xsd:sequence>
-            <xsd:element name="EventAction" type="eventActionType" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="EventAction" type="eventActionType" minOccurs="0" maxOccurs="unbounded" />
             <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="VertAlignment" type="vertAlignmentType" minOccurs="0" maxOccurs="1" />
 			<xsd:element name="HorzAlignment" type="horzAlignmentType" minOccurs="0" maxOccurs="1" />
