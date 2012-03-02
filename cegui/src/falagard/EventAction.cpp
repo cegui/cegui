@@ -28,6 +28,7 @@
 #include "CEGUI/falagard/EventAction.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/Logger.h"
 
 namespace CEGUI
 {
@@ -110,12 +111,26 @@ void EventAction::initialiseWidget(Window& widget) const
         CEGUI_THROW(InvalidRequestException("EventAction::initialiseWidget:"
             "EvenAction can only be initialised on child widgets."));
 
-    widget.subscribeEvent(d_eventName, EventActionFunctor(*parent, d_action));
+    d_connections.insert(
+        std::make_pair(makeConnectionKeyName(widget),
+                       widget.subscribeEvent(d_eventName,
+                            EventActionFunctor(*parent, d_action))));
 }
 
 //----------------------------------------------------------------------------//
 void EventAction::cleanupWidget(Window& widget) const
 {
+    const String keyname(makeConnectionKeyName(widget));
+
+    ConnectionMap::iterator i = d_connections.find(keyname);
+
+    if (i != d_connections.end())
+        d_connections.erase(i);
+    else
+        Logger::getSingleton().logEvent("EventAction::cleanupWidget: "
+            "An event connection with key '" + keyname + "' was not "
+            "found.  This may be harmless, but most likely could point "
+            "to a double-deletion or some other serious issue.", Errors);
 }
 
 //----------------------------------------------------------------------------//
@@ -125,6 +140,17 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
         .attribute("event", d_eventName)
         .attribute("action", FalagardXMLHelper::childEventActionToString(d_action))
         .closeTag();
+}
+
+//----------------------------------------------------------------------------//
+String EventAction::makeConnectionKeyName(const Window& widget) const
+{
+    char addr[32];
+    std::sprintf(addr, "%p", &widget);
+
+    return String(addr) +
+           d_eventName +
+           FalagardXMLHelper::childEventActionToString(d_action);
 }
 
 //----------------------------------------------------------------------------//
