@@ -638,7 +638,7 @@ public:
     
     static const String& getDataTypeName()
     {
-        static String type("Image*");
+        static String type("Image");
 
         return type;
     }
@@ -926,7 +926,7 @@ public:
     
     static const String& getDataTypeName()
     {
-        static String type("Font*");
+        static String type("Font");
 
         return type;
     }

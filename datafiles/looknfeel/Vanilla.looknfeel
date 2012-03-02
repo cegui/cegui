@@ -151,9 +151,9 @@
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="UseStandardImagery" initialValue="True" redrawOnWrite="true" type="bool"/>
-        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image*"/>
-        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image*"/>
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
         <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
 
@@ -260,7 +260,7 @@
 
     <WidgetLook name="Vanilla/FrameWindow">
         <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFFFFFFF" type="ColourRect" />
-        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font*" />
+        <PropertyLinkDefinition name="TitlebarFont" widget="__auto_titlebar__" targetProperty="Font" type="Font" />
         <Property name="NSSizingCursorImage" value="Vanilla-Images/MouseArrow" />
         <Property name="EWSizingCursorImage" value="Vanilla-Images/MouseArrow" />
         <Property name="NWSESizingCursorImage" value="Vanilla-Images/MouseArrow" />
