@@ -1258,6 +1258,11 @@ The @c \<PropertyDefinition\> element creates a new named property for the widge
 @arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
 @arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. Optional attribute.
 
 @subsection fal_elem_ref_sec_26_3 Usage:
 <ul>
@@ -1312,6 +1317,13 @@ value @c "__parent__" to indicate a back-link to the parent. Optional attribute.
 @arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
 @arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. It is the responsibility of the WidgetLook
+author to ensure that collisions with predefined events are avoided.
+Optional attribute.
 
 @subsection fal_elem_ref_sec_27_3 Usage:
 <ul>
