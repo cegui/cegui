@@ -1515,8 +1515,13 @@ namespace CEGUI
         
     void Falagard_xmlHandler::elementEventActionStart(const XMLAttributes& attributes)
     {
-        CEGUI_THROW(InvalidRequestException(
-            "elementEventActionStart: Unimplemented!"));
+        assert(d_childcomponent != 0);
+
+        const EventAction action(attributes.getValueAsString(EventAttribute),
+                                 FalagardXMLHelper::stringToChildEventAction(
+                                    attributes.getValueAsString(ActionAttribute)));
+
+        d_childcomponent->addEventAction(action);
     }
 
     /*************************************************************************
