@@ -252,7 +252,7 @@ namespace CEGUI
         }
     }
 
-    ChildEventAction Falagard_xmlHandler::stringToChildEventAction(const String& str)
+    ChildEventAction FalagardXMLHelper::stringToChildEventAction(const String& str)
     {
         if (str == "Redraw")
             return CEA_REDRAW;
@@ -481,6 +481,7 @@ namespace CEGUI
             CEGUI_THROW(InvalidRequestException(
                 "FalagardXMLHelper::childEventActionToString: "
                 "Invalid enumeration value given."));
+        }
     }
 
 } // End of  CEGUI namespace section
