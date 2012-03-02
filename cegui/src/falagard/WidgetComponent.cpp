@@ -80,6 +80,12 @@ namespace CEGUI
         }
     }
 
+    void WidgetComponent::cleanup(Window& parent) const
+    {
+        if (parent.isChild(getWidgetName()))
+            parent.destroyChild(getWidgetName());
+    }
+
     const ComponentArea& WidgetComponent::getComponentArea() const
     {
         return d_area;

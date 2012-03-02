@@ -59,9 +59,17 @@ namespace CEGUI
 
         /*!
         \brief
-            Create an instance of this widget component adding it as a child to the given Window.
+            Create an instance of this widget component adding it as a child to
+            the given Window.
         */
         void create(Window& parent) const;
+
+        /*!
+        \brief
+            Cleanup from the given parent widget, the instance of the child
+            created for this WidgetComponent.
+        */
+        void cleanup(Window& parent) const;
 
         const ComponentArea& getComponentArea() const;
         void setComponentArea(const ComponentArea& area);

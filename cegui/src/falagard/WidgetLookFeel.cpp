@@ -323,8 +323,7 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
          wci != wcl.end();
          ++wci)
     {
-        if (widget.isChild(wci->second->getWidgetName()))
-            widget.destroyChild(wci->second->getWidgetName());
+        wci->second->cleanup(widget);
     }
 
     // delete added named Events
