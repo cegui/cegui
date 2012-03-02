@@ -44,6 +44,8 @@ public:
     void initialiseWidget(Window& widget) const;
     void cleanupWidget(Window& widget) const;
 
+    void writeXMLToStream(XMLSerializer& xml_stream) const;
+
 protected:
     String d_eventName;
     ChildEventAction d_action;

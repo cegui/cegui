@@ -28,9 +28,10 @@
 #ifndef _CEGUIFalWidgetComponent_h_
 #define _CEGUIFalWidgetComponent_h_
 
-#include "./Dimensions.h"
-#include "./PropertyInitialiser.h"
-#include "../Window.h"
+#include "CEGUI/falagard/Dimensions.h"
+#include "CEGUI/falagard/PropertyInitialiser.h"
+#include "CEGUI/falagard/EventAction.h"
+#include "CEGUI/Window.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -99,6 +100,9 @@ namespace CEGUI
         void setAutoWindow(bool is_auto);
         bool isAutoWindow() const;
 
+        void addEventAction(const EventAction& event_action);
+        void clearEventActions();
+
         void layout(const Window& owner) const;
 
         /*!
@@ -128,16 +132,28 @@ namespace CEGUI
     private:
         typedef std::vector<PropertyInitialiser
             CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;
+        typedef std::vector<EventAction
+            CEGUI_VECTOR_ALLOC(EventAction)> EventActionList;
+
     public:
         /*************************************************************************
             Iterator stuff
         *************************************************************************/
         typedef ConstVectorIterator<PropertiesList> PropertyIterator;
+        typedef ConstVectorIterator<EventActionList> EventActionIterator;
 
         /*!
-         * Return a WidgetComponent::PropertyIterator that iterates over the PropertyInitialiser inside this WidgetComponent.
+         * Return a WidgetComponent::PropertyIterator that iterates over the
+         * PropertyInitialiser inside this WidgetComponent.
          */
         PropertyIterator getPropertyIterator() const;
+
+        /*!
+         * Return a WidgetComponent::EventActionIterator that iterates over the
+         * EventAction definitions for this WidgetComponent.
+         */
+        EventActionIterator getEventActionIterator() const;
+
     private:
         ComponentArea   d_area;              //!< Destination area for the widget (relative to it's parent).
         String   d_baseType;                 //!< Type of widget to be created.
@@ -148,6 +164,8 @@ namespace CEGUI
         VerticalAlignment    d_vertAlign;    //!< Vertical alignment to be used for this widget.
         HorizontalAlignment  d_horzAlign;    //!< Horizontal alignment to be used for this widget.
         PropertiesList  d_properties;        //!< Collection of PropertyInitialisers to be applied the the widget upon creation.
+        //! EventActions added to the WidgetComponent
+        EventActionList d_eventActions;
     };
 
 } // End of  CEGUI namespace section

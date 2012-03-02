@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/EventAction.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/Window.h"
 
 namespace CEGUI
@@ -91,6 +92,15 @@ void EventAction::initialiseWidget(Window& widget) const
 //----------------------------------------------------------------------------//
 void EventAction::cleanupWidget(Window& widget) const
 {
+}
+
+//----------------------------------------------------------------------------//
+void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
+{
+    xml_stream.openTag("EventAction")
+        .attribute("event", d_eventName)
+        .attribute("action", FalagardXMLHelper::childEventActionToString(d_action))
+        .closeTag();
 }
 
 //----------------------------------------------------------------------------//
