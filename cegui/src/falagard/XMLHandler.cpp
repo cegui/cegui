@@ -803,9 +803,9 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<Vector3f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "Rectf")
             prop = CEGUI_NEW_AO PropertyDefinition<Rectf>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "Font*")
+        else if(type == "Font")
             prop = CEGUI_NEW_AO PropertyDefinition<Font*>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "Image*")
+        else if(type == "Image")
             prop = CEGUI_NEW_AO PropertyDefinition<Image*>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "Quaternion")
             prop = CEGUI_NEW_AO PropertyDefinition<Quaternion>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -918,10 +918,10 @@ namespace CEGUI
         else if (type == "Rectf")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Rectf>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "Font*")
+        else if (type == "Font")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Font*>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "Image*")
+        else if (type == "Image")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Image*>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == "Quaternion")
@@ -1374,9 +1374,9 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<Vector3f>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "Rectf")
                 dynamic_cast<PropertyLinkDefinition<Rectf>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == "Font*")
+            else if(type == "Font")
                 dynamic_cast<PropertyLinkDefinition<Font*>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == "Image*")
+            else if(type == "Image")
                 dynamic_cast<PropertyLinkDefinition<Image*>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "Quaternion")
                 dynamic_cast<PropertyLinkDefinition<Quaternion>* >(d_propertyLink)->addLinkTarget(w, p);
