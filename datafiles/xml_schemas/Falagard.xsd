@@ -431,7 +431,6 @@
             <xsd:enumeration value="bool" />
             <xsd:enumeration value="uint" />
             <xsd:enumeration value="unsigned long" />
-            <xsd:enumeration value="uint" />
             <xsd:enumeration value="int" />
             <xsd:enumeration value="float" />
             <xsd:enumeration value="double" />
