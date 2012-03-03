@@ -56,6 +56,7 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/widgets/All.h"
+#include "CEGUI/RegexMatcher.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
 #endif
