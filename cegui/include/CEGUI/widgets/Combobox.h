@@ -126,6 +126,10 @@ public:
 	static const String EventListContentsChanged;
     /** Event fired when there is a change to the currently selected item in the
      * list.
+     * @note This change in selection may be temporary (for example, when
+     * hovering over an item in the combobox). See also the event
+     * CEGUI::Combobox::EventListSelectionAccepted that is fired for a selection
+     * that the user has 'confirmed' in some way.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Combobox whose currently selected list
      * item has changed.
