@@ -186,11 +186,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
 
     include_directories("${CMAKE_SOURCE_DIR}/${_REL_INC_DIR}")
 
-    if (${_IS_MODULE})
-        set (_LIB_TYPE MODULE)
-    else()
-        set (_LIB_TYPE SHARED)
-    endif()
+    set (_LIB_TYPE SHARED)
 
     ###########################################################################
     #                       STATIC LIBRARY SET UP
@@ -272,7 +268,7 @@ endmacro()
 # to (except in static builds)
 #
 macro (cegui_add_loadable_module _MODULE_NAME _SOURCE_FILES_VAR _HEADER_FILES_VAR)
-    cegui_add_library_impl(${_MODULE_NAME} TRUE ${_SOURCE_FILES_VAR} ${_HEADER_FILES_VAR} TRUE FALSE)
+    cegui_add_library_impl(${_MODULE_NAME} TRUE ${_SOURCE_FILES_VAR} ${_HEADER_FILES_VAR} TRUE TRUE)
 endmacro()
 
 #
