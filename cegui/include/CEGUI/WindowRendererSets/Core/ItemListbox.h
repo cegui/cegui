@@ -45,10 +45,15 @@ namespace CEGUI
             - Disabled
 
         Named Areas:
-            ItemRenderArea
-            ItemRenderAreaHScroll
-            ItemRenderAreaVScroll
-            ItemRenderAreaHVScroll
+            - ItemRenderArea
+            - ItemRenderAreaHScroll
+            - ItemRenderAreaVScroll
+            - ItemRenderAreaHVScroll
+            - - OR -
+            - ItemRenderingArea
+            - ItemRenderingAreaHScroll
+            - ItemRenderingAreaVScroll
+            - ItemRenderingAreaHVScroll
     */
     class COREWRSET_API FalagardItemListbox : public ItemListBaseWindowRenderer
     {
@@ -68,6 +73,8 @@ namespace CEGUI
         Rectf getUnclippedInnerRect() const;
 
     protected:
+        Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
+
         // overridden from WindowRenderer base class.
         void onLookNFeelAssigned();
         void onLookNFeelUnassigned();
