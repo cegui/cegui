@@ -57,34 +57,31 @@ namespace CEGUI
     Rectf FalagardItemListbox::getItemRenderArea(void) const
     {
         ItemListbox* lb = static_cast<ItemListbox*>(d_window);
-        // get WidgetLookFeel for the assigned look.
+        return getItemRenderingArea(lb->getHorzScrollbar()->isVisible(),
+                                    lb->getVertScrollbar()->isVisible());
+    }
+
+    Rectf FalagardItemListbox::getItemRenderingArea(bool hscroll,
+                                                    bool vscroll) const
+    {
+    	const ItemListbox* const lb = static_cast<ItemListbox*>(d_window);
         const WidgetLookFeel& wlf = getLookNFeel();
-        bool v_visible = lb->getVertScrollbar()->isVisible();
-        bool h_visible = lb->getHorzScrollbar()->isVisible();
+        const String area_name("ItemRenderArea");
+        const String alternate_name("ItemRenderingArea");
+        const String scroll_suffix(
+            vscroll ? hscroll ? "HVScroll" : "VScroll" : hscroll ? "HScroll" : "");
 
-        // if either of the scrollbars are visible, we might want to use another text rendering area
-        if (v_visible || h_visible)
-        {
-            String area_name("ItemRenderArea");
+        if (wlf.isNamedAreaDefined(area_name + scroll_suffix))
+                return wlf.getNamedArea(area_name + scroll_suffix).getArea().getPixelRect(*lb);
 
-            if (h_visible)
-            {
-                area_name.push_back('H');
-            }
-            if (v_visible)
-            {
-                area_name.push_back('V');
-            }
-            area_name += "Scroll";
+        if (wlf.isNamedAreaDefined(alternate_name + scroll_suffix))
+                return wlf.getNamedArea(alternate_name + scroll_suffix).getArea().getPixelRect(*lb);
 
-            if (wlf.isNamedAreaDefined(area_name))
-            {
-                return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
-            }
-        }
-
-        // default to plain ItemRenderArea
-        return wlf.getNamedArea("ItemRenderArea").getArea().getPixelRect(*lb);
+        // default to plain ItemRenderingArea
+        if (wlf.isNamedAreaDefined(area_name))
+            return wlf.getNamedArea(area_name).getArea().getPixelRect(*lb);
+        else
+            return wlf.getNamedArea(alternate_name).getArea().getPixelRect(*lb);
     }
 
     void FalagardItemListbox::onLookNFeelAssigned()
