@@ -285,6 +285,12 @@ void ImageManager::loadImageset(const String& filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 }
 
+void ImageManager::loadImagesetFromString(const String& source)
+{
+    System::getSingleton().getXMLParser()->parseXMLString(
+            *this, source, ImagesetSchemaName);
+}
+
 //----------------------------------------------------------------------------//
 void ImageManager::destroyImageCollection(const String& prefix,
                                           const bool delete_texture)
