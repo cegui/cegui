@@ -261,14 +261,10 @@ namespace CEGUI
         // methods to perform processing for each of the widget states
         void doActiveState(float elapsed);
         void doInactiveState(float elapsed);
-        void doFadeInState(float elapsed);
-        void doFadeOutState(float elapsed);
 
         // methods to switch widget states
         void switchToInactiveState(void);
         void switchToActiveState(void);
-        void switchToFadeInState(void);
-        void switchToFadeOutState(void);
 
         // validate window renderer
         virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
