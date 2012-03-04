@@ -19,14 +19,6 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
         CEGUI::Tooltip::doActiveState( elapsed );
     }
 
-    void doFadeInState( float elapsed ){
-        CEGUI::Tooltip::doFadeInState( elapsed );
-    }
-
-    void doFadeOutState( float elapsed ){
-        CEGUI::Tooltip::doFadeOutState( elapsed );
-    }
-
     void doInactiveState( float elapsed ){
         CEGUI::Tooltip::doInactiveState( elapsed );
     }
@@ -141,14 +133,6 @@ struct Tooltip_wrapper : CEGUI::Tooltip, bp::wrapper< CEGUI::Tooltip > {
 
     void switchToActiveState(  ){
         CEGUI::Tooltip::switchToActiveState(  );
-    }
-
-    void switchToFadeInState(  ){
-        CEGUI::Tooltip::switchToFadeInState(  );
-    }
-
-    void switchToFadeOutState(  ){
-        CEGUI::Tooltip::switchToFadeOutState(  );
     }
 
     void switchToInactiveState(  ){
@@ -1401,26 +1385,6 @@ void register_Tooltip_class(){
              methods to perform processing for each of the widget states\n" );
         
         }
-        { //::CEGUI::Tooltip::doFadeInState
-        
-            typedef void ( Tooltip_wrapper::*doFadeInState_function_type )( float ) ;
-            
-            Tooltip_exposer.def( 
-                "doFadeInState"
-                , doFadeInState_function_type( &Tooltip_wrapper::doFadeInState )
-                , ( bp::arg("elapsed") ) );
-        
-        }
-        { //::CEGUI::Tooltip::doFadeOutState
-        
-            typedef void ( Tooltip_wrapper::*doFadeOutState_function_type )( float ) ;
-            
-            Tooltip_exposer.def( 
-                "doFadeOutState"
-                , doFadeOutState_function_type( &Tooltip_wrapper::doFadeOutState )
-                , ( bp::arg("elapsed") ) );
-        
-        }
         { //::CEGUI::Tooltip::doInactiveState
         
             typedef void ( Tooltip_wrapper::*doInactiveState_function_type )( float ) ;
@@ -1765,24 +1729,6 @@ void register_Tooltip_class(){
                 "switchToActiveState"
                 , switchToActiveState_function_type( &Tooltip_wrapper::switchToActiveState )
                 , "methods to switch widget states\n" );
-        
-        }
-        { //::CEGUI::Tooltip::switchToFadeInState
-        
-            typedef void ( Tooltip_wrapper::*switchToFadeInState_function_type )(  ) ;
-            
-            Tooltip_exposer.def( 
-                "switchToFadeInState"
-                , switchToFadeInState_function_type( &Tooltip_wrapper::switchToFadeInState ) );
-        
-        }
-        { //::CEGUI::Tooltip::switchToFadeOutState
-        
-            typedef void ( Tooltip_wrapper::*switchToFadeOutState_function_type )(  ) ;
-            
-            Tooltip_exposer.def( 
-                "switchToFadeOutState"
-                , switchToFadeOutState_function_type( &Tooltip_wrapper::switchToFadeOutState ) );
         
         }
         { //::CEGUI::Tooltip::switchToInactiveState
