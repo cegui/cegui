@@ -143,6 +143,8 @@ public:
     uint getImageCount() const;
 
     void loadImageset(const String& filename, const String& resource_group = "");
+    void loadImagesetFromString(const String& source);
+
     void destroyImageCollection(const String& prefix,
                                 const bool delete_texture = true);
 

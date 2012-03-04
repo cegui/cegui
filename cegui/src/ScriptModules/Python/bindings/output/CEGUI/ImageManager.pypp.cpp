@@ -225,6 +225,16 @@ void register_ImageManager_class(){
                 , ( bp::arg("filename"), bp::arg("resource_group")="" ) );
         
         }
+        { //::CEGUI::ImageManager::loadImagesetFromString
+        
+            typedef void ( ::CEGUI::ImageManager::*loadImagesetFromString_function_type )( ::CEGUI::String const & ) ;
+            
+            ImageManager_exposer.def( 
+                "loadImagesetFromString"
+                , loadImagesetFromString_function_type( &::CEGUI::ImageManager::loadImagesetFromString )
+                , ( bp::arg("source") ) );
+        
+        }
         { //::CEGUI::ImageManager::notifyDisplaySizeChanged
         
             typedef void ( ::CEGUI::ImageManager::*notifyDisplaySizeChanged_function_type )( ::CEGUI::Sizef const & ) ;
