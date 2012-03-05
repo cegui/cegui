@@ -81,7 +81,16 @@ namespace CEGUI
 	*************************************************************************/
 	void GlobalEventSet::fireEvent(const String& name, EventArgs& args, const String& eventNamespace)
 	{
-        fireEvent_impl(eventNamespace + "/" + name, args);
+        // here we are very explicit about how we construct the event string.
+        // Doing it 'longhand' like this saves significant time when compared
+        // to the obvious - and previous - implementation:
+        //     fireEvent_impl(eventNamespace + "/" + name, args);
+        String evt_name;
+        evt_name.reserve(eventNamespace.length() + name.length() + 1);
+        evt_name.append(eventNamespace);
+        evt_name.append(1, '/');
+        evt_name.append(name);
+        fireEvent_impl(evt_name, args);
 	}
 
 } // End of  CEGUI namespace section
