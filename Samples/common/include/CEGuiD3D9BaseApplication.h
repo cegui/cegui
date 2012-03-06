@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,7 +29,7 @@
 #define _CEGuiD3D9BaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUIGeometryBuffer.h"
+#include "CEGUI/GeometryBuffer.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   define WIN32_LEAN_AND_MEAN
@@ -40,47 +40,17 @@
 #   undef max
 #endif
 
-//Updated for linking of static libs
-#if defined(_WIN32)
-#  pragma comment(lib, "d3d9.lib")
-#  if defined(_DEBUG)
-#	if defined(CEGUI_STATIC)
-#	   pragma comment(lib, "CEGUIDirect3D9Renderer_Static_d.lib")
-#	else
-#      pragma comment(lib, "CEGUIDirect3D9Renderer_d.lib")
-#	endif
-#  else
-#	if defined(CEGUI_STATIC)
-#	   pragma comment(lib, "CEGUIDirect3D9Renderer_Static.lib")
-#	else
-#      pragma comment(lib, "CEGUIDirect3D9Renderer.lib")
-#	endif
-#  endif
-#endif
-
-
 struct CEGuiBaseApplicationImpl;
 
 
 class CEGuiD3D9BaseApplication : public CEGuiBaseApplication
 {
 public:
-    /*!
-    \brief
-        Constructor.
-    */
+    //! Constructor.
     CEGuiD3D9BaseApplication();
 
-
-    /*!
-    \brief
-        Destructor.
-    */
+    //! Destructor.
     ~CEGuiD3D9BaseApplication();
-
-    // Implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
 
 protected:
     /*************************************************************************
@@ -92,7 +62,6 @@ protected:
     */
     bool initialiseDirect3D(unsigned int width, unsigned int height, unsigned int adapter, bool windowed);
 
-
     /*!
     \brief
         Do reset of Direct3D device
@@ -103,24 +72,19 @@ protected:
     */
     bool resetDirect3D(void);
 
-    void doFPSUpdate(void);
-
-    bool overlayHandler(const CEGUI::EventArgs& args);
+    // Implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
+    void beginRendering(const float elapsed);
+    void endRendering();
 
     /*************************************************************************
         Data fields
     *************************************************************************/
     CEGuiBaseApplicationImpl* pimpl;;
 
-    // counter used to track elapsed time (for time pulse injection)
+    // counter used to track elapsed time
     DWORD d_lastFrameTime;
-    // FPS stuff
-    DWORD d_fps_lastTime;
-    int d_fps_frames;
-    int d_fps_value;
-    char d_fps_textbuff[16];
-    CEGUI::GeometryBuffer* d_fps_geometry;
-    CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 #endif  // end of guard _CEGuiD3D9BaseApplication_h_

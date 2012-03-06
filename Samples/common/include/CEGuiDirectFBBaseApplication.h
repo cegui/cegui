@@ -4,6 +4,8 @@
     author:     Keith Mok
 *************************************************************************/
 /***************************************************************************
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
  *   "Software"), to deal in the Software without restriction, including
@@ -45,10 +47,6 @@ public:
     //! Destructor.
     ~CEGuiDirectFBBaseApplication();
 
-    // Implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
-
 protected:
     /*************************************************************************
         Implementation Methods
@@ -61,11 +59,14 @@ protected:
     void handleKeyUpEvent(DFBWindowEvent *evt);
     void handleWindowEvent(DFBWindowEvent *evt);
 
-    //! Perform update on the FPS counter fields.
-    void updateFPS(void);
-
     //! cleanup DirectFB objects / interfaces
     void cleanupDirectFB();
+
+    // Implementation of base class abstract methods.
+    bool execute(CEGuiSample* sampleApp);
+    void cleanup();
+    void beginRendering(const float elapsed);
+    void endRendering();
 
     /*************************************************************************
         Data fields

@@ -26,8 +26,8 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_Demo8.h"
-#include "CEGUI.h"
-#include "ScriptingModules/LuaScriptModule/CEGUILua.h"
+#include "CEGUI/CEGUI.h"
+#include "CEGUI/ScriptModules/Lua/ScriptModule.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {

@@ -13,6 +13,10 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_8 <br>
 @ref fal_elem_ref_sec_9 <br>
 @ref fal_elem_ref_sec_10 <br>
+@ref fal_elem_ref_eventaction <br>
+@ref fal_elem_ref_eventlinkdefintion <br>
+@ref fal_elem_ref_eventlinktarget <br>
+@ref fal_elem_ref_expressiondim <br>
 @ref fal_elem_ref_sec_11 <br>
 @ref fal_elem_ref_sec_12 <br>
 @ref fal_elem_ref_sec_13 <br>
@@ -187,17 +191,29 @@ The @c \<AreaProperty\> element is intended to allow the system to access a prop
 @section fal_elem_ref_sec_5 \<Child\> Element
 
 @subsection fal_elem_ref_sec_5_1 Purpose:
-The @c \<Child\> element defines a component widget that will be created and added to each instance of any window using the @c \<WidgetLook\> being defined. Some base widgets have requirements for @c \<Child\> element definition that must be provided.
+The @c \<Child\> element defines a component widget that will be created and
+added to each instance of any window using the @c \<WidgetLook\> being defined.
+Some base widgets have requirements for @c \<Child\> element definition that
+must be provided.
 
 @subsection fal_elem_ref_sec_5_2 Attributes:
 @arg @c type  specifies the widget type to create. Required attribute.
-@arg @c nameSuffix  specifies a suffix which will be used when naming the widget. The final name of the child widget will be that of the parent with this suffix appended. Required attribute.
-@arg @c look  specifies the name of a widget look to apply to the child widget. You should only use this if 'type' specifies a Falagard base widget type. Optional attribute.
+@arg @c nameSuffix  specifies a suffix which will be used when naming the
+widget. The final name of the child widget will be that of the parent with
+this suffix appended. Required attribute.
+@arg @c look  specifies the name of a widget look to apply to the child widget.
+You should only use this if 'type' specifies a Falagard base widget type.
+Optional attribute.
+@arg @c autoWindow specifies whether this child window is to be flagged as an
+auto-window. Optional attribute, default value is @c true.
 
 @subsection fal_elem_ref_sec_5_3 Usage:
 Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
+    <li>The @c \<Child\> element may contain any number of @c \<EventAction\>
+        elements that define actions to be taken by the containing widget in
+        response to events being fired on the child widget being defined.</li>
     <li>The @c \<Child\> element must contain an @c \<Area\> element that defines the location of the child widget in relation to the component being defined.</li>
     <li>You may optionally specify a single @c \<VertAlignment\> element to set the vertical alignment for the child.</li>
     <li>You may optionally specify a single @c \<HorzAlignment\> element to set the horizontal alignment for the child.</li>
@@ -447,6 +463,213 @@ and not:
 </AbsoluteDim>
 ...
 @endcode
+
+
+@section fal_elem_ref_eventaction \<EventAction\> Element
+
+@subsection fal_elem_ref_eventaction_1 Purpose:
+The @c \<EventAction\> element is used to specify a predefined action that
+should be performed by the containing widget for the child widget being
+defined, in response to a specified event being fired by the child widget.
+@par This is useful in situations where the containing widget has imagery or
+other content that is tied to some state on the child wiget.  By using the
+facilities provided by \<EventAction\> the containing widget is updated on
+demand in response to changes on the child.
+
+@subsection fal_elem_ref_eventaction_2 Attributes:
+@arg @c event specifies the name of the event on the Child component being
+defined that will trigger the action.  Required attribute.
+@arg @c action specifies one of the values defined for the
+@ref fal_enum_ref_sec_12 "ChildEventAction" enumeration. Required attribute.
+
+@subsection fal_elem_ref_eventaction_3 Usage:
+<ul>
+    <li>The @c \<EventAction\> element may not conatin any sub-elements.</li>
+    <li>The @c \<EventAction\> element may only appear as a sub-element
+        within @c \<Child\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventaction_4 Examples:
+In this example, an EventAction is defined for the thumb of a slider widget.
+The definition indicates that when the @c Moved is fired for the thumb
+widget, the containing slider should redraw itself.  This is useful in scenarios
+where the slider has imagery whose position is dependent upon the position of
+the thumb - by using the \<EventAction\> system, the required updates are fully
+automated.
+@code
+<Falagard>
+  <WidgetLook name="ANewLook/Slider">
+  ...
+    <Child  type="ANewLook/SliderThumb" nameSuffix="__auto_thumb__">
+      <EventAction event="Moved" action="Redraw" />
+      <Area>
+        <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+        ...
+      </Area>
+      ...
+  </WidgetLook>
+  ...
+</Falagard>
+@endcode
+
+
+@section fal_elem_ref_eventlinkdefintion \<EventLinkDefinition\> Element
+
+@subsection fal_elem_ref_eventlinkdefintion_1 Purpose:
+The @c \<EventLinkDefinition\> element is used to define an event on a window
+using the @c \<WidgetLook\> being defined.  The new event can be linked to
+other events on the window, or to events on child windows.  For child windows,
+the window must exist, and the facility is largely intended to be able to link
+to events on windows defined via the @c \<Child\> element.
+
+@subsection fal_elem_ref_eventlinkdefintion_2 Attributes:
+@arg @c name specifies the unique name to use for the new event.  Required attribute.
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined.  Optional attribute.
+@arg @c event specifies the name of an event on widget identified via @cwidget that
+is to be linked to the new event being defined. If this is omitted but @c widget is
+specified, it will be assumed that the event to link to has the same name as the
+event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinkdefintion_3 Usage:
+<ul>
+    <li>The @c \<EventLinkDefinition\> element may contain any number of @c \<EventLinkTarget\> sub-elements.</li>
+    <li>The @c \<EventLinkDefinition\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinkdefintion_4 Examples:
+TODO
+
+
+@section fal_elem_ref_eventlinktarget \<EventLinkTarget\> Element
+
+@subsection fal_elem_ref_eventlinktarget_1 Purpose:
+The @c \<EventLinkTarget\> element specifies a target widget suffix and
+event name to be used with a @c \<EventLinkDefinition\>.  Whenever the
+event specified here fires, the event defined by the
+enclosing @c \<EventLinkDefinition\> will also fire.
+
+@subsection fal_elem_ref_eventlinktarget_2 Attributes:
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined by the enclosing @c \<EventLinkDefinition\>.
+Optional attribute.
+@arg @c event specifies the name of an event on the widget identified via @cwidget that
+is to be linked to the event being defined by the enclosing @c \<EventLinkDefinition\>.
+If this is omitted but @c widget is specified, it will be assumed that the event to link
+to has the same name as the event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinktarget_3 Usage:
+<ul>
+    <li>The @c \<EventLinkTarget\> element may not contain sub-elements.</li>
+    <li>The @c \<EventLinkTarget\> element may only appear as a sub-element within @c \<EventLinkDefinition\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinktarget_4 Examples:
+TODO
+
+
+@section fal_elem_ref_expressiondim \<ExpressionDim\> Element
+
+@subsection fal_elem_ref_expressiondim_1 Purpose:
+The @c \<ExpressionDim\> element is used to define a component dimension for an area rectangle.
+@c \<ExpressionDim\> is used to specify a dimension by way of a textual
+representation of a mathematical expression.  There is currently support
+for the basic arithmetic operations; addition, subtraction, multiplication
+and division, as well as support for parenthesis.  In addition to this, it is
+also possible to use unified dimensions, image dimensions, widget
+dimensions, font metrics, text string extents and property dimensions directly within
+the expression by way of the pseudo-functions discussed below.
+
+@subsubsection fal_elem_ref_expressiondim_1_1 Unified Dimensions
+Unified dimensions can be specified within an expression string by way of the
+@c udim pseudo-function that has a single signature of:
+- @c udim( scale, offset, type )
+- where:
+    - @c scale is the relative scale portion of the dimension.
+    - @c offset is the absolute pixel offset portion of the dimension.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
+enumeration and is required in order to determine the base dimension for the scale
+component.
+
+@subsubsection fal_elem_ref_expressiondim_1_2 Image Dimensions
+Image dimensions can be specified within an expression string by way of the
+@c imagedim pseudo-function that has a single signature of:<br>
+- @c imagedim( 'imagename', type )
+- where:
+    - @c imagename is the name of the desired image.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
+enumeration indicating the specific dimension to be used.
+
+@subsubsection fal_elem_ref_expressiondim_1_3 Widget Dimensions
+Widget dimensions can be specified within an expression string by way of the
+@c widgetdim pseudo-function that has the following signature options:
+- @c widgetdim( 'widget', type )
+- @c widgetdim( type )
+- where:
+    - @c widget is the name of a child window to access.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
+enumeration indicating the specific dimension to be used.
+
+@subsubsection fal_elem_ref_expressiondim_1_4 Font Dimensions
+Font dimensions can be specified within an expression string by way of the
+@c fontdim pseudo-function that has the following signature options:
+- @c fontdim( 'widget', 'font', type, padding )
+- @c fontdim( type, padding )
+- @c fontdim( type )
+- where:
+    - @c widget is the name of a child window to access.
+    - @c font is the name of a font to access.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_3 "FontMetricType"
+enumeration indicating the specific metric to be used.
+    - @c padding is a number of pixels of padding to add to the resulting dimension.
+
+@subsubsection fal_elem_ref_expressiondim_1_5 Property Dimensions
+Property dimensions can be specified within an expression string by way of the
+@c propertydim pseudo-function that has the following signature options:
+- @c propertydim( 'widget', 'property', type )
+- @c propertydim( 'property', type )
+- @c propertydim( 'property' )
+- where:
+    - @c widget is the name of a child window to access.
+    - @c property is the name of a property to access.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
+enumeration indicating the specific dimension to be used.  @c type must be specified if
+the property being accessed is a unified dimension property, if the property being
+accessed is a simple float value, then @c type should be set to @c Float rather than one
+of the enumerated values.
+
+@subsubsection fal_elem_ref_expressiondim_1_6 String Extents
+Horizontal string extents can be specified within an expression string by way of the
+@c stringextent pseudo-function that has the following signature options:
+- @c stringextent( 'string', 'font' )
+- @c stringextent( 'string' )
+- where:
+    - @c string is text string whose horizontal extent is to be calculated
+    - @c font is the name of a font to use when measuring the extent (the default is
+to use the font from the window that has the looknfeel assigned.
+
+
+Notes for the use of these pseudo-functions:
+- single quotation marks (') are used around string and name arguments. These strings
+support the backslash as an escape character - for example to specify the ' itself if
+needed, you would use the sequence \' wihin the string.
+- numerical values should be simple floats only (i.e it's not yet possible to embed a
+sub-expression to be passed to a pseudo-function.
+- enumeration values should not be surrounded by quotes
+
+@note The ExpressionDim should currently be considered highly experimental.  There
+is much that can be improved and enhanced to make the support even more useful.
+
+@subsection fal_elem_ref_expressiondim_2 Attributes:
+@arg @c value  specifies the expression string. Required attribute.
+
+@subsection fal_elem_ref_expressiondim_3 Usage:
+@li The @c \<ExpressionDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.
+@li The @c \<ExpressionDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.
+@li The @c \<ExpressionDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.
+
+@subsection fal_elem_ref_expressiondim_4 Examples:
+TODO
 
 
 @section fal_elem_ref_sec_11 \<Falagard\> Element
@@ -1032,9 +1255,14 @@ The @c \<PropertyDefinition\> element creates a new named property for the widge
 @subsection fal_elem_ref_sec_26_2 Attributes:
 @arg @c name  specifies the name to use for the new property. Required attribute.
 @arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
-@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
+@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Defaults to @c Generic. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
 @arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. Optional attribute.
 
 @subsection fal_elem_ref_sec_26_3 Usage:
 <ul>
@@ -1086,9 +1314,16 @@ the first property to be linked to the property being defined, or the special
 value @c "__parent__" to indicate a back-link to the parent. Optional attribute.
 @arg @c targetProperty  specifies the name of the property on the child widget that is to be the first property linked to the new property being defined. If this is omitted but @c widget is specified, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
 @arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
-@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
+@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Defaults to @c Generic. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
 @arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. It is the responsibility of the WidgetLook
+author to ensure that collisions with predefined events are avoided.
+Optional attribute.
 
 @subsection fal_elem_ref_sec_27_3 Usage:
 <ul>
