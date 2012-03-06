@@ -28,7 +28,7 @@
 #include "InventoryItemRenderer.h"
 #include "InventoryItem.h"
 
-#include <falagard/CEGUIFalWidgetLookFeel.h>
+#include <CEGUI/falagard/WidgetLookFeel.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

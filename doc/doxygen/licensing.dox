@@ -41,6 +41,9 @@ http://www.winimage.com/zLibDll/minizip.html
 - This software can be compiled to contain an embedded version of the
 stb_image.c code, which has been released into the public domain by it's author
 Sean Barrett (http://nothings.org/).
+- The OpenGLES Renderer module contains portions of code that is
+Copyright (C)1991-2000 Silicon Graphics, Inc. All Rights Reserved.
+See : http://oss.sgi.com/projects/FreeB/
 
 <br>
 @section licensing_sec_4 Licensing 101: What it all means!

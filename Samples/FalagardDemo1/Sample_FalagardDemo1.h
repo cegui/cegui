@@ -29,7 +29,7 @@
 #define _Sample_FalagardDemo1_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 
 /*!
@@ -39,7 +39,7 @@
 class DemoConsole
 {
 public:
-    DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent = 0);
+    DemoConsole(CEGUI::Window* parent = 0);
     ~DemoConsole();
 
     void toggleVisibility();

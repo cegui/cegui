@@ -25,14 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
+#include "CEGUISamplesConfig.h"
 
-#if defined(CEGUI_SAMPLES_USE_DIRECTX_8) || defined(CEGUI_SAMPLES_USE_DIRECTX_9) || defined(CEGUI_SAMPLES_USE_DIRECTX_10)
+#if defined(CEGUI_SAMPLES_USE_DIRECT3D8) || defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10)
 
 #include "Win32AppHelper.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 #include <TCHAR.H>
 
 /*************************************************************************
@@ -115,7 +113,7 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     switch(message)
     {
     case WM_CHAR:
-        CEGUI::System::getSingleton().injectChar((CEGUI::utf32)wParam);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar((CEGUI::utf32)wParam);
         break;
 
     case WM_MOUSELEAVE:
@@ -129,35 +127,35 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     case WM_MOUSEMOVE:
         mouseEnters();
 
-        CEGUI::System::getSingleton().injectMousePosition((float)(LOWORD(lParam)), (float)(HIWORD(lParam)));
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition((float)(LOWORD(lParam)), (float)(HIWORD(lParam)));
         break;
 
     case WM_LBUTTONDOWN:
-        CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::LeftButton);
         break;
 
     case WM_LBUTTONUP:
-        CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::LeftButton);
         break;
 
     case WM_RBUTTONDOWN:
-        CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::RightButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::RightButton);
         break;
 
     case WM_RBUTTONUP:
-        CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::RightButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::RightButton);
         break;
 
     case WM_MBUTTONDOWN:
-        CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::MiddleButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::MiddleButton);
         break;
 
     case WM_MBUTTONUP:
-        CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::MiddleButton);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::MiddleButton);
         break;
 
     case 0x020A: // WM_MOUSEWHEEL:
-        CEGUI::System::getSingleton().injectMouseWheelChange(static_cast<float>((short)HIWORD(wParam)) / static_cast<float>(120));
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(static_cast<float>((short)HIWORD(wParam)) / static_cast<float>(120));
         break;
 
     case WM_DESTROY:
@@ -331,13 +329,13 @@ void Win32AppHelper::doDirectInputEvents(const Win32AppHelper::DirectInputState&
                 }
                 else
                 {
-                    CEGUI::System::getSingleton().injectKeyDown(devDat.dwOfs);
+                    CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
                 }
 
             }
             else
             {
-                CEGUI::System::getSingleton().injectKeyUp(devDat.dwOfs);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp((CEGUI::Key::Scan)devDat.dwOfs);
             }
 
         }

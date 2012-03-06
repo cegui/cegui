@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,9 +29,9 @@
 #define _CEGuiOgreBaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
-#include "RendererModules/Ogre/CEGUIOgreRenderer.h"
+#include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <Ogre.h>
 #include <OIS.h>
 
@@ -52,42 +52,27 @@ class CEGuiDemoFrameListener;
 // Window event listener forward ref (see class below)
 class WndEvtListener;
 
-namespace CEGUI
-{
-class GeometryBuffer;
-}
-
 class CEGuiOgreBaseApplication : public CEGuiBaseApplication
 {
 public:
-    /*!
-    \brief
-        Constructor.
-    */
+    //! Constructor.
     CEGuiOgreBaseApplication();
 
+    //! Destructor.
+    ~CEGuiOgreBaseApplication();
 
-    /*!
-    \brief
-        Destructor.
-    */
-    virtual ~CEGuiOgreBaseApplication();
-
-    //! called by the frame listener to perform per-frame updates.
+    //! called by the frame listener to perform requried per-frame updates.
     void doFrameUpdate(float elapsed);
 
-    //! handler for rendering the CEGUI fps & logo geometry
-    bool overlayHandler(const CEGUI::EventArgs& args);
-
-    // Implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
-
 protected:
-    void doFPSUpdate(float elapsed);
-
     // override from base class since we use a non-default resource provider.
     void initialiseResourceGroupDirectories();
+
+    // Implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
+    void beginRendering(const float elapsed);
+    void endRendering();
 
     /*************************************************************************
         Data Fields
@@ -95,18 +80,10 @@ protected:
     Ogre::Root* d_ogreRoot;
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
-    CEGUI::OgreRenderer* d_renderer;
     bool d_initialised;
 
     CEGuiDemoFrameListener* d_frameListener;
     WndEvtListener* d_windowEventListener;
-
-    // FPS stuff
-    int d_fps_frames;
-    float d_fps_time;
-	char d_fps_textbuff[16];
-    CEGUI::GeometryBuffer* d_fps_geometry;
-    CEGUI::GeometryBuffer* d_logo_geometry;
 };
 
 
