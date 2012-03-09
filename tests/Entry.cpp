@@ -33,6 +33,7 @@
 #include <iostream>
 
 #include "CEGUI/RendererModules/Null/Renderer.h"
+#include "CEGUI/Exceptions.h"
 
 /**
 \brief This fixture sets CEGUI up with NullRenderer
@@ -48,6 +49,8 @@ public:
         std::cout << std::endl;
         
         CEGUI::NullRenderer::bootstrapSystem();
+        // we don't need stderr, we will deal with exception reports manually
+        CEGUI::Exception::setStdErrEnabled(false);
     }
     
     ~CEGUIInstanceFixture()
