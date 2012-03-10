@@ -141,7 +141,7 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name)
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name);
     d_textures[name] = tex;
 
-    logTextureCreation(name);
+    logTextureCreation(tex);
 
     return *tex;
 }
@@ -159,7 +159,7 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
                                                filename, resourceGroup);
     d_textures[name] = tex;
 
-    logTextureCreation(name);
+    logTextureCreation(tex);
 
     return *tex;
 }
@@ -175,16 +175,22 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name, size);
     d_textures[name] = tex;
 
-    logTextureCreation(name);
+    logTextureCreation(tex);
 
     return *tex;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBRenderer::logTextureCreation(const String& name)
+void DirectFBRenderer::logTextureCreation(DirectFBTexture* texture)
 {
     if (Logger* logger = Logger::getSingletonPtr())
-        logger->logEvent("[DirectFBRenderer] Created texture: " + name);
+    {
+        char addr_buff[32];
+        sprintf(addr_buff, " (%p)", static_cast<void*>(texture));
+
+        logger->logEvent("[DirectFBRenderer] Created texture: " +
+                         texture->getName() + addr_buff);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -200,17 +206,23 @@ void DirectFBRenderer::destroyTexture(const CEGUI::String& name)
 
     if (d_textures.end() != i)
     {
-        logTextureDestruction(name);
+        logTextureDestruction(i->second);
         delete i->second;
         d_textures.erase(i);
     }
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBRenderer::logTextureDestruction(const String& name)
+void DirectFBRenderer::logTextureDestruction(DirectFBTexture* texture)
 {
     if (Logger* logger = Logger::getSingletonPtr())
-        logger->logEvent("[DirectFBRenderer] Destroyed texture: " + name);
+    {
+        char addr_buff[32];
+        sprintf(addr_buff, " (%p)", static_cast<void*>(texture));
+
+        logger->logEvent("[DirectFBRenderer] Destroyed texture: " +
+                         texture->getName() + addr_buff);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -221,8 +233,15 @@ void DirectFBRenderer::destroyAllTextures()
 }
 
 //----------------------------------------------------------------------------//
-Texture& DirectFBRenderer::getTexture(const String&) const
+Texture& DirectFBRenderer::getTexture(const String& name) const
 {
+    TextureMap::const_iterator i = d_textures.find(name);
+    
+    if (i == d_textures.end())
+        CEGUI_THROW(UnknownObjectException("DirectFBRenderer::getTexture: "
+            "No texture named '" + name + "' is available."));
+
+    return *i->second;
 }
 
 //----------------------------------------------------------------------------//

@@ -89,9 +89,9 @@ protected:
     ~DirectFBRenderer();
 
     //! helper to safely log the creation of a named texture
-    static void logTextureCreation(const String& name);
+    static void logTextureCreation(DirectFBTexture* texture);
     //! helper to safely log the destruction of a named texture
-    static void logTextureDestruction(const String& name);
+    static void logTextureDestruction(DirectFBTexture* texture);
 
     //! String holding the renderer identification text.
     static String d_rendererID;
