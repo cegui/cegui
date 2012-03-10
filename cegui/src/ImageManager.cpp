@@ -285,6 +285,7 @@ void ImageManager::loadImageset(const String& filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 }
 
+//----------------------------------------------------------------------------//
 void ImageManager::loadImagesetFromString(const String& source)
 {
     System::getSingleton().getXMLParser()->parseXMLString(
@@ -330,11 +331,13 @@ void ImageManager::notifyDisplaySizeChanged(const Sizef& size)
         i->second.first->notifyDisplaySizeChanged(size);
 }
 
+//----------------------------------------------------------------------------//
 const String& ImageManager::getSchemaName() const
 {
     return ImagesetSchemaName;
 }
 
+//----------------------------------------------------------------------------//
 const String& ImageManager::getDefaultResourceGroup() const
 {
     return d_imagesetDefaultResourceGroup;
