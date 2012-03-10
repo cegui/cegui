@@ -28,11 +28,12 @@
 #ifndef _CEGUIDirectFBRenderer_h_
 #define _CEGUIDirectFBRenderer_h_
 
-#include "../../Renderer.h"
-#include "../../Size.h"
-#include "../../Vector.h"
+#include "CEGUI/Renderer.h"
+#include "CEGUI/Size.h"
+#include "CEGUI/Vector.h"
 #include <directfb.h>
 #include <vector>
+#include <map>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -64,16 +65,20 @@ public:
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
-    Texture& createTexture();
-    Texture& createTexture(const String& filename, const String& resourceGroup);
-    Texture& createTexture(const Size& size);
+    Texture& createTexture(const CEGUI::String& name);
+    Texture& createTexture(const CEGUI::String& name,
+                           const String& filename,
+                           const String& resourceGroup);
+    Texture& createTexture(const CEGUI::String& name, const Sizef& size);
     void destroyTexture(Texture& texture);
+    void destroyTexture(const CEGUI::String& name);
     void destroyAllTextures();
+    Texture& getTexture(const String&) const;
     void beginRendering();
     void endRendering();
-    void setDisplaySize(const Size& sz);
-    const Size& getDisplaySize() const;
-    const Vector2& getDisplayDPI() const;
+    void setDisplaySize(const Sizef& sz);
+    const Sizef& getDisplaySize() const;
+    const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -82,6 +87,11 @@ protected:
     DirectFBRenderer(IDirectFB& directfb, IDirectFBSurface& surface);
     //! Destructor.
     ~DirectFBRenderer();
+
+    //! helper to safely log the creation of a named texture
+    static void logTextureCreation(const String& name);
+    //! helper to safely log the destruction of a named texture
+    static void logTextureDestruction(const String& name);
 
     //! String holding the renderer identification text.
     static String d_rendererID;
@@ -92,13 +102,13 @@ protected:
     //! The current target DirectFB surface.
     IDirectFBSurface* d_targetSurface;
     //! What the renderer considers to be the current display size.
-    Size d_displaySize;
+    Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2 d_displayDPI;
+    Vector2f d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.
-     typedef std::vector<TextureTarget*> TextureTargetList;
+    typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
     //! container type used to hold GeometryBuffers we create.
@@ -106,9 +116,9 @@ protected:
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
-    typedef std::vector<DirectFBTexture*> TextureList;
+    typedef std::map<String, DirectFBTexture*, StringFastLessCompare> TextureMap;
     //! Container used to track textures.
-    TextureList d_textures;
+    TextureMap d_textures;
 };
 
 } // End of  CEGUI namespace section

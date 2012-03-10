@@ -40,19 +40,25 @@ IDirectFBSurface* DirectFBTexture::getDirectFBSurface() const
 }
 
 //----------------------------------------------------------------------------//
-const Size& DirectFBTexture::getSize() const
+const String& DirectFBTexture::getName() const
+{
+    return d_name;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& DirectFBTexture::getSize() const
 {
     return d_size;
 }
 
 //----------------------------------------------------------------------------//
-const Size& DirectFBTexture::getOriginalDataSize() const
+const Sizef& DirectFBTexture::getOriginalDataSize() const
 {
     return d_dataSize;
 }
 
 //----------------------------------------------------------------------------//
-const Vector2& DirectFBTexture::getTexelScaling() const
+const Vector2f& DirectFBTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -86,7 +92,7 @@ void DirectFBTexture::loadFromFile(const String& filename,
 
 //----------------------------------------------------------------------------//
 void DirectFBTexture::loadFromMemory(const void* buffer,
-                                     const Size& buffer_size,
+                                     const Sizef& buffer_size,
                                      PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
@@ -147,7 +153,7 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBTexture::blitFromMemory(void* sourceData, const Rect& area)
+void DirectFBTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
     // TODO:
     CEGUI_THROW(RendererException(
@@ -163,34 +169,39 @@ void DirectFBTexture::blitToMemory(void* targetData)
 }
 
 //----------------------------------------------------------------------------//
-DirectFBTexture::DirectFBTexture(IDirectFB& directfb) :
+DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const String& name) :
     d_directfb(directfb),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
 //----------------------------------------------------------------------------//
-DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const String& filename,
+DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const String& name,
+                                 const String& filename,
                                  const String& resourceGroup) :
     d_directfb(directfb),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
 
 //----------------------------------------------------------------------------//
-DirectFBTexture::DirectFBTexture(IDirectFB& directfb, const Size& size) :
+DirectFBTexture::DirectFBTexture(IDirectFB& directfb,
+                                 const String& name, const Sizef& size) :
     d_directfb(directfb),
     d_texture(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     DFBSurfaceDescription desc;
     desc.flags = static_cast<DFBSurfaceDescriptionFlags>
@@ -221,7 +232,7 @@ void DirectFBTexture::cleanupDirectFBTexture()
 
     d_texture->Release(d_texture);
     d_texture = 0;
-    d_size = d_dataSize = Size(0,0);
+    d_size = d_dataSize = Sizef(0,0);
     updateCachedScaleValues();
 }
 

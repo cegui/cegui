@@ -47,13 +47,13 @@ public:
     // Implement RenderTarget interface
     void draw(const GeometryBuffer& buffer);
     void draw(const RenderQueue& queue);
-    void setArea(const Rect& area);
-    const Rect& getArea() const;
+    void setArea(const Rectf& area);
+    const Rectf& getArea() const;
     bool isImageryCache() const;
     void activate();
     void deactivate();
     void unprojectPoint(const GeometryBuffer& buff,
-                                const Vector2& p_in, Vector2& p_out) const;
+                                const Vector2f& p_in, Vector2f& p_out) const;
 
 protected:
     //! DirectFBRenderer that created and owns this RenderTarget.
@@ -61,7 +61,7 @@ protected:
     //! IDirectFBSurface targetted by this RenderTarget.
     IDirectFBSurface& d_target;
     //! holds defined area for the RenderTarget
-    Rect d_area;
+    Rectf d_area;
 };
 
 } // End of  CEGUI namespace section
