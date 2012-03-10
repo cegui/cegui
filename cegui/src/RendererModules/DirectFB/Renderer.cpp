@@ -159,7 +159,7 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
                                                filename, resourceGroup);
     d_textures[name] = tex;
 
-    logTextureDestruction(name);
+    logTextureCreation(name);
 
     return *tex;
 }
