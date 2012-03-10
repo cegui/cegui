@@ -41,10 +41,7 @@ struct CEGuiBaseApplicationImpl;
 class CEGuiDirectFBBaseApplication : public CEGuiBaseApplication
 {
 public:
-    //!Constructor.
     CEGuiDirectFBBaseApplication();
-
-    //! Destructor.
     ~CEGuiDirectFBBaseApplication();
 
 protected:
@@ -62,9 +59,9 @@ protected:
     //! cleanup DirectFB objects / interfaces
     void cleanupDirectFB();
 
-    // Implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
+    // implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
 
@@ -73,12 +70,6 @@ protected:
     *************************************************************************/
     //! Pointer to the struct holding DirectFB specific fields.
     CEGuiBaseApplicationImpl* pimpl;;
-
-    // FPS stuff
-    int d_frames;
-    int d_FPS;
-    // counter used to track elapsed time (for time pulse injection)
-    struct timeval d_lastTime;
 };
 
 #endif  // end of guard _CEGuiDirectFBBaseApplication_h_
