@@ -58,10 +58,10 @@ void DirectFBGeometryBuffer::draw() const
 
     // setup clip region
     const DFBRegion clip_region = {
-        static_cast<int>(d_clipRect.d_left),
-        static_cast<int>(d_clipRect.d_top),
-        static_cast<int>(d_clipRect.d_right),
-        static_cast<int>(d_clipRect.d_bottom) };
+        static_cast<int>(d_clipRect.left()),
+        static_cast<int>(d_clipRect.top()),
+        static_cast<int>(d_clipRect.right()),
+        static_cast<int>(d_clipRect.bottom()) };
     target_surface->SetClip(target_surface, &clip_region);
 
     // apply the transformations we need to use.
@@ -95,28 +95,28 @@ void DirectFBGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setTranslation(const Vector3& v)
+void DirectFBGeometryBuffer::setTranslation(const Vector3f& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setRotation(const Vector3& r)
+void DirectFBGeometryBuffer::setRotation(const Quaternion& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setPivot(const Vector3& p)
+void DirectFBGeometryBuffer::setPivot(const Vector3f& p)
 {
     d_pivot = p;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setClippingRegion(const Rect& region)
+void DirectFBGeometryBuffer::setClippingRegion(const Rectf& region)
 {
     d_clipRect.top(ceguimax(0.0f, region.top()));
     d_clipRect.bottom(ceguimax(0.0f, region.bottom()));

@@ -42,8 +42,8 @@ DirectFBRenderTarget::DirectFBRenderTarget(DirectFBRenderer& owner,
 {
     int w, h;
     d_target.GetSize(&d_target, &w, &h);
-    setArea(Rect(d_area.getPosition(),
-                 Size(static_cast<float>(w), static_cast<float>(h))));
+    setArea(Rectf(d_area.getPosition(),
+                 Sizef(static_cast<float>(w), static_cast<float>(h))));
 }
 
 //----------------------------------------------------------------------------//
@@ -59,7 +59,7 @@ void DirectFBRenderTarget::draw(const RenderQueue& queue)
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBRenderTarget::setArea(const Rect& area)
+void DirectFBRenderTarget::setArea(const Rectf& area)
 {
     d_area = area;
 
@@ -68,7 +68,7 @@ void DirectFBRenderTarget::setArea(const Rect& area)
 }
 
 //----------------------------------------------------------------------------//
-const Rect& DirectFBRenderTarget::getArea() const
+const Rectf& DirectFBRenderTarget::getArea() const
 {
     return d_area;
 }
@@ -92,7 +92,7 @@ void DirectFBRenderTarget::deactivate()
 
 //----------------------------------------------------------------------------//
 void DirectFBRenderTarget::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2& p_in, Vector2& p_out) const
+    const Vector2f& p_in, Vector2f& p_out) const
 {
     // TODO:
     p_out = p_in;

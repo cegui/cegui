@@ -43,30 +43,31 @@ public:
     IDirectFBSurface* getDirectFBSurface() const;
 
     // implement interface for Texture
-    const Size& getSize() const;
-    const Size& getOriginalDataSize() const;
-    const Vector2& getTexelScaling() const;
+    const String& getName() const;
+    const Sizef& getSize() const;
+    const Sizef& getOriginalDataSize() const;
+    const Vector2f& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
-    void loadFromMemory(const void* buffer, const Size& buffer_size,
+    void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rect& area);
+    void blitFromMemory(void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
     bool isPixelFormatSupported(const PixelFormat fmt) const;
 
 protected:
     // friends to allow renderer to construct and destroy texture objects
-    friend Texture& DirectFBRenderer::createTexture();
-    friend Texture& DirectFBRenderer::createTexture(const String&, const String&);
-    friend Texture& DirectFBRenderer::createTexture(const Size&);
-    friend void DirectFBRenderer::destroyTexture(Texture&);
+    friend Texture& DirectFBRenderer::createTexture(const String&);
+    friend Texture& DirectFBRenderer::createTexture(const String&, const String&, const String&);
+    friend Texture& DirectFBRenderer::createTexture(const String&, const Sizef&);
+    friend void DirectFBRenderer::destroyTexture(const String&);
 
     //! Basic constructor.
-    DirectFBTexture(IDirectFB& directfb);
+    DirectFBTexture(IDirectFB& directfb, const String& name);
     //! Construct texture from file.
-    DirectFBTexture(IDirectFB& directfb, const String& filename,
-                    const String& resourceGroup);
+    DirectFBTexture(IDirectFB& directfb, const String& name,
+                    const String& filename, const String& resourceGroup);
     //! Construct texture with given size.
-    DirectFBTexture(IDirectFB& directfb, const Size& size);
+    DirectFBTexture(IDirectFB& directfb, const String& name, const Sizef& size);
     //! Destructor.
     ~DirectFBTexture();
 
@@ -80,11 +81,13 @@ protected:
     //! surface representing the texture.
     IDirectFBSurface* d_texture;
     //! Size of the texture.
-    Size d_size;
+    Sizef d_size;
     //! original pixel of size data loaded into texture
-    Size d_dataSize;
+    Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2 d_texelScaling;
+    Vector2f d_texelScaling;
+    //! The name given for this texture.
+    const String d_name;
 };
 
 } // End of  CEGUI namespace section
