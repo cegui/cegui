@@ -29,6 +29,7 @@
 #   include "config.h"
 #endif
 
+#include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_DIRECTFB
 
 #include "CEGuiDirectFBBaseApplication.h"
@@ -45,7 +46,7 @@
 struct DFBKeyMapping
 {
     int dfbKey;
-    CEGUI::uint  ceguiKey;
+    CEGUI::Key::Scan  ceguiKey;
 };
 
 static DFBKeyMapping specialKeyMap[] =
@@ -74,7 +75,7 @@ static DFBKeyMapping specialKeyMap[] =
     {DIKS_DELETE, CEGUI::Key::Delete},
     {DIKS_ENTER, CEGUI::Key::Return},
     {DIKS_BACKSPACE, CEGUI::Key::Backspace},
-    {-1, 0}
+    {-1, CEGUI::Key::Unknown}
 };
 
 //----------------------------------------------------------------------------//
@@ -89,13 +90,9 @@ struct CEGuiBaseApplicationImpl
 
 //----------------------------------------------------------------------------//
 CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
-    pimpl(new CEGuiBaseApplicationImpl),
-    d_frames(0),
-    d_FPS(0)
+    pimpl(new CEGuiBaseApplicationImpl)
 {
     DFBResult ret;
-
-// d_lastTime = ;
 
     setenv("DFBARGS", "no-cursor-updates,layer-bg-none", 1);
 
@@ -169,7 +166,7 @@ void CEGuiDirectFBBaseApplication::handleKeyUpEvent(DFBWindowEvent *evt)
     {
         if (mapping->dfbKey == evt->key_symbol)
         {
-            CEGUI::System::getSingleton().injectKeyDown(mapping->ceguiKey);
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(mapping->ceguiKey);
             return;
         }
 
@@ -183,7 +180,7 @@ void CEGuiDirectFBBaseApplication::handleKeyDownEvent(DFBWindowEvent *evt)
 
     if(evt->key_symbol < 128)
     {
-        CEGUI::System::getSingleton().injectChar(static_cast<CEGUI::utf32>(evt->key_symbol));
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(static_cast<CEGUI::utf32>(evt->key_symbol));
     }
     else
     {
@@ -191,7 +188,7 @@ void CEGuiDirectFBBaseApplication::handleKeyDownEvent(DFBWindowEvent *evt)
         {
             if (mapping->dfbKey == evt->key_symbol)
             {
-                CEGUI::System::getSingleton().injectKeyDown(mapping->ceguiKey);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(mapping->ceguiKey);
                 return;
             }
 
@@ -210,15 +207,15 @@ void CEGuiDirectFBBaseApplication::handleWindowEvent(DFBWindowEvent *evt)
     case DWET_LEAVE:
         break;
     case DWET_MOTION:
-        CEGUI::System::getSingleton().injectMousePosition(evt->x, evt->y);
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(evt->x, evt->y);
         break;
     case DWET_BUTTONDOWN:
         if(evt->button == DIBI_LEFT)
-            CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::LeftButton);
         break;
     case DWET_BUTTONUP:
         if(evt->button == DIBI_LEFT)
-            CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::LeftButton);
         break;
     case DWET_KEYUP:
         handleKeyUpEvent(evt);
@@ -242,15 +239,14 @@ bool CEGuiDirectFBBaseApplication::execute_impl(CEGuiSample* sampleApp)
 
     CEGUI::System& guiSystem = CEGUI::System::getSingleton();
 
-    while(1)
+    while(!isQuitting())
     {
         if ((DFB_OK == pimpl->d_event_buffer->HasEvent(pimpl->d_event_buffer)))
         {
             ret = pimpl->d_event_buffer->GetEvent(pimpl->d_event_buffer, DFB_EVENT(&evt));
-            if (ret != DFB_OK)
-                continue; /* return to top of loop */
-            if(evt.clazz != DFEC_WINDOW)
-                continue; /* return to top of loop */
+            if (ret != DFB_OK || evt.clazz != DFEC_WINDOW)
+                continue;
+
             DFBWindowEvent *win_event = (DFBWindowEvent*)(&evt);
             handleWindowEvent(win_event);
         }

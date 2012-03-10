@@ -123,6 +123,11 @@ if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
 
 endif()
 
+if (CEGUI_SAMPLES_USE_DIRECTFB)
+    cegui_add_dependency(${CEGUI_TARGET_NAME} DIRECTFB)
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECTFB_RENDERER_LIBNAME})
+endif()
+
 if (CEGUI_SAMPLES_USE_GTK2)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GTK2)
 endif()
