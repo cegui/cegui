@@ -2474,8 +2474,8 @@
 -->
     <WidgetLook name="OgreTray/StaticImage">
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
         <ImagerySection name="image_withframe">
@@ -2555,8 +2555,8 @@
 -->
     <WidgetLook name="OgreTray/AltStaticImage">
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
-        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VertFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorzFormatting"/>
         <PropertyDefinition name="FrameEnabled" initialValue="True" redrawOnWrite="true" type="bool"/>
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
         <ImagerySection name="image">
