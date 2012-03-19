@@ -830,23 +830,21 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<uint>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "unsigned long")
             prop = CEGUI_NEW_AO PropertyDefinition<unsigned long>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "uint")
-            prop = CEGUI_NEW_AO PropertyDefinition<uint>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "int")
             prop = CEGUI_NEW_AO PropertyDefinition<int>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "float")
             prop = CEGUI_NEW_AO PropertyDefinition<float>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "double")
             prop = CEGUI_NEW_AO PropertyDefinition<double>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "TabPanePosition")
+        else if(type == "TabControl::TabPanePosition")
             prop = CEGUI_NEW_AO PropertyDefinition<TabControl::TabPanePosition>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "TextInputMode")
+        else if(type == "Spinner::TextInputMode")
             prop = CEGUI_NEW_AO PropertyDefinition<Spinner::TextInputMode>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "SortMode")
+        else if(type == "ItemListBase::SortMode")
             prop = CEGUI_NEW_AO PropertyDefinition<ItemListBase::SortMode>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "SortDirection")
+        else if(type == "ListHeaderSegment::SortDirection")
             prop = CEGUI_NEW_AO PropertyDefinition<ListHeaderSegment::SortDirection>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "SelectionMode")
+        else if(type == "MultiColumnList::SelectionMode")
             prop = CEGUI_NEW_AO PropertyDefinition<MultiColumnList::SelectionMode>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "VerticalFormatting")
             prop = CEGUI_NEW_AO PropertyDefinition<VerticalFormatting>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -963,9 +961,6 @@ namespace CEGUI
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<unsigned long>(
                     name, widget, target, init, d_widgetlook->getName(), redraw,
                     layout, eventName, d_widgetlook->getName());
-        else if (type == "uint")
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<uint>(name, widget,
-                    target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == "int")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<int>(name, widget,
                     target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
@@ -975,23 +970,23 @@ namespace CEGUI
         else if (type == "double")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<double>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "TabPanePosition")
+        else if (type == "TabControl::TabPanePosition")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
                     TabControl::TabPanePosition>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "TextInputMode")
+        else if (type == "Spinner::TextInputMode")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
                     Spinner::TextInputMode>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "SortMode")
+        else if (type == "ItemListBase::SortMode")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
                     ItemListBase::SortMode>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "SortDirection")
+        else if (type == "ListHeaderSegment::SortDirection")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
                     ListHeaderSegment::SortDirection>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "SelectionMode")
+        else if (type == "MultiColumnList::SelectionMode")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<
                     MultiColumnList::SelectionMode>(name, widget, target, init,
                     d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());

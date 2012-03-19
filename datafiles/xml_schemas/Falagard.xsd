@@ -407,7 +407,6 @@
     </xsd:simpleType>
     <xsd:simpleType name="propertyTypeEnum">
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="Generic" />
             <xsd:enumeration value="Colour" />
             <xsd:enumeration value="ColourRect" />
             <xsd:enumeration value="UBox" />
@@ -439,9 +438,11 @@
             <xsd:enumeration value="ItemListBase::SortMode" />
             <xsd:enumeration value="ListHeaderSegment::SortDirection" />
             <xsd:enumeration value="MultiColumnList::SelectionMode" />
+            <xsd:enumeration value="VerticalFormatting" />
+            <xsd:enumeration value="HorizontalFormatting" />
+            <xsd:enumeration value="Range" />
             <xsd:enumeration value="String" />
-            <xsd:enumeration value="VertFormatting" />
-            <xsd:enumeration value="HorzFormatting" />
+            <xsd:enumeration value="Generic" />
         </xsd:restriction>
     </xsd:simpleType>
     <xsd:simpleType name="fontMetricTypeEnum">
