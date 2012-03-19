@@ -164,6 +164,7 @@ void Affector::destroyKeyFrame(KeyFrame* keyframe)
     }
 
     d_keyFrames.erase(it);
+    delete keyframe;
 }
 
 //----------------------------------------------------------------------------//
