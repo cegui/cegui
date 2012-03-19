@@ -97,6 +97,17 @@ TreeItem::TreeItem(const String& text, uint item_id, void* item_data,
 //----------------------------------------------------------------------------//
 TreeItem::~TreeItem(void)
 {
+    // delete any items we are supposed to
+    for (size_t i = 0; i < getItemCount(); ++i)
+    {
+        // if item is supposed to be deleted by us
+        if (d_listItems[i]->isAutoDeleted())
+        {
+            // clean up this item.
+            CEGUI_DELETE_AO d_listItems[i];
+        }
+    }
+
     CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
