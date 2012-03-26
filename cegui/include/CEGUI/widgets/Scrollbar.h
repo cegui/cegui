@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -39,17 +39,10 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    Base class for Scrollbar window renderer objects.
-*/
+//! Base class for Scrollbar window renderer objects.
 class CEGUIEXPORT ScrollbarWindowRenderer : public WindowRenderer
 {
 public:
-    /*!
-    \brief
-        Constructor
-    */
     ScrollbarWindowRenderer(const String& name);
 
     /*!
@@ -97,14 +90,11 @@ public:
 class CEGUIEXPORT Scrollbar : public Window
 {
 public:
-    //! Namespace for global events
-    static const String EventNamespace;
     //! Window factory name
     static const String WidgetTypeName;
 
-    /*************************************************************************
-        Event name constants
-    *************************************************************************/
+    //! Namespace for global events
+    static const String EventNamespace;
     /** Event fired when the scroll bar position value changes.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Scrollbar whose position value had
@@ -130,9 +120,6 @@ public:
      */
     static const String EventScrollConfigChanged;
 
-    /*************************************************************************
-        Child Widget name constants
-    *************************************************************************/
     //! Widget name for the thumb component.
     static const String ThumbName;
     //! Widget name for the increase button component.
@@ -140,9 +127,6 @@ public:
     //! Widget name for the decrease button component.
     static const String DecreaseButtonName;
 
-    /*************************************************************************
-        Accessor functions
-    *************************************************************************/
     /*!
     \brief
         Return the size of the document or data.
@@ -163,6 +147,24 @@ public:
     {
         return d_documentSize;
     }
+
+    /*!
+    \brief
+        Set the size of the document or data.
+
+        The document size should be thought of as the total size of the data
+        that is being scrolled through (the number of lines in a text file for
+        example).
+
+    \note
+        The value set has no meaning within the Gui system, it is left up to
+        the application to assign appropriate values for the application
+        specific use of the scroll bar.
+
+    \param document_size
+        float value specifying the document size.
+    */
+    void setDocumentSize(float document_size);
 
     /*!
     \brief
@@ -188,6 +190,25 @@ public:
 
     /*!
     \brief
+        Set the page size for this scroll bar.
+
+        The page size is typically the amount of data that can be displayed at
+        one time.  This value is also used when calculating the amount the
+        position will change when you click either side of the scroll bar
+        thumb, the amount the position changes will is (pageSize - overlapSize).
+
+    \note
+        The value set has no meaning within the Gui system, it is left up to the
+        application to assign appropriate values for the application specific
+        use of the scroll bar.
+
+    \param page_size
+        float value specifying the page size.
+    */
+    void setPageSize(float page_size);
+
+    /*!
+    \brief
         Return the step size for this scroll bar.
 
         The step size is typically a single unit of data that can be displayed,
@@ -207,6 +228,25 @@ public:
     {
         return d_stepSize;
     }
+
+    /*!
+    \brief
+        Set the step size for this scroll bar.
+
+        The step size is typically a single unit of data that can be displayed,
+        this is the amount the position will change when you click either of the
+        arrow buttons on the scroll bar.  (this could be 1 for a single line of
+        text, for example).
+
+    \note
+        The value set has no meaning within the Gui system, it is left up to the
+        application to assign appropriate values for the application specific
+        use of the scroll bar.
+
+    \param step_size
+        float value specifying the step size.
+    */
+    void setStepSize(float step_size);
 
     /*!
     \brief
@@ -232,6 +272,25 @@ public:
 
     /*!
     \brief
+        Set the overlap size for this scroll bar.
+
+        The overlap size is the amount of data from the end of a 'page' that
+        will remain visible when the position is moved by a page.  This is
+        usually used so that the user keeps some context of where they were
+        within the document's data when jumping a page at a time.
+
+    \note
+        The value set has no meaning within the Gui system, it is left up to the
+        application to assign appropriate values for the application specific
+        use of the scroll bar.
+
+    \param overlap_size
+        float value specifying the overlap size.
+    */
+    void setOverlapSize(float overlap_size);
+
+    /*!
+    \brief
         Return the current position of scroll bar within the document.
 
         The range of the scroll bar is from 0 to the size of the document minus
@@ -250,6 +309,31 @@ public:
     {
         return d_position;
     }
+
+    /*!
+    \brief
+        Set the current position of scroll bar within the document.
+
+        The range of the scroll bar is from 0 to the size of the document minus
+        the size of a page (0 <= position <= (documentSize - pageSize)), any
+        attempt to set the position outside this range will be adjusted so that
+        it falls within the legal range.
+
+    \note
+        The returned value has no meaning within the Gui system, it is left up
+        to the application to assign appropriate values for the application
+        specific use of the scroll bar.
+
+    \param position
+        float value specifying the position of the scroll bar within its
+        document.
+    */
+    void setScrollPosition(float position);
+
+    //! return the current scroll position as a value in the interval [0, 1]
+    float getUnitIntervalScrollPosition() const;
+    //! set the current scroll position as a value in the interval [0, 1]
+    void setUnitIntervalScrollPosition(float position);
 
     /*!
     \brief
@@ -288,132 +372,6 @@ public:
         Thrown if the Thumb component does not exist.
     */
     Thumb* getThumb() const;
-
-    /*************************************************************************
-        Manipulator Commands
-    *************************************************************************/
-    /*!
-    \brief
-        Initialises the Scrollbar object ready for use.
-
-    \note
-        This must be called for every window created.  Normally this is handled
-        automatically by the WindowFactory for each Window type.
-
-    \return
-        Nothing
-    */
-    virtual void initialiseComponents(void);
-
-    /*!
-    \brief
-        Set the size of the document or data.
-
-        The document size should be thought of as the total size of the data
-        that is being scrolled through (the number of lines in a text file for
-        example).
-
-    \note
-        The value set has no meaning within the Gui system, it is left up to
-        the application to assign appropriate values for the application
-        specific use of the scroll bar.
-
-    \param document_size
-        float value specifying the document size.
-
-    \return
-        Nothing.
-    */
-    void setDocumentSize(float document_size);
-
-    /*!
-    \brief
-        Set the page size for this scroll bar.
-
-        The page size is typically the amount of data that can be displayed at
-        one time.  This value is also used when calculating the amount the
-        position will change when you click either side of the scroll bar
-        thumb, the amount the position changes will is (pageSize - overlapSize).
-
-    \note
-        The value set has no meaning within the Gui system, it is left up to the
-        application to assign appropriate values for the application specific
-        use of the scroll bar.
-
-    \param page_size
-        float value specifying the page size.
-
-    \return
-        Nothing.
-    */
-    void setPageSize(float page_size);
-
-    /*!
-    \brief
-        Set the step size for this scroll bar.
-
-        The step size is typically a single unit of data that can be displayed,
-        this is the amount the position will change when you click either of the
-        arrow buttons on the scroll bar.  (this could be 1 for a single line of
-        text, for example).
-
-    \note
-        The value set has no meaning within the Gui system, it is left up to the
-        application to assign appropriate values for the application specific
-        use of the scroll bar.
-
-    \param step_size
-        float value specifying the step size.
-
-    \return
-        Nothing.
-    */
-    void setStepSize(float step_size);
-
-    /*!
-    \brief
-        Set the overlap size for this scroll bar.
-
-        The overlap size is the amount of data from the end of a 'page' that
-        will remain visible when the position is moved by a page.  This is
-        usually used so that the user keeps some context of where they were
-        within the document's data when jumping a page at a time.
-
-    \note
-        The value set has no meaning within the Gui system, it is left up to the
-        application to assign appropriate values for the application specific
-        use of the scroll bar.
-
-    \param overlap_size
-        float value specifying the overlap size.
-
-    \return
-        Nothing.
-    */
-    void setOverlapSize(float overlap_size);
-
-    /*!
-    \brief
-        Set the current position of scroll bar within the document.
-
-        The range of the scroll bar is from 0 to the size of the document minus
-        the size of a page (0 <= position <= (documentSize - pageSize)), any
-        attempt to set the position outside this range will be adjusted so that
-        it falls within the legal range.
-
-    \note
-        The returned value has no meaning within the Gui system, it is left up
-        to the application to assign appropriate values for the application
-        specific use of the scroll bar.
-
-    \param position
-        float value specifying the position of the scroll bar within its
-        document.
-
-    \return
-        Nothing.
-    */
-    void setScrollPosition(float position);
 
     /*!
     \brief
@@ -488,11 +446,21 @@ public:
     */
     bool isEndLockEnabled() const;
 
-    //! Constructor for Scrollbar objects
-    Scrollbar(const String& type, const String& name);
+    //! move scroll position forwards by the current step size
+    void scrollForwardsByStep();
+    //! move scroll position backwards by the current step size
+    void scrollBackwardsByStep();
 
-    //! Destructor for Scrollbar objects
-    virtual ~Scrollbar(void);
+    //! move scroll position forwards by a page (uses appropriate overlap)
+    void scrollForwardsByPage();
+    //! move scroll position backwards by a page (uses appropriate overlap)
+    void scrollBackwardsByPage();
+
+    Scrollbar(const String& type, const String& name);
+    ~Scrollbar(void);
+
+    // overrides
+    void initialiseComponents(void);
 
 protected:
     /*!
