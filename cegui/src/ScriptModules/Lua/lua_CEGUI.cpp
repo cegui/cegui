@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Wed Feb 29 17:48:26 2012.
+** Generated automatically by tolua++-1.0.93 on Mon Mar 26 19:56:16 2012.
 */
 
 #ifndef __cplusplus
@@ -39161,6 +39161,38 @@ static int tolua_CEGUI_CEGUI_Scrollbar_getScrollPosition00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getUnitIntervalScrollPosition of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_getUnitIntervalScrollPosition00
+static int tolua_CEGUI_CEGUI_Scrollbar_getUnitIntervalScrollPosition00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Scrollbar* self = (const CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getUnitIntervalScrollPosition'",NULL);
+#endif
+ {
+  float tolua_ret = (float)  self->getUnitIntervalScrollPosition();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getUnitIntervalScrollPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: isEndLockEnabled of class  CEGUI::Scrollbar */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_isEndLockEnabled00
 static int tolua_CEGUI_CEGUI_Scrollbar_isEndLockEnabled00(lua_State* tolua_S)
@@ -39358,6 +39390,39 @@ static int tolua_CEGUI_CEGUI_Scrollbar_setScrollPosition00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: setUnitIntervalScrollPosition of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_setUnitIntervalScrollPosition00
+static int tolua_CEGUI_CEGUI_Scrollbar_setUnitIntervalScrollPosition00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Scrollbar* self = (CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+  float position = ((float)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setUnitIntervalScrollPosition'",NULL);
+#endif
+ {
+  self->setUnitIntervalScrollPosition(position);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setUnitIntervalScrollPosition'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setEndLockEnabled of class  CEGUI::Scrollbar */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00
 static int tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00(lua_State* tolua_S)
@@ -39386,6 +39451,130 @@ static int tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00(lua_State* tolua_S)
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setEndLockEnabled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: scrollForwardsByStep of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_scrollForwardsByStep00
+static int tolua_CEGUI_CEGUI_Scrollbar_scrollForwardsByStep00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Scrollbar* self = (CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'scrollForwardsByStep'",NULL);
+#endif
+ {
+  self->scrollForwardsByStep();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'scrollForwardsByStep'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: scrollBackwardsByStep of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_scrollBackwardsByStep00
+static int tolua_CEGUI_CEGUI_Scrollbar_scrollBackwardsByStep00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Scrollbar* self = (CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'scrollBackwardsByStep'",NULL);
+#endif
+ {
+  self->scrollBackwardsByStep();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'scrollBackwardsByStep'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: scrollForwardsByPage of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_scrollForwardsByPage00
+static int tolua_CEGUI_CEGUI_Scrollbar_scrollForwardsByPage00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Scrollbar* self = (CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'scrollForwardsByPage'",NULL);
+#endif
+ {
+  self->scrollForwardsByPage();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'scrollForwardsByPage'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: scrollBackwardsByPage of class  CEGUI::Scrollbar */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Scrollbar_scrollBackwardsByPage00
+static int tolua_CEGUI_CEGUI_Scrollbar_scrollBackwardsByPage00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Scrollbar",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Scrollbar* self = (CEGUI::Scrollbar*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'scrollBackwardsByPage'",NULL);
+#endif
+ {
+  self->scrollBackwardsByPage();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'scrollBackwardsByPage'.",&tolua_err);
  return 0;
 #endif
 }
@@ -64026,13 +64215,19 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getStepSize",tolua_CEGUI_CEGUI_Scrollbar_getStepSize00);
    tolua_function(tolua_S,"getOverlapSize",tolua_CEGUI_CEGUI_Scrollbar_getOverlapSize00);
    tolua_function(tolua_S,"getScrollPosition",tolua_CEGUI_CEGUI_Scrollbar_getScrollPosition00);
+   tolua_function(tolua_S,"getUnitIntervalScrollPosition",tolua_CEGUI_CEGUI_Scrollbar_getUnitIntervalScrollPosition00);
    tolua_function(tolua_S,"isEndLockEnabled",tolua_CEGUI_CEGUI_Scrollbar_isEndLockEnabled00);
    tolua_function(tolua_S,"setDocumentSize",tolua_CEGUI_CEGUI_Scrollbar_setDocumentSize00);
    tolua_function(tolua_S,"setPageSize",tolua_CEGUI_CEGUI_Scrollbar_setPageSize00);
    tolua_function(tolua_S,"setStepSize",tolua_CEGUI_CEGUI_Scrollbar_setStepSize00);
    tolua_function(tolua_S,"setOverlapSize",tolua_CEGUI_CEGUI_Scrollbar_setOverlapSize00);
    tolua_function(tolua_S,"setScrollPosition",tolua_CEGUI_CEGUI_Scrollbar_setScrollPosition00);
+   tolua_function(tolua_S,"setUnitIntervalScrollPosition",tolua_CEGUI_CEGUI_Scrollbar_setUnitIntervalScrollPosition00);
    tolua_function(tolua_S,"setEndLockEnabled",tolua_CEGUI_CEGUI_Scrollbar_setEndLockEnabled00);
+   tolua_function(tolua_S,"scrollForwardsByStep",tolua_CEGUI_CEGUI_Scrollbar_scrollForwardsByStep00);
+   tolua_function(tolua_S,"scrollBackwardsByStep",tolua_CEGUI_CEGUI_Scrollbar_scrollBackwardsByStep00);
+   tolua_function(tolua_S,"scrollForwardsByPage",tolua_CEGUI_CEGUI_Scrollbar_scrollForwardsByPage00);
+   tolua_function(tolua_S,"scrollBackwardsByPage",tolua_CEGUI_CEGUI_Scrollbar_scrollBackwardsByPage00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ScrolledContainer","CEGUI::ScrolledContainer","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"ScrolledContainer");

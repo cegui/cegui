@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -38,7 +38,7 @@ const String Scrollbar::EventNamespace("Scrollbar");
 const String Scrollbar::WidgetTypeName("CEGUI/Scrollbar");
 
 //----------------------------------------------------------------------------//
-const String Scrollbar::EventScrollPositionChanged( "ScrollPositionChanged" );
+const String Scrollbar::EventScrollPositionChanged("ScrollPositionChanged");
 const String Scrollbar::EventThumbTrackStarted("ThumbTrackStarted");
 const String Scrollbar::EventThumbTrackEnded("ThumbTrackEnded");
 const String Scrollbar::EventScrollConfigChanged("ScrollConfigChanged");
@@ -50,7 +50,7 @@ const String Scrollbar::DecreaseButtonName("__auto_decbtn__");
 
 //----------------------------------------------------------------------------//
 ScrollbarWindowRenderer::ScrollbarWindowRenderer(const String& name) :
-        WindowRenderer(name, Scrollbar::EventNamespace)
+    WindowRenderer(name, Scrollbar::EventNamespace)
 {
 }
 
@@ -79,27 +79,27 @@ void Scrollbar::initialiseComponents(void)
     Thumb* const t = getThumb();
     t->subscribeEvent(Thumb::EventThumbPositionChanged,
                       Event::Subscriber(&CEGUI::Scrollbar::handleThumbMoved,
-                      this));
+                                        this));
 
     t->subscribeEvent(Thumb::EventThumbTrackStarted,
                       Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackStarted,
-                      this));
+                                        this));
 
     t->subscribeEvent(Thumb::EventThumbTrackEnded,
                       Event::Subscriber(&CEGUI::Scrollbar::handleThumbTrackEnded,
-                      this));
+                                        this));
 
     // set up Increase button
     getIncreaseButton()->
-        subscribeEvent(PushButton::EventMouseButtonDown,
-                       Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked,
-                       this));
+    subscribeEvent(PushButton::EventMouseButtonDown,
+                   Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked,
+                                     this));
 
     // set up Decrease button
     getDecreaseButton()->
-        subscribeEvent(PushButton::EventMouseButtonDown,
-                       Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked,
-                       this));
+    subscribeEvent(PushButton::EventMouseButtonDown,
+                   Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked,
+                                     this));
 
     // do initial layout
     performChildWindowLayout();
@@ -184,7 +184,7 @@ void Scrollbar::setScrollPosition(float position)
 //----------------------------------------------------------------------------//
 bool Scrollbar::validateWindowRenderer(const WindowRenderer* renderer) const
 {
-	return dynamic_cast<const ScrollbarWindowRenderer*>(renderer) != 0;
+    return dynamic_cast<const ScrollbarWindowRenderer*>(renderer) != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -218,17 +218,17 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
     // base class processing
     Window::onMouseButtonDown(e);
 
-    if (e.button == LeftButton)
-    {
-        const float adj = getAdjustDirectionFromPoint(e.position);
+    if (e.button != LeftButton)
+        return;
 
-        // adjust scroll bar position in whichever direction as required.
-        if (adj != 0)
-            setScrollPosition(
-                d_position + ((d_pageSize - d_overlapSize) * adj));
+    const float adj = getAdjustDirectionFromPoint(e.position);
 
-        ++e.handled;
-    }
+    if (adj > 0)
+        scrollForwardsByPage();
+    else if (adj < 0)
+        scrollBackwardsByPage();
+
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//
@@ -256,29 +256,21 @@ bool Scrollbar::handleThumbMoved(const EventArgs&)
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleIncreaseClicked(const EventArgs& e)
 {
-    if (((const MouseEventArgs&)e).button == LeftButton)
-    {
-        // adjust scroll bar position as required.
-        setScrollPosition(d_position + d_stepSize);
+    if (((const MouseEventArgs&)e).button != LeftButton)
+        return false;
 
-        return true;
-    }
-
-    return false;
+    scrollForwardsByStep();
+    return true;
 }
 
 //----------------------------------------------------------------------------//
 bool Scrollbar::handleDecreaseClicked(const EventArgs& e)
 {
-    if (((const MouseEventArgs&)e).button == LeftButton)
-    {
-        // adjust scroll bar position as required.
-        setScrollPosition(d_position - d_stepSize);
+    if (((const MouseEventArgs&)e).button != LeftButton)
+        return false;
 
-        return true;
-    }
-
-    return false;
+    scrollBackwardsByStep();
+    return true;
 }
 
 //----------------------------------------------------------------------------//
@@ -309,33 +301,41 @@ void Scrollbar::addScrollbarProperties(void)
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "DocumentSize", "Property to get/set the document size for the Scrollbar.  Value is a float.",
         &Scrollbar::setDocumentSize, &Scrollbar::getDocumentSize, 1.0f
-    );
-    
+        );
+
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "PageSize", "Property to get/set the page size for the Scrollbar.  Value is a float.",
         &Scrollbar::setPageSize, &Scrollbar::getPageSize, 0.0f
-    );
-    
+        );
+
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "StepSize", "Property to get/set the step size for the Scrollbar.  Value is a float.",
         &Scrollbar::setStepSize, &Scrollbar::getStepSize, 1.0f
-    );
-    
+        );
+
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "OverlapSize", "Property to get/set the overlap size for the Scrollbar.  Value is a float.",
         &Scrollbar::setOverlapSize, &Scrollbar::getOverlapSize, 0.0f
-    );
-    
+        );
+
     CEGUI_DEFINE_PROPERTY(Scrollbar, float,
         "ScrollPosition", "Property to get/set the scroll position of the Scrollbar.  Value is a float.",
         &Scrollbar::setScrollPosition, &Scrollbar::getScrollPosition, 0.0f
-    );
-    
+        );
+
+    CEGUI_DEFINE_PROPERTY(Scrollbar, float,
+        "UnitIntervalScrollPosition",
+        "Property to access the scroll position of the Scrollbar as a value in "
+        "the interval [0, 1].  Value is a float.",
+        &Scrollbar::setUnitIntervalScrollPosition,
+        &Scrollbar::getUnitIntervalScrollPosition, 0.0f
+        );
+
     CEGUI_DEFINE_PROPERTY(Scrollbar, bool,
         "EndLockEnabled", "Property to get/set the 'end lock' mode setting for the Scrollbar. "
         "Value is either \"True\" or \"False\".",
         &Scrollbar::setEndLockEnabled, &Scrollbar::isEndLockEnabled, false
-    );
+        );
 }
 
 //----------------------------------------------------------------------------//
@@ -389,7 +389,7 @@ float Scrollbar::getValueFromThumb(void) const
             "window renderer is assigned.)"));
 
     return static_cast<ScrollbarWindowRenderer*>(
-        d_windowRenderer)->getValueFromThumb();
+               d_windowRenderer)->getValueFromThumb();
 }
 
 //----------------------------------------------------------------------------//
@@ -402,7 +402,7 @@ float Scrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
             "(no window renderer is assigned.)"));
 
     return static_cast<ScrollbarWindowRenderer*>(
-        d_windowRenderer)->getAdjustDirectionFromPoint(pt);
+               d_windowRenderer)->getAdjustDirectionFromPoint(pt);
 }
 
 //----------------------------------------------------------------------------//
@@ -413,10 +413,10 @@ bool Scrollbar::setScrollPosition_impl(const float position)
 
     // limit position to valid range:  0 <= position <= max_pos
     d_position = (position >= 0) ?
-                    ((position <= max_pos) ?
-                        position :
-                        max_pos) :
-                    0.0f;
+                 ((position <= max_pos) ?
+                  position :
+                  max_pos) :
+                     0.0f;
 
     return d_position != old_pos;
 }
@@ -449,7 +449,7 @@ void Scrollbar::setConfig(const float* const document_size,
         d_stepSize = *step_size;
         config_changed = true;
     }
-    
+
     if (overlap_size && (d_overlapSize != *overlap_size))
     {
         d_overlapSize = *overlap_size;
@@ -493,7 +493,7 @@ float Scrollbar::getMaxScrollPosition() const
 //----------------------------------------------------------------------------//
 bool Scrollbar::isAtEnd() const
 {
-    return d_position >= getMaxScrollPosition(); 
+    return d_position >= getMaxScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
@@ -506,6 +506,46 @@ void Scrollbar::setEndLockEnabled(const bool enabled)
 bool Scrollbar::isEndLockEnabled() const
 {
     return d_endLockPosition;
+}
+
+//----------------------------------------------------------------------------//
+float Scrollbar::getUnitIntervalScrollPosition() const
+{
+    const float range = d_documentSize - d_pageSize;
+
+    return (range > 0) ? d_position / range : 0.0f;
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::setUnitIntervalScrollPosition(float position)
+{
+    const float range = d_documentSize - d_pageSize;
+
+    setScrollPosition(range > 0 ? position * range : 0.0f);
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::scrollForwardsByStep()
+{
+    setScrollPosition(d_position + d_stepSize);
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::scrollBackwardsByStep()
+{
+    setScrollPosition(d_position - d_stepSize);
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::scrollForwardsByPage()
+{
+    setScrollPosition(d_position + (d_pageSize - d_overlapSize));
+}
+
+//----------------------------------------------------------------------------//
+void Scrollbar::scrollBackwardsByPage()
+{
+    setScrollPosition(d_position - (d_pageSize - d_overlapSize));
 }
 
 //----------------------------------------------------------------------------//
