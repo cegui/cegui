@@ -465,10 +465,6 @@ protected:
     */
     ScrolledContainer* getScrolledContainer() const;
 
-    static float getScrollbarPositionInUnitRange(const Scrollbar* scrollbar);
-    static void setScrollbarPositionInUnitRange(Scrollbar* scrollbar,
-                                                float position);
-
     // validate window renderer
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 

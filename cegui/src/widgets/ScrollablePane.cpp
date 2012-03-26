@@ -177,31 +177,13 @@ void ScrollablePane::setHorizontalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getHorizontalScrollPosition(void) const
 {
-    return getScrollbarPositionInUnitRange(getHorzScrollbar());
-}
-
-//----------------------------------------------------------------------------//
-float ScrollablePane::getScrollbarPositionInUnitRange(const Scrollbar* scrollbar)
-{
-    const float range = scrollbar->getDocumentSize() -
-                        scrollbar->getPageSize();
-    return (range > 0) ? scrollbar->getScrollPosition() / range : 0.0f;
+    return getHorzScrollbar()->getUnitIntervalScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setHorizontalScrollPosition(float position)
 {
-    setScrollbarPositionInUnitRange(getHorzScrollbar(), position);
-}
-
-//----------------------------------------------------------------------------//
-void ScrollablePane::setScrollbarPositionInUnitRange(Scrollbar* scrollbar,
-                                                     float position)
-{
-    const float range = scrollbar->getDocumentSize() -
-                        scrollbar->getPageSize();
-
-    scrollbar->setScrollPosition(range > 0 ? position * range : 0.0f);
+    getHorzScrollbar()->setUnitIntervalScrollPosition(position);
 }
 
 //----------------------------------------------------------------------------//
@@ -233,13 +215,13 @@ void ScrollablePane::setVerticalOverlapSize(float overlap)
 //----------------------------------------------------------------------------//
 float ScrollablePane::getVerticalScrollPosition(void) const
 {
-    return getScrollbarPositionInUnitRange(getVertScrollbar());
+    return getVertScrollbar()->getUnitIntervalScrollPosition();
 }
 
 //----------------------------------------------------------------------------//
 void ScrollablePane::setVerticalScrollPosition(float position)
 {
-    setScrollbarPositionInUnitRange(getVertScrollbar(), position);
+    getVertScrollbar()->setUnitIntervalScrollPosition(position);
 }
 
 //----------------------------------------------------------------------------//
