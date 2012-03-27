@@ -55,10 +55,6 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
         return CEGUI::ScrollablePane::getChildByNamePath_impl( boost::ref(name_path) );
     }
 
-    static float getScrollbarPositionInUnitRange( ::CEGUI::Scrollbar const * scrollbar ){
-        return CEGUI::ScrollablePane::getScrollbarPositionInUnitRange( boost::python::ptr(scrollbar) );
-    }
-
     ::CEGUI::ScrolledContainer * getScrolledContainer(  ) const {
         return CEGUI::ScrollablePane::getScrolledContainer(  );
     }
@@ -189,10 +185,6 @@ struct ScrollablePane_wrapper : CEGUI::ScrollablePane, bp::wrapper< CEGUI::Scrol
     
     virtual void default_removeChild_impl( ::CEGUI::Element * element ){
         CEGUI::ScrollablePane::removeChild_impl( boost::python::ptr(element) );
-    }
-
-    static void setScrollbarPositionInUnitRange( ::CEGUI::Scrollbar * scrollbar, float position ){
-        CEGUI::ScrollablePane::setScrollbarPositionInUnitRange( boost::python::ptr(scrollbar), position );
     }
 
     void updateContainerPosition(  ){
@@ -1533,16 +1525,6 @@ void register_ScrollablePane_class(){
                 *\n" );
         
         }
-        { //::CEGUI::ScrollablePane::getScrollbarPositionInUnitRange
-        
-            typedef float ( *getScrollbarPositionInUnitRange_function_type )( ::CEGUI::Scrollbar const * );
-            
-            ScrollablePane_exposer.def( 
-                "getScrollbarPositionInUnitRange"
-                , getScrollbarPositionInUnitRange_function_type( &ScrollablePane_wrapper::getScrollbarPositionInUnitRange )
-                , ( bp::arg("scrollbar") ) );
-        
-        }
         { //::CEGUI::ScrollablePane::getScrolledContainer
         
             typedef ::CEGUI::ScrolledContainer * ( ScrollablePane_wrapper::*getScrolledContainer_function_type )(  ) const;
@@ -2049,16 +2031,6 @@ void register_ScrollablePane_class(){
                 @return\n\
                     Nothing.\n\
                 *\n" );
-        
-        }
-        { //::CEGUI::ScrollablePane::setScrollbarPositionInUnitRange
-        
-            typedef void ( *setScrollbarPositionInUnitRange_function_type )( ::CEGUI::Scrollbar *,float );
-            
-            ScrollablePane_exposer.def( 
-                "setScrollbarPositionInUnitRange"
-                , setScrollbarPositionInUnitRange_function_type( &ScrollablePane_wrapper::setScrollbarPositionInUnitRange )
-                , ( bp::arg("scrollbar"), bp::arg("position") ) );
         
         }
         { //::CEGUI::ScrollablePane::setShowHorzScrollbar
@@ -4061,8 +4033,6 @@ void register_ScrollablePane_class(){
                 , ( bp::arg("xml_stream") ) );
         
         }
-        ScrollablePane_exposer.staticmethod( "getScrollbarPositionInUnitRange" );
-        ScrollablePane_exposer.staticmethod( "setScrollbarPositionInUnitRange" );
     }
 
 }

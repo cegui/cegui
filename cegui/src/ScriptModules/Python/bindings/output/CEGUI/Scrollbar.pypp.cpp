@@ -1360,7 +1360,7 @@ void register_Scrollbar_class(){
             This base class for scroll bars does not have any idea of direction - a\n\
             derived class would add whatever meaning is appropriate according to what\n\
             that derived class represents to the user.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "! Constructor for Scrollbar objects\n") );
+        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") )) );
         bp::scope Scrollbar_scope( Scrollbar_exposer );
         { //::CEGUI::Scrollbar::banPropertiesForAutoWindow
         
@@ -1423,10 +1423,7 @@ void register_Scrollbar_class(){
             Scrollbar_exposer.def( 
                 "getDocumentSize"
                 , getDocumentSize_function_type( &::CEGUI::Scrollbar::getDocumentSize )
-                , "*************************************************************************\n\
-                    Accessor functions\n\
-                *************************************************************************\n\
-                *!\n\
+                , "*!\n\
                 \n\
                     Return the size of the document or data.\n\
             \n\
@@ -1596,6 +1593,16 @@ void register_Scrollbar_class(){
                 @exception UnknownObjectException\n\
                     Thrown if the Thumb component does not exist.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Scrollbar::getUnitIntervalScrollPosition
+        
+            typedef float ( ::CEGUI::Scrollbar::*getUnitIntervalScrollPosition_function_type )(  ) const;
+            
+            Scrollbar_exposer.def( 
+                "getUnitIntervalScrollPosition"
+                , getUnitIntervalScrollPosition_function_type( &::CEGUI::Scrollbar::getUnitIntervalScrollPosition )
+                , "! return the current scroll position as a value in the interval [0, 1]\n" );
         
         }
         { //::CEGUI::Scrollbar::getValueFromThumb
@@ -1783,6 +1790,48 @@ void register_Scrollbar_class(){
                 , "! Handler triggered when the user begins to drag the scroll bar thumb.\n" );
         
         }
+        { //::CEGUI::Scrollbar::scrollBackwardsByPage
+        
+            typedef void ( ::CEGUI::Scrollbar::*scrollBackwardsByPage_function_type )(  ) ;
+            
+            Scrollbar_exposer.def( 
+                "scrollBackwardsByPage"
+                , scrollBackwardsByPage_function_type( &::CEGUI::Scrollbar::scrollBackwardsByPage )
+                , "! move scroll position forwards by a page (uses appropriate overlap)\n\
+            ! move scroll position backwards by a page (uses appropriate overlap)\n" );
+        
+        }
+        { //::CEGUI::Scrollbar::scrollBackwardsByStep
+        
+            typedef void ( ::CEGUI::Scrollbar::*scrollBackwardsByStep_function_type )(  ) ;
+            
+            Scrollbar_exposer.def( 
+                "scrollBackwardsByStep"
+                , scrollBackwardsByStep_function_type( &::CEGUI::Scrollbar::scrollBackwardsByStep )
+                , "! move scroll position forwards by the current step size\n\
+            ! move scroll position backwards by the current step size\n" );
+        
+        }
+        { //::CEGUI::Scrollbar::scrollForwardsByPage
+        
+            typedef void ( ::CEGUI::Scrollbar::*scrollForwardsByPage_function_type )(  ) ;
+            
+            Scrollbar_exposer.def( 
+                "scrollForwardsByPage"
+                , scrollForwardsByPage_function_type( &::CEGUI::Scrollbar::scrollForwardsByPage )
+                , "! move scroll position forwards by a page (uses appropriate overlap)\n" );
+        
+        }
+        { //::CEGUI::Scrollbar::scrollForwardsByStep
+        
+            typedef void ( ::CEGUI::Scrollbar::*scrollForwardsByStep_function_type )(  ) ;
+            
+            Scrollbar_exposer.def( 
+                "scrollForwardsByStep"
+                , scrollForwardsByStep_function_type( &::CEGUI::Scrollbar::scrollForwardsByStep )
+                , "! move scroll position forwards by the current step size\n" );
+        
+        }
         { //::CEGUI::Scrollbar::setConfig
         
             typedef void ( ::CEGUI::Scrollbar::*setConfig_function_type )( float const * const,float const * const,float const * const,float const * const,float const * const ) ;
@@ -1816,9 +1865,6 @@ void register_Scrollbar_class(){
             \n\
                 @param document_size\n\
                     float value specifying the document size.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
                 *\n" );
         
         }
@@ -1870,9 +1916,6 @@ void register_Scrollbar_class(){
             \n\
                 @param overlap_size\n\
                     float value specifying the overlap size.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
                 *\n" );
         
         }
@@ -1900,9 +1943,6 @@ void register_Scrollbar_class(){
             \n\
                 @param page_size\n\
                     float value specifying the page size.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
                 *\n" );
         
         }
@@ -1931,9 +1971,6 @@ void register_Scrollbar_class(){
                 @param position\n\
                     float value specifying the position of the scroll bar within its\n\
                     document.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
                 *\n" );
         
         }
@@ -1974,10 +2011,19 @@ void register_Scrollbar_class(){
             \n\
                 @param step_size\n\
                     float value specifying the step size.\n\
-            \n\
-                @return\n\
-                    Nothing.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Scrollbar::setUnitIntervalScrollPosition
+        
+            typedef void ( ::CEGUI::Scrollbar::*setUnitIntervalScrollPosition_function_type )( float ) ;
+            
+            Scrollbar_exposer.def( 
+                "setUnitIntervalScrollPosition"
+                , setUnitIntervalScrollPosition_function_type( &::CEGUI::Scrollbar::setUnitIntervalScrollPosition )
+                , ( bp::arg("position") )
+                , "! return the current scroll position as a value in the interval [0, 1]\n\
+            ! set the current scroll position as a value in the interval [0, 1]\n" );
         
         }
         { //::CEGUI::Scrollbar::updateThumb
