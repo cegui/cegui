@@ -368,7 +368,13 @@ String WindowManager::getLayoutAsString(const Window& window) const
     std::ostringstream str;
     writeLayoutToStream(window, str);
 
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
+    // we are holding utf8 string in std::string which is something CEGUI::String doesn't expect,
+    // therefore we are forcing it to treat it as utf8 by this cast
+    return String(reinterpret_cast<const utf8*>(str.str().c_str()));
+#else
     return String(str.str());
+#endif
 }
 
 //----------------------------------------------------------------------------//
