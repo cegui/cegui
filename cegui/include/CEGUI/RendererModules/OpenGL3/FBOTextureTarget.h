@@ -68,6 +68,8 @@ protected:
     void initialiseRenderTexture();
     //! resize the texture
     void resizeRenderTexture();
+    //! Checks for OpenGL framebuffer completeness
+    void checkFramebufferStatus();
 
     //! Frame buffer object.
     GLuint d_frameBuffer;

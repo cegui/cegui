@@ -35,6 +35,11 @@
 #include "CEGUI/RendererModules/OpenGL3/Renderer.h"
 #include "CEGUI/RendererModules/OpenGL3/Texture.h"
 
+#include "CEGUI/Logger.h"
+
+#include <sstream>
+#include <iostream>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -128,7 +133,8 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_TEXTURE_2D, d_texture, 0);
 
-    // TODO: Check for completeness and then maybe try some alternative stuff?
+    //Check for framebuffer completeness
+    checkFramebufferStatus();
 
     // switch from our frame buffer back to using default buffer.
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
@@ -183,5 +189,53 @@ void OpenGL3FBOTextureTarget::restoreTexture()
 }
 
 //----------------------------------------------------------------------------//
+void OpenGL3FBOTextureTarget::checkFramebufferStatus()
+{
+    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
+
+    // Check for completeness
+    if(status != GL_FRAMEBUFFER_COMPLETE)
+    {
+        std::stringstream stringStream;
+        stringStream << "OpenGL3Renderer: Error  Framebuffer is not complete\n";
+
+        switch(status)
+        {
+        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
+            break;
+        case GL_FRAMEBUFFER_UNDEFINED:
+            stringStream << "GL_FRAMEBUFFER_UNDEFINED \n";
+            break;
+        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
+            break;
+        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER :
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER \n";
+            break;
+        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
+            break;
+        case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
+            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n";
+            break;
+        case GL_FRAMEBUFFER_UNSUPPORTED:
+            stringStream << "GL_FRAMEBUFFER_UNSUPPORTED\n";
+            break;
+        default:
+            stringStream << "Undefined Framebuffer error\n";
+            break;
+        }
+
+        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
+            logger->logEvent(stringStream.str());
+        else
+            std::cerr << stringStream.str() << std::endl;
+    }
+}
+
+//----------------------------------------------------------------------------//
+
+
 
 } // End of  CEGUI namespace section

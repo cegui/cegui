@@ -105,13 +105,13 @@ private:
 #define STRINGIFY(x) #x
 #define TOSTRING(x) STRINGIFY(x)
 #define AT __FILE__ ":" TOSTRING(__LINE__)
-#define checkGLErrors() my_get_errors(AT)
+#define checkGLErrors() getGLErrors(AT)
 
 /*!
 \brief
     Query OpenGL errors and process them in CEGUI
 */
-void my_get_errors(const char *location);
+void getGLErrors(const char *location);
 
 }
 
