@@ -74,7 +74,6 @@ namespace CEGUI
         {
             loadShader(SHADER_ID_STANDARDSHADER, StandardShaderVert, StandardShaderFrag);
 
-            CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr();
 
             if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
             {   
@@ -85,7 +84,7 @@ namespace CEGUI
             }
 
             const std::string notify("OpenGL3Renderer: Notification - Successfully initialised OpenGL3Renderer shader programs.");
-            if (logger)
+            if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
                 logger->logEvent(notify);
 
             return;
