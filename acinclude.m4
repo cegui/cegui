@@ -819,7 +819,12 @@ AC_DEFUN([CEGUI_CHECK_LUA],[
                       [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
                       [cegui_found_lua=no])
 
-    dnl If that did not work, try again with an alternate name for the packages (as used on (K)Ubuntu etc)
+    dnl If that did not work, try again with alternate names for the packages (as used on various distros)
+    if test x$cegui_found_lua = xno; then
+        PKG_CHECK_MODULES(Lua, lua5.2,
+                        [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=52"],
+                        [cegui_found_lua=no])
+    fi
     if test x$cegui_found_lua = xno; then
         PKG_CHECK_MODULES(Lua, lua5.1,
                         [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
