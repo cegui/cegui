@@ -83,7 +83,11 @@ LuaScriptModule::LuaScriptModule(lua_State* state) :
 
         // create a lua state
         d_ownsState = true;
+#if LUA_VERSION_NUM > 501
+        d_state = luaL_newstate();
+#else
         d_state = lua_open();
+#endif
 
         // init all standard libraries
         #if CEGUI_LUA_VER >= 51
