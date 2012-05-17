@@ -59,7 +59,7 @@ namespace CEGUI
         OpenGL3Shader* getShader(GLuint id);
         void loadShader(GLuint id, std::string vertexShader, std::string fragmentShader);
 
-        bool initialiseShaders();
+        void initialiseShaders();
         void deinitialiseShaders();
 
     private:

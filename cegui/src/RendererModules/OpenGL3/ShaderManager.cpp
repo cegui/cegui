@@ -33,6 +33,9 @@
 #include "CEGUI/RendererModules/OpenGL3/StandardShaderVert.h"
 #include "CEGUI/RendererModules/OpenGL3/StandardShaderFrag.h"
 
+#include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
+
 #include <iostream>
 
 namespace CEGUI
@@ -65,7 +68,7 @@ namespace CEGUI
         }
     }
 
-    bool OpenGL3ShaderManager::initialiseShaders()
+    void OpenGL3ShaderManager::initialiseShaders()
     {
         if(!d_shadersInitialised)
         {
@@ -74,14 +77,18 @@ namespace CEGUI
 
             if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
             {   
-                //For CEGUI Log << "\n--- One or multiple shader programs weren't created successfully. Exiting program now. ---" << endl;
-                return false;
+                const std::string errorString("OpenGL3Renderer: Critical Error - One or multiple shader programs weren't created successfully");
+                CEGUI_THROW(RendererException(errorString));
+
+                return;
             }
 
-            std::cout << "Finished loading shaders.\n" << std::endl;
-            return true;
+            const std::string notify("OpenGL3Renderer: Notification - Successfully initialised OpenGL3Renderer shader programs.");
+            if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
+                logger->logEvent(notify);
+
+            return;
         }
-        return true;
     }
 
     void OpenGL3ShaderManager::deinitialiseShaders()

@@ -493,8 +493,7 @@ void OpenGL3Renderer::setupExtraStates()
 {
     glActiveTexture(GL_TEXTURE0);
 
-    glPolygonMode(GL_FRONT, GL_FILL);
-    glPolygonMode(GL_BACK, GL_FILL);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
     glDisable(GL_CULL_FACE);
     glDisable(GL_DEPTH_TEST);
