@@ -29,6 +29,7 @@
 
 #include "CEGUI/RendererModules/OpenGL3/Shader.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/Exceptions.h"
 
 
 #include <sstream>
@@ -132,7 +133,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
     if (shader == 0)
     {
         std::stringstream stringStream;
-        stringStream << "Could not create shader object of type:" << type << ".";
+        stringStream << "CEGUI OpenGL3Renderer: Critical Error - Could not create shader object of type:" << type << ".";
         CEGUI_THROW(RendererException(stringStream.str()));
         return 0;
     }
@@ -246,14 +247,14 @@ void OpenGL3Shader::outputShaderLog(GLuint shader)
 };
 
 //----------------------------------------------------------------------------//
-void my_get_errors(const char *location)
+void getGLErrors(const char *location)
 {
     GLenum error = glGetError();
 
     if (error != GL_NO_ERROR)
     {
         std::stringstream stringStream;
-        stringStream << "Error at " << location << ": " << std::endl; 
+        stringStream << "OpenGL3Renderer: Notification - OpenGL error at " << location << ": " << std::endl; 
 
         switch (error)
         {
