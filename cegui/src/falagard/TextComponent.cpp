@@ -227,20 +227,7 @@ namespace CEGUI
 
     void TextComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
     {
-        // get font to use
-        Font* font;
-
-        CEGUI_TRY
-        {
-            // FIXME: Evil const cast!
-            font = d_fontPropertyName.empty() ?
-                (d_font.empty() ? const_cast<Font*>(srcWindow.getFont()) : &FontManager::getSingleton().get(d_font))
-                : &FontManager::getSingleton().get(srcWindow.getProperty(d_fontPropertyName));
-        }
-        CEGUI_CATCH (UnknownObjectException&)
-        {
-            font = 0;
-        }
+        const Font* font = getFontObject(srcWindow);
 
         // exit if we have no font to use.
         if (!font)
@@ -305,12 +292,24 @@ namespace CEGUI
         ColourRect finalColours;
         initColoursRect(srcWindow, modColours, finalColours);
 
-        // offset the font little down so that it's centered within its own spacing
-//        destRect.d_top += (font->getLineSpacing() - font->getFontHeight()) * 0.5f;
         // add geometry for text to the target window.
         d_formattedRenderedString->draw(srcWindow.getGeometryBuffer(),
                                         destRect.getPosition(),
                                         &finalColours, clipper);
+    }
+
+    const Font* TextComponent::getFontObject(const Window& window) const
+    {
+        CEGUI_TRY
+        {
+            return d_fontPropertyName.empty() ?
+                (d_font.empty() ? const_cast<Font*>(window.getFont()) : &FontManager::getSingleton().get(d_font))
+                : &FontManager::getSingleton().get(window.getProperty(d_fontPropertyName));
+        }
+        CEGUI_CATCH (UnknownObjectException&)
+        {
+            return 0;
+        }
     }
 
     void TextComponent::writeXMLToStream(XMLSerializer& xml_stream) const
@@ -425,6 +424,18 @@ namespace CEGUI
     float TextComponent::getVerticalTextExtent() const
     {
         return d_formattedRenderedString->getVerticalExtent();
+    }
+
+    bool TextComponent::handleFontRenderSizeChange(Window& window,
+                                                   const Font* font) const
+    {
+        if (font == getFontObject(window))
+        {
+            window.invalidate();
+            return true;
+        }
+
+        return false;
     }
 
 } // End of  CEGUI namespace section

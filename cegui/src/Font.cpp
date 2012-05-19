@@ -45,6 +45,10 @@ const argb_t Font::DefaultColour = 0xFFFFFFFF;
 String Font::d_defaultResourceGroup;
 
 //----------------------------------------------------------------------------//
+const String Font::EventNamespace("Font");
+const String Font::EventRenderSizeChanged("RenderSizeChanged");
+
+//----------------------------------------------------------------------------//
 Font::Font(const String& name, const String& type_name, const String& filename,
            const String& resource_group, const bool auto_scaled,
            const float native_horz_res, const float native_vert_res) :
@@ -262,6 +266,9 @@ void Font::setAutoScaled(const bool auto_scaled)
 
     d_autoScale = auto_scaled;
     updateFont();
+
+    FontEventArgs args(this);
+    onRenderSizeChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -277,7 +284,12 @@ void Font::notifyDisplaySizeChanged(const Sizef& size)
     d_vertScaling = size.d_height / d_nativeVertRes;
 
     if (d_autoScale)
+    {
         updateFont();
+
+        FontEventArgs args(this);
+        onRenderSizeChanged(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -313,6 +325,12 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
 
     // output closing </Font> element.
     xml_stream.closeTag();
+}
+
+//----------------------------------------------------------------------------//
+void Font::onRenderSizeChanged(FontEventArgs& e)
+{
+    fireEvent(EventRenderSizeChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

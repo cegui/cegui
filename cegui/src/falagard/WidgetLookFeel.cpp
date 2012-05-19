@@ -987,6 +987,27 @@ void WidgetLookFeel::appendAnimationNames(AnimationNameSet& set, bool inherits) 
 }
 
 //---------------------------------------------------------------------------//
+bool WidgetLookFeel::handleFontRenderSizeChange(Window& window,
+                                                const Font* font) const
+{
+    bool result = false;
+
+    for(ImageryList::const_iterator i = d_imagerySections.begin();
+        i != d_imagerySections.end();
+        ++i)
+    {
+        result |= i->second.handleFontRenderSizeChange(window, font);
+    }
+
+    if (!d_inheritedLookName.empty())
+        result |= WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).
+                handleFontRenderSizeChange(window, font);
+
+    return result;
+}
+
+//---------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
 

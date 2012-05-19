@@ -377,6 +377,18 @@ public:
     String resourceName;
 };
 
+//! EventArgs based class that is used for notifications regarding Font objects.
+class CEGUIEXPORT FontEventArgs : public EventArgs
+{
+public:
+    FontEventArgs(Font* font) :
+       font(font)
+    {}
+
+    //! Pointer to the font object related to the event notification.
+    Font* font;
+};
+
 
 } // End of  CEGUI namespace section
 
