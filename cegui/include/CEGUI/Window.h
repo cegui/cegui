@@ -3363,6 +3363,9 @@ protected:
 
     virtual void banPropertiesForAutoWindow();
 
+    //! handler function for when font render size changes.
+    virtual bool handleFontRenderSizeChange(const EventArgs& args);
+
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
@@ -3577,6 +3580,9 @@ private:
     const Font* property_getFont() const;
     //! Not intended for public use, only used as a "MouseCursor" property getter
     const Image* property_getMouseCursor() const;
+
+    //! connection for event listener for font render size changes.
+    Event::ScopedConnection d_fontRenderSizeChangeConnection;
 };
 
 } // End of  CEGUI namespace section

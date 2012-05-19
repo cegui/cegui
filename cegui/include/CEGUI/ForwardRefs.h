@@ -189,6 +189,7 @@ class VerticalLayoutContainer;
 class ActivationEventArgs;
 class DisplayEventArgs;
 class DragDropEventArgs;
+class FontEventArgs;
 class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
 class KeyEventArgs;

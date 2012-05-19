@@ -454,6 +454,16 @@ public:
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
 
+    /*!
+    \brief
+        Format the text into lines as dictated by the formatting options.
+
+    \param update_scrollbars 
+        - true if scrollbar configuration should be performed.
+        - false if scrollbar configuration should not be performed.
+    */
+    void formatText(const bool update_scrollbars);
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -496,16 +506,6 @@ protected:
         This is deprecated in favour of the version taking a boolean.
 	*/
 	void	formatText(void);
-
-    /*!
-    \brief
-        Format the text into lines as dictated by the formatting options.
-
-    \param update_scrollbars 
-        - true if scrollbar configuration should be performed.
-        - false if scrollbar configuration should not be performed.
-    */
-    void formatText(const bool update_scrollbars);
 
 	/*!
 	\brief

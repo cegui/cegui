@@ -43,18 +43,18 @@ public:
     RenderedStringTextComponent();
     RenderedStringTextComponent(const String& text);
     RenderedStringTextComponent(const String& text, const String& font_name);
-    RenderedStringTextComponent(const String& text, Font* font);
+    RenderedStringTextComponent(const String& text, const Font* font);
 
     //! Set the text to be rendered by this component.
     void setText(const String& text);
     //! return the text that will be rendered by this component
     const String& getText() const;
     //! set the font to use when rendering the text.
-    void setFont(Font* font);
+    void setFont(const Font* font);
     //! set the font to use when rendering the text.
     void setFont(const String& font_name);
     //! return the font set to be used.  If 0 the default font will be used.
-    Font* getFont() const;
+    const Font* getFont() const;
     //! Set the colour values used when rendering this component.
     void setColours(const ColourRect& cr);
     //! Set the colour values used when rendering this component.
@@ -79,7 +79,7 @@ protected:
     //! pointer to the image drawn by the component.
     String d_text;
     //! Font to use for text rendering, 0 for system default.
-    Font* d_font;
+    const Font* d_font;
     //! ColourRect object describing the colours to use when rendering.
     ColourRect d_colours;
     //! last set selection

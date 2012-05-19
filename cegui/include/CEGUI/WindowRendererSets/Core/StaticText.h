@@ -160,6 +160,8 @@ namespace CEGUI
         //! return the current vertical formatted text extent in pixels.
         float getVerticalTextExtent() const;
 
+        // overridden from base class
+        bool handleFontRenderSizeChange(const Font* const font);
         void render(void);
 
     protected:

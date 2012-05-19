@@ -106,6 +106,9 @@ public:
     //! set the caret blink timeout period (only used if blink is enabled).
     void setCaretBlinkTimeout(float seconds);
 
+    // overridden from base class
+    bool handleFontRenderSizeChange(const Font* const font);
+
 protected:
     /*!
     \brief

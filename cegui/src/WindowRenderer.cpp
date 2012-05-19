@@ -129,4 +129,13 @@ void WindowRenderer::getRenderingContext(RenderingContext& ctx) const
     d_window->getRenderingContext_impl(ctx);
 }
 
+//----------------------------------------------------------------------------//
+bool WindowRenderer::handleFontRenderSizeChange(const Font* const font)
+{
+    const WidgetLookFeel& lf(getLookNFeel());
+    return lf.handleFontRenderSizeChange(*d_window, font);
+}
+
+//----------------------------------------------------------------------------//
+
 } // End of CEGUI namespace

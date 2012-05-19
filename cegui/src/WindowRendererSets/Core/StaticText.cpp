@@ -599,5 +599,20 @@ void FalagardStaticText::updateFormatting(const Sizef& sz) const
 }
 
 //----------------------------------------------------------------------------//
+bool FalagardStaticText::handleFontRenderSizeChange(const Font* const font)
+{
+    const bool res = WindowRenderer::handleFontRenderSizeChange(font);
+
+    if (d_window->getFont() == font)
+    {
+        d_window->invalidate();
+        d_formatValid = false;
+        return true;
+    }
+
+    return res;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

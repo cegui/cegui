@@ -519,6 +519,9 @@ void FreeTypeFont::setPointSize(const float point_size)
 
     d_ptSize = point_size;
     updateFont();
+
+    FontEventArgs args(this);
+    onRenderSizeChanged(args);
 }
 
 //----------------------------------------------------------------------------//
@@ -529,6 +532,9 @@ void FreeTypeFont::setAntiAliased(const bool anti_alaised)
 
     d_antiAliased = anti_alaised;
     updateFont();
+
+    FontEventArgs args(this);
+    onRenderSizeChanged(args);
 }
 
 //----------------------------------------------------------------------------//

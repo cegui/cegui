@@ -45,6 +45,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/GlobalEventSet.h"
 #include <algorithm>
 #include <iterator>
 #include <cmath>
@@ -266,7 +267,12 @@ Window::Window(const String& type, const String& name):
     // Don't propagate mouse inputs by default.
     d_propagateMouseInputs(false),
 
-    d_guiContext(0)
+    d_guiContext(0),
+
+    d_fontRenderSizeChangeConnection(
+        GlobalEventSet::getSingleton().subscribeEvent(
+            "Font/RenderSizeChanged",
+            Event::Subscriber(&Window::handleFontRenderSizeChange, this)))
 {
     // add properties
     addWindowProperties();
@@ -3738,6 +3744,16 @@ void Window::banPropertiesForAutoWindow()
     banPropertyFromXML("MaxSize");
     banPropertyFromXML(&d_windowRendererProperty);
     banPropertyFromXML(&d_lookNFeelProperty);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::handleFontRenderSizeChange(const EventArgs& args)
+{
+    if (!d_windowRenderer)
+        return false;
+
+    return d_windowRenderer->handleFontRenderSizeChange(
+        static_cast<const FontEventArgs&>(args).font);
 }
 
 //----------------------------------------------------------------------------//
