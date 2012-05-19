@@ -80,6 +80,7 @@ const String Window::EventInheritsAlphaChanged( "InheritsAlphaChanged" );
 const String Window::EventAlwaysOnTopChanged("AlwaysOnTopChanged");
 const String Window::EventInputCaptureGained( "InputCaptureGained" );
 const String Window::EventInputCaptureLost( "InputCaptureLost" );
+const String Window::EventInvalidated( "Invalidated" );
 const String Window::EventRenderingStarted( "RenderingStarted" );
 const String Window::EventRenderingEnded( "RenderingEnded" );
 const String Window::EventDestructionStarted( "DestructionStarted" );
@@ -1017,6 +1018,9 @@ void Window::invalidate_impl(const bool recursive)
 {
     d_needsRedraw = true;
     invalidateRenderingSurface();
+
+    WindowEventArgs args(this);
+    onInvalidated(args);
 
     if (recursive)
     {
@@ -2318,6 +2322,12 @@ void Window::onCaptureLost(WindowEventArgs& e)
     getGUIContext().injectMouseMove(0, 0);
 
     fireEvent(EventInputCaptureLost, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onInvalidated(WindowEventArgs& e)
+{
+    fireEvent(EventInvalidated, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

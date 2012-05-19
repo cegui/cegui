@@ -258,6 +258,16 @@ public:
      *   cause of the previous window with capture losing that capture.
      */
     static const String EventInputCaptureLost;
+    /** Event fired when the Window has been invalidated.
+     * When a window is invalidated its cached rendering geometry is cleared,
+     * the rendering surface that recieves the window's output is invalidated
+     * and the window's target GUIContext is marked as dirty; this causes all
+     * objects involved in the display of the window to be refreshed the next
+     * time that the GUIContext::draw function is called.
+     * Handlers are passed a const WindowEventArgs reference with
+     * WindowEventArgs::window set to the Window that has been invalidated.
+     */
+    static const String EventInvalidated;
     /** Event fired when rendering of the Window has started.  In this context
      * 'rendering' is the population of the GeometryBuffer with geometry for the
      * window, not the actual rendering of that GeometryBuffer content to the 
@@ -2769,6 +2779,17 @@ protected:
         'this'.
     */
     virtual void onCaptureLost(WindowEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when this window gets invalidated.
+
+    \param e
+        WindowEventArgs object whose 'window' pointer field is set to the window
+        that triggered the event.  For this event the trigger window is always
+        'this'.
+    */
+    virtual void onInvalidated(WindowEventArgs& e);
 
     /*!
     \brief
