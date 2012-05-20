@@ -141,7 +141,7 @@ public:
         changed.
 
     /note
-        This base implementation deals with updates needed for TextComponent
+        This base implementation deals with updates needed for various
         definitions in the assigned widget look.  If you override, you should
         generally always call this base class implementation.
 
