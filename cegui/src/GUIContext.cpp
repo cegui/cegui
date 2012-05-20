@@ -384,11 +384,11 @@ bool GUIContext::isMouseClickEventGenerationEnabled() const
 //----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
-    if (d_rootWindow)
-        updateRootWindowAreaRects();
-
     d_surfaceSize = d_target.getArea().getSize();
     d_mouseCursor.notifyDisplaySizeChanged(d_surfaceSize);
+
+    if (d_rootWindow)
+        updateRootWindowAreaRects();
 
     return true;
 }
