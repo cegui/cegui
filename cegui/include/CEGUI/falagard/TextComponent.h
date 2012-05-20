@@ -241,7 +241,7 @@ namespace CEGUI
         //! return the vertical pixel extent of the formatted rendered string.
         float getVerticalTextExtent() const;
     
-        //! perform any processing required due to the given font having changed.
+        // overridden from ComponentBase.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
     protected:

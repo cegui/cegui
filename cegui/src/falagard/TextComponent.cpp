@@ -429,13 +429,16 @@ namespace CEGUI
     bool TextComponent::handleFontRenderSizeChange(Window& window,
                                                    const Font* font) const
     {
+        const bool res = 
+            FalagardComponentBase::handleFontRenderSizeChange(window, font);
+
         if (font == getFontObject(window))
         {
             window.invalidate();
             return true;
         }
 
-        return false;
+        return res;
     }
 
 } // End of  CEGUI namespace section

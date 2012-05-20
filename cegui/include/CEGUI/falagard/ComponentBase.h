@@ -183,6 +183,10 @@ namespace CEGUI
         */
         void setHorzFormattingPropertySource(const String& property);
 
+        //! perform any processing required due to the given font having changed.
+        virtual bool handleFontRenderSizeChange(Window& window,
+                                                const Font* font) const;
+
     protected:
         /*!
         \brief

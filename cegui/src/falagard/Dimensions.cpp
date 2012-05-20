@@ -172,6 +172,11 @@ namespace CEGUI
         xml_stream.closeTag();
     }
 
+    bool BaseDim::handleFontRenderSizeChange(Window& window, const Font* font) const
+    {
+        return false;
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
 
     AbsoluteDim::AbsoluteDim(float val) :
@@ -495,7 +500,7 @@ namespace CEGUI
         // get window to use.
         const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
         // get font to use
-        const Font* fontObj = d_font.empty() ? sourceWindow.getFont() : &FontManager::getSingleton().get(d_font);
+        const Font* fontObj = getFontObject(sourceWindow);
 
         if (fontObj)
         {
@@ -520,6 +525,12 @@ namespace CEGUI
         {
             return d_padding;
         }
+    }
+
+    const Font* FontDim::getFontObject(const Window& window) const
+    {
+        return d_font.empty() ? window.getFont() :
+                                &FontManager::getSingleton().get(d_font);
     }
 
     float FontDim::getValue_impl(const Window& wnd, const Rectf&) const
@@ -553,6 +564,12 @@ namespace CEGUI
             xml_stream.attribute("padding", PropertyHelper<float>::toString(d_padding));
 
         xml_stream.attribute("type", FalagardXMLHelper::fontMetricTypeToString(d_metric));
+    }
+
+    bool FontDim::handleFontRenderSizeChange(Window& window,
+                                             const Font* font) const
+    {
+        return font == getFontObject(window);
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -721,6 +738,13 @@ namespace CEGUI
         if (d_value)
             d_value->writeXMLToStream(xml_stream);
         xml_stream.closeTag();
+    }
+
+    bool Dimension::handleFontRenderSizeChange(Window& window,
+                                               const Font* font) const
+    {
+        return d_value ? d_value->handleFontRenderSizeChange(window, font) :
+                         false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -978,6 +1002,17 @@ namespace CEGUI
     bool ComponentArea::isAreaFetchedFromNamedArea() const
     {
         return !d_namedAreaSourceLook.empty() && !d_namedSource.empty();
+    }
+
+    bool ComponentArea::handleFontRenderSizeChange(Window& window,
+                                                   const Font* font) const
+    {
+        bool result = d_left.handleFontRenderSizeChange(window, font);
+        result |= d_top.handleFontRenderSizeChange(window, font);
+        result |= d_right_or_width.handleFontRenderSizeChange(window, font);
+        result |= d_bottom_or_height.handleFontRenderSizeChange(window, font);
+
+        return result;
     }
 
 } // End of  CEGUI namespace section
