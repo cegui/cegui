@@ -174,7 +174,8 @@ namespace CEGUI
 
     bool BaseDim::handleFontRenderSizeChange(Window& window, const Font* font) const
     {
-        return false;
+        return d_operand ? d_operand->handleFontRenderSizeChange(window, font) :
+                           false;
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -1007,7 +1008,6 @@ namespace CEGUI
     bool ComponentArea::handleFontRenderSizeChange(Window& window,
                                                    const Font* font) const
     {
-
         if (isAreaFetchedFromProperty())
             return false;
 
