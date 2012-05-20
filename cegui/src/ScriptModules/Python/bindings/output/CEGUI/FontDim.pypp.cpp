@@ -41,6 +41,10 @@ struct FontDim_wrapper : CEGUI::FontDim, bp::wrapper< CEGUI::FontDim > {
         return CEGUI::FontDim::clone_impl( );
     }
 
+    ::CEGUI::Font const * getFontObject( ::CEGUI::Window const & window ) const {
+        return CEGUI::FontDim::getFontObject( boost::ref(window) );
+    }
+
     virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
         if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
             return func_getValue_impl( boost::ref(wnd) );
@@ -63,6 +67,18 @@ struct FontDim_wrapper : CEGUI::FontDim, bp::wrapper< CEGUI::FontDim > {
     
     virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
         return CEGUI::FontDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    }
+
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        else{
+            return this->CEGUI::FontDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        return CEGUI::FontDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
     }
 
     virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -146,6 +162,17 @@ void register_FontDim_class(){
             *\n" );
         
         }
+        { //::CEGUI::FontDim::getFontObject
+        
+            typedef ::CEGUI::Font const * ( FontDim_wrapper::*getFontObject_function_type )( ::CEGUI::Window const & ) const;
+            
+            FontDim_exposer.def( 
+                "getFontObject"
+                , getFontObject_function_type( &FontDim_wrapper::getFontObject )
+                , ( bp::arg("window") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
         { //::CEGUI::FontDim::getMetric
         
             typedef ::CEGUI::FontMetricType ( ::CEGUI::FontDim::*getMetric_function_type )(  ) const;
@@ -220,6 +247,18 @@ void register_FontDim_class(){
                 , getValue_impl_function_type( &FontDim_wrapper::default_getValue_impl )
                 , ( bp::arg("wnd"), bp::arg("container") )
                 , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::FontDim::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::FontDim::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            typedef bool ( FontDim_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            FontDim_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::FontDim::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&FontDim_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("window"), bp::arg("font") ) );
         
         }
         { //::CEGUI::FontDim::setFont

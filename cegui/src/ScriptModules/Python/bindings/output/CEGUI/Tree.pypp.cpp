@@ -551,6 +551,18 @@ struct Tree_wrapper : CEGUI::Tree, bp::wrapper< CEGUI::Tree > {
         return CEGUI::Window::getWindowAttachedToCommonAncestor( boost::ref(wnd) );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(args) );
+        else{
+            return this->CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
+        }
+    }
+    
+    virtual bool default_handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
+        return CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
+    }
+
     void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
         CEGUI::Window::initialiseClippers( boost::ref(ctx) );
     }
@@ -873,6 +885,18 @@ struct Tree_wrapper : CEGUI::Tree, bp::wrapper< CEGUI::Tree > {
     
     virtual void default_onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onInvalidated( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onInvalidated = this->get_override( "onInvalidated" ) )
+            func_onInvalidated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onInvalidated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onInvalidated( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onInvalidated( boost::ref(e) );
     }
 
     virtual void onKeyDown( ::CEGUI::KeyEventArgs & e ){
@@ -3120,6 +3144,17 @@ void register_Tree_class(){
              *\n" );
         
         }
+        { //::CEGUI::Window::handleFontRenderSizeChange
+        
+            typedef bool ( Tree_wrapper::*handleFontRenderSizeChange_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            Tree_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &Tree_wrapper::default_handleFontRenderSizeChange )
+                , ( bp::arg("args") )
+                , "! handler function for when font render size changes.\n" );
+        
+        }
         { //::CEGUI::Window::initialiseClippers
         
             typedef void ( Tree_wrapper::*initialiseClippers_function_type )( ::CEGUI::RenderingContext const & ) ;
@@ -3651,6 +3686,25 @@ void register_Tree_class(){
                 \n\
                     Handler called when the window's setting for inheriting alpha-blending\n\
                     is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onInvalidated
+        
+            typedef void ( Tree_wrapper::*onInvalidated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            Tree_exposer.def( 
+                "onInvalidated"
+                , onInvalidated_function_type( &Tree_wrapper::default_onInvalidated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window gets invalidated.\n\
             \n\
                 @param e\n\
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\

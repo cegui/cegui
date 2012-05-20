@@ -39,6 +39,18 @@ struct WindowRenderer_wrapper : CEGUI::WindowRenderer, bp::wrapper< CEGUI::Windo
         return CEGUI::WindowRenderer::getUnclippedInnerRect( );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( font );
+        else{
+            return this->CEGUI::WindowRenderer::handleFontRenderSizeChange( font );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        return CEGUI::WindowRenderer::handleFontRenderSizeChange( font );
+    }
+
     virtual void onAttach(  ){
         if( bp::override func_onAttach = this->get_override( "onAttach" ) )
             func_onAttach(  );
@@ -222,6 +234,18 @@ void register_WindowRenderer_class(){
             \n\
                 Get the window this windowrenderer is attached to.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::WindowRenderer::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::WindowRenderer::*handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            typedef bool ( WindowRenderer_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            
+            WindowRenderer_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::WindowRenderer::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&WindowRenderer_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("font") ) );
         
         }
         { //::CEGUI::WindowRenderer::onAttach

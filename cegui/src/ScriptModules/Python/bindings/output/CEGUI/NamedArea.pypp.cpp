@@ -48,6 +48,17 @@ void register_NamedArea_class(){
                     *\n" );
         
         }
+        { //::CEGUI::NamedArea::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::NamedArea::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            NamedArea_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &::CEGUI::NamedArea::handleFontRenderSizeChange )
+                , ( bp::arg("window"), bp::arg("font") )
+                , "! perform any processing required due to the given font having changed.\n" );
+        
+        }
         { //::CEGUI::NamedArea::setArea
         
             typedef void ( ::CEGUI::NamedArea::*setArea_function_type )( ::CEGUI::ComponentArea const & ) ;

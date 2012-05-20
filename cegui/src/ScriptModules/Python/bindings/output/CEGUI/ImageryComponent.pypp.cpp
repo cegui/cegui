@@ -34,6 +34,18 @@ struct ImageryComponent_wrapper : CEGUI::ImageryComponent, bp::wrapper< CEGUI::I
         CEGUI::ImageryComponent::render_impl( boost::ref(srcWindow), boost::ref(destRect), boost::python::ptr(modColours), boost::python::ptr(clipper), clipToDisplay );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        else{
+            return this->CEGUI::FalagardComponentBase::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        return CEGUI::FalagardComponentBase::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+    }
+
     void initColoursRect( ::CEGUI::Window const & wnd, ::CEGUI::ColourRect const * modCols, ::CEGUI::ColourRect & cr ) const {
         CEGUI::FalagardComponentBase::initColoursRect( boost::ref(wnd), boost::python::ptr(modCols), boost::ref(cr) );
     }
@@ -281,6 +293,18 @@ void register_ImageryComponent_class(){
                     @return\n\
                         Nothing.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::FalagardComponentBase::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::FalagardComponentBase::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            typedef bool ( ImageryComponent_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            ImageryComponent_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::FalagardComponentBase::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&ImageryComponent_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("window"), bp::arg("font") ) );
         
         }
         { //::CEGUI::FalagardComponentBase::initColoursRect
