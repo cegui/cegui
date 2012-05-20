@@ -99,6 +99,9 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+        //! perform any processing required due to the given font having changed.
+        bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+
     private:
         String d_name;
         ComponentArea d_area;

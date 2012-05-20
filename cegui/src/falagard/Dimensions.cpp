@@ -1007,6 +1007,18 @@ namespace CEGUI
     bool ComponentArea::handleFontRenderSizeChange(Window& window,
                                                    const Font* font) const
     {
+
+        if (isAreaFetchedFromProperty())
+            return false;
+
+        if (isAreaFetchedFromNamedArea())
+        {
+            return WidgetLookManager::getSingleton()
+                .getWidgetLook(d_namedAreaSourceLook)
+                .getNamedArea(d_namedSource)
+                .handleFontRenderSizeChange(window, font);
+        }
+
         bool result = d_left.handleFontRenderSizeChange(window, font);
         result |= d_top.handleFontRenderSizeChange(window, font);
         result |= d_right_or_width.handleFontRenderSizeChange(window, font);
