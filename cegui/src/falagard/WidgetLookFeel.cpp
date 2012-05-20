@@ -999,6 +999,13 @@ bool WidgetLookFeel::handleFontRenderSizeChange(Window& window,
         result |= i->second.handleFontRenderSizeChange(window, font);
     }
 
+    for(WidgetList::const_iterator i = d_childWidgets.begin();
+        i != d_childWidgets.end();
+        ++i)
+    {
+        result |= i->handleFontRenderSizeChange(window, font);
+    }
+
     if (!d_inheritedLookName.empty())
         result |= WidgetLookManager::getSingleton().
             getWidgetLook(d_inheritedLookName).

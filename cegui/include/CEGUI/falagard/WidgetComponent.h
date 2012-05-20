@@ -129,6 +129,9 @@ namespace CEGUI
         */
         const PropertyInitialiser* findPropertyInitialiser(const String& propertyName) const;
 
+        //! perform any processing required due to the given font having changed.
+        bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+
     private:
         typedef std::vector<PropertyInitialiser
             CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertiesList;
