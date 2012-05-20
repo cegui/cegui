@@ -113,7 +113,7 @@ struct BasicRenderedStringParser_wrapper : CEGUI::BasicRenderedStringParser, bp:
         CEGUI::BasicRenderedStringParser::initialiseTagHandlers(  );
     }
 
-    virtual ::CEGUI::RenderedString parse( ::CEGUI::String const & input_string, ::CEGUI::Font * initial_font, ::CEGUI::ColourRect const * initial_colours ) {
+    virtual ::CEGUI::RenderedString parse( ::CEGUI::String const & input_string, ::CEGUI::Font const * initial_font, ::CEGUI::ColourRect const * initial_colours ) {
         if( bp::override func_parse = this->get_override( "parse" ) )
             return func_parse( boost::ref(input_string), boost::python::ptr(initial_font), boost::python::ptr(initial_colours) );
         else{
@@ -121,7 +121,7 @@ struct BasicRenderedStringParser_wrapper : CEGUI::BasicRenderedStringParser, bp:
         }
     }
     
-    ::CEGUI::RenderedString default_parse( ::CEGUI::String const & input_string, ::CEGUI::Font * initial_font, ::CEGUI::ColourRect const * initial_colours ) {
+    ::CEGUI::RenderedString default_parse( ::CEGUI::String const & input_string, ::CEGUI::Font const * initial_font, ::CEGUI::ColourRect const * initial_colours ) {
         return CEGUI::BasicRenderedStringParser::parse( boost::ref(input_string), boost::python::ptr(initial_font), boost::python::ptr(initial_colours) );
     }
 
@@ -375,8 +375,8 @@ void register_BasicRenderedStringParser_class(){
         }
         { //::CEGUI::BasicRenderedStringParser::parse
         
-            typedef ::CEGUI::RenderedString ( ::CEGUI::BasicRenderedStringParser::*parse_function_type )( ::CEGUI::String const &,::CEGUI::Font *,::CEGUI::ColourRect const * ) ;
-            typedef ::CEGUI::RenderedString ( BasicRenderedStringParser_wrapper::*default_parse_function_type )( ::CEGUI::String const &,::CEGUI::Font *,::CEGUI::ColourRect const * ) ;
+            typedef ::CEGUI::RenderedString ( ::CEGUI::BasicRenderedStringParser::*parse_function_type )( ::CEGUI::String const &,::CEGUI::Font const *,::CEGUI::ColourRect const * ) ;
+            typedef ::CEGUI::RenderedString ( BasicRenderedStringParser_wrapper::*default_parse_function_type )( ::CEGUI::String const &,::CEGUI::Font const *,::CEGUI::ColourRect const * ) ;
             
             BasicRenderedStringParser_exposer.def( 
                 "parse"

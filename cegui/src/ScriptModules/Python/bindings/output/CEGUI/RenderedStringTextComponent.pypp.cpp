@@ -36,7 +36,7 @@ struct RenderedStringTextComponent_wrapper : CEGUI::RenderedStringTextComponent,
     
     }
 
-    RenderedStringTextComponent_wrapper(::CEGUI::String const & text, ::CEGUI::Font * font )
+    RenderedStringTextComponent_wrapper(::CEGUI::String const & text, ::CEGUI::Font const * font )
     : CEGUI::RenderedStringTextComponent( boost::ref(text), boost::python::ptr(font) )
       , bp::wrapper< CEGUI::RenderedStringTextComponent >(){
         // constructor
@@ -142,7 +142,7 @@ void register_RenderedStringTextComponent_class(){
         RenderedStringTextComponent_exposer.def( bp::init< CEGUI::String const & >(( bp::arg("text") ), "! Constructor\n") );
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::RenderedStringTextComponent >();
         RenderedStringTextComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("text"), bp::arg("font_name") )) );
-        RenderedStringTextComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::Font * >(( bp::arg("text"), bp::arg("font") )) );
+        RenderedStringTextComponent_exposer.def( bp::init< CEGUI::String const &, CEGUI::Font const * >(( bp::arg("text"), bp::arg("font") )) );
         { //::CEGUI::RenderedStringTextComponent::canSplit
         
             typedef bool ( ::CEGUI::RenderedStringTextComponent::*canSplit_function_type )(  ) const;
@@ -192,7 +192,7 @@ void register_RenderedStringTextComponent_class(){
         }
         { //::CEGUI::RenderedStringTextComponent::getFont
         
-            typedef ::CEGUI::Font * ( ::CEGUI::RenderedStringTextComponent::*getFont_function_type )(  ) const;
+            typedef ::CEGUI::Font const * ( ::CEGUI::RenderedStringTextComponent::*getFont_function_type )(  ) const;
             
             RenderedStringTextComponent_exposer.def( 
                 "getFont"
@@ -272,7 +272,7 @@ void register_RenderedStringTextComponent_class(){
         }
         { //::CEGUI::RenderedStringTextComponent::setFont
         
-            typedef void ( ::CEGUI::RenderedStringTextComponent::*setFont_function_type )( ::CEGUI::Font * ) ;
+            typedef void ( ::CEGUI::RenderedStringTextComponent::*setFont_function_type )( ::CEGUI::Font const * ) ;
             
             RenderedStringTextComponent_exposer.def( 
                 "setFont"

@@ -30,6 +30,18 @@ struct BaseDim_wrapper : CEGUI::BaseDim, bp::wrapper< CEGUI::BaseDim > {
         return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        else{
+            return this->CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        return CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+    }
+
     virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
         bp::override func_writeXMLElementAttributes_impl = this->get_override( "writeXMLElementAttributes_impl" );
         func_writeXMLElementAttributes_impl( boost::ref(xml_stream) );
@@ -197,6 +209,18 @@ void register_BaseDim_class(){
                 Implementataion method to return the base value for this BaseDim.  This method should\n\
                 not attempt to apply the mathematical operator; this is handled automatically by BaseDim.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::BaseDim::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::BaseDim::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            typedef bool ( BaseDim_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            BaseDim_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::BaseDim::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&BaseDim_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("window"), bp::arg("font") ) );
         
         }
         { //::CEGUI::BaseDim::setDimensionOperator

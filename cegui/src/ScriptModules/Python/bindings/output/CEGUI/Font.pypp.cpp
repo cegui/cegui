@@ -31,6 +31,18 @@ struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
         CEGUI::Font::notifyDisplaySizeChanged( boost::ref(size) );
     }
 
+    virtual void onRenderSizeChanged( ::CEGUI::FontEventArgs & args ){
+        if( bp::override func_onRenderSizeChanged = this->get_override( "onRenderSizeChanged" ) )
+            func_onRenderSizeChanged( boost::ref(args) );
+        else{
+            this->CEGUI::Font::onRenderSizeChanged( boost::ref(args) );
+        }
+    }
+    
+    virtual void default_onRenderSizeChanged( ::CEGUI::FontEventArgs & args ){
+        CEGUI::Font::onRenderSizeChanged( boost::ref(args) );
+    }
+
     virtual void rasterise( ::CEGUI::utf32 start_codepoint, ::CEGUI::utf32 end_codepoint ) const {
         if( bp::override func_rasterise = this->get_override( "rasterise" ) )
             func_rasterise( start_codepoint, end_codepoint );
@@ -57,12 +69,56 @@ struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
         func_writeXMLToStream_impl( boost::ref(xml_stream) );
     }
 
+    virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
+        if( bp::override func_fireEvent = this->get_override( "fireEvent" ) )
+            func_fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+        else{
+            this->CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+        }
+    }
+    
+    void default_fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
+        CEGUI::EventSet::fireEvent( boost::ref(name), boost::ref(args), boost::ref(eventNamespace) );
+    }
+
+    void fireEvent_impl( ::CEGUI::String const & name, ::CEGUI::EventArgs & args ){
+        CEGUI::EventSet::fireEvent_impl( boost::ref(name), boost::ref(args) );
+    }
+
+    ::CEGUI::ScriptModule * getScriptModule(  ) const {
+        return CEGUI::EventSet::getScriptModule(  );
+    }
+
+    virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
+        if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
+            return func_subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+        else{
+            return this->CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+        }
+    }
+    
+    ::CEGUI::RefCounted< CEGUI::BoundSlot > default_subscribeScriptedEvent( ::CEGUI::String const & name, ::CEGUI::String const & subscriber_name ) {
+        return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), boost::ref(subscriber_name) );
+    }
+
+    virtual ::CEGUI::RefCounted< CEGUI::BoundSlot > subscribeScriptedEvent( ::CEGUI::String const & name, unsigned int group, ::CEGUI::String const & subscriber_name ) {
+        if( bp::override func_subscribeScriptedEvent = this->get_override( "subscribeScriptedEvent" ) )
+            return func_subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+        else{
+            return this->CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+        }
+    }
+    
+    ::CEGUI::RefCounted< CEGUI::BoundSlot > default_subscribeScriptedEvent( ::CEGUI::String const & name, unsigned int group, ::CEGUI::String const & subscriber_name ) {
+        return CEGUI::EventSet::subscribeScriptedEvent( boost::ref(name), group, boost::ref(subscriber_name) );
+    }
+
 };
 
 void register_Font_class(){
 
     { //::CEGUI::Font
-        typedef bp::class_< Font_wrapper, bp::bases< CEGUI::PropertySet >, boost::noncopyable > Font_exposer_t;
+        typedef bp::class_< Font_wrapper, bp::bases< CEGUI::PropertySet, CEGUI::EventSet >, boost::noncopyable > Font_exposer_t;
         Font_exposer_t Font_exposer = Font_exposer_t( "Font", bp::no_init );
         bp::scope Font_scope( Font_exposer );
         Font_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool, float, float >(( bp::arg("name"), bp::arg("type_name"), bp::arg("filename"), bp::arg("resource_group"), bp::arg("auto_scaled"), bp::arg("native_horz_res"), bp::arg("native_vert_res") )) );
@@ -380,6 +436,17 @@ void register_Font_class(){
                 , ( bp::arg("size") ) );
         
         }
+        { //::CEGUI::Font::onRenderSizeChanged
+        
+            typedef void ( Font_wrapper::*onRenderSizeChanged_function_type )( ::CEGUI::FontEventArgs & ) ;
+            
+            Font_exposer.def( 
+                "onRenderSizeChanged"
+                , onRenderSizeChanged_function_type( &Font_wrapper::default_onRenderSizeChanged )
+                , ( bp::arg("args") )
+                , "! event trigger function for when the font rendering size changes.\n" );
+        
+        }
         { //::CEGUI::Font::rasterise
         
             typedef void ( Font_wrapper::*rasterise_function_type )( ::CEGUI::utf32,::CEGUI::utf32 ) const;
@@ -516,6 +583,68 @@ void register_Font_class(){
         
         }
         Font_exposer.def_readonly( "DefaultColour", CEGUI::Font::DefaultColour, "! Colour value used whenever a colour is not specified.\n" );
+        Font_exposer.add_static_property( "EventRenderSizeChanged"
+                        , bp::make_getter( &CEGUI::Font::EventRenderSizeChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        { //::CEGUI::EventSet::fireEvent
+        
+            typedef void ( ::CEGUI::EventSet::*fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
+            typedef void ( Font_wrapper::*default_fireEvent_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs &,::CEGUI::String const & ) ;
+            
+            Font_exposer.def( 
+                "fireEvent"
+                , fireEvent_function_type(&::CEGUI::EventSet::fireEvent)
+                , default_fireEvent_function_type(&Font_wrapper::default_fireEvent)
+                , ( bp::arg("name"), bp::arg("args"), bp::arg("eventNamespace")="" ) );
+        
+        }
+        { //::CEGUI::EventSet::fireEvent_impl
+        
+            typedef void ( Font_wrapper::*fireEvent_impl_function_type )( ::CEGUI::String const &,::CEGUI::EventArgs & ) ;
+            
+            Font_exposer.def( 
+                "fireEvent_impl"
+                , fireEvent_impl_function_type( &Font_wrapper::fireEvent_impl )
+                , ( bp::arg("name"), bp::arg("args") )
+                , "! Implementation event firing member\n" );
+        
+        }
+        { //::CEGUI::EventSet::getScriptModule
+        
+            typedef ::CEGUI::ScriptModule * ( Font_wrapper::*getScriptModule_function_type )(  ) const;
+            
+            Font_exposer.def( 
+                "getScriptModule"
+                , getScriptModule_function_type( &Font_wrapper::getScriptModule )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! Implementation event firing member\n\
+            ! Helper to return the script module pointer or throw.\n" );
+        
+        }
+        { //::CEGUI::EventSet::subscribeScriptedEvent
+        
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::*subscribeScriptedEvent_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( Font_wrapper::*default_subscribeScriptedEvent_function_type )( ::CEGUI::String const &,::CEGUI::String const & ) ;
+            
+            Font_exposer.def( 
+                "subscribeScriptedEvent"
+                , subscribeScriptedEvent_function_type(&::CEGUI::EventSet::subscribeScriptedEvent)
+                , default_subscribeScriptedEvent_function_type(&Font_wrapper::default_subscribeScriptedEvent)
+                , ( bp::arg("name"), bp::arg("subscriber_name") ) );
+        
+        }
+        { //::CEGUI::EventSet::subscribeScriptedEvent
+        
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( ::CEGUI::EventSet::*subscribeScriptedEvent_function_type )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ;
+            typedef ::CEGUI::RefCounted< CEGUI::BoundSlot > ( Font_wrapper::*default_subscribeScriptedEvent_function_type )( ::CEGUI::String const &,unsigned int,::CEGUI::String const & ) ;
+            
+            Font_exposer.def( 
+                "subscribeScriptedEvent"
+                , subscribeScriptedEvent_function_type(&::CEGUI::EventSet::subscribeScriptedEvent)
+                , default_subscribeScriptedEvent_function_type(&Font_wrapper::default_subscribeScriptedEvent)
+                , ( bp::arg("name"), bp::arg("group"), bp::arg("subscriber_name") ) );
+        
+        }
         Font_exposer.staticmethod( "getDefaultResourceGroup" );
         Font_exposer.staticmethod( "setDefaultResourceGroup" );
     }

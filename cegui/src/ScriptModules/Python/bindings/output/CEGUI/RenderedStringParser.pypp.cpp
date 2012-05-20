@@ -15,7 +15,7 @@ struct RenderedStringParser_wrapper : CEGUI::RenderedStringParser, bp::wrapper< 
         
     }
 
-    virtual ::CEGUI::RenderedString parse( ::CEGUI::String const & input_string, ::CEGUI::Font * initial_font, ::CEGUI::ColourRect const * initial_colours ){
+    virtual ::CEGUI::RenderedString parse( ::CEGUI::String const & input_string, ::CEGUI::Font const * initial_font, ::CEGUI::ColourRect const * initial_colours ){
         bp::override func_parse = this->get_override( "parse" );
         return func_parse( boost::ref(input_string), boost::python::ptr(initial_font), boost::python::ptr(initial_colours) );
     }
@@ -30,7 +30,7 @@ void register_RenderedStringParser_class(){
         bp::scope RenderedStringParser_scope( RenderedStringParser_exposer );
         { //::CEGUI::RenderedStringParser::parse
         
-            typedef ::CEGUI::RenderedString ( ::CEGUI::RenderedStringParser::*parse_function_type )( ::CEGUI::String const &,::CEGUI::Font *,::CEGUI::ColourRect const * ) ;
+            typedef ::CEGUI::RenderedString ( ::CEGUI::RenderedStringParser::*parse_function_type )( ::CEGUI::String const &,::CEGUI::Font const *,::CEGUI::ColourRect const * ) ;
             
             RenderedStringParser_exposer.def( 
                 "parse"
