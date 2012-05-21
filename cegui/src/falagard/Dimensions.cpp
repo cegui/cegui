@@ -624,8 +624,15 @@ namespace CEGUI
         const Window& sourceWindow = d_childName.empty() ? wnd : *wnd.getChild(d_childName);
 
         if (d_type == DT_INVALID)
+        {
+            // check property data type and convert to float if necessary
+            Property* pi = sourceWindow.getPropertyInstance(d_property);
+            if (pi->getDataType() == "bool")
+                return PropertyHelper<bool>::fromString(sourceWindow.getProperty(d_property)) ? 1.0f : 0.0f;
+
             // return float property value.
             return PropertyHelper<float>::fromString(sourceWindow.getProperty(d_property));
+        }
 
         const UDim d = PropertyHelper<UDim>::fromString(sourceWindow.getProperty(d_property));
         const Sizef s = sourceWindow.getPixelSize();
