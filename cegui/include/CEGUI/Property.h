@@ -230,6 +230,9 @@ public:
     */
     virtual bool isWritable() const;
 
+    //! function to allow initialisation of a PropertyReceiver.
+    virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const {}
+
     virtual Property* clone() const = 0;
 
 protected:

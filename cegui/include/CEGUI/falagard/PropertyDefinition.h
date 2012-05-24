@@ -61,6 +61,10 @@ template <typename T>
 
         virtual ~PropertyDefinition() {}
 
+        virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const
+        {
+            setWindowUserString(static_cast<Window*>(receiver), this->d_default);
+        }
 
         virtual Property* clone() const
         {
@@ -101,8 +105,13 @@ template <typename T>
         }
         virtual void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
         {
-            static_cast<Window*>(receiver)->setUserString(d_userStringName, Helper::toString(value));
+            setWindowUserString(static_cast<Window*>(receiver), Helper::toString(value));
             PropertyDefinitionBase<T>::setNative_impl(receiver, value);
+        }
+
+        void setWindowUserString(Window* window, const String& value) const
+        {
+            window->setUserString(d_userStringName, value);
         }
 
         void writeFalagardXMLElementType(XMLSerializer& xml_stream) const

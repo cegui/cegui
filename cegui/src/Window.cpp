@@ -1869,6 +1869,7 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
+    performChildWindowLayout();
 }
 
 //----------------------------------------------------------------------------//
