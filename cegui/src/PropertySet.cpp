@@ -49,6 +49,8 @@ void PropertySet::addProperty(Property* property)
 	{
 		CEGUI_THROW(AlreadyExistsException("A Property named '" + property->getName() + "' already exists in the PropertySet."));
 	}
+
+    property->initialisePropertyReceiver(this);
 }
 
 /*************************************************************************

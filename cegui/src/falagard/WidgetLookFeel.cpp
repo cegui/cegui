@@ -242,9 +242,6 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
         // add the property to the window
         widget.addProperty(pdi->second);
-        // write default value to get things set up properly
-        widget.setProperty(pdi->first,
-                           pdi->second->getDefault(&widget));
     }
 
     // add required child widgets
@@ -266,9 +263,6 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
         // add the property to the window
         widget.addProperty(pldi->second);
-        // write default value to get things set up properly
-        widget.setProperty(pldi->first,
-                           pldi->second->getDefault(&widget));
     }
     // apply properties to the parent window
     PropertyInitialiserPtrMap pim;
