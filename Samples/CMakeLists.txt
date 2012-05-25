@@ -1,3 +1,5 @@
+add_subdirectory(Framework)
+
 add_subdirectory(common)
 add_subdirectory(Demo6)
 add_subdirectory(Demo7)
