@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/RendererModules/Ogre/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include <Ogre.h>
 
@@ -65,31 +66,27 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
     Ogre::Image image;
     image.load(stream, d_dataTypeID.c_str());
 
+    const PixelFormat ogre_pf = image.getFormat();
+    const Texture::PixelFormat cegui_pf =
+        OgreTexture::fromOgrePixelFormat(ogre_pf);
+
     // discover the pixel format and number of pixel components
-    Texture::PixelFormat format;
     int components;
-    bool rbswap = false;
-    switch (image.getFormat())
+    bool rbswap;
+    switch (ogre_pf)
     {
-        case PF_R8G8B8:
-            rbswap = true;
-            // intentional fall through
         case PF_B8G8R8:
-            format = Texture::PF_RGB;
+            rbswap = true;
             components = 3;
             break;
 
-        case PF_A8R8G8B8:
-            rbswap = true;
-            // intentional fall through
         case PF_A8B8G8R8:
-            format = Texture::PF_RGBA;
+            rbswap = true;
             components = 4;
             break;
 
         default:
-            CEGUI_THROW(FileIOException("OgreImageCodec::load: File data was "
-                "of an unsupported format."));
+            rbswap = false;
             break;
     }
 
@@ -114,7 +111,7 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
     result->loadFromMemory(image.getData(),
                            Sizef(image.getWidth(),
                                   image.getHeight()),
-                           format);
+                           cegui_pf);
 
     return result;
 }

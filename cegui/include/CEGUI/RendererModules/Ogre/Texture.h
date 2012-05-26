@@ -59,6 +59,11 @@ public:
     void blitToMemory(void* targetData);
     bool isPixelFormatSupported(const PixelFormat fmt) const;
 
+    //! convert Ogre::PixelFormat to equivalent CEGUI::Texture::PixelFormat
+    static Texture::PixelFormat fromOgrePixelFormat(const Ogre::PixelFormat fmt);
+    //! convert CEGUI::Texture::PixelFormat to equivalent Ogre::PixelFormat
+    static Ogre::PixelFormat toOgrePixelFormat(const Texture::PixelFormat fmt);
+
 protected:
     // we all need a little help from out friends ;)
     friend Texture& OgreRenderer::createTexture(const String&);
