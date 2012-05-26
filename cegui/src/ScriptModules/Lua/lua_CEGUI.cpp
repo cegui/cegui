@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Mon Mar 26 19:56:16 2012.
+** Generated automatically by tolua++-1.0.93 on Sat May 26 13:20:04 2012.
 */
 
 #ifndef __cplusplus
@@ -63898,6 +63898,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_constant(tolua_S,"PF_RGB_565",CEGUI::Texture::PF_RGB_565);
    tolua_constant(tolua_S,"PF_PVRTC2",CEGUI::Texture::PF_PVRTC2);
    tolua_constant(tolua_S,"PF_PVRTC4",CEGUI::Texture::PF_PVRTC4);
+   tolua_constant(tolua_S,"PF_RGB_DXT1",CEGUI::Texture::PF_RGB_DXT1);
+   tolua_constant(tolua_S,"PF_RGBA_DXT1",CEGUI::Texture::PF_RGBA_DXT1);
+   tolua_constant(tolua_S,"PF_RGBA_DXT3",CEGUI::Texture::PF_RGBA_DXT3);
+   tolua_constant(tolua_S,"PF_RGBA_DXT5",CEGUI::Texture::PF_RGBA_DXT5);
    tolua_function(tolua_S,"getSize",tolua_CEGUI_CEGUI_Texture_getSize00);
    tolua_function(tolua_S,"getOriginalDataSize",tolua_CEGUI_CEGUI_Texture_getOriginalDataSize00);
    tolua_function(tolua_S,"getTexelScaling",tolua_CEGUI_CEGUI_Texture_getTexelScaling00);
