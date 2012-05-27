@@ -115,8 +115,12 @@ protected:
     //! Destructor.
     virtual ~Direct3D9Texture();
 
+    //! create internal texture.
+    void createDirect3D9Texture(const Sizef sz, D3DFORMAT format);
     //! clean up the internal texture.
     void cleanupDirect3D9Texture();
+    //! get the IDirect3DSurface9 interface for the underlying texture.
+    IDirect3DSurface9* getTextureSurface() const;
     //! updates cached scale value used to map pixels to texture co-ords.
     void updateCachedScaleValues();
     //! set d_size to actual texture size (d_dataSize is used if query fails)
