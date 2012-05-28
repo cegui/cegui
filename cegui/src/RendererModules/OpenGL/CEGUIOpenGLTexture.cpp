@@ -166,7 +166,7 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
     // save old states
     GLuint old_tex, old_pack;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-    glGetIntegerv(GL_UNPACK_ALIGNMENT, reinterpret_cast<GLint*>(&old_tex));
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, reinterpret_cast<GLint*>(&old_pack));
 
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
