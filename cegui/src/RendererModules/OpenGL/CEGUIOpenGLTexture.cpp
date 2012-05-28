@@ -163,18 +163,21 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Size& buffer_size,
     // update scale values
     updateCachedScaleValues();
 
-    // save old texture binding
-    GLuint old_tex;
+    // save old states
+    GLuint old_tex, old_pack;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, reinterpret_cast<GLint*>(&old_tex));
 
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                     static_cast<GLsizei>(buffer_size.d_width),
                     static_cast<GLsizei>(buffer_size.d_height),
                     format, GL_UNSIGNED_BYTE, buffer);
 
-    // restore previous texture binding.
+    // restore previous states.
+    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
