@@ -183,12 +183,19 @@ void OpenGL3Texture::loadFromMemory(const void* buffer, const Sizef& buffer_size
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
+    GLint old_pack;
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                     static_cast<GLsizei>(buffer_size.d_width),
                     static_cast<GLsizei>(buffer_size.d_height),
                     format, GL_UNSIGNED_BYTE, buffer);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);

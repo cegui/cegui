@@ -250,7 +250,7 @@ void OpenGLTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
                                                   const GLvoid* buffer) const
 {
     GLint old_pack;
-    glGetIntegerv(GL_UNPACK_ALIGNMENT, reinterpret_cast<GLint*>(&old_pack));
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
