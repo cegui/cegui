@@ -62,10 +62,17 @@ if (CEGUI_SAMPLES_USE_DIRECT3D9)
     )
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D9)
+if (CEGUI_SAMPLES_USE_DIRECT3D10)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiD3D10BaseApplication.cpp
         ./src/DeviceReset_Direct3D10.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_DIRECT3D11)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiD3D11BaseApplication.cpp
+        ./src/DeviceReset_Direct3D11.cpp
     )
 endif()
 
@@ -110,7 +117,7 @@ if (CEGUI_SAMPLES_USE_IRRLICHT)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_IRRLICHT_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
+if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} dxerr)
 
     if (CEGUI_SAMPLES_USE_DIRECT3D9)
@@ -119,6 +126,10 @@ if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
 
     if (CEGUI_SAMPLES_USE_DIRECT3D10)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D10_RENDERER_LIBNAME} d3d10)
+    endif()
+
+    if (CEGUI_SAMPLES_USE_DIRECT3D11)
+        cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME} d3d11)
     endif()
 
 endif()
