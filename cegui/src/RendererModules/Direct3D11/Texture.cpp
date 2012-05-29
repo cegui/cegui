@@ -366,7 +366,8 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name) :
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
 }
 
@@ -379,7 +380,8 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     loadFromFile(filename, resourceGroup);
 }
@@ -392,7 +394,8 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     D3D11_TEXTURE2D_DESC tex_desc;
     ZeroMemory(&tex_desc, sizeof(tex_desc));
@@ -427,7 +430,8 @@ Direct3D11Texture::Direct3D11Texture(IDevice11& device, const String& name,
     d_resourceView(0),
     d_size(0, 0),
     d_dataSize(0, 0),
-    d_texelScaling(0, 0)
+    d_texelScaling(0, 0),
+    d_name(name)
 {
     setDirect3DTexture(tex);
 }
