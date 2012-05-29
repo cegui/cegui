@@ -35,6 +35,43 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+// helper to convert cegui pixel format enum to equivalent D3D format.
+static DXGI_FORMAT toD3DPixelFormat(const Texture::PixelFormat fmt)
+{
+    switch (fmt)
+    {
+        case Texture::PF_RGBA:      return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case Texture::PF_RGB:       return DXGI_FORMAT_R8G8B8A8_UNORM;
+        case Texture::PF_RGBA_DXT1: return DXGI_FORMAT_BC1_UNORM;
+        case Texture::PF_RGBA_DXT3: return DXGI_FORMAT_BC2_UNORM;
+        case Texture::PF_RGBA_DXT5: return DXGI_FORMAT_BC3_UNORM;
+        default:                    return DXGI_FORMAT_UNKNOWN;
+    }
+}
+
+//----------------------------------------------------------------------------//
+// helper function to return byte width of given pixel width in given format
+static size_t calculateDataWidth(const size_t width, Texture::PixelFormat fmt)
+{
+    switch (fmt)
+    {
+    case Texture::PF_RGBA:
+    case Texture::PF_RGB: // also 4 because we convert to RGBA
+        return width * 4;
+
+    case Texture::PF_RGBA_DXT1:
+        return ((width + 3) / 4) * 8;
+
+    case Texture::PF_RGBA_DXT3:
+    case Texture::PF_RGBA_DXT5:
+        return ((width + 3) / 4) * 16;
+
+    default:
+        return 0;
+    }
+}
+
+//----------------------------------------------------------------------------//
 // Helper utility function that copies an RGBA buffer into a region of a second
 // buffer as D3DCOLOR data values
 static void blitToSurface(const uint32* src, uint32* dst,
@@ -200,7 +237,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
     tex_desc.ArraySize = 1;
     tex_desc.SampleDesc.Count = 1;
     tex_desc.SampleDesc.Quality = 0;
-    tex_desc.Format = DXGI_FORMAT_R8G8B8A8_UNORM;
+    tex_desc.Format = toD3DPixelFormat(pixel_format);
     tex_desc.Usage = D3D10_USAGE_DEFAULT;
     tex_desc.BindFlags = D3D10_BIND_SHADER_RESOURCE;
     tex_desc.CPUAccessFlags = 0;
@@ -210,7 +247,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
     D3D10_SUBRESOURCE_DATA data;
     ZeroMemory(&data, sizeof(D3D10_SUBRESOURCE_DATA));
     data.pSysMem = img_src;
-    data.SysMemPitch = 4 * tex_desc.Width;
+    data.SysMemPitch = calculateDataWidth(tex_desc.Width, pixel_format);
 
     HRESULT hr = d_device.CreateTexture2D(&tex_desc, &data, &d_texture);
 
@@ -464,7 +501,18 @@ void Direct3D10Texture::initialiseShaderResourceView()
 //----------------------------------------------------------------------------//
 bool Direct3D10Texture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    switch (fmt)
+    {
+        case PF_RGBA:
+        case PF_RGB:
+        case PF_RGBA_DXT1:
+        case PF_RGBA_DXT3:
+        case PF_RGBA_DXT5:
+            return true;
+
+        default:
+            return false;
+    }
 }
 
 //----------------------------------------------------------------------------//
