@@ -251,8 +251,8 @@ set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
 set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
 set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 
-# sample related module names
-set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
+# SampleFramework executable related names
+set( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework )
 
 # Additional lib names
 set( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )

@@ -1,0 +1,13 @@
+<?xml version="1.0" ?>
+<GUIScheme version="5" name="SampleBrowserSkin">
+	<Imageset filename="SampleBrowser.imageset" />
+	<Font filename="DejaVuSans-10.font" />
+	<LookNFeel filename="SampleBrowser.looknfeel" />
+	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
+
+	<FalagardMapping windowType="SampleBrowserSkin/Label" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="SampleBrowserSkin/Label" />
+	<FalagardMapping windowType="SampleBrowserSkin/SampleWindow" targetType="DefaultWindow" renderer="Core/Static" lookNFeel="SampleBrowserSkin/SampleWindow" />
+	<FalagardMapping windowType="SampleBrowserSkin/Button" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="SampleBrowserSkin/Button" />
+	<FalagardMapping windowType="SampleBrowserSkin/ProgressBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="SampleBrowserSkin/ProgressBar" />
+</GUIScheme>
+
