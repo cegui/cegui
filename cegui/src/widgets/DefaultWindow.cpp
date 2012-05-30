@@ -1,10 +1,10 @@
 /***********************************************************************
-	filename: 	CEGUIGUISheet.cpp
+	filename: 	DefaultWindow.cpp
 	created:	28/8/2004
 	author:		Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
