@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGuiSamplesFramework.h
+    filename:   SampleFramework.h
     created:    24/5/2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -28,35 +28,40 @@
 #ifndef _Samples_Framework_h_
 #define _Samples_Framework_h_
 
-// forward declarations
+#include "SamplesFrameworkBase.h"
 
+// forward declarations
+namespace CEGUI
+{
+    class DefaultWindow;
+}
 
 /*!
 \brief
     This is 
 */
-class SamplesFramework
+class SamplesFramework : public SamplesFrameworkBase
 {
 public:
     SamplesFramework();
     virtual ~SamplesFramework();
 
 
-    /*!
-    \brief
-        Application entry point run function.
+    bool initialiseSample();
+    void cleanupSample();
 
-    \return
-        returns integer value for the main function.
-    */
-    int run();
-
+    bool initialiseCEGUI();
 
 
 
 
 protected:
+    void initialiseFrameworkLayout();
+    void loadSamples();
+
+    CEGUI::DefaultWindow* m_root;
   
 };
 
 #endif
+

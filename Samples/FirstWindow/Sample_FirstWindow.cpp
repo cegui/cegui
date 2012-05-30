@@ -28,21 +28,10 @@
 #include "Sample_FirstWindow.h"
 #include "CEGUI/CEGUI.h"
 
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    FirstWindowSample app;
-    return app.run();
-}
-
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FirstWindowSample::initialiseSample()
+bool FirstWindowSample::initialise()
 {
     using namespace CEGUI;
 
@@ -133,7 +122,22 @@ bool FirstWindowSample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void FirstWindowSample::cleanupSample()
+void FirstWindowSample::deinitialise()
 {
     // nothing to do here!
+}
+
+
+/*************************************************************************
+    Returns the sample layouts GUI root
+*************************************************************************/
+CEGUI::Window* FirstWindowSample::getGUIRoot()
+{
+    // nothing to do here!
+    return 0;
+}
+
+extern "C" __declspec(dllexport) Sample* GetSample()
+{
+    return new FirstWindowSample();
 }

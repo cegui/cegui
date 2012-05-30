@@ -1,12 +1,99 @@
 set( CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME} )
 
 set( CORE_SOURCE_FILES
-	./src/SampleFramework.cpp
+    ./src/SamplesFrameworkBase.cpp
+	./src/SamplesFramework.cpp
+	./src/CEGuiBaseApplication.cpp
+    ./src/CEGuiRendererSelector.cpp
 )
 
+set( CORE_HEADER_FILES
+	../common/include/Sample.h
+	./include/SamplesFrameworkBase.h
+	./include/SamplesFramework.h
+	./include/CEGuiBaseApplication.h
+    ./include/CEGuiRendererSelector.h
+
+)
+
+
 include_directories(${CMAKE_BINARY_DIR}/samples/common/include
+					${CMAKE_SOURCE_DIR}/samples/common/include
 					${CMAKE_SOURCE_DIR}/samples/Framework/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
+
+					
+if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiGLFWSharedBase.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_OPENGL)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOpenGLBaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_OPENGL3)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOpenGL3BaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_OGRE)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOgreBaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_IRRLICHT)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiIrrlichtBaseApplication.cpp
+    )
+endif()
+
+if (WIN32)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/Win32AppHelper.cpp
+        ./src/Win32CEGuiRendererSelector.cpp
+    )
+elseif (APPLE)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/MacCEGuiRendererSelector.mm
+    )
+elseif (CEGUI_SAMPLES_USE_GTK2)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/GTK2CEGuiRendererSelector.cpp
+    )
+else()
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CLICEGuiRendererSelector.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_DIRECT3D9)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiD3D9BaseApplication.cpp
+        ./src/DeviceReset_Direct3D9.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_DIRECT3D9)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiD3D10BaseApplication.cpp
+        ./src/DeviceReset_Direct3D10.cpp
+    )
+endif()
+
+if (CEGUI_SAMPLES_USE_DIRECTFB)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiDirectFBBaseApplication.cpp
+    )
+endif()
+
+
+
 
 if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
     include_directories(${DIRECTXSDK_INCLUDE_DIR})

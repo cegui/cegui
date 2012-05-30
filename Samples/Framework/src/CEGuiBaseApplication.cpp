@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 #include "CEGuiBaseApplication.h"
+#include "SamplesFrameworkBase.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageManager.h"
@@ -96,7 +97,7 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
+bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 {
     if (!d_renderer)
         throw CEGUI::InvalidRequestException("CEGuiBaseApplication::execute: "
