@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#if defined(CEGUI_SAMPLES_USE_DIRECT3D8) || defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10)
+#if defined(CEGUI_SAMPLES_USE_DIRECT3D8) || defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10) || defined(CEGUI_SAMPLES_USE_DIRECT3D11)
 
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
@@ -59,6 +59,7 @@ bool Win32AppHelper::d_mouseInWindow = false;
 void DeviceReset_Direct3D9(HWND window, CEGUI::Renderer* renderer);
 void DeviceReset_Direct3D81(HWND window, CEGUI::Renderer* renderer);
 void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer);
+void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer);
 
 /*************************************************************************
     Create main application window.
@@ -184,6 +185,10 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_10
                 if (id.find("Official Direct3D 10") != id.npos)
                     DeviceReset_Direct3D10(hWnd, renderer);
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_11
+                if (id.find("Official Direct3D 11") != id.npos)
+                    DeviceReset_Direct3D11(hWnd, renderer);
 #endif
 #ifdef CEGUI_SAMPLES_USE_DIRECTX_8
                 if (id.find("Official Direct3D 8.1") != id.npos)
