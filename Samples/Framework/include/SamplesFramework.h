@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   Sample_FirstWindow.h
-    created:    10/3/2005
-    author:     Paul D Turner
+    filename:   SampleFramework.h
+    created:    24/5/2012
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,25 +25,43 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_FirstWindow_h_
-#define _Sample_FirstWindow_h_
+#ifndef _Samples_Framework_h_
+#define _Samples_Framework_h_
 
-#include "SampleBase.h"
-#include "CEGUI/CEGUI.h"
+#include "SamplesFrameworkBase.h"
 
-class FirstWindowSample : public Sample
+// forward declarations
+namespace CEGUI
+{
+    class DefaultWindow;
+}
+
+/*!
+\brief
+    This is 
+*/
+class SamplesFramework : public SamplesFrameworkBase
 {
 public:
-    FirstWindowSample() {}
-    virtual ~FirstWindowSample() {}
+    SamplesFramework();
+    virtual ~SamplesFramework();
 
-    virtual bool initialise();
-    virtual void deinitialise();
 
-    virtual CEGUI::Window* getGUIRoot();
-private:
-    FirstWindowSample(const FirstWindowSample&) {}
-    FirstWindowSample& operator=(const FirstWindowSample&) {}
+    bool initialiseSample();
+    void cleanupSample();
+
+    bool initialiseCEGUI();
+
+
+
+
+protected:
+    void initialiseFrameworkLayout();
+    void loadSamples();
+
+    CEGUI::DefaultWindow* m_root;
+  
 };
 
-#endif  // end of guard _Sample_FirstWindow_h_
+#endif
+

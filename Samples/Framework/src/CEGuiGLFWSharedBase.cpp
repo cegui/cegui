@@ -31,7 +31,7 @@
 
 #include "CEGUISamplesConfig.h"
 #include "CEGuiGLFWSharedBase.h"
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 #include "CEGUI/CEGUI.h"
 
 #include <stdexcept>
@@ -58,7 +58,7 @@ CEGuiGLFWSharedBase::~CEGuiGLFWSharedBase()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiGLFWSharedBase::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiGLFWSharedBase::execute_impl(SamplesFrameworkBase* sampleApp)
 {
     sampleApp->initialiseSample();
 

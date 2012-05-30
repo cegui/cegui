@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   Sample_FirstWindow.h
-    created:    10/3/2005
-    author:     Paul D Turner
+    filename:   Sample.h
+    created:    29/5/2012
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,25 +25,30 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_FirstWindow_h_
-#define _Sample_FirstWindow_h_
+#ifndef _Sample_h_
+#define _Sample_h_
 
-#include "SampleBase.h"
-#include "CEGUI/CEGUI.h"
+// This header serves as a base for all samples and is needed inside the
+// SamplesFramework as interface for Samples that will be loaded.
 
-class FirstWindowSample : public Sample
+namespace CEGUI
+{
+    class Window;
+}
+
+class Sample
 {
 public:
-    FirstWindowSample() {}
-    virtual ~FirstWindowSample() {}
+    Sample() {}
+    virtual ~Sample() {}
 
-    virtual bool initialise();
-    virtual void deinitialise();
+    virtual bool initialise() = 0;
+    virtual void deinitialise() = 0;
 
-    virtual CEGUI::Window* getGUIRoot();
+    virtual CEGUI::Window* getGUIRoot() = 0;
 private:
-    FirstWindowSample(const FirstWindowSample&) {}
-    FirstWindowSample& operator=(const FirstWindowSample&) {}
+    Sample(const Sample&) {}
+    Sample& operator=(const Sample&) {}
 };
 
-#endif  // end of guard _Sample_FirstWindow_h_
+#endif
