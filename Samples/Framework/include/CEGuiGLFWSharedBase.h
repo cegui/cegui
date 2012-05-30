@@ -40,7 +40,7 @@ public:
 
 protected:
     // implementation of base class abstract functions.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl(SamplesFrameworkBase* sampleApp);
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
