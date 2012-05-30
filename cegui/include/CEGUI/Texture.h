@@ -72,7 +72,15 @@ public:
         //! PVR texture compression. Each pixel is 2 bits.
         PF_PVRTC2,
         //! PVR texture compression. Each pixel is 4 bits.
-        PF_PVRTC4
+        PF_PVRTC4,
+        //! S3 DXT1 texture compression (RGB).
+        PF_RGB_DXT1,
+        //! S3 DXT1 texture compression (RGBA).
+        PF_RGBA_DXT1,
+        //! S3 DXT1 texture compression (RGBA).
+        PF_RGBA_DXT3,
+        //! S3 DXT1 texture compression (RGBA).
+        PF_RGBA_DXT5
     };
 
     /*!

@@ -240,6 +240,9 @@ namespace CEGUI
 
         //! return the vertical pixel extent of the formatted rendered string.
         float getVerticalTextExtent() const;
+    
+        // overridden from ComponentBase.
+        bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
     protected:
         // implemets abstract from base
@@ -247,6 +250,9 @@ namespace CEGUI
         //! helper to set up an appropriate FormattedRenderedString
         void setupStringFormatter(const Window& window,
                                   const RenderedString& rendered_string) const;
+        //! helper to get the font object to use
+        const Font* getFontObject(const Window& window) const;
+
     private:
         //! text rendered by this component.
         String d_textLogical;

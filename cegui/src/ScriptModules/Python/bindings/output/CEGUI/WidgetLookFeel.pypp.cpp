@@ -666,6 +666,17 @@ void register_WidgetLookFeel_class(){
                 , ( bp::arg("inherits")=(bool)(false) ) );
         
         }
+        { //::CEGUI::WidgetLookFeel::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::WidgetLookFeel::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            WidgetLookFeel_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &::CEGUI::WidgetLookFeel::handleFontRenderSizeChange )
+                , ( bp::arg("window"), bp::arg("font") )
+                , "! perform any processing required due to the given font having changed.\n" );
+        
+        }
         { //::CEGUI::WidgetLookFeel::initialiseWidget
         
             typedef void ( ::CEGUI::WidgetLookFeel::*initialiseWidget_function_type )( ::CEGUI::Window & ) const;

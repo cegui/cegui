@@ -152,6 +152,9 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+        //! perform any processing required due to the given font having changed.
+        virtual bool handleFontRenderSizeChange(Window& window,
+                                                const Font* font) const;
     protected:
         /*!
         \brief
@@ -560,6 +563,9 @@ namespace CEGUI
         */
         void setPadding(float padding);
 
+        // overridden from BaseDim.
+        bool handleFontRenderSizeChange(Window& window,
+                                        const Font* font) const;
     protected:
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
@@ -567,6 +573,8 @@ namespace CEGUI
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
+
+        const Font* getFontObject(const Window& window) const;
 
     private:
         String  d_font;          //!< Name of Font.  If empty font will be taken from Window.
@@ -795,6 +803,10 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+        //! perform any processing required due to the given font having changed.
+        bool handleFontRenderSizeChange(Window& window,
+                                        const Font* font) const;
+
     private:
         BaseDim*        d_value;    //!< Pointer to the value for this Dimension.
         DimensionType   d_type;     //!< What we represent.
@@ -904,6 +916,9 @@ namespace CEGUI
             - false if the area is not sourced from a named area.
         */
         bool isAreaFetchedFromNamedArea() const;
+
+        //! perform any processing required due to the given font having changed.
+        bool handleFontRenderSizeChange(Window& window, const Font* font) const;
 
         Dimension d_left;   //!< Left edge of the area.
         Dimension d_top;    //!< Top edge of the area.

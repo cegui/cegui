@@ -297,6 +297,17 @@ void register_ImagerySection_class(){
             *\n" );
         
         }
+        { //::CEGUI::ImagerySection::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::ImagerySection::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            ImagerySection_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &::CEGUI::ImagerySection::handleFontRenderSizeChange )
+                , ( bp::arg("window"), bp::arg("font") )
+                , "! perform any processing required due to the given font having changed.\n" );
+        
+        }
         { //::CEGUI::ImagerySection::initMasterColourRect
         
             typedef void ( ImagerySection_wrapper::*initMasterColourRect_function_type )( ::CEGUI::Window const &,::CEGUI::ColourRect & ) const;

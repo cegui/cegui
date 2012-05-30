@@ -34,6 +34,11 @@
 
 #include <map>
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 class Window;
@@ -66,6 +71,10 @@ protected:
 };
 
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
 

@@ -89,6 +89,18 @@ struct PropertyDim_wrapper : CEGUI::PropertyDim, bp::wrapper< CEGUI::PropertyDim
         CEGUI::PropertyDim::writeXMLElementName_impl( boost::ref(xml_stream) );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        else{
+            return this->CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        return CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+    }
+
 };
 
 void register_PropertyDim_class(){
@@ -315,6 +327,18 @@ void register_PropertyDim_class(){
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &PropertyDim_wrapper::default_writeXMLElementName_impl )
                 , ( bp::arg("xml_stream") ) );
+        
+        }
+        { //::CEGUI::BaseDim::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::BaseDim::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            typedef bool ( PropertyDim_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            PropertyDim_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::BaseDim::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&PropertyDim_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("window"), bp::arg("font") ) );
         
         }
     }

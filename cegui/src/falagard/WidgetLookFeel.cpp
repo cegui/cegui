@@ -242,9 +242,6 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
         // add the property to the window
         widget.addProperty(pdi->second);
-        // write default value to get things set up properly
-        widget.setProperty(pdi->first,
-                           pdi->second->getDefault(&widget));
     }
 
     // add required child widgets
@@ -266,9 +263,6 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
     {
         // add the property to the window
         widget.addProperty(pldi->second);
-        // write default value to get things set up properly
-        widget.setProperty(pldi->first,
-                           pldi->second->getDefault(&widget));
     }
     // apply properties to the parent window
     PropertyInitialiserPtrMap pim;
@@ -984,6 +978,34 @@ void WidgetLookFeel::appendAnimationNames(AnimationNameSet& set, bool inherits) 
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
             getWidgetLook(d_inheritedLookName).appendAnimationNames(set);
+}
+
+//---------------------------------------------------------------------------//
+bool WidgetLookFeel::handleFontRenderSizeChange(Window& window,
+                                                const Font* font) const
+{
+    bool result = false;
+
+    for(ImageryList::const_iterator i = d_imagerySections.begin();
+        i != d_imagerySections.end();
+        ++i)
+    {
+        result |= i->second.handleFontRenderSizeChange(window, font);
+    }
+
+    for(WidgetList::const_iterator i = d_childWidgets.begin();
+        i != d_childWidgets.end();
+        ++i)
+    {
+        result |= i->handleFontRenderSizeChange(window, font);
+    }
+
+    if (!d_inheritedLookName.empty())
+        result |= WidgetLookManager::getSingleton().
+            getWidgetLook(d_inheritedLookName).
+                handleFontRenderSizeChange(window, font);
+
+    return result;
 }
 
 //---------------------------------------------------------------------------//

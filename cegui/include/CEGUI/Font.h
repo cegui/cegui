@@ -30,6 +30,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/PropertySet.h"
+#include "CEGUI/EventSet.h"
 #include "CEGUI/String.h"
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/FontGlyph.h"
@@ -57,11 +58,21 @@ namespace CEGUI
 */
 class CEGUIEXPORT Font :
     public PropertySet,
+    public EventSet,
     public AllocatedObject<Font>
 {
 public:
     //! Colour value used whenever a colour is not specified.
     static const argb_t DefaultColour;
+
+    //! Event namespace for font events
+    static const String EventNamespace;
+    /** Event fired when the font internal state has changed such that the
+     * rendered size of they glyphs is different.
+     * Handlers are passed a const FontEventArgs reference with
+     * FontEventArgs::font set to the Font whose rendered size has changed.
+     */
+    static const String EventRenderSizeChanged;
 
     //! Destructor.
     virtual ~Font();
@@ -378,6 +389,9 @@ protected:
 
     //! Register all properties of this class.
     void addFontProperties();
+
+    //! event trigger function for when the font rendering size changes.
+    virtual void onRenderSizeChanged(FontEventArgs& args);
 
     /*!
     \brief

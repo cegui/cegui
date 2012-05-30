@@ -34,6 +34,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    class NamedArea;
+
     /*!
     \brief
         MenuItem class for the FalagardBase module.
@@ -71,9 +73,17 @@ namespace CEGUI
 
         void render();
         Sizef getItemPixelSize(void) const;
+
+        // overridden from WindowRenderer
+        bool handleFontRenderSizeChange(const Font* const font);
+
+    protected:
+        const NamedArea& getContentNamedArea() const;
+        bool parentIsMenubar() const;
     };
 
 } // End of  CEGUI namespace section
 
 
 #endif  // end of guard _FalMenuItem_h_
+

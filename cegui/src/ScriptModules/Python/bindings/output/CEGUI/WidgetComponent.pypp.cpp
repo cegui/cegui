@@ -201,6 +201,17 @@ void register_WidgetComponent_class(){
                 , bp::return_value_policy< bp::copy_const_reference >() );
         
         }
+        { //::CEGUI::WidgetComponent::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::WidgetComponent::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            WidgetComponent_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &::CEGUI::WidgetComponent::handleFontRenderSizeChange )
+                , ( bp::arg("window"), bp::arg("font") )
+                , "! perform any processing required due to the given font having changed.\n" );
+        
+        }
         { //::CEGUI::WidgetComponent::isAutoWindow
         
             typedef bool ( ::CEGUI::WidgetComponent::*isAutoWindow_function_type )(  ) const;

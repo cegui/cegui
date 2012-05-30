@@ -36,15 +36,38 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-// Internal function that reverses all bytes in a buffer
-void _byteSwap(unsigned char* b, int n)
+// helper function to return byte size of image of given size in given format
+static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 {
-    register int i = 0;
-    register int j = n-1;
-    while (i < j)
-        std::swap(b[i++], b[j--]);
+    switch (fmt)
+    {
+    case Texture::PF_RGBA:
+        return size.d_width * size.d_height * 4;
+
+    case Texture::PF_RGB:
+        return size.d_width * size.d_height * 3;
+
+    case Texture::PF_RGB_565:
+    case Texture::PF_RGBA_4444:
+        return size.d_width * size.d_height * 2;
+
+    case Texture::PF_PVRTC2:
+        return (static_cast<size_t>(size.d_width * size.d_height) * 2 + 7) / 8;
+
+    case Texture::PF_PVRTC4:
+        return (static_cast<size_t>(size.d_width * size.d_height) * 4 + 7) / 8;
+
+    case Texture::PF_RGBA_DXT1:
+        return std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 8;
+
+    case Texture::PF_RGBA_DXT3:
+    case Texture::PF_RGBA_DXT5:
+        return std::ceil(size.d_width / 4) * std::ceil(size.d_height / 4) * 16;
+
+    default:
+        return 0;
+    }
 }
-#define byteSwap(x) _byteSwap((unsigned char*) &x,sizeof(x))
 
 //----------------------------------------------------------------------------//
 uint32 OgreTexture::d_textureNumber = 0;
@@ -125,35 +148,16 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     // get rid of old texture
     freeOgreTexture();
 
-    // wrap input buffer with an Ogre data stream
-    const size_t pixel_size = pixel_format == PF_RGBA ? 4 : 3;
-    const size_t byte_size = buffer_size.d_width * buffer_size.d_height *
-                                pixel_size;
+    const size_t byte_size = calculateDataSize(buffer_size, pixel_format);
 
-#if OGRE_ENDIAN == OGRE_ENDIAN_BIG
-    // FIXME: I think this leaks memory, though need to check!
-    unsigned char* swapped_buffer = new unsigned char[byte_size];
-    memcpy(swapped_buffer, buffer, byte_size);
-
-    for (size_t i = 0; i < byte_size; i += pixel_size)
-        _byteSwap(&swapped_buffer[i], pixel_size);
-
-    DataStreamPtr odc(new MemoryDataStream(static_cast<void*>(swapped_buffer),
-                                           byte_size, false));
-#else
     DataStreamPtr odc(new MemoryDataStream(const_cast<void*>(buffer),
                                            byte_size, false));
-#endif
-
-    // get pixel type for the target texture.
-    Ogre::PixelFormat target_fmt =
-        (pixel_format == PF_RGBA) ? Ogre::PF_A8B8G8R8 : Ogre::PF_B8G8R8;
 
     // try to create a Ogre::Texture from the input data
     d_texture = TextureManager::getSingleton().loadRawData(
         getUniqueName(), "General", odc,
         buffer_size.d_width, buffer_size.d_height,
-        target_fmt, TEX_TYPE_2D, 0, 1.0f);
+        toOgrePixelFormat(pixel_format), TEX_TYPE_2D, 0, 1.0f);
 
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
@@ -331,7 +335,62 @@ Ogre::TexturePtr OgreTexture::getOgreTexture() const
 //----------------------------------------------------------------------------//
 bool OgreTexture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    CEGUI_TRY
+    {
+        return Ogre::TextureManager::getSingleton().
+            isEquivalentFormatSupported(Ogre::TEX_TYPE_2D,
+                                        toOgrePixelFormat(fmt),
+                                        Ogre::TU_DEFAULT);
+    }
+    CEGUI_CATCH(InvalidRequestException&)
+    {
+        return false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
+{
+    switch (fmt)
+    {
+        case Texture::PF_RGBA:       return Ogre::PF_A8R8G8B8;
+        case Texture::PF_RGB:        return Ogre::PF_R8G8B8;
+        case Texture::PF_RGB_565:    return Ogre::PF_R5G6B5;
+        case Texture::PF_RGBA_4444:  return Ogre::PF_A4R4G4B4;
+        case Texture::PF_PVRTC2:     return Ogre::PF_PVRTC_RGBA2;
+        case Texture::PF_PVRTC4:     return Ogre::PF_PVRTC_RGBA4;
+        case Texture::PF_RGBA_DXT1:  return Ogre::PF_DXT1;
+        case Texture::PF_RGBA_DXT3:  return Ogre::PF_DXT3;
+        case Texture::PF_RGBA_DXT5:  return Ogre::PF_DXT5;
+        
+        default:
+            CEGUI_THROW(InvalidRequestException(
+                "[OgreRenderer] Invalid pixel format translation."));
+    }
+}
+
+//----------------------------------------------------------------------------//
+Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
+                                            const Ogre::PixelFormat fmt)
+{
+    switch (fmt)
+    {
+        case Ogre::PF_A8R8G8B8:     return Texture::PF_RGBA;
+        case Ogre::PF_A8B8G8R8:     return Texture::PF_RGBA;
+        case Ogre::PF_R8G8B8:       return Texture::PF_RGB;
+        case Ogre::PF_B8G8R8:       return Texture::PF_RGB;
+        case Ogre::PF_R5G6B5:       return Texture::PF_RGB_565;
+        case Ogre::PF_A4R4G4B4:     return Texture::PF_RGBA_4444;
+        case Ogre::PF_PVRTC_RGBA2:  return Texture::PF_PVRTC2;
+        case Ogre::PF_PVRTC_RGBA4:  return Texture::PF_PVRTC4;
+        case Ogre::PF_DXT1:         return Texture::PF_RGBA_DXT1;
+        case Ogre::PF_DXT3:         return Texture::PF_RGBA_DXT3;
+        case Ogre::PF_DXT5:         return Texture::PF_RGBA_DXT5;
+        
+        default:
+            CEGUI_THROW(InvalidRequestException(
+                "[OgreRenderer] Invalid pixel format translation."));
+    }
 }
 
 //----------------------------------------------------------------------------//

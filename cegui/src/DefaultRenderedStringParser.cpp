@@ -34,7 +34,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 void appendSubstring(RenderedString& rs,
                      const String& string,
-                     Font* initial_font,
+                     const Font* initial_font,
                      const ColourRect* initial_colours)
 {
     RenderedStringTextComponent rstc(string, initial_font);
@@ -48,7 +48,7 @@ void appendSubstring(RenderedString& rs,
 //----------------------------------------------------------------------------//
 RenderedString DefaultRenderedStringParser::parse(
                                         const String& input_string,
-                                        Font* initial_font,
+                                        const Font* initial_font,
                                         const ColourRect* initial_colours)
 {
     RenderedString rs;

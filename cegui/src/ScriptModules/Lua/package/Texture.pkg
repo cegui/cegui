@@ -10,7 +10,11 @@ class Texture
         PF_RGBA_4444,
         PF_RGB_565,
         PF_PVRTC2,
-        PF_PVRTC4
+        PF_PVRTC4,
+        PF_RGB_DXT1,
+        PF_RGBA_DXT1,
+        PF_RGBA_DXT3,
+        PF_RGBA_DXT5
     };
 
     const Size<float>& getSize() const;

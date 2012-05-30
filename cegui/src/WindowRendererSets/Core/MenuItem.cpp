@@ -34,34 +34,45 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-
+//----------------------------------------------------------------------------//
 const String FalagardMenuItem::TypeName("Core/MenuItem");
 
+//----------------------------------------------------------------------------//
 FalagardMenuItem::FalagardMenuItem(const String& type) :
     ItemEntryWindowRenderer(type)
 {
 }
 
+//----------------------------------------------------------------------------//
 Sizef FalagardMenuItem::getItemPixelSize() const
 {
-    MenuItem* w = (MenuItem*)d_window;
-    Window* parent = w->getParent();
-    bool not_menubar = (!parent) ? true : !dynamic_cast<Menubar*>(parent);
-    const WidgetLookFeel& wlf = getLookNFeel();
-    const NamedArea* area;
+    return getContentNamedArea().getArea().getPixelRect(*d_window).getSize();
+}
 
-    if (w->getPopupMenu() && not_menubar && wlf.isNamedAreaDefined("HasPopupContentSize"))
+//----------------------------------------------------------------------------//
+const NamedArea& FalagardMenuItem::getContentNamedArea() const
+{
+    const WidgetLookFeel& wlf(getLookNFeel());
+
+    if (static_cast<MenuItem*>(d_window)->getPopupMenu() && !parentIsMenubar() &&
+        wlf.isNamedAreaDefined("HasPopupContentSize"))
     {
-        area = &wlf.getNamedArea("HasPopupContentSize");
+        return wlf.getNamedArea("HasPopupContentSize");
     }
     else
     {
-        area = &wlf.getNamedArea("ContentSize");
+        return wlf.getNamedArea("ContentSize");
     }
-
-    return area->getArea().getPixelRect(*w).getSize();
 }
 
+//----------------------------------------------------------------------------//
+bool FalagardMenuItem::parentIsMenubar() const
+{
+    const Window* const parent = d_window->getParent();
+    return parent && dynamic_cast<const Menubar*>(parent);
+}
+
+//----------------------------------------------------------------------------//
 void FalagardMenuItem::render()
 {
     MenuItem* w = (MenuItem*)d_window;
@@ -110,4 +121,22 @@ void FalagardMenuItem::render()
         imagery->render(*w);
     }
 }
+
+//----------------------------------------------------------------------------//
+bool FalagardMenuItem::handleFontRenderSizeChange(const Font* const font)
+{
+    if (getContentNamedArea().handleFontRenderSizeChange(*d_window, font))
+    {
+        if (Window* const parent = d_window->getParent())
+            parent->performChildWindowLayout();
+
+        return true;
+    }
+
+    return false;
 }
+
+//----------------------------------------------------------------------------//
+
+}
+

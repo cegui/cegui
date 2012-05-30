@@ -406,6 +406,9 @@ public:
         return d_properties;
     }
 
+    //! perform any processing required due to the given font having changed.
+    bool handleFontRenderSizeChange(Window& window, const Font* font) const;
+
 private:
     typedef std::map<String, StateImagery, StringFastLessCompare
         CEGUI_MAP_ALLOC(String, StateImagery)> StateList;
