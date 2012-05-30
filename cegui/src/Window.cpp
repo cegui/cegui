@@ -45,6 +45,7 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/RenderingWindow.h"
+#include "CEGUI/GlobalEventSet.h"
 #include <algorithm>
 #include <iterator>
 #include <cmath>
@@ -80,6 +81,7 @@ const String Window::EventInheritsAlphaChanged( "InheritsAlphaChanged" );
 const String Window::EventAlwaysOnTopChanged("AlwaysOnTopChanged");
 const String Window::EventInputCaptureGained( "InputCaptureGained" );
 const String Window::EventInputCaptureLost( "InputCaptureLost" );
+const String Window::EventInvalidated( "Invalidated" );
 const String Window::EventRenderingStarted( "RenderingStarted" );
 const String Window::EventRenderingEnded( "RenderingEnded" );
 const String Window::EventDestructionStarted( "DestructionStarted" );
@@ -265,7 +267,12 @@ Window::Window(const String& type, const String& name):
     // Don't propagate mouse inputs by default.
     d_propagateMouseInputs(false),
 
-    d_guiContext(0)
+    d_guiContext(0),
+
+    d_fontRenderSizeChangeConnection(
+        GlobalEventSet::getSingleton().subscribeEvent(
+            "Font/RenderSizeChanged",
+            Event::Subscriber(&Window::handleFontRenderSizeChange, this)))
 {
     // add properties
     addWindowProperties();
@@ -1017,6 +1024,9 @@ void Window::invalidate_impl(const bool recursive)
 {
     d_needsRedraw = true;
     invalidateRenderingSurface();
+
+    WindowEventArgs args(this);
+    onInvalidated(args);
 
     if (recursive)
     {
@@ -1859,6 +1869,7 @@ void Window::setLookNFeel(const String& look)
     d_windowRenderer->onLookNFeelAssigned();
 
     invalidate();
+    performChildWindowLayout();
 }
 
 //----------------------------------------------------------------------------//
@@ -2318,6 +2329,12 @@ void Window::onCaptureLost(WindowEventArgs& e)
     getGUIContext().injectMouseMove(0, 0);
 
     fireEvent(EventInputCaptureLost, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void Window::onInvalidated(WindowEventArgs& e)
+{
+    fireEvent(EventInvalidated, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -3728,6 +3745,16 @@ void Window::banPropertiesForAutoWindow()
     banPropertyFromXML("MaxSize");
     banPropertyFromXML(&d_windowRendererProperty);
     banPropertyFromXML(&d_lookNFeelProperty);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::handleFontRenderSizeChange(const EventArgs& args)
+{
+    if (!d_windowRenderer)
+        return false;
+
+    return d_windowRenderer->handleFontRenderSizeChange(
+        static_cast<const FontEventArgs&>(args).font);
 }
 
 //----------------------------------------------------------------------------//

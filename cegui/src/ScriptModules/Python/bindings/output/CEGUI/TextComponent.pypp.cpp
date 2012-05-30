@@ -22,6 +22,22 @@ struct TextComponent_wrapper : CEGUI::TextComponent, bp::wrapper< CEGUI::TextCom
     
     }
 
+    ::CEGUI::Font const * getFontObject( ::CEGUI::Window const & window ) const {
+        return CEGUI::TextComponent::getFontObject( boost::ref(window) );
+    }
+
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        else{
+            return this->CEGUI::TextComponent::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
+        return CEGUI::TextComponent::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
+    }
+
     virtual void render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
         if( bp::override func_render_impl = this->get_override( "render_impl" ) )
             func_render_impl( boost::ref(srcWindow), boost::ref(destRect), boost::python::ptr(modColours), boost::python::ptr(clipper), clipToDisplay );
@@ -84,6 +100,18 @@ void register_TextComponent_class(){
                     @return\n\
                         String object containing the name of a font, or  if the window font is to be used.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getFontObject
+        
+            typedef ::CEGUI::Font const * ( TextComponent_wrapper::*getFontObject_function_type )( ::CEGUI::Window const & ) const;
+            
+            TextComponent_exposer.def( 
+                "getFontObject"
+                , getFontObject_function_type( &TextComponent_wrapper::getFontObject )
+                , ( bp::arg("window") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! helper to get the font object to use\n" );
         
         }
         { //::CEGUI::TextComponent::getFontPropertySource
@@ -202,6 +230,18 @@ void register_TextComponent_class(){
                 "getVerticalTextExtent"
                 , getVerticalTextExtent_function_type( &::CEGUI::TextComponent::getVerticalTextExtent )
                 , "! return the vertical pixel extent of the formatted rendered string.\n" );
+        
+        }
+        { //::CEGUI::TextComponent::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::TextComponent::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            typedef bool ( TextComponent_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            TextComponent_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::TextComponent::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&TextComponent_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("window"), bp::arg("font") ) );
         
         }
         { //::CEGUI::TextComponent::isFontFetchedFromProperty

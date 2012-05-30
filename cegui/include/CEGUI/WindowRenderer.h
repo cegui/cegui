@@ -135,6 +135,25 @@ public:
     //! perform any time based updates for this WindowRenderer.
     virtual void update(float /*elapsed*/) {}
 
+    /*!
+    \brief
+        Perform any updates needed because the given font's render size has
+        changed.
+
+    /note
+        This base implementation deals with updates needed for various
+        definitions in the assigned widget look.  If you override, you should
+        generally always call this base class implementation.
+
+    \param font
+        Pointer to the Font whose render size has changed.
+
+    \return
+        - true if some action was taken.
+        - false if no action was taken (i.e font is not used here).
+    */
+    virtual bool handleFontRenderSizeChange(const Font* const font);
+
 protected:
     /*************************************************************************
         Implementation methods

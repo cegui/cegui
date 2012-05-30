@@ -122,6 +122,8 @@
 
 #include "FontDim.pypp.hpp"
 
+#include "FontEventArgs.pypp.hpp"
+
 #include "FontGlyph.pypp.hpp"
 
 #include "FontIterator.pypp.hpp"
@@ -708,6 +710,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_Font_class();
 
     register_FontDim_class();
+
+    register_FontEventArgs_class();
 
     register_FontGlyph_class();
 

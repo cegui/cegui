@@ -67,7 +67,7 @@ RenderedStringTextComponent::RenderedStringTextComponent(
 
 //----------------------------------------------------------------------------//
 RenderedStringTextComponent::RenderedStringTextComponent(const String& text,
-                                                         Font* font) :
+                                                         const Font* font) :
     d_text(text),
     d_font(font),
     d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF),
@@ -89,7 +89,7 @@ const String& RenderedStringTextComponent::getText() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringTextComponent::setFont(Font* font)
+void RenderedStringTextComponent::setFont(const Font* font)
 {
     d_font = font;
 }
@@ -102,7 +102,7 @@ void RenderedStringTextComponent::setFont(const String& font_name)
 }
 
 //----------------------------------------------------------------------------//
-Font* RenderedStringTextComponent::getFont() const
+const Font* RenderedStringTextComponent::getFont() const
 {
     return d_font;
 }
@@ -134,7 +134,7 @@ void RenderedStringTextComponent::setSelection(const float start, const float en
         return;
     }
 
-    Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
     d_selectionStart = fnt->getCharAtPixel(d_text, start);
     d_selectionLength = fnt->getCharAtPixel(d_text, end) - d_selectionStart + 1;
@@ -148,7 +148,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
                                        const float vertical_space,
                                        const float space_extra) const
 {
-    Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
     if (!fnt)
         return;
@@ -214,7 +214,7 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 //----------------------------------------------------------------------------//
 Sizef RenderedStringTextComponent::getPixelSize() const
 {
-    Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
     Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
                d_padding.d_min.d_y + d_padding.d_max.d_y);
@@ -238,7 +238,7 @@ bool RenderedStringTextComponent::canSplit() const
 RenderedStringTextComponent* RenderedStringTextComponent::split(
     float split_point, bool first_component)
 {
-    Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
 
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.

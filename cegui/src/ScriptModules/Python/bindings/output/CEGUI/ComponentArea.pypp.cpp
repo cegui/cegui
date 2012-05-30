@@ -85,6 +85,17 @@ void register_ComponentArea_class(){
                     *\n" );
         
         }
+        { //::CEGUI::ComponentArea::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::ComponentArea::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            ComponentArea_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &::CEGUI::ComponentArea::handleFontRenderSizeChange )
+                , ( bp::arg("window"), bp::arg("font") )
+                , "! perform any processing required due to the given font having changed.\n" );
+        
+        }
         { //::CEGUI::ComponentArea::isAreaFetchedFromNamedArea
         
             typedef bool ( ::CEGUI::ComponentArea::*isAreaFetchedFromNamedArea_function_type )(  ) const;

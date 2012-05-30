@@ -31,10 +31,6 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         CEGUI::MultiLineEditbox::formatText(  );
     }
 
-    void formatText( bool const update_scrollbars ){
-        CEGUI::MultiLineEditbox::formatText( update_scrollbars );
-    }
-
     ::size_t getNextTokenLength( ::CEGUI::String const & text, ::size_t start_idx ) const {
         return CEGUI::MultiLineEditbox::getNextTokenLength( boost::ref(text), start_idx );
     }
@@ -583,6 +579,18 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         return CEGUI::Window::getWindowAttachedToCommonAncestor( boost::ref(wnd) );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(args) );
+        else{
+            return this->CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
+        }
+    }
+    
+    virtual bool default_handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
+        return CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
+    }
+
     void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
         CEGUI::Window::initialiseClippers( boost::ref(ctx) );
     }
@@ -869,6 +877,18 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
     
     virtual void default_onInheritsAlphaChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Window::onInheritsAlphaChanged( boost::ref(e) );
+    }
+
+    virtual void onInvalidated( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onInvalidated = this->get_override( "onInvalidated" ) )
+            func_onInvalidated( boost::ref(e) );
+        else{
+            this->CEGUI::Window::onInvalidated( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onInvalidated( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::Window::onInvalidated( boost::ref(e) );
     }
 
     virtual void onKeyUp( ::CEGUI::KeyEventArgs & e ){
@@ -1475,6 +1495,24 @@ void register_MultiLineEditbox_class(){
         }
         { //::CEGUI::MultiLineEditbox::formatText
         
+            typedef void ( ::CEGUI::MultiLineEditbox::*formatText_function_type )( bool const ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "formatText"
+                , formatText_function_type( &::CEGUI::MultiLineEditbox::formatText )
+                , ( bp::arg("update_scrollbars") )
+                , "*!\n\
+                \n\
+                    Format the text into lines as dictated by the formatting options.\n\
+            \n\
+                @param update_scrollbars \n\
+                    - true if scrollbar configuration should be performed.\n\
+                    - false if scrollbar configuration should not be performed.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiLineEditbox::formatText
+        
             typedef void ( MultiLineEditbox_wrapper::*formatText_function_type )(  ) ;
             
             MultiLineEditbox_exposer.def( 
@@ -1489,24 +1527,6 @@ void register_MultiLineEditbox_class(){
               deprecated\n\
                  This is deprecated in favour of the version taking a boolean.\n\
             *\n" );
-        
-        }
-        { //::CEGUI::MultiLineEditbox::formatText
-        
-            typedef void ( MultiLineEditbox_wrapper::*formatText_function_type )( bool const ) ;
-            
-            MultiLineEditbox_exposer.def( 
-                "formatText"
-                , formatText_function_type( &MultiLineEditbox_wrapper::formatText )
-                , ( bp::arg("update_scrollbars") )
-                , "*!\n\
-                \n\
-                    Format the text into lines as dictated by the formatting options.\n\
-            \n\
-                @param update_scrollbars \n\
-                    - true if scrollbar configuration should be performed.\n\
-                    - false if scrollbar configuration should not be performed.\n\
-                *\n" );
         
         }
         { //::CEGUI::MultiLineEditbox::getCaretIndex
@@ -2948,6 +2968,17 @@ void register_MultiLineEditbox_class(){
              *\n" );
         
         }
+        { //::CEGUI::Window::handleFontRenderSizeChange
+        
+            typedef bool ( MultiLineEditbox_wrapper::*handleFontRenderSizeChange_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &MultiLineEditbox_wrapper::default_handleFontRenderSizeChange )
+                , ( bp::arg("args") )
+                , "! handler function for when font render size changes.\n" );
+        
+        }
         { //::CEGUI::Window::initialiseClippers
         
             typedef void ( MultiLineEditbox_wrapper::*initialiseClippers_function_type )( ::CEGUI::RenderingContext const & ) ;
@@ -3428,6 +3459,25 @@ void register_MultiLineEditbox_class(){
                 \n\
                     Handler called when the window's setting for inheriting alpha-blending\n\
                     is changed.\n\
+            \n\
+                @param e\n\
+                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
+                    that triggered the event.  For this event the trigger window is always\n\
+                    'this'.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::onInvalidated
+        
+            typedef void ( MultiLineEditbox_wrapper::*onInvalidated_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "onInvalidated"
+                , onInvalidated_function_type( &MultiLineEditbox_wrapper::default_onInvalidated )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler called when this window gets invalidated.\n\
             \n\
                 @param e\n\
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\

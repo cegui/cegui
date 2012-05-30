@@ -95,7 +95,7 @@ BasicRenderedStringParser::~BasicRenderedStringParser()
 
 //----------------------------------------------------------------------------//
 RenderedString BasicRenderedStringParser::parse(const String& input_string,
-                                                Font* initial_font,
+                                                const Font* initial_font,
                                                 const ColourRect* initial_colours)
 {
     // first-time initialisation (due to issues with static creation order)

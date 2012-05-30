@@ -71,6 +71,10 @@ void register_Texture_class(){
             .value("PF_RGB_565", CEGUI::Texture::PF_RGB_565)
             .value("PF_PVRTC2", CEGUI::Texture::PF_PVRTC2)
             .value("PF_PVRTC4", CEGUI::Texture::PF_PVRTC4)
+            .value("PF_RGB_DXT1", CEGUI::Texture::PF_RGB_DXT1)
+            .value("PF_RGBA_DXT1", CEGUI::Texture::PF_RGBA_DXT1)
+            .value("PF_RGBA_DXT3", CEGUI::Texture::PF_RGBA_DXT3)
+            .value("PF_RGBA_DXT5", CEGUI::Texture::PF_RGBA_DXT5)
             .export_values()
             ;
         { //::CEGUI::Texture::blitFromMemory

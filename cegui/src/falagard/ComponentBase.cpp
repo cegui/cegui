@@ -182,4 +182,10 @@ namespace CEGUI
         return false;
     }
 
+    bool FalagardComponentBase::handleFontRenderSizeChange(Window& window,
+                                                           const Font* font) const
+    {
+        return d_area.handleFontRenderSizeChange(window, font);
+    }
+
 } // End of  CEGUI namespace section

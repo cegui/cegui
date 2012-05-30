@@ -404,6 +404,18 @@ void FalagardMultiLineEditbox::setCaretBlinkTimeout(float seconds)
 }
 
 //----------------------------------------------------------------------------//
+bool FalagardMultiLineEditbox::handleFontRenderSizeChange(const Font* const font)
+{
+    const bool res = WindowRenderer::handleFontRenderSizeChange(font);
 
+    if (d_window->getFont() == font)
+    {
+        d_window->invalidate();
+        static_cast<MultiLineEditbox*>(d_window)->formatText(true);
+        return true;
+    }
+
+    return res;
+}
 
 } // End of  CEGUI namespace section

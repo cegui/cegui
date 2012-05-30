@@ -43,7 +43,7 @@ class CEGUIEXPORT DefaultRenderedStringParser : public RenderedStringParser
 public:
     // implement required interface
     RenderedString parse(const String& input_string,
-                         Font* initial_font,
+                         const Font* initial_font,
                          const ColourRect* initial_colours);
 };
 

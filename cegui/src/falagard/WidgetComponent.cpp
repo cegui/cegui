@@ -303,4 +303,17 @@ namespace CEGUI
         return EventActionIterator(d_eventActions.begin(),
                                    d_eventActions.end());
     }
+
+    bool WidgetComponent::handleFontRenderSizeChange(Window& window,
+                                                     const Font* font) const
+    {
+        if (d_area.handleFontRenderSizeChange(window, font))
+        {
+            window.performChildWindowLayout();
+            return true;
+        }
+
+        return false;
+    }
+
 } // End of  CEGUI namespace section

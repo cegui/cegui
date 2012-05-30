@@ -334,6 +334,21 @@ namespace CEGUI
         xml_stream.closeTag();
     }
 
+    bool ImagerySection::handleFontRenderSizeChange(Window& window,
+                                                    const Font* font) const
+    {
+        bool result = false;
+
+        for(TextList::const_iterator text = d_texts.begin();
+            text != d_texts.end();
+            ++text)
+        {
+            result |= (*text).handleFontRenderSizeChange(window, font);
+        }
+
+        return result;
+    }
+
     ImagerySection::ImageryComponentIterator
     ImagerySection::getImageryComponentIterator() const
     {

@@ -72,6 +72,17 @@ void register_Dimension_class(){
                     *\n" );
         
         }
+        { //::CEGUI::Dimension::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::Dimension::*handleFontRenderSizeChange_function_type )( ::CEGUI::Window &,::CEGUI::Font const * ) const;
+            
+            Dimension_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &::CEGUI::Dimension::handleFontRenderSizeChange )
+                , ( bp::arg("window"), bp::arg("font") )
+                , "! perform any processing required due to the given font having changed.\n" );
+        
+        }
         { //::CEGUI::Dimension::operator=
         
             typedef ::CEGUI::Dimension & ( ::CEGUI::Dimension::*assign_function_type )( ::CEGUI::Dimension const & ) ;

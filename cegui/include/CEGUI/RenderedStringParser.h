@@ -56,7 +56,7 @@ public:
         RenderedString object holding the result of the parse operation.
     */
     virtual RenderedString parse(const String& input_string,
-                                 Font* initial_font,
+                                 const Font* initial_font,
                                  const ColourRect* initial_colours) = 0;
 };
 

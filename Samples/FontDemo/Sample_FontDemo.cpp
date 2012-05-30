@@ -304,7 +304,6 @@ public:
         f->setProperty("AutoScaled",
                        PropertyHelper<bool>::toString(cb->isSelected()));
 
-        updateTextWindows();
         return true;
     }
 
@@ -322,7 +321,6 @@ public:
         f->setProperty("Antialiased",
                        PropertyHelper<bool>::toString(cb->isSelected()));
 
-        updateTextWindows();
         return true;
     }
 
@@ -341,7 +339,6 @@ public:
 
         setFontDesc();
 
-        updateTextWindows();
         return true;
     }
 
@@ -376,25 +373,6 @@ public:
         }
 
         return true;
-    }
-
-    //! Ensure window content and layout is updated.
-    void updateTextWindows()
-    {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
-        MultiLineEditbox* eb = static_cast<MultiLineEditbox*>(
-                                   root->getChild("root/FontDemo/FontSample"));
-        // this is a hack to force the editbox to update it's state, and is
-        // needed because no facility currently exists for a font to notify that
-        // it's internal size or state has changed (ideally all affected windows
-        // should receive EventFontChanged - this should be a TODO item!)
-        eb->setWordWrapping(false);
-        eb->setWordWrapping(true);
-        // inform lists of updated data too
-        Listbox* lb = static_cast<Listbox*>(root->getChild("root/FontDemo/LangList"));
-        lb->handleUpdatedItemData();
-        lb = static_cast<Listbox*>(root->getChild("root/FontDemo/FontList"));
-        lb->handleUpdatedItemData();
     }
 };
 

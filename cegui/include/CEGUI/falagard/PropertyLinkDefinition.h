@@ -104,6 +104,11 @@ namespace CEGUI
             return false;
         }
 
+        virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const
+        {
+            updateLinkTargets(receiver, Helper::fromString(this->d_default));
+        }
+
         virtual Property* clone() const
         {
             return CEGUI_NEW_AO PropertyLinkDefinition<T>(*this);
@@ -129,7 +134,15 @@ namespace CEGUI
         }
         void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
         {
-            LinkTargetCollection::iterator i = d_targets.begin();
+            updateLinkTargets(receiver, value);
+
+            // base handles things like ensuring redraws and such happen
+            PropertyDefinitionBase<T>::setNative_impl(receiver, value);
+        }
+
+        void updateLinkTargets(PropertyReceiver* receiver, typename Helper::pass_type value) const
+        {
+            LinkTargetCollection::const_iterator i = d_targets.begin();
             for ( ; i != d_targets.end(); ++i)
             {
                 Window* target_wnd = getTargetWindow(receiver, i->first);
@@ -139,11 +152,7 @@ namespace CEGUI
                     target_wnd->setProperty(i->second.empty() ?
                         TypedProperty<T>::d_name : i->second, Helper::toString(value));
             }
-
-            // base handles things like ensuring redraws and such happen
-            PropertyDefinitionBase<T>::setNative_impl(receiver, value);
         }
-
 
         void writeFalagardXMLElementType(XMLSerializer& xml_stream) const
         {
@@ -213,10 +222,10 @@ namespace CEGUI
 
         //! Return a pointer to the target window with the given name.
         Window* getTargetWindow(PropertyReceiver* receiver,
-                                const String& name)
+                                const String& name) const
         {
-            return const_cast<Window*>(static_cast<const PropertyLinkDefinition<T>*>(this)->
-                    getTargetWindow(receiver, name));
+            return const_cast<Window*>(
+                getTargetWindow(static_cast<const PropertyReceiver*>(receiver), name));
         }
 
         typedef std::pair<String,String> StringPair;

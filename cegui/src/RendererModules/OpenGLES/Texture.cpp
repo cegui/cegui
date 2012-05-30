@@ -191,10 +191,17 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
 void OpenGLESTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
                                                     const void* buffer) const
 {
+    GLint old_pack;
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
     glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
                     static_cast<GLsizei>(buffer_size.d_width),
                     static_cast<GLsizei>(buffer_size.d_height),
                     d_format, d_subpixelFormat, buffer);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
 }
 
 //----------------------------------------------------------------------------//
