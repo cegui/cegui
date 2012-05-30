@@ -132,7 +132,9 @@ Window::LookNFeelProperty Window::d_lookNFeelProperty;
 //----------------------------------------------------------------------------//
 Window::WindowRendererProperty::WindowRendererProperty() : TplWindowProperty<Window,String>(
     "WindowRenderer",
-    "Property to get/set the windows assigned window renderer objects name.  "
+    "Property to get/set the assigned WindowRenderer object type. For "
+    "advanced use only. See the api reference for Window::setWindowRenderer "
+    "for more information. "
     "Value is a string.",
     "Window", &Window::setWindowRenderer,&Window::getWindowRendererName, "")
     {}
@@ -150,7 +152,9 @@ void Window::WindowRendererProperty::writeXMLToStream(const PropertyReceiver* re
 //----------------------------------------------------------------------------//
 Window::LookNFeelProperty::LookNFeelProperty() : TplWindowProperty<Window,String>(
     "LookNFeel",
-    "Property to get/set the windows assigned look'n'feel.  Value is a string.",
+    "Property to get/set the assigned look'n'feel. For advanced use only. See "
+    "the api reference for Window::setLookNFeel for more informaton. "
+    "Value is a string.",
     "Window", &Window::setLookNFeel,&Window::getLookNFeel, "")
     {}
 
