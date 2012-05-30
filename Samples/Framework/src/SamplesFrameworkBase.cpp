@@ -71,6 +71,9 @@
 #   ifdef CEGUI_SAMPLES_USE_DIRECT3D10
 #       include "CEGuiD3D10BaseApplication.h"
 #   endif
+#   ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+#       include "CEGuiD3D11BaseApplication.h"
+#   endif
 #endif
 // now we include the base CEGuiBaseApplication just in case someone has managed to
 // get this far without any of the renderers.  This ensures the framework will build,
@@ -164,6 +167,10 @@ bool SamplesFrameworkBase::initialise()
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D10
     d_rendererSelector->setRendererAvailability(Direct3D10GuiRendererType);
 #endif
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+    d_rendererSelector->setRendererAvailability(Direct3D11GuiRendererType);
+#endif
+
 
 #elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // decide which method to use for renderer selection
@@ -221,6 +228,11 @@ bool SamplesFrameworkBase::initialise()
             d_sampleApp = new CEGuiD3D10BaseApplication();
             break;
 #endif // DX10
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+        case Direct3D11GuiRendererType:
+            d_sampleApp = new CEGuiD3D11BaseApplication();
+            break;
+#endif // DX11
 #endif // Win32
 #ifdef CEGUI_SAMPLES_USE_OPENGL
         case OpenGLGuiRendererType:
