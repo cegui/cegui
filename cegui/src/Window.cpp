@@ -1842,6 +1842,9 @@ const String& Window::getLookNFeel() const
 //----------------------------------------------------------------------------//
 void Window::setLookNFeel(const String& look)
 {
+    if (d_lookName == look)
+        return;
+
     if (!d_windowRenderer)
         CEGUI_THROW(NullObjectException("Window::setLookNFeel: There must be a "
             "window renderer assigned to the window '" + d_name +
@@ -2709,6 +2712,9 @@ void Window::onDragDropItemDropped(DragDropEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::setWindowRenderer(const String& name)
 {
+    if (d_windowRenderer && d_windowRenderer->getName() == name)
+        return;
+
     WindowRendererManager& wrm = WindowRendererManager::getSingleton();
     if (d_windowRenderer != 0)
     {
