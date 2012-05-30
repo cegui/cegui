@@ -2127,14 +2127,29 @@ public:
     \param look
         String object holding the name of the look to be assigned to the window.
 
-    \return
-        Nothing.
-
     \exception UnknownObjectException
         thrown if the look'n'feel specified by \a look does not exist.
 
+    \exception NullObjectException
+        thrown if the Window does not have a WindowRenderer assigned to it.
+        see Window::setWindowRenderer.
+
     \note
-        Once a look'n'feel has been assigned it is locked - as in cannot be changed.
+        This is really intended as an internal function. The way that client
+        code is supposed to use skins is by defining a Falagard mapping (either
+        in a scheme xml file or in code) and then create instances of that
+        mapped type via WindowManager.  See
+        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme. 
+        With that being said, it is possible for client code to use this
+        function so long as you are aware of the implications of doing so:
+        - Automatically created child windows (AutoWindows) will be deleted, and
+          references or pointers you hold to these will become invalid.
+        - Aside from those absolutely required, there is not guarantee that the
+          newly assigned look will create the same set of child windows, nor
+          that any created windows will be of any given type.
+        - Any properties set on automatically created child windows after their
+          creation will be lost - even if the new look creates a child of the
+          same type with the same name.
     */
     virtual void setLookNFeel(const String& look);
 
@@ -2291,14 +2306,17 @@ public:
 
     /*!
     \brief
-        Assign the WindowRenderer to specify the Look'N'Feel specification
-        to be used.
+        Assign the WindowRenderer type to be used when rendering this window.
 
     \param name
         The factory name of the WindowRenderer to use.
 
     \note
-        Once a window renderer has been assigned it is locked - as in cannot be changed.
+        This is really intended as an internal function. The way that client
+        code is supposed to use skins is by defining a Falagard mapping (either
+        in a scheme xml file or in code) and then create instances of that
+        mapped type via WindowManager.  See
+        WindowFactoryManager::addFalagardWindowMapping and \ref xml_scheme. 
     */
     void setWindowRenderer(const String& name);
 
