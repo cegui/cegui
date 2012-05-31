@@ -28,14 +28,6 @@
 #include "Sample_FirstWindow.h"
 #include "CEGUI/CEGUI.h"
 
-
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   define SAMPLE_EXPORT __declspec(dllexport)
-#else
-#   define SAMPLE_EXPORT
-#endif
-
-
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
@@ -145,7 +137,7 @@ CEGUI::Window* FirstWindowSample::getGUIRoot()
     return 0;
 }
 
-extern "C" SAMPLE_EXPORT Sample* GetSample()
+extern "C" SAMPLE_EXPORT Sample* CreateSample()
 {
     return new FirstWindowSample();
 }

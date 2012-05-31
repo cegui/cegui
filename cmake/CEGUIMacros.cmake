@@ -342,7 +342,7 @@ macro (cegui_add_sample _NAME)
 	
 
 
-    if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
+    if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11)
         link_directories(${DIRECTXSDK_LIBRARY_DIR})
     endif()
 
@@ -350,18 +350,20 @@ macro (cegui_add_sample _NAME)
 	
 	set(CORE_HEADER_FILES ${CORE_HEADER_FILES}
 		${CMAKE_SOURCE_DIR}/Samples/common/include/Sample.h
+		${CMAKE_SOURCE_DIR}/Samples/common/include/SampleBase.h
 	)
 
     ###########################################################################
     #                   Dynamically Linked Library
     ###########################################################################
-    add_library(${CEGUI_TARGET_NAME} MODULE ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+	add_library(${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 
     # append the _d (or whatever) for debug builds as needed.
     if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
             OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
         )
+		
     endif()
 
     if (NOT APPLE)

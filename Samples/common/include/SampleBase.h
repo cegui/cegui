@@ -33,6 +33,13 @@
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
 
-extern "C" __declspec(dllexport) Sample* GetSample();
+#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
+#   define SAMPLE_EXPORT __declspec(dllexport)
+#else
+#   define SAMPLE_EXPORT
+#endif
+
+
+extern "C" __declspec(dllexport) Sample* CreateSample();
 
 #endif
