@@ -20,7 +20,7 @@ if (ICONV_H_PATH)
     if (NOT ICONV_LIB_GLIBC)
         find_package_handle_standard_args(Iconv DEFAULT_MSG ICONV_LIB ICONV_H_PATH)
     else()
-        set(Iconv TRUE)
+        set(Iconv_FOUND TRUE)
         unset(ICONV_LIB)
     endif()
 
@@ -29,7 +29,7 @@ endif()
 mark_as_advanced(ICONV_H_PATH ICONV_LIB ICONV_LIB_GLIBC)
 
 # set up output vars
-if (ICONV_FOUND)
+if (Iconv_FOUND)
     set (ICONV_INCLUDE_DIR ${ICONV_H_PATH})
     set (ICONV_LIBRARIES ${ICONV_LIB})
 else()
