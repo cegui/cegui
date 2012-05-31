@@ -83,16 +83,8 @@ public:
         buffer.
 
     \param input
-    \note
-        What is represented by std::wstring and how it should be interpreted is
-        implementation specific.  This means that the content of the returned
-        std::wstring may vary according to the operating system and compiler
-        used - although what is returned should be consistent with other
-        std::wstring data running on the same implementation.  This largely
-        means that on Microsoft Windows you will have UTF-16 and on *nix type
-        environments you will have UTF-32.
-        pointer to a null terminated array of utf16 values encoded as UTF-16
-        string data.
+        Pointer to a null terminated array of uint16 values representing a
+        string encoded using UTF-16.
 
     \return
         String object holding the transcoded data.
