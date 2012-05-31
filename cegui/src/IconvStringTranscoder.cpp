@@ -136,7 +136,7 @@ static size_t getStringLength(const T* buffer)
     const T* b = buffer;
     while (*b++);
 
-    return b - buffer;
+    return b - buffer - 1;
 }
 
 //----------------------------------------------------------------------------//
@@ -145,7 +145,7 @@ template<typename T>
 static void deleteTranscodeBuffer(const T* buffer)
 {
     CEGUI_DELETE_ARRAY_PT(
-        buffer, T, getStringLength(buffer), CEGUI::BufferAllocator);
+        buffer, T, getStringLength(buffer) + 1, CEGUI::BufferAllocator);
 }
 
 //----------------------------------------------------------------------------//
