@@ -50,6 +50,14 @@ if (NOT CEGUI_HAS_EXPRESSION_DIM)
     )
 endif()
 
+if (WIN32)
+    list (REMOVE_ITEM CORE_SOURCE_FILES IconvStringTranscoder.cpp)
+else()
+    cegui_add_dependency(${CEGUI_TARGET_NAME} Iconv)
+#    list (REMOVE_ITEM CORE_SOURCE_FILES Win32StringTranscoder.cpp)
+endif()
+
+
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.
 cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
