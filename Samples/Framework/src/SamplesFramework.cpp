@@ -29,15 +29,27 @@ author:     Lukas E Meindl
 
 #include "Sample.h"
 #include "CEGUI/CEGUI.h"
+#include "CEGUI/Logger.h"
+#include "CEGUI/DynamicModule.h"
 
 using namespace CEGUI;
+
+struct DLLSample
+{
+    CEGUI::DynamicModule*   m_dynamicModule;
+    Sample*                 m_sample;
+};
 
 //platform-dependant DLL delay-loading includes
 #if (defined( __WIN32__ ) || defined( _WIN32 )) 
     #include "windows.h"
 #endif
 
-typedef Sample* (*GetSample)();
+typedef Sample* (*CreateSample)();
+
+
+
+
 
 
 int main(int /*argc*/, char* /*argv*/[])
@@ -147,18 +159,30 @@ void SamplesFramework::initialiseFrameworkLayout()
 
 void SamplesFramework::loadSamples()
 {
+    // load the appropriate image codec module
+    std::string dllName = "CEGUIFirstWindow-9999";
 
-    HINSTANCE hinst= LoadLibrary("CEGUIFirstWindow-9999.dll");
-    if (hinst)
+    CEGUI::DynamicModule* sampleModule = new DynamicModule(dllName.c_str());
+    CreateSample functionPointerCreateSample = (CreateSample)sampleModule->getSymbolAddress("CreateSample");
+
+    if(functionPointerCreateSample == 0)
     {
-        GetSample functionPointerGetSample = (GetSample)GetProcAddress(hinst, "GetSample");
-        Sample* sample = functionPointerGetSample();
-        sample->initialise(); 
-
-
-        sample->deinitialise();
-        delete sample;  // calls Plugin's dtor 
-
-        FreeLibrary(hinst);
+        std::string errorMessage = "The sample creation function is not defined in the dynamic library of " + dllName;
+        CEGUI_THROW(InvalidRequestException(errorMessage.c_str()));
     }
+    else
+    {
+        Sample* sample = functionPointerCreateSample();
+        sample->initialise(); 
+    }
+
+    /*
+
+    sample->deinitialise();
+    delete sample;  // calls Plugin's dtor 
+    delete sampleModule;
+
+    */
+
+
 }

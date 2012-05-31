@@ -30,11 +30,15 @@
 
 #include "SamplesFrameworkBase.h"
 
+#include <vector>
+
 // forward declarations
 namespace CEGUI
 {
     class DefaultWindow;
 }
+
+struct DLLSample;
 
 /*!
 \brief
@@ -60,7 +64,8 @@ protected:
     void loadSamples();
 
     CEGUI::DefaultWindow* m_root;
-  
+
+    std::vector<DLLSample> m_dllSamples;
 };
 
 #endif
