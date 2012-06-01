@@ -34,7 +34,7 @@ namespace CEGUI
 {
 
 //! Implementation of StringTranscoder that uses Win32
-class Win32StringTranscoder : public StringTranscoder
+class CEGUIEXPORT Win32StringTranscoder : public StringTranscoder
 {
 public:
     // implement abstract interface
