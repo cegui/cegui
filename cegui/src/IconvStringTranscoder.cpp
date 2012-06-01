@@ -162,7 +162,7 @@ static String_T iconvTranscode(IconvHelper& ich,
 }
 
 //----------------------------------------------------------------------------//
-uint16* IconvStringTranscoder::stringToUTF16(const String& input)
+uint16* IconvStringTranscoder::stringToUTF16(const String& input) const
 {
     IconvHelper ich("UTF-16", "UTF-8");
     return iconvTranscode<uint16>(
@@ -170,7 +170,7 @@ uint16* IconvStringTranscoder::stringToUTF16(const String& input)
 }
 
 //----------------------------------------------------------------------------//
-std::wstring IconvStringTranscoder::stringToStdWString(const String& input)
+std::wstring IconvStringTranscoder::stringToStdWString(const String& input) const
 {
     IconvHelper ich("WCHAR_T", "UTF-8");
     return iconvTranscode<std::wstring, wchar_t>(
@@ -178,7 +178,7 @@ std::wstring IconvStringTranscoder::stringToStdWString(const String& input)
 }
 
 //----------------------------------------------------------------------------//
-String IconvStringTranscoder::stringFromUTF16(const uint16* input)
+String IconvStringTranscoder::stringFromUTF16(const uint16* input) const
 {
     IconvHelper ich("UTF-8", "UTF-16");
     return iconvTranscode<String, utf8>(
@@ -187,7 +187,7 @@ String IconvStringTranscoder::stringFromUTF16(const uint16* input)
 }
 
 //----------------------------------------------------------------------------//
-String IconvStringTranscoder::stringFromStdWString(const std::wstring& input)
+String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) const
 {
     IconvHelper ich("UTF-8", "WCHAR_T");
     return iconvTranscode<String, utf8>(
@@ -196,7 +196,7 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input)
 }
 
 //----------------------------------------------------------------------------//
-void IconvStringTranscoder::deleteUTF16Buffer(const uint16* input)
+void IconvStringTranscoder::deleteUTF16Buffer(const uint16* input) const
 {
     deleteTranscodeBuffer(input);
 }

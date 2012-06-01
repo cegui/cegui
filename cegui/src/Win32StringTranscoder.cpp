@@ -34,7 +34,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-uint16* Win32StringTranscoder::stringToUTF16(const String& input)
+uint16* Win32StringTranscoder::stringToUTF16(const String& input) const
 {
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,
                                         0, 0);
@@ -51,7 +51,7 @@ uint16* Win32StringTranscoder::stringToUTF16(const String& input)
 }
 
 //----------------------------------------------------------------------------//
-std::wstring Win32StringTranscoder::stringToStdWString(const String& input)
+std::wstring Win32StringTranscoder::stringToStdWString(const String& input) const
 {
     uint16* tmp = stringToUTF16(input);
     std::wstring result(reinterpret_cast<wchar_t*>(tmp));
@@ -88,7 +88,7 @@ static CEGUI::String stringFromUTF16(UINT codepage, const uint16* input)
 }
 
 //----------------------------------------------------------------------------//
-String Win32StringTranscoder::stringFromUTF16(const uint16* input)
+String Win32StringTranscoder::stringFromUTF16(const uint16* input) const
 {
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     return CEGUI::stringFromUTF16<utf8>(CP_UTF8, input);
@@ -98,13 +98,13 @@ String Win32StringTranscoder::stringFromUTF16(const uint16* input)
 }
 
 //----------------------------------------------------------------------------//
-String Win32StringTranscoder::stringFromStdWString(const std::wstring& input)
+String Win32StringTranscoder::stringFromStdWString(const std::wstring& input) const
 {
     return stringFromUTF16(reinterpret_cast<const uint16*>(input.c_str()));
 }
 
 //----------------------------------------------------------------------------//
-void Win32StringTranscoder::deleteUTF16Buffer(const uint16* input)
+void Win32StringTranscoder::deleteUTF16Buffer(const uint16* input) const
 {
     const uint16* b = input;
     while (*b++);

@@ -54,7 +54,7 @@ public:
         Pointer to an array of utf16 values.  This buffer should be deleted by
         calling the deleteUTF16Buffer function.
     */
-    virtual uint16* stringToUTF16(const String& input) = 0;
+    virtual uint16* stringToUTF16(const String& input) const = 0;
 
     /*!
     \brief
@@ -75,7 +75,7 @@ public:
         means that on Microsoft Windows you will have UTF-16 and on *nix type
         environments you will have UTF-32.
     */
-    virtual std::wstring stringToStdWString(const String& input) = 0;
+    virtual std::wstring stringToStdWString(const String& input) const = 0;
 
     /*
     \brief
@@ -89,7 +89,7 @@ public:
     \return
         String object holding the transcoded data.
     */
-    virtual String stringFromUTF16(const uint16* input) = 0;
+    virtual String stringFromUTF16(const uint16* input) const = 0;
 
     /*
     \brief
@@ -111,10 +111,10 @@ public:
         assume that blithely passing what you think is UTF-16 data in a
         std::wstring will work everywhere - because it wont.
     */
-    virtual String stringFromStdWString(const std::wstring& input) = 0;
+    virtual String stringFromStdWString(const std::wstring& input) const = 0;
 
     //! deletes a buffer returned from the stringToUTF16 function.
-    virtual void deleteUTF16Buffer(const uint16* input) = 0;
+    virtual void deleteUTF16Buffer(const uint16* input) const = 0;
 
 protected:
     virtual ~StringTranscoder() {}

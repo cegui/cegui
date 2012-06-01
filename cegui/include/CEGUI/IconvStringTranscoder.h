@@ -38,11 +38,11 @@ class IconvStringTranscoder : public StringTranscoder
 {
 public:
     // implement abstract interface
-    uint16* stringToUTF16(const String& input);
-    std::wstring stringToStdWString(const String& input);
-    String stringFromUTF16(const uint16* input);
-    String stringFromStdWString(const std::wstring& input);
-    void deleteUTF16Buffer(const uint16* input);
+    uint16* stringToUTF16(const String& input) const;
+    std::wstring stringToStdWString(const String& input) const;
+    String stringFromUTF16(const uint16* input) const;
+    String stringFromStdWString(const std::wstring& input) const;
+    void deleteUTF16Buffer(const uint16* input) const;
 };
 
 }
