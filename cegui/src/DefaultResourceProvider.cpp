@@ -4,7 +4,7 @@
     author:     James '_mental_' O'Sullivan
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,55 +31,10 @@
 #include <stdio.h>
 
 #if defined(__WIN32__) || defined(_WIN32)
+#   include "CEGUI/System.h"
 #   include <io.h>
 #   include <windows.h>
 #   include <string>
-
-//----------------------------------------------------------------------------//
-std::wstring Utf8ToUtf16(const std::string& utf8text)
-{
-    const int textLen = MultiByteToWideChar(CP_UTF8, 0, utf8text.c_str(),
-                                            utf8text.size() + 1, 0, 0);
-
-    if (textLen == 0)
-        CEGUI_THROW(CEGUI::InvalidRequestException(
-            "Utf8ToUtf16 - MultiByteToWideChar failed"));
-
-    std::wstring wideStr(textLen, 0);
-    MultiByteToWideChar(CP_UTF8, 0, utf8text.c_str(), utf8text.size() + 1,
-                        &wideStr[0], wideStr.size());
-    return wideStr;
-}
-
-//----------------------------------------------------------------------------//
-CEGUI::String Utf16ToString(const wchar_t* const utf16text)
-{
-    const int len = WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
-                                        0, 0, 0, 0);
-    if (!len)
-        CEGUI_THROW(CEGUI::InvalidRequestException(
-            "Utf16ToUtf8 - WideCharToMultiByte failed"));
-
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    CEGUI::utf8* buff = CEGUI_NEW_ARRAY_PT(CEGUI::utf8, len + 1, CEGUI::BufferAllocator);
-    WideCharToMultiByte(CP_UTF8, 0, utf16text, -1,
-                        reinterpret_cast<char*>(buff), len, 0, 0);
-    const CEGUI::String result(buff);
-
-    CEGUI_DELETE_ARRAY_PT(buff, CEGUI::utf8, len + 1, CEGUI::BufferAllocator);
-#else
-    CEGUI::String::value_type* buff = CEGUI_NEW_ARRAY_PT(CEGUI::String::value_type, len + 1, CEGUI::BufferAllocator);
-    WideCharToMultiByte(CP_ACP, 0, utf16text, -1,
-                        static_cast<char*>(buff), len, 0, 0);
-    const CEGUI::String result(buff);
-
-    CEGUI_DELETE_ARRAY_PT(buff, CEGUI::String::value_type, len + 1, CEGUI::BufferAllocator);
-#endif
-
-    return result;
-}
-
-//----------------------------------------------------------------------------//
 #else
 #   include <sys/types.h>
 #   include <sys/stat.h>
@@ -103,7 +58,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     const String final_filename(getFinalFilename(filename, resourceGroup));
 
 #if defined(__WIN32__) || defined(_WIN32)
-    FILE* file = _wfopen(Utf8ToUtf16(final_filename.c_str()).c_str(), L"rb");
+    FILE* file = _wfopen(System::getStringTranscoder().stringToStdWString(final_filename).c_str(), L"rb");
 #else
     FILE* file = fopen(final_filename.c_str(), "rb");
 #endif
@@ -224,14 +179,15 @@ size_t DefaultResourceProvider::getResourceGroupFileNames(
     intptr_t f;
     struct _wfinddata_t fd;
 
-    if ((f = _wfindfirst(Utf8ToUtf16((dir_name + file_pattern).c_str()).c_str(), &fd)) != -1)
+    if ((f = _wfindfirst(System::getStringTranscoder().stringToStdWString(
+            dir_name + file_pattern).c_str(), &fd)) != -1)
     {
         do
         {
             if ((fd.attrib & _A_SUBDIR))
                 continue;
 
-            out_vec.push_back(Utf16ToString(fd.name));
+            out_vec.push_back(System::getStringTranscoder().stringFromStdWString(fd.name));
             ++entries;
         }
         while (_wfindnext(f, &fd) == 0);
