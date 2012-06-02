@@ -1,0 +1,30 @@
+/***********************************************************************
+	FontManager
+***********************************************************************/
+class FontManager
+{
+	static FontManager& getSingleton();
+
+    //tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromContainer(const RawDataContainer& source, XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromFile(utf8string xml_filename, utf8string resource_group = "", XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromString(utf8string source, XMLResourceExistsAction action = XREA_RETURN);
+
+    tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::GenericException,error| Font& createFreeTypeFont(utf8string font_name, float point_size, bool anti_aliased,
+                                                                string font_filename, utf8string resource_group = "", bool auto_scaled = false,
+                                                                float native_horz_res = 640.0f, float native_vert_res = 480.0f,
+                                                                XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createPixmapFont(utf8string font_name, utf8string imageset_filename, utf8string resource_group = "",
+                                                                const bool auto_scaled = false, const float native_horz_res = 640.0f,
+                                                                const float native_vert_res = 480.0f, XMLResourceExistsAction action = XREA_RETURN);
+
+	void destroy(utf8string name);
+	void destroy(Font& font);
+	void destroyAll();
+
+	bool isDefined(utf8string name) const;
+	Font& get(utf8string name) const;
+
+	void notifyDisplaySizeChanged(const Size<float>& sz);
+
+    FontIterator getIterator() const;
+};

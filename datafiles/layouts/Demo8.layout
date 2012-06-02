@@ -1,130 +1,130 @@
 <?xml version="1.0" ?>
-<GUILayout>
-<Window Type="DefaultGUISheet" Name="root">
-    <Window Type="DefaultGUISheet" Name="Demo8">
-        <Property Name="UnifiedMaxSize" Value="{{1,0},{2,0}}" />
-        <Property Name="UnifiedSize" Value="{{1,0},{2,0}}" />
+<GUILayout version="4">
+<Window name="root" type="DefaultWindow">
+    <Window name="Demo8" type="DefaultWindow">
+        <Property name="MaxSize" value="{{1,0},{2,0}}" />
+        <Property name="Size" value="{{1,0},{2,0}}" />
 
-        <Window Type="TaharezLook/LargeVerticalScrollbar" Name="Demo8/ViewScroll">
-            <Property Name="UnifiedPosition" Value="{{0,0},{0,0}}" />
-            <Property Name="UnifiedSize" Value="{{0.03,0},{0.75,0}}" />
-            <Property Name="DocumentSize" Value="2" />
-            <Property Name="PageSize" Value="1" />
-            <Property Name="StepSize" Value="0.01" />
-            <Property Name="OverlapSize" Value="0.5" />
-            <Property Name="Tooltip" Value="This scrollbar will scroll the window layout." />
+        <Window name="ViewScroll" type="TaharezLook/LargeVerticalScrollbar">
+            <Property name="Position" value="{{0,0},{0,0}}" />
+            <Property name="Size" value="{{0.03,0},{0.75,0}}" />
+            <Property name="DocumentSize" value="2" />
+            <Property name="PageSize" value="1" />
+            <Property name="StepSize" value="0.01" />
+            <Property name="OverlapSize" value="0.5" />
+            <Property name="TooltipText" value="This scrollbar will scroll the window layout." />
         </Window>
 
-        <Window Type="TaharezLook/FrameWindow" Name="Demo8/Window1">
-            <Property Name="UnifiedPosition" Value="{{0.05,0},{0.1,0}}" />
-            <Property Name="UnifiedMaxSize" Value="{{0.5,0},{1,0}}" />
-            <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
-            <Property Name="UnifiedSize" Value="{{0.4,0},{0.3,0}}" />
-            <Property Name="Text" Value="Demo 8 - Listbox Demo" />
-            <Property Name="Tooltip" Value="Window shows a simple Listbox demo." />
+        <Window name="Window1" type="TaharezLook/FrameWindow">
+            <Property name="Position" value="{{0.05,0},{0.1,0}}" />
+            <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
+            <Property name="MinSize" value="{{0,128},{0,128}}" />
+            <Property name="Size" value="{{0.4,0},{0.3,0}}" />
+            <Property name="Text" value="Demo 8 - Listbox Demo" />
+            <Property name="TooltipText" value="Window shows a simple Listbox demo." />
 
-            <Window Type="TaharezLook/Listbox" Name="Demo8/Window1/Listbox">
-                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.05,0}}" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedSize" Value="{{0.9,0},{0.38,0}}" />
-                <Property Name="Tooltip" Value="Listbox containing the items you have added." />
+            <Window name="Listbox" type="TaharezLook/Listbox">
+                <Property name="Position" value="{{0.05,0},{0.05,0}}" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="Size" value="{{0.9,0},{0.38,0}}" />
+                <Property name="TooltipText" value="Listbox containing the items you have added." />
             </Window>
 
-            <Window Type="TaharezLook/StaticText" Name="Demo8/Window1/Controls">
-                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.45,0}}" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedSize" Value="{{0.9,0},{0.5,0}}" />
+            <Window name="Controls" type="TaharezLook/StaticText">
+                <Property name="Position" value="{{0.05,0},{0.45,0}}" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="Size" value="{{0.9,0},{0.5,0}}" />
 
-                <Window Type="TaharezLook/HorizontalScrollbar" Name="Demo8/Window1/Controls/Red">
-                    <Property Name="UnifiedPosition" Value="{{0.05,0},{0.05,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.9,0},{0.06,0}}" />
-                    <Property Name="DocumentSize" Value="1" />
-                    <Property Name="PageSize" Value="0.0625" />
-                    <Property Name="StepSize" Value="0.00392" />
-                    <Property Name="OverlapSize" Value="0.00392" />
-                    <Property Name="Tooltip" Value="Slider to adjust the red colour component." />
+                <Window name="Red" type="TaharezLook/HorizontalScrollbar">
+                    <Property name="Position" value="{{0.05,0},{0.05,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.9,0},{0.06,0}}" />
+                    <Property name="DocumentSize" value="1" />
+                    <Property name="PageSize" value="0.0625" />
+                    <Property name="StepSize" value="0.00392" />
+                    <Property name="OverlapSize" value="0.00392" />
+                    <Property name="TooltipText" value="Slider to adjust the red colour component." />
                 </Window>
 
-                <Window Type="TaharezLook/HorizontalScrollbar" Name="Demo8/Window1/Controls/Green">
-                    <Property Name="UnifiedPosition" Value="{{0.05,0},{0.12,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.9,0},{0.06,0}}" />
-                    <Property Name="DocumentSize" Value="1" />
-                    <Property Name="PageSize" Value="0.0625" />
-                    <Property Name="StepSize" Value="0.00392" />
-                    <Property Name="OverlapSize" Value="0.00392" />
-                    <Property Name="Tooltip" Value="Slider to adjust the green colour component." />
+                <Window name="Green" type="TaharezLook/HorizontalScrollbar">
+                    <Property name="Position" value="{{0.05,0},{0.12,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.9,0},{0.06,0}}" />
+                    <Property name="DocumentSize" value="1" />
+                    <Property name="PageSize" value="0.0625" />
+                    <Property name="StepSize" value="0.00392" />
+                    <Property name="OverlapSize" value="0.00392" />
+                    <Property name="TooltipText" value="Slider to adjust the green colour component." />
                 </Window>
 
-                <Window Type="TaharezLook/HorizontalScrollbar" Name="Demo8/Window1/Controls/Blue">
-                    <Property Name="UnifiedPosition" Value="{{0.05,0},{0.19,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.9,0},{0.06,0}}" />
-                    <Property Name="DocumentSize" Value="1" />
-                    <Property Name="PageSize" Value="0.0625" />
-                    <Property Name="StepSize" Value="0.00392" />
-                    <Property Name="OverlapSize" Value="0.00392" />
-                    <Property Name="Tooltip" Value="Slider to adjust the blue colour component." />
+                <Window name="Blue" type="TaharezLook/HorizontalScrollbar">
+                    <Property name="Position" value="{{0.05,0},{0.19,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.9,0},{0.06,0}}" />
+                    <Property name="DocumentSize" value="1" />
+                    <Property name="PageSize" value="0.0625" />
+                    <Property name="StepSize" value="0.00392" />
+                    <Property name="OverlapSize" value="0.00392" />
+                    <Property name="TooltipText" value="Slider to adjust the blue colour component." />
                 </Window>
 
-                <Window Type="TaharezLook/StaticImage" Name="Demo8/Window1/Controls/ColourSample">
-                    <Property Name="UnifiedPosition" Value="{{0.05,0},{0.26,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.9,0},{0.1,0}}" />
-                    <Property Name="Image" Value="set:TaharezLook image:MultiListSelectionBrush" />
-                    <Property Name="ImageColours" Value="tl:0 tr:0 bl:0 br:0" />
-                    <Property Name="Tooltip" Value="Shows a sample of the selected colour." />
+                <Window name="ColourSample" type="TaharezLook/StaticImage">
+                    <Property name="Position" value="{{0.05,0},{0.26,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.9,0},{0.1,0}}" />
+                    <Property name="Image" value="TaharezLook/MultiListSelectionBrush" />
+                    <Property name="ImageColours" value="tl:0 tr:0 bl:0 br:0" />
+                    <Property name="TooltipText" value="Shows a sample of the selected colour." />
                 </Window>
 
-                <Window Type="TaharezLook/Editbox" Name="Demo8/Window1/Controls/Editbox">
-                    <Property Name="UnifiedPosition" Value="{{0.05,0},{0.38,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.6,0},{0.15,0}}" />
-                    <Property Name="Tooltip" Value="Enter the text for a new Listbox item here." />
+                <Window name="Editbox" type="TaharezLook/Editbox">
+                    <Property name="Position" value="{{0.05,0},{0.38,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.6,0},{0.15,0}}" />
+                    <Property name="TooltipText" value="Enter the text for a new Listbox item here." />
                 </Window>
 
-                <Window Type="TaharezLook/Button" Name="Demo8/Window1/Controls/Add">
-                    <Property Name="UnifiedPosition" Value="{{0.68,0},{0.38,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.3,0},{0.15,0}}" />
-                    <Property Name="Text" Value="Add" />
-                    <Property Name="Tooltip" Value="Adds a new item to the Listbox." />
+                <Window name="Add" type="TaharezLook/Button">
+                    <Property name="Position" value="{{0.68,0},{0.38,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.3,0},{0.15,0}}" />
+                    <Property name="Text" value="Add" />
+                    <Property name="TooltipText" value="Adds a new item to the Listbox." />
                 </Window>
 
-                <Window Type="TaharezLook/StaticText" Name="Demo8/Window1/Controls/ins1">
-                    <Property Name="UnifiedPosition" Value="{{0.05,0},{0.55,0}}" />
-                    <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                    <Property Name="UnifiedSize" Value="{{0.9,0},{0.4,0}}" />
-                    <Property Name="HorzFormatting" Value="WordWrapCentred" />
-                    <Property Name="Text" Value="Use this panel to add items.  The scrollbars change the selection colour." />
-                    <Property Name="Tooltip" Value="Information panel." />
+                <Window name="ins1" type="TaharezLook/StaticText">
+                    <Property name="Position" value="{{0.05,0},{0.55,0}}" />
+                    <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                    <Property name="Size" value="{{0.9,0},{0.4,0}}" />
+                    <Property name="HorzFormatting" value="WordWrapCentreAligned" />
+                    <Property name="Text" value="Use this panel to add items.  The scrollbars change the selection colour." />
+                    <Property name="TooltipText" value="Information panel." />
                 </Window>
             </Window>
         </Window>
 
-        <Window Type="TaharezLook/FrameWindow" Name="Demo8/Window2">
-            <Property Name="UnifiedPosition" Value="{{0.55,0},{0.1,0}}" />
-            <Property Name="UnifiedMaxSize" Value="{{0.5,0},{1,0}}" />
-            <Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
-            <Property Name="UnifiedSize" Value="{{0.4,0},{0.3,0}}" />
-            <Property Name="Text" Value="Demo 8 - Information Window" />
-            <Property Name="Tooltip" Value="Contains some StaticText information panels" />
+        <Window name="Window2" type="TaharezLook/FrameWindow">
+            <Property name="Position" value="{{0.55,0},{0.1,0}}" />
+            <Property name="MaxSize" value="{{0.5,0},{1,0}}" />
+            <Property name="MinSize" value="{{0,128},{0,128}}" />
+            <Property name="Size" value="{{0.4,0},{0.3,0}}" />
+            <Property name="Text" value="Demo 8 - Information Window" />
+            <Property name="TooltipText" value="Contains some StaticText information panels" />
 
-            <Window Type="TaharezLook/StaticText" Name="Demo8/Window2/Info">
-                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.05,0}}" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedSize" Value="{{0.9,0},{0.3,0}}" />
-                <Property Name="HorzFormatting" Value="WordWrapCentred" />
-                <Property Name="Text" Value="The panel below gives some information about the item under the mouse." />
+            <Window name="Info" type="TaharezLook/StaticText">
+                <Property name="Position" value="{{0.05,0},{0.05,0}}" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="Size" value="{{0.9,0},{0.3,0}}" />
+                <Property name="HorzFormatting" value="WordWrapCentreAligned" />
+                <Property name="Text" value="The panel below gives some information about the item under the mouse." />
             </Window>
     
-            <Window Type="TaharezLook/StaticText" Name="Demo8/Window2/Tips">
-                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.4,0}}" />
-                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
-                <Property Name="UnifiedSize" Value="{{0.9,0},{0.55,0}}" />
-                <Property Name="HorzFormatting" Value="WordWrapCentred" />
-                <Property Name="Text" Value="We removed this, and now use proper Tooltips instead!" />
+            <Window name="Tips" type="TaharezLook/StaticText">
+                <Property name="Position" value="{{0.05,0},{0.4,0}}" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="Size" value="{{0.9,0},{0.55,0}}" />
+                <Property name="HorzFormatting" value="WordWrapCentreAligned" />
+                <Property name="Text" value="We removed this, and now use proper tool tips instead!" />
             </Window>
         </Window>
     </Window>

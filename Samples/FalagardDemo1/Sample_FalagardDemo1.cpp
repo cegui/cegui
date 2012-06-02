@@ -26,8 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_FalagardDemo1.h"
-#include "CEGUI.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUI/CEGUI.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {
@@ -54,15 +53,17 @@ bool FalagardDemo1Sample::initialiseSample()
 {
     using namespace CEGUI;
 
+    Logger::getSingleton().setLoggingLevel(Informative);
+
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
     // Load the scheme to initialse the VanillaSkin which we use in this sample
-    SchemeManager::getSingleton().create("VanillaSkin.scheme");
+    SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     // set default mouse image
-    System::getSingleton().setDefaultMouseCursor("Vanilla-Images", "MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
-    ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -72,17 +73,17 @@ bool FalagardDemo1Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "set:BackgroundImage image:full_image");
+    background->setProperty("Image", "BackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().setGUISheet(background);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load some demo windows and attach to the background 'root'
-    background->addChildWindow(winMgr.loadWindowLayout("VanillaWindows.layout"));
-
+    background->addChild(winMgr.loadLayoutFromFile("VanillaWindows.layout"));
+    
     // create an instance of the console class.
-    d_console = new DemoConsole("Demo");
+    d_console = new DemoConsole();
 
     // listen for key presses on the root window.
     background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&FalagardDemo1Sample::handleRootKeyDown, this));
@@ -137,8 +138,8 @@ const unsigned int DemoConsole::EntryBoxID     = 2;
 const unsigned int DemoConsole::HistoryID      = 3;
 
 
-DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
-    d_root(CEGUI::WindowManager::getSingleton().loadWindowLayout("VanillaConsole.layout", id_name)),
+DemoConsole::DemoConsole(CEGUI::Window* parent) :
+    d_root(CEGUI::WindowManager::getSingleton().loadLayoutFromFile("VanillaConsole.layout")),
     d_historyPos(0)
 {
     using namespace CEGUI;
@@ -156,11 +157,11 @@ DemoConsole::DemoConsole(const CEGUI::String& id_name, CEGUI::Window* parent) :
         subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&DemoConsole::handleSubmit, this));
 
     // decide where to attach the console main window
-    parent = parent ? parent : CEGUI::System::getSingleton().getGUISheet();
+    parent = parent ? parent : CEGUI::System::getSingleton().getDefaultGUIContext().getRootWindow();
 
     // attach this window if parent is valid
     if (parent)
-        parent->addChildWindow(d_root);
+        parent->addChild(d_root);
 }
 
 DemoConsole::~DemoConsole()
@@ -171,12 +172,12 @@ DemoConsole::~DemoConsole()
 
 void DemoConsole::toggleVisibility()
 {
-    d_root->isVisible(true) ? d_root->hide() : d_root->show();
+    d_root->isVisible() ? d_root->hide() : d_root->show();
 }
 
 bool DemoConsole::isVisible() const
 {
-    return d_root->isVisible();
+    return d_root->isEffectiveVisible();
 }
 
 bool DemoConsole::handleSubmit(const CEGUI::EventArgs&)
@@ -201,7 +202,7 @@ bool DemoConsole::handleSubmit(const CEGUI::EventArgs&)
         // append new text to history output
         history->setText(history->getText() + edit_text);
         // scroll to bottom of history output
-        history->setCaratIndex(static_cast<size_t>(-1));
+        history->setCaretIndex(static_cast<size_t>(-1));
         // erase text in text entry box.
         editbox->setText("");
     }
@@ -226,7 +227,7 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
         if (d_historyPos >= 0)
         {
             editbox->setText(d_history[d_historyPos]);
-            editbox->setCaratIndex(static_cast<size_t>(-1));
+            editbox->setCaretIndex(static_cast<size_t>(-1));
         }
         else
         {
@@ -241,7 +242,7 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
         if (d_historyPos < static_cast<int>(d_history.size()))
         {
             editbox->setText(d_history[d_historyPos]);
-            editbox->setCaratIndex(static_cast<size_t>(-1));
+            editbox->setCaretIndex(static_cast<size_t>(-1));
         }
         else
         {

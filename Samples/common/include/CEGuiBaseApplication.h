@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -48,58 +48,70 @@
     Forward refs
 *************************************************************************/
 class CEGuiSample;
-
+namespace CEGUI
+{
+class Renderer;
+class ImageCodec;
+class ResourceProvider;
+class GeometryBuffer;
+class EventArgs;
+}
 
 /*!
 \brief
     Base application abstract base class.
- 
-    The "BaseApplication" family of classes are used to start up and execute a host application for
-    CeGui samples in a consistent manner.
+
+    The "BaseApplication" family of classes are used to start up and execute a
+    host application for CeGui samples in a consistent manner.
 */
 class CEGuiBaseApplication
 {
 public:
-    /*!
-    \brief
-        Constructor.
-    */
-    CEGuiBaseApplication() :
-        d_quitting(false)
-    { }
+    //! Constructor.
+    CEGuiBaseApplication();
 
-
-    /*!
-    \brief
-        Destructor
-    */
-    virtual ~CEGuiBaseApplication()
-    { }
-
+    //! Destructor
+    virtual ~CEGuiBaseApplication();
 
     /*!
     \brief
         Start the base application
 
-        This will fully initialise the application, finish initialisation of the demo via calls to 'sampleApp', and finally
-        control execution of the sample.
+        This will fully initialise the application, finish initialisation of the
+        demo via calls to 'sampleApp', and finally control execution of the
+        sample.  This calls calls the virtual execute_impl function.
 
     \param sampleApp
-        Pointer to the CEGuiSample object that the CEGuiBaseApplication is being invoked for.
+        Pointer to the CEGuiSample object that the CEGuiBaseApplication is being
+        invoked for.
 
     \return
-        - true if the application initialised and ran okay (cleanup call is required).
-        - false if the application failed to initialise (no cleanup call is required).
+        - true if the application initialised and ran okay (cleanup function
+          will be called).
+        - false if the application failed to initialise (cleanup function will
+          not be called).
     */
-    virtual bool execute(CEGuiSample* sampleApp) = 0;
-
+    bool execute(CEGuiSample* sampleApp);
 
     /*!
     \brief
-        Performs any required cleanup of the base application system.
+        Performs any required cleanup of the base application system.  This
+        calls the cleanup_impl function.
     */
-    virtual void cleanup() = 0;
+    void cleanup();
 
+    /*!
+    \brief
+        Render a single display frame.  This should be called by subclasses to
+        perform rendering.
+
+        This function handles all per-frame updates, calls beginRendering, then
+        renders the CEGUI output, and finally calls endRendering.
+
+    \param elapsed
+        Number of seconds elapsed since last frame.
+    */
+    void renderSingleFrame(const float elapsed);
 
     /*!
     \brief
@@ -111,8 +123,7 @@ public:
     \return
         Nothing.
     */
-    virtual void setQuitting(bool quit = true)      { d_quitting = quit; }
-
+    virtual void setQuitting(bool quit = true);
 
     /*!
     \brief
@@ -122,9 +133,21 @@ public:
         - true if the application will terminate at its earliest opportunity.
         - false if the application will keep running.
     */
-    virtual bool isQuitting() const     { return d_quitting; }
+    virtual bool isQuitting() const;
 
 protected:
+    //! name of env var that holds the path prefix to the data files.
+    static const char DATAPATH_VAR_NAME[];
+
+    //! implementation provided execution implementaion.
+    virtual bool execute_impl(CEGuiSample* sampleApp) = 0;
+    //! implementation provided cleanup implementation.
+    virtual void cleanup_impl() = 0;
+    //! Implementation function to perform required pre-render operations.
+    virtual void beginRendering(const float elapsed) = 0;
+    //! Implementation function to perform required post-render operations.
+    virtual void endRendering() = 0;
+
     /*!
     \brief
         Setup standard sample resource group directory locations.  Default uses
@@ -136,6 +159,17 @@ protected:
     //! initialise the standard default resource groups used by the samples.
     virtual void initialiseDefaultResourceGroups();
 
+    //! function that updates the FPS rendering as needed.
+    void updateFPS(const float elapsed);
+    //! function that updates the logo rotation as needed.
+    void updateLogo(const float elapsed);
+    //! function that positions the logo in the correct place.
+    void positionLogo();
+    //! event handler function that draws the logo and FPS overlay elements.
+    bool overlayHandler(const CEGUI::EventArgs& args);
+    //! event handler function called when main view is resized
+    bool resizeHandler(const CEGUI::EventArgs& args);
+
     /*!
     \brief
         Return the path prefix to use for datafiles.  The value returned
@@ -145,10 +179,26 @@ protected:
     */
     const char* getDataPathPrefix() const;
 
-    //! name of env var that holds the path prefix to the data files.
-    static const char DATAPATH_VAR_NAME[];
-
-    bool    d_quitting;     //!< true when the base app should cleanup and exit.
+    //! true when the base app should cleanup and exit.
+    bool d_quitting;
+    //! Renderer to use.  This MUST be set in the subclass constructor.
+    CEGUI::Renderer* d_renderer;
+    //! ImageCodec to use.  Set in subclass constructor, may be 0.
+    CEGUI::ImageCodec* d_imageCodec;
+    //! ResourceProvider to use.  Set in subclass constructor, may be 0.
+    CEGUI::ResourceProvider* d_resourceProvider;
+    //! GeometryBuffer used for drawing the spinning CEGUI logo
+    CEGUI::GeometryBuffer* d_logoGeometry;
+    //! GeometryBuffer used for drawing the FPS value.
+    CEGUI::GeometryBuffer* d_FPSGeometry;
+    //! Fraction of second elapsed (used for counting frames per second).
+    float d_FPSElapsed;
+    //! Number of frames drawn so far.
+    int d_FPSFrames;
+    //! Last changed FPS value.
+    int d_FPSValue;
+    //! whether to spin the logo
+    bool d_spinLogo;
 };
 
 #endif  // end of guard _CEGuiBaseApplication_h_
