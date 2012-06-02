@@ -47,16 +47,13 @@ void register_DefaultLogger_class(){
         typedef bp::class_< DefaultLogger_wrapper, bp::bases< CEGUI::Logger >, boost::noncopyable > DefaultLogger_exposer_t;
         DefaultLogger_exposer_t DefaultLogger_exposer = DefaultLogger_exposer_t( "DefaultLogger", "*!\n\
         \n\
-           Default implementation for the Logger class.\n\
+            Default implementation for the Logger class.\n\
             If you want to redirect CEGUI logs to some place other than a text file,\n\
             implement your own Logger implementation and create a object of the\n\
             Logger type before creating the CEGUI.System singleton.\n\
         *\n", bp::no_init );
         bp::scope DefaultLogger_scope( DefaultLogger_exposer );
-        DefaultLogger_exposer.def( bp::init< >("*!\n\
-        \n\
-           Constructor for DefaultLogger object.\n\
-        *\n") );
+        DefaultLogger_exposer.def( bp::init< >() );
         { //::CEGUI::DefaultLogger::logEvent
         
             typedef void ( ::CEGUI::DefaultLogger::*logEvent_function_type )( ::CEGUI::String const &,::CEGUI::LoggingLevel ) ;

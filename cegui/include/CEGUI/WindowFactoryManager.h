@@ -320,6 +320,12 @@ public:
 	*/
 	void	removeWindowTypeAlias(const String& aliasName, const String& targetType);
 
+	/*!
+	\brief
+		Remove all registered window type alias mappings.
+	*/
+	void removeAllWindowTypeAliases();
+
     /*!
     \brief
         Add a mapping for a falagard based window.
@@ -365,6 +371,12 @@ public:
         Nothing.
     */
     void removeFalagardWindowMapping(const String& type);
+
+    /*!
+	\brief
+		Remove all registered falagard type mappings
+	*/
+    void removeAllFalagardWindowMappings();
 
     /*!
     \brief
