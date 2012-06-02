@@ -102,6 +102,7 @@
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/String.h"
+#include "CEGUI/StringTranscoder.h"
 #include "CEGUI/System.h"
 #include "CEGUI/SystemKeys.h"
 #include "CEGUI/Texture.h"
