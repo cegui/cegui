@@ -15,10 +15,6 @@ struct System_wrapper : CEGUI::System, bp::wrapper< CEGUI::System > {
     
     }
 
-    void addStandardWindowFactories(  ){
-        CEGUI::System::addStandardWindowFactories(  );
-    }
-
     void cleanupImageCodec(  ){
         CEGUI::System::cleanupImageCodec(  );
     }
@@ -110,12 +106,19 @@ void register_System_class(){
         System_exposer.def( bp::init< CEGUI::Renderer &, CEGUI::ResourceProvider *, CEGUI::XMLParser *, CEGUI::ImageCodec *, CEGUI::ScriptModule *, CEGUI::String const &, CEGUI::String const & >(( bp::arg("renderer"), bp::arg("resourceProvider"), bp::arg("xmlParser"), bp::arg("imageCodec"), bp::arg("scriptModule"), bp::arg("configFile"), bp::arg("logFile") )) );
         { //::CEGUI::System::addStandardWindowFactories
         
-            typedef void ( System_wrapper::*addStandardWindowFactories_function_type )(  ) ;
+            typedef void ( ::CEGUI::System::*addStandardWindowFactories_function_type )(  ) ;
             
             System_exposer.def( 
                 "addStandardWindowFactories"
-                , addStandardWindowFactories_function_type( &System_wrapper::addStandardWindowFactories )
-                , "! adds factories for all the basic window types\n" );
+                , addStandardWindowFactories_function_type( &::CEGUI::System::addStandardWindowFactories )
+                , "*!\n\
+                 adds factories for all the basic window types\n\
+            \n\
+                You do not need to call this manually! Standard Window factories will be\n\
+                added automatically. One occasion when you will need this is if you\n\
+                remove all window factories from WindowFactoryManager and want to add the\n\
+                standard ones back\n\
+                *\n" );
         
         }
         { //::CEGUI::System::cleanupImageCodec
