@@ -282,7 +282,7 @@ void Affector::apply(AnimationInstance* instance)
     if (d_targetProperty.empty())
     {
         Logger::getSingleton().logEvent(
-            "Affector can't be applied when target property is set!", Warnings);
+            "Affector can't be applied when target property is empty!", Warnings);
         return;
     }
 
