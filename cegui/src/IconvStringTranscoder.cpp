@@ -30,6 +30,7 @@
 #include <vector>
 #include <iconv.h>
 #include <errno.h>
+#include <locale>
 
 namespace CEGUI
 {
@@ -180,19 +181,84 @@ std::wstring IconvStringTranscoder::stringToStdWString(const String& input) cons
 //----------------------------------------------------------------------------//
 String IconvStringTranscoder::stringFromUTF16(const uint16* input) const
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     IconvHelper ich("UTF-8", "UTF-16");
     return iconvTranscode<String, utf8>(
         ich, reinterpret_cast<const char*>(input),
         getStringLength(input) * sizeof(uint16));
+#else
+    IconvHelper ich("WCHAR_T", "UTF-16");
+    return stringFromStdWString(iconvTranscode<std::wstring, wchar_t>(
+        ich, reinterpret_cast<const char*>(input), getStringLength(input)));
+#endif
 }
 
 //----------------------------------------------------------------------------//
 String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) const
 {
+#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
     IconvHelper ich("UTF-8", "WCHAR_T");
     return iconvTranscode<String, utf8>(
         ich, reinterpret_cast<const char*>(input.c_str()),
         input.length() * sizeof(wchar_t));
+#else
+    /*
+     * WTF is this shit - a short story by CrazyEddie
+     *
+     * One of the following implementations are for use when CEGUI::String is
+     * not the unicode capable versions.  Neither of these implementations
+     * perform ideally, which is why I left both here - as it is intended
+     * that eventually we may come back here and improve this.
+     *
+     * The codecvt version (1st one) overall does a better job, because when
+     * the locale is mbcs compliant, it is able to produce encoded output
+     * that will likely match what client code is using elsewhere.  The
+     * problem with it is that when using a non-mbcs locale (such as the
+     * basic C or maybe an ISO8859-1 locale, a source character that will
+     * not fit causes the conversion to fail (and we throw an exception).
+     *
+     * The ctype version (2nd one) provides us the facility to use a 'default'
+     * character for those codes that can not be represented by a single
+     * character in the target locale - and the conversion will always
+     * succeed, though some data may be lost in translation.  The 'bad'
+     * part about using ctype for conversion is that it is a single code
+     * unit mapping, which means when the user has a mbcs locale, characters
+     * that should be correcly represented (i.e they would be converted by
+     * the codecvt version) are instead replaced by the default character.
+     *
+     * The ideal scenario for us would be able to use the codecvt approach but
+     * also have a default character for use when conversion is impossible. This
+     * would be the closest match to what is done on the Win32 implementation
+     * that uses WideCharToMultiByte passing the CP_ACP value.
+     */
+    std::locale conv_locale("");
+    std::vector<String::value_type> buf(input.length() * 6 + 1);
+
+#if 0
+    typedef std::codecvt<wchar_t, char, mbstate_t> Converter;
+    const Converter& facet =  std::use_facet<Converter>(conv_locale);
+
+    mbstate_t conv_state;
+    const wchar_t* from_next;
+    String::value_type* to_next;
+
+    const Converter::result result = 
+        facet.out(conv_state, &input[0],  &input[input.length()],  from_next,
+                              &buf[0], &buf[buf.size()], to_next);
+
+    if (result == Converter::error || result == Converter::partial)
+        CEGUI_THROW(InvalidRequestException(
+            "IconvStringTranscoder::stringFromStdWString: "
+            "conversion failed."));
+#else
+    const std::ctype<wchar_t>& facet = 
+        std::use_facet<std::ctype<wchar_t> >(conv_locale);
+
+    facet.narrow(&input[0], &input[input.length()], '?', &buf[0]);
+#endif
+    return String(&buf[0]);
+
+#endif
 }
 
 //----------------------------------------------------------------------------//
