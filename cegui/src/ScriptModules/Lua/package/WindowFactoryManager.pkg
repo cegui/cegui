@@ -30,6 +30,9 @@ class WindowFactoryManager
     String getDereferencedAliasType(utf8string type) const;
     const FalagardWindowMapping& getFalagardMappingForType(utf8string type) const;
 
+    void removeAllWindowTypeAliases();
+    void removeAllFalagardWindowMappings();
+
     WindowFactoryIterator getIterator() const;
     FalagardMappingIterator getFalagardMappingIterator() const;
 };
