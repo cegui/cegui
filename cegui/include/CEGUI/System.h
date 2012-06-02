@@ -548,6 +548,16 @@ public:
     GUIContext& createGUIContext(RenderTarget& rt);
     void destroyGUIContext(GUIContext& context);
 
+    /*!
+    \brief adds factories for all the basic window types
+
+    You do not need to call this manually! Standard Window factories will be
+    added automatically. One occasion when you will need this is if you
+    remove all window factories from WindowFactoryManager and want to add the
+    standard ones back
+    */
+    void addStandardWindowFactories();
+
 private:
     // unimplemented constructors / assignment
     System(const System& obj);
@@ -599,9 +609,6 @@ protected:
 
     //! output the standard log header
     void outputLogHeader();
-
-    //! adds factories for all the basic window types
-    void addStandardWindowFactories();
 
     //! create the other core system singleton objects (except the logger)
     void createSingletons();
