@@ -5828,14 +5828,17 @@ void register_Window_class(){
                 , ( bp::arg("name") )
                 , "*!\n\
                 \n\
-                    Assign the WindowRenderer to specify the Look'N'Feel specification\n\
-                    to be used.\n\
+                    Assign the WindowRenderer type to be used when rendering this window.\n\
             \n\
                 @param name\n\
                     The factory name of the WindowRenderer to use.\n\
             \n\
                 \note\n\
-                    Once a window renderer has been assigned it is locked - as in cannot be changed.\n\
+                    This is really intended as an internal function. The way that client\n\
+                    code is supposed to use skins is by defining a Falagard mapping (either\n\
+                    in a scheme xml file or in code) and then create instances of that\n\
+                    mapped type via WindowManager.  See\n\
+                    WindowFactoryManager.addFalagardWindowMapping and @see xml_scheme. \n\
                 *\n" );
         
         }

@@ -283,6 +283,11 @@ void WindowFactoryManager::removeWindowTypeAlias(const String& aliasName, const 
 
 }
 
+void WindowFactoryManager::removeAllWindowTypeAliases()
+{
+	d_aliasRegistry.clear();
+}
+
 void WindowFactoryManager::addFalagardWindowMapping(const String& newType,
                                                     const String& targetType,
                                                     const String& lookName,
@@ -322,6 +327,11 @@ void WindowFactoryManager::removeFalagardWindowMapping(const String& type)
         Logger::getSingleton().logEvent("Removing falagard mapping for type '" + type + "'.");
         d_falagardRegistry.erase(iter);
     }
+}
+
+void WindowFactoryManager::removeAllFalagardWindowMappings()
+{
+	d_falagardRegistry.clear();
 }
 
 WindowFactoryManager::FalagardMappingIterator WindowFactoryManager::getFalagardMappingIterator() const

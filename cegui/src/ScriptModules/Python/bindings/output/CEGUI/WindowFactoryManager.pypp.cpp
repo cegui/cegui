@@ -398,6 +398,32 @@ void register_WindowFactoryManager_class(){
                *\n" );
         
         }
+        { //::CEGUI::WindowFactoryManager::removeAllFalagardWindowMappings
+        
+            typedef void ( ::CEGUI::WindowFactoryManager::*removeAllFalagardWindowMappings_function_type )(  ) ;
+            
+            WindowFactoryManager_exposer.def( 
+                "removeAllFalagardWindowMappings"
+                , removeAllFalagardWindowMappings_function_type( &::CEGUI::WindowFactoryManager::removeAllFalagardWindowMappings )
+                , "*!\n\
+            \n\
+               Remove all registered falagard type mappings\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::WindowFactoryManager::removeAllWindowTypeAliases
+        
+            typedef void ( ::CEGUI::WindowFactoryManager::*removeAllWindowTypeAliases_function_type )(  ) ;
+            
+            WindowFactoryManager_exposer.def( 
+                "removeAllWindowTypeAliases"
+                , removeAllWindowTypeAliases_function_type( &::CEGUI::WindowFactoryManager::removeAllWindowTypeAliases )
+                , "*!\n\
+            \n\
+               Remove all registered window type alias mappings.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::WindowFactoryManager::removeFactory
         
             typedef void ( ::CEGUI::WindowFactoryManager::*removeFactory_function_type )( ::CEGUI::String const & ) ;
