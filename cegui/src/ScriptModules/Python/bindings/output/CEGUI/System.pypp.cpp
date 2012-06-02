@@ -528,6 +528,17 @@ void register_System_class(){
                *\n" );
         
         }
+        { //::CEGUI::System::getStringTranscoder
+        
+            typedef ::CEGUI::StringTranscoder const & ( *getStringTranscoder_function_type )(  );
+            
+            System_exposer.def( 
+                "getStringTranscoder"
+                , getStringTranscoder_function_type( &::CEGUI::System::getStringTranscoder )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "! Return the system StringTranscoder object\n" );
+        
+        }
         { //::CEGUI::System::getVerboseVersion
         
             typedef ::CEGUI::String const & ( *getVerboseVersion_function_type )(  );
@@ -1020,6 +1031,7 @@ void register_System_class(){
         System_exposer.staticmethod( "getMinorVersion" );
         System_exposer.staticmethod( "getPatchVersion" );
         System_exposer.staticmethod( "getSingleton" );
+        System_exposer.staticmethod( "getStringTranscoder" );
         System_exposer.staticmethod( "getVerboseVersion" );
         System_exposer.staticmethod( "getVersion" );
         System_exposer.staticmethod( "setDefaultImageCodecName" );
