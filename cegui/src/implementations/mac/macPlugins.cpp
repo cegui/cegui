@@ -26,7 +26,7 @@
  ***************************************************************************/
 #include <CoreFoundation/CoreFoundation.h>
 #include "macPlugins.h"
-#include "CEGUILogger.h"
+#include "CEGUI/Logger.h"
 
 namespace CEGUI 
 {

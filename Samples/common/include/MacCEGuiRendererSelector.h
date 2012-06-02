@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   MacCEGuiRendererSelector.h
-    created:    Tue Mar 17 2009
+    created:    Sat May 21 2011
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -29,7 +29,8 @@
 #define _MacCEGuiRendererSelector_h_
 
 #include "CEGuiRendererSelector.h"
-#include <string>
+
+class MacCEGuiRendererSelector_pimpl;
 
 //! RendererSelector for Apple Mac via Carbon
 class MacCEGuiRendererSelector : public CEGuiRendererSelector
@@ -42,24 +43,10 @@ public:
     bool invokeDialog();
 
 private:
-    //! Load the dialog window from the nib file.
-    void loadDialogWindow();
-    //! Add entries for available renderers. returns the number of renderers.
     int populateRendererMenu();
 
-    OSStatus commandHandler(UInt32 command);
-
-    //! function that will dispatch events back into the object for handling.
-    static OSStatus eventDispatcher(EventHandlerCallRef, EventRef, void*);
-
-    //! array of CEGuiRendererTypes that map to entries in the pop up.
-    CEGuiRendererType d_rendererTypes[4];
-    //! the main dialog window.
-    WindowRef d_dialog;
-    //! The popup button holding the renderer choices.
-	HIViewRef d_rendererPopup;
-    //! true if user cancelled the dialog
-    bool d_cancelled;
+    // implementation
+    MacCEGuiRendererSelector_pimpl* d_pimpl;
 };
 
 #endif  // end of guard _MacCEGuiRendererSelector_h_

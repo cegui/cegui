@@ -29,7 +29,7 @@
 #define _Sample_Demo6_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Sample class
 class Demo6Sample : public CEGuiSample
@@ -43,8 +43,8 @@ public:
 
 protected:
     // helper methods
-    void createDemoWindows(void);
-    void initDemoEventWiring(void);
+    void createDemoWindows(CEGUI::Window* root);
+    void initDemoEventWiring(CEGUI::Window* root);
 
     // event handlers
     bool handleQuit(const CEGUI::EventArgs& e);

@@ -7,22 +7,22 @@
 		<xsd:sequence>
 			<xsd:element name="Image" type="ImageType" maxOccurs="unbounded"/>
 		</xsd:sequence>
-		<xsd:attribute name="Imagefile" type="xsd:string" use="required"/>
-		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="NativeHorzRes" type="xsd:nonNegativeInteger" use="optional" default="640" />
-		<xsd:attribute name="NativeVertRes" type="xsd:nonNegativeInteger" use="optional" default="480" />
-		<xsd:attribute name="AutoScaled" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="imagefile" type="xsd:string" use="required"/>
+		<xsd:attribute name="resourceGroup" type="xsd:string" use="optional"  default="" />
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="nativeHorzRes" type="xsd:nonNegativeInteger" use="optional" default="640" />
+		<xsd:attribute name="nativeVertRes" type="xsd:nonNegativeInteger" use="optional" default="480" />
+		<xsd:attribute name="autoScaled" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:complexType>
 	
 	<xsd:complexType name="ImageType">
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="XPos" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="YPos" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="Width" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="Height" type="xsd:nonNegativeInteger" use="required"/>
-		<xsd:attribute name="XOffset" type="xsd:integer" use="optional" default="0"/>
-		<xsd:attribute name="YOffset" type="xsd:integer" use="optional" default="0"/>						
+        <xsd:sequence>
+            <xsd:any minOccurs="0" processContents="skip" maxOccurs="unbounded" />
+        </xsd:sequence>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="type" type="xsd:string" use="optional" default="BasicImage" />
+		<xsd:anyAttribute processContents="skip" />
 	</xsd:complexType>
 
 </xsd:schema>

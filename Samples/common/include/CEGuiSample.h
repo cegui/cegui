@@ -29,7 +29,7 @@
 #define _CEGuiSample_h_
 
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined (CEGUI_STATIC)
-#   ifdef CEGUISAMPLE_EXPORTS
+#   ifdef CEGUISAMPLEHELPER_EXPORTS
 #       define CEGUISAMPLE_API __declspec(dllexport)
 #   else
 #       define CEGUISAMPLE_API __declspec(dllimport)
