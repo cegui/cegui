@@ -40,6 +40,8 @@ $pfile "WindowFactoryManager.pkg"
 $pfile "Scheme.pkg"
 $pfile "SchemeManager.pkg"
 
+$pfile "StringTranscoder.pkg"
+
 $pfile "PropertyHelper.pkg"
 
 // Renderer related

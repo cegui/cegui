@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Sat May 26 13:20:04 2012.
+** Generated automatically by tolua++-1.0.93 on Sat Jun  2 17:33:50 2012.
 */
 
 #ifndef __cplusplus
@@ -469,7 +469,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::WidgetLookManager");
  tolua_usertype(tolua_S,"CEGUI::FrameWindow");
  tolua_usertype(tolua_S,"CEGUI::EventConnection");
- tolua_usertype(tolua_S,"CEGUI::ElementEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::Property");
  tolua_usertype(tolua_S,"CEGUI::EventIterator");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryIterator");
  tolua_usertype(tolua_S,"CEGUI::ToggleButton");
@@ -497,7 +497,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::StateImagery");
  tolua_usertype(tolua_S,"CEGUI::GeometryBuffer");
  tolua_usertype(tolua_S,"CEGUI::String");
- tolua_usertype(tolua_S,"CEGUI::RenderingContext");
+ tolua_usertype(tolua_S,"CEGUI::StringTranscoder");
  tolua_usertype(tolua_S,"CEGUI::VerticalLayoutContainer");
  tolua_usertype(tolua_S,"CEGUI::NamedElementEventArgs");
  tolua_usertype(tolua_S,"CEGUI::WindowIterator");
@@ -550,13 +550,14 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
  tolua_usertype(tolua_S,"CEGUI::TextComponent");
  tolua_usertype(tolua_S,"CEGUI::FrameComponent");
+ tolua_usertype(tolua_S,"CEGUI::PopupMenu");
  tolua_usertype(tolua_S,"CEGUI::Size<float>");
- tolua_usertype(tolua_S,"CEGUI::MenuItem");
  tolua_usertype(tolua_S,"CEGUI::ListHeader");
- tolua_usertype(tolua_S,"CEGUI::Affector");
  tolua_usertype(tolua_S,"CEGUI::PropertyDim");
- tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
- tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
+ tolua_usertype(tolua_S,"CEGUI::Affector");
+ tolua_usertype(tolua_S,"CEGUI::MenuItem");
+ tolua_usertype(tolua_S,"CEGUI::Colour");
+ tolua_usertype(tolua_S,"CEGUI::FontManager");
  tolua_usertype(tolua_S,"CEGUI::Vector3<float>");
  tolua_usertype(tolua_S,"CEGUI::Animation");
  tolua_usertype(tolua_S,"CEGUI::PushButton");
@@ -564,50 +565,50 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::BaseDim");
  tolua_usertype(tolua_S,"CEGUI::GridLayoutContainer");
  tolua_usertype(tolua_S,"CEGUI::GUIContext");
- tolua_usertype(tolua_S,"CEGUI::Property");
+ tolua_usertype(tolua_S,"CEGUI::DragContainer");
  tolua_usertype(tolua_S,"CEGUI::BasicImage");
  tolua_usertype(tolua_S,"CEGUI::Quaternion");
- tolua_usertype(tolua_S,"CEGUI::ScrolledContainer");
+ tolua_usertype(tolua_S,"CEGUI::SequentialLayoutContainer");
  tolua_usertype(tolua_S,"CEGUI::Listbox");
  tolua_usertype(tolua_S,"CEGUI::AnimationEventArgs");
  tolua_usertype(tolua_S,"CEGUI::System");
- tolua_usertype(tolua_S,"CEGUI::SequentialLayoutContainer");
+ tolua_usertype(tolua_S,"CEGUI::Interpolator");
  tolua_usertype(tolua_S,"CEGUI::ListboxTextItem");
- tolua_usertype(tolua_S,"CEGUI::Thumb");
- tolua_usertype(tolua_S,"CEGUI::MultiColumnList");
+ tolua_usertype(tolua_S,"CEGUI::MCLGridRef");
+ tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
  tolua_usertype(tolua_S,"CEGUI::TabButton");
  tolua_usertype(tolua_S,"CEGUI::UnifiedDim");
  tolua_usertype(tolua_S,"CEGUI::NamedArea");
- tolua_usertype(tolua_S,"CEGUI::PopupMenu");
  tolua_usertype(tolua_S,"CEGUI::Menubar");
+ tolua_usertype(tolua_S,"CEGUI::ElementEventArgs");
  tolua_usertype(tolua_S,"CEGUI::WindowEventArgs");
- tolua_usertype(tolua_S,"CEGUI::MCLGridRef");
+ tolua_usertype(tolua_S,"CEGUI::MultiColumnList");
  tolua_usertype(tolua_S,"CEGUI::ComponentArea");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryManager");
  tolua_usertype(tolua_S,"CEGUI::ListHeaderSegment");
  tolua_usertype(tolua_S,"CEGUI::Combobox");
- tolua_usertype(tolua_S,"CEGUI::Texture");
- tolua_usertype(tolua_S,"CEGUI::Colour");
+ tolua_usertype(tolua_S,"CEGUI::SystemKeys");
+ tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
  tolua_usertype(tolua_S,"CEGUI::ImageDim");
  tolua_usertype(tolua_S,"CEGUI::SchemeManager");
  tolua_usertype(tolua_S,"CEGUI::Editbox");
  tolua_usertype(tolua_S,"CEGUI::EventSet");
- tolua_usertype(tolua_S,"CEGUI::DragContainer");
+ tolua_usertype(tolua_S,"CEGUI::ScrolledContainer");
  tolua_usertype(tolua_S,"CEGUI::PropertyIterator");
  tolua_usertype(tolua_S,"CEGUI::AbsoluteDim");
  tolua_usertype(tolua_S,"CEGUI::HeaderSequenceEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Event");
- tolua_usertype(tolua_S,"CEGUI::FontManager");
+ tolua_usertype(tolua_S,"CEGUI::Titlebar");
  tolua_usertype(tolua_S,"CEGUI::TreeEventArgs");
  tolua_usertype(tolua_S,"CEGUI::CoordConverter");
- tolua_usertype(tolua_S,"CEGUI::Titlebar");
- tolua_usertype(tolua_S,"CEGUI::GUISheet");
+ tolua_usertype(tolua_S,"CEGUI::RenderingContext");
+ tolua_usertype(tolua_S,"CEGUI::Thumb");
  tolua_usertype(tolua_S,"CEGUI::FalagardWindowMapping");
  tolua_usertype(tolua_S,"CEGUI::UDim");
  tolua_usertype(tolua_S,"CEGUI::WindowManager");
- tolua_usertype(tolua_S,"CEGUI::Interpolator");
+ tolua_usertype(tolua_S,"CEGUI::GUISheet");
  tolua_usertype(tolua_S,"CEGUI::AnimationInstance");
- tolua_usertype(tolua_S,"CEGUI::SystemKeys");
+ tolua_usertype(tolua_S,"CEGUI::Texture");
 }
 
 /* get function: d_x of class  CEGUI::Vector2<float> */
@@ -24136,6 +24137,65 @@ static int tolua_CEGUI_CEGUI_System_destroyGUIContext00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: addStandardWindowFactories of class  CEGUI::System */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_addStandardWindowFactories00
+static int tolua_CEGUI_CEGUI_System_addStandardWindowFactories00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::System",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::System* self = (CEGUI::System*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'addStandardWindowFactories'",NULL);
+#endif
+ {
+  self->addStandardWindowFactories();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'addStandardWindowFactories'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getStringTranscoder of class  CEGUI::System */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_getStringTranscoder00
+static int tolua_CEGUI_CEGUI_System_getStringTranscoder00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::System",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  const CEGUI::StringTranscoder& tolua_ret = (const CEGUI::StringTranscoder&)  CEGUI::System::getStringTranscoder();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"const CEGUI::StringTranscoder");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getStringTranscoder'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: ceguiLua_getEventIterator of class  CEGUI::System */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_System_getEventIterator00
 static int tolua_CEGUI_CEGUI_System_getEventIterator00(lua_State* tolua_S)
@@ -26823,6 +26883,68 @@ static int tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingForType00(lu
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getFalagardMappingForType'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: removeAllWindowTypeAliases of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_removeAllWindowTypeAliases00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_removeAllWindowTypeAliases00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowFactoryManager* self = (CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeAllWindowTypeAliases'",NULL);
+#endif
+ {
+  self->removeAllWindowTypeAliases();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'removeAllWindowTypeAliases'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: removeAllFalagardWindowMappings of class  CEGUI::WindowFactoryManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_WindowFactoryManager_removeAllFalagardWindowMappings00
+static int tolua_CEGUI_CEGUI_WindowFactoryManager_removeAllFalagardWindowMappings00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::WindowFactoryManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::WindowFactoryManager* self = (CEGUI::WindowFactoryManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeAllFalagardWindowMappings'",NULL);
+#endif
+ {
+  self->removeAllFalagardWindowMappings();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'removeAllFalagardWindowMappings'.",&tolua_err);
  return 0;
 #endif
 }
@@ -63598,6 +63720,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"injectTimePulse",tolua_CEGUI_CEGUI_System_injectTimePulse00);
    tolua_function(tolua_S,"createGUIContext",tolua_CEGUI_CEGUI_System_createGUIContext00);
    tolua_function(tolua_S,"destroyGUIContext",tolua_CEGUI_CEGUI_System_destroyGUIContext00);
+   tolua_function(tolua_S,"addStandardWindowFactories",tolua_CEGUI_CEGUI_System_addStandardWindowFactories00);
+   tolua_function(tolua_S,"getStringTranscoder",tolua_CEGUI_CEGUI_System_getStringTranscoder00);
    tolua_function(tolua_S,"getEventIterator",tolua_CEGUI_CEGUI_System_getEventIterator00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
@@ -63705,6 +63829,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getMappedRendererForType",tolua_CEGUI_CEGUI_WindowFactoryManager_getMappedRendererForType00);
    tolua_function(tolua_S,"getDereferencedAliasType",tolua_CEGUI_CEGUI_WindowFactoryManager_getDereferencedAliasType00);
    tolua_function(tolua_S,"getFalagardMappingForType",tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingForType00);
+   tolua_function(tolua_S,"removeAllWindowTypeAliases",tolua_CEGUI_CEGUI_WindowFactoryManager_removeAllWindowTypeAliases00);
+   tolua_function(tolua_S,"removeAllFalagardWindowMappings",tolua_CEGUI_CEGUI_WindowFactoryManager_removeAllFalagardWindowMappings00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_WindowFactoryManager_getIterator00);
    tolua_function(tolua_S,"getFalagardMappingIterator",tolua_CEGUI_CEGUI_WindowFactoryManager_getFalagardMappingIterator00);
   tolua_endmodule(tolua_S);
@@ -63727,6 +63853,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"get",tolua_CEGUI_CEGUI_SchemeManager_get00);
    tolua_function(tolua_S,"destroyAll",tolua_CEGUI_CEGUI_SchemeManager_destroyAll00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_SchemeManager_getIterator00);
+  tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"StringTranscoder","CEGUI::StringTranscoder","",NULL);
+  tolua_beginmodule(tolua_S,"StringTranscoder");
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"PropertyHelper","CEGUI::ceguiLua_PropertyHelper","",NULL);
   tolua_beginmodule(tolua_S,"PropertyHelper");

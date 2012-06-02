@@ -58,6 +58,9 @@ class System : public EventSet
     GUIContext& createGUIContext(RenderTarget& rt);
     void destroyGUIContext(GUIContext& context);
 
+    void addStandardWindowFactories();
+    static const StringTranscoder& getStringTranscoder();
+
     tolua_outside EventIterator ceguiLua_getEventIterator @ getEventIterator() const;
 };
 
