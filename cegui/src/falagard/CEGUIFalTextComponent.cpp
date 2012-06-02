@@ -260,17 +260,17 @@ namespace CEGUI
             #endif
             // parse string using parser from Window.
             d_renderedString =
-                srcWindow.getRenderedStringParser().parse(vis, font, modColours);
+                srcWindow.getRenderedStringParser().parse(vis, font, 0);
         }
         // do we use a static text string from the looknfeel
         else if (!getTextVisual().empty())
             // parse string using parser from Window.
             d_renderedString = srcWindow.getRenderedStringParser().
-                parse(getTextVisual(), font, modColours);
+                parse(getTextVisual(), font, 0);
         // do we have to override the font?
         else if (font != srcWindow.getFont())
             d_renderedString = srcWindow.getRenderedStringParser().
-                parse(srcWindow.getTextVisual(), font, modColours);
+                parse(srcWindow.getTextVisual(), font, 0);
         // use ready-made RenderedString from the Window itself
         else
             rs = &srcWindow.getRenderedString();
