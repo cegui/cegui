@@ -29,6 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/DefaultLogger.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
 #include <ctime>
 #include <iomanip>
 
@@ -137,9 +138,16 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
     if (d_ostream.is_open())
         d_ostream.close();
 
+
+#if defined(__WIN32__) || defined(_WIN32)
+    d_ostream.open(System::getStringTranscoder().stringToStdWString(filename).c_str(),
+                   std::ios_base::out |
+                   (append ? std::ios_base::app : std::ios_base::trunc));
+#else
     d_ostream.open(filename.c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
+#endif
 
     if (!d_ostream)
         CEGUI_THROW(FileIOException(
