@@ -112,6 +112,7 @@ class ScriptFunctor;
 class ScriptModule;
 template<typename T> class Size;
 class SimpleTimer;
+class StringTranscoder;
 class System;
 class SystemKeys;
 class Texture;
