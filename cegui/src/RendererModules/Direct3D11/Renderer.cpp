@@ -321,8 +321,10 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     d_displayDPI(96, 96),
     d_defaultTarget(0),
     d_effect(0),
-    d_normalTechnique(0),
-    d_premultipliedTechnique(0),
+    d_normalClippedTechnique(0),
+    d_normalUnclippedTechnique(0),
+    d_premultipliedClippedTechnique(0),
+    d_premultipliedUnclippedTechnique(0),
     d_inputLayout(0),
     d_boundTextureVariable(0),
     d_worldMatrixVariable(0),
@@ -369,10 +371,14 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
 		ShaderBlob->Release();
 
     // extract the rendering techniques
-    d_normalTechnique =
-            d_effect->GetTechniqueByName("BM_NORMAL_Rendering");
-    d_premultipliedTechnique =
-            d_effect->GetTechniqueByName("BM_RTT_PREMULTIPLIED_Rendering");
+    d_normalClippedTechnique =
+            d_effect->GetTechniqueByName("BM_NORMAL_Clipped_Rendering");
+    d_normalUnclippedTechnique =
+            d_effect->GetTechniqueByName("BM_NORMAL_Unclipped_Rendering");
+    d_premultipliedClippedTechnique =
+            d_effect->GetTechniqueByName("BM_RTT_PREMULTIPLIED_Clipped_Rendering");
+    d_premultipliedClippedTechnique =
+            d_effect->GetTechniqueByName("BM_RTT_PREMULTIPLIED_Unclipped_Rendering");
 
     // Get the variables from the shader we need to be able to access
     d_boundTextureVariable =
@@ -393,7 +399,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     const UINT element_count = sizeof(vertex_layout) / sizeof(vertex_layout[0]);
 
     D3DX11_PASS_DESC pass_desc;
-    if (FAILED(d_normalTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
+    if (FAILED(d_normalClippedTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
         CEGUI_THROW(RendererException(
             "Direct3D11Renderer: failed to obtain technique "
             "description for pass 0."));
@@ -451,12 +457,18 @@ IDevice11& Direct3D11Renderer::getDirect3DDevice()
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11Renderer::bindTechniquePass(const BlendMode mode)
+void Direct3D11Renderer::bindTechniquePass(const BlendMode mode,
+                                           const bool clipped)
 {
     if (mode == BM_RTT_PREMULTIPLIED)
-        d_premultipliedTechnique->GetPassByIndex(0)->Apply(0,d_device.d_context);
+        if (clipped)
+            d_premultipliedClippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
+        else
+            d_premultipliedUnclippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
+    else if (clipped)
+        d_normalClippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
     else
-        d_normalTechnique->GetPassByIndex(0)->Apply(0,d_device.d_context);
+        d_normalUnclippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
 }
 
 //----------------------------------------------------------------------------//
