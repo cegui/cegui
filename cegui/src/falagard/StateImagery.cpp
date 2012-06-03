@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/falagard/StateImagery.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Renderer.h"
 #include <iostream>
@@ -42,6 +43,8 @@ namespace CEGUI
     {
         // TODO: Fix layer priority handling
 
+        srcWindow.getGeometryBuffer().setClippingActive(!d_clipToDisplay);
+
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
             (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
@@ -50,6 +53,8 @@ namespace CEGUI
     void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
     {
         // TODO: Fix layer priority handling
+
+        srcWindow.getGeometryBuffer().setClippingActive(!d_clipToDisplay);
 
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
