@@ -43,6 +43,7 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_driver(driver),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -64,41 +65,6 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::draw() const
 {
-    // Set up clipping for this buffer
-    //
-    // NB: This is done via viewport & projection manipulation because Irrlicht
-    // does not expose scissoring facilities of underlying APIs.  This has the
-    // unfortunate side effect of being much more expensive to set up.
-    const irr::core::rect<irr::s32> target_vp(d_driver.getViewPort());
-    const irr::core::matrix4 proj
-        (d_driver.getTransform(irr::video::ETS_PROJECTION));
-
-    const Sizef csz(d_clipRect.getSize());
-    const Sizef tsz(static_cast<float>(target_vp.getWidth()),
-                     static_cast<float>(target_vp.getHeight()));
-
-    // set modified projection 'scissor' matix that negates scale and
-    // translation that would be done by setting the viewport to the clip area.
-    irr::core::matrix4 scsr(irr::core::matrix4::EM4CONST_IDENTITY);
-    scsr(0, 0) = tsz.d_width / csz.d_width;
-    scsr(1, 1) = tsz.d_height / csz.d_height;
-    scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
-                   (target_vp.UpperLeftCorner.X -
-                     (d_clipRect.left() + csz.d_width * 0.5f))) / csz.d_width;
-    scsr(3, 1) = -(tsz.d_height + 2.0f *
-                   (target_vp.UpperLeftCorner.Y -
-                     (d_clipRect.top() + csz.d_height * 0.5f))) / csz.d_height;
-    scsr *= proj;
-    d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
-
-    // set new viewport for the clipping area
-    const irr::core::rect<irr::s32> vp(
-            static_cast<irr::s32>(d_clipRect.left()),
-            static_cast<irr::s32>(d_clipRect.top()),
-            static_cast<irr::s32>(d_clipRect.right()),
-            static_cast<irr::s32>(d_clipRect.bottom()));
-    d_driver.setViewPort(vp);
-
     if (!d_matrixValid)
         updateMatrix();
 
@@ -116,21 +82,67 @@ void IrrlichtGeometryBuffer::draw() const
         BatchList::const_iterator i = d_batches.begin();
         for ( ; i != d_batches.end(); ++i)
         {
-            d_material.setTexture(0, (*i).first);
+            if (i->clip)
+                setupClipping();
+
+            d_material.setTexture(0, i->texture);
             d_driver.setMaterial(d_material);
-            d_driver.drawIndexedTriangleList(&d_vertices[pos], (*i).second,
-                                            &d_indices[pos], (*i).second / 3);
-            pos += (*i).second;
+            d_driver.drawIndexedTriangleList(&d_vertices[pos], i->vertexCount,
+                                             &d_indices[pos], i->vertexCount / 3);
+            pos += i->vertexCount;
+
+            if (i->clip)
+                cleanupClipping();
         }
     }
 
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+}
 
-    // restore original projection matrix and viewport.
-    d_driver.setTransform(irr::video::ETS_PROJECTION, proj);
-    d_driver.setViewPort(target_vp);
+//----------------------------------------------------------------------------//
+void IrrlichtGeometryBuffer::setupClipping() const
+{
+    // NB: This is done via viewport & projection manipulation because Irrlicht
+    // does not expose scissoring facilities of underlying APIs.  This has the
+    // unfortunate side effect of being much more expensive to set up.
+    d_savedViewport = d_driver.getViewPort();
+    d_savedProjection = d_driver.getTransform(irr::video::ETS_PROJECTION);
+
+    const Sizef csz(d_clipRect.getSize());
+    const Sizef tsz(static_cast<float>(d_savedViewport.getWidth()),
+                     static_cast<float>(d_savedViewport.getHeight()));
+
+    // set modified projection 'scissor' matix that negates scale and
+    // translation that would be done by setting the viewport to the clip area.
+    irr::core::matrix4 scsr(irr::core::matrix4::EM4CONST_IDENTITY);
+    scsr(0, 0) = tsz.d_width / csz.d_width;
+    scsr(1, 1) = tsz.d_height / csz.d_height;
+    scsr(3, 0) = d_xViewDir * (tsz.d_width + 2.0f *
+                   (d_savedViewport.UpperLeftCorner.X -
+                     (d_clipRect.left() + csz.d_width * 0.5f))) / csz.d_width;
+    scsr(3, 1) = -(tsz.d_height + 2.0f *
+                   (d_savedViewport.UpperLeftCorner.Y -
+                     (d_clipRect.top() + csz.d_height * 0.5f))) / csz.d_height;
+
+    scsr *= d_savedProjection;
+    d_driver.setTransform(irr::video::ETS_PROJECTION, scsr);
+
+    // set new viewport for the clipping area
+    const irr::core::rect<irr::s32> vp(
+            static_cast<irr::s32>(d_clipRect.left()),
+            static_cast<irr::s32>(d_clipRect.top()),
+            static_cast<irr::s32>(d_clipRect.right()),
+            static_cast<irr::s32>(d_clipRect.bottom()));
+    d_driver.setViewPort(vp);
+}
+
+//----------------------------------------------------------------------------//
+void IrrlichtGeometryBuffer::cleanupClipping() const
+{
+    d_driver.setTransform(irr::video::ETS_PROJECTION, d_savedProjection);
+    d_driver.setViewPort(d_savedViewport);
 }
 
 //----------------------------------------------------------------------------//
@@ -184,11 +196,16 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     irr::video::ITexture* t =
         d_activeTexture ? d_activeTexture->getIrrlichtTexture() : 0;
 
-    if (d_batches.empty() || d_batches.back().first != t)
-        d_batches.push_back(BatchInfo(t, 0));
+    if (d_batches.empty() ||
+        d_batches.back().texture != t ||
+        d_batches.back().clip != d_clippingActive)
+    {
+        const BatchInfo batch = {t, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 
     // buffer these vertices
-    const irr::u16 idx_start = d_batches.back().second;
+    const irr::u16 idx_start = d_batches.back().vertexCount;
     irr::video::S3DVertex v;
     for (uint i = 0; i < vertex_count; ++i)
     {
@@ -204,7 +221,7 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     }
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 }
 
 //----------------------------------------------------------------------------//
@@ -332,4 +349,18 @@ const irr::video::SMaterial& IrrlichtGeometryBuffer::getMaterial() const
     return d_material;
 }
 
+//----------------------------------------------------------------------------//
+void IrrlichtGeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool IrrlichtGeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
+}
+
+//----------------------------------------------------------------------------//
+//
 } // End of  CEGUI namespace section

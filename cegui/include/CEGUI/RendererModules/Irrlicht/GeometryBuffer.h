@@ -29,9 +29,9 @@
 #define _CEGUIIrrlichtGeometryBuffer_h_
 
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
-#include "../../GeometryBuffer.h"
-#include "../../Rect.h"
-#include "../../Vector.h"
+#include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Rect.h"
+#include "CEGUI/Vector.h"
 #include <irrlicht.h>
 #include <vector>
 
@@ -76,12 +76,24 @@ public:
     uint getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
+    void setClippingActive(const bool active);
+    bool isClippingActive() const;
     // overrides of GeometryBuffer base functions.
     void setBlendMode(const BlendMode mode);
 
 protected:
     //! update cached matrix
     void updateMatrix() const;
+    void setupClipping() const;
+    void cleanupClipping() const;
+
+    //! type to track info for per-texture sub batches of geometry
+    struct BatchInfo
+    {
+        irr::video::ITexture* texture;
+        uint vertexCount;
+        bool clip;
+    };
 
     //! Irrlicht video driver we're to use.
     irr::video::IVideoDriver& d_driver;
@@ -91,6 +103,8 @@ protected:
     mutable irr::video::SMaterial d_material;
     //! rectangular clip region
     Rectf d_clipRect;
+    //! whether clipping will be active for the current batch
+    bool d_clippingActive;
     //! translation vector
     irr::core::vector3d<irr::f32> d_translation;
     //! rotation quaternion
@@ -103,8 +117,6 @@ protected:
     mutable irr::core::matrix4 d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
-    //! type to track info for per-texture sub batches of geometry
-    typedef std::pair<irr::video::ITexture*, uint> BatchInfo;
     //! type of container that tracks BatchInfos.
     typedef std::vector<BatchInfo> BatchList;
     //! type of container used to queue the geometry
@@ -121,6 +133,10 @@ protected:
     const float d_xViewDir;
     //! an offset applied to geometry to get correct texel to pixel mapping.
     const float d_texelOffset;
+    //! viewport that was set prior to us initialising clipping
+    mutable irr::core::rect<irr::s32> d_savedViewport;
+    //! projection transform that was set priot to us initialising clipping
+    mutable irr::core::matrix4 d_savedProjection;
 };
 
 
