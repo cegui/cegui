@@ -144,6 +144,9 @@ namespace CEGUI
         const Scrollbar* const horzScrollbar = getHorzScrollbar();
         if (horzScrollbar->isEffectiveVisible())
         {
+            const float range = horzScrollbar->getDocumentSize() -
+                                horzScrollbar->getPageSize();
+
             switch(d_horzFormatting)
             {
             case HTF_LEFT_ALIGNED:
@@ -156,12 +159,12 @@ namespace CEGUI
             case HTF_CENTRE_ALIGNED:
             case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(Vector2f(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2f(range / 2 - horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_RIGHT_ALIGNED:
             case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(Vector2f(horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(Vector2f(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             }
         }
@@ -169,26 +172,22 @@ namespace CEGUI
         // adjust y positioning according to formatting option
         float textHeight = d_formattedRenderedString->getVerticalExtent();
         const Scrollbar* const vertScrollbar = getVertScrollbar();
-        switch(d_vertFormatting)
-        {
-        case VTF_TOP_ALIGNED:
-            absarea.d_min.d_y -= vertScrollbar->getScrollPosition();
-            break;
-
-        case VTF_CENTRE_ALIGNED:
-            // if scroll bar is in use, act like TopAligned
-            if (vertScrollbar->isEffectiveVisible())
-                absarea.d_min.d_y -= vertScrollbar->getScrollPosition();
-            // no scroll bar, so centre text instead.
-            else
+        const float vertScrollPosition = vertScrollbar->getScrollPosition();
+        // if scroll bar is in use, position according to that.
+        if (vertScrollbar->isEffectiveVisible())
+            absarea.d_min.d_y -= vertScrollPosition;
+        // no scrollbar, so adjust position according to formatting set.
+        else
+            switch(d_vertFormatting)
+            {
+            case VTF_CENTRE_ALIGNED:
                 absarea.d_min.d_y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
+                break;
 
-            break;
-
-        case VTF_BOTTOM_ALIGNED:
-            absarea.d_min.d_y = absarea.d_max.d_y - textHeight + vertScrollbar->getScrollPosition();
-            break;
-        }
+            case VTF_BOTTOM_ALIGNED:
+                absarea.d_min.d_y = absarea.d_max.d_y - textHeight;
+                break;
+            }
 
         // calculate final colours
         ColourRect final_cols(d_textCols);
