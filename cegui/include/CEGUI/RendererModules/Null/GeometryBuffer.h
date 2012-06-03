@@ -70,12 +70,16 @@ public:
     uint getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
+    void setClippingActive(const bool active);
+    bool isClippingActive() const;
 
 protected:
     //! Texture that is set as active
     NullTexture* d_activeTexture;
     //! rectangular clip region
     Rectf d_clipRect;
+    //! whether clipping will be active for the current batch
+    bool d_clippingActive;
     //! translation vector
     Vector3f d_translation;
     //! rotation quaternion
