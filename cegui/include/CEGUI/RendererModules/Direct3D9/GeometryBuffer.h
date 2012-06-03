@@ -74,6 +74,8 @@ public:
     uint getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
+    void setClippingActive(const bool active);
+    bool isClippingActive() const;
 
 protected:
     //! perform batch management operations prior to adding new geometry.
@@ -92,12 +94,18 @@ protected:
         float tu, tv;
     };
 
+    //! type to track info for per-texture sub batches of geometry
+    struct BatchInfo
+    {
+        LPDIRECT3DTEXTURE9 texture;
+        uint vertexCount;
+        bool clip;
+    };
+
     //! Owning Direct3D9Renderer object
     Direct3D9Renderer& d_owner;
     //! last texture that was set as active
     Direct3D9Texture* d_activeTexture;
-    //! type to track info for per-texture sub batches of geometry
-    typedef std::pair<LPDIRECT3DTEXTURE9, uint> BatchInfo;
     //! type of container that tracks BatchInfos.
     typedef std::vector<BatchInfo> BatchList;
     //! list of texture batches added to the geometry buffer
@@ -108,6 +116,8 @@ protected:
     VertexList d_vertices;
     //! rectangular clip region
     Rectf d_clipRect;
+    //! whether clipping will be active for the current batch
+    bool d_clippingActive;
     //! translation vector
     Vector3f d_translation;
     //! rotation vector

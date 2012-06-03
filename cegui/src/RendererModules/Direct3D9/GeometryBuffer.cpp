@@ -40,6 +40,7 @@ Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(Direct3D9Renderer& owner,
     d_owner(owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -52,13 +53,15 @@ Direct3D9GeometryBuffer::Direct3D9GeometryBuffer(Direct3D9Renderer& owner,
 //----------------------------------------------------------------------------//
 void Direct3D9GeometryBuffer::draw() const
 {
+    RECT saved_clip;
+    d_device->GetScissorRect(&saved_clip);
+
     // setup clip region
     RECT clip;
     clip.left   = static_cast<LONG>(d_clipRect.left());
     clip.top    = static_cast<LONG>(d_clipRect.top());
     clip.right  = static_cast<LONG>(d_clipRect.right());
     clip.bottom = static_cast<LONG>(d_clipRect.bottom());
-    d_device->SetScissorRect(&clip);
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -80,10 +83,16 @@ void Direct3D9GeometryBuffer::draw() const
         BatchList::const_iterator i = d_batches.begin();
         for ( ; i != d_batches.end(); ++i)
         {
-            d_device->SetTexture(0, (*i).first);
-            d_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, (*i).second / 3,
+            if (i->clip)
+                d_device->SetScissorRect(&clip);
+
+            d_device->SetTexture(0, i->texture);
+            d_device->DrawPrimitiveUP(D3DPT_TRIANGLELIST, i->vertexCount / 3,
                                     &d_vertices[pos], sizeof(D3DVertex));
-            pos += (*i).second;
+            pos += i->vertexCount;
+
+            if (i->clip)
+                d_device->SetScissorRect(&saved_clip);
         }
     }
 
@@ -135,7 +144,7 @@ void Direct3D9GeometryBuffer::appendGeometry(const Vertex* const vbuff,
     performBatchManagement();
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     D3DVertex vd;
@@ -206,8 +215,13 @@ void Direct3D9GeometryBuffer::performBatchManagement()
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (t != d_batches.back().first))
-        d_batches.push_back(BatchInfo(t, 0));
+    if (d_batches.empty() ||
+        t != d_batches.back().texture ||
+        d_clippingActive != d_batches.back().clip)
+    {
+        BatchInfo batch = {t, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -234,6 +248,18 @@ const D3DXMATRIX* Direct3D9GeometryBuffer::getMatrix() const
         updateMatrix();
 
     return &d_matrix;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D9GeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool Direct3D9GeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
