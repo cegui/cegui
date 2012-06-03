@@ -73,6 +73,8 @@ public:
     uint getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
+    void setClippingActive(const bool active);
+    bool isClippingActive() const;
 
 protected:
     //! update cached matrix
@@ -95,6 +97,14 @@ protected:
         float tu, tv;
     };
 
+    //! type to track info for per-texture sub batches of geometry
+    struct BatchInfo
+    {
+        const ID3D10ShaderResourceView* texture;
+        uint vertexCount;
+        bool clip;
+    };
+
     // Direct3D10Renderer object that created and owns this GeometryBuffer.
     Direct3D10Renderer& d_owner;
     //! The D3D Device
@@ -107,8 +117,6 @@ protected:
     mutable UINT d_bufferSize;
     //! whether the h/w buffer is in sync with the added geometry
     mutable bool d_bufferSynched;
-    //! type to track info for per-texture sub batches of geometry
-    typedef std::pair<const ID3D10ShaderResourceView*, uint> BatchInfo;
     //! type of container that tracks BatchInfos.
     typedef std::vector<BatchInfo> BatchList;
     //! list of texture batches added to the geometry buffer
@@ -119,6 +127,8 @@ protected:
     VertexList d_vertices;
     //! rectangular clip region
     Rectf d_clipRect;
+    //! whether clipping will be active for the current batch
+    bool d_clippingActive;
     //! translation vector
     Vector3f d_translation;
     //! rotation Quaternion
