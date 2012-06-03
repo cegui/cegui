@@ -37,6 +37,7 @@ namespace CEGUI
 NullGeometryBuffer::NullGeometryBuffer() :
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(),
     d_pivot(0, 0, 0),
@@ -150,5 +151,19 @@ RenderEffect* NullGeometryBuffer::getRenderEffect()
 {
     return d_effect;
 }
+
+//----------------------------------------------------------------------------//
+void NullGeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool NullGeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
