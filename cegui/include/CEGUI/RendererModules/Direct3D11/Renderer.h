@@ -149,7 +149,7 @@ public:
 	IDevice11& getDirect3DDevice(); 
 	
     //! low-level function that binds the technique pass ready for use
-    void bindTechniquePass(const BlendMode mode);
+    void bindTechniquePass(const BlendMode mode, const bool clipped);
     //! low-level function to set the texture shader resource view to be used.
     void setCurrentTextureShaderResource(ID3D11ShaderResourceView* srv); 
     //! low-level function to set the projection matrix to be used.
@@ -226,11 +226,15 @@ protected:
     TextureMap d_textures;
     //! Effect (shader) used when rendering.
     ID3DX11Effect* d_effect;
+    //! Rendering technique that supplies scissor clipped BM_NORMAL type rendering
+    ID3DX11EffectTechnique* d_normalClippedTechnique;
     //! Rendering technique that supplies BM_NORMAL type rendering
-    ID3DX11EffectTechnique* d_normalTechnique;
+    ID3DX11EffectTechnique* d_normalUnclippedTechnique;
+    //! Rendering technique that supplies scissor clipped BM_RTT_PREMULTIPLIED type rendering
+    ID3DX11EffectTechnique* d_premultipliedClippedTechnique;
     //! Rendering technique that supplies BM_RTT_PREMULTIPLIED type rendering
-    ID3DX11EffectTechnique* d_premultipliedTechnique;
-    //! D3D10 input layout describing the vertex format we use.
+    ID3DX11EffectTechnique* d_premultipliedUnclippedTechnique;
+    //! D3D11 input layout describing the vertex format we use.
     ID3D11InputLayout* d_inputLayout;
     //! Variable to access current texture (actually shader resource view)
     ID3DX11EffectShaderResourceVariable* d_boundTextureVariable;

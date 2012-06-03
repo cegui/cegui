@@ -41,6 +41,8 @@ Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner) :
     d_vertexBuffer(0),
     d_bufferSize(0),
     d_bufferSynched(false),
+    d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -94,11 +96,11 @@ void Direct3D11GeometryBuffer::draw() const
         {
             // Set Texture
             d_owner.setCurrentTextureShaderResource(
-                    const_cast<ID3D11ShaderResourceView*>((*i).first));
+                    const_cast<ID3D11ShaderResourceView*>(i->texture));
             // Draw this batch
-            d_owner.bindTechniquePass(d_blendMode);
-            d_device.d_context->Draw((*i).second, pos);
-            pos += (*i).second;
+            d_owner.bindTechniquePass(d_blendMode, i->clip);
+            d_device.d_context->Draw(i->vertexCount, pos);
+            pos += i->vertexCount;
         }
     }
 
@@ -152,11 +154,16 @@ void Direct3D11GeometryBuffer::appendGeometry(const Vertex* const vbuff,
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (srv != d_batches.back().first))
-        d_batches.push_back(BatchInfo(srv, 0));
+    if (d_batches.empty() ||
+        srv != d_batches.back().texture ||
+        d_clippingActive != d_batches.back().clip)
+    {
+        BatchInfo batch = {srv, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     D3DVertex vd;
@@ -304,6 +311,18 @@ void Direct3D11GeometryBuffer::cleanupVertexBuffer() const
         d_vertexBuffer = 0;
         d_bufferSize = 0;
     }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11GeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool Direct3D11GeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
