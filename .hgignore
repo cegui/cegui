@@ -27,4 +27,6 @@ xcuserdata/
 
 cppcheck-output
 
+**exposed_decl.pypp.txt
+
 glob:CEGUI-DEPS-0.8.x-beta3
