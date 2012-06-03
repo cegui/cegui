@@ -39,6 +39,7 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
     d_owner(&owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(Quaternion::IDENTITY),
     d_pivot(0, 0, 0),
@@ -89,7 +90,12 @@ void OpenGLGeometryBuffer::draw() const
         BatchList::const_iterator i = d_batches.begin();
         for ( ; i != d_batches.end(); ++i)
         {
-            glBindTexture(GL_TEXTURE_2D, (*i).first);
+            if (i->clip)
+                glEnable(GL_SCISSOR_TEST);
+            else
+                glDisable(GL_SCISSOR_TEST);
+
+            glBindTexture(GL_TEXTURE_2D, i->texture);
             // set up pointers to the vertex element arrays
             glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex),
                               &d_vertices[pos]);
@@ -98,8 +104,8 @@ void OpenGLGeometryBuffer::draw() const
             glVertexPointer(3, GL_FLOAT, sizeof(GLVertex),
                             &d_vertices[pos].position[0]);
             // draw the geometry
-            glDrawArrays(GL_TRIANGLES, 0, (*i).second);
-            pos += (*i).second;
+            glDrawArrays(GL_TRIANGLES, 0, i->vertexCount);
+            pos += i->vertexCount;
         }
     }
 
@@ -145,7 +151,7 @@ void OpenGLGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     performBatchManagement();
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     GLVertex vd;
@@ -207,8 +213,13 @@ void OpenGLGeometryBuffer::performBatchManagement()
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (gltex != d_batches.back().first))
-        d_batches.push_back(BatchInfo(gltex, 0));
+    if (d_batches.empty() ||
+        gltex != d_batches.back().texture ||
+        d_clippingActive != d_batches.back().clip)
+    {
+        const BatchInfo batch = {gltex, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -274,6 +285,18 @@ void OpenGLGeometryBuffer::updateMatrix() const
     glPopMatrix();
 
     d_matrixValid = true;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGLGeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//

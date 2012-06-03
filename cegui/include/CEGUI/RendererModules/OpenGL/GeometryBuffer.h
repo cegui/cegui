@@ -71,6 +71,8 @@ public:
     uint getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
+    void setClippingActive(const bool active);
+    bool isClippingActive() const;
 
     //! return the GL modelview matrix used for this buffer.
     const double* getMatrix() const;
@@ -90,15 +92,21 @@ protected:
         float position[3];
     };
 
+    //! type to track info for per-texture sub batches of geometry
+    struct BatchInfo
+    {
+        uint texture;
+        uint vertexCount;
+        bool clip;
+    };
+
     //! OpenGLRenderer object that owns the GeometryBuffer.
     OpenGLRenderer* d_owner;
     //! last texture that was set as active
     OpenGLTexture* d_activeTexture;
-    //! type to track info for per-texture sub batches of geometry
-    typedef std::pair<uint, uint> BatchInfo;
     //! type of container that tracks BatchInfos.
     typedef std::vector<BatchInfo> BatchList;
-    //! list of texture batches added to the geometry buffer
+    //! list of batches added to the geometry buffer
     BatchList d_batches;
     //! type of container used to queue the geometry
     typedef std::vector<GLVertex> VertexList;
@@ -106,6 +114,8 @@ protected:
     VertexList d_vertices;
     //! rectangular clip region
     Rectf d_clipRect;
+    //! whether clipping will be active for the current batch
+    bool d_clippingActive;
     //! translation vector
     Vector3f d_translation;
     //! rotation quaternion
