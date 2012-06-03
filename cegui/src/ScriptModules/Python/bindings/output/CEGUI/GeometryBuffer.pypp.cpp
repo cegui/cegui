@@ -62,6 +62,11 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
         return func_getVertexCount(  );
     }
 
+    virtual bool isClippingActive(  ) const {
+        bp::override func_isClippingActive = this->get_override( "isClippingActive" );
+        return func_isClippingActive(  );
+    }
+
     virtual void reset(  ){
         bp::override func_reset = this->get_override( "reset" );
         func_reset(  );
@@ -82,6 +87,11 @@ struct GeometryBuffer_wrapper : CEGUI::GeometryBuffer, bp::wrapper< CEGUI::Geome
     
     void default_setBlendMode( ::CEGUI::BlendMode const mode ) {
         CEGUI::GeometryBuffer::setBlendMode( mode );
+    }
+
+    virtual void setClippingActive( bool const active ){
+        bp::override func_setClippingActive = this->get_override( "setClippingActive" );
+        func_setClippingActive( active );
     }
 
     virtual void setClippingRegion( ::CEGUI::Rectf const & region ){
@@ -254,6 +264,26 @@ void register_GeometryBuffer_class(){
                 *\n" );
         
         }
+        { //::CEGUI::GeometryBuffer::isClippingActive
+        
+            typedef bool ( ::CEGUI::GeometryBuffer::*isClippingActive_function_type )(  ) const;
+            
+            GeometryBuffer_exposer.def( 
+                "isClippingActive"
+                , bp::pure_virtual( isClippingActive_function_type(&::CEGUI::GeometryBuffer::isClippingActive) )
+                , "*\n\
+                \n\
+                    Return whether clipping will be used for the current batch\n\
+                    of vertices being defined.\n\
+            \n\
+                @return\n\
+                    - true if vertices subsequently added to the GeometryBuffer will\n\
+                      be clipped to the clipping region defined for this GeometryBuffer.\n\
+                    - false if vertices subsequently added will not be clippled (other than\n\
+                      to the edges of the rendering target).\n\
+                *\n" );
+        
+        }
         { //::CEGUI::GeometryBuffer::reset
         
             typedef void ( ::CEGUI::GeometryBuffer::*reset_function_type )(  ) ;
@@ -297,6 +327,26 @@ void register_GeometryBuffer_class(){
                 , setBlendMode_function_type(&::CEGUI::GeometryBuffer::setBlendMode)
                 , default_setBlendMode_function_type(&GeometryBuffer_wrapper::default_setBlendMode)
                 , ( bp::arg("mode") ) );
+        
+        }
+        { //::CEGUI::GeometryBuffer::setClippingActive
+        
+            typedef void ( ::CEGUI::GeometryBuffer::*setClippingActive_function_type )( bool const ) ;
+            
+            GeometryBuffer_exposer.def( 
+                "setClippingActive"
+                , bp::pure_virtual( setClippingActive_function_type(&::CEGUI::GeometryBuffer::setClippingActive) )
+                , ( bp::arg("active") )
+                , "*!\n\
+                \n\
+                    Set whether clipping will be active for subsequently added vertices.\n\
+            \n\
+                @param active\n\
+                    - true if vertices added after this call should be clipped to the\n\
+                      clipping region defined for this GeometryBuffer.\n\
+                    - false if vertices added after this call should not be clipped\n\
+                      (other than to the edges of rendering target.\n\
+                *\n" );
         
         }
         { //::CEGUI::GeometryBuffer::setClippingRegion
