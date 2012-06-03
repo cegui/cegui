@@ -112,6 +112,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_renderSystem(rs),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(Quaternion::IDENTITY),
     d_pivot(0, 0, 0),
@@ -132,10 +133,6 @@ OgreGeometryBuffer::~OgreGeometryBuffer()
 //----------------------------------------------------------------------------//
 void OgreGeometryBuffer::draw() const
 {
-    // Set up clipping for this buffer
-    d_renderSystem.setScissorTest(true, d_clipRect.left(), d_clipRect.top(),
-                                  d_clipRect.right(), d_clipRect.bottom());
-
     if (!d_sync)
         syncHardwareBuffer();
 
@@ -158,12 +155,17 @@ void OgreGeometryBuffer::draw() const
         BatchList::const_iterator i = d_batches.begin();
         for ( ; i != d_batches.end(); ++i)
         {
+            // Set up clipping for this buffer
+            d_renderSystem.setScissorTest(
+                i->clip, d_clipRect.left(), d_clipRect.top(),
+                         d_clipRect.right(), d_clipRect.bottom());
+
             d_renderOp.vertexData->vertexStart = pos;
-            d_renderOp.vertexData->vertexCount = (*i).second;
-            d_renderSystem._setTexture(0, true, (*i).first);
+            d_renderOp.vertexData->vertexCount = i->vertexCount;
+            d_renderSystem._setTexture(0, true, i->texture);
             initialiseTextureStates();
             d_renderSystem._render(d_renderOp);
-            pos += (*i).second;
+            pos += i->vertexCount;
         }
     }
 
@@ -217,11 +219,16 @@ void OgreGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     if (d_activeTexture)
         t = d_activeTexture->getOgreTexture();
 
-    if (d_batches.empty() || d_batches.back().first != t)
-        d_batches.push_back(BatchInfo(t, 0));
+    if (d_batches.empty() ||
+        d_batches.back().texture != t ||
+        d_batches.back().clip != d_clippingActive)
+    {
+        const BatchInfo batch = {t, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     OgreVertex v;
@@ -375,6 +382,18 @@ void OgreGeometryBuffer::initialiseTextureStates() const
     d_renderSystem._setTextureBlendMode(0, S_colourBlendMode);
     d_renderSystem._setTextureBlendMode(0, S_alphaBlendMode);
     d_renderSystem._disableTextureUnitsFrom(1);
+}
+
+//----------------------------------------------------------------------------//
+void OgreGeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool OgreGeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
