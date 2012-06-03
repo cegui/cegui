@@ -38,6 +38,7 @@ DirectFBGeometryBuffer::DirectFBGeometryBuffer(DirectFBRenderer& owner) :
     d_owner(owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -56,13 +57,15 @@ void DirectFBGeometryBuffer::draw() const
 {
     IDirectFBSurface* target_surface = &d_owner.getTargetSurface();
 
+    DFBRegion saved_clip;
+    target_surface->GetClip(target_surface, &saved_clip);
+
     // setup clip region
     const DFBRegion clip_region = {
         static_cast<int>(d_clipRect.left()),
         static_cast<int>(d_clipRect.top()),
         static_cast<int>(d_clipRect.right()),
         static_cast<int>(d_clipRect.bottom()) };
-    target_surface->SetClip(target_surface, &clip_region);
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -82,10 +85,16 @@ void DirectFBGeometryBuffer::draw() const
         BatchList::const_iterator i = d_batches.begin();
         for ( ; i != d_batches.end(); ++i)
         {
-            target_surface->TextureTriangles(target_surface, (*i).first,
-                                            &d_vertices[pos], 0, (*i).second,
+            if (i->clip)
+                target_surface->SetClip(target_surface, &clip_region);
+
+            target_surface->TextureTriangles(target_surface, i->texture,
+                                            &d_vertices[pos], 0, i->vertexCount,
                                             DTTF_LIST);
-            pos += (*i).second;
+            pos += i->vertexCount;
+
+            if (i->clip)
+                target_surface->SetClip(target_surface, &saved_clip);
         }
     }
 
@@ -139,11 +148,16 @@ void DirectFBGeometryBuffer::appendGeometry(const Vertex* const vbuff,
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (t != d_batches.back().first))
-        d_batches.push_back(BatchInfo(t, 0));
+    if (d_batches.empty() ||
+        t != d_batches.back().texture ||
+        d_clippingActive != d_batches.back().clip)
+    {
+        const BatchInfo batch = {t, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     DFBVertex vd;
@@ -223,6 +237,18 @@ void DirectFBGeometryBuffer::updateMatrix() const
     d_matrix[8] = 0x00010000;
 
     d_matrixValid = true;
+}
+
+//----------------------------------------------------------------------------//
+void DirectFBGeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool DirectFBGeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
