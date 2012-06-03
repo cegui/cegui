@@ -28,14 +28,15 @@
 #ifndef _CEGUIOgreGeometryBuffer_h_
 #define _CEGUIOgreGeometryBuffer_h_
 
-#include "../../GeometryBuffer.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
-#include "../../Rect.h"
-#include "../../Quaternion.h"
+#include "CEGUI/Rect.h"
+#include "CEGUI/Quaternion.h"
 
 #include <OgreMatrix4.h>
 #include <OgreColourValue.h>
 #include <OgreRenderOperation.h>
+#include <OgreTexture.h>
 
 #include <utility>
 #include <vector>
@@ -76,6 +77,8 @@ public:
     virtual uint getBatchCount() const;
     virtual void setRenderEffect(RenderEffect* effect);
     virtual RenderEffect* getRenderEffect();
+    void setClippingActive(const bool active);
+    bool isClippingActive() const;
 
 protected:
     //! convert CEGUI::colour into something Ogre can use
@@ -95,6 +98,14 @@ protected:
         float u, v;
     };
 
+    //! type to track info for per-texture sub batches of geometry
+    struct BatchInfo
+    {
+        Ogre::TexturePtr texture;
+        uint vertexCount;
+        bool clip;
+    };
+
     //! Renderer object that owns this GeometryBuffer
     OgreRenderer& d_owner;
     //! Ogre render system we're to use.
@@ -103,6 +114,8 @@ protected:
     OgreTexture* d_activeTexture;
     //! rectangular clip region
     Rectf d_clipRect;
+    //! whether clipping will be active for the current batch
+    bool d_clippingActive;
     //! translation vector
     Vector3f d_translation;
     //! rotation quaternion
@@ -123,8 +136,6 @@ protected:
     mutable Ogre::HardwareVertexBufferSharedPtr d_hwBuffer;
     //! whether the h/w buffer is in sync with the added geometry
     mutable bool d_sync;
-    //! type to track info for per-texture sub batches of geometry
-    typedef std::pair<Ogre::TexturePtr, uint> BatchInfo;
     //! type of container that tracks BatchInfos.
     typedef std::vector<BatchInfo> BatchList;
     //! list of texture batches added to the geometry buffer
