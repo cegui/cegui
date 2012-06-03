@@ -214,6 +214,31 @@ public:
     */
     virtual BlendMode getBlendMode() const;
 
+    /*!
+    \brief
+        Set whether clipping will be active for subsequently added vertices.
+
+    \param active
+        - true if vertices added after this call should be clipped to the
+          clipping region defined for this GeometryBuffer.
+        - false if vertices added after this call should not be clipped
+          (other than to the edges of rendering target.
+    */
+    virtual void setClippingActive(const bool active) = 0;
+
+    /*
+    \brief
+        Return whether clipping will be used for the current batch
+        of vertices being defined.
+
+    \return
+        - true if vertices subsequently added to the GeometryBuffer will
+          be clipped to the clipping region defined for this GeometryBuffer.
+        - false if vertices subsequently added will not be clippled (other than
+          to the edges of the rendering target).
+    */
+    virtual bool isClippingActive() const = 0;
+
 protected:
     //! Constructor.
     GeometryBuffer();
