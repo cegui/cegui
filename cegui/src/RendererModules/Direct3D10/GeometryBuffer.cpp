@@ -43,6 +43,7 @@ Direct3D10GeometryBuffer::Direct3D10GeometryBuffer(Direct3D10Renderer& owner) :
     d_bufferSize(0),
     d_bufferSynched(false),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(0, 0, 0),
     d_pivot(0, 0, 0),
@@ -96,11 +97,11 @@ void Direct3D10GeometryBuffer::draw() const
         {
             // Set Texture
             d_owner.setCurrentTextureShaderResource(
-                    const_cast<ID3D10ShaderResourceView*>((*i).first));
+                    const_cast<ID3D10ShaderResourceView*>(i->texture));
             // Draw this batch
-            d_owner.bindTechniquePass(d_blendMode);
-            d_device.Draw((*i).second, pos);
-            pos += (*i).second;
+            d_owner.bindTechniquePass(d_blendMode, i->clip);
+            d_device.Draw(i->vertexCount, pos);
+            pos += i->vertexCount;
         }
     }
 
@@ -154,11 +155,16 @@ void Direct3D10GeometryBuffer::appendGeometry(const Vertex* const vbuff,
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (srv != d_batches.back().first))
-        d_batches.push_back(BatchInfo(srv, 0));
+    if (d_batches.empty() ||
+        srv != d_batches.back().texture ||
+        d_clippingActive != d_batches.back().clip)
+    {
+        const BatchInfo batch = {srv, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     D3DVertex vd;
@@ -304,6 +310,18 @@ void Direct3D10GeometryBuffer::cleanupVertexBuffer() const
         d_vertexBuffer = 0;
         d_bufferSize = 0;
     }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D10GeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool Direct3D10GeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
