@@ -50,6 +50,7 @@ OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner) :
     d_owner(&owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
+    d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(Quaternion::IDENTITY),
     d_pivot(0, 0, 0),
@@ -122,10 +123,15 @@ void OpenGL3GeometryBuffer::draw() const
         {
             const BatchInfo& currentBatch = *i;
 
-            glBindTexture(GL_TEXTURE_2D, currentBatch.first);
+            if (currentBatch.clip)
+                glEnable(GL_SCISSOR_TEST);
+            else
+                glDisable(GL_SCISSOR_TEST);
+
+            glBindTexture(GL_TEXTURE_2D, currentBatch.texture);
 
             // draw the geometry
-            unsigned int numVertices = (*i).second;
+            const unsigned int numVertices = currentBatch.vertexCount;
             glDrawArrays(GL_TRIANGLES, pos, numVertices);
 
             pos += numVertices;
@@ -176,7 +182,7 @@ void OpenGL3GeometryBuffer::appendGeometry(const Vertex* const vbuff,
     performBatchManagement();
 
     // update size of current batch
-    d_batches.back().second += vertex_count;
+    d_batches.back().vertexCount += vertex_count;
 
     // buffer these vertices
     GLVertex vd;
@@ -241,8 +247,13 @@ void OpenGL3GeometryBuffer::performBatchManagement()
 
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
-    if (d_batches.empty() || (gltex != d_batches.back().first))
-        d_batches.push_back(BatchInfo(gltex, 0));
+    if (d_batches.empty() ||
+        gltex != d_batches.back().texture ||
+        d_clippingActive != d_batches.back().clip)
+    {
+        const BatchInfo batch = {gltex, 0, d_clippingActive};
+        d_batches.push_back(batch);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -358,6 +369,18 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
     {
         glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, d_vertices.data());
     }
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGL3GeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
