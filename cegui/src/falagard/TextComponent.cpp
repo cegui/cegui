@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,10 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/falagard/TextComponent.h"
 #include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/FontManager.h"
@@ -440,5 +436,59 @@ namespace CEGUI
 
         return res;
     }
+
+//----------------------------------------------------------------------------//
+String TextComponent::getEffectiveText(const Window& wnd) const
+{
+    if (!d_textPropertyName.empty())
+        return wnd.getProperty(d_textPropertyName);
+    else if (d_textLogical.empty())
+        return wnd.getText();
+    else
+        return d_textLogical;
+}
+
+//----------------------------------------------------------------------------//
+String TextComponent::getEffectiveVisualText(const Window& wnd) const
+{
+#ifndef CEGUI_BIDI_SUPPORT
+    return getEffectiveText(wnd);
+#else
+    if (!d_textPropertyName.empty())
+    {
+        String visual;
+        BidiVisualMapping::StrIndexList l2v, v2l;
+        d_bidiVisualMapping->reorderFromLogicalToVisual(
+            wnd.getProperty(d_textPropertyName), visual, l2v, v2l);
+
+        return visual;
+    }
+    // do we use a static text string from the looknfeel
+    else if (d_text.empty())
+        return wnd.getTextVisual();
+    else
+        getTextVisual();
+#endif
+}
+
+//----------------------------------------------------------------------------//
+String TextComponent::getEffectiveFont(const Window& wnd) const
+{
+    if (!d_fontPropertyName.empty())
+        return wnd.getProperty(d_fontPropertyName);
+    else if (d_font.empty())
+    {
+        if (const Font* font = wnd.getFont())
+            return font->getName();
+        else if (const Font* font = System::getSingleton().getDefaultFont())
+            return font->getName();
+        else
+            return String();
+    }
+    else
+        return d_font;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
