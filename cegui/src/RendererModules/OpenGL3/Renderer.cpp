@@ -25,12 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include <GL/glew.h>
-
 
 #include "CEGUI/RendererModules/OpenGL3/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL3/Renderer.h"
@@ -51,6 +46,7 @@
 
 #include <sstream>
 #include <algorithm>
+#include <cstring>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -66,8 +62,6 @@ namespace CEGUI
 #ifndef APIENTRY
 #   define APIENTRY
 #endif
-//! Function to perform extensions initialisation.
-static void initialiseGLExtensions();
 //! Dummy function for if real ones are not present (saves testing each render)
 void APIENTRY activeTextureDummy(GLenum) {}
 
@@ -677,8 +671,7 @@ void OpenGL3Renderer::initialiseOpenGLShaders()
 }
 
 //----------------------------------------------------------------------------//
-
-void initialiseGLExtensions()
+void OpenGL3Renderer::initialiseGLExtensions()
 {
     glewExperimental = GL_TRUE;
 
@@ -694,6 +687,27 @@ void initialiseGLExtensions()
     }
     //Clear the useless error glew produces as of version 1.7.0, when using OGL3.2 Core Profile
     glGetError();
+
+    // Why do we do this and not use GLEW_EXT_texture_compression_s3tc?
+    // Because of glewExperimental, of course!
+    int ext_count;
+    glGetIntegerv(GL_NUM_EXTENSIONS, &ext_count);
+    for(int i = 0; i < ext_count; ++i)
+    {
+        if (!std::strcmp(
+                reinterpret_cast<const char*>(glGetStringi(GL_EXTENSIONS, i)),
+                                              "GL_EXT_texture_compression_s3tc"))
+        {
+            d_s3tcSupported = true;
+            break;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGL3Renderer::isS3TCSupported() const
+{
+    return d_s3tcSupported;
 }
 
 //----------------------------------------------------------------------------//
