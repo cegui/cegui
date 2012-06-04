@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -48,69 +48,105 @@ namespace CEGUI
     class CEGUIEXPORT TextComponent : public FalagardComponentBase
     {
     public:
-        /*!
-        \brief
-            Constructor
-        */
         TextComponent();
-
-        //! Destructor
         ~TextComponent();
-
-        //! Copy constructor
         TextComponent(const TextComponent& obj);
-
-        //! Assignment
         TextComponent& operator=(const TextComponent& other);
 
         /*!
         \brief
-            Return the text object that will be rendered by this TextComponent.
+            Return the text set for this TextComponent.
 
-        \return
-            String object containing the text that will be rendered.
+        \note
+            This returns the text string set directly to the TextComponent,
+            which may or may not be the actual string that will be used -
+            since the actual string may be sourced from a property or the main
+            text string from a window that the TextComponent is rendered to.
+            To get the actual string, call the getEffectiveText function
+            instead.
         */
         const String& getText() const;
 
-        //! return text string with \e visual ordering of glyphs.
-        const String& getTextVisual() const;
+        /*
+        \brief
+            Return a copy of the actual text string that will be used when
+            rendering this TextComponent.
+        */
+        String getEffectiveText(const Window& wnd) const;
 
         /*!
         \brief
-            Set the text that will be rendered by this TextComponent.
+            return text string with \e visual ordering of glyphs.
 
-            Note that setting this to the empty string ("") will cause the text from the
-            base window passed when rendering to be used instead.
+        \note
+            This returns the visual text derived from the string set directly to
+            the TextComponent, which may or may not be the actual string that
+            will be used - since the actual string may be sourced from a
+            property or the main text string from a window that the
+            TextComponent is rendered to. To get the actual visual string, call
+            the getEffectiveVisualText function instead.
+        */
+        const String& getTextVisual() const;
+
+        /*
+        \brief
+            Return a copy of the actual text - with visual ordering - that
+            will be used when rendering this TextComponent.
+        */
+        String getEffectiveVisualText(const Window& wnd) const;
+
+        /*!
+        \brief
+            Set the text string for this TextComponent.
+
+        \note
+            Setting this string may not set the actual string that will be used
+            when rendering the TextComponent.  The acutal string used will
+            depend upon whether a text source property is set and whether this
+            string is set to the empty string or not.
 
         \param text
-            String containing text to render, or "" to render text from window.
-
-        \return
-            Nothing.
+            String containing text to set on the TextComponent.
         */
         void setText(const String& text);
 
         /*!
         \brief
-            Return the name of the font to be used when rendering this TextComponent.
+            Return the name of the font set to be used when rendering this
+            TextComponent.
+
+        \note
+            This returns the name of the font set directly to the TextComponent,
+            which may or may not be the actual font that will be used -
+            since the actual font may be sourced from a property or the main
+            font setting on a window that the TextComponent is rendered to, or
+            the default font. To get the actual font name that will be used,
+            call the getEffectiveFont function instead.
 
         \return
-            String object containing the name of a font, or "" if the window font is to be used.
+            String object containing the name of a font
         */
         const String& getFont() const;
 
+        /*
+        \brief
+            Return a copy of the name of the font that will actually be used
+            when rendering this TextComponent.
+        */
+        String getEffectiveFont(const Window& wnd) const;
+
         /*!
         \brief
-            Set the name of the font to be used when rendering this TextComponent.
+            Set the name of a font to be used when rendering this TextComponent.
 
-            Note that setting this to the empty string ("") will cause the font from the
-            base window passed when rendering to be used instead.
+        \note
+            Setting this may not set the actual font that will be used
+            when rendering the TextComponent.  The acutal font used will
+            depend upon whether a font source property is set and whether the
+            font name set here is set to the empty string or not.
 
         \param font
             String containing name of a font
-
-        \return
-            Nothing.
         */
         void setFont(const String& font);
 
