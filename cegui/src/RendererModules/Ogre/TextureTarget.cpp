@@ -73,9 +73,17 @@ void OgreTextureTarget::clear()
     if (!d_viewportValid)
         updateViewport();
 
+#if OGRE_VERSION >= 0x10800
+    Ogre::Viewport* const saved_vp = d_renderSystem._getViewport();
+#endif
+
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem.clearFrameBuffer(Ogre::FBT_COLOUR,
                                     Ogre::ColourValue(0, 0, 0, 0));
+
+#if OGRE_VERSION >= 0x10800
+    d_renderSystem._setViewport(saved_vp);
+#endif
 }
 
 //----------------------------------------------------------------------------//
