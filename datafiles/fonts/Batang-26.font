@@ -1,2 +1,2 @@
 <?xml version="1.0" ?>
-<Font Name="Batang-26" Filename="batang.ttf" Type="FreeType" Size="26" NativeHorzRes="1024" NativeVertRes="768" AutoScaled="true"/>
+<Font version="3" name="Batang-26" filename="batang.ttf" type="FreeType" size="26" nativeHorzRes="1024" nativeVertRes="768" autoScaled="true"/>

@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
-<Imageset Name="DriveIcons" Imagefile="DriveIcons.png" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true">
-	<Image Name="Artic" XPos="1" YPos="1" Width="62" Height="54" />
-	<Image Name="Lime" XPos="64" YPos="1" Width="62" Height="54" />
-	<Image Name="Sunset" XPos="127" YPos="1" Width="62" Height="54" />
-	<Image Name="Black" XPos="190" YPos="1" Width="62" Height="54" />
-	<Image Name="Blue" XPos="1" YPos="58" Width="62" Height="54" />
-	<Image Name="Silver" XPos="65" YPos="58" Width="62" Height="54" />
-	<Image Name="DriveStack" XPos="128" YPos="57" Width="62" Height="54" />
-	<Image Name="GreenCandy" XPos="192" YPos="57" Width="62" Height="54" />
-	<Image Name="GlobalDrive" XPos="1" YPos="114" Width="62" Height="54" />
+<Imageset version="2" name="DriveIcons" imagefile="DriveIcons.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="true">
+	<Image name="Artic" xPos="1" yPos="1" width="62" height="54" />
+	<Image name="Lime" xPos="64" yPos="1" width="62" height="54" />
+	<Image name="Sunset" xPos="127" yPos="1" width="62" height="54" />
+	<Image name="Black" xPos="190" yPos="1" width="62" height="54" />
+	<Image name="Blue" xPos="1" yPos="58" width="62" height="54" />
+	<Image name="Silver" xPos="65" yPos="58" width="62" height="54" />
+	<Image name="DriveStack" xPos="128" yPos="57" width="62" height="54" />
+	<Image name="GreenCandy" xPos="192" yPos="57" width="62" height="54" />
+	<Image name="GlobalDrive" xPos="1" yPos="114" width="62" height="54" />
 </Imageset>

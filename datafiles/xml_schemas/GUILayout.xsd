@@ -7,7 +7,7 @@
 		<xsd:sequence>
 			<xsd:element name="Window" type="WindowType" />
 		</xsd:sequence>
-		<xsd:attribute name="Parent" type="xsd:string" use="optional" default=""/>
+		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:complexType>
 	
 	<xsd:complexType name="WindowType">
@@ -20,9 +20,10 @@
 				<xsd:element name="AutoWindow" type="AutoWindowType" />
 			</xsd:choice>
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
+			<xsd:element name="UserString" type="UserStringType"  minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
-		<xsd:attribute name="Type" type="xsd:string" use="required"/>
-		<xsd:attribute name="Name" type="xsd:string" use="optional" default="" />
+		<xsd:attribute name="type" type="xsd:string" use="required"/>
+		<xsd:attribute name="name" type="xsd:string" use="optional" default="" />
 	</xsd:complexType>
 
 	<xsd:complexType name="AutoWindowType">
@@ -36,27 +37,35 @@
 			</xsd:choice>
 			<xsd:element name="Property" type="PropertyType"  minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
-		<xsd:attribute name="NameSuffix" type="xsd:string" use="required"/>
+		<xsd:attribute name="namePath" type="xsd:string" use="required"/>
 	</xsd:complexType>
 
 	<xsd:complexType name="PropertyType">
 		<xsd:simpleContent>
 			<xsd:extension base="xsd:string">
-				<xsd:attribute name="Name" type="xsd:string" use="required"/>
-				<xsd:attribute name="Value" type="xsd:string" use="optional"/>
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+				<xsd:attribute name="value" type="xsd:string" use="optional"/>
 			</xsd:extension>
 		</xsd:simpleContent> 
 	</xsd:complexType>
-
+	
+	<xsd:complexType name="UserStringType">
+		<xsd:simpleContent>
+			<xsd:extension base="xsd:string">
+				<xsd:attribute name="name" type="xsd:string" use="required"/>
+				<xsd:attribute name="value" type="xsd:string" use="optional"/>
+			</xsd:extension>
+		</xsd:simpleContent> 
+	</xsd:complexType>
+	
 	<xsd:complexType name="LayoutImportType">
-		<xsd:attribute name="Filename" type="xsd:string" use="required"/>
-		<xsd:attribute name="Prefix" type="xsd:string" use="optional" default="" />
-		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
+		<xsd:attribute name="filename" type="xsd:string" use="required"/>
+		<xsd:attribute name="resourceGroup" type="xsd:string" use="optional"  default="" />
 	</xsd:complexType>
 
 	<xsd:complexType name="EventType">
-		<xsd:attribute name="Name" type="xsd:string" use="required"/>
-		<xsd:attribute name="Function" type="xsd:string" use="required"/>
+		<xsd:attribute name="name" type="xsd:string" use="required"/>
+		<xsd:attribute name="function" type="xsd:string" use="required"/>
 	</xsd:complexType>
 
 </xsd:schema>
