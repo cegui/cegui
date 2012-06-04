@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2008 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -39,22 +39,17 @@
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
-#include "CEGUIDefaultResourceProvider.h"
 #include "CEGuiSample.h"
-#include "CEGUIRenderingRoot.h"
-#include "CEGUIGeometryBuffer.h"
+#include "CEGUI/RendererModules/Ogre/ImageCodec.h"
+#include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 
+//----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
-        d_ogreRoot(0),
-        d_renderer(0),
-        d_initialised(false),
-        d_frameListener(0),
-        d_windowEventListener(0),
-		d_fps_frames(0),
-		d_fps_time(0.0f)
+    d_ogreRoot(0),
+    d_initialised(false),
+    d_frameListener(0),
+    d_windowEventListener(0)
 {
-	strcpy(d_fps_textbuff, "");
-
     using namespace Ogre;
 
     d_ogreRoot = new Root();
@@ -79,101 +74,92 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
-        // initialise GUI system using the new automagic function
-        d_renderer = &CEGUI::OgreRenderer::bootstrapSystem();
-
-        initialiseResourceGroupDirectories();
-        initialiseDefaultResourceGroups();
-        ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+        // create ogre renderer, image codec and resource provider.
+        CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create();
+        d_renderer = &renderer;
+        d_imageCodec = &renderer.createOgreImageCodec();
+        d_resourceProvider = &renderer.createOgreResourceProvider();
 
         // create frame listener
         d_frameListener= new CEGuiDemoFrameListener(this, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
 
         // add a listener for OS framework window events (for resizing)
-        d_windowEventListener = new WndEvtListener(d_renderer);
+        d_windowEventListener = new WndEvtListener(&renderer);
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
-
-        // setup required to do direct rendering of FPS value
-        const CEGUI::Rect scrn(CEGUI::Vector2(0, 0),
-                               d_renderer->getDisplaySize());
-        d_fps_geometry = &d_renderer->createGeometryBuffer();
-        d_fps_geometry->setClippingRegion(scrn);
-
-        // setup for logo
-        CEGUI::ImagesetManager::getSingleton().
-            createFromImageFile("cegui_logo", "logo.png", "imagesets");
-        d_logo_geometry = &d_renderer->createGeometryBuffer();
-        d_logo_geometry->setClippingRegion(scrn);
-        d_logo_geometry->setPivot(CEGUI::Vector3(50, 34.75f, 0));
-        d_logo_geometry->setTranslation(CEGUI::Vector3(10, 520, 0));
-        CEGUI::ImagesetManager::getSingleton().get("cegui_logo").
-            getImage("full_image").draw(*d_logo_geometry,
-                                        CEGUI::Rect(0, 0, 100, 69.5f), 0);
-
-        // clearing this queue actually makes sure it's created(!)
-        d_renderer->getDefaultRenderingRoot().clearGeometry(CEGUI::RQ_OVERLAY);
-
-        // subscribe handler to render overlay items
-        d_renderer->getDefaultRenderingRoot().
-            subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-                CEGUI::Event::Subscriber(
-                    &CEGuiOgreBaseApplication::overlayHandler, this));
 
         d_initialised = true;
     }
     else
     {
-        // aborted.  Clean up and set root to 0 so when app attempts to run it knows what happened here.
+        // aborted.  Clean up and set root to 0 so when app attempts to run it
+        // knows what happened here.
         delete d_ogreRoot;
         d_ogreRoot = 0;
     }
 }
 
+//----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 {
     delete d_frameListener;
-    CEGUI::OgreRenderer::destroySystem();
+
+    CEGUI::OgreRenderer& renderer =
+        *static_cast<CEGUI::OgreRenderer*>(d_renderer);
+    renderer.destroyOgreResourceProvider(
+        *static_cast<CEGUI::OgreResourceProvider*>(d_resourceProvider));
+    renderer.destroyOgreImageCodec(
+        *static_cast<CEGUI::OgreImageCodec*>(d_imageCodec));
+    CEGUI::OgreRenderer::destroy(renderer);
+
     delete d_ogreRoot;
     delete d_windowEventListener;
 }
 
-bool CEGuiOgreBaseApplication::execute(CEGuiSample* sampleApp)
+//----------------------------------------------------------------------------//
+bool CEGuiOgreBaseApplication::execute_impl(CEGuiSample* sampleApp)
 {
-    // if initialisation failed or was cancelled by user, bail out now.
-    if (d_ogreRoot && d_initialised)
-    {
-        // perform sample initialisation
-        sampleApp->initialiseSample();
-
-        // start rendering via Ogre3D engine.
-        CEGUI_TRY
-        {
-            d_ogreRoot->startRendering();
-        }
-        CEGUI_CATCH(Ogre::Exception&)
-        {
-            return false;
-        }
-        CEGUI_CATCH(CEGUI::Exception&)
-        {
-            return false;
-        }
-
-        return true;
-    }
-    else
-    {
+    // if base initialisation failed or app was cancelled by user, bail out now.
+    if (!d_ogreRoot || !d_initialised)
         return false;
+
+    Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
+    // perform sample initialisation
+    sampleApp->initialiseSample();
+
+    // start rendering via Ogre3D engine.
+    CEGUI_TRY
+    {
+        d_ogreRoot->startRendering();
     }
+    CEGUI_CATCH(...)
+    {}
+
+    return true;
 }
 
-void CEGuiOgreBaseApplication::cleanup()
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::cleanup_impl()
 {
     // nothing to do here.
 }
 
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::beginRendering(const float elapsed)
+{
+    // this is nover called under Ogre, since we're not in control of the
+    // rendering process.
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::endRendering()
+{
+    // this is nover called under Ogre, since we're not in control of the
+    // rendering process.
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 {
     using namespace Ogre;
@@ -211,64 +197,26 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
 }
 
-void CEGuiOgreBaseApplication::doFrameUpdate(float elapsed)
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
 {
-    // update fps fields
-    doFPSUpdate(elapsed);
+    CEGUI::System& gui_system(CEGUI::System::getSingleton());
 
-    // update logo rotation
-    static float rot = 0.0f;
-    d_logo_geometry->setRotation(CEGUI::Vector3(rot, 0, 0));
-    rot += 180.0f * elapsed;
-    if (rot > 360.0f)
-        rot -= 360.0f;
+    gui_system.injectTimePulse(elapsed);
+    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
+    updateFPS(elapsed);
+    updateLogo(elapsed);
 }
 
-void CEGuiOgreBaseApplication::doFPSUpdate(float elapsed)
-{
-    // another frame
-    d_fps_frames += 1;
-
-    // has at least a second passed since we last updated the text?
-    if ((d_fps_time += elapsed) >= 1.0f)
-    {
-        // update FPS text to output
-        sprintf(d_fps_textbuff , "FPS: %d", d_fps_frames);
-        // reset counter
-        d_fps_frames    = 0;
-        // update timer
-        d_fps_time -= 1.0f;
-    }
-}
-
-bool CEGuiOgreBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
-{
-    using namespace CEGUI;
-
-    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
-        return false;
-
-    // render FPS:
-    Font* fnt = System::getSingleton().getDefaultFont();
-    if (fnt)
-    {
-        d_fps_geometry->reset();
-        fnt->drawText(*d_fps_geometry, d_fps_textbuff, Vector2(0, 0), 0,
-                      colour(0xFFFFFFFF));
-        d_fps_geometry->draw();
-    }
-
-    d_logo_geometry->draw();
-
-    return true;
-}
-
+//----------------------------------------------------------------------------//
 
 ////////////////////////////////////////////////////////////////////////////////
 /*******************************************************************************
     Start of CEGuiDemoFrameListener mehods
 *******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
+
+//----------------------------------------------------------------------------//
 CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
 {
     // OIS setup
@@ -333,6 +281,7 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     d_baseApp = baseApp;
 }
 
+//----------------------------------------------------------------------------//
 CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 {
     if (d_inputManager)
@@ -344,95 +293,94 @@ CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 
 }
 
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 {
     if(d_window->isClosed() || d_quit || d_baseApp->isQuitting())
-    {
         return false;
-    }
-    else
-    {
-        // always inject a time pulse to enable widget automation
-        CEGUI::System::getSingleton().injectTimePulse(static_cast<float>(evt.timeSinceLastFrame));
 
-        static_cast<CEGuiOgreBaseApplication*>(d_baseApp)->
-            doFrameUpdate(static_cast<float>(evt.timeSinceLastFrame));
+    static_cast<CEGuiOgreBaseApplication*>(d_baseApp)->
+        doFrameUpdate(static_cast<float>(evt.timeSinceLastFrame));
 
-        // update input system
-        if (d_mouse)
-            d_mouse->capture();
-        if (d_keyboard)
-            d_keyboard->capture();
+    // update input system
+    if (d_mouse)
+        d_mouse->capture();
+    if (d_keyboard)
+        d_keyboard->capture();
 
-        return true;
-    }
-
+    return true;
 }
 
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
 {
     return true;
 }
 
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
 {
 
-    CEGUI::System& cegui = CEGUI::System::getSingleton();
+    CEGUI::GUIContext& ctx = CEGUI::System::getSingleton().getDefaultGUIContext();
 
-    cegui.injectMouseMove(e.state.X.rel, e.state.Y.rel);
-    cegui.injectMouseWheelChange(e.state.Z.rel / 120.0f);
+    ctx.injectMouseMove(e.state.X.rel, e.state.Y.rel);
+    ctx.injectMouseWheelChange(e.state.Z.rel / 120.0f);
 
     return true;
 }
 
-
-
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 {
+    CEGUI::System& gui_system(CEGUI::System::getSingleton());
+
     // give 'quitting' priority
     if (e.key == OIS::KC_ESCAPE)
     {
         d_quit = true;
-         return true;
+        return true;
     }
 
     // do event injection
-    CEGUI::System& cegui = CEGUI::System::getSingleton();
+    CEGUI::GUIContext& ctx = CEGUI::System::getSingleton().getDefaultGUIContext();
 
     // key down
-    cegui.injectKeyDown(e.key);
+    ctx.injectKeyDown(static_cast<CEGUI::Key::Scan>(e.key));
 
     // now character
-    cegui.injectChar(e.text);
-
+    ctx.injectChar(e.text);
 
     return true;
 }
 
 
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
 {
-    CEGUI::System::getSingleton().injectKeyUp(e.key);
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectKeyUp(static_cast<CEGUI::Key::Scan>(e.key));
     return true;
 }
 
-
-
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().injectMouseButtonDown(convertOISButtonToCegui(id));
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectMouseButtonDown(convertOISButtonToCegui(id));
 
     return true;
 }
 
-
+//----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().injectMouseButtonUp(convertOISButtonToCegui(id));
+    CEGUI::System::getSingleton().getDefaultGUIContext().
+        injectMouseButtonUp(convertOISButtonToCegui(id));
 
     return true;
 }
 
+//----------------------------------------------------------------------------//
 CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
 {
    using namespace OIS;
@@ -450,24 +398,30 @@ CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
     }
 }
 
+//----------------------------------------------------------------------------//
+
 ////////////////////////////////////////////////////////////////////////////////
 /*******************************************************************************
     Start of WndEvtListener member functions
 *******************************************************************************/
 ////////////////////////////////////////////////////////////////////////////////
 
+//----------------------------------------------------------------------------//
 WndEvtListener::WndEvtListener(CEGUI::OgreRenderer* renderer) :
     d_renderer(renderer)
 {}
 
+//----------------------------------------------------------------------------//
 void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
 {
     CEGUI::System* const sys = CEGUI::System::getSingletonPtr();
     if (sys)
         sys->notifyDisplaySizeChanged(
-            CEGUI::Size(static_cast<float>(rw->getWidth()),
-                        static_cast<float>(rw->getHeight())));
+            CEGUI::Sizef(static_cast<float>(rw->getWidth()),
+                          static_cast<float>(rw->getHeight())));
 }
+
+//----------------------------------------------------------------------------//
 
 #endif
 

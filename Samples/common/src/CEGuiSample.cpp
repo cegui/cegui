@@ -52,6 +52,9 @@
 #ifdef CEGUI_SAMPLES_USE_OPENGL
 #   include "CEGuiOpenGLBaseApplication.h"
 #endif
+#ifdef CEGUI_SAMPLES_USE_OPENGL3
+#   include "CEGuiOpenGL3BaseApplication.h"
+#endif
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
 #   include "CEGuiIrrlichtBaseApplication.h"
 #endif
@@ -59,14 +62,17 @@
 #   include "CEGuiDirectFBBaseApplication.h"
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+#   ifdef CEGUI_SAMPLES_USE_DIRECT3D8
 #       include "CEGuiD3D81BaseApplication.h"
 #   endif
-#   ifdef CEGUI_SAMPLES_USE_DIRECTX_9
+#   ifdef CEGUI_SAMPLES_USE_DIRECT3D9
 #       include "CEGuiD3D9BaseApplication.h"
 #   endif
-#   ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+#   ifdef CEGUI_SAMPLES_USE_DIRECT3D10
 #       include "CEGuiD3D10BaseApplication.h"
+#   endif
+#   ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+#       include "CEGuiD3D11BaseApplication.h"
 #   endif
 #endif
 // now we include the base CEGuiBaseApplication just in case someone has managed to
@@ -74,7 +80,7 @@
 // although there will be no renderers available for selection in the samples.
 #include "CEGuiBaseApplication.h"
 
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -152,14 +158,17 @@ bool CEGuiSample::initialise()
     d_rendererSelector = new Win32CEGuiRendererSelector;
 
     // enable renderer types supported for Win32
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D8
     d_rendererSelector->setRendererAvailability(Direct3D81GuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D9
     d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
     d_rendererSelector->setRendererAvailability(Direct3D10GuiRendererType);
+#endif
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+    d_rendererSelector->setRendererAvailability(Direct3D11GuiRendererType);
 #endif
 
 #elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
@@ -179,7 +188,10 @@ bool CEGuiSample::initialise()
     d_rendererSelector->setRendererAvailability(OgreGuiRendererType);
 #endif
 #ifdef CEGUI_SAMPLES_USE_OPENGL
-    d_rendererSelector->setRendererAvailability(OpenGLGuiRendererType);
+	d_rendererSelector->setRendererAvailability(OpenGLGuiRendererType);
+#endif
+#ifdef CEGUI_SAMPLES_USE_OPENGL3
+	d_rendererSelector->setRendererAvailability(OpenGL3GuiRendererType);
 #endif
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
     d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
@@ -200,26 +212,36 @@ bool CEGuiSample::initialise()
             break;
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D8
         case Direct3D81GuiRendererType:
             d_sampleApp = new CEGuiD3D81BaseApplication();
             break;
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D9
         case Direct3D9GuiRendererType:
             d_sampleApp = new CEGuiD3D9BaseApplication();
             break;
 #endif // DX9
-#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
         case Direct3D10GuiRendererType:
             d_sampleApp = new CEGuiD3D10BaseApplication();
             break;
 #endif // DX10
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+        case Direct3D11GuiRendererType:
+            d_sampleApp = new CEGuiD3D11BaseApplication();
+            break;
+#endif // DX11
 #endif // Win32
 #ifdef CEGUI_SAMPLES_USE_OPENGL
         case OpenGLGuiRendererType:
-            d_sampleApp = new CEGuiOpenGLBaseApplication();
-            break;
+			d_sampleApp = new CEGuiOpenGLBaseApplication();
+			break;
+#endif
+#ifdef CEGUI_SAMPLES_USE_OPENGL3
+		case OpenGL3GuiRendererType:
+			d_sampleApp = new CEGuiOpenGL3BaseApplication();
+			break;
 #endif
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
         case IrrlichtGuiRendererType:
