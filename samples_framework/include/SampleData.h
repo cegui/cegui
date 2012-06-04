@@ -36,21 +36,52 @@ namespace CEGUI
     class DynamicModule;
 }
 
-struct SampleData
+enum SampleType
 {
-    enum SampleType
-    {
-        ST_Module,
-        ST_Lua,
-        ST_Python,
+    ST_Module,
+    ST_Lua,
+    ST_Python,
 
-        ST_Count
-    };
+    ST_Count
+};
 
-    String                  d_name;
-    String                  d_summary;
-    String                  d_description;
+class Sample;
+
+class SampleData
+{
+public:
+    SampleData(CEGUI::String sampleName, CEGUI::String summary,
+        CEGUI::String description, SampleType sampleTypeEnum);
+    virtual ~SampleData();
+
+    virtual void initialise() = 0;
+    virtual void deinitialise() = 0;
+
+    virtual CEGUI::Window*  getGUIRoot() = 0;
+
+
+protected:
+    CEGUI::String           d_name;
+    CEGUI::String           d_summary;
+    CEGUI::String           d_description;
     SampleType              d_type;
+};
+
+class SampleDataModule : public SampleData
+{
+public:
+    SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
+    CEGUI::String description, SampleType sampleTypeEnum);
+    virtual ~SampleDataModule();
+
+    virtual void SampleDataModule::getSampleInstanceFromDLL();
+
+    virtual void initialise();
+    virtual void deinitialise();
+
+    virtual CEGUI::Window*  getGUIRoot();
+
+private:
 
     CEGUI::DynamicModule*   d_dynamicModule;
     Sample*                 d_sample;

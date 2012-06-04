@@ -70,11 +70,7 @@ bool FirstWindowSample::initialise()
     // The DefaultWindow does not perform any rendering of its own, so is invisible.
     //
     // Create a DefaultWindow called 'Root'.
-    DefaultWindow* root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
-
-    // set the GUI root window (also known as the GUI "sheet"), so the gui we set up
-    // will be visible.
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    m_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
@@ -84,7 +80,7 @@ bool FirstWindowSample::initialise()
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
-    root->addChild(wnd);
+    m_root->addChild(wnd);
 
     // Windows are in Relative metrics mode by default.  This means that we can
     // specify sizes and positions without having to know the exact pixel size
@@ -133,10 +129,10 @@ void FirstWindowSample::deinitialise()
 *************************************************************************/
 CEGUI::Window* FirstWindowSample::getGUIRoot()
 {
-    return 0;
+    return m_root;
 }
 
 /*************************************************************************
-    Function that returns an instance of the sample
+    Define the module function that returns an instance of the sample
 *************************************************************************/
 SAMPLE_EXTERN_IMPL(FirstWindowSample)

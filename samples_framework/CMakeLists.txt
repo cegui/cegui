@@ -6,6 +6,7 @@ set( CORE_SOURCE_FILES
     ./src/CEGuiBaseApplication.cpp
     ./src/CEGuiRendererSelector.cpp
     ./src/Samples_xmlHandler.cpp
+    ./src/SampleData.cpp
 )
 
 set( CORE_HEADER_FILES

@@ -33,26 +33,16 @@ author:     Lukas E Meindl
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/DynamicModule.h"
-#include "CEGUI/Version.h"
-
 
 
 #include <string>
 
 using namespace CEGUI;
 
-#define S_(X) #X
-#define STRINGIZE(X) S_(X)
-
 //platform-dependant DLL delay-loading includes
 #if (defined( __WIN32__ ) || defined( _WIN32 )) 
     #include "windows.h"
 #endif
-
-typedef Sample& (*getSampleInstance)();
-#define GetSampleInstanceFuncName "getSampleInstance"
-
 
 // Name of the xsd schema file used to validate animation XML files.
 const String SamplesFramework::XMLSchemaName("Animation.xsd");
@@ -90,17 +80,20 @@ bool SamplesFramework::initialiseSample()
 
     loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
 
-    loadSamples();
+    initialiseSamples();
+
+    System::getSingleton().getDefaultGUIContext().setRootWindow(m_samples.back()->getGUIRoot());
+    
 
    
 
-    // return true ton continue that the samples framework knows that initialisation was a
-    // success, and that it should now run the sample.
+    // return true to continue
     return true;
 }
 
 void SamplesFramework::cleanupSample()
 {
+    unloadSamples();
 }
 
 void SamplesFramework::initialiseFrameworkLayout()
@@ -169,37 +162,29 @@ void SamplesFramework::initialiseFrameworkLayout()
     wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
 }
 
-void SamplesFramework::loadSamples()
+void SamplesFramework::initialiseSamples()
 {
     int size = m_samples.size();
     for(int i = 0; i < size; ++i)
     {
-        SampleData& const sampleData = m_samples[i];
+        SampleData*& sampleData = m_samples[i];
 
-        getSampleInstanceFromDLL(sampleData);
-
-        Sample* sample = sampleData.d_sample;
-        sampleData.d_sample->initialise();
+        sampleData->initialise();
     }
-  
-    //sample.deinitialise();
 }
 
-void SamplesFramework::getSampleInstanceFromDLL(SampleData& sampleData)
+
+void SamplesFramework::unloadSamples()
 {
-    // Append version
-    static CEGUI::String versionSuffix( "-" STRINGIZE(CEGUI_VERSION_MAJOR) "." STRINGIZE(CEGUI_VERSION_MINOR));
-
-    CEGUI::DynamicModule* sampleModule = new DynamicModule(sampleData.d_name + versionSuffix);
-    getSampleInstance functionPointerGetSample = (getSampleInstance)sampleModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName));
-
-    if(functionPointerGetSample == 0)
+    while(m_samples.size() > 0)
     {
-        CEGUI::String errorMessage = "The sample creation function is not defined in the dynamic library of " + sampleData.d_name;
-        CEGUI_THROW(InvalidRequestException(errorMessage.c_str()));
-    }
+        SampleData*& sampleData = m_samples.back();
 
-    sampleData.d_sample =  &(functionPointerGetSample());
+        sampleData->deinitialise();
+        delete sampleData;
+
+        m_samples.pop_back();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -232,8 +217,9 @@ void SamplesFramework::loadSamplesDataFromXML(const String& filename,
 }
 
 
-void SamplesFramework::addSampleData(const SampleData& sampleData)
+void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum)
 {
+    SampleData* sampleData = new SampleDataModule(sampleName, summary, description, sampleTypeEnum);
     m_samples.push_back(sampleData);
 }
 

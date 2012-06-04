@@ -29,6 +29,7 @@
 #define _Samples_Framework_h_
 
 #include "SamplesFrameworkBase.h"
+#include "SampleData.h"
 
 #include <vector>
 
@@ -39,7 +40,8 @@ namespace CEGUI
     class String;
 }
 
-struct SampleData;
+class SampleData;
+
 class Sample;
 
 using namespace CEGUI;
@@ -64,22 +66,23 @@ public:
 
     bool initialiseCEGUI();
 
-    void addSampleData(const SampleData& sampleData);
+    void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum);
 
 
 
 
 protected:
     void initialiseFrameworkLayout();
-    void loadSamples();
 
+    void initialiseSamples();
     void loadSamplesDataFromXML(const String& filename, const String& resourceGroup);
-
     void getSampleInstanceFromDLL(SampleData& sampleData);
+
+    void unloadSamples();
 
     CEGUI::DefaultWindow* m_root;
 
-    std::vector<SampleData> m_samples;
+    std::vector<SampleData*> m_samples;
 
 
 };

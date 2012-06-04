@@ -29,7 +29,13 @@
 #define _Sample_FirstWindow_h_
 
 #include "SampleBase.h"
-#include "CEGUI/CEGUI.h"
+
+
+namespace CEGUI
+{
+    class Window;
+    class DefaultWindow;
+}
 
 class FirstWindowSample : public Sample
 {
@@ -44,6 +50,8 @@ public:
 private:
     FirstWindowSample(const FirstWindowSample&) {}
     FirstWindowSample& operator=(const FirstWindowSample&) {}
+
+    CEGUI::DefaultWindow*      m_root;
 };
 
 #endif  // end of guard _Sample_FirstWindow_h_
