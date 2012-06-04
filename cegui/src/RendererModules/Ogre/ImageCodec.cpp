@@ -75,12 +75,12 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
     bool rbswap;
     switch (ogre_pf)
     {
-        case PF_B8G8R8:
+        case PF_R8G8B8:
             rbswap = true;
             components = 3;
             break;
 
-        case PF_A8B8G8R8:
+        case PF_A8R8G8B8:
             rbswap = true;
             components = 4;
             break;

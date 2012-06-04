@@ -353,8 +353,8 @@ Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
 {
     switch (fmt)
     {
-        case Texture::PF_RGBA:       return Ogre::PF_A8R8G8B8;
-        case Texture::PF_RGB:        return Ogre::PF_R8G8B8;
+        case Texture::PF_RGBA:       return Ogre::PF_A8B8G8R8;
+        case Texture::PF_RGB:        return Ogre::PF_B8G8R8;
         case Texture::PF_RGB_565:    return Ogre::PF_R5G6B5;
         case Texture::PF_RGBA_4444:  return Ogre::PF_A4R4G4B4;
         case Texture::PF_PVRTC2:     return Ogre::PF_PVRTC_RGBA2;
