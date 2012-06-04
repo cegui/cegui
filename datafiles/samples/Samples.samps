@@ -1,0 +1,9 @@
+<?xml version="1.0" ?>
+<Samples>
+	<SampleDefinition
+        sampleName      = "CEGUIFirstWindow"
+        sampleType      = "cppmodule"
+        summary         = "bla"
+        description     = "muh"
+    />
+</Samples>

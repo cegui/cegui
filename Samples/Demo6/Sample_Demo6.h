@@ -28,15 +28,16 @@
 #ifndef _Sample_Demo6_h_
 #define _Sample_Demo6_h_
 
-#include "CEGuiSample.h"
+#include "Sample.h"
 #include "CEGUI/CEGUI.h"
 
 // Sample class
-class Demo6Sample : public CEGuiSample
+class Demo6Sample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    bool initialise();
+    void deinitialise();
 
     // method to perform any required cleanup operations.
     void cleanupSample(void);
