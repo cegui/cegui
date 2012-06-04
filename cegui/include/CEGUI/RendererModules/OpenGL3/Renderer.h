@@ -376,7 +376,8 @@ public:
     */
     OpenGL3StateChangeWrapper* getOpenGLStateChanger();
 
-
+    //! Return whether EXT_texture_compression_s3tc is supported
+    bool isS3TCSupported() const;
 
     //! Gets the reference to the pointer
 private:
@@ -416,6 +417,9 @@ private:
 
     //! initialise OGL3TextureTargetFactory that will generate TextureTargets
     void initialiseTextureTargetFactory();
+
+    //! perform extensions initialisation.
+    void initialiseGLExtensions();
 
     //! helper to safely log the creation of a named texture
     static void logTextureCreation(const String& name);
@@ -468,6 +472,8 @@ private:
     //! The wrapper we use for OpenGL calls, to detect redundant state changes and prevent them
     OpenGL3StateChangeWrapper*  d_openGLStateChanger;
     OpenGL3ShaderManager*       d_shaderManager;
+    //! whether S3TC texture compression is supported by the context
+    bool d_s3tcSupported;
 };
 
 } // End of  CEGUI namespace section

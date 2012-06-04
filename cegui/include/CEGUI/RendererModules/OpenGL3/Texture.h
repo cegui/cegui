@@ -143,6 +143,18 @@ protected:
     //! clean up the GL texture, or the grab buffer if it had been grabbed
     void cleanupOpenGLTexture();
 
+    //! initialise the internal format flags for the given CEGUI::PixelFormat.
+    void initInternalPixelFormatFields(const PixelFormat fmt);
+
+    //! internal texture resize function (does not reset format or other fields)
+    void setTextureSize_impl(const Sizef& sz);
+
+    void loadUncompressedTextureBuffer(const Sizef& buffer_size,
+                                       const GLvoid* buffer) const;
+
+    void loadCompressedTextureBuffer(const Sizef& buffer_size,
+                                     const GLvoid* buffer) const;
+
     //! The OpenGL texture we're wrapping.
     GLuint d_ogltexture;
     //! Size of the texture.
@@ -157,6 +169,12 @@ protected:
     OpenGL3Renderer& d_owner;
     //! The name given for this texture.
     const String d_name;
+    //! Texture format
+    GLenum d_format;
+    //! Texture subpixel format
+    GLenum d_subpixelFormat;
+    //! Whether Texture format is a compressed format
+    bool d_isCompressed;
 };
 
 } // End of  CEGUI namespace section

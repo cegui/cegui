@@ -44,6 +44,7 @@ OpenGL3Texture::OpenGL3Texture(OpenGL3Renderer& owner, const String& name) :
     d_owner(owner),
     d_name(name)
 {
+    initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
 }
 
@@ -57,6 +58,7 @@ OpenGL3Texture::OpenGL3Texture(OpenGL3Renderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
+    initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
     loadFromFile(filename, resourceGroup);
 }
@@ -70,6 +72,7 @@ OpenGL3Texture::OpenGL3Texture(OpenGL3Renderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
+    initInternalPixelFormatFields(PF_RGBA);
     generateOpenGLTexture();
     setTextureSize(size);
 }
@@ -84,7 +87,66 @@ OpenGL3Texture::OpenGL3Texture(OpenGL3Renderer& owner, const String& name,
     d_owner(owner),
     d_name(name)
 {
+    initInternalPixelFormatFields(PF_RGBA);
     updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Texture::initInternalPixelFormatFields(const PixelFormat fmt)
+{
+    d_isCompressed = false;
+
+    switch (fmt)
+    {
+    case PF_RGBA:
+        d_format = GL_RGBA;
+        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        break;
+
+    case PF_RGB:
+        d_format = GL_RGB;
+        d_subpixelFormat = GL_UNSIGNED_BYTE;
+        break;
+
+    case PF_RGB_565:
+        d_format = GL_RGB;
+        d_subpixelFormat = GL_UNSIGNED_SHORT_5_6_5;
+        break;
+
+    case PF_RGBA_4444:
+        d_format = GL_RGBA;
+        d_subpixelFormat = GL_UNSIGNED_SHORT_4_4_4_4;
+        break;
+
+    case PF_RGB_DXT1:
+        d_format = GL_COMPRESSED_RGB_S3TC_DXT1_EXT;
+        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_isCompressed = true;
+        break;
+
+    case PF_RGBA_DXT1:
+        d_format = GL_COMPRESSED_RGBA_S3TC_DXT1_EXT;
+        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_isCompressed = true;
+        break;
+
+    case PF_RGBA_DXT3:
+        d_format = GL_COMPRESSED_RGBA_S3TC_DXT3_EXT;
+        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_isCompressed = true;
+        break;
+
+    case PF_RGBA_DXT5:
+        d_format = GL_COMPRESSED_RGBA_S3TC_DXT5_EXT;
+        d_subpixelFormat = GL_UNSIGNED_BYTE; // not used.
+        d_isCompressed = true;
+        break;
+
+    default:
+        CEGUI_THROW(RendererException(
+            "OpenGL3Texture::initInternalPixelFormatFields: invalid or "
+            "unsupported CEGUI::PixelFormat."));
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -160,51 +222,87 @@ void OpenGL3Texture::loadFromMemory(const void* buffer, const Sizef& buffer_size
         CEGUI_THROW(InvalidRequestException("OpenGL3Texture::loadFromMemory: "
             "Data was supplied in an unsupported pixel format."));
 
-    GLint comps;
-    GLenum format;
-    switch (pixel_format)
-    {
-    case PF_RGB:
-        format = GL_RGB;
-        break;
+    initInternalPixelFormatFields(pixel_format);
+    setTextureSize_impl(buffer_size);
 
-    case PF_RGBA:
-        format = GL_RGBA;
-        break;
-    };
-
-    setTextureSize(buffer_size);
     // store size of original data we are loading
     d_dataSize = buffer_size;
-    // update scale values
     updateCachedScaleValues();
 
     // save old texture binding
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
-    GLint old_pack;
-    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
-
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                    static_cast<GLsizei>(buffer_size.d_width),
-                    static_cast<GLsizei>(buffer_size.d_height),
-                    format, GL_UNSIGNED_BYTE, buffer);
 
-    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
+    if (d_isCompressed)
+        loadCompressedTextureBuffer(buffer_size, buffer);
+    else
+        loadUncompressedTextureBuffer(buffer_size, buffer);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
+void OpenGL3Texture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
+                                                  const GLvoid* buffer) const
+{
+    GLint old_pack;
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
+                    static_cast<GLsizei>(buffer_size.d_width),
+                    static_cast<GLsizei>(buffer_size.d_height),
+                    d_format, d_subpixelFormat, buffer);
+
+    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Texture::loadCompressedTextureBuffer(const Sizef& buffer_size,
+                                                const GLvoid* buffer) const
+{
+    GLsizei blocksize = 16;
+    if (d_format == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
+        d_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
+    {
+        blocksize = 8;
+    }
+
+    const GLsizei image_size = 
+        ((static_cast<GLsizei>(buffer_size.d_width) + 3) / 4) *
+        ((static_cast<GLsizei>(buffer_size.d_height) + 3) / 4) *
+        blocksize;
+
+    glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
+                           static_cast<GLsizei>(buffer_size.d_width),
+                           static_cast<GLsizei>(buffer_size.d_height),
+                           0, image_size, buffer);
+}
+
+//----------------------------------------------------------------------------//
 void OpenGL3Texture::setTextureSize(const Sizef& sz)
 {
+    initInternalPixelFormatFields(PF_RGBA);
+
+    setTextureSize_impl(sz);
+
+    d_dataSize = d_size;
+    updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3Texture::setTextureSize_impl(const Sizef& sz)
+{
     const Sizef size(d_owner.getAdjustedTextureSize(sz));
+    d_size = size;
+
+    if (d_isCompressed)
+        return;
 
     // make sure size is within boundaries
     GLfloat maxSize;
@@ -226,9 +324,6 @@ void OpenGL3Texture::setTextureSize(const Sizef& sz)
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
-
-    d_dataSize = d_size = size;
-    updateCachedScaleValues();
 }
 
 //----------------------------------------------------------------------------//
@@ -408,7 +503,23 @@ void OpenGL3Texture::setOpenGLTexture(GLuint tex, const Sizef& size)
 //----------------------------------------------------------------------------//
 bool OpenGL3Texture::isPixelFormatSupported(const PixelFormat fmt) const
 {
-    return fmt == PF_RGBA || fmt == PF_RGB;
+    switch (fmt)
+    {
+    case PF_RGBA:
+    case PF_RGB:
+    case PF_RGBA_4444:
+    case PF_RGB_565:
+        return true;
+
+    case PF_RGB_DXT1:
+    case PF_RGBA_DXT1:
+    case PF_RGBA_DXT3:
+    case PF_RGBA_DXT5:
+        return d_owner.isS3TCSupported();
+
+    default:
+        return false;
+    }
 }
 
 //----------------------------------------------------------------------------//
