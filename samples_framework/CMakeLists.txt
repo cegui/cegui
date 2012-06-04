@@ -2,27 +2,30 @@ set( CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME} )
 
 set( CORE_SOURCE_FILES
     ./src/SamplesFrameworkBase.cpp
-	./src/SamplesFramework.cpp
-	./src/CEGuiBaseApplication.cpp
+    ./src/SamplesFramework.cpp
+    ./src/CEGuiBaseApplication.cpp
     ./src/CEGuiRendererSelector.cpp
+    ./src/Samples_xmlHandler.cpp
 )
 
 set( CORE_HEADER_FILES
-	../common/include/Sample.h
-	./include/SamplesFrameworkBase.h
-	./include/SamplesFramework.h
-	./include/CEGuiBaseApplication.h
+    ../Samples/common/include/Sample.h
+    ./include/SamplesFrameworkBase.h
+    ./include/SamplesFramework.h
+    ./include/CEGuiBaseApplication.h
     ./include/CEGuiRendererSelector.h
+    ./include/Samples_xmlHandler.h
+    ./include/SampleData.h
 
 )
 
 
-include_directories(${CMAKE_BINARY_DIR}/samples/common/include
-					${CMAKE_SOURCE_DIR}/samples/common/include
-					${CMAKE_SOURCE_DIR}/samples/Framework/include
+include_directories(${CMAKE_SOURCE_DIR}/samples_framework/include
+                    ${CMAKE_BINARY_DIR}/samples/common/include
+                    ${CMAKE_SOURCE_DIR}/samples/common/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
 
-					
+                    
 if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiGLFWSharedBase.cpp
@@ -111,7 +114,7 @@ endif()
 
 
 
-	 ###########################################################################
+     ###########################################################################
     #                     Statically Linked Executable
     ###########################################################################
     if (CEGUI_BUILD_STATIC_CONFIGURATION)

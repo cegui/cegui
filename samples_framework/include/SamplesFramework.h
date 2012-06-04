@@ -36,9 +36,13 @@
 namespace CEGUI
 {
     class DefaultWindow;
+    class String;
 }
 
-struct DLLSample;
+struct SampleData;
+class Sample;
+
+using namespace CEGUI;
 
 /*!
 \brief
@@ -50,11 +54,17 @@ public:
     SamplesFramework();
     virtual ~SamplesFramework();
 
+    static void setDefaultResourceGroup(const String& resourceGroup);
+
+    static const String XMLSchemaName;
+    static String s_defaultResourceGroup;
 
     bool initialiseSample();
     void cleanupSample();
 
     bool initialiseCEGUI();
+
+    void addSampleData(const SampleData& sampleData);
 
 
 
@@ -63,9 +73,15 @@ protected:
     void initialiseFrameworkLayout();
     void loadSamples();
 
+    void loadSamplesDataFromXML(const String& filename, const String& resourceGroup);
+
+    void getSampleInstanceFromDLL(SampleData& sampleData);
+
     CEGUI::DefaultWindow* m_root;
 
-    std::vector<DLLSample> m_dllSamples;
+    std::vector<SampleData> m_samples;
+
+
 };
 
 #endif

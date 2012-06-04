@@ -436,7 +436,8 @@ add_subdirectory(cegui/src/ScriptModules)
 add_subdirectory(cegui/src/CommonDialogs)
 
 if (CEGUI_SAMPLES_ENABLED)
-    add_subdirectory(Samples)
+    add_subdirectory(samples_framework)
+    add_subdirectory(samples)
 endif()
 
 add_subdirectory(datafiles)

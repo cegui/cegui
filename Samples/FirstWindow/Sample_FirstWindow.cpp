@@ -133,11 +133,10 @@ void FirstWindowSample::deinitialise()
 *************************************************************************/
 CEGUI::Window* FirstWindowSample::getGUIRoot()
 {
-    // nothing to do here!
     return 0;
 }
 
-extern "C" SAMPLE_EXPORT Sample* CreateSample()
-{
-    return new FirstWindowSample();
-}
+/*************************************************************************
+    Function that returns an instance of the sample
+*************************************************************************/
+SAMPLE_EXTERN_IMPL(FirstWindowSample)
