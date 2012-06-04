@@ -27,29 +27,38 @@ author:     Lukas E Meindl
 ***************************************************************************/
 #include "SamplesFramework.h"
 
+#include "Samples_xmlHandler.h"
 #include "Sample.h"
+#include "SampleData.h"
+
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/DynamicModule.h"
+#include "CEGUI/Version.h"
+
+
+
+#include <string>
 
 using namespace CEGUI;
 
-struct DLLSample
-{
-    CEGUI::DynamicModule*   m_dynamicModule;
-    Sample*                 m_sample;
-};
+#define S_(X) #X
+#define STRINGIZE(X) S_(X)
 
 //platform-dependant DLL delay-loading includes
 #if (defined( __WIN32__ ) || defined( _WIN32 )) 
     #include "windows.h"
 #endif
 
-typedef Sample* (*CreateSample)();
+typedef Sample& (*getSampleInstance)();
+#define GetSampleInstanceFuncName "getSampleInstance"
 
 
+// Name of the xsd schema file used to validate animation XML files.
+const String SamplesFramework::XMLSchemaName("Animation.xsd");
 
-
+// String that holds the default resource group for loading samples
+String SamplesFramework::s_defaultResourceGroup("");
 
 
 int main(int /*argc*/, char* /*argv*/[])
@@ -77,6 +86,9 @@ bool SamplesFramework::initialiseSample()
     using namespace CEGUI;
 
     initialiseFrameworkLayout();
+
+
+    loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
 
     loadSamples();
 
@@ -159,30 +171,81 @@ void SamplesFramework::initialiseFrameworkLayout()
 
 void SamplesFramework::loadSamples()
 {
-    // load the appropriate image codec module
-    std::string dllName = "CEGUIFirstWindow-9999";
-
-    CEGUI::DynamicModule* sampleModule = new DynamicModule(dllName.c_str());
-    CreateSample functionPointerCreateSample = (CreateSample)sampleModule->getSymbolAddress("CreateSample");
-
-    if(functionPointerCreateSample == 0)
+    int size = m_samples.size();
+    for(int i = 0; i < size; ++i)
     {
-        std::string errorMessage = "The sample creation function is not defined in the dynamic library of " + dllName;
+        SampleData& const sampleData = m_samples[i];
+
+        getSampleInstanceFromDLL(sampleData);
+
+        Sample* sample = sampleData.d_sample;
+        sampleData.d_sample->initialise();
+    }
+  
+    //sample.deinitialise();
+}
+
+void SamplesFramework::getSampleInstanceFromDLL(SampleData& sampleData)
+{
+    // Append version
+    static CEGUI::String versionSuffix( "-" STRINGIZE(CEGUI_VERSION_MAJOR) "." STRINGIZE(CEGUI_VERSION_MINOR));
+
+    CEGUI::DynamicModule* sampleModule = new DynamicModule(sampleData.d_name + versionSuffix);
+    getSampleInstance functionPointerGetSample = (getSampleInstance)sampleModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName));
+
+    if(functionPointerGetSample == 0)
+    {
+        CEGUI::String errorMessage = "The sample creation function is not defined in the dynamic library of " + sampleData.d_name;
         CEGUI_THROW(InvalidRequestException(errorMessage.c_str()));
     }
-    else
+
+    sampleData.d_sample =  &(functionPointerGetSample());
+}
+
+//----------------------------------------------------------------------------//
+void SamplesFramework::loadSamplesDataFromXML(const String& filename,
+                                             const String& resourceGroup)
+{
+    if (filename.empty())
+        CEGUI_THROW(InvalidRequestException(
+            "SamplesFramework::loadSamplesDataFromXML: "
+            "filename supplied for file loading must be valid."));
+
+    Samples_xmlHandler handler(this);
+
+    // do parse (which uses handler to create actual data)
+    CEGUI_TRY
     {
-        Sample* sample = functionPointerCreateSample();
-        sample->initialise(); 
+        System::getSingleton().getXMLParser()->
+            parseXMLFile(handler, filename, XMLSchemaName,
+                         resourceGroup.empty() ? resourceGroup : s_defaultResourceGroup);
     }
+    CEGUI_CATCH(...)
+    {
+        Logger::getSingleton().logEvent(
+            "SamplesFramework::loadSamplesDataFromXML: "
+            "loading of sample data from file '" + filename + "' has failed.",
+            Errors);
 
-    /*
-
-    sample->deinitialise();
-    delete sample;  // calls Plugin's dtor 
-    delete sampleModule;
-
-    */
+        CEGUI_RETHROW;
+    }
+}
 
 
+void SamplesFramework::addSampleData(const SampleData& sampleData)
+{
+    m_samples.push_back(sampleData);
+}
+
+/*!
+\brief
+Sets the default resource group to be used when loading samples xml
+data
+
+\param resourceGroup
+String describing the default resource group identifier to be used.
+*/
+void SamplesFramework::setDefaultResourceGroup(const String& resourceGroup)
+{
+    s_defaultResourceGroup = resourceGroup;
 }

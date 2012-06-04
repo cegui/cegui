@@ -1,6 +1,6 @@
 /***********************************************************************
-filename:   SampleBase.h
-created:    29/5/2012
+filename:   SampleData.h
+created:    2/6/2012
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
@@ -25,26 +25,36 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _SampleBase_h_
-#define _SampleBase_h_
+#ifndef _Sample_Data_h_
+#define _Sample_Data_h_
 
-#include "Sample.h"
+#include "CEGUI/String.h"
 
-// This header serves as a base for all samples and is needed inside the
-// SamplesFramework as interface for Samples that will be loaded.
-
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
-#   define SAMPLE_EXPORT __declspec(dllexport)
-#else
-#   define SAMPLE_EXPORT
-#endif
-
-
-#define SAMPLE_EXTERN_IMPL(SAMPLE_CLASS) \
-    extern "C" SAMPLE_EXPORT Sample& getSampleInstance() \
-{ \
-    static SAMPLE_CLASS sample; \
-    return sample; \
+// forward declarations
+namespace CEGUI
+{
+    class DynamicModule;
 }
 
+struct SampleData
+{
+    enum SampleType
+    {
+        ST_Module,
+        ST_Lua,
+        ST_Python,
+
+        ST_Count
+    };
+
+    String                  d_name;
+    String                  d_summary;
+    String                  d_description;
+    SampleType              d_type;
+
+    CEGUI::DynamicModule*   d_dynamicModule;
+    Sample*                 d_sample;
+};
+
 #endif
+

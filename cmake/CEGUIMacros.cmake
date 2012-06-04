@@ -356,15 +356,8 @@ macro (cegui_add_sample _NAME)
     ###########################################################################
     #                   Dynamically Linked Library
     ###########################################################################
-	add_library(${CEGUI_TARGET_NAME} SHARED ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+	add_library(${CEGUI_TARGET_NAME} MODULE ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 
-    # append the _d (or whatever) for debug builds as needed.
-    if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-            OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
-        )
-		
-    endif()
 
     if (NOT APPLE)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
