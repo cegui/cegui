@@ -123,24 +123,16 @@ SampleDataHandler::SampleDataHandler(
         sampleType
         );
 
-    SampleData::SampleType sampleTypeEnum;
+    SampleType sampleTypeEnum;
 
     if (sampleType == SampleTypeCppModule)
-        sampleTypeEnum = SampleData::ST_Module;
+        sampleTypeEnum = ST_Module;
     else if(sampleType == SampleTypePython)
-        sampleTypeEnum = SampleData::ST_Python;
+        sampleTypeEnum = ST_Python;
     else
-        sampleTypeEnum = SampleData::ST_Lua;
+        sampleTypeEnum = ST_Lua;
 
-    SampleData sampleData;
-
-    sampleData.d_name = sampleName;
-    sampleData.d_summary = summary;
-    sampleData.d_description = description;
-    sampleData.d_type = sampleTypeEnum;
-
-    d_samplesFramework->addSampleData(sampleData);
-
+    d_samplesFramework->addSampleDataCppModule(sampleName, summary, description, sampleTypeEnum);
 }
 
 //----------------------------------------------------------------------------//
