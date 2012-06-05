@@ -273,6 +273,8 @@ Window::Window(const String& type, const String& name):
 
     d_guiContext(0),
 
+    d_containsMouse(false),
+
     d_fontRenderSizeChangeConnection(
         GlobalEventSet::getSingleton().subscribeEvent(
             "Font/RenderSizeChanged",
@@ -2438,12 +2440,14 @@ void Window::onChildRemoved(ElementEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onMouseEntersArea(MouseEventArgs& e)
 {
+    d_containsMouse = true;
     fireEvent(EventMouseEntersArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
 void Window::onMouseLeavesArea(MouseEventArgs& e)
 {
+    d_containsMouse = false;
     fireEvent(EventMouseLeavesArea, e, EventNamespace);
 }
 
@@ -3765,6 +3769,12 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 
     return d_windowRenderer->handleFontRenderSizeChange(
         static_cast<const FontEventArgs&>(args).font);
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isMouseContainedInArea() const
+{
+    return d_containsMouse;
 }
 
 //----------------------------------------------------------------------------//
