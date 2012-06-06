@@ -171,7 +171,6 @@ public:
 	*/
 	virtual String	getDefault(const PropertyReceiver* receiver) const;
 
-
     /*!
     \brief
         Writes out an XML representation of this class to the given stream.
@@ -181,6 +180,9 @@ public:
         case we require the target PropertyReceiver in order to obtain the property value.
     */
     virtual void writeXMLToStream(const PropertyReceiver* receiver, XMLSerializer& xml_stream) const;
+
+    //! function to allow initialisation of a PropertyReceiver.
+    virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const {}
 
 protected:
 	String	d_name;		//!< String that stores the Property name.

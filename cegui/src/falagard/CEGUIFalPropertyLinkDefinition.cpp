@@ -80,7 +80,20 @@ namespace CEGUI
 
     void PropertyLinkDefinition::set(PropertyReceiver* receiver, const String& value)
     {
-        LinkTargetCollection::iterator i = d_targets.begin();
+        updateLinkTargets(receiver, value);
+
+        // base handles things like ensuring redraws and such happen
+        PropertyDefinitionBase::set(receiver, value);
+    }
+
+    void PropertyLinkDefinition::initialisePropertyReceiver(PropertyReceiver* receiver) const
+    {
+        updateLinkTargets(receiver, d_default);
+    }
+
+    void PropertyLinkDefinition::updateLinkTargets(PropertyReceiver* receiver, const String& value) const
+    {
+        LinkTargetCollection::const_iterator i = d_targets.begin();
         for ( ; i != d_targets.end(); ++i)
         {
             Window* target_wnd = getTargetWindow(receiver,
@@ -92,9 +105,6 @@ namespace CEGUI
                                                 d_name :
                                                 (*i).d_targetProperty, value);
         }
-
-        // base handles things like ensuring redraws and such happen
-        PropertyDefinitionBase::set(receiver, value);
     }
 
     const Window* PropertyLinkDefinition::getTargetWindow(const PropertyReceiver* receiver) const
@@ -106,11 +116,10 @@ namespace CEGUI
                                (*d_targets.begin()).d_widgetNameSuffix);
     }
 
-    Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver)
+    Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver) const
     {
         return const_cast<Window*>(
-            static_cast<const PropertyLinkDefinition*>(this)->
-                getTargetWindow(receiver));
+            getTargetWindow(static_cast<const PropertyReceiver*>(receiver)));
     }
 
     void PropertyLinkDefinition::addLinkTarget(const String& widget,
@@ -141,11 +150,11 @@ namespace CEGUI
     }
 
     Window* PropertyLinkDefinition::getTargetWindow(PropertyReceiver* receiver,
-                                                    const String& name_suffix)
+                                                    const String& name_suffix) const
     {
         return const_cast<Window*>(
-            static_cast<const PropertyLinkDefinition*>(this)->
-                getTargetWindow(receiver, name_suffix));
+            getTargetWindow(static_cast<const PropertyReceiver*>(receiver),
+                            name_suffix));
     }
 
     void PropertyLinkDefinition::writeXMLElementType(XMLSerializer& xml_stream) const

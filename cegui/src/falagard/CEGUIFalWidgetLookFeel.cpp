@@ -135,8 +135,6 @@ namespace CEGUI
         {
             // add the property to the window
             widget.addProperty(&(*propdef));
-            // write default value to get things set up properly
-            widget.setProperty((*propdef).getName(), (*propdef).getDefault(&widget));
         }
 
         // add required child widgets
@@ -150,8 +148,6 @@ namespace CEGUI
         {
             // add the property to the window
             widget.addProperty(&(*linkdef));
-            // write default value to get things set up properly
-            widget.setProperty((*linkdef).getName(), (*linkdef).getDefault(&widget));
         }
 
         // apply properties to the parent window

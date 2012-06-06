@@ -57,6 +57,8 @@ namespace CEGUI
         // override members from PropertyDefinitionBase
         String get(const PropertyReceiver* receiver) const;
         void set(PropertyReceiver* receiver, const String& value);
+        // overrides
+        void initialisePropertyReceiver(PropertyReceiver* receiver) const;
 
     protected:
         void writeXMLElementType(XMLSerializer& xml_stream) const;
@@ -81,7 +83,7 @@ namespace CEGUI
             This will be removed in 0.8.x.  Use the version taking a suffix
             string instead!
         */
-        Window* getTargetWindow(PropertyReceiver* receiver);
+        Window* getTargetWindow(PropertyReceiver* receiver) const;
 
         //! Return a pointer to the target window with the given suffix.
         const Window* getTargetWindow(const PropertyReceiver* receiver,
@@ -89,7 +91,11 @@ namespace CEGUI
 
         //! Return a pointer to the target window with the given suffix.
         Window* getTargetWindow(PropertyReceiver* receiver,
-                                const String& name_suffix);
+                                const String& name_suffix) const;
+
+        //! Updates all linked properties to the given value.
+        void updateLinkTargets(PropertyReceiver* receiver,
+                               const String& value) const;
 
         //! Internal struct used to keep track of targets.
         struct LinkTarget

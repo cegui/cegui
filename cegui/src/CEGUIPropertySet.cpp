@@ -51,6 +51,7 @@ void PropertySet::addProperty(Property* property)
 	}
 
 	d_properties[property->getName()] = property;
+    property->initialisePropertyReceiver(this);
 }
 
 /*************************************************************************
