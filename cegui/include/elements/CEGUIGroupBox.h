@@ -118,15 +118,6 @@ namespace CEGUI
 			
 
 	protected:
-		
-
-		// Overridden from Window
-		/*!
-		\brief
-			Initializes the components necessary.
-		*/
-		virtual void initialiseComponents();
-
 		/*!
 		\brief
 			Add given window to child list at an appropriate position.
