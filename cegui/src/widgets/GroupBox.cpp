@@ -1,12 +1,12 @@
 /************************************************************************
-	filename: 	CEGUIGroupBox.cpp
-	created:	03/23/2004
-	author:		Lars 'Levia' Wesselius (Content Pane based on Tomas Lindquist Olsen's code)
+    filename:   CEGUIGroupBox.cpp
+    created:    03/23/2004
+    author:     Lars 'Levia' Wesselius (Content Pane based on Tomas Lindquist Olsen's code)
 
-	purpose:	Implementation of base class for the groupbox
+    purpose:    Implementation of base class for the groupbox
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,34 +33,29 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+const String GroupBox::EventNamespace("GroupBox");
+const String GroupBox::WidgetTypeName("CEGUI/GroupBox");
+const String GroupBox::ContentPaneName("__auto_contentpane__");
 
-	const String GroupBox::EventNamespace("GroupBox");
-	const String GroupBox::WidgetTypeName("CEGUI/GroupBox");
-	const String GroupBox::ContentPaneName("__auto_contentpane__");
-
-	/*************************************************************************
-	Base class constructor
-	*************************************************************************/
+//----------------------------------------------------------------------------//
 GroupBox::GroupBox(const String& type, const String& name) :
-	Window(type, name)
+    Window(type, name)
 {
-    // When clicked, don't rise. Required because a Groupbox does not have an actual parent child
-    // relation with the widgets which appear inside it.
+    // When clicked, don't rise. Required because a Groupbox does not have an
+    // actual parent child relation with the widgets which appear inside it.
     d_riseOnClick = false;
 }
 
-GroupBox::~GroupBox()
-{
-}
-
+//----------------------------------------------------------------------------//
 void GroupBox::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-    {
-        CEGUI_THROW(AlreadyExistsException("GroupBox::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
-    }
+        CEGUI_THROW(InvalidRequestException(
+            "GroupBox::addChild_impl - GroupBox can only have Elements of type "
+            "Window added as children (Window path: " + getNamePath() + ")."));
 
     if (wnd->isAutoWindow())
         Window::addChild_impl(wnd);
@@ -68,6 +63,7 @@ void GroupBox::addChild_impl(Element* element)
         pane->addChild(wnd);
 }
 
+//----------------------------------------------------------------------------//
 void GroupBox::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
@@ -78,41 +74,25 @@ void GroupBox::removeChild_impl(Element* element)
         pane->removeChild(wnd);
 }
 
+//----------------------------------------------------------------------------//
 Window * GroupBox::getContentPane() const
 {
-    if (isChild(ContentPaneName))
-        return getChild(ContentPaneName);
-    
-    return 0;
+    return getChild(ContentPaneName);    
 }
 
+//----------------------------------------------------------------------------//
 bool GroupBox::drawAroundWidget(const CEGUI::Window*)
 {
     Logger::getSingleton().logEvent("TODO: GroupBox::drawAroundWidget");
     return true;
-	/*if (!wnd)
-	{
-		return false;
-	}
-	UVector2 widgetSize = wnd->getSize();
-	UVector2 widgetPosition = wnd->getPosition();
-	UVector2 newSize = widgetSize;
-	newSize.d_x.d_scale = widgetSize.d_x.d_scale + 0.04f;
-	newSize.d_y.d_scale = widgetSize.d_y.d_scale + 0.06f;
-	UVector2 newPos = widgetPosition;
-	newPos.d_x.d_scale = widgetPosition.d_x.d_scale - 0.02f;
-	newPos.d_y.d_scale = widgetPosition.d_y.d_scale - 0.04f;
-
-	this->setSize(newSize);
-	this->setPosition(newPos);
-
-	return true;*/
 }
 
+//----------------------------------------------------------------------------//
 bool GroupBox::drawAroundWidget(const String& name)
 {
-	return drawAroundWidget(getChild(name));
+    return drawAroundWidget(getChild(name));
 }
 
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

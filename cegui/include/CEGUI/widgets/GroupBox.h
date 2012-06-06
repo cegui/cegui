@@ -1,12 +1,12 @@
 /************************************************************************
-	filename: 	CEGUIGroupBox.h
-	created:	03/23/2007
-	author:		Lars 'Levia' Wesselius (Content Pane based on Tomas Lindquist Olsen's code)
+    filename:   CEGUIGroupBox.h
+    created:    03/23/2007
+    author:     Lars 'Levia' Wesselius (Content Pane based on Tomas Lindquist Olsen's code)
 
-	purpose:	Interface for the GroupBox widget
+    purpose:    Interface for the GroupBox widget
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -35,91 +35,64 @@
 #include "./ClippedContainer.h"
 #include <vector>
 
-
 #if defined(_MSC_VER)
-#	pragma warning(push)
-#	pragma warning(disable : 4251)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+//! Base class for standard GroupBox widget.
+class CEGUIEXPORT GroupBox : public Window
+{
+public:
+    //! Namespace for global events
+    static const String EventNamespace;
 
-	/*!
-	\brief
-		Base class for standard GroupBox widget.
-	*/
-	class CEGUIEXPORT GroupBox : public Window
-	{
-	protected:
-
-	public:
-		static const String EventNamespace;					//!< Namespace for global events
+    static const String WidgetTypeName;
+    static const String ContentPaneName;
 
 
-		/*************************************************************************
-		Constants
-		*************************************************************************/
-		// temp
-		static const String WidgetTypeName;
-
-		static const String ContentPaneName;
+    GroupBox(const String& type, const String& name);
 
 
-		/*************************************************************************
-		Construction and Destruction
-		*************************************************************************/
-		/*!
-		\brief
-			Constructor for GroupBox class.
-		*/
-		GroupBox(const String& type, const String& name);
+    /*!
+    \brief
+        Draws the GroupBox around a widget. The size and position of the
+        GroupBox are overriden. Once the window that is drawn around resizes,
+        you'll have to call the function again. FIXME
+    */
+    bool drawAroundWidget(const CEGUI::Window* wnd);
+    bool drawAroundWidget(const String& name);
+
+    /*!
+    \brief
+        Returns the content pane held by this GroupBox.
+
+    \return
+        Pointer to a Window instance.
+    */
+    Window * getContentPane() const;
+
+protected:
+    /*!
+    \copydoc Window::addChild_impl
+    */
+    virtual void addChild_impl(Element* element);
+
+    /*!
+    \copydoc Window::removeChild_impl
+    */
+    virtual void removeChild_impl(Element* element);
 
 
-		/*!
-		\brief
-			Destructor for GroupBox class.
-		*/
-		virtual ~GroupBox();
+};
 
-		/*!
-		\brief
-			Draws the GroupBox around a widget. The size and position of the GroupBox are overriden.
-			 Once the window that is drawn around resizes, you'll have to call the function again. FIXME
-		*/
-		bool drawAroundWidget(const CEGUI::Window * wnd);
-		bool drawAroundWidget(const String& name);
-
-		/*!
-		\brief
-			Returns the content pane held by this GroupBox.
-
-		\return
-			Pointer to a Window instance.
-		*/
-		Window * getContentPane() const;
-			
-
-	protected:
-		/*!
-		\copydoc Window::addChild_impl
-		*/
-		virtual void addChild_impl(Element* element);
-
-		/*!
-		\copydoc Window::removeChild_impl
-		*/
-		virtual void removeChild_impl(Element* element);
-
-
-	};
-
-} // End of  CEGUI namespace section
-
+}
 
 #if defined(_MSC_VER)
-#	pragma warning(pop)
+#   pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIGroupBox_h_
+#endif
+
