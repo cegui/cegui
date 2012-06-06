@@ -42,7 +42,21 @@
 
 namespace CEGUI
 {
-//! Base class for standard GroupBox widget.
+/*!
+\brief
+    Base class for standard GroupBox widget.
+
+\deprecated
+    You should consider not using this class. It performs no useful function
+    and can be replicated 100% accurately via an XML based WidgetLook
+    definition.  If you are already using this and need to migrate, you can
+    usually do so by changing the following:
+    - in the looknfeel (WidgetLook) change the the \<Child\> element for
+    "__auto_contentpane__" into a \<NamedArea\> with the name "inner_rect" (and
+    remove anything other than the \<Area\> definition).
+    - in the scheme file, change the targetType from "CEGUI/GroupBox" to
+    "DefaultWindow".
+*/
 class CEGUIEXPORT GroupBox : public Window
 {
 public:
