@@ -102,15 +102,6 @@ namespace CEGUI
 			
 
 	protected:
-		
-
-		// Overridden from Window
-		/*!
-		\brief
-			Initializes the components necessary.
-		*/
-		virtual void initialiseComponents();
-
 		/*!
 		\copydoc Window::addChild_impl
 		*/
