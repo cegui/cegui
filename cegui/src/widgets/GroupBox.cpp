@@ -53,12 +53,6 @@ GroupBox::~GroupBox()
 {
 }
 
-void GroupBox::initialiseComponents()
-{   // Add the auto-child which got defined in the looknfeel
-	Window::addChild_impl(getContentPane());
-	Window::initialiseComponents();
-}
-
 void GroupBox::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
@@ -67,46 +61,21 @@ void GroupBox::addChild_impl(Element* element)
     {
         CEGUI_THROW(AlreadyExistsException("GroupBox::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
     }
-    
-    // Only add it when it's not the __auto_contentpane__ (auto-child) itself
-	if (wnd && wnd->getName() == ContentPaneName)
-	{
-		Window* pane = getContentPane();
-		if (pane)
-		{
-			pane->addChild(wnd);
-		}
-		else
-		{
-			Window::addChild_impl(wnd);
-		}
-	}
+
+    if (wnd->isAutoWindow())
+        Window::addChild_impl(wnd);
+    else if (Window * pane = getContentPane())
+        pane->addChild(wnd);
 }
 
 void GroupBox::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
-    
-	if (wnd)
-	{   // Auto pane itself?
-        if (wnd->getName() == ContentPaneName)
-        {   // Yes
-            Window::removeChild_impl(wnd);
-            WindowManager::getSingleton().destroyWindow(wnd);
-        }
-        else
-        {   // Remove child from out auto pane
-            Window* wndPane = getContentPane();
-            if (wndPane)
-            {
-                wndPane->removeChild(wnd);
-		        if (wnd->isDestroyedByParent())
-		        {
-			        WindowManager::getSingleton().destroyWindow(wnd);
-		        }
-            }
-        }
-	}
+
+    if (wnd->isAutoWindow())
+        Window::removeChild_impl(wnd);
+    else if (Window * pane = getContentPane())
+        pane->removeChild(wnd);
 }
 
 Window * GroupBox::getContentPane() const
