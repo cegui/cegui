@@ -53,51 +53,20 @@ GroupBox::~GroupBox()
 {
 }
 
-void GroupBox::initialiseComponents()
-{   // Add the auto-child which got defined in the looknfeel
-	Window::addChild_impl(getContentPane());
-	Window::initialiseComponents();
-}
-
 void GroupBox::addChild_impl(Window* wnd)
 {
-    // Only add it when it's not the __auto_contentpane__ (auto-child) itself
-	if (wnd && wnd->getName().find(ContentPaneNameSuffix) == String::npos)
-	{
-		Window * pane = getContentPane();
-		if (pane)
-		{
-			pane->addChildWindow(wnd);
-		}
-		else
-		{
-			Window::addChild_impl(wnd);
-		}
-	}
+	if (wnd->isAutoWindow())
+		Window::addChild_impl(wnd);
+    else if (Window * pane = getContentPane())
+		pane->addChildWindow(wnd);
 }
 
 void GroupBox::removeChild_impl(Window* wnd)
 {
-	if (wnd)
-	{   // Auto pane itself?
-        if (wnd->getName().find(ContentPaneNameSuffix) != String::npos)
-        {   // Yes
-            Window::removeChild_impl(wnd);
-            WindowManager::getSingleton().destroyWindow(wnd);
-        }
-        else
-        {   // Remove child from out auto pane
-            Window* wndPane = getContentPane();
-            if (wndPane)
-            {
-                wndPane->removeChildWindow(wnd);
-		        if (wnd->isDestroyedByParent())
-		        {
-			        WindowManager::getSingleton().destroyWindow(wnd);
-		        }
-            }
-        }
-	}
+	if (wnd->isAutoWindow())
+        Window::removeChild_impl(wnd);
+    else if (Window * pane = getContentPane())
+        pane->removeChildWindow(wnd);
 }
 
 Window * GroupBox::getContentPane() const
