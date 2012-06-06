@@ -52,7 +52,7 @@
 	<FalagardMapping windowType="AlfiskoSkin/Tooltip" targetType="CEGUI/Tooltip" renderer="Core/Tooltip" lookNFeel="AlfiskoSkin/Tooltip" />
 	<FalagardMapping windowType="AlfiskoSkin/StaticImage" targetType="DefaultWindow" renderer="Core/StaticImage" lookNFeel="AlfiskoSkin/StaticImage" />
 	<FalagardMapping windowType="AlfiskoSkin/StaticText" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="AlfiskoSkin/StaticText" />
-	<FalagardMapping windowType="AlfiskoSkin/GroupBox" targetType="CEGUI/GroupBox" renderer="Core/Default" lookNFeel="AlfiskoSkin/GroupBox" />
+	<FalagardMapping windowType="AlfiskoSkin/GroupBox" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="AlfiskoSkin/GroupBox" />
     <FalagardMapping windowType="AlfiskoSkin/Tree" targetType="CEGUI/Tree" renderer="Core/Tree" lookNFeel="AlfiskoSkin/Tree" />
 -->
 
