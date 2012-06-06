@@ -55,6 +55,8 @@ namespace CEGUI
         // abstract members from Property
         String get(const PropertyReceiver* receiver) const;
         void set(PropertyReceiver* receiver, const String& value);
+        // overrides
+        void initialisePropertyReceiver(PropertyReceiver* receiver) const;
 
     protected:
         void writeXMLElementType(XMLSerializer& xml_stream) const;

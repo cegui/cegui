@@ -93,6 +93,11 @@ namespace CEGUI
         static_cast<Window*>(receiver)->setUserString(d_userStringName, value);
         PropertyDefinitionBase::set(receiver, value);
     }
+    
+    void PropertyDefinition::initialisePropertyReceiver(PropertyReceiver* receiver) const
+    {
+        static_cast<Window*>(receiver)->setUserString(d_userStringName, d_default);
+    }
 
     void PropertyDefinition::writeXMLElementType(XMLSerializer& xml_stream) const
     {
