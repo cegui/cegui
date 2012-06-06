@@ -46,7 +46,7 @@
 	<FalagardMapping windowType="TaharezLook/StaticText"  targetType="DefaultWindow" renderer="Core/StaticText"  lookNFeel="TaharezLook/StaticText" />
 	<FalagardMapping windowType="TaharezLook/ItemListbox" targetType="CEGUI/ItemListbox" renderer="Core/ItemListbox" lookNFeel="TaharezLook/ItemListbox" />
 	<FalagardMapping windowType="TaharezLook/ListboxItem" targetType="CEGUI/ItemEntry"   renderer="Core/ItemEntry"   lookNFeel="TaharezLook/ListboxItem" />
-	<FalagardMapping windowType="TaharezLook/GroupBox" targetType="CEGUI/GroupBox"   renderer="Core/Default"   lookNFeel="TaharezLook/GroupBox" />
+	<FalagardMapping windowType="TaharezLook/GroupBox" targetType="DefaultWindow"   renderer="Core/Default"   lookNFeel="TaharezLook/GroupBox" />
       <FalagardMapping windowType="TaharezLook/Tree" targetType="CEGUI/Tree"   renderer="Core/Tree"   lookNFeel="TaharezLook/Tree" />
 </GUIScheme>
 
