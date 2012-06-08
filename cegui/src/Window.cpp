@@ -2833,11 +2833,13 @@ bool Window::isPropertyBannedFromXML(const String& property_name) const
     	return true;
     }
 
-    // read-only properties are implicitly banned (such stored information
-    // wouldn't be of any value in the XML anyways, no way to apply it to the
-    // widget
+    // properties that don't write any XML code are implicitly banned
+
+    // read-only properties are implicitly banned
+    // (such stored information wouldn't be of any value in the XML anyways,
+    // no way to apply it to the widget)
     Property* instance = getPropertyInstance(property_name);
-	return (!instance->isWritable());
+    return (!instance->doesWriteXML() || !instance->isWritable());
 }
 
 //----------------------------------------------------------------------------//

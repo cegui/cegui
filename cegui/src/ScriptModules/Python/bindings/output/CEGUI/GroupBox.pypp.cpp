@@ -27,18 +27,6 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         CEGUI::GroupBox::addChild_impl( boost::python::ptr(element) );
     }
 
-    virtual void initialiseComponents(  ){
-        if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
-            func_initialiseComponents(  );
-        else{
-            this->CEGUI::GroupBox::initialiseComponents(  );
-        }
-    }
-    
-    virtual void default_initialiseComponents(  ){
-        CEGUI::GroupBox::initialiseComponents( );
-    }
-
     virtual void removeChild_impl( ::CEGUI::Element * element ){
         if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
             func_removeChild_impl( boost::python::ptr(element) );
@@ -301,6 +289,18 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
 
     void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
         CEGUI::Window::initialiseClippers( boost::ref(ctx) );
+    }
+
+    virtual void initialiseComponents(  ) {
+        if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
+            func_initialiseComponents(  );
+        else{
+            this->CEGUI::Window::initialiseComponents(  );
+        }
+    }
+    
+    void default_initialiseComponents(  ) {
+        CEGUI::Window::initialiseComponents( );
     }
 
     void invalidate_impl( bool const recursive ){
@@ -1287,14 +1287,19 @@ void register_GroupBox_class(){
         typedef bp::class_< GroupBox_wrapper, bp::bases< CEGUI::Window >, boost::noncopyable > GroupBox_exposer_t;
         GroupBox_exposer_t GroupBox_exposer = GroupBox_exposer_t( "GroupBox", "*!\n\
         \n\
-           Base class for standard GroupBox widget.\n\
-        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") ), "*************************************************************************\n\
-        Construction and Destruction\n\
-        *************************************************************************\n\
-        *!\n\
+            Base class for standard GroupBox widget.\n\
         \n\
-           Constructor for GroupBox class.\n\
-        *\n") );
+         deprecated\n\
+            You should consider not using this class. It performs no useful function\n\
+            and can be replicated 100% accurately via an XML based WidgetLook\n\
+            definition.  If you are already using this and need to migrate, you can\n\
+            usually do so by changing the following:\n\
+            - in the looknfeel (WidgetLook) change the the  <Child > element for\n\
+            __auto_contentpane__ into a  <NamedArea > with the name inner_rect (and\n\
+            remove anything other than the  <Area > definition).\n\
+            - in the scheme file, change the targetType from CEGUIGroupBox to\n\
+            DefaultWindow.\n\
+        *\n", bp::init< CEGUI::String const &, CEGUI::String const & >(( bp::arg("type"), bp::arg("name") )) );
         bp::scope GroupBox_scope( GroupBox_exposer );
         { //::CEGUI::GroupBox::addChild_impl
         
@@ -1319,8 +1324,9 @@ void register_GroupBox_class(){
                 , ( bp::arg("wnd") )
                 , "*!\n\
             \n\
-               Draws the GroupBox around a widget. The size and position of the GroupBox are overriden.\n\
-                Once the window that is drawn around resizes, you'll have to call the function again. FIXME\n\
+                Draws the GroupBox around a widget. The size and position of the\n\
+                GroupBox are overriden. Once the window that is drawn around resizes,\n\
+                you'll have to call the function again. FIXME\n\
             *\n" );
         
         }
@@ -1334,8 +1340,9 @@ void register_GroupBox_class(){
                 , ( bp::arg("name") )
                 , "*!\n\
             \n\
-               Draws the GroupBox around a widget. The size and position of the GroupBox are overriden.\n\
-                Once the window that is drawn around resizes, you'll have to call the function again. FIXME\n\
+                Draws the GroupBox around a widget. The size and position of the\n\
+                GroupBox are overriden. Once the window that is drawn around resizes,\n\
+                you'll have to call the function again. FIXME\n\
             *\n" );
         
         }
@@ -1348,26 +1355,12 @@ void register_GroupBox_class(){
                 , getContentPane_function_type( &::CEGUI::GroupBox::getContentPane )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-                  \n\
-                     Returns the content pane held by this GroupBox.\n\
+                \n\
+                    Returns the content pane held by this GroupBox.\n\
             \n\
-                  @return\n\
-                     Pointer to a Window instance.\n\
-                  *\n" );
-        
-        }
-        { //::CEGUI::GroupBox::initialiseComponents
-        
-            typedef void ( GroupBox_wrapper::*initialiseComponents_function_type )(  ) ;
-            
-            GroupBox_exposer.def( 
-                "initialiseComponents"
-                , initialiseComponents_function_type( &GroupBox_wrapper::default_initialiseComponents )
-                , "Overridden from Window\n\
-            *!\n\
-            \n\
-               Initializes the components necessary.\n\
-            *\n" );
+                @return\n\
+                    Pointer to a Window instance.\n\
+                *\n" );
         
         }
         { //::CEGUI::GroupBox::removeChild_impl
@@ -1801,6 +1794,17 @@ void register_GroupBox_class(){
                 , initialiseClippers_function_type( &GroupBox_wrapper::initialiseClippers )
                 , ( bp::arg("ctx") )
                 , "! Helper to intialise the needed clipping for geometry and render surface.\n" );
+        
+        }
+        { //::CEGUI::Window::initialiseComponents
+        
+            typedef void ( ::CEGUI::Window::*initialiseComponents_function_type )(  ) ;
+            typedef void ( GroupBox_wrapper::*default_initialiseComponents_function_type )(  ) ;
+            
+            GroupBox_exposer.def( 
+                "initialiseComponents"
+                , initialiseComponents_function_type(&::CEGUI::Window::initialiseComponents)
+                , default_initialiseComponents_function_type(&GroupBox_wrapper::default_initialiseComponents) );
         
         }
         { //::CEGUI::Window::invalidate_impl
