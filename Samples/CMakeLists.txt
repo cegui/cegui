@@ -1,7 +1,7 @@
 # add_subdirectory(Demo6)
 # add_subdirectory(Demo7)
 # add_subdirectory(DragDropDemo)
-# add_subdirectory(FalagardDemo1)
+add_subdirectory(FalagardDemo1)
 add_subdirectory(FirstWindow)
 # add_subdirectory(FontDemo)
 # add_subdirectory(InventoryDemo)

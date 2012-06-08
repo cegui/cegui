@@ -28,17 +28,6 @@
 #include "Sample_FalagardDemo1.h"
 #include "CEGUI/CEGUI.h"
 
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    FalagardDemo1Sample app;
-    return app.run();
-}
-
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -49,7 +38,7 @@ int main(int /*argc*/, char* /*argv*/[])
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FalagardDemo1Sample::initialiseSample()
+bool FalagardDemo1Sample::initialise()
 {
     using namespace CEGUI;
 
@@ -60,36 +49,38 @@ bool FalagardDemo1Sample::initialiseSample()
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     // set default mouse image
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    d_guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
-    Window* background = winMgr.createWindow("Vanilla/StaticImage");
+    d_root = winMgr.createWindow("Vanilla/StaticImage");
+
+    // Set the root window as root of our GUI Context
+    d_guiContext->setRootWindow(d_root);
+
     // set area rectangle
-    background->setArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));
+    d_root->setArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
-    background->setProperty("FrameEnabled", "false");
-    background->setProperty("BackgroundEnabled", "false");
+    d_root->setProperty("FrameEnabled", "false");
+    d_root->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
-    // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    d_root->setProperty("Image", "BackgroundImage");
 
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load some demo windows and attach to the background 'root'
-    background->addChild(winMgr.loadLayoutFromFile("VanillaWindows.layout"));
+    d_root->addChild(winMgr.loadLayoutFromFile("VanillaWindows.layout"));
     
     // create an instance of the console class.
     d_console = new DemoConsole();
 
     // listen for key presses on the root window.
-    background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&FalagardDemo1Sample::handleRootKeyDown, this));
+    d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&FalagardDemo1Sample::handleRootKeyDown, this));
 
     // activate the background window
-    background->activate();
+    d_root->activate();
 
     // success!
     return true;
@@ -99,7 +90,7 @@ bool FalagardDemo1Sample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void FalagardDemo1Sample::cleanupSample()
+void FalagardDemo1Sample::deinitialise()
 {
     delete d_console;
 }
@@ -123,6 +114,12 @@ bool FalagardDemo1Sample::handleRootKeyDown(const CEGUI::EventArgs& args)
 
     return true;
 }
+
+CEGUI::Window* FalagardDemo1Sample::getGUIRoot()
+{
+    return d_root;
+}
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -258,3 +255,8 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
 
     return true;
 }
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+SAMPLE_EXTERN_IMPL(FalagardDemo1Sample)

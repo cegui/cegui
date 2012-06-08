@@ -67,7 +67,7 @@ const String& Samples_xmlHandler::getSchemaName() const
 //----------------------------------------------------------------------------//
 const String& Samples_xmlHandler::getDefaultResourceGroup() const
 {
-    return "";
+    return SamplesFramework::s_defaultResourceGroup;
 }
 
 //----------------------------------------------------------------------------//

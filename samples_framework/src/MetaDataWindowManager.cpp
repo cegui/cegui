@@ -1,6 +1,6 @@
 /***********************************************************************
-filename:   Sample.h
-created:    29/5/2012
+filename:   MetaDataWindowManager.cpp
+created:    7/6/2012
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
@@ -25,46 +25,28 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Sample_h_
-#define _Sample_h_
+#include "MetaDataWindowManager.h"
 
-// This header serves as a base for all samples and is needed inside the
-// SamplesFramework as interface for Samples that will be loaded.
+#include "CEGUI/Window.h"
+#include "CEGUI/SchemeManager.h"
+#include "CEGUI/WindowManager.h"
 
-namespace CEGUI
+using namespace CEGUI;
+
+MetaDataWindowManager::MetaDataWindowManager()
+    : d_root(0)
 {
-    class Window;
-    class GUIContext;
-    class TextureTarget;
-    class BasicImage;
-    class Image;
 }
 
-class Sample
+void MetaDataWindowManager::init()
 {
-public:
-    Sample();
-    virtual ~Sample();
+    SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
 
-    virtual bool initialise() = 0;
-    virtual void deinitialise() = 0;
+    WindowManager& winMgr = WindowManager::getSingleton();
+    d_root = winMgr.loadLayoutFromFile("SampleBrowserMetaData.layout");
+}
 
-    virtual CEGUI::Window* getGUIRoot() = 0;
-
-    CEGUI::GUIContext* getGuiContext();
-
-    void handleNewWindowSize(const float& width, const float& height);
-
-    CEGUI::Image& getRTTImage();
-
-private:
-    Sample(const Sample&) {}
-    Sample& operator=(const Sample&) {}
-
-protected:
-    CEGUI::GUIContext*         d_guiContext;
-    CEGUI::TextureTarget*      d_textureTarget;
-    CEGUI::BasicImage*              d_textureTargetImage;
-};
-
-#endif
+CEGUI::Window* MetaDataWindowManager::getWindow()
+{
+    return d_root;
+}

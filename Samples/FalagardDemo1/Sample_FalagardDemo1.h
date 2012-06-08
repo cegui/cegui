@@ -28,7 +28,7 @@
 #ifndef _Sample_FalagardDemo1_h_
 #define _Sample_FalagardDemo1_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 
@@ -60,19 +60,26 @@ private:
 };
 
 
-class FalagardDemo1Sample : public CEGuiSample
+class FalagardDemo1Sample : public Sample
 {
 public:
+    FalagardDemo1Sample() {}
+    virtual ~FalagardDemo1Sample() {}
+
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise();
 
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
+
+    virtual CEGUI::Window* getGUIRoot();
 
 protected:
     bool handleRootKeyDown(const CEGUI::EventArgs& args);
 
     DemoConsole* d_console;
+
+    CEGUI::Window* d_root;
 };
 
 

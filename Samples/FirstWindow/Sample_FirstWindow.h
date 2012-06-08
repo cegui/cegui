@@ -51,7 +51,7 @@ private:
     FirstWindowSample(const FirstWindowSample&) {}
     FirstWindowSample& operator=(const FirstWindowSample&) {}
 
-    CEGUI::DefaultWindow*      m_root;
+    CEGUI::DefaultWindow*      d_root;
 };
 
 #endif  // end of guard _Sample_FirstWindow_h_

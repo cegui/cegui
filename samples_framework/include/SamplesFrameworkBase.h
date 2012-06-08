@@ -82,6 +82,18 @@ public:
     */
     virtual void cleanupSample() = 0;
 
+    /*!
+    \brief
+        Update function called before rendering
+    */
+    virtual void update(float passedTime) = 0;
+
+    /*!
+    \brief
+        Update function for window size changes
+    */
+    virtual void handleNewWindowSize(const float& width, const float& height) = 0;
+
 
 protected:
     /*!

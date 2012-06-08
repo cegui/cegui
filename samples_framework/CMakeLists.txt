@@ -7,6 +7,7 @@ set( CORE_SOURCE_FILES
     ./src/CEGuiRendererSelector.cpp
     ./src/Samples_xmlHandler.cpp
     ./src/SampleData.cpp
+    ./src/MetaDataWindowManager.cpp
 )
 
 set( CORE_HEADER_FILES
@@ -17,6 +18,7 @@ set( CORE_HEADER_FILES
     ./include/CEGuiRendererSelector.h
     ./include/Samples_xmlHandler.h
     ./include/SampleData.h
+    ./include/MetaDataWindowManager.h
 
 )
 
