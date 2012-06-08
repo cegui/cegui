@@ -38,11 +38,12 @@ namespace CEGUI
 {
     class DefaultWindow;
     class String;
+    class Texture;
 }
 
 class SampleData;
-
 class Sample;
+class MetaDataWindowManager;
 
 using namespace CEGUI;
 
@@ -68,23 +69,30 @@ public:
 
     void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum);
 
+    void addSample(SampleData* sampleData);
 
+    virtual void update(float passedTime);
+
+    virtual void handleNewWindowSize(const float& width, const float& height);
+
+    void createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
 
 
 protected:
     void initialiseFrameworkLayout();
 
-    void initialiseSamples();
     void loadSamplesDataFromXML(const String& filename, const String& resourceGroup);
     void getSampleInstanceFromDLL(SampleData& sampleData);
 
     void unloadSamples();
 
-    CEGUI::DefaultWindow* m_root;
+    //virtual void updateGuiContexts(const float elapsed);
 
-    std::vector<SampleData*> m_samples;
+    CEGUI::DefaultWindow* d_root;
 
+    std::vector<SampleData*> d_samples;
 
+    MetaDataWindowManager* d_metaDataWinMgr;
 };
 
 #endif

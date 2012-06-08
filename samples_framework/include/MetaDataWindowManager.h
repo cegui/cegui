@@ -1,6 +1,6 @@
 /***********************************************************************
-filename:   Sample.h
-created:    29/5/2012
+filename:   MetaDataWindowManager.h
+created:    7/6/2012
 author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
@@ -25,8 +25,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _Sample_h_
-#define _Sample_h_
+#ifndef _MetaDataWindowManager_h_
+#define _MetaDataWindowManager_h_
 
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
@@ -34,37 +34,22 @@ author:     Lukas E Meindl
 namespace CEGUI
 {
     class Window;
-    class GUIContext;
-    class TextureTarget;
-    class BasicImage;
-    class Image;
 }
 
-class Sample
+class MetaDataWindowManager
 {
 public:
-    Sample();
-    virtual ~Sample();
+    MetaDataWindowManager();
+    virtual ~MetaDataWindowManager() {}
 
-    virtual bool initialise() = 0;
-    virtual void deinitialise() = 0;
-
-    virtual CEGUI::Window* getGUIRoot() = 0;
-
-    CEGUI::GUIContext* getGuiContext();
-
-    void handleNewWindowSize(const float& width, const float& height);
-
-    CEGUI::Image& getRTTImage();
+    void init();
+    CEGUI::Window* getWindow();
 
 private:
-    Sample(const Sample&) {}
-    Sample& operator=(const Sample&) {}
+    MetaDataWindowManager(const MetaDataWindowManager&) {}
+    MetaDataWindowManager& operator=(const MetaDataWindowManager&) {}
 
-protected:
-    CEGUI::GUIContext*         d_guiContext;
-    CEGUI::TextureTarget*      d_textureTarget;
-    CEGUI::BasicImage*              d_textureTargetImage;
+    CEGUI::Window* d_root;
 };
 
 #endif

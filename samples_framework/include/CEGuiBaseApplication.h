@@ -140,7 +140,7 @@ protected:
     static const char DATAPATH_VAR_NAME[];
 
     //! implementation provided execution implementaion.
-    virtual bool execute_impl(SamplesFrameworkBase* sampleApp) = 0;
+    virtual bool execute_impl() = 0;
     //! implementation provided cleanup implementation.
     virtual void cleanup_impl() = 0;
     //! Implementation function to perform required pre-render operations.
@@ -199,6 +199,8 @@ protected:
     int d_FPSValue;
     //! whether to spin the logo
     bool d_spinLogo;
+    //! SampleFramework base used in the application
+    SamplesFrameworkBase* d_sampleApp;
 };
 
 #endif  // end of guard _CEGuiBaseApplication_h_

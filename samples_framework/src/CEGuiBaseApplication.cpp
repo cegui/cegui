@@ -72,7 +72,8 @@ CEGuiBaseApplication::CEGuiBaseApplication() :
     d_FPSElapsed(0.0f),
     d_FPSFrames(0),
     d_FPSValue(0),
-    d_spinLogo(false)
+    d_spinLogo(false),
+    d_sampleApp(0)
 {
 }
 
@@ -87,7 +88,6 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
 
     gui_system.injectTimePulse(elapsed);
-    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
     updateFPS(elapsed);
     updateLogo(elapsed);
 
@@ -99,6 +99,9 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 //----------------------------------------------------------------------------//
 bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 {
+    d_sampleApp = sampleApp;
+
+
     if (!d_renderer)
         throw CEGUI::InvalidRequestException("CEGuiBaseApplication::execute: "
             "Base application subclass did not create Renderer!");
@@ -142,7 +145,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
         CEGUI::Event::Subscriber(&CEGuiBaseApplication::resizeHandler,
                                  this));
 
-    return execute_impl(sampleApp);
+    return execute_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -327,6 +330,9 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
     // clear FPS geometry and see that it gets recreated in the next frame
     d_FPSGeometry->reset();
     d_FPSValue = 0;
+
+    const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
+    d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
 
     positionLogo();
     return true;

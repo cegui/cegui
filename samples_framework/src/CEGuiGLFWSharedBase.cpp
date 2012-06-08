@@ -58,9 +58,9 @@ CEGuiGLFWSharedBase::~CEGuiGLFWSharedBase()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiGLFWSharedBase::execute_impl(SamplesFrameworkBase* sampleApp)
+bool CEGuiGLFWSharedBase::execute_impl()
 {
-    sampleApp->initialiseSample();
+    d_sampleApp->initialiseSample();
 
     // Input callbacks of glfw for CEGUI
     glfwSetKeyCallback(glfwKeyCallback);
@@ -72,7 +72,7 @@ bool CEGuiGLFWSharedBase::execute_impl(SamplesFrameworkBase* sampleApp)
     //Window callbacks
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
 
-    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.9f, 1.0f, 1.0f, 1.0f);
 
     // set starting time
     d_frameTime = glfwGetTime();
@@ -104,13 +104,14 @@ void CEGuiGLFWSharedBase::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::drawFrame(void)
+void CEGuiGLFWSharedBase::drawFrame()
 {
     // calculate time elapsed since last frame
     double time_now = glfwGetTime();
     const double elapsed = time_now - d_frameTime;
     d_frameTime = time_now;
 
+    d_sampleApp->update(static_cast<float>(elapsed));
     d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
 }
 
@@ -236,7 +237,7 @@ void CEGuiGLFWSharedBase::initGLFW()
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::createGLFWWindow()
 {
-    if (glfwOpenWindow(800, 600, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
+    if (glfwOpenWindow(1024, 800, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
     {
         CEGUI_THROW(CEGUI::RendererException("Failed to open GLFW window."));
         glfwTerminate();

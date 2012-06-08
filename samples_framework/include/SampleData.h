@@ -34,6 +34,8 @@ author:     Lukas E Meindl
 namespace CEGUI
 {
     class DynamicModule;
+    class GUIContext;
+    class Image;
 }
 
 enum SampleType
@@ -57,8 +59,13 @@ public:
     virtual void initialise() = 0;
     virtual void deinitialise() = 0;
 
-    virtual CEGUI::Window*  getGUIRoot() = 0;
+    virtual CEGUI::Window*  getGuiRoot() = 0;
+    virtual CEGUI::GUIContext*  getGuiContext() = 0;
+    virtual void handleNewWindowSize(const float& width, const float& height) = 0;
 
+    virtual CEGUI::Image& getRTTImage() = 0;
+    
+    CEGUI::String getName();
 
 protected:
     CEGUI::String           d_name;
@@ -74,12 +81,17 @@ public:
     CEGUI::String description, SampleType sampleTypeEnum);
     virtual ~SampleDataModule();
 
-    virtual void SampleDataModule::getSampleInstanceFromDLL();
+    virtual void getSampleInstanceFromDLL();
 
     virtual void initialise();
     virtual void deinitialise();
 
-    virtual CEGUI::Window*  getGUIRoot();
+    virtual CEGUI::Window*  getGuiRoot();
+    virtual CEGUI::GUIContext*  getGuiContext();
+
+    virtual void handleNewWindowSize(const float& width, const float& height);
+
+    virtual CEGUI::Image& getRTTImage();
 
 private:
 

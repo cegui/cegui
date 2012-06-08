@@ -53,7 +53,7 @@ bool FirstWindowSample::initialise()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    d_guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -62,7 +62,7 @@ bool FirstWindowSample::initialise()
     // All windows and widgets are created via the WindowManager singleton.
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    // Here we create a "DeafultWindow".  This is a native type, that is, it does
+    // Here we create a "DefaultWindow".  This is a native type, that is, it does
     // not have to be loaded via a scheme, it is always available.  One common use
     // for the DefaultWindow is as a generic container for other windows.  Its
     // size defaults to 1.0f x 1.0f using the Relative metrics mode, which means
@@ -70,7 +70,10 @@ bool FirstWindowSample::initialise()
     // The DefaultWindow does not perform any rendering of its own, so is invisible.
     //
     // Create a DefaultWindow called 'Root'.
-    m_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+    d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+
+    // Set the root window as root of our GUI Context
+    d_guiContext->setRootWindow(d_root);
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
@@ -80,7 +83,7 @@ bool FirstWindowSample::initialise()
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
-    m_root->addChild(wnd);
+    d_root->addChild(wnd);
 
     // Windows are in Relative metrics mode by default.  This means that we can
     // specify sizes and positions without having to know the exact pixel size
@@ -129,7 +132,7 @@ void FirstWindowSample::deinitialise()
 *************************************************************************/
 CEGUI::Window* FirstWindowSample::getGUIRoot()
 {
-    return m_root;
+    return d_root;
 }
 
 /*************************************************************************

@@ -75,9 +75,14 @@ void SampleDataModule::deinitialise()
 
 }
 
-CEGUI::Window*  SampleDataModule::getGUIRoot()
+CEGUI::Window*  SampleDataModule::getGuiRoot()
 {
     return d_sample->getGUIRoot();
+}
+
+CEGUI::GUIContext*  SampleDataModule::getGuiContext()
+{
+    return d_sample->getGuiContext();
 }
 
 void SampleDataModule::getSampleInstanceFromDLL()
@@ -95,4 +100,20 @@ void SampleDataModule::getSampleInstanceFromDLL()
     }
 
     d_sample =  &(functionPointerGetSample());
+}
+
+
+void SampleDataModule::handleNewWindowSize(const float& width, const float& height)
+{
+    d_sample->handleNewWindowSize(width, height);
+}
+
+CEGUI::String SampleData::getName()
+{
+    return d_name;
+}
+
+CEGUI::Image& SampleDataModule::getRTTImage()
+{
+    return d_sample->getRTTImage();
 }

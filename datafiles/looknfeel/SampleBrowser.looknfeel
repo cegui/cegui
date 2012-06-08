@@ -240,9 +240,30 @@
 		<Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
 		
+        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
 		<PropertyDefinition name="FrameColours" initialValue="tl:FF7F0000 tr:FF7F0000 bl:FF7F0000 br:FF7F0000" redrawOnWrite="true" type="ColourRect"/>
 		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        
+        <PropertyDefinition name="Image" initialValue="OgreTrayImages/OgreLogo" redrawOnWrite="true" />
 
+        <PropertyDefinition name="VertFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
+        <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
+        
+        
+        <ImagerySection name="image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="12" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="12" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-12" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-12" type="BottomEdge" /></Dim>
+                </Area>
+                <ImageProperty name="Image" />
+                <ColourRectProperty name="ImageColours" />
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
  
         <ImagerySection name="frame">
             <FrameComponent>
@@ -275,14 +296,14 @@
                         <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height" />
                     </Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1.0" type="FrameRight">
+                        <UnifiedDim scale="1.0" type="RightEdge">
                             <DimOperator op="Subtract">
                                 <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width" />
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="FrameBottom">
+                        <UnifiedDim scale="1.0" type="BottomEdge">
                             <DimOperator op="Subtract">
                                 <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height" />
                             </DimOperator>
@@ -336,18 +357,23 @@
         <StateImagery name="Disabled" />
         <StateImagery name="EnabledFrame">
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
         </StateImagery>
         <StateImagery name="DisabledFrame">
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
         </StateImagery>
-        <StateImagery name="WithFrameEnabledBackground">
+        <StateImagery name="WithFrameEnabledBackground"> 
 			<Layer><Section look="SampleBrowserSkin/SampleWindow" section="frameBackgroundFiller" /></Layer>
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="withFrameWithBackground" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
         </StateImagery>
         <StateImagery name="WithFrameDisabledBackground">
+        <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
         </StateImagery>
         <StateImagery name="NoFrameEnabledBackground">
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="noFrameWithBackground" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
         </StateImagery>
         <StateImagery name="NoFrameDisabledBackground" />
     </WidgetLook>
