@@ -20,6 +20,18 @@ struct Property_wrapper : CEGUI::Property, bp::wrapper< CEGUI::Property > {
         return func_clone(  );
     }
 
+    virtual bool doesWriteXML(  ) const  {
+        if( bp::override func_doesWriteXML = this->get_override( "doesWriteXML" ) )
+            return func_doesWriteXML(  );
+        else{
+            return this->CEGUI::Property::doesWriteXML(  );
+        }
+    }
+    
+    bool default_doesWriteXML(  ) const  {
+        return CEGUI::Property::doesWriteXML( );
+    }
+
     virtual ::CEGUI::String get( ::CEGUI::PropertyReceiver const * receiver ) const {
         bp::override func_get = this->get_override( "get" );
         return func_get( boost::python::ptr(receiver) );
@@ -140,6 +152,17 @@ void register_Property_class(){
                 "clone"
                 , bp::pure_virtual( clone_function_type(&::CEGUI::Property::clone) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::Property::doesWriteXML
+        
+            typedef bool ( ::CEGUI::Property::*doesWriteXML_function_type )(  ) const;
+            typedef bool ( Property_wrapper::*default_doesWriteXML_function_type )(  ) const;
+            
+            Property_exposer.def( 
+                "doesWriteXML"
+                , doesWriteXML_function_type(&::CEGUI::Property::doesWriteXML)
+                , default_doesWriteXML_function_type(&Property_wrapper::default_doesWriteXML) );
         
         }
         { //::CEGUI::Property::get

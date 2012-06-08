@@ -79,12 +79,54 @@ void register_TextComponent_class(){
         TextComponent_exposer_t TextComponent_exposer = TextComponent_exposer_t( "TextComponent", "*!\n\
         \n\
             Class that encapsulates information for a text component.\n\
-        *\n", bp::init< >("*!\n\
-        \n\
-            Constructor\n\
-        *\n") );
+        *\n", bp::init< >() );
         bp::scope TextComponent_scope( TextComponent_exposer );
-        TextComponent_exposer.def( bp::init< CEGUI::TextComponent const & >(( bp::arg("obj") ), "! Copy constructor\n") );
+        TextComponent_exposer.def( bp::init< CEGUI::TextComponent const & >(( bp::arg("obj") )) );
+        { //::CEGUI::TextComponent::getEffectiveFont
+        
+            typedef ::CEGUI::String ( ::CEGUI::TextComponent::*getEffectiveFont_function_type )( ::CEGUI::Window const & ) const;
+            
+            TextComponent_exposer.def( 
+                "getEffectiveFont"
+                , getEffectiveFont_function_type( &::CEGUI::TextComponent::getEffectiveFont )
+                , ( bp::arg("wnd") )
+                , "*\n\
+            \n\
+                Return a copy of the name of the font that will actually be used\n\
+                when rendering this TextComponent.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getEffectiveText
+        
+            typedef ::CEGUI::String ( ::CEGUI::TextComponent::*getEffectiveText_function_type )( ::CEGUI::Window const & ) const;
+            
+            TextComponent_exposer.def( 
+                "getEffectiveText"
+                , getEffectiveText_function_type( &::CEGUI::TextComponent::getEffectiveText )
+                , ( bp::arg("wnd") )
+                , "*\n\
+            \n\
+                Return a copy of the actual text string that will be used when\n\
+                rendering this TextComponent.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::TextComponent::getEffectiveVisualText
+        
+            typedef ::CEGUI::String ( ::CEGUI::TextComponent::*getEffectiveVisualText_function_type )( ::CEGUI::Window const & ) const;
+            
+            TextComponent_exposer.def( 
+                "getEffectiveVisualText"
+                , getEffectiveVisualText_function_type( &::CEGUI::TextComponent::getEffectiveVisualText )
+                , ( bp::arg("wnd") )
+                , "*\n\
+            \n\
+                Return a copy of the actual text - with visual ordering - that\n\
+                will be used when rendering this TextComponent.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::TextComponent::getFont
         
             typedef ::CEGUI::String const & ( ::CEGUI::TextComponent::*getFont_function_type )(  ) const;
@@ -95,10 +137,19 @@ void register_TextComponent_class(){
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                     \n\
-                        Return the name of the font to be used when rendering this TextComponent.\n\
+                        Return the name of the font set to be used when rendering this\n\
+                        TextComponent.\n\
+            \n\
+                    \note\n\
+                        This returns the name of the font set directly to the TextComponent,\n\
+                        which may or may not be the actual font that will be used -\n\
+                        since the actual font may be sourced from a property or the main\n\
+                        font setting on a window that the TextComponent is rendered to, or\n\
+                        the default font. To get the actual font name that will be used,\n\
+                        call the getEffectiveFont function instead.\n\
             \n\
                     @return\n\
-                        String object containing the name of a font, or  if the window font is to be used.\n\
+                        String object containing the name of a font\n\
                     *\n" );
         
         }
@@ -169,10 +220,15 @@ void register_TextComponent_class(){
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                     \n\
-                        Return the text object that will be rendered by this TextComponent.\n\
+                        Return the text set for this TextComponent.\n\
             \n\
-                    @return\n\
-                        String object containing the text that will be rendered.\n\
+                    \note\n\
+                        This returns the text string set directly to the TextComponent,\n\
+                        which may or may not be the actual string that will be used -\n\
+                        since the actual string may be sourced from a property or the main\n\
+                        text string from a window that the TextComponent is rendered to.\n\
+                        To get the actual string, call the getEffectiveText function\n\
+                        instead.\n\
                     *\n" );
         
         }
@@ -203,7 +259,18 @@ void register_TextComponent_class(){
                 "getTextVisual"
                 , getTextVisual_function_type( &::CEGUI::TextComponent::getTextVisual )
                 , bp::return_value_policy< bp::copy_const_reference >()
-                , "! return text string with  e visual ordering of glyphs.\n" );
+                , "*!\n\
+                    \n\
+                        return text string with  e visual ordering of glyphs.\n\
+            \n\
+                    \note\n\
+                        This returns the visual text derived from the string set directly to\n\
+                        the TextComponent, which may or may not be the actual string that\n\
+                        will be used - since the actual string may be sourced from a\n\
+                        property or the main text string from a window that the\n\
+                        TextComponent is rendered to. To get the actual visual string, call\n\
+                        the getEffectiveVisualText function instead.\n\
+                    *\n" );
         
         }
         { //::CEGUI::TextComponent::getVerticalFormatting
@@ -288,8 +355,7 @@ void register_TextComponent_class(){
                 "assign"
                 , assign_function_type( &::CEGUI::TextComponent::operator= )
                 , ( bp::arg("other") )
-                , bp::return_self< >()
-                , "! Assignment\n" );
+                , bp::return_self< >() );
         
         }
         { //::CEGUI::TextComponent::render_impl
@@ -313,16 +379,16 @@ void register_TextComponent_class(){
                 , ( bp::arg("font") )
                 , "*!\n\
                     \n\
-                        Set the name of the font to be used when rendering this TextComponent.\n\
+                        Set the name of a font to be used when rendering this TextComponent.\n\
             \n\
-                        Note that setting this to the empty string () will cause the font from the\n\
-                        base window passed when rendering to be used instead.\n\
+                    \note\n\
+                        Setting this may not set the actual font that will be used\n\
+                        when rendering the TextComponent.  The acutal font used will\n\
+                        depend upon whether a font source property is set and whether the\n\
+                        font name set here is set to the empty string or not.\n\
             \n\
                     @param font\n\
                         String containing name of a font\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
                     *\n" );
         
         }
@@ -379,16 +445,16 @@ void register_TextComponent_class(){
                 , ( bp::arg("text") )
                 , "*!\n\
                     \n\
-                        Set the text that will be rendered by this TextComponent.\n\
+                        Set the text string for this TextComponent.\n\
             \n\
-                        Note that setting this to the empty string () will cause the text from the\n\
-                        base window passed when rendering to be used instead.\n\
+                    \note\n\
+                        Setting this string may not set the actual string that will be used\n\
+                        when rendering the TextComponent.  The acutal string used will\n\
+                        depend upon whether a text source property is set and whether this\n\
+                        string is set to the empty string or not.\n\
             \n\
                     @param text\n\
-                        String containing text to render, or  to render text from window.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
+                        String containing text to set on the TextComponent.\n\
                     *\n" );
         
         }

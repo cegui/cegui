@@ -230,6 +230,12 @@ public:
     */
     virtual bool isWritable() const;
 
+    /*!
+    \brief
+    	Returns whether the property writes to XML streams.
+    */
+    virtual bool doesWriteXML() const;
+
     //! function to allow initialisation of a PropertyReceiver.
     virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const {}
 

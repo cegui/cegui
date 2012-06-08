@@ -84,4 +84,10 @@ bool Property::isWritable() const
 	return true;
 }
 
+//----------------------------------------------------------------------------//
+bool Property::doesWriteXML() const
+{
+    return d_writeXML;
+}
+
 } // End of  CEGUI namespace section

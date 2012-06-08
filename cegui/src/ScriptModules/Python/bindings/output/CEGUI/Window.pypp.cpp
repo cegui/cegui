@@ -3316,6 +3316,25 @@ void register_Window_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Window::isMouseContainedInArea
+        
+            typedef bool ( ::CEGUI::Window::*isMouseContainedInArea_function_type )(  ) const;
+            
+            Window_exposer.def( 
+                "isMouseContainedInArea"
+                , isMouseContainedInArea_function_type( &::CEGUI::Window::isMouseContainedInArea )
+                , "*!\n\
+                \n\
+                    Return whether Window thinks mouse is currently within its area.\n\
+            \n\
+                \note\n\
+                    If the mouse cursor has moved or Window's area has changed since the\n\
+                    last time the GUIContext updated the window hit information, the value\n\
+                    returned here may be inaccurate - this is not a bug, but is required\n\
+                    to ensure correct handling of certain events.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::isMouseInputPropagationEnabled
         
             typedef bool ( ::CEGUI::Window::*isMouseInputPropagationEnabled_function_type )(  ) const;
@@ -3378,7 +3397,14 @@ void register_Window_class(){
                 "isPropertyBannedFromXML"
                 , isPropertyBannedFromXML_function_type( &::CEGUI::Window::isPropertyBannedFromXML )
                 , ( bp::arg("property_name") )
-                , "! Return whether the named property is banned from XML\n" );
+                , "*!\n\
+                \n\
+                    Return whether the named property is banned from XML\n\
+            \n\
+                \note\n\
+                    Read-only properties and properties that can't write to XML streams\n\
+                    are implicitly banned. This method will return true for them.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::isPropertyBannedFromXML
@@ -3389,7 +3415,14 @@ void register_Window_class(){
                 "isPropertyBannedFromXML"
                 , isPropertyBannedFromXML_function_type( &::CEGUI::Window::isPropertyBannedFromXML )
                 , ( bp::arg("property") )
-                , "! Return whether the given property is banned from XML\n" );
+                , "*!\n\
+                \n\
+                    Return whether given property is banned from XML\n\
+            \n\
+                \note\n\
+                    Read-only properties and properties that can't write to XML streams\n\
+                    are implicitly banned. This method will return true for them.\n\
+                *\n" );
         
         }
         { //::CEGUI::Window::isRiseOnClickEnabled

@@ -2497,7 +2497,14 @@ public:
     //! Remove the named property from the XML ban list for this window.
     void unbanPropertyFromXML(const String& property_name);
 
-    //! Return whether the named property is banned from XML
+    /*!
+    \brief
+        Return whether the named property is banned from XML
+
+    \note
+        Read-only properties and properties that can't write to XML streams
+        are implicitly banned. This method will return true for them.
+    */
     bool isPropertyBannedFromXML(const String& property_name) const;
 
     //! Add the given property to the XML ban list for this window.
@@ -2506,7 +2513,14 @@ public:
     //! Remove the given property from the XML ban list for this window.
     void unbanPropertyFromXML(const Property* property);
 
-    //! Return whether the given property is banned from XML
+    /*!
+    \brief
+        Return whether given property is banned from XML
+
+    \note
+        Read-only properties and properties that can't write to XML streams
+        are implicitly banned. This method will return true for them.
+    */
     bool isPropertyBannedFromXML(const Property* property) const;
 
     /*!
