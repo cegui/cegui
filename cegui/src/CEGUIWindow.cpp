@@ -2800,16 +2800,15 @@ void Window::onDeactivated(ActivationEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onParentSized(WindowEventArgs& e)
 {
-    // set window area back on itself to cause minimum and maximum size
-    // constraints to be applied as required.  (fire no events though)
-    setArea_impl(d_area.getPosition(), d_area.getSize(), false, false);
+    markAllCachedRectsInvalid();
+
+    const Size oldSize(d_pixelSize);
+    calculatePixelSize();
+    const bool sized = (d_pixelSize != oldSize) || isInnerRectSizeChanged();
 
     const bool moved =
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
          (d_horzAlign != HA_LEFT) || (d_vertAlign != VA_TOP));
-    const bool sized =
-        ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0) ||
-         isInnerRectSizeChanged());
 
     fireAreaChangeEvents(moved, sized);
 
