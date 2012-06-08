@@ -1883,32 +1883,60 @@ void Window::setInheritsTooltipText(bool setting)
 void Window::setArea_impl(const UVector2& pos, const UVector2& size,
                           bool topLeftSizing, bool fireEvents)
 {
-    // we make sure the screen areas are recached when this is called as we need
-    // it in most cases
+    markAllCachedRectsInvalid();
+
+    // save original size so we can work out how to behave later on
+    const Size oldSize(d_pixelSize);
+
+    d_area.setSize(size);
+    calculatePixelSize();
+    const bool sized = (d_pixelSize != oldSize);
+
+    // If this is a top/left edge sizing op, only modify position if the size
+    // actually changed.  If it is not a sizing op, then position may always
+    // change.
+    const bool moved = (!topLeftSizing || sized) && pos != d_area.d_min;
+
+    if (moved)
+        d_area.setPosition(pos);
+
+    if (fireEvents)
+        fireAreaChangeEvents(moved, sized);
+
+    if (moved || sized)
+        System::getSingleton().updateWindowContainingMouse();
+
+    // update geometry position and clipping if nothing from above appears to
+    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
+    if (!d_outerUnclippedRectValid)
+        updateGeometryRenderSettings();
+}
+
+//----------------------------------------------------------------------------//
+void Window::markAllCachedRectsInvalid()
+{
     d_outerUnclippedRectValid = false;
     d_innerUnclippedRectValid = false;
     d_outerRectClipperValid = false;
     d_innerRectClipperValid = false;
     d_hitTestRectValid = false;
+}
 
-    // notes of what we did
-    bool moved = false, sized;
-
-    // save original size so we can work out how to behave later on
-    const Size oldSize(d_pixelSize);
-
+//----------------------------------------------------------------------------//
+void Window::calculatePixelSize()
+{
     // calculate pixel sizes for everything, so we have a common format for
     // comparisons.
-    Vector2 absMax(d_maxSize.asAbsolute(
+    const Vector2 absMax(d_maxSize.asAbsolute(
         System::getSingleton().getRenderer()->getDisplaySize()));
-    Vector2 absMin(d_minSize.asAbsolute(
+    const Vector2 absMin(d_minSize.asAbsolute(
         System::getSingleton().getRenderer()->getDisplaySize()));
 
-    const Size base_size((d_parent && !d_nonClientContent) ?
-                            d_parent->getUnclippedInnerRect().getSize() :
-                            getParentPixelSize());
+    const Size base_size(d_parent ? 
+        d_parent->getChildWindowContentArea(d_nonClientContent).getSize() :
+        System::getSingleton().getRenderer()->getDisplaySize());
 
-    d_pixelSize = size.asAbsolute(base_size).asSize();
+    d_pixelSize = d_area.getSize().asAbsolute(base_size).asSize();
 
     // limit new pixel size to: minSize <= newSize <= maxSize
     if (d_pixelSize.d_width < absMin.d_x)
@@ -1919,47 +1947,22 @@ void Window::setArea_impl(const UVector2& pos, const UVector2& size,
         d_pixelSize.d_height = absMin.d_y;
     else if (d_pixelSize.d_height > absMax.d_y)
         d_pixelSize.d_height = absMax.d_y;
+}
 
-    d_area.setSize(size);
-    sized = (d_pixelSize != oldSize);
-
-    // If this is a top/left edge sizing op, only modify position if the size
-    // actually changed.  If it is not a sizing op, then position may always
-    // change.
-    if (!topLeftSizing || sized)
-    {
-        // only update position if a change has occurred.
-        if (pos != d_area.d_min)
-        {
-            d_area.setPosition(pos);
-            moved = true;
-        }
-    }
-
-    // fire events as required
-    if (fireEvents)
+//----------------------------------------------------------------------------//
+void Window::fireAreaChangeEvents(const bool moved, const bool sized)
+{
+    if (moved)
     {
         WindowEventArgs args(this);
-
-        if (moved)
-        {
-            onMoved(args);
-            // reset handled so 'sized' event can re-use (since  wo do not care
-            // about it)
-            args.handled = 0;
-        }
-
-        if (sized)
-            onSized(args);
+        onMoved(args);
     }
 
-    if (moved || sized)
-        System::getSingleton().updateWindowContainingMouse();
-
-    // update geometry position and clipping if nothing from above appears to
-    // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
-    if (!d_outerUnclippedRectValid)
-        updateGeometryRenderSettings();
+    if (sized)
+    {
+        WindowEventArgs args(this);
+        onSized(args);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -2808,18 +2811,7 @@ void Window::onParentSized(WindowEventArgs& e)
         ((d_area.d_max.d_x.d_scale != 0) || (d_area.d_max.d_y.d_scale != 0) ||
          isInnerRectSizeChanged());
 
-    // now see if events should be fired.
-    if (moved)
-    {
-        WindowEventArgs args(this);
-        onMoved(args);
-    }
-
-    if (sized)
-    {
-        WindowEventArgs args(this);
-        onSized(args);
-    }
+    fireAreaChangeEvents(moved, sized);
 
     // if we were not moved or sized, do child layout anyway!
     if (!(moved || sized))
@@ -3335,12 +3327,7 @@ void Window::notifyClippingChanged(void)
 //----------------------------------------------------------------------------//
 void Window::notifyScreenAreaChanged(bool recursive /* = true */)
 {
-    d_outerUnclippedRectValid = false;
-    d_innerUnclippedRectValid = false;
-    d_outerRectClipperValid = false;
-    d_innerRectClipperValid = false;
-    d_hitTestRectValid = false;
-
+    markAllCachedRectsInvalid();
     updateGeometryRenderSettings();
 
     // inform children that their screen area must be updated
