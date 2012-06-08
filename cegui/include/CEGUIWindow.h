@@ -4154,6 +4154,12 @@ protected:
     bool constrainUVector2ToMinSize(const Size& base_sz, UVector2& sz);
     // constrain given UVector2 to window's max size, return if size changed.
     bool constrainUVector2ToMaxSize(const Size& base_sz, UVector2& sz);
+    
+    void markAllCachedRectsInvalid();
+    //! calculate constrained pixel size of the window (outer rect)
+    void calculatePixelSize();
+    //! helper to fire events based on changes to area rect
+    void fireAreaChangeEvents(const bool moved, const bool sized);
 
     /*************************************************************************
         Properties for Window base class
