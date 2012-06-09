@@ -242,7 +242,11 @@ void SamplesFramework::drawGUIContexts()
     {
         SampleData* sampleData = *iter;
 
-        sampleData->getGuiContext()->draw();
-        sampleData->getSampleWindow()->invalidate();
+        bool isContextDirty = sampleData->getGuiContext()->isDirty();
+        if(isContextDirty)
+        {
+            sampleData->getGuiContext()->draw();
+            sampleData->getSampleWindow()->getRenderingSurface()->invalidate();
+        }
     }
 }
