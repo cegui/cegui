@@ -36,6 +36,10 @@ namespace CEGUI
     class DynamicModule;
     class GUIContext;
     class Image;
+    class Window;
+    class GUIContext;
+    class BasicImage;
+    class TextureTarget;
 }
 
 enum SampleType
@@ -56,14 +60,14 @@ public:
         CEGUI::String description, SampleType sampleTypeEnum);
     virtual ~SampleData();
 
-    virtual void initialise() = 0;
-    virtual void deinitialise() = 0;
+    virtual void initialise();
+    virtual void deinitialise();
 
     virtual CEGUI::Window*  getGuiRoot() = 0;
-    virtual CEGUI::GUIContext*  getGuiContext() = 0;
-    virtual void handleNewWindowSize(float width, float height) = 0;
+    virtual CEGUI::GUIContext*  getGuiContext();
+    virtual void handleNewWindowSize(float width, float height);
 
-    virtual CEGUI::Image& getRTTImage() = 0;
+    virtual CEGUI::Image& getRTTImage();
 
     void setSampleWindow(CEGUI::Window* sampleWindow);
     CEGUI::Window* getSampleWindow();
@@ -77,6 +81,10 @@ protected:
     SampleType              d_type;
 
     CEGUI::Window*          d_sampleWindow;
+
+    CEGUI::GUIContext*      d_guiContext;
+    CEGUI::TextureTarget*   d_textureTarget;
+    CEGUI::BasicImage*      d_textureTargetImage;
 };
 
 class SampleDataModule : public SampleData
@@ -92,11 +100,6 @@ public:
     virtual void deinitialise();
 
     virtual CEGUI::Window*  getGuiRoot();
-    virtual CEGUI::GUIContext*  getGuiContext();
-
-    virtual void handleNewWindowSize(float width, float height);
-
-    virtual CEGUI::Image& getRTTImage();
 
 private:
 

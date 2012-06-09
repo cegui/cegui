@@ -35,36 +35,22 @@ namespace CEGUI
 {
     class Window;
     class GUIContext;
-    class TextureTarget;
-    class BasicImage;
-    class Image;
 }
 
 class Sample
 {
 public:
-    Sample();
-    virtual ~Sample();
+    Sample() {}
+    virtual ~Sample() {}
 
-    virtual bool initialise() = 0;
+    virtual bool initialise(CEGUI::GUIContext* guiContext) = 0;
     virtual void deinitialise() = 0;
 
     virtual CEGUI::Window* getGUIRoot() = 0;
 
-    CEGUI::GUIContext* getGuiContext();
-
-    void handleNewWindowSize(float width, float height);
-
-    CEGUI::Image& getRTTImage();
-
 private:
     Sample(const Sample&) {}
     Sample& operator=(const Sample&) {}
-
-protected:
-    CEGUI::GUIContext*         d_guiContext;
-    CEGUI::TextureTarget*      d_textureTarget;
-    CEGUI::BasicImage*              d_textureTargetImage;
 };
 
 #endif
