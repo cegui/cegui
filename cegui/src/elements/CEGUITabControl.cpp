@@ -539,7 +539,8 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
 /*************************************************************************
 Layout the widgets
 *************************************************************************/
-void TabControl::performChildWindowLayout()
+void TabControl::performChildWindowLayout(bool nonclient_sized_hint,
+                                          bool client_sized_hint)
 {
     Window* tabButtonPane = getTabButtonPane();
     Window* tabContentPane = getTabPane();
