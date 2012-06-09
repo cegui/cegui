@@ -53,7 +53,7 @@ public:
 
     CEGUI::GUIContext* getGuiContext();
 
-    void handleNewWindowSize(const float& width, const float& height);
+    void handleNewWindowSize(float width, float height);
 
     CEGUI::Image& getRTTImage();
 

@@ -34,6 +34,7 @@ author:     Lukas E Meindl
 #include "CEGUI/Image.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/BasicImage.h"
+#include "CEGUI/Vector.h"
 
 
 using namespace CEGUI;
@@ -80,10 +81,12 @@ GUIContext* Sample::getGuiContext()
     return d_guiContext;
 }
 
-void Sample::handleNewWindowSize(const float& width, const float& height)
+void Sample::handleNewWindowSize(float width, float height)
 {
-     d_textureTarget->declareRenderSize(Sizef(width, height));
-     d_textureTargetImage->setArea(CEGUI::Rectf(0.f, height, width, 0.f));
+    CEGUI::Sizef windowSize(width, height);
+
+    d_textureTarget->declareRenderSize(windowSize);
+    d_textureTargetImage->setArea(CEGUI::Rectf(CEGUI::Vector2f(0.f, 0.f), windowSize));
 }
 
 CEGUI::Image& Sample::getRTTImage()

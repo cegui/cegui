@@ -90,9 +90,15 @@ public:
 
     /*!
     \brief
-        Update function for window size changes
+    Update function for window size changes
     */
-    virtual void handleNewWindowSize(const float& width, const float& height) = 0;
+    virtual void handleNewWindowSize(float width, float height) = 0;
+
+    /*!
+    \brief
+    Draw function for custom gui contexts
+    */
+    virtual void drawGUIContexts() = 0;
 
 
 protected:
