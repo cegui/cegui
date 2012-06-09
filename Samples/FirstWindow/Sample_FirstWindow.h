@@ -43,7 +43,7 @@ public:
     FirstWindowSample() {}
     virtual ~FirstWindowSample() {}
 
-    virtual bool initialise();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
     virtual void deinitialise();
 
     virtual CEGUI::Window* getGUIRoot();

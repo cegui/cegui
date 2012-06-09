@@ -67,7 +67,7 @@ public:
     virtual ~FalagardDemo1Sample() {}
 
     // method to initialse the samples windows and events.
-    virtual bool initialise();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     // method to perform any required cleanup operations.
     virtual void deinitialise();
