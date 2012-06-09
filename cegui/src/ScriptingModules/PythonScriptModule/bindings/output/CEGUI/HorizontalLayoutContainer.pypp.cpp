@@ -171,16 +171,16 @@ struct HorizontalLayoutContainer_wrapper : CEGUI::HorizontalLayoutContainer, bp:
         CEGUI::SequentialLayoutContainer::moveChildWindowToPosition( boost::python::ptr(wnd), position );
     }
 
-    virtual void performChildWindowLayout(  ) {
+    virtual void performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
         if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
-            func_performChildWindowLayout(  );
+            func_performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         else{
-            this->CEGUI::Window::performChildWindowLayout(  );
+            this->CEGUI::Window::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         }
     }
     
-    void default_performChildWindowLayout(  ) {
-        CEGUI::Window::performChildWindowLayout( );
+    void default_performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
+        CEGUI::Window::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
     }
 
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
@@ -462,13 +462,14 @@ void register_HorizontalLayoutContainer_class(){
         }
         { //::CEGUI::Window::performChildWindowLayout
         
-            typedef void ( ::CEGUI::Window::*performChildWindowLayout_function_type )(  ) ;
-            typedef void ( HorizontalLayoutContainer_wrapper::*default_performChildWindowLayout_function_type )(  ) ;
+            typedef void ( ::CEGUI::Window::*performChildWindowLayout_function_type )( bool,bool ) ;
+            typedef void ( HorizontalLayoutContainer_wrapper::*default_performChildWindowLayout_function_type )( bool,bool ) ;
             
             HorizontalLayoutContainer_exposer.def( 
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::Window::performChildWindowLayout)
-                , default_performChildWindowLayout_function_type(&HorizontalLayoutContainer_wrapper::default_performChildWindowLayout) );
+                , default_performChildWindowLayout_function_type(&HorizontalLayoutContainer_wrapper::default_performChildWindowLayout)
+                , ( bp::arg("nonclient_sized_hint")=(bool)(false), bp::arg("client_sized_hint")=(bool)(false) ) );
         
         }
         { //::CEGUI::Window::setLookNFeel
