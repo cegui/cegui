@@ -34,6 +34,11 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+Win32StringTranscoder::Win32StringTranscoder()
+{
+}
+
+//----------------------------------------------------------------------------//
 uint16* Win32StringTranscoder::stringToUTF16(const String& input) const
 {
     const int len = MultiByteToWideChar(CP_UTF8, 0, input.c_str(), -1,

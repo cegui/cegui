@@ -37,6 +37,8 @@ namespace CEGUI
 class IconvStringTranscoder : public StringTranscoder
 {
 public:
+    IconvStringTranscoder();
+
     // implement abstract interface
     uint16* stringToUTF16(const String& input) const;
     std::wstring stringToStdWString(const String& input) const;
