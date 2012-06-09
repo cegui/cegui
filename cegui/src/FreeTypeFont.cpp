@@ -68,12 +68,12 @@ static FT_Library ft_lib;
 //----------------------------------------------------------------------------//
 FreeTypeFont::FreeTypeFont(const String& font_name, const float point_size,
                            const bool anti_aliased, const String& font_filename,
-                           const String& resource_group, const bool auto_scaled,
-                           const float native_horz_res,
-                           const float native_vert_res,
+                           const String& resource_group,
+                           const AutoScaledMode auto_scaled,
+                           const Sizef& native_res,
                            const float specific_line_spacing) :
     Font(font_name, Font_xmlHandler::FontTypeFreeType, font_filename,
-         resource_group, auto_scaled, native_horz_res, native_vert_res),
+         resource_group, auto_scaled, native_res),
     d_specificLineSpacing(specific_line_spacing),
     d_ptSize(point_size),
     d_antiAliased(anti_aliased),
@@ -237,8 +237,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Vector2f offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
-                        new BasicImage(name, &texture, area, offset, false,
-                                       Sizef(d_nativeHorzRes, d_nativeVertRes));
+                        new BasicImage(name, &texture, area, offset, ASM_Disabled,
+                                       d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
                 }
@@ -275,8 +275,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
                     BasicImage* img =
-                        new BasicImage(name, &texture, area, offset, false,
-                                       Sizef(d_nativeHorzRes, d_nativeVertRes));
+                        new BasicImage(name, &texture, area, offset, ASM_Disabled,
+                                       d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
 
@@ -407,7 +407,7 @@ void FreeTypeFont::updateFont()
 
     float hps = d_ptSize * 64;
     float vps = d_ptSize * 64;
-    if (d_autoScale)
+    if (d_autoScaled != ASM_Disabled)
     {
         hps *= d_horzScaling;
         vps *= d_vertScaling;

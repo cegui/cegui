@@ -48,12 +48,12 @@ public:
 
     BasicImage(const String& name, Texture* texture,
                const Rectf& tex_area, const Vector2f& offset,
-               const bool autoscaled, const Sizef& native_res);
+               const AutoScaledMode autoscaled, const Sizef& native_res);
 
     void setTexture(Texture* texture);
     void setArea(const Rectf& pixel_area);
     void setOffset(const Vector2f& pixel_offset);
-    void setAutoScaled(const bool autoscaled);
+    void setAutoScaled(const AutoScaledMode autoscaled);
     void setNativeResolution(const Sizef& native_res);
 
     // Implement CEGUI::Image interface
@@ -77,8 +77,8 @@ protected:
     Rectf d_area;
     //! Defined pixel offset
     Vector2f d_pixelOffset;
-    //! Whether image is auto-scaled or not.
-    bool d_autoscaled;
+    //! Whether image is auto-scaled or not and how.
+    AutoScaledMode d_autoScaled;
     //! Native resolution used for autoscaling.
     Sizef d_nativeResolution;
     //! Size after having autoscaling applied.

@@ -79,9 +79,8 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
                                       const bool anti_aliased,
                                       const String& font_filename,
                                       const String& resource_group,
-                                      const bool auto_scaled,
-                                      const float native_horz_res,
-                                      const float native_vert_res,
+                                      const AutoScaledMode auto_scaled,
+                                      const Sizef& native_res,
                                       XMLResourceExistsAction action)
 {
 #ifdef CEGUI_HAS_FREETYPE
@@ -91,7 +90,7 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
     // create new object ahead of time
     Font* object = CEGUI_NEW_AO FreeTypeFont(font_name, point_size, anti_aliased,
                                     font_filename, resource_group, auto_scaled,
-                                    native_horz_res, native_vert_res);
+                                    native_res);
 
     // return appropriate object instance (deleting any not required)
     return doExistingObjectAction(font_name, object, action);
@@ -106,9 +105,8 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
 Font& FontManager::createPixmapFont(const String& font_name,
                                     const String& imageset_filename,
                                     const String& resource_group,
-                                    const bool auto_scaled,
-                                    const float native_horz_res,
-                                    const float native_vert_res,
+                                    const AutoScaledMode auto_scaled,
+                                    const Sizef& native_res,
                                     XMLResourceExistsAction action)
 {
     CEGUI_LOGINSANE("Attempting to create Pixmap font '" +
@@ -116,7 +114,7 @@ Font& FontManager::createPixmapFont(const String& font_name,
 
     // create new object ahead of time
     Font* object = CEGUI_NEW_AO PixmapFont(font_name, imageset_filename, resource_group,
-                                  auto_scaled, native_horz_res, native_vert_res);
+                                  auto_scaled, native_res);
 
     // return appropriate object instance (deleting any not required)
     return doExistingObjectAction(font_name, object, action);;

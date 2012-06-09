@@ -232,9 +232,10 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
         attributes.getValueAsFloat(FontSizeAttribute, 12.0f),
         attributes.getValueAsBool(FontAntiAliasedAttribute, true),
         filename, resource_group,
-        attributes.getValueAsBool(FontAutoScaledAttribute, false),
-        attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
-        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f),
+        PropertyHelper<AutoScaledMode>::fromString(
+                attributes.getValueAsString(FontAutoScaledAttribute)),
+        Sizef(attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
+              attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f)),
         attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f));
 #else
     CEGUI_THROW(InvalidRequestException("Font_xmlHandler::createFreeTypeFont: "
@@ -255,9 +256,10 @@ void Font_xmlHandler::createPixmapFont(const XMLAttributes& attributes)
                     " in resource group: " + (resource_group.empty() ? "(Default)" : resource_group));
 
     d_font = CEGUI_NEW_AO PixmapFont(name, filename, resource_group,
-        attributes.getValueAsBool(FontAutoScaledAttribute, false),
-        attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
-        attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f));
+        PropertyHelper<AutoScaledMode>::fromString(
+                        attributes.getValueAsString(FontAutoScaledAttribute)),
+        Sizef(attributes.getValueAsFloat(FontNativeHorzResAttribute, 640.0f),
+              attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f)));
 }
 
 //----------------------------------------------------------------------------//

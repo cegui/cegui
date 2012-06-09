@@ -28,6 +28,8 @@
 #include "CEGUI/Image.h"
 #include "CEGUI/Logger.h"
 
+#include <algorithm>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -35,6 +37,51 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 Image::~Image()
 {
+}
+
+//----------------------------------------------------------------------------//
+void Image::computeScalingFactors(AutoScaledMode mode,
+                                  const Sizef& display_size,
+                                  const Sizef& native_display_size,
+                                  float& x_scale,
+                                  float& y_scale)
+{
+    if (mode == ASM_Disabled)
+    {
+        x_scale = 1.0f;
+        y_scale = 1.0f;
+    }
+    else if (mode == ASM_Vertical)
+    {
+        x_scale = display_size.d_height / native_display_size.d_height;
+        y_scale = x_scale;
+    }
+    else if (mode == ASM_Horizontal)
+    {
+        x_scale = display_size.d_width / native_display_size.d_width;
+        y_scale = x_scale;
+    }
+    else if (mode == ASM_Min)
+    {
+        x_scale = std::min(display_size.d_width / native_display_size.d_width,
+                           display_size.d_height / native_display_size.d_height);
+        y_scale = x_scale;
+    }
+    else if (mode == ASM_Max)
+    {
+        x_scale = std::max(display_size.d_width / native_display_size.d_width,
+                           display_size.d_height / native_display_size.d_height);
+        y_scale = x_scale;
+    }
+    else if (mode == ASM_Both)
+    {
+        x_scale = display_size.d_width / native_display_size.d_width;
+        y_scale = display_size.d_height / native_display_size.d_height;
+    }
+    else
+    {
+        assert(false && "Invalid AutoScaledMode");
+    }
 }
 
 //----------------------------------------------------------------------------//

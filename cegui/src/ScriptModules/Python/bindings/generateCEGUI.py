@@ -349,6 +349,8 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     # not needed in python
     
     # CEGUIImage.h
+    autoScaledModeEnum = CEGUI_ns.enum("AutoScaledMode")
+    autoScaledModeEnum.include()
     image = CEGUI_ns.class_("Image")
     image.include()
     

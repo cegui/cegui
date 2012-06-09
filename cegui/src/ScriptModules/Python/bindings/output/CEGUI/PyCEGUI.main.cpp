@@ -721,6 +721,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_SingletonFontManager_class();
 
+    register_Sizef_class();
+
     register_FontManager_class();
 
     register_FrameComponent_class();
@@ -902,8 +904,6 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_SingletonWindowRendererManager_class();
 
     register_USize_class();
-
-    register_Sizef_class();
 
     register_Slider_class();
 

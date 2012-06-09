@@ -29,7 +29,7 @@ struct BasicImage_wrapper : CEGUI::BasicImage, bp::wrapper< CEGUI::BasicImage > 
     
     }
 
-    BasicImage_wrapper(::CEGUI::String const & name, ::CEGUI::Texture * texture, ::CEGUI::Rectf const & tex_area, ::CEGUI::Vector2f const & offset, bool const autoscaled, ::CEGUI::Sizef const & native_res )
+    BasicImage_wrapper(::CEGUI::String const & name, ::CEGUI::Texture * texture, ::CEGUI::Rectf const & tex_area, ::CEGUI::Vector2f const & offset, ::CEGUI::AutoScaledMode const autoscaled, ::CEGUI::Sizef const & native_res )
     : CEGUI::BasicImage( boost::ref(name), boost::python::ptr(texture), boost::ref(tex_area), boost::ref(offset), autoscaled, boost::ref(native_res) )
       , bp::wrapper< CEGUI::BasicImage >(){
         // constructor
@@ -107,7 +107,7 @@ void register_BasicImage_class(){
         bp::implicitly_convertible< CEGUI::String const &, CEGUI::BasicImage >();
         BasicImage_exposer.def( bp::init< CEGUI::XMLAttributes const & >(( bp::arg("attributes") )) );
         bp::implicitly_convertible< CEGUI::XMLAttributes const &, CEGUI::BasicImage >();
-        BasicImage_exposer.def( bp::init< CEGUI::String const &, CEGUI::Texture *, CEGUI::Rectf const &, CEGUI::Vector2f const &, bool, CEGUI::Sizef const & >(( bp::arg("name"), bp::arg("texture"), bp::arg("tex_area"), bp::arg("offset"), bp::arg("autoscaled"), bp::arg("native_res") )) );
+        BasicImage_exposer.def( bp::init< CEGUI::String const &, CEGUI::Texture *, CEGUI::Rectf const &, CEGUI::Vector2f const &, CEGUI::AutoScaledMode, CEGUI::Sizef const & >(( bp::arg("name"), bp::arg("texture"), bp::arg("tex_area"), bp::arg("offset"), bp::arg("autoscaled"), bp::arg("native_res") )) );
         { //::CEGUI::BasicImage::getName
         
             typedef ::CEGUI::String const & ( ::CEGUI::BasicImage::*getName_function_type )(  ) const;
@@ -174,7 +174,7 @@ void register_BasicImage_class(){
         }
         { //::CEGUI::BasicImage::setAutoScaled
         
-            typedef void ( ::CEGUI::BasicImage::*setAutoScaled_function_type )( bool const ) ;
+            typedef void ( ::CEGUI::BasicImage::*setAutoScaled_function_type )( ::CEGUI::AutoScaledMode const ) ;
             
             BasicImage_exposer.def( 
                 "setAutoScaled"
