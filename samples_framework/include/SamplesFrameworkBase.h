@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGuiSample.h
+    filename:   SamplesFrameworkBase.h
     created:    24/9/2004
     author:     Paul D Turner
 *************************************************************************/
@@ -25,19 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGuiSample_h_
-#define _CEGuiSample_h_
-
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined (CEGUI_STATIC)
-#   ifdef CEGUISAMPLEHELPER_EXPORTS
-#       define CEGUISAMPLE_API __declspec(dllexport)
-#   else
-#       define CEGUISAMPLE_API __declspec(dllimport)
-#   endif
-#else
-#       define CEGUISAMPLE_API
-#endif
-
+#ifndef _SamplesFrameworkBase_h_
+#define _SamplesFrameworkBase_h_
 
 // forward declarations
 class CEGuiBaseApplication;
@@ -49,21 +38,21 @@ class CEGuiRendererSelector;
     Here we take care of common things such the renderer selection and application
     startup.
 */
-class CEGUISAMPLE_API CEGuiSample
+class SamplesFrameworkBase
 {
 public:
     /*!
     \brief
         Constructor.
     */
-    CEGuiSample();
+    SamplesFrameworkBase();
 
 
     /*!
     \brief
         Destructor.
     */
-    virtual ~CEGuiSample();
+    virtual ~SamplesFrameworkBase();
 
 
     /*!
@@ -92,6 +81,24 @@ public:
         Cleans up resources allocated in the initialiseSample call.
     */
     virtual void cleanupSample() = 0;
+
+    /*!
+    \brief
+        Update function called before rendering
+    */
+    virtual void update(float passedTime) = 0;
+
+    /*!
+    \brief
+    Update function for window size changes
+    */
+    virtual void handleNewWindowSize(float width, float height) = 0;
+
+    /*!
+    \brief
+    Draw function for custom gui contexts
+    */
+    virtual void drawGUIContexts() = 0;
 
 
 protected:
@@ -126,4 +133,4 @@ protected:
     CEGuiBaseApplication*   d_sampleApp;            //!< Pointer to the base application object.
 };
 
-#endif  // end of guard _CEGuiSample_h_
+#endif  // end of guard _SamplesFrameworkBase_h_

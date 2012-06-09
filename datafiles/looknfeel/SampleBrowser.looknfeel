@@ -1,0 +1,964 @@
+<?xml version="1.0" ?>
+
+<!--
+    SampleBrowserSkin.looknfeel by Lukas E. Meindl
+
+    This looknfeel is created for the SampleFramework to provide a minimal
+	set of widgets that are specifically designed for it. This also shows
+	how the looknfeel system and imagesets can be customized specifically
+	for a project.
+-->
+
+<Falagard version="7">
+    <WidgetLook name="SampleBrowserSkin/Label">
+        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <ImagerySection name="Label">
+            <TextComponent>
+                <Area>
+	            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+	            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+	            <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+	            <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="Label">
+                    <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="SampleBrowserSkin/Shared">
+        <ImagerySection name="Frame">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
+                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
+                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
+                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
+                <Image type="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
+                <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
+                <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
+                <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
+                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+            </FrameComponent>
+        </ImagerySection>
+
+        <ImagerySection name="FrameOnly">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
+                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
+                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
+                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
+                <Image type="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
+                <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
+                <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
+                <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
+            </FrameComponent>
+        </ImagerySection>
+
+        <ImagerySection name="BackgroundOnly">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width" /></Dim>
+                    <Dim type="TopEdge"><ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height" /></Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale="1" type="RightEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale="1" type="BottomEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+            </FrameComponent>
+        </ImagerySection>
+
+		<ImagerySection name="BackgroundOnlyFull">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+            </FrameComponent>
+        </ImagerySection>
+
+    </WidgetLook>
+
+
+    <WidgetLook name="SampleBrowserSkin/Button">
+        <PropertyDefinition name="NormalTextColour"	initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true"  type="ColourRect"/>
+        <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF888888" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="UseStandardImagery" initialValue="True" redrawOnWrite="true" type="bool"/>
+        <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
+        <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting"/>
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
+
+        <Property name="WantsMultiClickEvents" value="False" />
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="WordWrapCentreAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="normal_image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="NormalImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover_image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="pushed_image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+                </Area>
+                <ImageProperty name="PushedImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
+
+        <StateImagery name="Normal">
+            <Layer>
+                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+                <Section section="normal_image" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
+                    <Colours topLeft="FF9F9F9F" topRight="FF9F9F9F" bottomLeft="FF9F9F9F" bottomRight="FF9F9F9F" />
+                </Section>
+                <Section section="hover_image" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
+                    <Colours topLeft="FF6F6F6F" topRight="FF6F6F6F" bottomLeft="FF6F6F6F" bottomRight="FF6F6F6F" />
+                </Section>
+                <Section section="pushed_image" />
+                <Section section="label">
+                    <ColourProperty name="PushedTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
+                    <Colours topLeft="FF3F3F3F" topRight="FF3F3F3F" bottomLeft="FF3F3F3F" bottomRight="FF3F3F3F" />
+                </Section>
+                <Section section="normal_image">
+                    <Colours topLeft="FF3F3F3F" topRight="FF3F3F3F" bottomLeft="FF3F3F3F" bottomRight="FF3F3F3F" />
+                </Section>
+                <Section section="label">
+                    <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    <WidgetLook name="SampleBrowserSkin/SampleWindow">
+        <Property name="AutoRenderingSurface" value="True" />
+		<Property name="BackgroundEnabled" value="True" />
+        <Property name="FrameEnabled" value="True" />
+		
+        <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="FrameColours" initialValue="tl:FF7F0000 tr:FF7F0000 bl:FF7F0000 br:FF7F0000" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
+
+        <ImagerySection name="image">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <ImageProperty name="Image" />
+                <ColourRectProperty name="ImageColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        
+        <ImagerySection name="imageWithBorder">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="12" /></Dim>
+                    <Dim type="TopEdge" ><AbsoluteDim value="12" /></Dim>
+                    <Dim type="RightEdge" ><UnifiedDim scale="1.0" offset="-12" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1.0" offset="-12" type="BottomEdge" /></Dim>
+                </Area>
+                <ImageProperty name="Image" />
+                <ColourRectProperty name="ImageColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+ 
+        <ImagerySection name="frame">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
+                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
+                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
+                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
+                <Image type="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
+                <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
+                <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
+                <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
+                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+				<ColourRectProperty name="FrameColours" />
+            </FrameComponent>
+        </ImagerySection>
+		
+        <ImagerySection name="withFrameWithBackground">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" >
+                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width" />
+                    </Dim>
+                    <Dim type="TopEdge" >
+                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height" />
+                    </Dim>
+                    <Dim type="RightEdge" >
+                        <UnifiedDim scale="1.0" type="RightEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1.0" type="BottomEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height" />
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+                <Image name="SampleBrowserSkin/GenericFiller" />
+				<ColourRectProperty name="BackgroundColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+		
+        <ImagerySection name="frameBackgroundFiller">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameFillerTopLeft" />
+                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameFillerTopRight" />
+                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameFillerBottomLeft" />
+                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameFillerBottomRight" />
+                <Image type="LeftEdge" name="SampleBrowserSkin/FrameFillerLeft" />
+                <Image type="TopEdge" name="SampleBrowserSkin/FrameFillerTop" />
+                <Image type="RightEdge" name="SampleBrowserSkin/FrameFillerRight" />
+                <Image type="BottomEdge" name="SampleBrowserSkin/FrameFillerBottom" />
+                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+				<ColourRectProperty name="BackgroundColours" />
+            </FrameComponent>
+        </ImagerySection>
+		
+		
+        <ImagerySection name="noFrameWithBackground">
+            <ImageryComponent>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                <Image name="SampleBrowserSkin/GenericFiller" />
+				<ColourRectProperty name="BackgroundColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+		
+   
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+        <StateImagery name="EnabledFrame">
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+        </StateImagery>
+        <StateImagery name="DisabledFrame">
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+        </StateImagery>
+        <StateImagery name="WithFrameEnabledBackground"> 
+			<Layer><Section look="SampleBrowserSkin/SampleWindow" section="frameBackgroundFiller" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="withFrameWithBackground" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+        </StateImagery>
+        <StateImagery name="WithFrameDisabledBackground">
+        <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameEnabledBackground">
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="noFrameWithBackground" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameDisabledBackground" />
+    </WidgetLook>
+
+	
+    
+<!--
+    TitleBar
+-->
+    <WidgetLook name="SampleBrowserSkin/Titlebar">
+        <PropertyDefinition name="CaptionColour" initialValue="FFe5ffb2" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
+        <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
+        <Property name="NonClient" value="True" />
+        <ImagerySection name="normal">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="LeftEdge" name="SampleBrowserSkin/CaptionL" />
+                <Image type="RightEdge" name="SampleBrowserSkin/CaptionR" />
+                <Image type="Background" name="SampleBrowserSkin/CaptionM" />
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="caption">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <ColourProperty name="CaptionColour" />
+                <VertFormatProperty name="VertFormatting" />
+                <HorzFormatProperty name="HorzFormatting" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Active">
+            <Layer>
+                <Section section="normal" />
+                <Section section="caption" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Inactive">
+            <Layer>
+                <Section section="normal" />
+                <Section section="caption" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal" />
+                <Section section="caption" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+    
+<!--
+    FrameWindow
+-->
+
+    <WidgetLook name="SampleBrowser/FrameWindow">
+        <PropertyLinkDefinition name="CaptionColour" widget="__auto_titlebar__" targetProperty="CaptionColour" initialValue="FFe5ffb2" type="ColourRect"/>
+        <PropertyLinkDefinition name="CaptionFont" widget="__auto_titlebar__" targetProperty="Font" type="Font"/>
+        <Property name="NSSizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
+        <Property name="EWSizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
+        <Property name="NWSESizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
+        <Property name="NESWSizingCursorImage" value="SampleBrowserSkin/MouseArrow" />
+        <Property name="AutoRenderingSurface" value="True" />
+        <NamedArea name="ClientWithTitleWithFrame">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="SampleBrowserSkin/TrayL" dimension="Width">
+                        <DimOperator op="Divide">
+                            <AbsoluteDim value="2" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge">
+                        <DimOperator op="Add">
+                            <ImageDim name="SampleBrowserSkin/TrayT" dimension="Height">
+                                <DimOperator op="Divide">
+                                    <AbsoluteDim value="2" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </WidgetDim>
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/TrayR" dimension="Width">
+                                <DimOperator op="Divide">
+                                    <AbsoluteDim value="2" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/TrayB" dimension="Height">
+                                <DimOperator op="Divide">
+                                    <AbsoluteDim value="2" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientWithTitleNoFrame">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="BottomEdge" ><WidgetDim dimension="BottomEdge" /></Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientNoTitleWithFrame">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="SampleBrowserSkin/TrayL" dimension="Width">
+                        <DimOperator op="Divide">
+                            <AbsoluteDim value="2" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="SampleBrowserSkin/TrayT" dimension="Height">
+                        <DimOperator op="Divide">
+                            <AbsoluteDim value="2" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/TrayR" dimension="Width">
+                                <DimOperator op="Divide">
+                                    <AbsoluteDim value="2" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/TrayB" dimension="Height">
+                                <DimOperator op="Divide">
+                                    <AbsoluteDim value="2" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ClientNoTitleNoFrame">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
+            </Area>
+        </NamedArea>
+        <Child type="SampleBrowserSkin/Titlebar" nameSuffix="__auto_titlebar__">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="SampleBrowserSkin/TrayL" dimension="Width">
+                        <DimOperator op="Divide">
+                            <AbsoluteDim value="2" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="SampleBrowserSkin/TrayT" dimension="Height">
+                        <DimOperator op="Divide">
+                            <AbsoluteDim value="2" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="Width" >
+                    <UnifiedDim scale="1" type="Width"> 
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/TrayL" dimension="Width"/>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="Height" ><FontDim type="LineSpacing" padding="8" /></Dim>
+            </Area>
+            <Property name="AlwaysOnTop" value="False" />
+        </Child>
+        <!-- here we basically nullify the close button, for now at least -->
+        <Child type="DefaultWindow" nameSuffix="__auto_closebutton__">
+            <Area>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="0" type="Width" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="0" type="Height" /></Dim>
+            </Area>
+            <Property name="NonClient" value="True" />
+        </Child>
+        <ImagerySection name="frame">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
+                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image type="TopLeftCorner" name="SampleBrowserSkin/TrayTL" />
+                <Image type="TopRightCorner" name="SampleBrowserSkin/TrayTR" />
+                <Image type="BottomLeftCorner" name="SampleBrowserSkin/TrayBL" />
+                <Image type="BottomRightCorner" name="SampleBrowserSkin/TrayBR" />
+                <Image type="LeftEdge" name="SampleBrowserSkin/TrayL" />
+                <Image type="TopEdge" name="SampleBrowserSkin/TrayT" />
+                <Image type="RightEdge" name="SampleBrowserSkin/TrayR" />
+                <Image type="BottomEdge" name="SampleBrowserSkin/TrayB" />
+                <Image type="Background" name="SampleBrowserSkin/TrayM" />
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="noframe">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
+                </Area>
+                <Image name="SampleBrowserSkin/TrayM" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="ActiveWithTitleWithFrame">
+            <Layer><Section section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="InactiveWithTitleWithFrame">
+            <Layer><Section section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="DisabledWithTitleWithFrame">
+            <Layer><Section section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="ActiveWithTitleNoFrame">
+            <Layer><Section section="noframe" /></Layer>
+        </StateImagery>
+        <StateImagery name="InactiveWithTitleNoFrame">
+            <Layer><Section section="noframe" /></Layer>
+        </StateImagery>
+        <StateImagery name="DisabledWithTitleNoFrame">
+            <Layer><Section section="noframe" /></Layer>
+        </StateImagery>
+        <StateImagery name="ActiveNoTitleWithFrame">
+            <Layer><Section section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="InactiveNoTitleWithFrame">
+            <Layer><Section section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNoTitleWithFrame">
+            <Layer><Section section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="ActiveNoTitleNoFrame">
+            <Layer><Section section="noframe" /></Layer>
+        </StateImagery>
+        <StateImagery name="InactiveNoTitleNoFrame">
+            <Layer><Section section="noframe" /></Layer>
+        </StateImagery>
+        <StateImagery name="DisabledNoTitleNoFrame">
+            <Layer><Section section="noframe" /></Layer>
+        </StateImagery>
+    </WidgetLook>
+
+    
+    
+<!--
+    StaticText
+-->
+    <WidgetLook name="SampleBrowserSkin/StaticText">
+        <PropertyLinkDefinition name="HorzScrollPosition" widget="__auto_hscrollbar__" targetProperty="ScrollPosition" type="float" />
+        <PropertyLinkDefinition name="HorzScrollPageSize" widget="__auto_hscrollbar__" targetProperty="PageSize" type="float" />
+        <PropertyLinkDefinition name="HorzScrollDocumentSize" widget="__auto_hscrollbar__" targetProperty="DocumentSize" type="float" />
+
+        <PropertyLinkDefinition name="VertScrollPosition" widget="__auto_vscrollbar__" targetProperty="ScrollPosition" type="float" />
+        <PropertyLinkDefinition name="VertScrollPageSize" widget="__auto_vscrollbar__" targetProperty="PageSize" type="float" />
+        <PropertyLinkDefinition name="VertScrollDocumentSize" widget="__auto_vscrollbar__" targetProperty="DocumentSize" type="float" />
+
+        <Property name="BackgroundEnabled" value="True" />
+        <Property name="FrameEnabled" value="True" />
+        <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" />
+        <Property name="HorzFormatting" value="WordWrapLeftAligned" />
+
+        <NamedArea name="WithFrameTextRenderArea">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxL" dimension="Width" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxT" dimension="Height" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="WithFrameTextRenderAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxL" dimension="Width" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxT" dimension="Height" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="WithFrameTextRenderAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxL" dimension="Width" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxT" dimension="Height" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="WithFrameTextRenderAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxL" dimension="Width" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="OgreTrayImages/TextBoxT" dimension="Height" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderArea">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge" />
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge" />
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge" />
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge" />
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="NoFrameTextRenderAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="TopEdge" >
+                    <AbsoluteDim value="0" />
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Height" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child type="OgreTray/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="OgreTrayImages/TextBoxL" dimension="Width" /></Dim>
+                <Dim type="TopEdge" >
+                    <AbsoluteDim value="0">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height" />
+                        </DimOperator>
+                    </AbsoluteDim>
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1" type="Width">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width">
+                                <DimOperator op="Add">
+                                    <ImageDim name="OgreTrayImages/Handle" dimension="Width" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="Height" ><ImageDim name="OgreTrayImages/Handle" dimension="Height" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+            <Property name="NonClient" value="True" />
+        </Child>
+        <Child type="OgreTray/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <AbsoluteDim value="0">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxR" dimension="Width" />
+                        </DimOperator>
+                    </AbsoluteDim>
+                </Dim>
+                <Dim type="TopEdge" ><ImageDim name="OgreTrayImages/TextBoxT" dimension="Height" /></Dim>
+                <Dim type="Width" ><ImageDim name="OgreTrayImages/Handle" dimension="Width" /></Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="OgreTrayImages/TextBoxB" dimension="Height" />
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+            <Property name="NonClient" value="True" />
+        </Child>
+        <StateImagery name="Enabled" />
+        <StateImagery name="Disabled" />
+        <StateImagery name="EnabledFrame">
+            <Layer><Section look="OgreTray/StaticShared" section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="DisabledFrame">
+            <Layer><Section look="OgreTray/StaticShared" section="frame" /></Layer>
+        </StateImagery>
+        <StateImagery name="WithFrameEnabledBackground">
+            <Layer><Section look="OgreTray/StaticShared" section="with_frame_background" /></Layer>
+        </StateImagery>
+        <StateImagery name="WithFrameDisabledBackground">
+            <Layer><Section look="OgreTray/StaticShared" section="with_frame_background" /></Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameEnabledBackground">
+            <Layer><Section look="OgreTray/StaticShared" section="no_frame_background" /></Layer>
+        </StateImagery>
+        <StateImagery name="NoFrameDisabledBackground">
+            <Layer><Section look="OgreTray/StaticShared" section="no_frame_background" /></Layer>
+        </StateImagery>
+    </WidgetLook>
+    
+</Falagard>
