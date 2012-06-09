@@ -38,7 +38,7 @@
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FalagardDemo1Sample::initialise()
+bool FalagardDemo1Sample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -49,7 +49,7 @@ bool FalagardDemo1Sample::initialise()
     // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     // set default mouse image
-    d_guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
@@ -58,7 +58,7 @@ bool FalagardDemo1Sample::initialise()
     d_root = winMgr.createWindow("Vanilla/StaticImage");
 
     // Set the root window as root of our GUI Context
-    d_guiContext->setRootWindow(d_root);
+    guiContext->setRootWindow(d_root);
 
     // set area rectangle
     d_root->setArea(URect(cegui_reldim(0), cegui_reldim(0), cegui_reldim(1), cegui_reldim(1)));

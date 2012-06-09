@@ -31,7 +31,7 @@
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FirstWindowSample::initialise()
+bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -53,7 +53,7 @@ bool FirstWindowSample::initialise()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    d_guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -73,7 +73,7 @@ bool FirstWindowSample::initialise()
     d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
 
     // Set the root window as root of our GUI Context
-    d_guiContext->setRootWindow(d_root);
+    guiContext->setRootWindow(d_root);
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
