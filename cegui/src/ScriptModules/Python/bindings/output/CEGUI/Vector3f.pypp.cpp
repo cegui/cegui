@@ -12,8 +12,8 @@ void register_Vector3f_class(){
         typedef bp::class_< CEGUI::Vector3< float > > Vector3f_exposer_t;
         Vector3f_exposer_t Vector3f_exposer = Vector3f_exposer_t( "Vector3f", bp::init< >() );
         bp::scope Vector3f_scope( Vector3f_exposer );
-        Vector3f_exposer.def( bp::init< float const &, float const &, float const & >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) );
-        Vector3f_exposer.def( bp::init< CEGUI::Vector2< float > const &, float const & >(( bp::arg("v"), bp::arg("z") )) );
+        Vector3f_exposer.def( bp::init< float, float, float >(( bp::arg("x"), bp::arg("y"), bp::arg("z") )) );
+        Vector3f_exposer.def( bp::init< CEGUI::Vector2< float > const &, float >(( bp::arg("v"), bp::arg("z") )) );
         Vector3f_exposer.def( bp::init< CEGUI::Vector3< float > const & >(( bp::arg("v") )) );
         { //::CEGUI::Vector3< float >::one
         

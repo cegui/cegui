@@ -12,7 +12,7 @@ void register_Sizef_class(){
         typedef bp::class_< CEGUI::Size< float > > Sizef_exposer_t;
         Sizef_exposer_t Sizef_exposer = Sizef_exposer_t( "Sizef", bp::init< >() );
         bp::scope Sizef_scope( Sizef_exposer );
-        Sizef_exposer.def( bp::init< float const &, float const & >(( bp::arg("width"), bp::arg("height") )) );
+        Sizef_exposer.def( bp::init< float, float >(( bp::arg("width"), bp::arg("height") )) );
         Sizef_exposer.def( bp::init< CEGUI::Size< float > const & >(( bp::arg("v") )) );
         { //::CEGUI::Size< float >::clamp
         
@@ -77,7 +77,7 @@ void register_Sizef_class(){
         { //::CEGUI::Size< float >::square
         
             typedef CEGUI::Size< float > exported_class_t;
-            typedef ::CEGUI::Size< float > ( *square_function_type )( float const & );
+            typedef ::CEGUI::Size< float > ( *square_function_type )( float const );
             
             Sizef_exposer.def( 
                 "square"
