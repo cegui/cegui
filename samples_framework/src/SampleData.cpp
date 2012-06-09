@@ -52,6 +52,28 @@ SampleData::~SampleData()
 {
 
 }
+
+CEGUI::String SampleData::getName()
+{
+    return d_name;
+}
+
+void SampleData::setSampleWindow(CEGUI::Window* sampleWindow)
+{
+    d_sampleWindow = sampleWindow;
+}
+
+CEGUI::Window* SampleData::getSampleWindow()
+{
+    return d_sampleWindow;
+}
+
+
+
+
+
+
+
 SampleDataModule::SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
     CEGUI::String description, SampleType sampleTypeEnum)
     : SampleData(sampleName, summary, description ,sampleTypeEnum)
@@ -103,14 +125,9 @@ void SampleDataModule::getSampleInstanceFromDLL()
 }
 
 
-void SampleDataModule::handleNewWindowSize(const float& width, const float& height)
+void SampleDataModule::handleNewWindowSize(float width, float height)
 {
     d_sample->handleNewWindowSize(width, height);
-}
-
-CEGUI::String SampleData::getName()
-{
-    return d_name;
 }
 
 CEGUI::Image& SampleDataModule::getRTTImage()

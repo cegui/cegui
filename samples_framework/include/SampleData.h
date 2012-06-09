@@ -61,10 +61,13 @@ public:
 
     virtual CEGUI::Window*  getGuiRoot() = 0;
     virtual CEGUI::GUIContext*  getGuiContext() = 0;
-    virtual void handleNewWindowSize(const float& width, const float& height) = 0;
+    virtual void handleNewWindowSize(float width, float height) = 0;
 
     virtual CEGUI::Image& getRTTImage() = 0;
-    
+
+    void setSampleWindow(CEGUI::Window* sampleWindow);
+    CEGUI::Window* getSampleWindow();
+
     CEGUI::String getName();
 
 protected:
@@ -72,6 +75,8 @@ protected:
     CEGUI::String           d_summary;
     CEGUI::String           d_description;
     SampleType              d_type;
+
+    CEGUI::Window*          d_sampleWindow;
 };
 
 class SampleDataModule : public SampleData
@@ -89,7 +94,7 @@ public:
     virtual CEGUI::Window*  getGuiRoot();
     virtual CEGUI::GUIContext*  getGuiContext();
 
-    virtual void handleNewWindowSize(const float& width, const float& height);
+    virtual void handleNewWindowSize(float width, float height);
 
     virtual CEGUI::Image& getRTTImage();
 

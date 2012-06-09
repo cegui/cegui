@@ -86,13 +86,23 @@ CEGuiBaseApplication::~CEGuiBaseApplication()
 void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 {
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
+    CEGUI::Renderer* gui_renderer(gui_system.getRenderer());
 
     gui_system.injectTimePulse(elapsed);
     updateFPS(elapsed);
     updateLogo(elapsed);
 
     beginRendering(elapsed);
-    gui_system.renderAllGUIContexts();
+    gui_renderer->beginRendering();
+    // do final destruction on dead-pool windows
+    WindowManager::getSingleton().cleanDeadPool();
+
+    d_sampleApp->drawGUIContexts();
+    gui_system.getDefaultGUIContext().draw();
+
+    gui_renderer->endRendering();
+    WindowManager::getSingleton().cleanDeadPool();
+
     endRendering();
 }
 

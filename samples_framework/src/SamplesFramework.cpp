@@ -104,7 +104,7 @@ void SamplesFramework::initialiseFrameworkLayout()
 
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+    d_root = static_cast<DefaultWindow*>(winMgr.createWindow("DefaultWindow", "Root"));
     System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
 
     d_metaDataWinMgr->init();
@@ -194,7 +194,7 @@ void SamplesFramework::update(float passedTime)
     }
 }
 
-void SamplesFramework::handleNewWindowSize(const float& width, const float& height)
+void SamplesFramework::handleNewWindowSize(float width, float height)
 {
     std::vector<SampleData*>::iterator iter = d_samples.begin();
     std::vector<SampleData*>::iterator end = d_samples.end();
@@ -206,11 +206,11 @@ void SamplesFramework::handleNewWindowSize(const float& width, const float& heig
     }
 }
 
-void SamplesFramework::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
+CEGUI::FrameWindow* SamplesFramework::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("SampleBrowserSkin/SampleWindow", name);
+    FrameWindow* wnd = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
 
     
     CEGUI::String imageName = image.getName();
@@ -220,6 +220,8 @@ void SamplesFramework::createSampleWindow(const CEGUI::String& name, const CEGUI
 
     wnd->setPosition(UVector2(cegui_reldim(0.45f), cegui_reldim(0.25f)));
     wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.5f)));
+
+    return wnd;
 }
 
 void SamplesFramework::addSample(SampleData* sampleData)
@@ -227,5 +229,20 @@ void SamplesFramework::addSample(SampleData* sampleData)
     d_samples.push_back(sampleData);
 
     sampleData->initialise();
-    createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
+    CEGUI::FrameWindow* sampleWindow= createSampleWindow(sampleData->getName(), sampleData->getRTTImage());;
+    sampleData->setSampleWindow(sampleWindow);
+}
+
+
+void SamplesFramework::drawGUIContexts()
+{
+    std::vector<SampleData*>::iterator iter = d_samples.begin();
+    std::vector<SampleData*>::iterator end = d_samples.end();
+    for(; iter != end; ++iter)
+    {
+        SampleData* sampleData = *iter;
+
+        sampleData->getGuiContext()->draw();
+        sampleData->getSampleWindow()->invalidate();
+    }
 }

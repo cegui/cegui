@@ -8,6 +8,7 @@ set( CORE_SOURCE_FILES
     ./src/Samples_xmlHandler.cpp
     ./src/SampleData.cpp
     ./src/MetaDataWindowManager.cpp
+    ../Samples/common/src/Sample.cpp
 )
 
 set( CORE_HEADER_FILES
