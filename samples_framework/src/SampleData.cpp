@@ -31,7 +31,15 @@ author:     Lukas E Meindl
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/Version.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
+#include "CEGUI/TextureTarget.h"
+#include "CEGUI/BasicImage.h"
+#include "CEGUI/GUIContext.h"
+#include "CEGUI/Texture.h"
+#include "CEGUI/ImageManager.h"
+#include "CEGUI/Window.h"
 
+using namespace CEGUI;
 
 #define S_(X) #X
 #define STRINGIZE(X) S_(X)
@@ -44,7 +52,11 @@ SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
     : d_name(sampleName),
     d_summary(summary),
     d_description(description),
-    d_type(sampleTypeEnum)
+    d_type(sampleTypeEnum),
+    d_guiContext(0),
+    d_textureTarget(0),
+    d_textureTargetImage(0),
+    d_sampleWindow(0)
 {
 }
 
@@ -68,6 +80,60 @@ CEGUI::Window* SampleData::getSampleWindow()
     return d_sampleWindow;
 }
 
+void SampleData::initialise()
+{
+    CEGUI::System& system(System::getSingleton());
+
+    d_textureTarget = system.getRenderer()->createTextureTarget();
+    d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+
+    CEGUI::String imageName(d_textureTarget->getTexture().getName());
+    d_textureTargetImage = static_cast<CEGUI::BasicImage*>(&CEGUI::ImageManager::getSingleton().create("BasicImage", "SampleBrowser/" + imageName));
+    d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
+}
+
+void SampleData::deinitialise()
+{
+    CEGUI::System& system(System::getSingleton());
+
+    if(d_guiContext)
+    {
+        system.destroyGUIContext(*d_guiContext);
+        d_guiContext = 0;
+    }
+
+    if(d_textureTarget)
+    {
+        system.getRenderer()->destroyTextureTarget(d_textureTarget);
+        d_textureTarget = 0;
+    }
+}
+
+GUIContext* SampleData::getGuiContext()
+{
+    return d_guiContext;
+}
+
+void SampleData::handleNewWindowSize(float width, float height)
+{
+    CEGUI::Sizef windowSize(width, height);
+    CEGUI::Rectf renderArea(CEGUI::Rectf(0.f, height, width, 0.f));
+
+    d_textureTargetImage->setArea(renderArea);
+
+    //d_textureTarget->setArea(renderArea);
+    d_textureTarget->declareRenderSize(windowSize);
+   
+    d_sampleWindow->getRenderingSurface()->invalidate();
+}
+
+CEGUI::Image& SampleData::getRTTImage()
+{
+    return *d_textureTargetImage;
+}
+
+
+
 
 
 
@@ -87,24 +153,23 @@ SampleDataModule::~SampleDataModule()
 
 void SampleDataModule::initialise()
 {
+    SampleData::initialise();
+
     getSampleInstanceFromDLL();
 
-    d_sample->initialise();
+    d_sample->initialise(d_guiContext);
 }
 
 void SampleDataModule::deinitialise()
 {
+    SampleData::deinitialise();
 
+    d_sample->deinitialise();
 }
 
 CEGUI::Window*  SampleDataModule::getGuiRoot()
 {
     return d_sample->getGUIRoot();
-}
-
-CEGUI::GUIContext*  SampleDataModule::getGuiContext()
-{
-    return d_sample->getGuiContext();
 }
 
 void SampleDataModule::getSampleInstanceFromDLL()
@@ -122,15 +187,4 @@ void SampleDataModule::getSampleInstanceFromDLL()
     }
 
     d_sample =  &(functionPointerGetSample());
-}
-
-
-void SampleDataModule::handleNewWindowSize(float width, float height)
-{
-    d_sample->handleNewWindowSize(width, height);
-}
-
-CEGUI::Image& SampleDataModule::getRTTImage()
-{
-    return d_sample->getRTTImage();
 }
