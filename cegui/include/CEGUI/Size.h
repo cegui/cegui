@@ -70,7 +70,7 @@ public:
     inline Size()
     {}
 
-    inline Size(const T& width, const T& height):
+    inline Size(const T width, const T height):
         d_width(width),
         d_height(height)
     {}
@@ -90,7 +90,7 @@ public:
         return !operator==(other);
     }
 
-    inline Size operator*(const T& c) const
+    inline Size operator*(const T c) const
     {
         return Size(d_width * c, d_height * c);
     }
@@ -153,7 +153,7 @@ public:
     }
 
     //! \brief finger saving alias for Size(side, side)
-    inline static Size square(const T& side)
+    inline static Size square(const T side)
     {
         return Size(side, side);
     }

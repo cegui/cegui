@@ -12,7 +12,7 @@ void register_USize_class(){
         typedef bp::class_< CEGUI::Size< CEGUI::UDim > > USize_exposer_t;
         USize_exposer_t USize_exposer = USize_exposer_t( "USize", bp::init< >() );
         bp::scope USize_scope( USize_exposer );
-        USize_exposer.def( bp::init< CEGUI::UDim const &, CEGUI::UDim const & >(( bp::arg("width"), bp::arg("height") )) );
+        USize_exposer.def( bp::init< CEGUI::UDim, CEGUI::UDim >(( bp::arg("width"), bp::arg("height") )) );
         USize_exposer.def( bp::init< CEGUI::Size< CEGUI::UDim > const & >(( bp::arg("v") )) );
         { //::CEGUI::Size< CEGUI::UDim >::one
         
@@ -55,7 +55,7 @@ void register_USize_class(){
         { //::CEGUI::Size< CEGUI::UDim >::square
         
             typedef CEGUI::Size< CEGUI::UDim > exported_class_t;
-            typedef ::CEGUI::Size< CEGUI::UDim > ( *square_function_type )( ::CEGUI::UDim const & );
+            typedef ::CEGUI::Size< CEGUI::UDim > ( *square_function_type )( ::CEGUI::UDim const );
             
             USize_exposer.def( 
                 "square"

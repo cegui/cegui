@@ -12,7 +12,7 @@ void register_Vector2f_class(){
         typedef bp::class_< CEGUI::Vector2< float > > Vector2f_exposer_t;
         Vector2f_exposer_t Vector2f_exposer = Vector2f_exposer_t( "Vector2f", bp::init< >() );
         bp::scope Vector2f_scope( Vector2f_exposer );
-        Vector2f_exposer.def( bp::init< float const &, float const & >(( bp::arg("x"), bp::arg("y") )) );
+        Vector2f_exposer.def( bp::init< float, float >(( bp::arg("x"), bp::arg("y") )) );
         Vector2f_exposer.def( bp::init< CEGUI::Vector2< float > const & >(( bp::arg("v") )) );
         { //::CEGUI::Vector2< float >::one
         

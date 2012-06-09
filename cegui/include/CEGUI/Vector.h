@@ -58,7 +58,7 @@ public:
     inline Vector2()
     {}
     
-    inline Vector2(const T& x, const T& y):
+    inline Vector2(const T x, const T y):
         d_x(x),
         d_y(y)
     {}
@@ -120,12 +120,12 @@ public:
         return Vector2(d_x / vec.d_x, d_y / vec.d_y);
     }
 
-    inline Vector2 operator*(const T& c) const
+    inline Vector2 operator*(const T c) const
     {
         return Vector2(d_x * c, d_y * c);
     }
 
-    inline Vector2& operator*=(const T& c)
+    inline Vector2& operator*=(const T c)
     {
         d_x *= c;
         d_y *= c;
@@ -133,7 +133,7 @@ public:
         return *this;
     }
 
-    inline Vector2 operator/(const T& c) const
+    inline Vector2 operator/(const T c) const
     {
         return Vector2(d_x / c, d_y / c);
     }
@@ -216,13 +216,13 @@ public:
     inline Vector3()
     {}
 
-    inline Vector3(const T& x, const T& y, const T& z):
+    inline Vector3(const T x, const T y, const T z):
         d_x(x),
         d_y(y),
         d_z(z)
     {}
 
-    inline explicit Vector3(const Vector2<T>& v, const T& z):
+    inline explicit Vector3(const Vector2<T>& v, const T z):
         d_x(v.d_x),
         d_y(v.d_y),
         d_z(z)
@@ -244,7 +244,7 @@ public:
         return !(operator==(vec));
     }
 
-    inline Vector3 operator*(const T& c) const
+    inline Vector3 operator*(const T c) const
     {
         return Vector3(d_x * c, d_y * c, d_z * c);
     }
