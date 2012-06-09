@@ -163,6 +163,11 @@ static String_T iconvTranscode(IconvHelper& ich,
 }
 
 //----------------------------------------------------------------------------//
+IconvStringTranscoder::IconvStringTranscoder()
+{
+}
+
+//----------------------------------------------------------------------------//
 uint16* IconvStringTranscoder::stringToUTF16(const String& input) const
 {
     IconvHelper ich("UTF-16", "UTF-8");

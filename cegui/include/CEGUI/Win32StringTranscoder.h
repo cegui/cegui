@@ -37,6 +37,8 @@ namespace CEGUI
 class CEGUIEXPORT Win32StringTranscoder : public StringTranscoder
 {
 public:
+    Win32StringTranscoder();
+
     // implement abstract interface
     uint16* stringToUTF16(const String& input) const;
     std::wstring stringToStdWString(const String& input) const;
