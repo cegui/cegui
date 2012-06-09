@@ -15,6 +15,16 @@ void register_enumerations(){
         .export_values()
         ;
 
+    bp::enum_< CEGUI::AutoScaledMode>("AutoScaledMode")
+        .value("ASM_Disabled", CEGUI::ASM_Disabled)
+        .value("ASM_Vertical", CEGUI::ASM_Vertical)
+        .value("ASM_Horizontal", CEGUI::ASM_Horizontal)
+        .value("ASM_Min", CEGUI::ASM_Min)
+        .value("ASM_Max", CEGUI::ASM_Max)
+        .value("ASM_Both", CEGUI::ASM_Both)
+        .export_values()
+        ;
+
     bp::enum_< CEGUI::BlendMode>("BlendMode")
         .value("BM_INVALID", CEGUI::BM_INVALID)
         .value("BM_NORMAL", CEGUI::BM_NORMAL)

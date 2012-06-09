@@ -81,6 +81,16 @@ void register_Image_class(){
         typedef bp::class_< Image_wrapper, boost::noncopyable > Image_exposer_t;
         Image_exposer_t Image_exposer = Image_exposer_t( "Image" );
         bp::scope Image_scope( Image_exposer );
+        { //::CEGUI::Image::computeScalingFactors
+        
+            typedef void ( *computeScalingFactors_function_type )( ::CEGUI::AutoScaledMode,::CEGUI::Sizef const &,::CEGUI::Sizef const &,float &,float & );
+            
+            Image_exposer.def( 
+                "computeScalingFactors"
+                , computeScalingFactors_function_type( &::CEGUI::Image::computeScalingFactors )
+                , ( bp::arg("mode"), bp::arg("display_size"), bp::arg("native_display_size"), bp::arg("x_scale"), bp::arg("y_scale") ) );
+        
+        }
         { //::CEGUI::Image::elementEndLocal
         
             typedef void ( Image_wrapper::*elementEndLocal_function_type )( ::CEGUI::String const & ) ;
@@ -204,6 +214,7 @@ void register_Image_class(){
                 , ( bp::arg("text") ) );
         
         }
+        Image_exposer.staticmethod( "computeScalingFactors" );
     }
 
 }

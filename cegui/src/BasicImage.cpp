@@ -57,7 +57,7 @@ BasicImage::BasicImage(const String& name) :
     d_pixelSize(0, 0),
     d_area(0.0f, 0.0f, 0.0f, 0.0f),
     d_pixelOffset(0.0f, 0.0f),
-    d_autoscaled(false),
+    d_autoScaled(ASM_Disabled),
     d_nativeResolution(640, 480),
     d_scaledSize(0, 0),
     d_scaledOffset(0, 0)
@@ -77,11 +77,12 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
     d_pixelOffset(Vector2f(
         attributes.getValueAsInteger(ImageXOffsetAttribute, 0),
         attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
-    d_autoscaled(attributes.getValueAsBool(ImageAutoScaledAttribute)),
     d_nativeResolution(Sizef(
         attributes.getValueAsFloat(ImageNativeHorzResAttribute, 640),
         attributes.getValueAsFloat(ImageNativeVertResAttribute, 480)))
 {
+    d_autoScaled = PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute));
+
     // force initialisation of the autoscaling fields.
     notifyDisplaySizeChanged(
         System::getSingleton().getRenderer()->getDisplaySize());
@@ -90,13 +91,13 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name, Texture* texture,
                        const Rectf& pixel_area, const Vector2f& pixel_offset,
-                       const bool autoscaled, const Sizef& native_res) :
+                       const AutoScaledMode autoscaled, const Sizef& native_res) :
     d_name(name),
     d_texture(texture),
     d_pixelSize(pixel_area.getSize()),
     d_area(pixel_area),
     d_pixelOffset(pixel_offset),
-    d_autoscaled(autoscaled),
+    d_autoScaled(autoscaled),
     d_nativeResolution(native_res)
 
 {
@@ -117,7 +118,7 @@ void BasicImage::setArea(const Rectf& pixel_area)
     d_area = pixel_area;
     d_pixelSize = pixel_area.getSize();
 
-    if (d_autoscaled)
+    if (d_autoScaled != ASM_Disabled)
         notifyDisplaySizeChanged(
             System::getSingleton().getRenderer()->getDisplaySize());
 }
@@ -127,17 +128,17 @@ void BasicImage::setOffset(const Vector2f& pixel_offset)
 {
     d_pixelOffset = pixel_offset;
 
-    if (d_autoscaled)
+    if (d_autoScaled != ASM_Disabled)
         notifyDisplaySizeChanged(
             System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::setAutoScaled(const bool autoscaled)
+void BasicImage::setAutoScaled(const AutoScaledMode autoscaled)
 {
-    d_autoscaled = autoscaled;
+    d_autoScaled = autoscaled;
 
-    if (d_autoscaled)
+    if (d_autoScaled != ASM_Disabled)
     {
         notifyDisplaySizeChanged(
             System::getSingleton().getRenderer()->getDisplaySize());
@@ -154,7 +155,7 @@ void BasicImage::setNativeResolution(const Sizef& native_res)
 {
     d_nativeResolution = native_res;
 
-    if (d_autoscaled)
+    if (d_autoScaled != ASM_Disabled)
         notifyDisplaySizeChanged(
             System::getSingleton().getRenderer()->getDisplaySize());
 }
@@ -278,10 +279,11 @@ void BasicImage::notifyDisplaySizeChanged(const Sizef& size)
     // TODO: This could be cleaned up by adding some more operators to
     // Sizef and Vector2f
 
-    const float x_scale =
-        d_autoscaled ? size.d_width / d_nativeResolution.d_width : 1.0f;
-    const float y_scale =
-        d_autoscaled ? size.d_height / d_nativeResolution.d_height : 1.0f;
+    float x_scale;
+    float y_scale;
+
+    computeScalingFactors(d_autoScaled, size, d_nativeResolution,
+                          x_scale, y_scale);
 
     d_scaledSize.d_width = d_pixelSize.d_width * x_scale;
     d_scaledSize.d_height = d_pixelSize.d_height * y_scale;

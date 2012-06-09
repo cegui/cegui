@@ -45,11 +45,11 @@ static const String BuiltInResourceGroup ("*");
 
 //----------------------------------------------------------------------------//
 PixmapFont::PixmapFont(const String& font_name, const String& imageset_filename,
-                       const String& resource_group, const bool auto_scaled,
-                       const float native_horz_res,
-                       const float native_vert_res) :
+                       const String& resource_group,
+                       const AutoScaledMode auto_scaled,
+                       const Sizef& native_res):
     Font(font_name, Font_xmlHandler::FontTypePixmap, imageset_filename,
-         resource_group, auto_scaled, native_horz_res, native_vert_res),
+         resource_group, auto_scaled, native_res),
     d_origHorzScaling(1.0f),
     d_imagesetOwner(false)
 {
@@ -109,7 +109,7 @@ void PixmapFont::reinit()
 //----------------------------------------------------------------------------//
 void PixmapFont::updateFont()
 {
-    const float factor = (d_autoScale ? d_horzScaling : 1.0f) / d_origHorzScaling;
+    const float factor = (d_autoScaled != ASM_Disabled ? d_horzScaling : 1.0f) / d_origHorzScaling;
 
     d_ascender = 0;
     d_descender = 0;
@@ -128,8 +128,8 @@ void PixmapFont::updateFont()
         BasicImage* bi = dynamic_cast<BasicImage*>(img);
         if (bi)
         {
-            bi->setAutoScaled(d_autoScale);
-            bi->setNativeResolution(Sizef(d_nativeHorzRes, d_nativeVertRes));
+            bi->setAutoScaled(d_autoScaled);
+            bi->setNativeResolution(d_nativeResolution);
         }
 
         if (img->getRenderedOffset().d_y < d_ascender)
@@ -142,7 +142,7 @@ void PixmapFont::updateFont()
     d_descender = -d_descender;
     d_height = d_ascender - d_descender;
 
-    d_origHorzScaling = d_autoScale ? d_horzScaling : 1.0f;
+    d_origHorzScaling = d_autoScaled != ASM_Disabled ? d_horzScaling : 1.0f;
 }
 
 //----------------------------------------------------------------------------//
@@ -174,7 +174,7 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
         (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().d_x) :
         horz_advance;
 
-    if (d_autoScale)
+    if (d_autoScaled != ASM_Disabled)
         adv *= d_origHorzScaling;
 
     if (codepoint > d_maxCodepoint)

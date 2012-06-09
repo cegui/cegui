@@ -8,8 +8,8 @@ namespace bp = boost::python;
 
 struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
 
-    Font_wrapper(::CEGUI::String const & name, ::CEGUI::String const & type_name, ::CEGUI::String const & filename, ::CEGUI::String const & resource_group, bool const auto_scaled, float const native_horz_res, float const native_vert_res )
-    : CEGUI::Font( boost::ref(name), boost::ref(type_name), boost::ref(filename), boost::ref(resource_group), auto_scaled, native_horz_res, native_vert_res )
+    Font_wrapper(::CEGUI::String const & name, ::CEGUI::String const & type_name, ::CEGUI::String const & filename, ::CEGUI::String const & resource_group, ::CEGUI::AutoScaledMode const auto_scaled, ::CEGUI::Sizef const & native_res )
+    : CEGUI::Font( boost::ref(name), boost::ref(type_name), boost::ref(filename), boost::ref(resource_group), auto_scaled, boost::ref(native_res) )
       , bp::wrapper< CEGUI::Font >(){
         // constructor
     
@@ -121,7 +121,7 @@ void register_Font_class(){
         typedef bp::class_< Font_wrapper, bp::bases< CEGUI::PropertySet, CEGUI::EventSet >, boost::noncopyable > Font_exposer_t;
         Font_exposer_t Font_exposer = Font_exposer_t( "Font", bp::no_init );
         bp::scope Font_scope( Font_exposer );
-        Font_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, bool, float, float >(( bp::arg("name"), bp::arg("type_name"), bp::arg("filename"), bp::arg("resource_group"), bp::arg("auto_scaled"), bp::arg("native_horz_res"), bp::arg("native_vert_res") )) );
+        Font_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::AutoScaledMode, CEGUI::Sizef const & >(( bp::arg("name"), bp::arg("type_name"), bp::arg("filename"), bp::arg("resource_group"), bp::arg("auto_scaled"), bp::arg("native_res") )) );
         { //::CEGUI::Font::addFontProperties
         
             typedef void ( Font_wrapper::*addFontProperties_function_type )(  ) ;
@@ -140,6 +140,22 @@ void register_Font_class(){
                 "drawText"
                 , drawText_function_type( &::CEGUI::Font::drawText )
                 , ( bp::arg("buffer"), bp::arg("text"), bp::arg("position"), bp::arg("clip_rect"), bp::arg("colours"), bp::arg("space_extra")=0.0f, bp::arg("x_scale")=1.0e+0f, bp::arg("y_scale")=1.0e+0f ) );
+        
+        }
+        { //::CEGUI::Font::getAutoScaled
+        
+            typedef ::CEGUI::AutoScaledMode ( ::CEGUI::Font::*getAutoScaled_function_type )(  ) const;
+            
+            Font_exposer.def( 
+                "getAutoScaled"
+                , getAutoScaled_function_type( &::CEGUI::Font::getAutoScaled )
+                , "*!\n\
+                \n\
+                    Checks whether this font is being auto-scaled and how.\n\
+            \n\
+                @return\n\
+                    AutoScaledMode describing how this font should be auto scaled\n\
+                *\n" );
         
         }
         { //::CEGUI::Font::getBaseline
@@ -333,11 +349,12 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::getNativeResolution
         
-            typedef ::CEGUI::Sizef ( ::CEGUI::Font::*getNativeResolution_function_type )(  ) const;
+            typedef ::CEGUI::Sizef const & ( ::CEGUI::Font::*getNativeResolution_function_type )(  ) const;
             
             Font_exposer.def( 
                 "getNativeResolution"
                 , getNativeResolution_function_type( &::CEGUI::Font::getNativeResolution )
+                , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
                     Return the native display size for this Font.  This is only relevant if\n\
@@ -384,23 +401,6 @@ void register_Font_class(){
                 , getTypeName_function_type( &::CEGUI::Font::getTypeName )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "! Return the type of the font.\n" );
-        
-        }
-        { //::CEGUI::Font::isAutoScaled
-        
-            typedef bool ( ::CEGUI::Font::*isAutoScaled_function_type )(  ) const;
-            
-            Font_exposer.def( 
-                "isAutoScaled"
-                , isAutoScaled_function_type( &::CEGUI::Font::isAutoScaled )
-                , "*!\n\
-                \n\
-                    Return whether this Font is auto-scaled.\n\
-            \n\
-                @return\n\
-                    - true if Font is auto-scaled.\n\
-                    - false if Font is not auto-scaled.\n\
-                *\n" );
         
         }
         { //::CEGUI::Font::isCodepointAvailable
@@ -473,7 +473,7 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::setAutoScaled
         
-            typedef void ( ::CEGUI::Font::*setAutoScaled_function_type )( bool const ) ;
+            typedef void ( ::CEGUI::Font::*setAutoScaled_function_type )( ::CEGUI::AutoScaledMode const ) ;
             
             Font_exposer.def( 
                 "setAutoScaled"
@@ -484,8 +484,9 @@ void register_Font_class(){
                     Enable or disable auto-scaling for this Font.\n\
             \n\
                 @param auto_scaled\n\
-                    - true to enable auto-scaling.\n\
-                    - false to disable auto-scaling.\n\
+                    AutoScaledMode describing how this font should be auto scaled\n\
+            \n\
+                @see AutoScaledMode\n\
                 *\n" );
         
         }

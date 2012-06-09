@@ -85,23 +85,23 @@ void register_FontManager_class(){
         bp::scope FontManager_scope( FontManager_exposer );
         { //::CEGUI::FontManager::createFreeTypeFont
         
-            typedef ::CEGUI::Font & ( ::CEGUI::FontManager::*createFreeTypeFont_function_type )( ::CEGUI::String const &,float const,bool const,::CEGUI::String const &,::CEGUI::String const &,bool const,float const,float const,::CEGUI::XMLResourceExistsAction ) ;
+            typedef ::CEGUI::Font & ( ::CEGUI::FontManager::*createFreeTypeFont_function_type )( ::CEGUI::String const &,float const,bool const,::CEGUI::String const &,::CEGUI::String const &,::CEGUI::AutoScaledMode const,::CEGUI::Sizef const &,::CEGUI::XMLResourceExistsAction ) ;
             
             FontManager_exposer.def( 
                 "createFreeTypeFont"
                 , createFreeTypeFont_function_type( &::CEGUI::FontManager::createFreeTypeFont )
-                , ( bp::arg("font_name"), bp::arg("point_size"), bp::arg("anti_aliased"), bp::arg("font_filename"), bp::arg("resource_group")="", bp::arg("auto_scaled")=(bool const)(false), bp::arg("native_horz_res")=6.4e+2f, bp::arg("native_vert_res")=4.8e+2f, bp::arg("action")=::CEGUI::XREA_RETURN )
+                , ( bp::arg("font_name"), bp::arg("point_size"), bp::arg("anti_aliased"), bp::arg("font_filename"), bp::arg("resource_group")="", bp::arg("auto_scaled")=::CEGUI::ASM_Disabled, bp::arg("native_res")=CEGUI::Size<float>(6.4e+2f, 4.8e+2f), bp::arg("action")=::CEGUI::XREA_RETURN )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::FontManager::createPixmapFont
         
-            typedef ::CEGUI::Font & ( ::CEGUI::FontManager::*createPixmapFont_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const &,bool const,float const,float const,::CEGUI::XMLResourceExistsAction ) ;
+            typedef ::CEGUI::Font & ( ::CEGUI::FontManager::*createPixmapFont_function_type )( ::CEGUI::String const &,::CEGUI::String const &,::CEGUI::String const &,::CEGUI::AutoScaledMode const,::CEGUI::Sizef const &,::CEGUI::XMLResourceExistsAction ) ;
             
             FontManager_exposer.def( 
                 "createPixmapFont"
                 , createPixmapFont_function_type( &::CEGUI::FontManager::createPixmapFont )
-                , ( bp::arg("font_name"), bp::arg("imageset_filename"), bp::arg("resource_group")="", bp::arg("auto_scaled")=(bool const)(false), bp::arg("native_horz_res")=6.4e+2f, bp::arg("native_vert_res")=4.8e+2f, bp::arg("action")=::CEGUI::XREA_RETURN )
+                , ( bp::arg("font_name"), bp::arg("imageset_filename"), bp::arg("resource_group")="", bp::arg("auto_scaled")=::CEGUI::ASM_Disabled, bp::arg("native_res")=CEGUI::Size<float>(6.4e+2f, 4.8e+2f), bp::arg("action")=::CEGUI::XREA_RETURN )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }

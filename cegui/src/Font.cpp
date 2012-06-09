@@ -50,8 +50,8 @@ const String Font::EventRenderSizeChanged("RenderSizeChanged");
 
 //----------------------------------------------------------------------------//
 Font::Font(const String& name, const String& type_name, const String& filename,
-           const String& resource_group, const bool auto_scaled,
-           const float native_horz_res, const float native_vert_res) :
+           const String& resource_group, const AutoScaledMode auto_scaled,
+           const Sizef& native_res):
     d_name(name),
     d_type(type_name),
     d_filename(filename),
@@ -59,17 +59,16 @@ Font::Font(const String& name, const String& type_name, const String& filename,
     d_ascender(0),
     d_descender(0),
     d_height(0),
-    d_autoScale(auto_scaled),
-    d_nativeHorzRes(native_horz_res),
-    d_nativeVertRes(native_vert_res),
+    d_autoScaled(auto_scaled),
+    d_nativeResolution(native_res),
     d_maxCodepoint(0),
     d_glyphPageLoaded(0)
 {
     addFontProperties();
 
     const Sizef size(System::getSingleton().getRenderer()->getDisplaySize());
-    d_horzScaling = size.d_width / d_nativeHorzRes;
-    d_vertScaling = size.d_height / d_nativeVertRes;
+    Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution,
+                                 d_horzScaling, d_vertScaling);
 }
 
 //----------------------------------------------------------------------------//
@@ -112,10 +111,10 @@ void Font::addFontProperties()
         0, &Font::getName, ""
     );
 
-    CEGUI_DEFINE_PROPERTY(Font, bool,
-        "AutoScaled", "This is a flag indicating whether to autoscale font depending on "
-        "resolution.  Value is either true or false.",
-        &Font::setAutoScaled, &Font::isAutoScaled, true
+    CEGUI_DEFINE_PROPERTY(Font, AutoScaledMode,
+        "AutoScaled", "This indicating whether and how to autoscale font depending on "
+        "resolution.  Value can be 'false', 'vertical', 'horizontal' or 'true'.",
+        &Font::setAutoScaled, &Font::getAutoScaled, ASM_Disabled
     );
 }
 
@@ -244,8 +243,7 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
 //----------------------------------------------------------------------------//
 void Font::setNativeResolution(const Sizef& size)
 {
-    d_nativeHorzRes = size.d_width;
-    d_nativeVertRes = size.d_height;
+    d_nativeResolution = size;
 
     // re-calculate scaling factors & notify images as required
     notifyDisplaySizeChanged(
@@ -253,18 +251,18 @@ void Font::setNativeResolution(const Sizef& size)
 }
 
 //----------------------------------------------------------------------------//
-Sizef Font::getNativeResolution() const
+const Sizef& Font::getNativeResolution() const
 {
-    return Sizef(d_nativeHorzRes, d_nativeVertRes);
+    return d_nativeResolution;
 }
 
 //----------------------------------------------------------------------------//
-void Font::setAutoScaled(const bool auto_scaled)
+void Font::setAutoScaled(const AutoScaledMode auto_scaled)
 {
-    if (auto_scaled == d_autoScale)
+    if (auto_scaled == d_autoScaled)
         return;
 
-    d_autoScale = auto_scaled;
+    d_autoScaled = auto_scaled;
     updateFont();
 
     FontEventArgs args(this);
@@ -272,18 +270,18 @@ void Font::setAutoScaled(const bool auto_scaled)
 }
 
 //----------------------------------------------------------------------------//
-bool Font::isAutoScaled() const
+AutoScaledMode Font::getAutoScaled() const
 {
-    return d_autoScale;
+    return d_autoScaled;
 }
 
 //----------------------------------------------------------------------------//
 void Font::notifyDisplaySizeChanged(const Sizef& size)
 {
-    d_horzScaling = size.d_width / d_nativeHorzRes;
-    d_vertScaling = size.d_height / d_nativeVertRes;
+    Image::computeScalingFactors(d_autoScaled, size, d_nativeResolution,
+                                 d_horzScaling, d_vertScaling);
 
-    if (d_autoScale)
+    if (d_autoScaled != ASM_Disabled)
     {
         updateFont();
 
@@ -310,16 +308,17 @@ void Font::writeXMLToStream(XMLSerializer& xml_stream) const
         xml_stream.attribute(Font_xmlHandler::FontResourceGroupAttribute,
                              d_resourceGroup);
 
-    if (d_nativeHorzRes != DefaultNativeHorzRes)
+    if (d_nativeResolution.d_width != DefaultNativeHorzRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeHorzResAttribute,
-            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeHorzRes)));
+            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeResolution.d_width)));
 
-    if (d_nativeVertRes != DefaultNativeVertRes)
+    if (d_nativeResolution.d_height != DefaultNativeVertRes)
         xml_stream.attribute(Font_xmlHandler::FontNativeVertResAttribute,
-            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeVertRes)));
+            PropertyHelper<uint>::toString(static_cast<uint>(d_nativeResolution.d_height)));
 
-    if (d_autoScale)
-        xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute, "True");
+    if (d_autoScaled != ASM_Disabled)
+        xml_stream.attribute(Font_xmlHandler::FontAutoScaledAttribute,
+            PropertyHelper<AutoScaledMode>::toString(d_autoScaled));
 
     writeXMLToStream_impl(xml_stream);
 

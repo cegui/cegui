@@ -12,7 +12,18 @@
 		<xsd:attribute name="name" type="xsd:string" use="required"/>
 		<xsd:attribute name="nativeHorzRes" type="xsd:nonNegativeInteger" use="optional" default="640" />
 		<xsd:attribute name="nativeVertRes" type="xsd:nonNegativeInteger" use="optional" default="480" />
-		<xsd:attribute name="autoScaled" type="xsd:boolean" use="optional" default="false" />
+		<xsd:attribute name="autoScaled" default="false">
+			<xsd:simpleType>
+				<xsd:restriction base="xsd:string">
+					<xsd:enumeration value="false" />
+					<xsd:enumeration value="vertical" />
+					<xsd:enumeration value="horizontal" />
+					<xsd:enumeration value="min" />
+					<xsd:enumeration value="max" />
+					<xsd:enumeration value="true" />
+				</xsd:restriction>
+			</xsd:simpleType>
+		</xsd:attribute>
 		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:complexType>
 	

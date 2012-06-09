@@ -156,27 +156,27 @@ public:
     \return
         Size object describing the native display size for this Font.
     */
-    Sizef getNativeResolution() const;
+    const Sizef& getNativeResolution() const;
 
     /*!
     \brief
         Enable or disable auto-scaling for this Font.
 
     \param auto_scaled
-        - true to enable auto-scaling.
-        - false to disable auto-scaling.
+        AutoScaledMode describing how this font should be auto scaled
+
+    \see AutoScaledMode
     */
-    void setAutoScaled(const bool auto_scaled);
+    void setAutoScaled(const AutoScaledMode auto_scaled);
 
     /*!
     \brief
-        Return whether this Font is auto-scaled.
+        Checks whether this font is being auto-scaled and how.
 
     \return
-        - true if Font is auto-scaled.
-        - false if Font is not auto-scaled.
+        AutoScaledMode describing how this font should be auto scaled
     */
-    bool isAutoScaled() const;
+    AutoScaledMode getAutoScaled() const;
 
     /*!
     \brief
@@ -362,8 +362,8 @@ public:
 protected:
     //! Constructor.
     Font(const String& name, const String& type_name, const String& filename,
-         const String& resource_group, const bool auto_scaled,
-         const float native_horz_res, const float native_vert_res);
+         const String& resource_group, const AutoScaledMode auto_scaled,
+         const Sizef& native_res);
 
     /*!
     \brief
@@ -418,12 +418,10 @@ protected:
     //! (ascender - descender) + linegap
     float d_height;
 
-    //! true when auto-scaling is enabled.
-    bool d_autoScale;
-    //! native horizontal resolution for this Imageset.
-    float d_nativeHorzRes;
-    //! native vertical resolution for this Imageset.
-    float d_nativeVertRes;
+    //! which mode should we use for auto-scaling
+    AutoScaledMode d_autoScaled;
+    //! native resolution for this Font.
+    Sizef d_nativeResolution;
     //! current horizontal scaling factor.
     float d_horzScaling;
     //! current vertical scaling factor.

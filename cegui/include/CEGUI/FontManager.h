@@ -113,9 +113,8 @@ public:
                              const bool anti_aliased,
                              const String& font_filename,
                              const String& resource_group = "",
-                             const bool auto_scaled = false,
-                             const float native_horz_res = 640.0f,
-                             const float native_vert_res = 480.0f,
+                             const AutoScaledMode auto_scaled = ASM_Disabled,
+                             const Sizef& native_res = Sizef(640.0f, 480.0f),
                              XMLResourceExistsAction action = XREA_RETURN);
 
     /*!
@@ -161,9 +160,8 @@ public:
     Font& createPixmapFont(const String& font_name,
                            const String& imageset_filename,
                            const String& resource_group = "",
-                           const bool auto_scaled = false,
-                           const float native_horz_res = 640.0f,
-                           const float native_vert_res = 480.0f,
+                           const AutoScaledMode auto_scaled = ASM_Disabled,
+                           const Sizef& native_res = Sizef(640.0f, 480.0f),
                            XMLResourceExistsAction action = XREA_RETURN);
 
     /*!
