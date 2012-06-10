@@ -255,10 +255,9 @@ bool Demo7Sample::initialiseSample()
     RenderEffectManager::getSingleton().addEffect<MyEffect>("WobblyWindow");
 
     // Now we make a Falagard mapping for a frame window that uses this effect.
-    // We create a type "TaharezLook/WobblyFrameWindow", which is subsequently
-    // referenced in the layout file loaded below.  Note that it wold be more
-    // usual for this mapping to be specified in the scheme xml file, though
-    // here we are doing in manually to save from needing either multiple
+    // We create a type "TaharezLook/WobblyFrameWindow".  Note that it would be
+    // more usual for this mapping to be specified in the scheme xml file,
+    // though here we are doing in manually to save from needing either multiple
     // versions of the schemes or from having demo specific definitions in
     // the schemes.
     WindowFactoryManager::getSingleton().addFalagardWindowMapping(
@@ -267,6 +266,16 @@ bool Demo7Sample::initialiseSample()
         "TaharezLook/FrameWindow",          // WidgetLook to use.
         "Core/FrameWindow",                 // WindowRenderer to use.
         "WobblyWindow");                    // effect to use.
+
+    // Since we want to be able to load the Demo7Windows.layout in the editor
+    // tools (where the above mapping is not available), we now alias the
+    // new window type onto the original TaharezLook/FrameWindow.  This has
+    // the effect that - after the alias is added - any time a window of
+    // type "TaharezLook/FrameWindow" is requested, the system will create a
+    // "TaharezLook/WobblyFrameWindow" instead.
+    WindowFactoryManager::getSingleton().addWindowTypeAlias(
+        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
+        "TaharezLook/WobblyFrameWindow"); // target type to create.
 
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
