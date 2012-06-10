@@ -3,7 +3,7 @@
     <Window name="root" type="DefaultWindow">
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-        <Window name="Window1" type="TaharezLook/WobblyFrameWindow">
+        <Window name="Window1" type="TaharezLook/FrameWindow">
             <Property name="Text" value="Demo 7 - Window 1" />
             <Property name="MaxSize" value="{{0.8,0},{0.8,0}}" />
             <Property name="MinSize" value="{{0.2,0},{0.2,0}}" />
@@ -69,7 +69,7 @@
                 <Property name="Area" value="{{0.9,0},{0.555,0},{0.93,0},{0.855,0}}" />
             </Window>
         </Window>
-        <Window name="Window2" type="TaharezLook/WobblyFrameWindow">
+        <Window name="Window2" type="TaharezLook/FrameWindow">
             <Property name="Text" value="Demo 7 - Window 2" />
             <Property name="MaxSize" value="{{0.8,0},{0.8,0}}" />
             <Property name="MinSize" value="{{0.2,0},{0.2,0}}" />
@@ -131,7 +131,7 @@
                 <Property name="BackgroundEnabled" value="False" />
             </Window>
         </Window>
-        <Window name="Window3" type="TaharezLook/WobblyFrameWindow">
+        <Window name="Window3" type="TaharezLook/FrameWindow">
             <Property name="Text" value="Demo 7 - Window 3" />
             <Property name="MaxSize" value="{{0.8,0},{0.8,0}}" />
             <Property name="MinSize" value="{{0.2,0},{0.2,0}}" />
