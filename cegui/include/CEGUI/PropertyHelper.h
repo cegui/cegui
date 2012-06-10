@@ -302,6 +302,39 @@ public:
     }
 };
 
+template<>
+class PropertyHelper<uint64>
+{
+public:
+    typedef uint64 return_type;
+    typedef return_type safe_method_return_type;
+    typedef const uint64 pass_type;
+    typedef String string_return_type;
+    
+    static const String& getDataTypeName()
+    {
+        static String type("uint64");
+
+        return type;
+    }
+
+    static return_type fromString(const String& str)
+    {
+        uint64 val = 0;
+        sscanf(str.c_str(), " %llu", &val);
+
+        return val;
+    }
+
+    static string_return_type toString(pass_type val)
+    {
+        char buff[64];
+        snprintf(buff, sizeof(buff), "%llu", val);
+
+        return String(buff);
+    }
+};
+
 #if CEGUI_STRING_CLASS != CEGUI_STRING_CLASS_UNICODE
 
 template<>
