@@ -29,7 +29,7 @@
 #define _Sample_Demo7_h_
 
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 // Sample subclass for CEGUI::RenderEffect.  This particluar implementation
 // provides a basic 'wobbly window' type effect.
@@ -73,8 +73,8 @@ public:
 
 protected:
     // initialisation helpers
-    void createListContent(void);
-    void initDemoEventWiring(void);
+    void createListContent(CEGUI::Window* root);
+    void initDemoEventWiring(CEGUI::Window* root);
 
     // methods that process GUI events
     bool handleQuit(const CEGUI::EventArgs& e);
@@ -91,7 +91,7 @@ class MyListItem : public CEGUI::ListboxTextItem
 public:
     MyListItem(const CEGUI::String& text) : ListboxTextItem(text)
     {
-        setSelectionBrushImage("TaharezLook", "MultiListSelectionBrush");
+        setSelectionBrushImage("TaharezLook/MultiListSelectionBrush");
     }
 };
 

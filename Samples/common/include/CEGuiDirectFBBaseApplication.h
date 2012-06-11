@@ -4,6 +4,8 @@
     author:     Keith Mok
 *************************************************************************/
 /***************************************************************************
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
  *   "Software"), to deal in the Software without restriction, including
@@ -39,15 +41,8 @@ struct CEGuiBaseApplicationImpl;
 class CEGuiDirectFBBaseApplication : public CEGuiBaseApplication
 {
 public:
-    //!Constructor.
     CEGuiDirectFBBaseApplication();
-
-    //! Destructor.
     ~CEGuiDirectFBBaseApplication();
-
-    // Implementation of base class abstract methods.
-    bool execute(CEGuiSample* sampleApp);
-    void cleanup();
 
 protected:
     /*************************************************************************
@@ -61,23 +56,20 @@ protected:
     void handleKeyUpEvent(DFBWindowEvent *evt);
     void handleWindowEvent(DFBWindowEvent *evt);
 
-    //! Perform update on the FPS counter fields.
-    void updateFPS(void);
-
     //! cleanup DirectFB objects / interfaces
     void cleanupDirectFB();
+
+    // implementation of base class abstract methods.
+    bool execute_impl(CEGuiSample* sampleApp);
+    void cleanup_impl();
+    void beginRendering(const float elapsed);
+    void endRendering();
 
     /*************************************************************************
         Data fields
     *************************************************************************/
     //! Pointer to the struct holding DirectFB specific fields.
     CEGuiBaseApplicationImpl* pimpl;;
-
-    // FPS stuff
-    int d_frames;
-    int d_FPS;
-    // counter used to track elapsed time (for time pulse injection)
-    struct timeval d_lastTime;
 };
 
 #endif  // end of guard _CEGuiDirectFBBaseApplication_h_

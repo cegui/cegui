@@ -373,7 +373,7 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
             Win32CEGuiRendererSelector* obj = reinterpret_cast<Win32CEGuiRendererSelector*>(lParam);
 
             // set as window long for future use
-            SetWindowLong(hDlg, DWL_USER, static_cast<LONG>(lParam));
+            SetWindowLongPtr(hDlg, DWLP_USER, static_cast<LONG_PTR>(lParam));
 
             //
             // Set-up combo box list
@@ -391,7 +391,9 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
                 obj->addComboboxOption(combo, "Microsoft Direct3D 8.1 Renderer", Direct3D81GuiRendererType);
                 obj->addComboboxOption(combo, "Microsoft Direct3D 9 Renderer", Direct3D9GuiRendererType);
                 obj->addComboboxOption(combo, "Microsoft Direct3D 10 Renderer", Direct3D10GuiRendererType);
+                obj->addComboboxOption(combo, "Microsoft Direct3D 11 Renderer", Direct3D11GuiRendererType);
                 obj->addComboboxOption(combo, "OpenGL Renderer", OpenGLGuiRendererType);
+				obj->addComboboxOption(combo, "OpenGL 3.2 Core Renderer", OpenGL3GuiRendererType);
                 obj->addComboboxOption(combo, "Irrlicht Engine Renderer", IrrlichtGuiRendererType);
             }
 
@@ -418,7 +420,7 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
                     HWND combo = reinterpret_cast<HWND>(lParam);
 
                     // get the 'this' ptr for the object we were created by
-                    Win32CEGuiRendererSelector* obj = reinterpret_cast<Win32CEGuiRendererSelector*>(GetWindowLong(hDlg, DWL_USER));
+                    Win32CEGuiRendererSelector* obj = reinterpret_cast<Win32CEGuiRendererSelector*>(GetWindowLongPtr(hDlg, DWLP_USER));
 
                     int idx = static_cast<int>(SendMessage(combo, CB_GETCURSEL, 0, 0));
 
