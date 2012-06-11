@@ -146,8 +146,8 @@ cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to bu
 option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" TRUE )
 option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
 
-option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" ${LUA51_FOUND} )
-option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" ${LUA51_FOUND} )
+cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
 cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" )
 
