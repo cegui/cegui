@@ -33,18 +33,11 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-MetaDataWindowManager::MetaDataWindowManager()
-    : d_root(0)
+MetaDataWindowManager::MetaDataWindowManager(CEGUI::Window* metaDataWindow)
+    : d_root(metaDataWindow)
 {
 }
 
-void MetaDataWindowManager::init()
-{
-    SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
-
-    WindowManager& winMgr = WindowManager::getSingleton();
-    d_root = winMgr.loadLayoutFromFile("SampleBrowserMetaData.layout");
-}
 
 CEGUI::Window* MetaDataWindowManager::getWindow()
 {
