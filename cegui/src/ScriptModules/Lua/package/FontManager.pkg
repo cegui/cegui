@@ -9,13 +9,19 @@ class FontManager
     tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromFile(utf8string xml_filename, utf8string resource_group = "", XMLResourceExistsAction action = XREA_RETURN);
     tolua_throws|CEGUI::AlreadyExistsException,error| Font& createFromString(utf8string source, XMLResourceExistsAction action = XREA_RETURN);
 
-    tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::GenericException,error| Font& createFreeTypeFont(utf8string font_name, float point_size, bool anti_aliased,
-                                                                string font_filename, utf8string resource_group = "", bool auto_scaled = false,
-                                                                float native_horz_res = 640.0f, float native_vert_res = 480.0f,
-                                                                XMLResourceExistsAction action = XREA_RETURN);
-    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createPixmapFont(utf8string font_name, utf8string imageset_filename, utf8string resource_group = "",
-                                                                const bool auto_scaled = false, const float native_horz_res = 640.0f,
-                                                                const float native_vert_res = 480.0f, XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error|CEGUI::GenericException,error| Font& createFreeTypeFont(const utf8string font_name, const float point_size,
+                                                                                                             const bool anti_aliased,
+                                                                                                             const utf8string font_filename,
+                                                                                                             const utf8string resource_group = "",
+                                                                                                             AutoScaledMode auto_scaled = CEGUI::ASM_Disabled,
+                                                                                                             const Size<float>& native_res = Size<float>(640.0f, 480.0f),
+                                                                                                             XMLResourceExistsAction action = XREA_RETURN);
+    tolua_throws|CEGUI::AlreadyExistsException,error| Font& createPixmapFont(const utf8string font_name,
+                                                                             const utf8string imageset_filename,
+                                                                             const utf8string resource_group = "",
+                                                                             AutoScaledMode auto_scaled = CEGUI::ASM_Disabled,
+                                                                             const Size<float>& native_res = Size<float>(640.0f, 480.0f),
+                                                                             XMLResourceExistsAction action = XREA_RETURN);
 
 	void destroy(utf8string name);
 	void destroy(Font& font);

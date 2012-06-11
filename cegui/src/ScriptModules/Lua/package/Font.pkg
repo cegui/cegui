@@ -20,8 +20,11 @@ class Font //: public PropertySet
 
 	bool isCodepointAvailable(unsigned long cp) const;
 
-	void setNativeResolution(const Size<float>& sz);
 	void notifyDisplaySizeChanged(const Size<float>& sz);
+	void setNativeResolution(const Size<float>& sz);
+
+    void setAutoScaled(AutoScaledMode auto_scaled);
+    AutoScaledMode getAutoScaled() const;
 
 	float getTextExtent(utf8string text, float xscale=1);
 	float getLineSpacing(float yscale=1) const;
