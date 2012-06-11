@@ -26,8 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGuiSample.h"
-#include "CEGUI.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
 
@@ -35,7 +34,7 @@ using namespace CEGUI;
 // for this to work you'll have to change the .layout files
 //#define SKIN "WindowsLook"
 
-static const char *PageText [] =
+static const char* PageText [] =
 {
     "This is page three",
     "And this is page four, it's not too different from page three, isn't it?",
@@ -58,9 +57,9 @@ static const char *PageText [] =
 class MyListItem : public ListboxTextItem
 {
 public:
-    MyListItem (const String& text) : ListboxTextItem(text)
+    MyListItem(const String& text) : ListboxTextItem(text)
     {
-        setSelectionBrushImage(SKIN, "MultiListSelectionBrush");
+        setSelectionBrushImage(SKIN "/MultiListSelectionBrush");
     }
 };
 
@@ -69,249 +68,250 @@ class TabControlDemo : public CEGuiSample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample ()
-	{
+    bool initialiseSample()
+    {
         // we will use of the WindowManager.
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        WindowManager& winMgr = WindowManager::getSingleton();
 
         // load scheme and set up defaults
-        SchemeManager::getSingleton().create(SKIN ".scheme");
-        System::getSingleton().setDefaultMouseCursor (SKIN, "MouseArrow");
+        SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
+        System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically
-        FontManager::getSingleton().create("DejaVuSans-10.font");
+        FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
         // load an image to use as a background
-        ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
-        Window* background = winMgr.createWindow (SKIN "/StaticImage");
+        Window* background = winMgr.createWindow(SKIN "/StaticImage");
         // set area rectangle
-        background->setArea (URect (cegui_reldim (0), cegui_reldim (0),
-                                          cegui_reldim (1), cegui_reldim (1)));
+        background->setArea(URect(cegui_reldim(0), cegui_reldim(0),
+                                  cegui_reldim(1), cegui_reldim(1)));
         // disable frame and standard background
-        background->setProperty ("FrameEnabled", "false");
-        background->setProperty ("BackgroundEnabled", "false");
+        background->setProperty("FrameEnabled", "false");
+        background->setProperty("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty ("Image", "set:BackgroundImage image:full_image");
+        background->setProperty("Image", "BackgroundImage");
         // install this as the root GUI sheet
-        System::getSingleton ().setGUISheet (background);
+        System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
         // set tooltip styles (by default there is none)
-        System::getSingleton ().setDefaultTooltip (SKIN "/Tooltip");
+        System::getSingleton().getDefaultGUIContext().setDefaultTooltipType(SKIN "/Tooltip");
 
         // load some demo windows and attach to the background 'root'
-        // because of the 2nd parameter, all windows get prefixed with "TabControlDemo/"
-        CEGUI::String prefix = "TabControlDemo/";
-        background->addChildWindow (winMgr.loadWindowLayout ("TabControlDemo.layout", prefix));
+        background->addChild(winMgr.loadLayoutFromFile("TabControlDemo.layout"));
 
-        TabControl *tc = static_cast<TabControl *>(winMgr.getWindow ("TabControlDemo/Frame/TabControl"));
+        TabControl* tc = static_cast<TabControl*>(background->getChild("Frame/TabControl"));
 
         // Add some pages to tab control
-        tc->addTab (winMgr.loadWindowLayout ("TabPage1.layout", prefix));
-        tc->addTab (winMgr.loadWindowLayout ("TabPage2.layout", prefix));
+        tc->addTab(winMgr.loadLayoutFromFile("TabPage1.layout"));
+        tc->addTab(winMgr.loadLayoutFromFile("TabPage2.layout"));
 
-        // What did it load?
-        WindowManager::WindowIterator it =  CEGUI::WindowManager::getSingleton().getIterator();
-        for(; !it.isAtEnd() ; ++it) {
-            const char* windowName = it.getCurrentValue()->getName().c_str();
-            printf("Name: %s\n", windowName);
-        }
+        WindowManager::getSingleton().DEBUG_dumpWindowNames("asd");
 
-        static_cast<PushButton *> (
-            winMgr.getWindow("TabControlDemo/Page1/AddTab"))->subscribeEvent (
-            PushButton::EventClicked,
-            Event::Subscriber (&TabControlDemo::handleAddTab, this));
+        static_cast<PushButton*>(
+            background->getChild("Frame/TabControl/Page1/AddTab"))->subscribeEvent(
+                PushButton::EventClicked,
+                Event::Subscriber(&TabControlDemo::handleAddTab, this));
 
         // Click to visit this tab
-        static_cast<PushButton *> (
-            winMgr.getWindow("TabControlDemo/Page1/Go"))->subscribeEvent (
-            PushButton::EventClicked,
-            Event::Subscriber (&TabControlDemo::handleGoto, this));
+        static_cast<PushButton*>(
+            background->getChild("Frame/TabControl/Page1/Go"))->subscribeEvent(
+                PushButton::EventClicked,
+                Event::Subscriber(&TabControlDemo::handleGoto, this));
 
         // Click to make this tab button visible (when scrolling is required)
-        static_cast<PushButton *> (
-            winMgr.getWindow("TabControlDemo/Page1/Show"))->subscribeEvent (
-            PushButton::EventClicked,
-            Event::Subscriber (&TabControlDemo::handleShow, this));
+        static_cast<PushButton*>(
+            background->getChild("Frame/TabControl/Page1/Show"))->subscribeEvent(
+                PushButton::EventClicked,
+                Event::Subscriber(&TabControlDemo::handleShow, this));
 
-        static_cast<PushButton *> (
-            winMgr.getWindow("TabControlDemo/Page1/Del"))->subscribeEvent (
-            PushButton::EventClicked,
-            Event::Subscriber (&TabControlDemo::handleDel, this));
+        static_cast<PushButton*>(
+            background->getChild("Frame/TabControl/Page1/Del"))->subscribeEvent(
+                PushButton::EventClicked,
+                Event::Subscriber(&TabControlDemo::handleDel, this));
 
-        RadioButton *rb = static_cast<RadioButton *> (
-            winMgr.getWindow("TabControlDemo/Page1/TabPaneTop"));
-        rb->setSelected (tc->getTabPanePosition () == TabControl::Top);
-        rb->subscribeEvent (
+        RadioButton* rb = static_cast<RadioButton*>(
+                              background->getChild("Frame/TabControl/Page1/TabPaneTop"));
+        rb->setSelected(tc->getTabPanePosition() == TabControl::Top);
+        rb->subscribeEvent(
             RadioButton::EventSelectStateChanged,
-            Event::Subscriber (&TabControlDemo::handleTabPanePos, this));
+            Event::Subscriber(&TabControlDemo::handleTabPanePos, this));
 
-        rb = static_cast<RadioButton *> (
-            winMgr.getWindow("TabControlDemo/Page1/TabPaneBottom"));
-        rb->setSelected (tc->getTabPanePosition () == TabControl::Bottom);
-        rb->subscribeEvent (
+        rb = static_cast<RadioButton*>(
+                 background->getChild("Frame/TabControl/Page1/TabPaneBottom"));
+        rb->setSelected(tc->getTabPanePosition() == TabControl::Bottom);
+        rb->subscribeEvent(
             RadioButton::EventSelectStateChanged,
-            Event::Subscriber (&TabControlDemo::handleTabPanePos, this));
+            Event::Subscriber(&TabControlDemo::handleTabPanePos, this));
 
-        Scrollbar *sb = static_cast<Scrollbar *> (
-            winMgr.getWindow("TabControlDemo/Page1/TabHeight"));
-        sb->setScrollPosition (tc->getTabHeight ().d_offset);
-        sb->subscribeEvent (
+        Scrollbar* sb = static_cast<Scrollbar*>(
+                            background->getChild("Frame/TabControl/Page1/TabHeight"));
+        sb->setScrollPosition(tc->getTabHeight().d_offset);
+        sb->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
-            Event::Subscriber (&TabControlDemo::handleTabHeight, this));
+            Event::Subscriber(&TabControlDemo::handleTabHeight, this));
 
-        sb = static_cast<Scrollbar *> (
-            winMgr.getWindow("TabControlDemo/Page1/TabPadding"));
-        sb->setScrollPosition (tc->getTabTextPadding ().d_offset);
-        sb->subscribeEvent (
+        sb = static_cast<Scrollbar*>(
+                 background->getChild("Frame/TabControl/Page1/TabPadding"));
+        sb->setScrollPosition(tc->getTabTextPadding().d_offset);
+        sb->subscribeEvent(
             Scrollbar::EventScrollPositionChanged,
-            Event::Subscriber (&TabControlDemo::handleTabPadding, this));
+            Event::Subscriber(&TabControlDemo::handleTabPadding, this));
 
-        refreshPageList ();
+        refreshPageList();
 
         // From now on, we don't rely on the exceptions anymore, but perform nice (and recommended) checks
         // ourselves.
 
         return true;
-	}
+    }
 
     // method to perform any required cleanup operations.
-    void cleanupSample ()
+    void cleanupSample()
     {
         // me? cleanup? what?
     }
 
-    void refreshPageList ()
+    void refreshPageList()
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
         // Check if the windows exists
-        Listbox *lbox = NULL;
-        TabControl *tc = NULL;
-        if (winMgr.isWindowPresent("TabControlDemo/Page1/PageList"))
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
+
+        if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
-            lbox = static_cast<Listbox *> (winMgr.getWindow(
-                "TabControlDemo/Page1/PageList"));
+            lbox = static_cast<Listbox*>(root->getChild(
+                                             "Frame/TabControl/Page1/PageList"));
         }
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+
+        if (root->isChild("Frame/TabControl"))
         {
-            tc = static_cast<TabControl *>(winMgr.getWindow (
-                "TabControlDemo/Frame/TabControl"));
+            tc = static_cast<TabControl*>(root->getChild(
+                                              "Frame/TabControl"));
         }
+
         if (lbox && tc)
         {
-            lbox->resetList ();
-            for (size_t i = 0; i < tc->getTabCount (); i++)
+            lbox->resetList();
+
+            for (size_t i = 0; i < tc->getTabCount(); i++)
             {
-                lbox->addItem (new MyListItem (
-                    tc->getTabContentsAtIndex (i)->getName ()));
+                lbox->addItem(new MyListItem(
+                                  tc->getTabContentsAtIndex(i)->getName()));
             }
         }
     }
 
-    bool handleTabPanePos (const EventArgs& e)
+    bool handleTabPanePos(const EventArgs& e)
     {
         TabControl::TabPanePosition tpp;
-        switch (static_cast<const WindowEventArgs&> (e).window->getID ())
+
+        switch (static_cast<const WindowEventArgs&>(e).window->getID())
         {
-            case 0:
-                tpp = TabControl::Top;
-                break;
-            case 1:
-                tpp = TabControl::Bottom;
-                break;
-            default:
-                return false;
+        case 0:
+            tpp = TabControl::Top;
+            break;
+        case 1:
+            tpp = TabControl::Bottom;
+            break;
+        default:
+            return false;
         }
 
         // Check if the window exists
-        WindowManager& winMgr = WindowManager::getSingleton ();
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+
+        if (root->isChild("Frame/TabControl"))
         {
-            static_cast<TabControl *>(winMgr.getWindow (
-                "TabControlDemo/Frame/TabControl"))->setTabPanePosition (tpp);
+            static_cast<TabControl*>(root->getChild(
+                                         "Frame/TabControl"))->setTabPanePosition(tpp);
         }
 
         return true;
     }
 
-    bool handleTabHeight (const EventArgs& e)
+    bool handleTabHeight(const EventArgs& e)
     {
-        Scrollbar *sb = static_cast<Scrollbar *> (
-            static_cast<const WindowEventArgs&> (e).window);
+        Scrollbar* sb = static_cast<Scrollbar*>(
+                            static_cast<const WindowEventArgs&>(e).window);
 
         // Check if the window exists
-        WindowManager& winMgr = WindowManager::getSingleton ();
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+
+        if (root->isChild("Frame/TabControl"))
         {
-            static_cast<TabControl *> (WindowManager::getSingleton ().getWindow (
-                "TabControlDemo/Frame/TabControl"))->setTabHeight (
-                    UDim (0, sb->getScrollPosition ()));
+            static_cast<TabControl*>(root->getChild(
+                                         "Frame/TabControl"))->setTabHeight(
+                                             UDim(0, sb->getScrollPosition()));
         }
 
         // The return value mainly sais that we handled it, not if something failed.
         return true;
     }
 
-    bool handleTabPadding (const EventArgs& e)
+    bool handleTabPadding(const EventArgs& e)
     {
-        Scrollbar *sb = static_cast<Scrollbar *> (
-            static_cast<const WindowEventArgs&> (e).window);
+        Scrollbar* sb = static_cast<Scrollbar*>(
+                            static_cast<const WindowEventArgs&>(e).window);
 
         // Check if the window exists
-        WindowManager& winMgr = WindowManager::getSingleton ();
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+
+        if (root->isChild("Frame/TabControl"))
         {
-            static_cast<TabControl *> (WindowManager::getSingleton ().getWindow (
-                "TabControlDemo/Frame/TabControl"))->setTabTextPadding (
-                    UDim (0, sb->getScrollPosition ()));
+            static_cast<TabControl*>(root->getChild(
+                                         "Frame/TabControl"))->setTabTextPadding(
+                                             UDim(0, sb->getScrollPosition()));
         }
 
         return true;
     }
 
-    bool handleAddTab (const EventArgs&)
+    bool handleAddTab(const EventArgs&)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+
         // Check if the window exists
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+        if (root->isChild("Frame/TabControl"))
         {
-            TabControl *tc = static_cast<TabControl *>(winMgr.getWindow (
-                "TabControlDemo/Frame/TabControl"));
+            TabControl* tc = static_cast<TabControl*>(root->getChild(
+                                 "Frame/TabControl"));
 
             // Add some tab buttons once
             for (int num = 3; num <= 16; num++)
             {
-                std::stringstream prefix;
-                prefix << "TabControlDemo/Page" << num;
-                if (winMgr.isWindowPresent (prefix.str ()))
+                std::stringstream pgname;
+                pgname << "Page" << num;
+
+                if (root->isChild("Frame/TabControl/" + pgname.str()))
                     // Next
                     continue;
 
-                Window *pg = NULL;
+                Window* pg = 0;
                 CEGUI_TRY
                 {
-                    pg = winMgr.loadWindowLayout ("TabPage.layout", CEGUI::String(prefix.str ()));
+                    pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
+                    pg->setName(String(pgname.str()));
                 }
-                CEGUI_CATCH (CEGUI::Exception&)
+                CEGUI_CATCH(CEGUI::Exception&)
                 {
-                    outputExceptionMessage("Some error occured while adding a tabpage. Please see the logfile." );
+                    outputExceptionMessage("Some error occured while adding a tabpage. Please see the logfile.");
                     break;
                 }
 
-                prefix << "Text";
                 // This window has just been created while loading the layout
-                if (winMgr.isWindowPresent (prefix.str ()))
+                if (pg->isChild("Text"))
                 {
-                    Window *txt = winMgr.getWindow (prefix.str ());
-                    txt->setText (PageText [num - 3]);
+                    Window* txt = pg->getChild("Text");
+                    txt->setText(PageText [num - 3]);
 
-                    std::stringstream pgname;
-                    pgname << "Page " << num;
-                    pg->setText (pgname.str ());
-                    tc->addTab (pg);
+                    pg->setText(pgname.str());
+                    tc->addTab(pg);
 
-                    refreshPageList ();
+                    refreshPageList();
                     break;
                 }
             }
@@ -320,88 +320,101 @@ public:
         return true;
     }
 
-    bool handleGoto (const EventArgs&)
+    bool handleGoto(const EventArgs&)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
         // Check if the windows exists
-        Listbox *lbox = NULL;
-        TabControl *tc = NULL;
-        if (winMgr.isWindowPresent("TabControlDemo/Page1/PageList"))
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
+
+        if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
-            lbox = static_cast<Listbox *> (winMgr.getWindow(
-                "TabControlDemo/Page1/PageList"));
+            lbox = static_cast<Listbox*>(root->getChild(
+                                             "Frame/TabControl/Page1/PageList"));
         }
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+
+        if (root->isChild("Frame/TabControl"))
         {
-            tc = static_cast<TabControl *>(winMgr.getWindow (
-                "TabControlDemo/Frame/TabControl"));
+            tc = static_cast<TabControl*>(root->getChild(
+                                              "Frame/TabControl"));
         }
+
         if (lbox && tc)
         {
-            ListboxItem *lbi = lbox->getFirstSelectedItem ();
+            ListboxItem* lbi = lbox->getFirstSelectedItem();
+
             if (lbi)
             {
-                tc->setSelectedTab (lbi->getText ());
+                tc->setSelectedTab(lbi->getText());
             }
         }
 
         return true;
     }
 
-    bool handleShow (const EventArgs&)
+    bool handleShow(const EventArgs&)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
         // Check if the windows exists
-        Listbox *lbox = NULL;
-        TabControl *tc = NULL;
-        if (winMgr.isWindowPresent("TabControlDemo/Page1/PageList"))
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
+
+        if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
-            lbox = static_cast<Listbox *> (winMgr.getWindow(
-                "TabControlDemo/Page1/PageList"));
+            lbox = static_cast<Listbox*>(root->getChild(
+                                             "Frame/TabControl/Page1/PageList"));
         }
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+
+        if (root->isChild("Frame/TabControl"))
         {
-            tc = static_cast<TabControl *>(winMgr.getWindow (
-                "TabControlDemo/Frame/TabControl"));
+            tc = static_cast<TabControl*>(root->getChild(
+                                              "Frame/TabControl"));
         }
+
         if (lbox && tc)
         {
-            ListboxItem *lbi = lbox->getFirstSelectedItem ();
+            ListboxItem* lbi = lbox->getFirstSelectedItem();
+
             if (lbi)
             {
-                tc->makeTabVisible (lbi->getText ());
+                tc->makeTabVisible(lbi->getText());
             }
         }
 
         return true;
     }
 
-    bool handleDel (const EventArgs&)
+    bool handleDel(const EventArgs&)
     {
-        WindowManager& winMgr = WindowManager::getSingleton ();
+        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
         // Check if the windows exists
-        Listbox *lbox = NULL;
-        TabControl *tc = NULL;
-        if (winMgr.isWindowPresent("TabControlDemo/Page1/PageList"))
+        Listbox* lbox = 0;
+        TabControl* tc = 0;
+
+        if (root->isChild("Frame/TabControl/Page1/PageList"))
         {
-            lbox = static_cast<Listbox *> (winMgr.getWindow(
-                "TabControlDemo/Page1/PageList"));
+            lbox = static_cast<Listbox*>(root->getChild(
+                                             "Frame/TabControl/Page1/PageList"));
         }
-        if (winMgr.isWindowPresent("TabControlDemo/Frame/TabControl"))
+
+        if (root->isChild("Frame/TabControl"))
         {
-            tc = static_cast<TabControl *>(winMgr.getWindow (
-                "TabControlDemo/Frame/TabControl"));
+            tc = static_cast<TabControl*>(root->getChild(
+                                              "Frame/TabControl"));
         }
+
         if (lbox && tc)
         {
-            ListboxItem *lbi = lbox->getFirstSelectedItem ();
+            ListboxItem* lbi = lbox->getFirstSelectedItem();
+
             if (lbi)
             {
-                tc->removeTab (lbi->getText ());
+                Window* content = tc->getTabContents(lbi->getText());
+                tc->removeTab(lbi->getText());
                 // Remove the actual window from Cegui
-                winMgr.destroyWindow (lbi->getText ());
+                WindowManager::getSingleton().destroyWindow(content);
 
-                refreshPageList ();
+                refreshPageList();
             }
         }
 
@@ -417,5 +430,5 @@ int main(int /*argc*/, char* /*argv*/[])
     // to run.  All of the samples will use code similar to this in the
     // main/WinMain function.
     TabControlDemo app;
-    return app.run ();
+    return app.run();
 }

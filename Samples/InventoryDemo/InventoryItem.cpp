@@ -28,8 +28,8 @@
 #include "InventoryItem.h"
 #include "InventoryReceiver.h"
 
-#include <CEGUIPropertyHelper.h>
-#include <CEGUIImage.h>
+#include <CEGUI/PropertyHelper.h>
+#include <CEGUI/Image.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -88,7 +88,7 @@ void InventoryItem::setLocationOnReceiver(int x, int y)
 }
 
 //------------------------------------------------------------------------------//
-bool InventoryItem::isHit(const Vector2& position, const bool allow_disabled) const
+bool InventoryItem::isHit(const Vector2f& position, const bool allow_disabled) const
 {
     if (!DragContainer::isHit(position, allow_disabled))
         return false;
@@ -114,12 +114,12 @@ void InventoryItem::populateGeometryBuffer()
     if (!isUserStringDefined("BlockImage"))
         return;
 
-    const Image* img = PropertyHelper::stringToImage(getUserString("BlockImage"));
+    const Image* img = PropertyHelper<Image*>::fromString(getUserString("BlockImage"));
 
     if (!img)
         return;
 
-    const Size square_size(squarePixelSize());
+    const Sizef square_size(squarePixelSize());
 
     argb_t colour = 0xFF00FF00;
 
@@ -131,22 +131,22 @@ void InventoryItem::populateGeometryBuffer()
         for (int x = 0; x < d_content.width(); ++x)
         {
             if (d_content.elementAtLocation(x, y))
-                img->draw(*d_geometry,
-                          Vector2(x * square_size.d_width + 1, y * square_size.d_height + 1),
-                          Size(square_size.d_width - 2, square_size.d_height - 2), 0,
-                          colour, colour, colour, colour);
+                img->render(*d_geometry,
+                            Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
+                            Sizef(square_size.d_width - 2, square_size.d_height - 2), 0,
+                            ColourRect(colour));
         }
     }
 }
 
 //------------------------------------------------------------------------------//
-Rect InventoryItem::gridBasePixelRect() const
+Rectf InventoryItem::gridBasePixelRect() const
 {
-    return getUnclippedOuterRect();
+    return getUnclippedOuterRect().get();
 }
 
 //------------------------------------------------------------------------------//
-void InventoryItem::onMoved(WindowEventArgs& e)
+void InventoryItem::onMoved(ElementEventArgs& e)
 {
     invalidate();
 
@@ -156,11 +156,11 @@ void InventoryItem::onMoved(WindowEventArgs& e)
 
     if (receiver)
     {
-        const Size square_size(receiver->squarePixelSize());
-        Rect area(getUnclippedOuterRect());
-        area.offset(Point(square_size.d_width / 2, square_size.d_height / 2));
-        const int x = receiver->gridXLocationFromPixelPosition(area.d_left);
-        const int y = receiver->gridYLocationFromPixelPosition(area.d_top);
+        const Sizef square_size(receiver->squarePixelSize());
+        Rectf area(getUnclippedOuterRect().get());
+        area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
+        const int x = receiver->gridXLocationFromPixelPosition(area.left());
+        const int y = receiver->gridYLocationFromPixelPosition(area.top());
 
         d_validDropTarget = receiver->itemWillFitAtLocation(*this, x, y);
         return;

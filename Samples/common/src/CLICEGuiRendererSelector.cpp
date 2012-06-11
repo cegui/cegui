@@ -57,6 +57,12 @@ bool CLICEGuiRendererSelector::invokeDialog()
         last_available = OpenGLGuiRendererType;
         std::cout << rendererNumber << ". OpenGL GUI Renderer." << std::endl;
     }
+    if (d_rendererAvailability[OpenGL3GuiRendererType])
+    {
+        ++rendererNumber;
+        last_available = OpenGL3GuiRendererType;
+        std::cout << rendererNumber << ". OpenGL 3.2 Core Renderer." << std::endl;
+    }
     if (d_rendererAvailability[IrrlichtGuiRendererType])
     {
         ++rendererNumber;
@@ -102,6 +108,10 @@ bool CLICEGuiRendererSelector::invokeDialog()
     else if ((d_rendererAvailability[OpenGLGuiRendererType]) && (--selection == 0))
     {
         d_lastSelected = OpenGLGuiRendererType;
+    }
+    else if ((d_rendererAvailability[OpenGL3GuiRendererType]) && (--selection == 0))
+    {
+        d_lastSelected = OpenGL3GuiRendererType;
     }
     else if ((d_rendererAvailability[IrrlichtGuiRendererType]) && (--selection == 0))
     {

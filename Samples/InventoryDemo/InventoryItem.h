@@ -29,7 +29,7 @@
 #define _InventoryItem_h_
 
 #include "InventoryBase.h"
-#include <elements/CEGUIDragContainer.h>
+#include <CEGUI/widgets/DragContainer.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -73,15 +73,15 @@ public:
     bool currentDropTargetIsValid() const;
 
     // base class overrides
-    bool isHit(const Vector2& position, const bool allow_disabled = false) const;
+    bool isHit(const Vector2f& position, const bool allow_disabled = false) const;
     void setContentSize(int width, int height);
 
 protected:
     // base class overrides
-    void onMoved(WindowEventArgs& e);
+    void onMoved(ElementEventArgs& e);
     void onDragDropTargetChanged(DragDropEventArgs& e);
     void populateGeometryBuffer();
-    Rect gridBasePixelRect() const;
+    Rectf gridBasePixelRect() const;
 
     // whether the current drag / drop target is a valid drop location for this
     // item
