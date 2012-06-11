@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="SampleBrowserRoot" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window type="SampleBrowserSkin/FrameWindow" name="SampleBrowserMetaData" >
+            <Property name="Area" value="{{0,18},{0,0},{0,368},{0,523}}" />
+            <Property name="Text" value="Title" />
+            <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
+            <Property name="SizingEnabled" value="False" />
+            <Property name="DragMovingEnabled" value="False" />
+            <Property name="VerticalAlignment" value="Centre" />
+            <AutoWindow namePath="__auto_titlebar__" >
+                <Property name="DraggingEnabled" value="False" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_closebutton__" >
+                <Property name="NonClient" value="True" />
+            </AutoWindow>
+            <Window type="SampleBrowserSkin/StaticText" name="Summary" >
+                <Property name="Area" value="{{0,0},{0.00208137,48},{0,334},{0.00208137,138}}" />
+                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Text" value="Summary : dsadasdasdassddssssssssssssssssssssssssssssssssssssssssssss" />
+                <Property name="VertScrollbar" value="True" />
+                <Property name="HorzScrollPageSize" value="308" />
+                <Property name="VertScrollPageSize" value="71.7188" />
+                <Property name="HorzScrollDocumentSize" value="290" />
+                <Property name="VertScrollDocumentSize" value="46.5443" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+            <Window type="SampleBrowserSkin/StaticText" name="SampleType" >
+                <Property name="Area" value="{{0.0835821,126},{0,0},{0,334},{0,40}}" />
+                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="HorzScrollPageSize" value="154" />
+                <Property name="VertScrollPageSize" value="21.7188" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+            <Window type="SampleBrowserSkin/StaticText" name="LabelType" >
+                <Property name="Area" value="{{0,0},{0,0},{0.101493,120},{0,40}}" />
+                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Text" value="Sample type:" />
+                <Property name="TextColours" value="tl:DD000000 tr:DD000000 bl:DD000000 br:DD000000" />
+                <Property name="HorzScrollPageSize" value="128" />
+                <Property name="VertScrollPageSize" value="21.7188" />
+                <Property name="HorzScrollDocumentSize" value="90" />
+                <Property name="VertScrollDocumentSize" value="15.5148" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+            <Window type="SampleBrowserSkin/StaticText" name="UsedFiles" >
+                <Property name="Area" value="{{0,0},{0,304},{0,334},{0,410}}" />
+                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Text" value="Used files:" />
+                <Property name="VertScrollbar" value="True" />
+                <Property name="HorzScrollPageSize" value="308" />
+                <Property name="VertScrollPageSize" value="87.7188" />
+                <Property name="HorzScrollDocumentSize" value="69" />
+                <Property name="VertScrollDocumentSize" value="15.5148" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+            <Window type="SampleBrowserSkin/StaticText" name="Description" >
+                <Property name="Area" value="{{0,0},{0,145},{0,334},{0,300}}" />
+                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Text" value="Description: asdasdafasdasdddddddddddddddddddd dddddddddddddddd dddddddddddddddd ddddddddddddddd" />
+                <Property name="VertScrollbar" value="True" />
+                <Property name="HorzScrollPageSize" value="308" />
+                <Property name="VertScrollPageSize" value="136.719" />
+                <Property name="HorzScrollDocumentSize" value="260" />
+                <Property name="VertScrollDocumentSize" value="62.0591" />
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+        </Window>
+        <Window type="SampleBrowserSkin/FrameWindow" name="SamplesFrameWindow" >
+            <Property name="Area" value="{{0,400},{0,0},{1,-25},{1,-50}}" />
+            <Property name="Text" value="Samples" />
+            <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
+            <Property name="DragMovingEnabled" value="False" />
+            <Property name="VerticalAlignment" value="Centre" />
+            <AutoWindow namePath="__auto_titlebar__" >
+                <Property name="DraggingEnabled" value="False" />
+            </AutoWindow>
+            <AutoWindow namePath="__auto_closebutton__" >
+                <Property name="NonClient" value="True" />
+            </AutoWindow>
+            <Window type="SampleBrowserSkin/ScrollablePane" name="SamplesScrollablePane" >
+                <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+                <Property name="ForceVertScrollbar" value="True" />
+                <AutoWindow namePath="__auto_container__" >
+                    <Property name="MouseInputPropagationEnabled" value="True" />
+                </AutoWindow>
+                <AutoWindow namePath="__auto_hscrollbar__" >
+                    <Property name="AlwaysOnTop" value="True" />
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+                <AutoWindow namePath="__auto_vscrollbar__" >
+                    <Property name="AlwaysOnTop" value="True" />
+                    <AutoWindow namePath="__auto_decbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_incbtn__" >
+                        <Property name="Visible" value="False" />
+                    </AutoWindow>
+                </AutoWindow>
+            </Window>
+        </Window>
+    </Window>
+</GUILayout>
