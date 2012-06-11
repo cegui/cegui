@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Sat Jun  2 17:33:50 2012.
+** Generated automatically by tolua++-1.0.93 on Mon Jun 11 12:30:35 2012.
 */
 
 #ifndef __cplusplus
@@ -8071,6 +8071,39 @@ static int tolua_CEGUI_CEGUI_Font_isCodepointAvailable00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: notifyDisplaySizeChanged of class  CEGUI::Font */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00
+static int tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::Font* self = (CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Size<float>* sz = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
+#endif
+ {
+  self->notifyDisplaySizeChanged(*sz);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setNativeResolution of class  CEGUI::Font */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_setNativeResolution00
 static int tolua_CEGUI_CEGUI_Font_setNativeResolution00(lua_State* tolua_S)
@@ -8104,15 +8137,15 @@ static int tolua_CEGUI_CEGUI_Font_setNativeResolution00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: notifyDisplaySizeChanged of class  CEGUI::Font */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00
-static int tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00(lua_State* tolua_S)
+/* method: setAutoScaled of class  CEGUI::Font */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_setAutoScaled00
+static int tolua_CEGUI_CEGUI_Font_setAutoScaled00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::Font",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -8120,18 +8153,50 @@ static int tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00(lua_State* tolua_S)
 #endif
  {
   CEGUI::Font* self = (CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
-  const CEGUI::Size<float>* sz = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,2,0));
+  CEGUI::AutoScaledMode auto_scaled = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'notifyDisplaySizeChanged'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setAutoScaled'",NULL);
 #endif
  {
-  self->notifyDisplaySizeChanged(*sz);
+  self->setAutoScaled(auto_scaled);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'notifyDisplaySizeChanged'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setAutoScaled'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getAutoScaled of class  CEGUI::Font */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Font_getAutoScaled00
+static int tolua_CEGUI_CEGUI_Font_getAutoScaled00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Font",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Font* self = (const CEGUI::Font*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getAutoScaled'",NULL);
+#endif
+ {
+  CEGUI::AutoScaledMode tolua_ret = (CEGUI::AutoScaledMode)  self->getAutoScaled();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getAutoScaled'.",&tolua_err);
  return 0;
 #endif
 }
@@ -8449,28 +8514,22 @@ static int tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00(lua_State* tolua_S
  !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
  !tolua_isboolean(tolua_S,4,0,&tolua_err) ||
- !tolua_iscppstring(tolua_S,5,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,5,0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,6,1,&tolua_err) ||
- !tolua_isboolean(tolua_S,7,1,&tolua_err) ||
- !tolua_isnumber(tolua_S,8,1,&tolua_err) ||
- !tolua_isnumber(tolua_S,9,1,&tolua_err) ||
- !tolua_isnumber(tolua_S,10,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,11,&tolua_err)
+ !tolua_isnumber(tolua_S,7,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,8,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
-  utf8string font_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-  float point_size = ((float)  tolua_tonumber(tolua_S,3,0));
-  bool anti_aliased = ((bool)  tolua_toboolean(tolua_S,4,0));
-  string font_filename = ((string)  tolua_tocppstring(tolua_S,5,0));
-  utf8string resource_group = ((utf8string)  tolua_toutf8string(tolua_S,6,""));
-  bool auto_scaled = ((bool)  tolua_toboolean(tolua_S,7,false));
-  float native_horz_res = ((float)  tolua_tonumber(tolua_S,8,640.0f));
-  float native_vert_res = ((float)  tolua_tonumber(tolua_S,9,480.0f));
-  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,10,CEGUI::XREA_RETURN));
+  const utf8string font_name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
+  const float point_size = ((const float)  tolua_tonumber(tolua_S,3,0));
+  const bool anti_aliased = ((const bool)  tolua_toboolean(tolua_S,4,0));
+  const utf8string font_filename = ((const utf8string)  tolua_toutf8string(tolua_S,5,0));
+  const utf8string resource_group = ((const utf8string)  tolua_toutf8string(tolua_S,6,""));
+  CEGUI::AutoScaledMode auto_scaled = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,7,CEGUI::ASM_Disabled));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFreeTypeFont'",NULL);
 #endif
@@ -8478,7 +8537,7 @@ static int tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00(lua_State* tolua_S
  bool errorDoIt = false;
  try
  {
-  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createFreeTypeFont(font_name,point_size,anti_aliased,font_filename,resource_group,auto_scaled,native_horz_res,native_vert_res,action);
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createFreeTypeFont(font_name,point_size,anti_aliased,font_filename,resource_group,auto_scaled);
  tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
  }
 catch(CEGUI::AlreadyExistsException&e)
@@ -8504,6 +8563,65 @@ catch(CEGUI::AlreadyExistsException&e)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: createFreeTypeFont of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont01
+static int tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,4,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,5,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,6,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,7,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,8,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,9,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,10,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
+  const utf8string font_name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
+  const float point_size = ((const float)  tolua_tonumber(tolua_S,3,0));
+  const bool anti_aliased = ((const bool)  tolua_toboolean(tolua_S,4,0));
+  const utf8string font_filename = ((const utf8string)  tolua_toutf8string(tolua_S,5,0));
+  const utf8string resource_group = ((const utf8string)  tolua_toutf8string(tolua_S,6,0));
+  CEGUI::AutoScaledMode auto_scaled = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,7,0));
+  const CEGUI::Size<float>* native_res = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,8,0));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,9,CEGUI::XREA_RETURN));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createFreeTypeFont'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createFreeTypeFont(font_name,point_size,anti_aliased,font_filename,resource_group,auto_scaled,*native_res,action);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
+ }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createFreeTypeFont'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ catch(CEGUI::GenericException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::GenericException' was thrown by function 'createFreeTypeFont'\nMessage: %s","Unknown");
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: createPixmapFont of class  CEGUI::FontManager */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createPixmapFont00
 static int tolua_CEGUI_CEGUI_FontManager_createPixmapFont00(lua_State* tolua_S)
@@ -8515,24 +8633,18 @@ static int tolua_CEGUI_CEGUI_FontManager_createPixmapFont00(lua_State* tolua_S)
  !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
  !tolua_isutf8string(tolua_S,4,1,&tolua_err) ||
- !tolua_isboolean(tolua_S,5,1,&tolua_err) ||
- !tolua_isnumber(tolua_S,6,1,&tolua_err) ||
- !tolua_isnumber(tolua_S,7,1,&tolua_err) ||
- !tolua_isnumber(tolua_S,8,1,&tolua_err) ||
- !tolua_isnoobj(tolua_S,9,&tolua_err)
+ !tolua_isnumber(tolua_S,5,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,6,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
-  utf8string font_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
-  utf8string imageset_filename = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
-  utf8string resource_group = ((utf8string)  tolua_toutf8string(tolua_S,4,""));
-  const bool auto_scaled = ((const bool)  tolua_toboolean(tolua_S,5,false));
-  const float native_horz_res = ((const float)  tolua_tonumber(tolua_S,6,640.0f));
-  const float native_vert_res = ((const float)  tolua_tonumber(tolua_S,7,480.0f));
-  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,8,CEGUI::XREA_RETURN));
+  const utf8string font_name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
+  const utf8string imageset_filename = ((const utf8string)  tolua_toutf8string(tolua_S,3,0));
+  const utf8string resource_group = ((const utf8string)  tolua_toutf8string(tolua_S,4,""));
+  CEGUI::AutoScaledMode auto_scaled = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,5,CEGUI::ASM_Disabled));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createPixmapFont'",NULL);
 #endif
@@ -8540,7 +8652,7 @@ static int tolua_CEGUI_CEGUI_FontManager_createPixmapFont00(lua_State* tolua_S)
  bool errorDoIt = false;
  try
  {
-  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createPixmapFont(font_name,imageset_filename,resource_group,auto_scaled,native_horz_res,native_vert_res,action);
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createPixmapFont(font_name,imageset_filename,resource_group,auto_scaled);
  tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
  }
 catch(CEGUI::AlreadyExistsException&e)
@@ -8558,6 +8670,56 @@ catch(CEGUI::AlreadyExistsException&e)
  tolua_error(tolua_S,"#ferror in function 'createPixmapFont'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: createPixmapFont of class  CEGUI::FontManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FontManager_createPixmapFont01
+static int tolua_CEGUI_CEGUI_FontManager_createPixmapFont01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FontManager",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,4,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,6,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,7,1,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,8,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::FontManager* self = (CEGUI::FontManager*)  tolua_tousertype(tolua_S,1,0);
+  const utf8string font_name = ((const utf8string)  tolua_toutf8string(tolua_S,2,0));
+  const utf8string imageset_filename = ((const utf8string)  tolua_toutf8string(tolua_S,3,0));
+  const utf8string resource_group = ((const utf8string)  tolua_toutf8string(tolua_S,4,0));
+  CEGUI::AutoScaledMode auto_scaled = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,5,0));
+  const CEGUI::Size<float>* native_res = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,6,0));
+  CEGUI::XMLResourceExistsAction action = ((CEGUI::XMLResourceExistsAction) (int)  tolua_tonumber(tolua_S,7,CEGUI::XREA_RETURN));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'createPixmapFont'",NULL);
+#endif
+ char errorBuffer[512];
+ bool errorDoIt = false;
+ try
+ {
+  CEGUI::Font& tolua_ret = (CEGUI::Font&)  self->createPixmapFont(font_name,imageset_filename,resource_group,auto_scaled,*native_res,action);
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::Font");
+ }
+catch(CEGUI::AlreadyExistsException&e)
+{
+ snprintf(errorBuffer,512,"Exception of type 'CEGUI::AlreadyExistsException' was thrown by function 'createPixmapFont'\nMessage: %s",e.getMessage().c_str());
+ errorDoIt = true;
+}
+ if (errorDoIt) {
+ luaL_error(tolua_S,errorBuffer);
+}
+ }
+ return 1;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_FontManager_createPixmapFont00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -9065,6 +9227,45 @@ tolua_lerror:
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: computeScalingFactors of class  CEGUI::Image */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Image_computeScalingFactors00
+static int tolua_CEGUI_CEGUI_Image_computeScalingFactors00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::Image",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,3,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,4,"const CEGUI::Size<float>",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,5,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,6,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,7,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::AutoScaledMode mode = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,2,0));
+  const CEGUI::Size<float>* display_size = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,3,0));
+  const CEGUI::Size<float>* native_display_size = ((const CEGUI::Size<float>*)  tolua_tousertype(tolua_S,4,0));
+  float x_scale = ((float)  tolua_tonumber(tolua_S,5,0));
+  float y_scale = ((float)  tolua_tonumber(tolua_S,6,0));
+ {
+  CEGUI::Image::computeScalingFactors(mode,*display_size,*native_display_size,x_scale,y_scale);
+ tolua_pushnumber(tolua_S,(lua_Number)x_scale);
+ tolua_pushnumber(tolua_S,(lua_Number)y_scale);
+ }
+ }
+ return 2;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'computeScalingFactors'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setTexture of class  CEGUI::BasicImage */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_BasicImage_setTexture00
 static int tolua_CEGUI_CEGUI_BasicImage_setTexture00(lua_State* tolua_S)
@@ -9172,7 +9373,7 @@ static int tolua_CEGUI_CEGUI_BasicImage_setAutoScaled00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::BasicImage",0,&tolua_err) ||
- !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -9180,12 +9381,12 @@ static int tolua_CEGUI_CEGUI_BasicImage_setAutoScaled00(lua_State* tolua_S)
 #endif
  {
   CEGUI::BasicImage* self = (CEGUI::BasicImage*)  tolua_tousertype(tolua_S,1,0);
-  bool autoscaled = ((bool)  tolua_toboolean(tolua_S,2,0));
+  CEGUI::AutoScaledMode mode = ((CEGUI::AutoScaledMode) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setAutoScaled'",NULL);
 #endif
  {
-  self->setAutoScaled(autoscaled);
+  self->setAutoScaled(mode);
  }
  }
  return 0;
@@ -62716,8 +62917,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setDefaultResourceGroup",tolua_CEGUI_CEGUI_Font_setDefaultResourceGroup00);
    tolua_function(tolua_S,"getDefaultResourceGroup",tolua_CEGUI_CEGUI_Font_getDefaultResourceGroup00);
    tolua_function(tolua_S,"isCodepointAvailable",tolua_CEGUI_CEGUI_Font_isCodepointAvailable00);
-   tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_Font_setNativeResolution00);
    tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_Font_notifyDisplaySizeChanged00);
+   tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_Font_setNativeResolution00);
+   tolua_function(tolua_S,"setAutoScaled",tolua_CEGUI_CEGUI_Font_setAutoScaled00);
+   tolua_function(tolua_S,"getAutoScaled",tolua_CEGUI_CEGUI_Font_getAutoScaled00);
    tolua_function(tolua_S,"getTextExtent",tolua_CEGUI_CEGUI_Font_getTextExtent00);
    tolua_function(tolua_S,"getLineSpacing",tolua_CEGUI_CEGUI_Font_getLineSpacing00);
    tolua_function(tolua_S,"getFontHeight",tolua_CEGUI_CEGUI_Font_getFontHeight00);
@@ -62730,7 +62933,9 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"createFromFile",tolua_CEGUI_CEGUI_FontManager_createFromFile00);
    tolua_function(tolua_S,"createFromString",tolua_CEGUI_CEGUI_FontManager_createFromString00);
    tolua_function(tolua_S,"createFreeTypeFont",tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont00);
+   tolua_function(tolua_S,"createFreeTypeFont",tolua_CEGUI_CEGUI_FontManager_createFreeTypeFont01);
    tolua_function(tolua_S,"createPixmapFont",tolua_CEGUI_CEGUI_FontManager_createPixmapFont00);
+   tolua_function(tolua_S,"createPixmapFont",tolua_CEGUI_CEGUI_FontManager_createPixmapFont01);
    tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_FontManager_destroy00);
    tolua_function(tolua_S,"destroy",tolua_CEGUI_CEGUI_FontManager_destroy01);
    tolua_function(tolua_S,"destroyAll",tolua_CEGUI_CEGUI_FontManager_destroyAll00);
@@ -62739,6 +62944,12 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_FontManager_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_FontManager_getIterator00);
   tolua_endmodule(tolua_S);
+  tolua_constant(tolua_S,"ASM_Disabled",CEGUI::ASM_Disabled);
+  tolua_constant(tolua_S,"ASM_Vertical",CEGUI::ASM_Vertical);
+  tolua_constant(tolua_S,"ASM_Horizontal",CEGUI::ASM_Horizontal);
+  tolua_constant(tolua_S,"ASM_Min",CEGUI::ASM_Min);
+  tolua_constant(tolua_S,"ASM_Max",CEGUI::ASM_Max);
+  tolua_constant(tolua_S,"ASM_Both",CEGUI::ASM_Both);
   tolua_cclass(tolua_S,"Image","CEGUI::Image","",NULL);
   tolua_beginmodule(tolua_S,"Image");
    tolua_function(tolua_S,"getName",tolua_CEGUI_CEGUI_Image_getName00);
@@ -62749,6 +62960,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"render",tolua_CEGUI_CEGUI_Image_render02);
    tolua_function(tolua_S,"render",tolua_CEGUI_CEGUI_Image_render03);
    tolua_function(tolua_S,"render",tolua_CEGUI_CEGUI_Image_render04);
+   tolua_function(tolua_S,"computeScalingFactors",tolua_CEGUI_CEGUI_Image_computeScalingFactors00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"BasicImage","CEGUI::BasicImage","CEGUI::Image",NULL);
   tolua_beginmodule(tolua_S,"BasicImage");
