@@ -539,7 +539,8 @@ void TabControl::calculateTabButtonSizePosition(size_t index)
 /*************************************************************************
 Layout the widgets
 *************************************************************************/
-void TabControl::performChildWindowLayout()
+void TabControl::performChildWindowLayout(bool nonclient_sized_hint,
+                                          bool client_sized_hint)
 {
     Window* tabButtonPane = getTabButtonPane();
     Window* tabContentPane = getTabPane();
@@ -555,7 +556,8 @@ void TabControl::performChildWindowLayout()
     if (tabButtonPane->isPropertyPresent (EnableBottom))
         tabButtonPane->setProperty (EnableBottom, (d_tabPanePos == Top) ? n1 : n0);
 
-    Window::performChildWindowLayout();
+    Window::performChildWindowLayout(nonclient_sized_hint,
+                                     client_sized_hint);
 
     // Calculate the size & position of the tab scroll buttons
     Window *scrollLeftBtn = 0, *scrollRightBtn = 0;
