@@ -120,8 +120,6 @@ void SampleData::handleNewWindowSize(float width, float height)
     CEGUI::Rectf renderArea(CEGUI::Rectf(0.f, height, width, 0.f));
 
     d_textureTargetImage->setArea(renderArea);
-
-    //d_textureTarget->setArea(renderArea);
     d_textureTarget->declareRenderSize(windowSize);
    
     d_sampleWindow->getRenderingSurface()->invalidate();
