@@ -54,4 +54,5 @@
     <Image height="12" name="MiniTrayT" width="8" xPos="102" yPos="65" />
     <Image height="12" name="MiniTrayBL" width="12" xPos="90" yPos="85" />
     <Image height="8" name="MiniTrayR" width="12" xPos="110" yPos="77" />
+    <Image height="94" name="ExitButton" width="114" xPos="0" yPos="155" />
 </Imageset>

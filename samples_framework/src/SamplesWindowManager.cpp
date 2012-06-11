@@ -30,13 +30,18 @@ author:     Lukas E Meindl
 #include "CEGUI/Window.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/EventArgs.h"
 
 using namespace CEGUI;
+
+const uint32_t SamplesWindowManager::d_sampleWindowFrameNormal(0xFF234d46);
+const uint32_t SamplesWindowManager::d_sampleWindowFrameSelected(0xFF559d96);
 
 SamplesWindowManager::SamplesWindowManager(CEGUI::Window* samplesWindow)
     : d_root(samplesWindow),
     d_childCount(0),
-    d_widthToHeightFactor(1.f)
+    d_widthToHeightFactor(1.f),
+    d_selectedWindow(0)
 {
 }
 
@@ -60,7 +65,11 @@ void SamplesWindowManager::addSampleWindow(CEGUI::Window* sampleWindow)
     sampleWindow->setPosition(position);
     sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_reldim(0.4f)));
 
-    CEGUI::ColourRect colRect(CEGUI::Colour(argb_t(0xFF659d96)));
+    sampleWindow->setMouseInputPropagationEnabled(true);
+
+    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesWindowManager::handleMouseClickSampleWindow, this));
+
+    CEGUI::ColourRect colRect = CEGUI::ColourRect(CEGUI::Colour(d_sampleWindowFrameNormal));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
 }
 
@@ -80,6 +89,8 @@ void SamplesWindowManager::updateWindows()
     {
         CEGUI::Window* window(d_sampleWindows[i]);
 
+        window->setSize(USize(UDim(1.f, -10.f), cegui_reldim(0.4f)));
+
         float width = window->getOuterRectClipper().getWidth();
         float height = width * d_widthToHeightFactor;
 
@@ -89,4 +100,23 @@ void SamplesWindowManager::updateWindows()
 
         vertOffset += height + 15;
     }
+}
+
+
+bool SamplesWindowManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& args)
+{
+    const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
+
+    if(d_selectedWindow)
+    {
+        CEGUI::ColourRect colRectNormal = CEGUI::ColourRect(CEGUI::Colour(d_sampleWindowFrameNormal));
+        d_selectedWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRectNormal));
+    }
+
+    d_selectedWindow = winArgs.window;
+
+    CEGUI::ColourRect colRectSelected = CEGUI::ColourRect(CEGUI::Colour(d_sampleWindowFrameSelected));
+    d_selectedWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRectSelected));
+
+    return true;
 }

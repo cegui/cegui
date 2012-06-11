@@ -29,10 +29,12 @@ author:     Lukas E Meindl
 #define _SamplesWindowManager_h_
 
 #include <vector>
+#include <stdint.h>
 
 namespace CEGUI
 {
     class Window;
+    class EventArgs;
 }
 
 class SamplesWindowManager
@@ -50,13 +52,17 @@ private:
     SamplesWindowManager(const SamplesWindowManager&) {}
     SamplesWindowManager& operator=(const SamplesWindowManager&) {}
 
+    static const uint32_t d_sampleWindowFrameNormal;
+    static const uint32_t d_sampleWindowFrameSelected;
+
     void updateWindows();
 
+    bool handleMouseClickSampleWindow(const CEGUI::EventArgs& args);
+
     CEGUI::Window* d_root;
-
     int d_childCount;
-
     float d_widthToHeightFactor;
+    CEGUI::Window* d_selectedWindow;
 
     std::vector<CEGUI::Window*> d_sampleWindows;
 };
