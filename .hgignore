@@ -4,6 +4,8 @@ syntax: glob
 Thumbs.db
 .directory
 
+.clang_complete
+
 *.tmp
 *~
 
