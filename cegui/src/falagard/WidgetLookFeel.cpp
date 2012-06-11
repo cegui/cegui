@@ -234,54 +234,54 @@ void WidgetLookFeel::clearPropertyInitialisers()
 void WidgetLookFeel::initialiseWidget(Window& widget) const
 {
     // add new property definitions
-    PropertyDefinitionPtrMap pdm;
-    appendPropertyDefinitions(pdm);
-    for (PropertyDefinitionPtrMap::const_iterator pdi = pdm.begin();
-         pdi != pdm.end();
+    PropertyDefinitionCollator pdc;
+    appendPropertyDefinitions(pdc);
+    for (PropertyDefinitionCollator::const_iterator pdi = pdc.begin();
+         pdi != pdc.end();
          ++pdi)
     {
         // add the property to the window
-        widget.addProperty(pdi->second);
+        widget.addProperty(*pdi);
     }
 
     // add required child widgets
-    WidgetComponentPtrMap wcm;
-    appendChildWidgetComponents(wcm);
-    for (WidgetComponentPtrMap::const_iterator wci = wcm.begin();
-         wci != wcm.end();
+    WidgetComponentCollator wcc;
+    appendChildWidgetComponents(wcc);
+    for (WidgetComponentCollator::const_iterator wci = wcc.begin();
+         wci != wcc.end();
          ++wci)
     {
-        wci->second->create(widget);
+        (*wci)->create(widget);
     }
 
     // add new property link definitions
-    PropertyLinkDefinitionPtrMap pldm;
-    appendPropertyLinkDefinitions(pldm);
-    for (PropertyLinkDefinitionPtrMap::const_iterator pldi = pldm.begin();
-         pldi != pldm.end();
+    PropertyLinkDefinitionCollator pldc;
+    appendPropertyLinkDefinitions(pldc);
+    for (PropertyLinkDefinitionCollator::const_iterator pldi = pldc.begin();
+         pldi != pldc.end();
          ++pldi)
     {
         // add the property to the window
-        widget.addProperty(pldi->second);
+        widget.addProperty(*pldi);
     }
     // apply properties to the parent window
-    PropertyInitialiserPtrMap pim;
-    appendPropertyInitialisers(pim);
-    for (PropertyInitialiserPtrMap::const_iterator pi = pim.begin();
-         pi != pim.end();
+    PropertyInitialiserCollator pic;
+    appendPropertyInitialisers(pic);
+    for (PropertyInitialiserCollator::const_iterator pi = pic.begin();
+         pi != pic.end();
          ++pi)
     {
-        pi->second->apply(widget);
+        (*pi)->apply(widget);
     }
 
     // setup linked events
-    EventLinkDefinitionPtrMap eldm;
-    appendEventLinkDefinitions(eldm);
-    for (EventLinkDefinitionPtrMap::const_iterator eldi = eldm.begin();
-         eldi != eldm.end();
+    EventLinkDefinitionCollator eldc;
+    appendEventLinkDefinitions(eldc);
+    for (EventLinkDefinitionCollator::const_iterator eldi = eldc.begin();
+         eldi != eldc.end();
          ++eldi)
     {
-        eldi->second->initialiseWidget(widget);
+        (*eldi)->initialiseWidget(widget);
     }
 
     // create animation instances
@@ -311,45 +311,45 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
     }
 
     // remove added child widgets
-    WidgetComponentPtrMap wcl;
-    appendChildWidgetComponents(wcl);
-    for (WidgetComponentPtrMap::const_iterator wci = wcl.begin();
-         wci != wcl.end();
+    WidgetComponentCollator wcc;
+    appendChildWidgetComponents(wcc);
+    for (WidgetComponentCollator::const_iterator wci = wcc.begin();
+         wci != wcc.end();
          ++wci)
     {
-        wci->second->cleanup(widget);
+        (*wci)->cleanup(widget);
     }
 
     // delete added named Events
-    EventLinkDefinitionPtrMap eldm;
-    appendEventLinkDefinitions(eldm);
-    for (EventLinkDefinitionPtrMap::const_iterator eldi = eldm.begin();
-         eldi != eldm.end();
+    EventLinkDefinitionCollator eldc;
+    appendEventLinkDefinitions(eldc);
+    for (EventLinkDefinitionCollator::const_iterator eldi = eldc.begin();
+         eldi != eldc.end();
          ++eldi)
     {
-        eldi->second->cleanUpWidget(widget);
+        (*eldi)->cleanUpWidget(widget);
     }
 
     // remove added property definitions
-    PropertyDefinitionPtrMap pdm;
-    appendPropertyDefinitions(pdm);
-    for (PropertyDefinitionPtrMap::const_iterator pdi = pdm.begin();
-         pdi != pdm.end();
+    PropertyDefinitionCollator pdc;
+    appendPropertyDefinitions(pdc);
+    for (PropertyDefinitionCollator::const_iterator pdi = pdc.begin();
+         pdi != pdc.end();
          ++pdi)
     {
         // remove the property from the window
-        widget.removeProperty(pdi->first);
+        widget.removeProperty((*pdi)->getName());
     }
 
     // remove added property link definitions
-    PropertyLinkDefinitionPtrMap pldm;
-    appendPropertyLinkDefinitions(pldm);
-    for (PropertyLinkDefinitionPtrMap::const_iterator pldi = pldm.begin();
-         pldi != pldm.end();
+    PropertyLinkDefinitionCollator pldc;
+    appendPropertyLinkDefinitions(pldc);
+    for (PropertyLinkDefinitionCollator::const_iterator pldi = pldc.begin();
+         pldi != pldc.end();
          ++pldi)
     {
         // remove the property from the window
-        widget.removeProperty(pldi->first);
+        widget.removeProperty((*pldi)->getName());
     }
 
     // clean up animation instances assoicated wit the window.
@@ -448,14 +448,14 @@ bool WidgetLookFeel::isNamedAreaDefined(const String& name) const
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::layoutChildWidgets(const Window& owner) const
 {
-    WidgetComponentPtrMap wcl;
-    appendChildWidgetComponents(wcl);
+    WidgetComponentCollator wcc;
+    appendChildWidgetComponents(wcc);
 
-    for (WidgetComponentPtrMap::const_iterator wci = wcl.begin();
-         wci != wcl.end();
+    for (WidgetComponentCollator::const_iterator wci = wcc.begin();
+         wci != wcc.end();
          ++wci)
     {
-        wci->second->layout(owner);
+        (*wci)->layout(owner);
     }
 }
 
@@ -482,6 +482,7 @@ void WidgetLookFeel::clearPropertyLinkDefinitions()
 {
     d_propertyLinkDefinitions.clear();
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
 WidgetLookFeel::getStateNames(bool inherits) const
@@ -501,6 +502,7 @@ WidgetLookFeel::getStateNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StateIterator
 WidgetLookFeel::getStateIterator(bool inherits) const
@@ -518,6 +520,7 @@ WidgetLookFeel::getStateIterator(bool inherits) const
         return StateIterator(d_stateImagery.begin(),d_stateImagery.end());
     }
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
 WidgetLookFeel::getImageryNames(bool inherits) const
@@ -538,6 +541,7 @@ WidgetLookFeel::getImageryNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::ImageryIterator
 WidgetLookFeel::getImageryIterator(bool inherits) const
@@ -555,6 +559,7 @@ WidgetLookFeel::getImageryIterator(bool inherits) const
         return ImageryIterator(d_imagerySections.begin(),d_imagerySections.end());
     }
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
 WidgetLookFeel::getNamedAreaNames(bool inherits) const
@@ -574,6 +579,7 @@ WidgetLookFeel::getNamedAreaNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::NamedAreaIterator
 WidgetLookFeel::getNamedAreaIterator(bool inherits) const
@@ -591,7 +597,6 @@ WidgetLookFeel::getNamedAreaIterator(bool inherits) const
         return NamedAreaIterator(d_namedAreas.begin(),d_namedAreas.end());
     }
 }
-
 
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
@@ -612,15 +617,17 @@ WidgetLookFeel::getWidgetNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::WidgetComponentIterator
 WidgetLookFeel::getWidgetComponentIterator(bool inherits) const
 {
-    WidgetComponentPtrMap wcl;
-    appendChildWidgetComponents(wcl,inherits);
+    WidgetComponentCollator wcc;
+    appendChildWidgetComponents(wcc, inherits);
 
-    return WidgetComponentIterator(wcl.begin(),wcl.end());
+    return WidgetComponentIterator(wcc.begin(), wcc.end());
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
 WidgetLookFeel::getPropertyDefinitionNames(bool inherits) const
@@ -640,14 +647,15 @@ WidgetLookFeel::getPropertyDefinitionNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::PropertyDefinitionIterator
 WidgetLookFeel::getPropertyDefinitionIterator(bool inherits) const
 {
-    PropertyDefinitionPtrMap wcl;
-    appendPropertyDefinitions(wcl,inherits);
+    PropertyDefinitionCollator pdc;
+    appendPropertyDefinitions(pdc, inherits);
 
-    return PropertyDefinitionIterator(wcl.begin(),wcl.end());
+    return PropertyDefinitionIterator(pdc.begin(), pdc.end());
 }
 
 //---------------------------------------------------------------------------//
@@ -669,18 +677,16 @@ WidgetLookFeel::getPropertyLinkDefinitionNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::PropertyLinkDefinitionIterator
 WidgetLookFeel::getPropertyLinkDefinitionIterator(bool inherits) const
 {
-    PropertyLinkDefinitionPtrMap wcl;
-    appendPropertyLinkDefinitions(wcl,inherits);
+    PropertyLinkDefinitionCollator pldc;
+    appendPropertyLinkDefinitions(pldc, inherits);
 
-    return PropertyLinkDefinitionIterator(wcl.begin(),wcl.end());
+    return PropertyLinkDefinitionIterator(pldc.begin(), pldc.end());
 }
-
-
-
 
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
@@ -701,15 +707,17 @@ WidgetLookFeel::getPropertyInitialiserNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::PropertyInitialiserIterator
 WidgetLookFeel::getPropertyInitialiserIterator(bool inherits) const
 {
-    PropertyInitialiserPtrMap wcl;
-    appendPropertyInitialisers(wcl,inherits);
+    PropertyInitialiserCollator pic;
+    appendPropertyInitialisers(pic, inherits);
 
-    return PropertyInitialiserIterator(wcl.begin(),wcl.end());
+    return PropertyInitialiserIterator(pic.begin(), pic.end());
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
 WidgetLookFeel::getEventLinkDefinitionNames(bool inherits) const
@@ -729,15 +737,17 @@ WidgetLookFeel::getEventLinkDefinitionNames(bool inherits) const
     }
     return result;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::EventLinkDefinitionIterator
 WidgetLookFeel::getEventLinkDefinitionIterator(bool inherits) const
 {
-    EventLinkDefinitionPtrMap wcl;
-    appendEventLinkDefinitions(wcl,inherits);
+    EventLinkDefinitionCollator eldc;
+    appendEventLinkDefinitions(eldc, inherits);
 
-    return EventLinkDefinitionIterator(wcl.begin(),wcl.end());
+    return EventLinkDefinitionIterator(eldc.begin(), eldc.end());
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::StringSet
 WidgetLookFeel::getAnimationNames(bool inherits) const
@@ -746,6 +756,7 @@ WidgetLookFeel::getAnimationNames(bool inherits) const
     appendAnimationNames(ans,inherits);
     return ans;
 }
+
 //---------------------------------------------------------------------------//
 WidgetLookFeel::AnimationNameIterator
 WidgetLookFeel::getAnimationNameIterator(bool inherits) const
@@ -755,9 +766,6 @@ WidgetLookFeel::getAnimationNameIterator(bool inherits) const
 
     return AnimationNameIterator(wcl.begin(),wcl.end());
 }
-
-
-
 
 //---------------------------------------------------------------------------//
 void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
@@ -845,30 +853,30 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
 const PropertyInitialiser* WidgetLookFeel::findPropertyInitialiser(
                                             const String& propertyName) const
 {
-    PropertyInitialiserPtrMap pim;
-    appendPropertyInitialisers(pim);
+    PropertyInitialiserCollator pic;
+    appendPropertyInitialisers(pic);
 
-    PropertyInitialiserPtrMap::const_iterator i = pim.find(propertyName);
+    PropertyInitialiserCollator::const_iterator i = pic.find(propertyName);
 
-    if (i == pim.end())
+    if (i == pic.end())
         return 0;
 
-    return i->second;
+    return *i;
 }
 
 //---------------------------------------------------------------------------//
 const WidgetComponent* WidgetLookFeel::findWidgetComponent(
                                             const String& name) const
 {
-    WidgetComponentPtrMap wcl;
-    appendChildWidgetComponents(wcl);
+    WidgetComponentCollator wcc;
+    appendChildWidgetComponents(wcc);
 
-    WidgetComponentPtrMap::const_iterator wci = wcl.find(name);
+    WidgetComponentCollator::const_iterator wci = wcc.find(name);
 
-    if (wci == wcl.end())
+    if (wci == wcc.end())
         return 0;
 
-    return wci->second;
+    return *wci;
 }
 
 //---------------------------------------------------------------------------//
@@ -895,86 +903,93 @@ void WidgetLookFeel::clearEventLinkDefinitions()
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::appendChildWidgetComponents(WidgetComponentPtrMap& map, bool inherits) const
+void WidgetLookFeel::appendChildWidgetComponents(WidgetComponentCollator& col,
+                                                 bool inherits) const
 {
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendChildWidgetComponents(map);
+            getWidgetLook(d_inheritedLookName).appendChildWidgetComponents(col);
 
     for (WidgetList::const_iterator i = d_childWidgets.begin();
          i != d_childWidgets.end();
          ++i)
     {
-        map[(*i).getWidgetName()] = &(*i);
+        col.set(i->getWidgetName(), &*i);
     }
 
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::appendPropertyDefinitions(PropertyDefinitionPtrMap& map, bool inherits) const
+void WidgetLookFeel::appendPropertyDefinitions(PropertyDefinitionCollator& col,
+                                               bool inherits) const
 {
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendPropertyDefinitions(map);
+            getWidgetLook(d_inheritedLookName).appendPropertyDefinitions(col);
 
     for (PropertyDefinitionList::iterator i = d_propertyDefinitions.begin();
          i != d_propertyDefinitions.end();
          ++i)
     {
-        map[(*i)->getName()] = (*i);
+        col.set((*i)->getName(), *i);
     }
 
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map, bool inherits) const
+void WidgetLookFeel::appendPropertyLinkDefinitions(
+        PropertyLinkDefinitionCollator& col, bool inherits) const
 {
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendPropertyLinkDefinitions(map);
+            getWidgetLook(d_inheritedLookName).appendPropertyLinkDefinitions(col);
 
     for (PropertyLinkDefinitionList::iterator i = d_propertyLinkDefinitions.begin();
          i != d_propertyLinkDefinitions.end();
          ++i)
     {
-        map[(*i)->getName()] = (*i);
+        col.set((*i)->getName(), *i);
     }
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::appendPropertyInitialisers(PropertyInitialiserPtrMap& map, bool inherits) const
+void WidgetLookFeel::appendPropertyInitialisers(
+        PropertyInitialiserCollator& col, bool inherits) const
 {
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendPropertyInitialisers(map);
+            getWidgetLook(d_inheritedLookName).appendPropertyInitialisers(col);
 
     for (PropertyList::const_iterator i = d_properties.begin();
          i != d_properties.end();
          ++i)
     {
-        map[(*i).getTargetPropertyName()] = &(*i);
+        col.set(i->getTargetPropertyName(), &*i);
     }
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map, bool inherits) const
+void WidgetLookFeel::appendEventLinkDefinitions(
+        EventLinkDefinitionCollator& col, bool inherits) const
 {
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
-            getWidgetLook(d_inheritedLookName).appendEventLinkDefinitions(map);
+            getWidgetLook(d_inheritedLookName).appendEventLinkDefinitions(col);
 
     for (EventLinkDefinitionList::const_iterator i = d_eventLinkDefinitions.begin();
          i != d_eventLinkDefinitions.end();
          ++i)
     {
-        map[(*i).getName()] = &(*i);
+        col.set(i->getName(), &*i);
     }
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::appendAnimationNames(AnimationNameSet& set, bool inherits) const
+void WidgetLookFeel::appendAnimationNames(AnimationNameSet& set,
+                                          bool inherits) const
 {
     set.insert(d_animations.begin(),d_animations.end());
+
     if (!d_inheritedLookName.empty() && inherits)
         WidgetLookManager::getSingleton().
             getWidgetLook(d_inheritedLookName).appendAnimationNames(set);
