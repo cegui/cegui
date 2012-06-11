@@ -28,6 +28,8 @@ author:     Lukas E Meindl
 #include "SampleData.h"
 #include "Sample.h"
 
+#include "Samples_xmlHandler.h"
+
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/Version.h"
 #include "CEGUI/Exceptions.h"
@@ -56,7 +58,8 @@ SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
     d_guiContext(0),
     d_textureTarget(0),
     d_textureTargetImage(0),
-    d_sampleWindow(0)
+    d_sampleWindow(0),
+    d_usedFilesString("")
 {
 }
 
@@ -68,6 +71,38 @@ SampleData::~SampleData()
 CEGUI::String SampleData::getName()
 {
     return d_name;
+}
+
+CEGUI::String SampleData::getSummary()
+{
+    return d_summary;
+}
+
+CEGUI::String SampleData::getSampleTypeString()
+{
+    switch(d_type)
+    {
+    case ST_Module:
+        return SampleDataHandler::SampleTypeCppModule;
+        break;
+    case ST_Lua:
+        return SampleDataHandler::SampleTypeLua;
+        break;
+    case ST_Python:
+        return SampleDataHandler::SampleTypePython;
+    default:
+        return "";
+    }
+}
+
+CEGUI::String SampleData::getDescription()
+{
+    return d_description;
+}
+
+CEGUI::String SampleData::getUsedFilesString()
+{
+    return d_usedFilesString;
 }
 
 void SampleData::setSampleWindow(CEGUI::Window* sampleWindow)
@@ -155,6 +190,7 @@ void SampleDataModule::initialise()
 
     getSampleInstanceFromDLL();
 
+    d_usedFilesString = d_sample->getUsedFilesString();
     d_sample->initialise(d_guiContext);
 }
 

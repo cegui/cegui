@@ -114,7 +114,7 @@ void SamplesFramework::initialiseFrameworkLayout()
     d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
 
     CEGUI::Window* samplesScrollablePane = d_root->getChild("SamplesFrameWindow/SamplesScrollablePane");
-    d_samplesWinMgr = new SamplesWindowManager(samplesScrollablePane);
+    d_samplesWinMgr = new SamplesWindowManager(this, samplesScrollablePane);
 }
 
 void SamplesFramework::unloadSamples()
@@ -254,4 +254,27 @@ void SamplesFramework::drawGUIContexts()
             sampleData->getSampleWindow()->getRenderingSurface()->invalidate();
         }
     }
+}
+
+void SamplesFramework::handleNewSampleSelection(CEGUI::Window* sampleWindow)
+{
+    SampleData* correspondingSampleData = findSampleData(sampleWindow);
+
+    d_metaDataWinMgr->setSampleInfo(correspondingSampleData);
+}
+
+SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
+{
+    //Find corresponding SampleData
+    std::vector<SampleData*>::iterator iter = d_samples.begin();
+    std::vector<SampleData*>::iterator end = d_samples.end();
+    for(; iter != end; ++iter)
+    {
+        SampleData* sampleData = *iter;
+
+        if(sampleData->getSampleWindow() == sampleWindow)
+            return sampleData;
+    }
+
+    return 0;
 }

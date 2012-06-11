@@ -29,6 +29,14 @@
 #include "CEGUI/CEGUI.h"
 
 /*************************************************************************
+   Constructor.
+*************************************************************************/
+FirstWindowSample::FirstWindowSample()
+    : d_usedFiles(__FILE__)
+{
+}
+
+/*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
 bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
@@ -133,6 +141,14 @@ void FirstWindowSample::deinitialise()
 CEGUI::Window* FirstWindowSample::getGUIRoot()
 {
     return d_root;
+}
+
+/*************************************************************************
+    Returns the path of the file used for this
+*************************************************************************/
+const CEGUI::String& FirstWindowSample::getUsedFilesString()
+{
+    return d_usedFiles;
 }
 
 /*************************************************************************

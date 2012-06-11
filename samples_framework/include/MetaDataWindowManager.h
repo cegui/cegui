@@ -33,11 +33,15 @@ namespace CEGUI
     class Window;
 }
 
+class SampleData;
+
 class MetaDataWindowManager
 {
 public:
     MetaDataWindowManager(CEGUI::Window* metaDataWindow);
     virtual ~MetaDataWindowManager() {}
+
+    void setSampleInfo(SampleData* sampleData);
 
     CEGUI::Window* getWindow();
 
@@ -45,7 +49,14 @@ private:
     MetaDataWindowManager(const MetaDataWindowManager&) {}
     MetaDataWindowManager& operator=(const MetaDataWindowManager&) {}
 
+    void init();
+
     CEGUI::Window* d_root;
+
+    CEGUI::Window* d_wndSampleType;
+    CEGUI::Window* d_wndSummary;
+    CEGUI::Window* d_wndDescription;
+    CEGUI::Window* d_wndUsedFiles;
 };
 
 #endif

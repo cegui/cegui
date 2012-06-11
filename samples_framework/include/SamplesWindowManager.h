@@ -37,10 +37,12 @@ namespace CEGUI
     class EventArgs;
 }
 
+class SamplesFramework;
+
 class SamplesWindowManager
 {
 public:
-    SamplesWindowManager(CEGUI::Window* samplesWindow);
+    SamplesWindowManager(SamplesFramework* owner, CEGUI::Window* samplesWindow);
     virtual ~SamplesWindowManager() {}
 
     CEGUI::Window* getWindow();
@@ -58,6 +60,10 @@ private:
     void updateWindows();
 
     bool handleMouseClickSampleWindow(const CEGUI::EventArgs& args);
+
+    void selectSampleWindow(CEGUI::Window* wnd);
+
+    SamplesFramework* d_owner;
 
     CEGUI::Window* d_root;
     int d_childCount;

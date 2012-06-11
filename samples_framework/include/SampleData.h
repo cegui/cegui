@@ -73,12 +73,17 @@ public:
     CEGUI::Window* getSampleWindow();
 
     CEGUI::String getName();
+    CEGUI::String getSummary();
+    CEGUI::String getSampleTypeString();
+    CEGUI::String getDescription();
+    CEGUI::String getUsedFilesString();
 
 protected:
     CEGUI::String           d_name;
     CEGUI::String           d_summary;
     CEGUI::String           d_description;
     SampleType              d_type;
+    CEGUI::String           d_usedFilesString;
 
     CEGUI::Window*          d_sampleWindow;
 
