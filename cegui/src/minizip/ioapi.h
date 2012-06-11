@@ -44,6 +44,14 @@
 #include <stdlib.h>
 #include "zlib.h"
 
+#ifndef OF
+    #ifdef _Z_OF
+        #define OF _Z_OF
+    #else
+        #define OF(arg) arg
+    #endif
+#endif
+
 #if defined(USE_FILE32API)
 #define fopen64 fopen
 #define ftello64 ftell
