@@ -72,7 +72,7 @@ bool CEGuiGLFWSharedBase::execute_impl()
     //Window callbacks
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
 
-    glClearColor(0.9f, 1.0f, 1.0f, 1.0f);
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 
     // set starting time
     d_frameTime = glfwGetTime();

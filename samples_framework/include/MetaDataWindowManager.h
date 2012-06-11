@@ -28,9 +28,6 @@ author:     Lukas E Meindl
 #ifndef _MetaDataWindowManager_h_
 #define _MetaDataWindowManager_h_
 
-// This header serves as a base for all samples and is needed inside the
-// SamplesFramework as interface for Samples that will be loaded.
-
 namespace CEGUI
 {
     class Window;
@@ -39,10 +36,9 @@ namespace CEGUI
 class MetaDataWindowManager
 {
 public:
-    MetaDataWindowManager();
+    MetaDataWindowManager(CEGUI::Window* metaDataWindow);
     virtual ~MetaDataWindowManager() {}
 
-    void init();
     CEGUI::Window* getWindow();
 
 private:

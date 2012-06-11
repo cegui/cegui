@@ -44,6 +44,7 @@ namespace CEGUI
 class SampleData;
 class Sample;
 class MetaDataWindowManager;
+class SamplesWindowManager;
 
 using namespace CEGUI;
 
@@ -89,11 +90,12 @@ protected:
 
     //virtual void updateGuiContexts(const float elapsed);
 
-    CEGUI::DefaultWindow* d_root;
+    CEGUI::Window* d_root;
 
     std::vector<SampleData*> d_samples;
 
     MetaDataWindowManager* d_metaDataWinMgr;
+    SamplesWindowManager* d_samplesWinMgr;
 };
 
 #endif
