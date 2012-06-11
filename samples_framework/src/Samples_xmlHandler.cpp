@@ -44,9 +44,9 @@ const String SampleDataHandler::SummaryAttribute("summary");
 const String SampleDataHandler::DescriptionAttribute("description");
 
 const String SampleDataHandler::SampleTypeAttribute("sampleType");
-const String SampleDataHandler::SampleTypeCppModule("cppmodule");
-const String SampleDataHandler::SampleTypeLua("lua");
-const String SampleDataHandler::SampleTypePython("python");
+const String SampleDataHandler::SampleTypeCppModule("C++ Module");
+const String SampleDataHandler::SampleTypeLua("Lua");
+const String SampleDataHandler::SampleTypePython("Python");
 
 
 //----------------------------------------------------------------------------//

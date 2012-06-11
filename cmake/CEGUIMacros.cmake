@@ -353,10 +353,6 @@ macro (cegui_add_sample _NAME)
 		${CMAKE_SOURCE_DIR}/Samples/common/include/SampleBase.h
 	)
     
-    set( CORE_SOURCE_FILES ${CORE_SOURCE_FILES}
-        ${CMAKE_SOURCE_DIR}/Samples/common/src/Sample.cpp
-    )
-
     ###########################################################################
     #                   Dynamically Linked Library
     ###########################################################################

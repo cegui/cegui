@@ -1,4 +1,4 @@
-<Imageset autoScaled="true" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1280" nativeVertRes="1024" version="2">
+<Imageset autoScaled="false" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1280" nativeVertRes="1024" version="2">
     <Image height="3" name="GenericFiller" width="3" xPos="1" yPos="49" />
     <Image height="25" name="FrameFillerTopLeft" width="25" xPos="39" yPos="51" />
     <Image height="25" name="FrameFillerTopRight" width="25" xPos="64" yPos="51" />

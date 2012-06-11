@@ -65,20 +65,21 @@ public:
 
     bool initialiseSample();
     void cleanupSample();
-
     bool initialiseCEGUI();
 
     void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum);
-
     void addSample(SampleData* sampleData);
 
     virtual void update(float passedTime);
-
     virtual void handleNewWindowSize(float width, float height);
 
     CEGUI::FrameWindow* createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
 
     virtual void drawGUIContexts();
+
+    void handleNewSampleSelection(CEGUI::Window* sampleWindow);
+
+    SampleData* findSampleData(CEGUI::Window* sampleWindow);
 
 protected:
     void initialiseFrameworkLayout();

@@ -2,13 +2,13 @@
 <Samples>
 	<SampleDefinition
         sampleName      = "CEGUIFirstWindow"
-        sampleType      = "cppmodule"
+        sampleType      = "C++ Module"
         summary         = "bla"
         description     = "muh"
     />
 	<SampleDefinition
         sampleName      = "CEGUIFalagardDemo1"
-        sampleType      = "cppmodule"
+        sampleType      = "C++ Module"
         summary         = "saddasdsf"
         description     = "faxaxaxaxaxaxa"
     />

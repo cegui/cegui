@@ -14,9 +14,9 @@
 	</xsd:complexType>
     <xsd:simpleType name="sampsSampleTypeEnum">
         <xsd:restriction base="xsd:string">
-            <xsd:enumeration value="cppmodule" />
-            <xsd:enumeration value="lua" />
-            <xsd:enumeration value="python" />
+            <xsd:enumeration value="C++ Module" />
+            <xsd:enumeration value="Lua" />
+            <xsd:enumeration value="Python" />
         </xsd:restriction>
     </xsd:simpleType>
 </xsd:schema>

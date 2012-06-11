@@ -35,6 +35,7 @@ namespace CEGUI
 {
     class Window;
     class GUIContext;
+    class String;
 }
 
 class Sample
@@ -47,6 +48,7 @@ public:
     virtual void deinitialise() = 0;
 
     virtual CEGUI::Window* getGUIRoot() = 0;
+    virtual const CEGUI::String& getUsedFilesString() = 0;
 
 private:
     Sample(const Sample&) {}
