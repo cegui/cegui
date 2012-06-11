@@ -2,6 +2,7 @@
 <GUIScheme version="5" name="SampleBrowserSkin">
 	<Imageset filename="SampleBrowser.imageset" />
 	<Font filename="DejaVuSans-10.font" />
+    <Font filename="DejaVuSans-10-NoScale.font" />
 	<LookNFeel filename="SampleBrowser.looknfeel" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 
@@ -12,6 +13,10 @@
     <FalagardMapping windowType="SampleBrowserSkin/Titlebar" targetType="CEGUI/Titlebar" renderer="Core/Titlebar" lookNFeel="SampleBrowserSkin/Titlebar" />
     <FalagardMapping windowType="SampleBrowserSkin/FrameWindow" targetType="CEGUI/FrameWindow" renderer="Core/FrameWindow" lookNFeel="SampleBrowserSkin/FrameWindow" />
     <FalagardMapping windowType="SampleBrowserSkin/StaticText" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="SampleBrowserSkin/StaticText" />
- 
-</GUIScheme>
+    <FalagardMapping windowType="SampleBrowserSkin/VerticalScrollbar" targetType="CEGUI/Scrollbar" renderer="Core/Scrollbar" lookNFeel="SampleBrowserSkin/VerticalScrollbar" />
+    <FalagardMapping windowType="SampleBrowserSkin/HorizontalScrollbar" targetType="CEGUI/Scrollbar" renderer="Core/Scrollbar" lookNFeel="SampleBrowserSkin/HorizontalScrollbar" />
+    <FalagardMapping windowType="SampleBrowserSkin/Thumb" targetType="CEGUI/Thumb" renderer="Core/Button" lookNFeel="SampleBrowserSkin/Thumb" />
+    <FalagardMapping windowType="SampleBrowserSkin/ScrollablePane" targetType="CEGUI/ScrollablePane" renderer="Core/ScrollablePane" lookNFeel="SampleBrowserSkin/ScrollablePane" /> 
+
+    </GUIScheme>
 
