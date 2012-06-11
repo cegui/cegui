@@ -74,7 +74,7 @@ bool FalagardDemo1Sample::initialise(CEGUI::GUIContext* guiContext)
     d_root->addChild(winMgr.loadLayoutFromFile("VanillaWindows.layout"));
     
     // create an instance of the console class.
-    d_console = new DemoConsole();
+    d_console = new DemoConsole(d_root);
 
     // listen for key presses on the root window.
     d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&FalagardDemo1Sample::handleRootKeyDown, this));
@@ -136,10 +136,16 @@ const unsigned int DemoConsole::HistoryID      = 3;
 
 
 DemoConsole::DemoConsole(CEGUI::Window* parent) :
-    d_root(CEGUI::WindowManager::getSingleton().loadLayoutFromFile("VanillaConsole.layout")),
+d_root(CEGUI::WindowManager::getSingleton().loadLayoutFromFile("VanillaConsole.layout")),
     d_historyPos(0)
 {
     using namespace CEGUI;
+
+   /*
+         if(parent)
+                parent->addChild(d_root);*/
+        
+
 
     // we will destroy the console box windows ourselves
     d_root->setDestroyedByParent(false);
@@ -152,14 +158,8 @@ DemoConsole::DemoConsole(CEGUI::Window* parent) :
 
     d_root->getChild(EntryBoxID)->
         subscribeEvent(Editbox::EventTextAccepted, Event::Subscriber(&DemoConsole::handleSubmit, this));
-
-    // decide where to attach the console main window
-    parent = parent ? parent : CEGUI::System::getSingleton().getDefaultGUIContext().getRootWindow();
-
-    // attach this window if parent is valid
-    if (parent)
-        parent->addChild(d_root);
 }
+
 
 DemoConsole::~DemoConsole()
 {
