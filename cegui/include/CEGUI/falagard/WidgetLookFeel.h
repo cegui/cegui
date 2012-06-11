@@ -36,6 +36,7 @@
 #include "./PropertyLinkDefinition.h"
 #include "./EventLinkDefinition.h"
 #include "./NamedArea.h"
+#include "./NamedDefinitionCollator.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -452,26 +453,21 @@ private:
 
     // these are container types used when composing final collections of
     // objects that come via inheritence.
-    typedef std::map<String, const WidgetComponent*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, const WidgetComponent*)> WidgetComponentPtrMap;
-    typedef std::map<String, Property*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Property*)> PropertyDefinitionPtrMap;
-    typedef std::map<String, Property*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, Property*)> PropertyLinkDefinitionPtrMap;
-    typedef std::map<String, const PropertyInitialiser*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, const PropertyInitialiser*)> PropertyInitialiserPtrMap;
-    typedef std::map<String, const EventLinkDefinition*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, const EventLinkDefinition*)> EventLinkDefinitionPtrMap;
+    typedef NamedDefinitionCollator<String, const WidgetComponent*> WidgetComponentCollator;
+    typedef NamedDefinitionCollator<String, Property*> PropertyDefinitionCollator;
+    typedef NamedDefinitionCollator<String, Property*> PropertyLinkDefinitionCollator;
+    typedef NamedDefinitionCollator<String, const PropertyInitialiser*> PropertyInitialiserCollator;
+    typedef NamedDefinitionCollator<String, const EventLinkDefinition*> EventLinkDefinitionCollator;
     typedef std::set<String, StringFastLessCompare
         CEGUI_SET_ALLOC(String)> AnimationNameSet;
 
     // functions to populate containers with collections of objects that we
     // gain through inheritence.
-    void appendChildWidgetComponents(WidgetComponentPtrMap& map, bool inherits = true) const;
-    void appendPropertyDefinitions(PropertyDefinitionPtrMap& map, bool inherits = true) const;
-    void appendPropertyLinkDefinitions(PropertyLinkDefinitionPtrMap& map, bool inherits = true) const;
-    void appendPropertyInitialisers(PropertyInitialiserPtrMap& map, bool inherits = true) const;
-    void appendEventLinkDefinitions(EventLinkDefinitionPtrMap& map, bool inherits = true) const;
+    void appendChildWidgetComponents(WidgetComponentCollator& col, bool inherits = true) const;
+    void appendPropertyDefinitions(PropertyDefinitionCollator& col, bool inherits = true) const;
+    void appendPropertyLinkDefinitions(PropertyLinkDefinitionCollator& col, bool inherits = true) const;
+    void appendPropertyInitialisers(PropertyInitialiserCollator& col, bool inherits = true) const;
+    void appendEventLinkDefinitions(EventLinkDefinitionCollator& col, bool inherits = true) const;
     void appendAnimationNames(AnimationNameSet& set, bool inherits = true) const;
 
     void swap(WidgetLookFeel& other);
@@ -480,19 +476,17 @@ public:
     /*************************************************************************
         Iterator stuff
     *************************************************************************/
-
     typedef std::set<String, StringFastLessCompare
             CEGUI_SET_ALLOC(String)> StringSet;
-
 
     typedef ConstMapIterator<StateList> StateIterator;
     typedef ConstMapIterator<ImageryList> ImageryIterator;
     typedef ConstMapIterator<NamedAreaList> NamedAreaIterator;
-    typedef ConstMapIterator<WidgetComponentPtrMap> WidgetComponentIterator;
-    typedef ConstMapIterator<PropertyDefinitionPtrMap> PropertyDefinitionIterator;
-    typedef ConstMapIterator<PropertyLinkDefinitionPtrMap> PropertyLinkDefinitionIterator;
-    typedef ConstMapIterator<PropertyInitialiserPtrMap> PropertyInitialiserIterator;
-    typedef ConstMapIterator<EventLinkDefinitionPtrMap> EventLinkDefinitionIterator;
+    typedef ConstVectorIterator<WidgetComponentCollator> WidgetComponentIterator;
+    typedef ConstVectorIterator<PropertyDefinitionCollator> PropertyDefinitionIterator;
+    typedef ConstVectorIterator<PropertyLinkDefinitionCollator> PropertyLinkDefinitionIterator;
+    typedef ConstVectorIterator<PropertyInitialiserCollator> PropertyInitialiserIterator;
+    typedef ConstVectorIterator<EventLinkDefinitionCollator> EventLinkDefinitionIterator;
     typedef ConstVectorIterator<AnimationNameSet> AnimationNameIterator;
 
     StringSet getStateNames(bool inherits = false) const;
