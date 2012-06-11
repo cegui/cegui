@@ -32,6 +32,7 @@ author:     Lukas E Meindl
 #include "SampleData.h"
 
 #include "MetaDataWindowManager.h"
+#include "SamplesWindowManager.h"
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/Logger.h"
@@ -64,9 +65,9 @@ int main(int /*argc*/, char* /*argv*/[])
 
 
 SamplesFramework::SamplesFramework()
-    : d_metaDataWinMgr(0)
+    : d_metaDataWinMgr(0),
+    d_samplesWinMgr(0)
 {
-    d_metaDataWinMgr = new MetaDataWindowManager();
 }
 
 SamplesFramework::~SamplesFramework()
@@ -105,10 +106,15 @@ void SamplesFramework::initialiseFrameworkLayout()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_root = static_cast<DefaultWindow*>(winMgr.createWindow("DefaultWindow", "Root"));
+    
+    d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
     System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
 
-    d_metaDataWinMgr->init();
-    d_root->addChild(d_metaDataWinMgr->getWindow());
+    CEGUI::Window* metaDataWindow = d_root->getChild("SampleBrowserMetaData");
+    d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
+
+    CEGUI::Window* samplesScrollablePane = d_root->getChild("SamplesFrameWindow/SamplesScrollablePane");
+    d_samplesWinMgr = new SamplesWindowManager(samplesScrollablePane);
 }
 
 void SamplesFramework::unloadSamples()
@@ -204,6 +210,8 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
 
         sampleData->handleNewWindowSize(width, height);
     }
+
+    d_samplesWinMgr->setWindowRatio(height/width);
 }
 
 CEGUI::FrameWindow* SamplesFramework::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
@@ -216,10 +224,7 @@ CEGUI::FrameWindow* SamplesFramework::createSampleWindow(const CEGUI::String& na
     CEGUI::String imageName = image.getName();
     wnd->setProperty("Image", imageName);
 
-    d_root->addChild(wnd);
-
-    wnd->setPosition(UVector2(cegui_reldim(0.45f), cegui_reldim(0.25f)));
-    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.5f)));
+    d_samplesWinMgr->addSampleWindow(wnd);
 
     return wnd;
 }
