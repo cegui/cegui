@@ -1303,12 +1303,12 @@ do
         cegui_zlib_ldflags="-L$cegui_zlib_home/lib" 
       	if test -f "${cegui_zlib_home}/include/zlib.h" ; then 
             CPPFLAGS="$cegui_zlib_cppflags $cegui_zlib_save_CPPFLAGS"
-            LDFALGS="$cegui_zlib_ldflags $cegui_zlib_save_LDFLAGS"
+            LDFLAGS="$cegui_zlib_ldflags $cegui_zlib_save_LDFLAGS"
             AC_CHECK_HEADER(zlib.h, [cegui_zlib_cv_zlib_h=yes], [cegui_zlib_cv_zlib_h=no])
             AC_CHECK_LIB(z, inflateEnd, [cegui_zlib_cv_libz=yes], [cegui_zlib_cv_libz=no])
             if  test "$cegui_zlib_cv_libz" = "yes" -a "$cegui_zlib_cv_zlib_h" = "yes" ; then 
                 HAVE_ZLIB=yes
-                ZLIB_CFLAGS="$cegui_zlib_cflags"
+                ZLIB_CFLAGS="$cegui_zlib_cppflags"
                 ZLIB_LIBS="$cegui_zlib_ldflags -lz"
             fi
         fi
