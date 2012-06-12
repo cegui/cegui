@@ -356,7 +356,7 @@ protected:
     //! collection of RenderingWindow object we own
     RenderingWindowList d_windows;
     //! RenderTarget that this surface actually draws to.
-    RenderTarget& d_target;
+    RenderTarget* d_target;
     //! holds invalidated state of target (as far as we are concerned)
     bool d_invalidated;
 };

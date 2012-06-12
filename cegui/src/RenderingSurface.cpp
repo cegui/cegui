@@ -52,7 +52,7 @@ const String RenderingSurface::EventRenderQueueEnded("RenderQueueEnded");
 
 //----------------------------------------------------------------------------//
 RenderingSurface::RenderingSurface(RenderTarget& target) :
-    d_target(target),
+    d_target(&target),
     d_invalidated(true)
 {
 }
@@ -98,11 +98,11 @@ void RenderingSurface::clearGeometry()
 //----------------------------------------------------------------------------//
 void RenderingSurface::draw()
 {
-    d_target.activate();
+    d_target->activate();
 
     drawContent();
 
-    d_target.deactivate();
+    d_target->deactivate();
 }
 
 //----------------------------------------------------------------------------//
@@ -126,7 +126,7 @@ void RenderingSurface::draw(const RenderQueue& queue,
 {
     fireEvent(EventRenderQueueStarted, args, EventNamespace);
 
-    d_target.draw(queue);
+    d_target->draw(queue);
 
     args.handled = 0;
     fireEvent(EventRenderQueueEnded, args, EventNamespace);
@@ -141,7 +141,7 @@ void RenderingSurface::invalidate()
 //----------------------------------------------------------------------------//
 bool RenderingSurface::isInvalidated() const
 {
-    return d_invalidated || !d_target.isImageryCache();
+    return d_invalidated || !d_target->isImageryCache();
 }
 
 //----------------------------------------------------------------------------//
@@ -206,7 +206,7 @@ void RenderingSurface::attachWindow(RenderingWindow& w)
 //----------------------------------------------------------------------------//
 const RenderTarget& RenderingSurface::getRenderTarget() const
 {
-    return d_target;
+    return *d_target;
 }
 
 //----------------------------------------------------------------------------//
