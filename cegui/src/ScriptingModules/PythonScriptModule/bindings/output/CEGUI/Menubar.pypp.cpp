@@ -159,16 +159,16 @@ struct Menubar_wrapper : CEGUI::Menubar, bp::wrapper< CEGUI::Menubar > {
         CEGUI::ItemListBase::notifyItemSelectState( boost::python::ptr(arg0), arg1 );
     }
 
-    virtual void performChildWindowLayout(  ) {
+    virtual void performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
         if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
-            func_performChildWindowLayout(  );
+            func_performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         else{
-            this->CEGUI::ItemListBase::performChildWindowLayout(  );
+            this->CEGUI::ItemListBase::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         }
     }
     
-    void default_performChildWindowLayout(  ) {
-        CEGUI::ItemListBase::performChildWindowLayout( );
+    void default_performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
+        CEGUI::ItemListBase::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
     }
 
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
@@ -423,13 +423,14 @@ void register_Menubar_class(){
         }
         { //::CEGUI::ItemListBase::performChildWindowLayout
         
-            typedef void ( ::CEGUI::ItemListBase::*performChildWindowLayout_function_type )(  ) ;
-            typedef void ( Menubar_wrapper::*default_performChildWindowLayout_function_type )(  ) ;
+            typedef void ( ::CEGUI::ItemListBase::*performChildWindowLayout_function_type )( bool,bool ) ;
+            typedef void ( Menubar_wrapper::*default_performChildWindowLayout_function_type )( bool,bool ) ;
             
             Menubar_exposer.def( 
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::ItemListBase::performChildWindowLayout)
-                , default_performChildWindowLayout_function_type(&Menubar_wrapper::default_performChildWindowLayout) );
+                , default_performChildWindowLayout_function_type(&Menubar_wrapper::default_performChildWindowLayout)
+                , ( bp::arg("nonclient_sized_hint")=(bool)(false), bp::arg("client_sized_hint")=(bool)(false) ) );
         
         }
         { //::CEGUI::Window::setLookNFeel
