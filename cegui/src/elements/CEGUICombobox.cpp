@@ -630,6 +630,8 @@ void Combobox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onDropListDisplayed(WindowEventArgs& e)
 {
+    System::getSingleton().updateWindowContainingMouse();
+    getPushButton()->setPushedState(true);
 	fireEvent(EventDropListDisplayed, e, EventNamespace);
 }
 
@@ -639,6 +641,8 @@ void Combobox::onDropListDisplayed(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onDroplistRemoved(WindowEventArgs& e)
 {
+    System::getSingleton().updateWindowContainingMouse();
+    getPushButton()->setPushedState(false);
 	fireEvent(EventDropListRemoved, e, EventNamespace);
 }
 

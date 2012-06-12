@@ -122,12 +122,12 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 
 	if (e.button == LeftButton)
 	{
-		if (captureInput())
-		{
+        if (captureInput())
+        {
 			d_pushed = true;
 			updateInternalState(e.position);
 			invalidate();
-		}
+        }
 
 		// event was handled by us.
 		++e.handled;
@@ -135,6 +135,19 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 
 }
 
+//----------------------------------------------------------------------------//
+void ButtonBase::setPushedState(const bool pushed)
+{
+    d_pushed = pushed;
+
+    if (!pushed)
+	    updateInternalState(getUnprojectedPosition(
+            MouseCursor::getSingletonPtr()->getPosition()));
+    else
+        d_hovering = true;
+
+    invalidate();
+}
 
 /*************************************************************************
 	Handler for mouse button release events
