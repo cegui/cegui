@@ -12,7 +12,7 @@ set( CORE_SOURCE_FILES
 )
 
 set( CORE_HEADER_FILES
-    ../Samples/common/include/Sample.h
+    ../samples/common/include/Sample.h
     ./include/SamplesFrameworkBase.h
     ./include/SamplesFramework.h
     ./include/CEGuiBaseApplication.h
