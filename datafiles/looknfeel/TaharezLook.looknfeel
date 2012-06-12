@@ -2194,6 +2194,7 @@
             <Property name="NormalImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
             <Property name="HoverImage" value="set:TaharezLook image:ComboboxListButtonHover" />
             <Property name="PushedImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
+            <Property name="DisabledImage" value="set:TaharezLook image:ComboboxListButtonNormal" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
