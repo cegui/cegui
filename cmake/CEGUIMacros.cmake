@@ -338,7 +338,7 @@ endmacro()
 macro (cegui_add_sample _NAME)
     set (CEGUI_TARGET_NAME ${_NAME}${CEGUI_SLOT_VERSION})
 
-    include_directories(${CMAKE_SOURCE_DIR}/Samples/common/include)
+    include_directories(${CMAKE_SOURCE_DIR}/samples/common/include)
 	
 
 
@@ -349,8 +349,8 @@ macro (cegui_add_sample _NAME)
     cegui_gather_files()
 	
 	set(CORE_HEADER_FILES ${CORE_HEADER_FILES}
-		${CMAKE_SOURCE_DIR}/Samples/common/include/Sample.h
-		${CMAKE_SOURCE_DIR}/Samples/common/include/SampleBase.h
+		${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
+		${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
 	)
     
     ###########################################################################
