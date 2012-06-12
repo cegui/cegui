@@ -123,6 +123,18 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
+    virtual void initialiseComponents(  ) {
+        if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
+            func_initialiseComponents(  );
+        else{
+            this->CEGUI::Window::initialiseComponents(  );
+        }
+    }
+    
+    void default_initialiseComponents(  ) {
+        CEGUI::Window::initialiseComponents( );
+    }
+
     virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
@@ -135,16 +147,16 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
-    virtual void performChildWindowLayout(  ) {
+    virtual void performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
         if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
-            func_performChildWindowLayout(  );
+            func_performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         else{
-            this->CEGUI::Window::performChildWindowLayout(  );
+            this->CEGUI::Window::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         }
     }
     
-    void default_performChildWindowLayout(  ) {
-        CEGUI::Window::performChildWindowLayout( );
+    void default_performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
+        CEGUI::Window::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
     }
 
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
@@ -400,6 +412,17 @@ void register_GroupBox_class(){
                 , default_getUnclippedInnerRect_impl_function_type(&GroupBox_wrapper::default_getUnclippedInnerRect_impl) );
         
         }
+        { //::CEGUI::Window::initialiseComponents
+        
+            typedef void ( ::CEGUI::Window::*initialiseComponents_function_type )(  ) ;
+            typedef void ( GroupBox_wrapper::*default_initialiseComponents_function_type )(  ) ;
+            
+            GroupBox_exposer.def( 
+                "initialiseComponents"
+                , initialiseComponents_function_type(&::CEGUI::Window::initialiseComponents)
+                , default_initialiseComponents_function_type(&GroupBox_wrapper::default_initialiseComponents) );
+        
+        }
         { //::CEGUI::Window::isHit
         
             typedef bool ( ::CEGUI::Window::*isHit_function_type )( ::CEGUI::Vector2 const &,bool const ) const;
@@ -414,13 +437,14 @@ void register_GroupBox_class(){
         }
         { //::CEGUI::Window::performChildWindowLayout
         
-            typedef void ( ::CEGUI::Window::*performChildWindowLayout_function_type )(  ) ;
-            typedef void ( GroupBox_wrapper::*default_performChildWindowLayout_function_type )(  ) ;
+            typedef void ( ::CEGUI::Window::*performChildWindowLayout_function_type )( bool,bool ) ;
+            typedef void ( GroupBox_wrapper::*default_performChildWindowLayout_function_type )( bool,bool ) ;
             
             GroupBox_exposer.def( 
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::Window::performChildWindowLayout)
-                , default_performChildWindowLayout_function_type(&GroupBox_wrapper::default_performChildWindowLayout) );
+                , default_performChildWindowLayout_function_type(&GroupBox_wrapper::default_performChildWindowLayout)
+                , ( bp::arg("nonclient_sized_hint")=(bool)(false), bp::arg("client_sized_hint")=(bool)(false) ) );
         
         }
         { //::CEGUI::Window::setLookNFeel
