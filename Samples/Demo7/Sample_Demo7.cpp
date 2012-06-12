@@ -272,10 +272,7 @@ bool Demo7Sample::initialiseSample()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
-    SchemeManager::getSingleton().create("WindowsLook.scheme");
     SchemeManager::getSingleton().create("TaharezLook.scheme");
-    SchemeManager::getSingleton().create("VanillaSkin.scheme");
-    SchemeManager::getSingleton().create("OgreTray.scheme");
     System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
     FontManager::getSingleton().create("DejaVuSans-10.font");
 
@@ -340,7 +337,6 @@ void Demo7Sample::createListContent(void)
     cbobox->addItem(new MyListItem("Combobox Item 8"));
     cbobox->addItem(new MyListItem("Combobox Item 9"));
     cbobox->addItem(new MyListItem("Combobox Item 10"));
-
 
     //
     // Multi-Column List setup
@@ -477,8 +473,6 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
     WindowManager::getSingleton().getWindow("Demo7/Window3")->
         setVisible(static_cast<Checkbox*>(static_cast<const WindowEventArgs&>(e).window)->isSelected());
 
-    Combobox* cbobox = static_cast<Combobox*>(WindowManager::getSingleton().getWindow("Demo7/Window2/Combobox"));
-    cbobox->setEnabled(cbobox->isDisabled());
     // event was handled.
     return true;
 }
