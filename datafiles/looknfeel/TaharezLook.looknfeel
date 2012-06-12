@@ -1890,7 +1890,7 @@
             <HorzAlignment type="RightAligned" />
             <Property name="NormalImage" value="TaharezLook/ComboboxListButtonNormal" />
             <Property name="HoverImage" value="TaharezLook/ComboboxListButtonHover" />
-            <Property name="PushedImage" value="TaharezLook/ComboboxListButtonNormal" />
+            <Property name="PushedImage" value="TaharezLook/ComboboxListButtonHover" />
             <Property name="DisabledImage" value="TaharezLook/ComboboxListButtonNormal" />
         </Child>
         <StateImagery name="Enabled" />
