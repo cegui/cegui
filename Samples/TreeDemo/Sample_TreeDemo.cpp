@@ -26,15 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_TreeDemo.h"
-#include "CEGUI.h"
-#include "CEGUIPropertyHelper.h"    // for string conversions
-#include "elements/CEGUITree.h"
-#include "elements/CEGUIEditbox.h"
-#include "falagard/CEGUIFalWidgetLookManager.h"
+#include "CEGUI/CEGUI.h"
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #define WIN32_LEAN_AND_MEAN
-#define NOMINMAX
 #include "windows.h"
 #include <mmsystem.h>
 #endif
@@ -62,7 +57,7 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #define STATICIMAGE_NAME   "TaharezLook/StaticImage"
 #define TOOLTIP_NAME       "TaharezLook/Tooltip"
 #define LAYOUT_FILE_NAME   "TreeDemoTaharez.layout"
-#define BRUSH_NAME         "TextSelectionBrush"
+#define BRUSH_NAME         "/TextSelectionBrush"
 #endif
 
 
@@ -130,17 +125,16 @@ bool TreeDemoSample::initialiseSample()
    CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Insane);
 
    // Load the scheme to initialise the skin which we use in this sample
-   SchemeManager::getSingleton().create(SCHEME_FILE_NAME);
+   SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
-   System::getSingleton().setDefaultMouseCursor(IMAGES_FILE_NAME, "MouseArrow");
+   System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
-   ImagesetManager::getSingleton().createFromImageFile("BackgroundImage", "GPN-2000-001437.tga");
+   ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
 
    // Load some icon images for our test tree
-  // Imageset *iconImages = ImagesetManager::getSingleton().create("TreeIcons.imageset");
-   Imageset& drives = ImagesetManager::getSingleton().create("DriveIcons.imageset");
+   ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
    // here we will use a StaticImage as the root, then we can use it to place a background image
    Window* background = winMgr.createWindow(STATICIMAGE_NAME);
@@ -151,20 +145,20 @@ bool TreeDemoSample::initialiseSample()
    background->setProperty("FrameEnabled", "false");
    background->setProperty("BackgroundEnabled", "false");
    // set the background image
-   background->setProperty("Image", "set:BackgroundImage image:full_image");
+   background->setProperty("Image", "BackgroundImage");
    // install this as the root GUI sheet
-   System::getSingleton().setGUISheet(background);
+   System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 
-    FontManager::getSingleton().create("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 //	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
 //		FontManager::getSingleton().createFont("Commonwealth-10.font");
 
 
-   TreeDemoWindow = winMgr.loadWindowLayout(LAYOUT_FILE_NAME);
+   TreeDemoWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
 
-   background->addChildWindow(TreeDemoWindow);
+   background->addChild(TreeDemoWindow);
 
    // listen for key presses on the root window.
    background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&TreeDemoSample::handleRootKeyDown, this));
@@ -178,66 +172,65 @@ bool TreeDemoSample::initialiseSample()
    // activate the background window
    background->activate();
 
-   Imageset& iconImages = drives;
-   iconArray[0] = (Image *)&iconImages.getImage("Artic");
-   iconArray[1] = (Image *)&iconImages.getImage("Black");
-   iconArray[2] = (Image *)&iconImages.getImage("Sunset");
-   iconArray[3] = (Image *)&iconImages.getImage("DriveStack");
-   iconArray[4] = (Image *)&iconImages.getImage("GlobalDrive");
-   iconArray[5] = (Image *)&iconImages.getImage("Blue");
-   iconArray[6] = (Image *)&iconImages.getImage("Lime");
-   iconArray[7] = (Image *)&iconImages.getImage("Silver");
-   iconArray[8] = (Image *)&iconImages.getImage("GreenCandy");
+   iconArray[0] = &ImageManager::getSingleton().get("DriveIcons/Artic");
+   iconArray[1] = &ImageManager::getSingleton().get("DriveIcons/Black");
+   iconArray[2] = &ImageManager::getSingleton().get("DriveIcons/Sunset");
+   iconArray[3] = &ImageManager::getSingleton().get("DriveIcons/DriveStack");
+   iconArray[4] = &ImageManager::getSingleton().get("DriveIcons/GlobalDrive");
+   iconArray[5] = &ImageManager::getSingleton().get("DriveIcons/Blue");
+   iconArray[6] = &ImageManager::getSingleton().get("DriveIcons/Lime");
+   iconArray[7] = &ImageManager::getSingleton().get("DriveIcons/Silver");
+   iconArray[8] = &ImageManager::getSingleton().get("DriveIcons/GreenCandy");
 
    // Create a top-most TreeCtrlEntry
    newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1a");
-   newTreeCtrlEntryLvl1->setIcon(drives.getImage("Black"));
-   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl1->setIcon(ImageManager::getSingleton().get("DriveIcons/Black"));
+   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
 //   newTreeCtrlEntryLvl1->setUserData((void *)someData);
    theTree->addItem(newTreeCtrlEntryLvl1);
    // Create a second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2a (1a)");
-   newTreeCtrlEntryLvl2->setIcon(drives.getImage("Artic"));
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl2->setIcon(ImageManager::getSingleton().get("DriveIcons/Artic"));
+   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create a third-level TreeCtrlEntry and attach it to the above TreeCtrlEntry
    newTreeCtrlEntryLvl3 = new TreeItem("Tree Item Level 3a (2a)");
-   newTreeCtrlEntryLvl3->setIcon(drives.getImage("Blue"));
-   newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl3->setIcon(ImageManager::getSingleton().get("DriveIcons/Blue"));
+   newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl2->addItem(newTreeCtrlEntryLvl3);
    // Create another third-level TreeCtrlEntry and attach it to the above TreeCtrlEntry
    newTreeCtrlEntryLvl3 = new TreeItem("Tree Item Level 3b (2a)");
-   newTreeCtrlEntryLvl3->setIcon(drives.getImage("Lime"));
-   newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl3->setIcon(ImageManager::getSingleton().get("DriveIcons/Lime"));
+   newTreeCtrlEntryLvl3->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl2->addItem(newTreeCtrlEntryLvl3);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2b (1a)");
-   newTreeCtrlEntryLvl2->setIcon(drives.getImage("Sunset"));
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl2->setIcon(ImageManager::getSingleton().get("DriveIcons/Sunset"));
+   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2c (1a)");
-   newTreeCtrlEntryLvl2->setIcon(drives.getImage("Silver"));
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl2->setIcon(ImageManager::getSingleton().get("DriveIcons/Silver"));
+   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
 
    // Create another top-most TreeCtrlEntry
    newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1b");
-   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
-   newTreeCtrlEntryLvl1->setIcon(drives.getImage("DriveStack"));
+   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
+   newTreeCtrlEntryLvl1->setIcon(ImageManager::getSingleton().get("DriveIcons/DriveStack"));
    newTreeCtrlEntryLvl1->setDisabled(true); // Let's disable this one just to be sure it works
    theTree->addItem(newTreeCtrlEntryLvl1);
    // Create a second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2a (1b)");
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
    // Create another second-level TreeCtrlEntry and attach it to the top-most TreeCtrlEntry
    newTreeCtrlEntryLvl2 = new TreeItem("Tree Item Level 2b (1b)");
-   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    newTreeCtrlEntryLvl1->addItem(newTreeCtrlEntryLvl2);
 
    newTreeCtrlEntryLvl1 = new TreeItem("Tree Item Level 1c");
-   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+   newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
    theTree->addItem(newTreeCtrlEntryLvl1);
 
    // Now let's create a whole bunch of items automatically
@@ -250,13 +243,13 @@ bool TreeDemoSample::initialiseSample()
    while (levelIndex < 10)
       {
       idepthIndex = 0;
-      itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex);
+      itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex);
       newTreeCtrlEntryLvl1 = new TreeItem(itemText);
       // Set a random icon for the item.  Sometimes blank (on purpose).
       iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0])) + 2);
       if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
          newTreeCtrlEntryLvl1->setIcon(*iconArray[iconIndex]);
-      newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+      newTreeCtrlEntryLvl1->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
       theTree->addItem(newTreeCtrlEntryLvl1);
       newTreeCtrlEntryParent = newTreeCtrlEntryLvl1;
 
@@ -265,13 +258,13 @@ bool TreeDemoSample::initialiseSample()
       childCount = randInt(0, 3);
       while (childIndex < childCount)
          {
-         itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex + 1) + " Child " + PropertyHelper::intToString(childIndex + 1);
+         itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
          newTreeCtrlEntryLvl2 = new TreeItem(itemText);
          // Set a random icon for the item.  Sometimes blank (on purpose).
          iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
          if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
             newTreeCtrlEntryLvl2->setIcon(*iconArray[iconIndex]);
-         newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+         newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
          newTreeCtrlEntryParent->addItem(newTreeCtrlEntryLvl2);
          ++childIndex;
          }
@@ -279,13 +272,13 @@ bool TreeDemoSample::initialiseSample()
 
       while (idepthIndex < 15)
          {
-         itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex + 1);
+         itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1);
          newTreeCtrlEntryLvl2 = new TreeItem(itemText);
          // Set a random icon for the item.  Sometimes blank (on purpose).
          iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
          if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
             newTreeCtrlEntryLvl2->setIcon(*iconArray[iconIndex]);
-         newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+         newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
          newTreeCtrlEntryParent->addItem(newTreeCtrlEntryLvl2);
          newTreeCtrlEntryParent = newTreeCtrlEntryLvl2;
 
@@ -294,13 +287,13 @@ bool TreeDemoSample::initialiseSample()
          childCount = randInt(0, 3);
          while (childIndex < childCount)
             {
-            itemText = "Tree Item Level " + PropertyHelper::intToString(levelIndex) + " Depth " + PropertyHelper::intToString(idepthIndex + 1) + " Child " + PropertyHelper::intToString(childIndex + 1);
+            itemText = "Tree Item Level " + PropertyHelper<int>::toString(levelIndex) + " Depth " + PropertyHelper<int>::toString(idepthIndex + 1) + " Child " + PropertyHelper<int>::toString(childIndex + 1);
             newTreeCtrlEntryLvl2 = new TreeItem(itemText);
             // Set a random icon for the item.  Sometimes blank (on purpose).
             iconIndex = randInt(0, (sizeof(iconArray) / sizeof(iconArray[0]) + 2));
             if (iconIndex < sizeof(iconArray) / sizeof(iconArray[0]))
                newTreeCtrlEntryLvl2->setIcon(*iconArray[iconIndex]);
-            newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME, BRUSH_NAME);
+            newTreeCtrlEntryLvl2->setSelectionBrushImage(IMAGES_FILE_NAME BRUSH_NAME);
             newTreeCtrlEntryParent->addItem(newTreeCtrlEntryLvl2);
             ++childIndex;
             }

@@ -26,21 +26,12 @@ of this component.
 - This software can be compiled to optionally include an embedded copy of the
 minibidi software from the Arabeyes project (http://www.arabeyes.org/).
 minibidi was written by Ahmad Khalifa and is licensed under the MIT license.
-- This sofware can be compiled to optionally contain an embedded version of
-TinyXML.  Please see @subpage tinyxml_lic for additional licensing
-information.
-- This software can be compiled in such a way that certain components contain an
-embedded copy of the OpenGL Extension Wrangler (GLEW) library.  Please see
-@subpage glew_lic for additional licensing that may apply to the use of this
-library.
-- This software can be compiled to optionally contain an embedded copy of tolua++.
-Please see the @ref toluapp_readme for additional information.
-- This software can be compiled to optionally contain unzip code taken (and
-modified) from the Minizip project.  The original Minizip code may be found at 
-http://www.winimage.com/zLibDll/minizip.html
 - This software can be compiled to contain an embedded version of the
 stb_image.c code, which has been released into the public domain by it's author
 Sean Barrett (http://nothings.org/).
+- The OpenGLES Renderer module contains portions of code that is
+Copyright (C)1991-2000 Silicon Graphics, Inc. All Rights Reserved.
+See : http://oss.sgi.com/projects/FreeB/
 
 <br>
 @section licensing_sec_4 Licensing 101: What it all means!

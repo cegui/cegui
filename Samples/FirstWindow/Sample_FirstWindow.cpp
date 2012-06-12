@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Sample_FirstWindow.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 int main(int /*argc*/, char* /*argv*/[])
 {
@@ -56,7 +56,7 @@ bool FirstWindowSample::initialiseSample()
     // So, we use the SchemeManager singleton to load in a scheme that loads the
     // imagery and registers widgets for the TaharezLook skin.  This scheme also
     // loads in a font that gets used as the system default.
-    SchemeManager::getSingleton().create("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 
     // The next thing we do is to set a default mouse cursor image.  This is
     // not strictly essential, although it is nice to always have a visible
@@ -64,7 +64,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().setDefaultMouseCursor("TaharezLook", "MouseArrow");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -85,7 +85,7 @@ bool FirstWindowSample::initialiseSample()
 
     // set the GUI root window (also known as the GUI "sheet"), so the gui we set up
     // will be visible.
-    System::getSingleton().setGUISheet(root);
+    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
@@ -95,7 +95,7 @@ bool FirstWindowSample::initialiseSample()
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
-    root->addChildWindow(wnd);
+    root->addChild(wnd);
 
     // Windows are in Relative metrics mode by default.  This means that we can
     // specify sizes and positions without having to know the exact pixel size
@@ -107,7 +107,7 @@ bool FirstWindowSample::initialiseSample()
     // Here we set the FrameWindow so that it is half the size of the display,
     // and centered within the display.
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
-    wnd->setSize(UVector2(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
+    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
 
     // now we set the maximum and minum sizes for the new window.  These are
     // specified using relative co-ordinates, but the important thing to note
@@ -116,8 +116,8 @@ bool FirstWindowSample::initialiseSample()
     //
     // here we set a maximum size for the FrameWindow which is equal to the size
     // of the display, and a minimum size of one tenth of the display.
-    wnd->setMaxSize(UVector2(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
-    wnd->setMinSize(UVector2(cegui_reldim(0.1f), cegui_reldim( 0.1f)));
+    wnd->setMaxSize(USize(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
+    wnd->setMinSize(USize(cegui_reldim(0.1f), cegui_reldim( 0.1f)));
 
     // As a final step in the initialisation of our sample window, we set the window's
     // text to "Hello World!", so that this text will appear as the caption in the
