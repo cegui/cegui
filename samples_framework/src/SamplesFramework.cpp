@@ -66,7 +66,8 @@ int main(int /*argc*/, char* /*argv*/[])
 
 SamplesFramework::SamplesFramework()
     : d_metaDataWinMgr(0),
-    d_samplesWinMgr(0)
+    d_samplesWinMgr(0),
+    d_renderingBrowser(true)
 {
 }
 
@@ -87,6 +88,12 @@ bool SamplesFramework::initialiseSample()
     initialiseFrameworkLayout();
 
     loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
+
+    if(d_samples.size() > 0)
+    {
+        handleSampleSelection(d_samples[0]->getSampleWindow());
+        d_samplesWinMgr->selectSampleWindow(d_samples[0]->getSampleWindow());
+    }
 
     // return true to signalize the initialisation was sucessful and run the SamplesFramework
     return true;
@@ -234,34 +241,64 @@ void SamplesFramework::addSample(SampleData* sampleData)
     d_samples.push_back(sampleData);
 
     sampleData->initialise();
-    CEGUI::FrameWindow* sampleWindow= createSampleWindow(sampleData->getName(), sampleData->getRTTImage());;
+    CEGUI::FrameWindow* sampleWindow = createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
     sampleData->setSampleWindow(sampleWindow);
 }
 
 
 void SamplesFramework::drawGUIContexts()
 {
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
-    for(; iter != end; ++iter)
-    {
-        SampleData* sampleData = *iter;
+    CEGUI::System& gui_system(CEGUI::System::getSingleton());
+    gui_system.getDefaultGUIContext().draw();
 
-        bool isContextDirty = sampleData->getGuiContext()->isDirty();
-        if(isContextDirty)
+    if(d_renderingBrowser)
+    {
+        std::vector<SampleData*>::iterator iter = d_samples.begin();
+        std::vector<SampleData*>::iterator end = d_samples.end();
+        for(; iter != end; ++iter)
         {
-            sampleData->getGuiContext()->draw();
-            sampleData->getSampleWindow()->getRenderingSurface()->invalidate();
+            SampleData* sampleData = *iter;
+
+            bool isContextDirty = true;// sampleData->getGuiContext()->isDirty();
+            if(isContextDirty)
+            {
+                sampleData->getGuiContext()->draw();
+
+                sampleData->getSampleWindow()->invalidate();
+            }
         }
     }
 }
 
-void SamplesFramework::handleNewSampleSelection(CEGUI::Window* sampleWindow)
+void SamplesFramework::handleSampleSelection(CEGUI::Window* sampleWindow)
 {
     SampleData* correspondingSampleData = findSampleData(sampleWindow);
 
     d_metaDataWinMgr->setSampleInfo(correspondingSampleData);
 }
+
+
+void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
+{
+    SampleData* correspondingSampleData = findSampleData(sampleWindow);
+
+    CEGUI::Window* window = correspondingSampleData->getGuiRoot();
+
+    CEGUI::GUIContext& defaultContext(CEGUI::System::getSingleton().getDefaultGUIContext());
+    defaultContext.setRootWindow(correspondingSampleData->getGuiRoot());
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(correspondingSampleData->getGuiContext()->getMouseCursor().getImage());
+
+    d_renderingBrowser = false;
+}
+
+void SamplesFramework::handleStopDisplaySample(CEGUI::Window* sampleWindow)
+{
+    SampleData* correspondingSampleData = findSampleData(sampleWindow);
+     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
+
+    d_renderingBrowser = true;
+}
+
 
 SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
 {

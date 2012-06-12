@@ -77,7 +77,9 @@ public:
 
     virtual void drawGUIContexts();
 
-    void handleNewSampleSelection(CEGUI::Window* sampleWindow);
+    void handleSampleSelection(CEGUI::Window* sampleWindow);
+    void handleStartDisplaySample(CEGUI::Window* sampleWindow);
+    void handleStopDisplaySample(CEGUI::Window* sampleWindow);
 
     SampleData* findSampleData(CEGUI::Window* sampleWindow);
 
@@ -97,6 +99,8 @@ protected:
 
     MetaDataWindowManager* d_metaDataWinMgr;
     SamplesWindowManager* d_samplesWinMgr;
+
+    bool d_renderingBrowser;
 };
 
 #endif

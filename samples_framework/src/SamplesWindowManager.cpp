@@ -71,6 +71,7 @@ void SamplesWindowManager::addSampleWindow(CEGUI::Window* sampleWindow)
     sampleWindow->setMouseInputPropagationEnabled(true);
 
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesWindowManager::handleMouseClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesWindowManager::handleMouseDoubleClickSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
@@ -113,10 +114,23 @@ bool SamplesWindowManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& 
     CEGUI::Window* wnd(winArgs.window);
 
     selectSampleWindow(wnd);
-    d_owner->handleNewSampleSelection(wnd);
+    d_owner->handleSampleSelection(wnd);
 
     return true;
 }
+
+
+bool SamplesWindowManager::handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args)
+{
+    const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
+
+    CEGUI::Window* wnd(winArgs.window);
+
+    d_owner->handleStartDisplaySample(wnd);
+
+    return true;
+}
+
 
 void SamplesWindowManager::selectSampleWindow(CEGUI::Window* wnd)
 {
