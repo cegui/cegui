@@ -26,18 +26,22 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Minesweeper_Timer.h"
-#include "CEGUIPropertyHelper.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace TimerProperties
 {
 CEGUI::String Delay::get(const CEGUI::PropertyReceiver* receiver) const
 {
-    return CEGUI::PropertyHelper::floatToString(static_cast<const Timer*>(receiver)->getDelay());
+    return CEGUI::PropertyHelper<float>::toString(static_cast<const Timer*>(receiver)->getDelay());
 }
 void Delay::set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value)
 {
-    static_cast<Timer*>(receiver)->setDelay(CEGUI::PropertyHelper::stringToFloat(value));
+    static_cast<Timer*>(receiver)->setDelay(CEGUI::PropertyHelper<float>::fromString(value));
+}
+CEGUI::Property* Delay::clone() const
+{
+    return CEGUI_NEW_AO Delay(*this);
 }
 
 }
@@ -61,7 +65,7 @@ Timer::Timer(const CEGUI::String& type, const CEGUI::String& name) :
     d_currentValue(0),
     d_started(false)
 {
-    CEGUI::UVector2 sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
+    CEGUI::USize sz(CEGUI::UDim(1.0, 0.0), CEGUI::UDim(1.0, 0.0));
     setMaxSize(sz);
     setSize(sz);
     addTimerProperties();

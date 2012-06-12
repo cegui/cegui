@@ -30,9 +30,9 @@
 #ifndef _Minesweeper_Timer_h_
 #define _Minesweeper_Timer_h_
 
-#include "CEGUIWindow.h"
-#include "CEGUIWindowFactory.h"
-#include "CEGUIProperty.h" 
+#include "CEGUI/Window.h"
+#include "CEGUI/WindowFactory.h"
+#include "CEGUI/Property.h" 
 
 namespace TimerProperties 
 {
@@ -53,7 +53,7 @@ public:
     Delay() : Property("Delay", "Property to get/set the current delay used by the timer. Value is a float.", "0.000000") {}
     CEGUI::String get(const CEGUI::PropertyReceiver* receiver) const;
     void set(CEGUI::PropertyReceiver* receiver, const CEGUI::String& value);
-
+    CEGUI::Property* clone() const;
 };
   
 }
@@ -120,22 +120,6 @@ public:
 
 protected:
     virtual void updateSelf(float elapsed);
-	/*!
-	\brief
-		Return whether this window was inherited from the given class name at some point in the inheritance hierarchy.
-
-	\param class_name
-		The class name that is to be checked.
-
-	\return
-		true if this window was inherited from \a class_name. false if not.
-	*/
-	virtual bool	testClassName_impl(const CEGUI::String& class_name) const
-	{
-		if (class_name=="Timer")	
-            return true;
-		return CEGUI::Window::testClassName_impl(class_name);
-	}
     
 private:
     static TimerProperties::Delay d_delayProperty;

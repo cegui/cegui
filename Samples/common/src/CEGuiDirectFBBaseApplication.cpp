@@ -4,6 +4,8 @@
     author:     Keith Mok
 *************************************************************************/
 /***************************************************************************
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
  *   "Software"), to deal in the Software without restriction, including
@@ -27,12 +29,13 @@
 #   include "config.h"
 #endif
 
+#include "CEGUISamplesConfig.h"
 #ifdef CEGUI_SAMPLES_USE_DIRECTFB
 
 #include "CEGuiDirectFBBaseApplication.h"
-#include "RendererModules/DirectFB/CEGUIDirectFBRenderer.h"
+#include "CEGUI/RendererModules/DirectFB/Renderer.h"
 #include "CEGuiSample.h"
-#include "CEGUI.h"
+#include "CEGUI/CEGUI.h"
 
 #include <directfb.h>
 
@@ -43,7 +46,7 @@
 struct DFBKeyMapping
 {
     int dfbKey;
-    CEGUI::uint  ceguiKey;
+    CEGUI::Key::Scan  ceguiKey;
 };
 
 static DFBKeyMapping specialKeyMap[] =
@@ -72,7 +75,7 @@ static DFBKeyMapping specialKeyMap[] =
     {DIKS_DELETE, CEGUI::Key::Delete},
     {DIKS_ENTER, CEGUI::Key::Return},
     {DIKS_BACKSPACE, CEGUI::Key::Backspace},
-    {-1, 0}
+    {-1, CEGUI::Key::Unknown}
 };
 
 //----------------------------------------------------------------------------//
@@ -83,37 +86,34 @@ struct CEGuiBaseApplicationImpl
     IDirectFBWindow* d_window;
     IDirectFBSurface* d_surface;
     IDirectFBEventBuffer* d_event_buffer;
-
-    CEGUI::DirectFBRenderer* d_renderer;
 };
 
 //----------------------------------------------------------------------------//
 CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
-    pimpl(new CEGuiBaseApplicationImpl),
-    d_frames(0),
-    d_FPS(0)
+    pimpl(new CEGuiBaseApplicationImpl)
 {
     DFBResult ret;
-
-// d_lastTime = ;
 
     setenv("DFBARGS", "no-cursor-updates,layer-bg-none", 1);
 
     ret = DirectFBInit(0, 0);
-    if (ret) {
+    if (ret)
+    {
         CEGUI_THROW(std::runtime_error("DirectFB application failed to "
             "initialise. [DirectFBInit]"));
     }
 
     ret = DirectFBCreate(&pimpl->d_dfb);
-    if (ret) {
+    if (ret)
+    {
         pimpl->d_dfb = 0;
         CEGUI_THROW(std::runtime_error("DirectFB application failed to "
             "initialise. [DirectFBCreate]"));
     }
 
     ret = pimpl->d_dfb->GetDisplayLayer(pimpl->d_dfb, DLID_PRIMARY, &pimpl->d_layer);
-    if (ret) {
+    if (ret)
+    {
         pimpl->d_layer = 0;
         pimpl->d_dfb->Release(pimpl->d_dfb);
         pimpl->d_dfb = 0;
@@ -121,13 +121,15 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
             "initialise. [GetDisplayLayer]"));
     }
 
-    if(initialiseDirectFB(800, 600, true)) {
+    if(initialiseDirectFB(800, 600, true))
+    {
         CEGUI_THROW(std::runtime_error("DirectFB application failed to "
             "initialise. [initialiseDirectFB]"));
     }
 
     ret = pimpl->d_window->CreateEventBuffer(pimpl->d_window, &pimpl->d_event_buffer);
-    if (ret) {
+    if (ret)
+    {
         pimpl->d_layer->Release(pimpl->d_layer);
         pimpl->d_layer = 0;
         pimpl->d_dfb->Release(pimpl->d_dfb);
@@ -138,16 +140,8 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
 
     pimpl->d_window->GetSurface(pimpl->d_window, &pimpl->d_surface);
 
-    pimpl->d_renderer =
+    d_renderer =
         &CEGUI::DirectFBRenderer::create(*pimpl->d_dfb, *pimpl->d_surface);
-
-    // initialise the gui system
-    CEGUI::System::create(*pimpl->d_renderer);
-
-    initialiseResourceGroupDirectories();
-    initialiseDefaultResourceGroups();
-
-    CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
 
     return;
 }
@@ -155,15 +149,15 @@ CEGuiDirectFBBaseApplication::CEGuiDirectFBBaseApplication() :
 //----------------------------------------------------------------------------//
 CEGuiDirectFBBaseApplication::~CEGuiDirectFBBaseApplication()
 {
-    // cleanup gui system
-    CEGUI::System::destroy();
-    CEGUI::DirectFBRenderer::destroy(*pimpl->d_renderer);
+    CEGUI::DirectFBRenderer::destroy(
+        *static_cast<CEGUI::DirectFBRenderer*>(d_renderer));
 
     cleanupDirectFB();
 
     delete pimpl;
 }
 
+//----------------------------------------------------------------------------//
 void CEGuiDirectFBBaseApplication::handleKeyUpEvent(DFBWindowEvent *evt)
 {
     DFBKeyMapping* mapping = specialKeyMap;
@@ -172,25 +166,29 @@ void CEGuiDirectFBBaseApplication::handleKeyUpEvent(DFBWindowEvent *evt)
     {
         if (mapping->dfbKey == evt->key_symbol)
         {
-            CEGUI::System::getSingleton().injectKeyDown(mapping->ceguiKey);
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(mapping->ceguiKey);
             return;
         }
 
         ++mapping;
     }
 }
+//----------------------------------------------------------------------------//
 void CEGuiDirectFBBaseApplication::handleKeyDownEvent(DFBWindowEvent *evt)
 {
     DFBKeyMapping* mapping = specialKeyMap;
 
-    if(evt->key_symbol < 128) {
-                CEGUI::System::getSingleton().injectChar(static_cast<CEGUI::utf32>(evt->key_symbol));
-    } else {
+    if(evt->key_symbol < 128)
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(static_cast<CEGUI::utf32>(evt->key_symbol));
+    }
+    else
+    {
         while (mapping->dfbKey != -1)
         {
             if (mapping->dfbKey == evt->key_symbol)
             {
-                CEGUI::System::getSingleton().injectKeyDown(mapping->ceguiKey);
+                CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(mapping->ceguiKey);
                 return;
             }
 
@@ -202,37 +200,38 @@ void CEGuiDirectFBBaseApplication::handleKeyDownEvent(DFBWindowEvent *evt)
 //----------------------------------------------------------------------------//
 void CEGuiDirectFBBaseApplication::handleWindowEvent(DFBWindowEvent *evt)
 {
-    switch(evt->type) {
-               case DWET_ENTER:
-                    break;
-               case DWET_LEAVE:
-                    break;
-               case DWET_MOTION:
-            CEGUI::System::getSingleton().injectMousePosition(evt->x, evt->y);
-                    break;
-               case DWET_BUTTONDOWN:
-                    if(evt->button == DIBI_LEFT)
-                CEGUI::System::getSingleton().injectMouseButtonDown(CEGUI::LeftButton);
-                    break;
-               case DWET_BUTTONUP:
-                    if(evt->button == DIBI_LEFT)
-                CEGUI::System::getSingleton().injectMouseButtonUp(CEGUI::LeftButton);
-                    break;
-               case DWET_KEYUP:
-                    handleKeyUpEvent(evt);
-                    break;
-               case DWET_KEYDOWN:
-                    handleKeyDownEvent(evt);
-                    break;
-               case DWET_WHEEL:
-                    break;
-               default:
-                    break;
+    switch(evt->type)
+    {
+    case DWET_ENTER:
+        break;
+    case DWET_LEAVE:
+        break;
+    case DWET_MOTION:
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(evt->x, evt->y);
+        break;
+    case DWET_BUTTONDOWN:
+        if(evt->button == DIBI_LEFT)
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::LeftButton);
+        break;
+    case DWET_BUTTONUP:
+        if(evt->button == DIBI_LEFT)
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::LeftButton);
+        break;
+    case DWET_KEYUP:
+        handleKeyUpEvent(evt);
+        break;
+    case DWET_KEYDOWN:
+        handleKeyDownEvent(evt);
+        break;
+    case DWET_WHEEL:
+        break;
+    default:
+        break;
     }
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiDirectFBBaseApplication::execute(CEGuiSample* sampleApp)
+bool CEGuiDirectFBBaseApplication::execute_impl(CEGuiSample* sampleApp)
 {
     sampleApp->initialiseSample();
     DFBEvent    evt;
@@ -240,40 +239,20 @@ bool CEGuiDirectFBBaseApplication::execute(CEGuiSample* sampleApp)
 
     CEGUI::System& guiSystem = CEGUI::System::getSingleton();
 
-    while(1) {
-        if ((DFB_OK == pimpl->d_event_buffer->HasEvent(pimpl->d_event_buffer))) {
+    while(!isQuitting())
+    {
+        if ((DFB_OK == pimpl->d_event_buffer->HasEvent(pimpl->d_event_buffer)))
+        {
             ret = pimpl->d_event_buffer->GetEvent(pimpl->d_event_buffer, DFB_EVENT(&evt));
-            if (ret != DFB_OK)
-                continue; /* return to top of loop */
-            if(evt.clazz != DFEC_WINDOW)
-                continue; /* return to top of loop */
+            if (ret != DFB_OK || evt.clazz != DFEC_WINDOW)
+                continue;
+
             DFBWindowEvent *win_event = (DFBWindowEvent*)(&evt);
             handleWindowEvent(win_event);
-        } else {
-            /* TODO */
-            guiSystem.injectTimePulse(1000/ 1000.0f);
-
-            updateFPS();
-            char fpsbuff[16];
-            sprintf(fpsbuff, "FPS: %d", d_FPS);
-
-            // clear display
-            pimpl->d_surface->Clear( pimpl->d_surface, 0x0, 0x0, 0x0, 0xFF );
-
-            // main CEGUI rendering call
-            guiSystem.renderGUI();
-
-//             // render FPS:
-//             CEGUI::Font* fnt = guiSystem.getDefaultFont();
-//             if (fnt)
-//             {
-//                 guiSystem.getRenderer()->setQueueingEnabled(false);
-//                 fnt->drawText(fpsbuff, CEGUI::Vector3(0, 0, 0),
-//                               guiSystem.getRenderer()->getRect());
-//             }
-
-            pimpl->d_surface->Flip(pimpl->d_surface, 0, (DFBSurfaceFlipFlags)0);
-
+        }
+        else
+        {
+            renderSingleFrame(0.0f);
         }
     }
 
@@ -281,9 +260,22 @@ bool CEGuiDirectFBBaseApplication::execute(CEGuiSample* sampleApp)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiDirectFBBaseApplication::cleanup()
+void CEGuiDirectFBBaseApplication::cleanup_impl()
 {
     // nothing to do here.
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiDirectFBBaseApplication::beginRendering(const float elapsed)
+{
+    // clear display
+    pimpl->d_surface->Clear( pimpl->d_surface, 0x0, 0x0, 0x0, 0xFF );
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiDirectFBBaseApplication::endRendering()
+{
+    pimpl->d_surface->Flip(pimpl->d_surface, 0, (DFBSurfaceFlipFlags)0);
 }
 
 //----------------------------------------------------------------------------//
@@ -308,56 +300,6 @@ bool CEGuiDirectFBBaseApplication::initialiseDirectFB(unsigned int width,
     pimpl->d_window->SetOpacity( pimpl->d_window, 0xff );
 
     return false;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiDirectFBBaseApplication::updateFPS(void)
-{
-    ++d_frames;
-
-    struct timespec ts;
-    struct timeval tv, elapsed;
-
-#ifdef CLOCK_MONOTONIC
-    /* No locking or atomic ops for no_monotonic here */
-    static int no_monotonic = 0;
-
-    if (!no_monotonic)
-        if(syscall( __NR_clock_gettime, CLOCK_MONOTONIC, &ts ))
-            no_monotonic = 1;
-
-    if (no_monotonic)
-#endif
-        if(syscall(__NR_clock_gettime, CLOCK_REALTIME, &ts)) {
-            gettimeofday( &tv, 0 );
-        }
-    tv.tv_sec = ts.tv_sec;
-    tv.tv_usec = ts.tv_nsec / 1000;
-
-    elapsed = d_lastTime;
-
-    /* Perform the carry for the later subtraction by updating y. */
-    if (tv.tv_usec < elapsed.tv_usec) {
-        int nsec = (elapsed.tv_usec - tv.tv_usec) / 1000000 + 1;
-        elapsed.tv_usec -= 1000000 * nsec;
-        elapsed.tv_sec += nsec;
-    }
-    if (tv.tv_usec - elapsed.tv_usec > 1000000) {
-        int nsec = (tv.tv_usec - elapsed.tv_usec) / 1000000;
-        elapsed.tv_usec += 1000000 * nsec;
-        elapsed.tv_sec -= nsec;
-    }
-
-    /* Compute the time remaining to wait. */
-    elapsed.tv_sec = tv.tv_sec - d_lastTime.tv_sec;
-    elapsed.tv_usec = tv.tv_usec - d_lastTime.tv_usec;
-
-    if ((elapsed.tv_sec >= 1) || (elapsed.tv_usec >= 1000000))
-    {
-        d_FPS = d_frames;
-        d_frames = 0;
-        d_lastTime = tv;
-    }
 }
 
 //----------------------------------------------------------------------------//

@@ -38,7 +38,9 @@ enum CEGuiRendererType
     Direct3D81GuiRendererType,      //!< Renderer that uses the Direct3D 8.1 API.
     Direct3D9GuiRendererType,       //!< Renderer that uses the Direct3D 9 API.
     Direct3D10GuiRendererType,      //!< Renderer that uses the Direct3D 10 API.
+    Direct3D11GuiRendererType,      //!< Renderer that uses the Direct3D 11 API.
     OpenGLGuiRendererType,          //!< Renderer that uses the OpenGL API.
+	OpenGL3GuiRendererType,          //!< Renderer that uses the OpenGL3 API.
     IrrlichtGuiRendererType,        //!< Renderer that uses the Irrlicht engine.
     DirectFBGuiRendererType,        //!< Renderer that uses the DirectFB engine.
     RendererTypeCount,              //!< Special value that equals the number of renderer types.

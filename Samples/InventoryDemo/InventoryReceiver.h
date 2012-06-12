@@ -29,7 +29,7 @@
 #define _InventoryReceiver_h_
 
 #include "InventoryBase.h"
-#include <CEGUIWindow.h>
+#include <CEGUI/Window.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -66,7 +66,7 @@ protected:
     // base class overrides
     void onDragDropItemDropped(DragDropEventArgs &e);
     void populateGeometryBuffer();
-    Rect gridBasePixelRect() const;
+    Rectf gridBasePixelRect() const;
 };
 
 } // End of  CEGUI namespace section
