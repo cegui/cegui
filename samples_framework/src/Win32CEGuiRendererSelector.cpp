@@ -373,7 +373,7 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
             Win32CEGuiRendererSelector* obj = reinterpret_cast<Win32CEGuiRendererSelector*>(lParam);
 
             // set as window long for future use
-            SetWindowLong(hDlg, DWL_USER, static_cast<LONG>(lParam));
+            SetWindowLongPtr(hDlg, DWLP_USER, static_cast<LONG_PTR>(lParam));
 
             //
             // Set-up combo box list
@@ -420,7 +420,7 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
                     HWND combo = reinterpret_cast<HWND>(lParam);
 
                     // get the 'this' ptr for the object we were created by
-                    Win32CEGuiRendererSelector* obj = reinterpret_cast<Win32CEGuiRendererSelector*>(GetWindowLong(hDlg, DWL_USER));
+                    Win32CEGuiRendererSelector* obj = reinterpret_cast<Win32CEGuiRendererSelector*>(GetWindowLongPtr(hDlg, DWLP_USER));
 
                     int idx = static_cast<int>(SendMessage(combo, CB_GETCURSEL, 0, 0));
 

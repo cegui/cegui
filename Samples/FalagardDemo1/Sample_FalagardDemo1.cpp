@@ -128,14 +128,6 @@ bool FalagardDemo1Sample::handleRootKeyDown(const CEGUI::EventArgs& args)
 }
 
 /*************************************************************************
-    Returns the sample layouts GUI root
-*************************************************************************/
-CEGUI::Window* FalagardDemo1Sample::getGUIRoot()
-{
-    return d_root;
-}
-
-/*************************************************************************
     Returns the path of the file used for this
 *************************************************************************/
 const CEGUI::String& FalagardDemo1Sample::getUsedFilesString()
