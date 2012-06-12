@@ -54,6 +54,18 @@ public:
     GUIContext* context;
 };
 
+//! EventArgs class passed for GUIContext RenderTarget related events.
+class CEGUIEXPORT GUIContextRenderTargetEventArgs : public GUIContextEventArgs
+{
+public:
+    GUIContextRenderTargetEventArgs(GUIContext* context, RenderTarget* target) :
+        GUIContextEventArgs(context),
+        renderTarget(target)
+    {}
+
+    RenderTarget* renderTarget;
+};
+
 class CEGUIEXPORT GUIContext : public RenderingSurface,
                                public InjectedInputReceiver,
                                public AllocatedObject<GUIContext>
@@ -87,6 +99,11 @@ public:
      * Handlers are passed a const reference to a GUIContextEventArgs struct.
      */
     static const String EventMouseButtonMultiClickToleranceChanged;
+    /** Name of Event fired when the RenderTarget for the GUIContext is changed.
+     * Handlers are passed a const GUIContextRenderTargetEventArgs struct, with
+     * the renderTarget member set to the old RenderTarget.
+     */
+    static const String EventRenderTargetChanged;
 
     GUIContext(RenderTarget& target);
     ~GUIContext();
@@ -200,6 +217,8 @@ public:
     //! Returns a pointer to the context's default tooltip object.  May return 0.
     Tooltip* getDefaultTooltipObject() const;
 
+    void setRenderTarget(RenderTarget& target);
+
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
     bool injectMouseLeaves(void);
@@ -247,6 +266,7 @@ protected:
     virtual void onMouseButtonClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args);
+    virtual void onRenderTargetChanged(GUIContextEventArgs& args);
 
     // protected overrides
     void drawContent();

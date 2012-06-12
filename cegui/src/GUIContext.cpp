@@ -67,6 +67,7 @@ const String GUIContext::EventMouseMoveScalingFactorChanged("MouseMoveScalingFac
 const String GUIContext::EventMouseButtonClickTimeoutChanged("MouseButtonClickTimeoutChanged" );
 const String GUIContext::EventMouseButtonMultiClickTimeoutChanged("MouseButtonMultiClickTimeoutChanged" );
 const String GUIContext::EventMouseButtonMultiClickToleranceChanged("MouseButtonMultiClickToleranceChanged" );
+const String GUIContext::EventRenderTargetChanged("RenderTargetChanged");
 
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
@@ -384,7 +385,7 @@ bool GUIContext::isMouseClickEventGenerationEnabled() const
 //----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
-    d_surfaceSize = d_target.getArea().getSize();
+    d_surfaceSize = d_target->getArea().getSize();
     d_mouseCursor.notifyDisplaySizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
@@ -994,6 +995,36 @@ bool GUIContext::injectPasteRequest()
 {
     Window* target = getKeyboardTargetWindow();
     return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setRenderTarget(RenderTarget& target)
+{
+    if (d_target == &target)
+        return;
+
+    RenderTarget* const old_target = d_target;
+    d_target = &target;
+
+    if (d_rootWindow)
+        d_rootWindow->syncTargetSurface();
+
+    d_areaChangedEventConnection.disconnect();
+    d_areaChangedEventConnection = d_target->subscribeEvent(
+            RenderTarget::EventAreaChanged,
+            Event::Subscriber(&GUIContext::areaChangedHandler, this));
+
+    EventArgs area_args;
+    areaChangedHandler(area_args);
+
+    GUIContextRenderTargetEventArgs change_args(this, old_target);
+    onRenderTargetChanged(change_args);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onRenderTargetChanged(GUIContextEventArgs& args)
+{
+    fireEvent(EventRenderTargetChanged, args, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
