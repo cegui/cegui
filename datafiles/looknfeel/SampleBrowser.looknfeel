@@ -542,46 +542,10 @@
         <Property name="AutoRenderingSurface" value="True" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
-                <Dim type="LeftEdge" >
-                    <ImageDim name="SampleBrowserSkin/TrayL" dimension="Width">
-                        <DimOperator op="Divide">
-                            <AbsoluteDim value="2" />
-                        </DimOperator>
-                    </ImageDim>
-                </Dim>
-                <Dim type="TopEdge" >
-                    <WidgetDim widget="__auto_titlebar__" dimension="BottomEdge">
-                        <DimOperator op="Add">
-                            <ImageDim name="SampleBrowserSkin/TrayT" dimension="Height">
-                                <DimOperator op="Divide">
-                                    <AbsoluteDim value="2" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </WidgetDim>
-                </Dim>
-                <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="SampleBrowserSkin/TrayR" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <AbsoluteDim value="2" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="SampleBrowserSkin/TrayB" dimension="Height">
-                                <DimOperator op="Divide">
-                                    <AbsoluteDim value="2" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
-                </Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="BottomEdge" ><WidgetDim dimension="BottomEdge" /></Dim>
             </Area>
         </NamedArea>
         <NamedArea name="ClientWithTitleNoFrame">
@@ -594,42 +558,10 @@
         </NamedArea>
         <NamedArea name="ClientNoTitleWithFrame">
             <Area>
-                <Dim type="LeftEdge" >
-                    <ImageDim name="SampleBrowserSkin/TrayL" dimension="Width">
-                        <DimOperator op="Divide">
-                            <AbsoluteDim value="2" />
-                        </DimOperator>
-                    </ImageDim>
-                </Dim>
-                <Dim type="TopEdge" >
-                    <ImageDim name="SampleBrowserSkin/TrayT" dimension="Height">
-                        <DimOperator op="Divide">
-                            <AbsoluteDim value="2" />
-                        </DimOperator>
-                    </ImageDim>
-                </Dim>
-                <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="SampleBrowserSkin/TrayR" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <AbsoluteDim value="2" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
-                </Dim>
-                <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="SampleBrowserSkin/TrayB" dimension="Height">
-                                <DimOperator op="Divide">
-                                    <AbsoluteDim value="2" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
-                </Dim>
+                <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+                <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
+                <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
+                <Dim type="BottomEdge" ><WidgetDim dimension="BottomEdge" /></Dim>
             </Area>
         </NamedArea>
         <NamedArea name="ClientNoTitleNoFrame">
