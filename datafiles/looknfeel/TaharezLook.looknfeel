@@ -3948,10 +3948,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ImageButton">
-        <PropertyDefinition name="NormalImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="HoverImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="PushedImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" />
-        <PropertyDefinition name="DisabledImageColour" initialValue="FF7F7F7F" redrawOnWrite="true" />
+        <PropertyDefinition name="NormalImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="HoverImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="PushedImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="DisabledImageColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect" />
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
