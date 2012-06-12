@@ -266,7 +266,7 @@ protected:
     virtual void onMouseButtonClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args);
-    virtual void onRenderTargetChanged(GUIContextEventArgs& args);
+    virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
 
     // protected overrides
     void drawContent();
