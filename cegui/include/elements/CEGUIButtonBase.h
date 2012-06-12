@@ -73,6 +73,10 @@ public:
 	*/
 	bool	isPushed(void) const			{return d_pushed;}
 
+    /** Internal function to set button's pushed state.  Normally you would
+     * not call this, except perhaps when building compound widgets.
+     */
+    void setPushedState(const bool pushed);
 
 	/*************************************************************************
 		Construction and Destruction
