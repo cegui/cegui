@@ -1,5 +1,5 @@
 /***********************************************************************
-filename:   SamplesWindowManager.cpp
+filename:   SamplesBrowserManager.cpp
 created:    11/6/2012
 author:     Lukas E Meindl
 *************************************************************************/
@@ -25,7 +25,7 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "SamplesWindowManager.h"
+#include "SamplesBrowserManager.h"
 
 #include "SamplesFramework.h"
 
@@ -36,10 +36,10 @@ author:     Lukas E Meindl
 
 using namespace CEGUI;
 
-const uint32_t SamplesWindowManager::d_sampleWindowFrameNormal(0xFF234d46);
-const uint32_t SamplesWindowManager::d_sampleWindowFrameSelected(0xFF559d96);
+const uint32_t SamplesBrowserManager::d_sampleWindowFrameNormal(0xFF234d46);
+const uint32_t SamplesBrowserManager::d_sampleWindowFrameSelected(0xFF559d96);
 
-SamplesWindowManager::SamplesWindowManager(SamplesFramework* owner, CEGUI::Window* samplesWindow)
+SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Window* samplesWindow)
     : d_owner(owner),
     d_root(samplesWindow),
     d_childCount(0),
@@ -49,12 +49,12 @@ SamplesWindowManager::SamplesWindowManager(SamplesFramework* owner, CEGUI::Windo
 }
 
 
-CEGUI::Window* SamplesWindowManager::getWindow()
+CEGUI::Window* SamplesBrowserManager::getWindow()
 {
     return d_root;
 }
 
-void SamplesWindowManager::addSampleWindow(CEGUI::Window* sampleWindow)
+void SamplesBrowserManager::addSampleWindow(CEGUI::Window* sampleWindow)
 {
     d_root->addChild(sampleWindow);
     d_sampleWindows.push_back(sampleWindow);
@@ -70,21 +70,21 @@ void SamplesWindowManager::addSampleWindow(CEGUI::Window* sampleWindow)
 
     sampleWindow->setMouseInputPropagationEnabled(true);
 
-    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesWindowManager::handleMouseClickSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesWindowManager::handleMouseDoubleClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesBrowserManager::handleMouseDoubleClickSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
 }
 
-void SamplesWindowManager::setWindowRatio(float widthToHeight)
+void SamplesBrowserManager::setWindowRatio(float widthToHeight)
 {
     d_widthToHeightFactor = widthToHeight;
 
     updateWindows();
 }
 
-void SamplesWindowManager::updateWindows()
+void SamplesBrowserManager::updateWindows()
 {
     float vertOffset = 0.f;
 
@@ -107,7 +107,7 @@ void SamplesWindowManager::updateWindows()
 }
 
 
-bool SamplesWindowManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& args)
+bool SamplesBrowserManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
 
@@ -120,7 +120,7 @@ bool SamplesWindowManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& 
 }
 
 
-bool SamplesWindowManager::handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args)
+bool SamplesBrowserManager::handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
 
@@ -132,7 +132,7 @@ bool SamplesWindowManager::handleMouseDoubleClickSampleWindow(const CEGUI::Event
 }
 
 
-void SamplesWindowManager::selectSampleWindow(CEGUI::Window* wnd)
+void SamplesBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
 {
     if(d_selectedWindow)
     {

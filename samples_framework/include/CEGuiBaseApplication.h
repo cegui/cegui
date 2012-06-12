@@ -176,8 +176,11 @@ protected:
         is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
         if the variable is not set, a default will be used depending on the
         build system in use.
-    */
+        */
     const char* getDataPathPrefix() const;
+
+    //! SampleFramework base used in the application
+    static SamplesFrameworkBase* d_sampleApp;
 
     //! true when the base app should cleanup and exit.
     bool d_quitting;
@@ -199,8 +202,6 @@ protected:
     int d_FPSValue;
     //! whether to spin the logo
     bool d_spinLogo;
-    //! SampleFramework base used in the application
-    SamplesFrameworkBase* d_sampleApp;
 };
 
 #endif  // end of guard _CEGuiBaseApplication_h_

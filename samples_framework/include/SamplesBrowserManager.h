@@ -1,5 +1,5 @@
 /***********************************************************************
-filename:   SamplesWindowManager.h
+filename:   SamplesBrowserManager.h
 created:    11/6/2012
 author:     Lukas E Meindl
 *************************************************************************/
@@ -25,8 +25,8 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#ifndef _SamplesWindowManager_h_
-#define _SamplesWindowManager_h_
+#ifndef _SamplesBrowserManager_h_
+#define _SamplesBrowserManager_h_
 
 #include <vector>
 #include <stdint.h>
@@ -39,11 +39,11 @@ namespace CEGUI
 
 class SamplesFramework;
 
-class SamplesWindowManager
+class SamplesBrowserManager
 {
 public:
-    SamplesWindowManager(SamplesFramework* owner, CEGUI::Window* samplesWindow);
-    virtual ~SamplesWindowManager() {}
+    SamplesBrowserManager(SamplesFramework* owner, CEGUI::Window* samplesWindow);
+    virtual ~SamplesBrowserManager() {}
 
     CEGUI::Window* getWindow();
 
@@ -53,8 +53,8 @@ public:
     void selectSampleWindow(CEGUI::Window* wnd);
 
 private:
-    SamplesWindowManager(const SamplesWindowManager&) {}
-    SamplesWindowManager& operator=(const SamplesWindowManager&) {}
+    SamplesBrowserManager(const SamplesBrowserManager&) {}
+    SamplesBrowserManager& operator=(const SamplesBrowserManager&) {}
 
     static const uint32_t d_sampleWindowFrameNormal;
     static const uint32_t d_sampleWindowFrameSelected;

@@ -39,12 +39,13 @@ namespace CEGUI
     class DefaultWindow;
     class String;
     class Texture;
+    class PushButton;
 }
 
 class SampleData;
 class Sample;
 class MetaDataWindowManager;
-class SamplesWindowManager;
+class SamplesBrowserManager;
 
 using namespace CEGUI;
 
@@ -79,9 +80,20 @@ public:
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);
-    void handleStopDisplaySample(CEGUI::Window* sampleWindow);
+    void handleStopDisplaySample();
 
     SampleData* findSampleData(CEGUI::Window* sampleWindow);
+
+    virtual void injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
+    virtual void injectKeyUp(const CEGUI::Key::Scan& ceguiKey);
+    virtual void injectChar(int character);
+    virtual void injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton);
+    virtual void injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton);
+    virtual void injectMouseWheelChange(float position);
+    virtual void injectMousePosition(float x, float y);
+
+    bool handleExitSampleView(const CEGUI::EventArgs& args);
+    
 
 protected:
     void initialiseFrameworkLayout();
@@ -91,16 +103,16 @@ protected:
 
     void unloadSamples();
 
-    //virtual void updateGuiContexts(const float elapsed);
-
     CEGUI::Window* d_root;
+
+    CEGUI::PushButton* d_sampleExitButton;
 
     std::vector<SampleData*> d_samples;
 
     MetaDataWindowManager* d_metaDataWinMgr;
-    SamplesWindowManager* d_samplesWinMgr;
+    SamplesBrowserManager* d_samplesWinMgr;
 
-    bool d_renderingBrowser;
+    SampleData*     d_selectedSampleData;
 };
 
 #endif

@@ -63,11 +63,13 @@ public:
     virtual void initialise();
     virtual void deinitialise();
 
-    virtual CEGUI::Window*  getGuiRoot() = 0;
     virtual CEGUI::GUIContext*  getGuiContext();
     virtual void handleNewWindowSize(float width, float height);
 
     virtual CEGUI::Image& getRTTImage();
+
+    virtual void setGUIContextRTT();
+    virtual void clearRTTTexture();
 
     void setSampleWindow(CEGUI::Window* sampleWindow);
     CEGUI::Window* getSampleWindow();
@@ -103,8 +105,6 @@ public:
 
     virtual void initialise();
     virtual void deinitialise();
-
-    virtual CEGUI::Window*  getGuiRoot();
 
 private:
 

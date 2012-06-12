@@ -48,7 +48,6 @@ public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
     virtual void deinitialise();
 
-    virtual CEGUI::Window* getGUIRoot();
     virtual const CEGUI::String& getUsedFilesString();
 private:
     FirstWindowSample(const FirstWindowSample&) {}

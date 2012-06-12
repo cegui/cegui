@@ -32,10 +32,11 @@ author:     Lukas E Meindl
 #include "SampleData.h"
 
 #include "MetaDataWindowManager.h"
-#include "SamplesWindowManager.h"
+#include "SamplesBrowserManager.h"
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/widgets/PushButton.h"
 
 
 #include <string>
@@ -67,7 +68,8 @@ int main(int /*argc*/, char* /*argv*/[])
 SamplesFramework::SamplesFramework()
     : d_metaDataWinMgr(0),
     d_samplesWinMgr(0),
-    d_renderingBrowser(true)
+    d_selectedSampleData(0),
+    d_sampleExitButton(0)
 {
 }
 
@@ -110,7 +112,7 @@ void SamplesFramework::initialiseFrameworkLayout()
 
     System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
 
-    WindowManager& winMgr = WindowManager::getSingleton();
+    WindowManager& winMgr(WindowManager::getSingleton());
 
     d_root = static_cast<DefaultWindow*>(winMgr.createWindow("DefaultWindow", "Root"));
     
@@ -121,7 +123,20 @@ void SamplesFramework::initialiseFrameworkLayout()
     d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
 
     CEGUI::Window* samplesScrollablePane = d_root->getChild("SamplesFrameWindow/SamplesScrollablePane");
-    d_samplesWinMgr = new SamplesWindowManager(this, samplesScrollablePane);
+    d_samplesWinMgr = new SamplesBrowserManager(this, samplesScrollablePane);
+
+
+    d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
+
+    d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(50.f), cegui_absdim(42.f)));
+    d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(0.f)));
+    d_sampleExitButton->setHorizontalAlignment(HA_RIGHT);
+    d_sampleExitButton->setVerticalAlignment(VA_TOP);
+    d_sampleExitButton->setProperty("HoverImage", "SampleBrowserSkin/ExitButton");
+    d_sampleExitButton->setProperty("NormalImage", "SampleBrowserSkin/ExitButton");
+    d_sampleExitButton->setProperty("PushedImage", "SampleBrowserSkin/ExitButton");
+    d_sampleExitButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesFramework::handleExitSampleView, this));
+    d_sampleExitButton->setAlwaysOnTop(true);
 }
 
 void SamplesFramework::unloadSamples()
@@ -170,24 +185,100 @@ void SamplesFramework::loadSamplesDataFromXML(const String& filename,
 void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum)
 {
     SampleData* sampleData = new SampleDataModule(sampleName, summary, description, sampleTypeEnum);
-    
+
     addSample(sampleData);
 
 }
 
-/*!
-\brief
-Sets the default resource group to be used when loading samples xml
-data
-
-\param resourceGroup
-String describing the default resource group identifier to be used.
-*/
 void SamplesFramework::setDefaultResourceGroup(const String& resourceGroup)
 {
     s_defaultResourceGroup = resourceGroup;
 }
 
+
+void SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
+    }
+}
+
+void SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectKeyUp(ceguiKey);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(ceguiKey);
+    }
+}
+
+void SamplesFramework::injectChar(int character)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectChar(character);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(character);
+    }
+}
+
+void SamplesFramework::injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectMouseButtonDown(ceguiMouseButton);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(ceguiMouseButton);
+    }
+}
+
+void SamplesFramework::injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectMouseButtonUp(ceguiMouseButton);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(ceguiMouseButton);
+    }
+}
+
+void SamplesFramework::injectMouseWheelChange(float position)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectMouseWheelChange(position);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(position);
+    }
+}
+
+void SamplesFramework::injectMousePosition(float x, float y)
+{
+    if(d_selectedSampleData)
+    {
+        d_selectedSampleData->getGuiContext()->injectMousePosition(x, y);
+    }
+    else
+    {
+        CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(x, y);
+    }
+}
 
 
 
@@ -248,26 +339,32 @@ void SamplesFramework::addSample(SampleData* sampleData)
 
 void SamplesFramework::drawGUIContexts()
 {
-    CEGUI::System& gui_system(CEGUI::System::getSingleton());
-    gui_system.getDefaultGUIContext().draw();
-
-    if(d_renderingBrowser)
+    if(!d_selectedSampleData)
     {
+        CEGUI::System& gui_system(CEGUI::System::getSingleton());
+        gui_system.getDefaultGUIContext().draw();
+
         std::vector<SampleData*>::iterator iter = d_samples.begin();
         std::vector<SampleData*>::iterator end = d_samples.end();
         for(; iter != end; ++iter)
         {
             SampleData* sampleData = *iter;
 
-            bool isContextDirty = true;// sampleData->getGuiContext()->isDirty();
+            bool isContextDirty = sampleData->getGuiContext()->isDirty();
             if(isContextDirty)
             {
+                sampleData->clearRTTTexture();
                 sampleData->getGuiContext()->draw();
 
                 sampleData->getSampleWindow()->invalidate();
             }
         }
     }
+    else
+    {
+        d_selectedSampleData->getGuiContext()->draw();
+    }
+
 }
 
 void SamplesFramework::handleSampleSelection(CEGUI::Window* sampleWindow)
@@ -282,21 +379,25 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
 {
     SampleData* correspondingSampleData = findSampleData(sampleWindow);
 
-    CEGUI::Window* window = correspondingSampleData->getGuiRoot();
+    CEGUI::RenderTarget& defaultRenderTarget = CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget();
+    CEGUI::GUIContext* sampleContext(correspondingSampleData->getGuiContext());
+    sampleContext->setRenderTarget(defaultRenderTarget);
 
-    CEGUI::GUIContext& defaultContext(CEGUI::System::getSingleton().getDefaultGUIContext());
-    defaultContext.setRootWindow(correspondingSampleData->getGuiRoot());
-    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(correspondingSampleData->getGuiContext()->getMouseCursor().getImage());
+    sampleContext->getRootWindow()->addChild(d_sampleExitButton);
+    sampleContext->getMouseCursor().setPosition(CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().getPosition());
 
-    d_renderingBrowser = false;
+    d_selectedSampleData = correspondingSampleData;
 }
 
-void SamplesFramework::handleStopDisplaySample(CEGUI::Window* sampleWindow)
+void SamplesFramework::handleStopDisplaySample()
 {
-    SampleData* correspondingSampleData = findSampleData(sampleWindow);
-     CEGUI::System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
+    GUIContext* sampleGUIContext = d_selectedSampleData->getGuiContext();
+    sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
+    d_selectedSampleData->setGUIContextRTT();
 
-    d_renderingBrowser = true;
+     CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setPosition(sampleGUIContext->getMouseCursor().getPosition());
+
+    d_selectedSampleData = 0;
 }
 
 
@@ -314,4 +415,11 @@ SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
     }
 
     return 0;
+}
+
+bool SamplesFramework::handleExitSampleView(const CEGUI::EventArgs& args)
+{
+    handleStopDisplaySample();
+
+    return true;
 }
