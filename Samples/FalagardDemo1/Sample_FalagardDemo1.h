@@ -72,7 +72,6 @@ public:
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
-    virtual CEGUI::Window* getGUIRoot();
     virtual const CEGUI::String& getUsedFilesString();
 
 protected:
