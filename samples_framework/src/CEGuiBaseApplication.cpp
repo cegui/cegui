@@ -60,6 +60,7 @@
     Static / Const data
 *************************************************************************/
 const char CEGuiBaseApplication::DATAPATH_VAR_NAME[] = "CEGUI_SAMPLE_DATAPATH";
+SamplesFrameworkBase* CEGuiBaseApplication::d_sampleApp(0);
 
 //----------------------------------------------------------------------------//
 CEGuiBaseApplication::CEGuiBaseApplication() :
@@ -72,8 +73,7 @@ CEGuiBaseApplication::CEGuiBaseApplication() :
     d_FPSElapsed(0.0f),
     d_FPSFrames(0),
     d_FPSValue(0),
-    d_spinLogo(false),
-    d_sampleApp(0)
+    d_spinLogo(false)
 {
 }
 
@@ -94,8 +94,6 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 
     beginRendering(elapsed);
     gui_renderer->beginRendering();
-    // do final destruction on dead-pool windows
-    WindowManager::getSingleton().cleanDeadPool();
 
     d_sampleApp->drawGUIContexts();
 

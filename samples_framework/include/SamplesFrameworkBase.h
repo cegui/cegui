@@ -32,6 +32,8 @@
 class CEGuiBaseApplication;
 class CEGuiRendererSelector;
 
+#include "CEGUI/InputEvent.h"
+
 /*!
 \brief
     This is a base class that is intended to be used for all sample applications.
@@ -96,10 +98,51 @@ public:
 
     /*!
     \brief
-    Draw function for custom gui contexts
+    Draw function to draw GUIContexts
     */
     virtual void drawGUIContexts() = 0;
 
+    /*!
+    \brief
+    Function to inject key down to GUIContexts
+    */
+    virtual void injectKeyDown(const CEGUI::Key::Scan& ceguiKey) = 0;
+
+    /*!
+    \brief
+    Function to inject key up to GUIContexts
+    */
+    virtual void injectKeyUp(const CEGUI::Key::Scan& ceguiKey) = 0;
+
+    /*!
+    \brief
+    Function to inject characters to GUIContexts
+    */
+    virtual void injectChar(int character) = 0;
+
+    /*!
+    \brief
+    Function to inject mouse button down to GUIContexts
+    */
+    virtual void injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+
+    /*!
+    \brief
+    Function to inject mouse button up to GUIContexts
+    */
+    virtual void injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+
+    /*!
+    \brief
+    Function to inject mouse wheel changes to GUIContexts
+    */
+    virtual void injectMouseWheelChange(float position) = 0;
+
+    /*!
+    \brief
+    Function to inject the mouse position to GUIContexts
+    */
+    virtual void injectMousePosition(float x, float y) = 0;
 
 protected:
     /*!

@@ -134,15 +134,6 @@ void FirstWindowSample::deinitialise()
     // nothing to do here!
 }
 
-
-/*************************************************************************
-    Returns the sample layouts GUI root
-*************************************************************************/
-CEGUI::Window* FirstWindowSample::getGUIRoot()
-{
-    return d_root;
-}
-
 /*************************************************************************
     Returns the path of the file used for this
 *************************************************************************/

@@ -8,7 +8,7 @@ set( CORE_SOURCE_FILES
     ./src/Samples_xmlHandler.cpp
     ./src/SampleData.cpp
     ./src/MetaDataWindowManager.cpp
-    ./src/SamplesWindowManager.cpp
+    ./src/SamplesBrowserManager.cpp
 )
 
 set( CORE_HEADER_FILES
@@ -20,7 +20,7 @@ set( CORE_HEADER_FILES
     ./include/Samples_xmlHandler.h
     ./include/SampleData.h
     ./include/MetaDataWindowManager.h
-    ./include/SamplesWindowManager.h
+    ./include/SamplesBrowserManager.h
 )
 
 

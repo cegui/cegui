@@ -165,9 +165,15 @@ CEGUI::Image& SampleData::getRTTImage()
     return *d_textureTargetImage;
 }
 
+void SampleData::setGUIContextRTT()
+{
+    d_guiContext->setRenderTarget(*d_textureTarget);
+}
 
-
-
+void SampleData::clearRTTTexture()
+{
+    d_textureTarget->clear();
+}
 
 
 
@@ -199,11 +205,6 @@ void SampleDataModule::deinitialise()
     SampleData::deinitialise();
 
     d_sample->deinitialise();
-}
-
-CEGUI::Window*  SampleDataModule::getGuiRoot()
-{
-    return d_sample->getGUIRoot();
 }
 
 void SampleDataModule::getSampleInstanceFromDLL()
