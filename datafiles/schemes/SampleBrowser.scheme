@@ -3,6 +3,7 @@
 	<Imageset filename="SampleBrowser.imageset" />
 	<Font filename="DejaVuSans-10.font" />
     <Font filename="DejaVuSans-10-NoScale.font" />
+    <Font filename="DejaVuSans-12-NoScale.font" />
 	<LookNFeel filename="SampleBrowser.looknfeel" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 
