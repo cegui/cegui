@@ -50,6 +50,8 @@ public:
     void addSampleWindow(CEGUI::Window* sampleWindow);
     void setWindowRatio(float widthToHeight);
 
+    void selectSampleWindow(CEGUI::Window* wnd);
+
 private:
     SamplesWindowManager(const SamplesWindowManager&) {}
     SamplesWindowManager& operator=(const SamplesWindowManager&) {}
@@ -60,8 +62,7 @@ private:
     void updateWindows();
 
     bool handleMouseClickSampleWindow(const CEGUI::EventArgs& args);
-
-    void selectSampleWindow(CEGUI::Window* wnd);
+    bool handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args);
 
     SamplesFramework* d_owner;
 

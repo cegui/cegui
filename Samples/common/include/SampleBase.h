@@ -30,6 +30,8 @@ author:     Lukas E Meindl
 
 #include "Sample.h"
 
+#include <string>
+
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
 
@@ -46,5 +48,19 @@ author:     Lukas E Meindl
     static SAMPLE_CLASS sample; \
     return sample; \
 }
+
+
+class SampleBase : public Sample
+{
+public:
+
+private:
+/*
+    virtual void loadScheme(const std::string& fileName)        = 0;
+    virtual void loadLayout(const std::string& fileName)        = 0;
+    virtual void loadImageFile(const std::string& fileName)     = 0;
+    virtual void loadFont(const std::string& fileName)          = 0;*/
+
+};
 
 #endif

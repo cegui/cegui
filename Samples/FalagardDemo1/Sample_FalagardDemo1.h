@@ -60,7 +60,7 @@ private:
 };
 
 
-class FalagardDemo1Sample : public Sample
+class FalagardDemo1Sample : public SampleBase
 {
 public:
     FalagardDemo1Sample();

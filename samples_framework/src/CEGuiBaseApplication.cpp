@@ -98,7 +98,6 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
     WindowManager::getSingleton().cleanDeadPool();
 
     d_sampleApp->drawGUIContexts();
-    gui_system.getDefaultGUIContext().draw();
 
     gui_renderer->endRendering();
     WindowManager::getSingleton().cleanDeadPool();
