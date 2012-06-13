@@ -151,18 +151,11 @@ namespace CEGUI
     void ImagerySection::removeFrameComponent(const FrameComponent& frame)
     {
         for(FrameList::iterator f = d_frames.begin();
-                f < d_frames.end();
+            f < d_frames.end();
             ++f)
         {
-            bool result = true;
-
-            for(uint i = 0; i < FIC_FRAME_IMAGE_COUNT && result;++i)
-            {
-                result &= frame.getImage(FrameImageComponent(i)) == f->getImage(FrameImageComponent(i));
-            }
-            if(result)
+            if ((*f) == frame)
                 d_frames.erase(f);
-
         }
     }
 

@@ -1074,9 +1074,26 @@ namespace CEGUI
     *************************************************************************/
     void Falagard_xmlHandler::elementImagePropertyStart(const XMLAttributes& attributes)
     {
-        assert(d_imagerycomponent != 0);
+        assert(d_imagerycomponent != 0 || d_framecomponent != 0);
 
-        d_imagerycomponent->setImagePropertySource(attributes.getValueAsString(NameAttribute));
+        if (d_imagerycomponent)
+        {
+            d_imagerycomponent->setImagePropertySource(
+                attributes.getValueAsString(NameAttribute));
+
+            CEGUI_LOGINSANE("---------> Using image via property: " +
+                attributes.getValueAsString(NameAttribute));
+        }
+        else if (d_framecomponent)
+        {
+            d_framecomponent->setImagePropertySource(
+                FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
+                attributes.getValueAsString(NameAttribute));
+
+            CEGUI_LOGINSANE("---------> Using image via property: " +
+                attributes.getValueAsString(NameAttribute) + " for: " +
+                attributes.getValueAsString(TypeAttribute));
+        }
     }
 
     /*************************************************************************
