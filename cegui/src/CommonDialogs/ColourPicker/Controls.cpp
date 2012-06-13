@@ -140,7 +140,7 @@ ColourPickerControls::ColourPickerControls(const String& type, const String& nam
     d_colourPickingTexture(new RGB_Colour[d_colourPickerControlsTextureSize *
                                           d_colourPickerControlsTextureSize]),
     d_ignoreEvents(false),
-    d_regexMatcher(System::getSingleton().createRegexMatcher())
+    d_regexMatcher(*System::getSingleton().createRegexMatcher())
 {
 }
 
@@ -154,7 +154,7 @@ ColourPickerControls::~ColourPickerControls()
 
     delete[] d_colourPickingTexture;
 
-    System::getSingleton().destroyRegexMatcher(d_regexMatcher);
+    System::getSingleton().destroyRegexMatcher(&d_regexMatcher);
 }
 
 

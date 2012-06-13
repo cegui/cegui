@@ -165,7 +165,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::createRegexMatcher
         
-            typedef ::CEGUI::RegexMatcher & ( ::CEGUI::System::*createRegexMatcher_function_type )(  ) const;
+            typedef ::CEGUI::RegexMatcher * ( ::CEGUI::System::*createRegexMatcher_function_type )(  ) const;
             
             System_exposer.def( 
                 "createRegexMatcher"
@@ -173,16 +173,16 @@ void register_System_class(){
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
-                    Create a RegexMatcher instance.\n\
+                    Create a RegexMatcher instance if support is available.\n\
+            \n\
+                @return\n\
+                    Pointer to an object that implements the RegexMatcher interface, or 0\n\
+                    if the system has no built in support for RegexMatcher creation.\n\
             \n\
                 \note\n\
                     The created RegexMatcher is not tracked in any way, and it is the\n\
                     resposibility of the caller to destroy the RegexMatcher when it is no\n\
                     longer needed by calling System.destroyRegexMatcher.\n\
-            \n\
-                @exception\n\
-                    InvalidRequestException thrown if CEGUI was compiled without support\n\
-                    for regex matching.\n\
                 *\n" );
         
         }
@@ -218,7 +218,7 @@ void register_System_class(){
         }
         { //::CEGUI::System::destroyRegexMatcher
         
-            typedef void ( ::CEGUI::System::*destroyRegexMatcher_function_type )( ::CEGUI::RegexMatcher & ) const;
+            typedef void ( ::CEGUI::System::*destroyRegexMatcher_function_type )( ::CEGUI::RegexMatcher * ) const;
             
             System_exposer.def( 
                 "destroyRegexMatcher"

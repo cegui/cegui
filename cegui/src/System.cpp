@@ -1000,20 +1000,19 @@ void System::invalidateAllWindows()
 }
 
 //----------------------------------------------------------------------------//
-RegexMatcher& System::createRegexMatcher() const
+RegexMatcher* System::createRegexMatcher() const
 {
 #ifdef CEGUI_HAS_PCRE_REGEX
-    return *CEGUI_NEW_AO PCRERegexMatcher();
+    return CEGUI_NEW_AO PCRERegexMatcher();
 #else
-    CEGUI_THROW(InvalidRequestException("System::createRegexMatcher - "
-        "Library was built without support for regular expressions."));
+    return 0;
 #endif
 }
 
 //----------------------------------------------------------------------------//
-void System::destroyRegexMatcher(RegexMatcher& rm) const
+void System::destroyRegexMatcher(RegexMatcher* rm) const
 {
-    CEGUI_DELETE_AO &rm;
+    CEGUI_DELETE_AO rm;
 }
 
 //----------------------------------------------------------------------------//
