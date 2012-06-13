@@ -1,10 +1,8 @@
-
-/* A Bison parser, made by GNU Bison 2.4.1.  */
+/* A Bison parser, made by GNU Bison 2.5.  */
 
 /* Skeleton implementation for Bison LALR(1) parsers in C++
    
-      Copyright (C) 2002, 2003, 2004, 2005, 2006, 2007, 2008 Free Software
-   Foundation, Inc.
+      Copyright (C) 2002-2011 Free Software Foundation, Inc.
    
    This program is free software: you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
@@ -38,15 +36,15 @@
 /* First part of user declarations.  */
 
 
-/* Line 311 of lalr1.cc  */
-#line 43 "ExpressionDimParser.cpp"
+/* Line 293 of lalr1.cc  */
+#line 41 "ExpressionDimParser.cpp"
 
 
 #include "ExpressionDimParser.hpp"
 
 /* User implementation prologue.  */
 
-/* Line 317 of lalr1.cc  */
+/* Line 299 of lalr1.cc  */
 #line 59 "ExpressionDimParser.y"
 
 namespace CEGUI {
@@ -57,11 +55,11 @@ ExpressionDimParser::token_type ED_lex(ExpressionDimParser::semantic_type* yylva
 #include "./ExpressionDim_impl.h"
 
 
-/* Line 317 of lalr1.cc  */
-#line 62 "ExpressionDimParser.cpp"
+/* Line 299 of lalr1.cc  */
+#line 60 "ExpressionDimParser.cpp"
 
 #ifndef YY_
-# if YYENABLE_NLS
+# if defined YYENABLE_NLS && YYENABLE_NLS
 #  if ENABLE_NLS
 #   include <libintl.h> /* FIXME: INFRINGES ON USER NAME SPACE */
 #   define YY_(msgid) dgettext ("bison-runtime", msgid)
@@ -70,6 +68,26 @@ ExpressionDimParser::token_type ED_lex(ExpressionDimParser::semantic_type* yylva
 # ifndef YY_
 #  define YY_(msgid) msgid
 # endif
+#endif
+
+/* YYLLOC_DEFAULT -- Set CURRENT to span from RHS[1] to RHS[N].
+   If N is 0, then set CURRENT to the empty location which ends
+   the previous symbol: RHS[0] (always defined).  */
+
+#define YYRHSLOC(Rhs, K) ((Rhs)[K])
+#ifndef YYLLOC_DEFAULT
+# define YYLLOC_DEFAULT(Current, Rhs, N)                               \
+ do                                                                    \
+   if (N)                                                              \
+     {                                                                 \
+       (Current).begin = YYRHSLOC (Rhs, 1).begin;                      \
+       (Current).end   = YYRHSLOC (Rhs, N).end;                        \
+     }                                                                 \
+   else                                                                \
+     {                                                                 \
+       (Current).begin = (Current).end = YYRHSLOC (Rhs, 0).end;        \
+     }                                                                 \
+ while (false)
 #endif
 
 /* Suppress unused-variable warnings by "using" E.  */
@@ -121,52 +139,12 @@ do {					\
 #define YYRECOVERING()  (!!yyerrstatus_)
 
 
-/* Line 380 of lalr1.cc  */
+/* Line 382 of lalr1.cc  */
 #line 32 "ExpressionDimParser.y"
 namespace CEGUI {
 
-/* Line 380 of lalr1.cc  */
-#line 130 "ExpressionDimParser.cpp"
-#if YYERROR_VERBOSE
-
-  /* Return YYSTR after stripping away unnecessary quotes and
-     backslashes, so that it's suitable for yyerror.  The heuristic is
-     that double-quoting is unnecessary unless the string contains an
-     apostrophe, a comma, or backslash (other than backslash-backslash).
-     YYSTR is taken from yytname.  */
-  std::string
-  ExpressionDimParser::yytnamerr_ (const char *yystr)
-  {
-    if (*yystr == '"')
-      {
-        std::string yyr = "";
-        char const *yyp = yystr;
-
-        for (;;)
-          switch (*++yyp)
-            {
-            case '\'':
-            case ',':
-              goto do_not_strip_quotes;
-
-            case '\\':
-              if (*++yyp != '\\')
-                goto do_not_strip_quotes;
-              /* Fall through.  */
-            default:
-              yyr += *yyp;
-              break;
-
-            case '"':
-              return yyr;
-            }
-      do_not_strip_quotes: ;
-      }
-
-    return yystr;
-  }
-
-#endif
+/* Line 382 of lalr1.cc  */
+#line 148 "ExpressionDimParser.cpp"
 
   /// Build a parser object.
   ExpressionDimParser::ExpressionDimParser (ExpressionDim_impl* ctx_yyarg)
@@ -267,6 +245,18 @@ namespace CEGUI {
   }
 #endif
 
+  inline bool
+  ExpressionDimParser::yy_pact_value_is_default_ (int yyvalue)
+  {
+    return yyvalue == yypact_ninf_;
+  }
+
+  inline bool
+  ExpressionDimParser::yy_table_value_is_error_ (int yyvalue)
+  {
+    return yyvalue == yytable_ninf_;
+  }
+
   int
   ExpressionDimParser::parse ()
   {
@@ -288,7 +278,7 @@ namespace CEGUI {
     /// Location of the lookahead.
     location_type yylloc;
     /// The locations where the error started and ended.
-    location_type yyerror_range[2];
+    location_type yyerror_range[3];
 
     /// $$.
     semantic_type yyval;
@@ -326,7 +316,7 @@ namespace CEGUI {
 
     /* Try to take a decision without lookahead.  */
     yyn = yypact_[yystate];
-    if (yyn == yypact_ninf_)
+    if (yy_pact_value_is_default_ (yyn))
       goto yydefault;
 
     /* Read a lookahead token.  */
@@ -359,8 +349,8 @@ namespace CEGUI {
     yyn = yytable_[yyn];
     if (yyn <= 0)
       {
-	if (yyn == 0 || yyn == yytable_ninf_)
-	goto yyerrlab;
+	if (yy_table_value_is_error_ (yyn))
+	  goto yyerrlab;
 	yyn = -yyn;
 	goto yyreduce;
       }
@@ -416,14 +406,14 @@ namespace CEGUI {
       {
 	  case 2:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 69 "ExpressionDimParser.y"
     { ctx->d_parsedValue = (yysemantic_stack_[(1) - (1)].val); }
     break;
 
   case 3:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 72 "ExpressionDimParser.y"
     {
         (yyval.val) = ctx->d_area ?
@@ -433,46 +423,57 @@ namespace CEGUI {
 
   case 4:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 76 "ExpressionDimParser.y"
     { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) + (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 5:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 77 "ExpressionDimParser.y"
     { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) - (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 6:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 78 "ExpressionDimParser.y"
     { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) * (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 7:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 79 "ExpressionDimParser.y"
     { (yyval.val) = (yysemantic_stack_[(3) - (1)].val) / (yysemantic_stack_[(3) - (3)].val);      }
     break;
 
   case 8:
 
-/* Line 678 of lalr1.cc  */
+/* Line 690 of lalr1.cc  */
 #line 80 "ExpressionDimParser.y"
     { (yyval.val) = (yysemantic_stack_[(3) - (2)].val);                }
     break;
 
 
 
-/* Line 678 of lalr1.cc  */
-#line 473 "ExpressionDimParser.cpp"
+/* Line 690 of lalr1.cc  */
+#line 463 "ExpressionDimParser.cpp"
 	default:
           break;
       }
+    /* User semantic actions sometimes alter yychar, and that requires
+       that yytoken be updated with the new translation.  We take the
+       approach of translating immediately before every use of yytoken.
+       One alternative is translating here after every semantic action,
+       but that translation would be missed if the semantic action
+       invokes YYABORT, YYACCEPT, or YYERROR immediately after altering
+       yychar.  In the case of YYABORT or YYACCEPT, an incorrect
+       destructor might then be invoked immediately.  In the case of
+       YYERROR, subsequent parser actions might lead to an incorrect
+       destructor call or verbose syntax error message before the
+       lookahead is translated.  */
     YY_SYMBOL_PRINT ("-> $$ =", yyr1_[yyn], &yyval, &yyloc);
 
     yypop_ (yylen);
@@ -496,14 +497,20 @@ namespace CEGUI {
   | yyerrlab -- here on detecting error |
   `------------------------------------*/
   yyerrlab:
+    /* Make sure we have latest lookahead translation.  See comments at
+       user semantic actions for why this is necessary.  */
+    yytoken = yytranslate_ (yychar);
+
     /* If not already recovering from an error, report this error.  */
     if (!yyerrstatus_)
       {
 	++yynerrs_;
-	error (yylloc, yysyntax_error_ (yystate));
+	if (yychar == yyempty_)
+	  yytoken = yyempty_;
+	error (yylloc, yysyntax_error_ (yystate, yytoken));
       }
 
-    yyerror_range[0] = yylloc;
+    yyerror_range[1] = yylloc;
     if (yyerrstatus_ == 3)
       {
 	/* If just tried and failed to reuse lookahead token after an
@@ -538,7 +545,7 @@ namespace CEGUI {
     if (false)
       goto yyerrorlab;
 
-    yyerror_range[0] = yylocation_stack_[yylen - 1];
+    yyerror_range[1] = yylocation_stack_[yylen - 1];
     /* Do not reclaim the symbols of the rule which action triggered
        this YYERROR.  */
     yypop_ (yylen);
@@ -555,7 +562,7 @@ namespace CEGUI {
     for (;;)
       {
 	yyn = yypact_[yystate];
-	if (yyn != yypact_ninf_)
+	if (!yy_pact_value_is_default_ (yyn))
 	{
 	  yyn += yyterror_;
 	  if (0 <= yyn && yyn <= yylast_ && yycheck_[yyn] == yyterror_)
@@ -570,7 +577,7 @@ namespace CEGUI {
 	if (yystate_stack_.height () == 1)
 	YYABORT;
 
-	yyerror_range[0] = yylocation_stack_[0];
+	yyerror_range[1] = yylocation_stack_[0];
 	yydestruct_ ("Error: popping",
 		     yystos_[yystate],
 		     &yysemantic_stack_[0], &yylocation_stack_[0]);
@@ -579,10 +586,10 @@ namespace CEGUI {
 	YY_STACK_PRINT ();
       }
 
-    yyerror_range[1] = yylloc;
+    yyerror_range[2] = yylloc;
     // Using YYLLOC is tempting, but would change the location of
     // the lookahead.  YYLOC is available though.
-    YYLLOC_DEFAULT (yyloc, (yyerror_range - 1), 2);
+    YYLLOC_DEFAULT (yyloc, yyerror_range, 2);
     yysemantic_stack_.push (yylval);
     yylocation_stack_.push (yyloc);
 
@@ -605,7 +612,13 @@ namespace CEGUI {
 
   yyreturn:
     if (yychar != yyempty_)
-      yydestruct_ ("Cleanup: discarding lookahead", yytoken, &yylval, &yylloc);
+      {
+        /* Make sure we have latest lookahead translation.  See comments
+           at user semantic actions for why this is necessary.  */
+        yytoken = yytranslate_ (yychar);
+        yydestruct_ ("Cleanup: discarding lookahead", yytoken, &yylval,
+                     &yylloc);
+      }
 
     /* Do not reclaim the symbols of the rule which action triggered
        this YYABORT or YYACCEPT.  */
@@ -624,51 +637,9 @@ namespace CEGUI {
 
   // Generate an error message.
   std::string
-  ExpressionDimParser::yysyntax_error_ (int yystate)
+  ExpressionDimParser::yysyntax_error_ (int, int)
   {
-    std::string res;
-    YYUSE (yystate);
-#if YYERROR_VERBOSE
-    int yyn = yypact_[yystate];
-    if (yypact_ninf_ < yyn && yyn <= yylast_)
-      {
-	/* Start YYX at -YYN if negative to avoid negative indexes in
-	   YYCHECK.  */
-	int yyxbegin = yyn < 0 ? -yyn : 0;
-
-	/* Stay within bounds of both yycheck and yytname.  */
-	int yychecklim = yylast_ - yyn + 1;
-	int yyxend = yychecklim < yyntokens_ ? yychecklim : yyntokens_;
-	int count = 0;
-	for (int x = yyxbegin; x < yyxend; ++x)
-	  if (yycheck_[x + yyn] == x && x != yyterror_)
-	    ++count;
-
-	// FIXME: This method of building the message is not compatible
-	// with internationalization.  It should work like yacc.c does it.
-	// That is, first build a string that looks like this:
-	// "syntax error, unexpected %s or %s or %s"
-	// Then, invoke YY_ on this string.
-	// Finally, use the string as a format to output
-	// yytname_[tok], etc.
-	// Until this gets fixed, this message appears in English only.
-	res = "syntax error, unexpected ";
-	res += yytnamerr_ (yytname_[tok]);
-	if (count < 5)
-	  {
-	    count = 0;
-	    for (int x = yyxbegin; x < yyxend; ++x)
-	      if (yycheck_[x + yyn] == x && x != yyterror_)
-		{
-		  res += (!count++) ? ", expecting " : " or ";
-		  res += yytnamerr_ (yytname_[x]);
-		}
-	  }
-      }
-    else
-#endif
-      res = YY_("syntax error");
-    return res;
+    return YY_("syntax error");
   }
 
 
@@ -682,9 +653,9 @@ namespace CEGUI {
       10,    -4,     9,     9,    -4,    -4
   };
 
-  /* YYDEFACT[S] -- default rule to reduce with in state S when YYTABLE
-     doesn't specify something else to do.  Zero means the default is an
-     error.  */
+  /* YYDEFACT[S] -- default reduction number in state S.  Performed when
+     YYTABLE doesn't specify something else to do.  Zero means the
+     default is an error.  */
   const unsigned char
   ExpressionDimParser::yydefact_[] =
   {
@@ -708,7 +679,7 @@ namespace CEGUI {
 
   /* YYTABLE[YYPACT[STATE-NUM]].  What to do in state STATE-NUM.  If
      positive, shift that token.  If negative, reduce the rule which
-     number is the opposite.  If zero, do what YYDEFACT says.  */
+     number is the opposite.  If YYTABLE_NINF_, syntax error.  */
   const signed char ExpressionDimParser::yytable_ninf_ = -1;
   const unsigned char
   ExpressionDimParser::yytable_[] =
@@ -877,15 +848,15 @@ namespace CEGUI {
   const ExpressionDimParser::token_number_type ExpressionDimParser::yyundef_token_ = 2;
 
 
-/* Line 1054 of lalr1.cc  */
+/* Line 1136 of lalr1.cc  */
 #line 32 "ExpressionDimParser.y"
 } // CEGUI
 
-/* Line 1054 of lalr1.cc  */
-#line 886 "ExpressionDimParser.cpp"
+/* Line 1136 of lalr1.cc  */
+#line 857 "ExpressionDimParser.cpp"
 
 
-/* Line 1056 of lalr1.cc  */
+/* Line 1138 of lalr1.cc  */
 #line 82 "ExpressionDimParser.y"
 
 

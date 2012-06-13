@@ -160,6 +160,8 @@
 
 #include "ImageManager.pypp.hpp"
 
+#include "ImagePropertyDim.pypp.hpp"
+
 #include "ImageryComponent.pypp.hpp"
 
 #include "ImagerySection.pypp.hpp"
@@ -766,6 +768,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_SingletonImageManager_class();
 
     register_ImageManager_class();
+
+    register_ImagePropertyDim_class();
 
     register_ImageryComponent_class();
 

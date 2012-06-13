@@ -24,17 +24,34 @@ class AbsoluteDim : public BaseDim
 };
 
 /******************************************************************************
+  ImageDimBase
+******************************************************************************/
+class ImageDimBase : public BaseDim 
+{
+  void setSourceDimension(DimensionType dim);
+  DimensionType getSourceDimension() const;
+};
+
+/******************************************************************************
   ImageDim
 ******************************************************************************/
-class ImageDim : public BaseDim 
+class ImageDim : public ImageDimBase 
 {
   void setSourceImage(utf8string name);
   string getSourceImage() const;
 
-  void setSourceDimension(DimensionType dim);
-  DimensionType getSourceDimension() const;
+  ImageDim(utf8string image_name, DimensionType dim);
+};
 
-  ImageDim(utf8string name, DimensionType dim);
+/******************************************************************************
+  ImagePropertyDim
+******************************************************************************/
+class ImagePropertyDim : public ImageDimBase 
+{
+  void setSourceProperty(utf8string name);
+  string getSourceProperty() const;
+
+  ImagePropertyDim(utf8string property_name, DimensionType dim);
 };
 
 /******************************************************************************
