@@ -87,6 +87,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::UnifiedDimElement("UnifiedDim");
     const String Falagard_xmlHandler::AbsoluteDimElement("AbsoluteDim");
     const String Falagard_xmlHandler::ImageDimElement("ImageDim");
+    const String Falagard_xmlHandler::ImagePropertyDimElement("ImagePropertyDim");
     const String Falagard_xmlHandler::WidgetDimElement("WidgetDim");
     const String Falagard_xmlHandler::FontDimElement("FontDim");
     const String Falagard_xmlHandler::PropertyDimElement("PropertyDim");
@@ -190,6 +191,7 @@ namespace CEGUI
         registerElementStartHandler(UnifiedDimElement, &Falagard_xmlHandler::elementUnifiedDimStart);
         registerElementStartHandler(AbsoluteDimElement, &Falagard_xmlHandler::elementAbsoluteDimStart);
         registerElementStartHandler(ImageDimElement, &Falagard_xmlHandler::elementImageDimStart);
+        registerElementStartHandler(ImagePropertyDimElement, &Falagard_xmlHandler::elementImagePropertyDimStart);
         registerElementStartHandler(WidgetDimElement, &Falagard_xmlHandler::elementWidgetDimStart);
         registerElementStartHandler(FontDimElement, &Falagard_xmlHandler::elementFontDimStart);
         registerElementStartHandler(PropertyDimElement, &Falagard_xmlHandler::elementPropertyDimStart);
@@ -230,6 +232,7 @@ namespace CEGUI
         registerElementEndHandler(UnifiedDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(AbsoluteDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(ImageDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(ImagePropertyDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(WidgetDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(FontDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(PropertyDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
@@ -653,6 +656,18 @@ namespace CEGUI
     {
         ImageDim base(attributes.getValueAsString(NameAttribute),
                       FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+
+        doBaseDimStart(&base);
+    }
+
+    /*************************************************************************
+        Method that handles the opening ImageDim XML element.
+    *************************************************************************/
+    void Falagard_xmlHandler::elementImagePropertyDimStart(const XMLAttributes& attributes)
+    {
+        ImagePropertyDim base(
+            attributes.getValueAsString(NameAttribute),
+            FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
 
         doBaseDimStart(&base);
     }

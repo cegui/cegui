@@ -231,6 +231,7 @@
 			<xsd:element name="UnifiedDim" type="unifiedDimType" />
 			<xsd:element name="AbsoluteDim" type="absoluteDimType" />
 			<xsd:element name="ImageDim" type="imageDimType" />
+            <xsd:element name="ImagePropertyDim" type="imageDimType" />
             <xsd:element name="WidgetDim" type="widgetDimType" />
             <xsd:element name="FontDim" type="fontDimType" />
             <xsd:element name="PropertyDim" type="propertyDimType" />
@@ -322,6 +323,7 @@
             <xsd:element name="UnifiedDim" type="unifiedDimType" />
             <xsd:element name="AbsoluteDim" type="absoluteDimType" />
             <xsd:element name="ImageDim" type="imageDimType" />
+            <xsd:element name="ImagePropertyDim" type="imageDimType" />
             <xsd:element name="WidgetDim" type="widgetDimType" />
             <xsd:element name="FontDim" type="fontDimType" />
             <xsd:element name="PropertyDim" type="propertyDimType" />
