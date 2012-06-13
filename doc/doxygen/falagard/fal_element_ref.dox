@@ -597,12 +597,20 @@ component.
 
 @subsubsection fal_elem_ref_expressiondim_1_2 Image Dimensions
 Image dimensions can be specified within an expression string by way of the
-@c imagedim pseudo-function that has a single signature of:<br>
+@c imagedim and @c imagepropertydim pseudo-functions.
+The @c imagedim has a single signature of:<br>
 - @c imagedim( 'imagename', type )
 - where:
     - @c imagename is the name of the desired image.
     - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration indicating the specific dimension to be used.
+enumeration indicating the specific dimension to be used.<br>
+
+The @c imagepropertydim has a single signature of:<br>
+- @c imagepropertydim( 'propertyname', type )
+- where:
+    - @c propertyname is the name of a property that will provide the name of the image.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
+enumeration indicating the specific dimension to be used.<br>
 
 @subsubsection fal_elem_ref_expressiondim_1_3 Widget Dimensions
 Widget dimensions can be specified within an expression string by way of the
