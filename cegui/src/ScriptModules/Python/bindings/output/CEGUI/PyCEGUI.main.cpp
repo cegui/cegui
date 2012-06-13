@@ -138,6 +138,8 @@
 
 #include "GUIContextEventArgs.pypp.hpp"
 
+#include "GUIContextRenderTargetEventArgs.pypp.hpp"
+
 #include "GeometryBuffer.pypp.hpp"
 
 #include "GlobalEventSet.pypp.hpp"
@@ -736,6 +738,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_GUIContext_class();
 
     register_GUIContextEventArgs_class();
+
+    register_GUIContextRenderTargetEventArgs_class();
 
     register_GeometryBuffer_class();
 

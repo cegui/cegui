@@ -95,45 +95,119 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the Image object that will be drawn by this FrameComponent for a specified frame part.
+            Return the Image object that will be drawn by this FrameComponent
+            for a specified frame part.
 
         \param part
-            One of the FrameImageComponent enumerated values specifying the component image to be accessed.
+            One of the FrameImageComponent enumerated values specifying the
+            component image to be accessed.
+
+        \param wnd
+            Reference to a Window object that will be accessed if the image
+            component is fetched from a Property.
 
         \return
-            Image object.
+            pointer to an Image object, or 0 if the image had not been set
+            or if the image is sourced from a property that returns an empty
+            image name.
         */
-        const Image* getImage(FrameImageComponent part) const;
+        const Image* getImage(FrameImageComponent part,
+                              const Window& wnd) const;
 
         /*!
         \brief
-            Set the Image that will be drawn by this ImageryComponent.
+            Set an Image that will be drawn by this FrameComponent.
 
         \param part
-            One of the FrameImageComponent enumerated values specifying the component image to be accessed.
+            One of the FrameImageComponent enumerated values specifying the
+            component image to be set.
 
         \param image
-            Pointer to the Image object to be drawn by this FrameComponent.
-
-        \return
-            Nothing.
+            Pointer to the Image object to be drawn.  If this is 0 then drawing
+            of the component image specified by \a part will be disabled.
         */
         void setImage(FrameImageComponent part, const Image* image);
 
         /*!
         \brief
-            Set the Image that will be drawn by this FrameComponent.
+            Set an Image that will be drawn by this FrameComponent.
 
         \param part
-            One of the FrameImageComponent enumerated values specifying the component image to be accessed.
+            One of the FrameImageComponent enumerated values specifying the
+            component image to be set.
 
         \param name
-            String holding the name of the Image to be rendered.
-
-        \return
-            Nothing.
+            String holding the name of an Image. The image should already exist,
+            if the Image does not exist an Exception will be logged and
+            drawing of the component image specified by \a part will be
+            disabled.
         */
         void setImage(FrameImageComponent part, const String& name);
+
+        /*!
+        \brief
+            Set the name of the Property that will be accesssed on the target
+            Window to determine the Image that will be drawn by the
+            FrameComponent.
+
+        \param part
+            One of the FrameImageComponent enumerated values specifying the
+            component image to be set.
+
+        \param name
+            String holding the name of a property that will be accessed. If this
+            is the empty string then drawing of the component image specified by
+            \a part will be disabled.
+        */
+        void setImagePropertySource(FrameImageComponent part, const String& name);
+
+        /*!
+        \brief
+            Return whether the given component image has been specified.
+
+        \param part
+            One of the FrameImageComponent enumerated values specifying the
+            component image to check.
+
+        \return
+            - true if the image is specified and will be drawn.
+            - false if the image is not specified.
+        */
+        bool isImageSpecified(FrameImageComponent part) const;
+
+        /*!
+        \brief
+            Return whether the given component image is specified via a
+            property.
+
+        \param part
+            One of the FrameImageComponent enumerated values specifying the
+            component image to check.
+
+        \return
+            - true if the image is specified and fetched via a property.
+            - false if the image is not fetched via a property
+              (or is not specified)
+        */
+        bool isImageFetchedFromProperty(FrameImageComponent part) const;
+
+        /*!
+        \brief
+            Return the name of the property that will be used to determine the
+            image to use for the given component image.
+            
+            If the returned String is empty, it indicates either that the
+            component image is not specified or that the component image is not
+            sourced from a property.
+
+        \see
+            isImageFetchedFromProperty isImageSpecified
+
+        \param part
+            One of the FrameImageComponent enumerated values specifying the
+            component image property source to return.
+        */
+        const String& getImagePropertySource(FrameImageComponent part) const;
 
         /*!
         \brief
@@ -148,18 +222,47 @@ namespace CEGUI
         */
         void writeXMLToStream(XMLSerializer& xml_stream) const;
 
+        bool operator==(const FrameComponent& rhs) const;
+
     protected:
+        struct FrameImageSource
+        {
+            FrameImageSource() :
+                d_specified(false),
+                d_image(0)
+            {}
+
+            bool operator==(const FrameImageSource& rhs) const
+            {
+                return d_specified == rhs.d_specified &&
+                       d_image == rhs.d_image &&
+                       d_propertyName == rhs.d_propertyName;
+            }
+
+            bool operator!=(const FrameImageSource& rhs) const
+            {
+                return !operator==(rhs);
+            }
+            
+            bool d_specified;
+            const Image* d_image;
+            String d_propertyName;
+        };
+
         // implemets abstract from base
         void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
 
-        // renders the background image (basically a clone of render_impl from ImageryComponent - maybe we need a helper class?)
-        void doBackgroundRender(Window& srcWindow, Rectf& destRect, const ColourRect& colours, const Rectf* clipper, bool clipToDisplay) const;
+        // renders the background image (basically a clone of render_impl from
+        // ImageryComponent - maybe we need a helper class?)
+        void doBackgroundRender(Window& srcWindow, const Image* image,
+                                Rectf& destRect, const ColourRect& colours,
+                                const Rectf* clipper, bool clipToDisplay) const;
 
         // formatting options for background
         VerticalFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the background for the component.
         HorizontalFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the background for the component.
-        // images for the frame
-        const Image* d_frameImages[FIC_FRAME_IMAGE_COUNT];  //!< Array that holds the assigned images.
+        //! FrameImageSource array describing images to be used.
+        FrameImageSource d_frameImages[FIC_FRAME_IMAGE_COUNT];
     };
 
 } // End of  CEGUI namespace section

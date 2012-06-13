@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Mon Jun 11 12:30:35 2012.
+** Generated automatically by tolua++-1.0.93 on Wed Jun 13 12:19:30 2012.
 */
 
 #ifndef __cplusplus
@@ -57529,7 +57529,8 @@ static int tolua_CEGUI_CEGUI_FrameComponent_getImage00(lua_State* tolua_S)
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
  !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,3,&tolua_err)
+ !tolua_isusertype(tolua_S,3,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
  else
@@ -57537,11 +57538,12 @@ static int tolua_CEGUI_CEGUI_FrameComponent_getImage00(lua_State* tolua_S)
  {
   const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
   CEGUI::FrameImageComponent part = ((CEGUI::FrameImageComponent) (int)  tolua_tonumber(tolua_S,2,0));
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getImage'",NULL);
 #endif
  {
-  const CEGUI::Image* tolua_ret = (const CEGUI::Image*)  self->getImage(part);
+  const CEGUI::Image* tolua_ret = (const CEGUI::Image*)  self->getImage(part,*wnd);
  tolua_pushusertype(tolua_S,(void*)tolua_ret,"const CEGUI::Image");
  }
  }
@@ -57616,6 +57618,143 @@ static int tolua_CEGUI_CEGUI_FrameComponent_setImage01(lua_State* tolua_S)
  return 0;
 tolua_lerror:
  return tolua_CEGUI_CEGUI_FrameComponent_setImage00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setImagePropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setImagePropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setImagePropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,3,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,4,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::FrameImageComponent part = ((CEGUI::FrameImageComponent) (int)  tolua_tonumber(tolua_S,2,0));
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,3,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setImagePropertySource'",NULL);
+#endif
+ {
+  self->setImagePropertySource(part,name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setImagePropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isImageSpecified of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_isImageSpecified00
+static int tolua_CEGUI_CEGUI_FrameComponent_isImageSpecified00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::FrameImageComponent part = ((CEGUI::FrameImageComponent) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isImageSpecified'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isImageSpecified(part);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isImageSpecified'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isImageFetchedFromProperty of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_isImageFetchedFromProperty00
+static int tolua_CEGUI_CEGUI_FrameComponent_isImageFetchedFromProperty00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::FrameImageComponent part = ((CEGUI::FrameImageComponent) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isImageFetchedFromProperty'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isImageFetchedFromProperty(part);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isImageFetchedFromProperty'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getImagePropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getImagePropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_getImagePropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::FrameImageComponent part = ((CEGUI::FrameImageComponent) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getImagePropertySource'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getImagePropertySource(part);
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getImagePropertySource'.",&tolua_err);
+ return 0;
+#endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -65377,6 +65516,10 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getImage",tolua_CEGUI_CEGUI_FrameComponent_getImage00);
    tolua_function(tolua_S,"setImage",tolua_CEGUI_CEGUI_FrameComponent_setImage00);
    tolua_function(tolua_S,"setImage",tolua_CEGUI_CEGUI_FrameComponent_setImage01);
+   tolua_function(tolua_S,"setImagePropertySource",tolua_CEGUI_CEGUI_FrameComponent_setImagePropertySource00);
+   tolua_function(tolua_S,"isImageSpecified",tolua_CEGUI_CEGUI_FrameComponent_isImageSpecified00);
+   tolua_function(tolua_S,"isImageFetchedFromProperty",tolua_CEGUI_CEGUI_FrameComponent_isImageFetchedFromProperty00);
+   tolua_function(tolua_S,"getImagePropertySource",tolua_CEGUI_CEGUI_FrameComponent_getImagePropertySource00);
    tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_FrameComponent_new00);
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_FrameComponent_new00_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_FrameComponent_new00_local);

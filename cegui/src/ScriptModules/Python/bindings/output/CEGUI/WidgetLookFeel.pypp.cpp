@@ -388,7 +388,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getEventLinkDefinitionIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, const CEGUI::EventLinkDefinition*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, const CEGUI::EventLinkDefinition*> > > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, const CEGUI::EventLinkDefinition* > > ( ::CEGUI::WidgetLookFeel::*getEventLinkDefinitionIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getEventLinkDefinitionIterator"
@@ -519,7 +519,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitionIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::Property* > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitionIterator"
@@ -554,7 +554,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyInitialiserIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, const CEGUI::PropertyInitialiser*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, const CEGUI::PropertyInitialiser*> > > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, const CEGUI::PropertyInitialiser* > > ( ::CEGUI::WidgetLookFeel::*getPropertyInitialiserIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyInitialiserIterator"
@@ -574,7 +574,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Property*> > > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::Property* > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitionIterator"
@@ -648,7 +648,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getWidgetComponentIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, const CEGUI::WidgetComponent*, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, const CEGUI::WidgetComponent*> > > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, const CEGUI::WidgetComponent* > > ( ::CEGUI::WidgetLookFeel::*getWidgetComponentIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getWidgetComponentIterator"

@@ -758,7 +758,9 @@ The @c \<FontProperty\> element is intended to allow the system to access a prop
 @section fal_elem_ref_sec_14 \<FrameComponent\> Element
 
 @subsection fal_elem_ref_sec_14_1 Purpose:
-The @c \<FrameComponent\> element is used to define an imagery frame using a maximum of eight images for the corners and edges, and a single, formatted, image for the background. Any of the images may be omitted if not required.
+The @c \<FrameComponent\> element is used to define an imagery frame using a
+maximum of eight images for the corners and edges, and a single, formatted,
+image for the background. Any of the images may be omitted if not required.
 
 @subsection fal_elem_ref_sec_14_2 Attributes:
 No attributes are currently defined for the @c \<FrameComponent\> element.
@@ -768,7 +770,10 @@ Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
     <li>@c \<Area\> defining the target area for this frame.</li>
-    <li>Up to nine @c \<Image\> elements specifying the images to be drawn and in what positions.</li>
+    <li>Up to nine @c \<Image\> or @c \<ImageProperty\> elements specifying the
+        images to be drawn and in what positions. Note that it is acceptable to
+        freely mix @c \<Image\> and @c \<ImageProperty\> in a single 
+        @c \<FrameComponent\> definition.</li>
 
     <li>Optionally specifying the colours for the entire frame, one of the colour elements:</li>
     <ul>
@@ -1081,18 +1086,22 @@ The following was taken from TaharezLook.looknfeel and shows a full ImageryCompo
 @section fal_elem_ref_sec_21 \<ImageProperty\> Element
 
 @subsection fal_elem_ref_sec_21_1 Purpose:
-The @c \<ImageProperty\> element is intended to allow the system to access a property on the target window to obtain the final image to be used when rendering the ImageryComponent being defined.
+The @c \<ImageProperty\> element is intended to allow the system to access a
+property on the target window to obtain the final image to be used when
+rendering the component being defined.
 
 @subsection fal_elem_ref_sec_21_2 Attributes:
-@arg @c name  specifies the name of the property to access. Required attribute. The named property must access a imageset \& image value pair of the form:
-@code
-"set:<imageset_name> image:<image_name>"
-@endcode
+@arg @c name  specifies the name of the property to access that will provide the
+name of the Image to be used. Required attribute.
+@arg @c type  Only for @c \<FrameComponent\>. Specifies the part of the frame
+that this image is to be used for. One of the values from the
+FrameImageComponent enumeration. Required attribute.
 
 @subsection fal_elem_ref_sec_21_3 Usage:
 <ul>
     <li>The @c \<ImageProperty\> element may not contain sub-elements.</li>
-    <li>The @c \<ImageProperty\> element may appear as a sub-element only within the @c \<ImageryComponent\> elements.</li>
+    <li>The @c \<ImageProperty\> element may appear as a sub-element within
+        either @c \<ImageryComponent\> or @c \<FrameComponent\> elements.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_21_4 Examples:

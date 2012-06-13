@@ -109,7 +109,10 @@
     <xsd:complexType name="frameComponentType">
         <xsd:sequence>
             <xsd:element name="Area" type="componentAreaType" minOccurs="0" maxOccurs="1" />
-            <xsd:element name="Image" type="frameImageType" minOccurs="0" maxOccurs="9" />
+            <xsd:choice  minOccurs="0" maxOccurs="9">
+                <xsd:element name="Image" type="frameImageType" />
+                <xsd:element name="ImageProperty" type="frameImageType" />
+            </xsd:choice>
             <xsd:choice  minOccurs="0" maxOccurs="1">
                 <xsd:element name="Colour" type="colourType" />
                 <xsd:element name="Colours" type="colourRectType" />
