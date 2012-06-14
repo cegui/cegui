@@ -12540,7 +12540,7 @@ YY_RULE_SETUP
 
     CEGUI::UnifiedDim* dim = new CEGUI::UnifiedDim(
         CEGUI::UDim(scale, offset),
-        CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+        CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }
@@ -12561,7 +12561,7 @@ YY_RULE_SETUP
 
     CEGUI::ImageDim* dim = new CEGUI::ImageDim(
         image,
-        CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+        CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }
@@ -12583,7 +12583,7 @@ YY_RULE_SETUP
     CEGUI::ImagePropertyDim* dim =
         new CEGUI::ImagePropertyDim(
             property,
-            CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+            CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }
@@ -12604,7 +12604,7 @@ YY_RULE_SETUP
 
     CEGUI::WidgetDim* dim = new CEGUI::WidgetDim(
         widget,
-        CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+        CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }
@@ -12621,7 +12621,7 @@ YY_RULE_SETUP
 
     CEGUI::WidgetDim* dim = new CEGUI::WidgetDim(
         CEGUI::String(""),
-        CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+        CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }
@@ -12647,7 +12647,7 @@ YY_RULE_SETUP
         widget,
         font,
         CEGUI::String(""),
-        CEGUI::FalagardXMLHelper::stringToFontMetricType(type),
+        CEGUI::FalagardXMLHelper<CEGUI::FontMetricType>::fromString(type),
         padding);
 
     pushDim(ctx, dim);
@@ -12668,7 +12668,7 @@ YY_RULE_SETUP
         CEGUI::String(""),
         CEGUI::String(""),
         CEGUI::String(""),
-        CEGUI::FalagardXMLHelper::stringToFontMetricType(type),
+        CEGUI::FalagardXMLHelper<CEGUI::FontMetricType>::fromString(type),
         padding);
 
     pushDim(ctx, dim);
@@ -12688,7 +12688,7 @@ YY_RULE_SETUP
         CEGUI::String(""),
         CEGUI::String(""),
         CEGUI::String(""),
-        CEGUI::FalagardXMLHelper::stringToFontMetricType(type),
+        CEGUI::FalagardXMLHelper<CEGUI::FontMetricType>::fromString(type),
         0.0f);
 
     pushDim(ctx, dim);
@@ -12753,7 +12753,7 @@ YY_RULE_SETUP
     CEGUI::PropertyDim* dim = new CEGUI::PropertyDim(
         widget,
         property,
-        CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+        CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }
@@ -12774,7 +12774,7 @@ YY_RULE_SETUP
     CEGUI::PropertyDim* dim = new CEGUI::PropertyDim(
         CEGUI::String(""),
         property,
-        CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+        CEGUI::FalagardXMLHelper<CEGUI::DimensionType>::fromString(type));
 
     pushDim(ctx, dim);
 }

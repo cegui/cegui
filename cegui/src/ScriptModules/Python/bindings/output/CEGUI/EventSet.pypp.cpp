@@ -141,6 +141,11 @@ if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ActivationEventArgs&>(args));
 }
 
+if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
+}
+
 if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DragDropEventArgs&>(args));
@@ -149,11 +154,6 @@ if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
 if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))

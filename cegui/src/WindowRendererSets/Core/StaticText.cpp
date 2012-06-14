@@ -28,6 +28,7 @@
 #include "CEGUI/WindowRendererSets/Core/StaticText.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/widgets/Scrollbar.h"
 #include "CEGUI/Event.h"
