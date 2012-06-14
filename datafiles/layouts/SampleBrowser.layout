@@ -4,7 +4,7 @@
     <Window type="DefaultWindow" name="SampleBrowserRoot" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window type="SampleBrowserSkin/FrameWindow" name="SampleBrowserMetaData" >
-            <Property name="Area" value="{{0,18},{0,0},{0,368},{0,523}}" />
+            <Property name="Area" value="{{0,-18},{0,0},{0,332},{0,523}}" />
             <Property name="Font" value="DejaVuSans-12-NoScale" />
             <Property name="Text" value="Title" />
             <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
@@ -12,6 +12,7 @@
             <Property name="DragMovingEnabled" value="False" />
             <Property name="VerticalAlignment" value="Centre" />
             <Property name="CloseButtonEnabled" value="False" />
+            <Property name="HorizontalAlignment" value="Right" />
             <AutoWindow namePath="__auto_titlebar__" >
                 <Property name="DraggingEnabled" value="False" />
             </AutoWindow>
@@ -147,7 +148,7 @@
             </Window>
         </Window>
         <Window type="SampleBrowserSkin/FrameWindow" name="SamplesFrameWindow" >
-            <Property name="Area" value="{{0,400},{0,0},{1,-25},{1,-50}}" />
+            <Property name="Area" value="{{0,15},{0,0},{1,-410},{1,-50}}" />
             <Property name="Text" value="Samples" />
             <Property name="AlwaysOnTop" value="True" />
             <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />

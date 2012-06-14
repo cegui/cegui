@@ -48,7 +48,7 @@ public:
     CEGUI::Window* getWindow();
 
     void addSampleWindow(CEGUI::Window* sampleWindow);
-    void setWindowRatio(float widthToHeight);
+    void setWindowRatio(float aspectRatio);
 
     void selectSampleWindow(CEGUI::Window* wnd);
 
@@ -68,7 +68,7 @@ private:
 
     CEGUI::Window* d_root;
     int d_childCount;
-    float d_widthToHeightFactor;
+    float d_aspectRatio;
     CEGUI::Window* d_selectedWindow;
 
     std::vector<CEGUI::Window*> d_sampleWindows;

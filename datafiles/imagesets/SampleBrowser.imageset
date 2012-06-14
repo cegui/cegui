@@ -1,22 +1,22 @@
 <Imageset autoScaled="false" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1280" nativeVertRes="1024" version="2">
     <Image height="3" name="GenericFiller" width="3" xPos="1" yPos="49" />
-    <Image height="25" name="FrameFillerTopLeft" width="25" xPos="39" yPos="51" />
-    <Image height="25" name="FrameFillerTopRight" width="25" xPos="64" yPos="51" />
-    <Image height="25" name="FrameFillerBottomLeft" width="25" xPos="39" yPos="76" />
-    <Image height="25" name="FrameFillerBottomRight" width="25" xPos="64" yPos="76" />
-    <Image height="2" name="FrameFillerLeft" width="25" xPos="39" yPos="75" />
-    <Image height="2" name="FrameFillerRight" width="25" xPos="64" yPos="75" />
-    <Image height="25" name="FrameFillerTop" width="2" xPos="63" yPos="51" />
-    <Image height="25" name="FrameFillerBottom" width="2" xPos="63" yPos="76" />
+    <Image height="25" name="FrameFillerTopLeft" width="25" xPos="38" yPos="51" />
+    <Image height="25" name="FrameFillerTopRight" width="25" xPos="63" yPos="51" />
+    <Image height="25" name="FrameFillerBottomLeft" width="25" xPos="38" yPos="76" />
+    <Image height="25" name="FrameFillerBottomRight" width="25" xPos="63" yPos="76" />
+    <Image height="2" name="FrameFillerLeft" width="25" xPos="38" yPos="75" />
+    <Image height="2" name="FrameFillerRight" width="25" xPos="63" yPos="75" />
+    <Image height="25" name="FrameFillerTop" width="2" xPos="62" yPos="51" />
+    <Image height="25" name="FrameFillerBottom" width="2" xPos="62" yPos="76" />
     <Image height="45" name="MouseArrow" width="36" xPos="0" yPos="0" />
-    <Image height="25" name="FrameTop" width="2" xPos="63" yPos="0" />
-    <Image height="25" name="FrameBottomRight" width="25" xPos="64" yPos="25" />
-    <Image height="25" name="FrameBottomLeft" width="25" xPos="39" yPos="25" />
-    <Image height="2" name="FrameLeft" width="25" xPos="39" yPos="24" />
-    <Image height="25" name="FrameTopRight" width="25" xPos="64" yPos="0" />
-    <Image height="2" name="FrameRight" width="25" xPos="64" yPos="24" />
-    <Image height="25" name="FrameBottom" width="2" xPos="63" yPos="25" />
-    <Image height="25" name="FrameTopLeft" width="25" xPos="39" yPos="0" />
+    <Image height="13" name="FrameTop" width="2" xPos="62" yPos="0" />
+    <Image height="25" name="FrameBottomRight" width="25" xPos="63" yPos="25" />
+    <Image height="25" name="FrameBottomLeft" width="25" xPos="38" yPos="25" />
+    <Image height="2" name="FrameLeft" width="13" xPos="38" yPos="24" />
+    <Image height="25" name="FrameTopRight" width="25" xPos="63" yPos="0" />
+    <Image height="2" name="FrameRight" width="13" xPos="75" yPos="24" />
+    <Image height="13" name="FrameBottom" width="2" xPos="62" yPos="37" />
+    <Image height="25" name="FrameTopLeft" width="25" xPos="38" yPos="0" />
     <Image height="13" name="TextBoxB" width="6" xPos="13" yPos="116" />
     <Image height="13" name="TextBoxTR" width="13" xPos="19" yPos="97" />
     <Image height="13" name="TextBoxT" width="6" xPos="13" yPos="97" />
