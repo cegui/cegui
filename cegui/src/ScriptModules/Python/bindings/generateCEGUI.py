@@ -1170,8 +1170,9 @@ void Iterator_previous(::CEGUI::%s& t)
     widgetLookManager.include()
     
     # falagard/CEGUIFalXMLEnumHelper.h
-    falagardXMLHelper = CEGUI_ns.class_("FalagardXMLHelper")
+    falagardXMLHelper = CEGUI_ns.class_("FalagardXMLHelper_wrapper")
     falagardXMLHelper.include()
+    falagardXMLHelper.rename("FalagardXMLHelper")
     
     # todo: hack fixes
     # taken from python ogre, causes AttributeError at import if not excluded

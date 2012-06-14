@@ -100,10 +100,12 @@ namespace CEGUI
             return;
 
         HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
-            FalagardXMLHelper::stringToHorzFormat(srcWindow.getProperty(d_horzFormatPropertyName));
+            FalagardXMLHelper<HorizontalFormatting>::fromString(
+                srcWindow.getProperty(d_horzFormatPropertyName));
 
         VerticalFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
-            FalagardXMLHelper::stringToVertFormat(srcWindow.getProperty(d_vertFormatPropertyName));
+            FalagardXMLHelper<VerticalFormatting>::fromString(
+                srcWindow.getProperty(d_vertFormatPropertyName));
 
         uint horzTiles, vertTiles;
         float xpos, ypos;
@@ -246,7 +248,7 @@ namespace CEGUI
         {
             // was not a property, so write out explicit formatting in use
             xml_stream.openTag("VertFormat")
-                .attribute("type", FalagardXMLHelper::vertFormatToString(d_vertFormatting))
+                .attribute("type", FalagardXMLHelper<VerticalFormatting>::toString(d_vertFormatting))
                 .closeTag();
         }
 
@@ -255,7 +257,7 @@ namespace CEGUI
         {
             // was not a property, so write out explicit formatting in use
             xml_stream.openTag("HorzFormat")
-                .attribute("type", FalagardXMLHelper::horzFormatToString(d_horzFormatting))
+                .attribute("type", FalagardXMLHelper<HorizontalFormatting>::toString(d_horzFormatting))
                 .closeTag();
         }
 

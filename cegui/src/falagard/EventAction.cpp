@@ -138,7 +138,7 @@ void EventAction::writeXMLToStream(XMLSerializer& xml_stream) const
 {
     xml_stream.openTag("EventAction")
         .attribute("event", d_eventName)
-        .attribute("action", FalagardXMLHelper::childEventActionToString(d_action))
+        .attribute("action", FalagardXMLHelper<ChildEventAction>::toString(d_action))
         .closeTag();
 }
 
@@ -150,7 +150,7 @@ String EventAction::makeConnectionKeyName(const Window& widget) const
 
     return String(addr) +
            d_eventName +
-           FalagardXMLHelper::childEventActionToString(d_action);
+           FalagardXMLHelper<ChildEventAction>::toString(d_action);
 }
 
 //----------------------------------------------------------------------------//
