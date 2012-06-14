@@ -309,7 +309,7 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
         sampleData->handleNewWindowSize(width, height);
     }
 
-    d_samplesWinMgr->setWindowRatio(height/width);
+    d_samplesWinMgr->setWindowRatio(width/height);
 }
 
 CEGUI::FrameWindow* SamplesFramework::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
