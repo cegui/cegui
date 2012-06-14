@@ -284,8 +284,8 @@ namespace CEGUI
 */
             default:
                 CEGUI_THROW(InvalidRequestException(
-                    "ImageDim::getValue - unknown or unsupported DimensionType "
-                    "encountered."));
+                    "ImageDimBase::getValue - unknown or unsupported "
+                    "DimensionType encountered."));
                 break;
         }
     }
