@@ -50,8 +50,8 @@ class System : public EventSet
 
     void invalidateAllCachedRendering();
 
-    //RegexMatcher& createRegexMatcher() const;
-    //void destroyRegexMatcher(RegexMatcher& rm) const;
+    //RegexMatcher* createRegexMatcher() const;
+    //void destroyRegexMatcher(RegexMatcher* rm) const;
 
     bool injectTimePulse(float timeElapsed);
 

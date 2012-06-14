@@ -416,6 +416,25 @@ public:
     */
     void setMaxTextLength(size_t max_len);
 
+    /*!
+    \brief
+        Set the RegexMatcher based validator for this Editbox.
+
+    \param matcher
+        Pointer to an object that implements the RegexMatcher interface, or 0
+        to restore a system supplied RegexMatcher (if support is available).
+
+    \note
+        If the previous RegexMatcher validator is one supplied via the system,
+        it is deleted and replaced with the given RegexMatcher.  User supplied
+        RegexMatcher objects will never be deleted by the system and you must
+        ensure that the object is not deleted while the Editbox holds a pointer
+        to it.  Once the Editbox is destroyed or the validator is set to
+        something else it is the responsibility of client code to ensure any
+        previous custom validator is deleted.
+    */
+    void setValidator(RegexMatcher* matcher);
+
     //! \copydoc Window::performCopy
     virtual bool performCopy(Clipboard& clipboard);
 
@@ -597,6 +616,8 @@ protected:
     String d_validationString;
     //! Pointer to class used for validation of text.
     RegexMatcher* d_validator;
+    //! specifies whether validator was created by us, or supplied by user.
+    bool d_weOwnValidator;
     //! true when a selection is being dragged.
     bool d_dragging;
     //! Selection index for drag selection anchor point.

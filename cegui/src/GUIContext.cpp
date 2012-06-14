@@ -1022,7 +1022,7 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::onRenderTargetChanged(GUIContextEventArgs& args)
+void GUIContext::onRenderTargetChanged(GUIContextRenderTargetEventArgs& args)
 {
     fireEvent(EventRenderTargetChanged, args, EventNamespace);
 }

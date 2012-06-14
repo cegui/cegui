@@ -2344,6 +2344,33 @@ void register_Editbox_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Editbox::setValidator
+        
+            typedef void ( ::CEGUI::Editbox::*setValidator_function_type )( ::CEGUI::RegexMatcher * ) ;
+            
+            Editbox_exposer.def( 
+                "setValidator"
+                , setValidator_function_type( &::CEGUI::Editbox::setValidator )
+                , ( bp::arg("matcher") )
+                , "*!\n\
+                \n\
+                    Set the RegexMatcher based validator for this Editbox.\n\
+            \n\
+                @param matcher\n\
+                    Pointer to an object that implements the RegexMatcher interface, or 0\n\
+                    to restore a system supplied RegexMatcher (if support is available).\n\
+            \n\
+                \note\n\
+                    If the previous RegexMatcher validator is one supplied via the system,\n\
+                    it is deleted and replaced with the given RegexMatcher.  User supplied\n\
+                    RegexMatcher objects will never be deleted by the system and you must\n\
+                    ensure that the object is not deleted while the Editbox holds a pointer\n\
+                    to it.  Once the Editbox is destroyed or the validator is set to\n\
+                    something else it is the responsibility of client code to ensure any\n\
+                    previous custom validator is deleted.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Editbox::validateWindowRenderer
         
             typedef bool ( Editbox_wrapper::*validateWindowRenderer_function_type )( ::CEGUI::WindowRenderer const * ) const;

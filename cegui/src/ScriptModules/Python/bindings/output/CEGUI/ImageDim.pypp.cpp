@@ -22,8 +22,8 @@ struct ImageDim_wrapper : CEGUI::ImageDim, bp::wrapper< CEGUI::ImageDim > {
     
     }
 
-    ImageDim_wrapper(::CEGUI::String const & name, ::CEGUI::DimensionType dim )
-    : CEGUI::ImageDim( boost::ref(name), dim )
+    ImageDim_wrapper(::CEGUI::String const & image_name, ::CEGUI::DimensionType dim )
+    : CEGUI::ImageDim( boost::ref(image_name), dim )
       , bp::wrapper< CEGUI::ImageDim >(){
         // constructor
     
@@ -41,28 +41,16 @@ struct ImageDim_wrapper : CEGUI::ImageDim, bp::wrapper< CEGUI::ImageDim > {
         return CEGUI::ImageDim::clone_impl( );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
-        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
-            return func_getValue_impl( boost::ref(wnd) );
+    virtual ::CEGUI::Image const * getSourceImage( ::CEGUI::Window const & wnd ) const {
+        if( bp::override func_getSourceImage = this->get_override( "getSourceImage" ) )
+            return func_getSourceImage( boost::ref(wnd) );
         else{
-            return this->CEGUI::ImageDim::getValue_impl( boost::ref(wnd) );
+            return this->CEGUI::ImageDim::getSourceImage( boost::ref(wnd) );
         }
     }
     
-    virtual float default_getValue_impl( ::CEGUI::Window const & wnd ) const {
-        return CEGUI::ImageDim::getValue_impl( boost::ref(wnd) );
-    }
-
-    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
-            return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
-        else{
-            return this->CEGUI::ImageDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
-        }
-    }
-    
-    virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        return CEGUI::ImageDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    virtual ::CEGUI::Image const * default_getSourceImage( ::CEGUI::Window const & wnd ) const {
+        return CEGUI::ImageDim::getSourceImage( boost::ref(wnd) );
     }
 
     virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -106,23 +94,19 @@ struct ImageDim_wrapper : CEGUI::ImageDim, bp::wrapper< CEGUI::ImageDim > {
 void register_ImageDim_class(){
 
     { //::CEGUI::ImageDim
-        typedef bp::class_< ImageDim_wrapper, bp::bases< CEGUI::BaseDim > > ImageDim_exposer_t;
-        ImageDim_exposer_t ImageDim_exposer = ImageDim_exposer_t( "ImageDim", "*!\n\
-        \n\
-            Dimension type that represents some dimension of a named Image.  Implements BaseDim interface.\n\
-        *\n", bp::init< >() );
+        typedef bp::class_< ImageDim_wrapper > ImageDim_exposer_t;
+        ImageDim_exposer_t ImageDim_exposer = ImageDim_exposer_t( "ImageDim", "! ImageDimBase subclass that accesses an image by its name.\n", bp::init< >() );
         bp::scope ImageDim_scope( ImageDim_exposer );
-        ImageDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("dim") ), "*!\n\
+        ImageDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("image_name"), bp::arg("dim") ), "*!\n\
                 \n\
                     Constructor.\n\
         \n\
-                @param name\n\
-                    String object holding the name of the image.\n\
+                @param image_name\n\
+                    String holding the name of the image to be accessed by the ImageDim\n\
         \n\
                 @param dim\n\
-                    DimensionType value indicating which dimension of the described image that this\
-                    ImageDim\n\
-                    is to represent.\n\
+                    DimensionType value indicating which dimension of an Image that\n\
+                    this ImageDim is to represent.\n\
                 *\n") );
         { //::CEGUI::ImageDim::clone_impl
         
@@ -134,24 +118,6 @@ void register_ImageDim_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
-        { //::CEGUI::ImageDim::getSourceDimension
-        
-            typedef ::CEGUI::DimensionType ( ::CEGUI::ImageDim::*getSourceDimension_function_type )(  ) const;
-            
-            ImageDim_exposer.def( 
-                "getSourceDimension"
-                , getSourceDimension_function_type( &::CEGUI::ImageDim::getSourceDimension )
-                , "*!\n\
-                    \n\
-                        Gets the source dimension type for this WidgetDim.\n\
-            \n\
-                    @return\n\
-                        DimensionType value indicating which dimension of the described image that this\
-                        WidgetDim\n\
-                        is to represent.\n\
-                    *\n" );
-        
-        }
         { //::CEGUI::ImageDim::getSourceImage
         
             typedef ::CEGUI::String const & ( ::CEGUI::ImageDim::*getSourceImage_function_type )(  ) const;
@@ -160,57 +126,19 @@ void register_ImageDim_class(){
                 "getSourceImage"
                 , getSourceImage_function_type( &::CEGUI::ImageDim::getSourceImage )
                 , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-                    \n\
-                        Gets the source image information for this ImageDim.\n\
-            \n\
-                    @return\n\
-                        String object holding the name of the image.\n\
-                    *\n" );
+                , "! return the name of the image accessed by this ImageDim.\n" );
         
         }
-        { //::CEGUI::ImageDim::getValue_impl
+        { //::CEGUI::ImageDim::getSourceImage
         
-            typedef float ( ImageDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
+            typedef ::CEGUI::Image const * ( ImageDim_wrapper::*getSourceImage_function_type )( ::CEGUI::Window const & ) const;
             
             ImageDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &ImageDim_wrapper::default_getValue_impl )
+                "getSourceImage"
+                , getSourceImage_function_type( &ImageDim_wrapper::default_getSourceImage )
                 , ( bp::arg("wnd") )
+                , bp::return_value_policy< bp::reference_existing_object >()
                 , "Implementation of the base class interface\n" );
-        
-        }
-        { //::CEGUI::ImageDim::getValue_impl
-        
-            typedef float ( ImageDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
-            
-            ImageDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &ImageDim_wrapper::default_getValue_impl )
-                , ( bp::arg("wnd"), bp::arg("container") )
-                , "Implementation of the base class interface\n" );
-        
-        }
-        { //::CEGUI::ImageDim::setSourceDimension
-        
-            typedef void ( ::CEGUI::ImageDim::*setSourceDimension_function_type )( ::CEGUI::DimensionType ) ;
-            
-            ImageDim_exposer.def( 
-                "setSourceDimension"
-                , setSourceDimension_function_type( &::CEGUI::ImageDim::setSourceDimension )
-                , ( bp::arg("dim") )
-                , "*!\n\
-                    \n\
-                        Sets the source dimension type for this ImageDim.\n\
-            \n\
-                    @param dim\n\
-                        DimensionType value indicating which dimension of the described image that this\
-                        ImageDim\n\
-                        is to represent.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
         
         }
         { //::CEGUI::ImageDim::setSourceImage
@@ -220,17 +148,9 @@ void register_ImageDim_class(){
             ImageDim_exposer.def( 
                 "setSourceImage"
                 , setSourceImage_function_type( &::CEGUI::ImageDim::setSourceImage )
-                , ( bp::arg("name") )
-                , "*!\n\
-                    \n\
-                        Sets the source image information for this ImageDim.\n\
-            \n\
-                    @param name\n\
-                        String object holding the name of the image.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                , ( bp::arg("image_name") )
+                , "! return the name of the image accessed by this ImageDim.\n\
+            ! set the name of the image accessed by this ImageDim.\n" );
         
         }
         { //::CEGUI::ImageDim::writeXMLElementAttributes_impl
@@ -250,7 +170,8 @@ void register_ImageDim_class(){
             ImageDim_exposer.def( 
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &ImageDim_wrapper::default_writeXMLElementName_impl )
-                , ( bp::arg("xml_stream") ) );
+                , ( bp::arg("xml_stream") )
+                , "Implementation of the base class interface\n" );
         
         }
         { //::CEGUI::BaseDim::handleFontRenderSizeChange

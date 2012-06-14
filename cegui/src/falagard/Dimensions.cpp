@@ -223,34 +223,26 @@ namespace CEGUI
 
     ////////////////////////////////////////////////////////////////////////////////
 
-    ImageDim::ImageDim(const String& name, DimensionType dim) :
-        d_image(name),
+    ImageDimBase::ImageDimBase(DimensionType dim) :
         d_what(dim)
     {}
 
-    const String& ImageDim::getSourceImage() const
-    {
-        return d_image;
-    }
-
-    void ImageDim::setSourceImage(const String& name)
-    {
-        d_image = name;
-    }
-
-    DimensionType ImageDim::getSourceDimension() const
+    DimensionType ImageDimBase::getSourceDimension() const
     {
         return d_what;
     }
 
-    void ImageDim::setSourceDimension(DimensionType dim)
+    void ImageDimBase::setSourceDimension(DimensionType dim)
     {
         d_what = dim;
     }
 
-    float ImageDim::getValue_impl(const Window&) const
+    float ImageDimBase::getValue_impl(const Window& wnd) const
     {
-        const Image* img = &ImageManager::getSingleton().get(d_image);
+        const Image* const img = getSourceImage(wnd);
+
+        if (!img)
+            return 0.0f;
 
         switch (d_what)
         {
@@ -291,22 +283,51 @@ namespace CEGUI
                 break;
 */
             default:
-                CEGUI_THROW(InvalidRequestException("ImageDim::getValue - unknown or unsupported DimensionType encountered."));
+                CEGUI_THROW(InvalidRequestException(
+                    "ImageDimBase::getValue - unknown or unsupported "
+                    "DimensionType encountered."));
                 break;
         }
     }
 
-    float ImageDim::getValue_impl(const Window& wnd, const Rectf&) const
+    float ImageDimBase::getValue_impl(const Window& wnd, const Rectf&) const
     {
         // This dimension type does not alter when whithin a container Rect.
         return getValue_impl(wnd);
     }
 
+    void ImageDimBase::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
+    {
+        xml_stream.attribute("dimension",
+                             FalagardXMLHelper::dimensionTypeToString(d_what));
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    ImageDim::ImageDim(const String& image_name, DimensionType dim) :
+        ImageDimBase(dim),
+        d_imageName(image_name)
+    {
+    }
+
+    const String& ImageDim::getSourceImage() const
+    {
+        return d_imageName;
+    }
+    
+    void ImageDim::setSourceImage(const String& image_name)
+    {
+        d_imageName = image_name;
+    }
+
+    const Image* ImageDim::getSourceImage(const Window& wnd) const
+    {
+        return &ImageManager::getSingleton().get(d_imageName);
+    }
 
     BaseDim* ImageDim::clone_impl() const
     {
-        ImageDim* ndim = CEGUI_NEW_AO ImageDim(d_image, d_what);
-        return ndim;
+        return CEGUI_NEW_AO ImageDim(*this);
     }
 
     void ImageDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
@@ -316,8 +337,49 @@ namespace CEGUI
 
     void ImageDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
-        xml_stream.attribute("name", d_image)
-            .attribute("dimension", FalagardXMLHelper::dimensionTypeToString(d_what));
+        ImageDimBase::writeXMLElementAttributes_impl(xml_stream);
+        xml_stream.attribute("name", d_imageName);
+    }
+
+    ////////////////////////////////////////////////////////////////////////////////
+
+    ImagePropertyDim::ImagePropertyDim(const String& property_name,
+                                       DimensionType dim) :
+        ImageDimBase(dim),
+        d_propertyName(property_name)
+    {
+    }
+
+    const String& ImagePropertyDim::getSourceProperty() const
+    {
+        return d_propertyName;
+    }
+    
+    void ImagePropertyDim::setSourceProperty(const String& property_name)
+    {
+        d_propertyName = property_name;
+    }
+
+    const Image* ImagePropertyDim::getSourceImage(const Window& wnd) const
+    {
+        const String& image_name(wnd.getProperty(d_propertyName));
+        return image_name.empty() ? 0 : &ImageManager::getSingleton().get(image_name);
+    }
+
+    BaseDim* ImagePropertyDim::clone_impl() const
+    {
+        return CEGUI_NEW_AO ImagePropertyDim(*this);
+    }
+
+    void ImagePropertyDim::writeXMLElementName_impl(XMLSerializer& xml_stream) const
+    {
+        xml_stream.openTag("ImagePropertyDim");
+    }
+
+    void ImagePropertyDim::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
+    {
+        ImageDimBase::writeXMLElementAttributes_impl(xml_stream);
+        xml_stream.attribute("name", d_propertyName);
     }
 
     ////////////////////////////////////////////////////////////////////////////////

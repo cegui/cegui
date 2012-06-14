@@ -1890,7 +1890,8 @@
             <HorzAlignment type="RightAligned" />
             <Property name="NormalImage" value="TaharezLook/ComboboxListButtonNormal" />
             <Property name="HoverImage" value="TaharezLook/ComboboxListButtonHover" />
-            <Property name="PushedImage" value="TaharezLook/ComboboxListButtonNormal" />
+            <Property name="PushedImage" value="TaharezLook/ComboboxListButtonHover" />
+            <Property name="DisabledImage" value="TaharezLook/ComboboxListButtonNormal" />
         </Child>
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
@@ -3947,6 +3948,10 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ImageButton">
+        <PropertyDefinition name="NormalImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="HoverImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="PushedImageColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect" />
+        <PropertyDefinition name="DisabledImageColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect" />
         <PropertyDefinition name="NormalImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="HoverImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
@@ -3956,6 +3961,7 @@
         <ImagerySection name="normal">
             <ImageryComponent>
                 <ImageProperty name="NormalImage" />
+                <ColourProperty name="NormalImageColour" />
                 <VertFormatProperty name="VertImageFormatting" />
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
@@ -3963,6 +3969,7 @@
         <ImagerySection name="hover">
             <ImageryComponent>
                 <ImageProperty name="HoverImage" />
+                <ColourProperty name="HoverImageColour" />
                 <VertFormatProperty name="VertImageFormatting" />
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
@@ -3970,6 +3977,7 @@
         <ImagerySection name="pushed">
             <ImageryComponent>
                 <ImageProperty name="PushedImage" />
+                <ColourProperty name="PushedImageColour" />
                 <VertFormatProperty name="VertImageFormatting" />
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
@@ -3977,6 +3985,7 @@
         <ImagerySection name="disabled">
             <ImageryComponent>
                 <ImageProperty name="DisabledImage" />
+                <ColourProperty name="DisabledImageColour" />
                 <VertFormatProperty name="VertImageFormatting" />
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>

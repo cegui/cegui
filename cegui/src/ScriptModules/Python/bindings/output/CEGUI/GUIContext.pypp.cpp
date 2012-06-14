@@ -311,6 +311,18 @@ struct GUIContext_wrapper : CEGUI::GUIContext, bp::wrapper< CEGUI::GUIContext > 
         CEGUI::GUIContext::onMouseMoveScalingFactorChanged( boost::ref(args) );
     }
 
+    virtual void onRenderTargetChanged( ::CEGUI::GUIContextRenderTargetEventArgs & args ){
+        if( bp::override func_onRenderTargetChanged = this->get_override( "onRenderTargetChanged" ) )
+            func_onRenderTargetChanged( boost::ref(args) );
+        else{
+            this->CEGUI::GUIContext::onRenderTargetChanged( boost::ref(args) );
+        }
+    }
+    
+    virtual void default_onRenderTargetChanged( ::CEGUI::GUIContextRenderTargetEventArgs & args ){
+        CEGUI::GUIContext::onRenderTargetChanged( boost::ref(args) );
+    }
+
     virtual void onRootWindowChanged( ::CEGUI::WindowEventArgs & args ){
         if( bp::override func_onRootWindowChanged = this->get_override( "onRootWindowChanged" ) )
             func_onRootWindowChanged( boost::ref(args) );
@@ -948,6 +960,16 @@ void register_GUIContext_class(){
                 , "event trigger functions.\n" );
         
         }
+        { //::CEGUI::GUIContext::onRenderTargetChanged
+        
+            typedef void ( GUIContext_wrapper::*onRenderTargetChanged_function_type )( ::CEGUI::GUIContextRenderTargetEventArgs & ) ;
+            
+            GUIContext_exposer.def( 
+                "onRenderTargetChanged"
+                , onRenderTargetChanged_function_type( &GUIContext_wrapper::default_onRenderTargetChanged )
+                , ( bp::arg("args") ) );
+        
+        }
         { //::CEGUI::GUIContext::onRootWindowChanged
         
             typedef void ( GUIContext_wrapper::*onRootWindowChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
@@ -1105,6 +1127,16 @@ void register_GUIContext_class(){
                 , ( bp::arg("factor") ) );
         
         }
+        { //::CEGUI::GUIContext::setRenderTarget
+        
+            typedef void ( ::CEGUI::GUIContext::*setRenderTarget_function_type )( ::CEGUI::RenderTarget & ) ;
+            
+            GUIContext_exposer.def( 
+                "setRenderTarget"
+                , setRenderTarget_function_type( &::CEGUI::GUIContext::setRenderTarget )
+                , ( bp::arg("target") ) );
+        
+        }
         { //::CEGUI::GUIContext::setRootWindow
         
             typedef void ( ::CEGUI::GUIContext::*setRootWindow_function_type )( ::CEGUI::Window * ) ;
@@ -1171,6 +1203,9 @@ void register_GUIContext_class(){
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         GUIContext_exposer.add_static_property( "EventMouseMoveScalingFactorChanged"
                         , bp::make_getter( &CEGUI::GUIContext::EventMouseMoveScalingFactorChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        GUIContext_exposer.add_static_property( "EventRenderTargetChanged"
+                        , bp::make_getter( &CEGUI::GUIContext::EventRenderTargetChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         GUIContext_exposer.add_static_property( "EventRootWindowChanged"
                         , bp::make_getter( &CEGUI::GUIContext::EventRootWindowChanged

@@ -41,8 +41,6 @@ namespace CEGUI
         d_vertFormatting(VF_STRETCHED),
         d_horzFormatting(HF_STRETCHED)
     {
-        for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
-            d_frameImages[i] = 0;
     }
 
     VerticalFormatting FrameComponent::getBackgroundVerticalFormatting() const
@@ -65,32 +63,81 @@ namespace CEGUI
         d_horzFormatting = fmt;
     }
 
-    const Image* FrameComponent::getImage(FrameImageComponent part) const
+    const Image* FrameComponent::getImage(FrameImageComponent part,
+                                          const Window& wnd) const
     {
         assert(part < FIC_FRAME_IMAGE_COUNT);
 
-        return d_frameImages[part];
+        if (!d_frameImages[part].d_specified)
+            return 0;
+
+        if (d_frameImages[part].d_propertyName.empty())
+            return d_frameImages[part].d_image;
+
+        const String& image_name(
+            wnd.getProperty(d_frameImages[part].d_propertyName));
+
+        if (image_name.empty())
+            return 0;
+
+        return &ImageManager::getSingleton().get(image_name);
     }
 
     void FrameComponent::setImage(FrameImageComponent part, const Image* image)
     {
         assert(part < FIC_FRAME_IMAGE_COUNT);
 
-        d_frameImages[part] = image;
+        d_frameImages[part].d_image = image;
+        d_frameImages[part].d_specified = image != 0;
+        d_frameImages[part].d_propertyName.clear();
     }
 
     void FrameComponent::setImage(FrameImageComponent part, const String& name)
     {
-        assert(part < FIC_FRAME_IMAGE_COUNT);
-
+        const Image* image;
         CEGUI_TRY
         {
-            d_frameImages[part] = &ImageManager::getSingleton().get(name);
+            image = &ImageManager::getSingleton().get(name);
         }
         CEGUI_CATCH (UnknownObjectException&)
         {
-            d_frameImages[part] = 0;
+            image = 0;
         }
+
+        setImage(part, image);
+    }
+
+    void FrameComponent::setImagePropertySource(FrameImageComponent part,
+                                                const String& name)
+    {
+        assert(part < FIC_FRAME_IMAGE_COUNT);
+
+        d_frameImages[part].d_image = 0;
+        d_frameImages[part].d_specified = !name.empty();
+        d_frameImages[part].d_propertyName = name;
+    }
+
+    bool FrameComponent::isImageSpecified(FrameImageComponent part) const
+    {
+        assert(part < FIC_FRAME_IMAGE_COUNT);
+
+        return d_frameImages[part].d_specified;
+    }
+
+    bool FrameComponent::isImageFetchedFromProperty(FrameImageComponent part) const
+    {
+        assert(part < FIC_FRAME_IMAGE_COUNT);
+
+        return d_frameImages[part].d_specified &&
+               !d_frameImages[part].d_propertyName.empty();
+    }
+
+    const String& FrameComponent::getImagePropertySource(
+                                        FrameImageComponent part) const
+    {
+        assert(part < FIC_FRAME_IMAGE_COUNT);
+
+        return d_frameImages[part].d_propertyName;
     }
 
     void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
@@ -123,15 +170,16 @@ namespace CEGUI
             calcColoursPerImage = true;
         }
 
+        
         // top-left image
-        if (d_frameImages[FIC_TOP_LEFT_CORNER])
+        if (const Image* const componentImage = getImage(FIC_TOP_LEFT_CORNER, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_TOP_LEFT_CORNER]->getRenderedSize();
-            imageOffsets = d_frameImages[FIC_TOP_LEFT_CORNER]->getRenderedOffset();
+            imageSize = componentImage->getRenderedSize();
+            imageOffsets = componentImage->getRenderedOffset();
             finalRect.d_min = destRect.d_min;
             finalRect.setSize(imageSize);
-            finalRect = destRect.getIntersection (finalRect);
+            finalRect = destRect.getIntersection(finalRect);
 
             // update adjustments required to edges do to presence of this element.
             topOffset  += imageSize.d_width + imageOffsets.d_x;
@@ -151,15 +199,15 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_TOP_LEFT_CORNER]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // top-right image
-        if (d_frameImages[FIC_TOP_RIGHT_CORNER])
+        if (const Image* const componentImage = getImage(FIC_TOP_RIGHT_CORNER, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_TOP_RIGHT_CORNER]->getRenderedSize();
-            imageOffsets = d_frameImages[FIC_TOP_RIGHT_CORNER]->getRenderedOffset();
+            imageSize = componentImage->getRenderedSize();
+            imageOffsets = componentImage->getRenderedOffset();
             finalRect.left(destRect.right() - imageSize.d_width);
             finalRect.top(destRect.top());
             finalRect.setSize(imageSize);
@@ -182,15 +230,15 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_TOP_RIGHT_CORNER]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // bottom-left image
-        if (d_frameImages[FIC_BOTTOM_LEFT_CORNER])
+        if (const Image* const componentImage = getImage(FIC_BOTTOM_LEFT_CORNER, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_BOTTOM_LEFT_CORNER]->getRenderedSize();
-            imageOffsets = d_frameImages[FIC_BOTTOM_LEFT_CORNER]->getRenderedOffset();
+            imageSize = componentImage->getRenderedSize();
+            imageOffsets = componentImage->getRenderedOffset();
             finalRect.left(destRect.left());
             finalRect.top(destRect.bottom() - imageSize.d_height);
             finalRect.setSize(imageSize);
@@ -213,15 +261,15 @@ namespace CEGUI
             }
 
             // draw this element.
-            d_frameImages[FIC_BOTTOM_LEFT_CORNER]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // bottom-right image
-        if (d_frameImages[FIC_BOTTOM_RIGHT_CORNER])
+        if (const Image* const componentImage = getImage(FIC_BOTTOM_RIGHT_CORNER, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->getRenderedSize();
-            imageOffsets = d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->getRenderedOffset();
+            imageSize = componentImage->getRenderedSize();
+            imageOffsets = componentImage->getRenderedOffset();
             finalRect.left(destRect.right() - imageSize.d_width);
             finalRect.top(destRect.bottom() - imageSize.d_height);
             finalRect.setSize(imageSize);
@@ -234,23 +282,23 @@ namespace CEGUI
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.left() + d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->getRenderedOffset().d_x) / destRect.getWidth();
+                leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.top() + d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->getRenderedOffset().d_y) / destRect.getHeight();
+                topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
             }
 
             // draw this element.
-            d_frameImages[FIC_BOTTOM_RIGHT_CORNER]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // top image
-        if (d_frameImages[FIC_TOP_EDGE])
+        if (const Image* const componentImage = getImage(FIC_TOP_EDGE, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_TOP_EDGE]->getRenderedSize();
+            imageSize = componentImage->getRenderedSize();
             finalRect.left(destRect.left() + topOffset);
             finalRect.right(finalRect.left() + topWidth);
             finalRect.top(destRect.top());
@@ -258,28 +306,28 @@ namespace CEGUI
             finalRect = destRect.getIntersection(finalRect);
 
             // adjust background area to miss this edge
-            backgroundRect.d_min.d_y += imageSize.d_height + d_frameImages[FIC_TOP_EDGE]->getRenderedOffset().d_y;
+            backgroundRect.d_min.d_y += imageSize.d_height + componentImage->getRenderedOffset().d_y;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.left() + d_frameImages[FIC_TOP_EDGE]->getRenderedOffset().d_x) / destRect.getWidth();
+                leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.top() + d_frameImages[FIC_TOP_EDGE]->getRenderedOffset().d_y) / destRect.getHeight();
+                topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
             }
 
             // draw this element.
-            d_frameImages[FIC_TOP_EDGE]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // bottom image
-        if (d_frameImages[FIC_BOTTOM_EDGE])
+        if (const Image* const componentImage = getImage(FIC_BOTTOM_EDGE, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_BOTTOM_EDGE]->getRenderedSize();
+            imageSize = componentImage->getRenderedSize();
             finalRect.left(destRect.left() + bottomOffset);
             finalRect.right(finalRect.left() + bottomWidth);
             finalRect.bottom(destRect.bottom());
@@ -287,28 +335,28 @@ namespace CEGUI
             finalRect = destRect.getIntersection (finalRect);
 
             // adjust background area to miss this edge
-            backgroundRect.d_max.d_y -= imageSize.d_height - d_frameImages[FIC_BOTTOM_EDGE]->getRenderedOffset().d_y;;
+            backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.left() + d_frameImages[FIC_BOTTOM_EDGE]->getRenderedOffset().d_x) / destRect.getWidth();
+                leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.top() + d_frameImages[FIC_BOTTOM_EDGE]->getRenderedOffset().d_y) / destRect.getHeight();
+                topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
             }
 
             // draw this element.
-            d_frameImages[FIC_BOTTOM_EDGE]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // left image
-        if (d_frameImages[FIC_LEFT_EDGE])
+        if (const Image* const componentImage = getImage(FIC_LEFT_EDGE, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_LEFT_EDGE]->getRenderedSize();
+            imageSize = componentImage->getRenderedSize();
             finalRect.left(destRect.left());
             finalRect.right(finalRect.left() + imageSize.d_width);
             finalRect.top(destRect.top() + leftOffset);
@@ -316,28 +364,28 @@ namespace CEGUI
             finalRect = destRect.getIntersection(finalRect);
 
             // adjust background area to miss this edge
-            backgroundRect.d_min.d_x += imageSize.d_width + d_frameImages[FIC_LEFT_EDGE]->getRenderedOffset().d_x;
+            backgroundRect.d_min.d_x += imageSize.d_width + componentImage->getRenderedOffset().d_x;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.left() + d_frameImages[FIC_LEFT_EDGE]->getRenderedOffset().d_x) / destRect.getWidth();
+                leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.top() + d_frameImages[FIC_LEFT_EDGE]->getRenderedOffset().d_y) / destRect.getHeight();
+                topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
             }
 
             // draw this element.
-            d_frameImages[FIC_LEFT_EDGE]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
         // right image
-        if (d_frameImages[FIC_RIGHT_EDGE])
+        if (const Image* const componentImage = getImage(FIC_RIGHT_EDGE, srcWindow))
         {
             // calculate final destination area
-            imageSize = d_frameImages[FIC_RIGHT_EDGE]->getRenderedSize();
+            imageSize = componentImage->getRenderedSize();
             finalRect.top(destRect.top() + rightOffset);
             finalRect.bottom(finalRect.top() + rightHeight);
             finalRect.right(destRect.right());
@@ -345,42 +393,46 @@ namespace CEGUI
             finalRect = destRect.getIntersection (finalRect);
 
             // adjust background area to miss this edge
-            backgroundRect.d_max.d_x -= imageSize.d_width - d_frameImages[FIC_RIGHT_EDGE]->getRenderedOffset().d_x;
+            backgroundRect.d_max.d_x -= imageSize.d_width - componentImage->getRenderedOffset().d_x;
 
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (finalRect.left() + d_frameImages[FIC_RIGHT_EDGE]->getRenderedOffset().d_x) / destRect.getWidth();
+                leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-                topfactor    = (finalRect.top() + d_frameImages[FIC_RIGHT_EDGE]->getRenderedOffset().d_y) / destRect.getHeight();
+                topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
                 bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
             }
 
             // draw this element.
-            d_frameImages[FIC_RIGHT_EDGE]->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
+            componentImage->render(srcWindow.getGeometryBuffer(), finalRect, clipper, imageColours);
         }
 
-        if (d_frameImages[FIC_BACKGROUND])
+        if (const Image* const componentImage = getImage(FIC_BACKGROUND, srcWindow))
         {
             // calculate colours that are to be used to this component image
             if (calcColoursPerImage)
             {
-                leftfactor   = (backgroundRect.left() + d_frameImages[FIC_BACKGROUND]->getRenderedOffset().d_x) / destRect.getWidth();
+                leftfactor   = (backgroundRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
                 rightfactor  = leftfactor + backgroundRect.getWidth() / destRect.getWidth();
-                topfactor    = (backgroundRect.top() + d_frameImages[FIC_BACKGROUND]->getRenderedOffset().d_y) / destRect.getHeight();
+                topfactor    = (backgroundRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
                 bottomfactor = topfactor + backgroundRect.getHeight() / destRect.getHeight();
 
                 imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
             }
 
             // render background image.
-            doBackgroundRender(srcWindow, backgroundRect, imageColours, clipper, clipToDisplay);
+            doBackgroundRender(srcWindow, componentImage,
+                               backgroundRect, imageColours,
+                               clipper, clipToDisplay);
         }
     }
 
-    void FrameComponent::doBackgroundRender(Window& srcWindow, Rectf& destRect, const ColourRect& colours, const Rectf* clipper, bool /*clipToDisplay*/) const
+    void FrameComponent::doBackgroundRender(Window& srcWindow, const Image* image,
+                                            Rectf& destRect, const ColourRect& colours,
+                                            const Rectf* clipper, bool /*clipToDisplay*/) const
     {
         HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
             FalagardXMLHelper::stringToHorzFormat(srcWindow.getProperty(d_horzFormatPropertyName));
@@ -391,7 +443,7 @@ namespace CEGUI
         uint horzTiles, vertTiles;
         float xpos, ypos;
 
-        Sizef imgSz(d_frameImages[FIC_BACKGROUND]->getRenderedSize());
+        Sizef imgSz(image->getRenderedSize());
 
         // calculate initial x co-ordinate and horizontal tile count according to formatting options
         switch (horzFormatting)
@@ -488,8 +540,8 @@ namespace CEGUI
                     clippingRect = clipper;
                 }
 
-                // add image to the rendering cache for the target window.
-                d_frameImages[FIC_BACKGROUND]->render(srcWindow.getGeometryBuffer(), finalRect, clippingRect, colours);
+                // draw image to target window's GeometryBuffer.
+                image->render(srcWindow.getGeometryBuffer(), finalRect, clippingRect, colours);
 
                 finalRect.d_min.d_x += imgSz.d_width;
                 finalRect.d_max.d_x += imgSz.d_width;
@@ -510,12 +562,18 @@ namespace CEGUI
         // write images
         for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
         {
-            if (d_frameImages[i])
+            if (d_frameImages[i].d_specified)
             {
-                xml_stream.openTag("Image")
-                    .attribute("name", d_frameImages[i]->getName())
-                    .attribute("type", FalagardXMLHelper::frameImageComponentToString(static_cast<FrameImageComponent>(i)))
-                    .closeTag();
+                if (d_frameImages[i].d_propertyName.empty())
+                    xml_stream.openTag("Image")
+                        .attribute("name", d_frameImages[i].d_image->getName())
+                        .attribute("type", FalagardXMLHelper::frameImageComponentToString(static_cast<FrameImageComponent>(i)))
+                        .closeTag();
+                else
+                    xml_stream.openTag("ImageProperty")
+                        .attribute("name", d_frameImages[i].d_propertyName)
+                        .attribute("type", FalagardXMLHelper::frameImageComponentToString(static_cast<FrameImageComponent>(i)))
+                        .closeTag();
             }
         }
 
@@ -543,6 +601,19 @@ namespace CEGUI
 
         // closing tag
         xml_stream.closeTag();
+    }
+
+    bool FrameComponent::operator==(const FrameComponent& rhs) const
+    {
+        if (d_vertFormatting != rhs.d_vertFormatting ||
+            d_horzFormatting != rhs.d_horzFormatting)
+                return false;
+
+        for (int i = 0; i < FIC_FRAME_IMAGE_COUNT; ++i)
+            if (d_frameImages[i] != rhs.d_frameImages[i])
+                return false;
+
+        return true;
     }
 
 } // End of  CEGUI namespace section

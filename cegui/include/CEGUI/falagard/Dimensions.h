@@ -238,53 +238,31 @@ namespace CEGUI
 
     /*!
     \brief
-        Dimension type that represents some dimension of a named Image.  Implements BaseDim interface.
+        Dimension type that represents some dimension of an Image.
+        Implements BaseDim interface.
     */
-    class CEGUIEXPORT ImageDim : public BaseDim
+    class CEGUIEXPORT ImageDimBase : public BaseDim
     {
     public:
-        ImageDim() {};
+        ImageDimBase() {};
+
         /*!
         \brief
             Constructor.
 
-        \param name
-            String object holding the name of the image.
-
         \param dim
-            DimensionType value indicating which dimension of the described image that this ImageDim
-            is to represent.
+            DimensionType value indicating which dimension of an Image that
+            this ImageDim is to represent.
         */
-        ImageDim(const String& name, DimensionType dim);
-
-        /*!
-        \brief
-            Gets the source image information for this ImageDim.
-
-        \return
-            String object holding the name of the image.
-        */
-        const String& getSourceImage() const;
-
-        /*!
-        \brief
-            Sets the source image information for this ImageDim.
-
-        \param name
-            String object holding the name of the image.
-
-        \return
-            Nothing.
-        */
-        void setSourceImage(const String& name);
+        ImageDimBase(DimensionType dim);
 
         /*!
         \brief
             Gets the source dimension type for this WidgetDim.
 
         \return
-            DimensionType value indicating which dimension of the described image that this WidgetDim
-            is to represent.
+            DimensionType value indicating which dimension of the described
+            image that this WidgetDim is to represent.
         */
         DimensionType getSourceDimension() const;
 
@@ -293,27 +271,95 @@ namespace CEGUI
             Sets the source dimension type for this ImageDim.
 
         \param dim
-            DimensionType value indicating which dimension of the described image that this ImageDim
-            is to represent.
-
-        \return
-            Nothing.
+            DimensionType value indicating which dimension of the described
+            image that this ImageDim is to represent.
         */
         void setSourceDimension(DimensionType dim);
 
     protected:
+        //! return the image instance to access
+        virtual const Image* getSourceImage(const Window& wnd) const = 0;
+
         // Implementation of the base class interface
         float getValue_impl(const Window& wnd) const;
         float getValue_impl(const Window& wnd, const Rectf& container) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
+
+        //! the dimension of the image that we are to represent.
+        DimensionType d_what;
+    };
+
+    //! ImageDimBase subclass that accesses an image by its name.
+    class CEGUIEXPORT ImageDim : public ImageDimBase
+    {
+    public:
+        ImageDim() {};
+
+        /*!
+        \brief
+            Constructor.
+
+        \param image_name
+            String holding the name of the image to be accessed by the ImageDim
+
+        \param dim
+            DimensionType value indicating which dimension of an Image that
+            this ImageDim is to represent.
+        */
+        ImageDim(const String& image_name, DimensionType dim);
+
+        //! return the name of the image accessed by this ImageDim.
+        const String& getSourceImage() const;
+        //! set the name of the image accessed by this ImageDim.
+        void setSourceImage(const String& image_name);
+
+    protected:
+        // Implementation of the base class interface
+        const Image* getSourceImage(const Window& wnd) const;
         void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
         void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
         BaseDim* clone_impl() const;
 
-    private:
-        String d_image;         //!< name of the Image.
-        DimensionType d_what;   //!< the dimension of the image that we are to represent.
+        //! name of the Image.
+        String d_imageName;
     };
 
+    //! ImageDimBase subclass that accesses an image fetched via a property.
+    class CEGUIEXPORT ImagePropertyDim : public ImageDimBase
+    {
+    public:
+        ImagePropertyDim() {};
+
+        /*!
+        \brief
+            Constructor.
+
+        \param property_name
+            String holding the name of the property on the target that will be
+            accessed to retrieve the name of the image to be accessed by the
+            ImageDim.
+
+        \param dim
+            DimensionType value indicating which dimension of an Image that
+            this ImageDim is to represent.
+        */
+        ImagePropertyDim(const String& property_name, DimensionType dim);
+
+        //! return the name of the property accessed by this ImagePropertyDim.
+        const String& getSourceProperty() const;
+        //! set the name of the property accessed by this ImagePropertyDim.
+        void setSourceProperty(const String& property_name);
+
+    protected:
+        // Implementation of the base class interface
+        const Image* getSourceImage(const Window& wnd) const;
+        void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
+        void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
+        BaseDim* clone_impl() const;
+
+        //! name of the property from which to fetch the image name.
+        String d_propertyName;
+    };
 
     /*!
     \brief

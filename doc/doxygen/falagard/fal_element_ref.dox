@@ -26,6 +26,7 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_17 <br>
 @ref fal_elem_ref_sec_18 <br>
 @ref fal_elem_ref_sec_19 <br>
+@ref fal_elem_ref_sec_imagepropertydim <br>
 @ref fal_elem_ref_sec_20 <br>
 @ref fal_elem_ref_sec_21 <br>
 @ref fal_elem_ref_sec_22 <br>
@@ -386,6 +387,7 @@ The @c \<Dim\> element is intended as a container element for a single dimension
         <li>@c \<AbsoluteDim\></li>
         <li>@c \<FontDim\></li>
         <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
@@ -412,6 +414,7 @@ Of important note is the fact that in a large chain of operations, the calculati
         <li>@c \<AbsoluteDim\></li>
         <li>@c \<FontDim\></li>
         <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
@@ -422,6 +425,7 @@ Of important note is the fact that in a large chain of operations, the calculati
         <li>@c \<AbsoluteDim\></li>
         <li>@c \<FontDim\></li>
         <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
@@ -593,12 +597,20 @@ component.
 
 @subsubsection fal_elem_ref_expressiondim_1_2 Image Dimensions
 Image dimensions can be specified within an expression string by way of the
-@c imagedim pseudo-function that has a single signature of:<br>
+@c imagedim and @c imagepropertydim pseudo-functions.
+The @c imagedim has a single signature of:<br>
 - @c imagedim( 'imagename', type )
 - where:
     - @c imagename is the name of the desired image.
     - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration indicating the specific dimension to be used.
+enumeration indicating the specific dimension to be used.<br>
+
+The @c imagepropertydim has a single signature of:<br>
+- @c imagepropertydim( 'propertyname', type )
+- where:
+    - @c propertyname is the name of a property that will provide the name of the image.
+    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
+enumeration indicating the specific dimension to be used.<br>
 
 @subsubsection fal_elem_ref_expressiondim_1_3 Widget Dimensions
 Widget dimensions can be specified within an expression string by way of the
@@ -758,7 +770,9 @@ The @c \<FontProperty\> element is intended to allow the system to access a prop
 @section fal_elem_ref_sec_14 \<FrameComponent\> Element
 
 @subsection fal_elem_ref_sec_14_1 Purpose:
-The @c \<FrameComponent\> element is used to define an imagery frame using a maximum of eight images for the corners and edges, and a single, formatted, image for the background. Any of the images may be omitted if not required.
+The @c \<FrameComponent\> element is used to define an imagery frame using a
+maximum of eight images for the corners and edges, and a single, formatted,
+image for the background. Any of the images may be omitted if not required.
 
 @subsection fal_elem_ref_sec_14_2 Attributes:
 No attributes are currently defined for the @c \<FrameComponent\> element.
@@ -768,7 +782,10 @@ Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
     <li>@c \<Area\> defining the target area for this frame.</li>
-    <li>Up to nine @c \<Image\> elements specifying the images to be drawn and in what positions.</li>
+    <li>Up to nine @c \<Image\> or @c \<ImageProperty\> elements specifying the
+        images to be drawn and in what positions. Note that it is acceptable to
+        freely mix @c \<Image\> and @c \<ImageProperty\> in a single 
+        @c \<FrameComponent\> definition.</li>
 
     <li>Optionally specifying the colours for the entire frame, one of the colour elements:</li>
     <ul>
@@ -985,27 +1002,76 @@ Here you can see the @c \<Image\> element used to specify the image to render fo
 @section fal_elem_ref_sec_19 \<ImageDim\> Element
 
 @subsection fal_elem_ref_sec_19_1 Purpose:
-The @c \<ImageDim\> element is used to define a component dimension for an area rectangle. @c \<ImageDim\> is used to specify some dimension of an image for use as an area dimension.
+The @c \<ImageDim\> element is used to define a component dimension for an area
+rectangle. @c \<ImageDim\> is used to specify some dimension of an image for use
+as an area dimension.
 
 @subsection fal_elem_ref_sec_19_2 Attributes:
-@arg @c imageset  specifies the name of an Imageset which contains the image to be used. Required attribute.
-@arg @c image  specifies the name of the image from the specified Imageset to be used. Required attribute.
-@arg @c dimension  specifies the image dimension to be used. This should be set to one of the values defined in the DimensionType enumeration.  Required attribute.
+@arg @c name  specifies the name of the image to be used. Required attribute.
+@arg @c dimension  specifies the image dimension to be used. This should be set
+to one of the values defined in the DimensionType enumeration.
+Required attribute.
 
 @subsection fal_elem_ref_sec_19_3 Usage:
 <ul>
-    <li>The @c \<ImageDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
-    <li>The @c \<ImageDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<ImageDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<ImageDim\> element may contain a single @c \<DimOperator\>
+        element in order to form a dimension calculation.</li>
+    <li>The @c \<ImageDim\> element can appear as a sub-element in @c \<Dim\>
+        to form a dimension specification for an area.</li>
+    <li>The @c \<ImageDim\> element can appear as a sub-element of
+        @c \<DimOperator\> to specify the second operand for a dimension
+        calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_19_4 Examples:
-This example shows a dimension that uses @c \<ImageDim\> to fetch the width of a specified image for use as the dimensions value:
+This example shows a dimension that uses @c \<ImageDim\> to fetch the width of a
+specified image for use as the dimensions value:
 @code
 ...
 <Area>
   <Dim type="LeftEdge">
-    <ImageDim imageset="myImages" image="leftImage" dimension="Width" />
+    <ImageDim name="myImages/leftImage" dimension="Width" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_imagepropertydim \<ImagePropertyDim\> Element
+
+@subsection fal_elem_ref_sec_imagepropertydim_1 Purpose:
+The @c \<ImagePropertyDim\> element is used to define a component dimension for
+an area rectangle. @c \<ImagePropertyDim\> is used to specify some dimension of
+an image that is named by a property for use as an area dimension.
+
+@subsection fal_elem_ref_sec_imagepropertydim_2 Attributes:
+@arg @c name  specifies the name of the property that will fetch the name of the
+Image to be used. Required attribute.
+@arg @c dimension  specifies the image dimension to be used. This should be set
+to one of the values defined in the DimensionType enumeration.
+Required attribute.
+
+@subsection fal_elem_ref_sec_imagepropertydim_3 Usage:
+<ul>
+    <li>The @c \<ImagePropertyDim\> element may contain a single
+        @c \<DimOperator\> element in order to form a dimension calculation.</li>
+    <li>The @c \<ImagePropertyDim\> element can appear as a sub-element in
+        @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<ImagePropertyDim\> element can appear as a sub-element of
+        @c \<DimOperator\> to specify the second operand for a dimension
+        calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_imagepropertydim_4 Examples:
+This example shows a dimension that uses @c \<ImagePropertyDim\> to fetch the
+Height of the image specified in the property @c FrameTopImage for use as the
+dimension's value:
+@code
+...
+<Area>
+  <Dim type="TopEdge">
+    <ImagePropertyDim name="FrameTopImage" dimension="Height" />
   </Dim>
   ...
 </Area>
@@ -1081,18 +1147,22 @@ The following was taken from TaharezLook.looknfeel and shows a full ImageryCompo
 @section fal_elem_ref_sec_21 \<ImageProperty\> Element
 
 @subsection fal_elem_ref_sec_21_1 Purpose:
-The @c \<ImageProperty\> element is intended to allow the system to access a property on the target window to obtain the final image to be used when rendering the ImageryComponent being defined.
+The @c \<ImageProperty\> element is intended to allow the system to access a
+property on the target window to obtain the final image to be used when
+rendering the component being defined.
 
 @subsection fal_elem_ref_sec_21_2 Attributes:
-@arg @c name  specifies the name of the property to access. Required attribute. The named property must access a imageset \& image value pair of the form:
-@code
-"set:<imageset_name> image:<image_name>"
-@endcode
+@arg @c name  specifies the name of the property to access that will provide the
+name of the Image to be used. Required attribute.
+@arg @c type  Only for @c \<FrameComponent\>. Specifies the part of the frame
+that this image is to be used for. One of the values from the
+FrameImageComponent enumeration. Required attribute.
 
 @subsection fal_elem_ref_sec_21_3 Usage:
 <ul>
     <li>The @c \<ImageProperty\> element may not contain sub-elements.</li>
-    <li>The @c \<ImageProperty\> element may appear as a sub-element only within the @c \<ImageryComponent\> elements.</li>
+    <li>The @c \<ImageProperty\> element may appear as a sub-element within
+        either @c \<ImageryComponent\> or @c \<FrameComponent\> elements.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_21_4 Examples:

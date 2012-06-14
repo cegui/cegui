@@ -122,6 +122,7 @@ namespace CEGUI
 		static const String UnifiedDimElement;          //!< Tag name for unified dimension elements.
         static const String AbsoluteDimElement;         //!< Tag name for absolute dimension elements.
         static const String ImageDimElement;            //!< Tag name for image dimension elements.
+        static const String ImagePropertyDimElement;    //!< Tag name for image property dimension elements.
         static const String WidgetDimElement;           //!< Tag name for widget dimension elements.
         static const String FontDimElement;             //!< Tag name for font dimension elements.
         static const String PropertyDimElement;         //!< Tag name for property dimension elements.
@@ -339,6 +340,12 @@ namespace CEGUI
             Method that handles the opening ImageDim XML element.
         */
         void elementImageDimStart(const XMLAttributes& attributes);
+
+        /*!
+        \brief
+            Method that handles the opening ImagePropertyDim XML element.
+        */
+        void elementImagePropertyDimStart(const XMLAttributes& attributes);
 
         /*!
         \brief

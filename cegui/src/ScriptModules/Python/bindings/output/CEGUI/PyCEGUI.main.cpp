@@ -138,6 +138,8 @@
 
 #include "GUIContextEventArgs.pypp.hpp"
 
+#include "GUIContextRenderTargetEventArgs.pypp.hpp"
+
 #include "GeometryBuffer.pypp.hpp"
 
 #include "GlobalEventSet.pypp.hpp"
@@ -157,6 +159,8 @@
 #include "ImageDim.pypp.hpp"
 
 #include "ImageManager.pypp.hpp"
+
+#include "ImagePropertyDim.pypp.hpp"
 
 #include "ImageryComponent.pypp.hpp"
 
@@ -737,6 +741,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_GUIContextEventArgs_class();
 
+    register_GUIContextRenderTargetEventArgs_class();
+
     register_GeometryBuffer_class();
 
     register_SingletonGlobalEventSet_class();
@@ -762,6 +768,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_SingletonImageManager_class();
 
     register_ImageManager_class();
+
+    register_ImagePropertyDim_class();
 
     register_ImageryComponent_class();
 

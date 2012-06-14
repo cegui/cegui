@@ -4,14 +4,18 @@
 
 class FrameComponent : public FalagardComponentBase
 {
-
   VerticalFormatting getBackgroundVerticalFormatting() const;
   void setBackgroundVerticalFormatting(VerticalFormatting fmt);
   HorizontalFormatting getBackgroundHorizontalFormatting() const;
   void setBackgroundHorizontalFormatting(HorizontalFormatting fmt);
-  const Image* getImage(FrameImageComponent part) const;
+  const Image* getImage(FrameImageComponent part, const Window& wnd) const;
   void setImage(FrameImageComponent part, const Image* image);
   void setImage(FrameImageComponent part, utf8string name);
+  void setImagePropertySource(FrameImageComponent part, utf8string name);
+  bool isImageSpecified(FrameImageComponent part) const;
+  bool isImageFetchedFromProperty(FrameImageComponent part) const;
+  string getImagePropertySource(FrameImageComponent part) const;
+
   //void writeXMLToStream(OutStream& out_stream) const;
   FrameComponent();
 };
