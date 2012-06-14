@@ -380,7 +380,7 @@
             </FrameComponent>
         </ImagerySection>
 		
-        <ImagerySection name="withFrameWithBackground">
+        <ImagerySection name="frameWithBackground">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" >
@@ -404,8 +404,6 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image name="SampleBrowserSkin/GenericFiller" />
-				<ColourRectProperty name="BackgroundColours" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
@@ -450,24 +448,24 @@
         <StateImagery name="Enabled" />
         <StateImagery name="Disabled" />
         <StateImagery name="EnabledFrame">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
+         <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
+           
         </StateImagery>
         <StateImagery name="DisabledFrame">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
         </StateImagery>
         <StateImagery name="WithFrameEnabledBackground"> 
-			<Layer><Section look="SampleBrowserSkin/SampleWindow" section="frameBackgroundFiller" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="withFrameWithBackground" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
+           <Layer priority="1" ><Section look="SampleBrowserSkin/SampleWindow" section="frameWithBackground" /></Layer>   
+           <Layer priority="0" ><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
         </StateImagery>
         <StateImagery name="WithFrameDisabledBackground">
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
         </StateImagery>
         <StateImagery name="NoFrameEnabledBackground">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="noFrameWithBackground" /></Layer>
             <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
+            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="noFrameWithBackground" /></Layer>
         </StateImagery>
         <StateImagery name="NoFrameDisabledBackground" />
     </WidgetLook>
