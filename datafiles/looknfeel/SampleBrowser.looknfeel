@@ -304,61 +304,14 @@
 
     <WidgetLook name="SampleBrowserSkin/SampleWindow">
         <Property name="AutoRenderingSurface" value="True" />
-		<Property name="BackgroundEnabled" value="True" />
-        <Property name="FrameEnabled" value="True" />
-		
+        
+		<PropertyDefinition name="BackgroundEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
+        <PropertyDefinition name="FrameEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
 		<PropertyDefinition name="FrameColours" initialValue="tl:FF7F0000 tr:FF7F0000 bl:FF7F0000 br:FF7F0000" redrawOnWrite="true" type="ColourRect"/>
-		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        
+		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
-
-        <ImagerySection name="image">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge" ><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge" ><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-                </Area>
-                <ImageProperty name="Image" />
-                <ColourRectProperty name="ImageColours" />
-                <VertFormat type="Stretched" />
-                <HorzFormat type="Stretched" />
-            </ImageryComponent>
-        </ImagerySection>
         
-        <ImagerySection name="imageWithBorder">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width" />
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height" />
-                    </Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1.0" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
-                <ImageProperty name="Image" />
-                <ColourRectProperty name="ImageColours" />
-                <VertFormat type="Stretched" />
-                <HorzFormat type="Stretched" />
-            </ImageryComponent>
-        </ImagerySection>
- 
         <ImagerySection name="frame">
             <FrameComponent>
                 <Area>
@@ -375,101 +328,114 @@
                 <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
                 <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
                 <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
-                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
 				<ColourRectProperty name="FrameColours" />
             </FrameComponent>
         </ImagerySection>
-		
-        <ImagerySection name="withFrameWithBackground">
+        
+        <ImagerySection name="image">
             <ImageryComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width" />
+                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="FrameEnabled" />
+                            </DimOperator>
+                        </ImageDim>
                     </Dim>
                     <Dim type="TopEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height" />
+                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="FrameEnabled" />
+                            </DimOperator>
+                        </ImageDim>
                     </Dim>
                     <Dim type="RightEdge" >
                         <UnifiedDim scale="1.0" type="RightEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width" />
+                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="FrameEnabled" />
+                                    </DimOperator>
+                                </ImageDim>
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                     <Dim type="BottomEdge" >
                         <UnifiedDim scale="1.0" type="BottomEdge">
                             <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height" />
+                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="FrameEnabled" />
+                                    </DimOperator>
+                                </ImageDim>
                             </DimOperator>
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image name="SampleBrowserSkin/GenericFiller" />
-				<ColourRectProperty name="BackgroundColours" />
+                <ImageProperty name="Image" />
+                <ColourRectProperty name="ImageColours" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
+ 
+  
 		
-        <ImagerySection name="frameBackgroundFiller">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-                </Area>
-                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameFillerTopLeft" />
-                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameFillerTopRight" />
-                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameFillerBottomLeft" />
-                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameFillerBottomRight" />
-                <Image type="LeftEdge" name="SampleBrowserSkin/FrameFillerLeft" />
-                <Image type="TopEdge" name="SampleBrowserSkin/FrameFillerTop" />
-                <Image type="RightEdge" name="SampleBrowserSkin/FrameFillerRight" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/FrameFillerBottom" />
-                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
-				<ColourRectProperty name="BackgroundColours" />
-            </FrameComponent>
-        </ImagerySection>
-		
-		
-        <ImagerySection name="noFrameWithBackground">
+        <ImagerySection name="background">
             <ImageryComponent>
-                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-                <Image name="SampleBrowserSkin/GenericFiller" />
-				<ColourRectProperty name="BackgroundColours" />
+ 
+                <Area>
+                    <Dim type="LeftEdge" >
+                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="FrameEnabled" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                    <Dim type="TopEdge" >
+                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="FrameEnabled" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                    <Dim type="RightEdge" >
+                        <UnifiedDim scale="1.0" type="RightEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="FrameEnabled" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1.0" type="BottomEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="FrameEnabled" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
 		
+ 
    
-        <StateImagery name="Enabled" />
-        <StateImagery name="Disabled" />
-        <StateImagery name="EnabledFrame">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
+        <StateImagery name="Enabled">
+            <Layer priority="2" ><Section section="frame" controlProperty="FrameEnabled" /></Layer>
+            <Layer priority="1" ><Section section="image" /></Layer> 
+            <Layer priority="0" ><Section section="background" controlProperty="BackgroundEnabled" /></Layer>
+            </StateImagery>
+        <StateImagery name="Disabled">
         </StateImagery>
-        <StateImagery name="DisabledFrame">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="frame" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
-        </StateImagery>
-        <StateImagery name="WithFrameEnabledBackground"> 
-			<Layer><Section look="SampleBrowserSkin/SampleWindow" section="frameBackgroundFiller" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="withFrameWithBackground" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
-        </StateImagery>
-        <StateImagery name="WithFrameDisabledBackground">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="imageWithBorder" /></Layer>
-        </StateImagery>
-        <StateImagery name="NoFrameEnabledBackground">
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="noFrameWithBackground" /></Layer>
-            <Layer><Section look="SampleBrowserSkin/SampleWindow" section="image" /></Layer>
-        </StateImagery>
-        <StateImagery name="NoFrameDisabledBackground" />
     </WidgetLook>
 
 	

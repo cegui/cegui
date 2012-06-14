@@ -43,7 +43,7 @@ SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Win
     : d_owner(owner),
     d_root(samplesWindow),
     d_childCount(0),
-    d_widthToHeightFactor(1.f),
+    d_aspectRatio(1.f),
     d_selectedWindow(0)
 {
 }
@@ -66,7 +66,7 @@ void SamplesBrowserManager::addSampleWindow(CEGUI::Window* sampleWindow)
     position.d_y.d_scale += int((d_childCount - 1) / 2) * 0.5f;
 
     sampleWindow->setPosition(position);
-    sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_reldim(0.4f)));
+    sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
 
     sampleWindow->setMouseInputPropagationEnabled(true);
 
@@ -75,11 +75,13 @@ void SamplesBrowserManager::addSampleWindow(CEGUI::Window* sampleWindow)
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
+
+    sampleWindow->setAspectMode(AM_EXPAND);
 }
 
-void SamplesBrowserManager::setWindowRatio(float widthToHeight)
+void SamplesBrowserManager::setWindowRatio(float aspectRatio)
 {
-    d_widthToHeightFactor = widthToHeight;
+    d_aspectRatio = aspectRatio;
 
     updateWindows();
 }
@@ -93,12 +95,15 @@ void SamplesBrowserManager::updateWindows()
     {
         CEGUI::Window* window(d_sampleWindows[i]);
 
-        window->setSize(USize(UDim(1.f, -10.f), cegui_reldim(0.4f)));
+        window->setAspectRatio(d_aspectRatio);
+        window->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
 
         float width = window->getOuterRectClipper().getWidth();
-        float height = width * d_widthToHeightFactor;
+        float height = window->getOuterRectClipper().getHeight();
 
-        window->setSize(CEGUI::USize(cegui_absdim(width), cegui_absdim(height)));
+        window->setSize(CEGUI::USize(cegui_absdim(width),
+            cegui_absdim(height)
+            ));
 
         window->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(vertOffset)));
 
