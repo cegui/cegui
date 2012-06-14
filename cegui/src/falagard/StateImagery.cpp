@@ -41,8 +41,6 @@ namespace CEGUI
 
     void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
     {
-        // TODO: Fix layer priority handling
-
         srcWindow.getGeometryBuffer().setClippingActive(!d_clipToDisplay);
 
         // render all layers defined for this state
@@ -52,8 +50,6 @@ namespace CEGUI
 
     void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
     {
-        // TODO: Fix layer priority handling
-
         srcWindow.getGeometryBuffer().setClippingActive(!d_clipToDisplay);
 
         // render all layers defined for this state
