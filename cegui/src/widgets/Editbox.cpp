@@ -27,10 +27,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/widgets/Editbox.h"
 #include "CEGUI/TextUtils.h"
 #include "CEGUI/Exceptions.h"
@@ -74,7 +70,8 @@ Editbox::Editbox(const String& type, const String& name) :
     d_caretPos(0),
     d_selectionStart(0),
     d_selectionEnd(0),
-    d_validator(0),
+    d_validator(System::getSingleton().createRegexMatcher()),
+    d_weOwnValidator(true),
     d_dragging(false)
 {
     addEditboxProperties();
@@ -84,21 +81,19 @@ Editbox::Editbox(const String& type, const String& name) :
     // ban the property too, since this being off is not optional.
     banPropertyFromXML("TextParsingEnabled");
 
-#ifdef CEGUI_HAS_PCRE_REGEX
-    d_validator = &System::getSingleton().createRegexMatcher();
     // default to accepting all characters
-    setValidationString(".*");
-#else
+    if (d_validator)
+        setValidationString(".*");
     // set copy of validation string to ".*" so getter returns something valid.
-    d_validationString = ".*";
-#endif
+    else
+        d_validationString = ".*";
 }
 
 //----------------------------------------------------------------------------//
 Editbox::~Editbox(void)
 {
-    if (d_validator)
-        System::getSingleton().destroyRegexMatcher(*d_validator);
+    if (d_weOwnValidator && d_validator)
+        System::getSingleton().destroyRegexMatcher(d_validator);
 }
 
 //----------------------------------------------------------------------------//
@@ -160,9 +155,13 @@ void Editbox::setTextMasked(bool setting)
 //----------------------------------------------------------------------------//
 void Editbox::setValidationString(const String& validation_string)
 {
-#ifdef CEGUI_HAS_PCRE_REGEX
     if (validation_string == d_validationString)
         return;
+
+    if (!d_validator)
+        CEGUI_THROW(InvalidRequestException("Editbox::setValidationString: "
+            "Unable to set validation string on Editbox '" + getNamePath() + 
+            "' because it does not currently have a RegexMatcher validator."));
 
     d_validationString = validation_string;
     d_validator->setRegexString(validation_string);
@@ -177,11 +176,6 @@ void Editbox::setValidationString(const String& validation_string)
         args.handled = 0;
         onTextInvalidatedEvent(args);
     }
-#else
-    CEGUI_THROW(InvalidRequestException("Editbox::setValidationString: Unable "
-        "to set validation string because CEGUI was compiled without regular "
-        "expression support"));
-#endif
 }
 
 //----------------------------------------------------------------------------//
@@ -331,6 +325,23 @@ void Editbox::eraseSelectedText(bool modify_text)
 bool Editbox::isStringValid(const String& str) const
 {
     return d_validator ? d_validator->matchRegex(str) : true;
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::setValidator(RegexMatcher* validator)
+{
+    if (d_weOwnValidator && d_validator)
+        System::getSingleton().destroyRegexMatcher(d_validator);
+
+	d_validator = validator;
+
+    if (d_validator)
+        d_weOwnValidator = false;
+    else
+    {
+        d_validator = System::getSingleton().createRegexMatcher();
+        d_weOwnValidator = true;
+    }
 }
 
 //----------------------------------------------------------------------------//

@@ -87,6 +87,24 @@ UQARG       [[:space:]]*[^'",)]+[[:space:]]*
     pushDim(ctx, dim);
 }
 
+"imagepropertydim"\({SQSTRING},{UQARG}\) {
+    char property[256];
+    char type[32];
+
+    char* in = &yytext[9];
+    in = parse_single_quoted_string(in, property, 256);
+
+    prepareString(in);
+    sscanf(in, " %31s ", type);
+
+    CEGUI::ImagePropertyDim* dim =
+        new CEGUI::ImagePropertyDim(
+            property,
+            CEGUI::FalagardXMLHelper::stringToDimensionType(type));
+
+    pushDim(ctx, dim);
+}
+
 "widgetdim"\({SQSTRING},{UQARG}\) {
     char widget[256];
     char type[32];

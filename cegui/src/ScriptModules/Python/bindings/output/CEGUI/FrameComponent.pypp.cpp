@@ -22,8 +22,8 @@ struct FrameComponent_wrapper : CEGUI::FrameComponent, bp::wrapper< CEGUI::Frame
     
     }
 
-    void doBackgroundRender( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const & colours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
-        CEGUI::FrameComponent::doBackgroundRender( boost::ref(srcWindow), boost::ref(destRect), boost::ref(colours), boost::python::ptr(clipper), clipToDisplay );
+    void doBackgroundRender( ::CEGUI::Window & srcWindow, ::CEGUI::Image const * image, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const & colours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
+        CEGUI::FrameComponent::doBackgroundRender( boost::ref(srcWindow), boost::python::ptr(image), boost::ref(destRect), boost::ref(colours), boost::python::ptr(clipper), clipToDisplay );
     }
 
     virtual void render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
@@ -88,14 +88,12 @@ void register_FrameComponent_class(){
         bp::scope FrameComponent_scope( FrameComponent_exposer );
         { //::CEGUI::FrameComponent::doBackgroundRender
         
-            typedef void ( FrameComponent_wrapper::*doBackgroundRender_function_type )( ::CEGUI::Window &,::CEGUI::Rectf &,::CEGUI::ColourRect const &,::CEGUI::Rectf const *,bool ) const;
+            typedef void ( FrameComponent_wrapper::*doBackgroundRender_function_type )( ::CEGUI::Window &,::CEGUI::Image const *,::CEGUI::Rectf &,::CEGUI::ColourRect const &,::CEGUI::Rectf const *,bool ) const;
             
             FrameComponent_exposer.def( 
                 "doBackgroundRender"
                 , doBackgroundRender_function_type( &FrameComponent_wrapper::doBackgroundRender )
-                , ( bp::arg("srcWindow"), bp::arg("destRect"), bp::arg("colours"), bp::arg("clipper"), bp::arg("clipToDisplay") )
-                , "renders the background image (basically a clone of render_impl from ImageryComponent - maybe we need\
-            a helper class?)\n" );
+                , ( bp::arg("srcWindow"), bp::arg("image"), bp::arg("destRect"), bp::arg("colours"), bp::arg("clipper"), bp::arg("clipToDisplay") ) );
         
         }
         { //::CEGUI::FrameComponent::getBackgroundHorizontalFormatting
@@ -132,27 +130,107 @@ void register_FrameComponent_class(){
         }
         { //::CEGUI::FrameComponent::getImage
         
-            typedef ::CEGUI::Image const * ( ::CEGUI::FrameComponent::*getImage_function_type )( ::CEGUI::FrameImageComponent ) const;
+            typedef ::CEGUI::Image const * ( ::CEGUI::FrameComponent::*getImage_function_type )( ::CEGUI::FrameImageComponent,::CEGUI::Window const & ) const;
             
             FrameComponent_exposer.def( 
                 "getImage"
                 , getImage_function_type( &::CEGUI::FrameComponent::getImage )
-                , ( bp::arg("part") )
+                , ( bp::arg("part"), bp::arg("wnd") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                     \n\
-                        Return the Image object that will be drawn by this FrameComponent for a specified frame\
-                        part.\n\
+                        Return the Image object that will be drawn by this FrameComponent\n\
+                        for a specified frame part.\n\
             \n\
                     @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the component image to be\
-                        accessed.\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image to be accessed.\n\
+            \n\
+                    @param wnd\n\
+                        Reference to a Window object that will be accessed if the image\n\
+                        component is fetched from a Property.\n\
             \n\
                     @return\n\
-                        Image object.\n\
+                        pointer to an Image object, or 0 if the image had not been set\n\
+                        or if the image is sourced from a property that returns an empty\n\
+                        image name.\n\
                     *\n" );
         
         }
+        { //::CEGUI::FrameComponent::getImagePropertySource
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::FrameComponent::*getImagePropertySource_function_type )( ::CEGUI::FrameImageComponent ) const;
+            
+            FrameComponent_exposer.def( 
+                "getImagePropertySource"
+                , getImagePropertySource_function_type( &::CEGUI::FrameComponent::getImagePropertySource )
+                , ( bp::arg("part") )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+                    \n\
+                        Return the name of the property that will be used to determine the\n\
+                        image to use for the given component image.\n\
+                        \n\
+                        If the returned String is empty, it indicates either that the\n\
+                        component image is not specified or that the component image is not\n\
+                        sourced from a property.\n\
+            \n\
+                    @see\n\
+                        isImageFetchedFromProperty isImageSpecified\n\
+            \n\
+                    @param part\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image property source to return.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::isImageFetchedFromProperty
+        
+            typedef bool ( ::CEGUI::FrameComponent::*isImageFetchedFromProperty_function_type )( ::CEGUI::FrameImageComponent ) const;
+            
+            FrameComponent_exposer.def( 
+                "isImageFetchedFromProperty"
+                , isImageFetchedFromProperty_function_type( &::CEGUI::FrameComponent::isImageFetchedFromProperty )
+                , ( bp::arg("part") )
+                , "*!\n\
+                    \n\
+                        Return whether the given component image is specified via a\n\
+                        property.\n\
+            \n\
+                    @param part\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image to check.\n\
+            \n\
+                    @return\n\
+                        - true if the image is specified and fetched via a property.\n\
+                        - false if the image is not fetched via a property\n\
+                          (or is not specified)\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::isImageSpecified
+        
+            typedef bool ( ::CEGUI::FrameComponent::*isImageSpecified_function_type )( ::CEGUI::FrameImageComponent ) const;
+            
+            FrameComponent_exposer.def( 
+                "isImageSpecified"
+                , isImageSpecified_function_type( &::CEGUI::FrameComponent::isImageSpecified )
+                , ( bp::arg("part") )
+                , "*!\n\
+                    \n\
+                        Return whether the given component image has been specified.\n\
+            \n\
+                    @param part\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image to check.\n\
+            \n\
+                    @return\n\
+                        - true if the image is specified and will be drawn.\n\
+                        - false if the image is not specified.\n\
+                    *\n" );
+        
+        }
+        FrameComponent_exposer.def( bp::self == bp::self );
         { //::CEGUI::FrameComponent::render_impl
         
             typedef void ( FrameComponent_wrapper::*render_impl_function_type )( ::CEGUI::Window &,::CEGUI::Rectf &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
@@ -214,17 +292,15 @@ void register_FrameComponent_class(){
                 , ( bp::arg("part"), bp::arg("image") )
                 , "*!\n\
                     \n\
-                        Set the Image that will be drawn by this ImageryComponent.\n\
+                        Set an Image that will be drawn by this FrameComponent.\n\
             \n\
                     @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the component image to be\
-                        accessed.\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image to be set.\n\
             \n\
                     @param image\n\
-                        Pointer to the Image object to be drawn by this FrameComponent.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
+                        Pointer to the Image object to be drawn.  If this is 0 then drawing\n\
+                        of the component image specified by  part will be disabled.\n\
                     *\n" );
         
         }
@@ -238,17 +314,42 @@ void register_FrameComponent_class(){
                 , ( bp::arg("part"), bp::arg("name") )
                 , "*!\n\
                     \n\
-                        Set the Image that will be drawn by this FrameComponent.\n\
+                        Set an Image that will be drawn by this FrameComponent.\n\
             \n\
                     @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the component image to be\
-                        accessed.\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image to be set.\n\
             \n\
                     @param name\n\
-                        String holding the name of the Image to be rendered.\n\
+                        String holding the name of an Image. The image should already exist,\n\
+                        if the Image does not exist an Exception will be logged and\n\
+                        drawing of the component image specified by  part will be\n\
+                        disabled.\n\
+                    *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setImagePropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setImagePropertySource_function_type )( ::CEGUI::FrameImageComponent,::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setImagePropertySource"
+                , setImagePropertySource_function_type( &::CEGUI::FrameComponent::setImagePropertySource )
+                , ( bp::arg("part"), bp::arg("name") )
+                , "*!\n\
+                    \n\
+                        Set the name of the Property that will be accesssed on the target\n\
+                        Window to determine the Image that will be drawn by the\n\
+                        FrameComponent.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
+                    @param part\n\
+                        One of the FrameImageComponent enumerated values specifying the\n\
+                        component image to be set.\n\
+            \n\
+                    @param name\n\
+                        String holding the name of a property that will be accessed. If this\n\
+                        is the empty string then drawing of the component image specified by\n\
+                         part will be disabled.\n\
                     *\n" );
         
         }
