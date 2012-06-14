@@ -126,7 +126,9 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
     for (size_t i = 0; i < childCount; ++i)
     {
         const Window* const wnd = getChildAtIdx(i);
-        const Rectf area(CoordConverter::asAbsolute(wnd->getArea(), d_pixelSize));
+        const Rectf area(
+            CoordConverter::asAbsolute(wnd->getPosition(), d_pixelSize),
+            wnd->getPixelSize());
 
         if (area.d_min.d_x < extents.d_min.d_x)
             extents.d_min.d_x = area.d_min.d_x;
