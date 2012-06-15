@@ -65,7 +65,7 @@ Element::Element():
     d_horizontalAlignment(HA_LEFT),
     d_verticalAlignment(VA_TOP),
     d_minSize(cegui_reldim(0), cegui_reldim(0)),
-    d_maxSize(cegui_reldim(1), cegui_reldim(1)),
+    d_maxSize(cegui_reldim(0), cegui_reldim(0)),
     d_aspectMode(AM_IGNORE),
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
@@ -229,20 +229,28 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
 
     // in case absMin components are larger than absMax ones,
     // max size takes precedence
-    if (absMin.d_width > absMax.d_width)
+    if (absMax.d_width != 0.0f && absMin.d_width > absMax.d_width)
     {
         absMin.d_width = absMax.d_width;
         CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of width larger than what MaxSize resulted in");
     }
     
-    if (absMin.d_height > absMax.d_height)
+    if (absMax.d_height != 0.0f && absMin.d_height > absMax.d_height)
     {
         absMin.d_height = absMax.d_height;
         CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of height larger than what MaxSize resulted in");
     }
     
     // limit new pixel size to: minSize <= newSize <= maxSize
-    ret.clamp(absMin, absMax);
+    if (ret.d_width < absMin.d_width)
+        ret.d_width = absMin.d_width;
+    else if (absMax.d_width != 0.0f && ret.d_width > absMax.d_width)
+        ret.d_width = absMax.d_width;
+    
+    if (ret.d_height < absMin.d_height)
+        ret.d_height = absMin.d_height;
+    else if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
+        ret.d_height = absMax.d_height;
 
     if (d_aspectMode != AM_IGNORE)
     {
@@ -273,11 +281,11 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
         {
             float ratio = 1.0f;
             // check that we haven't blown the min size
-            if (ret.d_width > absMax.d_width)
+            if (absMax.d_width != 0.0f && ret.d_width > absMax.d_width)
             {
                 ratio = absMax.d_width / ret.d_width;
             }
-            if (ret.d_height > absMax.d_height)
+            if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
             {
                 const float newRatio = absMax.d_height / ret.d_height;
                 if (newRatio > ratio)
@@ -427,9 +435,10 @@ void Element::addElementProperties()
         &Element::setMinSize, &Element::getMinSize, USize(UDim(0, 0), UDim(0, 0))
     );
 
-    CEGUI_DEFINE_PROPERTY(Element, USize,
-        "MaxSize", "Property to get/set the unified maximum size. Value is a \"USize\".",
-        &Element::setMaxSize, &Element::getMaxSize, USize(UDim(1, 0), UDim(1, 0))
+    CEGUI_DEFINE_PROPERTY(Element, USize, "MaxSize",
+        "Property to get/set the unified maximum size. Value is a \"USize\". "
+        "Note that zero means no maximum size.",
+        &Element::setMaxSize, &Element::getMaxSize, USize(UDim(0, 0), UDim(0, 0))
     );
     
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,

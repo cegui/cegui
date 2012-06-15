@@ -706,7 +706,9 @@ public:
         determining the final value used.
 
     \param size
-        USize describing the new maximum size of the element's area.
+        USize describing the new maximum size of the element's area.  Note that
+        zero is used to indicate that the Element's maximum area size will be
+        unbounded.
      */
     void setMaxSize(const USize& size);
 
