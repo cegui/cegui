@@ -520,7 +520,8 @@ namespace CEGUI
         else if (d_framecomponent)
         {
             d_framecomponent->setImage(
-                FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
+                FalagardXMLHelper<FrameImageComponent>::fromString(
+                    attributes.getValueAsString(TypeAttribute)),
                 attributes.getValueAsString(NameAttribute));
 
             CEGUI_LOGINSANE("---------> Using image: " +
@@ -550,15 +551,21 @@ namespace CEGUI
     {
         if (d_framecomponent)
         {
-            d_framecomponent->setBackgroundVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+            d_framecomponent->setBackgroundVerticalFormatting(
+                FalagardXMLHelper<VerticalFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
         }
         else if (d_imagerycomponent)
         {
-            d_imagerycomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertFormat(attributes.getValueAsString(TypeAttribute)));
+            d_imagerycomponent->setVerticalFormatting(
+                FalagardXMLHelper<VerticalFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
         }
         else if (d_textcomponent)
         {
-            d_textcomponent->setVerticalFormatting(FalagardXMLHelper::stringToVertTextFormat(attributes.getValueAsString(TypeAttribute)));
+            d_textcomponent->setVerticalFormatting(
+                FalagardXMLHelper<VerticalTextFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
         }
     }
 
@@ -569,15 +576,21 @@ namespace CEGUI
     {
         if (d_framecomponent)
         {
-            d_framecomponent->setBackgroundHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+            d_framecomponent->setBackgroundHorizontalFormatting(
+                FalagardXMLHelper<HorizontalFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
         }
         else if (d_imagerycomponent)
         {
-            d_imagerycomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzFormat(attributes.getValueAsString(TypeAttribute)));
+            d_imagerycomponent->setHorizontalFormatting(
+                FalagardXMLHelper<HorizontalFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
         }
         else if (d_textcomponent)
         {
-            d_textcomponent->setHorizontalFormatting(FalagardXMLHelper::stringToHorzTextFormat(attributes.getValueAsString(TypeAttribute)));
+            d_textcomponent->setHorizontalFormatting(
+                FalagardXMLHelper<HorizontalTextFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute)));
         }
     }
 
@@ -587,7 +600,9 @@ namespace CEGUI
     void Falagard_xmlHandler::elementVertAlignmentStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent != 0);
-        d_childcomponent->setVerticalWidgetAlignment(FalagardXMLHelper::stringToVertAlignment(attributes.getValueAsString(TypeAttribute)));
+        d_childcomponent->setVerticalWidgetAlignment(
+            FalagardXMLHelper<VerticalAlignment>::fromString(
+                attributes.getValueAsString(TypeAttribute)));
     }
 
     /*************************************************************************
@@ -596,7 +611,9 @@ namespace CEGUI
     void Falagard_xmlHandler::elementHorzAlignmentStart(const XMLAttributes& attributes)
     {
         assert(d_childcomponent != 0);
-        d_childcomponent->setHorizontalWidgetAlignment(FalagardXMLHelper::stringToHorzAlignment(attributes.getValueAsString(TypeAttribute)));
+        d_childcomponent->setHorizontalWidgetAlignment(
+            FalagardXMLHelper<HorizontalAlignment>::fromString(
+                attributes.getValueAsString(TypeAttribute)));
     }
 
     /*************************************************************************
@@ -624,7 +641,9 @@ namespace CEGUI
     *************************************************************************/
     void Falagard_xmlHandler::elementDimStart(const XMLAttributes& attributes)
     {
-        d_dimension.setDimensionType(FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+        d_dimension.setDimensionType(
+            FalagardXMLHelper<DimensionType>::fromString(
+                attributes.getValueAsString(TypeAttribute)));
     }
 
     /*************************************************************************
@@ -635,7 +654,8 @@ namespace CEGUI
         UnifiedDim base(
             UDim(attributes.getValueAsFloat(ScaleAttribute, 0.0f),
                  attributes.getValueAsFloat(OffsetAttribute, 0.0f)),
-            FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(TypeAttribute)));
+            FalagardXMLHelper<DimensionType>::fromString(
+                attributes.getValueAsString(TypeAttribute)));
 
         doBaseDimStart(&base);
     }
@@ -655,7 +675,8 @@ namespace CEGUI
     void Falagard_xmlHandler::elementImageDimStart(const XMLAttributes& attributes)
     {
         ImageDim base(attributes.getValueAsString(NameAttribute),
-                      FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+                      FalagardXMLHelper<DimensionType>::fromString(
+                          attributes.getValueAsString(DimensionAttribute)));
 
         doBaseDimStart(&base);
     }
@@ -667,7 +688,8 @@ namespace CEGUI
     {
         ImagePropertyDim base(
             attributes.getValueAsString(NameAttribute),
-            FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+            FalagardXMLHelper<DimensionType>::fromString(
+                attributes.getValueAsString(DimensionAttribute)));
 
         doBaseDimStart(&base);
     }
@@ -678,7 +700,8 @@ namespace CEGUI
     void Falagard_xmlHandler::elementWidgetDimStart(const XMLAttributes& attributes)
     {
         WidgetDim base(attributes.getValueAsString(WidgetAttribute),
-                       FalagardXMLHelper::stringToDimensionType(attributes.getValueAsString(DimensionAttribute)));
+                       FalagardXMLHelper<DimensionType>::fromString(
+                           attributes.getValueAsString(DimensionAttribute)));
 
         doBaseDimStart(&base);
     }
@@ -692,7 +715,8 @@ namespace CEGUI
             attributes.getValueAsString(WidgetAttribute),
             attributes.getValueAsString(FontAttribute),
             attributes.getValueAsString(StringAttribute),
-            FalagardXMLHelper::stringToFontMetricType(attributes.getValueAsString(TypeAttribute)),
+            FalagardXMLHelper<FontMetricType>::fromString(
+                attributes.getValueAsString(TypeAttribute)),
             attributes.getValueAsFloat(PaddingAttribute, 0.0f));
 
         doBaseDimStart(&base);
@@ -706,7 +730,7 @@ namespace CEGUI
         String str_type = attributes.getValueAsString(TypeAttribute);
         DimensionType type = DT_INVALID;
         if (!str_type.empty())
-            type = FalagardXMLHelper::stringToDimensionType(str_type);
+            type = FalagardXMLHelper<DimensionType>::fromString(str_type);
 
         PropertyDim base(attributes.getValueAsString(WidgetAttribute),
                          attributes.getValueAsString(NameAttribute),
@@ -1044,7 +1068,9 @@ namespace CEGUI
     {
         if (!d_dimStack.empty())
         {
-            d_dimStack.back()->setDimensionOperator(FalagardXMLHelper::stringToDimensionOperator(attributes.getValueAsString(OperatorAttribute)));
+            d_dimStack.back()->setDimensionOperator(
+                FalagardXMLHelper<DimensionOperator>::fromString(
+                    attributes.getValueAsString(OperatorAttribute)));
         }
     }
 
@@ -1102,7 +1128,8 @@ namespace CEGUI
         else if (d_framecomponent)
         {
             d_framecomponent->setImagePropertySource(
-                FalagardXMLHelper::stringToFrameImageComponent(attributes.getValueAsString(TypeAttribute)),
+                FalagardXMLHelper<FrameImageComponent>::fromString(
+                    attributes.getValueAsString(TypeAttribute)),
                 attributes.getValueAsString(NameAttribute));
 
             CEGUI_LOGINSANE("---------> Using image via property: " +
@@ -1544,9 +1571,10 @@ namespace CEGUI
     {
         assert(d_childcomponent != 0);
 
-        const EventAction action(attributes.getValueAsString(EventAttribute),
-                                 FalagardXMLHelper::stringToChildEventAction(
-                                    attributes.getValueAsString(ActionAttribute)));
+        const EventAction action(
+            attributes.getValueAsString(EventAttribute),
+            FalagardXMLHelper<ChildEventAction>::fromString(
+                attributes.getValueAsString(ActionAttribute)));
 
         d_childcomponent->addEventAction(action);
     }

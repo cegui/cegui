@@ -261,12 +261,12 @@ namespace CEGUI
 
         // output vertical alignment
         xml_stream.openTag("VertAlignment")
-            .attribute("type", FalagardXMLHelper::vertAlignmentToString(d_vertAlign))
+            .attribute("type", FalagardXMLHelper<VerticalAlignment>::toString(d_vertAlign))
             .closeTag();
 
         // output horizontal alignment
         xml_stream.openTag("HorzAlignment")
-            .attribute("type", FalagardXMLHelper::horzAlignmentToString(d_horzAlign))
+            .attribute("type", FalagardXMLHelper<HorizontalAlignment>::toString(d_horzAlign))
             .closeTag();
 
         //output property initialisers

@@ -28,6 +28,7 @@
 #include "CEGUI/WindowRendererSets/Core/Static.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
+#include "CEGUI/falagard/XMLEnumHelper.h"
 #include "CEGUI/TplWindowRendererProperty.h"
 
 // Start of CEGUI namespace section

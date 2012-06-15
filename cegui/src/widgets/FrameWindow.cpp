@@ -319,7 +319,7 @@ bool FrameWindow::moveLeftEdge(float delta, URect& out_area)
     float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth - delta;
 
-    if (newWidth > maxWidth)
+    if (maxWidth != 0.0f && newWidth > maxWidth)
         delta = orgWidth - maxWidth;
     else if (newWidth < minWidth)
         delta = orgWidth - minWidth;
@@ -361,7 +361,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth + delta;
 
-    if (newWidth > maxWidth)
+    if (maxWidth != 0.0f && newWidth > maxWidth)
         delta = maxWidth - orgWidth;
     else if (newWidth < minWidth)
         delta = minWidth - orgWidth;
@@ -405,7 +405,7 @@ bool FrameWindow::moveTopEdge(float delta, URect& out_area)
     float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, getRootContainerSize().d_height));
     float newHeight = orgHeight - delta;
 
-    if (newHeight > maxHeight)
+    if (maxHeight != 0.0f && newHeight > maxHeight)
         delta = orgHeight - maxHeight;
     else if (newHeight < minHeight)
         delta = orgHeight - minHeight;
@@ -449,7 +449,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     float minHeight(CoordConverter::asAbsolute(d_minSize.d_height, getRootContainerSize().d_height));
     float newHeight = orgHeight + delta;
 
-    if (newHeight > maxHeight)
+    if (maxHeight != 0.0f && newHeight > maxHeight)
         delta = maxHeight - orgHeight;
     else if (newHeight < minHeight)
         delta = minHeight - orgHeight;

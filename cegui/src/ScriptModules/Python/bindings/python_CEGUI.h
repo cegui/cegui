@@ -143,6 +143,101 @@ public:
     }
 };
 
+
+class FalagardXMLHelper_wrapper
+{
+public:
+    static VerticalFormatting stringToVertFormat(const String& str)
+    {
+        return FalagardXMLHelper<VerticalFormatting>::fromString(str);
+    }
+    static HorizontalFormatting stringToHorzFormat(const String& str)
+    {
+        return FalagardXMLHelper<HorizontalFormatting>::fromString(str);
+    }
+    static VerticalAlignment stringToVertAlignment(const String& str)
+    {
+        return FalagardXMLHelper<VerticalAlignment>::fromString(str);
+    }
+    static HorizontalAlignment stringToHorzAlignment(const String& str)
+    {
+        return FalagardXMLHelper<HorizontalAlignment>::fromString(str);
+    }
+    static DimensionType stringToDimensionType(const String& str)
+    {
+        return FalagardXMLHelper<DimensionType>::fromString(str);
+    }
+    static VerticalTextFormatting stringToVertTextFormat(const String& str)
+    {
+        return FalagardXMLHelper<VerticalTextFormatting>::fromString(str);
+    }
+    static HorizontalTextFormatting stringToHorzTextFormat(const String& str)
+    {
+        return FalagardXMLHelper<HorizontalTextFormatting>::fromString(str);
+    }
+    static FontMetricType stringToFontMetricType(const String& str)
+    {
+        return FalagardXMLHelper<FontMetricType>::fromString(str);
+    }
+    static DimensionOperator stringToDimensionOperator(const String& str)
+    {
+        return FalagardXMLHelper<DimensionOperator>::fromString(str);
+    }
+    static FrameImageComponent stringToFrameImageComponent(const String& str)
+    {
+        return FalagardXMLHelper<FrameImageComponent>::fromString(str);
+    }
+    static ChildEventAction stringToChildEventAction(const String& str)
+    {
+        return FalagardXMLHelper<ChildEventAction>::fromString(str);
+    }
+
+    static String vertFormatToString(VerticalFormatting val)
+    {
+        return FalagardXMLHelper<VerticalFormatting>::toString(val);
+    }
+    static String horzFormatToString(HorizontalFormatting val)
+    {
+        return FalagardXMLHelper<HorizontalFormatting>::toString(val);
+    }
+    static String vertAlignmentToString(VerticalAlignment val)
+    {
+        return FalagardXMLHelper<VerticalAlignment>::toString(val);
+    }
+    static String horzAlignmentToString(HorizontalAlignment val)
+    {
+        return FalagardXMLHelper<HorizontalAlignment>::toString(val);
+    }
+    static String dimensionTypeToString(DimensionType val)
+    {
+        return FalagardXMLHelper<DimensionType>::toString(val);
+    }
+    static String vertTextFormatToString(VerticalTextFormatting val)
+    {
+        return FalagardXMLHelper<VerticalTextFormatting>::toString(val);
+    }
+    static String horzTextFormatToString(HorizontalTextFormatting val)
+    {
+        return FalagardXMLHelper<HorizontalTextFormatting>::toString(val);
+    }
+    static String fontMetricTypeToString(FontMetricType val)
+    {
+        return FalagardXMLHelper<FontMetricType>::toString(val);
+    }
+    static String dimensionOperatorToString(DimensionOperator val)
+    {
+        return FalagardXMLHelper<DimensionOperator>::toString(val);
+    }
+    static String frameImageComponentToString(FrameImageComponent val)
+    {
+        return FalagardXMLHelper<FrameImageComponent>::toString(val);
+    }
+    static String childEventActionToStringn(ChildEventAction val)
+    {
+        return FalagardXMLHelper<ChildEventAction>::toString(val);
+    }
+};
+
 }
 
 // First we create a magic namespace to hold all our aliases
