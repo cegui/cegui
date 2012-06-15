@@ -28,11 +28,11 @@
 #ifndef _Sample_TreeDemo_h_
 #define _Sample_TreeDemo_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 
-class TreeDemoSample : public CEGuiSample
+class TreeDemoSample : public Sample
    {
 public:
    // method to initialse the samples windows and events.

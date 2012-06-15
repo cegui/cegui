@@ -254,8 +254,8 @@ set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
 set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
 set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 
-# sample related module names
-set( CEGUI_SAMPLEHELPER_LIBNAME CEGUISampleHelper )
+# SampleFramework executable related names
+set( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework )
 
 # Additional lib names
 set( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
@@ -402,7 +402,7 @@ set( CEGUI_INCLUDE_INSTALL_DIR "include${CEGUI_SLOT_INSTALL_SUBDIR}" )
 ################################################################################
 configure_file( cegui/include/CEGUI/Version.h.in cegui/include/CEGUI/Version.h )
 configure_file( cegui/include/CEGUI/Config.h.in cegui/include/CEGUI/Config.h )
-configure_file( Samples/common/include/CEGUISamplesConfig.h.in Samples/common/include/CEGUISamplesConfig.h )
+configure_file( samples/common/include/CEGUISamplesConfig.h.in samples/common/include/CEGUISamplesConfig.h )
 
 if (UNIX AND NOT APPLE)
     configure_file( cegui/CEGUI.pc.in cegui/CEGUI${CEGUI_SLOT_VERSION}.pc @ONLY )
@@ -439,7 +439,8 @@ add_subdirectory(cegui/src/ScriptModules)
 add_subdirectory(cegui/src/CommonDialogs)
 
 if (CEGUI_SAMPLES_ENABLED)
-    add_subdirectory(Samples)
+    add_subdirectory(samples_framework)
+    add_subdirectory(samples)
 endif()
 
 add_subdirectory(datafiles)

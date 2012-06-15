@@ -1,0 +1,21 @@
+<?xml version="1.0" ?>
+<Samples>
+	<SampleDefinition
+        sampleName      = "CEGUIFirstWindow"
+        sampleType      = "C++ Module"
+        summary         = "bla"
+        description     = "muh"
+    />
+	<SampleDefinition
+        sampleName      = "CEGUIFalagardDemo1"
+        sampleType      = "C++ Module"
+        summary         = "saddasdsf"
+        description     = "faxaxaxaxaxaxa"
+    />
+    <SampleDefinition
+        sampleName      = "CEGUIDemo6"
+        sampleType      = "C++ Module"
+        summary         = "2"
+        description     = "3"
+    />
+</Samples>

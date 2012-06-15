@@ -27,27 +27,24 @@
  ***************************************************************************/
 #include "Sample_Demo6.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
 
 #include <stdlib.h>
 #include <stdio.h>
 #include <string>
 
-int main(int /*argc*/, char* /*argv*/[])
+
+/*************************************************************************
+   Constructor.
+*************************************************************************/
+Demo6Sample::Demo6Sample()
+    : d_usedFiles(__FILE__)
 {
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    Demo6Sample app;
-    return app.run();
 }
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool Demo6Sample::initialiseSample()
+bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -56,11 +53,11 @@ bool Demo6Sample::initialiseSample()
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageDemo6", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "root_wnd");
@@ -71,9 +68,9 @@ bool Demo6Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "BackgroundImageDemo6");
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    guiContext->setRootWindow(background);
 
     // do demo stuff
     createDemoWindows(background);
@@ -86,7 +83,7 @@ bool Demo6Sample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void Demo6Sample::cleanupSample()
+void Demo6Sample::deinitialise()
 {
     // nothing to do here!
 }
@@ -432,8 +429,6 @@ void Demo6Sample::initDemoEventWiring(CEGUI::Window* root)
 
 bool Demo6Sample::handleQuit(const CEGUI::EventArgs&)
 {
-    // signal quit
-    d_sampleApp->setQuitting();
 
     // event was handled
     return true;
@@ -720,3 +715,18 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
     // event was handled.
     return true;
 }
+
+
+/*************************************************************************
+    Returns the path of the file used for this
+*************************************************************************/
+const CEGUI::String& Demo6Sample::getUsedFilesString()
+{
+    return d_usedFiles;
+}
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+SAMPLE_EXTERN_IMPL(Demo6Sample)

@@ -33,18 +33,6 @@
 #include <CEGUI/CEGUI.h>
 
 //----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    InventoryDemo app;
-    return app.run();
-}
-
-//----------------------------------------------------------------------------//
 bool InventoryDemo::initialiseSample()
 {
     using namespace CEGUI;
