@@ -28,11 +28,11 @@
 #ifndef _Sample_DragDropDemo_h_
 #define _Sample_DragDropDemo_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 // Sample class
-class DragDropDemo : public CEGuiSample
+class DragDropDemo : public Sample
 {
 public:
     // override member to initialse the sample.

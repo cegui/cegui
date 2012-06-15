@@ -305,7 +305,7 @@ void SamplesFrameworkBase::cleanup()
 /*************************************************************************
     Output a message to the user in some OS independant way.
 *************************************************************************/
-void SamplesFrameworkBase::outputExceptionMessage(const char* message) const
+void SamplesFrameworkBase::outputExceptionMessage(const char* message)
 {
 #if defined(__WIN32__) || defined(_WIN32)
     MessageBoxA(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);

@@ -37,15 +37,14 @@
 #include "CEGUI/widgets/ScrollablePane.h"
 #include "CEGUI/widgets/ScrolledContainer.h"
 
-#include "CEGuiSample.h"
-#include "CEGuiBaseApplication.h"
+#include "SampleBase.h"
 
 /*
 This is a demonstration of the ScrollablePane widget
 */
 
 // ScrollablePane demo sample class
-class ScrollablePaneSample : public CEGuiSample
+class ScrollablePaneSample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
@@ -60,7 +59,7 @@ private:
     // quit menu item handler
     bool fileQuit(const CEGUI::EventArgs&)
     {
-        d_sampleApp->setQuitting(true);
+        //d_sampleApp->setQuitting(true);
         return true;
     }
 
@@ -78,17 +77,6 @@ private:
     CEGUI::ScrollablePane* d_pane; // the scrollable pane. center piece of the demo
 };
 
-// Sample program entry point
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    ScrollablePaneSample app;
-    return app.run();
-}
 
 /*************************************************************************
     Sample specific initialisation goes here.

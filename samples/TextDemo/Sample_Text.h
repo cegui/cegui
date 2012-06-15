@@ -28,11 +28,11 @@
 #ifndef _Sample_Text_h_
 #define _Sample_Text_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 // Sample class
-class TextDemo : public CEGuiSample
+class TextDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.

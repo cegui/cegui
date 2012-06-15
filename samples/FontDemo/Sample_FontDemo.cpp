@@ -30,7 +30,7 @@
 // sample texts might show up unreadable in this source file. The sample
 // should look okay though when running.
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
@@ -118,7 +118,7 @@ public:
 };
 
 // Sample class
-class FontDemo : public CEGuiSample
+class FontDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
@@ -141,7 +141,7 @@ public:
         FontManager::getSingleton().createAll("*.font", "fonts");
 
         // load an image to use as a background
-        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImageFontDemo", "GPN-2000-001437.png");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow("TaharezLook/StaticImage");
@@ -152,7 +152,7 @@ public:
         background->setProperty("FrameEnabled", "false");
         background->setProperty("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty("Image", "BackgroundImage");
+        background->setProperty("Image", "BackgroundImageFontDemo");
         // install this as the root GUI sheet
         System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
@@ -375,14 +375,3 @@ public:
         return true;
     }
 };
-
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    FontDemo app;
-    return app.run();
-}

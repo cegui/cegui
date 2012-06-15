@@ -27,20 +27,8 @@
  ***************************************************************************/
 #include "Sample_Demo7.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
 
 #include <cstdlib>
-
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    Demo7Sample app;
-    return app.run();
-}
 
 //----------------------------------------------------------------------------//
 // The following are related to the RenderEffect
@@ -286,7 +274,7 @@ bool Demo7Sample::initialiseSample()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageDemo7", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -297,7 +285,7 @@ bool Demo7Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "BackgroundImageDemo7");
     // install this as the root GUI sheet
     System::getSingleton().getDefaultGUIContext().setRootWindow(background);
 
@@ -417,9 +405,6 @@ void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
 
 bool Demo7Sample::handleQuit(const CEGUI::EventArgs&)
 {
-    // signal quit
-    d_sampleApp->setQuitting();
-
     // event was handled
     return true;
 }
@@ -455,7 +440,7 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     switch (id)
     {
     case 0:
-        img->setProperty("Image", "BackgroundImage");
+        img->setProperty("Image", "BackgroundImageDemo7");
         break;
 
     case 1:

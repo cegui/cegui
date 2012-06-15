@@ -64,7 +64,7 @@ bool FalagardDemo1Sample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageFalagardDemo", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     d_root = winMgr.createWindow("Vanilla/StaticImage");
@@ -78,7 +78,7 @@ bool FalagardDemo1Sample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("FrameEnabled", "false");
     d_root->setProperty("BackgroundEnabled", "false");
     // set the background image
-    d_root->setProperty("Image", "BackgroundImage");
+    d_root->setProperty("Image", "BackgroundImageFalagardDemo");
 
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
