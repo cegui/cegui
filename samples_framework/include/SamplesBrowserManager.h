@@ -29,12 +29,14 @@ author:     Lukas E Meindl
 #define _SamplesBrowserManager_h_
 
 #include <vector>
-#include <stdint.h>
+
+#include "CEGUI/Base.h"
 
 namespace CEGUI
 {
     class Window;
     class EventArgs;
+    class VerticalLayoutContainer;
 }
 
 class SamplesFramework;
@@ -54,10 +56,12 @@ public:
 
 private:
     SamplesBrowserManager(const SamplesBrowserManager&) {}
+
+    void init();
     SamplesBrowserManager& operator=(const SamplesBrowserManager&) {}
 
-    static const uint32_t d_sampleWindowFrameNormal;
-    static const uint32_t d_sampleWindowFrameSelected;
+    static const CEGUI::uint32 d_sampleWindowFrameNormal;
+    static const CEGUI::uint32 d_sampleWindowFrameSelected;
 
     void updateWindows();
 
@@ -67,9 +71,11 @@ private:
     SamplesFramework* d_owner;
 
     CEGUI::Window* d_root;
+    CEGUI::VerticalLayoutContainer* d_verticalLayoutContainerSamples;
     int d_childCount;
     float d_aspectRatio;
     CEGUI::Window* d_selectedWindow;
+
 
     std::vector<CEGUI::Window*> d_sampleWindows;
 };

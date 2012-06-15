@@ -152,7 +152,6 @@
             <Property name="Text" value="Samples" />
             <Property name="AlwaysOnTop" value="True" />
             <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
-            <Property name="SizingEnabled" value="False" />
             <Property name="DragMovingEnabled" value="False" />
             <Property name="VerticalAlignment" value="Centre" />
             <Property name="CloseButtonEnabled" value="False" />
