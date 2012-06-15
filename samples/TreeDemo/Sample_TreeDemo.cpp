@@ -61,20 +61,6 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #endif
 
 
-//
-// int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
-// #else
-int main(int /*argc*/, char* /*argv*/[])
-   {
-   // This is a basic start-up for the sample application which is
-   // object orientated in nature, so we just need an instance of
-   // the CEGuiSample based object and then tell that sample application
-   // to run.  All of the samples will use code similar to this in the
-   // main/WinMain function.
-   TreeDemoSample app;
-   return app.run();
-   }
-
 int randInt(int low, int high)
    {
    int   num;

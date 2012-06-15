@@ -27,19 +27,6 @@
  ***************************************************************************/
 #include "Sample_DragDropDemo.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
-
-//----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    DragDropDemo app;
-    return app.run();
-}
 
 //----------------------------------------------------------------------------//
 bool DragDropDemo::initialiseSample()
@@ -146,7 +133,6 @@ bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
 //----------------------------------------------------------------------------//
 bool DragDropDemo::handle_CloseButton(const CEGUI::EventArgs&)
 {
-    d_sampleApp->setQuitting();
     return true;
 }
 

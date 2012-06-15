@@ -12,4 +12,10 @@
         summary         = "saddasdsf"
         description     = "faxaxaxaxaxaxa"
     />
+    <SampleDefinition
+        sampleName      = "CEGUIDemo6"
+        sampleType      = "C++ Module"
+        summary         = "2"
+        description     = "3"
+    />
 </Samples>

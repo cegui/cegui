@@ -167,7 +167,7 @@ protected:
     \brief
         Output a message to the user in some OS independant way.
     */
-    void outputExceptionMessage(const char* message) const;
+    static void outputExceptionMessage(const char* message);
 
     /*************************************************************************
         Data fields

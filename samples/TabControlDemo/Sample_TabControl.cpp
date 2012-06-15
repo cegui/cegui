@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
@@ -64,7 +64,7 @@ public:
 };
 
 // Sample class
-class TabControlDemo : public CEGuiSample
+class TabControlDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
@@ -291,16 +291,10 @@ public:
                     continue;
 
                 Window* pg = 0;
-                CEGUI_TRY
-                {
-                    pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-                    pg->setName(String(pgname.str()));
-                }
-                CEGUI_CATCH(CEGUI::Exception&)
-                {
-                    outputExceptionMessage("Some error occured while adding a tabpage. Please see the logfile.");
-                    break;
-                }
+
+                pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
+                pg->setName(String(pgname.str()));
+
 
                 // This window has just been created while loading the layout
                 if (pg->isChild("Text"))
@@ -421,14 +415,3 @@ public:
         return true;
     }
 };
-
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    TabControlDemo app;
-    return app.run();
-}

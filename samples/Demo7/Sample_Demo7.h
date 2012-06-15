@@ -28,7 +28,7 @@
 #ifndef _Sample_Demo7_h_
 #define _Sample_Demo7_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 // Sample subclass for CEGUI::RenderEffect.  This particluar implementation
@@ -62,7 +62,7 @@ protected:
 
 
 // Sample class
-class Demo7Sample : public CEGuiSample
+class Demo7Sample : public Sample
 {
 public:
     // method to initialse the samples windows and events.

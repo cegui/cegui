@@ -33,6 +33,7 @@ author:     Lukas E Meindl
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/EventArgs.h"
+#include "CEGUI/widgets/DefaultWindow.h"
 #include "CEGUI/widgets/VerticalLayoutContainer.h"
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/Image.h"
@@ -64,19 +65,22 @@ CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI:
 
     CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
     root->setMaxSize(CEGUI::USize(cegui_absdim(9999999999.f), cegui_absdim(9999999999.f)));
+    root->setMouseInputPropagationEnabled(true);
 
-    CEGUI::Window* windowName = winMgr.createWindow("SampleBrowserSkin/StaticText");
+    CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
     windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
     windowName->setText(name);
     windowName->setHorizontalAlignment(HA_CENTRE);
+    windowName->setFont("DejaVuSans-12-NoScale");
+    windowName->setProperty("HorzFormatting", "Centre");
     root->addChild(windowName);
 
     FrameWindow* sampleWindow;
-   sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
+    sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
     CEGUI::String imageName = image.getName();
     sampleWindow->setProperty("Image", imageName);
 
-        sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
+    sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
     sampleWindow->setMouseInputPropagationEnabled(true);
 
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
