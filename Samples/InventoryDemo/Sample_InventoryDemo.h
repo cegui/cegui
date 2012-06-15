@@ -28,10 +28,10 @@
 #ifndef _Sample_InventoryDemo_h_
 #define _Sample_InventoryDemo_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
-class InventoryDemo : public CEGuiSample
+class InventoryDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.

@@ -25,23 +25,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-class CommonDialogsDemo : public CEGuiSample
+class CommonDialogsDemo : public Sample
 {
 public:
     bool initialiseSample();
     void cleanupSample(void) {}
 };
-
-//----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
-{
-    CommonDialogsDemo app;
-    return app.run();
-}
 
 //----------------------------------------------------------------------------//
 bool CommonDialogsDemo::initialiseSample()

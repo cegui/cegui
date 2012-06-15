@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 #include "Minesweeper_Timer.h"
 #include <ctime>
@@ -38,7 +38,7 @@ struct Location
 const size_t MinesweeperSize = 10;
 const size_t MineCount = 15;
 
-class MinesweeperSample : public CEGuiSample
+class MinesweeperSample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
@@ -90,22 +90,7 @@ protected:
     // Custom window type to force refresh of the timer
     Timer* d_alarm;
 };
-///////////////////////////////////////////////////////////////////////////
-/**************************************************************************
 
-    Main
-
-**************************************************************************/
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    MinesweeperSample app;
-    return app.run();
-}
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -139,7 +124,7 @@ bool MinesweeperSample::initialiseSample()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageMineSweeper", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -152,7 +137,7 @@ bool MinesweeperSample::initialiseSample()
     background->setProperty("BackgroundEnabled", "false");
 
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "BackgroundImageMineSweeper");
 
     // install this as the root GUI sheet
     System::getSingleton().getDefaultGUIContext().setRootWindow(background);

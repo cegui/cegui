@@ -28,17 +28,34 @@
 #ifndef _Sample_FirstWindow_h_
 #define _Sample_FirstWindow_h_
 
-#include "CEGuiSample.h"
-#include "CEGUI/CEGUI.h"
+#include "SampleBase.h"
 
-class FirstWindowSample : public CEGuiSample
+#include "CEGUI/String.h"
+
+
+namespace CEGUI
+{
+    class Window;
+    class DefaultWindow;
+}
+
+class FirstWindowSample : public Sample
 {
 public:
-    // method to initialse the samples windows and events.
-    bool initialiseSample();
+    FirstWindowSample();
+    virtual ~FirstWindowSample() {}
 
-    // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    virtual void deinitialise();
+
+    virtual const CEGUI::String& getUsedFilesString();
+private:
+    FirstWindowSample(const FirstWindowSample&) {}
+    FirstWindowSample& operator=(const FirstWindowSample&) {}
+
+    CEGUI::DefaultWindow*      d_root;
+
+    CEGUI::String d_usedFiles;
 };
 
 #endif  // end of guard _Sample_FirstWindow_h_
