@@ -68,7 +68,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI:
     CEGUI::Window* windowName = winMgr.createWindow("SampleBrowserSkin/StaticText");
     windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
     windowName->setText(name);
-    windowName->setHorizontalAlignment(HorizontalAlignment::HA_CENTRE);
+    windowName->setHorizontalAlignment(HA_CENTRE);
     root->addChild(windowName);
 
     FrameWindow* sampleWindow;
