@@ -182,6 +182,9 @@ protected:
     */
     virtual UVector2 getBoundingSizeForWindow(Window* window) const;
 
+    // overridden from parent class
+    void onParentSized(ElementEventArgs& e);
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
