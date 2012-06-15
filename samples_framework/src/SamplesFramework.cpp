@@ -312,27 +312,12 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
     d_samplesWinMgr->setWindowRatio(width/height);
 }
 
-CEGUI::FrameWindow* SamplesFramework::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
-{
-    WindowManager& winMgr = WindowManager::getSingleton();
-
-    FrameWindow* wnd = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
-
-    
-    CEGUI::String imageName = image.getName();
-    wnd->setProperty("Image", imageName);
-
-    d_samplesWinMgr->addSampleWindow(wnd);
-
-    return wnd;
-}
-
 void SamplesFramework::addSample(SampleData* sampleData)
 {
     d_samples.push_back(sampleData);
 
     sampleData->initialise();
-    CEGUI::FrameWindow* sampleWindow = createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
+    CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createAndAddSampleWindow(sampleData->getName(), sampleData->getRTTImage());
     sampleData->setSampleWindow(sampleWindow);
 }
 

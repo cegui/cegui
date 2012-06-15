@@ -74,8 +74,6 @@ public:
     virtual void update(float passedTime);
     virtual void handleNewWindowSize(float width, float height);
 
-    CEGUI::FrameWindow* createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
-
     virtual void drawGUIContexts();
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
