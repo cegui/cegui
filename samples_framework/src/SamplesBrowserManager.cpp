@@ -34,11 +34,13 @@ author:     Lukas E Meindl
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/widgets/VerticalLayoutContainer.h"
+#include "CEGUI/widgets/FrameWindow.h"
+#include "CEGUI/Image.h"
 
 using namespace CEGUI;
 
-const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameNormal(0xFF234d46);
-const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameSelected(0xFF559d96);
+const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameNormal(0xFFFFFFFF);
+const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameSelected(0xFF77FFB6);
 
 SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Window* samplesWindow)
     : d_owner(owner),
@@ -56,15 +58,25 @@ CEGUI::Window* SamplesBrowserManager::getWindow()
     return d_root;
 }
 
-void SamplesBrowserManager::addSampleWindow(CEGUI::Window* sampleWindow)
+CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
 {
-    d_verticalLayoutContainerSamples->addChild(sampleWindow);
-    d_sampleWindows.push_back(sampleWindow);
+    WindowManager& winMgr = WindowManager::getSingleton();
 
-    ++d_childCount;
+    CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
+    root->setMaxSize(CEGUI::USize(cegui_absdim(9999999999.f), cegui_absdim(9999999999.f)));
 
-    sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
+    CEGUI::Window* windowName = winMgr.createWindow("SampleBrowserSkin/StaticText");
+    windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
+    windowName->setText(name);
+    windowName->setHorizontalAlignment(HorizontalAlignment::HA_CENTRE);
+    root->addChild(windowName);
 
+    FrameWindow* sampleWindow;
+   sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
+    CEGUI::String imageName = image.getName();
+    sampleWindow->setProperty("Image", imageName);
+
+        sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
     sampleWindow->setMouseInputPropagationEnabled(true);
 
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
@@ -74,6 +86,16 @@ void SamplesBrowserManager::addSampleWindow(CEGUI::Window* sampleWindow)
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
 
     sampleWindow->setAspectMode(AM_EXPAND);
+    root->addChild(sampleWindow);
+
+    d_sampleWindows.push_back(sampleWindow);
+
+    d_verticalLayoutContainerSamples->addChild(root);
+
+
+    ++d_childCount;
+
+    return sampleWindow;
 }
 
 void SamplesBrowserManager::setWindowRatio(float aspectRatio)
@@ -144,8 +166,12 @@ void SamplesBrowserManager::init()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
-    d_root->addChild(d_verticalLayoutContainerSamples);
 
     d_verticalLayoutContainerSamples->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
+    d_verticalLayoutContainerSamples->setMaxSize(CEGUI::USize(cegui_absdim(9999999999.f), cegui_absdim(9999999999.f)));
+
     d_verticalLayoutContainerSamples->setMouseInputPropagationEnabled(true);
+
+    d_root->addChild(d_verticalLayoutContainerSamples);
+
 }

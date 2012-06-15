@@ -31,6 +31,7 @@ author:     Lukas E Meindl
 #include <vector>
 
 #include "CEGUI/Base.h"
+#include "CEGUI/String.h"
 
 namespace CEGUI
 {
@@ -49,7 +50,7 @@ public:
 
     CEGUI::Window* getWindow();
 
-    void addSampleWindow(CEGUI::Window* sampleWindow);
+    CEGUI::FrameWindow* createAndAddSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
     void setWindowRatio(float aspectRatio);
 
     void selectSampleWindow(CEGUI::Window* wnd);
