@@ -33,11 +33,12 @@ author:     Lukas E Meindl
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/EventArgs.h"
+#include "CEGUI/widgets/VerticalLayoutContainer.h"
 
 using namespace CEGUI;
 
-const uint32_t SamplesBrowserManager::d_sampleWindowFrameNormal(0xFF234d46);
-const uint32_t SamplesBrowserManager::d_sampleWindowFrameSelected(0xFF559d96);
+const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameNormal(0xFF234d46);
+const CEGUI::uint32 SamplesBrowserManager::d_sampleWindowFrameSelected(0xFF559d96);
 
 SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Window* samplesWindow)
     : d_owner(owner),
@@ -46,6 +47,7 @@ SamplesBrowserManager::SamplesBrowserManager(SamplesFramework* owner, CEGUI::Win
     d_aspectRatio(1.f),
     d_selectedWindow(0)
 {
+    init();
 }
 
 
@@ -56,16 +58,11 @@ CEGUI::Window* SamplesBrowserManager::getWindow()
 
 void SamplesBrowserManager::addSampleWindow(CEGUI::Window* sampleWindow)
 {
-    d_root->addChild(sampleWindow);
+    d_verticalLayoutContainerSamples->addChild(sampleWindow);
     d_sampleWindows.push_back(sampleWindow);
 
     ++d_childCount;
 
-    CEGUI::UVector2 position(cegui_reldim(0.f), cegui_reldim(0.f));
-
-    position.d_y.d_scale += int((d_childCount - 1) / 2) * 0.5f;
-
-    sampleWindow->setPosition(position);
     sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
 
     sampleWindow->setMouseInputPropagationEnabled(true);
@@ -97,18 +94,9 @@ void SamplesBrowserManager::updateWindows()
 
         window->setAspectRatio(d_aspectRatio);
         window->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
-
-        float width = window->getOuterRectClipper().getWidth();
-        float height = window->getOuterRectClipper().getHeight();
-
-        window->setSize(CEGUI::USize(cegui_absdim(width),
-            cegui_absdim(height)
-            ));
-
-        window->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(vertOffset)));
-
-        vertOffset += height + 15;
     }
+
+    d_root->setSize(USize(cegui_reldim(1.f), cegui_reldim(1.f)));
 }
 
 
@@ -149,4 +137,15 @@ void SamplesBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
 
     CEGUI::ColourRect colRectSelected = CEGUI::ColourRect(CEGUI::Colour(d_sampleWindowFrameSelected));
     d_selectedWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRectSelected));
+}
+
+void SamplesBrowserManager::init()
+{
+    WindowManager& winMgr = WindowManager::getSingleton();
+
+    d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
+    d_root->addChild(d_verticalLayoutContainerSamples);
+
+    d_verticalLayoutContainerSamples->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
+    d_verticalLayoutContainerSamples->setMouseInputPropagationEnabled(true);
 }
