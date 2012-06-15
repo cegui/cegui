@@ -306,12 +306,56 @@
         <Property name="AutoRenderingSurface" value="True" />
         
 		<PropertyDefinition name="BackgroundEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
+        <PropertyDefinition name="ForegroundEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
         <PropertyDefinition name="FrameEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
+        
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-		<PropertyDefinition name="FrameColours" initialValue="tl:FF7F0000 tr:FF7F0000 bl:FF7F0000 br:FF7F0000" redrawOnWrite="true" type="ColourRect"/>
-		<PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
+		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+		<PropertyDefinition name="ForegroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
         
+            <NamedArea name="InnerArea">
+                <Area>
+                    <Dim type="LeftEdge" >
+                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="FrameEnabled" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                    <Dim type="TopEdge" >
+                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
+                            <DimOperator op="Multiply">
+                                <PropertyDim name="FrameEnabled" />
+                            </DimOperator>
+                        </ImageDim>
+                    </Dim>
+                    <Dim type="RightEdge" >
+                        <UnifiedDim scale="1.0" type="RightEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="FrameEnabled" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
+                        <UnifiedDim scale="1.0" type="BottomEdge">
+                            <DimOperator op="Subtract">
+                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
+                                    <DimOperator op="Multiply">
+                                        <PropertyDim name="FrameEnabled" />
+                                    </DimOperator>
+                                </ImageDim>
+                            </DimOperator>
+                        </UnifiedDim>
+                    </Dim>
+                </Area>
+            </NamedArea>
+                
         <ImagerySection name="frame">
             <FrameComponent>
                 <Area>
@@ -334,103 +378,37 @@
         
         <ImagerySection name="image">
             <ImageryComponent>
-                <Area>
-                    <Dim type="LeftEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="FrameEnabled" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="FrameEnabled" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1.0" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="FrameEnabled" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="FrameEnabled" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
+                <Area><NamedAreaSource name="InnerArea"/></Area>
                 <ImageProperty name="Image" />
                 <ColourRectProperty name="ImageColours" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
- 
-  
 		
-        <ImagerySection name="background">
+        <ImagerySection name="foreground">
             <ImageryComponent>
- 
-                <Area>
-                    <Dim type="LeftEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="FrameEnabled" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="FrameEnabled" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1.0" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="FrameEnabled" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="FrameEnabled" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
+                <Area><NamedAreaSource name="InnerArea"/></Area>
+                <Image name="SampleBrowserSkin/SamplesForeground" />
+                <ColourRectProperty name="ForegroundColours" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
-            </ImageryComponent>
+            </ImageryComponent>     
         </ImagerySection>
 		
- 
+         <ImagerySection name="background">
+            <ImageryComponent>
+                <Area><NamedAreaSource name="InnerArea"/></Area>
+                <Image name="SampleBrowserSkin/GenericFiller" />
+                <ColourRectProperty name="BackgroundColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>     
+        </ImagerySection>
    
         <StateImagery name="Enabled">
-            <Layer priority="2" ><Section section="frame" controlProperty="FrameEnabled" /></Layer>
+            <Layer priority="3" ><Section section="frame" controlProperty="FrameEnabled" /></Layer>   
+            <Layer priority="2" ><Section section="foreground" controlProperty="ForegroundEnabled" /></Layer>
             <Layer priority="1" ><Section section="image" /></Layer> 
             <Layer priority="0" ><Section section="background" controlProperty="BackgroundEnabled" /></Layer>
             </StateImagery>
