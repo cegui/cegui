@@ -163,7 +163,7 @@ namespace CEGUI
         {
             // write out the DimOperator
             xml_stream.openTag("DimOperator")
-                .attribute("op", FalagardXMLHelper::dimensionOperatorToString(d_operator));
+                .attribute("op", FalagardXMLHelper<DimensionOperator>::toString(d_operator));
             // write out the other operand
             d_operand->writeXMLToStream(xml_stream);
             // write closing tag for DimOperator element
@@ -299,7 +299,7 @@ namespace CEGUI
     void ImageDimBase::writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const
     {
         xml_stream.attribute("dimension",
-                             FalagardXMLHelper::dimensionTypeToString(d_what));
+                             FalagardXMLHelper<DimensionType>::toString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -493,7 +493,7 @@ namespace CEGUI
         if (!d_widgetName.empty())
             xml_stream.attribute("widget", d_widgetName);
 
-        xml_stream.attribute("dimension", FalagardXMLHelper::dimensionTypeToString(d_what));
+        xml_stream.attribute("dimension", FalagardXMLHelper<DimensionType>::toString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -626,7 +626,7 @@ namespace CEGUI
         if (d_padding != 0)
             xml_stream.attribute("padding", PropertyHelper<float>::toString(d_padding));
 
-        xml_stream.attribute("type", FalagardXMLHelper::fontMetricTypeToString(d_metric));
+        xml_stream.attribute("type", FalagardXMLHelper<FontMetricType>::toString(d_metric));
     }
 
     bool FontDim::handleFontRenderSizeChange(Window& window,
@@ -734,7 +734,7 @@ namespace CEGUI
             xml_stream.attribute("widget", d_childName);
         xml_stream.attribute("name", d_property);
         if (d_type != DT_INVALID)
-            xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_type));
+            xml_stream.attribute("type", FalagardXMLHelper<DimensionType>::toString(d_type));
     }
 
     ////////////////////////////////////////////////////////////////////////////////
@@ -803,7 +803,7 @@ namespace CEGUI
     void Dimension::writeXMLToStream(XMLSerializer& xml_stream) const
     {
         xml_stream.openTag("Dim")
-            .attribute("type", FalagardXMLHelper::dimensionTypeToString(d_type));
+            .attribute("type", FalagardXMLHelper<DimensionType>::toString(d_type));
 
         if (d_value)
             d_value->writeXMLToStream(xml_stream);
@@ -917,7 +917,7 @@ namespace CEGUI
         if (d_value.d_offset != 0)
             xml_stream.attribute("offset", PropertyHelper<float>::toString(d_value.d_offset));
 
-        xml_stream.attribute("type", FalagardXMLHelper::dimensionTypeToString(d_what));
+        xml_stream.attribute("type", FalagardXMLHelper<DimensionType>::toString(d_what));
     }
 
     ////////////////////////////////////////////////////////////////////////////////

@@ -273,7 +273,7 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     float minWidth(CoordConverter::asAbsolute(d_minSize.d_width, getRootContainerSize().d_width));
     float newWidth = orgWidth + delta;
 
-    if (newWidth > maxWidth)
+    if (maxWidth != 0.0f && newWidth > maxWidth)
         delta = maxWidth - orgWidth;
     else if (newWidth < minWidth)
         delta = minWidth - orgWidth;
