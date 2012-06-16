@@ -376,7 +376,7 @@ public:
     typedef std::vector<PropertyDefinitionBase*
         CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyDefinitionList;
     typedef std::vector<PropertyDefinitionBase*
-        CEGUI_VECTOR_ALLOC(PropertyDefinitionList*)> PropertyLinkDefinitionList;
+        CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyLinkDefinitionList;
 
     /** Obtains list of properties definitions.
      * @access public
