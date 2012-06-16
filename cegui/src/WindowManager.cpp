@@ -172,7 +172,7 @@ void WindowManager::initialiseRenderEffect(
         // Set an instance of the requested RenderEffect
         static_cast<RenderingWindow*>(wnd->getRenderingSurface())->
                 setRenderEffect(&RenderEffectManager::getSingleton().
-                        create(effect));
+                        create(effect, wnd));
     }
     // log fact that we could not get a usable RenderingSurface
     else
