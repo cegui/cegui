@@ -119,13 +119,13 @@
                 <xsd:element name="ColourProperty" type="settingByPropertyType" />
                 <xsd:element name="ColourRectProperty" type="settingByPropertyType" />
             </xsd:choice>
-            <xsd:choice  minOccurs="0" maxOccurs="1">
-                <xsd:element name="VertFormat" type="vertFormatType" />
-                <xsd:element name="VertFormatProperty" type="settingByPropertyType" />
+            <xsd:choice  minOccurs="0" maxOccurs="3">
+                <xsd:element name="VertFormat" type="frameVertFormatType" />
+                <xsd:element name="VertFormatProperty" type="frameFormatPropertyType" />
             </xsd:choice>
-            <xsd:choice  minOccurs="0" maxOccurs="1">
-                <xsd:element name="HorzFormat" type="horzFormatType" />
-                <xsd:element name="HorzFormatProperty" type="settingByPropertyType" />
+            <xsd:choice  minOccurs="0" maxOccurs="3">
+                <xsd:element name="HorzFormat" type="frameHorzFormatType" />
+                <xsd:element name="HorzFormatProperty" type="frameFormatPropertyType" />
             </xsd:choice>
         </xsd:sequence>
     </xsd:complexType>
@@ -215,6 +215,18 @@
 	</xsd:complexType>
     <xsd:complexType name="frameImageType">
         <xsd:attribute name="component" type="frameImageComponentEnum" use="required" />
+        <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
+    <xsd:complexType name="frameVertFormatType">
+        <xsd:attribute name="component" type="frameImageComponentEnum" use="optional" default="Background" />
+        <xsd:attribute name="type" type="vertFormatEnum" use="optional" default="Stretched" />
+    </xsd:complexType>
+    <xsd:complexType name="frameHorzFormatType">
+        <xsd:attribute name="component" type="frameImageComponentEnum" use="optional" default="Background" />
+        <xsd:attribute name="type" type="horzFormatEnum" use="optional" default="Stretched" />
+    </xsd:complexType>
+    <xsd:complexType name="frameFormatPropertyType">
+        <xsd:attribute name="component" type="frameImageComponentEnum" use="optional" default="Background" />
         <xsd:attribute name="name" type="xsd:string" use="required" />
     </xsd:complexType>
 	<xsd:complexType name="componentAreaType">

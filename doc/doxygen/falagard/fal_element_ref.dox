@@ -890,11 +890,16 @@ This example defines a scrollbar type child widget. We have used the @c \<HorzAl
 The @c \<HorzFormat\> element is used to specify the required horizontal formatting for an image, frame, or text component.
 
 @subsection fal_elem_ref_sec_16_2 Attributes:
-@arg @c type  specifies the required horizontal formatting option.
-
 <ul>
-    <li>For use in ImageryComponents or FrameComponents, this will be one of the values from the HorizontalFormat enumeration.</li>
-    <li>For use in TextComponents, this will one of the values form the HorizontalTextFormat enumeration.</li>
+    <li>@c type  specifies the required horizontal formatting option.</li>
+    <ul>
+        <li>For use in ImageryComponents or FrameComponents, this will be one of the values from the HorizontalFormat enumeration.</li>
+        <li>For use in TextComponents, this will one of the values form the HorizontalTextFormat enumeration.</li>
+    </ul>
+    <li>@c component  Only for FrameComponent. Specifies the part of the frame
+        that this formatting is to be used for. Should be "TopEdge",
+        "BottomEdge" or "Background" from the FrameImageComponent enumeration.
+        Optional attribute, defaults to "Background".</li>
 </ul>
 
 @subsection fal_elem_ref_sec_16_3 Usage:
@@ -948,6 +953,10 @@ The @c \<HorzFormatProperty\> element is intended to allow the system to access 
 
 @subsection fal_elem_ref_sec_17_2 Attributes:
 @arg @c name  specifies the name of the property to access. The named property must access a string value that will be set to one of the enumeration values appropriate for the component being defined (HorizontalTextFormat for TextComponent, and HorizontalFormat for either FrameComponent or ImageryComponent). Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame
+that this formatting is to be used for. Should be "TopEdge",
+"BottomEdge" or "Background" from the FrameImageComponent enumeration.
+Optional attribute, defaults to "Background".</li>
 
 @subsection fal_elem_ref_sec_17_3 Usage:
 <ul>
@@ -1798,6 +1807,10 @@ The @c \<VertFormat\> element is used to specify the required vertical formattin
         <li>For use in ImageryComponents and FrameComponents, this will be one of the values from the VerticalFormat enumeration.</li>
         <li>For use in TextComponents, this will one of the values form the VerticalTextFormat enumeration.</li>
     </ul>
+    <li>@c component  Only for FrameComponent. Specifies the part of the frame
+        that this formatting is to be used for. Should be "LeftEdge",
+        "RightEdge" or "Background" from the FrameImageComponent enumeration.
+        Optional attribute, defaults to "Background".</li>
 </ul>
 
 @subsection fal_elem_ref_sec_36_3 Usage:
@@ -1852,6 +1865,10 @@ The @c \<VertFormatProperty\> element is intended to allow the system to access 
 
 @subsection fal_elem_ref_sec_37_2 Attributes:
 @arg @c name  specifies the name of the property to access. The named property must access a string value that will be set to one of the enumeration values appropriate for the component being defined (VerticalTextFormat for TextComponent, and VerticalFormat for FrameComponent and ImageryComponent).  Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame
+that this formatting is to be used for. Should be "LeftEdge",
+"RightEdge" or "Background" from the FrameImageComponent enumeration.
+Optional attribute, defaults to "Background".</li>
 
 @subsection fal_elem_ref_sec_37_3 Usage:
 <ul>

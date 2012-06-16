@@ -68,24 +68,36 @@ namespace CEGUI
         }
     }
 
-    VerticalFormatting ImageryComponent::getVerticalFormatting() const
+    VerticalFormatting ImageryComponent::getVerticalFormatting(const Window& wnd) const
     {
-        return d_vertFormatting;
+        return d_vertFormatting.get(wnd);
     }
 
     void ImageryComponent::setVerticalFormatting(VerticalFormatting fmt)
     {
-        d_vertFormatting = fmt;
+        d_vertFormatting.set(fmt);
     }
 
-    HorizontalFormatting ImageryComponent::getHorizontalFormatting() const
+    HorizontalFormatting ImageryComponent::getHorizontalFormatting(const Window& wnd) const
     {
-        return d_horzFormatting;
+        return d_horzFormatting.get(wnd);
     }
 
     void ImageryComponent::setHorizontalFormatting(HorizontalFormatting fmt)
     {
-        d_horzFormatting = fmt;
+        d_horzFormatting.set(fmt);
+    }
+    
+    void ImageryComponent::setHorizontalFormattingPropertySource(
+                                                const String& property_name)
+    {
+        d_horzFormatting.setPropertySource(property_name);
+    }
+
+    void ImageryComponent::setVerticalFormattingPropertySource(
+                                                const String& property_name)
+    {
+        d_vertFormatting.setPropertySource(property_name);
     }
 
     void ImageryComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
@@ -99,13 +111,8 @@ namespace CEGUI
         if (!img)
             return;
 
-        HorizontalFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
-            FalagardXMLHelper<HorizontalFormatting>::fromString(
-                srcWindow.getProperty(d_horzFormatPropertyName));
-
-        VerticalFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
-            FalagardXMLHelper<VerticalFormatting>::fromString(
-                srcWindow.getProperty(d_vertFormatPropertyName));
+        const HorizontalFormatting horzFormatting = d_horzFormatting.get(srcWindow);
+        const VerticalFormatting vertFormatting = d_vertFormatting.get(srcWindow);
 
         uint horzTiles, vertTiles;
         float xpos, ypos;
@@ -243,23 +250,8 @@ namespace CEGUI
         // get base class to write colours
         writeColoursXML(xml_stream);
 
-        // write vert format, allowing base class to do this for us if a propety is in use
-        if (!writeVertFormatXML(xml_stream))
-        {
-            // was not a property, so write out explicit formatting in use
-            xml_stream.openTag("VertFormat")
-                .attribute("type", FalagardXMLHelper<VerticalFormatting>::toString(d_vertFormatting))
-                .closeTag();
-        }
-
-        // write horz format, allowing base class to do this for us if a propety is in use
-        if (!writeHorzFormatXML(xml_stream))
-        {
-            // was not a property, so write out explicit formatting in use
-            xml_stream.openTag("HorzFormat")
-                .attribute("type", FalagardXMLHelper<HorizontalFormatting>::toString(d_horzFormatting))
-                .closeTag();
-        }
+        d_vertFormatting.writeXMLToStream(xml_stream);
+        d_horzFormatting.writeXMLToStream(xml_stream);
 
         // closing tag
         xml_stream.closeTag();

@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,234 +28,153 @@
 #ifndef _CEGUIFalComponentBase_h_
 #define _CEGUIFalComponentBase_h_
 
-#include "./Dimensions.h"
-#include "../Window.h"
-#include "../ColourRect.h"
+#include "CEGUI/falagard/Dimensions.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/ColourRect.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+//! Common base class used for renderable components within an ImagerySection.
+class CEGUIEXPORT FalagardComponentBase :
+    public AllocatedObject<FalagardComponentBase>
+{
+public:
+    FalagardComponentBase();
+    virtual ~FalagardComponentBase();
+
     /*!
     \brief
-        Common base class used for renderable components within an ImagerySection.
+        Render this component.  More correctly, the component is cached for
+        rendering.
+
+    \param srcWindow
+        Window to use as the base for translating the component's ComponentArea
+        into pixel values.
+
+    \param modColours
+        ColourRect describing colours that are to be modulated with the
+        component's stored colour values to calculate a set of 'final' colour
+        values to be used.  May be 0.
     */
-    class CEGUIEXPORT FalagardComponentBase :
-        public AllocatedObject<FalagardComponentBase>
-    {
-    public:
-        /*!
-        \brief
-            Constructor
-        */
-        FalagardComponentBase();
+    void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0,
+                const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
-        /*!
-        \brief
-            Destructor
-        */
-        virtual ~FalagardComponentBase();
+    /*!
+    \brief
+        Render this component.  More correctly, the component is cached for
+        rendering.
 
-        /*!
-        \brief
-            Render this component.  More correctly, the component is cached for rendering.
+    \param srcWindow
+        Window to use as the base for translating the component's ComponentArea
+        into pixel values.
 
-        \param srcWindow
-            Window to use as the base for translating the component's ComponentArea into pixel values.
+    \param baseRect
+        Rect to use as the base for translating the component's ComponentArea
+        into pixel values.
 
-        \param modColours
-            ColourRect describing colours that are to be modulated with the component's stored colour values
-            to calculate a set of 'final' colour values to be used.  May be 0.
+    \param modColours
+        ColourRect describing colours that are to be modulated with the
+        component's stored colour values to calculate a set of 'final' colour
+        values to be used.  May be 0.
+    */
+    void render(Window& srcWindow, const Rectf& baseRect,
+                const CEGUI::ColourRect* modColours = 0,
+                const Rectf* clipper = 0, bool clipToDisplay = false) const;
 
-        \return
-            Nothing.
-        */
-        void render(Window& srcWindow, const CEGUI::ColourRect* modColours = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
+    /*!
+    \brief
+        Return the ComponentArea of this component.
 
-        /*!
-        \brief
-            Render this component.  More correctly, the component is cached for rendering.
+    \return
+        ComponentArea object describing the component's current target area.
+    */
+    const ComponentArea& getComponentArea() const;
 
-        \param srcWindow
-            Window to use as the base for translating the component's ComponentArea into pixel values.
+    /*!
+    \brief
+        Set the conponent's ComponentArea.
 
-        \param baseRect
-            Rect to use as the base for translating the component's ComponentArea into pixel values.
+    \param area
+        ComponentArea object describing a new target area for the component.
+    */
+    void setComponentArea(const ComponentArea& area);
 
-        \param modColours
-            ColourRect describing colours that are to be modulated with the component's stored colour values
-            to calculate a set of 'final' colour values to be used.  May be 0.
+    /*!
+    \brief
+        Return the ColourRect used by this component.
 
-        \return
-            Nothing.
-        */
-        void render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours = 0, const Rectf* clipper = 0, bool clipToDisplay = false) const;
+    \return
+        ColourRect object holding the colours currently in use by this
+        component.
+    */
+    const ColourRect& getColours() const;
 
-        /*!
-        \brief
-            Return the ComponentArea of this ImageryComponent.
+    /*!
+    \brief
+        Set the colours to be used by this component.
 
-        \return
-            ComponentArea object describing the ImageryComponent's current target area.
-        */
-        const ComponentArea& getComponentArea() const;
+    \param cols
+        ColourRect object describing the colours to be used by this component.
+    */
+    void setColours(const ColourRect& cols);
 
-        /*!
-        \brief
-            Set the ImageryComponent's ComponentArea.
+    /*!
+    \brief
+        Set the name of the property where colour values can be obtained.
 
-        \param area
-            ComponentArea object describing a new target area for the ImageryComponent.
+    \param property
+        String containing the name of the property.
+    */
+    void setColoursPropertySource(const String& property);
 
-        \return
-            Nothing.
-        */
-        void setComponentArea(const ComponentArea& area);
+    //! perform any processing required due to the given font having changed.
+    virtual bool handleFontRenderSizeChange(Window& window,
+                                            const Font* font) const;
 
-        /*!
-        \brief
-            Return the ColourRect set for use by this ImageryComponent.
+protected:
+    /*!
+    \brief
+        Helper function to initialise a ColourRect with appropriate values
+        according to the way the component is set up.
 
-        \return
-            ColourRect object holding the colours currently in use by this ImageryComponent.
-        */
-        const ColourRect& getColours() const;
+        This will try and get values from multiple places:
+            - a property attached to \a wnd
+            - or the integral d_colours value.
+    */
+    void initColoursRect(const Window& wnd,
+                         const ColourRect* modCols,
+                         ColourRect& cr) const;
 
-        /*!
-        \brief
-            Set the colours to be used by this ImageryComponent.
+    //! Function to do main render caching work.
+    virtual void render_impl(Window& srcWindow, Rectf& destRect,
+                             const CEGUI::ColourRect* modColours,
+                             const Rectf* clipper, bool clipToDisplay) const = 0;
 
-        \param cols
-            ColourRect object describing the colours to be used by this ImageryComponent.
-        */
-        void setColours(const ColourRect& cols);
+    /*!
+    \brief
+        Writes xml for the colours to a OutStream.
+        Will prefer property colours before explicit.
 
-        /*!
-        \brief
-            Set the name of the property where colour values can be obtained.
+    \note
+        This is intended as a helper function for sub-classes when outputting
+        xml to a stream.
 
-        \param property
-            String containing the name of the property.
+    \return
+        - true if xml element was written.
+        - false if nothing was output due to the formatting not being set
+          (sub-class may then choose to do something else.)
+    */
+    bool writeColoursXML(XMLSerializer& xml_stream) const;
 
-        \return
-            Nothing.
-        */
-        void setColoursPropertySource(const String& property);
+    //! Destination area for this component.
+    ComponentArea d_area;
+    //! base colours to be applied when rendering the image component.
+    ColourRect d_colours;
+    //! name of property to fetch colours from.
+    String d_colourPropertyName;
+};
 
-        /*!
-        \brief
-            Get the name of the property where vertical formatting option can be obtained.
+}
 
-        \return
-            String containing the name of the property.
-        */
-        const String& getVertFormattingPropertySource() const;
+#endif
 
-        /*!
-        \brief
-            Set the name of the property where vertical formatting option can be obtained.
-
-        \param property
-            String containing the name of the property.
-
-        \return
-            Nothing.
-        */
-        void setVertFormattingPropertySource(const String& property);
-
-        /*!
-        \brief
-            Get the name of the property where horizontal formatting option can be obtained.
-
-        \param property
-            String containing the name of the property.
-        */
-        const String& getHorzFormattingPropertySource() const;
-
-        /*!
-        \brief
-            Set the name of the property where horizontal formatting option can be obtained.
-
-        \param property
-            String containing the name of the property.
-
-        \return
-            Nothing.
-        */
-        void setHorzFormattingPropertySource(const String& property);
-
-        //! perform any processing required due to the given font having changed.
-        virtual bool handleFontRenderSizeChange(Window& window,
-                                                const Font* font) const;
-
-    protected:
-        /*!
-        \brief
-            Helper method to initialise a ColourRect with appropriate values according to the way the
-            ImageryComponent is set up.
-
-            This will try and get values from multiple places:
-                - a property attached to \a wnd
-                - or the integral d_colours value.
-        */
-        void initColoursRect(const Window& wnd, const ColourRect* modCols, ColourRect& cr) const;
-
-        /*!
-        \brief
-            Method to do main render caching work.
-        */
-        virtual void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const = 0;
-
-        /*!
-        \brief
-            Writes xml for the colours to a OutStream.  Will prefer property colours before explicit.
-
-        \note
-            This is intended as a helper method for sub-classes when outputting xml to a stream.
-
-
-        \return
-            - true if xml element was written.
-            - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
-        */
-        bool writeColoursXML(XMLSerializer& xml_stream) const;
-
-        /*!
-        \brief
-            Writes xml for the vertical formatting to a OutStream if such a property is defined.
-
-        \note
-            This is intended as a helper method for sub-classes when outputting xml to a stream.
-
-
-        \return
-            - true if xml element was written.
-            - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
-        */
-        bool writeVertFormatXML(XMLSerializer& xml_stream) const;
-
-        /*!
-        \brief
-            Writes xml for the horizontal formatting to a OutStream if such a property is defined.
-
-        \note
-            This is intended as a helper method for sub-classes when outputting xml to a stream.
-
-
-        \return
-            - true if xml element was written.
-            - false if nothing was output due to the formatting not being set (sub-class may then choose to do something else.)
-        */
-        bool writeHorzFormatXML(XMLSerializer& xml_stream) const;
-
-
-        // data fields
-        ComponentArea   d_area;                 //!< Destination area for this component.
-        ColourRect      d_colours;              //!< base colours to be applied when rendering the image component.
-        String          d_colourPropertyName;   //!< name of property to fetch colours from.
-        String          d_vertFormatPropertyName;   //!< name of property to fetch vertical formatting setting from.
-        String          d_horzFormatPropertyName;   //!< name of property to fetch horizontal formatting setting from.
-    };
-} // End of  CEGUI namespace section
-
-
-#endif  // end of guard _CEGUIFalComponentBase_h_
