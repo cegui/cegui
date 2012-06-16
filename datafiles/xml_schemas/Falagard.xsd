@@ -214,7 +214,7 @@
 		<xsd:attribute name="name" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="frameImageType">
-        <xsd:attribute name="type" type="frameImageComponentEnum" use="required" />
+        <xsd:attribute name="component" type="frameImageComponentEnum" use="required" />
         <xsd:attribute name="name" type="xsd:string" use="required" />
     </xsd:complexType>
 	<xsd:complexType name="componentAreaType">

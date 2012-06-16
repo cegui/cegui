@@ -87,9 +87,9 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="OgreTrayImages/CaptionL" />
-                <Image type="RightEdge" name="OgreTrayImages/CaptionR" />
-                <Image type="Background" name="OgreTrayImages/CaptionM" />
+                <Image component="LeftEdge" name="OgreTrayImages/CaptionL" />
+                <Image component="RightEdge" name="OgreTrayImages/CaptionR" />
+                <Image component="Background" name="OgreTrayImages/CaptionM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="caption">
@@ -281,15 +281,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/TrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/TrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/TrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/TrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/TrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/TrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/TrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/TrayB" />
-                <Image type="Background" name="OgreTrayImages/TrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/TrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/TrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/TrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/TrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/TrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/TrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/TrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/TrayB" />
+                <Image component="Background" name="OgreTrayImages/TrayM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="noframe">
@@ -427,9 +427,9 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="TopEdge" name="OgreTrayImages/VertTrackT" />
-                <Image type="BottomEdge" name="OgreTrayImages/VertTrackB" />
-                <Image type="Background" name="OgreTrayImages/VertTrackM" />
+                <Image component="TopEdge" name="OgreTrayImages/VertTrackT" />
+                <Image component="BottomEdge" name="OgreTrayImages/VertTrackB" />
+                <Image component="Background" name="OgreTrayImages/VertTrackM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -495,9 +495,9 @@
                     </Dim>
                     <Dim type="Height"><UnifiedDim scale="0.78" type="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="OgreTrayImages/HorzTrackL" />
-                <Image type="RightEdge" name="OgreTrayImages/HorzTrackR" />
-                <Image type="Background" name="OgreTrayImages/HorzTrackM" />
+                <Image component="LeftEdge" name="OgreTrayImages/HorzTrackL" />
+                <Image component="RightEdge" name="OgreTrayImages/HorzTrackR" />
+                <Image component="Background" name="OgreTrayImages/HorzTrackM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -520,14 +520,14 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/TextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/TextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/TextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/TextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/TextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/TextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/TextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/TextBoxB" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/TextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/TextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/TextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/TextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/TextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/TextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/TextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/TextBoxB" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="with_frame_background">
@@ -1219,15 +1219,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">
@@ -1288,15 +1288,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/ButtonUpTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/ButtonUpTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/ButtonUpBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/ButtonUpBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/ButtonUpL" />
-                <Image type="TopEdge" name="OgreTrayImages/ButtonUpT" />
-                <Image type="RightEdge" name="OgreTrayImages/ButtonUpR" />
-                <Image type="BottomEdge" name="OgreTrayImages/ButtonUpB" />
-                <Image type="Background" name="OgreTrayImages/ButtonUpM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/ButtonUpTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/ButtonUpTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/ButtonUpBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/ButtonUpBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/ButtonUpL" />
+                <Image component="TopEdge" name="OgreTrayImages/ButtonUpT" />
+                <Image component="RightEdge" name="OgreTrayImages/ButtonUpR" />
+                <Image component="BottomEdge" name="OgreTrayImages/ButtonUpB" />
+                <Image component="Background" name="OgreTrayImages/ButtonUpM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="hover">
@@ -1307,15 +1307,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/ButtonOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/ButtonOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/ButtonOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/ButtonOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/ButtonOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/ButtonOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/ButtonOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/ButtonOverB" />
-                <Image type="Background" name="OgreTrayImages/ButtonOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/ButtonOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/ButtonOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/ButtonOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/ButtonOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/ButtonOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/ButtonOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/ButtonOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/ButtonOverB" />
+                <Image component="Background" name="OgreTrayImages/ButtonOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="pushed">
@@ -1326,15 +1326,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/ButtonDownTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/ButtonDownTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/ButtonDownBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/ButtonDownBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/ButtonDownL" />
-                <Image type="TopEdge" name="OgreTrayImages/ButtonDownT" />
-                <Image type="RightEdge" name="OgreTrayImages/ButtonDownR" />
-                <Image type="BottomEdge" name="OgreTrayImages/ButtonDownB" />
-                <Image type="Background" name="OgreTrayImages/ButtonDownM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/ButtonDownTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/ButtonDownTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/ButtonDownBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/ButtonDownBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/ButtonDownL" />
+                <Image component="TopEdge" name="OgreTrayImages/ButtonDownT" />
+                <Image component="RightEdge" name="OgreTrayImages/ButtonDownR" />
+                <Image component="BottomEdge" name="OgreTrayImages/ButtonDownB" />
+                <Image component="Background" name="OgreTrayImages/ButtonDownM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Normal">
@@ -1399,15 +1399,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="progress" >
@@ -1424,15 +1424,15 @@
                     </Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1503,15 +1503,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -1522,15 +1522,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="Caret">
@@ -1742,15 +1742,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="Caret">
@@ -1950,15 +1950,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2095,15 +2095,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">
@@ -2190,15 +2190,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="hover">
@@ -2215,15 +2215,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="select_mark">
@@ -2317,15 +2317,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="hover">
@@ -2342,15 +2342,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Height" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="select_mark">
@@ -2465,9 +2465,9 @@
                     </Dim>
                     <Dim type="Height"><UnifiedDim scale="0.78" type="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="OgreTrayImages/HorzTrackL" />
-                <Image type="RightEdge" name="OgreTrayImages/HorzTrackR" />
-                <Image type="Background" name="OgreTrayImages/HorzTrackM" />
+                <Image component="LeftEdge" name="OgreTrayImages/HorzTrackL" />
+                <Image component="RightEdge" name="OgreTrayImages/HorzTrackR" />
+                <Image component="Background" name="OgreTrayImages/HorzTrackM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2590,15 +2590,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/FrameTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/FrameTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/FrameBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/FrameBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/FrameL" />
-                <Image type="TopEdge" name="OgreTrayImages/FrameT" />
-                <Image type="RightEdge" name="OgreTrayImages/FrameR" />
-                <Image type="BottomEdge" name="OgreTrayImages/FrameB" />
-                <Image type="Background" name="OgreTrayImages/FrameM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/FrameTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/FrameTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/FrameBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/FrameBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/FrameL" />
+                <Image component="TopEdge" name="OgreTrayImages/FrameT" />
+                <Image component="RightEdge" name="OgreTrayImages/FrameR" />
+                <Image component="BottomEdge" name="OgreTrayImages/FrameB" />
+                <Image component="Background" name="OgreTrayImages/FrameM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2651,15 +2651,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
                 <Colours topLeft="E2FFFFFF" topRight="E2FFFFFF" bottomLeft="E2FFFFFF" bottomRight="E2FFFFFF" />
             </FrameComponent>
         </ImagerySection>
@@ -2884,15 +2884,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2942,15 +2942,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -2961,15 +2961,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">
@@ -3263,15 +3263,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="segment_hover">
@@ -3282,15 +3282,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="ascend_icon">
@@ -3607,15 +3607,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -3662,15 +3662,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -3681,15 +3681,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">
@@ -3856,15 +3856,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selected">
@@ -3875,15 +3875,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="popup_arrow_right">
@@ -4046,15 +4046,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4101,15 +4101,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4145,15 +4145,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="hover">
@@ -4164,15 +4164,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
-                <Image type="Background" name="OgreTrayImages/MiniTextBoxOverM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTextBoxOverTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTextBoxOverTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTextBoxOverBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTextBoxOverBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTextBoxOverL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTextBoxOverT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTextBoxOverR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTextBoxOverB" />
+                <Image component="Background" name="OgreTrayImages/MiniTextBoxOverM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="TopNormal">
@@ -4251,15 +4251,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4288,15 +4288,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
-                <Image type="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
-                <Image type="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
-                <Image type="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
-                <Image type="LeftEdge" name="OgreTrayImages/MiniTrayL" />
-                <Image type="TopEdge" name="OgreTrayImages/MiniTrayT" />
-                <Image type="RightEdge" name="OgreTrayImages/MiniTrayR" />
-                <Image type="BottomEdge" name="OgreTrayImages/MiniTrayB" />
-                <Image type="Background" name="OgreTrayImages/MiniTrayM" />
+                <Image component="TopLeftCorner" name="OgreTrayImages/MiniTrayTL" />
+                <Image component="TopRightCorner" name="OgreTrayImages/MiniTrayTR" />
+                <Image component="BottomLeftCorner" name="OgreTrayImages/MiniTrayBL" />
+                <Image component="BottomRightCorner" name="OgreTrayImages/MiniTrayBR" />
+                <Image component="LeftEdge" name="OgreTrayImages/MiniTrayL" />
+                <Image component="TopEdge" name="OgreTrayImages/MiniTrayT" />
+                <Image component="RightEdge" name="OgreTrayImages/MiniTrayR" />
+                <Image component="BottomEdge" name="OgreTrayImages/MiniTrayB" />
+                <Image component="Background" name="OgreTrayImages/MiniTrayM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">

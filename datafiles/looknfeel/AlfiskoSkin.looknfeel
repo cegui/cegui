@@ -53,14 +53,14 @@
         </ImagerySection>
         <ImagerySection name="normal">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/ButtonNormalTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/ButtonNormalTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/ButtonNormalBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/ButtonNormalBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/ButtonNormalL" />
-                <Image type="RightEdge" name="AlfiskoSkin/ButtonNormalR" />
-                <Image type="TopEdge" name="AlfiskoSkin/ButtonNormalT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/ButtonNormalB" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/ButtonNormalTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/ButtonNormalTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/ButtonNormalBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/ButtonNormalBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/ButtonNormalL" />
+                <Image component="RightEdge" name="AlfiskoSkin/ButtonNormalR" />
+                <Image component="TopEdge" name="AlfiskoSkin/ButtonNormalT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/ButtonNormalB" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -107,14 +107,14 @@
         </ImagerySection>
         <ImagerySection name="hover">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/ButtonHoverTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/ButtonHoverTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/ButtonHoverBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/ButtonHoverBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/ButtonHoverL" />
-                <Image type="RightEdge" name="AlfiskoSkin/ButtonHoverR" />
-                <Image type="TopEdge" name="AlfiskoSkin/ButtonHoverT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/ButtonHoverB" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/ButtonHoverTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/ButtonHoverTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/ButtonHoverBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/ButtonHoverBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/ButtonHoverL" />
+                <Image component="RightEdge" name="AlfiskoSkin/ButtonHoverR" />
+                <Image component="TopEdge" name="AlfiskoSkin/ButtonHoverT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/ButtonHoverB" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -161,14 +161,14 @@
         </ImagerySection>
         <ImagerySection name="pushed">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/ButtonPushedTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/ButtonPushedTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/ButtonPushedBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/ButtonPushedBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/ButtonPushedL" />
-                <Image type="RightEdge" name="AlfiskoSkin/ButtonPushedR" />
-                <Image type="TopEdge" name="AlfiskoSkin/ButtonPushedT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/ButtonPushedB" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/ButtonPushedTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/ButtonPushedTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/ButtonPushedBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/ButtonPushedBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/ButtonPushedL" />
+                <Image component="RightEdge" name="AlfiskoSkin/ButtonPushedR" />
+                <Image component="TopEdge" name="AlfiskoSkin/ButtonPushedT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/ButtonPushedB" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -495,14 +495,14 @@
         <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <ImagerySection name="active">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/TitlebarActiveTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/TitlebarActiveTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/TitlebarActiveBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/TitlebarActiveBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/TitlebarActiveL" />
-                <Image type="RightEdge" name="AlfiskoSkin/TitlebarActiveR" />
-                <Image type="TopEdge" name="AlfiskoSkin/TitlebarActiveT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/TitlebarActiveB" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/TitlebarActiveTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/TitlebarActiveTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/TitlebarActiveBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/TitlebarActiveBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/TitlebarActiveL" />
+                <Image component="RightEdge" name="AlfiskoSkin/TitlebarActiveR" />
+                <Image component="TopEdge" name="AlfiskoSkin/TitlebarActiveT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/TitlebarActiveB" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -549,14 +549,14 @@
         </ImagerySection>
         <ImagerySection name="inactive">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/TitlebarInactiveTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/TitlebarInactiveTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/TitlebarInactiveBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/TitlebarInactiveBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/TitlebarInactiveL" />
-                <Image type="RightEdge" name="AlfiskoSkin/TitlebarInactiveR" />
-                <Image type="TopEdge" name="AlfiskoSkin/TitlebarInactiveT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/TitlebarInactiveB" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/TitlebarInactiveTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/TitlebarInactiveTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/TitlebarInactiveBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/TitlebarInactiveBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/TitlebarInactiveL" />
+                <Image component="RightEdge" name="AlfiskoSkin/TitlebarInactiveR" />
+                <Image component="TopEdge" name="AlfiskoSkin/TitlebarInactiveT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/TitlebarInactiveB" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -730,25 +730,25 @@
                 <Area>
                     <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
                 </Area>
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/WindowBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/WindowBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/WindowL" />
-                <Image type="RightEdge" name="AlfiskoSkin/WindowR" />
-                <Image type="BottomEdge" name="AlfiskoSkin/WindowB" />
-                <Image type="Background" name="AlfiskoSkin/WindowFill" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/WindowBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/WindowBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/WindowL" />
+                <Image component="RightEdge" name="AlfiskoSkin/WindowR" />
+                <Image component="BottomEdge" name="AlfiskoSkin/WindowB" />
+                <Image component="Background" name="AlfiskoSkin/WindowFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="notitle_frame">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/WindowTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/WindowTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/WindowBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/WindowBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/WindowL" />
-                <Image type="RightEdge" name="AlfiskoSkin/WindowR" />
-                <Image type="TopEdge" name="AlfiskoSkin/WindowT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/WindowB" />
-                <Image type="Background" name="AlfiskoSkin/WindowFill" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/WindowTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/WindowTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/WindowBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/WindowBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/WindowL" />
+                <Image component="RightEdge" name="AlfiskoSkin/WindowR" />
+                <Image component="TopEdge" name="AlfiskoSkin/WindowT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/WindowB" />
+                <Image component="Background" name="AlfiskoSkin/WindowFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="withtitle_noframe_client_area">
@@ -866,15 +866,15 @@
         </NamedArea>
         <ImagerySection name="container_normal">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/EditboxTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/EditboxTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/EditboxBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/EditboxBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/EditboxL" />
-                <Image type="RightEdge" name="AlfiskoSkin/EditboxR" />
-                <Image type="TopEdge" name="AlfiskoSkin/EditboxT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/EditboxB" />
-                <Image type="Background" name="AlfiskoSkin/EditboxFill" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/EditboxTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/EditboxTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/EditboxBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/EditboxBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/EditboxL" />
+                <Image component="RightEdge" name="AlfiskoSkin/EditboxR" />
+                <Image component="TopEdge" name="AlfiskoSkin/EditboxT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/EditboxB" />
+                <Image component="Background" name="AlfiskoSkin/EditboxFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -1240,8 +1240,8 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="TopEdge" name="AlfiskoSkin/HorzScrollbarT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/HorzScrollbarB" />
+                <Image component="TopEdge" name="AlfiskoSkin/HorzScrollbarT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/HorzScrollbarB" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -1651,8 +1651,8 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="LeftEdge" name="AlfiskoSkin/VertScrollbarL" />
-                <Image type="RightEdge" name="AlfiskoSkin/VertScrollbarR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/VertScrollbarL" />
+                <Image component="RightEdge" name="AlfiskoSkin/VertScrollbarR" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -1851,15 +1851,15 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/EditboxTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/EditboxTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/EditboxBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/EditboxBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/EditboxL" />
-                <Image type="RightEdge" name="AlfiskoSkin/EditboxR" />
-                <Image type="TopEdge" name="AlfiskoSkin/EditboxT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/EditboxB" />
-                <Image type="Background" name="AlfiskoSkin/EditboxFill" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/EditboxTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/EditboxTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/EditboxBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/EditboxBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/EditboxL" />
+                <Image component="RightEdge" name="AlfiskoSkin/EditboxR" />
+                <Image component="TopEdge" name="AlfiskoSkin/EditboxT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/EditboxB" />
+                <Image component="Background" name="AlfiskoSkin/EditboxFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="Caret">
@@ -1896,28 +1896,28 @@
         <NamedArea name="ProgressArea" />
         <ImagerySection name="progress_empty">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/ProgressEmptyTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/ProgressEmptyTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/ProgressEmptyBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/ProgressEmptyBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/ProgressEmptyL" />
-                <Image type="RightEdge" name="AlfiskoSkin/ProgressEmptyR" />
-                <Image type="TopEdge" name="AlfiskoSkin/ProgressEmptyT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/ProgressEmptyB" />
-                <Image type="Background" name="AlfiskoSkin/ProgressEmptyFill" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/ProgressEmptyTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/ProgressEmptyTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/ProgressEmptyBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/ProgressEmptyBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/ProgressEmptyL" />
+                <Image component="RightEdge" name="AlfiskoSkin/ProgressEmptyR" />
+                <Image component="TopEdge" name="AlfiskoSkin/ProgressEmptyT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/ProgressEmptyB" />
+                <Image component="Background" name="AlfiskoSkin/ProgressEmptyFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="progress_full" >
             <FrameComponent>
-                <Image type="TopLeftCorner" name="AlfiskoSkin/ProgressFullTL" />
-                <Image type="TopRightCorner" name="AlfiskoSkin/ProgressFullTR" />
-                <Image type="BottomLeftCorner" name="AlfiskoSkin/ProgressFullBL" />
-                <Image type="BottomRightCorner" name="AlfiskoSkin/ProgressFullBR" />
-                <Image type="LeftEdge" name="AlfiskoSkin/ProgressFullL" />
-                <Image type="RightEdge" name="AlfiskoSkin/ProgressFullR" />
-                <Image type="TopEdge" name="AlfiskoSkin/ProgressFullT" />
-                <Image type="BottomEdge" name="AlfiskoSkin/ProgressFullB" />
-                <Image type="Background" name="AlfiskoSkin/ProgressFullFill" />
+                <Image component="TopLeftCorner" name="AlfiskoSkin/ProgressFullTL" />
+                <Image component="TopRightCorner" name="AlfiskoSkin/ProgressFullTR" />
+                <Image component="BottomLeftCorner" name="AlfiskoSkin/ProgressFullBL" />
+                <Image component="BottomRightCorner" name="AlfiskoSkin/ProgressFullBR" />
+                <Image component="LeftEdge" name="AlfiskoSkin/ProgressFullL" />
+                <Image component="RightEdge" name="AlfiskoSkin/ProgressFullR" />
+                <Image component="TopEdge" name="AlfiskoSkin/ProgressFullT" />
+                <Image component="BottomEdge" name="AlfiskoSkin/ProgressFullB" />
+                <Image component="Background" name="AlfiskoSkin/ProgressFullFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="progress_shadow" >

@@ -569,12 +569,12 @@ namespace CEGUI
                 if (d_frameImages[i].d_propertyName.empty())
                     xml_stream.openTag("Image")
                         .attribute("name", d_frameImages[i].d_image->getName())
-                        .attribute("type", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                        .attribute("component", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
                         .closeTag();
                 else
                     xml_stream.openTag("ImageProperty")
                         .attribute("name", d_frameImages[i].d_propertyName)
-                        .attribute("type", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
+                        .attribute("component", FalagardXMLHelper<FrameImageComponent>::toString(static_cast<FrameImageComponent>(i)))
                         .closeTag();
             }
         }
