@@ -64,9 +64,9 @@
         </ImagerySection>
         <ImagerySection name="normal">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/ButtonLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/ButtonRightNormal" />
-                <Image type="Background" name="TaharezLook/ButtonMiddleNormal" />
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightNormal" />
+                <Image component="Background" name="TaharezLook/ButtonMiddleNormal" />
             </FrameComponent>
             <ImageryComponent>
                 <ImageProperty name="NormalImage" />
@@ -76,9 +76,9 @@
         </ImagerySection>
         <ImagerySection name="hover">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/ButtonLeftHighlight" />
-                <Image type="RightEdge" name="TaharezLook/ButtonRightHighlight" />
-                <Image type="Background" name="TaharezLook/ButtonMiddleHighlight" />
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftHighlight" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightHighlight" />
+                <Image component="Background" name="TaharezLook/ButtonMiddleHighlight" />
             </FrameComponent>
             <ImageryComponent>
                 <ImageProperty name="HoverImage" />
@@ -88,9 +88,9 @@
         </ImagerySection>
         <ImagerySection name="pushed">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/ButtonLeftPushed" />
-                <Image type="RightEdge" name="TaharezLook/ButtonRightPushed" />
-                <Image type="Background" name="TaharezLook/ButtonMiddlePushed" />
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftPushed" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightPushed" />
+                <Image component="Background" name="TaharezLook/ButtonMiddlePushed" />
             </FrameComponent>
             <ImageryComponent>
                 <ImageProperty name="PushedImage" />
@@ -100,9 +100,9 @@
         </ImagerySection>
         <ImagerySection name="disabled">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/ButtonLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/ButtonRightNormal" />
-                <Image type="Background" name="TaharezLook/ButtonMiddleNormal" />
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightNormal" />
+                <Image component="Background" name="TaharezLook/ButtonMiddleNormal" />
             </FrameComponent>
             <ImageryComponent>
                 <ImageProperty name="DisabledImage" />
@@ -385,9 +385,9 @@
         </NamedArea>
         <ImagerySection name="container_normal">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/EditBoxLeft" />
-                <Image type="RightEdge" name="TaharezLook/EditBoxRight" />
-                <Image type="Background" name="TaharezLook/EditBoxMiddle" />
+                <Image component="LeftEdge" name="TaharezLook/EditBoxLeft" />
+                <Image component="RightEdge" name="TaharezLook/EditBoxRight" />
+                <Image component="Background" name="TaharezLook/EditBoxMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -666,11 +666,11 @@
                 <Area>
                     <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
                 </Area>
-                <Image type="BottomLeftCorner" name="TaharezLook/WindowBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/WindowBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/WindowLeftEdge" />
-                <Image type="RightEdge" name="TaharezLook/WindowRightEdge" />
-                <Image type="BottomEdge" name="TaharezLook/WindowBottomEdge" />
+                <Image component="BottomLeftCorner" name="TaharezLook/WindowBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/WindowBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/WindowLeftEdge" />
+                <Image component="RightEdge" name="TaharezLook/WindowRightEdge" />
+                <Image component="BottomEdge" name="TaharezLook/WindowBottomEdge" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -699,13 +699,13 @@
         </ImagerySection>
         <ImagerySection name="notitle_frame">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/WindowTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/WindowTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/WindowBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/WindowBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/WindowLeftEdge" />
-                <Image type="RightEdge" name="TaharezLook/WindowRightEdge" />
-                <Image type="BottomEdge" name="TaharezLook/WindowBottomEdge" />
+                <Image component="TopLeftCorner" name="TaharezLook/WindowTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/WindowTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/WindowBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/WindowBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/WindowLeftEdge" />
+                <Image component="RightEdge" name="TaharezLook/WindowRightEdge" />
+                <Image component="BottomEdge" name="TaharezLook/WindowBottomEdge" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -878,14 +878,14 @@
                         <AbsoluteDim value="11" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="TaharezLook/StaticTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/StaticTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/StaticBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/StaticBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/StaticLeft" />
-                <Image type="TopEdge" name="TaharezLook/StaticTop" />
-                <Image type="RightEdge" name="TaharezLook/StaticRight" />
-                <Image type="BottomEdge" name="TaharezLook/StaticBottom" />
+                <Image component="TopLeftCorner" name="TaharezLook/StaticTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/StaticTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/StaticBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/StaticBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/StaticLeft" />
+                <Image component="TopEdge" name="TaharezLook/StaticTop" />
+                <Image component="RightEdge" name="TaharezLook/StaticRight" />
+                <Image component="BottomEdge" name="TaharezLook/StaticBottom" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </FrameComponent>
@@ -959,9 +959,9 @@
         </NamedArea>
         <ImagerySection name="frame">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/ProgressBarLeft" />
-                <Image type="RightEdge" name="TaharezLook/ProgressBarRight" />
-                <Image type="Background" name="TaharezLook/ProgressBarMiddle" />
+                <Image component="LeftEdge" name="TaharezLook/ProgressBarLeft" />
+                <Image component="RightEdge" name="TaharezLook/ProgressBarRight" />
+                <Image component="Background" name="TaharezLook/ProgressBarMiddle" />
                 <HorzFormat type="Tiled" />
             </FrameComponent>
         </ImagerySection>
@@ -1020,9 +1020,9 @@
         </NamedArea>
         <ImagerySection name="frame">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/AltProgressLeft" />
-                <Image type="RightEdge" name="TaharezLook/AltProgressRight" />
-                <Image type="Background" name="TaharezLook/AltProgressMiddle" />
+                <Image component="LeftEdge" name="TaharezLook/AltProgressLeft" />
+                <Image component="RightEdge" name="TaharezLook/AltProgressRight" />
+                <Image component="Background" name="TaharezLook/AltProgressMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="progress_lights" >
@@ -1297,16 +1297,16 @@
         <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/MiniHorzScrollThumbLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/MiniHorzScrollThumbRightNormal" />
-                <Image type="Background" name="TaharezLook/MiniHorzScrollThumbMiddleNormal" />
+                <Image component="LeftEdge" name="TaharezLook/MiniHorzScrollThumbLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/MiniHorzScrollThumbRightNormal" />
+                <Image component="Background" name="TaharezLook/MiniHorzScrollThumbMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="hover">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/MiniHorzScrollThumbLeftHover" />
-                <Image type="RightEdge" name="TaharezLook/MiniHorzScrollThumbRightHover" />
-                <Image type="Background" name="TaharezLook/MiniHorzScrollThumbMiddleHover" />
+                <Image component="LeftEdge" name="TaharezLook/MiniHorzScrollThumbLeftHover" />
+                <Image component="RightEdge" name="TaharezLook/MiniHorzScrollThumbRightHover" />
+                <Image component="Background" name="TaharezLook/MiniHorzScrollThumbMiddleHover" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Normal">
@@ -1415,16 +1415,16 @@
         <Property name="MouseInputPropagationEnabled" value="True" />
         <ImagerySection name="normal">
             <FrameComponent>
-                <Image type="TopEdge" name="TaharezLook/MiniVertScrollThumbTopNormal" />
-                <Image type="BottomEdge" name="TaharezLook/MiniVertScrollThumbBottomNormal" />
-                <Image type="Background" name="TaharezLook/MiniVertScrollThumbMiddleNormal" />
+                <Image component="TopEdge" name="TaharezLook/MiniVertScrollThumbTopNormal" />
+                <Image component="BottomEdge" name="TaharezLook/MiniVertScrollThumbBottomNormal" />
+                <Image component="Background" name="TaharezLook/MiniVertScrollThumbMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="hover">
             <FrameComponent>
-                <Image type="TopEdge" name="TaharezLook/MiniVertScrollThumbTopHover" />
-                <Image type="BottomEdge" name="TaharezLook/MiniVertScrollThumbBottomHover" />
-                <Image type="Background" name="TaharezLook/MiniVertScrollThumbMiddleHover" />
+                <Image component="TopEdge" name="TaharezLook/MiniVertScrollThumbTopHover" />
+                <Image component="BottomEdge" name="TaharezLook/MiniVertScrollThumbBottomHover" />
+                <Image component="Background" name="TaharezLook/MiniVertScrollThumbMiddleHover" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Normal">
@@ -1626,15 +1626,15 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/ListboxTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/ListboxLeft" />
-                <Image type="RightEdge" name="TaharezLook/ListboxRight" />
-                <Image type="TopEdge" name="TaharezLook/ListboxTop" />
-                <Image type="BottomEdge" name="TaharezLook/ListboxBottom" />
-                <Image type="Background" name="TaharezLook/ListboxBackdrop" />
+                <Image component="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/ListboxTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/ListboxLeft" />
+                <Image component="RightEdge" name="TaharezLook/ListboxRight" />
+                <Image component="TopEdge" name="TaharezLook/ListboxTop" />
+                <Image component="BottomEdge" name="TaharezLook/ListboxBottom" />
+                <Image component="Background" name="TaharezLook/ListboxBackdrop" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1753,15 +1753,15 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/ComboboxListTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/ComboboxListTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/ComboboxListBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/ComboboxListBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/ComboboxListLeft" />
-                <Image type="RightEdge" name="TaharezLook/ComboboxListRight" />
-                <Image type="TopEdge" name="TaharezLook/ComboboxListTop" />
-                <Image type="BottomEdge" name="TaharezLook/ComboboxListBottom" />
-                <Image type="Background" name="TaharezLook/ComboboxListBackdrop" />
+                <Image component="TopLeftCorner" name="TaharezLook/ComboboxListTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/ComboboxListTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/ComboboxListBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/ComboboxListBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/ComboboxListLeft" />
+                <Image component="RightEdge" name="TaharezLook/ComboboxListRight" />
+                <Image component="TopEdge" name="TaharezLook/ComboboxListTop" />
+                <Image component="BottomEdge" name="TaharezLook/ComboboxListBottom" />
+                <Image component="Background" name="TaharezLook/ComboboxListBackdrop" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1799,8 +1799,8 @@
         </NamedArea>
         <ImagerySection name="container_normal">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/ComboboxEditLeft" />
-                <Image type="Background" name="TaharezLook/ComboboxEditMiddle" />
+                <Image component="LeftEdge" name="TaharezLook/ComboboxEditLeft" />
+                <Image component="Background" name="TaharezLook/ComboboxEditMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -1949,14 +1949,14 @@
     <WidgetLook name="TaharezLook/StaticShared">
         <ImagerySection name="frame">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/StaticTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/StaticTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/StaticBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/StaticBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/StaticLeft" />
-                <Image type="RightEdge" name="TaharezLook/StaticRight" />
-                <Image type="TopEdge" name="TaharezLook/StaticTop" />
-                <Image type="BottomEdge" name="TaharezLook/StaticBottom" />
+                <Image component="TopLeftCorner" name="TaharezLook/StaticTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/StaticTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/StaticBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/StaticBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/StaticLeft" />
+                <Image component="RightEdge" name="TaharezLook/StaticRight" />
+                <Image component="TopEdge" name="TaharezLook/StaticTop" />
+                <Image component="BottomEdge" name="TaharezLook/StaticBottom" />
                 <ColourRectProperty name="FrameColours" />
             </FrameComponent>
         </ImagerySection>
@@ -2571,15 +2571,15 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/MultiListTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/MultiListTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/MultiListBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/MultiListBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/MultiListLeft" />
-                <Image type="RightEdge" name="TaharezLook/MultiListRight" />
-                <Image type="TopEdge" name="TaharezLook/MultiListTop" />
-                <Image type="BottomEdge" name="TaharezLook/MultiListBottom" />
-                <Image type="Background" name="TaharezLook/MultiListBackdrop" />
+                <Image component="TopLeftCorner" name="TaharezLook/MultiListTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/MultiListTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/MultiListBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/MultiListBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/MultiListLeft" />
+                <Image component="RightEdge" name="TaharezLook/MultiListRight" />
+                <Image component="TopEdge" name="TaharezLook/MultiListTop" />
+                <Image component="BottomEdge" name="TaharezLook/MultiListBottom" />
+                <Image component="Background" name="TaharezLook/MultiListBackdrop" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2704,15 +2704,15 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/MultiLineEditboxTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/MultiLineEditboxTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/MultiLineEditboxBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/MultiLineEditboxBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/MultiLineEditboxLeft" />
-                <Image type="RightEdge" name="TaharezLook/MultiLineEditboxRight" />
-                <Image type="TopEdge" name="TaharezLook/MultiLineEditboxTop" />
-                <Image type="BottomEdge" name="TaharezLook/MultiLineEditboxBottom" />
-                <Image type="Background" name="TaharezLook/MultiLineEditboxBackdrop" />
+                <Image component="TopLeftCorner" name="TaharezLook/MultiLineEditboxTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/MultiLineEditboxTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/MultiLineEditboxBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/MultiLineEditboxBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/MultiLineEditboxLeft" />
+                <Image component="RightEdge" name="TaharezLook/MultiLineEditboxRight" />
+                <Image component="TopEdge" name="TaharezLook/MultiLineEditboxTop" />
+                <Image component="BottomEdge" name="TaharezLook/MultiLineEditboxBottom" />
+                <Image component="Background" name="TaharezLook/MultiLineEditboxBackdrop" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="Caret">
@@ -2772,15 +2772,15 @@
         </NamedArea>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/TooltipTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/TooltipTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/TooltipBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/TooltipBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/TooltipLeftEdge" />
-                <Image type="RightEdge" name="TaharezLook/TooltipRightEdge" />
-                <Image type="TopEdge" name="TaharezLook/TooltipTopEdge" />
-                <Image type="BottomEdge" name="TaharezLook/TooltipBottomEdge" />
-                <Image type="Background" name="TaharezLook/TooltipMiddle" />
+                <Image component="TopLeftCorner" name="TaharezLook/TooltipTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/TooltipTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TooltipBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/TooltipBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/TooltipLeftEdge" />
+                <Image component="RightEdge" name="TaharezLook/TooltipRightEdge" />
+                <Image component="TopEdge" name="TaharezLook/TooltipTopEdge" />
+                <Image component="BottomEdge" name="TaharezLook/TooltipBottomEdge" />
+                <Image component="Background" name="TaharezLook/TooltipMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">
@@ -2930,74 +2930,74 @@
         </ImagerySection>
         <ImagerySection name="top_normal">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/TabButtonUpperLeftNormal" />
-                <Image type="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
-                <Image type="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
-                <Image type="BottomRightCorner" name="TaharezLook/TabButtonLowerRight2Normal" />
-                <Image type="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/TabButtonRightNormal" />
-                <Image type="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
-                <Image type="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
-                <Image type="Background" name="TaharezLook/TabButtonMiddleNormal" />
+                <Image component="TopLeftCorner" name="TaharezLook/TabButtonUpperLeftNormal" />
+                <Image component="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
+                <Image component="BottomRightCorner" name="TaharezLook/TabButtonLowerRight2Normal" />
+                <Image component="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/TabButtonRightNormal" />
+                <Image component="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
+                <Image component="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
+                <Image component="Background" name="TaharezLook/TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="bot_normal">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/TabButtonUpperLeft2Normal" />
-                <Image type="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
-                <Image type="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
-                <Image type="BottomRightCorner" name="TaharezLook/TabButtonLowerRightNormal" />
-                <Image type="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/TabButtonRightNormal" />
-                <Image type="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
-                <Image type="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
-                <Image type="Background" name="TaharezLook/TabButtonMiddleNormal" />
+                <Image component="TopLeftCorner" name="TaharezLook/TabButtonUpperLeft2Normal" />
+                <Image component="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
+                <Image component="BottomRightCorner" name="TaharezLook/TabButtonLowerRightNormal" />
+                <Image component="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/TabButtonRightNormal" />
+                <Image component="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
+                <Image component="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
+                <Image component="Background" name="TaharezLook/TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="top_hover">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/TabButtonUpperLeftNormal" />
-                <Image type="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
-                <Image type="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
-                <Image type="BottomRightCorner" name="TaharezLook/TabButtonLowerRight2Normal" />
-                <Image type="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/TabButtonRightNormal" />
-                <Image type="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
-                <Image type="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
-                <Image type="Background" name="TaharezLook/TabButtonMiddleNormal" />
+                <Image component="TopLeftCorner" name="TaharezLook/TabButtonUpperLeftNormal" />
+                <Image component="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
+                <Image component="BottomRightCorner" name="TaharezLook/TabButtonLowerRight2Normal" />
+                <Image component="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/TabButtonRightNormal" />
+                <Image component="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
+                <Image component="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
+                <Image component="Background" name="TaharezLook/TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="bot_hover">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/TabButtonUpperLeft2Normal" />
-                <Image type="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
-                <Image type="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
-                <Image type="BottomRightCorner" name="TaharezLook/TabButtonLowerRightNormal" />
-                <Image type="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
-                <Image type="RightEdge" name="TaharezLook/TabButtonRightNormal" />
-                <Image type="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
-                <Image type="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
-                <Image type="Background" name="TaharezLook/TabButtonMiddleNormal" />
+                <Image component="TopLeftCorner" name="TaharezLook/TabButtonUpperLeft2Normal" />
+                <Image component="TopRightCorner" name="TaharezLook/TabButtonUpperRightNormal" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
+                <Image component="BottomRightCorner" name="TaharezLook/TabButtonLowerRightNormal" />
+                <Image component="LeftEdge" name="TaharezLook/TabButtonLeftNormal" />
+                <Image component="RightEdge" name="TaharezLook/TabButtonRightNormal" />
+                <Image component="TopEdge" name="TaharezLook/TabButtonUpperNormal" />
+                <Image component="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
+                <Image component="Background" name="TaharezLook/TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="top_selected">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/TabButtonUpperLeftSelected" />
-                <Image type="TopEdge" name="TaharezLook/TabButtonUpperSelected" />
-                <Image type="TopRightCorner" name="TaharezLook/TabButtonUpperRightSelected" />
-                <Image type="LeftEdge" name="TaharezLook/TabButtonLeftSelected" />
-                <Image type="Background" name="TaharezLook/TabButtonMiddleSelected" />
-                <Image type="RightEdge" name="TaharezLook/TabButtonRightSelected" />
+                <Image component="TopLeftCorner" name="TaharezLook/TabButtonUpperLeftSelected" />
+                <Image component="TopEdge" name="TaharezLook/TabButtonUpperSelected" />
+                <Image component="TopRightCorner" name="TaharezLook/TabButtonUpperRightSelected" />
+                <Image component="LeftEdge" name="TaharezLook/TabButtonLeftSelected" />
+                <Image component="Background" name="TaharezLook/TabButtonMiddleSelected" />
+                <Image component="RightEdge" name="TaharezLook/TabButtonRightSelected" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="bot_selected">
             <FrameComponent>
-                <Image type="LeftEdge" name="TaharezLook/TabButtonLeftSelected" />
-                <Image type="Background" name="TaharezLook/TabButtonMiddleSelected" />
-                <Image type="RightEdge" name="TaharezLook/TabButtonRightSelected" />
-                <Image type="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
-                <Image type="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
-                <Image type="BottomRightCorner" name="TaharezLook/TabButtonLowerRightNormal" />
+                <Image component="LeftEdge" name="TaharezLook/TabButtonLeftSelected" />
+                <Image component="Background" name="TaharezLook/TabButtonMiddleSelected" />
+                <Image component="RightEdge" name="TaharezLook/TabButtonRightSelected" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TabButtonLowerLeftNormal" />
+                <Image component="BottomEdge" name="TaharezLook/TabButtonLowerNormal" />
+                <Image component="BottomRightCorner" name="TaharezLook/TabButtonLowerRightNormal" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="TopNormal">
@@ -3105,9 +3105,9 @@
                         </ImageDim>
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="TaharezLook/TabContentPaneUpperLeft" />
-                <Image type="TopEdge" name="TaharezLook/TabContentPaneUpper" />
-                <Image type="TopRightCorner" name="TaharezLook/TabContentPaneUpperRight" />
+                <Image component="TopLeftCorner" name="TaharezLook/TabContentPaneUpperLeft" />
+                <Image component="TopEdge" name="TaharezLook/TabContentPaneUpper" />
+                <Image component="TopRightCorner" name="TaharezLook/TabContentPaneUpperRight" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -3130,9 +3130,9 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="LeftEdge" name="TaharezLook/TabContentPaneLeft" />
-                <Image type="Background" name="TaharezLook/TabContentPaneMiddle" />
-                <Image type="RightEdge" name="TaharezLook/TabContentPaneRight" />
+                <Image component="LeftEdge" name="TaharezLook/TabContentPaneLeft" />
+                <Image component="Background" name="TaharezLook/TabContentPaneMiddle" />
+                <Image component="RightEdge" name="TaharezLook/TabContentPaneRight" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -3148,9 +3148,9 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="BottomLeftCorner" name="TaharezLook/TabContentPaneLowerLeft" />
-                <Image type="BottomEdge" name="TaharezLook/TabContentPaneLower" />
-                <Image type="BottomRightCorner" name="TaharezLook/TabContentPaneLowerRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/TabContentPaneLowerLeft" />
+                <Image component="BottomEdge" name="TaharezLook/TabContentPaneLower" />
+                <Image component="BottomRightCorner" name="TaharezLook/TabContentPaneLowerRight" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -3186,7 +3186,7 @@
                         </ImageDim>
                     </Dim>
                 </Area>
-                <Image type="TopEdge" name="TaharezLook/TabHorizontalFiller" />
+                <Image component="TopEdge" name="TaharezLook/TabHorizontalFiller" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -3224,7 +3224,7 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="BottomEdge" name="TaharezLook/TabHorizontalFiller" />
+                <Image component="BottomEdge" name="TaharezLook/TabHorizontalFiller" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -3443,15 +3443,15 @@
         </ImagerySection>
         <ImagerySection name="frame">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/MenuTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/MenuTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/MenuBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/MenuBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/MenuLeft" />
-                <Image type="RightEdge" name="TaharezLook/MenuRight" />
-                <Image type="TopEdge" name="TaharezLook/MenuTop" />
-                <Image type="BottomEdge" name="TaharezLook/MenuBottom" />
-                <Image type="Background" name="TaharezLook/MenuMiddle" />
+                <Image component="TopLeftCorner" name="TaharezLook/MenuTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/MenuTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/MenuBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/MenuBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/MenuLeft" />
+                <Image component="RightEdge" name="TaharezLook/MenuRight" />
+                <Image component="TopEdge" name="TaharezLook/MenuTop" />
+                <Image component="BottomEdge" name="TaharezLook/MenuBottom" />
+                <Image component="Background" name="TaharezLook/MenuMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="popup_arrow_right">
@@ -3622,15 +3622,15 @@
         </NamedArea>
         <ImagerySection name="frame">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/PopupMenuFrameTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/PopupMenuFrameTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/PopupMenuFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/PopupMenuFrameBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/PopupMenuFrameLeft" />
-                <Image type="RightEdge" name="TaharezLook/PopupMenuFrameRight" />
-                <Image type="TopEdge" name="TaharezLook/PopupMenuFrameTop" />
-                <Image type="BottomEdge" name="TaharezLook/PopupMenuFrameBottom" />
-                <Image type="Background" name="TaharezLook/PopupMenuMiddle" />
+                <Image component="TopLeftCorner" name="TaharezLook/PopupMenuFrameTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/PopupMenuFrameTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/PopupMenuFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/PopupMenuFrameBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/PopupMenuFrameLeft" />
+                <Image component="RightEdge" name="TaharezLook/PopupMenuFrameRight" />
+                <Image component="TopEdge" name="TaharezLook/PopupMenuFrameTop" />
+                <Image component="BottomEdge" name="TaharezLook/PopupMenuFrameBottom" />
+                <Image component="Background" name="TaharezLook/PopupMenuMiddle" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -3700,15 +3700,15 @@
         </NamedArea>
         <ImagerySection name="frame">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/PopupMenuFrameTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/PopupMenuFrameTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/PopupMenuFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/PopupMenuFrameBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/PopupMenuFrameLeft" />
-                <Image type="RightEdge" name="TaharezLook/PopupMenuFrameRight" />
-                <Image type="TopEdge" name="TaharezLook/PopupMenuFrameTop" />
-                <Image type="BottomEdge" name="TaharezLook/PopupMenuFrameBottom" />
-                <Image type="Background" name="TaharezLook/PopupMenuMiddle" />
+                <Image component="TopLeftCorner" name="TaharezLook/PopupMenuFrameTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/PopupMenuFrameTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/PopupMenuFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/PopupMenuFrameBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/PopupMenuFrameLeft" />
+                <Image component="RightEdge" name="TaharezLook/PopupMenuFrameRight" />
+                <Image component="TopEdge" name="TaharezLook/PopupMenuFrameTop" />
+                <Image component="BottomEdge" name="TaharezLook/PopupMenuFrameBottom" />
+                <Image component="Background" name="TaharezLook/PopupMenuMiddle" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -3889,9 +3889,9 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopEdge" name="TaharezLook/VertScrollTop" />
-                <Image type="BottomEdge" name="TaharezLook/VertScrollBottom" />
-                <Image type="Background" name="TaharezLook/VertScrollMiddle" />
+                <Image component="TopEdge" name="TaharezLook/VertScrollTop" />
+                <Image component="BottomEdge" name="TaharezLook/VertScrollBottom" />
+                <Image component="Background" name="TaharezLook/VertScrollMiddle" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -4105,15 +4105,15 @@
         </Child>
         <ImagerySection name="main">
             <FrameComponent>
-                <Image type="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
-                <Image type="TopRightCorner" name="TaharezLook/ListboxTopRight" />
-                <Image type="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
-                <Image type="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
-                <Image type="LeftEdge" name="TaharezLook/ListboxLeft" />
-                <Image type="RightEdge" name="TaharezLook/ListboxRight" />
-                <Image type="TopEdge" name="TaharezLook/ListboxTop" />
-                <Image type="BottomEdge" name="TaharezLook/ListboxBottom" />
-                <Image type="Background" name="TaharezLook/ListboxBackdrop" />
+                <Image component="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/ListboxTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/ListboxLeft" />
+                <Image component="RightEdge" name="TaharezLook/ListboxRight" />
+                <Image component="TopEdge" name="TaharezLook/ListboxTop" />
+                <Image component="BottomEdge" name="TaharezLook/ListboxBottom" />
+                <Image component="Background" name="TaharezLook/ListboxBackdrop" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">

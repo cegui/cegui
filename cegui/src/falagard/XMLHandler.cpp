@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,10 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/ColourRect.h"
 
 #include "CEGUI/falagard/XMLHandler.h"
@@ -148,6 +144,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::AutoWindowAttribute("autoWindow");
     const String Falagard_xmlHandler::FireEventAttribute("fireEvent");
     const String Falagard_xmlHandler::ActionAttribute("action");
+    const String Falagard_xmlHandler::ComponentAttribute("component");
 
     ////////////////////////////////////////////////////////////////////////////////
 
@@ -521,12 +518,12 @@ namespace CEGUI
         {
             d_framecomponent->setImage(
                 FalagardXMLHelper<FrameImageComponent>::fromString(
-                    attributes.getValueAsString(TypeAttribute)),
+                    attributes.getValueAsString(ComponentAttribute)),
                 attributes.getValueAsString(NameAttribute));
 
             CEGUI_LOGINSANE("---------> Using image: " +
                 attributes.getValueAsString(NameAttribute) + " for: " +
-                attributes.getValueAsString(TypeAttribute));
+                attributes.getValueAsString(ComponentAttribute));
         }
     }
 
@@ -1129,12 +1126,12 @@ namespace CEGUI
         {
             d_framecomponent->setImagePropertySource(
                 FalagardXMLHelper<FrameImageComponent>::fromString(
-                    attributes.getValueAsString(TypeAttribute)),
+                    attributes.getValueAsString(ComponentAttribute)),
                 attributes.getValueAsString(NameAttribute));
 
             CEGUI_LOGINSANE("---------> Using image via property: " +
                 attributes.getValueAsString(NameAttribute) + " for: " +
-                attributes.getValueAsString(TypeAttribute));
+                attributes.getValueAsString(ComponentAttribute));
         }
     }
 

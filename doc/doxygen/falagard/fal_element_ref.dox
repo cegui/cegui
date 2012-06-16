@@ -972,7 +972,7 @@ The @c \<Image\> element is used to specify an Imageset and Image pair, and for 
 @subsection fal_elem_ref_sec_18_2 Attributes:
 @arg @c imageset  specifies the name of an Imageset which contains the image to be used. Required attribute.
 @arg @c image  specifies the name of the image from the specified Imageset to be used. Required attribute.
-@arg @c type  Only for FrameComponent. Specifies the part of the frame that this image is to be used for. One of the values from the FrameImageComponent enumeration. Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame that this image is to be used for. One of the values from the FrameImageComponent enumeration. Required attribute.
 
 @subsection fal_elem_ref_sec_18_3 Usage:
 <ul>
@@ -1154,7 +1154,7 @@ rendering the component being defined.
 @subsection fal_elem_ref_sec_21_2 Attributes:
 @arg @c name  specifies the name of the property to access that will provide the
 name of the Image to be used. Required attribute.
-@arg @c type  Only for @c \<FrameComponent\>. Specifies the part of the frame
+@arg @c component  Only for @c \<FrameComponent\>. Specifies the part of the frame
 that this image is to be used for. One of the values from the
 FrameImageComponent enumeration. Required attribute.
 

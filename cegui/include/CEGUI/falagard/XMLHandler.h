@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -191,6 +191,8 @@ namespace CEGUI
         static const String FireEventAttribute;
         //! Attribute name that stores the name of an action to be taken
         static const String ActionAttribute;
+        //! Attribute name that stores some component enum value
+        static const String ComponentAttribute;
 
         /*************************************************************************
             helper methods

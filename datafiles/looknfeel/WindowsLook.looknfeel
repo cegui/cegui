@@ -84,14 +84,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -138,14 +138,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonHoverTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonHoverRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonHoverTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonHoverRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -192,14 +192,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonPushedTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonPushedRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonPushedTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonPushedRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -246,14 +246,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -627,15 +627,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
-                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
-                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image component="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image component="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -728,15 +728,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/EditFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/EditFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/EditFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/EditFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/EditFrameLeft" />
-                <Image type="TopEdge" name="WindowsLook/EditFrameTop" />
-                <Image type="RightEdge" name="WindowsLook/EditFrameRight" />
-                <Image type="BottomEdge" name="WindowsLook/EditFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/EditFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/EditFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/EditFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/EditFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/EditFrameLeft" />
+                <Image component="TopEdge" name="WindowsLook/EditFrameTop" />
+                <Image component="RightEdge" name="WindowsLook/EditFrameRight" />
+                <Image component="BottomEdge" name="WindowsLook/EditFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="selection">
@@ -976,11 +976,11 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="BottomLeftCorner" name="WindowsLook/WindowFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/WindowFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/WindowFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/WindowFrameRight" />
-                <Image type="BottomEdge" name="WindowsLook/WindowFrameBottom" />
+                <Image component="BottomLeftCorner" name="WindowsLook/WindowFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/WindowFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/WindowFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/WindowFrameRight" />
+                <Image component="BottomEdge" name="WindowsLook/WindowFrameBottom" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="notitle_frame">
@@ -999,14 +999,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/WindowFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/WindowFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/WindowFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/WindowFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/WindowFrameLeft" />
-                <Image type="TopEdge" name="WindowsLook/WindowFrameTop" />
-                <Image type="RightEdge" name="WindowsLook/WindowFrameRight" />
-                <Image type="BottomEdge" name="WindowsLook/WindowFrameBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/WindowFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/WindowFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/WindowFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/WindowFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/WindowFrameLeft" />
+                <Image component="TopEdge" name="WindowsLook/WindowFrameTop" />
+                <Image component="RightEdge" name="WindowsLook/WindowFrameRight" />
+                <Image component="BottomEdge" name="WindowsLook/WindowFrameBottom" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="withtitle_withframe_client_area">
@@ -1342,15 +1342,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
-                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
-                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image component="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image component="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1464,15 +1464,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
-                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
-                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image component="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image component="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1645,15 +1645,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/MenuTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/MenuTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/MenuBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/MenuBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/MenuLeft" />
-                <Image type="RightEdge" name="WindowsLook/MenuRight" />
-                <Image type="TopEdge" name="WindowsLook/MenuTop" />
-                <Image type="BottomEdge" name="WindowsLook/MenuBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/MenuTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/MenuTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/MenuBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/MenuBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/MenuLeft" />
+                <Image component="RightEdge" name="WindowsLook/MenuRight" />
+                <Image component="TopEdge" name="WindowsLook/MenuTop" />
+                <Image component="BottomEdge" name="WindowsLook/MenuBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
                 <ColourRectProperty name="BackgroundColours" />
             </FrameComponent>
         </ImagerySection>
@@ -1779,15 +1779,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/MenuTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/MenuTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/MenuBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/MenuBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/MenuLeft" />
-                <Image type="RightEdge" name="WindowsLook/MenuRight" />
-                <Image type="TopEdge" name="WindowsLook/MenuTop" />
-                <Image type="BottomEdge" name="WindowsLook/MenuBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/MenuTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/MenuTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/MenuBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/MenuBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/MenuLeft" />
+                <Image component="RightEdge" name="WindowsLook/MenuRight" />
+                <Image component="TopEdge" name="WindowsLook/MenuTop" />
+                <Image component="BottomEdge" name="WindowsLook/MenuBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="popup_arrow_right">
@@ -2218,15 +2218,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
-                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
-                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image component="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image component="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -2345,15 +2345,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/EditFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/EditFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/EditFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/EditFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/EditFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/EditFrameRight" />
-                <Image type="TopEdge" name="WindowsLook/EditFrameTop" />
-                <Image type="BottomEdge" name="WindowsLook/EditFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/EditFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/EditFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/EditFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/EditFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/EditFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/EditFrameRight" />
+                <Image component="TopEdge" name="WindowsLook/EditFrameTop" />
+                <Image component="BottomEdge" name="WindowsLook/EditFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="Caret">
@@ -2447,15 +2447,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/PopupMenuFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/PopupMenuFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/PopupMenuFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/PopupMenuFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/PopupMenuFrameLeft" />
-                <Image type="RightEdge" name="WindowsLook/PopupMenuFrameRight" />
-                <Image type="TopEdge" name="WindowsLook/PopupMenuFrameTop" />
-                <Image type="BottomEdge" name="WindowsLook/PopupMenuFrameBottom" />
-                <Image type="Background" name="WindowsLook/Background" />
+                <Image component="TopLeftCorner" name="WindowsLook/PopupMenuFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/PopupMenuFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/PopupMenuFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/PopupMenuFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/PopupMenuFrameLeft" />
+                <Image component="RightEdge" name="WindowsLook/PopupMenuFrameRight" />
+                <Image component="TopEdge" name="WindowsLook/PopupMenuFrameTop" />
+                <Image component="BottomEdge" name="WindowsLook/PopupMenuFrameBottom" />
+                <Image component="Background" name="WindowsLook/Background" />
                 <ColourRectProperty name="BackgroundColours" />
             </FrameComponent>
         </ImagerySection>
@@ -2510,14 +2510,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
-                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
-                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
-                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image component="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image component="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image component="BottomEdge" name="WindowsLook/StaticFrameBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -2772,14 +2772,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -2818,14 +2818,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonHoverTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonHoverRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonHoverTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonHoverRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -2864,14 +2864,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonPushedTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonPushedRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonPushedTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonPushedRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -3060,14 +3060,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonNormalTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonNormalRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonNormalTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonNormalTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonNormalBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonNormalBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonNormalLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonNormalTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonNormalRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonNormalBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -3106,14 +3106,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonHoverTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonHoverRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonHoverTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonHoverTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonHoverBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonHoverBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonHoverLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonHoverTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonHoverRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonHoverBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -3152,14 +3152,14 @@
                     <Dim type="Width" ><UnifiedDim scale="1.0" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1.0" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
-                <Image type="TopEdge" name="WindowsLook/ButtonPushedTop" />
-                <Image type="RightEdge" name="WindowsLook/ButtonPushedRight" />
-                <Image type="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/ButtonPushedTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/ButtonPushedTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/ButtonPushedBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/ButtonPushedBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/ButtonPushedLeft" />
+                <Image component="TopEdge" name="WindowsLook/ButtonPushedTop" />
+                <Image component="RightEdge" name="WindowsLook/ButtonPushedRight" />
+                <Image component="BottomEdge" name="WindowsLook/ButtonPushedBottom" />
             </FrameComponent>
             <ImageryComponent>
                 <Area>
@@ -3443,9 +3443,9 @@
                     </Dim>
                     <Dim type="Height" ><ImageDim name="WindowsLook/SlidertrackMiddle" dimension="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="WindowsLook/SliderTrackLeft" />
-                <Image type="RightEdge" name="WindowsLook/SliderTrackRight" />
-                <Image type="Background" name="WindowsLook/SlidertrackMiddle" />
+                <Image component="LeftEdge" name="WindowsLook/SliderTrackLeft" />
+                <Image component="RightEdge" name="WindowsLook/SliderTrackRight" />
+                <Image component="Background" name="WindowsLook/SlidertrackMiddle" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </FrameComponent>
@@ -3530,14 +3530,14 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/StaticFrameLeft" />
-                <Image type="TopEdge" name="WindowsLook/StaticFrameTop" />
-                <Image type="RightEdge" name="WindowsLook/StaticFrameRight" />
-                <Image type="BottomEdge" name="WindowsLook/StaticFrameBottom" />
+                <Image component="TopLeftCorner" name="WindowsLook/StaticFrameTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/StaticFrameTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/StaticFrameBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/StaticFrameBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/StaticFrameLeft" />
+                <Image component="TopEdge" name="WindowsLook/StaticFrameTop" />
+                <Image component="RightEdge" name="WindowsLook/StaticFrameRight" />
+                <Image component="BottomEdge" name="WindowsLook/StaticFrameBottom" />
                 <ColourRectProperty name="FrameColours" />
             </FrameComponent>
         </ImagerySection>
@@ -4045,15 +4045,15 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/TabButtonUpperLeftNormal" />
-                <Image type="TopRightCorner" name="WindowsLook/TabButtonUpperRightNormal" />
-                <Image type="BottomLeftCorner" name="WindowsLook/TabButtonLowerLeftNormal" />
-                <Image type="BottomRightCorner" name="WindowsLook/TabButtonLowerRightNormal" />
-                <Image type="LeftEdge" name="WindowsLook/TabButtonLeftNormal" />
-                <Image type="RightEdge" name="WindowsLook/TabButtonRightNormal" />
-                <Image type="TopEdge" name="WindowsLook/TabButtonUpperNormal" />
-                <Image type="BottomEdge" name="WindowsLook/TabButtonLowerNormal" />
-                <Image type="Background" name="WindowsLook/TabButtonMiddleNormal" />
+                <Image component="TopLeftCorner" name="WindowsLook/TabButtonUpperLeftNormal" />
+                <Image component="TopRightCorner" name="WindowsLook/TabButtonUpperRightNormal" />
+                <Image component="BottomLeftCorner" name="WindowsLook/TabButtonLowerLeftNormal" />
+                <Image component="BottomRightCorner" name="WindowsLook/TabButtonLowerRightNormal" />
+                <Image component="LeftEdge" name="WindowsLook/TabButtonLeftNormal" />
+                <Image component="RightEdge" name="WindowsLook/TabButtonRightNormal" />
+                <Image component="TopEdge" name="WindowsLook/TabButtonUpperNormal" />
+                <Image component="BottomEdge" name="WindowsLook/TabButtonLowerNormal" />
+                <Image component="Background" name="WindowsLook/TabButtonMiddleNormal" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="top_selected">
@@ -4064,12 +4064,12 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/TabButtonUpperLeftSelected" />
-                <Image type="TopEdge" name="WindowsLook/TabButtonUpperSelected" />
-                <Image type="TopRightCorner" name="WindowsLook/TabButtonUpperRightSelected" />
-                <Image type="LeftEdge" name="WindowsLook/TabButtonLeftSelected" />
-                <Image type="Background" name="WindowsLook/TabButtonMiddleSelected" />
-                <Image type="RightEdge" name="WindowsLook/TabButtonRightSelected" />
+                <Image component="TopLeftCorner" name="WindowsLook/TabButtonUpperLeftSelected" />
+                <Image component="TopEdge" name="WindowsLook/TabButtonUpperSelected" />
+                <Image component="TopRightCorner" name="WindowsLook/TabButtonUpperRightSelected" />
+                <Image component="LeftEdge" name="WindowsLook/TabButtonLeftSelected" />
+                <Image component="Background" name="WindowsLook/TabButtonMiddleSelected" />
+                <Image component="RightEdge" name="WindowsLook/TabButtonRightSelected" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="bot_selected">
@@ -4080,12 +4080,12 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="Height" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="WindowsLook/TabButtonLeftSelected" />
-                <Image type="Background" name="WindowsLook/TabButtonMiddleSelected" />
-                <Image type="RightEdge" name="WindowsLook/TabButtonRightSelected" />
-                <Image type="BottomLeftCorner" name="WindowsLook/TabButtonLowerLeftSelected" />
-                <Image type="BottomEdge" name="WindowsLook/TabButtonLowerSelected" />
-                <Image type="BottomRightCorner" name="WindowsLook/TabButtonLowerRightSelected" />
+                <Image component="LeftEdge" name="WindowsLook/TabButtonLeftSelected" />
+                <Image component="Background" name="WindowsLook/TabButtonMiddleSelected" />
+                <Image component="RightEdge" name="WindowsLook/TabButtonRightSelected" />
+                <Image component="BottomLeftCorner" name="WindowsLook/TabButtonLowerLeftSelected" />
+                <Image component="BottomEdge" name="WindowsLook/TabButtonLowerSelected" />
+                <Image component="BottomRightCorner" name="WindowsLook/TabButtonLowerRightSelected" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Normal">
@@ -4153,9 +4153,9 @@
                         </ImageDim>
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/TabContentPaneUpperLeft" />
-                <Image type="TopEdge" name="WindowsLook/TabContentPaneTop" />
-                <Image type="TopRightCorner" name="WindowsLook/TabContentPaneUpperRight" />
+                <Image component="TopLeftCorner" name="WindowsLook/TabContentPaneUpperLeft" />
+                <Image component="TopEdge" name="WindowsLook/TabContentPaneTop" />
+                <Image component="TopRightCorner" name="WindowsLook/TabContentPaneUpperRight" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -4180,9 +4180,9 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="LeftEdge" name="WindowsLook/TabContentPaneLeft" />
-                <Image type="Background" name="WindowsLook/TabContentPaneMiddle" />
-                <Image type="RightEdge" name="WindowsLook/TabContentPaneRight" />
+                <Image component="LeftEdge" name="WindowsLook/TabContentPaneLeft" />
+                <Image component="Background" name="WindowsLook/TabContentPaneMiddle" />
+                <Image component="RightEdge" name="WindowsLook/TabContentPaneRight" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -4201,9 +4201,9 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="BottomLeftCorner" name="WindowsLook/TabContentPaneLowerLeft" />
-                <Image type="BottomEdge" name="WindowsLook/TabContentPaneLower" />
-                <Image type="BottomRightCorner" name="WindowsLook/TabContentPaneLowerRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/TabContentPaneLowerLeft" />
+                <Image component="BottomEdge" name="WindowsLook/TabContentPaneLower" />
+                <Image component="BottomRightCorner" name="WindowsLook/TabContentPaneLowerRight" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4243,7 +4243,7 @@
                         </ImageDim>
                     </Dim>
                 </Area>
-                <Image type="TopEdge" name="WindowsLook/TabHorizontalTopFiller" />
+                <Image component="TopEdge" name="WindowsLook/TabHorizontalTopFiller" />
             </FrameComponent>
             <FrameComponent>
                 <Area>
@@ -4286,7 +4286,7 @@
                     <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
                     <Dim type="BottomEdge" ><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
-                <Image type="BottomEdge" name="WindowsLook/TabHorizontalBottomFiller" />
+                <Image component="BottomEdge" name="WindowsLook/TabHorizontalBottomFiller" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -4465,15 +4465,15 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/TitlebarTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/TitlebarTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/TitlebarBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/TitlebarBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/TitlebarLeft" />
-                <Image type="TopEdge" name="WindowsLook/TitlebarTop" />
-                <Image type="RightEdge" name="WindowsLook/TitlebarRight" />
-                <Image type="BottomEdge" name="WindowsLook/TitlebarBottom" />
-                <Image type="Background" name="WindowsLook/TitlebarFill" />
+                <Image component="TopLeftCorner" name="WindowsLook/TitlebarTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/TitlebarTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/TitlebarBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/TitlebarBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/TitlebarLeft" />
+                <Image component="TopEdge" name="WindowsLook/TitlebarTop" />
+                <Image component="RightEdge" name="WindowsLook/TitlebarRight" />
+                <Image component="BottomEdge" name="WindowsLook/TitlebarBottom" />
+                <Image component="Background" name="WindowsLook/TitlebarFill" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="caption">
@@ -4567,15 +4567,15 @@
                         <UnifiedDim scale="1" type="BottomEdge" />
                     </Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="WindowsLook/TooltipTopLeft" />
-                <Image type="TopRightCorner" name="WindowsLook/TooltipTopRight" />
-                <Image type="BottomLeftCorner" name="WindowsLook/TooltipBottomLeft" />
-                <Image type="BottomRightCorner" name="WindowsLook/TooltipBottomRight" />
-                <Image type="LeftEdge" name="WindowsLook/TooltipLeftEdge" />
-                <Image type="TopEdge" name="WindowsLook/TooltipTopEdge" />
-                <Image type="RightEdge" name="WindowsLook/TooltipRightEdge" />
-                <Image type="BottomEdge" name="WindowsLook/TooltipBottomEdge" />
-                <Image type="Background" name="WindowsLook/TooltipMiddle" />
+                <Image component="TopLeftCorner" name="WindowsLook/TooltipTopLeft" />
+                <Image component="TopRightCorner" name="WindowsLook/TooltipTopRight" />
+                <Image component="BottomLeftCorner" name="WindowsLook/TooltipBottomLeft" />
+                <Image component="BottomRightCorner" name="WindowsLook/TooltipBottomRight" />
+                <Image component="LeftEdge" name="WindowsLook/TooltipLeftEdge" />
+                <Image component="TopEdge" name="WindowsLook/TooltipTopEdge" />
+                <Image component="RightEdge" name="WindowsLook/TooltipRightEdge" />
+                <Image component="BottomEdge" name="WindowsLook/TooltipBottomEdge" />
+                <Image component="Background" name="WindowsLook/TooltipMiddle" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="label">
