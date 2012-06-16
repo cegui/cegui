@@ -83,7 +83,7 @@ bool RenderEffectManager::isEffectAvailable(const String& name) const
 }
 
 //---------------------------------------------------------------------------//
-RenderEffect& RenderEffectManager::create(const String& name)
+RenderEffect& RenderEffectManager::create(const String& name, Window* window)
 {
     RenderEffectRegistry::iterator i(d_effectRegistry.find(name));
 
@@ -92,7 +92,7 @@ RenderEffect& RenderEffectManager::create(const String& name)
         CEGUI_THROW(UnknownObjectException("RenderEffectManager::create: "
             "No RenderEffect has been registered with the name '" + name + "'"));
 
-    RenderEffect& effect = i->second->create();
+    RenderEffect& effect = i->second->create(window);
 
     // here we keep track of the factory used to create the effect object.
     d_effects[&effect] = i->second;
