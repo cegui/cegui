@@ -50,7 +50,7 @@ namespace CEGUI
     class TextComponent;
     class NamedArea;
     class FrameComponent;
-    template<typename T> class PropertyLinkDefinition;
+    class PropertyDefinitionBase;
     class EventLinkDefinition;
 
     /*!
@@ -596,7 +596,7 @@ namespace CEGUI
         std::vector<BaseDim*
             CEGUI_VECTOR_ALLOC(BaseDim*)> d_dimStack;
 
-        Property* d_propertyLink;
+        PropertyDefinitionBase* d_propertyLink;
         EventLinkDefinition* d_eventLink;
     };
 
