@@ -36,7 +36,7 @@
 class MyEffect : public CEGUI::RenderEffect
 {
 public:
-    MyEffect();
+    MyEffect(CEGUI::Window* window);
 
     // implement required functions from RenderEffect interface.
     int getPassCount() const;
@@ -58,6 +58,8 @@ protected:
     float elasX, elasY;
 
     CEGUI::Vertex vb[buffsize];
+
+    CEGUI::Window* d_window;
 };
 
 
