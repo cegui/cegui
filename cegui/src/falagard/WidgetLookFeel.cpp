@@ -62,14 +62,18 @@ WidgetLookFeel::WidgetLookFeel(const WidgetLookFeel& other) :
         i < other.d_propertyDefinitions.end();
         ++i)
     {
-        d_propertyDefinitions.push_back((*i)->clone());
+        d_propertyDefinitions.push_back(
+            dynamic_cast<PropertyDefinitionBase*>(
+                dynamic_cast<Property*>(*i)->clone()));
     }
     
     for (PropertyLinkDefinitionList::iterator i = other.d_propertyLinkDefinitions.begin();
         i < other.d_propertyLinkDefinitions.end();
         ++i)
     {
-        d_propertyLinkDefinitions.push_back((*i)->clone());
+        d_propertyLinkDefinitions.push_back(
+            dynamic_cast<PropertyDefinitionBase*>(
+                dynamic_cast<Property*>(*i)->clone()));
     }
 }
 
@@ -241,7 +245,7 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
          ++pdi)
     {
         // add the property to the window
-        widget.addProperty(*pdi);
+        widget.addProperty(dynamic_cast<Property*>(*pdi));
     }
 
     // add required child widgets
@@ -262,7 +266,7 @@ void WidgetLookFeel::initialiseWidget(Window& widget) const
          ++pldi)
     {
         // add the property to the window
-        widget.addProperty(*pldi);
+        widget.addProperty(dynamic_cast<Property*>(*pldi));
     }
     // apply properties to the parent window
     PropertyInitialiserCollator pic;
@@ -338,7 +342,7 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
          ++pdi)
     {
         // remove the property from the window
-        widget.removeProperty((*pdi)->getName());
+        widget.removeProperty((*pdi)->getPropertyName());
     }
 
     // remove added property link definitions
@@ -349,7 +353,7 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
          ++pldi)
     {
         // remove the property from the window
-        widget.removeProperty((*pldi)->getName());
+        widget.removeProperty((*pldi)->getPropertyName());
     }
 
     // clean up animation instances assoicated wit the window.
@@ -460,7 +464,7 @@ void WidgetLookFeel::layoutChildWidgets(const Window& owner) const
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::addPropertyDefinition(Property* propdef)
+void WidgetLookFeel::addPropertyDefinition(PropertyDefinitionBase* propdef)
 {
     d_propertyDefinitions.push_back(propdef);
 }
@@ -472,7 +476,7 @@ void WidgetLookFeel::clearPropertyDefinitions()
 }
 
 //---------------------------------------------------------------------------//
-void WidgetLookFeel::addPropertyLinkDefinition(Property* propdef)
+void WidgetLookFeel::addPropertyLinkDefinition(PropertyDefinitionBase* propdef)
 {
     d_propertyLinkDefinitions.push_back(propdef);
 }
@@ -637,7 +641,7 @@ WidgetLookFeel::getPropertyDefinitionNames(bool inherits) const
         i != d_propertyDefinitions.end();
         ++i)
     {
-        result.insert((*i)->getName());
+        result.insert((*i)->getPropertyName());
     }
     if (!d_inheritedLookName.empty() && inherits)
     {
@@ -667,7 +671,7 @@ WidgetLookFeel::getPropertyLinkDefinitionNames(bool inherits) const
         i != d_propertyLinkDefinitions.end();
         ++i)
     {
-        result.insert((*i)->getName());
+        result.insert((*i)->getPropertyName());
     }
     if (!d_inheritedLookName.empty() && inherits)
     {
@@ -782,7 +786,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
              curr != d_propertyDefinitions.end();
              ++curr)
         {
-            (*curr)->writeXMLToStream(0, xml_stream);
+            (*curr)->writeDefinitionXMLToStream(xml_stream);
         }
     }
 
@@ -792,7 +796,7 @@ void WidgetLookFeel::writeXMLToStream(XMLSerializer& xml_stream) const
              curr != d_propertyLinkDefinitions.end();
              ++curr)
         {
-            (*curr)->writeXMLToStream(0, xml_stream);
+            (*curr)->writeDefinitionXMLToStream(xml_stream);
         }
     }
 
@@ -931,7 +935,7 @@ void WidgetLookFeel::appendPropertyDefinitions(PropertyDefinitionCollator& col,
          i != d_propertyDefinitions.end();
          ++i)
     {
-        col.set((*i)->getName(), *i);
+        col.set((*i)->getPropertyName(), *i);
     }
 
 }
@@ -948,7 +952,7 @@ void WidgetLookFeel::appendPropertyLinkDefinitions(
          i != d_propertyLinkDefinitions.end();
          ++i)
     {
-        col.set((*i)->getName(), *i);
+        col.set((*i)->getPropertyName(), *i);
     }
 }
 

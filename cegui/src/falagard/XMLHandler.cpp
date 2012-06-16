@@ -853,7 +853,7 @@ namespace CEGUI
     void Falagard_xmlHandler::elementPropertyDefinitionStart(const XMLAttributes& attributes)
     {
         assert(d_widgetlook);
-        Property* prop;
+        PropertyDefinitionBase* prop;
 
         const String name(attributes.getValueAsString(NameAttribute));
         const String init(attributes.getValueAsString(InitialValueAttribute));
@@ -1489,7 +1489,7 @@ namespace CEGUI
         d_widgetlook->addPropertyLinkDefinition(d_propertyLink);
 
         CEGUI_LOGINSANE("<----- End of PropertyLinkDefiniton. Name: " +
-                        d_propertyLink->getName());
+                        d_propertyLink->getPropertyName());
         d_propertyLink = 0;
     }
 
@@ -1502,7 +1502,7 @@ namespace CEGUI
         
         if (!w.empty() || !p.empty())
         {
-            const String type(d_propertyLink->getDataType());
+            const String type(dynamic_cast<Property*>(d_propertyLink)->getDataType());
 
             typedef std::pair<float,float> Range;
 

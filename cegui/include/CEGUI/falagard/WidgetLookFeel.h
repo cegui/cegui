@@ -288,7 +288,7 @@ public:
     \return
         Nothing.
     */
-    void addPropertyDefinition(Property* propdef);
+    void addPropertyDefinition(PropertyDefinitionBase* propdef);
 
     /*!
     \brief
@@ -300,7 +300,7 @@ public:
     \return
         Nothing.
     */
-    void addPropertyLinkDefinition(Property* propdef);
+    void addPropertyLinkDefinition(PropertyDefinitionBase* propdef);
 
     /*!
     \brief
@@ -373,10 +373,10 @@ public:
     /** Typedefs for property related lists. */
     typedef std::vector<PropertyInitialiser
         CEGUI_VECTOR_ALLOC(PropertyInitialiser)> PropertyList;
-    typedef std::vector<Property*
-        CEGUI_VECTOR_ALLOC(Property*)> PropertyDefinitionList;
-    typedef std::vector<Property*
-        CEGUI_VECTOR_ALLOC(Property*)> PropertyLinkDefinitionList;
+    typedef std::vector<PropertyDefinitionBase*
+        CEGUI_VECTOR_ALLOC(PropertyDefinitionBase*)> PropertyDefinitionList;
+    typedef std::vector<PropertyDefinitionBase*
+        CEGUI_VECTOR_ALLOC(PropertyDefinitionList*)> PropertyLinkDefinitionList;
 
     /** Obtains list of properties definitions.
      * @access public
@@ -454,8 +454,8 @@ private:
     // these are container types used when composing final collections of
     // objects that come via inheritence.
     typedef NamedDefinitionCollator<String, const WidgetComponent*> WidgetComponentCollator;
-    typedef NamedDefinitionCollator<String, Property*> PropertyDefinitionCollator;
-    typedef NamedDefinitionCollator<String, Property*> PropertyLinkDefinitionCollator;
+    typedef NamedDefinitionCollator<String, PropertyDefinitionBase*> PropertyDefinitionCollator;
+    typedef NamedDefinitionCollator<String, PropertyDefinitionBase*> PropertyLinkDefinitionCollator;
     typedef NamedDefinitionCollator<String, const PropertyInitialiser*> PropertyInitialiserCollator;
     typedef NamedDefinitionCollator<String, const EventLinkDefinition*> EventLinkDefinitionCollator;
     typedef std::set<String, StringFastLessCompare
