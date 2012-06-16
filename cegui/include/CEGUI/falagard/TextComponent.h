@@ -32,6 +32,7 @@
 #include "../RenderedString.h"
 #include "../RefCounted.h"
 #include "../FormattedRenderedString.h"
+#include "CEGUI/falagard/FormattingSetting.h"
 
 #if defined(_MSC_VER)
 #  pragma warning(push)
@@ -157,7 +158,7 @@ namespace CEGUI
         \return
             One of the VerticalTextFormatting enumerated values.
         */
-        VerticalTextFormatting getVerticalFormatting() const;
+        VerticalTextFormatting getVerticalFormatting(const Window& wnd) const;
 
         /*!
         \brief
@@ -178,7 +179,7 @@ namespace CEGUI
         \return
             One of the HorizontalTextFormatting enumerated values.
         */
-        HorizontalTextFormatting getHorizontalFormatting() const;
+        HorizontalTextFormatting getHorizontalFormatting(const Window& wnd) const;
 
         /*!
         \brief
@@ -191,6 +192,20 @@ namespace CEGUI
             Nothing.
         */
         void setHorizontalFormatting(HorizontalTextFormatting fmt);
+
+        /*!
+        \brief
+            Set the name of a property that will be used to obtain the horizontal
+            formatting to use for this ImageryComponent.
+        */
+        void setHorizontalFormattingPropertySource(const String& property_name);
+
+        /*!
+        \brief
+            Set the name of a property that will be used to obtain the vertical
+            formatting to use for this ImageryComponent.
+        */
+        void setVerticalFormattingPropertySource(const String& property_name);
 
         /*!
         \brief
@@ -304,8 +319,10 @@ namespace CEGUI
         mutable HorizontalTextFormatting d_lastHorzFormatting;
 
         String               d_font;            //!< name of font to use.
-        VerticalTextFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the component.
-        HorizontalTextFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the component.
+        //! Vertical formatting to be applied when rendering the image component.
+        FormattingSetting<VerticalTextFormatting> d_vertFormatting;
+        //! Horizontal formatting to be applied when rendering the image component.
+        FormattingSetting<HorizontalTextFormatting> d_horzFormatting;
         String  d_textPropertyName;             //!< Name of the property to access to obtain the text string to render.
         String  d_fontPropertyName;             //!< Name of the property to access to obtain the font to use for rendering.
     };

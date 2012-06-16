@@ -548,9 +548,32 @@ namespace CEGUI
     {
         if (d_framecomponent)
         {
-            d_framecomponent->setBackgroundVerticalFormatting(
+            const FrameImageComponent what =
+                FalagardXMLHelper<FrameImageComponent>::fromString(
+                    attributes.getValueAsString(ComponentAttribute, "Background"));
+            const VerticalFormatting fmt =
                 FalagardXMLHelper<VerticalFormatting>::fromString(
-                    attributes.getValueAsString(TypeAttribute)));
+                    attributes.getValueAsString(TypeAttribute));
+
+            switch(what)
+            {
+                case FIC_LEFT_EDGE:
+                    d_framecomponent->setLeftEdgeFormatting(fmt);
+                    break;
+                case FIC_RIGHT_EDGE:
+                    d_framecomponent->setRightEdgeFormatting(fmt);
+                    break;
+                case FIC_BACKGROUND:
+                    d_framecomponent->setBackgroundVerticalFormatting(fmt);
+                    break;
+                default:
+                    CEGUI_THROW(InvalidRequestException(
+                        "[Falagard] " + VertFormatElement + " within " +
+                        FrameComponentElement + " may only be used for "
+                        "LeftEdge, RightEdge or Background components. "
+                        "Received: " +
+                        attributes.getValueAsString(ComponentAttribute)));
+            }
         }
         else if (d_imagerycomponent)
         {
@@ -573,9 +596,32 @@ namespace CEGUI
     {
         if (d_framecomponent)
         {
-            d_framecomponent->setBackgroundHorizontalFormatting(
+            const FrameImageComponent what =
+                FalagardXMLHelper<FrameImageComponent>::fromString(
+                    attributes.getValueAsString(ComponentAttribute, "Background"));
+            const HorizontalFormatting fmt =
                 FalagardXMLHelper<HorizontalFormatting>::fromString(
-                    attributes.getValueAsString(TypeAttribute)));
+                    attributes.getValueAsString(TypeAttribute));
+
+            switch(what)
+            {
+                case FIC_TOP_EDGE:
+                    d_framecomponent->setTopEdgeFormatting(fmt);
+                    break;
+                case FIC_BOTTOM_EDGE:
+                    d_framecomponent->setBottomEdgeFormatting(fmt);
+                    break;
+                case FIC_BACKGROUND:
+                    d_framecomponent->setBackgroundHorizontalFormatting(fmt);
+                    break;
+                default:
+                    CEGUI_THROW(InvalidRequestException(
+                        "[Falagard] " + HorzFormatElement + " within " +
+                        FrameComponentElement + " may only be used for "
+                        "TopEdge, BottomEdge or Background components. "
+                        "Received: " +
+                        attributes.getValueAsString(ComponentAttribute)));
+            }
         }
         else if (d_imagerycomponent)
         {
@@ -1077,11 +1123,38 @@ namespace CEGUI
     void Falagard_xmlHandler::elementVertFormatPropertyStart(const XMLAttributes& attributes)
     {
         if (d_framecomponent)
-            d_framecomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        {
+            const FrameImageComponent what =
+                FalagardXMLHelper<FrameImageComponent>::fromString(
+                    attributes.getValueAsString(ComponentAttribute, "Background"));
+            const VerticalFormatting fmt =
+                FalagardXMLHelper<VerticalFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute));
+
+            switch(what)
+            {
+                case FIC_LEFT_EDGE:
+                    d_framecomponent->setLeftEdgeFormatting(fmt);
+                    break;
+                case FIC_RIGHT_EDGE:
+                    d_framecomponent->setRightEdgeFormatting(fmt);
+                    break;
+                case FIC_BACKGROUND:
+                    d_framecomponent->setBackgroundVerticalFormatting(fmt);
+                    break;
+                default:
+                    CEGUI_THROW(InvalidRequestException(
+                        "[Falagard] " + VertFormatPropertyElement + " within " +
+                        FrameComponentElement + " may only be used for "
+                        "LeftEdge, RightEdge or Background components. "
+                        "Received: " +
+                        attributes.getValueAsString(ComponentAttribute)));
+            }
+        }
         else if (d_imagerycomponent)
-            d_imagerycomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            d_imagerycomponent->setVerticalFormattingPropertySource(attributes.getValueAsString(NameAttribute));
         else if (d_textcomponent)
-            d_textcomponent->setVertFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            d_textcomponent->setVerticalFormattingPropertySource(attributes.getValueAsString(NameAttribute));
     }
 
     /*************************************************************************
@@ -1090,11 +1163,38 @@ namespace CEGUI
     void Falagard_xmlHandler::elementHorzFormatPropertyStart(const XMLAttributes& attributes)
     {
         if (d_framecomponent)
-            d_framecomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+        {
+            const FrameImageComponent what =
+                FalagardXMLHelper<FrameImageComponent>::fromString(
+                    attributes.getValueAsString(ComponentAttribute, "Background"));
+            const HorizontalFormatting fmt =
+                FalagardXMLHelper<HorizontalFormatting>::fromString(
+                    attributes.getValueAsString(TypeAttribute));
+
+            switch(what)
+            {
+                case FIC_TOP_EDGE:
+                    d_framecomponent->setTopEdgeFormatting(fmt);
+                    break;
+                case FIC_BOTTOM_EDGE:
+                    d_framecomponent->setBottomEdgeFormatting(fmt);
+                    break;
+                case FIC_BACKGROUND:
+                    d_framecomponent->setBackgroundHorizontalFormatting(fmt);
+                    break;
+                default:
+                    CEGUI_THROW(InvalidRequestException(
+                        "[Falagard] " + HorzFormatPropertyElement + " within " +
+                        FrameComponentElement + " may only be used for "
+                        "TopEdge, BottomEdge or Background components. "
+                        "Received: " +
+                        attributes.getValueAsString(ComponentAttribute)));
+            }
+        }
         else if (d_imagerycomponent)
-            d_imagerycomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            d_imagerycomponent->setHorizontalFormattingPropertySource(attributes.getValueAsString(NameAttribute));
         else if (d_textcomponent)
-            d_textcomponent->setHorzFormattingPropertySource(attributes.getValueAsString(NameAttribute));
+            d_textcomponent->setHorizontalFormattingPropertySource(attributes.getValueAsString(NameAttribute));
     }
 
     /*************************************************************************
