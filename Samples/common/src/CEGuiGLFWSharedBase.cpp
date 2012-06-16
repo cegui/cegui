@@ -41,6 +41,9 @@
 CEGuiGLFWSharedBase* CEGuiGLFWSharedBase::d_appInstance = 0;
 double  CEGuiGLFWSharedBase::d_frameTime = 0;
 int CEGuiGLFWSharedBase::d_modifiers = 0;
+bool CEGuiGLFWSharedBase::d_windowSized = false;
+int CEGuiGLFWSharedBase::d_newWindowWidth;
+int CEGuiGLFWSharedBase::d_newWindowHeight;
 
 //----------------------------------------------------------------------------//
 CEGuiGLFWSharedBase::CEGuiGLFWSharedBase()
@@ -77,8 +80,20 @@ bool CEGuiGLFWSharedBase::execute_impl(CEGuiSample* sampleApp)
     // set starting time
     d_frameTime = glfwGetTime();
 
-    while (!isQuitting() && !glfwGetKey(GLFW_KEY_ESC) && glfwGetWindowParam(GLFW_OPENED))
+    while (!isQuitting() && !glfwGetKey(GLFW_KEY_ESC) &&
+           glfwGetWindowParam(GLFW_OPENED))
+    {
+        if (d_windowSized)
+        {
+            d_windowSized = false;
+            CEGUI::System::getSingleton().
+                notifyDisplaySizeChanged(
+                    CEGUI::Sizef(static_cast<float>(d_newWindowWidth),
+                                 static_cast<float>(d_newWindowHeight)));
+        }
+        
         drawFrame();
+    }
 
     glfwTerminate();
 
@@ -117,9 +132,11 @@ void CEGuiGLFWSharedBase::drawFrame(void)
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::glfwWindowResizeCallback(int w, int h)
 {
-    CEGUI::System::getSingleton().
-        notifyDisplaySizeChanged(CEGUI::Sizef(static_cast<float>(w),
-                                              static_cast<float>(h)));
+    // We cache this in order to minimise calls to notifyDisplaySizeChanged,
+    // which happens in the main loop whenever d_windowSized is set to true.
+    d_windowSized = true;
+    d_newWindowWidth = w;
+    d_newWindowHeight = h;
 }
 
 //----------------------------------------------------------------------------//
