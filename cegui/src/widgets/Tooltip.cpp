@@ -141,7 +141,7 @@ namespace CEGUI
         {
             if (d_target != wnd)
             {
-                getGUIContext().getRootWindow()->addChild(this);
+                wnd->getGUIContext().getRootWindow()->addChild(this);
                 d_target = wnd;
             }
 
