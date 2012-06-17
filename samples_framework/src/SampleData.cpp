@@ -121,6 +121,7 @@ void SampleData::initialise()
 
     d_textureTarget = system.getRenderer()->createTextureTarget();
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+    d_textureTarget->declareRenderSize(CEGUI::Sizef(200.f, 200.f));
 
     CEGUI::String imageName(d_textureTarget->getTexture().getName());
     d_textureTargetImage = static_cast<CEGUI::BasicImage*>(&CEGUI::ImageManager::getSingleton().create("BasicImage", "SampleBrowser/" + imageName));
