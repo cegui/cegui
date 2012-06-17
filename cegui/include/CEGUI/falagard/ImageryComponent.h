@@ -30,6 +30,7 @@
 
 #include "./ComponentBase.h"
 #include "../XMLSerializer.h"
+#include "CEGUI/falagard/FormattingSetting.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -87,7 +88,7 @@ namespace CEGUI
         \return
             One of the VerticalFormatting enumerated values.
         */
-        VerticalFormatting getVerticalFormatting() const;
+        VerticalFormatting getVerticalFormatting(const Window& wnd) const;
 
         /*!
         \brief
@@ -108,7 +109,7 @@ namespace CEGUI
         \return
             One of the HorizontalFormatting enumerated values.
         */
-        HorizontalFormatting getHorizontalFormatting() const;
+        HorizontalFormatting getHorizontalFormatting(const Window& wnd) const;
 
         /*!
         \brief
@@ -121,6 +122,20 @@ namespace CEGUI
             Nothing.
         */
         void setHorizontalFormatting(HorizontalFormatting fmt);
+
+        /*!
+        \brief
+            Set the name of a property that will be used to obtain the horizontal
+            formatting to use for this ImageryComponent.
+        */
+        void setHorizontalFormattingPropertySource(const String& property_name);
+
+        /*!
+        \brief
+            Set the name of a property that will be used to obtain the vertical
+            formatting to use for this ImageryComponent.
+        */
+        void setVerticalFormattingPropertySource(const String& property_name);
 
         /*!
         \brief
@@ -171,8 +186,10 @@ namespace CEGUI
         void render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const;
 
         const Image*         d_image;           //!< CEGUI::Image to be drawn by this image component.
-        VerticalFormatting   d_vertFormatting;  //!< Vertical formatting to be applied when rendering the image component.
-        HorizontalFormatting d_horzFormatting;  //!< Horizontal formatting to be applied when rendering the image component.
+        //! Vertical formatting to be applied when rendering the image component.
+        FormattingSetting<VerticalFormatting> d_vertFormatting;
+        //! Horizontal formatting to be applied when rendering the image component.
+        FormattingSetting<HorizontalFormatting> d_horzFormatting;
         String  d_imagePropertyName;            //!< Name of the property to access to obtain the image to be used.
     };
 

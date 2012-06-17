@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -31,161 +31,138 @@
 #include "CEGUI/Colour.h"
 #include <iostream>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-    FalagardComponentBase::FalagardComponentBase() :
-        d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
-    {}
+//----------------------------------------------------------------------------//
+FalagardComponentBase::FalagardComponentBase() :
+    d_colours(0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF)
+{}
 
-    FalagardComponentBase::~ FalagardComponentBase()
-    {}
+//----------------------------------------------------------------------------//
+FalagardComponentBase::~FalagardComponentBase()
+{}
 
-    void FalagardComponentBase::render(Window& srcWindow, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
+//----------------------------------------------------------------------------//
+void FalagardComponentBase::render(Window& srcWindow,
+                                   const CEGUI::ColourRect* modColours,
+                                   const Rectf* clipper,
+                                   bool clipToDisplay) const
+{
+    Rectf dest_rect(d_area.getPixelRect(srcWindow));
+
+    if (!clipper)
+        clipper = &dest_rect;
+
+    const Rectf final_clip_rect(dest_rect.getIntersection(*clipper));
+    render_impl(srcWindow, dest_rect, modColours,
+                &final_clip_rect, clipToDisplay);
+}
+
+//----------------------------------------------------------------------------//
+void FalagardComponentBase::render(Window& srcWindow,
+                                   const Rectf& baseRect,
+                                   const CEGUI::ColourRect* modColours,
+                                   const Rectf* clipper,
+                                   bool clipToDisplay) const
+{
+    Rectf dest_rect(d_area.getPixelRect(srcWindow, baseRect));
+
+    if (!clipper)
+        clipper = &dest_rect;
+
+    const Rectf final_clip_rect(dest_rect.getIntersection(*clipper));
+    render_impl(srcWindow, dest_rect, modColours,
+                &final_clip_rect, clipToDisplay);
+}
+
+//----------------------------------------------------------------------------//
+const ComponentArea& FalagardComponentBase::getComponentArea() const
+{
+    return d_area;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardComponentBase::setComponentArea(const ComponentArea& area)
+{
+    d_area = area;
+}
+
+//----------------------------------------------------------------------------//
+const ColourRect& FalagardComponentBase::getColours() const
+{
+    return d_colours;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardComponentBase::setColours(const ColourRect& cols)
+{
+    d_colours = cols;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardComponentBase::setColoursPropertySource(const String& property)
+{
+    d_colourPropertyName = property;
+}
+
+//----------------------------------------------------------------------------//
+void FalagardComponentBase::initColoursRect(const Window& wnd,
+                                            const ColourRect* modCols,
+                                            ColourRect& cr) const
+{
+    // if colours come via a colour property
+    if (!d_colourPropertyName.empty())
     {
-        Rectf dest_rect(d_area.getPixelRect(srcWindow));
-
-        if (!clipper)
-            clipper = &dest_rect;
-
-        const Rectf final_clip_rect(dest_rect.getIntersection(*clipper));
-        render_impl(srcWindow, dest_rect, modColours,
-                    &final_clip_rect, clipToDisplay);
+        // if property accesses a ColourRect or a colour
+        cr = PropertyHelper<ColourRect>::fromString(
+            wnd.getProperty(d_colourPropertyName));
     }
+    // use explicit ColourRect.
+    else
+        cr = d_colours;
 
-    void FalagardComponentBase::render(Window& srcWindow, const Rectf& baseRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clipToDisplay) const
+    if (modCols)
+        cr *= *modCols;
+}
+
+//----------------------------------------------------------------------------//
+bool FalagardComponentBase::writeColoursXML(XMLSerializer& xml_stream) const
+{
+
+    if (!d_colourPropertyName.empty())
     {
-        Rectf dest_rect(d_area.getPixelRect(srcWindow, baseRect));
-
-        if (!clipper)
-            clipper = &dest_rect;
-
-        const Rectf final_clip_rect(dest_rect.getIntersection(*clipper));
-        render_impl(srcWindow, dest_rect, modColours,
-                    &final_clip_rect, clipToDisplay);
+        xml_stream.openTag("ColourRectProperty");
+        xml_stream.attribute("name", d_colourPropertyName)
+            .closeTag();
     }
-
-    const ComponentArea& FalagardComponentBase::getComponentArea() const
+    else if (!d_colours.isMonochromatic() ||
+              d_colours.d_top_left != Colour(1,1,1,1))
     {
-        return d_area;
+        xml_stream.openTag("Colours")
+            .attribute("topLeft",
+                PropertyHelper<Colour>::toString(d_colours.d_top_left))
+            .attribute("topRight",
+                PropertyHelper<Colour>::toString(d_colours.d_top_right))
+            .attribute("bottomLeft",
+                PropertyHelper<Colour>::toString(d_colours.d_bottom_left))
+            .attribute("bottomRight",
+                PropertyHelper<Colour>::toString(d_colours.d_bottom_right))
+            .closeTag();
     }
-
-    void FalagardComponentBase::setComponentArea(const ComponentArea& area)
-    {
-        d_area = area;
-    }
-
-    const ColourRect& FalagardComponentBase::getColours() const
-    {
-        return d_colours;
-    }
-
-    void FalagardComponentBase::setColours(const ColourRect& cols)
-    {
-        d_colours = cols;
-    }
-
-    void FalagardComponentBase::setColoursPropertySource(const String& property)
-    {
-        d_colourPropertyName = property;
-    }
-
-    void FalagardComponentBase::initColoursRect(const Window& wnd, const ColourRect* modCols, ColourRect& cr) const
-    {
-        // if colours come via a colour property
-        if (!d_colourPropertyName.empty())
-        {
-            // if property accesses a ColourRect or a colour
-            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
-        }
-        // use explicit ColourRect.
-        else
-        {
-            cr = d_colours;
-        }
-
-        if (modCols)
-        {
-            cr *= *modCols;
-        }
-    }
-
-
-    const String& FalagardComponentBase::getVertFormattingPropertySource() const
-    {
-        return d_vertFormatPropertyName;
-    }
-
-    void FalagardComponentBase::setVertFormattingPropertySource(const String& property)
-    {
-        d_vertFormatPropertyName = property;
-    }
-
-    const String& FalagardComponentBase::getHorzFormattingPropertySource() const
-    {
-        return d_horzFormatPropertyName;
-    }
-
-    void FalagardComponentBase::setHorzFormattingPropertySource(const String& property)
-    {
-        d_horzFormatPropertyName = property;
-    }
-
-    bool FalagardComponentBase::writeColoursXML(XMLSerializer& xml_stream) const
-    {
-
-        if (!d_colourPropertyName.empty())
-        {
-            xml_stream.openTag("ColourRectProperty");
-            xml_stream.attribute("name", d_colourPropertyName)
-                .closeTag();
-        }
-        else if (!d_colours.isMonochromatic() || d_colours.d_top_left != Colour(1,1,1,1))
-        {
-            xml_stream.openTag("Colours")
-                .attribute("topLeft", PropertyHelper<Colour>::toString(d_colours.d_top_left))
-                .attribute("topRight", PropertyHelper<Colour>::toString(d_colours.d_top_right))
-                .attribute("bottomLeft", PropertyHelper<Colour>::toString(d_colours.d_bottom_left))
-                .attribute("bottomRight", PropertyHelper<Colour>::toString(d_colours.d_bottom_right))
-                .closeTag();
-        }
-        else
-        {
-            return false;
-        }
-        return true;
-    }
-
-    bool FalagardComponentBase::writeVertFormatXML(XMLSerializer& xml_stream) const
-    {
-        if (!d_vertFormatPropertyName.empty())
-        {
-            xml_stream.openTag("VertFormatProperty")
-                .attribute("name", d_vertFormatPropertyName)
-                .closeTag();
-            return true;
-        }
-
+    else
         return false;
-    }
 
-    bool FalagardComponentBase::writeHorzFormatXML(XMLSerializer& xml_stream) const
-    {
-        if (!d_horzFormatPropertyName.empty())
-        {
-            xml_stream.openTag("HorzFormatProperty")
-                .attribute("name", d_horzFormatPropertyName)
-                .closeTag();
-            return true;
-        }
+    return true;
+}
 
-        return false;
-    }
+//----------------------------------------------------------------------------//
+bool FalagardComponentBase::handleFontRenderSizeChange(Window& window,
+                                                       const Font* font) const
+{
+    return d_area.handleFontRenderSizeChange(window, font);
+}
 
-    bool FalagardComponentBase::handleFontRenderSizeChange(Window& window,
-                                                           const Font* font) const
-    {
-        return d_area.handleFontRenderSizeChange(window, font);
-    }
+//----------------------------------------------------------------------------//
 
-} // End of  CEGUI namespace section
+}
+

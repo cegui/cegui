@@ -480,15 +480,15 @@
 						<UnifiedDim scale="1" type="BottomEdge" />
 					</Dim>
 				</Area>
-				<Image type="TopLeftCorner" name="Vanilla-Images/FrameTopLeft" />
-				<Image type="TopRightCorner" name="Vanilla-Images/FrameTopRight" />
-				<Image type="BottomLeftCorner" name="Vanilla-Images/FrameBottomLeft" />
-				<Image type="BottomRightCorner" name="Vanilla-Images/FrameBottomRight" />
-				<Image type="LeftEdge" name="Vanilla-Images/FrameLeft" />
-				<Image type="TopEdge" name="Vanilla-Images/FrameTop" />
-				<Image type="RightEdge" name="Vanilla-Images/FrameRight" />
-				<Image type="BottomEdge" name="Vanilla-Images/FrameBottom" />
-				<Image type="Background" name="Vanilla-Images/GenericBrush" />
+				<Image component="TopLeftCorner" name="Vanilla-Images/FrameTopLeft" />
+				<Image component="TopRightCorner" name="Vanilla-Images/FrameTopRight" />
+				<Image component="BottomLeftCorner" name="Vanilla-Images/FrameBottomLeft" />
+				<Image component="BottomRightCorner" name="Vanilla-Images/FrameBottomRight" />
+				<Image component="LeftEdge" name="Vanilla-Images/FrameLeft" />
+				<Image component="TopEdge" name="Vanilla-Images/FrameTop" />
+				<Image component="RightEdge" name="Vanilla-Images/FrameRight" />
+				<Image component="BottomEdge" name="Vanilla-Images/FrameBottom" />
+				<Image component="Background" name="Vanilla-Images/GenericBrush" />
 				<ColourRectProperty name="Colour"/>
 			</FrameComponent>
 		</ImagerySection>
@@ -1599,15 +1599,15 @@
 						<UnifiedDim scale="1" type="BottomEdge" />
 					</Dim>
 				</Area>
-				<Image type="TopLeftCorner" name="Vanilla-Images/FrameTopLeft" />
-				<Image type="TopRightCorner" name="Vanilla-Images/FrameTopRight" />
-				<Image type="BottomLeftCorner" name="Vanilla-Images/FrameBottomLeft" />
-				<Image type="BottomRightCorner" name="Vanilla-Images/FrameBottomRight" />
-				<Image type="LeftEdge" name="Vanilla-Images/FrameLeft" />
-				<Image type="TopEdge" name="Vanilla-Images/FrameTop" />
-				<Image type="RightEdge" name="Vanilla-Images/FrameRight" />
-				<Image type="BottomEdge" name="Vanilla-Images/FrameBottom" />
-				<Image type="Background" name="Vanilla-Images/GenericBrush" />
+				<Image component="TopLeftCorner" name="Vanilla-Images/FrameTopLeft" />
+				<Image component="TopRightCorner" name="Vanilla-Images/FrameTopRight" />
+				<Image component="BottomLeftCorner" name="Vanilla-Images/FrameBottomLeft" />
+				<Image component="BottomRightCorner" name="Vanilla-Images/FrameBottomRight" />
+				<Image component="LeftEdge" name="Vanilla-Images/FrameLeft" />
+				<Image component="TopEdge" name="Vanilla-Images/FrameTop" />
+				<Image component="RightEdge" name="Vanilla-Images/FrameRight" />
+				<Image component="BottomEdge" name="Vanilla-Images/FrameBottom" />
+				<Image component="Background" name="Vanilla-Images/GenericBrush" />
 				<ColourRectProperty name="BackgroundColours"/>
 			</FrameComponent>
 		</ImagerySection>
@@ -1628,7 +1628,7 @@
 						<UnifiedDim scale="1" type="BottomEdge" />
 					</Dim>
 				</Area>
-				<Image type="Background" name="Vanilla-Images/GenericBrush" />
+				<Image component="Background" name="Vanilla-Images/GenericBrush" />
 				<ColourRectProperty name="BackgroundColours"/>
 			</FrameComponent>
 		</ImagerySection>

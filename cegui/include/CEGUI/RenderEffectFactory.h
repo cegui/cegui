@@ -46,7 +46,7 @@ public:
     virtual ~RenderEffectFactory() {}
 
     //! Create an instance of the RenderEffect that this factory creates.
-    virtual RenderEffect& create() = 0;
+    virtual RenderEffect& create(Window* window) = 0;
 
     //! Destroy an instance of the RenderEffect that this factory creates.
     virtual void destroy(RenderEffect& effect) = 0;
@@ -58,15 +58,15 @@ class TplRenderEffectFactory : public RenderEffectFactory
 {
 public:
     // Implement RenderEffectFactory interface
-    RenderEffect& create();
+    RenderEffect& create(Window* window);
     void destroy(RenderEffect& effect);
 };
 
 //---------------------------------------------------------------------------//
 template <typename T>
-RenderEffect& TplRenderEffectFactory<T>::create()
+RenderEffect& TplRenderEffectFactory<T>::create(Window* window)
 {
-    return *CEGUI_NEW_AO T;
+    return *CEGUI_NEW_AO T(window);
 }
 
 //---------------------------------------------------------------------------//

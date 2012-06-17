@@ -138,32 +138,42 @@ namespace CEGUI
         d_font = font;
     }
 
-    VerticalTextFormatting TextComponent::getVerticalFormatting() const
+    VerticalTextFormatting TextComponent::getVerticalFormatting(const Window& wnd) const
     {
-        return d_vertFormatting;
+        return d_vertFormatting.get(wnd);
     }
 
     void TextComponent::setVerticalFormatting(VerticalTextFormatting fmt)
     {
-        d_vertFormatting = fmt;
+        d_vertFormatting.set(fmt);
     }
 
-    HorizontalTextFormatting TextComponent::getHorizontalFormatting() const
+    HorizontalTextFormatting TextComponent::getHorizontalFormatting(const Window& wnd) const
     {
-        return d_horzFormatting;
+        return d_horzFormatting.get(wnd);
     }
 
     void TextComponent::setHorizontalFormatting(HorizontalTextFormatting fmt)
     {
-        d_horzFormatting = fmt;
+        d_horzFormatting.set(fmt);
+    }
+
+    void TextComponent::setHorizontalFormattingPropertySource(
+                                                const String& property_name)
+    {
+        d_horzFormatting.setPropertySource(property_name);
+    }
+
+    void TextComponent::setVerticalFormattingPropertySource(
+                                                const String& property_name)
+    {
+        d_vertFormatting.setPropertySource(property_name);
     }
 
     void TextComponent::setupStringFormatter(const Window& window,
                                              const RenderedString& rendered_string) const
     {
-        const HorizontalTextFormatting horzFormatting = d_horzFormatPropertyName.empty() ? d_horzFormatting :
-            FalagardXMLHelper<HorizontalTextFormatting>::fromString(
-                window.getProperty(d_horzFormatPropertyName));
+        const HorizontalTextFormatting horzFormatting = d_horzFormatting.get(window);
 
         // no formatting change
         if (horzFormatting == d_lastHorzFormatting)
@@ -267,9 +277,7 @@ namespace CEGUI
         const float textHeight = d_formattedRenderedString->getVerticalExtent();
 
         // handle dest area adjustments for vertical formatting.
-        VerticalTextFormatting vertFormatting = d_vertFormatPropertyName.empty() ? d_vertFormatting :
-            FalagardXMLHelper<VerticalTextFormatting>::fromString(
-                srcWindow.getProperty(d_vertFormatPropertyName));
+        const VerticalTextFormatting vertFormatting = d_vertFormatting.get(srcWindow);
 
         switch(vertFormatting)
         {
@@ -347,23 +355,8 @@ namespace CEGUI
         // get base class to write colours
         writeColoursXML(xml_stream);
 
-        // write vert format, allowing base class to do this for us if a propety is in use
-        if (!writeVertFormatXML(xml_stream))
-        {
-            // was not a property, so write out explicit formatting in use
-            xml_stream.openTag("VertFormat")
-                .attribute("type", FalagardXMLHelper<VerticalTextFormatting>::toString(d_vertFormatting))
-                .closeTag();
-        }
-
-        // write horz format, allowing base class to do this for us if a propety is in use
-        if (!writeHorzFormatXML(xml_stream))
-        {
-            // was not a property, so write out explicit formatting in use
-            xml_stream.openTag("HorzFormat")
-                .attribute("type", FalagardXMLHelper<HorizontalTextFormatting>::toString(d_horzFormatting))
-                .closeTag();
-        }
+        d_vertFormatting.writeXMLToStream(xml_stream);
+        d_horzFormatting.writeXMLToStream(xml_stream);
 
         // closing tag
         xml_stream.closeTag();
