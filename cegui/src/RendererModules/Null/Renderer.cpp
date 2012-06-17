@@ -263,6 +263,12 @@ Texture& NullRenderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool NullRenderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void NullRenderer::beginRendering()
 {
 }

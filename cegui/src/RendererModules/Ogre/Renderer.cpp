@@ -408,6 +408,12 @@ Texture& OgreRenderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool OgreRenderer::isTextureDefined(const String& name) const
+{
+    return d_pimpl->d_textures.find(name) != d_pimpl->d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
     if ( !d_pimpl->d_previousVP ) 

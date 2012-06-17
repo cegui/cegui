@@ -262,6 +262,12 @@ Texture& Direct3D10Renderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool Direct3D10Renderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void Direct3D10Renderer::beginRendering()
 {
     d_device->IASetInputLayout(d_inputLayout);

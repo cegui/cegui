@@ -377,6 +377,12 @@ Texture& OpenGLESRenderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLESRenderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void OpenGLESRenderer::beginRendering()
 {
     //save current attributes

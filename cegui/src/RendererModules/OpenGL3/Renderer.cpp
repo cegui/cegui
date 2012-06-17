@@ -397,6 +397,12 @@ Texture& OpenGL3Renderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGL3Renderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void OpenGL3Renderer::beginRendering()
 {
     // do required set-up.  yes, it really is this minimal ;)

@@ -207,6 +207,7 @@ public:
     void destroyTexture(const String& name);
     void destroyAllTextures();
     Texture& getTexture(const String& name) const;
+    bool isTextureDefined(const String& name) const;
     void beginRendering();
     void endRendering();
     void setDisplaySize(const Sizef& sz);
