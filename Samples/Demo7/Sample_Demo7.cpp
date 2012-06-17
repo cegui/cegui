@@ -41,10 +41,11 @@ const float MyEffect::tess_x = 8;
 const float MyEffect::tess_y = 8;
 
 //----------------------------------------------------------------------------//
-MyEffect::MyEffect() :
+MyEffect::MyEffect(CEGUI::Window* window) :
     initialised(false),
     dragX(0), dragY(0),
-    elasX(0), elasY(0)
+    elasX(0), elasY(0),
+    d_window(window)
 {
 }
 
@@ -220,7 +221,7 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 
         // note we just need system to redraw the geometry; we do not need a
         // full redraw of all window/widget content - which is unchanged.
-        //guiContext->markAsDirty(); 
+        d_window->getGUIContext().markAsDirty();
         return false;
     }
 

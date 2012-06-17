@@ -250,8 +250,6 @@
 
 #include "PropertyIterator.pypp.hpp"
 
-#include "PropertyList.pypp.hpp"
-
 #include "PropertyReceiver.pypp.hpp"
 
 #include "PropertySet.pypp.hpp"
@@ -460,6 +458,8 @@
 
 #include "XMLSerializer.pypp.hpp"
 
+#include "vector_less__CEGUI_scope_PropertyDefinitionBase_ptr___greater_.pypp.hpp"
+
 #include "vector_less__CEGUI_scope_UDim__greater_.pypp.hpp"
 
 namespace bp = boost::python;
@@ -557,7 +557,7 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_PropertyInitialiserVector_class();
 
-    register_PropertyList_class();
+    register_vector_less__CEGUI_scope_PropertyDefinitionBase_ptr___greater__class();
 
     register_LineList_class();
 

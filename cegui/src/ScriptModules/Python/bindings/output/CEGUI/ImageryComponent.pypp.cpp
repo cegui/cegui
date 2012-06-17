@@ -54,14 +54,6 @@ struct ImageryComponent_wrapper : CEGUI::ImageryComponent, bp::wrapper< CEGUI::I
         return CEGUI::FalagardComponentBase::writeColoursXML( boost::ref(xml_stream) );
     }
 
-    bool writeHorzFormatXML( ::CEGUI::XMLSerializer & xml_stream ) const {
-        return CEGUI::FalagardComponentBase::writeHorzFormatXML( boost::ref(xml_stream) );
-    }
-
-    bool writeVertFormatXML( ::CEGUI::XMLSerializer & xml_stream ) const {
-        return CEGUI::FalagardComponentBase::writeVertFormatXML( boost::ref(xml_stream) );
-    }
-
 };
 
 void register_ImageryComponent_class(){
@@ -78,11 +70,12 @@ void register_ImageryComponent_class(){
         bp::scope ImageryComponent_scope( ImageryComponent_exposer );
         { //::CEGUI::ImageryComponent::getHorizontalFormatting
         
-            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::ImageryComponent::*getHorizontalFormatting_function_type )(  ) const;
+            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::ImageryComponent::*getHorizontalFormatting_function_type )( ::CEGUI::Window const & ) const;
             
             ImageryComponent_exposer.def( 
                 "getHorizontalFormatting"
                 , getHorizontalFormatting_function_type( &::CEGUI::ImageryComponent::getHorizontalFormatting )
+                , ( bp::arg("wnd") )
                 , "*!\n\
                     \n\
                         Return the current horizontal formatting setting for this ImageryComponent.\n\
@@ -129,11 +122,12 @@ void register_ImageryComponent_class(){
         }
         { //::CEGUI::ImageryComponent::getVerticalFormatting
         
-            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::ImageryComponent::*getVerticalFormatting_function_type )(  ) const;
+            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::ImageryComponent::*getVerticalFormatting_function_type )( ::CEGUI::Window const & ) const;
             
             ImageryComponent_exposer.def( 
                 "getVerticalFormatting"
                 , getVerticalFormatting_function_type( &::CEGUI::ImageryComponent::getVerticalFormatting )
+                , ( bp::arg("wnd") )
                 , "*!\n\
                     \n\
                         Return the current vertical formatting setting for this ImageryComponent.\n\
@@ -190,6 +184,21 @@ void register_ImageryComponent_class(){
                     @return\n\
                         Nothing.\n\
                     *\n" );
+        
+        }
+        { //::CEGUI::ImageryComponent::setHorizontalFormattingPropertySource
+        
+            typedef void ( ::CEGUI::ImageryComponent::*setHorizontalFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            ImageryComponent_exposer.def( 
+                "setHorizontalFormattingPropertySource"
+                , setHorizontalFormattingPropertySource_function_type( &::CEGUI::ImageryComponent::setHorizontalFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
+            \n\
+                Set the name of a property that will be used to obtain the horizontal\n\
+                formatting to use for this ImageryComponent.\n\
+            *\n" );
         
         }
         { //::CEGUI::ImageryComponent::setImage
@@ -274,6 +283,21 @@ void register_ImageryComponent_class(){
                     *\n" );
         
         }
+        { //::CEGUI::ImageryComponent::setVerticalFormattingPropertySource
+        
+            typedef void ( ::CEGUI::ImageryComponent::*setVerticalFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            ImageryComponent_exposer.def( 
+                "setVerticalFormattingPropertySource"
+                , setVerticalFormattingPropertySource_function_type( &::CEGUI::ImageryComponent::setVerticalFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
+            \n\
+                Set the name of a property that will be used to obtain the vertical\n\
+                formatting to use for this ImageryComponent.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::ImageryComponent::writeXMLToStream
         
             typedef void ( ::CEGUI::ImageryComponent::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
@@ -314,17 +338,7 @@ void register_ImageryComponent_class(){
             ImageryComponent_exposer.def( 
                 "initColoursRect"
                 , initColoursRect_function_type( &ImageryComponent_wrapper::initColoursRect )
-                , ( bp::arg("wnd"), bp::arg("modCols"), bp::arg("cr") )
-                , "*!\n\
-                    \n\
-                        Helper method to initialise a ColourRect with appropriate values according to the way\
-                        the\n\
-                        ImageryComponent is set up.\n\
-            \n\
-                        This will try and get values from multiple places:\n\
-                            - a property attached to  wnd\n\
-                            - or the integral d_colours value.\n\
-                    *\n" );
+                , ( bp::arg("wnd"), bp::arg("modCols"), bp::arg("cr") ) );
         
         }
         { //::CEGUI::FalagardComponentBase::writeColoursXML
@@ -336,65 +350,19 @@ void register_ImageryComponent_class(){
                 , writeColoursXML_function_type( &ImageryComponent_wrapper::writeColoursXML )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-                    \n\
-                        Writes xml for the colours to a OutStream.  Will prefer property colours before\
-                        explicit.\n\
+                \n\
+                    Writes xml for the colours to a OutStream.\n\
+                    Will prefer property colours before explicit.\n\
             \n\
-                    \note\n\
-                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
+                \note\n\
+                    This is intended as a helper function for sub-classes when outputting\n\
+                    xml to a stream.\n\
             \n\
-            \n\
-                    @return\n\
-                        - true if xml element was written.\n\
-                        - false if nothing was output due to the formatting not being set (sub-class may then\
-                        choose to do something else.)\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::FalagardComponentBase::writeHorzFormatXML
-        
-            typedef bool ( ImageryComponent_wrapper::*writeHorzFormatXML_function_type )( ::CEGUI::XMLSerializer & ) const;
-            
-            ImageryComponent_exposer.def( 
-                "writeHorzFormatXML"
-                , writeHorzFormatXML_function_type( &ImageryComponent_wrapper::writeHorzFormatXML )
-                , ( bp::arg("xml_stream") )
-                , "*!\n\
-                    \n\
-                        Writes xml for the horizontal formatting to a OutStream if such a property is defined.\n\
-            \n\
-                    \note\n\
-                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
-            \n\
-            \n\
-                    @return\n\
-                        - true if xml element was written.\n\
-                        - false if nothing was output due to the formatting not being set (sub-class may then\
-                        choose to do something else.)\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::FalagardComponentBase::writeVertFormatXML
-        
-            typedef bool ( ImageryComponent_wrapper::*writeVertFormatXML_function_type )( ::CEGUI::XMLSerializer & ) const;
-            
-            ImageryComponent_exposer.def( 
-                "writeVertFormatXML"
-                , writeVertFormatXML_function_type( &ImageryComponent_wrapper::writeVertFormatXML )
-                , ( bp::arg("xml_stream") )
-                , "*!\n\
-                    \n\
-                        Writes xml for the vertical formatting to a OutStream if such a property is defined.\n\
-            \n\
-                    \note\n\
-                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
-            \n\
-            \n\
-                    @return\n\
-                        - true if xml element was written.\n\
-                        - false if nothing was output due to the formatting not being set (sub-class may then\
-                        choose to do something else.)\n\
-                    *\n" );
+                @return\n\
+                    - true if xml element was written.\n\
+                    - false if nothing was output due to the formatting not being set\n\
+                      (sub-class may then choose to do something else.)\n\
+                *\n" );
         
         }
     }

@@ -140,6 +140,10 @@ public:
         String object describing the identifier of the RenderEffect based
         class that is to be created.
 
+    \param window
+        Pointer to a Window object.  Exactly how or if this is used will
+        depend upon the specific effect being created.
+
     \return
         Reference to the newly created RenderEffect.
 
@@ -147,7 +151,7 @@ public:
         thrown if no RenderEffect class has been registered using the
         identifier \a name.
     */
-    RenderEffect& create(const String& name);
+    RenderEffect& create(const String& name, Window* window);
 
     /*!
     \brief

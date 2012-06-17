@@ -28,101 +28,104 @@
 #ifndef _CEGUIFalPropertyDefinition_h_
 #define _CEGUIFalPropertyDefinition_h_
 
-#include "./PropertyDefinitionBase.h"
-#include "../Logger.h"
-// Start of CEGUI namespace section
+#include "CEGUI/falagard/FalagardPropertyBase.h"
+#include "CEGUI/Logger.h"
+
 namespace CEGUI
 {
-    /*!
-    \brief
-        Class representing a generic get/set property.
-    */
 template <typename T>
-    class PropertyDefinition : public PropertyDefinitionBase<T>
+class PropertyDefinition : public FalagardPropertyBase<T>
+{
+public:
+    typedef typename TypedProperty<T>::Helper Helper;
+
+    //------------------------------------------------------------------------//
+    PropertyDefinition(const String& name, const String& initialValue,
+                       const String& help, const String& origin,
+                       bool redrawOnWrite, bool layoutOnWrite,
+                       const String& fireEvent, const String& eventNamespace) :
+        FalagardPropertyBase<T>(name, help, initialValue, origin,
+                                redrawOnWrite, layoutOnWrite,
+                                fireEvent, eventNamespace),
+        d_userStringName(name + "_fal_auto_prop__")
     {
-    public:
-        typedef typename PropertyDefinitionBase<T>::Helper Helper;
+    }
 
-        //! Constructor.
-        PropertyDefinition(const String& name,
-                           const String& initialValue,
-                           const String& help,
-                           const String& origin,
-                           bool redrawOnWrite,
-                           bool layoutOnWrite,
-                           const String& fireEvent,
-                           const String& eventNamespace)
-        : PropertyDefinitionBase<T>(name, help, initialValue, origin,
-                                    redrawOnWrite, layoutOnWrite,
-                                    fireEvent, eventNamespace),
-          d_userStringName(name + "_fal_auto_prop__")
+    //------------------------------------------------------------------------//
+    ~PropertyDefinition() {}
+
+    //------------------------------------------------------------------------//
+    void initialisePropertyReceiver(PropertyReceiver* receiver) const
+    {
+        setWindowUserString(static_cast<Window*>(receiver), this->d_default);
+    }
+
+    //------------------------------------------------------------------------//
+    Property* clone() const
+    {
+        return CEGUI_NEW_AO PropertyDefinition<T>(*this);
+    }
+
+protected:
+    //------------------------------------------------------------------------//
+    typename Helper::safe_method_return_type 
+    getNative_impl(const PropertyReceiver* receiver) const
+    {
+        const Window* const wnd = static_cast<const Window*>(receiver);
+
+        // the try/catch is used instead of querying the existence of the user
+        // string in order that for the 'usual' case - where the user string
+        // exists - there is basically no additional overhead, and that any
+        // overhead is incurred only for the initial creation of the user
+        // string.
+        // Maybe the only negative here is that an error gets logged, though
+        // this can be treated as a 'soft' error.
+        CEGUI_TRY
         {
+            return Helper::fromString(wnd->getUserString(d_userStringName));
         }
-
-        virtual ~PropertyDefinition() {}
-
-        virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const
+        CEGUI_CATCH (UnknownObjectException&)
         {
-            setWindowUserString(static_cast<Window*>(receiver), this->d_default);
+            Logger::getSingleton().logEvent(
+                "PropertyDefiniton::get: Defining new user string: " +
+                d_userStringName);
+
+            // HACK: FIXME: TODO: This const_cast is basically to allow the
+            // above mentioned performance measure; the alternative would be
+            // to just return d_default, and while technically correct, it
+            // would be very slow.
+            const_cast<Window*>(wnd)->
+                setUserString(d_userStringName, TypedProperty<T>::d_default);
+
+            return Helper::fromString(TypedProperty<T>::d_default);
         }
+    }
 
-        virtual Property* clone() const
-        {
-            return CEGUI_NEW_AO PropertyDefinition<T>(*this);
-        }
+    //------------------------------------------------------------------------//
+    void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
+    {
+        setWindowUserString(static_cast<Window*>(receiver), Helper::toString(value));
+        FalagardPropertyBase<T>::setNative_impl(receiver, value);
+    }
 
-    protected:
-        typename Helper::safe_method_return_type getNative_impl(const PropertyReceiver* receiver) const
-        {
-            const Window* const wnd = static_cast<const Window*>(receiver);
+    //------------------------------------------------------------------------//
+    void setWindowUserString(Window* window, const String& value) const
+    {
+        window->setUserString(d_userStringName, value);
+    }
 
-            // the try/catch is used instead of querying the existence of the user
-            // string in order that for the 'usual' case - where the user string
-            // exists - there is basically no additional overhead, and that any
-            // overhead is incurred only for the initial creation of the user
-            // string.
-            // Maybe the only negative here is that an error gets logged, though
-            // this can be treated as a 'soft' error.
-            CEGUI_TRY
-            {
-                return Helper::fromString(wnd->getUserString(d_userStringName));
-            }
-            CEGUI_CATCH (UnknownObjectException&)
-            {
-                Logger::getSingleton().logEvent(
-                    "PropertyDefiniton::get: Defining new user string: " +
-                    d_userStringName);
+    //------------------------------------------------------------------------//
+    void writeDefinitionXMLElementType(XMLSerializer& xml_stream) const
+    {
+        xml_stream.openTag("PropertyDefinition");
+    }
 
-                // HACK: FIXME: TODO: This const_cast is basically to allow the
-                // above mentioned performance measure; the alternative would be
-                // to just return d_default, and while technically correct, it
-                // would be very slow.
-                const_cast<Window*>(wnd)->
-                    setUserString(d_userStringName, TypedProperty<T>::d_default);
+    //------------------------------------------------------------------------//
 
-                return Helper::fromString(TypedProperty<T>::d_default);
-            }
-        }
-        virtual void setNative_impl(PropertyReceiver* receiver,typename Helper::pass_type value)
-        {
-            setWindowUserString(static_cast<Window*>(receiver), Helper::toString(value));
-            PropertyDefinitionBase<T>::setNative_impl(receiver, value);
-        }
+    String d_userStringName;
+};
 
-        void setWindowUserString(Window* window, const String& value) const
-        {
-            window->setUserString(d_userStringName, value);
-        }
+}
 
-        void writeFalagardXMLElementType(XMLSerializer& xml_stream) const
-        {
-            xml_stream.openTag("PropertyDefinition");
-        }
+#endif
 
-        String d_userStringName;
-    };
-
-} // End of  CEGUI namespace section
-
-
-#endif  // end of guard _CEGUIFalPropertyDefinition_h_
