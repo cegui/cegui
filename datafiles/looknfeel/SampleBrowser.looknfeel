@@ -52,15 +52,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
-                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
-                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
-                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
-                <Image type="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
-                <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
-                <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
-                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
+                <Image component="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
+                <Image component="TopEdge" name="SampleBrowserSkin/FrameTop" />
+                <Image component="RightEdge" name="SampleBrowserSkin/FrameRight" />
+                <Image component="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
+                <Image component="Background" name="SampleBrowserSkin/GenericFiller" />
             </FrameComponent>
         </ImagerySection>
 
@@ -72,14 +72,14 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
-                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
-                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
-                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
-                <Image type="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
-                <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
-                <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
+                <Image component="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
+                <Image component="TopEdge" name="SampleBrowserSkin/FrameTop" />
+                <Image component="RightEdge" name="SampleBrowserSkin/FrameRight" />
+                <Image component="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
             </FrameComponent>
         </ImagerySection>
 
@@ -103,7 +103,7 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+                <Image component="Background" name="SampleBrowserSkin/GenericFiller" />
             </FrameComponent>
         </ImagerySection>
 
@@ -115,7 +115,7 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="Background" name="SampleBrowserSkin/GenericFiller" />
+                <Image component="Background" name="SampleBrowserSkin/GenericFiller" />
             </FrameComponent>
         </ImagerySection>
 
@@ -134,14 +134,14 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="SampleBrowserSkin/TextBoxTL" />
-                <Image type="TopRightCorner" name="SampleBrowserSkin/TextBoxTR" />
-                <Image type="BottomLeftCorner" name="SampleBrowserSkin/TextBoxBL" />
-                <Image type="BottomRightCorner" name="SampleBrowserSkin/TextBoxBR" />
-                <Image type="LeftEdge" name="SampleBrowserSkin/TextBoxL" />
-                <Image type="TopEdge" name="SampleBrowserSkin/TextBoxT" />
-                <Image type="RightEdge" name="SampleBrowserSkin/TextBoxR" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/TextBoxB" />
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/TextBoxTL" />
+                <Image component="TopRightCorner" name="SampleBrowserSkin/TextBoxTR" />
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/TextBoxBL" />
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/TextBoxBR" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/TextBoxL" />
+                <Image component="TopEdge" name="SampleBrowserSkin/TextBoxT" />
+                <Image component="RightEdge" name="SampleBrowserSkin/TextBoxR" />
+                <Image component="BottomEdge" name="SampleBrowserSkin/TextBoxB" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="with_frame_background">
@@ -364,14 +364,14 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
-                <Image type="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
-                <Image type="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
-                <Image type="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
-                <Image type="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
-                <Image type="TopEdge" name="SampleBrowserSkin/FrameTop" />
-                <Image type="RightEdge" name="SampleBrowserSkin/FrameRight" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/FrameTopLeft" />
+                <Image component="TopRightCorner" name="SampleBrowserSkin/FrameTopRight" />
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/FrameBottomLeft" />
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/FrameBottomRight" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/FrameLeft" />
+                <Image component="TopEdge" name="SampleBrowserSkin/FrameTop" />
+                <Image component="RightEdge" name="SampleBrowserSkin/FrameRight" />
+                <Image component="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
 				<ColourRectProperty name="FrameColours" />
             </FrameComponent>
         </ImagerySection>
@@ -434,9 +434,9 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="SampleBrowserSkin/CaptionL" />
-                <Image type="RightEdge" name="SampleBrowserSkin/CaptionR" />
-                <Image type="Background" name="SampleBrowserSkin/CaptionM" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/CaptionL" />
+                <Image component="RightEdge" name="SampleBrowserSkin/CaptionR" />
+                <Image component="Background" name="SampleBrowserSkin/CaptionM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="caption">
@@ -561,15 +561,15 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image type="TopLeftCorner" name="SampleBrowserSkin/TrayTL" />
-                <Image type="TopRightCorner" name="SampleBrowserSkin/TrayTR" />
-                <Image type="BottomLeftCorner" name="SampleBrowserSkin/TrayBL" />
-                <Image type="BottomRightCorner" name="SampleBrowserSkin/TrayBR" />
-                <Image type="LeftEdge" name="SampleBrowserSkin/TrayL" />
-                <Image type="TopEdge" name="SampleBrowserSkin/TrayT" />
-                <Image type="RightEdge" name="SampleBrowserSkin/TrayR" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/TrayB" />
-                <Image type="Background" name="SampleBrowserSkin/TrayM" />
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/TrayTL" />
+                <Image component="TopRightCorner" name="SampleBrowserSkin/TrayTR" />
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/TrayBL" />
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/TrayBR" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/TrayL" />
+                <Image component="TopEdge" name="SampleBrowserSkin/TrayT" />
+                <Image component="RightEdge" name="SampleBrowserSkin/TrayR" />
+                <Image component="BottomEdge" name="SampleBrowserSkin/TrayB" />
+                <Image component="Background" name="SampleBrowserSkin/TrayM" />
             </FrameComponent>
         </ImagerySection>
         <ImagerySection name="noframe">
@@ -977,9 +977,9 @@
                         </UnifiedDim>
                     </Dim>
                 </Area>
-                <Image type="TopEdge" name="SampleBrowserSkin/VertTrackT" />
-                <Image type="BottomEdge" name="SampleBrowserSkin/VertTrackB" />
-                <Image type="Background" name="SampleBrowserSkin/VertTrackM" />
+                <Image component="TopEdge" name="SampleBrowserSkin/VertTrackT" />
+                <Image component="BottomEdge" name="SampleBrowserSkin/VertTrackB" />
+                <Image component="Background" name="SampleBrowserSkin/VertTrackM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
@@ -1045,9 +1045,9 @@
                     </Dim>
                     <Dim type="Height"><UnifiedDim scale="0.78" type="Height" /></Dim>
                 </Area>
-                <Image type="LeftEdge" name="SampleBrowserSkin/HorzTrackL" />
-                <Image type="RightEdge" name="SampleBrowserSkin/HorzTrackR" />
-                <Image type="Background" name="SampleBrowserSkin/HorzTrackM" />
+                <Image component="LeftEdge" name="SampleBrowserSkin/HorzTrackL" />
+                <Image component="RightEdge" name="SampleBrowserSkin/HorzTrackR" />
+                <Image component="Background" name="SampleBrowserSkin/HorzTrackM" />
             </FrameComponent>
         </ImagerySection>
         <StateImagery name="Enabled">
