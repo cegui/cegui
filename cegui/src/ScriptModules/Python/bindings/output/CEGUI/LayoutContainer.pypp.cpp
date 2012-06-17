@@ -148,6 +148,18 @@ struct LayoutContainer_wrapper : CEGUI::LayoutContainer, bp::wrapper< CEGUI::Lay
         CEGUI::LayoutContainer::notifyScreenAreaChanged( recursive );
     }
 
+    virtual void onParentSized( ::CEGUI::ElementEventArgs & e ){
+        if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
+            func_onParentSized( boost::ref(e) );
+        else{
+            this->CEGUI::LayoutContainer::onParentSized( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onParentSized( ::CEGUI::ElementEventArgs & e ){
+        CEGUI::LayoutContainer::onParentSized( boost::ref(e) );
+    }
+
     virtual void removeChild_impl( ::CEGUI::Element * element ){
         if( bp::override func_removeChild_impl = this->get_override( "removeChild_impl" ) )
             func_removeChild_impl( boost::python::ptr(element) );
@@ -964,18 +976,6 @@ struct LayoutContainer_wrapper : CEGUI::LayoutContainer, bp::wrapper< CEGUI::Lay
         CEGUI::Window::onParentDestroyChanged( boost::ref(e) );
     }
 
-    virtual void onParentSized( ::CEGUI::ElementEventArgs & e ){
-        if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
-            func_onParentSized( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onParentSized( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onParentSized( ::CEGUI::ElementEventArgs & e ){
-        CEGUI::Window::onParentSized( boost::ref(e) );
-    }
-
     virtual void onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onRenderingEnded = this->get_override( "onRenderingEnded" ) )
             func_onRenderingEnded( boost::ref(e) );
@@ -1635,6 +1635,17 @@ void register_LayoutContainer_class(){
                 , notifyScreenAreaChanged_function_type(&::CEGUI::LayoutContainer::notifyScreenAreaChanged)
                 , default_notifyScreenAreaChanged_function_type(&LayoutContainer_wrapper::default_notifyScreenAreaChanged)
                 , ( bp::arg("recursive") ) );
+        
+        }
+        { //::CEGUI::LayoutContainer::onParentSized
+        
+            typedef void ( LayoutContainer_wrapper::*onParentSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
+            
+            LayoutContainer_exposer.def( 
+                "onParentSized"
+                , onParentSized_function_type( &LayoutContainer_wrapper::default_onParentSized )
+                , ( bp::arg("e") )
+                , "overridden from parent class\n" );
         
         }
         { //::CEGUI::LayoutContainer::removeChild_impl
@@ -2968,27 +2979,6 @@ void register_LayoutContainer_class(){
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\
                     that triggered the event.  For this event the trigger window is always\n\
                     'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onParentSized
-        
-            typedef void ( LayoutContainer_wrapper::*onParentSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
-            
-            LayoutContainer_exposer.def( 
-                "onParentSized"
-                , onParentSized_function_type( &LayoutContainer_wrapper::default_onParentSized )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when this window's parent window has been resized.  If\n\
-                    this window is the root  GUI Sheet window, this call will be made when\n\
-                    the display size changes.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set the the\n\
-                    window that caused the event; this is typically either this window's\n\
-                    parent window, or NULL to indicate the screen size has changed.\n\
                 *\n" );
         
         }

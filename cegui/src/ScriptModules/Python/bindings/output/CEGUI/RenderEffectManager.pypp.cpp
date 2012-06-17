@@ -14,12 +14,12 @@ void register_RenderEffectManager_class(){
         bp::scope RenderEffectManager_scope( RenderEffectManager_exposer );
         { //::CEGUI::RenderEffectManager::create
         
-            typedef ::CEGUI::RenderEffect & ( ::CEGUI::RenderEffectManager::*create_function_type )( ::CEGUI::String const & ) ;
+            typedef ::CEGUI::RenderEffect & ( ::CEGUI::RenderEffectManager::*create_function_type )( ::CEGUI::String const &,::CEGUI::Window * ) ;
             
             RenderEffectManager_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::RenderEffectManager::create )
-                , ( bp::arg("name") )
+                , ( bp::arg("name"), bp::arg("window") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -29,6 +29,10 @@ void register_RenderEffectManager_class(){
                 @param name\n\
                     String object describing the identifier of the RenderEffect based\n\
                     class that is to be created.\n\
+            \n\
+                @param window\n\
+                    Pointer to a Window object.  Exactly how or if this is used will\n\
+                    depend upon the specific effect being created.\n\
             \n\
                 @return\n\
                     Reference to the newly created RenderEffect.\n\

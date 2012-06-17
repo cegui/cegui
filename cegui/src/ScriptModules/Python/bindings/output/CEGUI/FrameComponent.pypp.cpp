@@ -22,8 +22,8 @@ struct FrameComponent_wrapper : CEGUI::FrameComponent, bp::wrapper< CEGUI::Frame
     
     }
 
-    void doBackgroundRender( ::CEGUI::Window & srcWindow, ::CEGUI::Image const * image, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const & colours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
-        CEGUI::FrameComponent::doBackgroundRender( boost::ref(srcWindow), boost::python::ptr(image), boost::ref(destRect), boost::ref(colours), boost::python::ptr(clipper), clipToDisplay );
+    void renderImage( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Image const * image, ::CEGUI::VerticalFormatting vertFmt, ::CEGUI::HorizontalFormatting horzFmt, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const & colours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
+        CEGUI::FrameComponent::renderImage( boost::ref(buffer), boost::python::ptr(image), vertFmt, horzFmt, boost::ref(destRect), boost::ref(colours), boost::python::ptr(clipper), clipToDisplay );
     }
 
     virtual void render_impl( ::CEGUI::Window & srcWindow, ::CEGUI::Rectf & destRect, ::CEGUI::ColourRect const * modColours, ::CEGUI::Rectf const * clipper, bool clipToDisplay ) const {
@@ -58,14 +58,6 @@ struct FrameComponent_wrapper : CEGUI::FrameComponent, bp::wrapper< CEGUI::Frame
         return CEGUI::FalagardComponentBase::writeColoursXML( boost::ref(xml_stream) );
     }
 
-    bool writeHorzFormatXML( ::CEGUI::XMLSerializer & xml_stream ) const {
-        return CEGUI::FalagardComponentBase::writeHorzFormatXML( boost::ref(xml_stream) );
-    }
-
-    bool writeVertFormatXML( ::CEGUI::XMLSerializer & xml_stream ) const {
-        return CEGUI::FalagardComponentBase::writeVertFormatXML( boost::ref(xml_stream) );
-    }
-
 };
 
 void register_FrameComponent_class(){
@@ -73,59 +65,65 @@ void register_FrameComponent_class(){
     { //::CEGUI::FrameComponent
         typedef bp::class_< FrameComponent_wrapper, bp::bases< CEGUI::FalagardComponentBase > > FrameComponent_exposer_t;
         FrameComponent_exposer_t FrameComponent_exposer = FrameComponent_exposer_t( "FrameComponent", "*!\n\
-            \n\
-                Class that encapsulates information for a frame with background (9 images in total)\n\
         \n\
-                Corner images are always drawn at their natural size, edges are stretched between the\
-                corner\n\
-                pieces for a particular edge, the background image will cover the inner rectangle formed\
-                by\n\
-                the edge images and can be stretched or tiled in either dimension.\n\
-            *\n", bp::init< >("*!\n\
+            Class that encapsulates information for a frame with background\n\
+            (9 images in total)\n\
         \n\
-            Constructor\n\
-        *\n") );
+            Corner images are always drawn at their natural size, edges can be fomatted\n\
+            (stretched, tiled or aligned) between the corner pieces for a particular\n\
+            edge, the background image will cover the inner rectangle formed by the edge\n\
+            images and can be formatted in both dimensions.\n\
+        *\n", bp::init< >() );
         bp::scope FrameComponent_scope( FrameComponent_exposer );
-        { //::CEGUI::FrameComponent::doBackgroundRender
-        
-            typedef void ( FrameComponent_wrapper::*doBackgroundRender_function_type )( ::CEGUI::Window &,::CEGUI::Image const *,::CEGUI::Rectf &,::CEGUI::ColourRect const &,::CEGUI::Rectf const *,bool ) const;
-            
-            FrameComponent_exposer.def( 
-                "doBackgroundRender"
-                , doBackgroundRender_function_type( &FrameComponent_wrapper::doBackgroundRender )
-                , ( bp::arg("srcWindow"), bp::arg("image"), bp::arg("destRect"), bp::arg("colours"), bp::arg("clipper"), bp::arg("clipToDisplay") ) );
-        
-        }
         { //::CEGUI::FrameComponent::getBackgroundHorizontalFormatting
         
-            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::FrameComponent::*getBackgroundHorizontalFormatting_function_type )(  ) const;
+            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::FrameComponent::*getBackgroundHorizontalFormatting_function_type )( ::CEGUI::Window const & ) const;
             
             FrameComponent_exposer.def( 
                 "getBackgroundHorizontalFormatting"
                 , getBackgroundHorizontalFormatting_function_type( &::CEGUI::FrameComponent::getBackgroundHorizontalFormatting )
+                , ( bp::arg("wnd") )
                 , "*!\n\
-                    \n\
-                        Return the current horizontal formatting setting for this FrameComponent.\n\
+                \n\
+                    Return the horizontal formatting to be used for the background image.\n\
             \n\
-                    @return\n\
-                        One of the HorizontalFormatting enumerated values.\n\
-                    *\n" );
+                @return\n\
+                    One of the HorizontalFormatting enumerated values.\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::getBackgroundVerticalFormatting
         
-            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::FrameComponent::*getBackgroundVerticalFormatting_function_type )(  ) const;
+            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::FrameComponent::*getBackgroundVerticalFormatting_function_type )( ::CEGUI::Window const & ) const;
             
             FrameComponent_exposer.def( 
                 "getBackgroundVerticalFormatting"
                 , getBackgroundVerticalFormatting_function_type( &::CEGUI::FrameComponent::getBackgroundVerticalFormatting )
+                , ( bp::arg("wnd") )
                 , "*!\n\
-                    \n\
-                        Return the current vertical formatting setting for this FrameComponent.\n\
+                \n\
+                    Return the vertical formatting to be used for the background image.\n\
             \n\
-                    @return\n\
-                        One of the VerticalFormatting enumerated values.\n\
-                    *\n" );
+                @return\n\
+                    One of the VerticalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::getBottomEdgeFormatting
+        
+            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::FrameComponent::*getBottomEdgeFormatting_function_type )( ::CEGUI::Window const & ) const;
+            
+            FrameComponent_exposer.def( 
+                "getBottomEdgeFormatting"
+                , getBottomEdgeFormatting_function_type( &::CEGUI::FrameComponent::getBottomEdgeFormatting )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return the formatting to be used for the bottom edge image.\n\
+            \n\
+                @return\n\
+                    One of the HorizontalFormatting enumerated values.\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::getImage
@@ -138,23 +136,23 @@ void register_FrameComponent_class(){
                 , ( bp::arg("part"), bp::arg("wnd") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-                    \n\
-                        Return the Image object that will be drawn by this FrameComponent\n\
-                        for a specified frame part.\n\
+                \n\
+                    Return the Image object that will be drawn by this FrameComponent\n\
+                    for a specified frame part.\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image to be accessed.\n\
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to be accessed.\n\
             \n\
-                    @param wnd\n\
-                        Reference to a Window object that will be accessed if the image\n\
-                        component is fetched from a Property.\n\
+                @param wnd\n\
+                    Reference to a Window object that will be accessed if the image\n\
+                    component is fetched from a Property.\n\
             \n\
-                    @return\n\
-                        pointer to an Image object, or 0 if the image had not been set\n\
-                        or if the image is sourced from a property that returns an empty\n\
-                        image name.\n\
-                    *\n" );
+                @return\n\
+                    pointer to an Image object, or 0 if the image had not been set\n\
+                    or if the image is sourced from a property that returns an empty\n\
+                    image name.\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::getImagePropertySource
@@ -167,21 +165,72 @@ void register_FrameComponent_class(){
                 , ( bp::arg("part") )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
+                \n\
+                    Return the name of the property that will be used to determine the\n\
+                    image to use for the given component image.\n\
                     \n\
-                        Return the name of the property that will be used to determine the\n\
-                        image to use for the given component image.\n\
-                        \n\
-                        If the returned String is empty, it indicates either that the\n\
-                        component image is not specified or that the component image is not\n\
-                        sourced from a property.\n\
+                    If the returned String is empty, it indicates either that the\n\
+                    component image is not specified or that the component image is not\n\
+                    sourced from a property.\n\
             \n\
-                    @see\n\
-                        isImageFetchedFromProperty isImageSpecified\n\
+                @see\n\
+                    isImageFetchedFromProperty isImageSpecified\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image property source to return.\n\
-                    *\n" );
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image property source to return.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::getLeftEdgeFormatting
+        
+            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::FrameComponent::*getLeftEdgeFormatting_function_type )( ::CEGUI::Window const & ) const;
+            
+            FrameComponent_exposer.def( 
+                "getLeftEdgeFormatting"
+                , getLeftEdgeFormatting_function_type( &::CEGUI::FrameComponent::getLeftEdgeFormatting )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return the formatting to be used for the left edge image.\n\
+            \n\
+                @return\n\
+                    One of the VerticalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::getRightEdgeFormatting
+        
+            typedef ::CEGUI::VerticalFormatting ( ::CEGUI::FrameComponent::*getRightEdgeFormatting_function_type )( ::CEGUI::Window const & ) const;
+            
+            FrameComponent_exposer.def( 
+                "getRightEdgeFormatting"
+                , getRightEdgeFormatting_function_type( &::CEGUI::FrameComponent::getRightEdgeFormatting )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return the formatting to be used for the right edge image.\n\
+            \n\
+                @return\n\
+                    One of the VerticalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::getTopEdgeFormatting
+        
+            typedef ::CEGUI::HorizontalFormatting ( ::CEGUI::FrameComponent::*getTopEdgeFormatting_function_type )( ::CEGUI::Window const & ) const;
+            
+            FrameComponent_exposer.def( 
+                "getTopEdgeFormatting"
+                , getTopEdgeFormatting_function_type( &::CEGUI::FrameComponent::getTopEdgeFormatting )
+                , ( bp::arg("wnd") )
+                , "*!\n\
+                \n\
+                    Return the formatting to be used for the top edge image.\n\
+            \n\
+                @return\n\
+                    One of the HorizontalFormatting enumerated values.\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::isImageFetchedFromProperty
@@ -193,19 +242,19 @@ void register_FrameComponent_class(){
                 , isImageFetchedFromProperty_function_type( &::CEGUI::FrameComponent::isImageFetchedFromProperty )
                 , ( bp::arg("part") )
                 , "*!\n\
-                    \n\
-                        Return whether the given component image is specified via a\n\
-                        property.\n\
+                \n\
+                    Return whether the given component image is specified via a\n\
+                    property.\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image to check.\n\
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to check.\n\
             \n\
-                    @return\n\
-                        - true if the image is specified and fetched via a property.\n\
-                        - false if the image is not fetched via a property\n\
-                          (or is not specified)\n\
-                    *\n" );
+                @return\n\
+                    - true if the image is specified and fetched via a property.\n\
+                    - false if the image is not fetched via a property\n\
+                      (or is not specified)\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::isImageSpecified
@@ -217,20 +266,30 @@ void register_FrameComponent_class(){
                 , isImageSpecified_function_type( &::CEGUI::FrameComponent::isImageSpecified )
                 , ( bp::arg("part") )
                 , "*!\n\
-                    \n\
-                        Return whether the given component image has been specified.\n\
+                \n\
+                    Return whether the given component image has been specified.\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image to check.\n\
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to check.\n\
             \n\
-                    @return\n\
-                        - true if the image is specified and will be drawn.\n\
-                        - false if the image is not specified.\n\
-                    *\n" );
+                @return\n\
+                    - true if the image is specified and will be drawn.\n\
+                    - false if the image is not specified.\n\
+                *\n" );
         
         }
         FrameComponent_exposer.def( bp::self == bp::self );
+        { //::CEGUI::FrameComponent::renderImage
+        
+            typedef void ( FrameComponent_wrapper::*renderImage_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Image const *,::CEGUI::VerticalFormatting,::CEGUI::HorizontalFormatting,::CEGUI::Rectf &,::CEGUI::ColourRect const &,::CEGUI::Rectf const *,bool ) const;
+            
+            FrameComponent_exposer.def( 
+                "renderImage"
+                , renderImage_function_type( &FrameComponent_wrapper::renderImage )
+                , ( bp::arg("buffer"), bp::arg("image"), bp::arg("vertFmt"), bp::arg("horzFmt"), bp::arg("destRect"), bp::arg("colours"), bp::arg("clipper"), bp::arg("clipToDisplay") ) );
+        
+        }
         { //::CEGUI::FrameComponent::render_impl
         
             typedef void ( FrameComponent_wrapper::*render_impl_function_type )( ::CEGUI::Window &,::CEGUI::Rectf &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,bool ) const;
@@ -238,8 +297,7 @@ void register_FrameComponent_class(){
             FrameComponent_exposer.def( 
                 "render_impl"
                 , render_impl_function_type( &FrameComponent_wrapper::default_render_impl )
-                , ( bp::arg("srcWindow"), bp::arg("destRect"), bp::arg("modColours"), bp::arg("clipper"), bp::arg("clipToDisplay") )
-                , "implemets abstract from base\n" );
+                , ( bp::arg("srcWindow"), bp::arg("destRect"), bp::arg("modColours"), bp::arg("clipper"), bp::arg("clipToDisplay") ) );
         
         }
         { //::CEGUI::FrameComponent::setBackgroundHorizontalFormatting
@@ -251,15 +309,27 @@ void register_FrameComponent_class(){
                 , setBackgroundHorizontalFormatting_function_type( &::CEGUI::FrameComponent::setBackgroundHorizontalFormatting )
                 , ( bp::arg("fmt") )
                 , "*!\n\
-                    \n\
-                        Set the horizontal formatting setting for this FrameComponent.\n\
+                \n\
+                    Set the horizontal formatting to be used for the background image.\n\
             \n\
-                    @param fmt\n\
-                        One of the HorizontalFormatting enumerated values.\n\
+                @param fmt\n\
+                    One of the HorizontalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setBackgroundHorizontalFormattingPropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setBackgroundHorizontalFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setBackgroundHorizontalFormattingPropertySource"
+                , setBackgroundHorizontalFormattingPropertySource_function_type( &::CEGUI::FrameComponent::setBackgroundHorizontalFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                Set the name of a property that will be used to obtain the horizontal\n\
+                formatting to use for the backdround image.\n\
+            *\n" );
         
         }
         { //::CEGUI::FrameComponent::setBackgroundVerticalFormatting
@@ -271,15 +341,59 @@ void register_FrameComponent_class(){
                 , setBackgroundVerticalFormatting_function_type( &::CEGUI::FrameComponent::setBackgroundVerticalFormatting )
                 , ( bp::arg("fmt") )
                 , "*!\n\
-                    \n\
-                        Set the vertical formatting setting for this FrameComponent.\n\
+                \n\
+                    Set the vertical formatting to be used for the background image.\n\
             \n\
-                    @param fmt\n\
-                        One of the VerticalFormatting enumerated values.\n\
+                @param fmt\n\
+                    One of the VerticalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setBackgroundVerticalFormattingPropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setBackgroundVerticalFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setBackgroundVerticalFormattingPropertySource"
+                , setBackgroundVerticalFormattingPropertySource_function_type( &::CEGUI::FrameComponent::setBackgroundVerticalFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                Set the name of a property that will be used to obtain the vertical\n\
+                formatting to use for the backdround image.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setBottomEdgeFormatting
+        
+            typedef void ( ::CEGUI::FrameComponent::*setBottomEdgeFormatting_function_type )( ::CEGUI::HorizontalFormatting ) ;
+            
+            FrameComponent_exposer.def( 
+                "setBottomEdgeFormatting"
+                , setBottomEdgeFormatting_function_type( &::CEGUI::FrameComponent::setBottomEdgeFormatting )
+                , ( bp::arg("fmt") )
+                , "*!\n\
+                \n\
+                    Set the formatting to be used for the bottom edge image.\n\
+            \n\
+                @param fmt\n\
+                    One of the HorizontalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setBottomEdgeFormattingPropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setBottomEdgeFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setBottomEdgeFormattingPropertySource"
+                , setBottomEdgeFormattingPropertySource_function_type( &::CEGUI::FrameComponent::setBottomEdgeFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
+            \n\
+                Set the name of a property that will be used to obtain the formatting\n\
+                to use for the bottom edge image.\n\
+            *\n" );
         
         }
         { //::CEGUI::FrameComponent::setImage
@@ -291,17 +405,17 @@ void register_FrameComponent_class(){
                 , setImage_function_type( &::CEGUI::FrameComponent::setImage )
                 , ( bp::arg("part"), bp::arg("image") )
                 , "*!\n\
-                    \n\
-                        Set an Image that will be drawn by this FrameComponent.\n\
+                \n\
+                    Set an Image that will be drawn by this FrameComponent.\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image to be set.\n\
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to be set.\n\
             \n\
-                    @param image\n\
-                        Pointer to the Image object to be drawn.  If this is 0 then drawing\n\
-                        of the component image specified by  part will be disabled.\n\
-                    *\n" );
+                @param image\n\
+                    Pointer to the Image object to be drawn.  If this is 0 then drawing\n\
+                    of the component image specified by  part will be disabled.\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::setImage
@@ -313,19 +427,19 @@ void register_FrameComponent_class(){
                 , setImage_function_type( &::CEGUI::FrameComponent::setImage )
                 , ( bp::arg("part"), bp::arg("name") )
                 , "*!\n\
-                    \n\
-                        Set an Image that will be drawn by this FrameComponent.\n\
+                \n\
+                    Set an Image that will be drawn by this FrameComponent.\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image to be set.\n\
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to be set.\n\
             \n\
-                    @param name\n\
-                        String holding the name of an Image. The image should already exist,\n\
-                        if the Image does not exist an Exception will be logged and\n\
-                        drawing of the component image specified by  part will be\n\
-                        disabled.\n\
-                    *\n" );
+                @param name\n\
+                    String holding the name of an Image. The image should already exist,\n\
+                    if the Image does not exist an Exception will be logged and\n\
+                    drawing of the component image specified by  part will be\n\
+                    disabled.\n\
+                *\n" );
         
         }
         { //::CEGUI::FrameComponent::setImagePropertySource
@@ -337,20 +451,116 @@ void register_FrameComponent_class(){
                 , setImagePropertySource_function_type( &::CEGUI::FrameComponent::setImagePropertySource )
                 , ( bp::arg("part"), bp::arg("name") )
                 , "*!\n\
-                    \n\
-                        Set the name of the Property that will be accesssed on the target\n\
-                        Window to determine the Image that will be drawn by the\n\
-                        FrameComponent.\n\
+                \n\
+                    Set the name of the Property that will be accesssed on the target\n\
+                    Window to determine the Image that will be drawn by the\n\
+                    FrameComponent.\n\
             \n\
-                    @param part\n\
-                        One of the FrameImageComponent enumerated values specifying the\n\
-                        component image to be set.\n\
+                @param part\n\
+                    One of the FrameImageComponent enumerated values specifying the\n\
+                    component image to be set.\n\
             \n\
-                    @param name\n\
-                        String holding the name of a property that will be accessed. If this\n\
-                        is the empty string then drawing of the component image specified by\n\
-                         part will be disabled.\n\
-                    *\n" );
+                @param name\n\
+                    String holding the name of a property that will be accessed. If this\n\
+                    is the empty string then drawing of the component image specified by\n\
+                     part will be disabled.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setLeftEdgeFormatting
+        
+            typedef void ( ::CEGUI::FrameComponent::*setLeftEdgeFormatting_function_type )( ::CEGUI::VerticalFormatting ) ;
+            
+            FrameComponent_exposer.def( 
+                "setLeftEdgeFormatting"
+                , setLeftEdgeFormatting_function_type( &::CEGUI::FrameComponent::setLeftEdgeFormatting )
+                , ( bp::arg("fmt") )
+                , "*!\n\
+                \n\
+                    Set the formatting to be used for the left edge image.\n\
+            \n\
+                @param fmt\n\
+                    One of the VerticalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setLeftEdgeFormattingPropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setLeftEdgeFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setLeftEdgeFormattingPropertySource"
+                , setLeftEdgeFormattingPropertySource_function_type( &::CEGUI::FrameComponent::setLeftEdgeFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
+            \n\
+                Set the name of a property that will be used to obtain the formatting\n\
+                to use for the left edge image.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setRightEdgeFormatting
+        
+            typedef void ( ::CEGUI::FrameComponent::*setRightEdgeFormatting_function_type )( ::CEGUI::VerticalFormatting ) ;
+            
+            FrameComponent_exposer.def( 
+                "setRightEdgeFormatting"
+                , setRightEdgeFormatting_function_type( &::CEGUI::FrameComponent::setRightEdgeFormatting )
+                , ( bp::arg("fmt") )
+                , "*!\n\
+                \n\
+                    Set the formatting to be used for the right edge image.\n\
+            \n\
+                @param fmt\n\
+                    One of the VerticalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setRightEdgeFormattingPropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setRightEdgeFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setRightEdgeFormattingPropertySource"
+                , setRightEdgeFormattingPropertySource_function_type( &::CEGUI::FrameComponent::setRightEdgeFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
+            \n\
+                Set the name of a property that will be used to obtain the formatting\n\
+                to use for the right edge image.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setTopEdgeFormatting
+        
+            typedef void ( ::CEGUI::FrameComponent::*setTopEdgeFormatting_function_type )( ::CEGUI::HorizontalFormatting ) ;
+            
+            FrameComponent_exposer.def( 
+                "setTopEdgeFormatting"
+                , setTopEdgeFormatting_function_type( &::CEGUI::FrameComponent::setTopEdgeFormatting )
+                , ( bp::arg("fmt") )
+                , "*!\n\
+                \n\
+                    Set the formatting to be used for the top edge image.\n\
+            \n\
+                @param fmt\n\
+                    One of the HorizontalFormatting enumerated values.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::FrameComponent::setTopEdgeFormattingPropertySource
+        
+            typedef void ( ::CEGUI::FrameComponent::*setTopEdgeFormattingPropertySource_function_type )( ::CEGUI::String const & ) ;
+            
+            FrameComponent_exposer.def( 
+                "setTopEdgeFormattingPropertySource"
+                , setTopEdgeFormattingPropertySource_function_type( &::CEGUI::FrameComponent::setTopEdgeFormattingPropertySource )
+                , ( bp::arg("property_name") )
+                , "*!\n\
+            \n\
+                Set the name of a property that will be used to obtain the formatting\n\
+                to use for the top edge image.\n\
+            *\n" );
         
         }
         { //::CEGUI::FrameComponent::writeXMLToStream
@@ -362,16 +572,16 @@ void register_FrameComponent_class(){
                 , writeXMLToStream_function_type( &::CEGUI::FrameComponent::writeXMLToStream )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-                    \n\
-                        Writes an xml representation of this FrameComponent to  out_stream.\n\
+                \n\
+                    Writes an xml representation of this FrameComponent to  out_stream.\n\
             \n\
-                    @param xml_stream\n\
-                        Stream where xml data should be output.\n\
+                @param xml_stream\n\
+                    Stream where xml data should be output.\n\
             \n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::FalagardComponentBase::handleFontRenderSizeChange
@@ -393,17 +603,7 @@ void register_FrameComponent_class(){
             FrameComponent_exposer.def( 
                 "initColoursRect"
                 , initColoursRect_function_type( &FrameComponent_wrapper::initColoursRect )
-                , ( bp::arg("wnd"), bp::arg("modCols"), bp::arg("cr") )
-                , "*!\n\
-                    \n\
-                        Helper method to initialise a ColourRect with appropriate values according to the way\
-                        the\n\
-                        ImageryComponent is set up.\n\
-            \n\
-                        This will try and get values from multiple places:\n\
-                            - a property attached to  wnd\n\
-                            - or the integral d_colours value.\n\
-                    *\n" );
+                , ( bp::arg("wnd"), bp::arg("modCols"), bp::arg("cr") ) );
         
         }
         { //::CEGUI::FalagardComponentBase::writeColoursXML
@@ -415,65 +615,19 @@ void register_FrameComponent_class(){
                 , writeColoursXML_function_type( &FrameComponent_wrapper::writeColoursXML )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-                    \n\
-                        Writes xml for the colours to a OutStream.  Will prefer property colours before\
-                        explicit.\n\
+                \n\
+                    Writes xml for the colours to a OutStream.\n\
+                    Will prefer property colours before explicit.\n\
             \n\
-                    \note\n\
-                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
+                \note\n\
+                    This is intended as a helper function for sub-classes when outputting\n\
+                    xml to a stream.\n\
             \n\
-            \n\
-                    @return\n\
-                        - true if xml element was written.\n\
-                        - false if nothing was output due to the formatting not being set (sub-class may then\
-                        choose to do something else.)\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::FalagardComponentBase::writeHorzFormatXML
-        
-            typedef bool ( FrameComponent_wrapper::*writeHorzFormatXML_function_type )( ::CEGUI::XMLSerializer & ) const;
-            
-            FrameComponent_exposer.def( 
-                "writeHorzFormatXML"
-                , writeHorzFormatXML_function_type( &FrameComponent_wrapper::writeHorzFormatXML )
-                , ( bp::arg("xml_stream") )
-                , "*!\n\
-                    \n\
-                        Writes xml for the horizontal formatting to a OutStream if such a property is defined.\n\
-            \n\
-                    \note\n\
-                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
-            \n\
-            \n\
-                    @return\n\
-                        - true if xml element was written.\n\
-                        - false if nothing was output due to the formatting not being set (sub-class may then\
-                        choose to do something else.)\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::FalagardComponentBase::writeVertFormatXML
-        
-            typedef bool ( FrameComponent_wrapper::*writeVertFormatXML_function_type )( ::CEGUI::XMLSerializer & ) const;
-            
-            FrameComponent_exposer.def( 
-                "writeVertFormatXML"
-                , writeVertFormatXML_function_type( &FrameComponent_wrapper::writeVertFormatXML )
-                , ( bp::arg("xml_stream") )
-                , "*!\n\
-                    \n\
-                        Writes xml for the vertical formatting to a OutStream if such a property is defined.\n\
-            \n\
-                    \note\n\
-                        This is intended as a helper method for sub-classes when outputting xml to a stream.\n\
-            \n\
-            \n\
-                    @return\n\
-                        - true if xml element was written.\n\
-                        - false if nothing was output due to the formatting not being set (sub-class may then\
-                        choose to do something else.)\n\
-                    *\n" );
+                @return\n\
+                    - true if xml element was written.\n\
+                    - false if nothing was output due to the formatting not being set\n\
+                      (sub-class may then choose to do something else.)\n\
+                *\n" );
         
         }
     }

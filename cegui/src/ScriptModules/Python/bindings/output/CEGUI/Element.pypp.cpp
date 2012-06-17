@@ -1417,7 +1417,9 @@ void register_Element_class(){
                     determining the final value used.\n\
             \n\
                 @param size\n\
-                    USize describing the new maximum size of the element's area.\n\
+                    USize describing the new maximum size of the element's area.  Note that\n\
+                    zero is used to indicate that the Element's maximum area size will be\n\
+                    unbounded.\n\
                  *\n" );
         
         }
