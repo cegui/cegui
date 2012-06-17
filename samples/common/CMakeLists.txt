@@ -82,8 +82,8 @@ if (CEGUI_SAMPLES_USE_DIRECTFB)
     )
 endif()
 
-include_directories(${CMAKE_BINARY_DIR}/Samples/common/include
-                    ${CMAKE_SOURCE_DIR}/Samples/common/include
+include_directories(${CMAKE_BINARY_DIR}/samples/common/include
+                    ${CMAKE_SOURCE_DIR}/samples/common/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
 
 if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11)

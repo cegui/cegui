@@ -338,7 +338,7 @@ endmacro()
 macro (cegui_add_sample _NAME)
     set (CEGUI_TARGET_NAME ${_NAME}${CEGUI_SLOT_VERSION})
 
-    include_directories(${CMAKE_SOURCE_DIR}/Samples/common/include)
+    include_directories(${CMAKE_SOURCE_DIR}/samples/common/include)
 
     if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
         link_directories(${DIRECTXSDK_LIBRARY_DIR})
