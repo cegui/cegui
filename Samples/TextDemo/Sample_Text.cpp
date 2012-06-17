@@ -27,7 +27,6 @@
  ***************************************************************************/
 #include "Sample_Text.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
 #include <cstdlib>
 
 using namespace CEGUI;
@@ -35,14 +34,16 @@ using namespace CEGUI;
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool TextDemo::initialiseSample()
+bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_guiContext = guiContext;
+
     // we will make extensive use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     // We need a font
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Font defaulting
@@ -52,7 +53,7 @@ bool TextDemo::initialiseSample()
     }
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageSampleText", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -63,9 +64,9 @@ bool TextDemo::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "BackgroundImageSampleText");
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    d_guiContext->setRootWindow(background);
 
     // Load our layout as a basic
     background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
@@ -107,7 +108,7 @@ void TextDemo::initStaticText()
 
 void TextDemo::initSingleLineEdit()
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     // Only accepts digits for the age field
     if (root->isChild("Root/TextDemo/editAge"))
     {
@@ -131,7 +132,7 @@ void TextDemo::initMultiLineEdit()
 
 void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     if (root->isChild(radio))
     {
         RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
@@ -142,7 +143,7 @@ void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 
 void TextDemo::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     if (root->isChild(widget))
     {
         Window* window = root->getChild(widget);
@@ -152,7 +153,7 @@ void TextDemo::subscribeEvent(const String& widget, const String& event, const E
 
 bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     // Check
     if (root->isChild(radio))
     {
@@ -164,7 +165,7 @@ bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 
 bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     // Check
     if (root->isChild(checkbox))
     {
@@ -176,7 +177,7 @@ bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 
 bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
 
     if (root->isChild("Root/TextDemo/StaticText"))
     {
@@ -208,7 +209,7 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 
 bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
 
     if (root->isChild("Root/TextDemo/editMulti"))
     {
@@ -223,8 +224,6 @@ bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 
 bool TextDemo::quit(const CEGUI::EventArgs&)
 {
-    // signal quit
-    d_sampleApp->setQuitting();
 
     // event was handled
     return true;
@@ -233,19 +232,17 @@ bool TextDemo::quit(const CEGUI::EventArgs&)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void TextDemo::cleanupSample()
+void TextDemo::deinitialise()
 {
     // nothing to do here!
 }
 
-// Main app
-int main(int /*argc*/, char* /*argv*/[])
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    TextDemo app;
-    return app.run();
+    static TextDemo sample;
+    return sample;
 }

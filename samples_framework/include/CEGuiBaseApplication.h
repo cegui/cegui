@@ -47,7 +47,7 @@
 /*************************************************************************
     Forward refs
 *************************************************************************/
-class CEGuiSample;
+class SamplesFrameworkBase;
 namespace CEGUI
 {
 class Renderer;
@@ -91,7 +91,7 @@ public:
         - false if the application failed to initialise (cleanup function will
           not be called).
     */
-    bool execute(CEGuiSample* sampleApp);
+    bool execute(SamplesFrameworkBase* sampleApp);
 
     /*!
     \brief
@@ -140,7 +140,7 @@ protected:
     static const char DATAPATH_VAR_NAME[];
 
     //! implementation provided execution implementaion.
-    virtual bool execute_impl(CEGuiSample* sampleApp) = 0;
+    virtual bool execute_impl() = 0;
     //! implementation provided cleanup implementation.
     virtual void cleanup_impl() = 0;
     //! Implementation function to perform required pre-render operations.
@@ -176,8 +176,11 @@ protected:
         is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
         if the variable is not set, a default will be used depending on the
         build system in use.
-    */
+        */
     const char* getDataPathPrefix() const;
+
+    //! SampleFramework base used in the application
+    static SamplesFrameworkBase* d_sampleApp;
 
     //! true when the base app should cleanup and exit.
     bool d_quitting;
