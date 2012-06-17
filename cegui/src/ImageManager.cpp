@@ -383,10 +383,22 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
 
     validateImagesetFileVersion(attributes);
 
-    // create texture from image
-    s_texture = &System::getSingleton().getRenderer()->
-        createTexture(name, filename,
-            resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
+    Renderer* const renderer = System::getSingleton().getRenderer();
+
+    // if the texture already exists, 
+    if (renderer->isTextureDefined(name))
+    {
+        Logger::getSingleton().logEvent(
+            "[ImageManager] WARNING: Using existing texture: " + name);
+        s_texture = &renderer->getTexture(name);
+    }
+    else
+    {
+        // create texture from image
+        s_texture = &renderer->createTexture(name, filename,
+            resource_group.empty() ? d_imagesetDefaultResourceGroup :
+                                     resource_group);
+    }
 
     // set native resolution for imageset
     s_nativeResolution = Sizef(
@@ -420,6 +432,13 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 {
     const String image_name(s_texture->getName() + '/' +
         attributes.getValueAsString(ImageNameAttribute));
+
+    if (isDefined(image_name))
+    {
+        Logger::getSingleton().logEvent(
+            "[ImageManager] WARNING: Using existing image :" + image_name);
+        return;
+    }
 
     XMLAttributes rw_attrs(attributes);
 
