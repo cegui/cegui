@@ -32,6 +32,8 @@
 #include "CEGUI/MouseCursor.h"
 #include <GL/glfw.h>
 
+class SamplesFrameworkBase;
+
 class CEGuiGLFWSharedBase : public CEGuiBaseApplication
 {
 public:
@@ -40,7 +42,7 @@ public:
 
 protected:
     // implementation of base class abstract functions.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
@@ -52,7 +54,7 @@ protected:
     static void createGLFWWindow();
     static void setGLFWAppConfiguration();
 
-    static void drawFrame(void);
+    void drawFrame();
 
     static void GLFWCALL glfwKeyCallback(int key, int action);
     static void GLFWCALL glfwCharCallback(int character, int action);
@@ -71,10 +73,6 @@ protected:
     static CEGuiGLFWSharedBase* d_appInstance;
     static double  d_frameTime;
     static int  d_modifiers;
-
-    static bool d_windowSized;
-    static int d_newWindowWidth;
-    static int d_newWindowHeight;
 };
 
 

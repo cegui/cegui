@@ -61,20 +61,6 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #endif
 
 
-//
-// int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
-// #else
-int main(int /*argc*/, char* /*argv*/[])
-   {
-   // This is a basic start-up for the sample application which is
-   // object orientated in nature, so we just need an instance of
-   // the CEGuiSample based object and then tell that sample application
-   // to run.  All of the samples will use code similar to this in the
-   // main/WinMain function.
-   TreeDemoSample app;
-   return app.run();
-   }
-
 int randInt(int low, int high)
    {
    int   num;
@@ -102,7 +88,7 @@ int randInt(int low, int high)
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool TreeDemoSample::initialiseSample()
+bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    {
    using namespace CEGUI;
    Tree *      theTree;
@@ -128,10 +114,10 @@ bool TreeDemoSample::initialiseSample()
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
-   System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
+   guiContext->getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
-   ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+   ImageManager::getSingleton().addFromImageFile("BackgroundImageTreeDemo", "GPN-2000-001437.png");
 
    // Load some icon images for our test tree
    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
@@ -145,9 +131,9 @@ bool TreeDemoSample::initialiseSample()
    background->setProperty("FrameEnabled", "false");
    background->setProperty("BackgroundEnabled", "false");
    // set the background image
-   background->setProperty("Image", "BackgroundImage");
+   background->setProperty("Image", "BackgroundImageTreeDemo");
    // install this as the root GUI sheet
-   System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+   guiContext->setRootWindow(background);
 
 //   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
 
@@ -310,7 +296,7 @@ bool TreeDemoSample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void TreeDemoSample::cleanupSample()
+void TreeDemoSample::deinitialise()
    {
    }
 
@@ -389,3 +375,13 @@ bool TreeDemoSample::handleEventBranchClosed(const CEGUI::EventArgs& args)
    editBox->setText("Closed: " + treeArgs.treeItem->getText());
    return true;
    }
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static TreeDemoSample sample;
+    return sample;
+}
