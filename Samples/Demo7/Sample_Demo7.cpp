@@ -220,7 +220,7 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 
         // note we just need system to redraw the geometry; we do not need a
         // full redraw of all window/widget content - which is unchanged.
-        System::getSingleton().getDefaultGUIContext().markAsDirty();
+        //guiContext->markAsDirty(); 
         return false;
     }
 
@@ -235,8 +235,10 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool Demo7Sample::initialiseSample()
+bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_guiContext = guiContext;
+
     using namespace CEGUI;
 
     // Register our effect with the system
@@ -261,16 +263,18 @@ bool Demo7Sample::initialiseSample()
     // the effect that - after the alias is added - any time a window of
     // type "TaharezLook/FrameWindow" is requested, the system will create a
     // "TaharezLook/WobblyFrameWindow" instead.
+/*
     WindowFactoryManager::getSingleton().addWindowTypeAlias(
         "TaharezLook/FrameWindow",  // alias name - can shadow existing types
-        "TaharezLook/WobblyFrameWindow"); // target type to create.
+        "TaharezLook/WobblyFrameWindow"); // target type to create.*/
+
 
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
@@ -287,7 +291,7 @@ bool Demo7Sample::initialiseSample()
     // set the background image
     background->setProperty("Image", "BackgroundImageDemo7");
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    guiContext->setRootWindow(background);
 
     // load the windows for Demo7 from the layout file.
     Window* sheet = winMgr.loadLayoutFromFile("Demo7Windows.layout");
@@ -305,7 +309,7 @@ bool Demo7Sample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void Demo7Sample::cleanupSample()
+void Demo7Sample::deinitialise()
 {
     // nothing to do here!
 }
@@ -467,4 +471,14 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
 
     // event was handled.
     return true;
+}
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static Demo7Sample sample;
+    return sample;
 }

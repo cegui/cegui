@@ -29,8 +29,10 @@
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-bool DragDropDemo::initialiseSample()
+bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_guiContext = guiContext;
+
     using namespace CEGUI;
 
     // load windows look
@@ -40,14 +42,14 @@ bool DragDropDemo::initialiseSample()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set up defaults
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
     System::getSingleton().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
     // load the initial layout
-    System::getSingleton().getDefaultGUIContext().setRootWindow(
+    guiContext->setRootWindow(
         WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
 
     // setup events
@@ -58,7 +60,7 @@ bool DragDropDemo::initialiseSample()
 }
 
 //----------------------------------------------------------------------------//
-void DragDropDemo::cleanupSample()
+void DragDropDemo::deinitialise()
 {
     // nothing doing in here!
 }
@@ -68,7 +70,7 @@ void DragDropDemo::subscribeEvents()
 {
     using namespace CEGUI;
 
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
 
     /*
      * Subscribe handler to deal with user closing the frame window
@@ -137,3 +139,13 @@ bool DragDropDemo::handle_CloseButton(const CEGUI::EventArgs&)
 }
 
 //----------------------------------------------------------------------------//
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static DragDropDemo sample;
+    return sample;
+}

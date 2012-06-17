@@ -33,16 +33,16 @@
 #include <CEGUI/CEGUI.h>
 
 //----------------------------------------------------------------------------//
-bool InventoryDemo::initialiseSample()
+bool InventoryDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
     
     // basic system init using TaharezLook.
     WindowManager& winMgr = WindowManager::getSingleton();
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    guiContext->setRootWindow(root);
 
     // register custom objects with CEGUI.
     WindowFactoryManager::addFactory<TplWindowFactory<InventoryReceiver> >();
@@ -128,10 +128,19 @@ bool InventoryDemo::initialiseSample()
 }
 
 //----------------------------------------------------------------------------//
-void InventoryDemo::cleanupSample()
+void InventoryDemo::deinitialise()
 {
     // nothing to do here!
 }
 
 //----------------------------------------------------------------------------//
 
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static InventoryDemo sample;
+    return sample;
+}

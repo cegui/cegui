@@ -42,16 +42,10 @@ namespace CEGUI
 class Demo6Sample : public Sample
 {
 public:
-    Demo6Sample();
-
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
     // method to perform any required cleanup operations.
     virtual void deinitialise();
-
-
-    virtual const CEGUI::String& getUsedFilesString();
-
 
 protected:
     // helper methods

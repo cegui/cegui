@@ -32,24 +32,24 @@
 class CommonDialogsDemo : public Sample
 {
 public:
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
     void cleanupSample(void) {}
 };
 
 //----------------------------------------------------------------------------//
-bool CommonDialogsDemo::initialiseSample()
+bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
     // load resources and set up system defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaCommonDialogs.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // set up the root window / gui sheet
     WindowManager& winMgr = WindowManager::getSingleton();
     Window* root = winMgr.createWindow("DefaultWindow", "Root");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    guiContext->setRootWindow(root);
 
     // create container window for the demo
     FrameWindow* wnd = static_cast<FrameWindow*>(

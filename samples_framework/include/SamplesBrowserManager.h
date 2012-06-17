@@ -68,6 +68,9 @@ private:
 
     bool handleMouseClickSampleWindow(const CEGUI::EventArgs& args);
     bool handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args);
+    //Sets the mouse cursor of the hovered sample-guicontext and makes it redraw on next render step
+    bool handleHoverSampleWindow(const CEGUI::EventArgs& args);
+    
 
     SamplesFramework* d_owner;
 

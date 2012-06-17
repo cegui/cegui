@@ -29,16 +29,21 @@
 #define _Sample_DragDropDemo_h_
 
 #include "SampleBase.h"
-#include "CEGUI/CEGUI.h"
+
+namespace CEGUI
+{
+    class GUIContext;
+    class EventArgs;
+}
 
 // Sample class
 class DragDropDemo : public Sample
 {
 public:
     // override member to initialse the sample.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
     // override member to perform cleanup.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
 private:
     /// member to subscribe handler to each 'slot' in the layout.
@@ -47,6 +52,8 @@ private:
     bool handle_ItemDropped(const CEGUI::EventArgs& args);
     /// member that handles the frame window close button and quits
     bool handle_CloseButton(const CEGUI::EventArgs& args);
+
+    CEGUI::GUIContext* d_guiContext;
 };
 
 #endif  // end of guard _Sample_DragDropDemo_h_

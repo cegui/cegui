@@ -32,15 +32,6 @@
 #include <stdio.h>
 #include <string>
 
-
-/*************************************************************************
-   Constructor.
-*************************************************************************/
-Demo6Sample::Demo6Sample()
-    : d_usedFiles(__FILE__)
-{
-}
-
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
@@ -63,7 +54,7 @@ bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "root_wnd");
     // set position and size
     background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
-    background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
+    background->setSize(USize(cegui_reldim(1), cegui_reldim(1)));
     // disable frame and standard background
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
@@ -716,17 +707,11 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
     return true;
 }
 
-
-/*************************************************************************
-    Returns the path of the file used for this
-*************************************************************************/
-const CEGUI::String& Demo6Sample::getUsedFilesString()
-{
-    return d_usedFiles;
-}
-
-
 /*************************************************************************
     Define the module function that returns an instance of the sample
 *************************************************************************/
-SAMPLE_EXTERN_IMPL(Demo6Sample)
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static Demo6Sample sample;
+    return sample;
+}

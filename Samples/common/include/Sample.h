@@ -28,6 +28,8 @@ author:     Lukas E Meindl
 #ifndef _Sample_h_
 #define _Sample_h_
 
+#include "CEGUI/String.h"
+
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
 
@@ -41,17 +43,13 @@ namespace CEGUI
 class Sample
 {
 public:
-    Sample() {}
-    virtual ~Sample() {}
-
     virtual bool initialise(CEGUI::GUIContext* guiContext) = 0;
     virtual void deinitialise() = 0;
 
-    virtual const CEGUI::String& getUsedFilesString() = 0;
+    const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
 
-private:
-    Sample(const Sample&) {}
-    Sample& operator=(const Sample&) {}
+protected:
+    CEGUI::String d_usedFiles;
 };
 
 #endif
