@@ -30,7 +30,7 @@
 // sample texts might show up unreadable in this source file. The sample
 // should look okay though when running.
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
@@ -118,18 +118,20 @@ public:
 };
 
 // Sample class
-class FontDemo : public CEGuiSample
+class FontDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample()
+    bool initialise(CEGUI::GUIContext* guiContext)
     {
+        d_guiContext = guiContext;
+
         // we will use of the WindowManager.
         WindowManager& winMgr = WindowManager::getSingleton();
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+        d_guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
         // Create a custom font which we use to draw the list items. This custom
         // font won't get effected by the scaler and such.
@@ -141,7 +143,7 @@ public:
         FontManager::getSingleton().createAll("*.font", "fonts");
 
         // load an image to use as a background
-        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImageFontDemo", "GPN-2000-001437.png");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow("TaharezLook/StaticImage");
@@ -152,12 +154,12 @@ public:
         background->setProperty("FrameEnabled", "false");
         background->setProperty("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty("Image", "BackgroundImage");
+        background->setProperty("Image", "BackgroundImageFontDemo");
         // install this as the root GUI sheet
-        System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+        d_guiContext->setRootWindow(background);
 
         // set tooltip styles (by default there is none)
-        System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
+        d_guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
         // load some demo windows and attach to the background 'root'
         background->addChild(winMgr.loadLayoutFromFile("FontDemo.layout"));
@@ -213,9 +215,8 @@ public:
     }
 
     // method to perform any required cleanup operations.
-    void cleanupSample()
+    void deinitialise()
     {
-        // me? cleanup? what?
     }
 
     /** When a fonts get selected from the list, we update the name field. Of course,
@@ -223,7 +224,7 @@ public:
     to query a widget's font. */
     void setFontDesc()
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         MultiLineEditbox* mle = static_cast<MultiLineEditbox*>
                                 (root->getChild("root/FontDemo/FontSample"));
@@ -244,7 +245,7 @@ public:
     /** Called when the used selects a different font from the font list.*/
     bool handleFontSelection(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         // Access the listbox which sent the event
         Listbox* lbox = static_cast<Listbox*>(
@@ -292,7 +293,7 @@ public:
 
     bool handleAutoScaled(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         ToggleButton* cb = static_cast<ToggleButton*>(
                            static_cast<const WindowEventArgs&>(e).window);
@@ -309,7 +310,7 @@ public:
 
     bool handleAntialiased(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         ToggleButton* cb = static_cast<ToggleButton*>(
                            static_cast<const WindowEventArgs&>(e).window);
@@ -326,7 +327,7 @@ public:
 
     bool handlePointSize(const EventArgs& e)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         Scrollbar* sb = static_cast<Scrollbar*>(
                             static_cast<const WindowEventArgs&>(e).window);
@@ -356,7 +357,7 @@ public:
             size_t idx = sel_item ? sel_item->getID() : 0;
             const String fontName(LangList[idx].Font);
 
-            Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+            Window* root = d_guiContext->getRootWindow();
             // Access the font list
             Listbox* fontList = static_cast<Listbox*>(root->getChild("root/FontDemo/FontList"));
             ListboxItem* lbi = fontList->findItemWithText(fontName, 0);
@@ -374,15 +375,16 @@ public:
 
         return true;
     }
+
+
+    CEGUI::GUIContext* d_guiContext;
 };
 
-int main(int /*argc*/, char* /*argv*/[])
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    FontDemo app;
-    return app.run();
+    static FontDemo sample;
+    return sample;
 }
