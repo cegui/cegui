@@ -272,6 +272,9 @@ public:
     */
     virtual Texture& getTexture(const String& name) const = 0;
 
+    //! Return whether a texture with the given name exists.
+    virtual bool isTextureDefined(const String& name) const = 0;
+
     /*!
     \brief
         Perform any operations required to put the system into a state ready

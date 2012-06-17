@@ -269,6 +269,12 @@ Texture& Direct3D9Renderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool Direct3D9Renderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void Direct3D9Renderer::beginRendering()
 {
     d_device->SetFVF(D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1);

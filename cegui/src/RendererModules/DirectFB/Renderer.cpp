@@ -245,6 +245,12 @@ Texture& DirectFBRenderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool DirectFBRenderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void DirectFBRenderer::beginRendering()
 {
     // TODO:

@@ -398,6 +398,12 @@ Texture& OpenGLRenderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool OpenGLRenderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void OpenGLRenderer::beginRendering()
 {
     //save current attributes

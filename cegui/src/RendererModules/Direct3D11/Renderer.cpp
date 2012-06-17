@@ -265,6 +265,12 @@ Texture& Direct3D11Renderer::getTexture(const String& name) const
 }
 
 //----------------------------------------------------------------------------//
+bool Direct3D11Renderer::isTextureDefined(const String& name) const
+{
+    return d_textures.find(name) != d_textures.end();
+}
+
+//----------------------------------------------------------------------------//
 void Direct3D11Renderer::beginRendering()
 {
     d_device.d_context->IASetInputLayout(d_inputLayout);

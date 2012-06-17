@@ -74,6 +74,7 @@ public:
     void destroyTexture(const CEGUI::String& name);
     void destroyAllTextures();
     Texture& getTexture(const String&) const;
+    bool isTextureDefined(const String& name) const;
     void beginRendering();
     void endRendering();
     void setDisplaySize(const Sizef& sz);
