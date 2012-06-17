@@ -15,7 +15,7 @@ struct RenderEffectFactory_wrapper : CEGUI::RenderEffectFactory, bp::wrapper< CE
         
     }
 
-    virtual ::CEGUI::RenderEffect & create(  ){
+    virtual ::CEGUI::RenderEffect & create( ::CEGUI::Window * window ){
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
@@ -34,11 +34,12 @@ void register_RenderEffectFactory_class(){
         bp::scope RenderEffectFactory_scope( RenderEffectFactory_exposer );
         { //::CEGUI::RenderEffectFactory::create
         
-            typedef ::CEGUI::RenderEffect & ( ::CEGUI::RenderEffectFactory::*create_function_type )(  ) ;
+            typedef ::CEGUI::RenderEffect & ( ::CEGUI::RenderEffectFactory::*create_function_type )( ::CEGUI::Window * ) ;
             
             RenderEffectFactory_exposer.def( 
                 "create"
                 , bp::pure_virtual( create_function_type(&::CEGUI::RenderEffectFactory::create) )
+                , ( bp::arg("window") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "! Create an instance of the RenderEffect that this factory creates.\n" );
         

@@ -86,7 +86,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::addPropertyDefinition
         
-            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyDefinition_function_type )( ::CEGUI::Property * ) ;
+            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyDefinition_function_type )( ::CEGUI::PropertyDefinitionBase * ) ;
             
             WidgetLookFeel_exposer.def( 
                 "addPropertyDefinition"
@@ -126,7 +126,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::addPropertyLinkDefinition
         
-            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyLinkDefinition_function_type )( ::CEGUI::Property * ) ;
+            typedef void ( ::CEGUI::WidgetLookFeel::*addPropertyLinkDefinition_function_type )( ::CEGUI::PropertyDefinitionBase * ) ;
             
             WidgetLookFeel_exposer.def( 
                 "addPropertyLinkDefinition"
@@ -519,7 +519,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitionIterator
         
-            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::Property* > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::PropertyDefinitionBase* > > ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitionIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitionIterator"
@@ -539,7 +539,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyDefinitions
         
-            typedef ::std::vector< CEGUI::Property* > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::PropertyDefinitionBase* > const & ( ::CEGUI::WidgetLookFeel::*getPropertyDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyDefinitions"
@@ -574,7 +574,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitionIterator
         
-            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::Property* > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstVectorIterator< CEGUI::NamedDefinitionCollator< CEGUI::String, CEGUI::PropertyDefinitionBase* > > ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitionIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitionIterator"
@@ -594,7 +594,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getPropertyLinkDefinitions
         
-            typedef ::std::vector< CEGUI::Property* > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
+            typedef ::std::vector< CEGUI::PropertyDefinitionBase* > const & ( ::CEGUI::WidgetLookFeel::*getPropertyLinkDefinitions_function_type )(  ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getPropertyLinkDefinitions"

@@ -980,12 +980,12 @@ struct SequentialLayoutContainer_wrapper : CEGUI::SequentialLayoutContainer, bp:
         if( bp::override func_onParentSized = this->get_override( "onParentSized" ) )
             func_onParentSized( boost::ref(e) );
         else{
-            this->CEGUI::Window::onParentSized( boost::ref(e) );
+            this->CEGUI::LayoutContainer::onParentSized( boost::ref(e) );
         }
     }
     
     virtual void default_onParentSized( ::CEGUI::ElementEventArgs & e ){
-        CEGUI::Window::onParentSized( boost::ref(e) );
+        CEGUI::LayoutContainer::onParentSized( boost::ref(e) );
     }
 
     virtual void onRenderingEnded( ::CEGUI::WindowEventArgs & e ){
@@ -3166,7 +3166,7 @@ void register_SequentialLayoutContainer_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Window::onParentSized
+        { //::CEGUI::LayoutContainer::onParentSized
         
             typedef void ( SequentialLayoutContainer_wrapper::*onParentSized_function_type )( ::CEGUI::ElementEventArgs & ) ;
             
@@ -3174,17 +3174,7 @@ void register_SequentialLayoutContainer_class(){
                 "onParentSized"
                 , onParentSized_function_type( &SequentialLayoutContainer_wrapper::default_onParentSized )
                 , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when this window's parent window has been resized.  If\n\
-                    this window is the root  GUI Sheet window, this call will be made when\n\
-                    the display size changes.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set the the\n\
-                    window that caused the event; this is typically either this window's\n\
-                    parent window, or NULL to indicate the screen size has changed.\n\
-                *\n" );
+                , "overridden from parent class\n" );
         
         }
         { //::CEGUI::Window::onRenderingEnded
