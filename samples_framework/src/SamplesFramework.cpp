@@ -108,6 +108,9 @@ void SamplesFramework::cleanupSample()
 
 void SamplesFramework::initialiseFrameworkLayout()
 {
+    CEGUI::Font& font = FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    CEGUI::System::getSingleton().setDefaultFont(&font);
+
     SchemeManager::getSingleton().createFromFile("SampleBrowser.scheme");
 
     System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");

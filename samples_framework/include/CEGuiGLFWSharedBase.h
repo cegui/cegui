@@ -73,6 +73,10 @@ protected:
     static CEGuiGLFWSharedBase* d_appInstance;
     static double  d_frameTime;
     static int  d_modifiers;
+
+    static bool d_windowSized;
+    static int d_newWindowWidth;
+    static int d_newWindowHeight;
 };
 
 

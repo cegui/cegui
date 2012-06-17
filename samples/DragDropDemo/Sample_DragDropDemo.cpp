@@ -43,7 +43,7 @@ bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // set up defaults
     guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
-    System::getSingleton().setDefaultFont("DejaVuSans-10");
+/*    System::getSingleton().setDefaultFont("DejaVuSans-10");*/
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
