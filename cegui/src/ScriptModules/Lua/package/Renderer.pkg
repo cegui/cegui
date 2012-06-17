@@ -29,6 +29,7 @@ class Renderer
     string getIdentifierString() const;
 
     Texture& getTexture(utf8string name) const;
+    bool isTextureDefined(utf8string name) const;
 
     //void beginRendering();
     //void endRendering();
