@@ -28,13 +28,6 @@
 #include "Sample_FirstWindow.h"
 #include "CEGUI/CEGUI.h"
 
-/*************************************************************************
-   Constructor.
-*************************************************************************/
-FirstWindowSample::FirstWindowSample()
-    : d_usedFiles(__FILE__)
-{
-}
 
 /*************************************************************************
     Sample specific initialisation goes here.
@@ -135,14 +128,10 @@ void FirstWindowSample::deinitialise()
 }
 
 /*************************************************************************
-    Returns the path of the file used for this
-*************************************************************************/
-const CEGUI::String& FirstWindowSample::getUsedFilesString()
-{
-    return d_usedFiles;
-}
-
-/*************************************************************************
     Define the module function that returns an instance of the sample
 *************************************************************************/
-SAMPLE_EXTERN_IMPL(FirstWindowSample)
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static FirstWindowSample sample;
+    return sample;
+}

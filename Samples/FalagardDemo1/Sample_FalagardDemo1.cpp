@@ -37,16 +37,6 @@
 //////////////////////////////////////////////////////////////////////////
 
 
-
-
-/*************************************************************************
-   Constructor.
-*************************************************************************/
-FalagardDemo1Sample::FalagardDemo1Sample()
-    : d_usedFiles(__FILE__)
-{
-}
-
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
@@ -126,15 +116,6 @@ bool FalagardDemo1Sample::handleRootKeyDown(const CEGUI::EventArgs& args)
 
     return true;
 }
-
-/*************************************************************************
-    Returns the path of the file used for this
-*************************************************************************/
-const CEGUI::String& FalagardDemo1Sample::getUsedFilesString()
-{
-    return d_usedFiles;
-}
-
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
@@ -273,4 +254,8 @@ bool DemoConsole::handleKeyDown(const CEGUI::EventArgs& args)
 /*************************************************************************
     Define the module function that returns an instance of the sample
 *************************************************************************/
-SAMPLE_EXTERN_IMPL(FalagardDemo1Sample)
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static FalagardDemo1Sample sample;
+    return sample;
+}

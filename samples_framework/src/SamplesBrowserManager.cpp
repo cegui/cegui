@@ -37,6 +37,7 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/VerticalLayoutContainer.h"
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
 
 using namespace CEGUI;
 
@@ -66,6 +67,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI:
     CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
     root->setMaxSize(CEGUI::USize(cegui_absdim(9999999999.f), cegui_absdim(9999999999.f)));
     root->setMouseInputPropagationEnabled(true);
+    root->setMargin(CEGUI::UBox(UDim(0.f, 0.f),UDim(0.f, 0.f),UDim(0.f, 12.f), UDim(0.f, 0.f)));
 
     CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
     windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
@@ -85,7 +87,9 @@ CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI:
 
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesBrowserManager::handleMouseDoubleClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleHoverSampleWindow, this));
 
+    
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
 
@@ -146,6 +150,37 @@ bool SamplesBrowserManager::handleMouseDoubleClickSampleWindow(const CEGUI::Even
     CEGUI::Window* wnd(winArgs.window);
 
     d_owner->handleStartDisplaySample(wnd);
+
+    return true;
+}
+
+
+bool SamplesBrowserManager::handleHoverSampleWindow(const CEGUI::EventArgs& args)
+{
+    const MouseEventArgs& mouseArgs(static_cast<const MouseEventArgs&>(args));
+
+    CEGUI::Window* wnd(mouseArgs.window);
+
+    const CEGUI::String& lookNFeel(wnd->getLookNFeel());
+    CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
+
+    const CEGUI::Vector2f& mousePos(mouseArgs.position);
+
+    const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
+
+    float relPosX = (mousePos.d_x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
+    float relPosY = (mousePos.d_y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
+
+    SampleData* sampleData = d_owner->findSampleData(wnd);
+    const CEGUI::Sizef& contextSize(sampleData->getGuiContext()->getSurfaceSize());
+
+    float absPosX = relPosX * contextSize.d_width;
+    float absPosY = relPosY * contextSize.d_height;
+
+    sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);
+    sampleData->getGuiContext()->markAsDirty();
+
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor();
 
     return true;
 }

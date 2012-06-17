@@ -41,26 +41,4 @@ author:     Lukas E Meindl
 #   define SAMPLE_EXPORT
 #endif
 
-
-#define SAMPLE_EXTERN_IMPL(SAMPLE_CLASS) \
-    extern "C" SAMPLE_EXPORT Sample& getSampleInstance() \
-{ \
-    static SAMPLE_CLASS sample; \
-    return sample; \
-}
-
-
-class SampleBase : public Sample
-{
-public:
-
-private:
-/*
-    virtual void loadScheme(const std::string& fileName)        = 0;
-    virtual void loadLayout(const std::string& fileName)        = 0;
-    virtual void loadImageFile(const std::string& fileName)     = 0;
-    virtual void loadFont(const std::string& fileName)          = 0;*/
-
-};
-
 #endif

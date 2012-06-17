@@ -30,9 +30,6 @@
 
 #include "SampleBase.h"
 
-#include "CEGUI/String.h"
-
-
 namespace CEGUI
 {
     class Window;
@@ -42,20 +39,11 @@ namespace CEGUI
 class FirstWindowSample : public Sample
 {
 public:
-    FirstWindowSample();
-    virtual ~FirstWindowSample() {}
-
     virtual bool initialise(CEGUI::GUIContext* guiContext);
     virtual void deinitialise();
 
-    virtual const CEGUI::String& getUsedFilesString();
 private:
-    FirstWindowSample(const FirstWindowSample&) {}
-    FirstWindowSample& operator=(const FirstWindowSample&) {}
-
     CEGUI::DefaultWindow*      d_root;
-
-    CEGUI::String d_usedFiles;
 };
 
 #endif  // end of guard _Sample_FirstWindow_h_

@@ -36,10 +36,10 @@ class TreeDemoSample : public Sample
    {
 public:
    // method to initialse the samples windows and events.
-   bool initialiseSample();
+   virtual bool initialise(CEGUI::GUIContext* guiContext);
 
    // method to perform any required cleanup operations.
-   void cleanupSample(void);
+   virtual void deinitialise();
 
 protected:
    CEGUI::Window* TreeDemoWindow;
