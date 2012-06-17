@@ -121,21 +121,21 @@ protected:
     String d_propertySource;
 };
 
-template<> void FormattingSetting<VerticalFormatting>::writeXMLTagToStream(
+template<> void CEGUIEXPORT FormattingSetting<VerticalFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<VerticalFormatting>::writeXMLAttributesToStream(
+template<> void CEGUIEXPORT FormattingSetting<VerticalFormatting>::writeXMLAttributesToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<HorizontalFormatting>::writeXMLTagToStream(
+template<> void CEGUIEXPORT FormattingSetting<HorizontalFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<HorizontalFormatting>::writeXMLAttributesToStream(
+template<> void CEGUIEXPORT FormattingSetting<HorizontalFormatting>::writeXMLAttributesToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<VerticalTextFormatting>::writeXMLTagToStream(
+template<> void CEGUIEXPORT FormattingSetting<VerticalTextFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<VerticalTextFormatting>::writeXMLAttributesToStream(
+template<> void CEGUIEXPORT FormattingSetting<VerticalTextFormatting>::writeXMLAttributesToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<HorizontalTextFormatting>::writeXMLTagToStream(
+template<> void CEGUIEXPORT FormattingSetting<HorizontalTextFormatting>::writeXMLTagToStream(
                                             XMLSerializer& xml_stream) const;
-template<> void FormattingSetting<HorizontalTextFormatting>::writeXMLAttributesToStream(
+template<> void CEGUIEXPORT FormattingSetting<HorizontalTextFormatting>::writeXMLAttributesToStream(
                                             XMLSerializer& xml_stream) const;
 }
 
