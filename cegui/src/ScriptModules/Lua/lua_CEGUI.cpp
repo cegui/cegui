@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Wed Jun 13 15:12:57 2012.
+** Generated automatically by tolua++-1.0.93 on Sun Jun 17 19:09:01 2012.
 */
 
 #ifndef __cplusplus
@@ -31390,6 +31390,40 @@ static int tolua_CEGUI_CEGUI_Renderer_getTexture00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: isTextureDefined of class  CEGUI::Renderer */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Renderer_isTextureDefined00
+static int tolua_CEGUI_CEGUI_Renderer_isTextureDefined00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Renderer",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::Renderer* self = (const CEGUI::Renderer*)  tolua_tousertype(tolua_S,1,0);
+  utf8string name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isTextureDefined'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isTextureDefined(name);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isTextureDefined'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getSize of class  CEGUI::Texture */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Texture_getSize00
 static int tolua_CEGUI_CEGUI_Texture_getSize00(lua_State* tolua_S)
@@ -57462,99 +57496,133 @@ static int tolua_CEGUI_CEGUI_FalagardComponentBase_setColoursPropertySource00(lu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setVertFormattingPropertySource of class  CEGUI::FalagardComponentBase */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FalagardComponentBase_setVertFormattingPropertySource00
-static int tolua_CEGUI_CEGUI_FalagardComponentBase_setVertFormattingPropertySource00(lua_State* tolua_S)
+/* method: setLeftEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setLeftEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_setLeftEdgeFormatting00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"CEGUI::FalagardComponentBase",0,&tolua_err) ||
- !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  CEGUI::FalagardComponentBase* self = (CEGUI::FalagardComponentBase*)  tolua_tousertype(tolua_S,1,0);
-  utf8string property = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::VerticalFormatting fmt = ((CEGUI::VerticalFormatting) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setVertFormattingPropertySource'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setLeftEdgeFormatting'",NULL);
 #endif
  {
-  self->setVertFormattingPropertySource(property);
+  self->setLeftEdgeFormatting(fmt);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setVertFormattingPropertySource'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setLeftEdgeFormatting'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: setHorzFormattingPropertySource of class  CEGUI::FalagardComponentBase */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FalagardComponentBase_setHorzFormattingPropertySource00
-static int tolua_CEGUI_CEGUI_FalagardComponentBase_setHorzFormattingPropertySource00(lua_State* tolua_S)
+/* method: setRightEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setRightEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_setRightEdgeFormatting00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"CEGUI::FalagardComponentBase",0,&tolua_err) ||
- !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  CEGUI::FalagardComponentBase* self = (CEGUI::FalagardComponentBase*)  tolua_tousertype(tolua_S,1,0);
-  utf8string property = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::VerticalFormatting fmt = ((CEGUI::VerticalFormatting) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setHorzFormattingPropertySource'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRightEdgeFormatting'",NULL);
 #endif
  {
-  self->setHorzFormattingPropertySource(property);
+  self->setRightEdgeFormatting(fmt);
  }
  }
  return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'setHorzFormattingPropertySource'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setRightEdgeFormatting'.",&tolua_err);
  return 0;
 #endif
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getBackgroundVerticalFormatting of class  CEGUI::FrameComponent */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getBackgroundVerticalFormatting00
-static int tolua_CEGUI_CEGUI_FrameComponent_getBackgroundVerticalFormatting00(lua_State* tolua_S)
+/* method: setTopEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setTopEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_setTopEdgeFormatting00(lua_State* tolua_S)
 {
 #ifndef TOLUA_RELEASE
  tolua_Error tolua_err;
  if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
-  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::HorizontalFormatting fmt = ((CEGUI::HorizontalFormatting) (int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getBackgroundVerticalFormatting'",NULL);
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTopEdgeFormatting'",NULL);
 #endif
  {
-  CEGUI::VerticalFormatting tolua_ret = (CEGUI::VerticalFormatting)  self->getBackgroundVerticalFormatting();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+  self->setTopEdgeFormatting(fmt);
  }
  }
- return 1;
+ return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getBackgroundVerticalFormatting'.",&tolua_err);
+ tolua_error(tolua_S,"#ferror in function 'setTopEdgeFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setBottomEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setBottomEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_setBottomEdgeFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::HorizontalFormatting fmt = ((CEGUI::HorizontalFormatting) (int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setBottomEdgeFormatting'",NULL);
+#endif
+ {
+  self->setBottomEdgeFormatting(fmt);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setBottomEdgeFormatting'.",&tolua_err);
  return 0;
 #endif
 }
@@ -57593,38 +57661,6 @@ static int tolua_CEGUI_CEGUI_FrameComponent_setBackgroundVerticalFormatting00(lu
 }
 #endif //#ifndef TOLUA_DISABLE
 
-/* method: getBackgroundHorizontalFormatting of class  CEGUI::FrameComponent */
-#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getBackgroundHorizontalFormatting00
-static int tolua_CEGUI_CEGUI_FrameComponent_getBackgroundHorizontalFormatting00(lua_State* tolua_S)
-{
-#ifndef TOLUA_RELEASE
- tolua_Error tolua_err;
- if (
- !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
- )
- goto tolua_lerror;
- else
-#endif
- {
-  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
-#ifndef TOLUA_RELEASE
- if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getBackgroundHorizontalFormatting'",NULL);
-#endif
- {
-  CEGUI::HorizontalFormatting tolua_ret = (CEGUI::HorizontalFormatting)  self->getBackgroundHorizontalFormatting();
- tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
- }
- }
- return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getBackgroundHorizontalFormatting'.",&tolua_err);
- return 0;
-#endif
-}
-#endif //#ifndef TOLUA_DISABLE
-
 /* method: setBackgroundHorizontalFormatting of class  CEGUI::FrameComponent */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormatting00
 static int tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormatting00(lua_State* tolua_S)
@@ -57653,6 +57689,408 @@ static int tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormatting00(
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setBackgroundHorizontalFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setLeftEdgeFormattingPropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setLeftEdgeFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setLeftEdgeFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setLeftEdgeFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setLeftEdgeFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setLeftEdgeFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setRightEdgeFormattingPropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setRightEdgeFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setRightEdgeFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setRightEdgeFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setRightEdgeFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setRightEdgeFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setTopEdgeFormattingPropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setTopEdgeFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setTopEdgeFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setTopEdgeFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setTopEdgeFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setTopEdgeFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setBottomEdgeFormattingPropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setBottomEdgeFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setBottomEdgeFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setBottomEdgeFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setBottomEdgeFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setBottomEdgeFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setBackgroundVerticalFormattingPropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setBackgroundVerticalFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setBackgroundVerticalFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setBackgroundVerticalFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setBackgroundVerticalFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setBackgroundVerticalFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setBackgroundHorizontalFormattingPropertySource of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setBackgroundHorizontalFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setBackgroundHorizontalFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setBackgroundHorizontalFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getLeftEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getLeftEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_getLeftEdgeFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getLeftEdgeFormatting'",NULL);
+#endif
+ {
+  CEGUI::VerticalFormatting tolua_ret = (CEGUI::VerticalFormatting)  self->getLeftEdgeFormatting(*wnd);
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getLeftEdgeFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getRightEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getRightEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_getRightEdgeFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getRightEdgeFormatting'",NULL);
+#endif
+ {
+  CEGUI::VerticalFormatting tolua_ret = (CEGUI::VerticalFormatting)  self->getRightEdgeFormatting(*wnd);
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getRightEdgeFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getTopEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getTopEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_getTopEdgeFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTopEdgeFormatting'",NULL);
+#endif
+ {
+  CEGUI::HorizontalFormatting tolua_ret = (CEGUI::HorizontalFormatting)  self->getTopEdgeFormatting(*wnd);
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getTopEdgeFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getBottomEdgeFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getBottomEdgeFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_getBottomEdgeFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getBottomEdgeFormatting'",NULL);
+#endif
+ {
+  CEGUI::HorizontalFormatting tolua_ret = (CEGUI::HorizontalFormatting)  self->getBottomEdgeFormatting(*wnd);
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getBottomEdgeFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getBackgroundVerticalFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getBackgroundVerticalFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_getBackgroundVerticalFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getBackgroundVerticalFormatting'",NULL);
+#endif
+ {
+  CEGUI::VerticalFormatting tolua_ret = (CEGUI::VerticalFormatting)  self->getBackgroundVerticalFormatting(*wnd);
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getBackgroundVerticalFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getBackgroundHorizontalFormatting of class  CEGUI::FrameComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_FrameComponent_getBackgroundHorizontalFormatting00
+static int tolua_CEGUI_CEGUI_FrameComponent_getBackgroundHorizontalFormatting00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::FrameComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::FrameComponent* self = (const CEGUI::FrameComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getBackgroundHorizontalFormatting'",NULL);
+#endif
+ {
+  CEGUI::HorizontalFormatting tolua_ret = (CEGUI::HorizontalFormatting)  self->getBackgroundHorizontalFormatting(*wnd);
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getBackgroundHorizontalFormatting'.",&tolua_err);
  return 0;
 #endif
 }
@@ -58053,18 +58491,20 @@ static int tolua_CEGUI_CEGUI_ImageryComponent_getVerticalFormatting00(lua_State*
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::ImageryComponent",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   const CEGUI::ImageryComponent* self = (const CEGUI::ImageryComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVerticalFormatting'",NULL);
 #endif
  {
-  CEGUI::VerticalFormatting tolua_ret = (CEGUI::VerticalFormatting)  self->getVerticalFormatting();
+  CEGUI::VerticalFormatting tolua_ret = (CEGUI::VerticalFormatting)  self->getVerticalFormatting(*wnd);
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
@@ -58118,18 +58558,20 @@ static int tolua_CEGUI_CEGUI_ImageryComponent_getHorizontalFormatting00(lua_Stat
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::ImageryComponent",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   const CEGUI::ImageryComponent* self = (const CEGUI::ImageryComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHorizontalFormatting'",NULL);
 #endif
  {
-  CEGUI::HorizontalFormatting tolua_ret = (CEGUI::HorizontalFormatting)  self->getHorizontalFormatting();
+  CEGUI::HorizontalFormatting tolua_ret = (CEGUI::HorizontalFormatting)  self->getHorizontalFormatting(*wnd);
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
@@ -58170,6 +58612,72 @@ static int tolua_CEGUI_CEGUI_ImageryComponent_setHorizontalFormatting00(lua_Stat
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setHorizontalFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setHorizontalFormattingPropertySource of class  CEGUI::ImageryComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageryComponent_setHorizontalFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_ImageryComponent_setHorizontalFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageryComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageryComponent* self = (CEGUI::ImageryComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setHorizontalFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setHorizontalFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setHorizontalFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setVerticalFormattingPropertySource of class  CEGUI::ImageryComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageryComponent_setVerticalFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_ImageryComponent_setVerticalFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageryComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageryComponent* self = (CEGUI::ImageryComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setVerticalFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setVerticalFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setVerticalFormattingPropertySource'.",&tolua_err);
  return 0;
 #endif
 }
@@ -58360,6 +58868,106 @@ static int tolua_CEGUI_CEGUI_TextComponent_getText00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getEffectiveText of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_getEffectiveText00
+static int tolua_CEGUI_CEGUI_TextComponent_getEffectiveText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getEffectiveText'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getEffectiveText(*wnd);
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getEffectiveText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getTextVisual of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_getTextVisual00
+static int tolua_CEGUI_CEGUI_TextComponent_getTextVisual00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getTextVisual'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getTextVisual();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getTextVisual'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getEffectiveVisualText of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_getEffectiveVisualText00
+static int tolua_CEGUI_CEGUI_TextComponent_getEffectiveVisualText00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getEffectiveVisualText'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getEffectiveVisualText(*wnd);
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getEffectiveVisualText'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setText of class  CEGUI::TextComponent */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_setText00
 static int tolua_CEGUI_CEGUI_TextComponent_setText00(lua_State* tolua_S)
@@ -58425,6 +59033,40 @@ static int tolua_CEGUI_CEGUI_TextComponent_getFont00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: getEffectiveFont of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_getEffectiveFont00
+static int tolua_CEGUI_CEGUI_TextComponent_getEffectiveFont00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getEffectiveFont'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getEffectiveFont(*wnd);
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getEffectiveFont'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: setFont of class  CEGUI::TextComponent */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_setFont00
 static int tolua_CEGUI_CEGUI_TextComponent_setFont00(lua_State* tolua_S)
@@ -58466,18 +59108,20 @@ static int tolua_CEGUI_CEGUI_TextComponent_getVerticalFormatting00(lua_State* to
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVerticalFormatting'",NULL);
 #endif
  {
-  CEGUI::VerticalTextFormatting tolua_ret = (CEGUI::VerticalTextFormatting)  self->getVerticalFormatting();
+  CEGUI::VerticalTextFormatting tolua_ret = (CEGUI::VerticalTextFormatting)  self->getVerticalFormatting(*wnd);
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
@@ -58531,18 +59175,20 @@ static int tolua_CEGUI_CEGUI_TextComponent_getHorizontalFormatting00(lua_State* 
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
- !tolua_isnoobj(tolua_S,2,&tolua_err)
+ !tolua_isusertype(tolua_S,2,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
  {
   const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::Window* wnd = ((const CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHorizontalFormatting'",NULL);
 #endif
  {
-  CEGUI::HorizontalTextFormatting tolua_ret = (CEGUI::HorizontalTextFormatting)  self->getHorizontalFormatting();
+  CEGUI::HorizontalTextFormatting tolua_ret = (CEGUI::HorizontalTextFormatting)  self->getHorizontalFormatting(*wnd);
  tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
@@ -58583,6 +59229,72 @@ static int tolua_CEGUI_CEGUI_TextComponent_setHorizontalFormatting00(lua_State* 
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setHorizontalFormatting'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setHorizontalFormattingPropertySource of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_setHorizontalFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_TextComponent_setHorizontalFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TextComponent* self = (CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setHorizontalFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setHorizontalFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setHorizontalFormattingPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setVerticalFormattingPropertySource of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_setVerticalFormattingPropertySource00
+static int tolua_CEGUI_CEGUI_TextComponent_setVerticalFormattingPropertySource00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::TextComponent* self = (CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+  utf8string property_name = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setVerticalFormattingPropertySource'",NULL);
+#endif
+ {
+  self->setVerticalFormattingPropertySource(property_name);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setVerticalFormattingPropertySource'.",&tolua_err);
  return 0;
 #endif
 }
@@ -58777,6 +59489,70 @@ static int tolua_CEGUI_CEGUI_TextComponent_setFontPropertySource00(lua_State* to
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'setFontPropertySource'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getHorizontalTextExtent of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_getHorizontalTextExtent00
+static int tolua_CEGUI_CEGUI_TextComponent_getHorizontalTextExtent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getHorizontalTextExtent'",NULL);
+#endif
+ {
+  float tolua_ret = (float)  self->getHorizontalTextExtent();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getHorizontalTextExtent'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getVerticalTextExtent of class  CEGUI::TextComponent */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_TextComponent_getVerticalTextExtent00
+static int tolua_CEGUI_CEGUI_TextComponent_getVerticalTextExtent00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::TextComponent",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::TextComponent* self = (const CEGUI::TextComponent*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getVerticalTextExtent'",NULL);
+#endif
+ {
+  float tolua_ret = (float)  self->getVerticalTextExtent();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getVerticalTextExtent'.",&tolua_err);
  return 0;
 #endif
 }
@@ -64507,6 +65283,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getMaxTextureSize",tolua_CEGUI_CEGUI_Renderer_getMaxTextureSize00);
    tolua_function(tolua_S,"getIdentifierString",tolua_CEGUI_CEGUI_Renderer_getIdentifierString00);
    tolua_function(tolua_S,"getTexture",tolua_CEGUI_CEGUI_Renderer_getTexture00);
+   tolua_function(tolua_S,"isTextureDefined",tolua_CEGUI_CEGUI_Renderer_isTextureDefined00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"Texture","CEGUI::Texture","",NULL);
   tolua_beginmodule(tolua_S,"Texture");
@@ -65653,8 +66430,6 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getColours",tolua_CEGUI_CEGUI_FalagardComponentBase_getColours00);
    tolua_function(tolua_S,"setColours",tolua_CEGUI_CEGUI_FalagardComponentBase_setColours00);
    tolua_function(tolua_S,"setColoursPropertySource",tolua_CEGUI_CEGUI_FalagardComponentBase_setColoursPropertySource00);
-   tolua_function(tolua_S,"setVertFormattingPropertySource",tolua_CEGUI_CEGUI_FalagardComponentBase_setVertFormattingPropertySource00);
-   tolua_function(tolua_S,"setHorzFormattingPropertySource",tolua_CEGUI_CEGUI_FalagardComponentBase_setHorzFormattingPropertySource00);
   tolua_endmodule(tolua_S);
   #ifdef __cplusplus
   tolua_cclass(tolua_S,"FrameComponent","CEGUI::FrameComponent","CEGUI::FalagardComponentBase",tolua_collect_CEGUI__FrameComponent);
@@ -65662,10 +66437,24 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   tolua_cclass(tolua_S,"FrameComponent","CEGUI::FrameComponent","CEGUI::FalagardComponentBase",NULL);
   #endif
   tolua_beginmodule(tolua_S,"FrameComponent");
-   tolua_function(tolua_S,"getBackgroundVerticalFormatting",tolua_CEGUI_CEGUI_FrameComponent_getBackgroundVerticalFormatting00);
+   tolua_function(tolua_S,"setLeftEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_setLeftEdgeFormatting00);
+   tolua_function(tolua_S,"setRightEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_setRightEdgeFormatting00);
+   tolua_function(tolua_S,"setTopEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_setTopEdgeFormatting00);
+   tolua_function(tolua_S,"setBottomEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_setBottomEdgeFormatting00);
    tolua_function(tolua_S,"setBackgroundVerticalFormatting",tolua_CEGUI_CEGUI_FrameComponent_setBackgroundVerticalFormatting00);
-   tolua_function(tolua_S,"getBackgroundHorizontalFormatting",tolua_CEGUI_CEGUI_FrameComponent_getBackgroundHorizontalFormatting00);
    tolua_function(tolua_S,"setBackgroundHorizontalFormatting",tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormatting00);
+   tolua_function(tolua_S,"setLeftEdgeFormattingPropertySource",tolua_CEGUI_CEGUI_FrameComponent_setLeftEdgeFormattingPropertySource00);
+   tolua_function(tolua_S,"setRightEdgeFormattingPropertySource",tolua_CEGUI_CEGUI_FrameComponent_setRightEdgeFormattingPropertySource00);
+   tolua_function(tolua_S,"setTopEdgeFormattingPropertySource",tolua_CEGUI_CEGUI_FrameComponent_setTopEdgeFormattingPropertySource00);
+   tolua_function(tolua_S,"setBottomEdgeFormattingPropertySource",tolua_CEGUI_CEGUI_FrameComponent_setBottomEdgeFormattingPropertySource00);
+   tolua_function(tolua_S,"setBackgroundVerticalFormattingPropertySource",tolua_CEGUI_CEGUI_FrameComponent_setBackgroundVerticalFormattingPropertySource00);
+   tolua_function(tolua_S,"setBackgroundHorizontalFormattingPropertySource",tolua_CEGUI_CEGUI_FrameComponent_setBackgroundHorizontalFormattingPropertySource00);
+   tolua_function(tolua_S,"getLeftEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_getLeftEdgeFormatting00);
+   tolua_function(tolua_S,"getRightEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_getRightEdgeFormatting00);
+   tolua_function(tolua_S,"getTopEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_getTopEdgeFormatting00);
+   tolua_function(tolua_S,"getBottomEdgeFormatting",tolua_CEGUI_CEGUI_FrameComponent_getBottomEdgeFormatting00);
+   tolua_function(tolua_S,"getBackgroundVerticalFormatting",tolua_CEGUI_CEGUI_FrameComponent_getBackgroundVerticalFormatting00);
+   tolua_function(tolua_S,"getBackgroundHorizontalFormatting",tolua_CEGUI_CEGUI_FrameComponent_getBackgroundHorizontalFormatting00);
    tolua_function(tolua_S,"getImage",tolua_CEGUI_CEGUI_FrameComponent_getImage00);
    tolua_function(tolua_S,"setImage",tolua_CEGUI_CEGUI_FrameComponent_setImage00);
    tolua_function(tolua_S,"setImage",tolua_CEGUI_CEGUI_FrameComponent_setImage01);
@@ -65690,6 +66479,8 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setVerticalFormatting",tolua_CEGUI_CEGUI_ImageryComponent_setVerticalFormatting00);
    tolua_function(tolua_S,"getHorizontalFormatting",tolua_CEGUI_CEGUI_ImageryComponent_getHorizontalFormatting00);
    tolua_function(tolua_S,"setHorizontalFormatting",tolua_CEGUI_CEGUI_ImageryComponent_setHorizontalFormatting00);
+   tolua_function(tolua_S,"setHorizontalFormattingPropertySource",tolua_CEGUI_CEGUI_ImageryComponent_setHorizontalFormattingPropertySource00);
+   tolua_function(tolua_S,"setVerticalFormattingPropertySource",tolua_CEGUI_CEGUI_ImageryComponent_setVerticalFormattingPropertySource00);
    tolua_function(tolua_S,"isImageFetchedFromProperty",tolua_CEGUI_CEGUI_ImageryComponent_isImageFetchedFromProperty00);
    tolua_function(tolua_S,"getImagePropertySource",tolua_CEGUI_CEGUI_ImageryComponent_getImagePropertySource00);
    tolua_function(tolua_S,"setImagePropertySource",tolua_CEGUI_CEGUI_ImageryComponent_setImagePropertySource00);
@@ -65704,19 +66495,27 @@ int tolua_CEGUI_open (lua_State* tolua_S)
   #endif
   tolua_beginmodule(tolua_S,"TextComponent");
    tolua_function(tolua_S,"getText",tolua_CEGUI_CEGUI_TextComponent_getText00);
+   tolua_function(tolua_S,"getEffectiveText",tolua_CEGUI_CEGUI_TextComponent_getEffectiveText00);
+   tolua_function(tolua_S,"getTextVisual",tolua_CEGUI_CEGUI_TextComponent_getTextVisual00);
+   tolua_function(tolua_S,"getEffectiveVisualText",tolua_CEGUI_CEGUI_TextComponent_getEffectiveVisualText00);
    tolua_function(tolua_S,"setText",tolua_CEGUI_CEGUI_TextComponent_setText00);
    tolua_function(tolua_S,"getFont",tolua_CEGUI_CEGUI_TextComponent_getFont00);
+   tolua_function(tolua_S,"getEffectiveFont",tolua_CEGUI_CEGUI_TextComponent_getEffectiveFont00);
    tolua_function(tolua_S,"setFont",tolua_CEGUI_CEGUI_TextComponent_setFont00);
    tolua_function(tolua_S,"getVerticalFormatting",tolua_CEGUI_CEGUI_TextComponent_getVerticalFormatting00);
    tolua_function(tolua_S,"setVerticalFormatting",tolua_CEGUI_CEGUI_TextComponent_setVerticalFormatting00);
    tolua_function(tolua_S,"getHorizontalFormatting",tolua_CEGUI_CEGUI_TextComponent_getHorizontalFormatting00);
    tolua_function(tolua_S,"setHorizontalFormatting",tolua_CEGUI_CEGUI_TextComponent_setHorizontalFormatting00);
+   tolua_function(tolua_S,"setHorizontalFormattingPropertySource",tolua_CEGUI_CEGUI_TextComponent_setHorizontalFormattingPropertySource00);
+   tolua_function(tolua_S,"setVerticalFormattingPropertySource",tolua_CEGUI_CEGUI_TextComponent_setVerticalFormattingPropertySource00);
    tolua_function(tolua_S,"isTextFetchedFromProperty",tolua_CEGUI_CEGUI_TextComponent_isTextFetchedFromProperty00);
    tolua_function(tolua_S,"getTextPropertySource",tolua_CEGUI_CEGUI_TextComponent_getTextPropertySource00);
    tolua_function(tolua_S,"setTextPropertySource",tolua_CEGUI_CEGUI_TextComponent_setTextPropertySource00);
    tolua_function(tolua_S,"isFontFetchedFromProperty",tolua_CEGUI_CEGUI_TextComponent_isFontFetchedFromProperty00);
    tolua_function(tolua_S,"getFontPropertySource",tolua_CEGUI_CEGUI_TextComponent_getFontPropertySource00);
    tolua_function(tolua_S,"setFontPropertySource",tolua_CEGUI_CEGUI_TextComponent_setFontPropertySource00);
+   tolua_function(tolua_S,"getHorizontalTextExtent",tolua_CEGUI_CEGUI_TextComponent_getHorizontalTextExtent00);
+   tolua_function(tolua_S,"getVerticalTextExtent",tolua_CEGUI_CEGUI_TextComponent_getVerticalTextExtent00);
    tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_TextComponent_new00);
    tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_TextComponent_new00_local);
    tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_TextComponent_new00_local);
