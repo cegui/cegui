@@ -4209,11 +4209,7 @@
 ***********************************************************************************************************/
 -->
 <WidgetLook name="TaharezLook/Tree">
-        <Property name="SelectionBrushImage" value="TaharezLook/GenericBrush" />
-        <Property name="NormalTextColour" value="FF000000" />
-        <Property name="SelectedTextColour" value="FFFFFFFF" />
-        <Property name="ActiveSelectionColour" value="FF607FFF" />
-        <Property name="InactiveSelectionColour" value="FF808080" />
+        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowLeftEdge" dimension="Width" /></Dim>
