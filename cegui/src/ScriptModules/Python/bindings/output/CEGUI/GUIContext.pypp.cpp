@@ -263,6 +263,22 @@ struct GUIContext_wrapper : CEGUI::GUIContext, bp::wrapper< CEGUI::GUIContext > 
         return CEGUI::GUIContext::mouseMoveInjection_impl( boost::ref(ma) );
     }
 
+    void notifyDefaultFontChanged( ::CEGUI::Window * hierarchy_root ) const {
+        CEGUI::GUIContext::notifyDefaultFontChanged( boost::python::ptr(hierarchy_root) );
+    }
+
+    virtual void onDefaultFontChanged( ::CEGUI::EventArgs & args ){
+        if( bp::override func_onDefaultFontChanged = this->get_override( "onDefaultFontChanged" ) )
+            func_onDefaultFontChanged( boost::ref(args) );
+        else{
+            this->CEGUI::GUIContext::onDefaultFontChanged( boost::ref(args) );
+        }
+    }
+    
+    virtual void default_onDefaultFontChanged( ::CEGUI::EventArgs & args ){
+        CEGUI::GUIContext::onDefaultFontChanged( boost::ref(args) );
+    }
+
     virtual void onMouseButtonClickTimeoutChanged( ::CEGUI::GUIContextEventArgs & args ){
         if( bp::override func_onMouseButtonClickTimeoutChanged = this->get_override( "onMouseButtonClickTimeoutChanged" ) )
             func_onMouseButtonClickTimeoutChanged( boost::ref(args) );
@@ -527,6 +543,23 @@ void register_GUIContext_class(){
                 , getCommonAncestor_function_type( &GUIContext_wrapper::getCommonAncestor )
                 , ( bp::arg("w1"), bp::arg("w2") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::GUIContext::getDefaultFont
+        
+            typedef ::CEGUI::Font * ( ::CEGUI::GUIContext::*getDefaultFont_function_type )(  ) const;
+            
+            GUIContext_exposer.def( 
+                "getDefaultFont"
+                , getDefaultFont_function_type( &::CEGUI::GUIContext::getDefaultFont )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    Return a pointer to the default Font for the GUIContext\n\
+            \n\
+                @return\n\
+                    Pointer to a Font object that is the default for this GUIContext.\n\
+                *\n" );
         
         }
         { //::CEGUI::GUIContext::getDefaultTooltipObject
@@ -919,6 +952,27 @@ void register_GUIContext_class(){
                 , ( bp::arg("ma") ) );
         
         }
+        { //::CEGUI::GUIContext::notifyDefaultFontChanged
+        
+            typedef void ( GUIContext_wrapper::*notifyDefaultFontChanged_function_type )( ::CEGUI::Window * ) const;
+            
+            GUIContext_exposer.def( 
+                "notifyDefaultFontChanged"
+                , notifyDefaultFontChanged_function_type( &GUIContext_wrapper::notifyDefaultFontChanged )
+                , ( bp::arg("hierarchy_root") )
+                , "! notify windows in a hierarchy using default font, when font changes.\n" );
+        
+        }
+        { //::CEGUI::GUIContext::onDefaultFontChanged
+        
+            typedef void ( GUIContext_wrapper::*onDefaultFontChanged_function_type )( ::CEGUI::EventArgs & ) ;
+            
+            GUIContext_exposer.def( 
+                "onDefaultFontChanged"
+                , onDefaultFontChanged_function_type( &GUIContext_wrapper::default_onDefaultFontChanged )
+                , ( bp::arg("args") ) );
+        
+        }
         { //::CEGUI::GUIContext::onMouseButtonClickTimeoutChanged
         
             typedef void ( GUIContext_wrapper::*onMouseButtonClickTimeoutChanged_function_type )( ::CEGUI::GUIContextEventArgs & ) ;
@@ -988,6 +1042,41 @@ void register_GUIContext_class(){
             GUIContext_exposer.def( 
                 "renderWindowHierarchyToSurfaces"
                 , renderWindowHierarchyToSurfaces_function_type( &GUIContext_wrapper::renderWindowHierarchyToSurfaces ) );
+        
+        }
+        { //::CEGUI::GUIContext::setDefaultFont
+        
+            typedef void ( ::CEGUI::GUIContext::*setDefaultFont_function_type )( ::CEGUI::String const & ) ;
+            
+            GUIContext_exposer.def( 
+                "setDefaultFont"
+                , setDefaultFont_function_type( &::CEGUI::GUIContext::setDefaultFont )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    Set the default font to be used by the GUIContext\n\
+            \n\
+                @param name\n\
+                    String object containing the name of the font to be used as the\n\
+                    default for this GUIContext\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::GUIContext::setDefaultFont
+        
+            typedef void ( ::CEGUI::GUIContext::*setDefaultFont_function_type )( ::CEGUI::Font * ) ;
+            
+            GUIContext_exposer.def( 
+                "setDefaultFont"
+                , setDefaultFont_function_type( &::CEGUI::GUIContext::setDefaultFont )
+                , ( bp::arg("font") )
+                , "*!\n\
+                \n\
+                    Set the default font to be used by the GUIContext\n\
+            \n\
+                @param font\n\
+                    Pointer to the font to be used as the default for this GUIContext.\n\
+                *\n" );
         
         }
         { //::CEGUI::GUIContext::setDefaultTooltipObject
@@ -1192,6 +1281,9 @@ void register_GUIContext_class(){
         GUIContext_exposer.def_readonly( "DefaultMouseButtonClickTimeout", CEGUI::GUIContext::DefaultMouseButtonClickTimeout );
         GUIContext_exposer.def_readonly( "DefaultMouseButtonMultiClickTimeout", CEGUI::GUIContext::DefaultMouseButtonMultiClickTimeout );
         GUIContext_exposer.def_readonly( "DefaultMouseButtonMultiClickTolerance", CEGUI::GUIContext::DefaultMouseButtonMultiClickTolerance );
+        GUIContext_exposer.add_static_property( "EventDefaultFontChanged"
+                        , bp::make_getter( &CEGUI::GUIContext::EventDefaultFontChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
         GUIContext_exposer.add_static_property( "EventMouseButtonClickTimeoutChanged"
                         , bp::make_getter( &CEGUI::GUIContext::EventMouseButtonClickTimeoutChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );

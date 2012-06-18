@@ -96,12 +96,12 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::draw
         
-            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const ) const;
+            typedef void ( ::CEGUI::RenderedString::*draw_function_type )( ::CEGUI::Window const *,::size_t const,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const ) const;
             
             RenderedString_exposer.def( 
                 "draw"
                 , draw_function_type( &::CEGUI::RenderedString::draw )
-                , ( bp::arg("line"), bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect"), bp::arg("space_extra") ) );
+                , ( bp::arg("ref_wnd"), bp::arg("line"), bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect"), bp::arg("space_extra") ) );
         
         }
         { //::CEGUI::RenderedString::getComponentCount
@@ -126,12 +126,12 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::getPixelSize
         
-            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::size_t const ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedString::*getPixelSize_function_type )( ::CEGUI::Window const *,::size_t const ) const;
             
             RenderedString_exposer.def( 
                 "getPixelSize"
                 , getPixelSize_function_type( &::CEGUI::RenderedString::getPixelSize )
-                , ( bp::arg("line") )
+                , ( bp::arg("ref_wnd"), bp::arg("line") )
                 , "*!\n\
                 \n\
                     Return the pixel size of a specified line for the RenderedString.\n\
@@ -174,23 +174,23 @@ void register_RenderedString_class(){
         }
         { //::CEGUI::RenderedString::setSelection
         
-            typedef void ( ::CEGUI::RenderedString::*setSelection_function_type )( float,float ) ;
+            typedef void ( ::CEGUI::RenderedString::*setSelection_function_type )( ::CEGUI::Window const *,float,float ) ;
             
             RenderedString_exposer.def( 
                 "setSelection"
                 , setSelection_function_type( &::CEGUI::RenderedString::setSelection )
-                , ( bp::arg("start"), bp::arg("end") )
+                , ( bp::arg("ref_wnd"), bp::arg("start"), bp::arg("end") )
                 , "! set selection highlight\n" );
         
         }
         { //::CEGUI::RenderedString::split
         
-            typedef void ( ::CEGUI::RenderedString::*split_function_type )( ::size_t const,float,::CEGUI::RenderedString & ) ;
+            typedef void ( ::CEGUI::RenderedString::*split_function_type )( ::CEGUI::Window const *,::size_t const,float,::CEGUI::RenderedString & ) ;
             
             RenderedString_exposer.def( 
                 "split"
                 , split_function_type( &::CEGUI::RenderedString::split )
-                , ( bp::arg("line"), bp::arg("split_point"), bp::arg("left") )
+                , ( bp::arg("ref_wnd"), bp::arg("line"), bp::arg("split_point"), bp::arg("left") )
                 , "*!\n\
                 \n\
                     split the string in line  line as close to  split_point as possible.\n\

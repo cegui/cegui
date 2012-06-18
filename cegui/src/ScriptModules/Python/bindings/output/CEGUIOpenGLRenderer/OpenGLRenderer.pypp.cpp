@@ -162,6 +162,18 @@ struct OpenGLRenderer_wrapper : CEGUI::OpenGLRenderer, bp::wrapper< CEGUI::OpenG
         CEGUI::OpenGLRenderer::initialiseTextureTargetFactory( tt_type );
     }
 
+    virtual bool isTextureDefined( ::CEGUI::String const & name ) const  {
+        if( bp::override func_isTextureDefined = this->get_override( "isTextureDefined" ) )
+            return func_isTextureDefined( boost::ref(name) );
+        else{
+            return this->CEGUI::OpenGLRenderer::isTextureDefined( boost::ref(name) );
+        }
+    }
+    
+    bool default_isTextureDefined( ::CEGUI::String const & name ) const  {
+        return CEGUI::OpenGLRenderer::isTextureDefined( boost::ref(name) );
+    }
+
     static void logTextureCreation( ::CEGUI::String const & name ){
         CEGUI::OpenGLRenderer::logTextureCreation( boost::ref(name) );
     }
@@ -715,6 +727,18 @@ void register_OpenGLRenderer_class(){
                 , initialiseTextureTargetFactory_function_type( &OpenGLRenderer_wrapper::initialiseTextureTargetFactory )
                 , ( bp::arg("tt_type") )
                 , "! initialise OGLTextureTargetFactory that will generate TextureTargets\n" );
+        
+        }
+        { //::CEGUI::OpenGLRenderer::isTextureDefined
+        
+            typedef bool ( ::CEGUI::OpenGLRenderer::*isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( OpenGLRenderer_wrapper::*default_isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            
+            OpenGLRenderer_exposer.def( 
+                "isTextureDefined"
+                , isTextureDefined_function_type(&::CEGUI::OpenGLRenderer::isTextureDefined)
+                , default_isTextureDefined_function_type(&OpenGLRenderer_wrapper::default_isTextureDefined)
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::OpenGLRenderer::logTextureCreation

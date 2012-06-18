@@ -60,28 +60,32 @@ struct RenderedStringWidgetComponent_wrapper : CEGUI::RenderedStringWidgetCompon
         return CEGUI::RenderedStringWidgetComponent::clone( );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const  {
+    virtual void draw( ::CEGUI::Window const * ref_wnd, ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
-            func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
+            func_draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
         else{
-            this->CEGUI::RenderedStringWidgetComponent::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
+            this->CEGUI::RenderedStringWidgetComponent::draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const  {
-        CEGUI::RenderedStringWidgetComponent::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
+    void default_draw( ::CEGUI::Window const * ref_wnd, ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const  {
+        CEGUI::RenderedStringWidgetComponent::draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
-    virtual ::CEGUI::Sizef getPixelSize(  ) const  {
+    ::CEGUI::Window * getEffectiveWindow( ::CEGUI::Window const * ref_wnd ) const {
+        return CEGUI::RenderedStringWidgetComponent::getEffectiveWindow( boost::python::ptr(ref_wnd) );
+    }
+
+    virtual ::CEGUI::Sizef getPixelSize( ::CEGUI::Window const * ref_wnd ) const  {
         if( bp::override func_getPixelSize = this->get_override( "getPixelSize" ) )
-            return func_getPixelSize(  );
+            return func_getPixelSize( boost::python::ptr(ref_wnd) );
         else{
-            return this->CEGUI::RenderedStringWidgetComponent::getPixelSize(  );
+            return this->CEGUI::RenderedStringWidgetComponent::getPixelSize( boost::python::ptr(ref_wnd) );
         }
     }
     
-    ::CEGUI::Sizef default_getPixelSize(  ) const  {
-        return CEGUI::RenderedStringWidgetComponent::getPixelSize( );
+    ::CEGUI::Sizef default_getPixelSize( ::CEGUI::Window const * ref_wnd ) const  {
+        return CEGUI::RenderedStringWidgetComponent::getPixelSize( boost::python::ptr(ref_wnd) );
     }
 
     virtual ::size_t getSpaceCount(  ) const  {
@@ -96,28 +100,28 @@ struct RenderedStringWidgetComponent_wrapper : CEGUI::RenderedStringWidgetCompon
         return CEGUI::RenderedStringWidgetComponent::getSpaceCount( );
     }
 
-    virtual void setSelection( float const start, float const end ) {
+    virtual void setSelection( ::CEGUI::Window const * ref_wnd, float const start, float const end ) {
         if( bp::override func_setSelection = this->get_override( "setSelection" ) )
-            func_setSelection( start, end );
+            func_setSelection( boost::python::ptr(ref_wnd), start, end );
         else{
-            this->CEGUI::RenderedStringWidgetComponent::setSelection( start, end );
+            this->CEGUI::RenderedStringWidgetComponent::setSelection( boost::python::ptr(ref_wnd), start, end );
         }
     }
     
-    void default_setSelection( float const start, float const end ) {
-        CEGUI::RenderedStringWidgetComponent::setSelection( start, end );
+    void default_setSelection( ::CEGUI::Window const * ref_wnd, float const start, float const end ) {
+        CEGUI::RenderedStringWidgetComponent::setSelection( boost::python::ptr(ref_wnd), start, end );
     }
 
-    virtual ::CEGUI::RenderedStringWidgetComponent * split( float split_point, bool first_component ) {
+    virtual ::CEGUI::RenderedStringWidgetComponent * split( ::CEGUI::Window const * ref_wnd, float split_point, bool first_component ) {
         if( bp::override func_split = this->get_override( "split" ) )
-            return func_split( split_point, first_component );
+            return func_split( boost::python::ptr(ref_wnd), split_point, first_component );
         else{
-            return this->CEGUI::RenderedStringWidgetComponent::split( split_point, first_component );
+            return this->CEGUI::RenderedStringWidgetComponent::split( boost::python::ptr(ref_wnd), split_point, first_component );
         }
     }
     
-    ::CEGUI::RenderedStringWidgetComponent * default_split( float split_point, bool first_component ) {
-        return CEGUI::RenderedStringWidgetComponent::split( split_point, first_component );
+    ::CEGUI::RenderedStringWidgetComponent * default_split( ::CEGUI::Window const * ref_wnd, float split_point, bool first_component ) {
+        return CEGUI::RenderedStringWidgetComponent::split( boost::python::ptr(ref_wnd), split_point, first_component );
     }
 
 };
@@ -157,25 +161,37 @@ void register_RenderedStringWidgetComponent_class(){
         }
         { //::CEGUI::RenderedStringWidgetComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringWidgetComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
-            typedef void ( RenderedStringWidgetComponent_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringWidgetComponent::*draw_function_type )( ::CEGUI::Window const *,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
+            typedef void ( RenderedStringWidgetComponent_wrapper::*default_draw_function_type )( ::CEGUI::Window const *,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
             
             RenderedStringWidgetComponent_exposer.def( 
                 "draw"
                 , draw_function_type(&::CEGUI::RenderedStringWidgetComponent::draw)
                 , default_draw_function_type(&RenderedStringWidgetComponent_wrapper::default_draw)
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect"), bp::arg("vertical_space"), bp::arg("space_extra") ) );
+                , ( bp::arg("ref_wnd"), bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect"), bp::arg("vertical_space"), bp::arg("space_extra") ) );
+        
+        }
+        { //::CEGUI::RenderedStringWidgetComponent::getEffectiveWindow
+        
+            typedef ::CEGUI::Window * ( RenderedStringWidgetComponent_wrapper::*getEffectiveWindow_function_type )( ::CEGUI::Window const * ) const;
+            
+            RenderedStringWidgetComponent_exposer.def( 
+                "getEffectiveWindow"
+                , getEffectiveWindow_function_type( &RenderedStringWidgetComponent_wrapper::getEffectiveWindow )
+                , ( bp::arg("ref_wnd") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::RenderedStringWidgetComponent::getPixelSize
         
-            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedStringWidgetComponent::*getPixelSize_function_type )(  ) const;
-            typedef ::CEGUI::Sizef ( RenderedStringWidgetComponent_wrapper::*default_getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedStringWidgetComponent::*getPixelSize_function_type )( ::CEGUI::Window const * ) const;
+            typedef ::CEGUI::Sizef ( RenderedStringWidgetComponent_wrapper::*default_getPixelSize_function_type )( ::CEGUI::Window const * ) const;
             
             RenderedStringWidgetComponent_exposer.def( 
                 "getPixelSize"
                 , getPixelSize_function_type(&::CEGUI::RenderedStringWidgetComponent::getPixelSize)
-                , default_getPixelSize_function_type(&RenderedStringWidgetComponent_wrapper::default_getPixelSize) );
+                , default_getPixelSize_function_type(&RenderedStringWidgetComponent_wrapper::default_getPixelSize)
+                , ( bp::arg("ref_wnd") ) );
         
         }
         { //::CEGUI::RenderedStringWidgetComponent::getSpaceCount
@@ -203,14 +219,14 @@ void register_RenderedStringWidgetComponent_class(){
         }
         { //::CEGUI::RenderedStringWidgetComponent::setSelection
         
-            typedef void ( ::CEGUI::RenderedStringWidgetComponent::*setSelection_function_type )( float const,float const ) ;
-            typedef void ( RenderedStringWidgetComponent_wrapper::*default_setSelection_function_type )( float const,float const ) ;
+            typedef void ( ::CEGUI::RenderedStringWidgetComponent::*setSelection_function_type )( ::CEGUI::Window const *,float const,float const ) ;
+            typedef void ( RenderedStringWidgetComponent_wrapper::*default_setSelection_function_type )( ::CEGUI::Window const *,float const,float const ) ;
             
             RenderedStringWidgetComponent_exposer.def( 
                 "setSelection"
                 , setSelection_function_type(&::CEGUI::RenderedStringWidgetComponent::setSelection)
                 , default_setSelection_function_type(&RenderedStringWidgetComponent_wrapper::default_setSelection)
-                , ( bp::arg("start"), bp::arg("end") ) );
+                , ( bp::arg("ref_wnd"), bp::arg("start"), bp::arg("end") ) );
         
         }
         { //::CEGUI::RenderedStringWidgetComponent::setWindow
@@ -238,14 +254,14 @@ void register_RenderedStringWidgetComponent_class(){
         }
         { //::CEGUI::RenderedStringWidgetComponent::split
         
-            typedef ::CEGUI::RenderedStringWidgetComponent * ( ::CEGUI::RenderedStringWidgetComponent::*split_function_type )( float,bool ) ;
-            typedef ::CEGUI::RenderedStringWidgetComponent * ( RenderedStringWidgetComponent_wrapper::*default_split_function_type )( float,bool ) ;
+            typedef ::CEGUI::RenderedStringWidgetComponent * ( ::CEGUI::RenderedStringWidgetComponent::*split_function_type )( ::CEGUI::Window const *,float,bool ) ;
+            typedef ::CEGUI::RenderedStringWidgetComponent * ( RenderedStringWidgetComponent_wrapper::*default_split_function_type )( ::CEGUI::Window const *,float,bool ) ;
             
             RenderedStringWidgetComponent_exposer.def( 
                 "split"
                 , split_function_type(&::CEGUI::RenderedStringWidgetComponent::split)
                 , default_split_function_type(&RenderedStringWidgetComponent_wrapper::default_split)
-                , ( bp::arg("split_point"), bp::arg("first_component") )
+                , ( bp::arg("ref_wnd"), bp::arg("split_point"), bp::arg("first_component") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }

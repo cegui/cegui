@@ -35,10 +35,6 @@ struct System_wrapper : CEGUI::System, bp::wrapper< CEGUI::System > {
         CEGUI::System::invalidateAllWindows(  );
     }
 
-    void onDefaultFontChanged( ::CEGUI::EventArgs & e ){
-        CEGUI::System::onDefaultFontChanged( boost::ref(e) );
-    }
-
     void outputLogHeader(  ){
         CEGUI::System::outputLogHeader(  );
     }
@@ -334,23 +330,6 @@ void register_System_class(){
                     with parsing enabled and no custom RenderedStringParser set on the\n\
                     window itself will use the systems BasicRenderedStringParser. \n\
                 *\n" );
-        
-        }
-        { //::CEGUI::System::getDefaultFont
-        
-            typedef ::CEGUI::Font * ( ::CEGUI::System::*getDefaultFont_function_type )(  ) const;
-            
-            System_exposer.def( 
-                "getDefaultFont"
-                , getDefaultFont_function_type( &::CEGUI::System::getDefaultFont )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-               \n\
-                  Return a pointer to the default Font for the GUI system\n\
-            \n\
-               @return\n\
-                  Pointer to a Font object that is the default font in the system.\n\
-               *\n" );
         
         }
         { //::CEGUI::System::getDefaultGUIContext
@@ -656,23 +635,6 @@ void register_System_class(){
                 *\n" );
         
         }
-        { //::CEGUI::System::onDefaultFontChanged
-        
-            typedef void ( System_wrapper::*onDefaultFontChanged_function_type )( ::CEGUI::EventArgs & ) ;
-            
-            System_exposer.def( 
-                "onDefaultFontChanged"
-                , onDefaultFontChanged_function_type( &System_wrapper::onDefaultFontChanged )
-                , ( bp::arg("e") )
-                , "*************************************************************************\n\
-               Handlers for System events\n\
-            *************************************************************************\n\
-            *!\n\
-            \n\
-               Handler called when the default system font is changed.\n\
-            *\n" );
-        
-        }
         { //::CEGUI::System::outputLogHeader
         
             typedef void ( System_wrapper::*outputLogHeader_function_type )(  ) ;
@@ -720,46 +682,6 @@ void register_System_class(){
                     with parsing enabled and no custom RenderedStringParser set on the\n\
                     window itself will use the systems BasicRenderedStringParser. \n\
                 *\n" );
-        
-        }
-        { //::CEGUI::System::setDefaultFont
-        
-            typedef void ( ::CEGUI::System::*setDefaultFont_function_type )( ::CEGUI::String const & ) ;
-            
-            System_exposer.def( 
-                "setDefaultFont"
-                , setDefaultFont_function_type( &::CEGUI::System::setDefaultFont )
-                , ( bp::arg("name") )
-                , "*!\n\
-               \n\
-                  Set the default font to be used by the system\n\
-            \n\
-               @param name\n\
-                  String object containing the name of the font to be used as the system default.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
-        
-        }
-        { //::CEGUI::System::setDefaultFont
-        
-            typedef void ( ::CEGUI::System::*setDefaultFont_function_type )( ::CEGUI::Font * ) ;
-            
-            System_exposer.def( 
-                "setDefaultFont"
-                , setDefaultFont_function_type( &::CEGUI::System::setDefaultFont )
-                , ( bp::arg("font") )
-                , "*!\n\
-               \n\
-                  Set the default font to be used by the system\n\
-            \n\
-               @param font\n\
-                  Pointer to the font to be used as the system default.\n\
-            \n\
-               @return\n\
-                  Nothing.\n\
-               *\n" );
         
         }
         { //::CEGUI::System::setDefaultImageCodecName
@@ -955,9 +877,6 @@ void register_System_class(){
                 , "! handle creation and initialisation of the XML parser.\n" );
         
         }
-        System_exposer.add_static_property( "EventDefaultFontChanged"
-                        , bp::make_getter( &CEGUI::System::EventDefaultFontChanged
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         System_exposer.add_static_property( "EventDisplaySizeChanged"
                         , bp::make_getter( &CEGUI::System::EventDisplaySizeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );

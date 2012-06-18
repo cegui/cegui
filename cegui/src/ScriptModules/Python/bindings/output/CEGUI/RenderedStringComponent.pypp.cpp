@@ -25,14 +25,14 @@ struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wra
         return func_clone(  );
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const {
+    virtual void draw( ::CEGUI::Window const * ref_wnd, ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect, float const vertical_space, float const space_extra ) const {
         bp::override func_draw = this->get_override( "draw" );
-        func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
+        func_draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect), vertical_space, space_extra );
     }
 
-    virtual ::CEGUI::Sizef getPixelSize(  ) const {
+    virtual ::CEGUI::Sizef getPixelSize( ::CEGUI::Window const * ref_wnd ) const {
         bp::override func_getPixelSize = this->get_override( "getPixelSize" );
-        return func_getPixelSize(  );
+        return func_getPixelSize( boost::python::ptr(ref_wnd) );
     }
 
     virtual ::size_t getSpaceCount(  ) const {
@@ -40,14 +40,14 @@ struct RenderedStringComponent_wrapper : CEGUI::RenderedStringComponent, bp::wra
         return func_getSpaceCount(  );
     }
 
-    virtual void setSelection( float const start, float const end ){
+    virtual void setSelection( ::CEGUI::Window const * ref_wnd, float const start, float const end ){
         bp::override func_setSelection = this->get_override( "setSelection" );
-        func_setSelection( start, end );
+        func_setSelection( boost::python::ptr(ref_wnd), start, end );
     }
 
-    virtual ::CEGUI::RenderedStringComponent * split( float split_point, bool first_component ){
+    virtual ::CEGUI::RenderedStringComponent * split( ::CEGUI::Window const * ref_wnd, float split_point, bool first_component ){
         bp::override func_split = this->get_override( "split" );
-        return func_split( split_point, first_component );
+        return func_split( boost::python::ptr(ref_wnd), split_point, first_component );
     }
 
 };
@@ -82,12 +82,12 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::draw
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
+            typedef void ( ::CEGUI::RenderedStringComponent::*draw_function_type )( ::CEGUI::Window const *,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const *,float const,float const ) const;
             
             RenderedStringComponent_exposer.def( 
                 "draw"
                 , bp::pure_virtual( draw_function_type(&::CEGUI::RenderedStringComponent::draw) )
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect"), bp::arg("vertical_space"), bp::arg("space_extra") ) );
+                , ( bp::arg("ref_wnd"), bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect"), bp::arg("vertical_space"), bp::arg("space_extra") ) );
         
         }
         { //::CEGUI::RenderedStringComponent::getAspectLock
@@ -137,11 +137,12 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::getPixelSize
         
-            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedStringComponent::*getPixelSize_function_type )(  ) const;
+            typedef ::CEGUI::Sizef ( ::CEGUI::RenderedStringComponent::*getPixelSize_function_type )( ::CEGUI::Window const * ) const;
             
             RenderedStringComponent_exposer.def( 
                 "getPixelSize"
                 , bp::pure_virtual( getPixelSize_function_type(&::CEGUI::RenderedStringComponent::getPixelSize) )
+                , ( bp::arg("ref_wnd") )
                 , "! return the pixel size of the rendered component.\n" );
         
         }
@@ -250,12 +251,12 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::setSelection
         
-            typedef void ( ::CEGUI::RenderedStringComponent::*setSelection_function_type )( float const,float const ) ;
+            typedef void ( ::CEGUI::RenderedStringComponent::*setSelection_function_type )( ::CEGUI::Window const *,float const,float const ) ;
             
             RenderedStringComponent_exposer.def( 
                 "setSelection"
                 , bp::pure_virtual( setSelection_function_type(&::CEGUI::RenderedStringComponent::setSelection) )
-                , ( bp::arg("start"), bp::arg("end") )
+                , ( bp::arg("ref_wnd"), bp::arg("start"), bp::arg("end") )
                 , "! mark some region appropriate given a start and a end as selected.\n" );
         
         }
@@ -284,23 +285,13 @@ void register_RenderedStringComponent_class(){
         }
         { //::CEGUI::RenderedStringComponent::split
         
-            typedef ::CEGUI::RenderedStringComponent * ( ::CEGUI::RenderedStringComponent::*split_function_type )( float,bool ) ;
+            typedef ::CEGUI::RenderedStringComponent * ( ::CEGUI::RenderedStringComponent::*split_function_type )( ::CEGUI::Window const *,float,bool ) ;
             
             RenderedStringComponent_exposer.def( 
                 "split"
                 , bp::pure_virtual( split_function_type(&::CEGUI::RenderedStringComponent::split) )
-                , ( bp::arg("split_point"), bp::arg("first_component") )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-            \n\
-                split the component as close to split_point as possible, returning a\n\
-                new RenderedStringComponent of the same type as '*this' holding the\n\
-                left side of the split, and leaving the right side of the split in\n\
-                this object.\n\
-            \n\
-            @exception InvalidRequestException\n\
-                thrown if the RenderedStringComponent does not support being split.\n\
-            *\n" );
+                , ( bp::arg("ref_wnd"), bp::arg("split_point"), bp::arg("first_component") )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
     }

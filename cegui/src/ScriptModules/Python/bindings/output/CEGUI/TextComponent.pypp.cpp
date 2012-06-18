@@ -195,11 +195,12 @@ void register_TextComponent_class(){
         }
         { //::CEGUI::TextComponent::getHorizontalTextExtent
         
-            typedef float ( ::CEGUI::TextComponent::*getHorizontalTextExtent_function_type )(  ) const;
+            typedef float ( ::CEGUI::TextComponent::*getHorizontalTextExtent_function_type )( ::CEGUI::Window const & ) const;
             
             TextComponent_exposer.def( 
                 "getHorizontalTextExtent"
                 , getHorizontalTextExtent_function_type( &::CEGUI::TextComponent::getHorizontalTextExtent )
+                , ( bp::arg("window") )
                 , "! return the horizontal pixel extent of the formatted rendered string.\n" );
         
         }
@@ -285,11 +286,12 @@ void register_TextComponent_class(){
         }
         { //::CEGUI::TextComponent::getVerticalTextExtent
         
-            typedef float ( ::CEGUI::TextComponent::*getVerticalTextExtent_function_type )(  ) const;
+            typedef float ( ::CEGUI::TextComponent::*getVerticalTextExtent_function_type )( ::CEGUI::Window const & ) const;
             
             TextComponent_exposer.def( 
                 "getVerticalTextExtent"
                 , getVerticalTextExtent_function_type( &::CEGUI::TextComponent::getVerticalTextExtent )
+                , ( bp::arg("window") )
                 , "! return the vertical pixel extent of the formatted rendered string.\n" );
         
         }

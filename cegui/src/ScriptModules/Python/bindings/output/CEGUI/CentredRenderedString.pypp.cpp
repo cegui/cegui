@@ -22,28 +22,28 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
     
     }
 
-    virtual void draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect ) const  {
+    virtual void draw( ::CEGUI::Window const * ref_wnd, ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect ) const  {
         if( bp::override func_draw = this->get_override( "draw" ) )
-            func_draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
+            func_draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
         else{
-            this->CEGUI::CentredRenderedString::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
+            this->CEGUI::CentredRenderedString::draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
         }
     }
     
-    void default_draw( ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect ) const  {
-        CEGUI::CentredRenderedString::draw( boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
+    void default_draw( ::CEGUI::Window const * ref_wnd, ::CEGUI::GeometryBuffer & buffer, ::CEGUI::Vector2f const & position, ::CEGUI::ColourRect const * mod_colours, ::CEGUI::Rectf const * clip_rect ) const  {
+        CEGUI::CentredRenderedString::draw( boost::python::ptr(ref_wnd), boost::ref(buffer), boost::ref(position), boost::python::ptr(mod_colours), boost::python::ptr(clip_rect) );
     }
 
-    virtual void format( ::CEGUI::Sizef const & area_size ) {
+    virtual void format( ::CEGUI::Window const * ref_wnd, ::CEGUI::Sizef const & area_size ) {
         if( bp::override func_format = this->get_override( "format" ) )
-            func_format( boost::ref(area_size) );
+            func_format( boost::python::ptr(ref_wnd), boost::ref(area_size) );
         else{
-            this->CEGUI::CentredRenderedString::format( boost::ref(area_size) );
+            this->CEGUI::CentredRenderedString::format( boost::python::ptr(ref_wnd), boost::ref(area_size) );
         }
     }
     
-    void default_format( ::CEGUI::Sizef const & area_size ) {
-        CEGUI::CentredRenderedString::format( boost::ref(area_size) );
+    void default_format( ::CEGUI::Window const * ref_wnd, ::CEGUI::Sizef const & area_size ) {
+        CEGUI::CentredRenderedString::format( boost::python::ptr(ref_wnd), boost::ref(area_size) );
     }
 
     virtual ::size_t getFormattedLineCount(  ) const  {
@@ -58,28 +58,28 @@ struct CentredRenderedString_wrapper : CEGUI::CentredRenderedString, bp::wrapper
         return CEGUI::CentredRenderedString::getFormattedLineCount( );
     }
 
-    virtual float getHorizontalExtent(  ) const  {
+    virtual float getHorizontalExtent( ::CEGUI::Window const * ref_wnd ) const  {
         if( bp::override func_getHorizontalExtent = this->get_override( "getHorizontalExtent" ) )
-            return func_getHorizontalExtent(  );
+            return func_getHorizontalExtent( boost::python::ptr(ref_wnd) );
         else{
-            return this->CEGUI::CentredRenderedString::getHorizontalExtent(  );
+            return this->CEGUI::CentredRenderedString::getHorizontalExtent( boost::python::ptr(ref_wnd) );
         }
     }
     
-    float default_getHorizontalExtent(  ) const  {
-        return CEGUI::CentredRenderedString::getHorizontalExtent( );
+    float default_getHorizontalExtent( ::CEGUI::Window const * ref_wnd ) const  {
+        return CEGUI::CentredRenderedString::getHorizontalExtent( boost::python::ptr(ref_wnd) );
     }
 
-    virtual float getVerticalExtent(  ) const  {
+    virtual float getVerticalExtent( ::CEGUI::Window const * ref_wnd ) const  {
         if( bp::override func_getVerticalExtent = this->get_override( "getVerticalExtent" ) )
-            return func_getVerticalExtent(  );
+            return func_getVerticalExtent( boost::python::ptr(ref_wnd) );
         else{
-            return this->CEGUI::CentredRenderedString::getVerticalExtent(  );
+            return this->CEGUI::CentredRenderedString::getVerticalExtent( boost::python::ptr(ref_wnd) );
         }
     }
     
-    float default_getVerticalExtent(  ) const  {
-        return CEGUI::CentredRenderedString::getVerticalExtent( );
+    float default_getVerticalExtent( ::CEGUI::Window const * ref_wnd ) const  {
+        return CEGUI::CentredRenderedString::getVerticalExtent( boost::python::ptr(ref_wnd) );
     }
 
 };
@@ -97,26 +97,26 @@ void register_CentredRenderedString_class(){
         bp::implicitly_convertible< CEGUI::RenderedString const &, CEGUI::CentredRenderedString >();
         { //::CEGUI::CentredRenderedString::draw
         
-            typedef void ( ::CEGUI::CentredRenderedString::*draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
-            typedef void ( CentredRenderedString_wrapper::*default_draw_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
+            typedef void ( ::CEGUI::CentredRenderedString::*draw_function_type )( ::CEGUI::Window const *,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
+            typedef void ( CentredRenderedString_wrapper::*default_draw_function_type )( ::CEGUI::Window const *,::CEGUI::GeometryBuffer &,::CEGUI::Vector2f const &,::CEGUI::ColourRect const *,::CEGUI::Rectf const * ) const;
             
             CentredRenderedString_exposer.def( 
                 "draw"
                 , draw_function_type(&::CEGUI::CentredRenderedString::draw)
                 , default_draw_function_type(&CentredRenderedString_wrapper::default_draw)
-                , ( bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect") ) );
+                , ( bp::arg("ref_wnd"), bp::arg("buffer"), bp::arg("position"), bp::arg("mod_colours"), bp::arg("clip_rect") ) );
         
         }
         { //::CEGUI::CentredRenderedString::format
         
-            typedef void ( ::CEGUI::CentredRenderedString::*format_function_type )( ::CEGUI::Sizef const & ) ;
-            typedef void ( CentredRenderedString_wrapper::*default_format_function_type )( ::CEGUI::Sizef const & ) ;
+            typedef void ( ::CEGUI::CentredRenderedString::*format_function_type )( ::CEGUI::Window const *,::CEGUI::Sizef const & ) ;
+            typedef void ( CentredRenderedString_wrapper::*default_format_function_type )( ::CEGUI::Window const *,::CEGUI::Sizef const & ) ;
             
             CentredRenderedString_exposer.def( 
                 "format"
                 , format_function_type(&::CEGUI::CentredRenderedString::format)
                 , default_format_function_type(&CentredRenderedString_wrapper::default_format)
-                , ( bp::arg("area_size") ) );
+                , ( bp::arg("ref_wnd"), bp::arg("area_size") ) );
         
         }
         { //::CEGUI::CentredRenderedString::getFormattedLineCount
@@ -132,24 +132,26 @@ void register_CentredRenderedString_class(){
         }
         { //::CEGUI::CentredRenderedString::getHorizontalExtent
         
-            typedef float ( ::CEGUI::CentredRenderedString::*getHorizontalExtent_function_type )(  ) const;
-            typedef float ( CentredRenderedString_wrapper::*default_getHorizontalExtent_function_type )(  ) const;
+            typedef float ( ::CEGUI::CentredRenderedString::*getHorizontalExtent_function_type )( ::CEGUI::Window const * ) const;
+            typedef float ( CentredRenderedString_wrapper::*default_getHorizontalExtent_function_type )( ::CEGUI::Window const * ) const;
             
             CentredRenderedString_exposer.def( 
                 "getHorizontalExtent"
                 , getHorizontalExtent_function_type(&::CEGUI::CentredRenderedString::getHorizontalExtent)
-                , default_getHorizontalExtent_function_type(&CentredRenderedString_wrapper::default_getHorizontalExtent) );
+                , default_getHorizontalExtent_function_type(&CentredRenderedString_wrapper::default_getHorizontalExtent)
+                , ( bp::arg("ref_wnd") ) );
         
         }
         { //::CEGUI::CentredRenderedString::getVerticalExtent
         
-            typedef float ( ::CEGUI::CentredRenderedString::*getVerticalExtent_function_type )(  ) const;
-            typedef float ( CentredRenderedString_wrapper::*default_getVerticalExtent_function_type )(  ) const;
+            typedef float ( ::CEGUI::CentredRenderedString::*getVerticalExtent_function_type )( ::CEGUI::Window const * ) const;
+            typedef float ( CentredRenderedString_wrapper::*default_getVerticalExtent_function_type )( ::CEGUI::Window const * ) const;
             
             CentredRenderedString_exposer.def( 
                 "getVerticalExtent"
                 , getVerticalExtent_function_type(&::CEGUI::CentredRenderedString::getVerticalExtent)
-                , default_getVerticalExtent_function_type(&CentredRenderedString_wrapper::default_getVerticalExtent) );
+                , default_getVerticalExtent_function_type(&CentredRenderedString_wrapper::default_getVerticalExtent)
+                , ( bp::arg("ref_wnd") ) );
         
         }
     }

@@ -151,6 +151,18 @@ struct NullRenderer_wrapper : CEGUI::NullRenderer, bp::wrapper< CEGUI::NullRende
         return CEGUI::NullRenderer::getMaxTextureSize( );
     }
 
+    virtual bool isTextureDefined( ::CEGUI::String const & name ) const  {
+        if( bp::override func_isTextureDefined = this->get_override( "isTextureDefined" ) )
+            return func_isTextureDefined( boost::ref(name) );
+        else{
+            return this->CEGUI::NullRenderer::isTextureDefined( boost::ref(name) );
+        }
+    }
+    
+    bool default_isTextureDefined( ::CEGUI::String const & name ) const  {
+        return CEGUI::NullRenderer::isTextureDefined( boost::ref(name) );
+    }
+
     static void logTextureCreation( ::CEGUI::String const & name ){
         CEGUI::NullRenderer::logTextureCreation( boost::ref(name) );
     }
@@ -486,6 +498,18 @@ void register_NullRenderer_class(){
                 , getTexture_function_type(&::CEGUI::NullRenderer::getTexture)
                 , ( bp::arg("name") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::NullRenderer::isTextureDefined
+        
+            typedef bool ( ::CEGUI::NullRenderer::*isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( NullRenderer_wrapper::*default_isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            
+            NullRenderer_exposer.def( 
+                "isTextureDefined"
+                , isTextureDefined_function_type(&::CEGUI::NullRenderer::isTextureDefined)
+                , default_isTextureDefined_function_type(&NullRenderer_wrapper::default_isTextureDefined)
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::NullRenderer::logTextureCreation
