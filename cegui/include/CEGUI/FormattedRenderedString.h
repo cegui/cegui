@@ -45,13 +45,13 @@ public:
     //! Destructor.
     virtual ~FormattedRenderedString();
 
-    virtual void format(const Sizef& area_size) = 0;
-    virtual void draw(GeometryBuffer& buffer, const Vector2f& position,
-                      const ColourRect* mod_colours,
+    virtual void format(const Window* ref_wnd, const Sizef& area_size) = 0;
+    virtual void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+                      const Vector2f& position, const ColourRect* mod_colours,
                       const Rectf* clip_rect) const = 0;
     virtual size_t getFormattedLineCount() const = 0;
-    virtual float getHorizontalExtent() const = 0;
-    virtual float getVerticalExtent() const = 0;
+    virtual float getHorizontalExtent(const Window* ref_wnd) const = 0;
+    virtual float getVerticalExtent(const Window* ref_wnd) const = 0;
 
     //! set the RenderedString.
     void setRenderedString(const RenderedString& string);

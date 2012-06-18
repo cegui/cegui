@@ -67,16 +67,19 @@ public:
     const Sizef& getSize() const;
 
     // implementation of abstract base interface
-    void draw(GeometryBuffer& buffer, const Vector2f& position,
-              const ColourRect* mod_colours, const Rectf* clip_rect,
-              const float vertical_space, const float space_extra) const;
-    Sizef getPixelSize() const;
+    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+              const Vector2f& position, const ColourRect* mod_colours,
+              const Rectf* clip_rect, const float vertical_space,
+              const float space_extra) const;
+    Sizef getPixelSize(const Window* ref_wnd) const;
     bool canSplit() const;
-    RenderedStringImageComponent* split(float split_point, bool first_component);
+    RenderedStringImageComponent* split(const Window* ref_wnd,
+                                        float split_point,
+                                        bool first_component);
     RenderedStringImageComponent* clone() const;
     size_t getSpaceCount() const;
-    void setSelection(const float start, const float end);
-
+    void setSelection(const Window* ref_wnd,
+                      const float start, const float end);
 protected:
     //! pointer to the image drawn by the component.
     const Image* d_image;

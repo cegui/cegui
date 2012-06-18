@@ -287,10 +287,10 @@ namespace CEGUI
         void setFontPropertySource(const String& property);
 
         //! return the horizontal pixel extent of the formatted rendered string.
-        float getHorizontalTextExtent() const;
+        float getHorizontalTextExtent(const Window& window) const;
 
         //! return the vertical pixel extent of the formatted rendered string.
-        float getVerticalTextExtent() const;
+        float getVerticalTextExtent(const Window& window) const;
     
         // overridden from ComponentBase.
         bool handleFontRenderSizeChange(Window& window, const Font* font) const;

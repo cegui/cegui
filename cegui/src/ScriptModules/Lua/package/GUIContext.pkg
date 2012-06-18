@@ -50,6 +50,10 @@ class GUIContext : public RenderingSurface
 
     Tooltip* getDefaultTooltipObject() const;
 
+    void setDefaultFont(utf8string name);
+    void setDefaultFont(Font* font);
+    Font* getDefaultFont(void) const;
+
     ////////////////////////////////////////////////////////////////////////////
     // InjectedInputReceiver
     bool injectMouseMove(float delta_x, float delta_y);

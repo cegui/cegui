@@ -40,22 +40,24 @@ LeftAlignedRenderedString::LeftAlignedRenderedString(
 }
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::format(const Sizef& /*area_size*/)
+void LeftAlignedRenderedString::format(const Window* /*ref_wnd*/,
+                                       const Sizef& /*area_size*/)
 {
 }
 
 //----------------------------------------------------------------------------//
-void LeftAlignedRenderedString::draw(GeometryBuffer& buffer,
-                                 const Vector2f& position,
-                                 const ColourRect* mod_colours,
-                                 const Rectf* clip_rect) const
+void LeftAlignedRenderedString::draw(const Window* ref_wnd,
+                                     GeometryBuffer& buffer,
+                                     const Vector2f& position,
+                                     const ColourRect* mod_colours,
+                                     const Rectf* clip_rect) const
 {
     Vector2f draw_pos(position);
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        d_renderedString->draw(i, buffer, draw_pos, mod_colours, clip_rect, 0.0f);
-        draw_pos.d_y += d_renderedString->getPixelSize(i).d_height;
+        d_renderedString->draw(ref_wnd, i, buffer, draw_pos, mod_colours, clip_rect, 0.0f);
+        draw_pos.d_y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
 }
 
@@ -66,12 +68,12 @@ size_t LeftAlignedRenderedString::getFormattedLineCount() const
 }
 
 //----------------------------------------------------------------------------//
-float LeftAlignedRenderedString::getHorizontalExtent() const
+float LeftAlignedRenderedString::getHorizontalExtent(const Window* ref_wnd) const
 {
     float w = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        const float this_width = d_renderedString->getPixelSize(i).d_width;
+        const float this_width = d_renderedString->getPixelSize(ref_wnd, i).d_width;
         if (this_width > w)
             w = this_width;
     }
@@ -80,11 +82,11 @@ float LeftAlignedRenderedString::getHorizontalExtent() const
 }
 
 //----------------------------------------------------------------------------//
-float LeftAlignedRenderedString::getVerticalExtent() const
+float LeftAlignedRenderedString::getVerticalExtent(const Window* ref_wnd) const
 {
     float h = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getPixelSize(i).d_height;
+        h += d_renderedString->getPixelSize(ref_wnd, i).d_height;
 
     return h;
 }

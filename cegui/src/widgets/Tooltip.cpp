@@ -187,7 +187,7 @@ namespace CEGUI
 
         for (size_t i = 0; i < rs.getLineCount(); ++i)
         {
-            const Sizef line_sz(rs.getPixelSize(i));
+            const Sizef line_sz(rs.getPixelSize(this, i));
             sz.d_height += line_sz.d_height;
 
             if (line_sz.d_width > sz.d_width)

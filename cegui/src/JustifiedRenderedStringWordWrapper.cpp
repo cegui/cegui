@@ -37,7 +37,9 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <>
-void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Sizef& area_size)
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(
+                                                        const Window* ref_wnd,
+                                                        const Sizef& area_size)
 {
     deleteFormatters();
 
@@ -49,16 +51,16 @@ void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Sizef& are
 
     for (size_t line = 0; line < rstring.getLineCount(); ++line)
     {
-        while ((rs_width = rstring.getPixelSize(line).d_width) > 0)
+        while ((rs_width = rstring.getPixelSize(ref_wnd, line).d_width) > 0)
         {
             // skip line if no wrapping occurs
             if (rs_width <= area_size.d_width)
                 break;
 
             // split rstring at width into lstring and remaining rstring
-            rstring.split(line, area_size.d_width, lstring);
+            rstring.split(ref_wnd, line, area_size.d_width, lstring);
             frs = CEGUI_NEW_AO JustifiedRenderedString(*CEGUI_NEW_AO RenderedString(lstring));
-            frs->format(area_size);
+            frs->format(ref_wnd, area_size);
             d_lines.push_back(frs);
             line = 0;
         }
@@ -66,7 +68,7 @@ void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Sizef& are
 
     // last line (which we do not justify)
     frs = CEGUI_NEW_AO LeftAlignedRenderedString(*CEGUI_NEW_AO RenderedString(rstring));
-    frs->format(area_size);
+    frs->format(ref_wnd, area_size);
     d_lines.push_back(frs);
 }
 

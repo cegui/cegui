@@ -51,12 +51,13 @@ public:
     ~RenderedStringWordWrapper();
 
     // implementation of base interface
-    void format(const Sizef& area_size);
-    void draw(GeometryBuffer& buffer, const Vector2f& position,
-              const ColourRect* mod_colours, const Rectf* clip_rect) const;
+    void format(const Window* ref_wnd, const Sizef& area_size);
+    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+              const Vector2f& position, const ColourRect* mod_colours,
+              const Rectf* clip_rect) const;
     size_t getFormattedLineCount() const;
-    float getHorizontalExtent() const;
-    float getVerticalExtent() const;
+    float getHorizontalExtent(const Window* ref_wnd) const;
+    float getVerticalExtent(const Window* ref_wnd) const;
 
 protected:
     //! Delete the current formatters and associated RenderedStrings
@@ -70,7 +71,8 @@ protected:
 
 //! specialised version of format used with Justified text
 template <> CEGUIEXPORT
-void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Sizef& area_size);
+void RenderedStringWordWrapper<JustifiedRenderedString>::format(const Window* ref_wnd,
+                                                                const Sizef& area_size);
 
 //----------------------------------------------------------------------------//
 template <typename T>
@@ -89,7 +91,8 @@ RenderedStringWordWrapper<T>::~RenderedStringWordWrapper()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void RenderedStringWordWrapper<T>::format(const Sizef& area_size)
+void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
+                                          const Sizef& area_size)
 {
     deleteFormatters();
 
@@ -101,16 +104,16 @@ void RenderedStringWordWrapper<T>::format(const Sizef& area_size)
 
     for (size_t line = 0; line < rstring.getLineCount(); ++line)
     {
-        while ((rs_width = rstring.getPixelSize(line).d_width) > 0)
+        while ((rs_width = rstring.getPixelSize(ref_wnd, line).d_width) > 0)
         {
             // skip line if no wrapping occurs
             if (rs_width <= area_size.d_width)
                 break;
 
             // split rstring at width into lstring and remaining rstring
-            rstring.split(line, area_size.d_width, lstring);
+            rstring.split(ref_wnd, line, area_size.d_width, lstring);
             frs = CEGUI_NEW_AO T(*new RenderedString(lstring));
-            frs->format(area_size);
+            frs->format(ref_wnd, area_size);
             d_lines.push_back(frs);
             line = 0;
         }
@@ -118,23 +121,24 @@ void RenderedStringWordWrapper<T>::format(const Sizef& area_size)
 
     // last line.
     frs = CEGUI_NEW_AO T(*new RenderedString(rstring));
-    frs->format(area_size);
+    frs->format(ref_wnd, area_size);
     d_lines.push_back(frs);
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void RenderedStringWordWrapper<T>::draw(GeometryBuffer& buffer,
-                                     const Vector2f& position,
-                                     const ColourRect* mod_colours,
-                                     const Rectf* clip_rect) const
+void RenderedStringWordWrapper<T>::draw(const Window* ref_wnd,
+                                        GeometryBuffer& buffer,
+                                        const Vector2f& position,
+                                        const ColourRect* mod_colours,
+                                        const Rectf* clip_rect) const
 {
     Vector2f line_pos(position);
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
     {
-        (*i)->draw(buffer, line_pos, mod_colours, clip_rect);
-        line_pos.d_y += (*i)->getVerticalExtent();
+        (*i)->draw(ref_wnd, buffer, line_pos, mod_colours, clip_rect);
+        line_pos.d_y += (*i)->getVerticalExtent(ref_wnd);
     }
 }
 
@@ -147,7 +151,7 @@ size_t RenderedStringWordWrapper<T>::getFormattedLineCount() const
 
 //----------------------------------------------------------------------------//
 template <typename T>
-float RenderedStringWordWrapper<T>::getHorizontalExtent() const
+float RenderedStringWordWrapper<T>::getHorizontalExtent(const Window* ref_wnd) const
 {
     // TODO: Cache at format time.
 
@@ -155,7 +159,7 @@ float RenderedStringWordWrapper<T>::getHorizontalExtent() const
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
     {
-        const float cur_width = (*i)->getHorizontalExtent();
+        const float cur_width = (*i)->getHorizontalExtent(ref_wnd);
         if (cur_width > w)
             w = cur_width;
     }
@@ -165,14 +169,14 @@ float RenderedStringWordWrapper<T>::getHorizontalExtent() const
 
 //----------------------------------------------------------------------------//
 template <typename T>
-float RenderedStringWordWrapper<T>::getVerticalExtent() const
+float RenderedStringWordWrapper<T>::getVerticalExtent(const Window* ref_wnd) const
 {
     // TODO: Cache at format time.
 
     float h = 0;
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
-        h += (*i)->getVerticalExtent();
+        h += (*i)->getVerticalExtent(ref_wnd);
 
     return h;
 }
