@@ -171,7 +171,7 @@ namespace CEGUI
         }
 
         // adjust y positioning according to formatting option
-        float textHeight = d_formattedRenderedString->getVerticalExtent();
+        float textHeight = d_formattedRenderedString->getVerticalExtent(d_window);
         const Scrollbar* const vertScrollbar = getVertScrollbar();
         const float vertScrollPosition = vertScrollbar->getScrollPosition();
         // if scroll bar is in use, position according to that.
@@ -194,7 +194,7 @@ namespace CEGUI
         ColourRect final_cols(d_textCols);
         final_cols.modulateAlpha(d_window->getEffectiveAlpha());
         // cache the text for rendering.
-        d_formattedRenderedString->draw(d_window->getGeometryBuffer(),
+        d_formattedRenderedString->draw(d_window, d_window->getGeometryBuffer(),
                                         absarea.getPosition(),
                                         &final_cols, &clipper);
     }
@@ -263,8 +263,8 @@ namespace CEGUI
         if (!d_formatValid)
             updateFormatting(renderArea.getSize());
 
-        return Sizef(d_formattedRenderedString->getHorizontalExtent(),
-                      d_formattedRenderedString->getVerticalExtent());
+        return Sizef(d_formattedRenderedString->getHorizontalExtent(d_window),
+                      d_formattedRenderedString->getVerticalExtent(d_window));
     }
 
     /*************************************************************************
@@ -561,7 +561,7 @@ float FalagardStaticText::getHorizontalTextExtent() const
         updateFormatting();
 
     return d_formattedRenderedString ?
-        d_formattedRenderedString->getHorizontalExtent() :
+        d_formattedRenderedString->getHorizontalExtent(d_window) :
         0.0f;
 }
 
@@ -572,7 +572,7 @@ float FalagardStaticText::getVerticalTextExtent() const
         updateFormatting();
 
     return d_formattedRenderedString ?
-        d_formattedRenderedString->getVerticalExtent() :
+        d_formattedRenderedString->getVerticalExtent(d_window) :
         0.0f;
 }
 
@@ -594,7 +594,7 @@ void FalagardStaticText::updateFormatting(const Sizef& sz) const
     // 'touch' the window's rendered string to ensure it's re-parsed if needed.
     d_window->getRenderedString();
 
-    d_formattedRenderedString->format(sz);
+    d_formattedRenderedString->format(d_window, sz);
     d_formatValid = true;
 }
 

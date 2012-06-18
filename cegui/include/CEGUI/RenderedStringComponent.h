@@ -82,14 +82,13 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(GeometryBuffer& buffer, const Vector2f& position,
-                      const ColourRect* mod_colours,
-                      const Rectf* clip_rect,
-                      const float vertical_space,
+    virtual void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+                      const Vector2f& position, const ColourRect* mod_colours,
+                      const Rectf* clip_rect, const float vertical_space,
                       const float space_extra) const = 0;
 
     //! return the pixel size of the rendered component.
-    virtual Sizef getPixelSize() const = 0;
+    virtual Sizef getPixelSize(const Window* ref_wnd) const = 0;
 
     //! return whether the component can be split
     virtual bool canSplit() const = 0;
@@ -104,7 +103,8 @@ public:
     \exception InvalidRequestException
         thrown if the RenderedStringComponent does not support being split.
     */
-    virtual RenderedStringComponent* split(float split_point,
+    virtual RenderedStringComponent* split(const Window* ref_wnd,
+                                           float split_point,
                                            bool first_component) = 0;
 
     //! clone this component.
@@ -114,7 +114,8 @@ public:
     virtual size_t getSpaceCount() const = 0;
 
     //! mark some region appropriate given /a start and /a end as selected.
-    virtual void setSelection(const float start, const float end) = 0;
+    virtual void setSelection(const Window* ref_wnd,
+                              const float start, const float end) = 0;
 
 protected:
     //! Protected constructor.

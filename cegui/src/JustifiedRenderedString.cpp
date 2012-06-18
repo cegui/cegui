@@ -39,14 +39,16 @@ JustifiedRenderedString::JustifiedRenderedString(const RenderedString& string) :
 }
 
 //----------------------------------------------------------------------------//
-void JustifiedRenderedString::format(const Sizef& area_size)
+void JustifiedRenderedString::format(const Window* ref_wnd,
+                                     const Sizef& area_size)
 {
     d_spaceExtras.clear();
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
         const size_t space_count = d_renderedString->getSpaceCount(i);
-        const float string_width = d_renderedString->getPixelSize(i).d_width;
+        const float string_width = d_renderedString->getPixelSize(
+                                                        ref_wnd, i).d_width;
 
         if ((space_count == 0) || (string_width >= area_size.d_width))
             d_spaceExtras.push_back(0.0f);
@@ -57,18 +59,18 @@ void JustifiedRenderedString::format(const Sizef& area_size)
 }
 
 //----------------------------------------------------------------------------//
-void JustifiedRenderedString::draw(GeometryBuffer& buffer,
-                                 const Vector2f& position,
-                                 const ColourRect* mod_colours,
-                                 const Rectf* clip_rect) const
+void JustifiedRenderedString::draw(const Window* ref_wnd, GeometryBuffer& buffer,
+                                   const Vector2f& position,
+                                   const ColourRect* mod_colours,
+                                   const Rectf* clip_rect) const
 {
     Vector2f draw_pos(position);
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        d_renderedString->draw(i, buffer, draw_pos, mod_colours, clip_rect,
-                               d_spaceExtras[i]);
-        draw_pos.d_y += d_renderedString->getPixelSize(i).d_height;
+        d_renderedString->draw(ref_wnd, i, buffer, draw_pos, mod_colours,
+                               clip_rect, d_spaceExtras[i]);
+        draw_pos.d_y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
 }
 
@@ -79,12 +81,12 @@ size_t JustifiedRenderedString::getFormattedLineCount() const
 }
 
 //----------------------------------------------------------------------------//
-float JustifiedRenderedString::getHorizontalExtent() const
+float JustifiedRenderedString::getHorizontalExtent(const Window* ref_wnd) const
 {
     float w = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        const float this_width = d_renderedString->getPixelSize(i).d_width +
+        const float this_width = d_renderedString->getPixelSize(ref_wnd, i).d_width +
             d_renderedString->getSpaceCount(i) * d_spaceExtras[i];
 
         if (this_width > w)
@@ -95,11 +97,11 @@ float JustifiedRenderedString::getHorizontalExtent() const
 }
 
 //----------------------------------------------------------------------------//
-float JustifiedRenderedString::getVerticalExtent() const
+float JustifiedRenderedString::getVerticalExtent(const Window* ref_wnd) const
 {
     float h = 0.0f;
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
-        h += d_renderedString->getPixelSize(i).d_height;
+        h += d_renderedString->getPixelSize(ref_wnd, i).d_height;
 
     return h;
 }

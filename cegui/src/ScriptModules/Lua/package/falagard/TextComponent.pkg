@@ -30,8 +30,8 @@ class TextComponent : public FalagardComponentBase
         string getFontPropertySource() const;
         void setFontPropertySource(utf8string property);
 
-        float getHorizontalTextExtent() const;
-        float getVerticalTextExtent() const;
+        float getHorizontalTextExtent(const Window& window) const;
+        float getVerticalTextExtent(const Window& window) const;
 
     //void writeXMLToStream(OutStream& out_stream) const;
     TextComponent();

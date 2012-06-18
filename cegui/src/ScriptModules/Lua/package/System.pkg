@@ -17,10 +17,6 @@ class System : public EventSet
 
     GUIContext& getDefaultGUIContext() const;
 
-    void setDefaultFont(utf8string name);
-    void setDefaultFont(Font* font);
-    Font* getDefaultFont(void) const;
-
     void renderAllGUIContexts();
 
     //ScriptModule* getScriptingModule(void) const;

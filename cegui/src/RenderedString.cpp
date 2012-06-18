@@ -99,8 +99,8 @@ void RenderedString::clearComponentList(ComponentList& list)
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::split(const size_t line, float split_point,
-                           RenderedString& left)
+void RenderedString::split(const Window* ref_wnd, const size_t line,
+                           float split_point, RenderedString& left)
 {
     // FIXME: This function is big and nasty; it breaks all the rules for a
     // 'good' function and desperately needs some refactoring work done to it.
@@ -144,7 +144,7 @@ void RenderedString::split(const size_t line, float split_point,
     const size_t last_component = d_lines[0].second;
     for (; idx < last_component; ++idx)
     {
-        partial_extent += d_components[idx]->getPixelSize().d_width;
+        partial_extent += d_components[idx]->getPixelSize(ref_wnd).d_width;
 
         if (split_point <= partial_extent)
             break;
@@ -197,7 +197,8 @@ void RenderedString::split(const size_t line, float split_point,
     if (c->canSplit())
     {
         RenderedStringComponent* lc = 
-            c->split(split_point - (partial_extent - c->getPixelSize().d_width),
+            c->split(ref_wnd,
+                     split_point - (partial_extent - c->getPixelSize(ref_wnd).d_width),
                      idx == 0);
 
         if (lc)
@@ -208,7 +209,7 @@ void RenderedString::split(const size_t line, float split_point,
     }
     // can't split, if component width is >= split_point xfer the whole
     // component to it's own line in the left part (FIX #306)
-    else if (c->getPixelSize().d_width >= split_point)
+    else if (c->getPixelSize(ref_wnd).d_width >= split_point)
     {
         left.appendLineBreak();
         left.d_components.push_back(d_components[0]);
@@ -241,7 +242,8 @@ size_t RenderedString::getLineCount() const
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedString::getPixelSize(const size_t line) const
+Sizef RenderedString::getPixelSize(const Window* ref_wnd,
+                                   const size_t line) const
 {
     if (line >= getLineCount())
         CEGUI_THROW(InvalidRequestException("RenderedString::getPixelSize: "
@@ -252,7 +254,7 @@ Sizef RenderedString::getPixelSize(const size_t line) const
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        const Sizef comp_sz(d_components[i]->getPixelSize());
+        const Sizef comp_sz(d_components[i]->getPixelSize(ref_wnd));
         sz.d_width += comp_sz.d_width;
 
         if (comp_sz.d_height > sz.d_height)
@@ -279,8 +281,8 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
-                          const Vector2f& position,
+void RenderedString::draw(const Window* ref_wnd, const size_t line,
+                          GeometryBuffer& buffer, const Vector2f& position,
                           const ColourRect* mod_colours, const Rectf* clip_rect,
                           const float space_extra) const
 {
@@ -288,27 +290,27 @@ void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
         CEGUI_THROW(InvalidRequestException("RenderedString::draw: "
             "line number specified is invalid."));
 
-    const float render_height = getPixelSize(line).d_height;
+    const float render_height = getPixelSize(ref_wnd, line).d_height;
 
     Vector2f comp_pos(position);
 
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        d_components[i]->draw(buffer, comp_pos, mod_colours, clip_rect,
+        d_components[i]->draw(ref_wnd, buffer, comp_pos, mod_colours, clip_rect,
                               render_height, space_extra);
-        comp_pos.d_x += d_components[i]->getPixelSize().d_width;
+        comp_pos.d_x += d_components[i]->getPixelSize(ref_wnd).d_width;
     }
 }
 
 //----------------------------------------------------------------------------//
-void RenderedString::setSelection(float start, float end)
+void RenderedString::setSelection(const Window* ref_wnd, float start, float end)
 {
     const size_t last_component = d_lines[0].second;
     float partial_extent = 0;
     size_t idx = 0;
     for (; idx < last_component; ++idx)
-        if (start <= partial_extent + d_components[idx]->getPixelSize().d_width)
+        if (start <= partial_extent + d_components[idx]->getPixelSize(ref_wnd).d_width)
             break;
 
     start -= partial_extent;
@@ -316,8 +318,10 @@ void RenderedString::setSelection(float start, float end)
 
     while (end > 0.0f)
     {
-        const float comp_extent = d_components[idx]->getPixelSize().d_width;
-        d_components[idx]->setSelection(start, (end >= comp_extent) ? comp_extent : end);
+        const float comp_extent = d_components[idx]->getPixelSize(ref_wnd).d_width;
+        d_components[idx]->setSelection(ref_wnd,
+                                        start,
+                                        (end >= comp_extent) ? comp_extent : end);
         start = 0;
         end -= comp_extent;
         ++idx;

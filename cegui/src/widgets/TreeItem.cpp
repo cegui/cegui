@@ -199,7 +199,7 @@ Sizef TreeItem::getPixelSize(void) const
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        const Sizef line_sz(d_renderedString.getPixelSize(i));
+        const Sizef line_sz(d_renderedString.getPixelSize(d_owner, i));
         sz.d_height += line_sz.d_height;
 
         if (line_sz.d_width > sz.d_width)
@@ -315,8 +315,8 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(i, buffer, draw_pos, &final_colours, clipper, 0.0f);
-        draw_pos.d_y += d_renderedString.getPixelSize(i).d_height;
+        d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
+        draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }
 

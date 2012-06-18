@@ -36,6 +36,7 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent() :
+    d_windowPtrSynched(true),
     d_window(0),
     d_selected(false)
 {
@@ -43,57 +44,68 @@ RenderedStringWidgetComponent::RenderedStringWidgetComponent() :
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent(
-        const String& /*widget_name*/) :
-    d_window(0 /* FIXME: WindowManager::getSingleton().getWindow(widget_name)*/ ),
+                                                    const String& widget_name) :
+    d_windowName(widget_name),
+    d_windowPtrSynched(false),
+    d_window(0),
     d_selected(false)
 {
 }
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent::RenderedStringWidgetComponent(Window* widget) :
+    d_windowPtrSynched(true),
     d_window(widget),
     d_selected(false)
 {
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::setWindow(const String& /*widget_name*/)
+void RenderedStringWidgetComponent::setWindow(const String& widget_name)
 {
-    // FIXME: d_window = WindowManager::getSingleton().getWindow(widget_name);
+    d_windowName = widget_name;
+    d_windowPtrSynched = false;
+    d_window = 0;
 }
 
 //----------------------------------------------------------------------------//
 void RenderedStringWidgetComponent::setWindow(Window* widget)
 {
     d_window = widget;
+    d_windowPtrSynched = true;
 }
 
 //----------------------------------------------------------------------------//
 const Window* RenderedStringWidgetComponent::getWindow() const
 {
-    return d_window;
+    return getEffectiveWindow(0); // FIXME: Perhaps?
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::setSelection(const float start, const float end)
+void RenderedStringWidgetComponent::setSelection(const Window* /*ref_wnd*/,
+                                                 const float start,
+                                                 const float end)
 {
     d_selected = (start != end);
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
+void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
+                                         GeometryBuffer& buffer,
                                          const Vector2f& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
                                          const Rectf* clip_rect,
                                          const float vertical_space,
                                          const float /*space_extra*/) const
 {
-    if (!d_window)
+    Window* const window = getEffectiveWindow(ref_wnd);
+
+    if (!window)
         return;
 
     // HACK: re-adjust for inner-rect of parent
     float x_adj = 0, y_adj = 0;
-    Window* parent = d_window->getParent();
+    Window* parent = window->getParent();
     
     if (parent)
     {
@@ -109,7 +121,7 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        final_pos.d_y += vertical_space - getPixelSize().d_height;
+        final_pos.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_STRETCHED:
@@ -120,7 +132,7 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
         // intentional fall-through.
         
     case VF_CENTRE_ALIGNED:
-        final_pos.d_y += (vertical_space - getPixelSize().d_height) / 2 ;
+        final_pos.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
 
@@ -136,7 +148,7 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
     // render the selection if needed
     if (d_selectionImage && d_selected)
     {
-        const Rectf select_area(position, getPixelSize());
+        const Rectf select_area(position, getPixelSize(ref_wnd));
         d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
     }
 
@@ -144,17 +156,33 @@ void RenderedStringWidgetComponent::draw(GeometryBuffer& buffer,
     const UVector2 wpos(UDim(0, final_pos.d_x + d_padding.d_min.d_x - x_adj),
                         UDim(0, final_pos.d_y + d_padding.d_min.d_y - y_adj));
 
-    d_window->setPosition(wpos);
+    window->setPosition(wpos);
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedStringWidgetComponent::getPixelSize() const
+Window* RenderedStringWidgetComponent::getEffectiveWindow(
+                                                const Window* ref_wnd) const
+{
+    if (!d_windowPtrSynched)
+    {
+        if (!ref_wnd)
+            return 0;
+
+        d_window = ref_wnd->getChild(d_windowName);
+        d_windowPtrSynched = true;
+    }
+    
+    return d_window;
+}
+
+//----------------------------------------------------------------------------//
+Sizef RenderedStringWidgetComponent::getPixelSize(const Window* ref_wnd) const
 {
     Sizef sz(0, 0);
 
-    if (d_window)
+    if (Window* const window = getEffectiveWindow(ref_wnd))
     {
-        sz = d_window->getPixelSize();
+        sz = window->getPixelSize();
         sz.d_width += (d_padding.d_min.d_x + d_padding.d_max.d_x);
         sz.d_height += (d_padding.d_min.d_y + d_padding.d_max.d_y);
     }
@@ -170,7 +198,7 @@ bool RenderedStringWidgetComponent::canSplit() const
 
 //----------------------------------------------------------------------------//
 RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
-    float /*split_point*/, bool /*first_component*/)
+    const Window* /*ref_wnd*/, float /*split_point*/, bool /*first_component*/)
 {
     CEGUI_THROW(InvalidRequestException(
         "RenderedStringWidgetComponent::split: this "

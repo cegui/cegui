@@ -51,12 +51,13 @@ public:
     JustifiedRenderedString(const RenderedString& string);
 
     // implementation of base interface
-    void format(const Sizef& area_size);
-    void draw(GeometryBuffer& buffer, const Vector2f& position,
-              const ColourRect* mod_colours, const Rectf* clip_rect) const;
+    void format(const Window* ref_wnd, const Sizef& area_size);
+    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+              const Vector2f& position, const ColourRect* mod_colours,
+              const Rectf* clip_rect) const;
     size_t getFormattedLineCount() const;
-    float getHorizontalExtent() const;
-    float getVerticalExtent() const;
+    float getHorizontalExtent(const Window* ref_wnd) const;
+    float getVerticalExtent(const Window* ref_wnd) const;
 
 protected:
     //! space extra size for each line to achieve justified formatting.

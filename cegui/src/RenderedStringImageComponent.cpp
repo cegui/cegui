@@ -105,13 +105,15 @@ const ColourRect& RenderedStringImageComponent::getColours() const
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::setSelection(const float start, const float end)
+void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
+                                                const float start, const float end)
 {
     d_selected = (start != end);
 }
 
 //----------------------------------------------------------------------------//
-void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
+void RenderedStringImageComponent::draw(const Window* ref_wnd,
+                                        GeometryBuffer& buffer,
                                         const Vector2f& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect,
@@ -128,15 +130,15 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        dest.d_min.d_y += vertical_space - getPixelSize().d_height;
+        dest.d_min.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_CENTRE_ALIGNED:
-        dest.d_min.d_y += (vertical_space - getPixelSize().d_height) / 2 ;
+        dest.d_min.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
     case VF_STRETCHED:
-        y_scale = vertical_space / getPixelSize().d_height;
+        y_scale = vertical_space / getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_TOP_ALIGNED:
@@ -164,7 +166,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
     // render the selection if needed
     if (d_selectionImage && d_selected)
     {
-        const Rectf select_area(position, getPixelSize());
+        const Rectf select_area(position, getPixelSize(ref_wnd));
         d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
     }
 
@@ -178,7 +180,7 @@ void RenderedStringImageComponent::draw(GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
-Sizef RenderedStringImageComponent::getPixelSize() const
+Sizef RenderedStringImageComponent::getPixelSize(const Window* /*ref_wnd*/) const
 {
     Sizef sz(0, 0);
 
@@ -204,7 +206,7 @@ bool RenderedStringImageComponent::canSplit() const
 
 //----------------------------------------------------------------------------//
 RenderedStringImageComponent* RenderedStringImageComponent::split(
-    float /*split_point*/, bool /*first_component*/)
+    const Window* /*ref_wnd*/ ,float /*split_point*/, bool /*first_component*/)
 {
     CEGUI_THROW(InvalidRequestException(
         "RenderedStringImageComponent::split: this "

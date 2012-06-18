@@ -94,9 +94,10 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void draw(const size_t line, GeometryBuffer& buffer, const Vector2f& position,
-              const ColourRect* mod_colours, const Rectf* clip_rect,
-              const float space_extra) const;
+    void draw(const Window* ref_wnd,
+              const size_t line, GeometryBuffer& buffer,
+              const Vector2f& position, const ColourRect* mod_colours,
+              const Rectf* clip_rect, const float space_extra) const;
 
     /*!
     \brief
@@ -112,7 +113,7 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    Sizef getPixelSize(const size_t line) const;
+    Sizef getPixelSize(const Window* ref_wnd, const size_t line) const;
 
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);
@@ -146,7 +147,8 @@ public:
     \exception InvalidRequestException
         thrown if \a line is out of range.
     */
-    void split(const size_t line, float split_point, RenderedString& left);
+    void split(const Window* ref_wnd,
+               const size_t line, float split_point, RenderedString& left);
 
     //! return the total number of spacing characters in the specified line.
     size_t getSpaceCount(const size_t line) const;
@@ -158,7 +160,7 @@ public:
     size_t getLineCount() const;
 
     //! set selection highlight
-    void setSelection(float start, float end);
+    void setSelection(const Window* ref_wnd, float start, float end);
 
     //! Copy constructor.
     RenderedString(const RenderedString& other);
