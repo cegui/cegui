@@ -15,20 +15,20 @@ struct FontManager_wrapper : CEGUI::FontManager, bp::wrapper< CEGUI::FontManager
     
     }
 
-    virtual void doPostObjectAdditionAction( ::CEGUI::Font & object ){
+    ::CEGUI::Font & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Font * object, ::CEGUI::XMLResourceExistsAction const action ){
+        return CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
+    }
+
+    virtual void doPostObjectAdditionAction( ::CEGUI::Font & arg0 ){
         if( bp::override func_doPostObjectAdditionAction = this->get_override( "doPostObjectAdditionAction" ) )
-            func_doPostObjectAdditionAction( boost::ref(object) );
+            func_doPostObjectAdditionAction( boost::ref(arg0) );
         else{
-            this->CEGUI::FontManager::doPostObjectAdditionAction( boost::ref(object) );
+            this->CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doPostObjectAdditionAction( boost::ref(arg0) );
         }
     }
     
-    virtual void default_doPostObjectAdditionAction( ::CEGUI::Font & object ){
-        CEGUI::FontManager::doPostObjectAdditionAction( boost::ref(object) );
-    }
-
-    ::CEGUI::Font & doExistingObjectAction( ::CEGUI::String const object_name, ::CEGUI::Font * object, ::CEGUI::XMLResourceExistsAction const action ){
-        return CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doExistingObjectAction( object_name, boost::python::ptr(object), action );
+    virtual void default_doPostObjectAdditionAction( ::CEGUI::Font & arg0 ){
+        CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doPostObjectAdditionAction( boost::ref(arg0) );
     }
 
     virtual void fireEvent( ::CEGUI::String const & name, ::CEGUI::EventArgs & args, ::CEGUI::String const & eventNamespace="" ) {
@@ -105,17 +105,6 @@ void register_FontManager_class(){
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
-        { //::CEGUI::FontManager::doPostObjectAdditionAction
-        
-            typedef void ( FontManager_wrapper::*doPostObjectAdditionAction_function_type )( ::CEGUI::Font & ) ;
-            
-            FontManager_exposer.def( 
-                "doPostObjectAdditionAction"
-                , doPostObjectAdditionAction_function_type( &FontManager_wrapper::default_doPostObjectAdditionAction )
-                , ( bp::arg("object") )
-                , "override from base\n" );
-        
-        }
         { //::CEGUI::FontManager::getIterator
         
             typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::Font*> > > > ( ::CEGUI::FontManager::*getIterator_function_type )(  ) const;
@@ -178,6 +167,18 @@ void register_FontManager_class(){
                 , doExistingObjectAction_function_type( &FontManager_wrapper::doExistingObjectAction )
                 , ( bp::arg("object_name"), bp::arg("object"), bp::arg("action") )
                 , bp::return_value_policy< bp::reference_existing_object >() );
+        
+        }
+        { //::CEGUI::NamedXMLResourceManager< CEGUI::Font, CEGUI::Font_xmlHandler >::doPostObjectAdditionAction
+        
+            typedef CEGUI::FontManager exported_class_t;
+            typedef void ( FontManager_wrapper::*doPostObjectAdditionAction_function_type )( ::CEGUI::Font & ) ;
+            
+            FontManager_exposer.def( 
+                "doPostObjectAdditionAction"
+                , doPostObjectAdditionAction_function_type( &FontManager_wrapper::default_doPostObjectAdditionAction )
+                , ( bp::arg("arg0") )
+                , "----------------------------------------------------------------------------\n" );
         
         }
         { //::CEGUI::EventSet::fireEvent

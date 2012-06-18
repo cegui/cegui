@@ -106,6 +106,11 @@ struct Renderer_wrapper : CEGUI::Renderer, bp::wrapper< CEGUI::Renderer > {
         throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
+    virtual bool isTextureDefined( ::CEGUI::String const & name ) const {
+        bp::override func_isTextureDefined = this->get_override( "isTextureDefined" );
+        return func_isTextureDefined( boost::ref(name) );
+    }
+
     virtual void setDisplaySize( ::CEGUI::Sizef const & size ){
         bp::override func_setDisplaySize = this->get_override( "setDisplaySize" );
         func_setDisplaySize( boost::ref(size) );
@@ -482,6 +487,17 @@ void register_Renderer_class(){
                     - UnknownObjectException - thrown if no Texture object named  name\n\
                       exists within the system.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::Renderer::isTextureDefined
+        
+            typedef bool ( ::CEGUI::Renderer::*isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            
+            Renderer_exposer.def( 
+                "isTextureDefined"
+                , bp::pure_virtual( isTextureDefined_function_type(&::CEGUI::Renderer::isTextureDefined) )
+                , ( bp::arg("name") )
+                , "! Return whether a texture with the given name exists.\n" );
         
         }
         { //::CEGUI::Renderer::setDisplaySize

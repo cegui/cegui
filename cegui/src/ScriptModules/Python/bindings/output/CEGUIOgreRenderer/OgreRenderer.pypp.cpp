@@ -162,6 +162,18 @@ struct OgreRenderer_wrapper : CEGUI::OgreRenderer, bp::wrapper< CEGUI::OgreRende
         return CEGUI::OgreRenderer::getMaxTextureSize( );
     }
 
+    virtual bool isTextureDefined( ::CEGUI::String const & name ) const  {
+        if( bp::override func_isTextureDefined = this->get_override( "isTextureDefined" ) )
+            return func_isTextureDefined( boost::ref(name) );
+        else{
+            return this->CEGUI::OgreRenderer::isTextureDefined( boost::ref(name) );
+        }
+    }
+    
+    bool default_isTextureDefined( ::CEGUI::String const & name ) const  {
+        return CEGUI::OgreRenderer::isTextureDefined( boost::ref(name) );
+    }
+
     static void logTextureCreation( ::CEGUI::String const & name ){
         CEGUI::OgreRenderer::logTextureCreation( boost::ref(name) );
     }
@@ -697,6 +709,18 @@ void register_OgreRenderer_class(){
                 "isRenderingEnabled"
                 , isRenderingEnabled_function_type( &::CEGUI::OgreRenderer::isRenderingEnabled )
                 , "! return whether CEGUI rendering is enabled.\n" );
+        
+        }
+        { //::CEGUI::OgreRenderer::isTextureDefined
+        
+            typedef bool ( ::CEGUI::OgreRenderer::*isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            typedef bool ( OgreRenderer_wrapper::*default_isTextureDefined_function_type )( ::CEGUI::String const & ) const;
+            
+            OgreRenderer_exposer.def( 
+                "isTextureDefined"
+                , isTextureDefined_function_type(&::CEGUI::OgreRenderer::isTextureDefined)
+                , default_isTextureDefined_function_type(&OgreRenderer_wrapper::default_isTextureDefined)
+                , ( bp::arg("name") ) );
         
         }
         { //::CEGUI::OgreRenderer::logTextureCreation
