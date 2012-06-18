@@ -135,9 +135,9 @@ void SamplesFramework::initialiseFrameworkLayout()
     d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(0.f)));
     d_sampleExitButton->setHorizontalAlignment(HA_RIGHT);
     d_sampleExitButton->setVerticalAlignment(VA_TOP);
-    d_sampleExitButton->setProperty("HoverImage", "SampleBrowserSkin/ExitButton");
-    d_sampleExitButton->setProperty("NormalImage", "SampleBrowserSkin/ExitButton");
-    d_sampleExitButton->setProperty("PushedImage", "SampleBrowserSkin/ExitButton");
+    d_sampleExitButton->setProperty("NormalImage", "SampleBrowserSkin/ExitButtonNormal");
+    d_sampleExitButton->setProperty("HoverImage", "SampleBrowserSkin/ExitButtonHover");
+    d_sampleExitButton->setProperty("PushedImage", "SampleBrowserSkin/ExitButtonClicked");
     d_sampleExitButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesFramework::handleExitSampleView, this));
     d_sampleExitButton->setAlwaysOnTop(true);
 }
@@ -203,14 +203,14 @@ void SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
     if(d_selectedSampleData)
     {
-        if(CEGUI::Key::Scan::Escape != ceguiKey)
+        if(Key::Escape != ceguiKey)
             d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
         else
             handleStopDisplaySample();
     }
     else
     {
-        if(CEGUI::Key::Scan::Escape != ceguiKey)
+        if(Key::Escape != ceguiKey)
             CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
         else
             setQuitting(true);
