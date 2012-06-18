@@ -337,6 +337,10 @@ namespace pyplusplus
 
 // then we exposed everything needed (and more) to ensure GCCXML makes them visible to Py++
 //
+
+// this is a gcc-only workaround, don't do this at build time
+#ifdef __GCCXML__
+
 namespace python_CEGUI
 {
 	namespace details
@@ -380,3 +384,6 @@ namespace python_CEGUI
 		}
 	}
 }
+
+#endif
+
