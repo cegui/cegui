@@ -33,25 +33,25 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GUIContext.h"
 
 #include "CEGUI/widgets/ScrollablePane.h"
 #include "CEGUI/widgets/ScrolledContainer.h"
 
-#include "CEGuiSample.h"
-#include "CEGuiBaseApplication.h"
+#include "SampleBase.h"
 
 /*
 This is a demonstration of the ScrollablePane widget
 */
 
 // ScrollablePane demo sample class
-class ScrollablePaneSample : public CEGuiSample
+class ScrollablePaneSample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
 private:
     // creates the menubar with content
@@ -60,7 +60,7 @@ private:
     // quit menu item handler
     bool fileQuit(const CEGUI::EventArgs&)
     {
-        d_sampleApp->setQuitting(true);
+        //d_sampleApp->setQuitting(true);
         return true;
     }
 
@@ -76,25 +76,18 @@ private:
     CEGUI::Window* d_root;      // the gui sheet
     CEGUI::Font* d_font;        // the font we use
     CEGUI::ScrollablePane* d_pane; // the scrollable pane. center piece of the demo
+
+    CEGUI::GUIContext* d_guiContext;
 };
 
-// Sample program entry point
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    ScrollablePaneSample app;
-    return app.run();
-}
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool ScrollablePaneSample::initialiseSample()
+bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_guiContext = guiContext;
+
     using namespace CEGUI;
 
     // this sample will use WindowsLook
@@ -111,10 +104,10 @@ bool ScrollablePaneSample::initialiseSample()
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_system->getDefaultGUIContext().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    d_guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
-    d_system->getDefaultGUIContext().setDefaultTooltipType("WindowsLook/Tooltip");
+    d_guiContext->setDefaultTooltipType("WindowsLook/Tooltip");
 
     // We need the window manager to set up the test interface :)
     d_wm = WindowManager::getSingletonPtr();
@@ -125,7 +118,7 @@ bool ScrollablePaneSample::initialiseSample()
     d_root->setProperty("FrameEnabled", "false");
     // root window will take care of hotkeys
     d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
-    d_system->getDefaultGUIContext().setRootWindow(d_root);
+    d_guiContext->setRootWindow(d_root);
 
     // create a menubar.
     // this will fit in the top of the screen and have options for the demo
@@ -200,7 +193,7 @@ void ScrollablePaneSample::createMenu(CEGUI::Window* bar)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void ScrollablePaneSample::cleanupSample()
+void ScrollablePaneSample::deinitialise()
 {
     // everything we did is cleaned up by CEGUI
 }
@@ -253,4 +246,14 @@ bool ScrollablePaneSample::hotkeysHandler(const CEGUI::EventArgs& e)
     }
 
     return true;
+}
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static ScrollablePaneSample sample;
+    return sample;
 }

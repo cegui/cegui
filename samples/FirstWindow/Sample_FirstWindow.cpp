@@ -28,21 +28,11 @@
 #include "Sample_FirstWindow.h"
 #include "CEGUI/CEGUI.h"
 
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    FirstWindowSample app;
-    return app.run();
-}
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FirstWindowSample::initialiseSample()
+bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -64,7 +54,7 @@ bool FirstWindowSample::initialiseSample()
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -73,7 +63,7 @@ bool FirstWindowSample::initialiseSample()
     // All windows and widgets are created via the WindowManager singleton.
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    // Here we create a "DeafultWindow".  This is a native type, that is, it does
+    // Here we create a "DefaultWindow".  This is a native type, that is, it does
     // not have to be loaded via a scheme, it is always available.  One common use
     // for the DefaultWindow is as a generic container for other windows.  Its
     // size defaults to 1.0f x 1.0f using the Relative metrics mode, which means
@@ -81,11 +71,10 @@ bool FirstWindowSample::initialiseSample()
     // The DefaultWindow does not perform any rendering of its own, so is invisible.
     //
     // Create a DefaultWindow called 'Root'.
-    DefaultWindow* root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+    d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
 
-    // set the GUI root window (also known as the GUI "sheet"), so the gui we set up
-    // will be visible.
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    // Set the root window as root of our GUI Context
+    guiContext->setRootWindow(d_root);
 
     // A FrameWindow is a window with a frame and a titlebar which may be moved around
     // and resized.
@@ -95,7 +84,7 @@ bool FirstWindowSample::initialiseSample()
 
     // Here we attach the newly created FrameWindow to the previously created
     // DefaultWindow which we will be using as the root of the displayed gui.
-    root->addChild(wnd);
+    d_root->addChild(wnd);
 
     // Windows are in Relative metrics mode by default.  This means that we can
     // specify sizes and positions without having to know the exact pixel size
@@ -133,7 +122,16 @@ bool FirstWindowSample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void FirstWindowSample::cleanupSample()
+void FirstWindowSample::deinitialise()
 {
     // nothing to do here!
+}
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static FirstWindowSample sample;
+    return sample;
 }

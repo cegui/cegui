@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGuiSample.h
+    filename:   SamplesFrameworkBase.h
     created:    24/9/2004
     author:     Paul D Turner
 *************************************************************************/
@@ -25,23 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGuiSample_h_
-#define _CEGuiSample_h_
-
-#if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined (CEGUI_STATIC)
-#   ifdef CEGUISAMPLEHELPER_EXPORTS
-#       define CEGUISAMPLE_API __declspec(dllexport)
-#   else
-#       define CEGUISAMPLE_API __declspec(dllimport)
-#   endif
-#else
-#       define CEGUISAMPLE_API
-#endif
-
+#ifndef _SamplesFrameworkBase_h_
+#define _SamplesFrameworkBase_h_
 
 // forward declarations
 class CEGuiBaseApplication;
 class CEGuiRendererSelector;
+
+#include "CEGUI/InputEvent.h"
 
 /*!
 \brief
@@ -49,21 +40,21 @@ class CEGuiRendererSelector;
     Here we take care of common things such the renderer selection and application
     startup.
 */
-class CEGUISAMPLE_API CEGuiSample
+class SamplesFrameworkBase
 {
 public:
     /*!
     \brief
         Constructor.
     */
-    CEGuiSample();
+    SamplesFrameworkBase();
 
 
     /*!
     \brief
         Destructor.
     */
-    virtual ~CEGuiSample();
+    virtual ~SamplesFrameworkBase();
 
 
     /*!
@@ -93,6 +84,79 @@ public:
     */
     virtual void cleanupSample() = 0;
 
+    /*!
+    \brief
+        Update function called before rendering
+    */
+    virtual void update(float passedTime) = 0;
+
+    /*!
+    \brief
+    Update function for window size changes
+    */
+    virtual void handleNewWindowSize(float width, float height) = 0;
+
+    /*!
+    \brief
+    Draw function to draw GUIContexts
+    */
+    virtual void drawGUIContexts() = 0;
+
+    /*!
+    \brief
+    Function to inject key down to GUIContexts
+    */
+    virtual void injectKeyDown(const CEGUI::Key::Scan& ceguiKey) = 0;
+
+    /*!
+    \brief
+    Function to inject key up to GUIContexts
+    */
+    virtual void injectKeyUp(const CEGUI::Key::Scan& ceguiKey) = 0;
+
+    /*!
+    \brief
+    Function to inject characters to GUIContexts
+    */
+    virtual void injectChar(int character) = 0;
+
+    /*!
+    \brief
+    Function to inject mouse button down to GUIContexts
+    */
+    virtual void injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+
+    /*!
+    \brief
+    Function to inject mouse button up to GUIContexts
+    */
+    virtual void injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+
+    /*!
+    \brief
+    Function to inject mouse wheel changes to GUIContexts
+    */
+    virtual void injectMouseWheelChange(float position) = 0;
+
+    /*!
+    \brief
+    Function to inject the mouse position to GUIContexts
+    */
+    virtual void injectMousePosition(float x, float y) = 0;
+
+    /*!
+    \brief
+    Function to set the bool defining if the application should quit as soon as possible
+    */
+    virtual void setQuitting(bool quit);
+
+    /*!
+    \brief
+    Function returning if the application should quit as soon as possible
+    \return
+    true if should quit.
+    */
+    bool isQuitting();
 
 protected:
     /*!
@@ -117,13 +181,15 @@ protected:
     \brief
         Output a message to the user in some OS independant way.
     */
-    void outputExceptionMessage(const char* message) const;
+    static void outputExceptionMessage(const char* message);
 
     /*************************************************************************
         Data fields
     *************************************************************************/
     CEGuiRendererSelector*  d_rendererSelector;     //!< Points to the renderer selector object.
     CEGuiBaseApplication*   d_sampleApp;            //!< Pointer to the base application object.
+
+    bool                    d_quitting;              //!< Bool defining if application should quit.
 };
 
-#endif  // end of guard _CEGuiSample_h_
+#endif  // end of guard _SamplesFrameworkBase_h_
