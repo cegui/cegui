@@ -28,17 +28,17 @@
 #ifndef _Sample_InventoryDemo_h_
 #define _Sample_InventoryDemo_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
-class InventoryDemo : public CEGuiSample
+class InventoryDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 };
 
 #endif  // end of guard _Sample_InventoryDemo_h_

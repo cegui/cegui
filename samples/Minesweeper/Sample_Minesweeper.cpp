@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 #include "Minesweeper_Timer.h"
 #include <ctime>
@@ -38,14 +38,14 @@ struct Location
 const size_t MinesweeperSize = 10;
 const size_t MineCount = 15;
 
-class MinesweeperSample : public CEGuiSample
+class MinesweeperSample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
 protected:
     // Handle new game
@@ -90,22 +90,7 @@ protected:
     // Custom window type to force refresh of the timer
     Timer* d_alarm;
 };
-///////////////////////////////////////////////////////////////////////////
-/**************************************************************************
 
-    Main
-
-**************************************************************************/
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    MinesweeperSample app;
-    return app.run();
-}
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
@@ -116,7 +101,7 @@ int main(int /*argc*/, char* /*argv*/[])
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool MinesweeperSample::initialiseSample()
+bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
     // Register Timer Window
@@ -130,16 +115,16 @@ bool MinesweeperSample::initialiseSample()
 	// Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
+    guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
     // set default mouse image
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // Load font
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageMineSweeper", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -152,10 +137,10 @@ bool MinesweeperSample::initialiseSample()
     background->setProperty("BackgroundEnabled", "false");
 
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "BackgroundImageMineSweeper");
 
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    guiContext->setRootWindow(background);
     d_alarm = (Timer*)winMgr.createWindow("Timer");
     background->addChild(d_alarm);
     d_alarm->setDelay(0.5); // Tick each 0.5 seconds
@@ -260,7 +245,7 @@ bool MinesweeperSample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void MinesweeperSample::cleanupSample()
+void MinesweeperSample::deinitialise()
 {
     //delete d_console;
 }
@@ -526,4 +511,11 @@ bool MinesweeperSample::boardDiscover(const Location& loc)
         }
     }
     return true;
+}
+
+
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static MinesweeperSample sample;
+    return sample;
 }

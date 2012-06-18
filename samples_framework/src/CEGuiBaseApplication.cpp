@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 #include "CEGuiBaseApplication.h"
+#include "SamplesFramework.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageManager.h"
@@ -59,6 +60,7 @@
     Static / Const data
 *************************************************************************/
 const char CEGuiBaseApplication::DATAPATH_VAR_NAME[] = "CEGUI_SAMPLE_DATAPATH";
+SamplesFrameworkBase* CEGuiBaseApplication::d_sampleApp(0);
 
 //----------------------------------------------------------------------------//
 CEGuiBaseApplication::CEGuiBaseApplication() :
@@ -84,20 +86,29 @@ CEGuiBaseApplication::~CEGuiBaseApplication()
 void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 {
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
+    CEGUI::Renderer* gui_renderer(gui_system.getRenderer());
 
     gui_system.injectTimePulse(elapsed);
-    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
     updateFPS(elapsed);
     updateLogo(elapsed);
 
     beginRendering(elapsed);
-    gui_system.renderAllGUIContexts();
+    gui_renderer->beginRendering();
+
+    d_sampleApp->drawGUIContexts();
+
+    gui_renderer->endRendering();
+    WindowManager::getSingleton().cleanDeadPool();
+
     endRendering();
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
+bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 {
+    d_sampleApp = sampleApp;
+
+
     if (!d_renderer)
         throw CEGUI::InvalidRequestException("CEGuiBaseApplication::execute: "
             "Base application subclass did not create Renderer!");
@@ -141,7 +152,7 @@ bool CEGuiBaseApplication::execute(CEGuiSample* sampleApp)
         CEGUI::Event::Subscriber(&CEGuiBaseApplication::resizeHandler,
                                  this));
 
-    return execute_impl(sampleApp);
+    return execute_impl();
 }
 
 //----------------------------------------------------------------------------//
@@ -153,18 +164,6 @@ void CEGuiBaseApplication::cleanup()
     d_renderer->destroyGeometryBuffer(*d_logoGeometry);
     d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
     CEGUI::System::destroy();
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiBaseApplication::setQuitting(bool quit)
-{
-    d_quitting = quit;
-}
-
-//----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::isQuitting() const
-{
-    return d_quitting;
 }
 
 //----------------------------------------------------------------------------//
@@ -194,7 +193,9 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
     rp->setResourceGroupDirectory("schemas", resourcePath);   
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    rp->setResourceGroupDirectory("animations", resourcePath);   
+    rp->setResourceGroupDirectory("animations", resourcePath);
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "samples/");
+    rp->setResourceGroupDirectory("samples", resourcePath); 
 }
 
 //----------------------------------------------------------------------------//
@@ -208,6 +209,9 @@ void CEGuiBaseApplication::initialiseDefaultResourceGroups()
     CEGUI::WindowManager::setDefaultResourceGroup("layouts");
     CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
     CEGUI::AnimationManager::setDefaultResourceGroup("animations");
+
+    SamplesFramework::setDefaultResourceGroup("samples");
+
     // setup default group for validation schemas
     CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
     if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
@@ -274,9 +278,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         {
             d_FPSValue = d_FPSFrames;
 
-            CEGUI::Font* fnt = CEGUI::System::getSingleton().
-                getDefaultGUIContext().getDefaultFont();
-
+            CEGUI::Font* fnt = CEGUI::System::getSingleton().getDefaultFont();
             if (!fnt)
                 return;
 
@@ -323,6 +325,9 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
     // clear FPS geometry and see that it gets recreated in the next frame
     d_FPSGeometry->reset();
     d_FPSValue = 0;
+
+    const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
+    d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
 
     positionLogo();
     return true;

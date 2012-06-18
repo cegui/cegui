@@ -27,23 +27,12 @@
  ***************************************************************************/
 #include "Sample_DragDropDemo.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
 
 //----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
+bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
 {
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    DragDropDemo app;
-    return app.run();
-}
+    d_guiContext = guiContext;
 
-//----------------------------------------------------------------------------//
-bool DragDropDemo::initialiseSample()
-{
     using namespace CEGUI;
 
     // load windows look
@@ -53,14 +42,14 @@ bool DragDropDemo::initialiseSample()
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // set up defaults
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
     System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
 
     // load the initial layout
-    System::getSingleton().getDefaultGUIContext().setRootWindow(
+    guiContext->setRootWindow(
         WindowManager::getSingleton().loadLayoutFromFile("DragDropDemo.layout"));
 
     // setup events
@@ -71,7 +60,7 @@ bool DragDropDemo::initialiseSample()
 }
 
 //----------------------------------------------------------------------------//
-void DragDropDemo::cleanupSample()
+void DragDropDemo::deinitialise()
 {
     // nothing doing in here!
 }
@@ -81,7 +70,7 @@ void DragDropDemo::subscribeEvents()
 {
     using namespace CEGUI;
 
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
 
     /*
      * Subscribe handler to deal with user closing the frame window
@@ -146,8 +135,17 @@ bool DragDropDemo::handle_ItemDropped(const CEGUI::EventArgs& args)
 //----------------------------------------------------------------------------//
 bool DragDropDemo::handle_CloseButton(const CEGUI::EventArgs&)
 {
-    d_sampleApp->setQuitting();
     return true;
 }
 
 //----------------------------------------------------------------------------//
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static DragDropDemo sample;
+    return sample;
+}
