@@ -256,9 +256,6 @@
 
         <StateImagery name="Normal">
             <Layer>
-                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
-                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
-                </Section>
                 <Section section="normal_image" />
                 <Section section="label">
                     <ColourProperty name="NormalTextColour" />
@@ -267,9 +264,6 @@
         </StateImagery>
         <StateImagery name="Hover">
             <Layer>
-                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
-                    <Colours topLeft="FF9F9F9F" topRight="FF9F9F9F" bottomLeft="FF9F9F9F" bottomRight="FF9F9F9F" />
-                </Section>
                 <Section section="hover_image" />
                 <Section section="label">
                     <ColourProperty name="HoverTextColour" />
@@ -278,9 +272,6 @@
         </StateImagery>
         <StateImagery name="Pushed">
             <Layer>
-                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
-                    <Colours topLeft="FF6F6F6F" topRight="FF6F6F6F" bottomLeft="FF6F6F6F" bottomRight="FF6F6F6F" />
-                </Section>
                 <Section section="pushed_image" />
                 <Section section="label">
                     <ColourProperty name="PushedTextColour" />
@@ -289,9 +280,6 @@
         </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
-                <Section look="SampleBrowserSkin/Shared" section="Frame" controlProperty="UseStandardImagery" >
-                    <Colours topLeft="FF3F3F3F" topRight="FF3F3F3F" bottomLeft="FF3F3F3F" bottomRight="FF3F3F3F" />
-                </Section>
                 <Section section="normal_image">
                     <Colours topLeft="FF3F3F3F" topRight="FF3F3F3F" bottomLeft="FF3F3F3F" bottomRight="FF3F3F3F" />
                 </Section>

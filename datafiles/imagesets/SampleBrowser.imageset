@@ -46,7 +46,11 @@
     <Image height="12" name="MiniTrayT" width="8" xPos="102" yPos="65" />
     <Image height="12" name="MiniTrayBL" width="12" xPos="90" yPos="85" />
     <Image height="8" name="MiniTrayR" width="12" xPos="110" yPos="77" />
-    <Image height="94" name="ExitButton" width="94" xPos="0" yPos="155" />
+    <Image height="94" name="ExitButtonNormal" width="94" xPos="0" yPos="155" />
     <Image height="389" name="SamplesForeground" width="690" xPos="185" yPos="479" />
-    <Image height="94" name="EntryButton" width="94" xPos="0" yPos="250" />
+    <Image height="94" name="EntryButtonNormal" width="94" xPos="0" yPos="440" />
+    <Image height="94" name="ExitButtonHover" width="94" xPos="0" yPos="250" />
+    <Image height="94" name="ExitButtonClicked" width="94" xPos="0" yPos="345" />
+    <Image height="94" name="EntryButtonHover" width="94" xPos="0" yPos="535" />
+    <Image height="94" name="EntryButtonClicked" width="94" xPos="0" yPos="630" />
 </Imageset>
