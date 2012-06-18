@@ -31,6 +31,8 @@
 #include "CEGUI/System.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/TextUtils.h"
+#include "CEGUI/GUIContext.h"
+#include "CEGUI/Window.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -134,10 +136,24 @@ void RenderedStringTextComponent::setSelection(const float start, const float en
         return;
     }
 
-    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    // FIXME: Passing 0 is incorrect when rendering for a window, since it can
+    // cause the incorrect default font to be used.
+    const Font* fnt = getEffectiveFont(0); 
 
     d_selectionStart = fnt->getCharAtPixel(d_text, start);
     d_selectionLength = fnt->getCharAtPixel(d_text, end) - d_selectionStart + 1;
+}
+
+//----------------------------------------------------------------------------//
+const Font* RenderedStringTextComponent::getEffectiveFont(
+                                                    const Window* window) const
+{
+    if (d_font)
+        return d_font;
+
+    return (window ? window->getGUIContext() :
+                     System::getSingleton().getDefaultGUIContext()).
+           getDefaultFont();
 }
 
 //----------------------------------------------------------------------------//
@@ -148,7 +164,9 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
                                        const float vertical_space,
                                        const float space_extra) const
 {
-    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    // FIXME: Passing 0 is incorrect when rendering for a window, since it can
+    // cause the incorrect default font to be used.
+    const Font* fnt = getEffectiveFont(0); 
 
     if (!fnt)
         return;
@@ -214,7 +232,9 @@ void RenderedStringTextComponent::draw(GeometryBuffer& buffer,
 //----------------------------------------------------------------------------//
 Sizef RenderedStringTextComponent::getPixelSize() const
 {
-    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    // FIXME: Passing 0 is incorrect when rendering for a window, since it can
+    // cause the incorrect default font to be used.
+    const Font* fnt = getEffectiveFont(0); 
 
     Sizef psz(d_padding.d_min.d_x + d_padding.d_max.d_x,
                d_padding.d_min.d_y + d_padding.d_max.d_y);
@@ -238,7 +258,9 @@ bool RenderedStringTextComponent::canSplit() const
 RenderedStringTextComponent* RenderedStringTextComponent::split(
     float split_point, bool first_component)
 {
-    const Font* fnt = d_font ? d_font : System::getSingleton().getDefaultFont();
+    // FIXME: Passing 0 is incorrect when rendering for a window, since it can
+    // cause the incorrect default font to be used.
+    const Font* fnt = getEffectiveFont(0); 
 
     // This is checked, but should never fail, since if we had no font our
     // extent would be 0 and we would never cause a split to be needed here.

@@ -98,7 +98,6 @@ const IconvStringTranscoder System::d_stringTranscoder;
 #endif
 
 // event names
-const String System::EventDefaultFontChanged( "DefaultFontChanged" );
 const String System::EventDisplaySizeChanged( "DisplaySizeChanged" );
 const String System::EventRenderedStringParserChanged("RenderedStringParserChanged");
 
@@ -122,7 +121,6 @@ System::System(Renderer& renderer,
 : d_renderer(&renderer),
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
-  d_defaultFont(0),
   d_clipboard(CEGUI_NEW_AO Clipboard()),
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
@@ -428,36 +426,6 @@ void System::renderAllGUIContexts()
 
 
 /*************************************************************************
-	Set the default font to be used by the system
-*************************************************************************/
-void System::setDefaultFont(const String& name)
-{
-	if (name.empty())
-	{
-		setDefaultFont(0);
-	}
-	else
-	{
-		setDefaultFont(&FontManager::getSingleton().get(name));
-	}
-
-}
-
-
-/*************************************************************************
-	Set the default font to be used by the system
-*************************************************************************/
-void System::setDefaultFont(Font* font)
-{
-	d_defaultFont = font;
-
-	// fire event
-	EventArgs args;
-	onDefaultFontChanged(args);
-}
-
-
-/*************************************************************************
 	Return a pointer to the ScriptModule being used for scripting within
 	the GUI system.
 *************************************************************************/
@@ -607,38 +575,6 @@ System*	System::getSingletonPtr(void)
 {
 	return Singleton<System>::getSingletonPtr();
 }
-
-/*************************************************************************
-	Handler called when the default system font is changed.
-*************************************************************************/
-void System::onDefaultFontChanged(EventArgs& e)
-{
-    // here we need to inform every window using the default font that
-    // it's font has been changed.
-    WindowManager::WindowIterator iter =
-        WindowManager::getSingleton().getIterator();
-
-    // Args structure we will re-use for all windows.
-    WindowEventArgs args(0);
-
-    while (!iter.isAtEnd())
-    {
-        Window* wnd = iter.getCurrentValue();
-
-        if (wnd->getFont(false) == 0)
-        {
-            args.window = wnd;
-            wnd->onFontChanged(args);
-            // ensure 'handled' state is reset.
-            args.handled = 0;
-        }
-
-        ++iter;
-    }
-
-	fireEvent(EventDefaultFontChanged, e, EventNamespace);
-}
-
 
 /*************************************************************************
 	Handler method for display size change notifications

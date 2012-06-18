@@ -200,10 +200,6 @@ public:
     using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromContainer;
     using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromFile;
     using NamedXMLResourceManager<Font, Font_xmlHandler>::createFromString;
-
-protected:
-    // override from base
-    void doPostObjectAdditionAction(Font& object);
 };
 
 } // End of  CEGUI namespace section

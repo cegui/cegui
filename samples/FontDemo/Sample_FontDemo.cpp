@@ -135,7 +135,7 @@ public:
         // font won't get effected by the scaler and such.
         FontManager::getSingleton().createFreeTypeFont("DefaultFont", 10/*pt*/, true, "DejaVuSans.ttf");
         // Set it as the default
-        System::getSingleton().setDefaultFont("DefaultFont");
+        System::getSingleton().getDefaultGUIContext().setDefaultFont("DefaultFont");
 
         // load all the fonts (if they are not loaded yet)
         FontManager::getSingleton().createAll("*.font", "fonts");

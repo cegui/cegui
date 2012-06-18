@@ -48,7 +48,7 @@ bool TextDemo::initialiseSample()
     // Font defaulting
     if(FontManager::getSingleton().isDefined("DejaVuSans-10"))
     {
-		System::getSingleton().setDefaultFont("DejaVuSans-10");
+		System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
     }
 
     // load an image to use as a background

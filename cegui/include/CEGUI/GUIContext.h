@@ -104,6 +104,10 @@ public:
      * the renderTarget member set to the old RenderTarget.
      */
     static const String EventRenderTargetChanged;
+    /** Event fired when the default font changes.
+     * Handlers are passed a const reference to a generic EventArgs struct.
+     */
+	static const String EventDefaultFontChanged;
 
     GUIContext(RenderTarget& target);
     ~GUIContext();
@@ -219,6 +223,34 @@ public:
 
     void setRenderTarget(RenderTarget& target);
 
+    /*!
+    \brief
+        Set the default font to be used by the GUIContext
+
+    \param name
+        String object containing the name of the font to be used as the
+        default for this GUIContext
+    */
+    void setDefaultFont(const String& name);
+
+    /*!
+    \brief
+        Set the default font to be used by the GUIContext
+
+    \param font
+        Pointer to the font to be used as the default for this GUIContext.
+    */
+    void setDefaultFont(Font* font);
+
+    /*!
+    \brief
+        Return a pointer to the default Font for the GUIContext
+
+    \return
+        Pointer to a Font object that is the default for this GUIContext.
+    */
+    Font* getDefaultFont() const;
+
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
     bool injectMouseLeaves(void);
@@ -248,6 +280,9 @@ protected:
     void createDefaultTooltipWindowInstance() const;
     void destroyDefaultTooltipWindowInstance();
 
+    //! notify windows in a hierarchy using default font, when font changes.
+    void notifyDefaultFontChanged(Window* hierarchy_root) const;
+
     bool mouseMoveInjection_impl(MouseEventArgs& ma);
     Window* getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
     Window* getKeyboardTargetWindow() const;
@@ -267,6 +302,7 @@ protected:
     virtual void onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args);
     virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
+    virtual void onDefaultFontChanged(EventArgs& args);
 
     // protected overrides
     void drawContent();
@@ -288,6 +324,8 @@ protected:
     mutable Tooltip* d_defaultTooltipObject;
     mutable bool d_weCreatedTooltipObject;
     String d_defaultTooltipType;
+
+    Font* d_defaultFont;
 
     //! a cache of the target surface size, allows returning by ref.
     Sizef d_surfaceSize;

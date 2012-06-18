@@ -146,13 +146,5 @@ void FontManager::writeFontToStream(const String& name,
 }
 
 //----------------------------------------------------------------------------//
-void FontManager::doPostObjectAdditionAction(Font& object)
-{
-    // if this was the first font created, set it as the default font
-    if (d_objects.size() == 1)
-        System::getSingleton().setDefaultFont(&object);
-}
-
-//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

@@ -74,6 +74,8 @@ public:
     void setSelection(const float start, const float end);
 
 protected:
+    const Font* getEffectiveFont(const Window* window) const;
+
     static size_t getNextTokenLength(const String& text, size_t start_idx);
 
     //! pointer to the image drawn by the component.

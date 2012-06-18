@@ -341,7 +341,8 @@ void Config_xmlHandler::loadAutoResources() const
 void Config_xmlHandler::initialiseDefaultFont() const
 {
     if (!d_defaultFont.empty())
-        System::getSingleton().setDefaultFont(d_defaultFont);
+        System::getSingleton().getDefaultGUIContext().
+            setDefaultFont(d_defaultFont);
 }
 
 //----------------------------------------------------------------------------//
