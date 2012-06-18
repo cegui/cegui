@@ -161,7 +161,7 @@ const Font* TreeItem::getFont(void) const
         return d_owner->getFont();
     // no owner, just use the default (which may be NULL anyway)
     else
-        return System::getSingleton().getDefaultFont();   
+        return System::getSingleton().getDefaultGUIContext().getDefaultFont();   
 }
 
 /*************************************************************************

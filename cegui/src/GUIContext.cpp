@@ -29,6 +29,7 @@
 #include "CEGUI/RenderTarget.h"
 #include "CEGUI/RenderingWindow.h"
 #include "CEGUI/WindowManager.h"
+#include "CEGUI/FontManager.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/SimpleTimer.h"
@@ -68,6 +69,7 @@ const String GUIContext::EventMouseButtonClickTimeoutChanged("MouseButtonClickTi
 const String GUIContext::EventMouseButtonMultiClickTimeoutChanged("MouseButtonMultiClickTimeoutChanged" );
 const String GUIContext::EventMouseButtonMultiClickToleranceChanged("MouseButtonMultiClickToleranceChanged" );
 const String GUIContext::EventRenderTargetChanged("RenderTargetChanged");
+const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 
 //----------------------------------------------------------------------------//
 GUIContext::GUIContext(RenderTarget& target) :
@@ -1025,6 +1027,58 @@ void GUIContext::setRenderTarget(RenderTarget& target)
 void GUIContext::onRenderTargetChanged(GUIContextRenderTargetEventArgs& args)
 {
     fireEvent(EventRenderTargetChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultFont(const String& name)
+{
+    if (name.empty())
+        setDefaultFont(0);
+    else
+        setDefaultFont(&FontManager::getSingleton().get(name));
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setDefaultFont(Font* font)
+{
+    d_defaultFont = font;
+
+    EventArgs args;
+    onDefaultFontChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+Font* GUIContext::getDefaultFont() const
+{
+    if (d_defaultFont)
+        return d_defaultFont;
+
+    // if no explicit default, we will return the first font we can get from
+    // the font manager
+    FontManager::FontIterator iter = FontManager::getSingleton().getIterator();
+
+    return (!iter.isAtEnd()) ? *iter : 0;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::onDefaultFontChanged(EventArgs& args)
+{
+    if (d_rootWindow)
+        notifyDefaultFontChanged(d_rootWindow);
+
+    fireEvent(EventDefaultFontChanged, args, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
+{
+    WindowEventArgs evt_args(hierarchy_root);
+
+    if (!hierarchy_root->getFont(false))
+        hierarchy_root->onFontChanged(evt_args);
+
+    for (int i = 0; i < hierarchy_root->getChildCount(); ++i)
+        notifyDefaultFontChanged(hierarchy_root->getChildAtIdx(i));
 }
 
 //----------------------------------------------------------------------------//

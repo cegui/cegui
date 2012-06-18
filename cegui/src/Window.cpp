@@ -440,7 +440,7 @@ bool Window::isAncestor(uint ID) const
 const Font* Window::getFont(bool useDefault) const
 {
     if (!d_font)
-        return useDefault ? System::getSingleton().getDefaultFont() : 0;
+        return useDefault ? getGUIContext().getDefaultFont() : 0;
 
     return d_font;
 }

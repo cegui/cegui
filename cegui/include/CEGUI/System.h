@@ -75,10 +75,6 @@ public:
 		Constants
 	*************************************************************************/
 	// event names
-    /** Event fired when the default font changes.
-     * Handlers are passed a const reference to a generic EventArgs struct.
-     */
-	static const String EventDefaultFontChanged;
     /** Event fired for display size changes (as notified by client code).
      * Handlers are passed a const DisplayEventArgs reference with
      * DisplayEventArgs::size set to the pixel size that was notifiied to the
@@ -219,42 +215,6 @@ public:
     Clipboard* getClipboard() const         {return d_clipboard;}
 
     GUIContext& getDefaultGUIContext() const;
-
-	/*!
-	\brief
-		Set the default font to be used by the system
-
-	\param name
-		String object containing the name of the font to be used as the system default.
-
-	\return
-		Nothing.
-	*/
-	void	setDefaultFont(const String& name);
-
-
-	/*!
-	\brief
-		Set the default font to be used by the system
-
-	\param font
-		Pointer to the font to be used as the system default.
-
-	\return
-		Nothing.
-	*/
-	void	setDefaultFont(Font* font);
-
-
-	/*!
-	\brief
-		Return a pointer to the default Font for the GUI system
-
-	\return
-		Pointer to a Font object that is the default font in the system.
-	*/
-	Font*	getDefaultFont(void) const				{return d_defaultFont;}
-
 
     /*!
     \brief
@@ -641,21 +601,11 @@ protected:
     void invalidateAllWindows();
 
 	/*************************************************************************
-		Handlers for System events
-	*************************************************************************/
-	/*!
-	\brief
-		Handler called when the default system font is changed.
-	*/
-	void	onDefaultFontChanged(EventArgs& e);
-
-	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
 	Renderer*	d_renderer;			//!< Holds the pointer to the Renderer object given to us in the constructor
     ResourceProvider* d_resourceProvider;      //!< Holds the pointer to the ResourceProvider object given to us by the renderer or the System constructor.
 	bool d_ourResourceProvider;
-    Font*		d_defaultFont;		//!< Holds a pointer to the default GUI font.
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
 

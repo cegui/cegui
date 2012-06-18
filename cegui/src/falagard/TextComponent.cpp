@@ -475,8 +475,6 @@ String TextComponent::getEffectiveFont(const Window& wnd) const
     {
         if (const Font* font = wnd.getFont())
             return font->getName();
-        else if (const Font* font = System::getSingleton().getDefaultFont())
-            return font->getName();
         else
             return String();
     }
