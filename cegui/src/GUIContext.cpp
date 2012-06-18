@@ -84,6 +84,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_defaultTooltipObject(0),
     d_weCreatedTooltipObject(false),
     d_surfaceSize(target.getArea().getSize()),
+    d_defaultFont(0),
     d_windowContainingMouse(0),
     d_modalWindow(0),
     d_captureWindow(0),
