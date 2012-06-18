@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset version="2" name="FairChar" imagefile="FairChar.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="true">
+<Imageset version="2" name="FairChar" imagefile="FairChar.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="vertical">
 	<Image name=" " xPos="0"   yPos="0"  width="0"  height="0" />
 	<Image name="A" xPos="4"   yPos="1"  width="30" height="30" yOffset="-30" />
 	<Image name="B" xPos="35"  yPos="1"  width="31" height="30" yOffset="-30" />
