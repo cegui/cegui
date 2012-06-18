@@ -264,10 +264,10 @@ bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
     // the effect that - after the alias is added - any time a window of
     // type "TaharezLook/FrameWindow" is requested, the system will create a
     // "TaharezLook/WobblyFrameWindow" instead.
-/*
+
     WindowFactoryManager::getSingleton().addWindowTypeAlias(
         "TaharezLook/FrameWindow",  // alias name - can shadow existing types
-        "TaharezLook/WobblyFrameWindow"); // target type to create.*/
+        "TaharezLook/WobblyFrameWindow"); // target type to create.
 
 
     // we will use of the WindowManager.
