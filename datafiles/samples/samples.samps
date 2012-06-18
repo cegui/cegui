@@ -31,12 +31,6 @@
         description     = "3"
     />
     <SampleDefinition
-        sampleName      = "CEGUIFontDemo"
-        sampleType      = "C++ Module"
-        summary         = "2"
-        description     = "3"
-    />
-    <SampleDefinition
         sampleName      = "CEGUIInventoryDemo"
         sampleType      = "C++ Module"
         summary         = "2"
