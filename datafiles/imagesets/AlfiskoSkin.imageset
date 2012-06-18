@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<Imageset version="2" name="AlfiskoSkin" imagefile="AlfiskoSkin.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="true" >
+<Imageset version="2" name="AlfiskoSkin" imagefile="AlfiskoSkin.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="vertical" >
     <Image name="WindowB" xPos="9" yPos="248" width="663" height="8" />
     <Image name="WindowL" xPos="0" yPos="225" width="8" height="22" />
     <Image name="WindowR" xPos="674" yPos="226" width="8" height="20" />

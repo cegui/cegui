@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-<Imageset version="2" name="WindowsLook" imagefile="WindowsLook.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="true">
+<Imageset version="2" name="WindowsLook" imagefile="WindowsLook.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="vertical">
 	<Image name="Background" xPos="9" yPos="9" width="2" height="2" />
 	<Image name="WindowFrameLeft" xPos="2" yPos="9" width="4" height="2" />
 	<Image name="WindowFrameRight" xPos="14" yPos="9" width="4" height="2" />

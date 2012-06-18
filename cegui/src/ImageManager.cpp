@@ -91,7 +91,7 @@ const String NativeVersion( "2" );
 //----------------------------------------------------------------------------//
 // Internal variables used when parsing XML
 static Texture* s_texture = 0;
-static bool s_autoscaled = false;
+static AutoScaledMode s_autoScaled = ASM_Disabled;
 static Sizef s_nativeResolution(640.0f, 480.0f);
 
 //----------------------------------------------------------------------------//
@@ -406,8 +406,8 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
         attributes.getValueAsFloat(ImagesetNativeVertResAttribute, 480));
 
     // set auto-scaling as needed
-    s_autoscaled =
-        attributes.getValueAsBool(ImagesetAutoScaledAttribute, false);
+    s_autoScaled = PropertyHelper<AutoScaledMode>::fromString(
+                attributes.getValueAsString(ImagesetAutoScaledAttribute, "false"));
 }
 
 //----------------------------------------------------------------------------//
@@ -450,7 +450,7 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 
     if (!rw_attrs.exists(ImagesetAutoScaledAttribute))
         rw_attrs.add(ImagesetAutoScaledAttribute,
-                     s_autoscaled ? "true" : "false");
+                     PropertyHelper<AutoScaledMode>::toString(s_autoScaled));
 
     if (!rw_attrs.exists(ImagesetNativeHorzResAttribute))
         rw_attrs.add(ImagesetNativeHorzResAttribute,
