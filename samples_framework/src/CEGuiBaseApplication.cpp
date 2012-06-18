@@ -167,18 +167,6 @@ void CEGuiBaseApplication::cleanup()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::setQuitting(bool quit)
-{
-    d_quitting = quit;
-}
-
-//----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::isQuitting() const
-{
-    return d_quitting;
-}
-
-//----------------------------------------------------------------------------//
 void CEGuiBaseApplication::initialiseResourceGroupDirectories()
 {
     // initialise the required dirs for the DefaultResourceProvider

@@ -80,7 +80,7 @@ bool CEGuiGLFWSharedBase::execute_impl()
     // set starting time
     d_frameTime = glfwGetTime();
 
-    while (!isQuitting() && !glfwGetKey(GLFW_KEY_ESC) &&
+    while (!d_sampleApp->isQuitting() &&
         glfwGetWindowParam(GLFW_OPENED))
     {
         if (d_windowSized)

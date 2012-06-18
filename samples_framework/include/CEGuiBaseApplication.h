@@ -113,28 +113,6 @@ public:
     */
     void renderSingleFrame(const float elapsed);
 
-    /*!
-    \brief
-        Set whether the BaseApplication should clean up and exit.
-
-    \param quit
-        - true if the application should clean up and exit.
-
-    \return
-        Nothing.
-    */
-    virtual void setQuitting(bool quit = true);
-
-    /*!
-    \brief
-        Return whether the app is currently set to quit.
-
-    \return
-        - true if the application will terminate at its earliest opportunity.
-        - false if the application will keep running.
-    */
-    virtual bool isQuitting() const;
-
 protected:
     //! name of env var that holds the path prefix to the data files.
     static const char DATAPATH_VAR_NAME[];

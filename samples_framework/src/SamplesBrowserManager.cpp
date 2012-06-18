@@ -35,7 +35,9 @@ author:     Lukas E Meindl
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/widgets/DefaultWindow.h"
 #include "CEGUI/widgets/VerticalLayoutContainer.h"
+#include "CEGUI/widgets/HorizontalLayoutContainer.h"
 #include "CEGUI/widgets/FrameWindow.h"
+#include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 
@@ -62,38 +64,18 @@ CEGUI::Window* SamplesBrowserManager::getWindow()
 
 CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
+    CEGUI::VerticalLayoutContainer* root = createPreviewLayoutContainer();
 
-    CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
-    root->setMaxSize(CEGUI::USize(cegui_absdim(9999999999.f), cegui_absdim(9999999999.f)));
-    root->setMouseInputPropagationEnabled(true);
-    root->setMargin(CEGUI::UBox(UDim(0.f, 0.f),UDim(0.f, 0.f),UDim(0.f, 12.f), UDim(0.f, 0.f)));
+    CEGUI::HorizontalLayoutContainer* header = createPreviewHeader();
+    root->addChild(header);
 
-    CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
-    windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
-    windowName->setText(name);
-    windowName->setHorizontalAlignment(HA_CENTRE);
-    windowName->setFont("DejaVuSans-12-NoScale");
-    windowName->setProperty("HorzFormatting", "Centre");
-    root->addChild(windowName);
+    CEGUI::DefaultWindow* windowName = createPreviewHeaderNameWindow(name);
+    header->addChild(windowName);
 
-    FrameWindow* sampleWindow;
-    sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
-    CEGUI::String imageName = image.getName();
-    sampleWindow->setProperty("Image", imageName);
+    CEGUI::PushButton* d_sampleExitButton = createPreviewHeaderEnterButton();
+    header->addChild(d_sampleExitButton);
 
-    sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
-    sampleWindow->setMouseInputPropagationEnabled(true);
-
-    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesBrowserManager::handleMouseDoubleClickSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleHoverSampleWindow, this));
-
-    
-    CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
-    sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
-
-    sampleWindow->setAspectMode(AM_EXPAND);
+    FrameWindow* sampleWindow = createPreviewSampleWindow(name, image);
     root->addChild(sampleWindow);
 
     d_sampleWindows.push_back(sampleWindow);
@@ -202,15 +184,92 @@ void SamplesBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
 
 void SamplesBrowserManager::init()
 {
-    WindowManager& winMgr = WindowManager::getSingleton();
+    WindowManager& winMgr(WindowManager::getSingleton());
 
     d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
 
     d_verticalLayoutContainerSamples->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
-    d_verticalLayoutContainerSamples->setMaxSize(CEGUI::USize(cegui_absdim(9999999999.f), cegui_absdim(9999999999.f)));
 
     d_verticalLayoutContainerSamples->setMouseInputPropagationEnabled(true);
 
     d_root->addChild(d_verticalLayoutContainerSamples);
 
+}
+
+CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const CEGUI::String& name)
+{
+    WindowManager& winMgr(WindowManager::getSingleton());
+
+    CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
+    windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
+    windowName->setText(name);
+    windowName->setHorizontalAlignment(HA_CENTRE);
+    windowName->setFont("DejaVuSans-10-NoScale");
+    windowName->setProperty("HorzFormatting", "Centre");
+    windowName->setMouseInputPropagationEnabled(true);
+
+    return windowName;
+}
+
+CEGUI::VerticalLayoutContainer* SamplesBrowserManager::createPreviewLayoutContainer()
+{
+    WindowManager& winMgr(WindowManager::getSingleton());
+
+    CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
+    root->setMouseInputPropagationEnabled(true);
+    root->setMargin(CEGUI::UBox(UDim(0.f, 0.f),UDim(0.f, 0.f),UDim(0.f, 12.f), UDim(0.f, 0.f)));
+
+    return root;
+}
+
+CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI::String& name, const CEGUI::Image &image)
+{
+    WindowManager& winMgr(WindowManager::getSingleton());
+
+    FrameWindow* sampleWindow = static_cast<FrameWindow*>(winMgr.createWindow("SampleBrowserSkin/SampleWindow", name));
+    CEGUI::String imageName = image.getName();
+    sampleWindow->setProperty("Image", imageName);
+
+    sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
+    sampleWindow->setMouseInputPropagationEnabled(true);
+
+    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesBrowserManager::handleMouseDoubleClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleHoverSampleWindow, this));
+
+
+    CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
+    sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
+
+    sampleWindow->setAspectMode(AM_EXPAND);
+
+    return sampleWindow;
+}
+
+CEGUI::HorizontalLayoutContainer* SamplesBrowserManager::createPreviewHeader()
+{
+    WindowManager& winMgr(WindowManager::getSingleton());
+
+    CEGUI::HorizontalLayoutContainer* header = static_cast<HorizontalLayoutContainer*>(winMgr.createWindow("HorizontalLayoutContainer"));
+    header->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_absdim(40.f)));
+    header->setMouseInputPropagationEnabled(true);
+    header->setMargin(CEGUI::UBox(UDim(0.f, 12.f),UDim(0.f, 0.f),UDim(0.f, 0), UDim(0.f, 0.f)));
+
+    return header;
+}
+
+CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
+{
+    WindowManager& winMgr(WindowManager::getSingleton());
+
+    CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
+
+    button->setSize(CEGUI::USize(cegui_absdim(23.f), cegui_absdim(23.f)));
+    button->setProperty("HoverImage", "SampleBrowserSkin/EntryButton");
+    button->setProperty("NormalImage", "SampleBrowserSkin/EntryButton");
+    button->setProperty("PushedImage", "SampleBrowserSkin/EntryButton");
+//    button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesFramework::handleExitSampleView, this));
+    button->setAlwaysOnTop(true);
+
+    return button;
 }

@@ -94,7 +94,8 @@
 *************************************************************************/
 SamplesFrameworkBase::SamplesFrameworkBase() :
         d_rendererSelector(0),
-        d_sampleApp(0)
+        d_sampleApp(0),
+        d_quitting(false)
 {}
 
 
@@ -313,4 +314,14 @@ void SamplesFrameworkBase::outputExceptionMessage(const char* message)
     std::cout << "An exception was thrown within the sample framework:" << std::endl;
     std::cout << message << std::endl;
 #endif
+}
+
+void SamplesFrameworkBase::setQuitting(bool quit)
+{
+    d_quitting = quit;
+}
+
+bool SamplesFrameworkBase::isQuitting()
+{
+    return d_quitting;
 }

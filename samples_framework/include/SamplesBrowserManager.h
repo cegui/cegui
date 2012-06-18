@@ -38,6 +38,8 @@ namespace CEGUI
     class Window;
     class EventArgs;
     class VerticalLayoutContainer;
+    class FrameWindow;
+    class PushButton;
 }
 
 class SamplesFramework;
@@ -51,6 +53,7 @@ public:
     CEGUI::Window* getWindow();
 
     CEGUI::FrameWindow* createAndAddSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
+
     void setWindowRatio(float aspectRatio);
 
     void selectSampleWindow(CEGUI::Window* wnd);
@@ -70,7 +73,12 @@ private:
     bool handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args);
     //Sets the mouse cursor of the hovered sample-guicontext and makes it redraw on next render step
     bool handleHoverSampleWindow(const CEGUI::EventArgs& args);
-    
+
+    CEGUI::VerticalLayoutContainer* createPreviewLayoutContainer();
+    CEGUI::DefaultWindow* createPreviewHeaderNameWindow(const CEGUI::String& name);
+    CEGUI::FrameWindow* createPreviewSampleWindow(const CEGUI::String& name, const CEGUI::Image &image);
+    CEGUI::PushButton* createPreviewHeaderEnterButton();
+    CEGUI::HorizontalLayoutContainer* createPreviewHeader();
 
     SamplesFramework* d_owner;
 
