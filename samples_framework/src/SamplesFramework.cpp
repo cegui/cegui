@@ -131,7 +131,7 @@ void SamplesFramework::initialiseFrameworkLayout()
 
     d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
 
-    d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(50.f), cegui_absdim(42.f)));
+    d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(46.f), cegui_absdim(46.f)));
     d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(0.f)));
     d_sampleExitButton->setHorizontalAlignment(HA_RIGHT);
     d_sampleExitButton->setVerticalAlignment(VA_TOP);
@@ -203,11 +203,17 @@ void SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
+        if(CEGUI::Key::Scan::Escape != ceguiKey)
+            d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
+        else
+            handleStopDisplaySample();
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
+        if(CEGUI::Key::Scan::Escape != ceguiKey)
+            CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
+        else
+            setQuitting(true);
     }
 }
 
@@ -383,7 +389,7 @@ void SamplesFramework::handleStopDisplaySample()
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-     CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setPosition(sampleGUIContext->getMouseCursor().getPosition());
+    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setPosition(sampleGUIContext->getMouseCursor().getPosition());
 
     d_selectedSampleData = 0;
 }

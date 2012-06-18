@@ -144,6 +144,20 @@ public:
     */
     virtual void injectMousePosition(float x, float y) = 0;
 
+    /*!
+    \brief
+    Function to set the bool defining if the application should quit as soon as possible
+    */
+    virtual void setQuitting(bool quit);
+
+    /*!
+    \brief
+    Function returning if the application should quit as soon as possible
+    \return
+    true if should quit.
+    */
+    bool isQuitting();
+
 protected:
     /*!
     \brief
@@ -174,6 +188,8 @@ protected:
     *************************************************************************/
     CEGuiRendererSelector*  d_rendererSelector;     //!< Points to the renderer selector object.
     CEGuiBaseApplication*   d_sampleApp;            //!< Pointer to the base application object.
+
+    bool                    d_quitting;              //!< Bool defining if application should quit.
 };
 
 #endif  // end of guard _SamplesFrameworkBase_h_
