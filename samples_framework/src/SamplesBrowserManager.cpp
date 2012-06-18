@@ -72,13 +72,14 @@ CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI:
     CEGUI::DefaultWindow* windowName = createPreviewHeaderNameWindow(name);
     header->addChild(windowName);
 
-    CEGUI::PushButton* d_sampleExitButton = createPreviewHeaderEnterButton();
-    header->addChild(d_sampleExitButton);
+    CEGUI::PushButton* entryButton = createPreviewHeaderEnterButton();
+    header->addChild(entryButton);
 
     FrameWindow* sampleWindow = createPreviewSampleWindow(name, image);
     root->addChild(sampleWindow);
 
     d_sampleWindows.push_back(sampleWindow);
+    d_buttonToSampleWindowMap[entryButton] = sampleWindow;
 
     d_verticalLayoutContainerSamples->addChild(root);
 
@@ -203,7 +204,6 @@ CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const
     CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
     windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
     windowName->setText(name);
-    windowName->setHorizontalAlignment(HA_CENTRE);
     windowName->setFont("DejaVuSans-10-NoScale");
     windowName->setProperty("HorzFormatting", "Centre");
     windowName->setMouseInputPropagationEnabled(true);
@@ -254,6 +254,7 @@ CEGUI::HorizontalLayoutContainer* SamplesBrowserManager::createPreviewHeader()
     header->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_absdim(40.f)));
     header->setMouseInputPropagationEnabled(true);
     header->setMargin(CEGUI::UBox(UDim(0.f, 12.f),UDim(0.f, 0.f),UDim(0.f, 0), UDim(0.f, 0.f)));
+    header->setHorizontalAlignment(HA_CENTRE);
 
     return header;
 }
@@ -262,14 +263,26 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
 {
     WindowManager& winMgr(WindowManager::getSingleton());
 
-    CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
+    CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleEntryButton"));
 
-    button->setSize(CEGUI::USize(cegui_absdim(23.f), cegui_absdim(23.f)));
-    button->setProperty("HoverImage", "SampleBrowserSkin/EntryButton");
-    button->setProperty("NormalImage", "SampleBrowserSkin/EntryButton");
-    button->setProperty("PushedImage", "SampleBrowserSkin/EntryButton");
-//    button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesFramework::handleExitSampleView, this));
+    button->setSize(CEGUI::USize(cegui_absdim(33.f), cegui_absdim(33.f)));
+    button->setMouseInputPropagationEnabled(true);
+    button->setProperty("NormalImage", "SampleBrowserSkin/EntryButtonNormal");
+    button->setProperty("HoverImage", "SampleBrowserSkin/EntryButtonHover");
+    button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");
+    button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesBrowserManager::handleSampleEnterButtonClicked, this));
     button->setAlwaysOnTop(true);
 
     return button;
+}
+
+
+bool SamplesBrowserManager::handleSampleEnterButtonClicked(const CEGUI::EventArgs& args)
+{
+    const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
+
+    CEGUI::Window* sampleWindow = d_buttonToSampleWindowMap[winArgs.window];
+    d_owner->handleStartDisplaySample(sampleWindow);
+
+    return true;
 }

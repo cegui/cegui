@@ -29,6 +29,7 @@ author:     Lukas E Meindl
 #define _SamplesBrowserManager_h_
 
 #include <vector>
+#include <map>
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
@@ -73,6 +74,7 @@ private:
     bool handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args);
     //Sets the mouse cursor of the hovered sample-guicontext and makes it redraw on next render step
     bool handleHoverSampleWindow(const CEGUI::EventArgs& args);
+    bool handleSampleEnterButtonClicked(const CEGUI::EventArgs& args);
 
     CEGUI::VerticalLayoutContainer* createPreviewLayoutContainer();
     CEGUI::DefaultWindow* createPreviewHeaderNameWindow(const CEGUI::String& name);
@@ -87,6 +89,9 @@ private:
     int d_childCount;
     float d_aspectRatio;
     CEGUI::Window* d_selectedWindow;
+
+    
+    std::map<CEGUI::Window*, CEGUI::Window*> d_buttonToSampleWindowMap;
 
 
     std::vector<CEGUI::Window*> d_sampleWindows;
