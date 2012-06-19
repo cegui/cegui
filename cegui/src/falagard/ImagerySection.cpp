@@ -28,6 +28,7 @@
 #include "CEGUI/falagard/ImagerySection.h"
 #include "CEGUI/PropertyHelper.h"
 #include <iostream>
+#include <limits>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -207,7 +208,10 @@ namespace CEGUI
     Rectf ImagerySection::getBoundingRect(const Window& wnd) const
     {
         Rectf compRect;
-        Rectf bounds(0, 0, 0, 0);
+        Rectf bounds(std::numeric_limits<float>::max(), 
+                     std::numeric_limits<float>::max(),
+                     std::numeric_limits<float>::min(),
+                     std::numeric_limits<float>::min());
 
         // measure all frame components
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
@@ -246,7 +250,10 @@ namespace CEGUI
     Rectf ImagerySection::getBoundingRect(const Window& wnd, const Rectf& rect) const
     {
         Rectf compRect;
-        Rectf bounds(0, 0, 0, 0);
+        Rectf bounds(std::numeric_limits<float>::max(), 
+                     std::numeric_limits<float>::max(),
+                     std::numeric_limits<float>::min(),
+                     std::numeric_limits<float>::min());
 
         // measure all frame components
         for(FrameList::const_iterator frame = d_frames.begin(); frame != d_frames.end(); ++frame)
