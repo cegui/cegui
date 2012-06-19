@@ -94,13 +94,13 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load the default font
-    d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-10-NoScale.font");
+    d_guiContext->setDefaultFont(d_font);
 
     // to look more like a real application, we override the autoscale setting
     // for both skin and font
 //    Imageset& wndlook = ImageManager::getSingleton().get("WindowsLook");
 //    wndlook.setAutoScalingEnabled(false);
-    d_font->setProperty("AutoScaled", "false");
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
