@@ -278,7 +278,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         {
             d_FPSValue = d_FPSFrames;
 
-            CEGUI::Font* fnt = CEGUI::System::getSingleton().getDefaultFont();
+            CEGUI::Font* fnt = CEGUI::System::getSingleton().getDefaultGUIContext().getDefaultFont();
             if (!fnt)
                 return;
 

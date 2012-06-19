@@ -136,9 +136,9 @@ public:
         // Create a custom font which we use to draw the list items. This custom
         // font won't get effected by the scaler and such.
 
-        FontManager::getSingleton().createFreeTypeFont("DefaultFont", 10/*pt*/, true, "DejaVuSans.ttf");
+        FontManager::getSingleton().createFreeTypeFont("FontDemoFont", 10/*pt*/, true, "DejaVuSans.ttf");
         // Set it as the default
-        System::getSingleton().setDefaultFont("DefaultFont");
+        d_guiContext->setDefaultFont("FontDemoFont");
 
 
         // load all the fonts (if they are not loaded yet)
@@ -168,14 +168,14 @@ public:
 
         // Add the font names to the listbox
         Listbox* lbox = static_cast<Listbox*>(background->getChild("root/FontDemo/FontList"));
-        lbox->setFont("DefaultFont");
+        lbox->setFont("FontDemoFont");
 
         FontManager::FontIterator fi = FontManager::getSingleton().getIterator();
 
         while (!fi.isAtEnd())
         {
-            // exclude the special DefaultFont!
-            if (fi.getCurrentKey() != String("DefaultFont"))
+            // exclude the special FontDemoFont!
+            if (fi.getCurrentKey() != String("FontDemoFont"))
                 lbox->addItem(new MyListItem(fi.getCurrentKey()));
 
             ++fi;
@@ -189,7 +189,7 @@ public:
 
         // Add language list to the listbox
         lbox = static_cast<Listbox*>(background->getChild("root/FontDemo/LangList"));
-        lbox->setFont("DefaultFont");
+        lbox->setFont("FontDemoFont");
 
         for (size_t i = 0; i < (sizeof(LangList) / sizeof(LangList [0])); i++)
 
