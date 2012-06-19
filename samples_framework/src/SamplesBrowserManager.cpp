@@ -73,7 +73,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI:
     header->addChild(windowName);
 
     CEGUI::PushButton* entryButton = createPreviewHeaderEnterButton();
-    header->addChild(entryButton);
+    windowName->addChild(entryButton);
 
     FrameWindow* sampleWindow = createPreviewSampleWindow(name, image);
     root->addChild(sampleWindow);
@@ -265,13 +265,17 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
 
     CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleEntryButton"));
 
-    button->setSize(CEGUI::USize(cegui_absdim(33.f), cegui_absdim(33.f)));
+    button->setSize(CEGUI::USize(cegui_absdim(1.f), cegui_reldim(0.8f)));
+    button->setAspectMode(AM_EXPAND);
+    button->setAspectRatio(1.f);
     button->setMouseInputPropagationEnabled(true);
     button->setProperty("NormalImage", "SampleBrowserSkin/EntryButtonNormal");
     button->setProperty("HoverImage", "SampleBrowserSkin/EntryButtonHover");
     button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");
     button->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesBrowserManager::handleSampleEnterButtonClicked, this));
     button->setAlwaysOnTop(true);
+    button->setHorizontalAlignment(HA_RIGHT);
+    button->setVerticalAlignment(VA_CENTRE);
 
     return button;
 }
