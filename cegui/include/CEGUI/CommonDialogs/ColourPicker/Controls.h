@@ -168,6 +168,8 @@ protected:
     void refreshColourPickingImage();
     void refreshAlphaSliderImage();
 
+    void reloadColourPickerControlsTexture();
+
     Lab_Colour getColourSliderPositionColourLAB(float value);
     Lab_Colour getColourPickingPositionColourLAB(float xAbs, float yAbs);
 

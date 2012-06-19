@@ -434,11 +434,21 @@ void ColourPickerControls::refreshColourPickerControlsTextures()
     refreshColourSliderImage();
     refreshAlphaSliderImage();
 
+    reloadColourPickerControlsTexture();
+}
+
+//----------------------------------------------------------------------------//
+void ColourPickerControls::reloadColourPickerControlsTexture()
+{
     d_colourPickerControlsTextureTarget->getTexture().loadFromMemory(
         d_colourPickingTexture,
         Sizef(static_cast<float>(d_colourPickerControlsTextureSize),
               static_cast<float>(d_colourPickerControlsTextureSize)),
         Texture::PF_RGB);
+
+    getColourPickerImageSlider()->invalidate();
+    getColourPickerAlphaSlider()->invalidate();
+    getColourPickerStaticImage()->invalidate();
 }
 
 //----------------------------------------------------------------------------//
@@ -1601,11 +1611,7 @@ void ColourPickerControls::onColourCursorPositionChanged()
 void ColourPickerControls::refreshOnlyColourSliderImage()
 {
     refreshColourSliderImage();
-    d_colourPickerControlsTextureTarget->getTexture().loadFromMemory(
-        d_colourPickingTexture,
-        Sizef(static_cast<float>(d_colourPickerControlsTextureSize),
-              static_cast<float>(d_colourPickerControlsTextureSize)),
-        Texture::PF_RGB);
+    reloadColourPickerControlsTexture();
 }
 
 //----------------------------------------------------------------------------//
