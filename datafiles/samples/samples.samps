@@ -30,12 +30,20 @@
         summary         = "2"
         description     = "3"
     />
+    <!--
+    <SampleDefinition
+        sampleName      = "CEGUIFontDemo"
+        sampleType      = "C++ Module"
+        summary         = "2"
+        description     = "3"
+    />
+    -->
     <SampleDefinition
         sampleName      = "CEGUIInventoryDemo"
         sampleType      = "C++ Module"
         summary         = "2"
         description     = "3"
-    />
+    /> 
     <SampleDefinition
         sampleName      = "CEGUIMinesweeper"
         sampleType      = "C++ Module"
@@ -47,13 +55,13 @@
         sampleType      = "C++ Module"
         summary         = "2"
         description     = "3"
-    /> 
+    />
     <SampleDefinition
         sampleName      = "CEGUITabControlDemo"
         sampleType      = "C++ Module"
         summary         = "2"
         description     = "3"
-    /> 
+    />   
     <SampleDefinition
         sampleName      = "CEGUITextDemo"
         sampleType      = "C++ Module"
@@ -66,4 +74,5 @@
         summary         = "2"
         description     = "3"
     />  
+  
 </Samples>
