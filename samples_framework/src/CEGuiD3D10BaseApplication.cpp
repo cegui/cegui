@@ -31,7 +31,7 @@
 
 #include "CEGuiD3D10BaseApplication.h"
 #include "CEGUI/RendererModules/Direct3D10/Renderer.h"
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 
@@ -104,9 +104,9 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D10BaseApplication::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiD3D10BaseApplication::execute_impl()
 {
-    sampleApp->initialiseSample();
+    d_sampleApp->initialiseSample();
 
     float clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
@@ -146,7 +146,7 @@ bool CEGuiD3D10BaseApplication::execute_impl(CEGuiSample* sampleApp)
 
         // check if the application is quitting, and break the loop next time
         // around if so.
-        if (isQuitting())
+        if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
 

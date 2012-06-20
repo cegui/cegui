@@ -28,18 +28,24 @@
 #ifndef _Sample_Demo6_h_
 #define _Sample_Demo6_h_
 
-#include "CEGuiSample.h"
-#include "CEGUI/CEGUI.h"
+#include "SampleBase.h"
+
+#include "CEGUI/String.h"
+
+namespace CEGUI
+{
+    class Window;
+    class EventArgs;
+}
 
 // Sample class
-class Demo6Sample : public CEGuiSample
+class Demo6Sample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
-
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
 protected:
     // helper methods
@@ -56,6 +62,8 @@ protected:
     bool handleSelectChanged(const CEGUI::EventArgs& e);
     bool handleSelectModeChanged(const CEGUI::EventArgs& e);
     bool handleContentsChanged(const CEGUI::EventArgs& e);
+
+    CEGUI::String d_usedFiles;
 };
 
 #endif  // end of guard _Sample_Demo6_h_

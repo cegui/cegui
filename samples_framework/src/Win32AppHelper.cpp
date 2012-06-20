@@ -178,19 +178,19 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
                 CEGUI::String id(renderer->getIdentifierString());
 
                 // invoke correct function based on the renderer we have ID'd
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D9
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_9
                 if (id.find("Official Direct3D 9") != id.npos)
                     DeviceReset_Direct3D9(hWnd, renderer);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_10
                 if (id.find("Official Direct3D 10") != id.npos)
                     DeviceReset_Direct3D10(hWnd, renderer);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTX3D11
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_11
                 if (id.find("Official Direct3D 11") != id.npos)
                     DeviceReset_Direct3D11(hWnd, renderer);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D8
+#ifdef CEGUI_SAMPLES_USE_DIRECTX_8
                 if (id.find("Official Direct3D 8.1") != id.npos)
                     DeviceReset_Direct3D81(hWnd, renderer);
 #endif
