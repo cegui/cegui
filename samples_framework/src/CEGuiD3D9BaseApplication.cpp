@@ -38,7 +38,7 @@
 #undef max
 
 #include "CEGUI/RendererModules/Direct3D9/Renderer.h"
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 #include <stdexcept>
@@ -103,9 +103,9 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D9BaseApplication::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiD3D9BaseApplication::execute_impl()
 {
-    sampleApp->initialiseSample();
+    d_sampleApp->initialiseSample();
 
     //
     //  This is basically a modified Win32 message pump
@@ -152,7 +152,7 @@ bool CEGuiD3D9BaseApplication::execute_impl(CEGuiSample* sampleApp)
 
         // check if the application is quitting, and break the loop next time
         // around if so.
-        if (isQuitting())
+        if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
 
