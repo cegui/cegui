@@ -155,6 +155,8 @@
             <Property name="DragMovingEnabled" value="False" />
             <Property name="VerticalAlignment" value="Centre" />
             <Property name="CloseButtonEnabled" value="False" />
+            <Property name="SizingEnabled" value="False" />
+            <Property name="MaxSize" value="{{0,420}, {0,0}}" />
             <AutoWindow namePath="__auto_titlebar__" >
                 <Property name="DraggingEnabled" value="False" />
             </AutoWindow>
