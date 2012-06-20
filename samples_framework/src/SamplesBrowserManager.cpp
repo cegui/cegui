@@ -265,9 +265,10 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
 
     CEGUI::PushButton* button = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleEntryButton"));
 
-    button->setSize(CEGUI::USize(cegui_absdim(1.f), cegui_reldim(0.8f)));
+    button->setSize(CEGUI::USize(cegui_absdim(1.f), cegui_reldim(0.7f)));
     button->setAspectMode(AM_EXPAND);
     button->setAspectRatio(1.f);
+    button->setPosition(CEGUI::UVector2(cegui_absdim(-7.f), cegui_absdim(0.f)));
     button->setMouseInputPropagationEnabled(true);
     button->setProperty("NormalImage", "SampleBrowserSkin/EntryButtonNormal");
     button->setProperty("HoverImage", "SampleBrowserSkin/EntryButtonHover");

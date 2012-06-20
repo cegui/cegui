@@ -31,6 +31,8 @@
 #include "CEGuiBaseApplication.h"
 #include "CEGUI/GeometryBuffer.h"
 
+class SamplesFrameworkBase;
+
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   define WIN32_LEAN_AND_MEAN
 #   include <windows.h>
@@ -61,7 +63,7 @@ protected:
     void cleanupDirect3D();
 
     // Implementation of base class abstract methods.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
