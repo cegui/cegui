@@ -54,8 +54,8 @@ void GroupBox::addChild_impl(Element* element)
     
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
-            "GroupBox::addChild_impl - GroupBox can only have Elements of type "
-            "Window added as children (Window path: " + getNamePath() + ")."));
+            "GroupBox can only have Elements of type Window added as children "
+            "(Window path: " + getNamePath() + ")."));
 
     if (wnd->isAutoWindow())
         Window::addChild_impl(wnd);

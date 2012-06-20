@@ -54,7 +54,7 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
 
     if (!parser)
     {
-        CEGUI_THROW(GenericException("ExpatParser::parseXMLFile - Unable to create a new Expat Parser"));
+        CEGUI_THROW(GenericException("Unable to create a new Expat Parser"));
     }
 
     XML_SetUserData(parser, (void*)&handler); // Initialise user data
@@ -64,7 +64,7 @@ void ExpatParser::parseXML(XMLHandler& handler, const RawDataContainer& source, 
     // Parse the data (note that the last true parameter tels Expat that this is the last chunk of the document
     if (!XML_Parse(parser, reinterpret_cast<const char*>(source.getDataPtr()), source.getSize(), true))
     {
-        String exception (String((const encoded_char*)"ExpatParser::parseXMLFile - XML Parsing error '") +
+        String exception (String((const encoded_char*)"XML Parsing error '") +
                           String((const encoded_char*)XML_ErrorString(XML_GetErrorCode(parser))) +
                           String((const encoded_char*)"' at line ") +
                           PropertyHelper<uint>::toString(XML_GetCurrentLineNumber(parser)));

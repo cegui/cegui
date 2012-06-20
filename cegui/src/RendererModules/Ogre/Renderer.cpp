@@ -125,7 +125,7 @@ String OgreRenderer_impl::d_rendererID(
 OgreRenderer& OgreRenderer::bootstrapSystem()
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("OgreRenderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
     OgreRenderer& renderer = create();
@@ -140,7 +140,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem()
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target)
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("OgreRenderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
     OgreRenderer& renderer = OgreRenderer::create(target);
@@ -156,7 +156,7 @@ void OgreRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException("OgreRenderer::destroySystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
     OgreRenderer* renderer = static_cast<OgreRenderer*>(sys->getRenderer());
@@ -401,8 +401,7 @@ Texture& OgreRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_pimpl->d_textures.find(name);
     
     if (i == d_pimpl->d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "[OgreRenderer] Texture does not exist: " + name));
+        CEGUI_THROW(UnknownObjectException("Texture does not exist: " + name));
 
     return *i->second;
 }

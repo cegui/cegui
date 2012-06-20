@@ -135,7 +135,7 @@ void DirectFBRenderer::destroyAllTextureTargets()
 Texture& DirectFBRenderer::createTexture(const CEGUI::String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("DirectFBRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name);
@@ -152,7 +152,7 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
                                          const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("DirectFBRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name,
@@ -169,7 +169,7 @@ Texture& DirectFBRenderer::createTexture(const CEGUI::String& name,
                                          const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("DirectFBRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     DirectFBTexture* tex = new DirectFBTexture(d_directfb, name, size);
@@ -238,7 +238,7 @@ Texture& DirectFBRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException("DirectFBRenderer::getTexture: "
+        CEGUI_THROW(UnknownObjectException(
             "No texture named '" + name + "' is available."));
 
     return *i->second;

@@ -40,13 +40,15 @@ bool Exception::d_stdErrEnabled(true);
 
 //----------------------------------------------------------------------------//
 Exception::Exception(const String& message, const String& name,
-                     const String& filename, int line) :
+                     const String& filename, int line, const String& function) :
     d_message(message),
-    d_filename(filename),
     d_name(name),
+    d_filename(filename),
     d_line(line),
-    d_what(name + " in file " + filename  +
-           "(" + PropertyHelper<int>::toString(line) + ") : " + message)
+    d_function(function),
+    d_what(name + " in function '" + function +
+           "' (" + filename + ":" + PropertyHelper<int>::toString(line) + ") : " +
+           message)
 {
     // Log exception if possible
     Logger* const logger = Logger::getSingletonPtr();

@@ -522,7 +522,9 @@ void GridLayoutContainer::addChild_impl(Element* element)
     
     if (!wnd)
     {
-        CEGUI_THROW(AlreadyExistsException("GridLayoutContainer::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
+        CEGUI_THROW(InvalidRequestException(
+            "GridLayoutContainer can only have Elements of type Window added "
+            "as children (Window path: " + getNamePath() + ")."));
     }
     
     if (isDummy(wnd))
@@ -544,9 +546,8 @@ void GridLayoutContainer::addChild_impl(Element* element)
                 (d_nextGridY == std::numeric_limits<size_t>::max()))
             {
                 CEGUI_THROW(InvalidRequestException(
-                    "GridLayoutContainer::addChild_impl: Unable to add child "
-                    "without explicit grid position because auto positioning is "
-                    "disabled.  Consider using the "
+                    "Unable to add child without explicit grid position "
+                    "because auto positioning is disabled.  Consider using the "
                     "GridLayoutContainer::addChildToPosition functions."));
             }
 

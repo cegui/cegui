@@ -75,7 +75,7 @@ OpenGLWGLPBTextureTarget::OpenGLWGLPBTextureTarget(OpenGLRenderer& owner) :
     wglChoosePixelFormatARB(hdc, pbAttrs, 0, 1, &d_pixfmt, &fmtcnt);
 
     if (!fmtcnt)
-        CEGUI_THROW(RendererException("OpenGLWGLPBTextureTarget - "
+        CEGUI_THROW(RendererException(
             "pbuff creation failure, no suitable pixel formats."));
 
     initialiseTexture();
@@ -187,26 +187,22 @@ void OpenGLWGLPBTextureTarget::initialisePBuffer()
 
     if (!d_pbuffer)
         CEGUI_THROW(RendererException(
-            "OpenGLWGLPBTextureTarget::initialisePBuffer - "
             "pbuffer creation failure, wglCreatePbufferARB() call failed."));
 
     d_hdc = wglGetPbufferDCARB(d_pbuffer);
 
     if (!d_hdc)
         CEGUI_THROW(RendererException(
-            "OpenGLWGLPBTextureTarget::initialisePBuffer - "
             "pbuffer creation failure, wglGetPbufferDCARB() call failed."));
 
     d_context= wglCreateContext(d_hdc);
 
     if (!d_hdc)
         CEGUI_THROW(RendererException(
-            "OpenGLWGLPBTextureTarget::initialisePBuffer - "
             "pbuffer creation failure, wglCreateContext() call failed."));
 
     if(!wglShareLists(wglGetCurrentContext(), d_context))
         CEGUI_THROW(RendererException(
-            "OpenGLWGLPBTextureTarget::initialisePBuffer - "
             "pbuffer creation failure, wglShareLists() call failed."));
 
     // extract the actual size of the created bufer

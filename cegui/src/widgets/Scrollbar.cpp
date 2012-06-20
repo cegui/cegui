@@ -373,9 +373,9 @@ Thumb* Scrollbar::getThumb() const
 void Scrollbar::updateThumb(void)
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException("Scrollbar::updateThumb: This "
-            "function must be implemented by the window renderer object (no "
-            "window renderer is assigned.)"));
+        CEGUI_THROW(InvalidRequestException(
+            "This function must be implemented by the window renderer object "
+            "(no window renderer is assigned.)"));
 
     static_cast<ScrollbarWindowRenderer*>(d_windowRenderer)->updateThumb();
 }
@@ -384,9 +384,9 @@ void Scrollbar::updateThumb(void)
 float Scrollbar::getValueFromThumb(void) const
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException("Scrollbar::getValueFromThumb: This "
-            "function must be implemented by the window renderer object (no "
-            "window renderer is assigned.)"));
+        CEGUI_THROW(InvalidRequestException(
+            "This function must be implemented by the window renderer object "
+            "(no window renderer is assigned.)"));
 
     return static_cast<ScrollbarWindowRenderer*>(
                d_windowRenderer)->getValueFromThumb();
@@ -397,7 +397,6 @@ float Scrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
 {
     if (!d_windowRenderer)
         CEGUI_THROW(InvalidRequestException(
-            "Scrollbar::getAdjustDirectionFromPoint: "
             "This function must be implemented by the window renderer object "
             "(no window renderer is assigned.)"));
 

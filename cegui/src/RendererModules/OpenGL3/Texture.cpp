@@ -144,8 +144,7 @@ void OpenGL3Texture::initInternalPixelFormatFields(const PixelFormat fmt)
 
     default:
         CEGUI_THROW(RendererException(
-            "OpenGL3Texture::initInternalPixelFormatFields: invalid or "
-            "unsupported CEGUI::PixelFormat."));
+            "invalid or unsupported CEGUI::PixelFormat."));
     }
 }
 
@@ -197,7 +196,7 @@ void OpenGL3Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System (needed to access ImageCodec)
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("OpenGL3Texture::loadFromFile - "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created: "
             "unable to access ImageCodec."));
 
@@ -209,7 +208,7 @@ void OpenGL3Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException("OpenGL3Texture::loadFromFile - " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
@@ -219,7 +218,7 @@ void OpenGL3Texture::loadFromMemory(const void* buffer, const Sizef& buffer_size
                     PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException("OpenGL3Texture::loadFromMemory: "
+        CEGUI_THROW(InvalidRequestException(
             "Data was supplied in an unsupported pixel format."));
 
     initInternalPixelFormatFields(pixel_format);
@@ -308,8 +307,7 @@ void OpenGL3Texture::setTextureSize_impl(const Sizef& sz)
     GLfloat maxSize;
     glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
     if ((size.d_width > maxSize) || (size.d_height > maxSize))
-        CEGUI_THROW(RendererException(
-            "OpenGL3Texture::setTextureSize: size too big"));
+        CEGUI_THROW(RendererException("size too big"));
 
     // save old texture binding
     GLuint old_tex;

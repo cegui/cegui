@@ -59,7 +59,8 @@ namespace CEGUI
     {
         if (d_tabButtonType.empty())
         {
-            CEGUI_THROW(InvalidRequestException("FalagardTabControl::createTabButton - d_tabButtonType has not been set!"));
+            CEGUI_THROW(InvalidRequestException(
+                "d_tabButtonType has not been set!"));
         }
 
         Window* button = WindowManager::getSingleton().createWindow(d_tabButtonType, name);

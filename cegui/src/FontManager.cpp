@@ -96,7 +96,7 @@ Font& FontManager::createFreeTypeFont(const String& font_name,
     return doExistingObjectAction(font_name, object, action);
 
 #else
-    CEGUI_THROW(InvalidRequestException("FontManager::createFreeTypeFont: "
+    CEGUI_THROW(InvalidRequestException(
         "CEGUI was compiled without freetype support."));
 #endif
 }

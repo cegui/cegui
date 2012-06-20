@@ -101,7 +101,7 @@ String OpenGL3Renderer::d_rendererID(
 OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem()
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("OpenGL3Renderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
     OpenGL3Renderer& renderer(create());
@@ -115,7 +115,7 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem()
 OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size)
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("OpenGL3Renderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
     OpenGL3Renderer& renderer(create(display_size));
@@ -130,7 +130,7 @@ void OpenGL3Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException("OpenGL3Renderer::destroySystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
     OpenGL3Renderer* renderer = static_cast<OpenGL3Renderer*>(sys->getRenderer());
@@ -299,7 +299,7 @@ void OpenGL3Renderer::destroyAllTextureTargets()
 Texture& OpenGL3Renderer::createTexture(const String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGL3Renderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGL3Texture* tex = new OpenGL3Texture(*this, name);
@@ -316,7 +316,7 @@ Texture& OpenGL3Renderer::createTexture(const String& name,
                                        const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGL3Renderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGL3Texture* tex = new OpenGL3Texture(*this, name, filename, resourceGroup);
@@ -331,7 +331,7 @@ Texture& OpenGL3Renderer::createTexture(const String& name,
 Texture& OpenGL3Renderer::createTexture(const String& name, const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGL3Renderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGL3Texture* tex = new OpenGL3Texture(*this, name, size);
@@ -390,7 +390,7 @@ Texture& OpenGL3Renderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException("OpenGL3Renderer::getTexture: "
+        CEGUI_THROW(UnknownObjectException(
             "No texture named '" + name + "' is available."));
 
     return *i->second;
@@ -457,7 +457,7 @@ Texture& OpenGL3Renderer::createTexture(const String& name, GLuint tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGL3Renderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGL3Texture* t = new OpenGL3Texture(*this, name, tex, sz);
@@ -686,7 +686,7 @@ void OpenGL3Renderer::initialiseGLExtensions()
     {
         std::ostringstream err_string;
         //Problem: glewInit failed, something is seriously wrong.
-        err_string << "OpenGL3Renderer failed to initialise the GLEW library. "
+        err_string << "failed to initialise the GLEW library. "
             << glewGetErrorString(err);
 
         CEGUI_THROW(RendererException(err_string.str().c_str()));

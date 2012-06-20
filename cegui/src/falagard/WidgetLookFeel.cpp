@@ -124,8 +124,7 @@ const StateImagery& WidgetLookFeel::getStateImagery(
         return (*imagery).second;
 
     if (d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::getStateImagery - unknown state '" + state +
+        CEGUI_THROW(UnknownObjectException("unknown state '" + state +
             "' in look '" + d_lookName + "'."));
 
     return WidgetLookManager::getSingleton().
@@ -142,8 +141,7 @@ const ImagerySection& WidgetLookFeel::getImagerySection(
         return (*imgSect).second;
 
     if (d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::getImagerySection - unknown imagery section '" +
+        CEGUI_THROW(UnknownObjectException("unknown imagery section '" +
             section +  "' in look '" + d_lookName + "'."));
 
     return WidgetLookManager::getSingleton().
@@ -172,13 +170,12 @@ void WidgetLookFeel::renameImagerySection(const String& oldName, const String& n
 {
 	ImageryList::iterator oldsection = d_imagerySections.find(oldName);
     if (oldsection == d_imagerySections.end())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::renameImagerySection - unknown imagery section: '" + oldName +
-            "' in look '" + d_lookName + "'."));
+        CEGUI_THROW(UnknownObjectException("unknown imagery section: '" +
+            oldName + "' in look '" + d_lookName + "'."));
+
     if (d_imagerySections.find(newName) != d_imagerySections.end())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::renameImagerySection - imagery section: '" + newName +
-            "' exist in look '" + d_lookName + "'."));
+        CEGUI_THROW(UnknownObjectException("imagery section: '" + newName +
+            "' already exists in look '" + d_lookName + "'."));
 
     oldsection->second.setName(newName);
     d_imagerySections[newName] = d_imagerySections[oldName];
@@ -308,10 +305,8 @@ void WidgetLookFeel::cleanUpWidget(Window& widget) const
 {
     if (widget.getLookNFeel() != getName())
     {
-        CEGUI_THROW(InvalidRequestException(
-            "WidgetLookFeel::cleanUpWidget - The window '"
-            + widget.getName() +
-            "' does not have this look'n'feel assigned"));
+        CEGUI_THROW(InvalidRequestException("The window '" + 
+            widget.getNamePath() + "' does not have this WidgetLook assigned"));
     }
 
     // remove added child widgets
@@ -399,13 +394,12 @@ void WidgetLookFeel::renameNamedArea(const String& oldName, const String& newNam
     NamedAreaList::iterator oldarea = d_namedAreas.find(oldName);
     NamedAreaList::const_iterator newarea = d_namedAreas.find(newName);
     if (oldarea == d_namedAreas.end())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::renameNamedArea - unknown named area: '" + oldName +
+        CEGUI_THROW(UnknownObjectException("unknown named area: '" + oldName +
             "' in look '" + d_lookName + "'."));
+
     if (newarea != d_namedAreas.end())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::renameNamedArea - named area: '" + newName +
-            "' exist in look '" + d_lookName + "'."));
+        CEGUI_THROW(UnknownObjectException("named area: '" + newName +
+            "' already exists in look '" + d_lookName + "'."));
 
     oldarea->second.setName(newName);
     d_namedAreas[newName] = d_namedAreas[oldName];
@@ -426,8 +420,7 @@ const NamedArea& WidgetLookFeel::getNamedArea(const String& name) const
         return (*area).second;
 
     if (d_inheritedLookName.empty())
-        CEGUI_THROW(UnknownObjectException(
-            "WidgetLookFeel::getNamedArea - unknown named area: '" + name +
+        CEGUI_THROW(UnknownObjectException("unknown named area: '" + name +
             "' in look '" + d_lookName + "'."));
 
     return WidgetLookManager::getSingleton().

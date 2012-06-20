@@ -61,8 +61,7 @@ void IrrlichtResourceProvider::loadRawDataContainer(const String& filename,
 
     if (!f)
     {
-        String sMsg("IrrlichtResourceProvider::loadRawDataContainer: "
-                    "Filename supplied for loading must be valid");
+        String sMsg("Filename supplied for loading must be valid");
         sMsg += " [" + final_filename + "]";
         CEGUI_THROW(InvalidRequestException(sMsg));
     }

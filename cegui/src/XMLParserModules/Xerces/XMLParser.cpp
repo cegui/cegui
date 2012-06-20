@@ -87,7 +87,7 @@ namespace CEGUI
                 delete reader;
 
                 char* excmsg = XMLString::transcode(exc.getMessage());
-                String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
+                String message("An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getSrcLine()) + " while parsing XML.  Additional information: ");
                 message += excmsg;
                 XMLString::release(&excmsg);
 
@@ -100,7 +100,7 @@ namespace CEGUI
             delete reader;
 
             char* excmsg = XMLString::transcode(exc.getMessage());
-            String message("XercesParser::parseXMLFile - An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
+            String message("An error occurred at line nr. " + PropertyHelper<uint>::toString((uint)exc.getLineNumber()) + " while parsing XML.  Additional information: ");
             message += excmsg;
             XMLString::release(&excmsg);
 
@@ -110,7 +110,7 @@ namespace CEGUI
         {
             delete reader;
 
-            Logger::getSingleton().logEvent("XercesParser::parseXMLFile - An unexpected error occurred while parsing XML", Errors);
+            Logger::getSingleton().logEvent("An unexpected error occurred while parsing XML", Errors);
             CEGUI_RETHROW;
         }
 
@@ -201,7 +201,7 @@ namespace CEGUI
         }
         else
         {
-            CEGUI_THROW(GenericException("XercesParser::transcodeXmlCharToString - Internal Error: Could not create UTF-8 string transcoder."));
+            CEGUI_THROW(GenericException("Internal Error: Could not create UTF-8 string transcoder."));
         }
 
     }

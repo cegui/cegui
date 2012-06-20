@@ -51,8 +51,7 @@ Direct3D10Renderer& Direct3D10Renderer::bootstrapSystem(ID3D10Device* device)
 {
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D10Renderer::bootstrapSystem: CEGUI::System object is "
-            "already initialised."));
+            "CEGUI::System object is already initialised."));
 
     Direct3D10Renderer& renderer(create(device));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -67,8 +66,7 @@ void Direct3D10Renderer::destroySystem()
     System* sys;
     if (!(sys = System::getSingletonPtr()))
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D10Renderer::destroySystem: CEGUI::System object is not "
-            "created or was already destroyed."));
+            "CEGUI::System object is not created or was already destroyed."));
 
     Direct3D10Renderer* renderer =
         static_cast<Direct3D10Renderer*>(sys->getRenderer());
@@ -255,8 +253,7 @@ Texture& Direct3D10Renderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "[Direct3D10Renderer] Texture does not exist: " + name));
+        CEGUI_THROW(UnknownObjectException("Texture does not exist: " + name));
 
     return *i->second;
 }
@@ -377,16 +374,14 @@ Direct3D10Renderer::Direct3D10Renderer(ID3D10Device* device) :
     D3D10_PASS_DESC pass_desc;
     if (FAILED(d_normalClippedTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
         CEGUI_THROW(RendererException(
-            "Direct3D10Renderer: failed to obtain technique "
-            "description for pass 0."));
+            "failed to obtain technique description for pass 0."));
 
     if (FAILED(d_device->CreateInputLayout(vertex_layout, element_count,
                                             pass_desc.pIAInputSignature,
                                             pass_desc.IAInputSignatureSize,
                                             &d_inputLayout)))
     {
-        CEGUI_THROW(RendererException(
-            "Direct3D10Renderer: failed to create D3D 10 input layout."));
+        CEGUI_THROW(RendererException("failed to create D3D 10 input layout."));
     }
 
     d_defaultTarget = new Direct3D10ViewportTarget(*this);
@@ -419,8 +414,8 @@ Sizef Direct3D10Renderer::getViewportSize()
 
     if (vp_count != 1)
         CEGUI_THROW(RendererException(
-            "Direct3D10Renderer::getViewportSize: Unable "
-            "to access required view port information from IDirect3DDevice10."));
+            "Unable to access required view port information from "
+            "IDirect3DDevice10."));
     else
         return Sizef(static_cast<float>(vp.Width),
                       static_cast<float>(vp.Height));

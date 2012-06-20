@@ -146,13 +146,13 @@ Image& ImageManager::create(const String& type, const String& name)
 {
     if (d_images.find(name) != d_images.end())
         CEGUI_THROW(AlreadyExistsException(
-            "[ImageManager] Image already exists: " + name));
+            "Image already exists: " + name));
 
     ImageFactoryRegistry::iterator i(d_factories.find(type));
 
     if (i == d_factories.end())
         CEGUI_THROW(UnknownObjectException(
-            "[ImageManager] Unknown Image type: " + type));
+            "Unknown Image type: " + type));
 
     ImageFactory* factory = i->second;
     Image& image = factory->create(name);
@@ -178,17 +178,17 @@ Image& ImageManager::create(const XMLAttributes& attributes)
 
     if (name.empty())
         CEGUI_THROW(InvalidRequestException(
-            "[ImageManager] Invalid (empty) image name passed to create."));
+            "Invalid (empty) image name passed to create."));
 
     if (d_images.find(name) != d_images.end())
         CEGUI_THROW(AlreadyExistsException(
-            "[ImageManager] Image already exists: " + name));
+            "Image already exists: " + name));
 
     ImageFactoryRegistry::iterator i(d_factories.find(type));
 
     if (i == d_factories.end())
         CEGUI_THROW(UnknownObjectException(
-            "[ImageManager] Unknown Image type: " + type));
+            "Unknown Image type: " + type));
 
     ImageFactory* factory = i->second;
     Image& image = factory->create(attributes);
@@ -198,7 +198,7 @@ Image& ImageManager::create(const XMLAttributes& attributes)
     if (image.getName() != name)
     {
         const String message(
-            "[ImageManager] Factory for type: " + type + " created Image named: " +
+            "Factory for type: " + type + " created Image named: " +
             image.getName() + ".  Was expecting name: " + name);
             
         factory->destroy(image);
@@ -259,7 +259,7 @@ Image& ImageManager::get(const String& name) const
     
     if (i == d_images.end())
         CEGUI_THROW(UnknownObjectException(
-            "[ImageManager] Image not defined: " + name));
+            "Image not defined: " + name));
 
     return *i->second.first;
 }
@@ -420,11 +420,10 @@ void ImageManager::validateImagesetFileVersion(const XMLAttributes& attrs)
         return;
 
     CEGUI_THROW(InvalidRequestException(
-        "ImageManager::validateImagesetFileVersion - You are attempting to "
-        "load an imageset of version '" + version + "' but this CEGUI version "
-        "is only meant to load imagesets of version '" + NativeVersion + "'. "
-        "Consider using the migrate.py script bundled with CEGUI Unified "
-        "Editor to migrate your data."));
+        "You are attempting to load an imageset of version '" + version +
+        "' but this CEGUI version is only meant to load imagesets of version '" +
+        NativeVersion + "'. Consider using the migrate.py script bundled with "
+        "CEGUI Unified Editor to migrate your data."));
 }
 
 //----------------------------------------------------------------------------//
