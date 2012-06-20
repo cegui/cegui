@@ -186,7 +186,7 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
                 if (id.find("Official Direct3D 10") != id.npos)
                     DeviceReset_Direct3D10(hWnd, renderer);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTX3D11
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
                 if (id.find("Official Direct3D 11") != id.npos)
                     DeviceReset_Direct3D11(hWnd, renderer);
 #endif
