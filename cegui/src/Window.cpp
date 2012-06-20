@@ -370,7 +370,7 @@ Window* Window::getChild(uint ID) const
 
     char strbuf[16];
     sprintf(strbuf, "%X", ID);
-    CEGUI_THROW(UnknownObjectException("Window::getChild: A Window with ID: '" +
+    CEGUI_THROW(UnknownObjectException("A Window with ID: '" +
         String(strbuf) + "' is not attached to Window '" + d_name + "'."));
 }
 
@@ -1168,8 +1168,8 @@ void Window::addChild_impl(Element* element)
     
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
-            "Window::addChild_impl - Window can only have Elements of type "
-            "Window added as children (Window path: " + getNamePath() + ")."));
+            "Window can only have Elements of type Window added as children "
+            "(Window path: " + getNamePath() + ")."));
     
     // if the element is already a child of this Window, this is a NOOP
     if (isChild(element))
@@ -1854,7 +1854,7 @@ void Window::setLookNFeel(const String& look)
         return;
 
     if (!d_windowRenderer)
-        CEGUI_THROW(NullObjectException("Window::setLookNFeel: There must be a "
+        CEGUI_THROW(NullObjectException("There must be a "
             "window renderer assigned to the window '" + d_name +
             "' to set its look'n'feel"));
 
@@ -1948,8 +1948,8 @@ const String& Window::getUserString(const String& name) const
 
     if (iter == d_userStrings.end())
         CEGUI_THROW(UnknownObjectException(
-            "Window::getUserString: a user string named '" + name +
-            "' is not defined for Window '" + d_name + "'."));
+            "a user string named '" + name + "' is not defined for Window '" +
+            d_name + "'."));
 
     return (*iter).second;
 }
@@ -2771,8 +2771,8 @@ void Window::setWindowRenderer(const String& name)
     }
     else
         CEGUI_THROW(InvalidRequestException(
-            "Window::setWindowRenderer: Attempt to "
-            "assign a 'null' window renderer to window '" + d_name + "'."));
+            "Attempt to assign a 'null' window renderer to window '" +
+            d_name + "'."));
 }
 
 //----------------------------------------------------------------------------//
@@ -2786,8 +2786,7 @@ void Window::onWindowRendererAttached(WindowEventArgs& e)
 {
     if (!validateWindowRenderer(d_windowRenderer))
         CEGUI_THROW(InvalidRequestException(
-            "Window::onWindowRendererAttached: The "
-            "window renderer '" + d_windowRenderer->getName() + "' is not "
+            "The window renderer '" + d_windowRenderer->getName() + "' is not "
             "compatible with this widget type (" + getType() + ")"));
 
     d_windowRenderer->d_window = this;
@@ -3663,8 +3662,8 @@ size_t Window::getZIndex() const
         this);
 
     if (i == getParent()->d_drawList.end())
-        CEGUI_THROW(InvalidRequestException("Window::getZIndex: Window is not "
-            "in its parent's draw list."));
+        CEGUI_THROW(InvalidRequestException(
+            "Window is not in its parent's draw list."));
 
     return std::distance(getParent()->d_drawList.begin(), i);
 }

@@ -272,9 +272,7 @@ void Direct3D11GeometryBuffer::syncHardwareBuffer() const
         void* buff;
 		D3D11_MAPPED_SUBRESOURCE SubRes;
         if (FAILED(d_device.d_context->Map(d_vertexBuffer,0,D3D11_MAP_WRITE_DISCARD, 0, &SubRes)))
-            CEGUI_THROW(RendererException(
-                "Direct3D11GeometryBuffer::syncHardwareBuffer: "
-                "failed to map buffer."));
+            CEGUI_THROW(RendererException("failed to map buffer."));
 		buff=SubRes.pData;
 
         std::memcpy(buff, &d_vertices[0], sizeof(D3DVertex) * vertex_count);
@@ -295,9 +293,7 @@ void Direct3D11GeometryBuffer::allocateVertexBuffer(const size_t count) const
     buffer_desc.MiscFlags      = 0;
 
     if (FAILED(d_device.d_device->CreateBuffer(&buffer_desc, 0, &d_vertexBuffer)))
-        CEGUI_THROW(RendererException(
-            "Direct3D11GeometryBuffer::allocateVertexBuffer:"
-            " failed to allocate vertex buffer."));
+        CEGUI_THROW(RendererException("failed to allocate vertex buffer."));
 
     d_bufferSize = count;
 }

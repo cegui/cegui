@@ -178,7 +178,7 @@ template <typename T>
 void RenderEffectManager::addEffect(const String& name)
 {
     if (isEffectAvailable(name))
-        CEGUI_THROW(AlreadyExistsException("RenderEffectManager::addEffect: "
+        CEGUI_THROW(AlreadyExistsException(
             "A RenderEffect is already registered under the name '" +
             name + "'"));
 

@@ -98,8 +98,7 @@ OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
 {
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
-            "OpenGLESRenderer::bootstrapSystem: CEGUI::System object is already "
-            "initialised."));
+            "CEGUI::System object is already initialised."));
 
     OpenGLESRenderer& renderer(create(tt_type));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -115,8 +114,7 @@ OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
 {
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
-            "OpenGLESRenderer::bootstrapSystem: CEGUI::System object is already "
-            "initialised."));
+            "CEGUI::System object is already initialised."));
 
     OpenGLESRenderer& renderer(create(display_size, tt_type));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -130,7 +128,7 @@ void OpenGLESRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException("OpenGLESRenderer::destroySystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
     OpenGLESRenderer* renderer = 
@@ -370,7 +368,7 @@ Texture& OpenGLESRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException("OpenGLESRenderer::getTexture: "
+        CEGUI_THROW(UnknownObjectException(
             "No texture named '" + name + "' is available."));
 
     return *i->second;

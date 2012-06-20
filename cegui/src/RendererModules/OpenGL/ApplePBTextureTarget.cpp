@@ -65,20 +65,20 @@ OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
     CGLError err;
     CGLContextObj cctx = CGLGetCurrentContext();
     if (err = CGLGetVirtualScreen(cctx, &d_screen))
-        CEGUI_THROW(RendererException("OpenGLApplePBTextureTarget - "
+        CEGUI_THROW(RendererException(
             "CGLGetVirtualScreen failed: " + String(CGLErrorString(err))));
 
     GLint fmt_count;
     CGLPixelFormatObj pix_fmt;
     if (err = CGLChoosePixelFormat(fmtAttrs, &pix_fmt, &fmt_count))
-        CEGUI_THROW(RendererException("OpenGLApplePBTextureTarget - "
+        CEGUI_THROW(RendererException(
             "CGLChoosePixelFormat failed: " + String(CGLErrorString(err))));
 
     err = CGLCreateContext(pix_fmt, cctx, &d_context);
     CGLDestroyPixelFormat(pix_fmt);
 
     if (err)
-        CEGUI_THROW(RendererException("OpenGLApplePBTextureTarget - "
+        CEGUI_THROW(RendererException(
             "CGLCreateContext failed: " + String(CGLErrorString(err))));
 
     // set default size (and cause initialisation of the pbuffer)
@@ -177,14 +177,12 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Sizef& sz)
                                 GL_TEXTURE_2D, GL_RGBA, 0, &d_pbuffer))
     {
         CEGUI_THROW(RendererException(
-            "OpenGLApplePBTextureTarget::declareRenderSize "
-            "- CGLCreatePBuffer failed: " + String(CGLErrorString(err))));
+            "CGLCreatePBuffer failed: " + String(CGLErrorString(err))));
     }
 
     if (err = CGLSetPBuffer(d_context, d_pbuffer, 0, 0, d_screen))
         CEGUI_THROW(RendererException(
-            "OpenGLApplePBTextureTarget::declareRenderSize "
-            "- CGLSetPBuffer failed: " + String(CGLErrorString(err))));
+            "CGLSetPBuffer failed: " + String(CGLErrorString(err))));
 
     clear();
 
@@ -201,8 +199,7 @@ void OpenGLApplePBTextureTarget::declareRenderSize(const Sizef& sz)
 
     if (err)
         CEGUI_THROW(RendererException(
-            "OpenGLApplePBTextureTarget::declareRenderSize "
-            "- CGLTexImagePBuffer failed: " + String(CGLErrorString(err))));
+            "CGLTexImagePBuffer failed: " + String(CGLErrorString(err))));
 
     // ensure CEGUI::Texture is wrapping real GL texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());

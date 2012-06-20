@@ -162,7 +162,7 @@ size_t TabControl::getSelectedTabIndex() const
         if (d_tabButtonVector [i]->isSelected ())
             return i;
 
-	CEGUI_THROW(UnknownObjectException("TabControl::getSelectedTabIndex - Current tab not in list?"));
+	CEGUI_THROW(UnknownObjectException("Current tab not in list?"));
 }
 
 /*************************************************************************
@@ -318,7 +318,8 @@ TabButton* TabControl::getButtonForTabContents(Window* wnd) const
         if (d_tabButtonVector [i]->getTargetWindow () == wnd)
             return d_tabButtonVector [i];
 
-	CEGUI_THROW(UnknownObjectException("TabControl::getButtonForTabContents - The Window object is not a tab contents."));
+	CEGUI_THROW(UnknownObjectException(
+        "The Window object is not a tab contents."));
 }
 /*************************************************************************
 Remove tab button
@@ -458,9 +459,9 @@ void TabControl::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-    {
-        CEGUI_THROW(AlreadyExistsException("TabControl::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
-    }
+        CEGUI_THROW(InvalidRequestException(
+            "TabControl can only have Elements of type Window added as "
+            "children (Window path: " + getNamePath() + ")."));
     
     if (wnd->isAutoWindow())
     {
@@ -704,7 +705,8 @@ TabButton* TabControl::createTabButton(const String& name) const
     else
     {
         //return createTabButton_impl(name);
-        CEGUI_THROW(InvalidRequestException("TabControl::createTabButton - This function must be implemented by the window renderer module"));
+        CEGUI_THROW(InvalidRequestException(
+            "This function must be implemented by the window renderer module"));
     }
 }
 

@@ -76,7 +76,8 @@ size_t Affector::getIdxInParent() const
         ++i;
     }
 
-    CEGUI_THROW(UnknownObjectException("Affector::getIdxInParent(): Affector wasn't found in parent, therefore its index is unknown!"));
+    CEGUI_THROW(UnknownObjectException(
+        "Affector wasn't found in parent, therefore its index is unknown!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -128,9 +129,8 @@ KeyFrame* Affector::createKeyFrame(float position)
     if (d_keyFrames.find(position) != d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-                        "Affector::createKeyFrame: Unable to create KeyFrame "
-                        "at given position, there already is a KeyFrame "
-                        "on that position."));
+                        "Unable to create KeyFrame at given position, there "
+                        "already is a KeyFrame on that position."));
     }
 
     KeyFrame* ret = CEGUI_NEW_AO KeyFrame(this, position);
@@ -159,7 +159,7 @@ void Affector::destroyKeyFrame(KeyFrame* keyframe)
     if (it == d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-                        "Affector::destroyKeyFrame: Unable to destroy given KeyFrame! "
+                        "Unable to destroy given KeyFrame! "
                         "No such KeyFrame was found."));
     }
 
@@ -175,8 +175,7 @@ KeyFrame* Affector::getKeyFrameAtPosition(float position) const
     if (it == d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-                        "Affector::getKeyFrameAtPosition: Can't find a KeyFrame with given "
-                        "position."));
+                        "Can't find a KeyFrame with given position."));
     }
 
     return it->second;
@@ -193,8 +192,7 @@ KeyFrame* Affector::getKeyFrameAtIdx(size_t index) const
 {
     if (index >= d_keyFrames.size())
     {
-        CEGUI_THROW(InvalidRequestException(
-                        "Affector::getKeyFrameAtIdx: Out of bounds!"));
+        CEGUI_THROW(InvalidRequestException("Out of bounds!"));
     }
 
     KeyFrameMap::const_iterator it = d_keyFrames.begin();
@@ -218,8 +216,8 @@ void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
     if (d_keyFrames.find(newPosition) != d_keyFrames.end())
     {
         CEGUI_THROW(InvalidRequestException(
-                    "Affector::moveKeyFrameToPosition: There is already a key frame at "
-        		    "position: "+ PropertyHelper<float>::toString(newPosition) + "."));
+                    "There is already a key frame at position: " +
+                    PropertyHelper<float>::toString(newPosition) + "."));
 	}
 
     for (KeyFrameMap::iterator it = d_keyFrames.begin(); it != d_keyFrames.end(); ++it)
@@ -234,7 +232,8 @@ void Affector::moveKeyFrameToPosition(KeyFrame* keyframe, float newPosition)
         }
     }
 
-    CEGUI_THROW(UnknownObjectException("Affector::moveKeyFrameToPosition - passed key frame wasn't found within this affector"));
+    CEGUI_THROW(UnknownObjectException(
+        "passed key frame wasn't found within this affector"));
 }
 
 //----------------------------------------------------------------------------//

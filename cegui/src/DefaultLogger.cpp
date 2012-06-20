@@ -151,8 +151,7 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
 
     if (!d_ostream)
         CEGUI_THROW(FileIOException(
-            "[DefaultLogger] Failed to open file '" + filename +
-            "' for writing"));
+            "Failed to open file '" + filename + "' for writing"));
 
     // initialise width for date & time alignment.
     d_ostream.width(2);

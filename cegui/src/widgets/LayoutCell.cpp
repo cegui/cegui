@@ -108,9 +108,9 @@ void LayoutCell::addChild_impl(Element* element)
     Window* wnd = dynamic_cast<Window*>(element);
     
     if (!wnd)
-    {
-        CEGUI_THROW(AlreadyExistsException("LayoutCell::addChild_impl - You can't add elements of different types than 'Window' to a Window (Window path: " + getNamePath() + ") attached."));
-    }
+        CEGUI_THROW(InvalidRequestException(
+            "LayoutCell can only have Elements of type Window added as children "
+            "(Window path: " + getNamePath() + ")."));
     
     Window::addChild_impl(wnd);
 
@@ -152,7 +152,8 @@ bool LayoutCell::handleChildAdded(const EventArgs&)
 {
     if (getChildCount() > 0)
     {
-        CEGUI_THROW(InvalidRequestException("You can't add more than one widget to a layout cell!"));
+        CEGUI_THROW(InvalidRequestException(
+            "You can't add more than one widget to a layout cell!"));
     }
 
     //markNeedsLayouting();

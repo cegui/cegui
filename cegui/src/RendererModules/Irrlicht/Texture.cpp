@@ -93,7 +93,7 @@ void IrrlichtTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("IrrlichtTexture::loadFromFile: "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
@@ -108,7 +108,7 @@ void IrrlichtTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        CEGUI_THROW(RendererException("IrrlichtTexture::loadFromFile: " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
@@ -122,8 +122,7 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 
     if (!isPixelFormatSupported(pixel_format))
         CEGUI_THROW(InvalidRequestException(
-            "IrrlichtTexture::loadFromMemory: Data was supplied in an "
-            "unsupported pixel format."));
+            "Data was supplied in an unsupported pixel format."));
 
     freeIrrlichtTexture();
     createIrrlichtTexture(buffer_size);
@@ -318,8 +317,7 @@ void IrrlichtTexture::createIrrlichtTexture(const Sizef& sz)
     // we use ARGB all the time for now, so throw if we gut something else!
     if(video::ECF_A8R8G8B8 != d_texture->getColorFormat())
         CEGUI_THROW(RendererException(
-            "IrrlichtTexture::loadFromMemory: texture did "
-            "not have the correct format (ARGB)"));
+            "texture did not have the correct format (ARGB)"));
 }
 
 //----------------------------------------------------------------------------//

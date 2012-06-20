@@ -39,8 +39,9 @@ Direct3D11ViewportTarget::Direct3D11ViewportTarget(Direct3D11Renderer& owner) :
     UINT vp_count = 1;
     d_device.d_context->RSGetViewports(&vp_count, &vp);
     if (vp_count != 1)
-        CEGUI_THROW(RendererException("Direct3D11ViewportTarget: Unable to access "
-            "required view port information from ID3D10Device."));
+        CEGUI_THROW(RendererException(
+            "Unable to access required view port information from "
+            "ID3D11Device."));
 
     Rectf area(
         Vector2f(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),

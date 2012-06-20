@@ -103,7 +103,7 @@ void OgreTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("OgreTexture::loadFromFile: "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
@@ -130,7 +130,7 @@ void OgreTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        CEGUI_THROW(RendererException("OgreTexture::loadFromFile: " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
@@ -142,8 +142,8 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     using namespace Ogre;
 
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException("OgreTexture::loadFromMemory: Data "
-            "was supplied in an unsupported pixel format."));
+        CEGUI_THROW(InvalidRequestException(
+            "Data was supplied in an unsupported pixel format."));
 
     // get rid of old texture
     freeOgreTexture();
@@ -161,8 +161,8 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
-        CEGUI_THROW(RendererException("OgreTexture::loadFromMemory: Failed to "
-            "create Texture object from memory."));
+        CEGUI_THROW(RendererException(
+            "Failed to create Texture object from memory."));
 
     d_size.d_width = d_texture->getWidth();
     d_size.d_height = d_texture->getHeight();
@@ -233,8 +233,8 @@ OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
     
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
-        CEGUI_THROW(RendererException("OgreTexture: Failed to create Texture "
-            "object with spcecified size."));
+        CEGUI_THROW(RendererException(
+            "Failed to create Texture object with spcecified size."));
     
     d_size.d_width = d_texture->getWidth();
     d_size.d_height = d_texture->getHeight();
@@ -365,7 +365,7 @@ Ogre::PixelFormat OgreTexture::toOgrePixelFormat(const Texture::PixelFormat fmt)
         
         default:
             CEGUI_THROW(InvalidRequestException(
-                "[OgreRenderer] Invalid pixel format translation."));
+                "Invalid pixel format translation."));
     }
 }
 
@@ -389,7 +389,7 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
         
         default:
             CEGUI_THROW(InvalidRequestException(
-                "[OgreRenderer] Invalid pixel format translation."));
+                "Invalid pixel format translation."));
     }
 }
 

@@ -221,7 +221,7 @@ void Scheme::loadFonts()
         if (realname != (*pos).name)
         {
             fntmgr.destroy(font);
-            CEGUI_THROW(InvalidRequestException("Scheme::loadResources: "
+            CEGUI_THROW(InvalidRequestException(
                 "The Font created by file '" + (*pos).filename +
                 "' is named '" + realname + "', not '" + (*pos).name +
                 "' as required by Scheme '" + d_name + "'."));
@@ -269,8 +269,8 @@ void Scheme::loadWindowFactories()
 
             if (!getWindowFactoryModuleFunc)
                 CEGUI_THROW(InvalidRequestException(
-                    "Scheme::loadWindowFactories: Required function "
-                    "export 'FactoryModule& getWindowFactoryModule()' "
+                    "Required function export "
+                    "'FactoryModule& ""getWindowFactoryModule()' "
                     "was not found in module '" + (*cmod).name + "'."));
 
             // get the WindowRendererModule object for this module.
@@ -322,8 +322,8 @@ void Scheme::loadWindowRendererFactories()
 
             if (!getWRFactoryModuleFunc)
                 CEGUI_THROW(InvalidRequestException(
-                    "Scheme::loadWindowRendererFactories: Required function "
-                    "export 'FactoryModule& getWindowRendererFactoryModule()' "
+                    "Required function export "
+                    "'FactoryModule& getWindowRendererFactoryModule()' "
                     "was not found in module '" + (*cmod).name + "'."));
 
             // get the WindowRendererModule object for this module.

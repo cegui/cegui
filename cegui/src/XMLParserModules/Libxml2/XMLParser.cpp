@@ -102,7 +102,7 @@ void LibxmlParser::parseXML(XMLHandler& handler,
         xmlError* err = xmlGetLastError();
 
         CEGUI_THROW(GenericException(
-            String("LibxmlParser::parseXMLFile - xmlParseMemory failed in file: '") +
+            String("xmlParseMemory failed in file: '") +
             err->file + "' at line number" +
             PropertyHelper<uint>::toString(err->line) + ".  Error is:" +
             err->message));

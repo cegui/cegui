@@ -93,7 +93,7 @@ Font_xmlHandler::~Font_xmlHandler()
 const String& Font_xmlHandler::getObjectName() const
 {
     if (!d_font)
-        CEGUI_THROW(InvalidRequestException("Font_xmlHandler::getName: "
+        CEGUI_THROW(InvalidRequestException(
             "Attempt to access null object."));
 
     return d_font->getName();
@@ -103,7 +103,7 @@ const String& Font_xmlHandler::getObjectName() const
 Font& Font_xmlHandler::getObject() const
 {
     if (!d_font)
-        CEGUI_THROW(InvalidRequestException("Font_xmlHandler::getObject: "
+        CEGUI_THROW(InvalidRequestException(
             "Attempt to access null object."));
 
     d_objectRead = true;
@@ -162,7 +162,7 @@ void Font_xmlHandler::elementFontStart(const XMLAttributes& attributes)
     else if (font_type == FontTypePixmap)
         createPixmapFont(attributes);
     else
-        CEGUI_THROW(InvalidRequestException("Font_xmlHandler::elementFontStart: "
+        CEGUI_THROW(InvalidRequestException(
             "Encountered unknown font type of '" + font_type + "'"));
 }
 
@@ -176,11 +176,10 @@ void Font_xmlHandler::validateFontFileVersion(const XMLAttributes& attrs)
         return;
 
     CEGUI_THROW(InvalidRequestException(
-        "Font_xmlHandler::validateImagesetFileVersion - You are attempting "
-        "to load a font of version '" + version + "' but this CEGUI version is "
-        "only meant to load fonts of version '" + NativeVersion + "'. "
-        "Consider using the migrate.py script bundled with CEGUI Unified "
-        "Editor to migrate your data."));
+        "You are attempting to load a font of version '" + version + "' but "
+        "this CEGUI version is only meant to load fonts of version '" +
+        NativeVersion + "'. Consider using the migrate.py script bundled with "
+        "CEGUI Unified Editor to migrate your data."));
 }
 
 //----------------------------------------------------------------------------//
@@ -197,8 +196,7 @@ void Font_xmlHandler::elementMappingStart(const XMLAttributes& attributes)
 {
     if (!d_font)
         CEGUI_THROW(InvalidRequestException(
-            "Imageset_xmlHandler::elementMappingStart: Attempt to access null "
-            "object."));
+            "Attempt to access null object."));
 
     // double-check font type just in case - report issues as 'soft' errors
     if (d_font->getTypeName() != FontTypePixmap)
@@ -238,7 +236,7 @@ void Font_xmlHandler::createFreeTypeFont(const XMLAttributes& attributes)
               attributes.getValueAsFloat(FontNativeVertResAttribute, 480.0f)),
         attributes.getValueAsFloat(FontLineSpacingAttribute, 0.0f));
 #else
-    CEGUI_THROW(InvalidRequestException("Font_xmlHandler::createFreeTypeFont: "
+    CEGUI_THROW(InvalidRequestException(
         "CEGUI was compiled without freetype support."));
 #endif
 }

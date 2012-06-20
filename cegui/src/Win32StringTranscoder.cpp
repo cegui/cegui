@@ -45,7 +45,6 @@ uint16* Win32StringTranscoder::stringToUTF16(const String& input) const
                                         0, 0);
     if (!len)
         CEGUI_THROW(CEGUI::InvalidRequestException(
-            "Win32StringTranscoder::stringToUTF16: "
             "MultiByteToWideChar failed"));
 
     uint16* buff = CEGUI_NEW_ARRAY_PT(uint16, len, CEGUI::BufferAllocator);
@@ -76,7 +75,6 @@ static CEGUI::String stringFromUTF16(UINT codepage, const uint16* input)
                             0, 0, 0, 0);
     if (!len)
         CEGUI_THROW(CEGUI::InvalidRequestException(
-            "Win32StringTranscoder::stringFromUTF16: "
             "WideCharToMultiByte failed"));
 
     T* buff =

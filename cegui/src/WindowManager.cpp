@@ -98,7 +98,7 @@ Window* WindowManager::createWindow(const String& type, const String& name)
 {
     // only allow creation of Window objects if we are in unlocked state
     if (isLocked())
-        CEGUI_THROW(InvalidRequestException("WindowManager::createWindow - "
+        CEGUI_THROW(InvalidRequestException(
             "WindowManager is in the locked state."));
 
     String finalName(name.empty() ? generateUniqueWindowName() : name);
@@ -273,7 +273,8 @@ Window* WindowManager::loadLayoutFromFile(const String& filename, const String& 
 {
 	if (filename.empty())
 	{
-		CEGUI_THROW(InvalidRequestException("WindowManager::loadWindowLayout - Filename supplied for gui-layout loading must be valid."));
+		CEGUI_THROW(InvalidRequestException(
+            "Filename supplied for gui-layout loading must be valid."));
 	}
 
 	// log the fact we are about to load a layout
@@ -384,7 +385,7 @@ void WindowManager::saveLayoutToFile(const Window& window,
     std::ofstream stream(filename.c_str());
 
     if (!stream.good())
-        CEGUI_THROW(FileIOException("WindowManager::saveWindowLayout: "
+        CEGUI_THROW(FileIOException(
             "failed to create stream for writing."));
 
     writeLayoutToStream(window, stream);

@@ -52,7 +52,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
                                                    const String& resourceGroup)
 {
     if (filename.empty())
-        CEGUI_THROW(InvalidRequestException("DefaultResourceProvider::load: "
+        CEGUI_THROW(InvalidRequestException(
             "Filename supplied for data loading must be valid"));
 
     const String final_filename(getFinalFilename(filename, resourceGroup));
@@ -64,8 +64,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
 #endif
 
     if (file == 0)
-        CEGUI_THROW(InvalidRequestException("DefaultResourceProvider::load: " +
-            final_filename + " does not exist"));
+        CEGUI_THROW(FileIOException(final_filename + " does not exist"));
 
     fseek(file, 0, SEEK_END);
     const size_t size = ftell(file);
@@ -80,8 +79,7 @@ void DefaultResourceProvider::loadRawDataContainer(const String& filename,
     {
         CEGUI_DELETE_ARRAY_PT(buffer, unsigned char, size, BufferAllocator);
 
-        CEGUI_THROW(GenericException(
-            "DefaultResourceProvider::loadRawDataContainer: "
+        CEGUI_THROW(FileIOException(
             "A problem occurred while reading file: " + final_filename));
     }
 

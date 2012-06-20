@@ -77,7 +77,7 @@ namespace CEGUI
 
             if(!getShader(SHADER_ID_STANDARDSHADER)->isCreatedSuccessfully())
             {   
-                const std::string errorString("OpenGL3Renderer: Critical Error - One or multiple shader programs weren't created successfully");
+                const std::string errorString("Critical Error - One or multiple shader programs weren't created successfully");
                 CEGUI_THROW(RendererException(errorString));
 
                 return;

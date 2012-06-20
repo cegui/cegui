@@ -122,8 +122,7 @@ DynamicModule::DynamicModule(const String& name) :
 
     // check for library load failure
     if (!d_handle)
-        CEGUI_THROW(GenericException(
-            "DynamicModule::DynamicModule - Failed to load module '" +
+        CEGUI_THROW(GenericException("Failed to load module '" +
             d_moduleName + "': " + getFailureString()));
 }
 

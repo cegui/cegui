@@ -48,7 +48,7 @@ String NullRenderer::d_rendererID(
 NullRenderer& NullRenderer::bootstrapSystem()
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("NullRenderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
 	NullRenderer& renderer = create();
@@ -67,7 +67,7 @@ void NullRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException("NullRenderer::destroySystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
     NullRenderer* renderer = static_cast<NullRenderer*>(sys->getRenderer());
@@ -257,7 +257,7 @@ Texture& NullRenderer::getTexture(const String& name) const
     
     if (i == d_textures.end())
         CEGUI_THROW(UnknownObjectException(
-            "[NullRenderer] Texture does not exist: " + name));
+            "Texture does not exist: " + name));
 
     return *i->second;
 }
