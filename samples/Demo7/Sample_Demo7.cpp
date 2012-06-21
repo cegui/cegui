@@ -303,6 +303,13 @@ bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
     // initialise the event handling.
     initDemoEventWiring(sheet);
 
+
+    WindowFactoryManager::getSingleton().removeWindowTypeAlias(
+        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
+        "TaharezLook/WobblyFrameWindow"); // target type to create.
+
+
+
     // success!
     return true;
 }
