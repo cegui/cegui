@@ -1,4 +1,4 @@
-<Imageset version="2" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1280" nativeVertRes="1280" autoScaled="vertical">
+<Imageset version="2" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1024" nativeVertRes="1024" autoScaled="vertical">
     <Image height="3" name="GenericFiller" width="3" xPos="1" yPos="49" />
     <Image height="45" name="MouseArrow" width="36" xPos="0" yPos="0" />
     <Image height="29" name="FrameBottom" width="690" xPos="185" yPos="416" />
