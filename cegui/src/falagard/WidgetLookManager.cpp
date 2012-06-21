@@ -97,7 +97,8 @@ namespace CEGUI
         // valid filenames are required!
         if (filename.empty())
         {
-            CEGUI_THROW(InvalidRequestException("WidgetLookManager::parseLookNFeelSpecification - Filename supplied for look & feel file must be valid"));
+            CEGUI_THROW(InvalidRequestException(
+                "Filename supplied for look & feel file must be valid"));
         }
 
         // create handler object
@@ -149,7 +150,8 @@ namespace CEGUI
             return (*wlf).second;
         }
 
-        CEGUI_THROW(UnknownObjectException("WidgetLookManager::getWidgetLook - Widget look and feel '" + widget + "' does not exist."));
+        CEGUI_THROW(UnknownObjectException(
+            "WidgetLook '" + widget + "' does not exist."));
     }
 
     void WidgetLookManager::eraseWidgetLook(const String& widget)

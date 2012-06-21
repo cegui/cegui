@@ -82,7 +82,7 @@ namespace CEGUI
             delete[] buf;
 
             // throw exception
-            CEGUI_THROW(FileIOException("TinyXMLParser: an error occurred while "
+            CEGUI_THROW(FileIOException("an error occurred while "
                 "parsing the XML document - check it for potential errors!."));
         }
 

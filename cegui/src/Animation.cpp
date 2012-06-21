@@ -133,8 +133,7 @@ void Animation::destroyAffector(Affector* affector)
 
     if (it == d_affectors.end())
     {
-        CEGUI_THROW(InvalidRequestException(
-                        "Animation::destroyAffector: Given affector not found!"));
+        CEGUI_THROW(InvalidRequestException("Given affector not found!"));
     }
 
     d_affectors.erase(it);
@@ -146,8 +145,7 @@ Affector* Animation::getAffectorAtIdx(size_t index) const
 {
     if (index >= d_affectors.size())
     {
-        CEGUI_THROW(InvalidRequestException(
-                        "Animation::getAffectorAtIdx: Out of bounds."));
+        CEGUI_THROW(InvalidRequestException("Out of bounds."));
     }
 
     AffectorList::const_iterator it = d_affectors.begin();
@@ -173,9 +171,8 @@ void Animation::defineAutoSubscription(const String& eventName,
         if (it->second == action)
         {
             CEGUI_THROW(InvalidRequestException(
-                            "Animation::defineAutoSubscription: Unable to define "
-                            "given Auto Subscription - exactly the same auto subscription "
-                            "is already there!"));
+                            "Unable to define given Auto Subscription - exactly "
+                            "the same auto subscription is already there!"));
         }
 
         ++it;
@@ -202,8 +199,7 @@ void Animation::undefineAutoSubscription(const String& eventName,
     }
 
     CEGUI_THROW(InvalidRequestException(
-                    "Animation::undefineAutoSubscription: Unable to undefine "
-                    "given Auto Subscription - not found!"));
+        "Unable to undefine given Auto Subscription - not found!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -258,7 +254,7 @@ void Animation::autoSubscribe(AnimationInstance* instance)
         else
         {
             CEGUI_THROW(InvalidRequestException(
-                            "Animation::autoSubscribe: Unable to auto subscribe! "
+                            "Unable to auto subscribe! "
                             "'" + a + "' is not a valid action."));
         }
 

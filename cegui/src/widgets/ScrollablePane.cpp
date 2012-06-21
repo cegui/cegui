@@ -437,7 +437,7 @@ void ScrollablePane::addChild_impl(Element* element)
     
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
-            "ScrollablePane::addChild_impl - Window can only have Elements of "
+            "ScrollablePane can only have Elements of "
             "type Window added as children (Window path: " +
             getNamePath() + ")."));
     
@@ -590,7 +590,7 @@ ScrolledContainer* ScrollablePane::getScrolledContainer() const
 Rectf ScrollablePane::getViewableArea() const
 {
     if (!d_windowRenderer)
-        CEGUI_THROW(InvalidRequestException("ScrollablePane::getViewableArea: "
+        CEGUI_THROW(InvalidRequestException(
             "This function must be implemented by the window renderer module"));
     
     ScrollablePaneWindowRenderer* wr =

@@ -173,7 +173,6 @@ void OpenGLGLXPBTextureTarget::initialisePBuffer()
 
     if (!d_pbuffer)
         CEGUI_THROW(RendererException(
-            "OpenGLGLXPBTextureTarget::initialisePBuffer - "
             "pbuffer creation error:  glXCreatePbuffer() failed"));
 
     // get the real size of the buffer that was created
@@ -232,8 +231,7 @@ void OpenGLGLXPBTextureTarget::selectFBConfig()
     glxcfgs = glXChooseFBConfig(d_dpy, DefaultScreen(d_dpy), pbAttrs, &cfgcnt);
     if (!glxcfgs)
         CEGUI_THROW(RendererException(
-            "OpenGLGLXPBTextureTarget::selectFBConfig - pbuffer creation "
-            "failure, can't get suitable configuration."));
+            "pbuffer creation failure, can't get suitable configuration."));
 
     d_fbconfig = glxcfgs[0];
 }
@@ -246,7 +244,6 @@ void OpenGLGLXPBTextureTarget::createContext()
 
     if (!d_context)
         CEGUI_THROW(RendererException(
-            "OpenGLGLXPBTextureTarget::createContext - "
             "Failed to create GLX context for pbuffer."));
 }
 

@@ -54,8 +54,7 @@ Direct3D11Renderer& Direct3D11Renderer::bootstrapSystem(
 {
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D11Renderer::bootstrapSystem: CEGUI::System object is "
-            "already initialised."));
+            "CEGUI::System object is already initialised."));
 
     Direct3D11Renderer& renderer(create(device, context));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -70,8 +69,7 @@ void Direct3D11Renderer::destroySystem()
     System* sys;
     if (!(sys = System::getSingletonPtr()))
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D11Renderer::destroySystem: CEGUI::System object is not "
-            "created or was already destroyed."));
+            "CEGUI::System object is not created or was already destroyed."));
 
     Direct3D11Renderer* renderer =
         static_cast<Direct3D11Renderer*>(sys->getRenderer());
@@ -258,8 +256,7 @@ Texture& Direct3D11Renderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "[Direct3D11Renderer] Texture does not exist: " + name));
+        CEGUI_THROW(UnknownObjectException("Texture does not exist: " + name));
 
     return *i->second;
 }
@@ -370,7 +367,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
 	if (FAILED(D3DX11CreateEffectFromMemory(ShaderBlob->GetBufferPointer(), ShaderBlob->GetBufferSize(),0, 
 		d_device.d_device, &d_effect) ))
 	{
-		CEGUI_THROW(RendererException("Direct3D11Renderer: failed to create effect!"));
+		CEGUI_THROW(RendererException("failed to create effect!"));
 	}
 
 	if(ShaderBlob) 
@@ -407,8 +404,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     D3DX11_PASS_DESC pass_desc;
     if (FAILED(d_normalClippedTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
         CEGUI_THROW(RendererException(
-            "Direct3D11Renderer: failed to obtain technique "
-            "description for pass 0."));
+            "failed to obtain technique description for pass 0."));
 
     if (FAILED(d_device.d_device->CreateInputLayout(vertex_layout, element_count,
                                             pass_desc.pIAInputSignature,
@@ -416,7 +412,7 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
                                             &d_inputLayout)))
     {
         CEGUI_THROW(RendererException(
-            "Direct3D11Renderer: failed to create D3D 10 input layout."));
+            "failed to create D3D 11 input layout."));
     }
 
     d_defaultTarget = new Direct3D11ViewportTarget(*this);
@@ -449,8 +445,8 @@ Sizef Direct3D11Renderer::getViewportSize()
 
     if (vp_count != 1)
         CEGUI_THROW(RendererException(
-            "Direct3D11Renderer::getViewportSize: Unable "
-            "to access required view port information from IDirect3DDevice10."));
+            "Unable to access required view port information from "
+            "ID3D11Device."));
     else
         return Sizef(static_cast<float>(vp.Width),
                       static_cast<float>(vp.Height));

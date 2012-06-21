@@ -181,7 +181,7 @@ void Direct3D10Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("Direct3D10Texture::loadFromFile - "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
@@ -196,7 +196,7 @@ void Direct3D10Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException("Direct3D10Texture::loadFromFile - " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
@@ -208,8 +208,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 {
     if (!isPixelFormatSupported(pixel_format))
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D10Texture::loadFromMemory: Data was supplied in an "
-            "unsupported pixel format."));
+            "Data was supplied in an unsupported pixel format."));
 
     cleanupDirect3D10Texture();
 
@@ -256,8 +255,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 
     if (FAILED(hr))
         CEGUI_THROW(RendererException(
-            "Direct3D10Texture::loadFromMemory: Failed to "
-            "create texture from memory buffer."));
+            "Failed to create texture from memory buffer."));
 
     initialiseShaderResourceView();
 
@@ -322,13 +320,12 @@ void Direct3D10Texture::blitToMemory(void* targetData)
             offscreen->Unmap(0);
         }
         else
-            exception_msg.assign("[Direct3D10Renderer] "
-                "ID3D10Texture2D::Map failed.");
+            exception_msg.assign("ID3D10Texture2D::Map failed.");
 
         offscreen->Release();
     }
     else
-        exception_msg.assign("[Direct3D10Renderer] "
+        exception_msg.assign(
             "ID3D10Device::CreateTexture2D failed for 'offscreen'.");
 
     if (!exception_msg.empty())
@@ -447,7 +444,7 @@ Direct3D10Texture::Direct3D10Texture(ID3D10Device& device, const String& name,
 
     if (FAILED(d_device.CreateTexture2D(&tex_desc, 0, &d_texture)))
         CEGUI_THROW(RendererException(
-            "Direct3D10Texture: Failed to create texture with specified size."));
+            "Failed to create texture with specified size."));
 
     initialiseShaderResourceView();
 

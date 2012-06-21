@@ -596,8 +596,7 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
 
         default:
             CEGUI_THROW(InvalidRequestException(
-                "FrameComponent::renderImage: An unknown HorizontalFormatting "
-                "value was specified."));
+                "An unknown HorizontalFormatting value was specified."));
     }
 
     // calculate initial y co-ordinate and vertical tile count according to formatting options
@@ -632,8 +631,7 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
 
         default:
             CEGUI_THROW(InvalidRequestException(
-                "FrameComponent::renderImage: - An unknown VerticalFormatting "
-                "value was specified."));
+                "An unknown VerticalFormatting value was specified."));
     }
 
     // perform final rendering (actually is now a caching of the images which will be drawn)

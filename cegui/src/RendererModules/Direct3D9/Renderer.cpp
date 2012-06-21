@@ -60,8 +60,7 @@ Direct3D9Renderer& Direct3D9Renderer::bootstrapSystem(LPDIRECT3DDEVICE9 device)
 {
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D9Renderer::bootstrapSystem: CEGUI::System object is "
-            "already initialised."));
+            "CEGUI::System object is already initialised."));
 
     Direct3D9Renderer& renderer(create(device));
     DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
@@ -75,7 +74,7 @@ void Direct3D9Renderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException("Direct3D9Renderer::destroySystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
     Direct3D9Renderer* renderer =
@@ -379,8 +378,8 @@ Direct3D9Renderer::Direct3D9Renderer(LPDIRECT3DDEVICE9 device) :
 
     if (!caps.RasterCaps && D3DPRASTERCAPS_SCISSORTEST)
         CEGUI_THROW(RendererException(
-            "Direct3D9Renderer: Hardware does not support "
-            "D3DPRASTERCAPS_SCISSORTEST.  Unable to proceed."));
+            "Hardware does not support D3DPRASTERCAPS_SCISSORTEST. "
+            "Unable to proceed."));
 
     d_maxTextureSize = ceguimin(caps.MaxTextureHeight, caps.MaxTextureWidth);
 
@@ -409,8 +408,8 @@ Sizef Direct3D9Renderer::getViewportSize()
 
     if (FAILED(d_device->GetViewport(&vp)))
         CEGUI_THROW(RendererException(
-            "Direct3D9Renderer::getViewportSize - Unable to access required "
-            "view port information from Direct3DDevice9."));
+            "Unable to access required view port information from "
+            "Direct3DDevice9."));
     else
         return Sizef(static_cast<float>(vp.Width),
                       static_cast<float>(vp.Height));

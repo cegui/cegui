@@ -113,7 +113,7 @@ String OpenGLRenderer::d_rendererID(
 OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type)
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("OpenGLRenderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
     OpenGLRenderer& renderer(create(tt_type));
@@ -128,7 +128,7 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const Sizef& display_size,
                                                 const TextureTargetType tt_type)
 {
     if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException("OpenGLRenderer::bootstrapSystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
 
     OpenGLRenderer& renderer(create(display_size, tt_type));
@@ -143,7 +143,7 @@ void OpenGLRenderer::destroySystem()
 {
     System* sys;
     if (!(sys = System::getSingletonPtr()))
-        CEGUI_THROW(InvalidRequestException("OpenGLRenderer::destroySystem: "
+        CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is not created or was already destroyed."));
 
     OpenGLRenderer* renderer = static_cast<OpenGLRenderer*>(sys->getRenderer());
@@ -300,7 +300,7 @@ void OpenGLRenderer::destroyAllTextureTargets()
 Texture& OpenGLRenderer::createTexture(const String& name)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGLRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGLTexture* tex = new OpenGLTexture(*this, name);
@@ -317,7 +317,7 @@ Texture& OpenGLRenderer::createTexture(const String& name,
                                        const String& resourceGroup)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGLRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGLTexture* tex = new OpenGLTexture(*this, name, filename, resourceGroup);
@@ -332,7 +332,7 @@ Texture& OpenGLRenderer::createTexture(const String& name,
 Texture& OpenGLRenderer::createTexture(const String& name, const Sizef& size)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGLRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGLTexture* tex = new OpenGLTexture(*this, name, size);
@@ -391,7 +391,7 @@ Texture& OpenGLRenderer::getTexture(const String& name) const
     TextureMap::const_iterator i = d_textures.find(name);
     
     if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException("OpenGLRenderer::getTexture: "
+        CEGUI_THROW(UnknownObjectException(
             "No texture named '" + name + "' is available."));
 
     return *i->second;
@@ -486,7 +486,7 @@ Texture& OpenGLRenderer::createTexture(const String& name, GLuint tex,
                                        const Sizef& sz)
 {
     if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException("OpenGLRenderer::createTexture: "
+        CEGUI_THROW(AlreadyExistsException(
             "A texture named '" + name + "' already exists."));
 
     OpenGLTexture* t = new OpenGLTexture(*this, name, tex, sz);
