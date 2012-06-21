@@ -316,7 +316,8 @@ namespace CEGUI
                 d_area->d_bottom_or_height = dim;
                 break;
             default:
-                CEGUI_THROW(InvalidRequestException("Falagard::xmlHandler::assignAreaDimension - Invalid DimensionType specified for area component."));
+                CEGUI_THROW(InvalidRequestException(
+                    "Invalid DimensionType specified for area component."));
             }
         }
     }
@@ -371,10 +372,10 @@ namespace CEGUI
         if (version != NativeVersion)
         {
             CEGUI_THROW(InvalidRequestException(
-                "Falagard_xmlHandler::elementFalagardStart - You are attempting to load a looknfeel of "
-                "version '" + version + "' but this CEGUI version is only meant to load looknfeels of "
-                "version '" + NativeVersion + "'. Consider using the migrate.py script bundled with "
-                "CEGUI Unified Editor to migrate your data."));
+                "You are attempting to load a looknfeel of version '" + version +
+                "' but this CEGUI version is only meant to load looknfeels of "
+                "version '" + NativeVersion + "'. Consider using the migrate.py "
+                "script bundled with CEGUI Unified Editor to migrate your data."));
         }
     }
 
@@ -568,7 +569,7 @@ namespace CEGUI
                     break;
                 default:
                     CEGUI_THROW(InvalidRequestException(
-                        "[Falagard] " + VertFormatElement + " within " +
+                        VertFormatElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "LeftEdge, RightEdge or Background components. "
                         "Received: " +
@@ -616,7 +617,7 @@ namespace CEGUI
                     break;
                 default:
                     CEGUI_THROW(InvalidRequestException(
-                        "[Falagard] " + HorzFormatElement + " within " +
+                        HorzFormatElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "TopEdge, BottomEdge or Background components. "
                         "Received: " +
@@ -792,8 +793,7 @@ namespace CEGUI
         doBaseDimStart(&base);
 #else
         CEGUI_THROW(InvalidRequestException(
-            "Falagard_xmlHandler::elementExpressionDimStart: CEGUI was built "
-            "without ExpressionDim support."));
+            "CEGUI was built without ExpressionDim support."));
 #endif
     }
 
@@ -1144,7 +1144,7 @@ namespace CEGUI
                     break;
                 default:
                     CEGUI_THROW(InvalidRequestException(
-                        "[Falagard] " + VertFormatPropertyElement + " within " +
+                        VertFormatPropertyElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "LeftEdge, RightEdge or Background components. "
                         "Received: " +
@@ -1184,7 +1184,7 @@ namespace CEGUI
                     break;
                 default:
                     CEGUI_THROW(InvalidRequestException(
-                        "[Falagard] " + HorzFormatPropertyElement + " within " +
+                        HorzFormatPropertyElement + " within " +
                         FrameComponentElement + " may only be used for "
                         "TopEdge, BottomEdge or Background components. "
                         "Received: " +

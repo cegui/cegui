@@ -195,10 +195,11 @@ void GUILayout_xmlHandler::elementGUILayoutStart(const XMLAttributes& attributes
     if (version != NativeVersion)
     {
         CEGUI_THROW(InvalidRequestException(
-            "GUILayout_xmlHandler::elementGUILayoutStart - You are attempting to load a layout of "
-            "version '" + version + "' but this CEGUI version is only meant to load layouts of "
-            "version '" + NativeVersion + "'. Consider using the migrate.py script bundled with "
-            "CEGUI Unified Editor to migrate your data."));
+            "You are attempting to load a layout of version '" + version +
+            "' but this CEGUI version is only meant to load layouts of "
+            "version '" + NativeVersion + "'. Consider using the "
+            "migrate.py script bundled with CEGUI Unified Editor to "
+            "migrate your data."));
     }
 }
 
@@ -237,7 +238,8 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
         cleanupLoadedWindows();
 
         // signal error - with more info about what we have done.
-        CEGUI_THROW(InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since Window named '" + windowName + "' already exists."));
+        CEGUI_THROW(InvalidRequestException(
+            "layout loading has been aborted since Window named '" + windowName + "' already exists."));
     }
     CEGUI_CATCH (UnknownObjectException&)
     {
@@ -245,7 +247,8 @@ void GUILayout_xmlHandler::elementWindowStart(const XMLAttributes& attributes)
         cleanupLoadedWindows();
 
         // signal error - with more info about what we have done.
-        CEGUI_THROW(InvalidRequestException("GUILayout_xmlHandler::startElement - layout loading has been aborted since no WindowFactory is available for '" + windowType + "' objects."));
+        CEGUI_THROW(InvalidRequestException(
+            "layout loading has been aborted since no WindowFactory is available for '" + windowType + "' objects."));
     }
 }
 
@@ -275,9 +278,8 @@ void GUILayout_xmlHandler::elementAutoWindowStart(const XMLAttributes& attribute
 
         // signal error - with more info about what we have done.
         CEGUI_THROW(InvalidRequestException(
-            "GUILayout_xmlHandler::startElement - layout loading has been "
-            "aborted since auto window '" + name_path + "' could not be "
-            "referenced."));
+            "layout loading has been aborted since auto window '" +
+            name_path + "' could not be referenced."));
     }
 }
 
@@ -406,7 +408,8 @@ void GUILayout_xmlHandler::elementLayoutImportStart(const XMLAttributes& attribu
         cleanupLoadedWindows();
 
         // signal error - with more info about what we have done.
-        CEGUI_THROW(GenericException("GUILayout_xmlHandler::startElement - layout loading aborted due to imported layout load failure (see error(s) above)."));
+        CEGUI_THROW(GenericException(
+            "layout loading aborted due to imported layout load failure (see error(s) above)."));
     }
 }
 

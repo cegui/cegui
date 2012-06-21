@@ -483,7 +483,8 @@ void System::executeScriptFile(const String& filename, const String& resourceGro
         }
 		CEGUI_CATCH(...)
 		{
-			CEGUI_THROW(GenericException("System::executeScriptFile - An exception was thrown during the execution of the script file."));
+			CEGUI_THROW(GenericException(
+                "An exception was thrown during the execution of the script file."));
 		}
 
 	}
@@ -514,7 +515,8 @@ int	System::executeScriptGlobal(const String& function_name) const
         }
 		CEGUI_CATCH(...)
 		{
-			CEGUI_THROW(GenericException("System::executeScriptGlobal - An exception was thrown during execution of the scripted function."));
+			CEGUI_THROW(GenericException(
+                "An exception was thrown during execution of the scripted function."));
 		}
 
 	}
@@ -546,7 +548,8 @@ void System::executeScriptString(const String& str) const
         }
         CEGUI_CATCH(...)
         {
-            CEGUI_THROW(GenericException("System::executeScriptString - An exception was thrown during execution of the script code."));
+            CEGUI_THROW(GenericException(
+                "An exception was thrown during execution of the script code."));
         }
 
     }

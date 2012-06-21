@@ -323,7 +323,7 @@ private:
     void populateTextureSurfaceDescription()
     {
         if (FAILED(d_texture->GetLevelDesc(0, &d_surfDesc)))
-            CEGUI_THROW(RendererException("[Direct3D9Renderer] "
+            CEGUI_THROW(RendererException(
                 "IDirect3DTexture9::GetLevelDesc failed."));
 
         d_fullArea.left = 0;
@@ -339,7 +339,7 @@ private:
             d_surfDesc.Width, d_surfDesc.Height, d_surfDesc.Format,
             D3DPOOL_SYSTEMMEM, &d_offscreen, 0)))
         {
-            CEGUI_THROW(RendererException("[Direct3D9Renderer] "
+            CEGUI_THROW(RendererException(
                 "IDirect3DDevice9::CreateOffscreenPlainSurface failed."));
         }
     }
@@ -348,7 +348,7 @@ private:
     void getTextureSurface()
     {
         if (FAILED(d_texture->GetSurfaceLevel(0, &d_renderTarget)))
-            CEGUI_THROW(RendererException("[Direct3D9Renderer] "
+            CEGUI_THROW(RendererException(
                 "IDirect3DTexture9::GetSurfaceLevel failed."));
     }
 
@@ -357,7 +357,7 @@ private:
     {
         if (FAILED(d_offscreen->LockRect(&d_lockedRect, area, 0)))
             CEGUI_THROW(RendererException(
-                "[Direct3D9Renderer] IDirect3DSurface9::LockRect failed."));
+                "IDirect3DSurface9::LockRect failed."));
     }
 
     //------------------------------------------------------------------------//
@@ -365,7 +365,7 @@ private:
     {
         if (FAILED(d_texture->LockRect(0, &d_lockedRect, area, 0)))
             CEGUI_THROW(RendererException(
-                "[Direct3D9Renderer] IDirect3DTexture9::LockRect failed."));
+                "IDirect3DTexture9::LockRect failed."));
     }
 
     //------------------------------------------------------------------------//
@@ -377,7 +377,7 @@ private:
                                            d_renderTarget, &pt)))
         {
             CEGUI_THROW(RendererException(
-                "[Direct3D9Renderer] IDirect3DDevice9::UpdateSurface failed."));
+                "IDirect3DDevice9::UpdateSurface failed."));
         }
     }
 
@@ -385,7 +385,7 @@ private:
     void getRenderTargetData()
     {
         if (FAILED(d_device->GetRenderTargetData(d_renderTarget, d_offscreen)))
-            CEGUI_THROW(RendererException("[Direct3D9Renderer] "
+            CEGUI_THROW(RendererException(
                 "IDirect3DDevice9::GetRenderTargetData failed."));
     }
 
@@ -511,7 +511,7 @@ void Direct3D9Texture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromFile - "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
@@ -526,7 +526,7 @@ void Direct3D9Texture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromFile - " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
@@ -538,8 +538,7 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 {
     if (!isPixelFormatSupported(pixel_format))
         CEGUI_THROW(InvalidRequestException(
-            "Direct3D9Texture::loadFromMemory: Data was supplied in an "
-            "unsupported pixel format."));
+            "Data was supplied in an unsupported pixel format."));
 
     const D3DFORMAT pixfmt = toD3DPixelFormat(pixel_format);
     createDirect3D9Texture(buffer_size, pixfmt);
@@ -559,7 +558,7 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
     surface->Release();
 
     if (FAILED(hr))
-        CEGUI_THROW(RendererException("Direct3D9Texture::loadFromMemory: "
+        CEGUI_THROW(RendererException(
             "D3DXLoadSurfaceFromMemory failed."));
 }
 
@@ -576,8 +575,7 @@ void Direct3D9Texture::createDirect3D9Texture(const Sizef sz, D3DFORMAT format)
                                    1, 0, format, D3DPOOL_MANAGED, &d_texture);
 
     if (FAILED(hr))
-        CEGUI_THROW(RendererException("[Direct3D9Renderer] "
-            "Direct3D9Texture::createDirect3D9Texture failed."));
+        CEGUI_THROW(RendererException("D3DXCreateTexture failed."));
 
     d_dataSize = sz;
     updateTextureSize();
@@ -591,8 +589,8 @@ IDirect3DSurface9* Direct3D9Texture::getTextureSurface() const
     HRESULT hr = d_texture->GetSurfaceLevel(0, &surface);
 
     if (FAILED(hr))
-        CEGUI_THROW(RendererException("[Direct3D9Renderer] "
-            "Direct3D9Texture::getDirect3DSurface failed."));
+        CEGUI_THROW(RendererException(
+            "IDirect3DTexture9::GetSurfaceLevel failed."));
 
     return surface;
 }

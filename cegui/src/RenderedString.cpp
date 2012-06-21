@@ -107,7 +107,7 @@ void RenderedString::split(const Window* ref_wnd, const size_t line,
     // On the plus side, it does seem to work though ;)
 
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException("RenderedString::split: "
+        CEGUI_THROW(InvalidRequestException(
             "line number specified is invalid."));
 
     left.clearComponents();
@@ -246,7 +246,7 @@ Sizef RenderedString::getPixelSize(const Window* ref_wnd,
                                    const size_t line) const
 {
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException("RenderedString::getPixelSize: "
+        CEGUI_THROW(InvalidRequestException(
             "line number specified is invalid."));
 
     Sizef sz(0, 0);
@@ -268,7 +268,7 @@ Sizef RenderedString::getPixelSize(const Window* ref_wnd,
 size_t RenderedString::getSpaceCount(const size_t line) const
 {
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException("RenderedString::getSpaceCount: "
+        CEGUI_THROW(InvalidRequestException(
             "line number specified is invalid."));
 
     size_t space_count = 0;
@@ -287,7 +287,7 @@ void RenderedString::draw(const Window* ref_wnd, const size_t line,
                           const float space_extra) const
 {
     if (line >= getLineCount())
-        CEGUI_THROW(InvalidRequestException("RenderedString::draw: "
+        CEGUI_THROW(InvalidRequestException(
             "line number specified is invalid."));
 
     const float render_height = getPixelSize(ref_wnd, line).d_height;

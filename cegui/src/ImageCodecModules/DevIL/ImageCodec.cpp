@@ -117,7 +117,7 @@ Texture* DevILImageCodec::load(const RawDataContainer& data, Texture* result)
 
         default:
             CEGUI_THROW(InvalidRequestException(
-                "[DevILImageCodec] Unsupported DXTC data format returned."));
+                "Unsupported DXTC data format returned."));
         }
 
         // delete DevIL image

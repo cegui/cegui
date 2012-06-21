@@ -141,7 +141,7 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
         break;
 
     default:
-        CEGUI_THROW(InvalidRequestException("RenderedStringTextComponent::draw: "
+        CEGUI_THROW(InvalidRequestException(
                 "unknown VerticalFormatting option specified."));
     }
 
@@ -201,8 +201,7 @@ RenderedStringWidgetComponent* RenderedStringWidgetComponent::split(
     const Window* /*ref_wnd*/, float /*split_point*/, bool /*first_component*/)
 {
     CEGUI_THROW(InvalidRequestException(
-        "RenderedStringWidgetComponent::split: this "
-        "component does not support being split."));
+        "this component does not support being split."));
 }
 
 //----------------------------------------------------------------------------//

@@ -67,7 +67,7 @@ void NullTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("NullTexture::loadFromFile: "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
@@ -82,7 +82,7 @@ void NullTexture::loadFromFile(const String& filename,
 
     // throw exception if data was load loaded to texture.
     if (!res)
-        CEGUI_THROW(RendererException("NullTexture::loadFromFile: " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }

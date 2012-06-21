@@ -556,7 +556,6 @@ public:
 
         default:
             CEGUI_THROW(InvalidRequestException(
-                "FalagardXMLHelper::childEventActionToString: "
                 "Invalid enumeration value given."));
         }
     }
@@ -570,7 +569,7 @@ public:
             return CEA_LAYOUT;
 
         CEGUI_THROW(InvalidRequestException(
-            "FalagardXMLHelper::stringToChildEventAction: '" + str +
+            "'" + str +
             "' does not represent a ChildEventAction enumerated value."));
     }
 };

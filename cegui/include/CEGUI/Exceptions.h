@@ -91,6 +91,18 @@ public:
     int getLine(void) const
         { return d_line; }
 
+    /*!
+    \brief
+        Return a reference to the String object containing the name of the
+        function where the exception occurred.
+
+    \return
+        String object containing the name of the function where the exception
+        occurred.
+    */
+    const String& getFunctionName(void) const
+        { return d_function; }
+
     // override from std::exception.
     const char* what() const throw();
 
@@ -140,20 +152,27 @@ protected:
 
     \param line
         Integer representing the line number where the exception occurred.
+
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
     */
     Exception(const String& message = "",
               const String& name = "CEGUI::Exception",
               const String& filename = "",
-              int line = 0);
+              int line = 0,
+              const String& function = "");
 
     //! Holds the reason for the exception being thrown.
     String d_message;
-    //! Holds the name of the file where the exception occurred.
-    String d_filename;
     //! Holds the class name of the exception (e.g. CEGUI::ObjectInUseException)
     String d_name;
+    //! Holds the name of the file where the exception occurred.
+    String d_filename;
     //! Holds the line number where the exception occurred.
     int d_line;
+    //! Holds the name of the function where the exception occurred.
+    String d_function;
     //! Holds the default error message.
     String d_what;
 };
@@ -181,13 +200,18 @@ public:
         Integer representing the line number where the generic exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The generic exception name is automatically passed to the base class as
         "CEGUI::GenericException".
     */
     GenericException(const String& message,
-                     const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::GenericException", file, line)
+                     const String& file = "unknown", int line = 0,
+                     const String& function = "unknown") :
+        Exception(message, "CEGUI::GenericException", file, line, function)
     {}
 };
 
@@ -209,7 +233,7 @@ public:
     VS2003.
 */
 #define GenericException(message)  \
-    GenericException(message, __FILE__, __LINE__)
+    GenericException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -234,13 +258,18 @@ public:
         Integer representing the line number where the unknown object exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The unknown object exception name is automatically passed to the base
         class as "CEGUI::UnknownObjectException".
     */
     UnknownObjectException(const String& message,
-                           const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::UnknownObjectException", file, line)
+                           const String& file = "unknown", int line = 0,
+                           const String& function = "unknown") :
+        Exception(message, "CEGUI::UnknownObjectException", file, line, function)
     {}
 };
 
@@ -262,7 +291,7 @@ public:
     VS2003.
 */
 #define UnknownObjectException(message)  \
-    UnknownObjectException(message, __FILE__, __LINE__)
+    UnknownObjectException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -287,13 +316,18 @@ public:
         Integer representing the line number where the invalid request exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The invalid request exception name is automatically passed to the base
         class as "CEGUI::InvalidRequestException".
     */
     InvalidRequestException(const String& message,
-                            const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::InvalidRequestException", file, line)
+                            const String& file = "unknown", int line = 0,
+                            const String& function = "unknown") :
+        Exception(message, "CEGUI::InvalidRequestException", file, line, function)
     {}
 };
 
@@ -315,7 +349,7 @@ public:
     VS2003.
 */
 #define InvalidRequestException(message)  \
-    InvalidRequestException(message, __FILE__, __LINE__)
+    InvalidRequestException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -340,13 +374,18 @@ public:
         Integer representing the line number where the file IO exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The file IO exception name is automatically passed to the base class as
         "CEGUI::FileIOException".
     */
     FileIOException(const String& message,
-                    const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::FileIOException", file, line)
+                    const String& file = "unknown", int line = 0,
+                    const String& function = "unknown") :
+        Exception(message, "CEGUI::FileIOException", file, line, function)
     {}
 };
 
@@ -368,7 +407,7 @@ public:
     VS2003.
 */
 #define FileIOException(message)  \
-    FileIOException(message, __FILE__, __LINE__)
+    FileIOException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -393,13 +432,18 @@ public:
         Integer representing the line number where the renderer exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The renderer exception name is automatically passed to the base class as
         "CEGUI::RendererException".
     */
     RendererException(const String& message,
-                      const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::RendererException", file, line)
+                      const String& file = "unknown", int line = 0,
+                      const String& function = "unknown") :
+        Exception(message, "CEGUI::RendererException", file, line, function)
     {}
 };
 
@@ -421,7 +465,7 @@ public:
     VS2003.
 */
 #define RendererException(message)  \
-    RendererException(message, __FILE__, __LINE__)
+    RendererException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -451,13 +495,18 @@ public:
         Integer representing the line number where the already exists exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The already exists exception name is automatically passed to the base
         class as "CEGUI::AlreadyExistsException".
     */
     AlreadyExistsException(const String& message,
-                           const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::AlreadyExistsException", file, line)
+                           const String& file = "unknown", int line = 0,
+                           const String& function = "unknown") :
+        Exception(message, "CEGUI::AlreadyExistsException", file, line, function)
     {}
 };
 
@@ -479,7 +528,7 @@ public:
     VS2003.
 */
 #define AlreadyExistsException(message)  \
-    AlreadyExistsException(message, __FILE__, __LINE__)
+    AlreadyExistsException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -504,13 +553,18 @@ public:
         Integer representing the line number where the memory exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The memory exception name is automatically passed to the base class as
         "CEGUI::MemoryException".
     */
     MemoryException(const String& message,
-                    const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::MemoryException", file, line)
+                    const String& file = "unknown", int line = 0,
+                    const String& function = "unknown") :
+        Exception(message, "CEGUI::MemoryException", file, line, function)
     {}
 };
 
@@ -532,7 +586,7 @@ public:
     VS2003.
 */
 #define MemoryException(message)  \
-    MemoryException(message, __FILE__, __LINE__)
+    MemoryException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -557,13 +611,18 @@ public:
         Integer representing the line number where the null object exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The null object exception name is automatically passed to the base class
         as "CEGUI::NullObjectException".
     */
     NullObjectException(const String& message,
-                        const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::NullObjectException", file, line)
+                        const String& file = "unknown", int line = 0,
+                        const String& function = "unknown") :
+        Exception(message, "CEGUI::NullObjectException", file, line, function)
     {}
 };
 
@@ -585,7 +644,7 @@ public:
     VS2003.
 */
 #define NullObjectException(message)  \
-    NullObjectException(message, __FILE__, __LINE__)
+    NullObjectException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -614,13 +673,18 @@ public:
         Integer representing the line number where the object in use exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The object in use exception name is automatically passed to the base
         class as "CEGUI::ObjectInUseException".
     */
     ObjectInUseException(const String& message,
-                         const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::ObjectInUseException", file, line)
+                         const String& file = "unknown", int line = 0,
+                         const String& function = "unknown") :
+        Exception(message, "CEGUI::ObjectInUseException", file, line, function)
     {}
 };
 
@@ -642,7 +706,7 @@ public:
     VS2003.
 */
 #define ObjectInUseException(message)  \
-    ObjectInUseException(message, __FILE__, __LINE__)
+    ObjectInUseException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 //----------------------------------------------------------------------------//
 
@@ -667,13 +731,18 @@ public:
         Integer representing the line number where the script exception
         occurred.
 
+    \param function
+        String object containing the name of the function where the exception
+        occurred.
+
     \remarks
         The script exception name is automatically passed to the base class as
         "CEGUI::ScriptException".
     */
     ScriptException(const String& message,
-                    const String& file = "unknown", int line = 0) :
-        Exception(message, "CEGUI::ScriptException", file, line)
+                    const String& file = "unknown", int line = 0,
+                    const String& function = "unknown") :
+        Exception(message, "CEGUI::ScriptException", file, line, function)
     {}
 };
 
@@ -695,7 +764,7 @@ public:
     VS2003.
 */
 #define ScriptException(message)  \
-    ScriptException(message, __FILE__, __LINE__)
+    ScriptException(message, __FILE__, __LINE__, CEGUI_FUNCTION_NAME)
 
 
 //----------------------------------------------------------------------------//

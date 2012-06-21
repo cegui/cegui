@@ -54,8 +54,7 @@ struct EventActionFunctor
             return true;
 
         default:
-            CEGUI_THROW(InvalidRequestException(
-                "EventActionFunctor: Encountered invalid action."));
+            CEGUI_THROW(InvalidRequestException("invalid action."));
         }
 
         return false;
@@ -108,7 +107,7 @@ void EventAction::initialiseWidget(Window& widget) const
     Window* parent = widget.getParent();
 
     if (!parent)
-        CEGUI_THROW(InvalidRequestException("EventAction::initialiseWidget:"
+        CEGUI_THROW(InvalidRequestException(
             "EvenAction can only be initialised on child widgets."));
 
     d_connections.insert(

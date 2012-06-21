@@ -70,7 +70,7 @@ void DirectFBTexture::loadFromFile(const String& filename,
     // get and check existence of CEGUI::System object
     System* sys = System::getSingletonPtr();
     if (!sys)
-        CEGUI_THROW(RendererException("DirectFBTexture::loadFromFile - "
+        CEGUI_THROW(RendererException(
             "CEGUI::System object has not been created!"));
 
     // load file to memory via resource provider
@@ -85,7 +85,7 @@ void DirectFBTexture::loadFromFile(const String& filename,
 
     if (!res)
         // It's an error
-        CEGUI_THROW(RendererException("DirectFBTexture::loadFromFile - " +
+        CEGUI_THROW(RendererException(
             sys->getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
@@ -96,7 +96,7 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
                                      PixelFormat pixel_format)
 {
     if (!isPixelFormatSupported(pixel_format))
-        CEGUI_THROW(InvalidRequestException("DirectFBTexture::loadFromMemory: "
+        CEGUI_THROW(InvalidRequestException(
             "Data was supplied in an unsupported pixel format."));
 
     cleanupDirectFBTexture();
@@ -109,8 +109,7 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
     desc.pixelformat = DSPF_ARGB;
 
     if (d_directfb.CreateSurface(&d_directfb, &desc, &d_texture))
-        CEGUI_THROW(RendererException(
-            "DirectFBTexture::loadFromMemory: Failed to create texture."));
+        CEGUI_THROW(RendererException("Failed to create surface."));
 
     char* dest;
     int pitch;
@@ -119,8 +118,7 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
     {
         d_texture->Release(d_texture);
         d_texture = 0;
-        CEGUI_THROW(RendererException(
-            "DirectFBTexture::loadFromMemory: Directfb::Lock failed."));
+        CEGUI_THROW(RendererException("Directfb::Lock failed."));
     }
 
     // Copy data in.
@@ -156,16 +154,14 @@ void DirectFBTexture::loadFromMemory(const void* buffer,
 void DirectFBTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
     // TODO:
-    CEGUI_THROW(RendererException(
-        "DirectFBTexture::blitFromMemory: unimplemented!"));
+    CEGUI_THROW(RendererException("unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
 void DirectFBTexture::blitToMemory(void* targetData)
 {
     // TODO:
-    CEGUI_THROW(RendererException(
-        "DirectFBTexture::blitToMemory: unimplemented!"));
+    CEGUI_THROW(RendererException("unimplemented!"));
 }
 
 //----------------------------------------------------------------------------//
@@ -212,7 +208,7 @@ DirectFBTexture::DirectFBTexture(IDirectFB& directfb,
 
     if (d_directfb.CreateSurface(&d_directfb, &desc, &d_texture))
         CEGUI_THROW(RendererException(
-            "DirectFBTexture: Failed to create texture of specified size."));
+            "Failed to create texture of specified size."));
 
     d_size = d_dataSize = size;
     updateCachedScaleValues();
