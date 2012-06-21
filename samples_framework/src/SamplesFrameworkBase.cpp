@@ -95,7 +95,9 @@
 SamplesFrameworkBase::SamplesFrameworkBase() :
         d_rendererSelector(0),
         d_sampleApp(0),
-        d_quitting(false)
+        d_quitting(false),
+        d_appWindowWidth(0),
+        d_appWindowHeight(0)
 {}
 
 
@@ -125,7 +127,7 @@ int SamplesFrameworkBase::run()
 {
     CEGUI_TRY
     {
-        if (initialise())
+        if (runApplication())
             cleanup();
     }
     CEGUI_CATCH (CEGUI::Exception& exc)
@@ -150,9 +152,9 @@ int SamplesFrameworkBase::run()
 
 
 /*************************************************************************
-    Initialise the sample application
+    Start the SamplesFramework application
 *************************************************************************/
-bool SamplesFrameworkBase::initialise()
+bool SamplesFrameworkBase::runApplication()
 {
     // Setup renderer selection dialog for Win32
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -324,4 +326,10 @@ void SamplesFrameworkBase::setQuitting(bool quit)
 bool SamplesFrameworkBase::isQuitting()
 {
     return d_quitting;
+}
+
+void SamplesFrameworkBase::setApplicationWindowSize(int width, int height)
+{
+    d_appWindowWidth = width;
+    d_appWindowHeight = height;
 }

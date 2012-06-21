@@ -53,7 +53,7 @@ public:
 
     CEGUI::Window* getWindow();
 
-    CEGUI::FrameWindow* createAndAddSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
+    CEGUI::FrameWindow* createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image);
 
     void setWindowRatio(float aspectRatio);
 

@@ -108,7 +108,6 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 {
     d_sampleApp = sampleApp;
 
-
     if (!d_renderer)
         throw CEGUI::InvalidRequestException("CEGuiBaseApplication::execute: "
             "Base application subclass did not create Renderer!");
@@ -150,7 +149,10 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     CEGUI::System::getSingleton().subscribeEvent(
         CEGUI::System::EventDisplaySizeChanged,
         CEGUI::Event::Subscriber(&CEGuiBaseApplication::resizeHandler,
-                                 this));
+        this));
+
+    const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
+    d_sampleApp->setApplicationWindowSize(area.getWidth(), area.getHeight());
 
     return execute_impl();
 }

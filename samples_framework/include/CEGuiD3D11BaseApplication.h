@@ -52,7 +52,7 @@ protected:
     void cleanupDirect3D();
 
     // Implementation of base class.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();

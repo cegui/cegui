@@ -53,9 +53,9 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
     pimpl(new CEGuiBaseApplicationImpl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))
+    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
     {
-        if (initialiseDirect3D(800, 600, true))
+        if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, true))
         {
             // set the swap chain ptr into window data so we can get access
             // later.  This is a bit of a hack, but saved us redesigning the
@@ -106,7 +106,7 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
 //----------------------------------------------------------------------------//
 bool CEGuiD3D10BaseApplication::execute_impl()
 {
-    d_sampleApp->initialiseSample();
+    d_sampleApp->initialise();
 
     float clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 

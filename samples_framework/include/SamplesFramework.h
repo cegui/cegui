@@ -64,9 +64,10 @@ public:
     static const String XMLSchemaName;
     static String s_defaultResourceGroup;
 
-    bool initialiseSample();
+    bool initialise();
+
+    void initialiseSamples();
     void cleanupSample();
-    bool initialiseCEGUI();
 
     void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum);
     void addSample(SampleData* sampleData);

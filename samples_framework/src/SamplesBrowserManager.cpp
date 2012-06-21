@@ -62,7 +62,7 @@ CEGUI::Window* SamplesBrowserManager::getWindow()
     return d_root;
 }
 
-CEGUI::FrameWindow* SamplesBrowserManager::createAndAddSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
+CEGUI::FrameWindow* SamplesBrowserManager::createSampleWindow(const CEGUI::String& name, const CEGUI::Image& image)
 {
     CEGUI::VerticalLayoutContainer* root = createPreviewLayoutContainer();
 

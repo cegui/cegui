@@ -81,7 +81,7 @@ SamplesFramework::~SamplesFramework()
 
 
 
-bool SamplesFramework::initialiseSample()
+bool SamplesFramework::initialise()
 {
     using namespace CEGUI;
 
@@ -91,10 +91,16 @@ bool SamplesFramework::initialiseSample()
 
     loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
 
+    initialiseSamples();
+
     if(d_samples.size() > 0)
     {
-        handleSampleSelection(d_samples[0]->getSampleWindow());
-        d_samplesWinMgr->selectSampleWindow(d_samples[0]->getSampleWindow());
+        CEGUI::Window* wnd = d_samples[0]->getSampleWindow();
+        if(wnd)
+        {
+            handleSampleSelection(wnd);
+            d_samplesWinMgr->selectSampleWindow(wnd);
+        }
     }
 
     // return true to signalize the initialisation was sucessful and run the SamplesFramework
@@ -190,7 +196,6 @@ void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName, CEGUI::S
     SampleData* sampleData = new SampleDataModule(sampleName, summary, description, sampleTypeEnum);
 
     addSample(sampleData);
-
 }
 
 void SamplesFramework::setDefaultResourceGroup(const String& resourceGroup)
@@ -309,6 +314,9 @@ void SamplesFramework::update(float passedTime)
 
 void SamplesFramework::handleNewWindowSize(float width, float height)
 {
+    d_appWindowWidth = (int)width;
+    d_appWindowHeight = (int)height;
+
     std::vector<SampleData*>::iterator iter = d_samples.begin();
     std::vector<SampleData*>::iterator end = d_samples.end();
     for(; iter != end; ++iter)
@@ -318,16 +326,13 @@ void SamplesFramework::handleNewWindowSize(float width, float height)
         sampleData->handleNewWindowSize(width, height);
     }
 
-    d_samplesWinMgr->setWindowRatio(width/height);
+    if(d_samplesWinMgr)
+        d_samplesWinMgr->setWindowRatio(width / height);
 }
 
 void SamplesFramework::addSample(SampleData* sampleData)
 {
     d_samples.push_back(sampleData);
-
-    sampleData->initialise();
-    CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createAndAddSampleWindow(sampleData->getName(), sampleData->getRTTImage());
-    sampleData->setSampleWindow(sampleWindow);
 }
 
 
@@ -343,6 +348,9 @@ void SamplesFramework::drawGUIContexts()
         for(; iter != end; ++iter)
         {
             SampleData* sampleData = *iter;
+
+            if(!sampleData->getGuiContext())
+                continue;
 
             bool isContextDirty = sampleData->getGuiContext()->isDirty();
             if(isContextDirty)
@@ -416,4 +424,20 @@ bool SamplesFramework::handleExitSampleView(const CEGUI::EventArgs& args)
     handleStopDisplaySample();
 
     return true;
+}
+
+void SamplesFramework::initialiseSamples()
+{
+    std::vector<SampleData*>::iterator iter = d_samples.begin();
+    std::vector<SampleData*>::iterator end = d_samples.end();
+    for(; iter != end; ++iter)
+    {
+        SampleData* sampleData = *iter;
+
+        sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
+        CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
+        sampleData->setSampleWindow(sampleWindow);
+    }
+
+    d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
 }
