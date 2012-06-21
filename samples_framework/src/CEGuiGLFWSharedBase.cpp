@@ -63,8 +63,6 @@ CEGuiGLFWSharedBase::~CEGuiGLFWSharedBase()
 //----------------------------------------------------------------------------//
 bool CEGuiGLFWSharedBase::execute_impl()
 {
-    d_sampleApp->initialiseSample();
-
     // Input callbacks of glfw for CEGUI
     glfwSetKeyCallback(glfwKeyCallback);
     glfwSetCharCallback(glfwCharCallback);
@@ -74,8 +72,10 @@ bool CEGuiGLFWSharedBase::execute_impl()
 
     //Window callbacks
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
-
+    d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+
+    d_sampleApp->initialise();
 
     // set starting time
     d_frameTime = glfwGetTime();
@@ -250,7 +250,7 @@ void CEGuiGLFWSharedBase::initGLFW()
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::createGLFWWindow()
 {
-    if (glfwOpenWindow(1024, 800, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
+    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
     {
         CEGUI_THROW(CEGUI::RendererException("Failed to open GLFW window."));
         glfwTerminate();

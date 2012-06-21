@@ -60,12 +60,13 @@ public:
         CEGUI::String description, SampleType sampleTypeEnum);
     virtual ~SampleData();
 
-    virtual void initialise();
+    virtual void initialise(int width, int height);
     virtual void deinitialise();
 
     virtual CEGUI::GUIContext*  getGuiContext();
     virtual void handleNewWindowSize(float width, float height);
 
+    void setTextureTargetImageArea(float height, float width);
     virtual CEGUI::Image& getRTTImage();
 
     virtual void setGUIContextRTT();
@@ -103,7 +104,7 @@ public:
 
     virtual void getSampleInstanceFromDLL();
 
-    virtual void initialise();
+    virtual void initialise(int width, int height);
     virtual void deinitialise();
 
 private:

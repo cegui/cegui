@@ -40,6 +40,7 @@ author:     Lukas E Meindl
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/Vector.h"
 
 using namespace CEGUI;
 
@@ -115,17 +116,21 @@ CEGUI::Window* SampleData::getSampleWindow()
     return d_sampleWindow;
 }
 
-void SampleData::initialise()
+void SampleData::initialise(int width, int height)
 {
     CEGUI::System& system(System::getSingleton());
 
+    CEGUI::Sizef size(static_cast<float>(width), static_cast<float>(height));
+
     d_textureTarget = system.getRenderer()->createTextureTarget();
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
-    d_textureTarget->declareRenderSize(CEGUI::Sizef(200.f, 200.f));
+    d_textureTarget->declareRenderSize(size);
 
     CEGUI::String imageName(d_textureTarget->getTexture().getName());
     d_textureTargetImage = static_cast<CEGUI::BasicImage*>(&CEGUI::ImageManager::getSingleton().create("BasicImage", "SampleBrowser/" + imageName));
     d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
+
+    setTextureTargetImageArea(height, width);
 }
 
 void SampleData::deinitialise()
@@ -152,10 +157,9 @@ GUIContext* SampleData::getGuiContext()
 
 void SampleData::handleNewWindowSize(float width, float height)
 {
-    CEGUI::Sizef windowSize(width, height);
-    CEGUI::Rectf renderArea(CEGUI::Rectf(0.f, height, width, 0.f));
+    setTextureTargetImageArea(height, width);
 
-    d_textureTargetImage->setArea(renderArea);
+    CEGUI::Sizef windowSize(width, height);
     d_textureTarget->declareRenderSize(windowSize);
    
     d_sampleWindow->getRenderingSurface()->invalidate();
@@ -176,24 +180,32 @@ void SampleData::clearRTTTexture()
     d_textureTarget->clear();
 }
 
+void SampleData::setTextureTargetImageArea(float height, float width)
+{
+    bool isTextureTargetVerticallyFlipped = d_textureTarget->isRenderingInverted();
+    CEGUI::Rectf renderArea;
+    if(isTextureTargetVerticallyFlipped)
+        renderArea = CEGUI::Rectf(0.f, height, width, 0.f);
+    else
+        renderArea = CEGUI::Rectf(0.f, 0.f, width, height);
 
-
+    d_textureTargetImage->setArea(renderArea);
+}
 
 
 SampleDataModule::SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
     CEGUI::String description, SampleType sampleTypeEnum)
     : SampleData(sampleName, summary, description ,sampleTypeEnum)
 {
-
 }
 
 SampleDataModule::~SampleDataModule()
 {
 }
 
-void SampleDataModule::initialise()
+void SampleDataModule::initialise(int width, int height)
 {
-    SampleData::initialise();
+    SampleData::initialise(width, height);
 
     getSampleInstanceFromDLL();
 

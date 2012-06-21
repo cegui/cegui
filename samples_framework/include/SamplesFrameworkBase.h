@@ -75,12 +75,12 @@ public:
     \return
         false if something went wrong.
     */
-    virtual bool initialiseSample()  = 0;
+    virtual bool initialise()  = 0;
 
 
     /*!
     \brief
-        Cleans up resources allocated in the initialiseSample call.
+        Cleans up resources allocated in the initialise call.
     */
     virtual void cleanupSample() = 0;
 
@@ -158,6 +158,12 @@ public:
     */
     bool isQuitting();
 
+    /*!
+    \brief
+    Function setting the application window's size
+    */
+    void setApplicationWindowSize(int width, int height);
+
 protected:
     /*!
     \brief
@@ -167,7 +173,7 @@ protected:
     \return
         false if anything went wrong.
     */
-    virtual bool initialise();
+    virtual bool runApplication();
 
 
     /*!
@@ -190,6 +196,9 @@ protected:
     CEGuiBaseApplication*   d_sampleApp;            //!< Pointer to the base application object.
 
     bool                    d_quitting;              //!< Bool defining if application should quit.
+
+    int                     d_appWindowWidth;            //!< Int defining the application window's width.
+    int                     d_appWindowHeight;           //!< Int defining the application window's height.
 };
 
 #endif  // end of guard _SamplesFrameworkBase_h_

@@ -31,7 +31,7 @@
 
 #include "CEGuiD3D11BaseApplication.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 
@@ -55,9 +55,9 @@ CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
     pimpl(new CEGuiBaseApplicationImpl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))
+    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
     {
-        if (initialiseDirect3D(800, 600, true))
+        if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, true))
         {
             // set the swap chain ptr into window data so we can get access
             // later.  This is a bit of a hack, but saved us redesigning the
@@ -105,9 +105,9 @@ CEGuiD3D11BaseApplication::~CEGuiD3D11BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D11BaseApplication::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiD3D11BaseApplication::execute_impl()
 {
-    sampleApp->initialiseSample();
+    d_sampleApp->initialise();
 
     float clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
@@ -147,7 +147,7 @@ bool CEGuiD3D11BaseApplication::execute_impl(CEGuiSample* sampleApp)
 
         // check if the application is quitting, and break the loop next time
         // around if so.
-        if (isQuitting())
+        if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
 
@@ -224,8 +224,8 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
 
                 // set a basic viewport.
                 D3D11_VIEWPORT view_port;
-                view_port.Width    = width;
-                view_port.Height   = height;
+                view_port.Width    = static_cast<float>(width);
+                view_port.Height   = static_cast<float>(height);
                 view_port.MinDepth = 0.0f;
                 view_port.MaxDepth = 1.0f;
                 view_port.TopLeftX = 0;

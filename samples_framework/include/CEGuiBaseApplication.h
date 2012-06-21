@@ -159,6 +159,10 @@ protected:
 
     //! SampleFramework base used in the application
     static SamplesFrameworkBase* d_sampleApp;
+    //! The window width the application should get created with at start
+    static const int s_defaultWindowWidth = 1280;
+    //! The window height the application should get created with at start
+    static const int s_defaultWindowHeight = 720;
 
     //! true when the base app should cleanup and exit.
     bool d_quitting;
