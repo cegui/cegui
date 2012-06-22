@@ -148,15 +148,16 @@
             </Window>
         </Window>
         <Window type="SampleBrowserSkin/FrameWindow" name="SamplesFrameWindow" >
-            <Property name="Area" value="{{0,15},{0,0},{1,-410},{1,-50}}" />
+            <Property name="Area" value="{{0,0},{0,0},{1, 0},{1, 0}}" />
             <Property name="Text" value="Samples" />
             <Property name="AlwaysOnTop" value="True" />
             <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
             <Property name="DragMovingEnabled" value="False" />
+            <Property name="HorizontalAlignment" value="Centre" />
             <Property name="VerticalAlignment" value="Centre" />
             <Property name="CloseButtonEnabled" value="False" />
             <Property name="SizingEnabled" value="False" />
-            <Property name="MaxSize" value="{{0,420}, {0,0}}" />
+            <Property name="MaxSize" value="{{0,500}, {0,0}}" />
             <AutoWindow namePath="__auto_titlebar__" >
                 <Property name="DraggingEnabled" value="False" />
             </AutoWindow>
