@@ -1,7 +1,7 @@
 /***********************************************************************
-    filename:   CEGuiGLFWSharedBase.cpp
-    created:    12/2/2012
-    author:     Paul D Turner
+filename:   CEGuiGLFWSharedBase.cpp
+created:    12/2/2012
+author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
 *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -126,7 +126,6 @@ void CEGuiGLFWSharedBase::drawFrame()
     const double elapsed = time_now - d_frameTime;
     d_frameTime = time_now;
 
-    d_sampleApp->update(static_cast<float>(elapsed));
     d_appInstance->renderSingleFrame(static_cast<float>(elapsed));
 }
 
