@@ -40,7 +40,7 @@
 #   undef max
 #endif
 
-struct CEGuiBaseApplicationImpl;
+struct CEGuiBaseApplication9Impl;
 
 
 class CEGuiD3D9BaseApplication : public CEGuiBaseApplication
@@ -81,7 +81,7 @@ protected:
     /*************************************************************************
         Data fields
     *************************************************************************/
-    CEGuiBaseApplicationImpl* pimpl;;
+    CEGuiBaseApplication9Impl* pimpl;;
 
     // counter used to track elapsed time
     DWORD d_lastFrameTime;

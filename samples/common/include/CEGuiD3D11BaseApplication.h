@@ -37,7 +37,7 @@
 #endif
 
 // forward declare struct that will hold D3D11 specifics
-struct CEGuiBaseApplicationImpl;
+struct CEGuiBaseApplication11Impl;
 
 //! CEGuiBaseApplication implementation for Microsoft Direct3D 11
 class CEGuiD3D11BaseApplication : public CEGuiBaseApplication
@@ -58,7 +58,7 @@ protected:
     void endRendering();
 
     //! Pointer to the struct holding D3D specific fields.
-    CEGuiBaseApplicationImpl* pimpl;;
+    CEGuiBaseApplication11Impl* pimpl;;
     //! counter used to track elapsed time
     DWORD d_lastFrameTime;
 };

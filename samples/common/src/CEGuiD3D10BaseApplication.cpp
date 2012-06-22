@@ -40,7 +40,7 @@
 #include <dinput.h>
 
 //----------------------------------------------------------------------------//
-struct CEGuiBaseApplicationImpl
+struct CEGuiBaseApplication10Impl
 {
     HWND d_window;
     IDXGISwapChain* d_swapChain;
@@ -50,7 +50,7 @@ struct CEGuiBaseApplicationImpl
 
 //----------------------------------------------------------------------------//
 CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
-    pimpl(new CEGuiBaseApplicationImpl),
+    pimpl(new CEGuiBaseApplication10Impl),
     d_lastFrameTime(GetTickCount())
 {
     if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))

@@ -44,7 +44,7 @@
 #include <stdexcept>
 
 //----------------------------------------------------------------------------//
-struct CEGuiBaseApplicationImpl
+struct CEGuiBaseApplication9Impl
 {
     HWND d_window;
     LPDIRECT3D9 d_D3D;
@@ -55,7 +55,7 @@ struct CEGuiBaseApplicationImpl
 
 //----------------------------------------------------------------------------//
 CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
-    pimpl(new CEGuiBaseApplicationImpl),
+    pimpl(new CEGuiBaseApplication9Impl),
     d_lastFrameTime(GetTickCount())
 {
     if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))
