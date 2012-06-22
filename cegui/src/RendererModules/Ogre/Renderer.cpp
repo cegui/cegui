@@ -36,6 +36,7 @@
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>
@@ -122,8 +123,17 @@ String OgreRenderer_impl::d_rendererID(
 "CEGUI::OgreRenderer - Official OGRE based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
-OgreRenderer& OgreRenderer::bootstrapSystem()
+OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -137,8 +147,18 @@ OgreRenderer& OgreRenderer::bootstrapSystem()
 }
 
 //----------------------------------------------------------------------------//
-OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target)
+OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
+                                            const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -172,14 +192,33 @@ void OgreRenderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-OgreRenderer& OgreRenderer::create()
+OgreRenderer& OgreRenderer::create(const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OgreRenderer;
 }
 
 //----------------------------------------------------------------------------//
-OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target)
+OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target,
+                                   const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OgreRenderer(target);
 }
 

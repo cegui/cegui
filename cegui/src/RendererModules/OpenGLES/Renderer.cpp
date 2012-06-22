@@ -37,6 +37,7 @@
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <sstream>
 #include <algorithm>
@@ -94,8 +95,18 @@ String OpenGLESRenderer::d_rendererID(
 
 //----------------------------------------------------------------------------//
 OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
-                                        const TextureTargetType tt_type)
+                                        const TextureTargetType tt_type,
+                                        const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -110,8 +121,18 @@ OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
 //----------------------------------------------------------------------------//
 OpenGLESRenderer& OpenGLESRenderer::bootstrapSystem(
                                         const Sizef& display_size,
-                                        const TextureTargetType tt_type)
+                                        const TextureTargetType tt_type,
+                                        const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -142,15 +163,35 @@ void OpenGLESRenderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-OpenGLESRenderer& OpenGLESRenderer::create(const TextureTargetType tt_type)
+OpenGLESRenderer& OpenGLESRenderer::create(const TextureTargetType tt_type,
+                                           const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OpenGLESRenderer(tt_type);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLESRenderer& OpenGLESRenderer::create(const Sizef& display_size,
-                                           const TextureTargetType tt_type)
+                                           const TextureTargetType tt_type,
+                                           const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OpenGLESRenderer(display_size, tt_type);
 }
 

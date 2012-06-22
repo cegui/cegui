@@ -32,6 +32,7 @@
 #include "CEGUI/TextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <algorithm>
 
@@ -45,8 +46,18 @@ String DirectFBRenderer::d_rendererID(
 
 //----------------------------------------------------------------------------//
 DirectFBRenderer& DirectFBRenderer::create(IDirectFB& directfb,
-                                           IDirectFBSurface& surface)
+                                           IDirectFBSurface& surface,
+                                           const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new DirectFBRenderer(directfb, surface);
 }
 

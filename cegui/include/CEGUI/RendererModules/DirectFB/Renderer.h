@@ -47,7 +47,8 @@ class DirectFBRenderer : public Renderer
 public:
     //! create a DirectFBRenderer object.
     static DirectFBRenderer& create(IDirectFB& directfb,
-                                    IDirectFBSurface& surface);
+                                    IDirectFBSurface& surface,
+                                    const int abi = CEGUI_VERSION_ABI);
     //! destroy a DirectFBRenderer object created by the \a create call.
     static void destroy(DirectFBRenderer& renderer);
 

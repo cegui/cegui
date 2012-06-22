@@ -101,11 +101,15 @@ public:
         Pointer to the ID3D11DeviceContext interface that is to be used for
         CEGUI rendering operations.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::Direct3D11Renderer object that was created.
     */
     static Direct3D11Renderer& bootstrapSystem(ID3D11Device* device,
-                                               ID3D11DeviceContext* context);
+                                               ID3D11DeviceContext* context,
+                                               const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -128,7 +132,8 @@ public:
     \brief
         Create an Direct3D11Renderer object.
     */
-    static Direct3D11Renderer& create(ID3D11Device* device,ID3D11DeviceContext* context);
+    static Direct3D11Renderer& create(ID3D11Device* device,ID3D11DeviceContext* context,
+                                      const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief

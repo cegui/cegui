@@ -96,11 +96,15 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.  Defaults to TTT_AUTO.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
     static OpenGLRenderer& bootstrapSystem(
-                                    const TextureTargetType tt_type = TTT_AUTO);
+                                    const TextureTargetType tt_type = TTT_AUTO,
+                                    const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -122,11 +126,15 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.  Defaults to TTT_AUTO.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::OpenGLRenderer object that was created.
     */
     static OpenGLRenderer& bootstrapSystem(const Sizef& display_size,
-                                           const TextureTargetType tt_type = TTT_AUTO);
+                                           const TextureTargetType tt_type = TTT_AUTO,
+                                           const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -152,8 +160,12 @@ public:
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGLRenderer& create(const TextureTargetType tt_type = TTT_AUTO);
+    static OpenGLRenderer& create(const TextureTargetType tt_type = TTT_AUTO,
+                                  const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -165,9 +177,13 @@ public:
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
     static OpenGLRenderer& create(const Sizef& display_size,
-                                  const TextureTargetType tt_type = TTT_AUTO);
+                                  const TextureTargetType tt_type = TTT_AUTO,
+                                  const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief

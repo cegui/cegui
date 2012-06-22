@@ -85,6 +85,9 @@ public:
         - CEGUI::OgreImageCodec
         - CEGUI::System
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::OgreRenderer object that was created.
 
@@ -93,7 +96,7 @@ public:
         rendering window.  If you have not done this, then you'll be wanting to
         use the overload that takes an Ogre::RenderTarget as input.
     */
-    static OgreRenderer& bootstrapSystem();
+    static OgreRenderer& bootstrapSystem(const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -113,10 +116,14 @@ public:
         Reference to the Ogre::RenderTarget object that the created OgreRenderer
         will use as the default rendering root.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::OgreRenderer object that was created.
     */
-    static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target);
+    static OgreRenderer& bootstrapSystem(Ogre::RenderTarget& target,
+                                         const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -146,14 +153,15 @@ public:
         rendering window.  If you have not done this, then you'll be wanting to
         use the overload that takes an Ogre::RenderTarget as input.
     */
-    static OgreRenderer& create();
+    static OgreRenderer& create(const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
         Create an OgreRenderer object that uses the specified Ogre::RenderTarget
         as the default output surface.
     */
-    static OgreRenderer& create(Ogre::RenderTarget& target);
+    static OgreRenderer& create(Ogre::RenderTarget& target,
+                                const int abi = CEGUI_VERSION_ABI);
 
     //! destory an OgreRenderer object.
     static void destroy(OgreRenderer& renderer);

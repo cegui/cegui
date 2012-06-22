@@ -34,6 +34,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
 #include <algorithm>
 
 #include "shader.txt"
@@ -47,8 +48,18 @@ String Direct3D10Renderer::d_rendererID(
 " module.");
 
 //----------------------------------------------------------------------------//
-Direct3D10Renderer& Direct3D10Renderer::bootstrapSystem(ID3D10Device* device)
+Direct3D10Renderer& Direct3D10Renderer::bootstrapSystem(ID3D10Device* device,
+                                                        const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -79,8 +90,18 @@ void Direct3D10Renderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D10Renderer& Direct3D10Renderer::create(ID3D10Device* device)
+Direct3D10Renderer& Direct3D10Renderer::create(ID3D10Device* device,
+                                               const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new Direct3D10Renderer(device);
 }
 

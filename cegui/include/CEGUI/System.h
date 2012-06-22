@@ -117,6 +117,9 @@ public:
 
     \param logFile
         String object containing the name to use for the log file.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
     static System& create(Renderer& renderer,
                           ResourceProvider* resourceProvider = 0,
@@ -124,7 +127,8 @@ public:
                           ImageCodec* imageCodec = 0,
                           ScriptModule* scriptModule = 0,
                           const String& configFile = "",
-                          const String& logFile = "CEGUI.log");
+                          const String& logFile = "CEGUI.log",
+                          const int abi = CEGUI_VERSION_ABI);
 
     //! Destroy the System object.
     static void destroy();

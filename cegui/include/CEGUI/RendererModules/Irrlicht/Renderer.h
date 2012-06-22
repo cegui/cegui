@@ -87,10 +87,14 @@ public:
         Reference to the irr::IrrlichtDevice to be used when creating the
         CEGUI::IrrlichtRenderer object.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         A reference to the CEGUI::IrrlichtRenderer object that was created.
     */
-    static IrrlichtRenderer& bootstrapSystem(irr::IrrlichtDevice& device);
+    static IrrlichtRenderer& bootstrapSystem(irr::IrrlichtDevice& device,
+                                             const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -111,7 +115,8 @@ public:
     static void destroySystem();
 
     //! Function to create and return IrrlichtRenderer objects
-    static IrrlichtRenderer& create(irr::IrrlichtDevice& device);
+    static IrrlichtRenderer& create(irr::IrrlichtDevice& device,
+                                    const int abi = CEGUI_VERSION_ABI);
 
     //! Function to destroy IrrlichtRenderer objects.
     static void destroy(IrrlichtRenderer& renderer);

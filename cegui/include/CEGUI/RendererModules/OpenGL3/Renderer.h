@@ -86,14 +86,13 @@ public:
         - CEGUI::DefaultResourceProvider
         - CEGUI::System
 
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
 
     \return
         Reference to the CEGUI::OpenGL3Renderer object that was created.
     */
-    static OpenGL3Renderer& bootstrapSystem();
+    static OpenGL3Renderer& bootstrapSystem(const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -111,14 +110,14 @@ public:
     \param display_size
         Size object describing the initial display resolution.
 
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
 
     \return
         Reference to the CEGUI::OpenGL3Renderer object that was created.
     */
-    static OpenGL3Renderer& bootstrapSystem(const Sizef& display_size);
+    static OpenGL3Renderer& bootstrapSystem(const Sizef& display_size,
+                                            const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -144,8 +143,11 @@ public:
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGL3Renderer& create();
+    static OpenGL3Renderer& create(const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -157,8 +159,12 @@ public:
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGL3Renderer& create(const Sizef& display_size);
+    static OpenGL3Renderer& create(const Sizef& display_size,
+                                   const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
