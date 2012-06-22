@@ -1414,15 +1414,25 @@ for python in python2.7 python2.6 python2.5 python2.4 python2.3 python2.2 python
 AC_CHECK_PROGS(PYTHON_BIN, [$python])
 ax_python_bin=$PYTHON_BIN
 if test x$ax_python_bin != x; then
-   AC_CHECK_LIB($ax_python_bin, main, ax_python_lib=$ax_python_bin, ax_python_lib=no)
-   AC_CHECK_HEADER([$ax_python_bin/Python.h],
-   [[ax_python_header=`locate $ax_python_bin/Python.h | sed -e s,/Python.h,,`]],
-   ax_python_header=no)
-   if test x$ax_python_lib != xno; then
-     if test x$ax_python_header != xno; then
-       break;
-     fi
-   fi
+    AC_CHECK_LIB($ax_python_bin, main, ax_python_lib=$ax_python_bin, ax_python_lib=no)
+    cegui_old_cppflags="$CPPFLAGS"
+    for hpath in /usr/local/include /usr/include; do
+        CPPFLAGS="-I$hpath/$ax_python_bin"
+        AC_CHECK_HEADERS([Python.h],
+            [[ax_python_header=$hpath/$ax_python_bin]],
+            ax_python_header=no;unset ac_cv_header_Python_h)
+        if test x$ax_python_header != xno; then
+            break;
+        fi
+    done
+    CPPFLAGS="$cegui_old_cppflags"
+    if test x$ax_python_lib != xno; then
+        if test x$ax_python_header != xno; then
+            break;
+        fi
+    fi
+
+    unset ac_cv_header_Python_h
 fi
 done
 if test x$ax_python_bin = x; then
