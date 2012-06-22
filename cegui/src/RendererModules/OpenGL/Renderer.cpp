@@ -25,10 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include <GL/glew.h>
 
 #include "CEGUI/RendererModules/OpenGL/Renderer.h"
@@ -42,6 +38,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <sstream>
 #include <algorithm>
@@ -110,8 +107,18 @@ String OpenGLRenderer::d_rendererID(
 "CEGUI::OpenGLRenderer - Official OpenGL based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type)
+OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type,
+                                                const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -125,8 +132,18 @@ OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type)
 
 //----------------------------------------------------------------------------//
 OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const Sizef& display_size,
-                                                const TextureTargetType tt_type)
+                                                const TextureTargetType tt_type,
+                                                const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            "received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -156,15 +173,35 @@ void OpenGLRenderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer& OpenGLRenderer::create(const TextureTargetType tt_type)
+OpenGLRenderer& OpenGLRenderer::create(const TextureTargetType tt_type,
+                                       const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OpenGLRenderer(tt_type);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRenderer& OpenGLRenderer::create(const Sizef& display_size,
-                                       const TextureTargetType tt_type)
+                                       const TextureTargetType tt_type,
+                                       const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OpenGLRenderer(display_size, tt_type);
 }
 

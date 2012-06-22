@@ -97,11 +97,15 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.  Defaults to TTT_AUTO.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::OpenGLESRenderer object that was created.
     */
     static OpenGLESRenderer& bootstrapSystem(
-                                const TextureTargetType tt_type = TTT_AUTO);
+                                const TextureTargetType tt_type = TTT_AUTO,
+                                const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -123,12 +127,16 @@ public:
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.  Defaults to TTT_AUTO.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::OpenGLESRenderer object that was created.
     */
     static OpenGLESRenderer& bootstrapSystem(
                                 const Sizef& display_size,
-                                const TextureTargetType tt_type = TTT_AUTO);
+                                const TextureTargetType tt_type = TTT_AUTO,
+                                const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -154,8 +162,12 @@ public:
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
-    static OpenGLESRenderer& create(const TextureTargetType tt_type = TTT_AUTO);
+    static OpenGLESRenderer& create(const TextureTargetType tt_type = TTT_AUTO,
+                                    const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -167,9 +179,13 @@ public:
     \param tt_type
         Specifies one of the TextureTargetType enumerated values indicating the
         desired TextureTarget type to be used.
+
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
     */
     static OpenGLESRenderer& create(const Sizef& display_size,
-                                    const TextureTargetType tt_type = TTT_AUTO);
+                                    const TextureTargetType tt_type = TTT_AUTO,
+                                    const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief

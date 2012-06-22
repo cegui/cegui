@@ -33,6 +33,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/PropertyHelper.h"
 #include <algorithm>
 
 #include "d3dx11effect.h"
@@ -50,8 +51,18 @@ String Direct3D11Renderer::d_rendererID(
 //----------------------------------------------------------------------------//
 Direct3D11Renderer& Direct3D11Renderer::bootstrapSystem(
                                                    ID3D11Device* device,
-                                                   ID3D11DeviceContext* context)
+                                                   ID3D11DeviceContext* context,
+                                                   const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -82,8 +93,19 @@ void Direct3D11Renderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Renderer& Direct3D11Renderer::create(ID3D11Device* device,ID3D11DeviceContext *context)
+Direct3D11Renderer& Direct3D11Renderer::create(ID3D11Device* device,
+                                               ID3D11DeviceContext* context,
+                                               const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new Direct3D11Renderer(device,context);
 }
 

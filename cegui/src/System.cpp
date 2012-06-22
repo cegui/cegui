@@ -882,8 +882,17 @@ const String& System::getDefaultImageCodecName()
 System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
                        XMLParser* xmlParser, ImageCodec* imageCodec,
                        ScriptModule* scriptModule, const String& configFile,
-                       const String& logFile)
+                       const String& logFile, const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *CEGUI_NEW_AO System(renderer, resourceProvider, xmlParser, imageCodec,
                        scriptModule, configFile, logFile);
 }

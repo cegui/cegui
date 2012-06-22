@@ -71,11 +71,14 @@ public:
         - CEGUI::DefaultResourceProvider
         - CEGUI::System
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::NullRenderer object that was created.
 
     */
-    static NullRenderer& bootstrapSystem();
+    static NullRenderer& bootstrapSystem(const int abi = CEGUI_VERSION_ABI);
     
     /*!
     \brief
@@ -98,7 +101,7 @@ public:
     \brief
         Create an NullRenderer object 
     */
-    static NullRenderer& create();
+    static NullRenderer& create(const int abi = CEGUI_VERSION_ABI);
 
     //! destory an NullRenderer object.
     static void destroy(NullRenderer& renderer);

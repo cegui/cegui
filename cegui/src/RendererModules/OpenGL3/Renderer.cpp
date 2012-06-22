@@ -43,6 +43,7 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/RendererModules/OpenGL3/StateChangeWrapper.h"
+#include "CEGUI/PropertyHelper.h"
 
 #include <sstream>
 #include <algorithm>
@@ -98,8 +99,17 @@ String OpenGL3Renderer::d_rendererID(
 "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based renderer module.");
 
 //----------------------------------------------------------------------------//
-OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem()
+OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -112,8 +122,18 @@ OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem()
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size)
+OpenGL3Renderer& OpenGL3Renderer::bootstrapSystem(const Sizef& display_size,
+                                                  const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
@@ -143,14 +163,33 @@ void OpenGL3Renderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3Renderer& OpenGL3Renderer::create()
+OpenGL3Renderer& OpenGL3Renderer::create(const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OpenGL3Renderer();
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3Renderer& OpenGL3Renderer::create(const Sizef& display_size)
+OpenGL3Renderer& OpenGL3Renderer::create(const Sizef& display_size,
+                                         const int abi)
 {
+    if (abi != CEGUI_VERSION_ABI)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
+            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
+            "means that the code calling this function was compiled against a "
+            "CEGUI version that is incompatible with the library containing "
+            "this function. This means that you probably have old libraries "
+            "laying around that have been picked up by mistake."));
+
     return *new OpenGL3Renderer(display_size);
 }
 

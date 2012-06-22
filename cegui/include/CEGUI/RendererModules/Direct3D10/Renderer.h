@@ -83,10 +83,14 @@ public:
         Pointer to the ID3D10Device interface that is to be used for CEGUI
         rendering operations.
 
+    \param abi
+        This must be set to CEGUI_VERSION_ABI
+
     \return
         Reference to the CEGUI::Direct3D10Renderer object that was created.
     */
-    static Direct3D10Renderer& bootstrapSystem(ID3D10Device* device);
+    static Direct3D10Renderer& bootstrapSystem(ID3D10Device* device,
+                                               const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
@@ -109,7 +113,8 @@ public:
     \brief
         Create an Direct3D10Renderer object.
     */
-    static Direct3D10Renderer& create(ID3D10Device* device);
+    static Direct3D10Renderer& create(ID3D10Device* device,
+                                      const int abi = CEGUI_VERSION_ABI);
 
     /*!
     \brief
