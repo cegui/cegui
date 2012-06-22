@@ -53,80 +53,80 @@ static void dumpBacktrace(size_t frames)
 {
 #if defined(_DEBUG) || defined(DEBUG)
 #if defined( __WIN32__ ) || defined( _WIN32)
-	SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES);
+    SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES);
 
-	if (!SymInitialize(GetCurrentProcess(), 0, TRUE))
+    if (!SymInitialize(GetCurrentProcess(), 0, TRUE))
         return;
 
-	HANDLE thread = GetCurrentThread();
+    HANDLE thread = GetCurrentThread();
 
-	CONTEXT context;
-	RtlCaptureContext(&context);
+    CONTEXT context;
+    RtlCaptureContext(&context);
 
-	STACKFRAME64 stackframe;
-	ZeroMemory(&stackframe, sizeof(stackframe));
-	stackframe.AddrPC.Mode = AddrModeFlat;
+    STACKFRAME64 stackframe;
+    ZeroMemory(&stackframe, sizeof(stackframe));
+    stackframe.AddrPC.Mode = AddrModeFlat;
     stackframe.AddrStack.Mode = AddrModeFlat;
     stackframe.AddrFrame.Mode = AddrModeFlat;
 
 #if _M_IX86
-	stackframe.AddrPC.Offset = context.Eip;
-	stackframe.AddrStack.Offset = context.Esp;
+    stackframe.AddrPC.Offset = context.Eip;
+    stackframe.AddrStack.Offset = context.Esp;
     stackframe.AddrFrame.Offset = context.Ebp;
-	DWORD machine_arch = IMAGE_FILE_MACHINE_I386;
+    DWORD machine_arch = IMAGE_FILE_MACHINE_I386;
 #elif _M_X64
-	stackframe.AddrPC.Offset = context.Rip;
-	stackframe.AddrStack.Offset = context.Rsp;
+    stackframe.AddrPC.Offset = context.Rip;
+    stackframe.AddrStack.Offset = context.Rsp;
     stackframe.AddrFrame.Offset = context.Rbp;
-	DWORD machine_arch = IMAGE_FILE_MACHINE_AMD64;
+    DWORD machine_arch = IMAGE_FILE_MACHINE_AMD64;
 #endif
 
-	char symbol_buffer[1024];
-	ZeroMemory(symbol_buffer, sizeof(symbol_buffer));
-	PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(symbol_buffer);
-	symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
+    char symbol_buffer[1024];
+    ZeroMemory(symbol_buffer, sizeof(symbol_buffer));
+    PSYMBOL_INFO symbol = reinterpret_cast<PSYMBOL_INFO>(symbol_buffer);
+    symbol->SizeOfStruct = sizeof(SYMBOL_INFO);
     symbol->MaxNameLen = sizeof(symbol_buffer) - sizeof(SYMBOL_INFO);
 
     Logger& logger(Logger::getSingleton());
     logger.logEvent("========== Start of Backtrace ==========", Errors);
 
-	size_t frame_no = 0;
-	while (StackWalk64(machine_arch, GetCurrentProcess(), thread, &stackframe,
-					   &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0) &&
-		   stackframe.AddrPC.Offset)
-	{
-		symbol->Address = stackframe.AddrPC.Offset;
+    size_t frame_no = 0;
+    while (StackWalk64(machine_arch, GetCurrentProcess(), thread, &stackframe,
+                       &context, 0, SymFunctionTableAccess64, SymGetModuleBase64, 0) &&
+           stackframe.AddrPC.Offset)
+    {
+        symbol->Address = stackframe.AddrPC.Offset;
         DWORD64 displacement = 0;
-		char signature[256];
+        char signature[256];
 
-		if (SymFromAddr(GetCurrentProcess(), symbol->Address, &displacement, symbol))
-			UnDecorateSymbolName(symbol->Name, signature, sizeof(signature), UNDNAME_COMPLETE);
-		else
-			sprintf_s(signature, sizeof(signature), "%p", symbol->Address);
+        if (SymFromAddr(GetCurrentProcess(), symbol->Address, &displacement, symbol))
+            UnDecorateSymbolName(symbol->Name, signature, sizeof(signature), UNDNAME_COMPLETE);
+        else
+            sprintf_s(signature, sizeof(signature), "%p", symbol->Address);
  
-		IMAGEHLP_MODULE64 modinfo;
-		modinfo.SizeOfStruct = sizeof(modinfo);
+        IMAGEHLP_MODULE64 modinfo;
+        modinfo.SizeOfStruct = sizeof(modinfo);
 
-		const BOOL have_image_name =
-			SymGetModuleInfo64(GetCurrentProcess(), symbol->Address, &modinfo);
+        const BOOL have_image_name =
+            SymGetModuleInfo64(GetCurrentProcess(), symbol->Address, &modinfo);
 
         char outstr[512];
-		sprintf_s(outstr, sizeof(outstr), "#%d %s +%#llx (%s)",
+        sprintf_s(outstr, sizeof(outstr), "#%d %s +%#llx (%s)",
                   frame_no, signature, displacement,
                   (have_image_name ? modinfo.LoadedImageName : "????"));
 
         logger.logEvent(outstr, Errors);
 
-		if (++frame_no >= frames)
+        if (++frame_no >= frames)
             break;
 
-		if (!stackframe.AddrReturn.Offset)
+        if (!stackframe.AddrReturn.Offset)
             break;
-	}
+    }
 
     logger.logEvent("==========  End of Backtrace  ==========", Errors);
 
-	SymCleanup(GetCurrentProcess());
+    SymCleanup(GetCurrentProcess());
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     void* buffer[frames];
     const int received = backtrace(&buffer[0], frames);
@@ -187,9 +187,9 @@ Exception::Exception(const String& message, const String& name,
 
     if (d_stdErrEnabled)
     {
-    	// output to stderr unless it's explicitly disabled
-    	// nobody seems to look in their log file!
-    	std::cerr << what() << std::endl;
+        // output to stderr unless it's explicitly disabled
+        // nobody seems to look in their log file!
+        std::cerr << what() << std::endl;
     }
 }
 
@@ -207,13 +207,13 @@ const char* Exception::what() const throw()
 //----------------------------------------------------------------------------//
 void Exception::setStdErrEnabled(bool enabled)
 {
-	d_stdErrEnabled = enabled;
+    d_stdErrEnabled = enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool Exception::isStdErrEnabled()
 {
-	return d_stdErrEnabled;
+    return d_stdErrEnabled;
 }
 
 //----------------------------------------------------------------------------//
