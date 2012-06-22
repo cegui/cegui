@@ -348,17 +348,9 @@ public:
     virtual void endInitialisation(void);
 
 
-    /*!
-    \brief
-        method called to perform extended laying out of attached child windows.
-
-        The system may call this at various times (like when it is resized for
-        example), and it may be invoked directly where required.
-
-    \return
-        Nothing.
-    */
-    virtual void performChildWindowLayout(void);
+    //! \copydoc Window::performChildWindowLayout(bool ,bool)
+    void performChildWindowLayout(bool nonclient_sized_hint = false,
+                                  bool client_sized_hint = false);
 
 
     /*!

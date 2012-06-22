@@ -135,16 +135,16 @@ struct ButtonBase_wrapper : CEGUI::ButtonBase, bp::wrapper< CEGUI::ButtonBase > 
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
-    virtual void performChildWindowLayout(  ) {
+    virtual void performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
         if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
-            func_performChildWindowLayout(  );
+            func_performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         else{
-            this->CEGUI::Window::performChildWindowLayout(  );
+            this->CEGUI::Window::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         }
     }
     
-    void default_performChildWindowLayout(  ) {
-        CEGUI::Window::performChildWindowLayout( );
+    void default_performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
+        CEGUI::Window::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
     }
 
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
@@ -400,13 +400,14 @@ void register_ButtonBase_class(){
         }
         { //::CEGUI::Window::performChildWindowLayout
         
-            typedef void ( ::CEGUI::Window::*performChildWindowLayout_function_type )(  ) ;
-            typedef void ( ButtonBase_wrapper::*default_performChildWindowLayout_function_type )(  ) ;
+            typedef void ( ::CEGUI::Window::*performChildWindowLayout_function_type )( bool,bool ) ;
+            typedef void ( ButtonBase_wrapper::*default_performChildWindowLayout_function_type )( bool,bool ) ;
             
             ButtonBase_exposer.def( 
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::Window::performChildWindowLayout)
-                , default_performChildWindowLayout_function_type(&ButtonBase_wrapper::default_performChildWindowLayout) );
+                , default_performChildWindowLayout_function_type(&ButtonBase_wrapper::default_performChildWindowLayout)
+                , ( bp::arg("nonclient_sized_hint")=(bool)(false), bp::arg("client_sized_hint")=(bool)(false) ) );
         
         }
         { //::CEGUI::Window::setLookNFeel
