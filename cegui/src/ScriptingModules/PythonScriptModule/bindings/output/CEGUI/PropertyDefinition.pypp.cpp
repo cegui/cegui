@@ -41,6 +41,18 @@ struct PropertyDefinition_wrapper : CEGUI::PropertyDefinition, bp::wrapper< CEGU
         return CEGUI::PropertyDefinition::get( boost::python::ptr(receiver) );
     }
 
+    virtual void initialisePropertyReceiver( ::CEGUI::PropertyReceiver * receiver ) const  {
+        if( bp::override func_initialisePropertyReceiver = this->get_override( "initialisePropertyReceiver" ) )
+            func_initialisePropertyReceiver( boost::python::ptr(receiver) );
+        else{
+            this->CEGUI::PropertyDefinition::initialisePropertyReceiver( boost::python::ptr(receiver) );
+        }
+    }
+    
+    void default_initialisePropertyReceiver( ::CEGUI::PropertyReceiver * receiver ) const  {
+        CEGUI::PropertyDefinition::initialisePropertyReceiver( boost::python::ptr(receiver) );
+    }
+
     virtual void set( ::CEGUI::PropertyReceiver * receiver, ::CEGUI::String const & value ) {
         if( bp::override func_set = this->get_override( "set" ) )
             func_set( boost::python::ptr(receiver), boost::ref(value) );
@@ -126,6 +138,18 @@ void register_PropertyDefinition_class(){
                 "get"
                 , get_function_type(&::CEGUI::PropertyDefinition::get)
                 , default_get_function_type(&PropertyDefinition_wrapper::default_get)
+                , ( bp::arg("receiver") ) );
+        
+        }
+        { //::CEGUI::PropertyDefinition::initialisePropertyReceiver
+        
+            typedef void ( ::CEGUI::PropertyDefinition::*initialisePropertyReceiver_function_type )( ::CEGUI::PropertyReceiver * ) const;
+            typedef void ( PropertyDefinition_wrapper::*default_initialisePropertyReceiver_function_type )( ::CEGUI::PropertyReceiver * ) const;
+            
+            PropertyDefinition_exposer.def( 
+                "initialisePropertyReceiver"
+                , initialisePropertyReceiver_function_type(&::CEGUI::PropertyDefinition::initialisePropertyReceiver)
+                , default_initialisePropertyReceiver_function_type(&PropertyDefinition_wrapper::default_initialisePropertyReceiver)
                 , ( bp::arg("receiver") ) );
         
         }
