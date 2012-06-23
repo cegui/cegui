@@ -9,7 +9,7 @@ following systems:
 - Various flavors of Linux using gcc.
 - Microsoft Windows using Visual C++ - both express and professional versions
 where applicable. (Tested on Windows XP with MSVC++ 2010).
-- Apple Mac OS X running Xcode (tested on version 10.7.2 with Xcode 4.2.1).
+- Apple Mac OS X running Xcode (tested on version 10.7.4 with Xcode 4.3.3).
 
 It is very possible that the system will compile with other compilers and run on
 other systems, though those mentioned above have been tested.
