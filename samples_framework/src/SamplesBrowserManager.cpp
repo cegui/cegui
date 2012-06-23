@@ -112,21 +112,7 @@ void SamplesBrowserManager::updateWindows()
     d_root->setSize(USize(cegui_reldim(1.f), cegui_reldim(1.f)));
 }
 
-
 bool SamplesBrowserManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& args)
-{
-    const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
-
-    CEGUI::Window* wnd(winArgs.window);
-
-    selectSampleWindow(wnd);
-    d_owner->handleSampleSelection(wnd);
-
-    return true;
-}
-
-
-bool SamplesBrowserManager::handleMouseDoubleClickSampleWindow(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
 
@@ -138,11 +124,17 @@ bool SamplesBrowserManager::handleMouseDoubleClickSampleWindow(const CEGUI::Even
 }
 
 
-bool SamplesBrowserManager::handleHoverSampleWindow(const CEGUI::EventArgs& args)
+bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& args)
 {
     const MouseEventArgs& mouseArgs(static_cast<const MouseEventArgs&>(args));
 
     CEGUI::Window* wnd(mouseArgs.window);
+
+    if(d_selectedWindow != wnd)
+    {
+        selectSampleWindow(wnd);
+        d_owner->handleSampleSelection(wnd);
+    }
 
     const CEGUI::String& lookNFeel(wnd->getLookNFeel());
     CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
@@ -251,9 +243,8 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     sampleWindow->setSize(USize(UDim(1.f, -10.f), cegui_absdim(1.f)));
     sampleWindow->setMouseInputPropagationEnabled(true);
 
+    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleMouseMoveSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesBrowserManager::handleMouseDoubleClickSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleHoverSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
