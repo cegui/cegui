@@ -1,4 +1,4 @@
-<Imageset version="2" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1024" nativeVertRes="1024" autoScaled="vertical">
+<Imageset autoScaled="vertical" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1024" nativeVertRes="1024" version="2">
     <Image height="3" name="GenericFiller" width="3" xPos="1" yPos="49" />
     <Image height="45" name="MouseArrow" width="36" xPos="0" yPos="0" />
     <Image height="29" name="FrameBottom" width="690" xPos="185" yPos="416" />
@@ -40,7 +40,7 @@
     <Image height="8" name="MiniTrayM" width="8" xPos="102" yPos="77" />
     <Image height="12" name="MiniTrayTR" width="12" xPos="110" yPos="65" />
     <Image height="12" name="MiniTrayTL" width="12" xPos="90" yPos="65" />
-    <Image height="8" name="MiniTrayL" width="12" xPos="90" yPos="97" />
+    <Image height="8" name="MiniTrayL" width="12" xPos="90" yPos="77" />
     <Image height="12" name="MiniTrayB" width="8" xPos="102" yPos="85" />
     <Image height="12" name="MiniTrayBR" width="12" xPos="110" yPos="85" />
     <Image height="12" name="MiniTrayT" width="8" xPos="102" yPos="65" />
@@ -53,4 +53,5 @@
     <Image height="94" name="ExitButtonClicked" width="94" xPos="0" yPos="345" />
     <Image height="94" name="EntryButtonHover" width="94" xPos="0" yPos="535" />
     <Image height="94" name="EntryButtonClicked" width="94" xPos="0" yPos="630" />
+    <Image height="45" name="MouseArrowHover" width="36" xPos="94" yPos="102" />
 </Imageset>
