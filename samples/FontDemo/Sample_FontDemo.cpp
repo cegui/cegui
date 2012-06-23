@@ -136,7 +136,7 @@ public:
         // Create a custom font which we use to draw the list items. This custom
         // font won't get effected by the scaler and such.
 
-        FontManager::getSingleton().createFreeTypeFont("FontDemoFont", 10/*pt*/, true, "DejaVuSans.ttf");
+        FontManager::getSingleton().createFreeTypeFont("FontDemoFont", 10, true, "DejaVuSans.ttf");
         // Set it as the default
         d_guiContext->setDefaultFont("FontDemoFont");
 

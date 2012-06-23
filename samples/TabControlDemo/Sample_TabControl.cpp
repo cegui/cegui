@@ -77,10 +77,11 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
-        guiContext->getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
+        d_guiContext->getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically
-        FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+        CEGUI::Font& font(FontManager::getSingleton().createFromFile("DejaVuSans-10.font"));
+        d_guiContext->setDefaultFont(&font);
 
         // load an image to use as a background
         ImageManager::getSingleton().addFromImageFile("BackgroundImageTabControl", "GPN-2000-001437.png");
