@@ -419,19 +419,19 @@
         
         
         
-        <AnimationDefinition name="SamplePreviewFadeIn" duration="0.3" replayMode="once" autoStart="false">
+        <AnimationDefinition name="SamplePreviewFadeIn" duration="0.23" replayMode="once" autoStart="false">
             <Affector property="ForegroundFadeColours" interpolator="ColourRect">
                 <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
-                <KeyFrame position="0.3" value="tl:00000000 tr:00000000 bl:00000000 br:00000000" progression="quadratic decelerating" />
+                <KeyFrame position="0.23" value="tl:00000000 tr:00000000 bl:00000000 br:00000000" progression="quadratic decelerating" />
             </Affector>
             <Subscription event="MouseLeavesArea" action="Stop" />
             <Subscription event="MouseEntersArea" action="Start" />
         </AnimationDefinition>
         
-        <AnimationDefinition name="SamplePreviewFadeOut" duration="1.2" replayMode="once" autoStart="false">
+        <AnimationDefinition name="SamplePreviewFadeOut" duration="0.56" replayMode="once" autoStart="false">
             <Affector property="ForegroundFadeColours" interpolator="ColourRect">
                 <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
-                <KeyFrame position="1.2" value="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" progression="linear" />
+                <KeyFrame position="0.56" value="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" progression="quadratic decelerating" />
             </Affector>
             <Subscription event="MouseEntersArea" action="Stop" />
             <Subscription event="MouseLeavesArea" action="Start" />
