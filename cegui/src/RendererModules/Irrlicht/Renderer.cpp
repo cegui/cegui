@@ -34,7 +34,6 @@
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/RendererModules/Irrlicht/EventPusher.h"
 #include "CEGUI/RendererModules/Irrlicht/ImageCodec.h"
-#include "CEGUI/PropertyHelper.h"
 
 #include <irrlicht.h>
 #include <algorithm>
@@ -49,14 +48,7 @@ String IrrlichtRenderer::d_rendererID("CEGUI::IrrlichtRenderer "
 IrrlichtRenderer& IrrlichtRenderer::bootstrapSystem(irr::IrrlichtDevice& device,
                                                     const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
@@ -96,14 +88,7 @@ void IrrlichtRenderer::destroySystem()
 IrrlichtRenderer& IrrlichtRenderer::create(irr::IrrlichtDevice& device,
                                            const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *new IrrlichtRenderer(device);
 }

@@ -34,7 +34,6 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/PropertyHelper.h"
 
 #include <algorithm>
 
@@ -48,14 +47,7 @@ String NullRenderer::d_rendererID(
 //----------------------------------------------------------------------------//
 NullRenderer& NullRenderer::bootstrapSystem(const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
@@ -96,14 +88,7 @@ void NullRenderer::destroySystem()
 //----------------------------------------------------------------------------//
 NullRenderer& NullRenderer::create(const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *new NullRenderer;
 }
