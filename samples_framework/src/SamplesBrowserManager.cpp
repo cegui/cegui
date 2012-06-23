@@ -154,20 +154,38 @@ bool SamplesBrowserManager::handleHoverSampleWindow(const CEGUI::EventArgs& args
     float relPosX = (mousePos.d_x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
     float relPosY = (mousePos.d_y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
 
-    SampleData* sampleData = d_owner->findSampleData(wnd);
-    const CEGUI::Sizef& contextSize(sampleData->getGuiContext()->getSurfaceSize());
+    if(relPosX >= 0.f && relPosX <= 1.f && relPosY >= 0.f && relPosY <= 1.f)
+    {
+        SampleData* sampleData = d_owner->findSampleData(wnd);
+        const CEGUI::Sizef& contextSize(sampleData->getGuiContext()->getSurfaceSize());
 
-    float absPosX = relPosX * contextSize.d_width;
-    float absPosY = relPosY * contextSize.d_height;
+        float absPosX = relPosX * contextSize.d_width;
+        float absPosY = relPosY * contextSize.d_height;
 
-    sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);
-    sampleData->getGuiContext()->markAsDirty();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor();
+        sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);
+        sampleData->getGuiContext()->markAsDirty();
+
+        wnd->setMouseCursor("SampleBrowserSkin/MouseArrowHover");
+    }
+    else
+    {
+        wnd->setMouseCursor("SampleBrowserSkin/MouseArrow");
+    }
 
     return true;
 }
 
+
+bool SamplesBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
+{ 
+    const MouseEventArgs& mouseArgs(static_cast<const MouseEventArgs&>(args));
+
+    CEGUI::Window* wnd(mouseArgs.window);
+    wnd->setMouseCursor("SampleBrowserSkin/MouseArrow");
+
+    return true;
+}
 
 void SamplesBrowserManager::selectSampleWindow(CEGUI::Window* wnd)
 {
@@ -236,7 +254,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseDoubleClick, Event::Subscriber(&SamplesBrowserManager::handleMouseDoubleClickSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleHoverSampleWindow, this));
-
+    sampleWindow->subscribeEvent(Window::EventMouseLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
@@ -277,6 +295,7 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
     button->setAlwaysOnTop(true);
     button->setHorizontalAlignment(HA_RIGHT);
     button->setVerticalAlignment(VA_CENTRE);
+    button->setAlwaysOnTop(true);
 
     return button;
 }
