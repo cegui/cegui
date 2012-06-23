@@ -96,6 +96,12 @@ const String& Font::getTypeName() const
 }
 
 //----------------------------------------------------------------------------//
+const String& Font::getFileName() const
+{
+    return d_filename;
+}
+
+//----------------------------------------------------------------------------//
 void Font::addFontProperties()
 {
     const String propertyOrigin("Font");
