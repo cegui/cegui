@@ -3,6 +3,30 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.7</b>
+- Bug Fix: make dist missed premake.lua for InventoryDemo
+- Bug Fix: ImagerySection bounds calculations were incorrectly starting from zero.
+- Bug Fix: Show Combobox button in pushed state when list is shown.
+- Bug Fix: Set disabled image for combobox button.  See: http://www.cegui.org.uk/mantis/view.php?id=633
+- Bug Fix: Support Gentoo's (and others') modified zlib headers. See: http://www.cegui.org.uk/mantis/view.php?id=813
+- Bug Fix: typos in macro to detect zlib prevented using zlib in custom locations.
+- Bug Fix: Multiple issues in GroupBox related to handling of its content pane and also how child content is added and removed.  NB: This does change some behaviour, in that child content is no longer destroyed when removed, but that should NEVER have happened anyway, so is treated as another bug to be fixed.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=2&t=6126
+- Bug Fix: Backported fix for issue caused by layoutOnWrite property definitions triggering Window::performChildWindowLayout before the window is fully initialised. (NB: this breaks binary compatibility) See: http://www.cegui.org.uk/phpBB2/viewtopic.php?p=29008#p29008 and http://www.cegui.org.uk/mantis/view.php?id=645
+- Bug Fix: CEGUI::OgreTextureTarget::clear sets the Ogre system view port. This call can occur outside the regular rendering sequence and if the OgreTextureTarget is then deleted, Ogre and other parts of the CEGUI::OgreRenderer may try to access the deleted viewport. IMPORTANT: Prior to Ogre 1.8, there are scenarios where it is impossible to restore the view port safely. See: http://www.cegui.org.uk/mantis/view.php?id=745
+- Bug Fix: We were applying text colours twice in Falagard TextComponent when string to be drawn or font to use were sourced anywhere other than from the default places. Many thanks to forum member 'BrightBit' for providing test case datafiles to produce this issue. See: http://www.cegui.org.uk/mantis/view.php?id=774.
+- Bug Fix: In OpenGL renderer, default pixel unpack setting of 4 was causing headaches on textures with unusual widths.  See: http://www.cegui.org.uk/mantis/view.php?id=778
+- Bug Fix: Ensure properties defined via PropertyDefinition are added to the target widget first, to avoid situations where they might be accessed before they are added.  See: http://www.cegui.org.uk/phpBB2/viewtopic.php?f=10&t=6019
+
+- Modified: Detect python header in a /slightly/ less horrible way.
+- Modified: Refactor Window::onParentSized to not abuse Window::setArea_impl.
+- Modified: refactor some Window implementation: mostly breaking up setArea_impl, and then reducing some code repetition elsewhere.
+- Modified: Add support for lua 5.2.  This includes detection of newer package as well as fixes to the Lua module and the embedded tolua++ lib (patch from 'worldcitizen' on the forums). See: http://www.cegui.org.uk/mantis/view.php?id=776
+
+- Added: PropertyDefinitions to set colours on TaharezLook/ImageButton.
+
+- Documentation: Typo in GLEW-LICENSE (this was grabbed from original glew package, too!).  See: http://www.cegui.org.uk/mantis/view.php?id=775
+
+
 <b>Release 0.7.6</b>
 - Bug Fix: Backported the TinyXML API version check and related code conditionals from default (cmake) branch to here (autotools).
 - Bug Fix: Make ScrolledContainer not issue the content changed notification when in the destruction phase.  This fixes issues in clients of ScrolledContainer that respond to this notification.  Via patch from Erik Ogenvik.
