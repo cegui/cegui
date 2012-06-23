@@ -2225,27 +2225,61 @@ void Window::setModalState(bool state)
 }
 
 //----------------------------------------------------------------------------//
-void Window::performChildWindowLayout()
+void Window::performChildWindowLayout(const bool nonclient_sized_hint,
+                                      const bool client_sized_hint)
+{
+    const Size old_size(d_pixelSize);
+    calculatePixelSize();
+
+    layoutLookNFeelChildWidgets();
+
+    const bool outer_changed = nonclient_sized_hint || d_pixelSize != old_size;
+    const bool inner_changed = client_sized_hint || isInnerRectSizeChanged();
+
+    d_outerRectClipperValid &= !outer_changed;
+    d_innerRectClipperValid &= !inner_changed;
+
+    if (d_windowRenderer)
+        d_windowRenderer->performChildWindowLayout();
+
+    notifyChildrenOfSizeChange(outer_changed, inner_changed);
+}
+
+//----------------------------------------------------------------------------//
+void Window::layoutLookNFeelChildWidgets()
 {
     if (d_lookName.empty())
         return;
 
-    // here we just grab the look and feel and get it to layout it's children
     CEGUI_TRY
     {
-        const WidgetLookFeel& wlf =
-            WidgetLookManager::getSingleton().getWidgetLook(d_lookName);
-        // get look'n'feel to layout any child windows it created.
-        wlf.layoutChildWidgets(*this);
+        WidgetLookManager::getSingleton().
+            getWidgetLook(d_lookName).layoutChildWidgets(*this);
     }
     CEGUI_CATCH (UnknownObjectException&)
     {
-        Logger::getSingleton().logEvent("Window::performChildWindowLayout: "
-            "assigned widget look was not found.", Errors);
+        Logger::getSingleton().logEvent(
+            "Window::layoutLookNFeelChildWidgets: "
+            "WidgetLook '" + d_lookName + "' was not found.", Errors);
     }
+}
 
-    if (d_windowRenderer)
-        d_windowRenderer->performChildWindowLayout();
+//----------------------------------------------------------------------------//
+void Window::notifyChildrenOfSizeChange(const bool non_client,
+                                        const bool client)
+{
+    const size_t child_count = getChildCount();
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        Window * const child = d_children[i];
+
+        if ((non_client && child->isNonClientWindow()) ||
+            (client && !child->isNonClientWindow()))
+        {
+            WindowEventArgs args(this);
+            d_children[i]->onParentSized(args);
+        }
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -2540,25 +2574,11 @@ void Window::onSized(WindowEventArgs& e)
         static_cast<RenderingWindow*>(d_surface)->setSize(getPixelSize());
 
     // screen area changes when we're resized.
-    // NB: Called non-recursive since the onParentSized notifications will deal
-    // more selectively with child Window cases.
+    // NB: Called non-recursive since the performChildWindowLayout call should
+    // have dealt more selectively with child Window cases.
     notifyScreenAreaChanged(false);
 
-    // we need to layout loonfeel based content first, in case anything is
-    // relying on that content for size or positioning info (i.e. some child
-    // is used to establish inner-rect position or size).
-    //
-    // TODO: The subsequent onParentSized notification for those windows cause
-    // additional - unneccessary - work; we should look to optimise that.
-    performChildWindowLayout();
-
-    // inform children their parent has been re-sized
-    const size_t child_count = getChildCount();
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        WindowEventArgs args(this);
-        d_children[i]->onParentSized(args);
-    }
+    performChildWindowLayout(true, true);
 
     invalidate();
 
@@ -2800,8 +2820,6 @@ void Window::onDeactivated(ActivationEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onParentSized(WindowEventArgs& e)
 {
-    markAllCachedRectsInvalid();
-
     const Size oldSize(d_pixelSize);
     calculatePixelSize();
     const bool sized = (d_pixelSize != oldSize) || isInnerRectSizeChanged();
@@ -2810,11 +2828,12 @@ void Window::onParentSized(WindowEventArgs& e)
         ((d_area.d_min.d_x.d_scale != 0) || (d_area.d_min.d_y.d_scale != 0) ||
          (d_horzAlign != HA_LEFT) || (d_vertAlign != VA_TOP));
 
+    markAllCachedRectsInvalid();
     fireAreaChangeEvents(moved, sized);
 
     // if we were not moved or sized, do child layout anyway!
     if (!(moved || sized))
-        performChildWindowLayout();
+        performChildWindowLayout(true, true);
 
     fireEvent(EventParentSized, e, EventNamespace);
 }
