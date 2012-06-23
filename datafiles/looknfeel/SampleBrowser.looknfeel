@@ -18,10 +18,10 @@
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
-	            <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-	            <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-	            <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
-	            <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
+                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
+                    <Dim type="Width"><UnifiedDim scale="1" type="Width" /></Dim>
+                    <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
                 </Area>
                 <VertFormatProperty name="VertFormatting" />
                 <HorzFormatProperty name="HorzFormatting" />
@@ -107,7 +107,7 @@
             </FrameComponent>
         </ImagerySection>
 
-		<ImagerySection name="BackgroundOnlyFull">
+        <ImagerySection name="BackgroundOnlyFull">
             <FrameComponent>
                 <Area>
                     <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
@@ -121,8 +121,8 @@
 
     </WidgetLook>
 
-    
-<!--
+
+    <!--
 :::: Shared static widget components.
 -->
     <WidgetLook name="SampleBrowserSkin/StaticShared">
@@ -291,59 +291,62 @@
     </WidgetLook>
 
     <WidgetLook name="SampleBrowserSkin/SampleWindow">
-        <Property name="AutoRenderingSurface" value="True" />
-        
-		<PropertyDefinition name="BackgroundEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
+        <PropertyDefinition name="BackgroundEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
         <PropertyDefinition name="ForegroundEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
         <PropertyDefinition name="FrameEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
-        
+        <PropertyDefinition name="FadeEnabled" initialValue="true" redrawOnWrite="true" layoutOnWrite="true" type="bool" />
+
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-		<PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-		<PropertyDefinition name="ForegroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
+        <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
+        <PropertyDefinition name="ForegroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
         <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
+        <PropertyDefinition name="ForegroundFadeColours" initialValue="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
-        
-            <NamedArea name="InnerArea">
-                <Area>
-                    <Dim type="LeftEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="FrameEnabled" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="TopEdge" >
-                        <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="FrameEnabled" />
-                            </DimOperator>
-                        </ImageDim>
-                    </Dim>
-                    <Dim type="RightEdge" >
-                        <UnifiedDim scale="1.0" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="FrameEnabled" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                    <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="FrameEnabled" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
-                    </Dim>
-                </Area>
-            </NamedArea>
-                
+
+        <Property name="AutoRenderingSurface" value="True" />
+
+
+        <NamedArea name="InnerArea">
+            <Area>
+                <Dim type="LeftEdge" >
+                    <ImageDim name="SampleBrowserSkin/FrameLeft" dimension="Width">
+                        <DimOperator op="Multiply">
+                            <PropertyDim name="FrameEnabled" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="TopEdge" >
+                    <ImageDim name="SampleBrowserSkin/FrameTop" dimension="Height">
+                        <DimOperator op="Multiply">
+                            <PropertyDim name="FrameEnabled" />
+                        </DimOperator>
+                    </ImageDim>
+                </Dim>
+                <Dim type="RightEdge" >
+                    <UnifiedDim scale="1.0" type="RightEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/FrameRight" dimension="Width">
+                                <DimOperator op="Multiply">
+                                    <PropertyDim name="FrameEnabled" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <UnifiedDim scale="1.0" type="BottomEdge">
+                        <DimOperator op="Subtract">
+                            <ImageDim name="SampleBrowserSkin/FrameBottom" dimension="Height">
+                                <DimOperator op="Multiply">
+                                    <PropertyDim name="FrameEnabled" />
+                                </DimOperator>
+                            </ImageDim>
+                        </DimOperator>
+                    </UnifiedDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+
         <ImagerySection name="frame">
             <FrameComponent>
                 <Area>
@@ -360,10 +363,10 @@
                 <Image component="TopEdge" name="SampleBrowserSkin/FrameTop" />
                 <Image component="RightEdge" name="SampleBrowserSkin/FrameRight" />
                 <Image component="BottomEdge" name="SampleBrowserSkin/FrameBottom" />
-				<ColourRectProperty name="FrameColours" />
+                <ColourRectProperty name="FrameColours" />
             </FrameComponent>
         </ImagerySection>
-        
+
         <ImagerySection name="image">
             <ImageryComponent>
                 <Area><NamedAreaSource name="InnerArea"/></Area>
@@ -373,7 +376,17 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
         </ImagerySection>
-		
+          
+        <ImagerySection name="fadeForeground">
+            <ImageryComponent>
+                <Area><NamedAreaSource name="InnerArea"/></Area>
+                <Image name="SampleBrowserSkin/GenericFiller" />
+                <ColourRectProperty name="ForegroundFadeColours" />
+                <VertFormat type="Stretched" />
+                <HorzFormat type="Stretched" />
+            </ImageryComponent>     
+        </ImagerySection>
+        
         <ImagerySection name="foreground">
             <ImageryComponent>
                 <Area><NamedAreaSource name="InnerArea"/></Area>
@@ -383,8 +396,8 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>     
         </ImagerySection>
-		
-         <ImagerySection name="background">
+
+        <ImagerySection name="background">
             <ImageryComponent>
                 <Area><NamedAreaSource name="InnerArea"/></Area>
                 <Image name="SampleBrowserSkin/GenericFiller" />
@@ -393,27 +406,50 @@
                 <HorzFormat type="Stretched" />
             </ImageryComponent>     
         </ImagerySection>
-   
+
         <StateImagery name="Enabled">
-            <Layer priority="3" ><Section section="frame" controlProperty="FrameEnabled" /></Layer>   
+            <Layer priority="4" ><Section section="frame" controlProperty="FrameEnabled" /></Layer> 
+            <Layer priority="3" ><Section section="fadeForeground" controlProperty="FadeEnabled" /></Layer>
             <Layer priority="2" ><Section section="foreground" controlProperty="ForegroundEnabled" /></Layer>
             <Layer priority="1" ><Section section="image" /></Layer> 
             <Layer priority="0" ><Section section="background" controlProperty="BackgroundEnabled" /></Layer>
-            </StateImagery>
+        </StateImagery>
         <StateImagery name="Disabled">
         </StateImagery>
+        
+        
+        
+        <AnimationDefinition name="SamplePreviewFadeIn" duration="0.3" replayMode="once" autoStart="false">
+            <Affector property="ForegroundFadeColours" interpolator="ColourRect">
+                <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
+                <KeyFrame position="0.3" value="tl:00000000 tr:00000000 bl:00000000 br:00000000" progression="quadratic decelerating" />
+            </Affector>
+            <Subscription event="MouseLeavesArea" action="Stop" />
+            <Subscription event="MouseEntersArea" action="Start" />
+        </AnimationDefinition>
+        
+        <AnimationDefinition name="SamplePreviewFadeOut" duration="1.2" replayMode="once" autoStart="false">
+            <Affector property="ForegroundFadeColours" interpolator="ColourRect">
+                <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
+                <KeyFrame position="1.2" value="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" progression="linear" />
+            </Affector>
+            <Subscription event="MouseEntersArea" action="Stop" />
+            <Subscription event="MouseLeavesArea" action="Start" />
+        </AnimationDefinition>
     </WidgetLook>
 
-	
-    
-<!--
+
+
+    <!--
     TitleBar
 -->
     <WidgetLook name="SampleBrowserSkin/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FFe5ffb2" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" type="VerticalTextFormatting"/>
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" type="HorizontalTextFormatting"/>
+
         <Property name="NonClient" value="True" />
+
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -459,8 +495,8 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
-<!--
+
+    <!--
     FrameWindow
 -->
 
@@ -611,9 +647,9 @@
         </StateImagery>
     </WidgetLook>
 
-    
-    
-<!--
+
+
+    <!--
     StaticText
 -->
     <WidgetLook name="SampleBrowserSkin/StaticText">
@@ -907,10 +943,10 @@
             <Layer><Section look="SampleBrowserSkin/StaticShared" section="no_frame_background" /></Layer>
         </StateImagery>
     </WidgetLook>
-    
-    
-    
-<!--
+
+
+
+    <!--
     Vertical Scrollbar
 -->
     <WidgetLook name="SampleBrowserSkin/VerticalScrollbar">
@@ -978,7 +1014,7 @@
         </StateImagery>
     </WidgetLook>
 
-<!--
+    <!--
     Horizontal Scrollbar
 -->
     <WidgetLook name="SampleBrowserSkin/HorizontalScrollbar">
@@ -1046,8 +1082,8 @@
         </StateImagery>
     </WidgetLook>
 
-    
-<!--
+
+    <!--
     Thumb
 -->
     <WidgetLook name="SampleBrowserSkin/Thumb">
@@ -1076,7 +1112,7 @@
     </WidgetLook>
 
 
-<!--
+    <!--
     ScrollablePane
 -->
     <WidgetLook name="SampleBrowserSkin/ScrollablePane">
