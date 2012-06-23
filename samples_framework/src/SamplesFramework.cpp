@@ -131,7 +131,7 @@ void SamplesFramework::initialiseFrameworkLayout()
     CEGUI::Window* metaDataWindow = d_root->getChild("SampleBrowserMetaData");
     d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
 
-    CEGUI::Window* samplesScrollablePane = d_root->getChild("SamplesFrameWindow/SamplesScrollablePane");
+    CEGUI::Window* samplesScrollablePane = d_root->getChild("SampleFrameWindowContainer/SamplesFrameWindow/SamplesScrollablePane");
     d_samplesWinMgr = new SamplesBrowserManager(this, samplesScrollablePane);
 
 
