@@ -6,7 +6,7 @@
 	purpose:	Defines interface for main GUI system class
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -530,6 +530,10 @@ public:
 
     //! Return the system StringTranscoder object
     static const StringTranscoder& getStringTranscoder();
+
+    //! Internal CEGUI version validation function.
+    static void performVersionTest(const int expected, const int received,
+                                   const String& func);
 
 private:
     // unimplemented constructors / assignment

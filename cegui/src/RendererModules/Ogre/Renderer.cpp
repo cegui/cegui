@@ -36,7 +36,6 @@
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/PropertyHelper.h"
 
 #include <OgreRoot.h>
 #include <OgreRenderSystem.h>
@@ -125,14 +124,7 @@ String OgreRenderer_impl::d_rendererID(
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
@@ -150,14 +142,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
                                             const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
@@ -194,14 +179,7 @@ void OgreRenderer::destroySystem()
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::create(const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *new OgreRenderer;
 }
@@ -210,14 +188,7 @@ OgreRenderer& OgreRenderer::create(const int abi)
 OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target,
                                    const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *new OgreRenderer(target);
 }

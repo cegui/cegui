@@ -6,7 +6,7 @@
 	purpose:	Implementation of main system object
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -884,17 +884,25 @@ System& System::create(Renderer& renderer, ResourceProvider* resourceProvider,
                        ScriptModule* scriptModule, const String& configFile,
                        const String& logFile, const int abi)
 {
-    if (abi != CEGUI_VERSION_ABI)
-        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
-            "Expected abi: " + PropertyHelper<int>::toString(CEGUI_VERSION_ABI) +
-            " received abi: " + PropertyHelper<int>::toString(abi) + ". This "
-            "means that the code calling this function was compiled against a "
-            "CEGUI version that is incompatible with the library containing "
-            "this function. This means that you probably have old libraries "
-            "laying around that have been picked up by mistake."));
+    performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *CEGUI_NEW_AO System(renderer, resourceProvider, xmlParser, imageCodec,
                        scriptModule, configFile, logFile);
+}
+
+//----------------------------------------------------------------------------//
+void System::performVersionTest(const int expected, const int received,
+                                const String& func)
+{
+    if (expected != received)
+        CEGUI_THROW(InvalidRequestException("Version mismatch detected! "
+            "Called from function: " + func +
+            " Expected abi: " + PropertyHelper<int>::toString(expected) +
+            " received abi: " + PropertyHelper<int>::toString(received) +
+            ". This means that the code calling the function was compiled "
+            "against a CEGUI version that is incompatible with the library "
+            "containing the function. Usually this means that you have "
+            "old binary library versions that have been used by mistake."));
 }
 
 //----------------------------------------------------------------------------//
