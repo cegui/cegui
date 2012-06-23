@@ -503,9 +503,11 @@ void ItemListBase::endInitialisation(void)
 /************************************************************************
 	Perform child window layout
 ************************************************************************/
-void ItemListBase::performChildWindowLayout(void)
+void ItemListBase::performChildWindowLayout(bool nonclient_sized_hint,
+                                            bool client_sized_hint)
 {
-	Window::performChildWindowLayout();
+	Window::performChildWindowLayout(nonclient_sized_hint,
+                                     client_sized_hint);
 	// if we are not currently initialising
 	if (!d_initialising)
 	{

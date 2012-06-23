@@ -195,16 +195,16 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
-    virtual void performChildWindowLayout(  ) {
+    virtual void performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
         if( bp::override func_performChildWindowLayout = this->get_override( "performChildWindowLayout" ) )
-            func_performChildWindowLayout(  );
+            func_performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         else{
-            this->CEGUI::ItemListBase::performChildWindowLayout(  );
+            this->CEGUI::ItemListBase::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
         }
     }
     
-    void default_performChildWindowLayout(  ) {
-        CEGUI::ItemListBase::performChildWindowLayout( );
+    void default_performChildWindowLayout( bool nonclient_sized_hint=false, bool client_sized_hint=false ) {
+        CEGUI::ItemListBase::performChildWindowLayout( nonclient_sized_hint, client_sized_hint );
     }
 
     virtual void setLookNFeel( ::CEGUI::String const & look ) {
@@ -697,13 +697,14 @@ void register_ItemListbox_class(){
         }
         { //::CEGUI::ItemListBase::performChildWindowLayout
         
-            typedef void ( ::CEGUI::ItemListBase::*performChildWindowLayout_function_type )(  ) ;
-            typedef void ( ItemListbox_wrapper::*default_performChildWindowLayout_function_type )(  ) ;
+            typedef void ( ::CEGUI::ItemListBase::*performChildWindowLayout_function_type )( bool,bool ) ;
+            typedef void ( ItemListbox_wrapper::*default_performChildWindowLayout_function_type )( bool,bool ) ;
             
             ItemListbox_exposer.def( 
                 "performChildWindowLayout"
                 , performChildWindowLayout_function_type(&::CEGUI::ItemListBase::performChildWindowLayout)
-                , default_performChildWindowLayout_function_type(&ItemListbox_wrapper::default_performChildWindowLayout) );
+                , default_performChildWindowLayout_function_type(&ItemListbox_wrapper::default_performChildWindowLayout)
+                , ( bp::arg("nonclient_sized_hint")=(bool)(false), bp::arg("client_sized_hint")=(bool)(false) ) );
         
         }
         { //::CEGUI::Window::setLookNFeel
