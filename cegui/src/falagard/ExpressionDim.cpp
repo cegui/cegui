@@ -79,7 +79,7 @@ const String& ExpressionDim::getExpression() const
 }
 
 //----------------------------------------------------------------------------//
-float ExpressionDim::getValue_impl(const Window& wnd) const
+float ExpressionDim::getValue(const Window& wnd) const
 {
     if (!d_pimpl->d_performedScan)
         scanString();
@@ -93,7 +93,7 @@ float ExpressionDim::getValue_impl(const Window& wnd) const
 }
 
 //----------------------------------------------------------------------------//
-float ExpressionDim::getValue_impl(const Window& wnd,
+float ExpressionDim::getValue(const Window& wnd,
                                    const Rectf& container) const
 {
     if (!d_pimpl->d_performedScan)
@@ -121,7 +121,7 @@ void ExpressionDim::writeXMLElementAttributes_impl(
 }
 
 //----------------------------------------------------------------------------//
-BaseDim* ExpressionDim::clone_impl() const
+BaseDim* ExpressionDim::clone() const
 {
     return new ExpressionDim(d_pimpl->d_expression);
 }

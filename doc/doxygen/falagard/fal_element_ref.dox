@@ -12,7 +12,6 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_7 <br>
 @ref fal_elem_ref_sec_8 <br>
 @ref fal_elem_ref_sec_9 <br>
-@ref fal_elem_ref_sec_10 <br>
 @ref fal_elem_ref_eventaction <br>
 @ref fal_elem_ref_eventlinkdefintion <br>
 @ref fal_elem_ref_eventlinktarget <br>
@@ -32,6 +31,7 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_22 <br>
 @ref fal_elem_ref_sec_23 <br>
 @ref fal_elem_ref_sec_24 <br>
+@ref fal_elem_ref_sec_operatordim <br>
 @ref fal_elem_ref_sec_25 <br>
 @ref fal_elem_ref_sec_26 <br>
 @ref fal_elem_ref_sec_27 <br>
@@ -74,9 +74,8 @@ The @c \<AbsoluteDim\> element is used to define a component dimension for an ar
 @arg @c value  specifies the a number of pixels. Required attribute.
 
 @subsection fal_elem_ref_sec_2_3 Usage:
-@li The @c \<AbsoluteDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.
 @li The @c \<AbsoluteDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.
-@li The @c \<AbsoluteDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.
+@li The @c \<AbsoluteDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify an operand for a dimension calculation.
 
 @subsection fal_elem_ref_sec_2_4 Examples:
 The following shows @c \<AbsoluteDim\> used to define an area rectangle. In the example, all four component dimensions of the area rectangle are specified using @c \<AbsoluteDim\>:
@@ -101,26 +100,24 @@ The following shows @c \<AbsoluteDim\> in use as part of a dimension calculation
 @code
 <Area>
   <Dim type="LeftEdge" >
-    <WidgetDim widget="myWidget" dimension="Width" >
-      <DimOperator op="Subtract" >
-        <AbsoluteDim value="2" />
-      </DimOperator>
-    </WidgetDim>
+    <OperatorDim op="Subtract" >
+      <WidgetDim widget="myWidget" dimension="Width" />
+      <AbsoluteDim value="2" />
+    </OperatorDim>
   </Dim>
   ...
 </Area>
 @endcode
 
-Finally, we see @c \<AbsoluteDim\> as the starting dimension for a dimension calculation sequence. In the example, we are adding the value of some window property to the starting absolute value of six:
+Finally, we see @c \<AbsoluteDim\> as part of a dimension calculation sequence. In the example, we are adding the value of some window property to the starting absolute value of six:
 @code
 <Area>
   ...
   <Dim type="Height" >
-    <AbsoluteDim value="6">
-      <DimOperator op="Add" >
-        <PropertyDim name="someHeightProperty" />
-      </DimOperator>
-    </AbsoluteDim>
+    <OperatorDim op="Add" >
+      <AbsoluteDim value="6" />
+      <PropertyDim name="someHeightProperty" />
+    </OperatorDim>
   </Dim>
 </Area>
 @endcode
@@ -234,11 +231,10 @@ In this example, taken from TaharezLook.looknfeel, we see how the title bar chil
       <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
       <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
       <Dim type="Height" >
-        <FontDim type="LineSpacing">
-          <DimOperator op="Multiply">
-            <AbsoluteDim value="1.5" />
-          </DimOperator>
-        </FontDim>
+        <OperatorDim op="Multiply">
+          <FontDim type="LineSpacing" />
+          <AbsoluteDim value="1.5" />
+        </OperatorDim>
       </Dim>
     </Area>
     <Property name="AlwaysOnTop" value="False" />
@@ -391,82 +387,12 @@ The @c \<Dim\> element is intended as a container element for a single dimension
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
+        <li>@c \<ExpressionDim\></li>
+        <li>@c \<OperatorDim\></li>
     </ul>
 </ul>
 
 @subsection fal_elem_ref_sec_9_4 Examples:
-
-
-@section fal_elem_ref_sec_10 \<DimOperator\> Element
-
-@subsection fal_elem_ref_sec_10_1 Purpose:
-The @c \<DimOperator\> element allows you to combine two of the specialised dimension specifier elements via a simple mathematical operator. Since the dimension used as the second operand may also contain a @c \<DimOperator\> it is possible to create quite complex operations.
-
-Of important note is the fact that in a large chain of operations, the calculations are done in reverse order. Also, there is no operator precedence as such, all operations are applied linearly.
-
-@subsection fal_elem_ref_sec_10_2 Attributes:
-@arg @c op  specifies one of the vales from the DimensionOperator enumeration indicating the mathematical operation to be performed. Required attribute.
-
-@subsection fal_elem_ref_sec_10_3 Usage:
-<ul>
-    <li>A single @c \<DimOperator\> element may appear as a sub-element within any of the following specialised dimension elements:</li>
-    <ul>
-        <li>@c \<AbsoluteDim\></li>
-        <li>@c \<FontDim\></li>
-        <li>@c \<ImageDim\></li>
-        <li>@c \<ImagePropertyDim\></li>
-        <li>@c \<PropertyDim\></li>
-        <li>@c \<UnifiedDim\></li>
-        <li>@c \<WidgetDim\></li>
-    </ul>
-    
-    <li>The @c \<DimOperator\> element may contain any of the following specialised dimension elements:</li>
-    <ul>
-        <li>@c \<AbsoluteDim\></li>
-        <li>@c \<FontDim\></li>
-        <li>@c \<ImageDim\></li>
-        <li>@c \<ImagePropertyDim\></li>
-        <li>@c \<PropertyDim\></li>
-        <li>@c \<UnifiedDim\></li>
-        <li>@c \<WidgetDim\></li>
-    </ul>
-</ul>
-
-@subsection fal_elem_ref_sec_10_4 Examples:
-The following multiplies two simple AbsoluteDim dimensions:
-@code
-...
-<AbsoluteDim value="10">
-  <DimOperator op="Multiply">
-    <AbsoluteDim value="4" />
-  </DimOperator>
-</AbsoluteDim>
-...
-@endcode
-
-The next example takes the height of the font used for the target window, adds four pixels and multiplies the result by two.
-
-Note the effectively reversed order and lack of 'normal' operator precedence, the operation performed will be:
-
-@f$ (2 {*} (4 + LineSpacing)) @f$
-
-and not:
-
-@f$ ((2 {*} 4) + LineSpacing) @f$
-
-@code
-...
-<AbsoluteDim value="2">
-  <DimOperator op="Multiply">
-    <AbsoluteDim value="4">
-      <DimOperator op="Add">
-        <FontDim type="LineSpacing" />
-      </DimOperator>
-    </AbsoluteDim>
-  </DimOperator>
-</AbsoluteDim>
-...
-@endcode
 
 
 @section fal_elem_ref_eventaction \<EventAction\> Element
@@ -676,9 +602,8 @@ is much that can be improved and enhanced to make the support even more useful.
 @arg @c value  specifies the expression string. Required attribute.
 
 @subsection fal_elem_ref_expressiondim_3 Usage:
-@li The @c \<ExpressionDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.
 @li The @c \<ExpressionDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.
-@li The @c \<ExpressionDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.
+@li The @c \<ExpressionDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.
 
 @subsection fal_elem_ref_expressiondim_4 Examples:
 TODO
@@ -729,9 +654,8 @@ The @c \<FontDim\> element is used to take some measurement of a Font, and use i
 
 @subsection fal_elem_ref_sec_12_3 Usage:
 <ul>
-    <li>The @c \<FontDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<FontDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<FontDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<FontDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_12_4 Examples:
@@ -1023,12 +947,10 @@ Required attribute.
 
 @subsection fal_elem_ref_sec_19_3 Usage:
 <ul>
-    <li>The @c \<ImageDim\> element may contain a single @c \<DimOperator\>
-        element in order to form a dimension calculation.</li>
     <li>The @c \<ImageDim\> element can appear as a sub-element in @c \<Dim\>
         to form a dimension specification for an area.</li>
     <li>The @c \<ImageDim\> element can appear as a sub-element of
-        @c \<DimOperator\> to specify the second operand for a dimension
+        @c \<OperatorDim\> to specify one of the operands for a dimension
         calculation.</li>
 </ul>
 
@@ -1063,12 +985,10 @@ Required attribute.
 
 @subsection fal_elem_ref_sec_imagepropertydim_3 Usage:
 <ul>
-    <li>The @c \<ImagePropertyDim\> element may contain a single
-        @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<ImagePropertyDim\> element can appear as a sub-element in
         @c \<Dim\> to form a dimension specification for an area.</li>
     <li>The @c \<ImagePropertyDim\> element can appear as a sub-element of
-        @c \<DimOperator\> to specify the second operand for a dimension
+        @c \<OperatorDim\> to specify one of the operands for a dimension
         calculation.</li>
 </ul>
 
@@ -1291,6 +1211,71 @@ This example defines a named area called 'TextArea'. It is defined as being an a
 @endcode
 
 
+@section fal_elem_ref_sec_operatordim \<OperatorDim\> Element
+
+@subsection fal_elem_ref_sec_operatordim_1 Purpose:
+The @c \<OperatorDim\> element allows you to use the result of performing a
+mathematical calculation on two two dimension elements. Since either dimension
+used as operands may also be an @c \<OperatorDim\> it is possible to create
+expression trees to perform any mathematical calculation that can be expressed
+using the supported operators.
+
+@subsection fal_elem_ref_sec_operatordim_2 Attributes:
+@arg @c op  specifies one of the vales from the DimensionOperator enumeration
+indicating the mathematical operation to be performed. Required attribute.
+
+@subsection fal_elem_ref_sec_operatordim_3 Usage:
+<ul>
+    <li>A single @c \<OperatorDim\> element may appear as a sub-element within the following:</li>
+    <ul>
+        <li>@c \<Dim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+    
+    <li>The @c \<OperatorDim\> element must contain any of two the following dimension elements:</li>
+    <ul>
+        <li>@c \<AbsoluteDim\></li>
+        <li>@c \<FontDim\></li>
+        <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
+        <li>@c \<PropertyDim\></li>
+        <li>@c \<UnifiedDim\></li>
+        <li>@c \<WidgetDim\></li>
+        <li>@c \<ExpressionDim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_operatordim_4 Examples:
+The following multiplies two simple AbsoluteDim dimensions:
+@code
+...
+<OperatorDim op="Multiply">
+  <AbsoluteDim value="10" />
+  <AbsoluteDim value="4" />
+</OperatorDim>
+...
+@endcode
+
+The next example takes the height of the font used for the target window, adds four pixels and multiplies the result by two.
+
+The operation performed will be:
+
+@f$ (LineSpacing + 4) {*} 2 @f$
+
+@code
+...
+<OperatorDim op="Multiply">
+  <OperatorDim op="Add">
+    <FontDim type="LineSpacing" />
+    <AbsoluteDim value="4" />
+  </OperatorDim>
+  <AbsoluteDim value="2" />
+</OperatorDim>
+...
+@endcode
+
+
 @section fal_elem_ref_sec_25 \<Property\> Element
 
 @subsection fal_elem_ref_sec_25_1 Purpose:
@@ -1488,9 +1473,8 @@ Optional attribute.
 
 @subsection fal_elem_ref_sec_28_3 Usage:
 <ul>
-    <li>The @c \<PropertyDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<PropertyDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<PropertyDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<PropertyDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_28_4 Examples:
@@ -1745,9 +1729,8 @@ The @c \<UnifiedDim\> element is used to define a component dimension for an are
 
 @subsection fal_elem_ref_sec_34_3 Usage:
 <ul>
-    <li>The @c \<UnifiedDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<UnifiedDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<UnifiedDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<UnifiedDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_34_4 Examples:
@@ -1896,9 +1879,8 @@ The @c \<WidgetDim\> element is used to define a component dimension for an area
 
 @subsection fal_elem_ref_sec_38_3 Usage:
 <ul>
-    <li>The @c \<WidgetDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<WidgetDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<WidgetDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<WidgetDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_38_4 Examples:

@@ -168,11 +168,10 @@
             <TextComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim name="TaharezLook/RadioButtonNormal" dimension="Width">
-                            <DimOperator op="Add">
-                                <AbsoluteDim value="3" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/RadioButtonNormal" dimension="Width"/>
+                            <AbsoluteDim value="3" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
@@ -273,11 +272,10 @@
             <TextComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim name="TaharezLook/CheckboxNormal" dimension="Width">
-                            <DimOperator op="Add">
-                                <AbsoluteDim value="3" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/CheckboxNormal" dimension="Width"/>
+                            <AbsoluteDim value="3" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
@@ -465,15 +463,13 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/SysAreaRight" dimension="Width">
-                                    <DimOperator op="Add">
-                                        <ImageDim name="TaharezLook/SysAreaMiddle" dimension="Width" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge"/>
+                            <OperatorDim op="Add">
+                                <ImageDim name="TaharezLook/SysAreaRight" dimension="Width"/>
+                                <ImageDim name="TaharezLook/SysAreaMiddle" dimension="Width" />
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/NewTitlebarRight" />
@@ -483,11 +479,10 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/SysAreaRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge"/>
+                            <ImageDim name="TaharezLook/SysAreaRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/SysAreaMiddle" />
@@ -503,19 +498,16 @@
                 <Area>
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/NewTitlebarLeft" dimension="Width" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/SysAreaRight" dimension="Width">
-                                    <DimOperator op="Add">
-                                        <ImageDim name="TaharezLook/SysAreaMiddle" dimension="Width">
-                                            <DimOperator op="Add">
-                                                <ImageDim name="TaharezLook/NewTitlebarRight" dimension="Width" />
-                                            </DimOperator>
-                                        </ImageDim>
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <OperatorDim op="Subtract">
+                                <OperatorDim op="Subtract">
+                                    <UnifiedDim scale="1" type="RightEdge"/>
+                                    <ImageDim name="TaharezLook/SysAreaRight" dimension="Width"/>
+                                </OperatorDim>
+                                <ImageDim name="TaharezLook/SysAreaMiddle" dimension="Width"/>
+                            </OperatorDim>
+                            <ImageDim name="TaharezLook/NewTitlebarRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/NewTitlebarMiddle" />
@@ -577,18 +569,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowTopLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -605,18 +595,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowTopLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/WindowTopEdge" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -631,26 +619,22 @@
         <Child type="TaharezLook/ImageButton" nameSuffix="__auto_closebutton__">
             <Area>
                 <Dim type="LeftEdge" >
-                    <UnifiedDim scale="1" type="LeftEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/SysAreaRight" dimension="Width">
-                                <DimOperator op="Add">
-                                    <ImageDim name="TaharezLook/SysAreaMiddle" dimension="Width" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="LeftEdge"/>
+                            <ImageDim name="TaharezLook/SysAreaRight" dimension="Width"/>
+                        </OperatorDim>
+                        <ImageDim name="TaharezLook/SysAreaMiddle" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="TopEdge" >
-                    <AbsoluteDim value="0.5">
-                        <DimOperator op="Multiply">
-                            <WidgetDim widget="__auto_titlebar__" dimension="Height">
-                                <DimOperator op="Subtract">
-                                    <ImageDim name="TaharezLook/NewCloseButtonNormal" dimension="Width" />
-                                </DimOperator>
-                            </WidgetDim>
-                        </DimOperator>
-                    </AbsoluteDim>
+                    <OperatorDim op="Multiply">
+                        <OperatorDim op="Subtract">
+                            <WidgetDim widget="__auto_titlebar__" dimension="Height" />
+                            <ImageDim name="TaharezLook/NewCloseButtonNormal" dimension="Width" />
+                        </OperatorDim>
+                        <AbsoluteDim value="0.5" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Width" ><ImageDim name="TaharezLook/NewCloseButtonNormal" dimension="Width" /></Dim>
                 <Dim type="Height" ><ImageDim name="TaharezLook/NewCloseButtonNormal" dimension="Width" /></Dim>
@@ -677,18 +661,16 @@
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowTopLeft" dimension="Width" /></Dim>
                     <Dim type="TopEdge" ><WidgetDim widget="__auto_titlebar__" dimension="BottomEdge" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="Width">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width" />
+                            <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="Height">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/GenericBrush" />
@@ -712,18 +694,16 @@
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowTopLeft" dimension="Width" /></Dim>
                     <Dim type="TopEdge" ><ImageDim name="TaharezLook/WindowTopEdge" dimension="Width" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="Width">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width" />
+                            <ImageDim name="TaharezLook/WindowTopRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="Height">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/GenericBrush" />
@@ -845,18 +825,16 @@
                     <AbsoluteDim value="20" />
                 </Dim>
                 <Dim type="RightEdge">
-                    <UnifiedDim scale="1" offset="0" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <AbsoluteDim value="8" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" offset="0" type="RightEdge" />
+                        <AbsoluteDim value="8" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge">
-                    <UnifiedDim scale="1" offset="0" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <AbsoluteDim value="8" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" offset="0" type="BottomEdge" />
+                        <AbsoluteDim value="8" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -938,22 +916,19 @@
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim name="TaharezLook/ProgressBarLeft" dimension="Width">
-                        <DimOperator op="Divide">
-                            <AbsoluteDim value="2" />
-                        </DimOperator>
-                    </ImageDim>
+                    <OperatorDim op="Divide">
+                        <ImageDim name="TaharezLook/ProgressBarLeft" dimension="Width" />
+                        <AbsoluteDim value="2" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ProgressBarRight" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <AbsoluteDim value="2" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <OperatorDim op="Divide">
+                            <ImageDim name="TaharezLook/ProgressBarRight" dimension="Width"/>
+                            <AbsoluteDim value="2" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1009,11 +984,10 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/AltProgressLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/AltProgressRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/AltProgressRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height" ><UnifiedDim scale="1" offset="-4" type="Height" /></Dim>
             </Area>
@@ -1343,11 +1317,10 @@
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MiniHorzScrollLeftNormal" dimension="Width" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1.0" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MiniHorzScrollRightNormal" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1.0" type="RightEdge" />
+                        <ImageDim name="TaharezLook/MiniHorzScrollRightNormal" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1379,11 +1352,10 @@
                 <Area>
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MiniHorzScrollLeftNormal" dimension="Width" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1.0" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/MiniHorzScrollRightNormal" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="RightEdge" />
+                            <ImageDim name="TaharezLook/MiniHorzScrollRightNormal" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/MiniHorzScrollBarSegment" />
@@ -1462,11 +1434,10 @@
             <Area>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/MiniVertScrollUpNormal" dimension="Height" /></Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1.0" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MiniVertScrollDownNormal" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1.0" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/MiniVertScrollDownNormal" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1498,11 +1469,10 @@
                 <Area>
                     <Dim type="TopEdge" ><ImageDim name="TaharezLook/MiniVertScrollUpNormal" dimension="Height" /></Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/MiniVertScrollDownNormal" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="BottomEdge" />
+                            <ImageDim name="TaharezLook/MiniVertScrollDownNormal" dimension="Height" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/MiniVertScrollBarSegment" />
@@ -1535,18 +1505,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1555,18 +1523,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1575,18 +1541,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1595,18 +1559,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1662,18 +1624,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ComboboxListTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ComboboxListRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ComboboxListRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ComboboxListBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ComboboxListBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1682,18 +1642,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ComboboxListTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ComboboxListRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ComboboxListRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1702,18 +1660,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ComboboxListTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ComboboxListBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ComboboxListBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1722,18 +1678,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ComboboxListTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -1866,11 +1820,10 @@
         <Child  type="TaharezLook/ComboEditbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <FontDim type="LineSpacing" padding="10" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <FontDim type="LineSpacing" padding="10" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height" >
                     <FontDim type="LineSpacing" padding="10" />
@@ -1906,11 +1859,10 @@
         <Child  type="TaharezLook/Editbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </Child>
@@ -1966,18 +1918,16 @@
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
                     <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="BottomEdge" />
+                            <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/StaticBackdrop" />
@@ -2017,18 +1967,16 @@
 					<Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
 					<Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
 					<Dim type="RightEdge" >
-						<UnifiedDim scale="1" type="RightEdge">
-							<DimOperator op="Subtract">
-								<ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-							</DimOperator>
-						</UnifiedDim>
+                        <OperatorDim op="Subtract">
+    						<UnifiedDim scale="1" type="RightEdge" />
+	        				<ImageDim name="TaharezLook/StaticRight" dimension="Width" />
+						</OperatorDim>
 					</Dim>
 					<Dim type="BottomEdge" >
-						<UnifiedDim scale="1" type="BottomEdge">
-							<DimOperator op="Subtract">
-								<ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
-							</DimOperator>
-						</UnifiedDim>
+                        <OperatorDim op="Subtract">
+    						<UnifiedDim scale="1" type="BottomEdge" />
+	    					<ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
+						</OperatorDim>
 					</Dim>
 				</Area>
                 <ImageProperty name="Image" />
@@ -2113,18 +2061,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2133,18 +2079,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/StaticRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2153,18 +2097,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/StaticBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2173,18 +2115,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/StaticTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2192,40 +2132,36 @@
         <NamedArea name="NoFrameTextRenderAreaHScroll">
             <Area>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <NamedArea name="NoFrameTextRenderAreaVScroll">
             <Area>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <NamedArea name="NoFrameTextRenderAreaHVScroll">
             <Area>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2291,11 +2227,10 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/HeaderBarSplitterNormal" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="TaharezLook/HeaderBarSplitterNormal" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/HeaderBarBackdropNormal" />
@@ -2307,11 +2242,10 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/HeaderBarSplitterNormal" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="TaharezLook/HeaderBarSplitterNormal" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/HeaderBarBackdropHover" />
@@ -2359,11 +2293,10 @@
             <TextComponent>
                 <Area>
                     <Dim type="LeftEdge" >
-                        <ImageDim name="TaharezLook/HeaderBarSortUp" dimension="Width">
-                            <DimOperator op="Add">
-                                <AbsoluteDim value="5" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/HeaderBarSortUp" dimension="Width" />
+                            <AbsoluteDim value="5" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
@@ -2465,18 +2398,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiListRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/MultiListRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiListBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/MultiListBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2485,18 +2416,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiListRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/MultiListRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2505,18 +2434,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiListBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/MultiListBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2525,18 +2452,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiListLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><WidgetDim widget="__auto_listheader__" dimension="BottomEdge" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2546,11 +2471,10 @@
                 <Dim type="TopEdge" ><AbsoluteDim value="2" /></Dim>
                 <Dim type="RightEdge" ><UnifiedDim scale="1" offset="-2" type="RightEdge" /></Dim>
                 <Dim type="Height" >
-                    <FontDim type="LineSpacing">
-                        <DimOperator op="Multiply">
-                            <AbsoluteDim value="1.5" />
-                        </DimOperator>
-                    </FontDim>
+                    <OperatorDim op="Multiply">
+                        <FontDim type="LineSpacing" />
+                        <AbsoluteDim value="1.5" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </Child>
@@ -2613,18 +2537,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiLineEditboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/MultiLineEditboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiLineEditboxRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/MultiLineEditboxRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiLineEditboxBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/MultiLineEditboxBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2633,18 +2555,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiLineEditboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/MultiLineEditboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiLineEditboxRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/MultiLineEditboxRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2653,18 +2573,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiLineEditboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/MultiLineEditboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/MultiLineEditboxBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/MultiLineEditboxBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2673,18 +2591,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiLineEditboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/MultiLineEditboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2755,18 +2671,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/TooltipLeftEdge" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/TooltipTopEdge" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/TooltipRightEdge" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/TooltipRightEdge" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/TooltipBottomEdge" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/TooltipBottomEdge" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -2789,18 +2703,16 @@
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/TooltipLeftEdge" dimension="Width" /></Dim>
                     <Dim type="TopEdge" ><ImageDim name="TaharezLook/TooltipTopEdge" dimension="Height" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/TooltipRightEdge" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="TaharezLook/TooltipRightEdge" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/TooltipBottomEdge" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="BottomEdge" />
+                            <ImageDim name="TaharezLook/TooltipBottomEdge" dimension="Height" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Colours topLeft="FF000000" topRight="FF000000" bottomLeft="FF000000" bottomRight="FF000000" />
@@ -2854,40 +2766,36 @@
         <NamedArea name="ViewableAreaHScroll">
             <Area>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <NamedArea name="ViewableAreaVScroll">
             <Area>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <NamedArea name="ViewableAreaHVScroll">
             <Area>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -3098,11 +3006,10 @@
             <FrameComponent>
                 <Area>
                     <Dim type="BottomEdge" >
-                        <ImageDim name="TaharezLook/TabContentPaneUpperLeft" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="EnableTop" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Multiply">
+                            <ImageDim name="TaharezLook/TabContentPaneUpperLeft" dimension="Height" />
+                            <PropertyDim name="EnableTop" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image component="TopLeftCorner" name="TaharezLook/TabContentPaneUpperLeft" />
@@ -3112,22 +3019,19 @@
             <FrameComponent>
                 <Area>
                     <Dim type="TopEdge" >
-                        <ImageDim name="TaharezLook/TabContentPaneUpperLeft" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="EnableTop" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Multiply">
+                            <ImageDim name="TaharezLook/TabContentPaneUpperLeft" dimension="Height" />
+                            <PropertyDim name="EnableTop" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="Height">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/TabContentPaneLowerLeft" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="EnableBottom" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <OperatorDim op="Multiply">
+                                <ImageDim name="TaharezLook/TabContentPaneLowerLeft" dimension="Height"/>
+                                <PropertyDim name="EnableBottom" />
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image component="LeftEdge" name="TaharezLook/TabContentPaneLeft" />
@@ -3137,15 +3041,13 @@
             <FrameComponent>
                 <Area>
                     <Dim type="TopEdge" >
-                        <UnifiedDim scale="1" type="Height">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/TabContentPaneLowerLeft" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="EnableBottom" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <OperatorDim op="Multiply">
+                                <ImageDim name="TaharezLook/TabContentPaneLowerLeft" dimension="Height"/>
+                                <PropertyDim name="EnableBottom" />
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image component="BottomLeftCorner" name="TaharezLook/TabContentPaneLowerLeft" />
@@ -3179,11 +3081,10 @@
             <FrameComponent>
                 <Area>
                     <Dim type="BottomEdge" >
-                        <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="EnableTop" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Multiply">
+                            <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height" />
+                            <PropertyDim name="EnableTop" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image component="TopEdge" name="TaharezLook/TabHorizontalFiller" />
@@ -3191,37 +3092,32 @@
             <FrameComponent>
                 <Area>
                     <Dim type="TopEdge" >
-                        <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height">
-                            <DimOperator op="Multiply">
-                                <PropertyDim name="EnableTop" />
-                            </DimOperator>
-                        </ImageDim>
+                        <OperatorDim op="Multiply">
+                            <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height" />
+                            <PropertyDim name="EnableTop" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="Height">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="EnableBottom" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <OperatorDim op="Multiply">
+                                <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height" />
+                                <PropertyDim name="EnableBottom" />
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                 </Area>
             </FrameComponent>
             <FrameComponent>
                 <Area>
                     <Dim type="TopEdge" >
-                        <UnifiedDim scale="1" type="Height">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <PropertyDim name="EnableBottom" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <OperatorDim op="Multiply">
+                                <ImageDim name="TaharezLook/TabHorizontalFiller" dimension="Height" />
+                                <PropertyDim name="EnableBottom" />
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image component="BottomEdge" name="TaharezLook/TabHorizontalFiller" />
@@ -3252,33 +3148,29 @@
         <Child type="TaharezLook/TabContentPane" nameSuffix="__auto_TabPane__">
             <Area>
                 <Dim type="TopEdge">
-                    <PropertyDim widget="__auto_TabPane__" name="EnableBottom">
-                        <DimOperator op="Multiply">
-                            <PropertyDim name="TabHeight" type="Height" />
-                        </DimOperator>
-                    </PropertyDim>
+                    <OperatorDim op="Multiply">
+                        <PropertyDim widget="__auto_TabPane__" name="EnableBottom" />
+                        <PropertyDim name="TabHeight" type="Height" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height">
-                    <UnifiedDim scale="1" type="Height">
-                        <DimOperator op="Subtract">
-                            <PropertyDim name="TabHeight" type="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="Height" />
+                        <PropertyDim name="TabHeight" type="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </Child>
         <Child  type="TaharezLook/TabButtonPane" nameSuffix="__auto_TabPane__Buttons">
             <Area>
                 <Dim type="TopEdge">
-                    <PropertyDim widget="__auto_TabPane__Buttons" name="EnableTop">
-                        <DimOperator op="Multiply">
-                            <UnifiedDim scale="1" type="Height">
-                                <DimOperator op="Subtract">
-                                    <PropertyDim name="TabHeight" type="Height" />
-                                </DimOperator>
-                            </UnifiedDim>
-                        </DimOperator>
-                    </PropertyDim>
+                    <OperatorDim op="Multiply">
+                        <PropertyDim widget="__auto_TabPane__Buttons" name="EnableTop"/>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Height" />
+                            <PropertyDim name="TabHeight" type="Height" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height"><PropertyDim name="TabHeight" type="Height" /></Dim>
             </Area>
@@ -3290,15 +3182,13 @@
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="TopEdge" />
                 </Dim>
                 <Dim type="Width">
-                    <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height">
-                        <DimOperator op="Multiply">
-                            <ImageDim name="TaharezLook/TabButtonScrollLeftNormal" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <ImageDim name="TaharezLook/TabButtonScrollLeftNormal" dimension="Height" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </WidgetDim>
+                    <OperatorDim op="Multiply">
+                        <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height" />
+                        <OperatorDim op="Divide">
+                            <ImageDim name="TaharezLook/TabButtonScrollLeftNormal" dimension="Width" />
+                            <ImageDim name="TaharezLook/TabButtonScrollLeftNormal" dimension="Height" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge">
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="BottomEdge" />
@@ -3312,22 +3202,19 @@
         <Child type="TaharezLook/Button" nameSuffix="__auto_TabPane__ScrollRight">
             <Area>
                 <Dim type="Width">
-                    <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height">
-                        <DimOperator op="Multiply">
-                            <ImageDim name="TaharezLook/TabButtonScrollRightNormal" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <ImageDim name="TaharezLook/TabButtonScrollRightNormal" dimension="Height" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </WidgetDim>
+                    <OperatorDim op="Multiply">
+                        <WidgetDim widget="__auto_TabPane__Buttons" dimension="Height" />
+                        <OperatorDim op="Divide">
+                            <ImageDim name="TaharezLook/TabButtonScrollRightNormal" dimension="Width" />
+                            <ImageDim name="TaharezLook/TabButtonScrollRightNormal" dimension="Height" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="LeftEdge">
-                    <UnifiedDim scale="1" type="Width">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_TabPane__ScrollRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="Width" />
+                        <WidgetDim widget="__auto_TabPane__ScrollRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="TopEdge">
                     <WidgetDim widget="__auto_TabPane__Buttons" dimension="TopEdge" />
@@ -3360,60 +3247,50 @@
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="Width">
-                    <FontDim type="HorzExtent">
-                        <DimOperator op="Add">
-                            <ImageDim name="TaharezLook/MenuLeft" dimension="Width">
-                                <DimOperator op="Add">
-                                    <ImageDim name="TaharezLook/MenuRight" dimension="Width" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </FontDim>
+                    <OperatorDim op="Add">
+                        <FontDim type="HorzExtent" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/MenuLeft" dimension="Width" />
+                            <ImageDim name="TaharezLook/MenuRight" dimension="Width" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height">
-                    <FontDim type="LineSpacing">
-                        <DimOperator op="Add">
-                            <ImageDim name="TaharezLook/MenuTop" dimension="Height">
-                                <DimOperator op="Add">
-                                    <ImageDim name="TaharezLook/MenuBottom" dimension="Height" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </FontDim>
+                    <OperatorDim op="Add">
+                        <FontDim type="LineSpacing" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/MenuTop" dimension="Height" />
+                            <ImageDim name="TaharezLook/MenuBottom" dimension="Height" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
         <NamedArea name="HasPopupContentSize">
             <Area>
                 <Dim type="Width">
-                    <FontDim type="HorzExtent">
-                        <DimOperator op="Add">
-                            <ImageDim name="TaharezLook/MenuLeft" dimension="Width">
-                                <DimOperator op="Add">
-                                    <ImageDim name="TaharezLook/MenuRight" dimension="Width">
-                                        <DimOperator op="Add">
-                                            <ImageDim name="TaharezLook/PopupMenuArrowLeft" dimension="Width">
-                                                <DimOperator op="Multiply">
-                                                    <AbsoluteDim value="3" />
-                                                </DimOperator>
-                                            </ImageDim>
-                                        </DimOperator>
-                                    </ImageDim>
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </FontDim>
+                    <OperatorDim op="Add">
+                        <FontDim type="HorzExtent" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/MenuLeft" dimension="Width" />
+                            <OperatorDim op="Add">
+                                <ImageDim name="TaharezLook/MenuRight" dimension="Width" />
+                                <OperatorDim op="Multiply">
+                                    <ImageDim name="TaharezLook/PopupMenuArrowLeft" dimension="Width" />
+                                    <AbsoluteDim value="3" />
+                                </OperatorDim>
+                            </OperatorDim>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height">
-                    <FontDim type="LineSpacing">
-                        <DimOperator op="Add">
-                            <ImageDim name="TaharezLook/MenuTop" dimension="Height">
-                                <DimOperator op="Add">
-                                    <ImageDim name="TaharezLook/MenuBottom" dimension="Height" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </FontDim>
+                    <OperatorDim op="Add">
+                        <FontDim type="LineSpacing" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/MenuTop" dimension="Height" />
+                            <ImageDim name="TaharezLook/MenuBottom" dimension="Height" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -3423,18 +3300,16 @@
                     <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MenuLeft" dimension="Width" /></Dim>
                     <Dim type="TopEdge" ><ImageDim name="TaharezLook/MenuTop" dimension="Height" /></Dim>
                     <Dim type="RightEdge" >
-                        <UnifiedDim scale="1" type="RightEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/MenuRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="TaharezLook/MenuRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/MenuBottom" dimension="Height" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="BottomEdge" />
+                            <ImageDim name="TaharezLook/MenuBottom" dimension="Height" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <VertFormat type="CentreAligned" />
@@ -3458,11 +3333,10 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="Width" >
-                        <UnifiedDim scale="1" type="Width">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/PopupMenuArrowRight" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width" />
+                            <ImageDim name="TaharezLook/PopupMenuArrowRight" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/PopupMenuArrowRight" />
@@ -3474,11 +3348,10 @@
             <ImageryComponent>
                 <Area>
                     <Dim type="Width" >
-                        <UnifiedDim scale="1" type="Width">
-                            <DimOperator op="Subtract">
-                                <ImageDim name="TaharezLook/PopupMenuArrowLeft" dimension="Width" />
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="Width" />
+                            <ImageDim name="TaharezLook/PopupMenuArrowLeft" dimension="Width" />
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/PopupMenuArrowLeft" />
@@ -3583,40 +3456,34 @@
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim name="TaharezLook/PopupMenuFrameLeft" dimension="Width">
-                        <DimOperator op="Add">
-                            <PropertyDim name="BorderWidth" />
-                        </DimOperator>
-                    </ImageDim>
+                    <OperatorDim op="Add">
+                        <ImageDim name="TaharezLook/PopupMenuFrameLeft" dimension="Width" />
+                        <PropertyDim name="BorderWidth" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim name="TaharezLook/PopupMenuFrameTop" dimension="Height">
-                        <DimOperator op="Add">
-                            <PropertyDim name="BorderWidth" />
-                        </DimOperator>
-                    </ImageDim>
+                    <OperatorDim op="Add">
+                        <ImageDim name="TaharezLook/PopupMenuFrameTop" dimension="Height" />
+                        <PropertyDim name="BorderWidth" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/PopupMenuFrameRight" dimension="Width">
-                                <DimOperator op="Add">
-                                    <PropertyDim name="BorderWidth" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/PopupMenuFrameRight" dimension="Width" />
+                            <PropertyDim name="BorderWidth" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/PopupMenuFrameBottom" dimension="Height">
-                                <DimOperator op="Add">
-                                    <PropertyDim name="BorderWidth" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/PopupMenuFrameBottom" dimension="Height" />
+                            <PropertyDim name="BorderWidth" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -3661,40 +3528,34 @@
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" >
-                    <ImageDim name="TaharezLook/PopupMenuFrameLeft" dimension="Width">
-                        <DimOperator op="Add">
-                            <PropertyDim name="BorderWidth" />
-                        </DimOperator>
-                    </ImageDim>
+                    <OperatorDim op="Add">
+                        <ImageDim name="TaharezLook/PopupMenuFrameLeft" dimension="Width" />
+                        <PropertyDim name="BorderWidth" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="TopEdge" >
-                    <ImageDim name="TaharezLook/PopupMenuFrameTop" dimension="Height">
-                        <DimOperator op="Add">
-                            <PropertyDim name="BorderWidth" />
-                        </DimOperator>
-                    </ImageDim>
+                    <OperatorDim op="Add">
+                        <ImageDim name="TaharezLook/PopupMenuFrameTop" dimension="Height" />
+                        <PropertyDim name="BorderWidth" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/PopupMenuFrameRight" dimension="Width">
-                                <DimOperator op="Add">
-                                    <PropertyDim name="BorderWidth" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/PopupMenuFrameRight" dimension="Width" />
+                            <PropertyDim name="BorderWidth" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/PopupMenuFrameBottom" dimension="Height">
-                                <DimOperator op="Add">
-                                    <PropertyDim name="BorderWidth" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <OperatorDim op="Add">
+                            <ImageDim name="TaharezLook/PopupMenuFrameBottom" dimension="Height" />
+                            <PropertyDim name="BorderWidth" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -3784,31 +3645,26 @@
             <Area>
                 <Dim type="LeftEdge" ><UnifiedDim scale="0.325" type="LeftEdge" /></Dim>
                 <Dim type="TopEdge" >
-                    <WidgetDim widget="__auto_decbtn__" dimension="Height">
-                        <DimOperator op="Add">
-                            <ImageDim name="TaharezLook/VertScrollTop" dimension="Height">
-                                <DimOperator op="Multiply">
-                                    <AbsoluteDim value="0.5" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </WidgetDim>
+                    <OperatorDim op="Add">
+                        <WidgetDim widget="__auto_decbtn__" dimension="Height" />
+                        <OperatorDim op="Multiply">
+                            <ImageDim name="TaharezLook/VertScrollTop" dimension="Height" />
+                            <AbsoluteDim value="0.5" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1.0" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <WidgetDim widget="__auto_decbtn__" dimension="Height">
-                                <DimOperator op="Add">
-                                    <ImageDim name="TaharezLook/VertScrollTop" dimension="Height">
-                                        <DimOperator op="Multiply">
-                                            <AbsoluteDim value="0.5" />
-                                        </DimOperator>
-                                    </ImageDim>
-                                </DimOperator>
-                            </WidgetDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1.0" type="BottomEdge" />
+                        <OperatorDim op="Add">
+                            <WidgetDim widget="__auto_decbtn__" dimension="Height" />
+                            <OperatorDim op="Multiply">
+                                <ImageDim name="TaharezLook/VertScrollTop" dimension="Height" />
+                                <AbsoluteDim value="0.5" />
+                            </OperatorDim>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -3816,27 +3672,23 @@
             <Area>
                 <Dim type="LeftEdge" ><UnifiedDim scale="0.25" type="LeftEdge" /></Dim>
                 <Dim type="TopEdge" >
-                    <AbsoluteDim value="-1">
-                        <DimOperator op="Multiply">
-                            <ImageDim name="TaharezLook/VertScrollTop" dimension="Height">
-                                <DimOperator op="Multiply">
-                                    <AbsoluteDim value="0.5" />
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </AbsoluteDim>
+                    <OperatorDim op="Multiply">
+                        <AbsoluteDim value="-1" />
+                        <OperatorDim op="Multiply">
+                            <ImageDim name="TaharezLook/VertScrollTop" dimension="Height" />
+                            <AbsoluteDim value="0.5" />
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Width" ><UnifiedDim scale="0.6" type="Width" /></Dim>
                 <Dim type="Height" >
-                    <UnifiedDim scale="0.6" type="Width">
-                        <DimOperator op="Multiply">
-                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Height"/>
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Multiply">
+                        <UnifiedDim scale="0.6" type="Width" />
+                        <OperatorDim op="Divide">
+                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Width" />
+                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned" />
@@ -3848,23 +3700,20 @@
             <Area>
                 <Dim type="LeftEdge" ><UnifiedDim scale="0.25" type="LeftEdge" /></Dim>
                 <Dim type="TopEdge">
-                    <ImageDim name="TaharezLook/VertScrollTop" dimension="Height">
-                        <DimOperator op="Multiply">
-                            <AbsoluteDim value="0.5" />
-                        </DimOperator>
-                    </ImageDim>
+                    <OperatorDim op="Multiply">
+                        <ImageDim name="TaharezLook/VertScrollTop" dimension="Height" />
+                        <AbsoluteDim value="0.5" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Width" ><UnifiedDim scale="0.6" type="Width" /></Dim>
                 <Dim type="Height" >
-                    <UnifiedDim scale="0.6" type="Width">
-                        <DimOperator op="Multiply">
-                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Width">
-                                <DimOperator op="Divide">
-                                    <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Height"/>
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Multiply">
+                        <UnifiedDim scale="0.6" type="Width" />
+                        <OperatorDim op="Divide">
+                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Width" />
+                            <ImageDim name="TaharezLook/VertScrollUpNormal" dimension="Height"/>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
             <Property name="NormalImage" value="TaharezLook/VertScrollUpNormal" />
@@ -3875,15 +3724,13 @@
             <Area>
                 <Dim type="Width" ><UnifiedDim scale="0.4" type="Width" /></Dim>
                 <Dim type="Height" >
-                    <UnifiedDim scale="0.4" type="Width">
-                        <DimOperator op="Multiply">
-                            <ImageDim name="TaharezLook/VertScrollThumbNormal" dimension="Height">
-                                <DimOperator op="Divide">
-                                    <ImageDim name="TaharezLook/VertScrollThumbNormal" dimension="Width"/>
-                                </DimOperator>
-                            </ImageDim>
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Multiply">
+                        <UnifiedDim scale="0.4" type="Width" />
+                        <OperatorDim op="Divide">
+                            <ImageDim name="TaharezLook/VertScrollThumbNormal" dimension="Height" />
+                            <ImageDim name="TaharezLook/VertScrollThumbNormal" dimension="Width"/>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </Child>
@@ -3897,31 +3744,26 @@
                 <Area>
                     <Dim type="LeftEdge" ><UnifiedDim scale="0.45" type="LeftEdge" /></Dim>
                     <Dim type="TopEdge" >
-                        <WidgetDim widget="__auto_decbtn__" dimension="Height">
-                            <DimOperator op="Add">
-                                <ImageDim name="TaharezLook/VertScrollTop" dimension="Height">
-                                    <DimOperator op="Multiply">
-                                        <AbsoluteDim value="0.5" />
-                                    </DimOperator>
-                                </ImageDim>
-                            </DimOperator>
-                        </WidgetDim>
+                        <OperatorDim op="Add">
+                            <WidgetDim widget="__auto_decbtn__" dimension="Height" />
+                            <OperatorDim op="Multiply">
+                                <ImageDim name="TaharezLook/VertScrollTop" dimension="Height" />
+                                <AbsoluteDim value="0.5" />
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                     <Dim type="RightEdge" ><UnifiedDim scale="1.0" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge" >
-                        <UnifiedDim scale="1.0" type="BottomEdge">
-                            <DimOperator op="Subtract">
-                                <WidgetDim widget="__auto_decbtn__" dimension="Height">
-                                    <DimOperator op="Add">
-                                        <ImageDim name="TaharezLook/VertScrollTop" dimension="Height">
-                                            <DimOperator op="Multiply">
-                                                <AbsoluteDim value="0.5" />
-                                            </DimOperator>
-                                        </ImageDim>
-                                    </DimOperator>
-                                </WidgetDim>
-                            </DimOperator>
-                        </UnifiedDim>
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1.0" type="BottomEdge" />
+                            <OperatorDim op="Add">
+                                <WidgetDim widget="__auto_decbtn__" dimension="Height" />
+                                <OperatorDim op="Multiply">
+                                    <ImageDim name="TaharezLook/VertScrollTop" dimension="Height" />
+                                    <AbsoluteDim value="0.5" />
+                                </OperatorDim>
+                            </OperatorDim>
+                        </OperatorDim>
                     </Dim>
                 </Area>
                 <Image name="TaharezLook/VertScrollBarSegment" />
@@ -4028,18 +3870,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -4048,11 +3888,10 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
                     <UnifiedDim scale="1" offset="-12" type="BottomEdge" />
@@ -4067,11 +3906,10 @@
                     <UnifiedDim scale="1" offset="-12" type="RightEdge" />
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>
@@ -4215,18 +4053,16 @@
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowLeftEdge" dimension="Width" /></Dim>
                 <Dim type="TopEdge" ><ImageDim name="TaharezLook/WindowTopEdge" dimension="Height" /></Dim>
                 <Dim type="RightEdge" >
-                    <UnifiedDim scale="1" type="RightEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/WindowRightEdge" dimension="Width" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/WindowRightEdge" dimension="Width" />
+                    </OperatorDim>
                 </Dim>
                 <Dim type="BottomEdge" >
-                    <UnifiedDim scale="1" type="BottomEdge">
-                        <DimOperator op="Subtract">
-                            <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
-                        </DimOperator>
-                    </UnifiedDim>
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/WindowBottomEdge" dimension="Height" />
+                    </OperatorDim>
                 </Dim>
             </Area>
         </NamedArea>

@@ -95,7 +95,7 @@ namespace CEGUI
     const String Falagard_xmlHandler::PropertyDefinitionElement("PropertyDefinition");
     const String Falagard_xmlHandler::PropertyLinkDefinitionElement("PropertyLinkDefinition");
     const String Falagard_xmlHandler::PropertyLinkTargetElement("PropertyLinkTarget");
-    const String Falagard_xmlHandler::DimOperatorElement("DimOperator");
+    const String Falagard_xmlHandler::OperatorDimElement("OperatorDim");
     const String Falagard_xmlHandler::VertFormatPropertyElement("VertFormatProperty");
     const String Falagard_xmlHandler::HorzFormatPropertyElement("HorzFormatProperty");
     const String Falagard_xmlHandler::AreaPropertyElement("AreaProperty");
@@ -199,7 +199,7 @@ namespace CEGUI
         registerElementStartHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaStart);
         registerElementStartHandler(PropertyDefinitionElement, &Falagard_xmlHandler::elementPropertyDefinitionStart);
         registerElementStartHandler(PropertyLinkDefinitionElement, &Falagard_xmlHandler::elementPropertyLinkDefinitionStart);
-        registerElementStartHandler(DimOperatorElement, &Falagard_xmlHandler::elementDimOperatorStart);
+        registerElementStartHandler(OperatorDimElement, &Falagard_xmlHandler::elementOperatorDimStart);
         registerElementStartHandler(VertFormatPropertyElement, &Falagard_xmlHandler::elementVertFormatPropertyStart);
         registerElementStartHandler(HorzFormatPropertyElement, &Falagard_xmlHandler::elementHorzFormatPropertyStart);
         registerElementStartHandler(AreaPropertyElement, &Falagard_xmlHandler::elementAreaPropertyStart);
@@ -234,6 +234,7 @@ namespace CEGUI
         registerElementEndHandler(FontDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(PropertyDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(ExpressionDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
+        registerElementEndHandler(OperatorDimElement, &Falagard_xmlHandler::elementAnyDimEnd);
         registerElementEndHandler(NamedAreaElement, &Falagard_xmlHandler::elementNamedAreaEnd);
         registerElementEndHandler(PropertyLinkDefinitionElement, &Falagard_xmlHandler::elementPropertyLinkDefinitionEnd);
         registerElementEndHandler(EventLinkDefinitionElement, &Falagard_xmlHandler::elementEventLinkDefinitionEnd);
@@ -1105,16 +1106,14 @@ namespace CEGUI
     }
 
     /*************************************************************************
-        Method that handles the opening DimOperator XML element.
+        Method that handles the opening OperatorDim XML element.
     *************************************************************************/
-    void Falagard_xmlHandler::elementDimOperatorStart(const XMLAttributes& attributes)
+    void Falagard_xmlHandler::elementOperatorDimStart(const XMLAttributes& attributes)
     {
-        if (!d_dimStack.empty())
-        {
-            d_dimStack.back()->setDimensionOperator(
-                FalagardXMLHelper<DimensionOperator>::fromString(
-                    attributes.getValueAsString(OperatorAttribute)));
-        }
+        OperatorDim base(FalagardXMLHelper<DimensionOperator>::fromString(
+            attributes.getValueAsString(OperatorAttribute)));
+
+        doBaseDimStart(&base);
     }
 
     /*************************************************************************
@@ -1470,7 +1469,8 @@ namespace CEGUI
 
             if (!d_dimStack.empty())
             {
-                d_dimStack.back()->setOperand(*currDim);
+                if (OperatorDim* op = dynamic_cast<OperatorDim*>(d_dimStack.back()))
+                   op->setNextOperand(currDim); 
             }
             else
             {
