@@ -29,16 +29,16 @@ struct ImagePropertyDim_wrapper : CEGUI::ImagePropertyDim, bp::wrapper< CEGUI::I
     
     }
 
-    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
-        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
-            return func_clone_impl(  );
+    virtual ::CEGUI::BaseDim * clone(  ) const  {
+        if( bp::override func_clone = this->get_override( "clone" ) )
+            return func_clone(  );
         else{
-            return this->CEGUI::ImagePropertyDim::clone_impl(  );
+            return this->CEGUI::ImagePropertyDim::clone(  );
         }
     }
     
-    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
-        return CEGUI::ImagePropertyDim::clone_impl( );
+    ::CEGUI::BaseDim * default_clone(  ) const  {
+        return CEGUI::ImagePropertyDim::clone( );
     }
 
     virtual ::CEGUI::Image const * getSourceImage( ::CEGUI::Window const & wnd ) const {
@@ -89,6 +89,18 @@ struct ImagePropertyDim_wrapper : CEGUI::ImagePropertyDim, bp::wrapper< CEGUI::I
         return CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
     }
 
+    virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
+            func_writeXMLToStream( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+        }
+    }
+    
+    void default_writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+    }
+
 };
 
 void register_ImagePropertyDim_class(){
@@ -98,25 +110,27 @@ void register_ImagePropertyDim_class(){
         ImagePropertyDim_exposer_t ImagePropertyDim_exposer = ImagePropertyDim_exposer_t( "ImagePropertyDim", "! ImageDimBase subclass that accesses an image fetched via a property.\n", bp::init< >() );
         bp::scope ImagePropertyDim_scope( ImagePropertyDim_exposer );
         ImagePropertyDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("property_name"), bp::arg("dim") ), "*!\n\
-                \n\
-                    Constructor.\n\
+            \n\
+                Constructor.\n\
         \n\
-                @param property_name\n\
-                    String holding the name of the property on the target that will be\n\
-                    accessed to retrieve the name of the image to be accessed by the\n\
-                    ImageDim.\n\
+            @param property_name\n\
+                String holding the name of the property on the target that will be\n\
+                accessed to retrieve the name of the image to be accessed by the\n\
+                ImageDim.\n\
         \n\
-                @param dim\n\
-                    DimensionType value indicating which dimension of an Image that\n\
-                    this ImageDim is to represent.\n\
-                *\n") );
-        { //::CEGUI::ImagePropertyDim::clone_impl
+            @param dim\n\
+                DimensionType value indicating which dimension of an Image that\n\
+                this ImageDim is to represent.\n\
+            *\n") );
+        { //::CEGUI::ImagePropertyDim::clone
         
-            typedef ::CEGUI::BaseDim * ( ImagePropertyDim_wrapper::*clone_impl_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( ::CEGUI::ImagePropertyDim::*clone_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( ImagePropertyDim_wrapper::*default_clone_function_type )(  ) const;
             
             ImagePropertyDim_exposer.def( 
-                "clone_impl"
-                , clone_impl_function_type( &ImagePropertyDim_wrapper::default_clone_impl )
+                "clone"
+                , clone_function_type(&::CEGUI::ImagePropertyDim::clone)
+                , default_clone_function_type(&ImagePropertyDim_wrapper::default_clone)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -129,7 +143,7 @@ void register_ImagePropertyDim_class(){
                 , getSourceImage_function_type( &ImagePropertyDim_wrapper::default_getSourceImage )
                 , ( bp::arg("wnd") )
                 , bp::return_value_policy< bp::reference_existing_object >()
-                , "Implementation of the base class interface\n" );
+                , "Implementation  overrides of functions in superclasses\n" );
         
         }
         { //::CEGUI::ImagePropertyDim::getSourceProperty
@@ -173,7 +187,7 @@ void register_ImagePropertyDim_class(){
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &ImagePropertyDim_wrapper::default_writeXMLElementName_impl )
                 , ( bp::arg("xml_stream") )
-                , "Implementation of the base class interface\n" );
+                , "Implementation  overrides of functions in superclasses\n" );
         
         }
         { //::CEGUI::BaseDim::handleFontRenderSizeChange
@@ -186,6 +200,18 @@ void register_ImagePropertyDim_class(){
                 , handleFontRenderSizeChange_function_type(&::CEGUI::BaseDim::handleFontRenderSizeChange)
                 , default_handleFontRenderSizeChange_function_type(&ImagePropertyDim_wrapper::default_handleFontRenderSizeChange)
                 , ( bp::arg("window"), bp::arg("font") ) );
+        
+        }
+        { //::CEGUI::BaseDim::writeXMLToStream
+        
+            typedef void ( ::CEGUI::BaseDim::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( ImagePropertyDim_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            ImagePropertyDim_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type(&::CEGUI::BaseDim::writeXMLToStream)
+                , default_writeXMLToStream_function_type(&ImagePropertyDim_wrapper::default_writeXMLToStream)
+                , ( bp::arg("xml_stream") ) );
         
         }
     }

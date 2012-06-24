@@ -29,40 +29,40 @@ struct PropertyDim_wrapper : CEGUI::PropertyDim, bp::wrapper< CEGUI::PropertyDim
     
     }
 
-    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
-        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
-            return func_clone_impl(  );
+    virtual ::CEGUI::BaseDim * clone(  ) const  {
+        if( bp::override func_clone = this->get_override( "clone" ) )
+            return func_clone(  );
         else{
-            return this->CEGUI::PropertyDim::clone_impl(  );
+            return this->CEGUI::PropertyDim::clone(  );
         }
     }
     
-    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
-        return CEGUI::PropertyDim::clone_impl( );
+    ::CEGUI::BaseDim * default_clone(  ) const  {
+        return CEGUI::PropertyDim::clone( );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
-        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
-            return func_getValue_impl( boost::ref(wnd) );
+    virtual float getValue( ::CEGUI::Window const & wnd ) const  {
+        if( bp::override func_getValue = this->get_override( "getValue" ) )
+            return func_getValue( boost::ref(wnd) );
         else{
-            return this->CEGUI::PropertyDim::getValue_impl( boost::ref(wnd) );
+            return this->CEGUI::PropertyDim::getValue( boost::ref(wnd) );
         }
     }
     
-    virtual float default_getValue_impl( ::CEGUI::Window const & wnd ) const {
-        return CEGUI::PropertyDim::getValue_impl( boost::ref(wnd) );
+    float default_getValue( ::CEGUI::Window const & wnd ) const  {
+        return CEGUI::PropertyDim::getValue( boost::ref(wnd) );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
-            return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
+    virtual float getValue( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const  {
+        if( bp::override func_getValue = this->get_override( "getValue" ) )
+            return func_getValue( boost::ref(wnd), boost::ref(container) );
         else{
-            return this->CEGUI::PropertyDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+            return this->CEGUI::PropertyDim::getValue( boost::ref(wnd), boost::ref(container) );
         }
     }
     
-    virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        return CEGUI::PropertyDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    float default_getValue( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const  {
+        return CEGUI::PropertyDim::getValue( boost::ref(wnd), boost::ref(container) );
     }
 
     virtual void writeXMLElementAttributes_impl( ::CEGUI::XMLSerializer & xml_stream ) const {
@@ -101,6 +101,18 @@ struct PropertyDim_wrapper : CEGUI::PropertyDim, bp::wrapper< CEGUI::PropertyDim
         return CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
     }
 
+    virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
+            func_writeXMLToStream( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+        }
+    }
+    
+    void default_writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+    }
+
 };
 
 void register_PropertyDim_class(){
@@ -114,37 +126,39 @@ void register_PropertyDim_class(){
         *\n", bp::init< >() );
         bp::scope PropertyDim_scope( PropertyDim_exposer );
         PropertyDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("name"), bp::arg("property"), bp::arg("type") ), "*!\n\
-                \n\
-                    Constructor.\n\
+            \n\
+                Constructor.\n\
         \n\
-                @param name\n\
-                    String holding the name suffix of the window on which the property\n\
-                    is to be accessed.\n\
+            @param name\n\
+                String holding the name suffix of the window on which the property\n\
+                is to be accessed.\n\
         \n\
-                @param property\n\
-                    String object holding the name of the property this PropertyDim\n\
-                    represents the value of.  The property named should represent either\n\
-                    a UDim value or a simple float value - dependning upon what  type\n\
-                    is specified as.\n\
+            @param property\n\
+                String object holding the name of the property this PropertyDim\n\
+                represents the value of.  The property named should represent either\n\
+                a UDim value or a simple float value - dependning upon what  type\n\
+                is specified as.\n\
         \n\
-                @param type\n\
-                    DimensionType value indicating what dimension named property\n\
-                    represents.  The possible DimensionType values are as follows:\n\
-                    - DT_INVALID the property should represent a simple float value.\n\
-                    - DT_WIDTH the property should represent a UDim value where the\n\
-                    scale is relative to the targetted Window's width.\n\
-                    - DT_HEIGHT the property should represent a UDim value where the\n\
-                    scale is relative to the targetted Window's height.\n\
-                    - All other values will cause an InvalidRequestException exception\n\
-                    to be thrown.\n\
-                *\n") );
-        { //::CEGUI::PropertyDim::clone_impl
+            @param type\n\
+                DimensionType value indicating what dimension named property\n\
+                represents.  The possible DimensionType values are as follows:\n\
+                - DT_INVALID the property should represent a simple float value.\n\
+                - DT_WIDTH the property should represent a UDim value where the\n\
+                scale is relative to the targetted Window's width.\n\
+                - DT_HEIGHT the property should represent a UDim value where the\n\
+                scale is relative to the targetted Window's height.\n\
+                - All other values will cause an InvalidRequestException exception\n\
+                to be thrown.\n\
+            *\n") );
+        { //::CEGUI::PropertyDim::clone
         
-            typedef ::CEGUI::BaseDim * ( PropertyDim_wrapper::*clone_impl_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( ::CEGUI::PropertyDim::*clone_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( PropertyDim_wrapper::*default_clone_function_type )(  ) const;
             
             PropertyDim_exposer.def( 
-                "clone_impl"
-                , clone_impl_function_type( &PropertyDim_wrapper::default_clone_impl )
+                "clone"
+                , clone_function_type(&::CEGUI::PropertyDim::clone)
+                , default_clone_function_type(&PropertyDim_wrapper::default_clone)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -157,12 +171,12 @@ void register_PropertyDim_class(){
                 , getPropertyName_function_type( &::CEGUI::PropertyDim::getPropertyName )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Get the name of the property to use for this WidgetDim.\n\
+                \n\
+                    Get the name of the property to use for this WidgetDim.\n\
             \n\
-                    @return\n\
-                        String object holding the name of the property.\n\
-                    *\n" );
+                @return\n\
+                    String object holding the name of the property.\n\
+                *\n" );
         
         }
         { //::CEGUI::PropertyDim::getSourceDimension
@@ -173,36 +187,41 @@ void register_PropertyDim_class(){
                 "getSourceDimension"
                 , getSourceDimension_function_type( &::CEGUI::PropertyDim::getSourceDimension )
                 , "*!\n\
-                    \n\
-                        Gets the source dimension type for this WidgetDim.\n\
+                \n\
+                    Gets the source dimension type for this WidgetDim.\n\
             \n\
-                    @return\n\
-                        DimensionType value indicating which dimension of the described image that this\
-                        WidgetDim\n\
-                        is to represent.\n\
-                    *\n" );
+                @return\n\
+                    DimensionType value indicating which dimension of the target window to\n\
+                    use as the reference  base value when accessing a property that\n\
+                    represents a unified dimension:\n\
+                        - DT_INVALID if the property does not represent a unified dim.\n\
+                        - DT_WIDTH to use target width as reference value.\n\
+                        - DT_HEIGHT to use target hight as reference value.\n\
+                *\n" );
         
         }
-        { //::CEGUI::PropertyDim::getValue_impl
+        { //::CEGUI::PropertyDim::getValue
         
-            typedef float ( PropertyDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
+            typedef float ( ::CEGUI::PropertyDim::*getValue_function_type )( ::CEGUI::Window const & ) const;
+            typedef float ( PropertyDim_wrapper::*default_getValue_function_type )( ::CEGUI::Window const & ) const;
             
             PropertyDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &PropertyDim_wrapper::default_getValue_impl )
-                , ( bp::arg("wnd") )
-                , "Implementation of the base class interface\n" );
+                "getValue"
+                , getValue_function_type(&::CEGUI::PropertyDim::getValue)
+                , default_getValue_function_type(&PropertyDim_wrapper::default_getValue)
+                , ( bp::arg("wnd") ) );
         
         }
-        { //::CEGUI::PropertyDim::getValue_impl
+        { //::CEGUI::PropertyDim::getValue
         
-            typedef float ( PropertyDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            typedef float ( ::CEGUI::PropertyDim::*getValue_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            typedef float ( PropertyDim_wrapper::*default_getValue_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
             
             PropertyDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &PropertyDim_wrapper::default_getValue_impl )
-                , ( bp::arg("wnd"), bp::arg("container") )
-                , "Implementation of the base class interface\n" );
+                "getValue"
+                , getValue_function_type(&::CEGUI::PropertyDim::getValue)
+                , default_getValue_function_type(&PropertyDim_wrapper::default_getValue)
+                , ( bp::arg("wnd"), bp::arg("container") ) );
         
         }
         { //::CEGUI::PropertyDim::getWidgetName
@@ -214,37 +233,37 @@ void register_PropertyDim_class(){
                 , getWidgetName_function_type( &::CEGUI::PropertyDim::getWidgetName )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Constructor.\n\
+                \n\
+                    Constructor.\n\
             \n\
-                    @param name\n\
-                        String holding the name suffix of the window on which the property\n\
-                        is to be accessed.\n\
+                @param name\n\
+                    String holding the name suffix of the window on which the property\n\
+                    is to be accessed.\n\
             \n\
-                    @param property\n\
-                        String object holding the name of the property this PropertyDim\n\
-                        represents the value of.  The property named should represent either\n\
-                        a UDim value or a simple float value - dependning upon what  type\n\
-                        is specified as.\n\
+                @param property\n\
+                    String object holding the name of the property this PropertyDim\n\
+                    represents the value of.  The property named should represent either\n\
+                    a UDim value or a simple float value - dependning upon what  type\n\
+                    is specified as.\n\
             \n\
-                    @param type\n\
-                        DimensionType value indicating what dimension named property\n\
-                        represents.  The possible DimensionType values are as follows:\n\
-                        - DT_INVALID the property should represent a simple float value.\n\
-                        - DT_WIDTH the property should represent a UDim value where the\n\
-                        scale is relative to the targetted Window's width.\n\
-                        - DT_HEIGHT the property should represent a UDim value where the\n\
-                        scale is relative to the targetted Window's height.\n\
-                        - All other values will cause an InvalidRequestException exception\n\
-                        to be thrown.\n\
-                    *\n\
-                    *!\n\
-                    \n\
-                        Get the name suffix to use for this WidgetDim.\n\
+                @param type\n\
+                    DimensionType value indicating what dimension named property\n\
+                    represents.  The possible DimensionType values are as follows:\n\
+                    - DT_INVALID the property should represent a simple float value.\n\
+                    - DT_WIDTH the property should represent a UDim value where the\n\
+                    scale is relative to the targetted Window's width.\n\
+                    - DT_HEIGHT the property should represent a UDim value where the\n\
+                    scale is relative to the targetted Window's height.\n\
+                    - All other values will cause an InvalidRequestException exception\n\
+                    to be thrown.\n\
+                *\n\
+                *!\n\
+                \n\
+                    Get the name suffix to use for this WidgetDim.\n\
             \n\
-                    @return\n\
-                        String object holding the name suffix for a windowwidget.\n\
-                    *\n" );
+                @return\n\
+                    String object holding the name suffix for a windowwidget.\n\
+                *\n" );
         
         }
         { //::CEGUI::PropertyDim::setPropertyName
@@ -256,15 +275,15 @@ void register_PropertyDim_class(){
                 , setPropertyName_function_type( &::CEGUI::PropertyDim::setPropertyName )
                 , ( bp::arg("property") )
                 , "*!\n\
-                    \n\
-                        Set the name of the property to use for this WidgetDim.\n\
+                \n\
+                    Set the name of the property to use for this WidgetDim.\n\
             \n\
-                    @param property\n\
-                        String object holding the name of the property.\n\
+                @param property\n\
+                    String object holding the name of the property.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::PropertyDim::setSourceDimension
@@ -276,17 +295,17 @@ void register_PropertyDim_class(){
                 , setSourceDimension_function_type( &::CEGUI::PropertyDim::setSourceDimension )
                 , ( bp::arg("dim") )
                 , "*!\n\
-                    \n\
-                        Sets the source dimension type for this WidgetDim.\n\
+                \n\
+                    Sets the source dimension type for this WidgetDim.\n\
             \n\
-                    @param dim\n\
-                        DimensionType value indicating which dimension of the described image that this\
-                        WidgetDim\n\
-                        is to represent.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @param dim\n\
+                    DimensionType value indicating which dimension of the target window to\n\
+                    use as the reference  base value when accessing a property that\n\
+                    represents a unified dimension:\n\
+                        - DT_INVALID if the property does not represent a unified dim.\n\
+                        - DT_WIDTH to use target width as reference value.\n\
+                        - DT_HEIGHT to use target hight as reference value.\n\
+                *\n" );
         
         }
         { //::CEGUI::PropertyDim::setWidgetName
@@ -298,15 +317,15 @@ void register_PropertyDim_class(){
                 , setWidgetName_function_type( &::CEGUI::PropertyDim::setWidgetName )
                 , ( bp::arg("name") )
                 , "*!\n\
-                    \n\
-                        Set the name suffix to use for this WidgetDim.\n\
+                \n\
+                    Set the name suffix to use for this WidgetDim.\n\
             \n\
-                    @param name\n\
-                        String object holding the name suffix for a windowwidget.\n\
+                @param name\n\
+                    String object holding the name suffix for a windowwidget.\n\
             \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::PropertyDim::writeXMLElementAttributes_impl
@@ -316,7 +335,8 @@ void register_PropertyDim_class(){
             PropertyDim_exposer.def( 
                 "writeXMLElementAttributes_impl"
                 , writeXMLElementAttributes_impl_function_type( &PropertyDim_wrapper::default_writeXMLElementAttributes_impl )
-                , ( bp::arg("xml_stream") ) );
+                , ( bp::arg("xml_stream") )
+                , "Implementation of the base class interface\n" );
         
         }
         { //::CEGUI::PropertyDim::writeXMLElementName_impl
@@ -326,7 +346,8 @@ void register_PropertyDim_class(){
             PropertyDim_exposer.def( 
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &PropertyDim_wrapper::default_writeXMLElementName_impl )
-                , ( bp::arg("xml_stream") ) );
+                , ( bp::arg("xml_stream") )
+                , "Implementation of the base class interface\n" );
         
         }
         { //::CEGUI::BaseDim::handleFontRenderSizeChange
@@ -339,6 +360,18 @@ void register_PropertyDim_class(){
                 , handleFontRenderSizeChange_function_type(&::CEGUI::BaseDim::handleFontRenderSizeChange)
                 , default_handleFontRenderSizeChange_function_type(&PropertyDim_wrapper::default_handleFontRenderSizeChange)
                 , ( bp::arg("window"), bp::arg("font") ) );
+        
+        }
+        { //::CEGUI::BaseDim::writeXMLToStream
+        
+            typedef void ( ::CEGUI::BaseDim::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( PropertyDim_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            PropertyDim_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type(&::CEGUI::BaseDim::writeXMLToStream)
+                , default_writeXMLToStream_function_type(&PropertyDim_wrapper::default_writeXMLToStream)
+                , ( bp::arg("xml_stream") ) );
         
         }
     }

@@ -15,19 +15,19 @@ struct BaseDim_wrapper : CEGUI::BaseDim, bp::wrapper< CEGUI::BaseDim > {
     
     }
 
-    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
-        bp::override func_clone_impl = this->get_override( "clone_impl" );
-        return func_clone_impl(  );
+    virtual ::CEGUI::BaseDim * clone(  ) const {
+        bp::override func_clone = this->get_override( "clone" );
+        return func_clone(  );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
-        bp::override func_getValue_impl = this->get_override( "getValue_impl" );
-        return func_getValue_impl( boost::ref(wnd) );
+    virtual float getValue( ::CEGUI::Window const & wnd ) const {
+        bp::override func_getValue = this->get_override( "getValue" );
+        return func_getValue( boost::ref(wnd) );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        bp::override func_getValue_impl = this->get_override( "getValue_impl" );
-        return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
+    virtual float getValue( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
+        bp::override func_getValue = this->get_override( "getValue" );
+        return func_getValue( boost::ref(wnd), boost::ref(container) );
     }
 
     virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
@@ -52,6 +52,18 @@ struct BaseDim_wrapper : CEGUI::BaseDim, bp::wrapper< CEGUI::BaseDim > {
         func_writeXMLElementName_impl( boost::ref(xml_stream) );
     }
 
+    virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
+            func_writeXMLToStream( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+        }
+    }
+    
+    void default_writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+    }
+
 };
 
 void register_BaseDim_class(){
@@ -66,71 +78,17 @@ void register_BaseDim_class(){
             
             BaseDim_exposer.def( 
                 "clone"
-                , clone_function_type( &::CEGUI::BaseDim::clone )
+                , bp::pure_virtual( clone_function_type(&::CEGUI::BaseDim::clone) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-                    \n\
-                        Create an exact copy of the specialised class and return it as a pointer to\n\
-                        a BaseDim object.\n\
+                \n\
+                    Create an exact copy of the specialised object and return it as a\n\
+                    pointer to a BaseDim object.\n\
             \n\
-                        Since the system needs to be able to copy objects derived from BaseDim, but only\n\
-                        has knowledge of the BaseDim interface, this clone method is provided to prevent\n\
-                        slicing issues.\n\
-            \n\
-                    @return\n\
-                        BaseDim object pointer\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::BaseDim::clone_impl
-        
-            typedef ::CEGUI::BaseDim * ( BaseDim_wrapper::*clone_impl_function_type )(  ) const;
-            
-            BaseDim_exposer.def( 
-                "clone_impl"
-                , clone_impl_function_type( &BaseDim_wrapper::clone_impl )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-            \n\
-                Implementataion method to return a clone of this sub-class of BaseDim.\n\
-                This method should not attempt to clone the mathematical operator or operand; theis is\n\
-                handled automatically by BaseDim.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::BaseDim::getDimensionOperator
-        
-            typedef ::CEGUI::DimensionOperator ( ::CEGUI::BaseDim::*getDimensionOperator_function_type )(  ) const;
-            
-            BaseDim_exposer.def( 
-                "getDimensionOperator"
-                , getDimensionOperator_function_type( &::CEGUI::BaseDim::getDimensionOperator )
-                , "*!\n\
-                    \n\
-                        Return the DimensionOperator set for this BaseDim based object.\n\
-            \n\
-                    @return\n\
-                        One of the DimensionOperator enumerated values representing a mathematical operation to\
-                        be\n\
-                        performed upon this BaseDim using the set operand.\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::BaseDim::getOperand
-        
-            typedef ::CEGUI::BaseDim const * ( ::CEGUI::BaseDim::*getOperand_function_type )(  ) const;
-            
-            BaseDim_exposer.def( 
-                "getOperand"
-                , getOperand_function_type( &::CEGUI::BaseDim::getOperand )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                    \n\
-                        Return a pointer to the BaseDim set to be used as the other operand.\n\
-            \n\
-                    @return\n\
-                        Pointer to the BaseDim object.\n\
-                    *\n" );
+                    Since the system needs to be able to copy objects derived from BaseDim,\n\
+                    but only has knowledge of the BaseDim interface, this clone method is\n\
+                    provided to prevent slicing issues.\n\
+                *\n" );
         
         }
         { //::CEGUI::BaseDim::getValue
@@ -139,19 +97,19 @@ void register_BaseDim_class(){
             
             BaseDim_exposer.def( 
                 "getValue"
-                , getValue_function_type( &::CEGUI::BaseDim::getValue )
+                , bp::pure_virtual( getValue_function_type(&::CEGUI::BaseDim::getValue) )
                 , ( bp::arg("wnd") )
                 , "*!\n\
-                    \n\
-                        Return a value that represents this dimension as absolute pixels.\n\
+                \n\
+                    Return a value that represents this dimension as absolute pixels.\n\
             \n\
-                    @param wnd\n\
-                        Window object that may be used by the specialised class to aid in\n\
-                        calculating the final value.\n\
+                @param wnd\n\
+                    Window object that may be used by the specialised class to aid in\n\
+                    calculating the final value.\n\
             \n\
-                    @return\n\
-                        float value which represents, in pixels, the same value as this BaseDim.\n\
-                    *\n" );
+                @return\n\
+                    float value which represents, in pixels, the same value as this BaseDim.\n\
+                *\n" );
         
         }
         { //::CEGUI::BaseDim::getValue
@@ -160,55 +118,25 @@ void register_BaseDim_class(){
             
             BaseDim_exposer.def( 
                 "getValue"
-                , getValue_function_type( &::CEGUI::BaseDim::getValue )
+                , bp::pure_virtual( getValue_function_type(&::CEGUI::BaseDim::getValue) )
                 , ( bp::arg("wnd"), bp::arg("container") )
                 , "*!\n\
-                    \n\
-                        Return a value that represents this dimension as absolute pixels.\n\
+                \n\
+                    Return a value that represents this dimension as absolute pixels.\n\
             \n\
-                    @param wnd\n\
-                        Window object that may be used by the specialised class to aid in\n\
-                        calculating the final value (typically would be used to obtain\n\
-                        windowwidget dimensions).\n\
+                @param wnd\n\
+                    Window object that may be used by the specialised class to aid in\n\
+                    calculating the final value (typically would be used to obtain\n\
+                    windowwidget dimensions).\n\
             \n\
-                    @param container\n\
-                        Rect object which describes an area to be considered as the base area\n\
-                        when calculating the final value.  Basically this means that relative values\n\
-                        are calculated from the dimensions of this Rect.\n\
+                @param container\n\
+                    Rect object which describes an area to be considered as the base area\n\
+                    when calculating the final value.  Basically this means that relative\n\
+                    values are calculated from the dimensions of this Rect.\n\
             \n\
-                    @return\n\
-                        float value which represents, in pixels, the same value as this BaseDim.\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::BaseDim::getValue_impl
-        
-            typedef float ( BaseDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
-            
-            BaseDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &BaseDim_wrapper::getValue_impl )
-                , ( bp::arg("wnd") )
-                , "*!\n\
-            \n\
-                Implementataion method to return the base value for this BaseDim.  This method should\n\
-                not attempt to apply the mathematical operator; this is handled automatically.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::BaseDim::getValue_impl
-        
-            typedef float ( BaseDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
-            
-            BaseDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &BaseDim_wrapper::getValue_impl )
-                , ( bp::arg("wnd"), bp::arg("container") )
-                , "*!\n\
-            \n\
-                Implementataion method to return the base value for this BaseDim.  This method should\n\
-                not attempt to apply the mathematical operator; this is handled automatically by BaseDim.\n\
-            *\n" );
+                @return\n\
+                    float value which represents, in pixels, the same value as this BaseDim.\n\
+                *\n" );
         
         }
         { //::CEGUI::BaseDim::handleFontRenderSizeChange
@@ -223,50 +151,6 @@ void register_BaseDim_class(){
                 , ( bp::arg("window"), bp::arg("font") ) );
         
         }
-        { //::CEGUI::BaseDim::setDimensionOperator
-        
-            typedef void ( ::CEGUI::BaseDim::*setDimensionOperator_function_type )( ::CEGUI::DimensionOperator ) ;
-            
-            BaseDim_exposer.def( 
-                "setDimensionOperator"
-                , setDimensionOperator_function_type( &::CEGUI::BaseDim::setDimensionOperator )
-                , ( bp::arg("op") )
-                , "*!\n\
-                    \n\
-                        Set the DimensionOperator set for this BaseDim based object.\n\
-            \n\
-                    @param op\n\
-                        One of the DimensionOperator enumerated values representing a mathematical operation to\
-                        be\n\
-                        performed upon this BaseDim using the set operand.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
-        
-        }
-        { //::CEGUI::BaseDim::setOperand
-        
-            typedef void ( ::CEGUI::BaseDim::*setOperand_function_type )( ::CEGUI::BaseDim const & ) ;
-            
-            BaseDim_exposer.def( 
-                "setOperand"
-                , setOperand_function_type( &::CEGUI::BaseDim::setOperand )
-                , ( bp::arg("operand") )
-                , "*!\n\
-                    \n\
-                        Set the BaseDim set to be used as the other operand in calculations for this BaseDim.\n\
-            \n\
-                    @param operand\n\
-                        sub-class of BaseDim representing the 'other' operand.  The given object will be cloned;\
-                        no\n\
-                        transfer of ownership occurrs for the passed object.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
-        
-        }
         { //::CEGUI::BaseDim::writeXMLElementAttributes_impl
         
             typedef void ( BaseDim_wrapper::*writeXMLElementAttributes_impl_function_type )( ::CEGUI::XMLSerializer & ) const;
@@ -275,10 +159,7 @@ void register_BaseDim_class(){
                 "writeXMLElementAttributes_impl"
                 , writeXMLElementAttributes_impl_function_type( &BaseDim_wrapper::writeXMLElementAttributes_impl )
                 , ( bp::arg("xml_stream") )
-                , "*!\n\
-            \n\
-                Implementataion method to create the element attributes\n\
-            *\n" );
+                , "! Implementataion method to create the element attributes\n" );
         
         }
         { //::CEGUI::BaseDim::writeXMLElementName_impl
@@ -289,30 +170,19 @@ void register_BaseDim_class(){
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &BaseDim_wrapper::writeXMLElementName_impl )
                 , ( bp::arg("xml_stream") )
-                , "*!\n\
-            \n\
-                Implementataion method to output real xml element name.\n\
-            *\n" );
+                , "! Implementataion method to output real xml element name.\n" );
         
         }
         { //::CEGUI::BaseDim::writeXMLToStream
         
             typedef void ( ::CEGUI::BaseDim::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( BaseDim_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
             
             BaseDim_exposer.def( 
                 "writeXMLToStream"
-                , writeXMLToStream_function_type( &::CEGUI::BaseDim::writeXMLToStream )
-                , ( bp::arg("xml_stream") )
-                , "*!\n\
-                    \n\
-                        Writes an xml representation of this BaseDim to  out_stream.\n\
-            \n\
-                    @param xml_stream\n\
-                        Stream where xml data should be output.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                , writeXMLToStream_function_type(&::CEGUI::BaseDim::writeXMLToStream)
+                , default_writeXMLToStream_function_type(&BaseDim_wrapper::default_writeXMLToStream)
+                , ( bp::arg("xml_stream") ) );
         
         }
     }

@@ -29,44 +29,44 @@ struct FontDim_wrapper : CEGUI::FontDim, bp::wrapper< CEGUI::FontDim > {
     
     }
 
-    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
-        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
-            return func_clone_impl(  );
+    virtual ::CEGUI::BaseDim * clone(  ) const  {
+        if( bp::override func_clone = this->get_override( "clone" ) )
+            return func_clone(  );
         else{
-            return this->CEGUI::FontDim::clone_impl(  );
+            return this->CEGUI::FontDim::clone(  );
         }
     }
     
-    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
-        return CEGUI::FontDim::clone_impl( );
+    ::CEGUI::BaseDim * default_clone(  ) const  {
+        return CEGUI::FontDim::clone( );
     }
 
     ::CEGUI::Font const * getFontObject( ::CEGUI::Window const & window ) const {
         return CEGUI::FontDim::getFontObject( boost::ref(window) );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd ) const {
-        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
-            return func_getValue_impl( boost::ref(wnd) );
+    virtual float getValue( ::CEGUI::Window const & wnd ) const  {
+        if( bp::override func_getValue = this->get_override( "getValue" ) )
+            return func_getValue( boost::ref(wnd) );
         else{
-            return this->CEGUI::FontDim::getValue_impl( boost::ref(wnd) );
+            return this->CEGUI::FontDim::getValue( boost::ref(wnd) );
         }
     }
     
-    virtual float default_getValue_impl( ::CEGUI::Window const & wnd ) const {
-        return CEGUI::FontDim::getValue_impl( boost::ref(wnd) );
+    float default_getValue( ::CEGUI::Window const & wnd ) const  {
+        return CEGUI::FontDim::getValue( boost::ref(wnd) );
     }
 
-    virtual float getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        if( bp::override func_getValue_impl = this->get_override( "getValue_impl" ) )
-            return func_getValue_impl( boost::ref(wnd), boost::ref(container) );
+    virtual float getValue( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const  {
+        if( bp::override func_getValue = this->get_override( "getValue" ) )
+            return func_getValue( boost::ref(wnd), boost::ref(container) );
         else{
-            return this->CEGUI::FontDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+            return this->CEGUI::FontDim::getValue( boost::ref(wnd), boost::ref(container) );
         }
     }
     
-    virtual float default_getValue_impl( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const {
-        return CEGUI::FontDim::getValue_impl( boost::ref(wnd), boost::ref(container) );
+    float default_getValue( ::CEGUI::Window const & wnd, ::CEGUI::Rectf const & container ) const  {
+        return CEGUI::FontDim::getValue( boost::ref(wnd), boost::ref(container) );
     }
 
     virtual bool handleFontRenderSizeChange( ::CEGUI::Window & window, ::CEGUI::Font const * font ) const  {
@@ -105,6 +105,18 @@ struct FontDim_wrapper : CEGUI::FontDim, bp::wrapper< CEGUI::FontDim > {
         CEGUI::FontDim::writeXMLElementName_impl( boost::ref(xml_stream) );
     }
 
+    virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
+            func_writeXMLToStream( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+        }
+    }
+    
+    void default_writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+    }
+
 };
 
 void register_FontDim_class(){
@@ -113,38 +125,43 @@ void register_FontDim_class(){
         typedef bp::class_< FontDim_wrapper, bp::bases< CEGUI::BaseDim > > FontDim_exposer_t;
         FontDim_exposer_t FontDim_exposer = FontDim_exposer_t( "FontDim", "*!\n\
         \n\
-            Dimension type that represents some metric of a Font.  Implements BaseDim interface.\n\
+            Dimension type that represents some metric of a Font.\n\
+            Implements BaseDim interface.\n\
         *\n", bp::init< >() );
         bp::scope FontDim_scope( FontDim_exposer );
         FontDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, CEGUI::FontMetricType, bp::optional< float > >(( bp::arg("name"), bp::arg("font"), bp::arg("text"), bp::arg("metric"), bp::arg("padding")=0 ), "*!\n\
-                \n\
-                    Constructor.\n\
+            \n\
+                Constructor.\n\
         \n\
-                @param name\n\
-                    String holding the name suffix of the window to be accessed to obtain the font\n\
-                    and  or text strings to be used when these items are not explicitly given.\n\
+            @param name\n\
+                String holding the name suffix of the window to be accessed to obtain\n\
+                the font and  or text strings to be used when these items are not\n\
+                explicitly given.\n\
         \n\
-                @param font\n\
-                    String holding the name of the font to use for this dimension.  If the string is\n\
-                    empty, the font assigned to the window passed to getValue will be used.\n\
+            @param font\n\
+                String holding the name of the font to use for this dimension.  If the\n\
+                string is empty, the font assigned to the window passed to getValue will\n\
+                be used.\n\
         \n\
-                @param text\n\
-                    String holding the text to be measured for horizontal extent.  If this is empty,\n\
-                    the text from the window passed to getValue will be used.\n\
+            @param text\n\
+                String holding the text to be measured for horizontal extent. If this\n\
+                is empty, the text from the window passed to getValue will be used.\n\
         \n\
-                @param metric\n\
-                    One of the FontMetricType values indicating what we should represent.\n\
+            @param metric\n\
+                One of the FontMetricType values indicating what we should represent.\n\
         \n\
-                @param padding\n\
-                    constant pixel padding value to be added.\n\
-                *\n") );
-        { //::CEGUI::FontDim::clone_impl
+            @param padding\n\
+                constant pixel padding value to be added.\n\
+            *\n") );
+        { //::CEGUI::FontDim::clone
         
-            typedef ::CEGUI::BaseDim * ( FontDim_wrapper::*clone_impl_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( ::CEGUI::FontDim::*clone_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( FontDim_wrapper::*default_clone_function_type )(  ) const;
             
             FontDim_exposer.def( 
-                "clone_impl"
-                , clone_impl_function_type( &FontDim_wrapper::default_clone_impl )
+                "clone"
+                , clone_function_type(&::CEGUI::FontDim::clone)
+                , default_clone_function_type(&FontDim_wrapper::default_clone)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -156,10 +173,7 @@ void register_FontDim_class(){
                 "getFont"
                 , getFont_function_type( &::CEGUI::FontDim::getFont )
                 , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-            \n\
-                Get the current font of the FontDim.\n\
-            *\n" );
+                , "! Get the current font of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::getFontObject
@@ -180,10 +194,7 @@ void register_FontDim_class(){
             FontDim_exposer.def( 
                 "getMetric"
                 , getMetric_function_type( &::CEGUI::FontDim::getMetric )
-                , "*!\n\
-            \n\
-                Get the current metric of the FontDim.\n\
-            *\n" );
+                , "! Get the current metric of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::getName
@@ -194,10 +205,7 @@ void register_FontDim_class(){
                 "getName"
                 , getName_function_type( &::CEGUI::FontDim::getName )
                 , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-            \n\
-                Get the current name of the FontDim.\n\
-            *\n" );
+                , "! Get the current name of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::getPadding
@@ -207,10 +215,7 @@ void register_FontDim_class(){
             FontDim_exposer.def( 
                 "getPadding"
                 , getPadding_function_type( &::CEGUI::FontDim::getPadding )
-                , "*!\n\
-            \n\
-                Get the current padding of the FontDim.\n\
-            *\n" );
+                , "! Get the current padding of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::getText
@@ -221,32 +226,31 @@ void register_FontDim_class(){
                 "getText"
                 , getText_function_type( &::CEGUI::FontDim::getText )
                 , bp::return_value_policy< bp::copy_const_reference >()
-                , "*!\n\
-            \n\
-                Get the current text of the FontDim.\n\
-            *\n" );
+                , "! Get the current text of the FontDim.\n" );
         
         }
-        { //::CEGUI::FontDim::getValue_impl
+        { //::CEGUI::FontDim::getValue
         
-            typedef float ( FontDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const & ) const;
+            typedef float ( ::CEGUI::FontDim::*getValue_function_type )( ::CEGUI::Window const & ) const;
+            typedef float ( FontDim_wrapper::*default_getValue_function_type )( ::CEGUI::Window const & ) const;
             
             FontDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &FontDim_wrapper::default_getValue_impl )
-                , ( bp::arg("wnd") )
-                , "Implementation of the base class interface\n" );
+                "getValue"
+                , getValue_function_type(&::CEGUI::FontDim::getValue)
+                , default_getValue_function_type(&FontDim_wrapper::default_getValue)
+                , ( bp::arg("wnd") ) );
         
         }
-        { //::CEGUI::FontDim::getValue_impl
+        { //::CEGUI::FontDim::getValue
         
-            typedef float ( FontDim_wrapper::*getValue_impl_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            typedef float ( ::CEGUI::FontDim::*getValue_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
+            typedef float ( FontDim_wrapper::*default_getValue_function_type )( ::CEGUI::Window const &,::CEGUI::Rectf const & ) const;
             
             FontDim_exposer.def( 
-                "getValue_impl"
-                , getValue_impl_function_type( &FontDim_wrapper::default_getValue_impl )
-                , ( bp::arg("wnd"), bp::arg("container") )
-                , "Implementation of the base class interface\n" );
+                "getValue"
+                , getValue_function_type(&::CEGUI::FontDim::getValue)
+                , default_getValue_function_type(&FontDim_wrapper::default_getValue)
+                , ( bp::arg("wnd"), bp::arg("container") ) );
         
         }
         { //::CEGUI::FontDim::handleFontRenderSizeChange
@@ -269,10 +273,7 @@ void register_FontDim_class(){
                 "setFont"
                 , setFont_function_type( &::CEGUI::FontDim::setFont )
                 , ( bp::arg("font") )
-                , "*!\n\
-            \n\
-                Set the current font of the FontDim.\n\
-            *\n" );
+                , "! Set the current font of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::setMetric
@@ -283,10 +284,7 @@ void register_FontDim_class(){
                 "setMetric"
                 , setMetric_function_type( &::CEGUI::FontDim::setMetric )
                 , ( bp::arg("metric") )
-                , "*!\n\
-            \n\
-                Set the current metric of the FontDim.\n\
-            *\n" );
+                , "! Set the current metric of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::setName
@@ -297,10 +295,7 @@ void register_FontDim_class(){
                 "setName"
                 , setName_function_type( &::CEGUI::FontDim::setName )
                 , ( bp::arg("name") )
-                , "*!\n\
-            \n\
-                Set the current name of the FontDim.\n\
-            *\n" );
+                , "! Set the current name of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::setPadding
@@ -311,10 +306,7 @@ void register_FontDim_class(){
                 "setPadding"
                 , setPadding_function_type( &::CEGUI::FontDim::setPadding )
                 , ( bp::arg("padding") )
-                , "*!\n\
-            \n\
-                Set the current padding of the FontDim.\n\
-            *\n" );
+                , "! Set the current padding of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::setText
@@ -325,10 +317,7 @@ void register_FontDim_class(){
                 "setText"
                 , setText_function_type( &::CEGUI::FontDim::setText )
                 , ( bp::arg("text") )
-                , "*!\n\
-            \n\
-                Set the current text of the FontDim.\n\
-            *\n" );
+                , "! Set the current text of the FontDim.\n" );
         
         }
         { //::CEGUI::FontDim::writeXMLElementAttributes_impl
@@ -338,7 +327,8 @@ void register_FontDim_class(){
             FontDim_exposer.def( 
                 "writeXMLElementAttributes_impl"
                 , writeXMLElementAttributes_impl_function_type( &FontDim_wrapper::default_writeXMLElementAttributes_impl )
-                , ( bp::arg("xml_stream") ) );
+                , ( bp::arg("xml_stream") )
+                , "Implementation of the base class interface\n" );
         
         }
         { //::CEGUI::FontDim::writeXMLElementName_impl
@@ -348,6 +338,19 @@ void register_FontDim_class(){
             FontDim_exposer.def( 
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &FontDim_wrapper::default_writeXMLElementName_impl )
+                , ( bp::arg("xml_stream") )
+                , "Implementation of the base class interface\n" );
+        
+        }
+        { //::CEGUI::BaseDim::writeXMLToStream
+        
+            typedef void ( ::CEGUI::BaseDim::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( FontDim_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            FontDim_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type(&::CEGUI::BaseDim::writeXMLToStream)
+                , default_writeXMLToStream_function_type(&FontDim_wrapper::default_writeXMLToStream)
                 , ( bp::arg("xml_stream") ) );
         
         }

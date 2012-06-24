@@ -11,14 +11,14 @@ void register_ComponentArea_class(){
     { //::CEGUI::ComponentArea
         typedef bp::class_< CEGUI::ComponentArea > ComponentArea_exposer_t;
         ComponentArea_exposer_t ComponentArea_exposer = ComponentArea_exposer_t( "ComponentArea", "*!\n\
-            \n\
-                Class that represents a target area for a widget or imagery component.\n\
         \n\
-                This is essentially a Rect built out of Dimension objects.  Of note is that\n\
-                what would normally be the 'right' and 'bottom' edges may alternatively\n\
-                represent width and height depending upon what the assigned Dimension(s)\n\
-                represent.\n\
-            *\n", bp::init< >() );
+            Class that represents a target area for a widget or imagery component.\n\
+        \n\
+            This is essentially a Rect built out of Dimension objects.  Of note is that\n\
+            what would normally be the 'right' and 'bottom' edges may alternatively\n\
+            represent width and height depending upon what the assigned Dimension(s)\n\
+            represent.\n\
+        *\n", bp::init< >() );
         bp::scope ComponentArea_scope( ComponentArea_exposer );
         { //::CEGUI::ComponentArea::getAreaPropertySource
         
@@ -29,13 +29,13 @@ void register_ComponentArea_class(){
                 , getAreaPropertySource_function_type( &::CEGUI::ComponentArea::getAreaPropertySource )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        Return the name of the property that will be used to determine the pixel area for this\
-                        ComponentArea.\n\
+                \n\
+                    Return the name of the property that will be used to determine the pixel\n\
+                    area for this ComponentArea.\n\
             \n\
-                    @return\n\
-                        String object holding the name of a Propery.\n\
-                    *\n" );
+                @return\n\
+                    String object holding the name of a Propery.\n\
+                *\n" );
         
         }
         { //::CEGUI::ComponentArea::getPixelRect
@@ -47,17 +47,18 @@ void register_ComponentArea_class(){
                 , getPixelRect_function_type( &::CEGUI::ComponentArea::getPixelRect )
                 , ( bp::arg("wnd") )
                 , "*!\n\
-                    \n\
-                        Return a Rect describing the absolute pixel area represented by this ComponentArea.\n\
+                \n\
+                    Return a Rect describing the absolute pixel area represented by this\n\
+                    ComponentArea.\n\
             \n\
-                    @param wnd\n\
-                        Window object to be used when calculating final pixel area.\n\
+                @param wnd\n\
+                    Window object to be used when calculating final pixel area.\n\
             \n\
-                    @return\n\
-                        Rect object describing the pixels area represented by this ComponentArea when using\
-                        wnd\n\
-                        as a reference for calculating the final pixel dimensions.\n\
-                    *\n" );
+                @return\n\
+                    Rectf object describing the pixels area represented by this ComponentArea\n\
+                    when using  wnd as a reference for calculating the final pixel\n\
+                    dimensions.\n\
+                *\n" );
         
         }
         { //::CEGUI::ComponentArea::getPixelRect
@@ -69,20 +70,22 @@ void register_ComponentArea_class(){
                 , getPixelRect_function_type( &::CEGUI::ComponentArea::getPixelRect )
                 , ( bp::arg("wnd"), bp::arg("container") )
                 , "*!\n\
-                    \n\
-                        Return a Rect describing the absolute pixel area represented by this ComponentArea.\n\
+                \n\
+                    Return a Rectd describing the absolute pixel area represented by this\n\
+                    ComponentArea.\n\
             \n\
-                    @param wnd\n\
-                        Window object to be used when calculating final pixel area.\n\
+                @param wnd\n\
+                    Window object to be used when calculating final pixel area.\n\
             \n\
-                    @param container\n\
-                        Rect object to be used as a base or container when converting relative dimensions.\n\
+                @param container\n\
+                    Rect object to be used as a base or container when converting relative\n\
+                    dimensions.\n\
             \n\
-                    @return\n\
-                        Rect object describing the pixels area represented by this ComponentArea when using\
-                        wnd\n\
-                        and  container as a reference for calculating the final pixel dimensions.\n\
-                    *\n" );
+                @return\n\
+                    Rectf object describing the pixels area represented by this\n\
+                    ComponentArea when using  wnd and  container as a reference for\n\
+                    calculating the final pixel dimensions.\n\
+                *\n" );
         
         }
         { //::CEGUI::ComponentArea::handleFontRenderSizeChange
@@ -104,14 +107,14 @@ void register_ComponentArea_class(){
                 "isAreaFetchedFromNamedArea"
                 , isAreaFetchedFromNamedArea_function_type( &::CEGUI::ComponentArea::isAreaFetchedFromNamedArea )
                 , "*!\n\
-                    \n\
-                        Return whether this ComponentArea fetches it's area via a named area\n\
-                        defined.\n\
+                \n\
+                    Return whether this ComponentArea fetches it's area via a named area\n\
+                    defined.\n\
             \n\
-                    @return\n\
-                        - true if the area comes via a named area defined in a WidgetLook.\n\
-                        - false if the area is not sourced from a named area.\n\
-                    *\n" );
+                @return\n\
+                    - true if the area comes via a named area defined in a WidgetLook.\n\
+                    - false if the area is not sourced from a named area.\n\
+                *\n" );
         
         }
         { //::CEGUI::ComponentArea::isAreaFetchedFromProperty
@@ -122,14 +125,14 @@ void register_ComponentArea_class(){
                 "isAreaFetchedFromProperty"
                 , isAreaFetchedFromProperty_function_type( &::CEGUI::ComponentArea::isAreaFetchedFromProperty )
                 , "*!\n\
-                    \n\
-                        Return whether this ComponentArea fetches it's area via a property on the target\
-                        window.\n\
+                \n\
+                    Return whether this ComponentArea fetches it's area via a property on\n\
+                    the target window.\n\
             \n\
-                    @return\n\
-                        - true if the area comes via a Propery.\n\
-                        - false if the area is not sourced from a Property.\n\
-                    *\n" );
+                @return\n\
+                    - true if the area comes via a Propery.\n\
+                    - false if the area is not sourced from a Property.\n\
+                *\n" );
         
         }
         { //::CEGUI::ComponentArea::setAreaPropertySource
@@ -141,20 +144,17 @@ void register_ComponentArea_class(){
                 , setAreaPropertySource_function_type( &::CEGUI::ComponentArea::setAreaPropertySource )
                 , ( bp::arg("property") )
                 , "*!\n\
-                    \n\
-                        Set the name of the property that will be used to determine the pixel area for this\
-                        ComponentArea.\n\
+                \n\
+                    Set the name of the property that will be used to determine the pixel\n\
+                    area for this ComponentArea.\n\
             \n\
-                    \note\n\
-                        Calling this will replace any existing souce, such as a named area.\n\
+                \note\n\
+                    Calling this will replace any existing souce, such as a named area.\n\
             \n\
-                    @param property\n\
-                        String object holding the name of a Propery.  The property should access a URect type\
-                        property.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @param property\n\
+                    String object holding the name of a Propery.  The property should access\n\
+                    a URect type property.\n\
+                *\n" );
         
         }
         { //::CEGUI::ComponentArea::setNamedAreaSouce
@@ -177,22 +177,21 @@ void register_ComponentArea_class(){
                 , writeXMLToStream_function_type( &::CEGUI::ComponentArea::writeXMLToStream )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-                    \n\
-                        Writes an xml representation of this ComponentArea to  out_stream.\n\
+                \n\
+                    Writes an xml representation of this ComponentArea to  out_stream.\n\
             \n\
-                    @param xml_stream\n\
-                        Stream where xml data should be output.\n\
-            \n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @param xml_stream\n\
+                    XMLSerializer where xml data should be output.\n\
+                *\n" );
         
         }
-        ComponentArea_exposer.def_readwrite( "d_bottom_or_height", &CEGUI::ComponentArea::d_bottom_or_height );
-        ComponentArea_exposer.def_readwrite( "d_left", &CEGUI::ComponentArea::d_left );
-        ComponentArea_exposer.def_readwrite( "d_right_or_width", &CEGUI::ComponentArea::d_right_or_width );
-        ComponentArea_exposer.def_readwrite( "d_top", &CEGUI::ComponentArea::d_top );
+        ComponentArea_exposer.def_readwrite( "d_bottom_or_height", &CEGUI::ComponentArea::d_bottom_or_height, "! Either the right edge or the width of the area.\n\
+        ! Either the bototm edge or the height of the area.\n" );
+        ComponentArea_exposer.def_readwrite( "d_left", &CEGUI::ComponentArea::d_left, "! Left edge of the area.\n" );
+        ComponentArea_exposer.def_readwrite( "d_right_or_width", &CEGUI::ComponentArea::d_right_or_width, "! Top edge of the area.\n\
+        ! Either the right edge or the width of the area.\n" );
+        ComponentArea_exposer.def_readwrite( "d_top", &CEGUI::ComponentArea::d_top, "! Left edge of the area.\n\
+        ! Top edge of the area.\n" );
     }
 
 }

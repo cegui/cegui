@@ -29,16 +29,16 @@ struct ImageDim_wrapper : CEGUI::ImageDim, bp::wrapper< CEGUI::ImageDim > {
     
     }
 
-    virtual ::CEGUI::BaseDim * clone_impl(  ) const {
-        if( bp::override func_clone_impl = this->get_override( "clone_impl" ) )
-            return func_clone_impl(  );
+    virtual ::CEGUI::BaseDim * clone(  ) const  {
+        if( bp::override func_clone = this->get_override( "clone" ) )
+            return func_clone(  );
         else{
-            return this->CEGUI::ImageDim::clone_impl(  );
+            return this->CEGUI::ImageDim::clone(  );
         }
     }
     
-    virtual ::CEGUI::BaseDim * default_clone_impl(  ) const {
-        return CEGUI::ImageDim::clone_impl( );
+    ::CEGUI::BaseDim * default_clone(  ) const  {
+        return CEGUI::ImageDim::clone( );
     }
 
     virtual ::CEGUI::Image const * getSourceImage( ::CEGUI::Window const & wnd ) const {
@@ -89,6 +89,18 @@ struct ImageDim_wrapper : CEGUI::ImageDim, bp::wrapper< CEGUI::ImageDim > {
         return CEGUI::BaseDim::handleFontRenderSizeChange( boost::ref(window), boost::python::ptr(font) );
     }
 
+    virtual void writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        if( bp::override func_writeXMLToStream = this->get_override( "writeXMLToStream" ) )
+            func_writeXMLToStream( boost::ref(xml_stream) );
+        else{
+            this->CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+        }
+    }
+    
+    void default_writeXMLToStream( ::CEGUI::XMLSerializer & xml_stream ) const  {
+        CEGUI::BaseDim::writeXMLToStream( boost::ref(xml_stream) );
+    }
+
 };
 
 void register_ImageDim_class(){
@@ -97,24 +109,16 @@ void register_ImageDim_class(){
         typedef bp::class_< ImageDim_wrapper > ImageDim_exposer_t;
         ImageDim_exposer_t ImageDim_exposer = ImageDim_exposer_t( "ImageDim", "! ImageDimBase subclass that accesses an image by its name.\n", bp::init< >() );
         bp::scope ImageDim_scope( ImageDim_exposer );
-        ImageDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("image_name"), bp::arg("dim") ), "*!\n\
-                \n\
-                    Constructor.\n\
-        \n\
-                @param image_name\n\
-                    String holding the name of the image to be accessed by the ImageDim\n\
-        \n\
-                @param dim\n\
-                    DimensionType value indicating which dimension of an Image that\n\
-                    this ImageDim is to represent.\n\
-                *\n") );
-        { //::CEGUI::ImageDim::clone_impl
+        ImageDim_exposer.def( bp::init< CEGUI::String const &, CEGUI::DimensionType >(( bp::arg("image_name"), bp::arg("dim") )) );
+        { //::CEGUI::ImageDim::clone
         
-            typedef ::CEGUI::BaseDim * ( ImageDim_wrapper::*clone_impl_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( ::CEGUI::ImageDim::*clone_function_type )(  ) const;
+            typedef ::CEGUI::BaseDim * ( ImageDim_wrapper::*default_clone_function_type )(  ) const;
             
             ImageDim_exposer.def( 
-                "clone_impl"
-                , clone_impl_function_type( &ImageDim_wrapper::default_clone_impl )
+                "clone"
+                , clone_function_type(&::CEGUI::ImageDim::clone)
+                , default_clone_function_type(&ImageDim_wrapper::default_clone)
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -138,7 +142,7 @@ void register_ImageDim_class(){
                 , getSourceImage_function_type( &ImageDim_wrapper::default_getSourceImage )
                 , ( bp::arg("wnd") )
                 , bp::return_value_policy< bp::reference_existing_object >()
-                , "Implementation of the base class interface\n" );
+                , "Implementation  overrides of functions in superclasses\n" );
         
         }
         { //::CEGUI::ImageDim::setSourceImage
@@ -171,7 +175,7 @@ void register_ImageDim_class(){
                 "writeXMLElementName_impl"
                 , writeXMLElementName_impl_function_type( &ImageDim_wrapper::default_writeXMLElementName_impl )
                 , ( bp::arg("xml_stream") )
-                , "Implementation of the base class interface\n" );
+                , "Implementation  overrides of functions in superclasses\n" );
         
         }
         { //::CEGUI::BaseDim::handleFontRenderSizeChange
@@ -184,6 +188,18 @@ void register_ImageDim_class(){
                 , handleFontRenderSizeChange_function_type(&::CEGUI::BaseDim::handleFontRenderSizeChange)
                 , default_handleFontRenderSizeChange_function_type(&ImageDim_wrapper::default_handleFontRenderSizeChange)
                 , ( bp::arg("window"), bp::arg("font") ) );
+        
+        }
+        { //::CEGUI::BaseDim::writeXMLToStream
+        
+            typedef void ( ::CEGUI::BaseDim::*writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            typedef void ( ImageDim_wrapper::*default_writeXMLToStream_function_type )( ::CEGUI::XMLSerializer & ) const;
+            
+            ImageDim_exposer.def( 
+                "writeXMLToStream"
+                , writeXMLToStream_function_type(&::CEGUI::BaseDim::writeXMLToStream)
+                , default_writeXMLToStream_function_type(&ImageDim_wrapper::default_writeXMLToStream)
+                , ( bp::arg("xml_stream") ) );
         
         }
     }
