@@ -234,6 +234,8 @@
 
 #include "NamedXMLResourceManagerScheme.pypp.hpp"
 
+#include "OperatorDim.pypp.hpp"
+
 #include "PopupMenu.pypp.hpp"
 
 #include "ProgressBar.pypp.hpp"
@@ -822,6 +824,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_NamedElementEventArgs_class();
 
     register_NamedXMLResourceManagerScheme_class();
+
+    register_OperatorDim_class();
 
     register_PopupMenu_class();
 

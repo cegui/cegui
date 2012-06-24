@@ -1077,6 +1077,7 @@ void Iterator_previous(::CEGUI::%s& t)
     
     # falagard/CEGUIFalDimensions.h
     CEGUI_ns.class_("BaseDim").include()
+    CEGUI_ns.class_("OperatorDim").include()
     CEGUI_ns.class_("AbsoluteDim").include()
     CEGUI_ns.class_("ImageDim").include()
     CEGUI_ns.class_("ImagePropertyDim").include()

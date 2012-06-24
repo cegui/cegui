@@ -11,33 +11,25 @@ void register_Dimension_class(){
     { //::CEGUI::Dimension
         typedef bp::class_< CEGUI::Dimension > Dimension_exposer_t;
         Dimension_exposer_t Dimension_exposer = Dimension_exposer_t( "Dimension", "*!\n\
-            \n\
-                Class representing some kind of dimension.\n\
         \n\
-                The key thing to understand about Dimension is that it contains not just a dimensional\
-                value,\n\
-                but also a record of what the dimension value is supposed to represent. (e.g. a co-ordinate\
-                on\n\
-                the x axis, or the height of something).\n\
-            *\n", bp::init< >("*!\n\
+            Class representing some kind of dimension.\n\
         \n\
-            Constructor\n\
-        *\n") );
+            The key thing to understand about Dimension is that it contains not just a\n\
+            dimensional value, but also a record of what the dimension value is supposed\n\
+            to represent. (e.g. a co-ordinate on the x axis, or the height of something).\n\
+        *\n", bp::init< >() );
         bp::scope Dimension_scope( Dimension_exposer );
+        Dimension_exposer.def( bp::init< CEGUI::Dimension const & >(( bp::arg("other") )) );
         Dimension_exposer.def( bp::init< CEGUI::BaseDim const &, CEGUI::DimensionType >(( bp::arg("dim"), bp::arg("type") ), "*!\n\
-                \n\
-                    Constructor\n\
+            \n\
+                Constructor\n\
         \n\
-                @param dim\n\
-                    object based on subclass of BaseDim which holds the dimensional value.\n\
+            @param dim\n\
+                object based on subclass of BaseDim which holds the dimensional value.\n\
         \n\
-                @param type\n\
-                    DimensionType value indicating what dimension this object is to represent.\n\
-                *\n") );
-        Dimension_exposer.def( bp::init< CEGUI::Dimension const & >(( bp::arg("other") ), "*!\n\
-        \n\
-            Copy constructor\n\
-        *\n") );
+            @param type\n\
+                DimensionType value indicating what dimension this object is to represent.\n\
+            *\n") );
         { //::CEGUI::Dimension::getBaseDimension
         
             typedef ::CEGUI::BaseDim const & ( ::CEGUI::Dimension::*getBaseDimension_function_type )(  ) const;
@@ -47,13 +39,13 @@ void register_Dimension_class(){
                 , getBaseDimension_function_type( &::CEGUI::Dimension::getBaseDimension )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                    \n\
-                        return the BaseDim object currently used as the value for this Dimension.\n\
+                \n\
+                    return the BaseDim object currently used as the value for this Dimension.\n\
             \n\
-                    @return\n\
-                        const reference to the BaseDim sub-class object which contains the value for this\
-                        Dimension.\n\
-                    *\n" );
+                @return\n\
+                    const reference to the BaseDim sub-class object which contains the value\n\
+                    for this Dimension.\n\
+                *\n" );
         
         }
         { //::CEGUI::Dimension::getDimensionType
@@ -64,12 +56,12 @@ void register_Dimension_class(){
                 "getDimensionType"
                 , getDimensionType_function_type( &::CEGUI::Dimension::getDimensionType )
                 , "*!\n\
-                    \n\
-                        Return a DimensionType value indicating what this Dimension represents.\n\
+                \n\
+                    Return a DimensionType value indicating what this Dimension represents.\n\
             \n\
-                    @return\n\
-                        one of the DimensionType enumerated values.\n\
-                    *\n" );
+                @return\n\
+                    one of the DimensionType enumerated values.\n\
+                *\n" );
         
         }
         { //::CEGUI::Dimension::handleFontRenderSizeChange
@@ -91,11 +83,7 @@ void register_Dimension_class(){
                 "assign"
                 , assign_function_type( &::CEGUI::Dimension::operator= )
                 , ( bp::arg("other") )
-                , bp::return_self< >()
-                , "*!\n\
-            \n\
-                Assignment operator\n\
-            *\n" );
+                , bp::return_self< >() );
         
         }
         { //::CEGUI::Dimension::setBaseDimension
@@ -107,15 +95,12 @@ void register_Dimension_class(){
                 , setBaseDimension_function_type( &::CEGUI::Dimension::setBaseDimension )
                 , ( bp::arg("dim") )
                 , "*!\n\
-                    \n\
-                        set the current value for this Dimension.\n\
+                \n\
+                    set the current value for this Dimension.\n\
             \n\
-                    @param dim\n\
-                        object based on a subclass of BaseDim which holds the dimensional value.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @param dim\n\
+                    object based on a subclass of BaseDim which holds the dimensional value.\n\
+                *\n" );
         
         }
         { //::CEGUI::Dimension::setDimensionType
@@ -127,15 +112,12 @@ void register_Dimension_class(){
                 , setDimensionType_function_type( &::CEGUI::Dimension::setDimensionType )
                 , ( bp::arg("type") )
                 , "*!\n\
-                    \n\
-                        Sets what this Dimension represents.\n\
+                \n\
+                    Sets what this Dimension represents.\n\
             \n\
-                    @param type\n\
-                        one of the DimensionType enumerated values.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @param type\n\
+                    one of the DimensionType enumerated values.\n\
+                *\n" );
         
         }
         { //::CEGUI::Dimension::writeXMLToStream
@@ -147,15 +129,12 @@ void register_Dimension_class(){
                 , writeXMLToStream_function_type( &::CEGUI::Dimension::writeXMLToStream )
                 , ( bp::arg("xml_stream") )
                 , "*!\n\
-                    \n\
-                        Writes an xml representation of this Dimension to  out_stream.\n\
+                \n\
+                    Writes an xml representation of this Dimension to  out_stream.\n\
             \n\
-                    @param xml_stream\n\
-                        Stream where xml data should be output.\n\
-            \n\
-                    @return\n\
-                        Nothing.\n\
-                    *\n" );
+                @param xml_stream\n\
+                    Stream where xml data should be output.\n\
+                *\n" );
         
         }
     }

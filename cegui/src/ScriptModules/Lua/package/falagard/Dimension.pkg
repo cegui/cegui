@@ -6,11 +6,28 @@ class BaseDim
   tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd) const;
   tolua_throws|CEGUI::InvalidRequestException,error| float getValue(const Window& wnd, const Rect<float>& container) const;
   BaseDim* clone() const;
-  DimensionOperator getDimensionOperator() const;
-  void setDimensionOperator(DimensionOperator op);
-  const BaseDim* getOperand() const;
-  void setOperand(const BaseDim& operand);
   //void writeXMLToStream(OutStream& out_stream) const;
+};
+
+/******************************************************************************
+  OperatorDim 
+******************************************************************************/
+class OperatorDim : public BaseDim
+{
+    OperatorDim();
+    OperatorDim(DimensionOperator op);
+    OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right);
+
+    void setLeftOperand(const BaseDim* operand);
+    BaseDim* getLeftOperand() const;
+
+    void setRightOperand(const BaseDim* operand);
+    BaseDim* getRightOperand() const;
+
+    void setOperator(DimensionOperator op);
+    DimensionOperator getOperator() const;
+
+    void setNextOperand(const BaseDim* operand);
 };
 
 /******************************************************************************
