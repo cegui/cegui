@@ -248,67 +248,24 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::bootstrapSystem
         
-            typedef ::CEGUI::OpenGLRenderer & ( *bootstrapSystem_function_type )( ::CEGUI::OpenGLRenderer::TextureTargetType const );
+            typedef ::CEGUI::OpenGLRenderer & ( *bootstrapSystem_function_type )( ::CEGUI::OpenGLRenderer::TextureTargetType const,int const );
             
             OpenGLRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::OpenGLRenderer::bootstrapSystem )
-                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    Convenience function that creates the required objects to initialise the\n\
-                    CEGUI system.\n\
-            \n\
-                    The created Renderer will use the current OpenGL viewport as it's\n\
-                    default surface size.\n\
-            \n\
-                    This will create and initialise the following objects for you:\n\
-                    - CEGUI.OpenGLRenderer\n\
-                    - CEGUI.DefaultResourceProvider\n\
-                    - CEGUI.System\n\
-            \n\
-                @param tt_type\n\
-                    Specifies one of the TextureTargetType enumerated values indicating the\n\
-                    desired TextureTarget type to be used.  Defaults to TTT_AUTO.\n\
-            \n\
-                @return\n\
-                    Reference to the CEGUI.OpenGLRenderer object that was created.\n\
-                *\n" );
+                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(99990) )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::bootstrapSystem
         
-            typedef ::CEGUI::OpenGLRenderer & ( *bootstrapSystem_function_type )( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const );
+            typedef ::CEGUI::OpenGLRenderer & ( *bootstrapSystem_function_type )( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const,int const );
             
             OpenGLRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::OpenGLRenderer::bootstrapSystem )
-                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    Convenience function that creates the required objects to initialise the\n\
-                    CEGUI system.\n\
-            \n\
-                    The created Renderer will use the current OpenGL viewport as it's\n\
-                    default surface size.\n\
-            \n\
-                    This will create and initialise the following objects for you:\n\
-                    - CEGUI.OpenGLRenderer\n\
-                    - CEGUI.DefaultResourceProvider\n\
-                    - CEGUI.System\n\
-            \n\
-                @param display_size\n\
-                    Size object describing the initial display resolution.\n\
-            \n\
-                @param tt_type\n\
-                    Specifies one of the TextureTargetType enumerated values indicating the\n\
-                    desired TextureTarget type to be used.  Defaults to TTT_AUTO.\n\
-            \n\
-                @return\n\
-                    Reference to the CEGUI.OpenGLRenderer object that was created.\n\
-                *\n" );
+                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(99990) )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::cleanupExtraStates
@@ -323,12 +280,12 @@ void register_OpenGLRenderer_class(){
         }
         { //::CEGUI::OpenGLRenderer::create
         
-            typedef ::CEGUI::OpenGLRenderer & ( *create_function_type )( ::CEGUI::OpenGLRenderer::TextureTargetType const );
+            typedef ::CEGUI::OpenGLRenderer & ( *create_function_type )( ::CEGUI::OpenGLRenderer::TextureTargetType const,int const );
             
             OpenGLRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::OpenGLRenderer::create )
-                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO )
+                , ( bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -337,29 +294,21 @@ void register_OpenGLRenderer_class(){
                 @param tt_type\n\
                     Specifies one of the TextureTargetType enumerated values indicating the\n\
                     desired TextureTarget type to be used.\n\
+            \n\
+                @param abi\n\
+                    This must be set to CEGUI_VERSION_ABI\n\
                 *\n" );
         
         }
         { //::CEGUI::OpenGLRenderer::create
         
-            typedef ::CEGUI::OpenGLRenderer & ( *create_function_type )( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const );
+            typedef ::CEGUI::OpenGLRenderer & ( *create_function_type )( ::CEGUI::Sizef const &,::CEGUI::OpenGLRenderer::TextureTargetType const,int const );
             
             OpenGLRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::OpenGLRenderer::create )
-                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO )
-                , bp::return_value_policy< bp::reference_existing_object >()
-                , "*!\n\
-                \n\
-                    Create an OpenGLRenderer object.\n\
-            \n\
-                @param display_size\n\
-                    Size object describing the initial display resolution.\n\
-            \n\
-                @param tt_type\n\
-                    Specifies one of the TextureTargetType enumerated values indicating the\n\
-                    desired TextureTarget type to be used.\n\
-                *\n" );
+                , ( bp::arg("display_size"), bp::arg("tt_type")=::CEGUI::OpenGLRenderer::TTT_AUTO, bp::arg("abi")=(int const)(99990) )
+                , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
         { //::CEGUI::OpenGLRenderer::createGeometryBuffer

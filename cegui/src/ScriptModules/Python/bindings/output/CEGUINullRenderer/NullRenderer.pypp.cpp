@@ -209,11 +209,12 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::bootstrapSystem
         
-            typedef ::CEGUI::NullRenderer & ( *bootstrapSystem_function_type )(  );
+            typedef ::CEGUI::NullRenderer & ( *bootstrapSystem_function_type )( int const );
             
             NullRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::NullRenderer::bootstrapSystem )
+                , ( bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -224,6 +225,9 @@ void register_NullRenderer_class(){
                     - CEGUI.NullRenderer\n\
                     - CEGUI.DefaultResourceProvider\n\
                     - CEGUI.System\n\
+            \n\
+                @param abi\n\
+                    This must be set to CEGUI_VERSION_ABI\n\
             \n\
                 @return\n\
                     Reference to the CEGUI.NullRenderer object that was created.\n\
@@ -244,11 +248,12 @@ void register_NullRenderer_class(){
         }
         { //::CEGUI::NullRenderer::create
         
-            typedef ::CEGUI::NullRenderer & ( *create_function_type )(  );
+            typedef ::CEGUI::NullRenderer & ( *create_function_type )( int const );
             
             NullRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::NullRenderer::create )
+                , ( bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
             \n\

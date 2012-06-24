@@ -8,8 +8,8 @@ namespace bp = boost::python;
 
 struct Exception_wrapper : CEGUI::Exception, bp::wrapper< CEGUI::Exception > {
 
-    Exception_wrapper(::CEGUI::String const & message="", ::CEGUI::String const & name="CEGUI::Exception", ::CEGUI::String const & filename="", int line=0 )
-    : CEGUI::Exception( boost::ref(message), boost::ref(name), boost::ref(filename), line )
+    Exception_wrapper(::CEGUI::String const & message="", ::CEGUI::String const & name="CEGUI::Exception", ::CEGUI::String const & filename="", int line=0, ::CEGUI::String const & function="" )
+    : CEGUI::Exception( boost::ref(message), boost::ref(name), boost::ref(filename), line, boost::ref(function) )
       , bp::wrapper< CEGUI::Exception >(){
         // constructor
     
@@ -27,7 +27,7 @@ void register_Exception_class(){
         typedef bp::class_< Exception_wrapper, boost::noncopyable > Exception_exposer_t;
         Exception_exposer_t Exception_exposer = Exception_exposer_t( "Exception", bp::no_init );
         bp::scope Exception_scope( Exception_exposer );
-        Exception_exposer.def( bp::init< bp::optional< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, int > >(( bp::arg("message")="", bp::arg("name")="CEGUI::Exception", bp::arg("filename")="", bp::arg("line")=(int)(0) )) );
+        Exception_exposer.def( bp::init< bp::optional< CEGUI::String const &, CEGUI::String const &, CEGUI::String const &, int, CEGUI::String const & > >(( bp::arg("message")="", bp::arg("name")="CEGUI::Exception", bp::arg("filename")="", bp::arg("line")=(int)(0), bp::arg("function")="" )) );
         { //::CEGUI::Exception::isStdErrEnabled
         
             typedef bool ( *isStdErrEnabled_function_type )(  );

@@ -222,11 +222,12 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::bootstrapSystem
         
-            typedef ::CEGUI::OgreRenderer & ( *bootstrapSystem_function_type )(  );
+            typedef ::CEGUI::OgreRenderer & ( *bootstrapSystem_function_type )( int const );
             
             OgreRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::OgreRenderer::bootstrapSystem )
+                , ( bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -242,6 +243,9 @@ void register_OgreRenderer_class(){
                     - CEGUI.OgreImageCodec\n\
                     - CEGUI.System\n\
             \n\
+                @param abi\n\
+                    This must be set to CEGUI_VERSION_ABI\n\
+            \n\
                 @return\n\
                     Reference to the CEGUI.OgreRenderer object that was created.\n\
             \n\
@@ -254,12 +258,12 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::bootstrapSystem
         
-            typedef ::CEGUI::OgreRenderer & ( *bootstrapSystem_function_type )( ::Ogre::RenderTarget & );
+            typedef ::CEGUI::OgreRenderer & ( *bootstrapSystem_function_type )( ::Ogre::RenderTarget &,int const );
             
             OgreRenderer_exposer.def( 
                 "bootstrapSystem"
                 , bootstrapSystem_function_type( &::CEGUI::OgreRenderer::bootstrapSystem )
-                , ( bp::arg("target") )
+                , ( bp::arg("target"), bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -278,6 +282,9 @@ void register_OgreRenderer_class(){
                 @param target\n\
                     Reference to the Ogre.RenderTarget object that the created OgreRenderer\n\
                     will use as the default rendering root.\n\
+            \n\
+                @param abi\n\
+                    This must be set to CEGUI_VERSION_ABI\n\
             \n\
                 @return\n\
                     Reference to the CEGUI.OgreRenderer object that was created.\n\
@@ -307,11 +314,12 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::create
         
-            typedef ::CEGUI::OgreRenderer & ( *create_function_type )(  );
+            typedef ::CEGUI::OgreRenderer & ( *create_function_type )( int const );
             
             OgreRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::OgreRenderer::create )
+                , ( bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
                 \n\
@@ -327,12 +335,12 @@ void register_OgreRenderer_class(){
         }
         { //::CEGUI::OgreRenderer::create
         
-            typedef ::CEGUI::OgreRenderer & ( *create_function_type )( ::Ogre::RenderTarget & );
+            typedef ::CEGUI::OgreRenderer & ( *create_function_type )( ::Ogre::RenderTarget &,int const );
             
             OgreRenderer_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::OgreRenderer::create )
-                , ( bp::arg("target") )
+                , ( bp::arg("target"), bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
             \n\

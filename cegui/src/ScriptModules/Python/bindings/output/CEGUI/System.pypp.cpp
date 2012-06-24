@@ -139,12 +139,12 @@ void register_System_class(){
         }
         { //::CEGUI::System::create
         
-            typedef ::CEGUI::System & ( *create_function_type )( ::CEGUI::Renderer &,::CEGUI::ResourceProvider *,::CEGUI::XMLParser *,::CEGUI::ImageCodec *,::CEGUI::ScriptModule *,::CEGUI::String const &,::CEGUI::String const & );
+            typedef ::CEGUI::System & ( *create_function_type )( ::CEGUI::Renderer &,::CEGUI::ResourceProvider *,::CEGUI::XMLParser *,::CEGUI::ImageCodec *,::CEGUI::ScriptModule *,::CEGUI::String const &,::CEGUI::String const &,int const );
             
             System_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::System::create )
-                , ( bp::arg("renderer"), bp::arg("resourceProvider")=bp::object(), bp::arg("xmlParser")=bp::object(), bp::arg("imageCodec")=bp::object(), bp::arg("scriptModule")=bp::object(), bp::arg("configFile")="", bp::arg("logFile")="CEGUI.log" )
+                , ( bp::arg("renderer"), bp::arg("resourceProvider")=bp::object(), bp::arg("xmlParser")=bp::object(), bp::arg("imageCodec")=bp::object(), bp::arg("scriptModule")=bp::object(), bp::arg("configFile")="", bp::arg("logFile")="CEGUI.log", bp::arg("abi")=(int const)(99990) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
@@ -645,6 +645,17 @@ void register_System_class(){
                 , "! output the standard log header\n" );
         
         }
+        { //::CEGUI::System::performVersionTest
+        
+            typedef void ( *performVersionTest_function_type )( int const,int const,::CEGUI::String const & );
+            
+            System_exposer.def( 
+                "performVersionTest"
+                , performVersionTest_function_type( &::CEGUI::System::performVersionTest )
+                , ( bp::arg("expected"), bp::arg("received"), bp::arg("func") )
+                , "! Internal CEGUI version validation function.\n" );
+        
+        }
         { //::CEGUI::System::renderAllGUIContexts
         
             typedef void ( ::CEGUI::System::*renderAllGUIContexts_function_type )(  ) ;
@@ -953,6 +964,7 @@ void register_System_class(){
         System_exposer.staticmethod( "getStringTranscoder" );
         System_exposer.staticmethod( "getVerboseVersion" );
         System_exposer.staticmethod( "getVersion" );
+        System_exposer.staticmethod( "performVersionTest" );
         System_exposer.staticmethod( "setDefaultImageCodecName" );
         System_exposer.staticmethod( "setDefaultXMLParserName" );
     }
