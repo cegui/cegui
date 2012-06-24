@@ -134,7 +134,7 @@ namespace CEGUI
         static const String PropertyDefinitionElement;  //!< Tag name for property definition elements.
         static const String PropertyLinkDefinitionElement;  //!< Tag name for property link elements.
         static const String PropertyLinkTargetElement;  //!< Tag name for property link target elements.
-        static const String DimOperatorElement;         //!< Tag name for dimension operator elements.
+        static const String OperatorDimElement;         //!< Tag name for dimension operator elements.
         static const String VertFormatPropertyElement;  //!< Tag name for element that specifies a vertical formatting property.
         static const String HorzFormatPropertyElement;  //!< Tag name for element that specifies a horizontal formatting property..
         static const String AreaPropertyElement;        //!< Tag name for element that specifies a URect property..
@@ -405,9 +405,9 @@ namespace CEGUI
 
         /*!
         \brief
-            Method that handles the opening DimOperator XML element.
+            Method that handles the opening OperatorDim XML element.
         */
-        void elementDimOperatorStart(const XMLAttributes& attributes);
+        void elementOperatorDimStart(const XMLAttributes& attributes);
 
         /*!
         \brief

@@ -50,13 +50,15 @@ public:
     //! Return the current expression string for this dimension.
     const String& getExpression() const;
 
+    // Implementation of the base class interface
+    float getValue(const Window& wnd) const;
+    float getValue(const Window& wnd, const Rectf& container) const;
+    BaseDim* clone() const;
+
 protected:
     // Implementation of the base class interface
-    float getValue_impl(const Window& wnd) const;
-    float getValue_impl(const Window& wnd, const Rectf& container) const;
     void writeXMLElementName_impl(XMLSerializer& xml_stream) const;
     void writeXMLElementAttributes_impl(XMLSerializer& xml_stream) const;
-    BaseDim* clone_impl() const;
 
     //! function to perform the string scan.
     void scanString() const;
