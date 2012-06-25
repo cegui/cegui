@@ -10,7 +10,7 @@
         <Property name="TooltipText" value="This is a simple demonstration of what the font subsystem can do." />
 
         <Window name="FontSample" type="TaharezLook/MultiLineEditbox">
-            <Property name="Area" value="{{0.05,0},{0.05,0},{0.75,0},{0.5,0}}" />
+            <Property name="Area" value="{{0.05,0},{0.05,0},{0.65,0},{0.5,0}}" />
             <Property name="TooltipText" value="This window shows a sample of the selected font" />
 			<Property name="WordWrap" value="True" />
         </Window>

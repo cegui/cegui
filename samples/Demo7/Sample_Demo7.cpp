@@ -27,20 +27,8 @@
  ***************************************************************************/
 #include "Sample_Demo7.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
 
 #include <cstdlib>
-
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    Demo7Sample app;
-    return app.run();
-}
 
 //----------------------------------------------------------------------------//
 // The following are related to the RenderEffect
@@ -248,8 +236,10 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool Demo7Sample::initialiseSample()
+bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_guiContext = guiContext;
+
     using namespace CEGUI;
 
     // Register our effect with the system
@@ -274,20 +264,22 @@ bool Demo7Sample::initialiseSample()
     // the effect that - after the alias is added - any time a window of
     // type "TaharezLook/FrameWindow" is requested, the system will create a
     // "TaharezLook/WobblyFrameWindow" instead.
+
     WindowFactoryManager::getSingleton().addWindowTypeAlias(
         "TaharezLook/FrameWindow",  // alias name - can shadow existing types
         "TaharezLook/WobblyFrameWindow"); // target type to create.
+
 
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageDemo7", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -298,9 +290,9 @@ bool Demo7Sample::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "BackgroundImageDemo7");
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    guiContext->setRootWindow(background);
 
     // load the windows for Demo7 from the layout file.
     Window* sheet = winMgr.loadLayoutFromFile("Demo7Windows.layout");
@@ -311,6 +303,13 @@ bool Demo7Sample::initialiseSample()
     // initialise the event handling.
     initDemoEventWiring(sheet);
 
+
+    WindowFactoryManager::getSingleton().removeWindowTypeAlias(
+        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
+        "TaharezLook/WobblyFrameWindow"); // target type to create.
+
+
+
     // success!
     return true;
 }
@@ -318,7 +317,7 @@ bool Demo7Sample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void Demo7Sample::cleanupSample()
+void Demo7Sample::deinitialise()
 {
     // nothing to do here!
 }
@@ -418,9 +417,6 @@ void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
 
 bool Demo7Sample::handleQuit(const CEGUI::EventArgs&)
 {
-    // signal quit
-    d_sampleApp->setQuitting();
-
     // event was handled
     return true;
 }
@@ -456,7 +452,7 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     switch (id)
     {
     case 0:
-        img->setProperty("Image", "BackgroundImage");
+        img->setProperty("Image", "BackgroundImageDemo7");
         break;
 
     case 1:
@@ -485,3 +481,12 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
     return true;
 }
 
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static Demo7Sample sample;
+    return sample;
+}

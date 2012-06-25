@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGuiSample.cpp
+    filename:   SamplesFrameworkBase.cpp
     created:    24/9/2004
     author:     Paul D Turner
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
@@ -92,16 +92,19 @@
 /*************************************************************************
     Constructor
 *************************************************************************/
-CEGuiSample::CEGuiSample() :
+SamplesFrameworkBase::SamplesFrameworkBase() :
         d_rendererSelector(0),
-        d_sampleApp(0)
+        d_sampleApp(0),
+        d_quitting(false),
+        d_appWindowWidth(0),
+        d_appWindowHeight(0)
 {}
 
 
 /*************************************************************************
     Destructor
 *************************************************************************/
-CEGuiSample::~CEGuiSample()
+SamplesFrameworkBase::~SamplesFrameworkBase()
 {
     if (d_sampleApp)
     {
@@ -120,11 +123,11 @@ CEGuiSample::~CEGuiSample()
 /*************************************************************************
     Application entry point
 *************************************************************************/
-int CEGuiSample::run()
+int SamplesFrameworkBase::run()
 {
     CEGUI_TRY
     {
-        if (initialise())
+        if (runApplication())
             cleanup();
     }
     CEGUI_CATCH (CEGUI::Exception& exc)
@@ -149,9 +152,9 @@ int CEGuiSample::run()
 
 
 /*************************************************************************
-    Initialise the sample application
+    Start the SamplesFramework application
 *************************************************************************/
-bool CEGuiSample::initialise()
+bool SamplesFrameworkBase::runApplication()
 {
     // Setup renderer selection dialog for Win32
 #if defined( __WIN32__ ) || defined( _WIN32 )
@@ -170,6 +173,7 @@ bool CEGuiSample::initialise()
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D11
     d_rendererSelector->setRendererAvailability(Direct3D11GuiRendererType);
 #endif
+
 
 #elif defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // decide which method to use for renderer selection
@@ -283,7 +287,7 @@ bool CEGuiSample::initialise()
 /*************************************************************************
     Cleanup the sample application.
 *************************************************************************/
-void CEGuiSample::cleanup()
+void SamplesFrameworkBase::cleanup()
 {
     if (d_sampleApp)
     {
@@ -304,7 +308,7 @@ void CEGuiSample::cleanup()
 /*************************************************************************
     Output a message to the user in some OS independant way.
 *************************************************************************/
-void CEGuiSample::outputExceptionMessage(const char* message) const
+void SamplesFrameworkBase::outputExceptionMessage(const char* message)
 {
 #if defined(__WIN32__) || defined(_WIN32)
     MessageBoxA(0, message, "CEGUI - Exception", MB_OK|MB_ICONERROR);
@@ -312,4 +316,20 @@ void CEGuiSample::outputExceptionMessage(const char* message) const
     std::cout << "An exception was thrown within the sample framework:" << std::endl;
     std::cout << message << std::endl;
 #endif
+}
+
+void SamplesFrameworkBase::setQuitting(bool quit)
+{
+    d_quitting = quit;
+}
+
+bool SamplesFrameworkBase::isQuitting()
+{
+    return d_quitting;
+}
+
+void SamplesFrameworkBase::setApplicationWindowSize(int width, int height)
+{
+    d_appWindowWidth = width;
+    d_appWindowHeight = height;
 }

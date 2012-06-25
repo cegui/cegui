@@ -38,13 +38,13 @@
 #undef max
 
 #include "CEGUI/RendererModules/Direct3D9/Renderer.h"
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 #include <stdexcept>
 
 //----------------------------------------------------------------------------//
-struct CEGuiBaseApplication9Impl
+struct CEGuiBaseApplicationImpl
 {
     HWND d_window;
     LPDIRECT3D9 d_D3D;
@@ -55,12 +55,12 @@ struct CEGuiBaseApplication9Impl
 
 //----------------------------------------------------------------------------//
 CEGuiD3D9BaseApplication::CEGuiD3D9BaseApplication() :
-    pimpl(new CEGuiBaseApplication9Impl),
+pimpl(new CEGuiBaseApplicationImpl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))
+    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
     {
-        if (initialiseDirect3D(800, 600, D3DADAPTER_DEFAULT, true))
+        if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, D3DADAPTER_DEFAULT, true))
         {
             if (Win32AppHelper::initialiseDirectInput(pimpl->d_window, pimpl->d_directInput))
             {
@@ -103,9 +103,10 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D9BaseApplication::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiD3D9BaseApplication::execute_impl()
 {
-    sampleApp->initialiseSample();
+    Win32AppHelper::setSamplesFramework(d_sampleApp);
+    d_sampleApp->initialise();
 
     //
     //  This is basically a modified Win32 message pump
@@ -152,7 +153,7 @@ bool CEGuiD3D9BaseApplication::execute_impl(CEGuiSample* sampleApp)
 
         // check if the application is quitting, and break the loop next time
         // around if so.
-        if (isQuitting())
+        if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
 
@@ -169,7 +170,7 @@ void CEGuiD3D9BaseApplication::cleanup_impl()
 void CEGuiD3D9BaseApplication::beginRendering(const float elapsed)
 {
     pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET,
-                             D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
+                             D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
 }
 
 //----------------------------------------------------------------------------//
