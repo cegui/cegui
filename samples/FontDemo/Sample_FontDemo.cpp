@@ -139,7 +139,7 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // load all the fonts (if they are not loaded yet)
     fontManager.createAll("*.font", "fonts");
 
-    createFontOptions();
+    retrieveFontOptions();
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImageFontDemo", "GPN-2000-001437.png");
@@ -172,8 +172,10 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // set up the font listbox callback
     lbox->subscribeEvent(Listbox::EventSelectionChanged,
         Event::Subscriber(&FontDemo::handleFontSelection, this));
+/*
     // select the first font
     lbox->setItemSelectState(size_t (0), true);
+*/
 
     // Add language list to the listbox
     lbox = static_cast<Listbox*>(background->getChild("root/FontDemo/LangList"));
@@ -367,7 +369,7 @@ bool FontDemo::handleLangSelection(const EventArgs& e)
     return true;
 }
 
-void FontDemo::createFontOptions()
+void FontDemo::retrieveFontOptions()
 {
     FontManager& fontManager(FontManager::getSingleton());
 
@@ -379,6 +381,8 @@ void FontDemo::createFontOptions()
         if (fi.getCurrentKey() != String("FontDemoFont"))
         {
             CEGUI::Font& font(fontManager.get(fi.getCurrentKey()));
+
+            d_fontOptions.push_back(font.getFileName());
         }
         ++fi;
     }
