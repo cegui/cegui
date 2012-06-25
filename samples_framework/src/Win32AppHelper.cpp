@@ -33,6 +33,8 @@
 #include "CEGUI/CEGUI.h"
 #include <TCHAR.H>
 
+#include "SamplesFrameworkBase.h"
+
 /*************************************************************************
     Static Data Definitions
 *************************************************************************/
@@ -48,7 +50,10 @@ const TCHAR Win32AppHelper::CREATE_D3D_ERROR[]      = _TEXT("Failed to create ma
 const TCHAR Win32AppHelper::CREATE_DEVICE_ERROR[]   = _TEXT("Failed to create Direct3D Device object.");
 
 // variable for tracking Win32 cursor
-bool Win32AppHelper::d_mouseInWindow = false;
+bool Win32AppHelper::s_mouseInWindow = false;
+
+// For input injection
+SamplesFrameworkBase* Win32AppHelper::s_samplesFramework(0);
 
 /*************************************************************************
     Prototypes for internal helper functions a.k.a "The hacks section"
@@ -114,7 +119,7 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     switch(message)
     {
     case WM_CHAR:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar((CEGUI::utf32)wParam);
+        s_samplesFramework->injectChar((CEGUI::utf32)wParam);
         break;
 
     case WM_MOUSELEAVE:
@@ -128,35 +133,35 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
     case WM_MOUSEMOVE:
         mouseEnters();
 
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition((float)(LOWORD(lParam)), (float)(HIWORD(lParam)));
+        s_samplesFramework->injectMousePosition((float)(LOWORD(lParam)), (float)(HIWORD(lParam)));
         break;
 
     case WM_LBUTTONDOWN:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::LeftButton);
+        s_samplesFramework->injectMouseButtonDown(CEGUI::LeftButton);
         break;
 
     case WM_LBUTTONUP:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::LeftButton);
+        s_samplesFramework->injectMouseButtonUp(CEGUI::LeftButton);
         break;
 
     case WM_RBUTTONDOWN:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::RightButton);
+        s_samplesFramework->injectMouseButtonDown(CEGUI::RightButton);
         break;
 
     case WM_RBUTTONUP:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::RightButton);
+        s_samplesFramework->injectMouseButtonUp(CEGUI::RightButton);
         break;
 
     case WM_MBUTTONDOWN:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(CEGUI::MiddleButton);
+        s_samplesFramework->injectMouseButtonDown(CEGUI::MiddleButton);
         break;
 
     case WM_MBUTTONUP:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(CEGUI::MiddleButton);
+        s_samplesFramework->injectMouseButtonUp(CEGUI::MiddleButton);
         break;
 
     case 0x020A: // WM_MOUSEWHEEL:
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(static_cast<float>((short)HIWORD(wParam)) / static_cast<float>(120));
+        s_samplesFramework->injectMouseWheelChange(static_cast<float>((short)HIWORD(wParam)) / static_cast<float>(120));
         break;
 
     case WM_DESTROY:
@@ -219,18 +224,18 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
 
 void Win32AppHelper::mouseEnters(void)
 {
-    if (!d_mouseInWindow)
+    if (!s_mouseInWindow)
     {
-        d_mouseInWindow = true;
+        s_mouseInWindow = true;
         ShowCursor(false);
     }
 }
 
 void Win32AppHelper::mouseLeaves(void)
 {
-    if (d_mouseInWindow)
+    if (s_mouseInWindow)
     {
-        d_mouseInWindow = false;
+        s_mouseInWindow = false;
         ShowCursor(true);
     }
 }
@@ -334,13 +339,13 @@ void Win32AppHelper::doDirectInputEvents(const Win32AppHelper::DirectInputState&
                 }
                 else
                 {
-                    CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
+                    s_samplesFramework->injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
                 }
 
             }
             else
             {
-                CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp((CEGUI::Key::Scan)devDat.dwOfs);
+                s_samplesFramework->injectKeyUp((CEGUI::Key::Scan)devDat.dwOfs);
             }
 
         }
@@ -380,6 +385,12 @@ bool Win32AppHelper::doWin32Events(bool& idle)
     }
 
     return true;
+}
+
+
+void Win32AppHelper::setSamplesFramework(SamplesFrameworkBase* samplesFramework)
+{
+    s_samplesFramework = samplesFramework;
 }
 
 #endif

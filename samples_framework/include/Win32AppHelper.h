@@ -44,6 +44,8 @@
 #  pragma comment(lib, "dxguid.lib")
 #endif
 
+class SamplesFrameworkBase;
+
 
 /*!
 \brief
@@ -58,7 +60,7 @@ public:
         {}
 
         LPDIRECTINPUT8 directInput;
-        LPDIRECTINPUTDEVICE8 keyboardDevice ;
+        LPDIRECTINPUTDEVICE8 keyboardDevice;
     };
 
     static HWND createApplicationWindow(int width, int height);
@@ -69,6 +71,8 @@ public:
     static void doDirectInputEvents(const Win32AppHelper::DirectInputState& dis);
     static bool doWin32Events(bool& idle);
     static LRESULT CALLBACK wndProc(HWND hWnd, UINT message, WPARAM wParam, LPARAM lParam);
+
+    static void setSamplesFramework(SamplesFrameworkBase* samplesFramework);
 
     /*************************************************************************
         Constants
@@ -85,7 +89,9 @@ public:
     static const TCHAR  CREATE_DEVICE_ERROR[];
 
 private:
-    static bool d_mouseInWindow;
+    static bool s_mouseInWindow;
+
+    static SamplesFrameworkBase* s_samplesFramework;
 };
 
 #endif  // end of guard _Win32AppHelper_h_

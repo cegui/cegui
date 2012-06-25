@@ -37,7 +37,7 @@
 #endif
 
 // forward declare struct that will hold D3D11 specifics
-struct CEGuiBaseApplication11Impl;
+struct CEGuiBaseApplicationImpl;
 
 //! CEGuiBaseApplication implementation for Microsoft Direct3D 11
 class CEGuiD3D11BaseApplication : public CEGuiBaseApplication
@@ -52,13 +52,13 @@ protected:
     void cleanupDirect3D();
 
     // Implementation of base class.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
 
     //! Pointer to the struct holding D3D specific fields.
-    CEGuiBaseApplication11Impl* pimpl;;
+    CEGuiBaseApplicationImpl* pimpl;;
     //! counter used to track elapsed time
     DWORD d_lastFrameTime;
 };

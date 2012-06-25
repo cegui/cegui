@@ -1,6 +1,6 @@
 /***********************************************************************
-    filename:   CEGuiD3D9BaseApplication.h
-    created:    24/9/2004
+    filename:   CEGuiD3D10BaseApplication.h
+    created:    Sun May 25 2008
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGuiD3D9BaseApplication_h_
-#define _CEGuiD3D9BaseApplication_h_
+#ifndef _CEGuiD3D10BaseApplication_h_
+#define _CEGuiD3D10BaseApplication_h_
 
 #include "CEGuiBaseApplication.h"
 #include "CEGUI/GeometryBuffer.h"
@@ -34,46 +34,34 @@
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #   define WIN32_LEAN_AND_MEAN
 #   include <windows.h>
-
-// undefine Microsoft macro evilness
-#   undef min
-#   undef max
 #endif
 
-struct CEGuiBaseApplication9Impl;
+// forward declare struct that will hold D3D10 specifics
+struct CEGuiBaseApplicationImpl;
 
-
-class CEGuiD3D9BaseApplication : public CEGuiBaseApplication
+//! CEGuiBaseApplication implementation for Microsoft Direct3D 10
+class CEGuiD3D10BaseApplication : public CEGuiBaseApplication
 {
 public:
-    //! Constructor.
-    CEGuiD3D9BaseApplication();
+    //!Constructor.
+    CEGuiD3D10BaseApplication();
 
     //! Destructor.
-    ~CEGuiD3D9BaseApplication();
+    ~CEGuiD3D10BaseApplication();
 
 protected:
     /*************************************************************************
         Implementation Methods
     *************************************************************************/
-    /*!
-    \brief
-        Initialises Direct3D system.
-    */
-    bool initialiseDirect3D(unsigned int width, unsigned int height, unsigned int adapter, bool windowed);
+    //! Initialises Direct3D system.
+    bool initialiseDirect3D(unsigned int width, unsigned int height,
+                            bool windowed);
 
-    /*!
-    \brief
-        Do reset of Direct3D device
-
-    \return
-        - true if the device was reset successfully
-        - false if the device was not reset.
-    */
-    bool resetDirect3D(void);
+    //! cleanup D3D objects / interfaces
+    void cleanupDirect3D();
 
     // Implementation of base class abstract methods.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
@@ -81,10 +69,11 @@ protected:
     /*************************************************************************
         Data fields
     *************************************************************************/
-    CEGuiBaseApplication9Impl* pimpl;;
+    //! Pointer to the struct holding D3D specific fields.
+    CEGuiBaseApplicationImpl* pimpl;;
 
     // counter used to track elapsed time
     DWORD d_lastFrameTime;
 };
 
-#endif  // end of guard _CEGuiD3D9BaseApplication_h_
+#endif  // end of guard _CEGuiD3D10BaseApplication_h_

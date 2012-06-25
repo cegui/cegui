@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGuiD3D10BaseApplication.cpp
-    created:    Sun May 25 2008
+    filename:   CEGuiD3D11BaseApplication.cpp
+    created:    Tue May 29 2012
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,35 +27,37 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
+#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
 
-#include "CEGuiD3D10BaseApplication.h"
-#include "CEGUI/RendererModules/Direct3D10/Renderer.h"
-#include "CEGuiSample.h"
+#include "CEGuiD3D11BaseApplication.h"
+#include "CEGUI/RendererModules/Direct3D11/Renderer.h"
+#include "SamplesFrameworkBase.h"
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
 
 #include <stdexcept>
-#include <d3d10.h>
+#include <d3d11.h>
 #include <dinput.h>
 
 //----------------------------------------------------------------------------//
-struct CEGuiBaseApplication10Impl
+struct CEGuiBaseApplicationImpl
 {
     HWND d_window;
     IDXGISwapChain* d_swapChain;
-    ID3D10Device* d_device;
+    ID3D11Device* d_device;
+    ID3D11DeviceContext* d_context;
+    D3D_FEATURE_LEVEL d_featureLevel;
     Win32AppHelper::DirectInputState d_directInput;
 };
 
 //----------------------------------------------------------------------------//
-CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
-    pimpl(new CEGuiBaseApplication10Impl),
+CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
+    pimpl(new CEGuiBaseApplicationImpl),
     d_lastFrameTime(GetTickCount())
 {
-    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(800, 600))
+    if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
     {
-        if (initialiseDirect3D(800, 600, true))
+        if (initialiseDirect3D(s_defaultWindowWidth, s_defaultWindowHeight, true))
         {
             // set the swap chain ptr into window data so we can get access
             // later.  This is a bit of a hack, but saved us redesigning the
@@ -67,7 +69,8 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
             if (Win32AppHelper::initialiseDirectInput(pimpl->d_window,
                                                       pimpl->d_directInput))
             {
-                d_renderer = &CEGUI::Direct3D10Renderer::create(pimpl->d_device);
+                d_renderer = &CEGUI::Direct3D11Renderer::create(pimpl->d_device,
+                                                                pimpl->d_context);
                 return;
             }
 
@@ -77,22 +80,20 @@ CEGuiD3D10BaseApplication::CEGuiD3D10BaseApplication() :
         DestroyWindow(pimpl->d_window);
     }
     else
-    {
         MessageBox(0, Win32AppHelper::CREATE_WINDOW_ERROR,
                    Win32AppHelper::APPLICATION_NAME, MB_ICONERROR|MB_OK);
-    }
 
-    CEGUI_THROW(std::runtime_error("Windows Direct3D 10 application failed to "
-        "initialise."));
+    CEGUI_THROW(std::runtime_error(
+        "Windows Direct3D 11 application failed to initialise."));
 }
 
 //----------------------------------------------------------------------------//
-CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
+CEGuiD3D11BaseApplication::~CEGuiD3D11BaseApplication()
 {
     Win32AppHelper::mouseLeaves();
 
-    CEGUI::Direct3D10Renderer::destroy(
-        *static_cast<CEGUI::Direct3D10Renderer*>(d_renderer));
+    CEGUI::Direct3D11Renderer::destroy(
+        *static_cast<CEGUI::Direct3D11Renderer*>(d_renderer));
 
     Win32AppHelper::cleanupDirectInput(pimpl->d_directInput);
 
@@ -104,9 +105,10 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D10BaseApplication::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiD3D11BaseApplication::execute_impl()
 {
-    sampleApp->initialiseSample();
+    Win32AppHelper::setSamplesFramework(d_sampleApp);
+    d_sampleApp->initialise();
 
     float clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
 
@@ -132,11 +134,11 @@ bool CEGuiD3D10BaseApplication::execute_impl(CEGuiSample* sampleApp)
             // get render target view
             // this is a bit wasteful, but done like this for now since the
             // resize code can change the view from under us.
-            ID3D10RenderTargetView* rtview;
-            pimpl->d_device->OMGetRenderTargets(1, &rtview, 0);
+            ID3D11RenderTargetView* rtview;
+            pimpl->d_context->OMGetRenderTargets(1, &rtview, 0);
 
             // clear display
-            pimpl->d_device->ClearRenderTargetView(rtview, clear_colour);
+            pimpl->d_context->ClearRenderTargetView(rtview, clear_colour);
 
             renderSingleFrame(elapsed);
 
@@ -146,7 +148,7 @@ bool CEGuiD3D10BaseApplication::execute_impl(CEGuiSample* sampleApp)
 
         // check if the application is quitting, and break the loop next time
         // around if so.
-        if (isQuitting())
+        if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
 
@@ -154,23 +156,23 @@ bool CEGuiD3D10BaseApplication::execute_impl(CEGuiSample* sampleApp)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D10BaseApplication::cleanup_impl()
+void CEGuiD3D11BaseApplication::cleanup_impl()
 {
     // nothing to do here.
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D10BaseApplication::beginRendering(const float elapsed)
+void CEGuiD3D11BaseApplication::beginRendering(const float elapsed)
 {
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D10BaseApplication::endRendering()
+void CEGuiD3D11BaseApplication::endRendering()
 {
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
+bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
     unsigned int height, bool windowed)
 {
     HRESULT res;
@@ -191,21 +193,22 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
     scd.Windowed = windowed;
 
     // initialise main parts of D3D
-    res = D3D10CreateDeviceAndSwapChain(0, D3D10_DRIVER_TYPE_HARDWARE,
-                                        0, 0, D3D10_SDK_VERSION,
+    res = D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE,
+                                        0, 0, 0, 0, D3D11_SDK_VERSION,
                                         &scd, &pimpl->d_swapChain,
-                                        &pimpl->d_device);
+                                        &pimpl->d_device, &pimpl->d_featureLevel,
+                                        &pimpl->d_context);
+
     if (SUCCEEDED(res))
     {
-
         // obtain handle to thr back buffer of the swap chain
-        ID3D10Texture2D* back_buffer;
-        res = pimpl->d_swapChain->GetBuffer(0, __uuidof(ID3D10Texture2D),
+        ID3D11Texture2D* back_buffer;
+        res = pimpl->d_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),
                                             (LPVOID*)&back_buffer);
 
         if (SUCCEEDED(res))
         {
-            ID3D10RenderTargetView* rtview;
+            ID3D11RenderTargetView* rtview;
 
             // create render target view using the back buffer
             res = pimpl->d_device->
@@ -217,18 +220,18 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
             if (SUCCEEDED(res))
             {
                 // bind the back-buffer render target to get the output.
-                pimpl->d_device->
+                pimpl->d_context->
                     OMSetRenderTargets(1, &rtview, 0);
 
                 // set a basic viewport.
-                D3D10_VIEWPORT view_port;
-                view_port.Width    = width;
-                view_port.Height   = height;
+                D3D11_VIEWPORT view_port;
+                view_port.Width    = static_cast<float>(width);
+                view_port.Height   = static_cast<float>(height);
                 view_port.MinDepth = 0.0f;
                 view_port.MaxDepth = 1.0f;
                 view_port.TopLeftX = 0;
                 view_port.TopLeftY = 0;
-                pimpl->d_device->RSSetViewports(1, &view_port);
+                pimpl->d_context->RSSetViewports(1, &view_port);
 
                 // complete window initialisation
                 ShowWindow(pimpl->d_window, SW_NORMAL);
@@ -246,20 +249,20 @@ bool CEGuiD3D10BaseApplication::initialiseDirect3D(unsigned int width,
         pimpl->d_device = 0;
     }
 
-    MessageBox(0, "Failed to correctly initialise Direct3D 10",
+    MessageBox(0, "Failed to correctly initialise Direct3D 11",
                Win32AppHelper::APPLICATION_NAME, MB_ICONERROR|MB_OK);
 
     return false;
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiD3D10BaseApplication::cleanupDirect3D()
+void CEGuiD3D11BaseApplication::cleanupDirect3D()
 {
     if (pimpl->d_device)
     {
         // get render target view
-        ID3D10RenderTargetView* rtview;
-        pimpl->d_device->OMGetRenderTargets(1, &rtview, 0);
+        ID3D11RenderTargetView* rtview;
+        pimpl->d_context->OMGetRenderTargets(1, &rtview, 0);
 
         if (rtview)
         {
@@ -278,3 +281,4 @@ void CEGuiD3D10BaseApplication::cleanupDirect3D()
 }
 
 #endif
+
