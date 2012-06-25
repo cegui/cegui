@@ -28,13 +28,15 @@ author:     Lukas E Meindl
 #ifndef _Sample_FontDemo_h_
 #define _Sample_FontDemo_h_
 
-
 #include "SampleBase.h"
+
+#include <vector>
 
 namespace CEGUI
 {
     class GUIContext;
     class EventArgs;
+    const String;
 }
 
 // Sample class
@@ -44,7 +46,7 @@ public:
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext);
 
-    void createFontOptions();
+    void retrieveFontOptions();
     bool handleLangSelection(const CEGUI::EventArgs& e);
     bool handlePointSize(const CEGUI::EventArgs& e);
     bool handleAntialiased(const CEGUI::EventArgs& e);
@@ -55,6 +57,8 @@ public:
     void deinitialise();
 protected:
     CEGUI::GUIContext* d_guiContext;
+
+    std::vector<CEGUI::String> d_fontOptions;
 };
 
 
