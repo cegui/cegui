@@ -3411,7 +3411,19 @@
                     <UnifiedDim scale="1" type="Width"/>
                 </Dim>
                 <Dim type="Height">
-                    <UnifiedDim scale="0.2" type="Height"/>
+                    <OperatorDim op="Multiply">
+                        <OperatorDim op="Divide">
+                            <PropertyDim name="PageSize"/>
+                            <PropertyDim name="DocumentSize"/>
+                        </OperatorDim>
+                        <OperatorDim op="Subtract">
+                            <OperatorDim op="Subtract">
+                                <UnifiedDim scale="1" type="Height"/>
+                                <WidgetDim widget="__auto_decbtn__" dimension="Height"/>
+                            </OperatorDim>
+                            <WidgetDim widget="__auto_incbtn__" dimension="Height"/>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
             </Area>
         </Child>
@@ -3741,7 +3753,19 @@
                     <AbsoluteDim value="0"/>
                 </Dim>
                 <Dim type="Width">
-                    <UnifiedDim scale="0.2" type="Width"/>
+                    <OperatorDim op="Multiply">
+                        <OperatorDim op="Divide">
+                            <PropertyDim name="PageSize"/>
+                            <PropertyDim name="DocumentSize"/>
+                        </OperatorDim>
+                        <OperatorDim op="Subtract">
+                            <OperatorDim op="Subtract">
+                                <UnifiedDim scale="1" type="Width"/>
+                                <WidgetDim widget="__auto_decbtn__" dimension="Width"/>
+                            </OperatorDim>
+                            <WidgetDim widget="__auto_incbtn__" dimension="Width"/>
+                        </OperatorDim>
+                    </OperatorDim>
                 </Dim>
                 <Dim type="Height">
                     <UnifiedDim scale="1" type="Height"/>
