@@ -47,12 +47,7 @@ bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
     // We need a font
     FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Font defaulting
-/*
-    if(FontManager::getSingleton().isDefined("DejaVuSans-10"))
-    {
-		System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    }*/
-
+    guiContext->setDefaultFont("DejaVuSans-10");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImageSampleText", "GPN-2000-001437.png");
