@@ -1,5 +1,12 @@
 <?xml version="1.0" ?>
 <Samples>
+    <SampleDefinition
+        sampleName      = "CEGUIFontDemo"
+        sampleType      = "C++ Module"
+        summary         = "2"
+        description     = "3"
+    />
+<!--
 	<SampleDefinition
         sampleName      = "CEGUIFirstWindow"
         sampleType      = "C++ Module"
@@ -30,12 +37,7 @@
         summary         = "2"
         description     = "3"
     />
-    <SampleDefinition
-        sampleName      = "CEGUIFontDemo"
-        sampleType      = "C++ Module"
-        summary         = "2"
-        description     = "3"
-    />
+
     <SampleDefinition
         sampleName      = "CEGUIInventoryDemo"
         sampleType      = "C++ Module"
@@ -72,5 +74,5 @@
         summary         = "2"
         description     = "3"
     />  
-  
+  -->
 </Samples>
