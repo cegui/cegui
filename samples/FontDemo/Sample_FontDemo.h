@@ -31,12 +31,19 @@ author:     Lukas E Meindl
 #include "SampleBase.h"
 
 #include <vector>
+#include <map>
 
 namespace CEGUI
 {
     class GUIContext;
     class EventArgs;
-    const String;
+    class String;
+    class Window;
+    class Combobox;
+    class ToggleButton;
+    class Listbox;
+    class MenuItem;
+    class MultiLineEditbox;
 }
 
 // Sample class
@@ -46,19 +53,45 @@ public:
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext);
 
-    void retrieveFontOptions();
-    bool handleLangSelection(const CEGUI::EventArgs& e);
-    bool handlePointSize(const CEGUI::EventArgs& e);
-    bool handleAntialiased(const CEGUI::EventArgs& e);
-    bool handleAutoScaled(const CEGUI::EventArgs& e);
-    bool handleFontSelection(const CEGUI::EventArgs& e);
+    void initialiseLangToTextMap();
+    void initialiseFontSelector();
+    void initialiseTextSelector();
+    void initialiseFontCreator();
+    void initialiseFontFileNameCombobox();
+    void retrieveFontNames();
+    void retrieveFontFileNames();
 
-    void setFontDesc();
+    bool handleFontCreationButtonClicked(const CEGUI::EventArgs& e);
+    bool handleFontSelectionChanged(const CEGUI::EventArgs& e);
+    bool handleTextSelectionChanged(const CEGUI::EventArgs& e);
+    bool handleTextChanged(const CEGUI::EventArgs& e);
+
     void deinitialise();
-protected:
-    CEGUI::GUIContext* d_guiContext;
 
-    std::vector<CEGUI::String> d_fontOptions;
+protected:
+    void changeFontSelectorFontSelection(const CEGUI::String& font);
+
+    CEGUI::GUIContext*      d_guiContext;
+
+    CEGUI::Window*          d_root;
+
+    CEGUI::Editbox*         d_fontNameEditbox;
+    CEGUI::Combobox*        d_fontFileNameSelector;
+    CEGUI::Editbox*         d_fontSizeEditbox;
+    CEGUI::ToggleButton*    d_fontAutoScaleCheckbox;
+    CEGUI::ToggleButton*    d_fontAntiAliasCheckbox;
+    CEGUI::PushButton*      d_fontCreationButton;
+
+    CEGUI::Listbox*         d_fontSelector;
+    CEGUI::Listbox*         d_textSelector;
+
+    CEGUI::MultiLineEditbox*        d_textDisplayMultiLineEditbox;
+
+    std::vector<CEGUI::String>      d_fontFileNameOptions;
+    std::vector<CEGUI::String>      d_fontNameOptions;
+
+    std::map<CEGUI::String, CEGUI::String>  d_languageToFontMap;
+    std::map<CEGUI::String, CEGUI::String>  d_languageToTextMap;
 };
 
 

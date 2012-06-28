@@ -1,59 +1,127 @@
-<?xml version="1.0" ?>
-<GUILayout version="4">
-<Window name="root" type="DefaultWindow">
-    <Window name="FontDemo" type="TaharezLook/FrameWindow">
-        <Property name="Position" value="{{0.1,0},{0.1,0}}" />
-        <Property name="MaxSize" value="{{1,0},{1,0}}" />
-        <Property name="MinSize" value="{{0,128},{0,128}}" />
-        <Property name="Size" value="{{0.8,0},{0.8,0}}" />
-        <Property name="Text" value="Font Demo" />
-        <Property name="TooltipText" value="This is a simple demonstration of what the font subsystem can do." />
+<?xml version="1.0" encoding="UTF-8"?>
 
-        <Window name="FontSample" type="TaharezLook/MultiLineEditbox">
-            <Property name="Area" value="{{0.05,0},{0.05,0},{0.65,0},{0.5,0}}" />
-            <Property name="TooltipText" value="This window shows a sample of the selected font" />
-			<Property name="WordWrap" value="True" />
-        </Window>
-
-        <Window name="LangList" type="TaharezLook/Listbox">
-            <Property name="Area" value="{{0.8,0},{0.05,0},{0.95,0},{0.5,0}}" />
-            <Property name="TooltipText" value="Contains a list of languages to select sample text from" />
-			<Property name="Font" value="DejaVuSans-10" />
-        </Window>
-
-        <Window name="FontList" type="TaharezLook/Listbox">
-            <Property name="Area" value="{{0.05,0},{0.55,0},{0.45,0},{0.95,0}}" />
-            <Property name="TooltipText" value="This listbox shows a list of available fonts to experiment with" />
-        </Window>
-
-        <Window name="FontDesc" type="TaharezLook/StaticText">
-            <Property name="FrameEnabled" value="False" />
-            <Property name="HorzFormatting" value="WordWrapCentreAligned" />
-            <Property name="VertFormatting" value="CentreAligned" />
-            <Property name="Area" value="{{0.5,0},{0.55,0},{0.95,0},{0.65,0}}" />
-            <Property name="BackgroundEnabled" value="False" />
-        </Window>
-
-        <Window name="AutoScaled" type="TaharezLook/Checkbox">
-            <Property name="Text" value="Auto scale font to current resolution" />
-            <Property name="Area" value="{{0.5,0},{0.7,0},{0.95,0},{0.75,0}}" />
-            <Property name="TooltipText" value="Choose between autoscaled/non-autoscaled font versions" />
-        </Window>
-
-        <Window name="Antialiased" type="TaharezLook/Checkbox">
-            <Property name="Text" value="Antialias the font for smoother look" />
-            <Property name="Area" value="{{0.5,0},{0.8,0},{0.95,0},{0.85,0}}" />
-            <Property name="TooltipText" value="Choose between antialiased/non-antialiased font versions" />
-        </Window>
-
-        <Window name="PointSize" type="TaharezLook/HorizontalScrollbar">
-            <Property name="DocumentSize" value="72" />
-            <Property name="PageSize" value="1" />
-            <Property name="StepSize" value="1" />
-            <Property name="OverlapSize" value="0" />
-            <Property name="Area" value="{{0.5,0},{0.9,0},{0.95,0},{0.9,12}}" />
-            <Property name="TooltipText" value="Changes font point size" />
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="FontDemoRoot" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+        <Window type="Vanilla/FrameWindow" name="FontDemoWindow" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="Text" value="Font Demo" />
+            <Property name="SizingEnabled" value="False" />
+            <Property name="DragMovingEnabled" value="False" />
+            <Property name="CloseButtonEnabled" value="False" />
+            <AutoWindow namePath="__auto_titlebar__" >
+                <Property name="DraggingEnabled" value="False" />
+            </AutoWindow>
+            <Window type="Vanilla/MultiLineEditbox" name="MultiLineTextWindow" >
+                <Property name="Area" value="{{0.0117276,0},{0.130902,0},{0.631001,0},{0.773549,0}}" />
+                <Property name="Text" >
+</Property>
+            </Window>
+            <Window type="Vanilla/Listbox" name="TextSelector" >
+                <Property name="Area" value="{{0.65,0},{0.0415294,0},{0.97,0},{0.281529,0}}" />
+            </Window>
+            <Window type="Vanilla/Listbox" name="FontSelector" >
+                <Property name="Area" value="{{0.65,0},{0.33,0},{0.97,0},{0.57,0}}" />
+            </Window>
+            <Window type="Vanilla/Label" name="TextSelectorLabel" >
+                <Property name="Area" value="{{0.64921,0},{-0.003,0},{0.96921,0},{0.041,0}}" />
+                <Property name="Text" value="Text/Language selector" />
+            </Window>
+            <Window type="Vanilla/Label" name="FontSelectorLabel" >
+                <Property name="Area" value="{{0.65,0},{0.285,0},{0.97,0},{0.329,0}}" />
+                <Property name="Text" value="Font selector" />
+            </Window>
+            <Window type="Vanilla/FrameWindow" name="FontCreator" >
+                <Property name="Area" value="{{0.65,0},{0.615,0},{0.97,0},{0.951765,0}}" />
+                <Property name="SizingEnabled" value="False" />
+                <Property name="TitlebarEnabled" value="False" />
+                <Property name="DragMovingEnabled" value="False" />
+                <Property name="CloseButtonEnabled" value="False" />
+                <Property name="EWSizingCursorImage" value="" />
+                <Property name="NSSizingCursorImage" value="" />
+                <Property name="NESWSizingCursorImage" value="" />
+                <Property name="NWSESizingCursorImage" value="" />
+                <AutoWindow namePath="__auto_titlebar__" >
+                    <Property name="DraggingEnabled" value="False" />
+                </AutoWindow>
+                <Window type="Vanilla/Button" name="CreationButton" >
+                    <Property name="Area" value="{{0.101394,0},{0.812449,0},{0.909086,0},{0.947333,0}}" />
+                    <Property name="Text" value="ADD" />
+                </Window>
+                <Window type="Vanilla/Checkbox" name="AntiAliasingCheckbox" >
+                    <Property name="Area" value="{{0.550297,0},{0.587931,0},{0.962385,0},{0.732117,0}}" />
+                    <Property name="Text" value="Anti-aliasing" />
+                </Window>
+                <Window type="Vanilla/Editbox" name="FontNameEditbox" >
+                    <Property name="Area" value="{{0.366493,0},{0.029395,0},{0.973067,0},{0.164279,0}}" />
+                </Window>
+                <Window type="Vanilla/Label" name="FontNameLabel" >
+                    <Property name="Area" value="{{0.116618,0},{0.0316746,0},{0.330904,0},{0.138651,0}}" />
+                    <Property name="Text" value="Name" />
+                    <Property name="HorzFormatting" value="RightAligned" />
+                </Window>
+                <Window type="Vanilla/Combobox" name="FontFileCombobox" >
+                    <Property name="Area" value="{{0.36614,0},{0.207607,0},{0.973472,0},{0.961095,0}}" />
+                    <Property name="ReadOnly" value="True" />
+                    <Property name="ForceVertScrollbar" value="True" />
+                    <AutoWindow namePath="__auto_editbox__" >
+                        <Property name="ReadOnly" value="True" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_droplist__" >
+                        <AutoWindow namePath="__auto_hscrollbar__" >
+                            <AutoWindow namePath="__auto_thumb__" >
+                                <Property name="RestoreOldCapture" value="True" />
+                            </AutoWindow>
+                            <AutoWindow namePath="__auto_decbtn__" >
+                                <Property name="RestoreOldCapture" value="True" />
+                            </AutoWindow>
+                            <AutoWindow namePath="__auto_incbtn__" >
+                                <Property name="RestoreOldCapture" value="True" />
+                            </AutoWindow>
+                        </AutoWindow>
+                        <AutoWindow namePath="__auto_vscrollbar__" >
+                            <AutoWindow namePath="__auto_thumb__" >
+                                <Property name="RestoreOldCapture" value="True" />
+                            </AutoWindow>
+                            <AutoWindow namePath="__auto_decbtn__" >
+                                <Property name="RestoreOldCapture" value="True" />
+                            </AutoWindow>
+                            <AutoWindow namePath="__auto_incbtn__" >
+                                <Property name="RestoreOldCapture" value="True" />
+                            </AutoWindow>
+                        </AutoWindow>
+                    </AutoWindow>
+                </Window>
+                <Window type="Vanilla/Label" name="FontFileLabel" >
+                    <Property name="Area" value="{{0.112169,0},{0.20843,0},{0.334697,0},{0.334012,0}}" />
+                    <Property name="Text" value="Font file" />
+                    <Property name="HorzFormatting" value="RightAligned" />
+                </Window>
+                <Window type="Vanilla/Editbox" name="FontSizeEditbox" >
+                    <Property name="Area" value="{{0.51928,0},{0.412005,0},{0.82972,0},{0.556191,0}}" />
+                    <Property name="Text" value="12.0" />
+                    <Property name="MaxTextLength" value="8" />
+                    <Property name="ValidationString" value="[0-9]*\.?[0-9]" />
+                </Window>
+                <Window type="Vanilla/Label" name="FontSizeLabel" >
+                    <Property name="Area" value="{{0.0901848,0},{0.416329,0},{0.337438,0},{0.527956,0}}" />
+                    <Property name="Text" value="Font size" />
+                    <Property name="HorzFormatting" value="RightAligned" />
+                </Window>
+                <Window type="Vanilla/Label" name="FontSizePtsLabel" >
+                    <Property name="Area" value="{{0.84048,0},{0.419109,0},{0.965157,0},{0.550174,0}}" />
+                    <Property name="Text" value="pts." />
+                    <Property name="HorzFormatting" value="LeftAligned" />
+                </Window>
+                <Window type="Vanilla/Checkbox" name="AutoScaleCheckbox" >
+                    <Property name="Area" value="{{0.0129948,0},{0.598582,0},{0.529478,0},{0.719512,0}}" />
+                    <Property name="Text" value="Vertical auto-scale" />
+                </Window>
+            </Window>
+            <Window type="Vanilla/Label" name="Label" >
+                <Property name="Area" value="{{0.65,0},{0.57,0},{0.97,0},{0.614,0}}" />
+                <Property name="Text" value="Font creator" />
+            </Window>
         </Window>
     </Window>
-</Window>
 </GUILayout>
