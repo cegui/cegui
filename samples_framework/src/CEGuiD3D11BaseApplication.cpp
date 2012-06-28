@@ -40,7 +40,7 @@
 #include <dinput.h>
 
 //----------------------------------------------------------------------------//
-struct CEGuiBaseApplicationImpl
+struct CEGuiBaseApplication11Impl
 {
     HWND d_window;
     IDXGISwapChain* d_swapChain;
@@ -52,7 +52,7 @@ struct CEGuiBaseApplicationImpl
 
 //----------------------------------------------------------------------------//
 CEGuiD3D11BaseApplication::CEGuiD3D11BaseApplication() :
-    pimpl(new CEGuiBaseApplicationImpl),
+    pimpl(new CEGuiBaseApplication11Impl),
     d_lastFrameTime(GetTickCount())
 {
     if (pimpl->d_window = Win32AppHelper::createApplicationWindow(s_defaultWindowWidth, s_defaultWindowHeight))
@@ -110,7 +110,7 @@ bool CEGuiD3D11BaseApplication::execute_impl()
     Win32AppHelper::setSamplesFramework(d_sampleApp);
     d_sampleApp->initialise();
 
-    float clear_colour[4] = { 0.0f, 0.0f, 0.0f, 1.0f };
+    float clear_colour[4] = {1.0f, 1.0f, 1.0f, 0.0f};
 
     //
     //  This is basically a modified Win32 message pump
