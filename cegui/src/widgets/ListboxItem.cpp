@@ -154,5 +154,11 @@ const String& ListboxItem::getTextVisual() const
 }
 
 //----------------------------------------------------------------------------//
+bool ListboxItem::handleFontRenderSizeChange(const Font* const /*font*/)
+{
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

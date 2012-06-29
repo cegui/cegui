@@ -752,8 +752,9 @@ protected:
      */
     bool handle_scrollChange(const EventArgs& args);
     
-     // overridden from Window base class.
-     virtual void populateGeometryBuffer();
+    // overridden from Window base class.
+    virtual void populateGeometryBuffer();
+    bool handleFontRenderSizeChange(const EventArgs& args);
  
      void drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
                        Vector2f& itemPos, GeometryBuffer& geometry, float alpha);

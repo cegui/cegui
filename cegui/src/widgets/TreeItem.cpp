@@ -383,5 +383,20 @@ const String& TreeItem::getTextVisual() const
 }
 
 //----------------------------------------------------------------------------//
+bool TreeItem::handleFontRenderSizeChange(const Font* const font)
+{
+    if (getFont() == font)
+        return true;
+
+    for (size_t i = 0; i < getItemCount(); ++i)
+    {
+        if (d_listItems[i]->handleFontRenderSizeChange(font))
+            return true;
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

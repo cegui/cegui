@@ -214,5 +214,11 @@ bool ListboxTextItem::isTextParsingEnabled() const
 }
 
 //----------------------------------------------------------------------------//
+bool ListboxTextItem::handleFontRenderSizeChange(const Font* const font)
+{
+    return getFont() == font;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
