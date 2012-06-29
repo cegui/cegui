@@ -1529,6 +1529,13 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 	++e.handled;
 }
 
+void MultiLineEditbox::onFontChanged(WindowEventArgs& e)
+{
+    Window::onFontChanged(e);
+    formatText(true);
+}
+
+
 bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {
 	return dynamic_cast<const MultiLineEditboxWindowRenderer*>(renderer) != 0;
