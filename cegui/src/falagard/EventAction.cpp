@@ -41,7 +41,7 @@ struct EventActionFunctor
         action(action)
     {}
 
-    bool operator()(const EventArgs& args) const
+    bool operator()(const EventArgs& /*args*/) const
     {
         switch (action)
         {
