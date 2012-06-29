@@ -73,9 +73,9 @@ public:
     {
         std::string reason;
 
-        if (errno == EINVAL)
+        if (err == EINVAL)
             reason = "Incomplete " + d_fromCode + " sequence.";
-        else if (errno == EILSEQ)
+        else if (err == EILSEQ)
             reason = "Invalid " + d_fromCode + " sequence.";
         else
             reason = "Unknown error.";
