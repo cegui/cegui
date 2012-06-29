@@ -35,7 +35,7 @@ author:     Paul D Turner
 
 using namespace CEGUI;
 
-static const unsigned int LangListSize = 7;
+static const unsigned int LangListSize = 10;
 
 static struct
 {
@@ -81,7 +81,7 @@ static struct
             },
             {
                 (encoded_char*)"Japanese",
-                    (encoded_char*)"Sword-26",
+                    (encoded_char*)"Batang-26",
                     (encoded_char*)"日本語を選択\n"
                     "トリガー検知\n"
                     "鉱石備蓄不足\n"
@@ -102,6 +102,34 @@ static struct
                         "Cám ơn bạn rất nhiều\n"
                         "Chúc bạn sức khoẻ\n"
                         "Tạm biệt !\n"
+                },
+                {
+                    (encoded_char*)"Việt",
+                        (encoded_char*)"DejaVuSans-10",
+                        (encoded_char*)"Chào CrazyEddie !\n"
+                        "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
+                        "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
+                        "Cám ơn bạn rất nhiều\n"
+                        "Chúc bạn sức khoẻ\n"
+                        "Tạm biệt !\n"
+                },
+                {
+                    (encoded_char*)"Việt",
+                        (encoded_char*)"DejaVuSans-10",
+                        (encoded_char*)"Chào CrazyEddie !\n"
+                        "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
+                        "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
+                        "Cám ơn bạn rất nhiều\n"
+                        "Chúc bạn sức khoẻ\n"
+                        "Tạm biệt !\n"
+                },  
+                {
+                    (encoded_char*)"Klingon",
+                        (encoded_char*)"DejaVuSans-10",
+                        (encoded_char*)"  \n"
+                        "         \n"
+                        "         \n"
+                        "  "
                 }
 };
 
@@ -136,6 +164,7 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // Set it as the default
     d_guiContext->setDefaultFont(&font);
 
+
     // load all the fonts (if they are not loaded yet)
     fontManager.createAll("*.font", "fonts");
 
@@ -146,21 +175,30 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     retrieveFontFileNames();
 
     // set tooltip styles (by default there is none)
-   // d_guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
+    //d_guiContext->setDefaultTooltipType("Vanilla/StaticText");
 
     // Load the GUI layout and attach it to the context as root window
     d_root = winMgr.loadLayoutFromFile("FontDemo.layout");
     d_guiContext->setRootWindow(d_root);
 
+    //Here we create a font and apply it to the renew font name button
+    CEGUI::Font& buttonFont = fontManager.createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf",
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+    d_renewFontNameButton =  static_cast<CEGUI::PushButton*>(d_root->getChild("FontDemoWindow/FontCreator/RenewNameButton"));
+    d_renewFontNameButton->setFont(&buttonFont);
+
+    d_root->getChild("FontDemoWindow/FontCreator/FontSizeLabel");
+
+    //Subscribe click event for renewing font name based on font file name and size
+    d_renewFontNameButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontDemo::handleRenewFontNameButtonClicked, this));
+
     // Get the editbox where we display the text
     d_textDisplayMultiLineEditbox = static_cast<CEGUI::MultiLineEditbox*>(d_root->getChild("FontDemoWindow/MultiLineTextWindow"));
-    d_textDisplayMultiLineEditbox->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, Event::Subscriber(&FontDemo::handleTextChanged, this));
+    d_textDisplayMultiLineEditbox->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, Event::Subscriber(&FontDemo::handleTextMultiLineEditboxTextChanged, this));
 
-   
+    initialiseAutoScaleOptionsArray();
 
     initialiseLangToTextMap();
-
-
 
     // Initialise the font creator window + its subwindows
     initialiseFontCreator();
@@ -190,7 +228,7 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
     CEGUI::String fontName = d_fontNameEditbox->getText();
     bool fontNameExists = fontMgr.isDefined(fontName);
     if(fontNameExists ||fontName.size() == 0)
-        return true; // todo
+        return true; // todo : display error message
 
     CEGUI::String fontFileName = d_fontFileNameSelector->getSelectedItem()->getText();
 
@@ -201,10 +239,9 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
 
     bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
 
-    bool vertAutoScale = d_fontAutoScaleCheckbox->isSelected();
-    AutoScaledMode autoScaleMode = ASM_Disabled;
-    if(vertAutoScale)
-        autoScaleMode = ASM_Vertical;
+    
+    AutoScaledMode autoScaleMode = static_cast<AutoScaledMode>(getAutoScaleMode());
+
 
     String::size_type pos = fontFileName.rfind(".imageset");
     if(pos != -1)
@@ -223,6 +260,46 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
     return true;
 }
 
+
+bool FontDemo::handleFontEditButtonClicked(const EventArgs& e)
+{
+    FontManager& fontMgr(FontManager::getSingleton());
+
+    CEGUI::String fontName = d_fontNameEditbox->getText();
+    bool fontNameExists = fontMgr.isDefined(fontName);
+    if(!fontNameExists)
+        return true; // todo : display error message
+
+    CEGUI::Font& font(fontMgr.get(fontName));
+
+  /*
+    if(font.isPropertyPresent("PointSize"))
+    {
+        CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
+        float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
+        if(fontSize != 0.f)
+           // font.setProperty<float>("PointSize", fontSize);
+            font.setProperty("PointSize", PropertyHelper<int>::toString(int(fontSize)));
+    }
+      */
+    if(font.isPropertyPresent("Antialiased"))
+    {
+        bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
+       // font.setProperty<bool>("Antialiased", antiAlias);
+
+        font.setProperty("Antialiased", PropertyHelper<bool>::toString(antiAlias));
+    }
+
+
+/*
+    AutoScaledMode autoScaleMode = static_cast<AutoScaledMode>(getAutoScaleMode());
+    font.setAutoScaled(autoScaleMode);*/
+
+
+
+    return true;
+}
+
 bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
 {
     if(d_fontSelector->getFirstSelectedItem())
@@ -237,28 +314,46 @@ bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
         d_languageToFontMap[LangList[index].Language] = d_fontSelector->getFirstSelectedItem()->getText();
     }
 
-    if(d_textSelector->getFirstSelectedItem())
+    if(d_fontSelector->getFirstSelectedItem())
     {
-        unsigned int index = d_textSelector->getFirstSelectedItem()->getID();
-
-        CEGUI::String fontName =  LangList[index].Font;
+        CEGUI::String fontName = d_fontSelector->getFirstSelectedItem()->getText();
 
         if(FontManager::getSingleton().isDefined(fontName))
         {
             CEGUI::Font& font(FontManager::getSingleton().get(fontName));
 
             d_fontNameEditbox->setText(font.getName());
-            d_fontAutoScaleCheckbox->setSelected(font.getAutoScaled());
 
-            bool fontAntiAlias = font.getProperty<bool>("Antialiased");
-            d_fontAntiAliasCheckbox->setSelected(fontAntiAlias);
+            AutoScaledMode autoScaleMode = font.getAutoScaled();
+            CEGUI::String autoScaleString = d_autoScaleOptionsArray.at(autoScaleMode);
+            d_fontAutoScaleCombobox->getEditbox()->setText(autoScaleString);
+            d_fontAutoScaleCombobox->selectListItemWithEditboxText();
 
-            CEGUI::String fontPointSize = font.getProperty<CEGUI::String>("PointSize");
-            d_fontSizeEditbox->setText(fontPointSize);
+            if(font.isPropertyPresent("Antialiased"))
+            {
+                bool fontAntiAlias = font.getProperty<bool>("Antialiased");
+                d_fontAntiAliasCheckbox->enable();
+                d_fontAntiAliasCheckbox->setSelected(fontAntiAlias);
+            }
+            else
+            {
+                d_fontAntiAliasCheckbox->disable();
+            }
+
+            if(font.isPropertyPresent("PointSize"))
+            {
+                CEGUI::String fontPointSize = font.getProperty("PointSize");
+                d_fontSizeEditbox->enable();
+                d_fontSizeEditbox->setText(fontPointSize);
+            }
+            else
+            {
+                d_fontSizeEditbox->disable();
+            }
+
+            d_fontFileNameSelector->setText(font.getFileName());
         }
     }
-
-
 
     return true;
 }
@@ -277,7 +372,7 @@ bool FontDemo::handleTextSelectionChanged(const EventArgs& e)
     return true;
 }
 
-bool FontDemo::handleTextChanged(const EventArgs& e)
+bool FontDemo::handleTextMultiLineEditboxTextChanged(const EventArgs& e)
 {
     if(d_textSelector->getFirstSelectedItem())
     {
@@ -288,6 +383,31 @@ bool FontDemo::handleTextChanged(const EventArgs& e)
 
     return true;
 }
+
+bool FontDemo::handleFontFileNameSelectionChanged(const EventArgs& e)
+{
+    generateNewFontName();
+
+    return true;
+}
+
+bool FontDemo::handleRenewFontNameButtonClicked(const EventArgs& e)
+{
+    generateNewFontName();
+
+    return true;
+}
+
+void FontDemo::initialiseAutoScaleOptionsArray()
+{
+    d_autoScaleOptionsArray.push_back("Disabled");
+    d_autoScaleOptionsArray.push_back("Vertical");
+    d_autoScaleOptionsArray.push_back("Horizontal");
+    d_autoScaleOptionsArray.push_back("Minimum");
+    d_autoScaleOptionsArray.push_back("Maximum");
+    d_autoScaleOptionsArray.push_back("Both");
+}
+
 
 void FontDemo::retrieveFontNames()
 {
@@ -333,13 +453,19 @@ void FontDemo::initialiseFontCreator()
     d_fontFileNameSelector = static_cast<CEGUI::Combobox*>(d_root->getChild("FontDemoWindow/FontCreator/FontFileCombobox"));
     d_fontNameEditbox = static_cast<CEGUI::Editbox*>(d_root->getChild("FontDemoWindow/FontCreator/FontNameEditbox"));
     d_fontSizeEditbox = static_cast<CEGUI::Editbox*>(d_root->getChild("FontDemoWindow/FontCreator/FontSizeEditbox"));
-    d_fontAutoScaleCheckbox = static_cast<CEGUI::ToggleButton*>(d_root->getChild("FontDemoWindow/FontCreator/AutoScaleCheckbox"));
+    d_fontAutoScaleCombobox = static_cast<CEGUI::Combobox*>(d_root->getChild("FontDemoWindow/FontCreator/AutoScaleCombobox"));
     d_fontAntiAliasCheckbox = static_cast<CEGUI::ToggleButton*>(d_root->getChild("FontDemoWindow/FontCreator/AntiAliasingCheckbox"));
     d_fontCreationButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontDemoWindow/FontCreator/CreationButton"));
+    d_fontEditButton = static_cast<CEGUI::PushButton*>(d_root->getChild("FontDemoWindow/FontCreator/EditButton"));
+
+    d_fontFileNameSelector->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&FontDemo::handleFontFileNameSelectionChanged, this));
 
     d_fontCreationButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontDemo::handleFontCreationButtonClicked, this));
+    d_fontEditButton->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&FontDemo::handleFontEditButtonClicked, this));
 
     initialiseFontFileNameCombobox();
+    initialiseAutoScaleCombobox();
+
 }
 
 void FontDemo::initialiseFontSelector()
@@ -374,23 +500,23 @@ void FontDemo::initialiseTextSelector()
 
 void FontDemo::changeFontSelectorFontSelection(const CEGUI::String& font)
 {
+    while(d_fontSelector->getFirstSelectedItem())
+    {
+        d_fontSelector->setItemSelectState(d_fontSelector->getFirstSelectedItem(), false);
+    }
+
     unsigned int itemCount = d_fontSelector->getItemCount();
     for(unsigned int i = 0; i < itemCount; ++i)
     {
         CEGUI::ListboxItem* item = d_fontSelector->getListboxItemFromIndex(i);
 
         CEGUI::String itemFontName = item->getText();
-        
+
         if(itemFontName.compare(font) == 0)
         {
             d_fontSelector->setItemSelectState(item, true);
             return;
         }
-    }
-
-    while(d_fontSelector->getFirstSelectedItem())
-    {
-       d_fontSelector->setItemSelectState(d_fontSelector->getFirstSelectedItem(), false);
     }
 }
 
@@ -400,6 +526,41 @@ void FontDemo::initialiseLangToTextMap()
     {
         d_languageToTextMap[LangList[i].Language] = LangList[i].Text;
     }
+}
+
+void FontDemo::generateNewFontName()
+{
+    CEGUI::String fileName = d_fontFileNameSelector->getText();
+    CEGUI::String pointSize = d_fontSizeEditbox->getText();
+
+    CEGUI::String fontName = fileName.substr(0, fileName.find_last_of("."));
+    fontName += "-" + pointSize;
+
+    d_fontNameEditbox->setText(fontName);
+}
+
+void FontDemo::initialiseAutoScaleCombobox()
+{
+   for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
+    {
+        CEGUI::String itemText = d_autoScaleOptionsArray.at(i);
+        d_fontAutoScaleCombobox->addItem(new MyListItem(itemText, i));
+    }
+}
+
+int FontDemo::getAutoScaleMode()
+{
+    CEGUI::String autoScaleString = d_fontAutoScaleCombobox->getSelectedItem()->getText();
+
+    for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
+    {
+        if(autoScaleString.compare(d_autoScaleOptionsArray.at(i)) == 0)
+        {
+            return i;
+        }
+    }
+
+    return 0;
 }
 
 /*************************************************************************
