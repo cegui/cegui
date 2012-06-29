@@ -52,24 +52,34 @@ class FontDemo : public Sample
 public:
     // method to initialse the samples windows and events.
     bool initialise(CEGUI::GUIContext* guiContext);
+    void deinitialise();
 
+protected:
     void initialiseLangToTextMap();
     void initialiseFontSelector();
     void initialiseTextSelector();
     void initialiseFontCreator();
+
+    void initialiseAutoScaleCombobox();
     void initialiseFontFileNameCombobox();
     void retrieveFontNames();
     void retrieveFontFileNames();
 
     bool handleFontCreationButtonClicked(const CEGUI::EventArgs& e);
+
+    bool handleFontEditButtonClicked(const CEGUI::EventArgs& e);
     bool handleFontSelectionChanged(const CEGUI::EventArgs& e);
     bool handleTextSelectionChanged(const CEGUI::EventArgs& e);
-    bool handleTextChanged(const CEGUI::EventArgs& e);
+    bool handleTextMultiLineEditboxTextChanged(const CEGUI::EventArgs& e);
+    bool handleFontFileNameSelectionChanged(const CEGUI::EventArgs& e);
+    bool handleRenewFontNameButtonClicked(const CEGUI::EventArgs& e);
 
-    void deinitialise();
-
-protected:
+    void generateNewFontName();
     void changeFontSelectorFontSelection(const CEGUI::String& font);
+
+    void initialiseAutoScaleOptionsArray();
+
+    int getAutoScaleMode();
 
     CEGUI::GUIContext*      d_guiContext;
 
@@ -78,9 +88,11 @@ protected:
     CEGUI::Editbox*         d_fontNameEditbox;
     CEGUI::Combobox*        d_fontFileNameSelector;
     CEGUI::Editbox*         d_fontSizeEditbox;
-    CEGUI::ToggleButton*    d_fontAutoScaleCheckbox;
+    CEGUI::Combobox*        d_fontAutoScaleCombobox;
     CEGUI::ToggleButton*    d_fontAntiAliasCheckbox;
     CEGUI::PushButton*      d_fontCreationButton;
+    CEGUI::PushButton*      d_fontEditButton;
+    CEGUI::PushButton*      d_renewFontNameButton;
 
     CEGUI::Listbox*         d_fontSelector;
     CEGUI::Listbox*         d_textSelector;
@@ -92,6 +104,9 @@ protected:
 
     std::map<CEGUI::String, CEGUI::String>  d_languageToFontMap;
     std::map<CEGUI::String, CEGUI::String>  d_languageToTextMap;
+
+    // A vector for Auto Scale Strings in the order of the AutoScale enum
+    std::vector<CEGUI::String> d_autoScaleOptionsArray;
 };
 
 
