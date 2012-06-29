@@ -15,7 +15,6 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_eventaction <br>
 @ref fal_elem_ref_eventlinkdefintion <br>
 @ref fal_elem_ref_eventlinktarget <br>
-@ref fal_elem_ref_expressiondim <br>
 @ref fal_elem_ref_sec_11 <br>
 @ref fal_elem_ref_sec_12 <br>
 @ref fal_elem_ref_sec_13 <br>
@@ -387,7 +386,6 @@ The @c \<Dim\> element is intended as a container element for a single dimension
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
-        <li>@c \<ExpressionDim\></li>
         <li>@c \<OperatorDim\></li>
     </ul>
 </ul>
@@ -495,117 +493,6 @@ to has the same name as the event being defined. Optional attribute.
 </ul>
 
 @subsection fal_elem_ref_eventlinktarget_4 Examples:
-TODO
-
-
-@section fal_elem_ref_expressiondim \<ExpressionDim\> Element
-
-@subsection fal_elem_ref_expressiondim_1 Purpose:
-The @c \<ExpressionDim\> element is used to define a component dimension for an area rectangle.
-@c \<ExpressionDim\> is used to specify a dimension by way of a textual
-representation of a mathematical expression.  There is currently support
-for the basic arithmetic operations; addition, subtraction, multiplication
-and division, as well as support for parenthesis.  In addition to this, it is
-also possible to use unified dimensions, image dimensions, widget
-dimensions, font metrics, text string extents and property dimensions directly within
-the expression by way of the pseudo-functions discussed below.
-
-@subsubsection fal_elem_ref_expressiondim_1_1 Unified Dimensions
-Unified dimensions can be specified within an expression string by way of the
-@c udim pseudo-function that has a single signature of:
-- @c udim( scale, offset, type )
-- where:
-    - @c scale is the relative scale portion of the dimension.
-    - @c offset is the absolute pixel offset portion of the dimension.
-    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration and is required in order to determine the base dimension for the scale
-component.
-
-@subsubsection fal_elem_ref_expressiondim_1_2 Image Dimensions
-Image dimensions can be specified within an expression string by way of the
-@c imagedim and @c imagepropertydim pseudo-functions.
-The @c imagedim has a single signature of:<br>
-- @c imagedim( 'imagename', type )
-- where:
-    - @c imagename is the name of the desired image.
-    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration indicating the specific dimension to be used.<br>
-
-The @c imagepropertydim has a single signature of:<br>
-- @c imagepropertydim( 'propertyname', type )
-- where:
-    - @c propertyname is the name of a property that will provide the name of the image.
-    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration indicating the specific dimension to be used.<br>
-
-@subsubsection fal_elem_ref_expressiondim_1_3 Widget Dimensions
-Widget dimensions can be specified within an expression string by way of the
-@c widgetdim pseudo-function that has the following signature options:
-- @c widgetdim( 'widget', type )
-- @c widgetdim( type )
-- where:
-    - @c widget is the name of a child window to access.
-    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration indicating the specific dimension to be used.
-
-@subsubsection fal_elem_ref_expressiondim_1_4 Font Dimensions
-Font dimensions can be specified within an expression string by way of the
-@c fontdim pseudo-function that has the following signature options:
-- @c fontdim( 'widget', 'font', type, padding )
-- @c fontdim( type, padding )
-- @c fontdim( type )
-- where:
-    - @c widget is the name of a child window to access.
-    - @c font is the name of a font to access.
-    - @c type is one of the values defined for the @ref fal_enum_ref_sec_3 "FontMetricType"
-enumeration indicating the specific metric to be used.
-    - @c padding is a number of pixels of padding to add to the resulting dimension.
-
-@subsubsection fal_elem_ref_expressiondim_1_5 Property Dimensions
-Property dimensions can be specified within an expression string by way of the
-@c propertydim pseudo-function that has the following signature options:
-- @c propertydim( 'widget', 'property', type )
-- @c propertydim( 'property', type )
-- @c propertydim( 'property' )
-- where:
-    - @c widget is the name of a child window to access.
-    - @c property is the name of a property to access.
-    - @c type is one of the values defined for the @ref fal_enum_ref_sec_2 "DimensionType"
-enumeration indicating the specific dimension to be used.  @c type must be specified if
-the property being accessed is a unified dimension property, if the property being
-accessed is a simple float value, then @c type should be set to @c Float rather than one
-of the enumerated values.
-
-@subsubsection fal_elem_ref_expressiondim_1_6 String Extents
-Horizontal string extents can be specified within an expression string by way of the
-@c stringextent pseudo-function that has the following signature options:
-- @c stringextent( 'string', 'font' )
-- @c stringextent( 'string' )
-- where:
-    - @c string is text string whose horizontal extent is to be calculated
-    - @c font is the name of a font to use when measuring the extent (the default is
-to use the font from the window that has the looknfeel assigned.
-
-
-Notes for the use of these pseudo-functions:
-- single quotation marks (') are used around string and name arguments. These strings
-support the backslash as an escape character - for example to specify the ' itself if
-needed, you would use the sequence \' wihin the string.
-- numerical values should be simple floats only (i.e it's not yet possible to embed a
-sub-expression to be passed to a pseudo-function.
-- enumeration values should not be surrounded by quotes
-
-@note The ExpressionDim should currently be considered highly experimental.  There
-is much that can be improved and enhanced to make the support even more useful.
-
-@subsection fal_elem_ref_expressiondim_2 Attributes:
-@arg @c value  specifies the expression string. Required attribute.
-
-@subsection fal_elem_ref_expressiondim_3 Usage:
-@li The @c \<ExpressionDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.
-@li The @c \<ExpressionDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.
-
-@subsection fal_elem_ref_expressiondim_4 Examples:
 TODO
 
 
@@ -1241,7 +1128,6 @@ indicating the mathematical operation to be performed. Required attribute.
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
-        <li>@c \<ExpressionDim\></li>
         <li>@c \<OperatorDim\></li>
     </ul>
 </ul>
