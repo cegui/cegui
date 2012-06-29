@@ -184,6 +184,7 @@ public:
 
     // base class overrides
     void setText(const String& text);
+    bool handleFontRenderSizeChange(const Font* const font);
 
 
 	/*************************************************************************

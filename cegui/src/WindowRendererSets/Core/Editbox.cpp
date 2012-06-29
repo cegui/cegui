@@ -533,5 +533,19 @@ HorizontalTextFormatting FalagardEditbox::getTextFormatting() const
 }
 
 //----------------------------------------------------------------------------//
+bool FalagardEditbox::handleFontRenderSizeChange(const Font* const font)
+{
+    const bool res = WindowRenderer::handleFontRenderSizeChange(font);
+
+    if (d_window->getFont() == font)
+    {
+        d_window->invalidate();
+        return true;
+    }
+
+    return res;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
