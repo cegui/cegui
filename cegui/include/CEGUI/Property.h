@@ -237,7 +237,7 @@ public:
     virtual bool doesWriteXML() const;
 
     //! function to allow initialisation of a PropertyReceiver.
-    virtual void initialisePropertyReceiver(PropertyReceiver* receiver) const {}
+    virtual void initialisePropertyReceiver(PropertyReceiver* /*receiver*/) const {}
 
     virtual Property* clone() const = 0;
 
