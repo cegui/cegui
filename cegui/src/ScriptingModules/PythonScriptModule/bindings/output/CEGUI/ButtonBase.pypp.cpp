@@ -273,6 +273,19 @@ void register_ButtonBase_class(){
                *\n" );
         
         }
+        { //::CEGUI::ButtonBase::setPushedState
+        
+            typedef void ( ::CEGUI::ButtonBase::*setPushedState_function_type )( bool const ) ;
+            
+            ButtonBase_exposer.def( 
+                "setPushedState"
+                , setPushedState_function_type( &::CEGUI::ButtonBase::setPushedState )
+                , ( bp::arg("pushed") )
+                , "** Internal function to set button's pushed state.  Normally you would\n\
+             * not call this, except perhaps when building compound widgets.\n\
+             *\n" );
+        
+        }
         { //::CEGUI::Window::beginInitialisation
         
             typedef void ( ::CEGUI::Window::*beginInitialisation_function_type )(  ) ;
