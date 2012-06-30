@@ -2666,6 +2666,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Tooltip">
+        <Property name="Alpha" value="0" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/TooltipLeftEdge" dimension="Width" /></Dim>
