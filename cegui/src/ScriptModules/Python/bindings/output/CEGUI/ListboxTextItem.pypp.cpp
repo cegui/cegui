@@ -46,6 +46,18 @@ struct ListboxTextItem_wrapper : CEGUI::ListboxTextItem, bp::wrapper< CEGUI::Lis
         return CEGUI::ListboxTextItem::getPixelSize( );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( font );
+        else{
+            return this->CEGUI::ListboxTextItem::handleFontRenderSizeChange( font );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        return CEGUI::ListboxTextItem::handleFontRenderSizeChange( font );
+    }
+
     void parseTextString(  ) const {
         CEGUI::ListboxTextItem::parseTextString(  );
     }
@@ -148,6 +160,18 @@ void register_ListboxTextItem_class(){
                @return\n\
                   ColourRect object describing the currently set colours\n\
                *\n" );
+        
+        }
+        { //::CEGUI::ListboxTextItem::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::ListboxTextItem::*handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            typedef bool ( ListboxTextItem_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            
+            ListboxTextItem_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::ListboxTextItem::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&ListboxTextItem_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("font") ) );
         
         }
         { //::CEGUI::ListboxTextItem::isTextParsingEnabled

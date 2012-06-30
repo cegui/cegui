@@ -329,5 +329,29 @@ void RenderedString::setSelection(const Window* ref_wnd, float start, float end)
 }
 
 //----------------------------------------------------------------------------//
+float RenderedString::getHorizontalExtent(const Window* ref_wnd) const
+{
+    float w = 0.0f;
+    for (size_t i = 0; i < d_lines.size(); ++i)
+    {
+        const float this_width = getPixelSize(ref_wnd, i).d_width;
+        if (this_width > w)
+            w = this_width;
+    }
+
+    return w;
+}
+
+//----------------------------------------------------------------------------//
+float RenderedString::getVerticalExtent(const Window* ref_wnd) const
+{
+    float h = 0.0f;
+    for (size_t i = 0; i < d_lines.size(); ++i)
+        h += getPixelSize(ref_wnd, i).d_height;
+
+    return h;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
