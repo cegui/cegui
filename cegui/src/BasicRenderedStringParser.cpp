@@ -187,15 +187,12 @@ void BasicRenderedStringParser::appendRenderedText(RenderedString& rs,
             ((nlpos != String::npos) ? nlpos : text.length()) - cpos;
 
         // construct new text component and append it.
-        if (len > 0)
-        {
-            RenderedStringTextComponent rtc(text.substr(cpos, len), d_fontName);
-            rtc.setPadding(d_padding);
-            rtc.setColours(d_colours);
-            rtc.setVerticalFormatting(d_vertAlignment);
-            rtc.setAspectLock(d_aspectLock);
-            rs.appendComponent(rtc);
-        }
+        RenderedStringTextComponent rtc(text.substr(cpos, len), d_fontName);
+        rtc.setPadding(d_padding);
+        rtc.setColours(d_colours);
+        rtc.setVerticalFormatting(d_vertAlignment);
+        rtc.setAspectLock(d_aspectLock);
+        rs.appendComponent(rtc);
 
         // break line if needed
         if (nlpos != String::npos)
