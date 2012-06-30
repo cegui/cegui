@@ -72,6 +72,7 @@ namespace CEGUI
         setUpdateMode(WUM_ALWAYS);
 
         switchToInactiveState();
+        hide();
     }
 
     Tooltip::~Tooltip(void)
