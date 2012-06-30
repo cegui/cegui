@@ -189,7 +189,7 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
         else if (isRadioSelected("Root/TextDemo/VertBottom"))
             st->setProperty("VertFormatting", "BottomAligned");
         else if (isRadioSelected("Root/TextDemo/VertCentered"))
-            st->setProperty("VertFormatting", "VertCentred");
+            st->setProperty("VertFormatting", "CentreAligned");
 
         // handle horizontal formatting settings
         bool wrap = isCheckboxSelected("Root/TextDemo/Wrap");
@@ -199,7 +199,7 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
         else if (isRadioSelected("Root/TextDemo/HorzRight"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
         else if (isRadioSelected("Root/TextDemo/HorzCentered"))
-            st->setProperty("HorzFormatting", wrap ? "WordWrapCentred" : "HorzCentred");
+            st->setProperty("HorzFormatting", wrap ? "WordWrapCentreAligned" : "HorzCentred");
     }
 
     // event was handled
