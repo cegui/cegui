@@ -3058,6 +3058,7 @@
 :::: Tooltip
 -->
     <WidgetLook name="OgreTray/Tooltip">
+        <Property name="Alpha" value="0" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
