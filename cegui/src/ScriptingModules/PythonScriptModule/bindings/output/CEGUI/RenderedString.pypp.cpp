@@ -70,6 +70,16 @@ void register_RenderedString_class(){
                 , "! return the number of components that make up this string.\n" );
         
         }
+        { //::CEGUI::RenderedString::getHorizontalExtent
+        
+            typedef float ( ::CEGUI::RenderedString::*getHorizontalExtent_function_type )(  ) const;
+            
+            RenderedString_exposer.def( 
+                "getHorizontalExtent"
+                , getHorizontalExtent_function_type( &::CEGUI::RenderedString::getHorizontalExtent )
+                , "! Return the maximum horizontal extent of all lines, in pixels.\n" );
+        
+        }
         { //::CEGUI::RenderedString::getLineCount
         
             typedef ::size_t ( ::CEGUI::RenderedString::*getLineCount_function_type )(  ) const;
@@ -114,6 +124,16 @@ void register_RenderedString_class(){
                 , getSpaceCount_function_type( &::CEGUI::RenderedString::getSpaceCount )
                 , ( bp::arg("line") )
                 , "! return the total number of spacing characters in the specified line.\n" );
+        
+        }
+        { //::CEGUI::RenderedString::getVerticalExtent
+        
+            typedef float ( ::CEGUI::RenderedString::*getVerticalExtent_function_type )(  ) const;
+            
+            RenderedString_exposer.def( 
+                "getVerticalExtent"
+                , getVerticalExtent_function_type( &::CEGUI::RenderedString::getVerticalExtent )
+                , "! Return the sum vertical extent of all lines, in pixels.\n" );
         
         }
         { //::CEGUI::RenderedString::operator=

@@ -302,5 +302,29 @@ void RenderedString::draw(const size_t line, GeometryBuffer& buffer,
 }
 
 //----------------------------------------------------------------------------//
+float RenderedString::getHorizontalExtent() const
+{
+    float w = 0.0f;
+    for (size_t i = 0; i < d_lines.size(); ++i)
+    {
+        const float this_width = getPixelSize(i).d_width;
+        if (this_width > w)
+            w = this_width;
+    }
+
+    return w;
+}
+
+//----------------------------------------------------------------------------//
+float RenderedString::getVerticalExtent() const
+{
+    float h = 0.0f;
+    for (size_t i = 0; i < d_lines.size(); ++i)
+        h += getPixelSize(i).d_height;
+
+    return h;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

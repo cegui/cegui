@@ -123,6 +123,18 @@ struct GroupBox_wrapper : CEGUI::GroupBox, bp::wrapper< CEGUI::GroupBox > {
         return CEGUI::Window::getUnclippedInnerRect_impl( );
     }
 
+    virtual void initialiseComponents(  ) {
+        if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
+            func_initialiseComponents(  );
+        else{
+            this->CEGUI::Window::initialiseComponents(  );
+        }
+    }
+    
+    void default_initialiseComponents(  ) {
+        CEGUI::Window::initialiseComponents( );
+    }
+
     virtual bool isHit( ::CEGUI::Vector2 const & position, bool const allow_disabled=false ) const  {
         if( bp::override func_isHit = this->get_override( "isHit" ) )
             return func_isHit( boost::ref(position), allow_disabled );
@@ -398,6 +410,17 @@ void register_GroupBox_class(){
                 "getUnclippedInnerRect_impl"
                 , getUnclippedInnerRect_impl_function_type(&::CEGUI::Window::getUnclippedInnerRect_impl)
                 , default_getUnclippedInnerRect_impl_function_type(&GroupBox_wrapper::default_getUnclippedInnerRect_impl) );
+        
+        }
+        { //::CEGUI::Window::initialiseComponents
+        
+            typedef void ( ::CEGUI::Window::*initialiseComponents_function_type )(  ) ;
+            typedef void ( GroupBox_wrapper::*default_initialiseComponents_function_type )(  ) ;
+            
+            GroupBox_exposer.def( 
+                "initialiseComponents"
+                , initialiseComponents_function_type(&::CEGUI::Window::initialiseComponents)
+                , default_initialiseComponents_function_type(&GroupBox_wrapper::default_initialiseComponents) );
         
         }
         { //::CEGUI::Window::isHit

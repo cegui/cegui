@@ -197,6 +197,28 @@ void register_ImagerySection_class(){
                     *\n" );
         
         }
+        { //::CEGUI::ImagerySection::getTextComponent
+        
+            typedef ::CEGUI::TextComponent const & ( ::CEGUI::ImagerySection::*getTextComponent_function_type )( ::size_t const ) const;
+            
+            ImagerySection_exposer.def( 
+                "getTextComponent"
+                , getTextComponent_function_type( &::CEGUI::ImagerySection::getTextComponent )
+                , ( bp::arg("idx") )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "! return a reference to a TextComponent (via index).\n" );
+        
+        }
+        { //::CEGUI::ImagerySection::getTextComponentCount
+        
+            typedef ::size_t ( ::CEGUI::ImagerySection::*getTextComponentCount_function_type )(  ) const;
+            
+            ImagerySection_exposer.def( 
+                "getTextComponentCount"
+                , getTextComponentCount_function_type( &::CEGUI::ImagerySection::getTextComponentCount )
+                , "! return number of TextComponents in the ImagerySection.\n" );
+        
+        }
         { //::CEGUI::ImagerySection::render
         
             typedef void ( ::CEGUI::ImagerySection::*render_function_type )( ::CEGUI::Window &,::CEGUI::ColourRect const *,::CEGUI::Rect const *,bool ) const;
