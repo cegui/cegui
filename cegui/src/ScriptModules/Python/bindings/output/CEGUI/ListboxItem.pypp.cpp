@@ -33,6 +33,18 @@ struct ListboxItem_wrapper : CEGUI::ListboxItem, bp::wrapper< CEGUI::ListboxItem
         return func_getPixelSize(  );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( font );
+        else{
+            return this->CEGUI::ListboxItem::handleFontRenderSizeChange( font );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        return CEGUI::ListboxItem::handleFontRenderSizeChange( font );
+    }
+
     virtual void setText( ::CEGUI::String const & text ) {
         if( bp::override func_setText = this->get_override( "setText" ) )
             func_setText( boost::ref(text) );
@@ -274,6 +286,18 @@ void register_ListboxItem_class(){
                 @return\n\
                     Pointer to the currently assigned user data.\n\
                 *\n" );
+        
+        }
+        { //::CEGUI::ListboxItem::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::ListboxItem::*handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            typedef bool ( ListboxItem_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            
+            ListboxItem_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::ListboxItem::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&ListboxItem_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("font") ) );
         
         }
         { //::CEGUI::ListboxItem::isAutoDeleted
