@@ -199,7 +199,7 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
         else if (isRadioSelected("Root/TextDemo/HorzRight"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
         else if (isRadioSelected("Root/TextDemo/HorzCentered"))
-            st->setProperty("HorzFormatting", wrap ? "WordWrapCentreAligned" : "HorzCentred");
+            st->setProperty("HorzFormatting", wrap ? "WordWrapCentreAligned" : "CentreAligned");
     }
 
     // event was handled
