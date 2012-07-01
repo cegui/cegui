@@ -47,7 +47,7 @@ public:
     // implement required interface
     void setRegexString(const String& regex);
     const String& getRegexString() const;
-    bool matchRegex(const String& str) const;
+    MatchState getMatchStateOfString(const String& str) const;
 
 private:
     //! free the compiled PCRE regex, if any.

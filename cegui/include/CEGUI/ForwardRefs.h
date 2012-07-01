@@ -196,6 +196,7 @@ class HeaderSequenceEventArgs;
 class KeyEventArgs;
 class MouseCursorEventArgs;
 class MouseEventArgs;
+class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;
 class ResourceEventArgs;

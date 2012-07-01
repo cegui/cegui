@@ -5109,6 +5109,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Tooltip">
+        <Property name="Alpha" value="0" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">

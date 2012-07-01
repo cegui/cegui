@@ -111,6 +111,18 @@ struct Tree_wrapper : CEGUI::Tree, bp::wrapper< CEGUI::Tree > {
         CEGUI::Tree::getWidestItemWidthInList( boost::ref(itemList), itemDepth, widest );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( boost::ref(args) );
+        else{
+            return this->CEGUI::Tree::handleFontRenderSizeChange( boost::ref(args) );
+        }
+    }
+    
+    virtual bool default_handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
+        return CEGUI::Tree::handleFontRenderSizeChange( boost::ref(args) );
+    }
+
     bool handle_scrollChange( ::CEGUI::EventArgs const & args ){
         return CEGUI::Tree::handle_scrollChange( boost::ref(args) );
     }
@@ -553,18 +565,6 @@ struct Tree_wrapper : CEGUI::Tree, bp::wrapper< CEGUI::Tree > {
 
     ::CEGUI::Window const * getWindowAttachedToCommonAncestor( ::CEGUI::Window const & wnd ) const {
         return CEGUI::Window::getWindowAttachedToCommonAncestor( boost::ref(wnd) );
-    }
-
-    virtual bool handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
-        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
-            return func_handleFontRenderSizeChange( boost::ref(args) );
-        else{
-            return this->CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
-        }
-    }
-    
-    virtual bool default_handleFontRenderSizeChange( ::CEGUI::EventArgs const & args ){
-        return CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
     }
 
     void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
@@ -2120,6 +2120,17 @@ void register_Tree_class(){
                 , ( bp::arg("itemList"), bp::arg("itemDepth"), bp::arg("widest") ) );
         
         }
+        { //::CEGUI::Tree::handleFontRenderSizeChange
+        
+            typedef bool ( Tree_wrapper::*handleFontRenderSizeChange_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            Tree_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type( &Tree_wrapper::default_handleFontRenderSizeChange )
+                , ( bp::arg("args") )
+                , "overridden from Window base class.\n" );
+        
+        }
         { //::CEGUI::Tree::handleUpdatedItemData
         
             typedef void ( ::CEGUI::Tree::*handleUpdatedItemData_function_type )(  ) ;
@@ -3169,17 +3180,6 @@ void register_Tree_class(){
                 as a child to a window that is also an ancestor of a this.  Returns 0\n\
                 if a wnd and a this are not part of the same hierachy.\n\
              *\n" );
-        
-        }
-        { //::CEGUI::Window::handleFontRenderSizeChange
-        
-            typedef bool ( Tree_wrapper::*handleFontRenderSizeChange_function_type )( ::CEGUI::EventArgs const & ) ;
-            
-            Tree_exposer.def( 
-                "handleFontRenderSizeChange"
-                , handleFontRenderSizeChange_function_type( &Tree_wrapper::default_handleFontRenderSizeChange )
-                , ( bp::arg("args") )
-                , "! handler function for when font render size changes.\n" );
         
         }
         { //::CEGUI::Window::initialiseClippers

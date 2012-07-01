@@ -142,15 +142,6 @@ setting CMake options and regenerating, rather than editing directly.
 #cmakedefine CEGUI_HAS_DEFAULT_LOGGER
 
 //////////////////////////////////////////////////////////////////////////
-// The following controls whether the system recognise the ExpressionDim
-// falagard dimension type.
-//
-// If this is not defined and a looknfeel file uses the <ExpressionDim>
-// element, an exception will be thrown.
-//////////////////////////////////////////////////////////////////////////
-#cmakedefine CEGUI_HAS_EXPRESSION_DIM
-
-//////////////////////////////////////////////////////////////////////////
 // The following defines control bidirectional text support.
 //
 // Uncomment the CEGUI_BIDI_SUPPORT definition to enable bidirectional

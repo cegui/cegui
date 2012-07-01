@@ -199,5 +199,22 @@ namespace CEGUI
         imagery->render(*d_window);
     }
 
+    bool FalagardListbox::handleFontRenderSizeChange(const Font* const font)
+    {
+        bool res = ListboxWindowRenderer::handleFontRenderSizeChange(font);
+
+        if (!res)
+        {
+            Listbox* const listbox = static_cast<Listbox*>(d_window);
+
+            for (size_t i = 0; i < listbox->getItemCount(); ++i)
+                res |= listbox->getListboxItemFromIndex(i)->handleFontRenderSizeChange(font);
+
+            if (res)
+                listbox->invalidate();
+        }
+
+        return res;
+    }
 
 } // End of  CEGUI namespace section

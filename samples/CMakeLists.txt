@@ -10,6 +10,7 @@ add_subdirectory(ScrollablePaneDemo)
 add_subdirectory(TabControlDemo)
 add_subdirectory(TextDemo)
 add_subdirectory(TreeDemo)
+add_subdirectory(EditboxValidationDemo)
 add_subdirectory(CommonDialogsDemo)
 
 if (CEGUI_BUILD_LUA_MODULE)

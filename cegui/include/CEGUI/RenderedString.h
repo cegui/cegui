@@ -115,6 +115,12 @@ public:
     */
     Sizef getPixelSize(const Window* ref_wnd, const size_t line) const;
 
+    //! Return the maximum horizontal extent of all lines, in pixels.
+    float getHorizontalExtent(const Window* ref_wnd) const;
+
+    //! Return the sum vertical extent of all lines, in pixels.
+    float getVerticalExtent(const Window* ref_wnd) const;
+
     //! append \a component to the list of components drawn for this string.
     void appendComponent(const RenderedStringComponent& component);
 

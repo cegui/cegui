@@ -83,8 +83,8 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
     d_defaultTooltipObject(0),
     d_weCreatedTooltipObject(false),
-    d_surfaceSize(target.getArea().getSize()),
     d_defaultFont(0),
+    d_surfaceSize(target.getArea().getSize()),
     d_windowContainingMouse(0),
     d_modalWindow(0),
     d_captureWindow(0),
@@ -1078,7 +1078,7 @@ void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
     if (!hierarchy_root->getFont(false))
         hierarchy_root->onFontChanged(evt_args);
 
-    for (int i = 0; i < hierarchy_root->getChildCount(); ++i)
+    for (size_t i = 0; i < hierarchy_root->getChildCount(); ++i)
         notifyDefaultFontChanged(hierarchy_root->getChildAtIdx(i));
 }
 

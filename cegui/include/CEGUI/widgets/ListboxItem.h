@@ -367,6 +367,22 @@ public:
     */
     void    setSelectionBrushImage(const String& name);
 
+    /*!
+    \brief
+        Perform any updates needed because the given font's render size has
+        changed.
+
+    /note
+        The base implementation just returns false.
+
+    \param font
+        Pointer to the Font whose render size has changed.
+
+    \return
+        - true if some action was taken.
+        - false if no action was taken (i.e font is not used here).
+    */
+    virtual bool handleFontRenderSizeChange(const Font* const font);
 
     /*************************************************************************
         Abstract portion of interface

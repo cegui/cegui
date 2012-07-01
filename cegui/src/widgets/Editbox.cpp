@@ -32,7 +32,6 @@
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Font.h"
 #include "CEGUI/Clipboard.h"
-#include "CEGUI/RegexMatcher.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include <string.h>
 
@@ -53,8 +52,7 @@ const String Editbox::EventMaskedRenderingModeChanged( "MaskedRenderingModeChang
 const String Editbox::EventMaskCodePointChanged( "MaskCodePointChanged" );
 const String Editbox::EventValidationStringChanged( "ValidationStringChanged" );
 const String Editbox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
-const String Editbox::EventTextInvalidated("TextInvalidated");
-const String Editbox::EventInvalidEntryAttempted( "InvalidEntryAttempted" );
+const String Editbox::EventTextValidityChanged( "TextValidityChanged" );
 const String Editbox::EventCaretMoved( "CaretMoved" );
 const String Editbox::EventTextSelectionChanged( "TextSelectionChanged" );
 const String Editbox::EventEditboxFull("EditboxFull");
@@ -72,7 +70,8 @@ Editbox::Editbox(const String& type, const String& name) :
     d_selectionEnd(0),
     d_validator(System::getSingleton().createRegexMatcher()),
     d_weOwnValidator(true),
-    d_dragging(false)
+    d_dragging(false),
+    d_validatorMatchState(RegexMatcher::MS_VALID)
 {
     addEditboxProperties();
 
@@ -103,9 +102,9 @@ bool Editbox::hasInputFocus(void) const
 }
 
 //----------------------------------------------------------------------------//
-bool Editbox::isTextValid(void) const
+Editbox::MatchState Editbox::getTextMatchState() const
 {
-    return isStringValid(getText());
+    return d_validatorMatchState;
 }
 
 //----------------------------------------------------------------------------//
@@ -170,11 +169,13 @@ void Editbox::setValidationString(const String& validation_string)
     WindowEventArgs args(this);
     onValidationStringChanged(args);
 
-    // also notify if text is now invalid.
-    if (!isTextValid())
+    // also notify if text validation state has changed.
+    const MatchState state = getStringMatchState(getText());
+    if (d_validatorMatchState != state)
     {
-        args.handled = 0;
-        onTextInvalidatedEvent(args);
+        RegexMatchStateArgs rms_args(this, state);
+        onTextValidityChanged(rms_args);
+        d_validatorMatchState = state;
     }
 }
 
@@ -275,13 +276,13 @@ void Editbox::setMaxTextLength(size_t max_len)
             setText(newText);
             onTextChanged(args);
 
-            // see if new text is valid
-            if (!isTextValid())
+            const MatchState state = getStringMatchState(getText());
+            if (d_validatorMatchState != state)
             {
-                // Trigger Text is invalid event.
-                onTextInvalidatedEvent(args);
+                RegexMatchStateArgs rms_args(this, state);
+                onTextValidityChanged(rms_args);
+                d_validatorMatchState = state;
             }
-
         }
 
     }
@@ -322,9 +323,10 @@ void Editbox::eraseSelectedText(bool modify_text)
 }
 
 //----------------------------------------------------------------------------//
-bool Editbox::isStringValid(const String& str) const
+Editbox::MatchState Editbox::getStringMatchState(const String& str) const
 {
-    return d_validator ? d_validator->matchRegex(str) : true;
+    return d_validator ? d_validator->getMatchStateOfString(str) :
+                         RegexMatcher::MS_VALID;
 }
 
 //----------------------------------------------------------------------------//
@@ -371,6 +373,24 @@ bool Editbox::performCut(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
+bool Editbox::handleValidityChangeForString(const String& str)
+{
+    const MatchState state = getStringMatchState(str);
+
+    if (state == d_validatorMatchState)
+        return true;
+
+    RegexMatchStateArgs args(this, state);
+    onTextValidityChanged(args);
+
+    if (args.handled == 0)
+        return false;
+
+    d_validatorMatchState = state;
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 bool Editbox::performPaste(Clipboard& clipboard)
 {
     if (isReadOnly())
@@ -390,7 +410,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     {
         tmp.insert(getSelectionStartIndex(), clipboardText);
         
-        if (isStringValid(tmp))
+        if (handleValidityChangeForString(tmp))
         {
             // erase selection using mode that does not modify getText()
             // (we just want to update state)
@@ -404,14 +424,6 @@ bool Editbox::performPaste(Clipboard& clipboard)
             setText(tmp);
             
             return true;
-        }
-        else
-        {
-            // Trigger invalid modification attempted event.
-            WindowEventArgs args(this);
-            onInvalidEntryAttempted(args);
-
-            return false;
         }
     }
 
@@ -563,7 +575,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
         {
             tmp.insert(getSelectionStartIndex(), 1, e.codepoint);
 
-            if (isStringValid(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // erase selection using mode that does not modify getText()
                 // (we just want to update state)
@@ -579,13 +591,6 @@ void Editbox::onCharacter(KeyEventArgs& e)
                 // char was accepted into the Editbox - mark event as handled.
                 ++e.handled;
             }
-            else
-            {
-                // Trigger invalid modification attempted event.
-                WindowEventArgs args(this);
-                onInvalidEntryAttempted(args);
-            }
-
         }
         else
         {
@@ -680,7 +685,7 @@ void Editbox::handleBackspace(void)
         {
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
-            if (isStringValid(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // erase selection using mode that does not modify getText()
                 // (we just want to update state)
@@ -689,32 +694,18 @@ void Editbox::handleBackspace(void)
                 // set text to the newly modified string
                 setText(tmp);
             }
-            else
-            {
-                // Trigger invalid modification attempted event.
-                WindowEventArgs args(this);
-                onInvalidEntryAttempted(args);
-            }
-
         }
         else if (getCaretIndex() > 0)
         {
             tmp.erase(d_caretPos - 1, 1);
 
-            if (isStringValid(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 setCaretIndex(d_caretPos - 1);
 
                 // set text to the newly modified string
                 setText(tmp);
             }
-            else
-            {
-                // Trigger invalid modification attempted event.
-                WindowEventArgs args(this);
-                onInvalidEntryAttempted(args);
-            }
-
         }
 
     }
@@ -732,7 +723,7 @@ void Editbox::handleDelete(void)
         {
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
-            if (isStringValid(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // erase selection using mode that does not modify getText()
                 // (we just want to update state)
@@ -741,30 +732,16 @@ void Editbox::handleDelete(void)
                 // set text to the newly modified string
                 setText(tmp);
             }
-            else
-            {
-                // Trigger invalid modification attempted event.
-                WindowEventArgs args(this);
-                onInvalidEntryAttempted(args);
-            }
-
         }
         else if (getCaretIndex() < tmp.length())
         {
             tmp.erase(d_caretPos, 1);
 
-            if (isStringValid(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // set text to the newly modified string
                 setText(tmp);
             }
-            else
-            {
-                // Trigger invalid modification attempted event.
-                WindowEventArgs args(this);
-                onInvalidEntryAttempted(args);
-            }
-
         }
 
     }
@@ -886,15 +863,9 @@ void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onTextInvalidatedEvent(WindowEventArgs& e)
+void Editbox::onTextValidityChanged(RegexMatchStateArgs& e)
 {
-    fireEvent(EventTextInvalidated, e, EventNamespace);
-}
-
-//----------------------------------------------------------------------------//
-void Editbox::onInvalidEntryAttempted(WindowEventArgs& e)
-{
-    fireEvent(EventInvalidEntryAttempted , e, EventNamespace);
+    fireEvent(EventTextValidityChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//

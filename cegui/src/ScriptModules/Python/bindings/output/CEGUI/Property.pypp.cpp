@@ -49,16 +49,16 @@ struct Property_wrapper : CEGUI::Property, bp::wrapper< CEGUI::Property > {
         return CEGUI::Property::getDefault( boost::python::ptr(receiver) );
     }
 
-    virtual void initialisePropertyReceiver( ::CEGUI::PropertyReceiver * receiver ) const  {
+    virtual void initialisePropertyReceiver( ::CEGUI::PropertyReceiver * arg0 ) const  {
         if( bp::override func_initialisePropertyReceiver = this->get_override( "initialisePropertyReceiver" ) )
-            func_initialisePropertyReceiver( boost::python::ptr(receiver) );
+            func_initialisePropertyReceiver( boost::python::ptr(arg0) );
         else{
-            this->CEGUI::Property::initialisePropertyReceiver( boost::python::ptr(receiver) );
+            this->CEGUI::Property::initialisePropertyReceiver( boost::python::ptr(arg0) );
         }
     }
     
-    void default_initialisePropertyReceiver( ::CEGUI::PropertyReceiver * receiver ) const  {
-        CEGUI::Property::initialisePropertyReceiver( boost::python::ptr(receiver) );
+    void default_initialisePropertyReceiver( ::CEGUI::PropertyReceiver * arg0 ) const  {
+        CEGUI::Property::initialisePropertyReceiver( boost::python::ptr(arg0) );
     }
 
     virtual bool isDefault( ::CEGUI::PropertyReceiver const * receiver ) const  {
@@ -274,7 +274,7 @@ void register_Property_class(){
                 "initialisePropertyReceiver"
                 , initialisePropertyReceiver_function_type(&::CEGUI::Property::initialisePropertyReceiver)
                 , default_initialisePropertyReceiver_function_type(&Property_wrapper::default_initialisePropertyReceiver)
-                , ( bp::arg("receiver") ) );
+                , ( bp::arg("arg0") ) );
         
         }
         { //::CEGUI::Property::isDefault

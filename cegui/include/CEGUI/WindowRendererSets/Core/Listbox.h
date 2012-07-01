@@ -90,6 +90,8 @@ namespace CEGUI
         void resizeListToContent(bool fit_width,
                                  bool fit_height) const;
 
+        bool handleFontRenderSizeChange(const Font* const font);
+
     protected:
         Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
     };

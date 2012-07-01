@@ -54,6 +54,18 @@ struct TreeItem_wrapper : CEGUI::TreeItem, bp::wrapper< CEGUI::TreeItem > {
         return CEGUI::TreeItem::getPixelSize( );
     }
 
+    virtual bool handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        if( bp::override func_handleFontRenderSizeChange = this->get_override( "handleFontRenderSizeChange" ) )
+            return func_handleFontRenderSizeChange( font );
+        else{
+            return this->CEGUI::TreeItem::handleFontRenderSizeChange( font );
+        }
+    }
+    
+    bool default_handleFontRenderSizeChange( ::CEGUI::Font const * const font ) {
+        return CEGUI::TreeItem::handleFontRenderSizeChange( font );
+    }
+
     void parseTextString(  ) const {
         CEGUI::TreeItem::parseTextString(  );
     }
@@ -380,6 +392,18 @@ void register_TreeItem_class(){
              @return\n\
                 Pointer to the currently assigned user data.\n\
              *\n" );
+        
+        }
+        { //::CEGUI::TreeItem::handleFontRenderSizeChange
+        
+            typedef bool ( ::CEGUI::TreeItem::*handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            typedef bool ( TreeItem_wrapper::*default_handleFontRenderSizeChange_function_type )( ::CEGUI::Font const * const ) ;
+            
+            TreeItem_exposer.def( 
+                "handleFontRenderSizeChange"
+                , handleFontRenderSizeChange_function_type(&::CEGUI::TreeItem::handleFontRenderSizeChange)
+                , default_handleFontRenderSizeChange_function_type(&TreeItem_wrapper::default_handleFontRenderSizeChange)
+                , ( bp::arg("font") ) );
         
         }
         { //::CEGUI::TreeItem::isAutoDeleted

@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/PCRERegexMatcher.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/PropertyHelper.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -72,7 +73,8 @@ const String& PCRERegexMatcher::getRegexString() const
 }
 
 //----------------------------------------------------------------------------//
-bool PCRERegexMatcher::matchRegex(const String& str) const
+RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
+                                                        const String& str) const
 {
     // if the regex is not valid, then an exception is thrown
     if (!d_regex)
@@ -82,19 +84,25 @@ bool PCRERegexMatcher::matchRegex(const String& str) const
     int match[3];
     const char* utf8_str = str.c_str();
     const int len = static_cast<int>(strlen(utf8_str));
-    const int result = pcre_exec(d_regex, 0, utf8_str, len, 0, 0, match, 3);
+    const int result = pcre_exec(d_regex, 0, utf8_str, len, 0,
+                                 PCRE_PARTIAL_SOFT | PCRE_ANCHORED, match, 3);
+
+    if (result == PCRE_ERROR_PARTIAL)
+        return MS_PARTIAL;
 
     // a match must be for the entire string
     if (result >= 0)
-        return (match[1] - match[0] == len);
+        return (match[1] - match[0] == len) ? MS_VALID : MS_INVALID;
+
     // no match found or if test string or regex is 0
-    else if ((result == PCRE_ERROR_NOMATCH) || (result == PCRE_ERROR_NULL))
-        return false;
+    if (result == PCRE_ERROR_NOMATCH || result == PCRE_ERROR_NULL)
+        return MS_INVALID;
+
     // anything else is an error
-    else
-        CEGUI_THROW(InvalidRequestException(
-            "An internal error occurred while attempting to match the RegEx '" +
-            d_string + "'."));
+    CEGUI_THROW(InvalidRequestException(
+        "PCRE Error: " + PropertyHelper<int>::toString(result) +
+        " occurred while attempting to match the RegEx '" +
+        d_string + "'."));
 }
 
 //----------------------------------------------------------------------------//

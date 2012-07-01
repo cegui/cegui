@@ -309,7 +309,7 @@ namespace CEGUI
         CEGUI_TRY
         {
             return d_fontPropertyName.empty() ?
-                (d_font.empty() ? const_cast<Font*>(window.getFont()) : &FontManager::getSingleton().get(d_font))
+                (d_font.empty() ? window.getFont() : &FontManager::getSingleton().get(d_font))
                 : &FontManager::getSingleton().get(window.getProperty(d_fontPropertyName));
         }
         CEGUI_CATCH (UnknownObjectException&)

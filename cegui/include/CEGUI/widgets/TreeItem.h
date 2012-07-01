@@ -589,6 +589,20 @@ public:
     virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
                       float alpha, const Rectf* clipper) const;
 
+    /*!
+    \brief
+        Perform any updates needed because the given font's render size has
+        changed.
+
+    \param font
+        Pointer to the Font whose render size has changed.
+
+    \return
+        - true if some action was taken.
+        - false if no action was taken (i.e font is not used here).
+    */
+    virtual bool handleFontRenderSizeChange(const Font* const font);
+
     /*************************************************************************
         Operators
      *************************************************************************/

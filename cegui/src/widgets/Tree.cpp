@@ -1362,6 +1362,23 @@ bool Tree::handle_scrollChange(const EventArgs&)
     return true;
 }
 
+bool Tree::handleFontRenderSizeChange(const EventArgs& args)
+{
+    bool res = Window::handleFontRenderSizeChange(args);
+
+    if (!res)
+    {
+        const Font* const font = static_cast<const FontEventArgs&>(args).font;
+
+        for (size_t i = 0; i < getItemCount(); ++i)
+            res |= d_listItems[i]->handleFontRenderSizeChange(font);
+
+        if (res)
+            invalidate();
+    }
+
+    return res;
+}
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************

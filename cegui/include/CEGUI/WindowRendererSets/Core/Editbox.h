@@ -150,6 +150,7 @@ public:
     size_t getTextIndexFromPosition(const Vector2f& pt) const;
     // overridden from WindowRenderer class
     void update(float elapsed);
+    bool handleFontRenderSizeChange(const Font* const font);
 
 protected:
     //! helper to draw the base imagery (container and what have you)
