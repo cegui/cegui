@@ -6,7 +6,7 @@ class Editbox : public Window
 	bool hasInputFocus() const;
 	bool isReadOnly() const;
 	bool isTextMasked() const;
-	bool isTextValid() const;
+    RegexMatcher::MatchState getTextMatchState() const;
 
 	string getValidationString() const;
 

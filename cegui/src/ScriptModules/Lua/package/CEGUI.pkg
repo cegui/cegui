@@ -44,6 +44,8 @@ $pfile "StringTranscoder.pkg"
 
 $pfile "PropertyHelper.pkg"
 
+$pfile "RegexMatcher.pkg"
+
 // Renderer related
 $pfile "Vertex.pkg"
 $pfile "RenderingContext.pkg"
