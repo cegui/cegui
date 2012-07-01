@@ -12,7 +12,7 @@ class Combobox : public Window
 
 	bool hasInputFocus() const;
 	bool isReadOnly() const;
-	bool isTextValid() const;
+    RegexMatcher::MatchState getTextMatchState() const;
 	string getValidationString() const;
 
 	unsigned long getCaretIndex() const;
