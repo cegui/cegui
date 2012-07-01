@@ -4,7 +4,7 @@
     <Window type="DefaultWindow" name="FontDemoRoot" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window type="Vanilla/FrameWindow" name="FontDemoWindow" >
-            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="Area" value="{{0,0},{0,1},{1,0},{1,1}}" />
             <Property name="Text" value="Font Demo" />
             <Property name="SizingEnabled" value="False" />
             <Property name="DragMovingEnabled" value="False" />
@@ -121,11 +121,15 @@
                 </Window>
                 <Window type="Vanilla/Button" name="RenewNameButton" >
                     <Property name="Area" value="{{0.13,0},{0.05,0},{0.218,0},{0.16,0}}" />
-                    <Property name="Text" value="	➪" />
+                    <Property name="Text" value="✭" />
                 </Window>
                 <Window type="Vanilla/Combobox" name="AutoScaleCombobox" >
                     <Property name="Area" value="{{0.0525575,0},{0.52527,0},{0.400384,50},{0.819876,50}}" />
+                    <Property name="ReadOnly" value="True" />
                     <Property name="ForceVertScrollbar" value="True" />
+                    <AutoWindow namePath="__auto_editbox__" >
+                        <Property name="ReadOnly" value="True" />
+                    </AutoWindow>
                     <AutoWindow namePath="__auto_droplist__" >
                         <AutoWindow namePath="__auto_hscrollbar__" >
                             <AutoWindow namePath="__auto_thumb__" >
@@ -150,6 +154,10 @@
                             </AutoWindow>
                         </AutoWindow>
                     </AutoWindow>
+                </Window>
+                <Window type="Vanilla/Label" name="InfoLabel" >
+                    <Property name="Area" value="{{0.0485934,0},{0.850622,0},{0.97954,0},{0.93776,0}}" />
+                    <Property name="NormalTextColour" value="FFFF2222" />
                 </Window>
             </Window>
             <Window type="Vanilla/Label" name="Label" >
