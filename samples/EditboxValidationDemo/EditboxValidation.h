@@ -1,7 +1,7 @@
 /***********************************************************************
-    filename:   CEGUIExpressionDim_impl.h
-    created:    Wed Dec 30 2009
-    author:     Paul D Turner <paul@cegui.org.uk>
+    filename:   EditboxValidation.h
+    created:    July 1 2012
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -25,52 +25,22 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIFalExpressionDim_impl_h
-#define _CEGUIFalExpressionDim_impl_h_
+#ifndef _EditboxValidation_h_
+#define _EditboxValidation_h_
 
-#include "CEGUI/falagard/Dimensions.h"
-#include "./ExpressionDimParser.hpp"
-#include <vector>
-#include <utility>
+#include "CEGuiSample.h"
+#include "CEGUI/EventArgs.h"
 
-// Start of CEGUI namespace section
-namespace CEGUI
+class EditboxValidation : public CEGuiSample
 {
+public:
+    bool initialiseSample();
+    void cleanupSample(void);
 
-typedef std::pair<ExpressionDimParser::token_type, BaseDim*> ExpressionPart;
-typedef std::vector<ExpressionPart> ExpressionStack;
-
-struct ExpressionDim_impl
-{
-    ExpressionDim_impl() :
-        d_performedScan(false),
-        d_parser(this),
-        d_stackPos(0),
-        d_window(0),
-        d_area(0),
-        d_parsedValue(0.0f)
-    {
-    }
-
-    //! String representation of the expression (i.e the original input).
-    String d_expression;
-    //! signifies whether d_expression has been scanned yet.
-    bool d_performedScan;
-    //! parser object that does the parse of pre-scanned tokens.
-    ExpressionDimParser d_parser;
-    //! stack of scanned expression parts.
-    ExpressionStack d_stack;
-    //! current parse location within the stack.
-    size_t d_stackPos;
-    //! CEGUI::Window for the current parse.
-    const Window* d_window;
-    //! CEGUI::Rect area for the current parse (may be 0).
-    const Rectf* d_area;
-    //! The final value from the last parse.
-    float d_parsedValue;
+protected:
+    bool validationChangeHandler(const CEGUI::EventArgs& args);
+    bool quitButtonHandler(const CEGUI::EventArgs& args);
 };
 
-} // End of  CEGUI namespace section
-
-#endif  // end of guard _CEGUIFalExpressionDim_impl_h_
+#endif
 

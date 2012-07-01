@@ -151,6 +151,18 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
         CEGUI::MultiLineEditbox::onEditboxFullEvent( boost::ref(e) );
     }
 
+    virtual void onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        if( bp::override func_onFontChanged = this->get_override( "onFontChanged" ) )
+            func_onFontChanged( boost::ref(e) );
+        else{
+            this->CEGUI::MultiLineEditbox::onFontChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onFontChanged( ::CEGUI::WindowEventArgs & e ){
+        CEGUI::MultiLineEditbox::onFontChanged( boost::ref(e) );
+    }
+
     void onHorzScrollbarModeChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::MultiLineEditbox::onHorzScrollbarModeChanged( boost::ref(e) );
     }
@@ -833,18 +845,6 @@ struct MultiLineEditbox_wrapper : CEGUI::MultiLineEditbox, bp::wrapper< CEGUI::M
     
     virtual void default_onEnabled( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Window::onEnabled( boost::ref(e) );
-    }
-
-    virtual void onFontChanged( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onFontChanged = this->get_override( "onFontChanged" ) )
-            func_onFontChanged( boost::ref(e) );
-        else{
-            this->CEGUI::Window::onFontChanged( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onFontChanged( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Window::onFontChanged( boost::ref(e) );
     }
 
     virtual void onHidden( ::CEGUI::WindowEventArgs & e ){
@@ -2128,6 +2128,16 @@ void register_MultiLineEditbox_class(){
             \n\
                Handler called when the edit box is full\n\
             *\n" );
+        
+        }
+        { //::CEGUI::MultiLineEditbox::onFontChanged
+        
+            typedef void ( MultiLineEditbox_wrapper::*onFontChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
+            
+            MultiLineEditbox_exposer.def( 
+                "onFontChanged"
+                , onFontChanged_function_type( &MultiLineEditbox_wrapper::default_onFontChanged )
+                , ( bp::arg("e") ) );
         
         }
         { //::CEGUI::MultiLineEditbox::onHorzScrollbarModeChanged
@@ -3419,25 +3429,6 @@ void register_MultiLineEditbox_class(){
                 , "*!\n\
                 \n\
                     Handler called when the window is enabled.\n\
-            \n\
-                @param e\n\
-                    WindowEventArgs object whose 'window' pointer field is set to the window\n\
-                    that triggered the event.  For this event the trigger window is always\n\
-                    'this'.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Window::onFontChanged
-        
-            typedef void ( MultiLineEditbox_wrapper::*onFontChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            MultiLineEditbox_exposer.def( 
-                "onFontChanged"
-                , onFontChanged_function_type( &MultiLineEditbox_wrapper::default_onFontChanged )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when the window's font is changed.\n\
             \n\
                 @param e\n\
                     WindowEventArgs object whose 'window' pointer field is set to the window\n\

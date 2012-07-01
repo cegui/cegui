@@ -62,7 +62,8 @@ void BaseDim::writeXMLToStream(XMLSerializer& xml_stream) const
 }
 
 //----------------------------------------------------------------------------//
-bool BaseDim::handleFontRenderSizeChange(Window& window, const Font* font) const
+bool BaseDim::handleFontRenderSizeChange(Window& /*window*/,
+                                         const Font* /*font*/) const
 {
     return false;
 }
@@ -383,7 +384,7 @@ void ImageDim::setSourceImage(const String& image_name)
 }
 
 //----------------------------------------------------------------------------//
-const Image* ImageDim::getSourceImage(const Window& wnd) const
+const Image* ImageDim::getSourceImage(const Window& /*wnd*/) const
 {
     return &ImageManager::getSingleton().get(d_imageName);
 }

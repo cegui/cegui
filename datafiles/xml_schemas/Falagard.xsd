@@ -247,7 +247,6 @@
             <xsd:element name="WidgetDim" type="widgetDimType" />
             <xsd:element name="FontDim" type="fontDimType" />
             <xsd:element name="PropertyDim" type="propertyDimType" />
-            <xsd:element name="ExpressionDim" type="expressionDimType" />
             <xsd:element name="OperatorDim" type="operatorDimType" />
 		</xsd:choice>
 		<xsd:attribute name="type" type="dimensionTypeEnum" use="required" />
@@ -280,9 +279,6 @@
 		<xsd:attribute name="widget" type="xsd:string" use="optional" default="" />
 		<xsd:attribute name="dimension" type="dimensionTypeEnum" use="required" />
 	</xsd:complexType>
-   	<xsd:complexType name="expressionDimType">
-		<xsd:attribute name="value" type="xsd:string" use="required" />
-	</xsd:complexType>
     <xsd:complexType name="operatorDimType">
         <xsd:choice minOccurs="2" maxOccurs="2">
 			<xsd:element name="UnifiedDim" type="unifiedDimType" />
@@ -292,7 +288,6 @@
             <xsd:element name="WidgetDim" type="widgetDimType" />
             <xsd:element name="FontDim" type="fontDimType" />
             <xsd:element name="PropertyDim" type="propertyDimType" />
-            <xsd:element name="ExpressionDim" type="expressionDimType" />
             <xsd:element name="OperatorDim" type="operatorDimType" />
         </xsd:choice>
         <xsd:attribute name="op" type="dimensionOperatorEnum" use="required" />

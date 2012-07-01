@@ -30,8 +30,9 @@
 #ifndef _CEGUIEditbox_h_
 #define _CEGUIEditbox_h_
 
-#include "../Base.h"
-#include "../Window.h"
+#include "CEGUI/Base.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/RegexMatcher.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -69,6 +70,8 @@ public:
 class CEGUIEXPORT Editbox : public Window
 {
 public:
+    typedef RegexMatcher::MatchState MatchState;
+
     //! Namespace for global events
     static const String EventNamespace;
     //! Window factory name
@@ -104,19 +107,20 @@ public:
      * has been changed.
      */
     static const String EventMaximumTextLengthChanged;
-    /** Event fired when the current text has become invalid as regards to the
-     * validation string.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Editbox whose text has become invalid.
+    /** Event fired when the validity of the Exitbox text (as determined by a
+     * RegexMatcher object) has changed.
+     * Handlers are passed a const RegexMatchStateArgs reference with
+     * WindowEventArgs::window set to the Editbox whose text validity has
+     * changed and RegexMatchStateArgs::matchState set to the new match
+     * validity. Handler return is significant, as follows:
+     * - true indicates the new state - and therfore text - is to be accepted.
+     * - false indicates the new state is not acceptable, and the previous text
+     *   should remain in place. NB: This is only possible when the validity
+     *   change is due to a change in the text, if the validity change is due to
+     *   a change in the validation regular expression string, then returning
+     *   false will have no effect.
      */
-    static const String EventTextInvalidated;
-    /** Event fired when the user attempts to chage the text in a way that would
-     * make it invalid as regards to the validation string.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Editbox in which the users input would
-     * have invalidated the text.
-     */
-    static const String EventInvalidEntryAttempted;
+    static const String EventTextValidityChanged;
     /** Event fired when the text caret position / insertion point is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Editbox whose current insertion point
@@ -178,14 +182,8 @@ public:
 
     /*!
     \brief
-        return true if the Editbox text is valid given the currently set
-        validation string.
-
-    \note
-        It is possible to programmatically set 'invalid' text for the Editbox by
-        calling setText.  This has certain implications since if invalid text is
-        set, whatever the user types into the box will be rejected when the
-        input is validated.
+        return the validation MatchState for the current Editbox text, given the
+        currently set validation string.
 
     \note
         Validation is performed by means of a regular expression.  If the text
@@ -193,10 +191,9 @@ public:
         text does not match with the regex then the text fails validation.
 
     \return
-        - true if the current Editbox text passes validation.
-        - false if the text does not pass validation.
+        One of the MatchState enumerated values indicating the current match state.
     */
-    bool isTextValid(void) const;
+    MatchState getTextMatchState() const;
 
     /*!
     \brief
@@ -480,10 +477,18 @@ protected:
 
     /*!
     \brief
-        return true if the given string matches the validation regular
+        return the match state of the given string for the validation regular
         expression.
     */
-    bool isStringValid(const String& str) const;
+    MatchState getStringMatchState(const String& str) const;
+
+    /** Helper to update validator match state as needed for the given string
+     * and event handler return codes.
+     *
+     * This effectively asks permission from event handlers to proceed with the
+     * change, updates d_validatorMatchState and returns an appropriate bool.
+     */
+    bool handleValidityChangeForString(const String& str);
 
     //! Processing for backspace key
     void handleBackspace(void);
@@ -546,20 +551,10 @@ protected:
 
     /*!
     \brief
-        Handler called when something has caused the current text to now fail
-        validation.
-
-        This can be caused by changing the validation string or setting a
-        maximum length that causes the current text to be truncated.
+        Handler called when something has caused the validity state of the
+        current text to change.
     */
-    virtual void onTextInvalidatedEvent(WindowEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when the user attempted to make a change to the edit box
-        that would have caused it to fail validation.
-    */
-    virtual void onInvalidEntryAttempted(WindowEventArgs& e);
+    virtual void onTextValidityChanged(RegexMatchStateArgs& e);
 
     /*!
     \brief
@@ -622,6 +617,8 @@ protected:
     bool d_dragging;
     //! Selection index for drag selection anchor point.
     size_t d_dragAnchorIdx;
+    //! Current match state of EditboxText
+    MatchState d_validatorMatchState;
 
 private:
 

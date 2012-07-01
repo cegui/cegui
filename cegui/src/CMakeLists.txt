@@ -42,14 +42,6 @@ if (NOT CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER)
     list (REMOVE_ITEM CORE_SOURCE_FILES MinizipResourceProvider.cpp)
 endif()
 
-if (NOT CEGUI_HAS_EXPRESSION_DIM)
-    list(REMOVE_ITEM CORE_SOURCE_FILES
-        falagard/ExpressionDim.cpp
-        falagard/ExpressionDimParser.cpp
-        falagard/ExpressionDimScanner.cpp
-    )
-endif()
-
 if (WIN32)
     list (REMOVE_ITEM CORE_SOURCE_FILES IconvStringTranscoder.cpp)
 else()

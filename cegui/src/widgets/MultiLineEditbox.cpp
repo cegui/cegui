@@ -605,7 +605,8 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2f& pt) const
 	wndPt.d_x += getHorzScrollbar()->getScrollPosition();
 	wndPt.d_y += getVertScrollbar()->getScrollPosition();
 
-	size_t lineNumber = static_cast<size_t>(wndPt.d_y / getFont()->getLineSpacing());
+	size_t lineNumber = static_cast<size_t>(
+        ceguimax(0.0f, wndPt.d_y) / getFont()->getLineSpacing());
 
 	if (lineNumber >= d_lines.size())
 	{
@@ -1528,6 +1529,13 @@ void MultiLineEditbox::onMouseWheel(MouseEventArgs& e)
 
 	++e.handled;
 }
+
+void MultiLineEditbox::onFontChanged(WindowEventArgs& e)
+{
+    Window::onFontChanged(e);
+    formatText(true);
+}
+
 
 bool MultiLineEditbox::validateWindowRenderer(const WindowRenderer* renderer) const
 {

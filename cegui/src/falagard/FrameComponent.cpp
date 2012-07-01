@@ -557,7 +557,7 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
                                  VerticalFormatting vertFmt,
                                  HorizontalFormatting horzFmt,
                                  Rectf& destRect, const ColourRect& colours,
-                                 const Rectf* clipper, bool clipToDisplay) const
+                                 const Rectf* clipper, bool /*clipToDisplay*/) const
 {
     uint horzTiles, vertTiles;
     float xpos, ypos;
