@@ -373,7 +373,7 @@ bool Editbox::performCut(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-bool Editbox::aHelperFunction(const String& str)
+bool Editbox::handleValidityChangeForString(const String& str)
 {
     const MatchState state = getStringMatchState(str);
 
@@ -410,7 +410,7 @@ bool Editbox::performPaste(Clipboard& clipboard)
     {
         tmp.insert(getSelectionStartIndex(), clipboardText);
         
-        if (aHelperFunction(tmp))
+        if (handleValidityChangeForString(tmp))
         {
             // erase selection using mode that does not modify getText()
             // (we just want to update state)
@@ -575,7 +575,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
         {
             tmp.insert(getSelectionStartIndex(), 1, e.codepoint);
 
-            if (aHelperFunction(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // erase selection using mode that does not modify getText()
                 // (we just want to update state)
@@ -685,7 +685,7 @@ void Editbox::handleBackspace(void)
         {
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
-            if (aHelperFunction(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // erase selection using mode that does not modify getText()
                 // (we just want to update state)
@@ -699,7 +699,7 @@ void Editbox::handleBackspace(void)
         {
             tmp.erase(d_caretPos - 1, 1);
 
-            if (aHelperFunction(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 setCaretIndex(d_caretPos - 1);
 
@@ -723,7 +723,7 @@ void Editbox::handleDelete(void)
         {
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
-            if (aHelperFunction(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // erase selection using mode that does not modify getText()
                 // (we just want to update state)
@@ -737,7 +737,7 @@ void Editbox::handleDelete(void)
         {
             tmp.erase(d_caretPos, 1);
 
-            if (aHelperFunction(tmp))
+            if (handleValidityChangeForString(tmp))
             {
                 // set text to the newly modified string
                 setText(tmp);

@@ -481,7 +481,14 @@ protected:
         expression.
     */
     MatchState getStringMatchState(const String& str) const;
-    bool aHelperFunction(const String& str);
+
+    /** Helper to update validator match state as needed for the given string
+     * and event handler return codes.
+     *
+     * This effectively asks permission from event handlers to proceed with the
+     * change, updates d_validatorMatchState and returns an appropriate bool.
+     */
+    bool handleValidityChangeForString(const String& str);
 
     //! Processing for backspace key
     void handleBackspace(void);
