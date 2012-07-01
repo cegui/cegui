@@ -40,14 +40,27 @@ class CEGUIEXPORT RegexMatcher :
     public AllocatedObject<RegexMatcher>
 {
 public:
+    //! Enumeration of possible states when cosidering a regex match.
+    enum MatchState
+    {
+        //! String matches the regular expression completely.
+        MS_VALID,
+        //! String does not match the regular expression at all.
+        MS_INVALID,
+        /** String partially matches. Changes to the string could result in
+         * either an MS_VALID or MS_INVALID MatchState.
+         */
+        MS_PARTIAL
+    };
+
     //! Destructor.
     virtual ~RegexMatcher() {}
     //! Set the regex string that will be matched against.
     virtual void setRegexString(const String& regex) = 0;
     //! Return reference to current regex string set.
     virtual const String& getRegexString() const = 0;
-    //! Return whether a given string matches the set regex.
-    virtual bool matchRegex(const String& str) const = 0;
+    //! Return the MatchState result for the given String.
+    virtual MatchState getMatchStateOfString(const String& str) const = 0;
 };
 
 } // End of  CEGUI namespace section

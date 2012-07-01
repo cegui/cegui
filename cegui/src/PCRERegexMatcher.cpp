@@ -72,7 +72,8 @@ const String& PCRERegexMatcher::getRegexString() const
 }
 
 //----------------------------------------------------------------------------//
-bool PCRERegexMatcher::matchRegex(const String& str) const
+RegexMatcher::MatchState PCRERegexMatcher::getMatchStateOfString(
+                                                        const String& str) const
 {
     // if the regex is not valid, then an exception is thrown
     if (!d_regex)
@@ -86,10 +87,10 @@ bool PCRERegexMatcher::matchRegex(const String& str) const
 
     // a match must be for the entire string
     if (result >= 0)
-        return (match[1] - match[0] == len);
+        return (match[1] - match[0] == len) ? MS_VALID : MS_PARTIAL;
     // no match found or if test string or regex is 0
     else if ((result == PCRE_ERROR_NOMATCH) || (result == PCRE_ERROR_NULL))
-        return false;
+        return MS_INVALID;
     // anything else is an error
     else
         CEGUI_THROW(InvalidRequestException(
