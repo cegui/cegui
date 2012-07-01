@@ -28,14 +28,14 @@
 #ifndef _EditboxValidation_h_
 #define _EditboxValidation_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/EventArgs.h"
 
-class EditboxValidation : public CEGuiSample
+class EditboxValidation : public Sample
 {
 public:
-    bool initialiseSample();
-    void cleanupSample(void);
+    bool initialise(CEGUI::GUIContext* guiContext);
+    void deinitialise();
 
 protected:
     bool validationChangeHandler(const CEGUI::EventArgs& args);
