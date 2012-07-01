@@ -83,6 +83,9 @@ public:
     //! Return the type of the font.
     const String& getTypeName() const;
 
+    //! Return the filename of the used font.
+    const String& getFileName() const;
+    
     /*!
     \brief
         Return whether this Font can draw the specified code-point
