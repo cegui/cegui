@@ -926,9 +926,9 @@ bool ColourPickerControls::handleLABEditboxTextChanged(const EventArgs&)
     String LabBString = getLabEditBoxB()->getText();
 
     bool matchingRegEx = true;
-    matchingRegEx &= d_regexMatcher.matchRegex(LabLString);
-    matchingRegEx &= d_regexMatcher.matchRegex(LabAString);
-    matchingRegEx &= d_regexMatcher.matchRegex(LabBString);
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabLString) == RegexMatcher::MS_VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabAString) == RegexMatcher::MS_VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(LabBString) == RegexMatcher::MS_VALID;
 
     if (!matchingRegEx)
         return true;
@@ -964,9 +964,9 @@ bool ColourPickerControls::handleHSVEditboxTextChanged(const EventArgs&)
     String VString = getHSVEditBoxV()->getText();
 
     bool matchingRegEx = true;
-    matchingRegEx &= d_regexMatcher.matchRegex(HString);
-    matchingRegEx &= d_regexMatcher.matchRegex(SString);
-    matchingRegEx &= d_regexMatcher.matchRegex(VString);
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(HString) == RegexMatcher::MS_VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(SString) == RegexMatcher::MS_VALID;
+    matchingRegEx &= d_regexMatcher.getMatchStateOfString(VString) == RegexMatcher::MS_VALID;
 
     if (!matchingRegEx)
         return true;
@@ -998,8 +998,7 @@ bool ColourPickerControls::handleAlphaEditboxTextChanged(const EventArgs&)
     d_regexMatcher.setRegexString(labRegEx);
 
     String ValueString = getAlphaEditBox()->getText();
-    bool matchingRegEx = d_regexMatcher.matchRegex(ValueString);
-
+    bool matchingRegEx = d_regexMatcher.getMatchStateOfString(ValueString) == RegexMatcher::MS_VALID;
 
     if (!matchingRegEx)
         return true;

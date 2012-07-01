@@ -324,7 +324,9 @@ void Editbox::eraseSelectedText(bool modify_text)
 //----------------------------------------------------------------------------//
 bool Editbox::isStringValid(const String& str) const
 {
-    return d_validator ? d_validator->matchRegex(str) : true;
+    return d_validator ?
+        d_validator->getMatchStateOfString(str) == RegexMatcher::MS_VALID :
+        true;
 }
 
 //----------------------------------------------------------------------------//
