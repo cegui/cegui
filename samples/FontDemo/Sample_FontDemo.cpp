@@ -35,7 +35,13 @@ author:     Paul D Turner
 
 using namespace CEGUI;
 
-static const unsigned int LangListSize = 10;
+static const unsigned int LangListSize = 13;
+
+struct FontOption
+{
+    CEGUI::String   d_font;
+    bool            d_isEditable;
+};
 
 static struct
 {
@@ -47,37 +53,44 @@ static struct
     // A list of strings in different languages
     // Feel free to add your own language here (UTF-8 ONLY!)...
     {
+        (encoded_char*)"Sandbox",
+            (encoded_char*)"DejaVuSans-11",
+            (encoded_char*)"Try out writing text in any language here\n"
+            "You can create new fonts if needed. The new font will be immediately set to be the font for the currently selected text/language...\n"
+            "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other demos)"
+    },
+    {
         (encoded_char*)"English",
-            (encoded_char*)"DejaVuSans-10",
+            (encoded_char*)"DroidSans-12",
             (encoded_char*)"THIS IS SOME TEXT IN UPPERCASE\n"
             "and this is lowercase...\n"
             "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog"
-    },
-    {
-        (encoded_char*)"Русский",
-            (encoded_char*)"DejaVuSans-10",
-            (encoded_char*)"Всё ускоряющаяся эволюция компьютерных технологий "
-            "предъявила жёсткие требования к производителям как "
-            "собственно вычислительной техники, так и периферийных устройств.\n"
-            "\nЗавершён ежегодный съезд эрудированных школьников, "
-            "мечтающих глубоко проникнуть в тайны физических явлений "
-            "и химических реакций.\n"
-            "\nавтор панграмм -- Андрей Николаев\n"
         },
         {
-            (encoded_char*)"Română",
-                (encoded_char*)"DejaVuSans-10",
+            (encoded_char*)"Russian - Русский",
+                (encoded_char*)"DejaVuSans-11",
+                (encoded_char*)"Всё ускоряющаяся эволюция компьютерных технологий "
+                "предъявила жёсткие требования к производителям как "
+                "собственно вычислительной техники, так и периферийных устройств.\n"
+                "\nЗавершён ежегодный съезд эрудированных школьников, "
+                "мечтающих глубоко проникнуть в тайны физических явлений "
+                "и химических реакций.\n"
+                "\nавтор панграмм -- Андрей Николаев\n"
+        },
+        {
+            (encoded_char*)"Romanian - Română",
+                (encoded_char*)"DejaVuSans-11",
                 (encoded_char*)"CEI PATRU APOSTOLI\n"
                 "au fost trei:\n"
                 "Luca şi Matfei\n"
-        },
-        {
-            (encoded_char*)"Dansk",
-                (encoded_char*)"DejaVuSans-10",
-                (encoded_char*)"FARLIGE STORE BOGSTAVER\n"
-                "og flere men små...\n"
-                "Quizdeltagerne spiste jordbær med fløde, mens "
-                "cirkusklovnen Walther spillede på xylofon\n"
+            },
+            {
+                (encoded_char*)"Dansk - with monospaced font",
+                    (encoded_char*)"DroidSansMono-12",
+                    (encoded_char*)"FARLIGE STORE BOGSTAVER\n"
+                    "og flere men små...\n"
+                    "Quizdeltagerne spiste jordbær med fløde, mens "
+                    "cirkusklovnen Walther spillede på xylofon\n"
             },
             {
                 (encoded_char*)"Japanese",
@@ -85,52 +98,58 @@ static struct
                     (encoded_char*)"日本語を選択\n"
                     "トリガー検知\n"
                     "鉱石備蓄不足\n"
-            },
-            {
-                (encoded_char*)"Korean",
-                    (encoded_char*)"Batang-26",
-                    (encoded_char*)"한국어를 선택\n"
-                    "트리거 검지\n"
-                    "광석 비축부족\n"
+                },
+                {
+                    (encoded_char*)"Korean",
+                        (encoded_char*)"Batang-26",
+                        (encoded_char*)"< 단심가 >"
+                        "이몸이/죽고죽어/일백번/고쳐죽어/"
+                        "백골이/진퇴되어/넋이라도/있고없고/"
+                        "임 향한/일편단심이야/가실 줄이/있으랴/ "
                 },
                 {
                     (encoded_char*)"Việt",
-                        (encoded_char*)"DejaVuSans-10",
+                        (encoded_char*)"DejaVuSans-11",
                         (encoded_char*)"Chào CrazyEddie !\n"
                         "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
                         "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
                         "Cám ơn bạn rất nhiều\n"
                         "Chúc bạn sức khoẻ\n"
                         "Tạm biệt !\n"
-                },
-                {
-                    (encoded_char*)"Việt",
-                        (encoded_char*)"DejaVuSans-10",
-                        (encoded_char*)"Chào CrazyEddie !\n"
-                        "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
-                        "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
-                        "Cám ơn bạn rất nhiều\n"
-                        "Chúc bạn sức khoẻ\n"
-                        "Tạm biệt !\n"
-                },
-                {
-                    (encoded_char*)"Việt",
-                        (encoded_char*)"DejaVuSans-10",
-                        (encoded_char*)"Chào CrazyEddie !\n"
-                        "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
-                        "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
-                        "Cám ơn bạn rất nhiều\n"
-                        "Chúc bạn sức khoẻ\n"
-                        "Tạm biệt !\n"
-                },  
-                {
-                    (encoded_char*)"Klingon",
-                        (encoded_char*)"DejaVuSans-10",
-                        (encoded_char*)"  \n"
-                        "         \n"
-                        "         \n"
-                        "  "
-                }
+                    },
+                    {
+                        (encoded_char*)"Hebrew",
+                            (encoded_char*)"TnuaLibre-12",
+                            (encoded_char*)"תנועה \n"
+                            "חופשי ** אבגד  \n"
+                            "1234\n"
+                    },
+                    {
+                        (encoded_char*)"Old Fell Type font",
+                            (encoded_char*)"FellType-14",
+                            (encoded_char*)" Non nobis, non nobis, Domine\n"
+                            "Sed nomini tuo da gloriam.\n"
+                            "✠"
+                        },
+
+                        {
+                        (encoded_char*)"Handwriting font",
+                            (encoded_char*)"GreatVibes-22",
+                            (encoded_char*)"Ablabl abla asdda das weg asff dasf  dsad"
+                        },
+                        {
+                            (encoded_char*)"RichStyle Icons Font",
+                                (encoded_char*)"RichStyle-22",
+                                (encoded_char*)"+ - ? B I W Y f n t ℹ ⇦ ⇧ ⇨ ⇩ ⌘ ☎ ☐ ☑ ⚖ ⚙ ⚠ ⛏ ✎ ✑ ✓ ✔ ✕ ✖ ❝ ❞ ➡ ⬀ ⬁ ⬂ ⬃ ⬅ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋                       "
+                        },  
+                        {
+                            (encoded_char*)"Klingon",
+                                (encoded_char*)"Klingon-pIqaD-HaSta-24",
+                                (encoded_char*)"  \n"
+                                "         \n"
+                                "         \n"
+                                "  "
+                            }
 };
 
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
@@ -164,18 +183,24 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // Set it as the default
     d_guiContext->setDefaultFont(&font);
 
-
     // load all the fonts (if they are not loaded yet)
     fontManager.createAll("*.font", "fonts");
 
-    //Fill list with all loaded font names
-    retrieveFontNames();
+    // Fill list with all loaded font names
+    retrieveLoadedFontNames(false);
 
-    //Fill list with all available font type file names
+    // Now that we know about all existing fonts we will initialise
+    // the fonts we wanna use for this demo hardcoded
+    initialiseDemoFonts();
+
+    // Fill list with all new and thus editable font names
+    retrieveLoadedFontNames(true);
+
+    // Fill list with all available font type file names
     retrieveFontFileNames();
 
     // set tooltip styles (by default there is none)
-    //d_guiContext->setDefaultTooltipType("Vanilla/StaticText");
+    d_guiContext->setDefaultTooltipType("Vanilla/Tooltip");
 
     // Load the GUI layout and attach it to the context as root window
     d_root = winMgr.loadLayoutFromFile("FontDemo.layout");
@@ -196,8 +221,13 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     d_textDisplayMultiLineEditbox = static_cast<CEGUI::MultiLineEditbox*>(d_root->getChild("FontDemoWindow/MultiLineTextWindow"));
     d_textDisplayMultiLineEditbox->subscribeEvent(CEGUI::MultiLineEditbox::EventTextChanged, Event::Subscriber(&FontDemo::handleTextMultiLineEditboxTextChanged, this));
 
+    //Get the font editor info label and apply an animation to it for blending out
+    initialiseFontEditorInfoLabel();
+
+    //Initialise the options we have for setting autoScale for fonts as strings
     initialiseAutoScaleOptionsArray();
 
+    //Initialise the Map that connects Language/Text strings with the actual text we will display in the MultiLineEditbox
     initialiseLangToTextMap();
 
     // Initialise the font creator window + its subwindows
@@ -209,6 +239,7 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // Initialise the widget to select the different language texts the relative items for each
     initialiseTextSelector();
 
+    //Subscribe font selection event and set selection as last step
     d_fontSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontDemo::handleFontSelectionChanged, this));
     d_fontSelector->setItemSelectState(size_t(0), true);
 
@@ -228,7 +259,10 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
     CEGUI::String fontName = d_fontNameEditbox->getText();
     bool fontNameExists = fontMgr.isDefined(fontName);
     if(fontNameExists ||fontName.size() == 0)
-        return true; // todo : display error message
+    {
+        d_fontEditorInfoLabel->setText("Font name already in use.");
+        return true;
+    }
 
     CEGUI::String fontFileName = d_fontFileNameSelector->getSelectedItem()->getText();
 
@@ -255,7 +289,9 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
             CEGUI::Sizef(1280.f, 720.f), XREA_THROW);
     }
 
-    d_fontSelector->addItem(new MyListItem(fontName, 0));
+    ListboxItem* item = new MyListItem(fontName, 0);
+    d_fontSelector->addItem(item);
+    d_fontSelector->setItemSelectState(item, true);
 
     return true;
 }
@@ -268,32 +304,31 @@ bool FontDemo::handleFontEditButtonClicked(const EventArgs& e)
     CEGUI::String fontName = d_fontNameEditbox->getText();
     bool fontNameExists = fontMgr.isDefined(fontName);
     if(!fontNameExists)
-        return true; // todo : display error message
+    {
+        d_fontEditorInfoLabel->setText("A font with this name does not exist.");
+        return true;
+    }
 
     CEGUI::Font& font(fontMgr.get(fontName));
 
-  /*
+
     if(font.isPropertyPresent("PointSize"))
     {
         CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
         float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
         if(fontSize != 0.f)
-           // font.setProperty<float>("PointSize", fontSize);
-            font.setProperty("PointSize", PropertyHelper<int>::toString(int(fontSize)));
+            font.setProperty<float>("PointSize", fontSize);
     }
-      */
+
     if(font.isPropertyPresent("Antialiased"))
     {
         bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
-       // font.setProperty<bool>("Antialiased", antiAlias);
-
         font.setProperty("Antialiased", PropertyHelper<bool>::toString(antiAlias));
     }
 
 
-/*
     AutoScaledMode autoScaleMode = static_cast<AutoScaledMode>(getAutoScaleMode());
-    font.setAutoScaled(autoScaleMode);*/
+    font.setAutoScaled(autoScaleMode);
 
 
 
@@ -302,11 +337,7 @@ bool FontDemo::handleFontEditButtonClicked(const EventArgs& e)
 
 bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
 {
-    if(d_fontSelector->getFirstSelectedItem())
-    {
-        d_textDisplayMultiLineEditbox->setFont(d_fontSelector->getFirstSelectedItem()->getText());
-    }
-
+    //Change font of the selected language/text sample
     if(d_textSelector->getFirstSelectedItem() && d_fontSelector->getFirstSelectedItem())
     {
         unsigned int index = d_textSelector->getFirstSelectedItem()->getID();
@@ -314,6 +345,7 @@ bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
         d_languageToFontMap[LangList[index].Language] = d_fontSelector->getFirstSelectedItem()->getText();
     }
 
+    //Change the font creatore fields according to the font
     if(d_fontSelector->getFirstSelectedItem())
     {
         CEGUI::String fontName = d_fontSelector->getFirstSelectedItem()->getText();
@@ -321,6 +353,8 @@ bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
         if(FontManager::getSingleton().isDefined(fontName))
         {
             CEGUI::Font& font(FontManager::getSingleton().get(fontName));
+
+            d_textDisplayMultiLineEditbox->setFont(&font);
 
             d_fontNameEditbox->setText(font.getName());
 
@@ -352,6 +386,16 @@ bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
             }
 
             d_fontFileNameSelector->setText(font.getFileName());
+
+            checkIfEditButtonShouldBeDisabled(font);
+
+
+            //Change the font colour for pixmap fonts
+            if(font.getTypeName().compare(Font_xmlHandler::FontTypePixmap) == 0)
+                d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(1.f, 1.f, 1.f, 1.f)));
+            else
+                d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(0.f, 0.f, 0.f, 1.f)));
+
         }
     }
 
@@ -400,6 +444,7 @@ bool FontDemo::handleRenewFontNameButtonClicked(const EventArgs& e)
 
 void FontDemo::initialiseAutoScaleOptionsArray()
 {
+    //AutoScale options in the enum order
     d_autoScaleOptionsArray.push_back("Disabled");
     d_autoScaleOptionsArray.push_back("Vertical");
     d_autoScaleOptionsArray.push_back("Horizontal");
@@ -409,7 +454,7 @@ void FontDemo::initialiseAutoScaleOptionsArray()
 }
 
 
-void FontDemo::retrieveFontNames()
+void FontDemo::retrieveLoadedFontNames(bool areEditable)
 {
     FontManager& fontManager(FontManager::getSingleton());
     FontManager::FontIterator fi = fontManager.getIterator();
@@ -418,7 +463,10 @@ void FontDemo::retrieveFontNames()
     {
         CEGUI::Font& font(fontManager.get(fi.getCurrentKey()));
 
-        d_fontNameOptions.push_back(font.getName());
+        if(d_fontNameOptions.find(font.getName()) == d_fontNameOptions.end())
+        {
+            d_fontNameOptions[font.getName()] = areEditable;
+        }
         ++fi;
     }
 }
@@ -428,6 +476,7 @@ void FontDemo::retrieveFontFileNames()
 {
     System::getSingleton().getResourceProvider()->getResourceGroupFileNames(d_fontFileNameOptions, "*.ttf", Font::getDefaultResourceGroup());
     System::getSingleton().getResourceProvider()->getResourceGroupFileNames(d_fontFileNameOptions, "*.pcf", Font::getDefaultResourceGroup());
+    System::getSingleton().getResourceProvider()->getResourceGroupFileNames(d_fontFileNameOptions, "*.otf", Font::getDefaultResourceGroup());
 }
 
 void FontDemo::initialiseFontFileNameCombobox()
@@ -475,11 +524,12 @@ void FontDemo::initialiseFontSelector()
     //Select a font file name if any are present
     if(d_fontNameOptions.size() > 0)
     {
-        for(unsigned int i = 0; i < d_fontNameOptions.size(); i++)
+        std::map<String, bool>::iterator iter = d_fontNameOptions.begin();
+        for(; iter != d_fontNameOptions.end(); ++iter)
         {
-            const CEGUI::String& fontName(d_fontNameOptions[i]);
+            std::pair<const CEGUI::String, bool>& currentPair = *iter;
 
-            d_fontSelector->addItem(new MyListItem(fontName, i));  
+            d_fontSelector->addItem(new MyListItem(currentPair.first, 0));
         }
     }
 }
@@ -555,12 +605,98 @@ int FontDemo::getAutoScaleMode()
     for(unsigned int i = 0; i < d_autoScaleOptionsArray.size(); ++i)
     {
         if(autoScaleString.compare(d_autoScaleOptionsArray.at(i)) == 0)
-        {
             return i;
-        }
     }
 
     return 0;
+}
+
+bool FontDemo::findFontOption(CEGUI::String fontName)
+{
+    std::map<String, bool>::iterator iter = d_fontNameOptions.begin();
+    for(; iter != d_fontNameOptions.end(); ++iter)
+    {
+        std::pair<const CEGUI::String, bool>& currentPair = *iter;
+
+        if(currentPair.first.compare(fontName) == 0)
+            return currentPair.second; 
+    }
+    return true;
+}
+
+void FontDemo::initialiseFontEditorInfoLabel()
+{
+    d_fontEditorInfoLabel = d_root->getChild("FontDemoWindow/FontCreator/InfoLabel");
+
+    //Create fadeout animation
+    CEGUI::Animation* anim = CEGUI::AnimationManager::getSingleton().createAnimation("ErrorDisplayAndFadeout");
+    anim->setDuration(5.f);
+    anim->setReplayMode(CEGUI::Animation::RM_Once);
+
+    // this affector changes YRotation and interpolates keyframes with float interpolator
+    CEGUI::Affector* affector = anim->createAffector("Alpha", "float");
+    affector->createKeyFrame(0.0f, "1.0");
+    affector->createKeyFrame(4.0f, "1.0");
+    affector->createKeyFrame(5.0f, "0.0", CEGUI::KeyFrame::P_QuadraticDecelerating);
+
+    //anim->defineAutoSubscription(CEGUI::Window::EventTextChanged, "Stop");
+    anim->defineAutoSubscription(CEGUI::Window::EventTextChanged, "Start");
+
+
+    CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(anim);
+    // after we instantiate the animation, we have to set its target window
+    instance->setTargetWindow(d_fontEditorInfoLabel);
+
+    // at this point, you can start this instance and see the results
+    instance->start();
+}
+
+void FontDemo::checkIfEditButtonShouldBeDisabled(CEGUI::Font &font)
+{
+    bool isEditable = findFontOption(font.getName());
+
+    if(!isEditable)
+    {
+        d_fontEditButton->disable();
+        d_fontEditButton->setTooltipText("This demo won't allow editing of\n"
+            "fonts that were created outside the demo or\n"
+            "were loaded from .font files");
+    }
+    else
+    {
+        d_fontEditButton->enable();
+        d_fontEditButton->setTooltipText("");
+    }
+}
+
+void FontDemo::initialiseDemoFonts()
+{
+    FontManager& fontManager(FontManager::getSingleton());
+    fontManager.createFreeTypeFont("DejaVuSans-11", 11.f, true, "DejaVuSans.ttf",
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+
+    fontManager.createFreeTypeFont("DroidSans-12", 12.f, true, "DroidSans.ttf",
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+
+    fontManager.createFreeTypeFont("Klingon-pIqaD-HaSta-24", 24.f, true, "Klingon-pIqaD-HaSta.ttf",
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+
+    fontManager.createFreeTypeFont("TnuaLibre-12", 12.f, true, "Tnua-Libre.ttf",
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+
+    fontManager.createFreeTypeFont("RichStyle-22", 22.5f, true, "RichStyle.ttf",
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+
+    fontManager.createFreeTypeFont("JustLetters-32", 32.f, true, "JustLetters.otf",
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+
+        fontManager.createFreeTypeFont("GreatVibes-22", 22.f, true, "GreatVibes-Regular.ttf",
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+
+               fontManager.createFreeTypeFont("FellFont-12.5", 12.5f, true, "IMFePIrm29P.ttf",
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+
+  
 }
 
 /*************************************************************************
