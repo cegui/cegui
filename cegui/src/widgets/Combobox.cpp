@@ -55,8 +55,7 @@ const String Combobox::WidgetTypeName("CEGUI/Combobox");
 const String Combobox::EventReadOnlyModeChanged( "ReadOnlyModeChanged" );
 const String Combobox::EventValidationStringChanged( "ValidationStringChanged" );
 const String Combobox::EventMaximumTextLengthChanged( "MaximumTextLengthChanged" );
-const String Combobox::EventTextInvalidated( "TextInvalidated" );
-const String Combobox::EventInvalidEntryAttempted( "InvalidEntryAttempted" );
+const String Combobox::EventTextValidityChanged( "TextValidityChanged" );
 const String Combobox::EventCaretMoved( "CaretMoved" );
 const String Combobox::EventTextSelectionChanged( "TextSelectionChanged" );
 const String Combobox::EventEditboxFull( "EditboxFull" );
@@ -128,8 +127,7 @@ void Combobox::initialiseComponents(void)
 	editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
 	editbox->subscribeEvent(Editbox::EventValidationStringChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ValidationStringChangedHandler, this));
 	editbox->subscribeEvent(Editbox::EventMaximumTextLengthChanged, Event::Subscriber(&CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler, this));
-	editbox->subscribeEvent(Editbox::EventTextInvalidated, Event::Subscriber(&CEGUI::Combobox::editbox_TextInvalidatedEventHandler, this));
-	editbox->subscribeEvent(Editbox::EventInvalidEntryAttempted, Event::Subscriber(&CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler, this));
+	editbox->subscribeEvent(Editbox::EventTextValidityChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextValidityChangedHandler, this));
 	editbox->subscribeEvent(Editbox::EventCaretMoved, Event::Subscriber(&CEGUI::Combobox::editbox_CaretMovedHandler, this));
 	editbox->subscribeEvent(Editbox::EventTextSelectionChanged, Event::Subscriber(&CEGUI::Combobox::editbox_TextSelectionChangedHandler, this));
 	editbox->subscribeEvent(Editbox::EventEditboxFull, Event::Subscriber(&CEGUI::Combobox::editbox_EditboxFullEventHandler, this));
@@ -198,9 +196,9 @@ bool Combobox::isReadOnly(void) const
 	return true if the Editbox text is valid given the currently set
 	validation string.
 *************************************************************************/
-bool Combobox::isTextValid(void) const
+Combobox::MatchState Combobox::getTextMatchState() const
 {
-	return getEditbox()->isTextValid();
+	return getEditbox()->getTextMatchState();
 }
 
 
@@ -535,18 +533,9 @@ void Combobox::onMaximumTextLengthChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when
 *************************************************************************/
-void Combobox::onTextInvalidatedEvent(WindowEventArgs& e)
+void Combobox::onTextValidityChanged(RegexMatchStateArgs& e)
 {
-	fireEvent(EventTextInvalidated, e, EventNamespace);
-}
-
-
-/*************************************************************************
-	Handler for when
-*************************************************************************/
-void Combobox::onInvalidEntryAttempted(WindowEventArgs& e)
-{
-	fireEvent(EventInvalidEntryAttempted, e, EventNamespace);
+	fireEvent(EventTextValidityChanged, e, EventNamespace);
 }
 
 
@@ -1075,21 +1064,13 @@ bool Combobox::editbox_MaximumTextLengthChangedHandler(const EventArgs&)
 }
 
 
-bool Combobox::editbox_TextInvalidatedEventHandler(const EventArgs&)
+bool Combobox::editbox_TextValidityChangedHandler(const EventArgs& e)
 {
-	WindowEventArgs	args(this);
-	onTextInvalidatedEvent(args);
+	RegexMatchStateArgs args(
+        this, static_cast<const RegexMatchStateArgs&>(e).matchState);
+	onTextValidityChanged(args);
 
-	return true;
-}
-
-
-bool Combobox::editbox_InvalidEntryAttemptedHandler(const EventArgs&)
-{
-	WindowEventArgs	args(this);
-	onInvalidEntryAttempted(args);
-
-	return true;
+	return args.handled > 0;
 }
 
 

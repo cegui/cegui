@@ -30,9 +30,9 @@
 #ifndef _CEGUICombobox_h_
 #define _CEGUICombobox_h_
 
-#include "../Base.h"
-#include "../Window.h"
-
+#include "CEGUI/Base.h"
+#include "CEGUI/Window.h"
+#include "CEGUI/RegexMatcher.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -51,6 +51,8 @@ namespace CEGUI
 class CEGUIEXPORT Combobox : public Window
 {
 public:
+    typedef RegexMatcher::MatchState MatchState;
+
 	static const String EventNamespace;				//!< Namespace for global events
     static const String WidgetTypeName;             //!< Window factory name
 
@@ -76,20 +78,20 @@ public:
      * string length has been changed.
      */
 	static const String EventMaximumTextLengthChanged;
-    /** Event fired when an operation has made the current edit box text invalid
-     * as regards to the current validation string.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Combobox whose edit box text has
-     * become invalid.
+    /** Event fired when the validity of the Combobox text (as determined by a
+     * RegexMatcher object) has changed.
+     * Handlers are passed a const RegexMatchStateArgs reference with
+     * WindowEventArgs::window set to the Combobox whose text validity has
+     * changed and RegexMatchStateArgs::matchState set to the new match
+     * validity. Handler return is significant, as follows:
+     * - true indicates the new state - and therfore text - is to be accepted.
+     * - false indicates the new state is not acceptable, and the previous text
+     *   should remain in place. NB: This is only possible when the validity
+     *   change is due to a change in the text, if the validity change is due to
+     *   a change in the validation regular expression string, then returning
+     *   false will have no effect.
      */
-	static const String EventTextInvalidated;
-    /** Event fired when the user attempts to modify the edit box text in a way
-     * that would make it invalid.
-     * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Combobox in which the user's input
-     * would have invalidated the text.
-     */
-	static const String EventInvalidEntryAttempted;
+    static const String EventTextValidityChanged;
     /** Event fired when the edit box text insertion position is changed.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the Combobox whose caret position has
@@ -275,23 +277,21 @@ public:
 	bool	isReadOnly(void) const;
 
 
-	/*!
-	\brief
-		return true if the Editbox text is valid given the currently set validation string.
+    /*!
+    \brief
+        return the validation MatchState for the current Combobox text, given
+        the currently set validation string.
 
-	\note
-		It is possible to programmatically set 'invalid' text for the Editbox by calling setText.  This has certain
-		implications since if invalid text is set, whatever the user types into the box will be rejected when the input
-		is validated.
+    \note
+        Validation is performed by means of a regular expression.  If the text
+        matches the regex, the text is said to have passed validation.  If the
+        text does not match with the regex then the text fails validation.
 
-	\note
-		Validation is performed by means of a regular expression.  If the text matches the regex, the text is said to have passed
-		validation.  If the text does not match with the regex then the text fails validation.
-
-	\return
-		true if the current Editbox text passes validation, false if the text does not pass validation.
-	*/
-	bool	isTextValid(void) const;
+    \return
+        One of the MatchState enumerated values indicating the current match
+        state.
+    */
+    MatchState getTextMatchState() const;
 
 
 	/*!
@@ -912,8 +912,7 @@ protected:
 	bool editbox_ReadOnlyChangedHandler(const EventArgs& e);
 	bool editbox_ValidationStringChangedHandler(const EventArgs& e);
 	bool editbox_MaximumTextLengthChangedHandler(const EventArgs& e);
-	bool editbox_TextInvalidatedEventHandler(const EventArgs& e);
-	bool editbox_InvalidEntryAttemptedHandler(const EventArgs& e);
+	bool editbox_TextValidityChangedHandler(const EventArgs& e);
 	bool editbox_CaretMovedHandler(const EventArgs& e);
 	bool editbox_TextSelectionChangedHandler(const EventArgs& e);
 	bool editbox_EditboxFullEventHandler(const EventArgs& e);
@@ -950,18 +949,12 @@ protected:
 	virtual	void	onMaximumTextLengthChanged(WindowEventArgs& e);
 
 
-	/*!
-	\brief
-		Handler called internally when the Combobox's Editbox text has been invalidated.
-	*/
-	virtual	void	onTextInvalidatedEvent(WindowEventArgs& e);
-
-
-	/*!
-	\brief
-		Handler called internally when an invalid entry was attempted in the Combobox's Editbox.
-	*/
-	virtual	void	onInvalidEntryAttempted(WindowEventArgs& e);
+    /*!
+    \brief
+        Handler called when something has caused the validity state of the
+        current text to change.
+    */
+    virtual void onTextValidityChanged(RegexMatchStateArgs& e);
 
 
 	/*!

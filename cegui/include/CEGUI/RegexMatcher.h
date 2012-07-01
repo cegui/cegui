@@ -30,6 +30,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
+#include "CEGUI/InputEvent.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -61,6 +62,21 @@ public:
     virtual const String& getRegexString() const = 0;
     //! Return the MatchState result for the given String.
     virtual MatchState getMatchStateOfString(const String& str) const = 0;
+};
+
+/** WindowEventArgs based class that is used for notifications regarding
+ * RegexMatcher::MatchState changes for some component.
+ */
+class CEGUIEXPORT RegexMatchStateArgs : public WindowEventArgs
+{
+public:
+    RegexMatchStateArgs(Window* wnd,
+                        RegexMatcher::MatchState state) :
+        WindowEventArgs(wnd),
+        matchState(state)
+    {}
+
+    RegexMatcher::MatchState matchState;
 };
 
 } // End of  CEGUI namespace section
