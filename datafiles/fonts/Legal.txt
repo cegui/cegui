@@ -27,3 +27,146 @@ when 320x240 and 320x480 were the best resolutions invented ever ;-) I don't
 know who is the original author of these nice glyphs, everything but the .GIF
 file was lost in the long road from early 90s, when I got it from some BBS
 to nowadays... -- Andrew Zabolotny.
+
+================================================================================
+
+The Droid fonts (DroidFont.ttf and DroidSansMono.ttf) were retrieved from the The
+Android Open Source Project and are licensed under the Apache 2 license.
+
+The license can be found in LicenseApache.txt inside this folder or under the url
+http://www.apache.org/licenses/LICENSE-2.0 .
+ 
+================================================================================
+
+The Tnua Libre font (Tnua-Libre.ttf):
+--------------------------------------------------------------
+Copyright (C) 1999, 2000, 2004 Elad M. Mizrahi 
+<elamizrahi@gmail.com>
+
+This font is free software; you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation; either version 2 of the License, or
+(at your option) any later version.
+
+This font is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this font; if not, write to the Free Software
+Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+
+As a special exception, if you create a document which uses
+this font, and embed this font or unaltered portions of this font into
+the document, this font does not by itself cause the resulting
+document to be covered by the GNU General Public License.  This
+exception does not however invalidate any other reasons why the
+document might be covered by the GNU General Public License.  If you
+modify this font, you may extend this exception to your version of the
+font, but you are not obligated to do so. If you do not wish to do so,
+delete this exception statement from your version.
+--------------------------------------------------------------
+The GNU license file can be found in this folder (LicenseGPL.txt)
+
+================================================================================
+
+The pIqaD-HaSta font (Klingon-pIqaD-HaSta.ttf):
+--------------------------------------------------------------
+Copyright (c) 2005-07-17, Mike Neff (qa'vaj) (darqang99@gmail.com),
+with Reserved Font Name pIqaD HaSta.
+Copyright (c) 2009-07-01, Michael Everson (evertype.com),
+with Reserved Font Name Klingon pIqaD HaSta.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+--------------------------------------------------------------
+The SIL OPEN FONT LICENSE Version 1.1 is available in this folder
+(LicenseSIL1.txt)
+
+================================================================================
+
+The Baekmuk Batang font (batang.ttf):
+--------------------------------------------------------------
+Copyright (c) 1986-2002 Kim Jeong-Hwan
+All rights reserved.
+
+Permission to use, copy, modify and distribute this font is
+hereby granted, provided that both the copyright notice and
+this permission notice appear in all copies of the font,
+derivative works or modified versions, and that the following
+acknowledgement appear in supporting documentation:
+    Baekmuk Batang, Baekmuk Dotum, Baekmuk Gulim, and
+    Baekmuk Headline are registered trademarks owned by
+    Kim Jeong-Hwan.
+
+===============================================================================
+   
+RichStyle Dingbat (RichStyle.ttf) was made by Mohammad Anas Ramadan
+(http://www.richstyle.org) :
+A set of icons for web pages, stored in a Unicode 6.0 font file. It was
+developed for the RichStyle project.
+It includes:
+- Icons from The Noun Project.
+- Icons of popular social media (Facebook, Twitter, LinkedIn,... etc).
+- HTML5 Technology Icons.
+- ... and much more.
+RichStyle font is licensed under Ubuntu Font License 1.0.
+-----------------------------------------------------------
+The Ubuntu Font License 1.0 is available in this folder (LicenseUbuntuFont.txt)
+
+===============================================================================
+   
+The Futhark Adapted (Futhark Adapted.ttf) is a monospaced font.
+Copyright (c) 2011, Geoffrey Gaillard (),
+with Reserved Font Name FutharkAdapted.
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+Available in this folder (LicenseOFL.txt) and at url http://scripts.sil.org/OFL 
+----------------------------------------------------------- 
+L\'ancien Futhark adapté aux caractères des ordinateurs d\'aujourd\'hui.
+Il contient les runes classiques ( minuscules et majuscules sont différenciées
+par un petit point), les accent ( bien que non existant normalement) sont pour
+la plupart disponibles. a lettre Thurisaz n\'étant pas prononcée en français
+a été placé dans les caractères spéciaux.
+
+Full Language Support Afrikaans, Baltic, Basic Cyrillic, Basic Greek,
+Basic Latin, Catalan, Central European, Dutch, IPA, Pinyin, Romanian, Turkish,
+Western European, 
+
+===============================================================================
+
+The Just Letters font (JustLetters.otf):
+After Albrecht Dürer, Of the Just Shaping of Letters, 1525 (1917)
+
+Font made by Christopher Adams, licensed under OFL (SIL Open Font License).
+OFL license available in this folder (LicenseOFL.txt).
+
+===============================================================================
+
+The Great Vibes font (GreatVibes-Regular.ttf):
+Great Vibes is a beautifully flowing connecting script. It has cleanly looping
+ascenders and descenders as well as elegant uppercase forms.
+
+Great Vibes is a Unicode typeface that supports languages that use the Latin
+script and its variants, and could be expanded to support other scripts
+----------------------------------------------------------- 
+Copyright (c) 2012, TypeSETit, LLC (typesetit@att.net), 
+with Reserved Font Name "Great Vibes"
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is copied below, and is also available with a FAQ at:
+http://scripts.sil.org/OFL
+----------------------------------------------------------- 
+OFL license available in this folder (LicenseOFL.txt).
+
+===============================================================================
+
+Fell Type font (IMFePIrm29P.ttf):
+Cut by Peter de Walpergen. Acquisition in 1692. To be printed at 12,5 points to
+match the original size.
+----------------------------------------------------------- 
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+OFL license available in this folder (LicenseOFL.txt).
+
