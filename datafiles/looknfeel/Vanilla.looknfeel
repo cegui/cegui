@@ -2200,4 +2200,95 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+    
+    <WidgetLook name="Vanilla/Tooltip">
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="Vanilla-Images/TooltipLeftEdge" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="Vanilla-Images/TooltipTopEdge" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="Vanilla-Images/TooltipRightEdge" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="Vanilla-Images/TooltipBottomEdge" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="Vanilla-Images/TooltipTopLeft" />
+                <Image component="TopRightCorner" name="Vanilla-Images/TooltipTopRight" />
+                <Image component="BottomLeftCorner" name="Vanilla-Images/TooltipBottomLeft" />
+                <Image component="BottomRightCorner" name="Vanilla-Images/TooltipBottomRight" />
+                <Image component="LeftEdge" name="Vanilla-Images/TooltipLeftEdge" />
+                <Image component="RightEdge" name="Vanilla-Images/TooltipRightEdge" />
+                <Image component="TopEdge" name="Vanilla-Images/TooltipTopEdge" />
+                <Image component="BottomEdge" name="Vanilla-Images/TooltipBottomEdge" />
+                <Image component="Background" name="Vanilla-Images/TooltipMiddle" />
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge" ><ImageDim name="Vanilla-Images/TooltipLeftEdge" dimension="Width" /></Dim>
+                    <Dim type="TopEdge" ><ImageDim name="Vanilla-Images/TooltipTopEdge" dimension="Height" /></Dim>
+                    <Dim type="RightEdge" >
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="RightEdge" />
+                            <ImageDim name="Vanilla-Images/TooltipRightEdge" dimension="Width" />
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="BottomEdge" >
+                        <OperatorDim op="Subtract">
+                            <UnifiedDim scale="1" type="BottomEdge" />
+                            <ImageDim name="Vanilla-Images/TooltipBottomEdge" dimension="Height" />
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <Colours topLeft="FF000000" topRight="FF000000" bottomLeft="FF000000" bottomRight="FF000000" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="CentreAligned" />
+            </TextComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main" />
+                <Section section="label" />
+            </Layer>
+        </StateImagery>
+        
+        <AnimationDefinition name="FadeInddd" duration="0.33" replayMode="once">
+            <Affector property="Alpha" interpolator="float">
+                <KeyFrame position="0" sourceProperty="Alpha" />
+                <KeyFrame position="0.33" value="1" progression="linear" />
+            </Affector>
+            
+            <Subscription event="TooltipActive" action="Start" />
+        </AnimationDefinition>
+        
+        <AnimationDefinition name="FadeOutddd" duration="0.33" replayMode="once">
+            <Affector property="Alpha" interpolator="float">
+                <KeyFrame position="0" sourceProperty="Alpha" />
+                <KeyFrame position="0.33" value="0" progression="linear" />
+            </Affector>
+            <Affector property="Visible" interpolator="bool">
+                <KeyFrame position="0" sourceProperty="Visible" />
+                <KeyFrame position="0.33" value="false" progression="discrete" />
+            </Affector>
+            
+            <Subscription event="TooltipInactive" action="Start" />
+        </AnimationDefinition>
+    </WidgetLook>
 </Falagard>
