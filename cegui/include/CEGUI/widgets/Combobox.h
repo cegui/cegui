@@ -80,9 +80,9 @@ public:
 	static const String EventMaximumTextLengthChanged;
     /** Event fired when the validity of the Combobox text (as determined by a
      * RegexMatcher object) has changed.
-     * Handlers are passed a const RegexMatchStateArgs reference with
+     * Handlers are passed a const RegexMatchStateEventArgs reference with
      * WindowEventArgs::window set to the Combobox whose text validity has
-     * changed and RegexMatchStateArgs::matchState set to the new match
+     * changed and RegexMatchStateEventArgs::matchState set to the new match
      * validity. Handler return is significant, as follows:
      * - true indicates the new state - and therfore text - is to be accepted.
      * - false indicates the new state is not acceptable, and the previous text
@@ -954,7 +954,7 @@ protected:
         Handler called when something has caused the validity state of the
         current text to change.
     */
-    virtual void onTextValidityChanged(RegexMatchStateArgs& e);
+    virtual void onTextValidityChanged(RegexMatchStateEventArgs& e);
 
 
 	/*!
