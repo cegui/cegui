@@ -269,6 +269,17 @@ void register_Font_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Font::getFileName
+        
+            typedef ::CEGUI::String const & ( ::CEGUI::Font::*getFileName_function_type )(  ) const;
+            
+            Font_exposer.def( 
+                "getFileName"
+                , getFileName_function_type( &::CEGUI::Font::getFileName )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "! Return the filename of the used font.\n" );
+        
+        }
         { //::CEGUI::Font::getFontHeight
         
             typedef float ( ::CEGUI::Font::*getFontHeight_function_type )( float ) const;

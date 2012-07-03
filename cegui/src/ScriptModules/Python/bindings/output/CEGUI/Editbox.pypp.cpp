@@ -23,6 +23,10 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Editbox::eraseSelectedText( modify_text );
     }
 
+    ::CEGUI::RegexMatcher::MatchState getStringMatchState( ::CEGUI::String const & str ) const {
+        return CEGUI::Editbox::getStringMatchState( boost::ref(str) );
+    }
+
     ::size_t getTextIndexFromPosition( ::CEGUI::Vector2f const & pt ) const {
         return CEGUI::Editbox::getTextIndexFromPosition( boost::ref(pt) );
     }
@@ -51,16 +55,16 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Editbox::handleHome( sysKeys );
     }
 
+    bool handleValidityChangeForString( ::CEGUI::String const & str ){
+        return CEGUI::Editbox::handleValidityChangeForString( boost::ref(str) );
+    }
+
     void handleWordLeft( ::CEGUI::uint sysKeys ){
         CEGUI::Editbox::handleWordLeft( sysKeys );
     }
 
     void handleWordRight( ::CEGUI::uint sysKeys ){
         CEGUI::Editbox::handleWordRight( sysKeys );
-    }
-
-    bool isStringValid( ::CEGUI::String const & str ) const {
-        return CEGUI::Editbox::isStringValid( boost::ref(str) );
     }
 
     virtual void onCaptureLost( ::CEGUI::WindowEventArgs & e ){
@@ -109,18 +113,6 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
     
     virtual void default_onEditboxFullEvent( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Editbox::onEditboxFullEvent( boost::ref(e) );
-    }
-
-    virtual void onInvalidEntryAttempted( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onInvalidEntryAttempted = this->get_override( "onInvalidEntryAttempted" ) )
-            func_onInvalidEntryAttempted( boost::ref(e) );
-        else{
-            this->CEGUI::Editbox::onInvalidEntryAttempted( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onInvalidEntryAttempted( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Editbox::onInvalidEntryAttempted( boost::ref(e) );
     }
 
     virtual void onKeyDown( ::CEGUI::KeyEventArgs & e ){
@@ -267,18 +259,6 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         CEGUI::Editbox::onTextChanged( boost::ref(e) );
     }
 
-    virtual void onTextInvalidatedEvent( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onTextInvalidatedEvent = this->get_override( "onTextInvalidatedEvent" ) )
-            func_onTextInvalidatedEvent( boost::ref(e) );
-        else{
-            this->CEGUI::Editbox::onTextInvalidatedEvent( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onTextInvalidatedEvent( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Editbox::onTextInvalidatedEvent( boost::ref(e) );
-    }
-
     virtual void onTextSelectionChanged( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onTextSelectionChanged = this->get_override( "onTextSelectionChanged" ) )
             func_onTextSelectionChanged( boost::ref(e) );
@@ -289,6 +269,18 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
     
     virtual void default_onTextSelectionChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Editbox::onTextSelectionChanged( boost::ref(e) );
+    }
+
+    virtual void onTextValidityChanged( ::CEGUI::RegexMatchStateEventArgs & e ){
+        if( bp::override func_onTextValidityChanged = this->get_override( "onTextValidityChanged" ) )
+            func_onTextValidityChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Editbox::onTextValidityChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextValidityChanged( ::CEGUI::RegexMatchStateEventArgs & e ){
+        CEGUI::Editbox::onTextValidityChanged( boost::ref(e) );
     }
 
     virtual void onValidationStringChanged( ::CEGUI::WindowEventArgs & e ){
@@ -1620,6 +1612,21 @@ void register_Editbox_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Editbox::getStringMatchState
+        
+            typedef ::CEGUI::RegexMatcher::MatchState ( Editbox_wrapper::*getStringMatchState_function_type )( ::CEGUI::String const & ) const;
+            
+            Editbox_exposer.def( 
+                "getStringMatchState"
+                , getStringMatchState_function_type( &Editbox_wrapper::getStringMatchState )
+                , ( bp::arg("str") )
+                , "*!\n\
+            \n\
+                return the match state of the given string for the validation regular\n\
+                expression.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::Editbox::getTextIndexFromPosition
         
             typedef ::size_t ( Editbox_wrapper::*getTextIndexFromPosition_function_type )( ::CEGUI::Vector2f const & ) const;
@@ -1639,6 +1646,28 @@ void register_Editbox_class(){
                 @return\n\
                     Code point index into the text that is rendered closest to screen\n\
                     position  pt.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Editbox::getTextMatchState
+        
+            typedef ::CEGUI::RegexMatcher::MatchState ( ::CEGUI::Editbox::*getTextMatchState_function_type )(  ) const;
+            
+            Editbox_exposer.def( 
+                "getTextMatchState"
+                , getTextMatchState_function_type( &::CEGUI::Editbox::getTextMatchState )
+                , "*!\n\
+                \n\
+                    return the validation MatchState for the current Editbox text, given the\n\
+                    currently set validation string.\n\
+            \n\
+                \note\n\
+                    Validation is performed by means of a regular expression.  If the text\n\
+                    matches the regex, the text is said to have passed validation.  If the\n\
+                    text does not match with the regex then the text fails validation.\n\
+            \n\
+                @return\n\
+                    One of the MatchState enumerated values indicating the current match state.\n\
                 *\n" );
         
         }
@@ -1728,6 +1757,22 @@ void register_Editbox_class(){
                 , "! Processing to move caret to the start of the text.\n" );
         
         }
+        { //::CEGUI::Editbox::handleValidityChangeForString
+        
+            typedef bool ( Editbox_wrapper::*handleValidityChangeForString_function_type )( ::CEGUI::String const & ) ;
+            
+            Editbox_exposer.def( 
+                "handleValidityChangeForString"
+                , handleValidityChangeForString_function_type( &Editbox_wrapper::handleValidityChangeForString )
+                , ( bp::arg("str") )
+                , "** Helper to update validator match state as needed for the given string\n\
+             * and event handler return codes.\n\
+             *\n\
+             * This effectively asks permission from event handlers to proceed with the\n\
+             * change, updates d_validatorMatchState and returns an appropriate bool.\n\
+             *\n" );
+        
+        }
         { //::CEGUI::Editbox::handleWordLeft
         
             typedef void ( Editbox_wrapper::*handleWordLeft_function_type )( ::CEGUI::uint ) ;
@@ -1784,21 +1829,6 @@ void register_Editbox_class(){
                 *\n" );
         
         }
-        { //::CEGUI::Editbox::isStringValid
-        
-            typedef bool ( Editbox_wrapper::*isStringValid_function_type )( ::CEGUI::String const & ) const;
-            
-            Editbox_exposer.def( 
-                "isStringValid"
-                , isStringValid_function_type( &Editbox_wrapper::isStringValid )
-                , ( bp::arg("str") )
-                , "*!\n\
-            \n\
-                return true if the given string matches the validation regular\n\
-                expression.\n\
-            *\n" );
-        
-        }
         { //::CEGUI::Editbox::isTextMasked
         
             typedef bool ( ::CEGUI::Editbox::*isTextMasked_function_type )(  ) const;
@@ -1814,35 +1844,6 @@ void register_Editbox_class(){
                     true if the Editbox text will be rendered masked using the currently set\n\
                     mask code point, false if the Editbox text will be rendered as ordinary\n\
                     text.\n\
-                *\n" );
-        
-        }
-        { //::CEGUI::Editbox::isTextValid
-        
-            typedef bool ( ::CEGUI::Editbox::*isTextValid_function_type )(  ) const;
-            
-            Editbox_exposer.def( 
-                "isTextValid"
-                , isTextValid_function_type( &::CEGUI::Editbox::isTextValid )
-                , "*!\n\
-                \n\
-                    return true if the Editbox text is valid given the currently set\n\
-                    validation string.\n\
-            \n\
-                \note\n\
-                    It is possible to programmatically set 'invalid' text for the Editbox by\n\
-                    calling setText.  This has certain implications since if invalid text is\n\
-                    set, whatever the user types into the box will be rejected when the\n\
-                    input is validated.\n\
-            \n\
-                \note\n\
-                    Validation is performed by means of a regular expression.  If the text\n\
-                    matches the regex, the text is said to have passed validation.  If the\n\
-                    text does not match with the regex then the text fails validation.\n\
-            \n\
-                @return\n\
-                    - true if the current Editbox text passes validation.\n\
-                    - false if the text does not pass validation.\n\
                 *\n" );
         
         }
@@ -1892,21 +1893,6 @@ void register_Editbox_class(){
             \n\
                 Handler called when the edit box text has reached the set maximum\n\
                 length.\n\
-            *\n" );
-        
-        }
-        { //::CEGUI::Editbox::onInvalidEntryAttempted
-        
-            typedef void ( Editbox_wrapper::*onInvalidEntryAttempted_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Editbox_exposer.def( 
-                "onInvalidEntryAttempted"
-                , onInvalidEntryAttempted_function_type( &Editbox_wrapper::default_onInvalidEntryAttempted )
-                , ( bp::arg("e") )
-                , "*!\n\
-            \n\
-                Handler called when the user attempted to make a change to the edit box\n\
-                that would have caused it to fail validation.\n\
             *\n" );
         
         }
@@ -2055,24 +2041,6 @@ void register_Editbox_class(){
                 , ( bp::arg("e") ) );
         
         }
-        { //::CEGUI::Editbox::onTextInvalidatedEvent
-        
-            typedef void ( Editbox_wrapper::*onTextInvalidatedEvent_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Editbox_exposer.def( 
-                "onTextInvalidatedEvent"
-                , onTextInvalidatedEvent_function_type( &Editbox_wrapper::default_onTextInvalidatedEvent )
-                , ( bp::arg("e") )
-                , "*!\n\
-                \n\
-                    Handler called when something has caused the current text to now fail\n\
-                    validation.\n\
-            \n\
-                    This can be caused by changing the validation string or setting a\n\
-                    maximum length that causes the current text to be truncated.\n\
-                *\n" );
-        
-        }
         { //::CEGUI::Editbox::onTextSelectionChanged
         
             typedef void ( Editbox_wrapper::*onTextSelectionChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
@@ -2084,6 +2052,21 @@ void register_Editbox_class(){
                 , "*!\n\
             \n\
                 Handler called when the current text selection changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Editbox::onTextValidityChanged
+        
+            typedef void ( Editbox_wrapper::*onTextValidityChanged_function_type )( ::CEGUI::RegexMatchStateEventArgs & ) ;
+            
+            Editbox_exposer.def( 
+                "onTextValidityChanged"
+                , onTextValidityChanged_function_type( &Editbox_wrapper::default_onTextValidityChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+                Handler called when something has caused the validity state of the\n\
+                current text to change.\n\
             *\n" );
         
         }
@@ -2388,9 +2371,6 @@ void register_Editbox_class(){
         Editbox_exposer.add_static_property( "EventEditboxFull"
                         , bp::make_getter( &CEGUI::Editbox::EventEditboxFull
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Editbox_exposer.add_static_property( "EventInvalidEntryAttempted"
-                        , bp::make_getter( &CEGUI::Editbox::EventInvalidEntryAttempted
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Editbox_exposer.add_static_property( "EventMaskCodePointChanged"
                         , bp::make_getter( &CEGUI::Editbox::EventMaskCodePointChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -2406,11 +2386,11 @@ void register_Editbox_class(){
         Editbox_exposer.add_static_property( "EventTextAccepted"
                         , bp::make_getter( &CEGUI::Editbox::EventTextAccepted
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Editbox_exposer.add_static_property( "EventTextInvalidated"
-                        , bp::make_getter( &CEGUI::Editbox::EventTextInvalidated
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Editbox_exposer.add_static_property( "EventTextSelectionChanged"
                         , bp::make_getter( &CEGUI::Editbox::EventTextSelectionChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Editbox_exposer.add_static_property( "EventTextValidityChanged"
+                        , bp::make_getter( &CEGUI::Editbox::EventTextValidityChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Editbox_exposer.add_static_property( "EventValidationStringChanged"
                         , bp::make_getter( &CEGUI::Editbox::EventValidationStringChanged
