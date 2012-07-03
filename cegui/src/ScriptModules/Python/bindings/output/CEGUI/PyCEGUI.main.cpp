@@ -268,6 +268,8 @@
 
 #include "Rectf.pypp.hpp"
 
+#include "RegexMatchStateEventArgs.pypp.hpp"
+
 #include "RegexMatcher.pypp.hpp"
 
 #include "RenderEffect.pypp.hpp"
@@ -852,6 +854,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_URect_class();
 
     register_RegexMatcher_class();
+
+    register_RegexMatchStateEventArgs_class();
 
     register_RenderEffect_class();
 

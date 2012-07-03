@@ -15,13 +15,13 @@ struct RegexMatcher_wrapper : CEGUI::RegexMatcher, bp::wrapper< CEGUI::RegexMatc
         
     }
 
-    virtual ::CEGUI::String const & getRegexString(  ) const {
-        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
+    virtual ::CEGUI::RegexMatcher::MatchState getMatchStateOfString( ::CEGUI::String const & str ) const {
+        bp::override func_getMatchStateOfString = this->get_override( "getMatchStateOfString" );
+        return func_getMatchStateOfString( boost::ref(str) );
     }
 
-    virtual bool matchRegex( ::CEGUI::String const & str ) const {
-        bp::override func_matchRegex = this->get_override( "matchRegex" );
-        return func_matchRegex( boost::ref(str) );
+    virtual ::CEGUI::String const & getRegexString(  ) const {
+        throw std::logic_error("warning W1049: This method could not be overriden in Python - method returns reference to local variable!");
     }
 
     virtual void setRegexString( ::CEGUI::String const & regex ){
@@ -37,6 +37,24 @@ void register_RegexMatcher_class(){
         typedef bp::class_< RegexMatcher_wrapper, boost::noncopyable > RegexMatcher_exposer_t;
         RegexMatcher_exposer_t RegexMatcher_exposer = RegexMatcher_exposer_t( "RegexMatcher" );
         bp::scope RegexMatcher_scope( RegexMatcher_exposer );
+        bp::enum_< CEGUI::RegexMatcher::MatchState>("MatchState")
+            .value("MS_VALID", CEGUI::RegexMatcher::MS_VALID)
+            .value("MS_INVALID", CEGUI::RegexMatcher::MS_INVALID)
+            .value("MS_PARTIAL", CEGUI::RegexMatcher::MS_PARTIAL)
+            .export_values()
+            ;
+        { //::CEGUI::RegexMatcher::getMatchStateOfString
+        
+            typedef ::CEGUI::RegexMatcher::MatchState ( ::CEGUI::RegexMatcher::*getMatchStateOfString_function_type )( ::CEGUI::String const & ) const;
+            
+            RegexMatcher_exposer.def( 
+                "getMatchStateOfString"
+                , bp::pure_virtual( getMatchStateOfString_function_type(&::CEGUI::RegexMatcher::getMatchStateOfString) )
+                , ( bp::arg("str") )
+                , "! Return reference to current regex string set.\n\
+            ! Return the MatchState result for the given String.\n" );
+        
+        }
         { //::CEGUI::RegexMatcher::getRegexString
         
             typedef ::CEGUI::String const & ( ::CEGUI::RegexMatcher::*getRegexString_function_type )(  ) const;
@@ -47,18 +65,6 @@ void register_RegexMatcher_class(){
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "! Set the regex string that will be matched against.\n\
             ! Return reference to current regex string set.\n" );
-        
-        }
-        { //::CEGUI::RegexMatcher::matchRegex
-        
-            typedef bool ( ::CEGUI::RegexMatcher::*matchRegex_function_type )( ::CEGUI::String const & ) const;
-            
-            RegexMatcher_exposer.def( 
-                "matchRegex"
-                , bp::pure_virtual( matchRegex_function_type(&::CEGUI::RegexMatcher::matchRegex) )
-                , ( bp::arg("str") )
-                , "! Return reference to current regex string set.\n\
-            ! Return whether a given string matches the set regex.\n" );
         
         }
         { //::CEGUI::RegexMatcher::setRegexString

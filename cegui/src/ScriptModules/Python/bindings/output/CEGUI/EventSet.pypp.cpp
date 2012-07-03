@@ -96,14 +96,19 @@ public:
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::AnimationEventArgs&>(args));
 }
 
-if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
-}
-
 if (dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ActivationEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::HeaderSequenceEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::HeaderSequenceEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::UpdateEventArgs*>(&args))
@@ -111,9 +116,9 @@ if (dynamic_cast<const CEGUI::UpdateEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::UpdateEventArgs&>(args));
 }
 
-if (dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+if (dynamic_cast<const CEGUI::TreeEventArgs*>(&args))
 {
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::KeyEventArgs&>(args));
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::TreeEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
@@ -126,9 +131,9 @@ if (dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DragDropEventArgs&>(args));
 }
 
-if (dynamic_cast<const CEGUI::HeaderSequenceEventArgs*>(&args))
+if (dynamic_cast<const CEGUI::RegexMatchStateEventArgs*>(&args))
 {
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::HeaderSequenceEventArgs&>(args));
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RegexMatchStateEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
@@ -136,19 +141,24 @@ if (dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::WindowEventArgs&>(args));
 }
 
+if (dynamic_cast<const CEGUI::RenderQueueEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderQueueEventArgs&>(args));
+}
+
 if (dynamic_cast<const CEGUI::RenderTargetEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderTargetEventArgs&>(args));
 }
 
-if (dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseCursorEventArgs&>(args));
-}
-
 if (dynamic_cast<const CEGUI::ElementEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ElementEventArgs&>(args));
+}
+
+if (dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::MouseCursorEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::FontEventArgs*>(&args))
@@ -166,6 +176,11 @@ if (dynamic_cast<const CEGUI::GUIContextEventArgs*>(&args))
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::GUIContextEventArgs&>(args));
 }
 
+if (dynamic_cast<const CEGUI::NamedElementEventArgs*>(&args))
+{
+    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::NamedElementEventArgs&>(args));
+}
+
 if (dynamic_cast<const CEGUI::ResourceEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::ResourceEventArgs&>(args));
@@ -179,16 +194,6 @@ if (dynamic_cast<const CEGUI::LinkedEventArgs*>(&args))
 if (dynamic_cast<const CEGUI::DisplayEventArgs*>(&args))
 {
     return boost::python::call<bool>(d_callable, static_cast<const CEGUI::DisplayEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::RenderQueueEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::RenderQueueEventArgs&>(args));
-}
-
-if (dynamic_cast<const CEGUI::NamedElementEventArgs*>(&args))
-{
-    return boost::python::call<bool>(d_callable, static_cast<const CEGUI::NamedElementEventArgs&>(args));
 }
 
 if (dynamic_cast<const CEGUI::EventArgs*>(&args))

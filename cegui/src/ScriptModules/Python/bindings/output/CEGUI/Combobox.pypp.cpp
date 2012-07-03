@@ -35,10 +35,6 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         return CEGUI::Combobox::editbox_EditboxFullEventHandler( boost::ref(e) );
     }
 
-    bool editbox_InvalidEntryAttemptedHandler( ::CEGUI::EventArgs const & e ){
-        return CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler( boost::ref(e) );
-    }
-
     bool editbox_MaximumTextLengthChangedHandler( ::CEGUI::EventArgs const & e ){
         return CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler( boost::ref(e) );
     }
@@ -59,12 +55,12 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         return CEGUI::Combobox::editbox_TextChangedEventHandler( boost::ref(e) );
     }
 
-    bool editbox_TextInvalidatedEventHandler( ::CEGUI::EventArgs const & e ){
-        return CEGUI::Combobox::editbox_TextInvalidatedEventHandler( boost::ref(e) );
-    }
-
     bool editbox_TextSelectionChangedHandler( ::CEGUI::EventArgs const & e ){
         return CEGUI::Combobox::editbox_TextSelectionChangedHandler( boost::ref(e) );
+    }
+
+    bool editbox_TextValidityChangedHandler( ::CEGUI::EventArgs const & e ){
+        return CEGUI::Combobox::editbox_TextValidityChangedHandler( boost::ref(e) );
     }
 
     bool editbox_ValidationStringChangedHandler( ::CEGUI::EventArgs const & e ){
@@ -203,18 +199,6 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Combobox::onHorzScrollbarModeChanged( boost::ref(e) );
     }
 
-    virtual void onInvalidEntryAttempted( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onInvalidEntryAttempted = this->get_override( "onInvalidEntryAttempted" ) )
-            func_onInvalidEntryAttempted( boost::ref(e) );
-        else{
-            this->CEGUI::Combobox::onInvalidEntryAttempted( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onInvalidEntryAttempted( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Combobox::onInvalidEntryAttempted( boost::ref(e) );
-    }
-
     virtual void onListContentsChanged( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onListContentsChanged = this->get_override( "onListContentsChanged" ) )
             func_onListContentsChanged( boost::ref(e) );
@@ -323,18 +307,6 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
         CEGUI::Combobox::onTextChanged( boost::ref(e) );
     }
 
-    virtual void onTextInvalidatedEvent( ::CEGUI::WindowEventArgs & e ){
-        if( bp::override func_onTextInvalidatedEvent = this->get_override( "onTextInvalidatedEvent" ) )
-            func_onTextInvalidatedEvent( boost::ref(e) );
-        else{
-            this->CEGUI::Combobox::onTextInvalidatedEvent( boost::ref(e) );
-        }
-    }
-    
-    virtual void default_onTextInvalidatedEvent( ::CEGUI::WindowEventArgs & e ){
-        CEGUI::Combobox::onTextInvalidatedEvent( boost::ref(e) );
-    }
-
     virtual void onTextSelectionChanged( ::CEGUI::WindowEventArgs & e ){
         if( bp::override func_onTextSelectionChanged = this->get_override( "onTextSelectionChanged" ) )
             func_onTextSelectionChanged( boost::ref(e) );
@@ -345,6 +317,18 @@ struct Combobox_wrapper : CEGUI::Combobox, bp::wrapper< CEGUI::Combobox > {
     
     virtual void default_onTextSelectionChanged( ::CEGUI::WindowEventArgs & e ){
         CEGUI::Combobox::onTextSelectionChanged( boost::ref(e) );
+    }
+
+    virtual void onTextValidityChanged( ::CEGUI::RegexMatchStateEventArgs & e ){
+        if( bp::override func_onTextValidityChanged = this->get_override( "onTextValidityChanged" ) )
+            func_onTextValidityChanged( boost::ref(e) );
+        else{
+            this->CEGUI::Combobox::onTextValidityChanged( boost::ref(e) );
+        }
+    }
+    
+    virtual void default_onTextValidityChanged( ::CEGUI::RegexMatchStateEventArgs & e ){
+        CEGUI::Combobox::onTextValidityChanged( boost::ref(e) );
     }
 
     virtual void onValidationStringChanged( ::CEGUI::WindowEventArgs & e ){
@@ -1715,16 +1699,6 @@ void register_Combobox_class(){
                 , ( bp::arg("e") ) );
         
         }
-        { //::CEGUI::Combobox::editbox_InvalidEntryAttemptedHandler
-        
-            typedef bool ( Combobox_wrapper::*editbox_InvalidEntryAttemptedHandler_function_type )( ::CEGUI::EventArgs const & ) ;
-            
-            Combobox_exposer.def( 
-                "editbox_InvalidEntryAttemptedHandler"
-                , editbox_InvalidEntryAttemptedHandler_function_type( &Combobox_wrapper::editbox_InvalidEntryAttemptedHandler )
-                , ( bp::arg("e") ) );
-        
-        }
         { //::CEGUI::Combobox::editbox_MaximumTextLengthChangedHandler
         
             typedef bool ( Combobox_wrapper::*editbox_MaximumTextLengthChangedHandler_function_type )( ::CEGUI::EventArgs const & ) ;
@@ -1782,16 +1756,6 @@ void register_Combobox_class(){
                 , ( bp::arg("e") ) );
         
         }
-        { //::CEGUI::Combobox::editbox_TextInvalidatedEventHandler
-        
-            typedef bool ( Combobox_wrapper::*editbox_TextInvalidatedEventHandler_function_type )( ::CEGUI::EventArgs const & ) ;
-            
-            Combobox_exposer.def( 
-                "editbox_TextInvalidatedEventHandler"
-                , editbox_TextInvalidatedEventHandler_function_type( &Combobox_wrapper::editbox_TextInvalidatedEventHandler )
-                , ( bp::arg("e") ) );
-        
-        }
         { //::CEGUI::Combobox::editbox_TextSelectionChangedHandler
         
             typedef bool ( Combobox_wrapper::*editbox_TextSelectionChangedHandler_function_type )( ::CEGUI::EventArgs const & ) ;
@@ -1799,6 +1763,16 @@ void register_Combobox_class(){
             Combobox_exposer.def( 
                 "editbox_TextSelectionChangedHandler"
                 , editbox_TextSelectionChangedHandler_function_type( &Combobox_wrapper::editbox_TextSelectionChangedHandler )
+                , ( bp::arg("e") ) );
+        
+        }
+        { //::CEGUI::Combobox::editbox_TextValidityChangedHandler
+        
+            typedef bool ( Combobox_wrapper::*editbox_TextValidityChangedHandler_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            Combobox_exposer.def( 
+                "editbox_TextValidityChangedHandler"
+                , editbox_TextValidityChangedHandler_function_type( &Combobox_wrapper::editbox_TextValidityChangedHandler )
                 , ( bp::arg("e") ) );
         
         }
@@ -2113,6 +2087,29 @@ void register_Combobox_class(){
                *\n" );
         
         }
+        { //::CEGUI::Combobox::getTextMatchState
+        
+            typedef ::CEGUI::RegexMatcher::MatchState ( ::CEGUI::Combobox::*getTextMatchState_function_type )(  ) const;
+            
+            Combobox_exposer.def( 
+                "getTextMatchState"
+                , getTextMatchState_function_type( &::CEGUI::Combobox::getTextMatchState )
+                , "*!\n\
+                \n\
+                    return the validation MatchState for the current Combobox text, given\n\
+                    the currently set validation string.\n\
+            \n\
+                \note\n\
+                    Validation is performed by means of a regular expression.  If the text\n\
+                    matches the regex, the text is said to have passed validation.  If the\n\
+                    text does not match with the regex then the text fails validation.\n\
+            \n\
+                @return\n\
+                    One of the MatchState enumerated values indicating the current match\n\
+                    state.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Combobox::getValidationString
         
             typedef ::CEGUI::String const & ( ::CEGUI::Combobox::*getValidationString_function_type )(  ) const;
@@ -2353,35 +2350,6 @@ void register_Combobox_class(){
                *\n" );
         
         }
-        { //::CEGUI::Combobox::isTextValid
-        
-            typedef bool ( ::CEGUI::Combobox::*isTextValid_function_type )(  ) const;
-            
-            Combobox_exposer.def( 
-                "isTextValid"
-                , isTextValid_function_type( &::CEGUI::Combobox::isTextValid )
-                , "*!\n\
-               \n\
-                  return true if the Editbox text is valid given the currently set validation string.\n\
-            \n\
-               \note\n\
-                  It is possible to programmatically set 'invalid' text for the Editbox by calling setText.\
-                  This has certain\n\
-                  implications since if invalid text is set, whatever the user types into the box will be\
-                  rejected when the input\n\
-                  is validated.\n\
-            \n\
-               \note\n\
-                  Validation is performed by means of a regular expression.  If the text matches the regex, the\
-                  text is said to have passed\n\
-                  validation.  If the text does not match with the regex then the text fails validation.\n\
-            \n\
-               @return\n\
-                  true if the current Editbox text passes validation, false if the text does not pass\
-                  validation.\n\
-               *\n" );
-        
-        }
         { //::CEGUI::Combobox::isVertScrollbarAlwaysShown
         
             typedef bool ( ::CEGUI::Combobox::*isVertScrollbarAlwaysShown_function_type )(  ) const;
@@ -2560,20 +2528,6 @@ void register_Combobox_class(){
             *\n" );
         
         }
-        { //::CEGUI::Combobox::onInvalidEntryAttempted
-        
-            typedef void ( Combobox_wrapper::*onInvalidEntryAttempted_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Combobox_exposer.def( 
-                "onInvalidEntryAttempted"
-                , onInvalidEntryAttempted_function_type( &Combobox_wrapper::default_onInvalidEntryAttempted )
-                , ( bp::arg("e") )
-                , "*!\n\
-            \n\
-               Handler called internally when an invalid entry was attempted in the Combobox's Editbox.\n\
-            *\n" );
-        
-        }
         { //::CEGUI::Combobox::onListContentsChanged
         
             typedef void ( Combobox_wrapper::*onListContentsChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
@@ -2702,20 +2656,6 @@ void register_Combobox_class(){
             *************************************************************************\n" );
         
         }
-        { //::CEGUI::Combobox::onTextInvalidatedEvent
-        
-            typedef void ( Combobox_wrapper::*onTextInvalidatedEvent_function_type )( ::CEGUI::WindowEventArgs & ) ;
-            
-            Combobox_exposer.def( 
-                "onTextInvalidatedEvent"
-                , onTextInvalidatedEvent_function_type( &Combobox_wrapper::default_onTextInvalidatedEvent )
-                , ( bp::arg("e") )
-                , "*!\n\
-            \n\
-               Handler called internally when the Combobox's Editbox text has been invalidated.\n\
-            *\n" );
-        
-        }
         { //::CEGUI::Combobox::onTextSelectionChanged
         
             typedef void ( Combobox_wrapper::*onTextSelectionChanged_function_type )( ::CEGUI::WindowEventArgs & ) ;
@@ -2727,6 +2667,21 @@ void register_Combobox_class(){
                 , "*!\n\
             \n\
                Handler called internally when the selection within the Combobox's Editbox changes.\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Combobox::onTextValidityChanged
+        
+            typedef void ( Combobox_wrapper::*onTextValidityChanged_function_type )( ::CEGUI::RegexMatchStateEventArgs & ) ;
+            
+            Combobox_exposer.def( 
+                "onTextValidityChanged"
+                , onTextValidityChanged_function_type( &Combobox_wrapper::default_onTextValidityChanged )
+                , ( bp::arg("e") )
+                , "*!\n\
+            \n\
+                Handler called when something has caused the validity state of the\n\
+                current text to change.\n\
             *\n" );
         
         }
@@ -3222,9 +3177,6 @@ void register_Combobox_class(){
         Combobox_exposer.add_static_property( "EventHorzScrollbarModeChanged"
                         , bp::make_getter( &CEGUI::Combobox::EventHorzScrollbarModeChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "EventInvalidEntryAttempted"
-                        , bp::make_getter( &CEGUI::Combobox::EventInvalidEntryAttempted
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Combobox_exposer.add_static_property( "EventListContentsChanged"
                         , bp::make_getter( &CEGUI::Combobox::EventListContentsChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
@@ -3246,11 +3198,11 @@ void register_Combobox_class(){
         Combobox_exposer.add_static_property( "EventTextAccepted"
                         , bp::make_getter( &CEGUI::Combobox::EventTextAccepted
                                 , bp::return_value_policy< bp::return_by_value >() ) );
-        Combobox_exposer.add_static_property( "EventTextInvalidated"
-                        , bp::make_getter( &CEGUI::Combobox::EventTextInvalidated
-                                , bp::return_value_policy< bp::return_by_value >() ) );
         Combobox_exposer.add_static_property( "EventTextSelectionChanged"
                         , bp::make_getter( &CEGUI::Combobox::EventTextSelectionChanged
+                                , bp::return_value_policy< bp::return_by_value >() ) );
+        Combobox_exposer.add_static_property( "EventTextValidityChanged"
+                        , bp::make_getter( &CEGUI::Combobox::EventTextValidityChanged
                                 , bp::return_value_policy< bp::return_by_value >() ) );
         Combobox_exposer.add_static_property( "EventValidationStringChanged"
                         , bp::make_getter( &CEGUI::Combobox::EventValidationStringChanged
