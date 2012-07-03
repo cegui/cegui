@@ -67,11 +67,11 @@ public:
 /** WindowEventArgs based class that is used for notifications regarding
  * RegexMatcher::MatchState changes for some component.
  */
-class CEGUIEXPORT RegexMatchStateArgs : public WindowEventArgs
+class CEGUIEXPORT RegexMatchStateEventArgs : public WindowEventArgs
 {
 public:
-    RegexMatchStateArgs(Window* wnd,
-                        RegexMatcher::MatchState state) :
+    RegexMatchStateEventArgs(Window* wnd,
+                             RegexMatcher::MatchState state) :
         WindowEventArgs(wnd),
         matchState(state)
     {}

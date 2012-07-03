@@ -77,7 +77,8 @@ bool EditboxValidation::initialiseSample()
 bool EditboxValidation::validationChangeHandler(const CEGUI::EventArgs& args)
 {
     using namespace CEGUI;
-    const RegexMatchStateArgs& ra(static_cast<const RegexMatchStateArgs&>(args));
+    const RegexMatchStateEventArgs& ra(
+        static_cast<const RegexMatchStateEventArgs&>(args));
     Editbox* eb = static_cast<Editbox*>(ra.window);
 
     switch(ra.matchState)

@@ -173,7 +173,7 @@ void Editbox::setValidationString(const String& validation_string)
     const MatchState state = getStringMatchState(getText());
     if (d_validatorMatchState != state)
     {
-        RegexMatchStateArgs rms_args(this, state);
+        RegexMatchStateEventArgs rms_args(this, state);
         onTextValidityChanged(rms_args);
         d_validatorMatchState = state;
     }
@@ -279,7 +279,7 @@ void Editbox::setMaxTextLength(size_t max_len)
             const MatchState state = getStringMatchState(getText());
             if (d_validatorMatchState != state)
             {
-                RegexMatchStateArgs rms_args(this, state);
+                RegexMatchStateEventArgs rms_args(this, state);
                 onTextValidityChanged(rms_args);
                 d_validatorMatchState = state;
             }
@@ -380,7 +380,7 @@ bool Editbox::handleValidityChangeForString(const String& str)
     if (state == d_validatorMatchState)
         return true;
 
-    RegexMatchStateArgs args(this, state);
+    RegexMatchStateEventArgs args(this, state);
     onTextValidityChanged(args);
 
     if (args.handled == 0)
@@ -863,7 +863,7 @@ void Editbox::onMaximumTextLengthChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onTextValidityChanged(RegexMatchStateArgs& e)
+void Editbox::onTextValidityChanged(RegexMatchStateEventArgs& e)
 {
     fireEvent(EventTextValidityChanged, e, EventNamespace);
 }

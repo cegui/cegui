@@ -533,7 +533,7 @@ void Combobox::onMaximumTextLengthChanged(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when
 *************************************************************************/
-void Combobox::onTextValidityChanged(RegexMatchStateArgs& e)
+void Combobox::onTextValidityChanged(RegexMatchStateEventArgs& e)
 {
 	fireEvent(EventTextValidityChanged, e, EventNamespace);
 }
@@ -1066,8 +1066,8 @@ bool Combobox::editbox_MaximumTextLengthChangedHandler(const EventArgs&)
 
 bool Combobox::editbox_TextValidityChangedHandler(const EventArgs& e)
 {
-	RegexMatchStateArgs args(
-        this, static_cast<const RegexMatchStateArgs&>(e).matchState);
+	RegexMatchStateEventArgs args(
+        this, static_cast<const RegexMatchStateEventArgs&>(e).matchState);
 	onTextValidityChanged(args);
 
 	return args.handled > 0;
