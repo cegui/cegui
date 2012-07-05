@@ -80,7 +80,7 @@ public:
         d_guiContext->getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
         // Ensure font is loaded
         // First font gets set as the default font automatically
-        CEGUI::Font& font(FontManager::getSingleton().createFromFile("DejaVuSans-10.font"));
+        CEGUI::Font& font(FontManager::getSingleton().createFromFile("DejaVuSans-12.font"));
         d_guiContext->setDefaultFont(&font);
 
         // load an image to use as a background

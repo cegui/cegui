@@ -45,9 +45,9 @@ bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     // We need a font
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     // Font defaulting
-    guiContext->setDefaultFont("DejaVuSans-10");
+    guiContext->setDefaultFont("DejaVuSans-12");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImageSampleText", "GPN-2000-001437.png");

@@ -121,7 +121,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // Load font
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImageMineSweeper", "GPN-2000-001437.png");

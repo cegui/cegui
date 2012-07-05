@@ -135,7 +135,7 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    // install this as the root GUI sheet
    guiContext->setRootWindow(background);
 
-   FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+   FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
    TreeDemoWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
 
