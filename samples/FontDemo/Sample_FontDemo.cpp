@@ -35,7 +35,7 @@ author:     Paul D Turner
 
 using namespace CEGUI;
 
-static const unsigned int LangListSize = 13;
+static const unsigned int LangListSize = 12;
 
 struct FontOption
 {
@@ -54,102 +54,106 @@ static struct
     // Feel free to add your own language here (UTF-8 ONLY!)...
     {
         (encoded_char*)"Sandbox",
-            (encoded_char*)"DejaVuSans-11",
-            (encoded_char*)"Try out writing text in any language here\n"
-            "You can create new fonts if needed. The new font will be immediately set to be the font for the currently selected text/language...\n"
-            "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other demos)"
+            (encoded_char*)"DejaVuSans-12",
+            (encoded_char*)"Try out writing text in any language here. The used font can be changed on the right.\n"
+            "You can create new fonts if needed. The new font will be set as font for the selected text/language...\n"
+            "You can also edit the fonts that are part of this demo or the ones you created here (however, this demo won't allow to change the fonts of the other demos)\n"
+            "Important: When you switch to a font the FIRST time, it takes some time to load it. Especially for fonts with asian characters this load time might be noticable.!"
     },
     {
-        (encoded_char*)"English",
-            (encoded_char*)"DroidSans-12",
-            (encoded_char*)"THIS IS SOME TEXT IN UPPERCASE\n"
-            "and this is lowercase...\n"
-            "Try Catching The Brown Fox While It's Jumping Over The Lazy Dog"
+        (encoded_char*)"European characters using DejaVuSans font",
+            (encoded_char*)"DejaVuSans-12",
+            (encoded_char*)"Try Catching The Brown Fox While It's Jumping Over The Lazy Dog\n\n"
+            "Supports nearly all European unicode characters, including cyrillic:\n"
+            "bokmål, česky, русский, српски / srpski, slovenščina, latviešu, Tiếng Việt, etc.\n"
+            "¥¤£¢©®ÐÆ\nÄÜÖäüöß\nēĒŗŖūŪīĪāĀšŠģĢķĶļĻžŽčČņŅ\nøØæÆåÅèâïÀÁÂƒéíóúÉÍÓÚõç¿ñÑ\nускоряющпризв"
         },
         {
-            (encoded_char*)"Russian - Русский",
-                (encoded_char*)"DejaVuSans-11",
-                (encoded_char*)"Всё ускоряющаяся эволюция компьютерных технологий "
-                "предъявила жёсткие требования к производителям как "
-                "собственно вычислительной техники, так и периферийных устройств.\n"
-                "\nЗавершён ежегодный съезд эрудированных школьников, "
-                "мечтающих глубоко проникнуть в тайны физических явлений "
-                "и химических реакций.\n"
-                "\nавтор панграмм -- Андрей Николаев\n"
+            (encoded_char*)"European characters using Junicode font",
+                (encoded_char*)"Junicode-14",
+                (encoded_char*)"Try Catching The Brown Fox While It's Jumping Over The Lazy Dog\n\n"
+                "Supports most European unicode characters, but for example no cyrillic:\n"
+                "bokmål, česky, slovenščina, latviešu, Tiếng Việt, etc.\n"
+                "¥¤£¢©®ÐÆ\nÄÜÖäüöß\nēĒŗŖūŪīĪāĀšŠģĢķĶļĻžŽčČņŅ\nøØæÆåÅèâïÀÁÂƒéíóúÉÍÓÚõç¿ñÑ"
         },
-        {
-            (encoded_char*)"Romanian - Română",
-                (encoded_char*)"DejaVuSans-11",
-                (encoded_char*)"CEI PATRU APOSTOLI\n"
-                "au fost trei:\n"
-                "Luca şi Matfei\n"
-            },
-            {
-                (encoded_char*)"Dansk - with monospaced font",
-                    (encoded_char*)"DroidSansMono-12",
-                    (encoded_char*)"FARLIGE STORE BOGSTAVER\n"
-                    "og flere men små...\n"
-                    "Quizdeltagerne spiste jordbær med fløde, mens "
-                    "cirkusklovnen Walther spillede på xylofon\n"
-            },
-            {
-                (encoded_char*)"Japanese",
-                    (encoded_char*)"Batang-26",
-                    (encoded_char*)"日本語を選択\n"
-                    "トリガー検知\n"
-                    "鉱石備蓄不足\n"
-                },
-                {
-                    (encoded_char*)"Korean",
-                        (encoded_char*)"Batang-26",
-                        (encoded_char*)"< 단심가 >"
-                        "이몸이/죽고죽어/일백번/고쳐죽어/"
-                        "백골이/진퇴되어/넋이라도/있고없고/"
-                        "임 향한/일편단심이야/가실 줄이/있으랴/ "
-                },
-                {
-                    (encoded_char*)"Việt",
-                        (encoded_char*)"DejaVuSans-11",
-                        (encoded_char*)"Chào CrazyEddie !\n"
-                        "Mình rất hạnh phúc khi nghe bạn nói điều đó\n"
-                        "Hy vọng sớm được thấy CEGUI hỗ trợ đầy đủ tiếng Việt\n"
-                        "Cám ơn bạn rất nhiều\n"
-                        "Chúc bạn sức khoẻ\n"
-                        "Tạm biệt !\n"
-                    },
-                    {
-                        (encoded_char*)"Hebrew",
-                            (encoded_char*)"TnuaLibre-12",
-                            (encoded_char*)"תנועה \n"
-                            "חופשי ** אבגד  \n"
-                            "1234\n"
-                    },
-                    {
-                        (encoded_char*)"Old Fell Type font",
-                            (encoded_char*)"FellType-14",
-                            (encoded_char*)" Non nobis, non nobis, Domine\n"
-                            "Sed nomini tuo da gloriam.\n"
-                            "✠"
-                        },
 
-                        {
-                        (encoded_char*)"Handwriting font",
-                            (encoded_char*)"GreatVibes-22",
-                            (encoded_char*)"Ablabl abla asdda das weg asff dasf  dsad"
+            {
+                (encoded_char*)"Korean/Chinese/Japanese using Batang font",
+                    (encoded_char*)"Batang-18",
+                    (encoded_char*)
+                    //Japanese
+                    "日本語を選択\n"
+                    "トリガー検知\n"
+                    "鉱石備蓄不足\n\n\n\n\n"
+
+                    //Chinese
+                    "早發白帝城 (李白)\n\n"
+
+                    "朝辭白帝彩雲間，\n"
+                    "千里江陵一日還。\n"
+                    "兩岸猿聲啼不住，\n"
+                    "輕舟己過萬重山。\n\n\n\n\n" 
+ 
+                    //Korean
+                    "이몸이/죽고죽어/일백번/고쳐죽어/\n"
+                    "백골이/진퇴되어/넋이라도/있고없고/\n"
+                    "임 향한/일편단심이야/가실 줄이/있으랴/"
+                },
+                {
+                    (encoded_char*)"Hebrew using TnuaLibre font",
+                        (encoded_char*)"TnuaLibre-12",
+                        (encoded_char*)"תנועה \n"
+                        "חופשי ** אבגד  \n"
+                        "1234"
+                    },
+                    {
+                        (encoded_char*)"Old German using Fette UNZ Fraktur font",
+                            (encoded_char*)"FetteUNZFraktur-20",
+                            (encoded_char*)"Heute back ich, morgen brau ich,\n"
+                            "Übermorgen hol ich mir der Königin ihr Kind;\n"
+                            "Ach, wie gut, dass niemand weiß,\n"
+                            "dass ich Rumpelstilzchen heiß"
+                    },
+                    {
+                        (encoded_char*)"Latin using Old Fell Type font",
+                            (encoded_char*)"FellType-12.5",
+                            (encoded_char*)"☞Non nobis, non nobis, Domine\n"
+                            "Sed nomini tuo da gloriam.☜\n"
+                            "    Ð"
                         },
                         {
-                            (encoded_char*)"RichStyle Icons Font",
+                            (encoded_char*)"Handwriting font",
+                                (encoded_char*)"GreatVibes-22",
+                                (encoded_char*)"Dear Gooby,\n\n"
+                                "Handwriting is nice when you don't have to do it yourself.\n\n"
+                                "Regards, Uncle Dolan."
+                        },
+                        {
+                            (encoded_char*)"RichStyle Icons font",
                                 (encoded_char*)"RichStyle-22",
                                 (encoded_char*)"+ - ? B I W Y f n t ℹ ⇦ ⇧ ⇨ ⇩ ⌘ ☎ ☐ ☑ ⚖ ⚙ ⚠ ⛏ ✎ ✑ ✓ ✔ ✕ ✖ ❝ ❞ ➡ ⬀ ⬁ ⬂ ⬃ ⬅ ⬆ ⬇ ⬈ ⬉ ⬊ ⬋                       "
-                        },  
-                        {
-                            (encoded_char*)"Klingon",
-                                (encoded_char*)"Klingon-pIqaD-HaSta-24",
-                                (encoded_char*)"  \n"
-                                "         \n"
-                                "         \n"
-                                "  "
-                            }
+                            },  
+                            {
+                                (encoded_char*)"Old Runic writing using Futhark Adapted font",
+                                    (encoded_char*)"FutharkAdapted-18",
+                                    (encoded_char*)"Somehow, although he is the smallest office boy around the place, none of the other lads pick on him. Scuffling and fighting almost has ceased since Kerensky came to work. That's only one of the nicknames of Leo Kobreen, and was assigned to him because of a considerable facial resemblance to the perpetually fleeing Russian statesman, and, too, because both wore quite formal standing collars."
+                            },
+                            {
+                                (encoded_char*)"Klingon using pIqaD HaSta font",
+                                    (encoded_char*)"Klingon-pIqaD-HaSta-24",
+                                    (encoded_char*)"  \n\n\n"
+                                    "         \n"
+                                    "         \n"
+                                    "  "
+                                },
+                                {
+                                    (encoded_char*)"Pixel style font using Mizufalp font",
+                                        (encoded_char*)"mizufalp-12",
+                                        (encoded_char*)"Mechanic: Somebody set up us the bomb.\n"
+                                        "Operator: Main screen turn on.\n"
+                                        "CATS: All your base are belong to us.\n"
+                                        "CATS: You have no chance to survive make your time."
+                                }
 };
 
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
@@ -179,7 +183,7 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // Create a custom font which we use to draw the list items. This custom
     // font won't get effected by the scaler and such.
     FontManager& fontManager(FontManager::getSingleton());
-    CEGUI::Font& font(fontManager.createFromFile("DejaVuSans-10.font"));
+    CEGUI::Font& font(fontManager.createFromFile("DejaVuSans-12.font"));
     // Set it as the default
     d_guiContext->setDefaultFont(&font);
 
@@ -239,10 +243,10 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
     // Initialise the widget to select the different language texts the relative items for each
     initialiseTextSelector();
 
-    //Subscribe font selection event and set selection as last step
+    //Subscribe font selection event
     d_fontSelector->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&FontDemo::handleFontSelectionChanged, this));
-    d_fontSelector->setItemSelectState(size_t(0), true);
 
+    d_textSelector->setItemSelectState(size_t(0), true);
 
     return true;
 }
@@ -329,8 +333,6 @@ bool FontDemo::handleFontEditButtonClicked(const EventArgs& e)
 
     AutoScaledMode autoScaleMode = static_cast<AutoScaledMode>(getAutoScaleMode());
     font.setAutoScaled(autoScaleMode);
-
-
 
     return true;
 }
@@ -521,6 +523,8 @@ void FontDemo::initialiseFontSelector()
 {
     d_fontSelector = static_cast<CEGUI::Listbox*>(d_root->getChild("FontDemoWindow/FontSelector"));
 
+    d_fontSelector->setSortingEnabled(true);
+
     //Select a font file name if any are present
     if(d_fontNameOptions.size() > 0)
     {
@@ -528,10 +532,11 @@ void FontDemo::initialiseFontSelector()
         for(; iter != d_fontNameOptions.end(); ++iter)
         {
             std::pair<const CEGUI::String, bool>& currentPair = *iter;
-
             d_fontSelector->addItem(new MyListItem(currentPair.first, 0));
         }
     }
+
+    d_fontSelector->handleUpdatedItemData();
 }
 
 void FontDemo::initialiseTextSelector()
@@ -544,8 +549,6 @@ void FontDemo::initialiseTextSelector()
          d_textSelector->addItem(new MyListItem(LangList[i].Language, i)); 
          d_languageToFontMap[LangList[i].Language] = LangList[i].Font;
     }
-
-    d_textSelector->setItemSelectState(size_t(0), true);
 }
 
 void FontDemo::changeFontSelectorFontSelection(const CEGUI::String& font)
@@ -672,10 +675,7 @@ void FontDemo::checkIfEditButtonShouldBeDisabled(CEGUI::Font &font)
 void FontDemo::initialiseDemoFonts()
 {
     FontManager& fontManager(FontManager::getSingleton());
-    fontManager.createFreeTypeFont("DejaVuSans-11", 11.f, true, "DejaVuSans.ttf",
-        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
-
-    fontManager.createFreeTypeFont("DroidSans-12", 12.f, true, "DroidSans.ttf",
+    fontManager.createFreeTypeFont("Junicode-14", 14.f, true, "Junicode.ttf",
         Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
 
     fontManager.createFreeTypeFont("Klingon-pIqaD-HaSta-24", 24.f, true, "Klingon-pIqaD-HaSta.ttf",
@@ -687,16 +687,20 @@ void FontDemo::initialiseDemoFonts()
     fontManager.createFreeTypeFont("RichStyle-22", 22.5f, true, "RichStyle.ttf",
         Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
 
-    fontManager.createFreeTypeFont("JustLetters-32", 32.f, true, "JustLetters.otf",
+    fontManager.createFreeTypeFont("FetteUNZFraktur-20", 20.f, true, "FetteClassicUNZFraktur.ttf",
         Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
 
-        fontManager.createFreeTypeFont("GreatVibes-22", 22.f, true, "GreatVibes-Regular.ttf",
+    fontManager.createFreeTypeFont("GreatVibes-22", 22.f, true, "GreatVibes-Regular.ttf",
         Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
 
-               fontManager.createFreeTypeFont("FellFont-12.5", 12.5f, true, "IMFePIrm29P.ttf",
+    fontManager.createFreeTypeFont("FellType-12.5", 12.5f, true, "IMFePIrm29P.ttf",
         Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
 
-  
+    fontManager.createFreeTypeFont("FutharkAdapted-18", 18.f, true, "Futhark Adapted.ttf",
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+
+    fontManager.createFreeTypeFont("mizufalp-12", 12.f, true, "mizufalp.ttf",
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
 }
 
 /*************************************************************************
