@@ -45,7 +45,7 @@ bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImageDemo6", "GPN-2000-001437.png");

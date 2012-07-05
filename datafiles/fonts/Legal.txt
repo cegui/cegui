@@ -1,17 +1,16 @@
 The file fkp.de.pcf is a X11 bitmap font, taken from the artwiz font collection:
-http://artwizaleczapka.sourceforge.net
-
+------------------------------------------------
 artwiz-aleczapka is released under the terms of GNU General Public License
-(GPL) version 2. Read file 'COPYING' from the artwiz package for detailed info.
+(GPL) version 2.
+
+The project homepage is: http://artwizaleczapka.sourceforge.net
 
 ================================================================================
 
-DejaVuSans.ttf is a international TrueType font from the excellent DejaVu font
-package, which is distributed under the conditions of the Bitstream Vera Fonts
-Copyright, which can be found in the DejaVu package.
+DejaVuSans.ttf and DejaVuSerif.ttf fonts:
 
-DejaVu fonts 2.2 (c)2004-2006 Stepan Roh and DejaVu fonts team
---------------------------------------------------------------
+DejaVu fonts 2.33 (c)2004-2011 DejaVu fonts team
+------------------------------------------------
 
 The DejaVu fonts are a font family based on the Bitstream Vera Fonts
 (http://gnome.org/fonts/). Its purpose is to provide a wider range of
@@ -19,6 +18,8 @@ characters (see status.txt for more information) while maintaining the
 original look and feel.
 
 DejaVu fonts are based on Bitstream Vera fonts version 1.10.
+
+License available in this folder (LicenseDejaVu.txt)
 
 ================================================================================
 
@@ -30,11 +31,11 @@ to nowadays... -- Andrew Zabolotny.
 
 ================================================================================
 
-The Droid fonts (DroidFont.ttf and DroidSansMono.ttf) were retrieved from the The
-Android Open Source Project and are licensed under the Apache 2 license.
+Junicode Font (Junicode.ttf):
+This is a TrueType font for medievalists (and others) with many
+OpenType features.
 
-The license can be found in LicenseApache.txt inside this folder or under the url
-http://www.apache.org/licenses/LICENSE-2.0 .
+License: Open Font License (http://scripts.sil.org/OFL)
  
 ================================================================================
 
@@ -82,8 +83,7 @@ This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 --------------------------------------------------------------
-The SIL OPEN FONT LICENSE Version 1.1 is available in this folder
-(LicenseSIL1.txt)
+SIL license available in this folder (LicenseSIL.txt)
 
 ================================================================================
 
@@ -123,7 +123,7 @@ Copyright (c) 2011, Geoffrey Gaillard (),
 with Reserved Font Name FutharkAdapted.
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
-Available in this folder (LicenseOFL.txt) and at url http://scripts.sil.org/OFL 
+Available in this folder (LicenseSIL.txt) and at url http://scripts.sil.org/OFL 
 ----------------------------------------------------------- 
 L\'ancien Futhark adapté aux caractères des ordinateurs d\'aujourd\'hui.
 Il contient les runes classiques ( minuscules et majuscules sont différenciées
@@ -141,7 +141,7 @@ The Just Letters font (JustLetters.otf):
 After Albrecht Dürer, Of the Just Shaping of Letters, 1525 (1917)
 
 Font made by Christopher Adams, licensed under OFL (SIL Open Font License).
-OFL license available in this folder (LicenseOFL.txt).
+SIL license available in this folder (LicenseSIL.txt)
 
 ===============================================================================
 
@@ -159,7 +159,7 @@ This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
 http://scripts.sil.org/OFL
 ----------------------------------------------------------- 
-OFL license available in this folder (LicenseOFL.txt).
+SIL license available in this folder (LicenseSIL.txt)
 
 ===============================================================================
 
@@ -168,5 +168,55 @@ Cut by Peter de Walpergen. Acquisition in 1692. To be printed at 12,5 points to
 match the original size.
 ----------------------------------------------------------- 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
-OFL license available in this folder (LicenseOFL.txt).
+SIL license available in this folder (LicenseSIL.txt)
 
+===============================================================================
+
+Fette Classic UNZ Fraktur Font (FetteClassicUNZFraktur.ttf):
+----------------------------------------------------------- 
+Die "Fette Fraktur", eine von Johann Christian Bauer für die Schriftgießerei C.
+E. Weber geschnittene Akzidenz- schrift, welche im Jahre 1850 das erste Mal
+veröffentlicht wurde, gehört ohne Zweifel zu den auch heute noch am meisten
+verwendeten Frakturschriften.
+
+Sie wird unter verschiedenen Namen (z.B. auch Fraktur BT oder Frankenstein) von
+den verschiedensten Font- Foundries angeboten. 
+----------------------------------------------------------- 
+Copyright (c) 2012, Peter Wiegel, www.peter-wiegel.de, wiegel@peter-wiegel.de
+with Reserved Font Name Fette UNZ1 Fraktur
+
+
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+The OFL license available in this folder (LicenseSIL.txt), and is also available
+with a FAQ at: http://scripts.sil.org/OFL
+
+
+===============================================================================
+
+MizuFontAlphabet font (mizufalp.ttf):
+----------------------------------------------------------- 
+MizuFontAlphabet is designed by Mizu and sk89q. Typeface © 2004 The 
+Risen Realm (http://www.therisenrealm.com). All Rights Reserved.
+
+##########
+# LICENSE AGREEMENT
+##########
+
+This typeface is the property of The Risen Realm and its designers 
+and its use by you is covered under the terms of a license 
+agreement.
+
+This typeface may be used for only personal purposes. You may 
+distribute this software provided you keep it unmodified and 
+distributed for free. This software may not be sold alone or with 
+another product. This software may not be modified.
+
+You may locate The Risen Realm at http://www.therisenrealm.com.
+
+Pixel font best at 6 points.
+
+Font Vendor: The Risen Realm
+Font vendor Link: http://www.therisenrealm.com
+
+The official page of the MizuFontAlphabet font is at 
+http://www.therisenrealm.com/?page=font_mizufontalphabet

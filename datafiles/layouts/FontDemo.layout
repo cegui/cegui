@@ -13,7 +13,7 @@
                 <Property name="DraggingEnabled" value="False" />
             </AutoWindow>
             <Window type="Vanilla/MultiLineEditbox" name="MultiLineTextWindow" >
-                <Property name="Area" value="{{0.0117276,0},{0.130902,0},{0.631001,0},{0.773549,0}}" />
+                <Property name="Area" value="{{0.015677,0},{0.0415294,0},{0.631001,0},{0.990059,0}}" />
                 <Property name="Text" >
 </Property>
             </Window>

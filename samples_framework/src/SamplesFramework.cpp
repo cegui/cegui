@@ -114,7 +114,7 @@ void SamplesFramework::cleanupSample()
 
 void SamplesFramework::initialiseFrameworkLayout()
 {
-    CEGUI::Font& font = FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    CEGUI::Font& font = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(&font);
 
     SchemeManager::getSingleton().createFromFile("SampleBrowser.scheme");

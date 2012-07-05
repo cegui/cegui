@@ -22,7 +22,7 @@
             </AutoWindow>
             <Window type="SampleBrowserSkin/StaticText" name="Summary" >
                 <Property name="Area" value="{{0,9},{0,48},{0,340},{0,142}}" />
-                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Font" value="DejaVuSans-12-NoScale" />
                 <Property name="Text" value="Summary : " />
                 <Property name="VertScrollbar" value="True" />
                 <Property name="HorzScrollPageSize" value="305" />
@@ -48,7 +48,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="SampleType" >
                 <Property name="Area" value="{{0,172},{0,5},{0,340},{0,45}}" />
-                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Font" value="DejaVuSans-12-NoScale" />
                 <Property name="HorzScrollPageSize" value="142" />
                 <Property name="VertScrollPageSize" value="14" />
                 <AutoWindow namePath="__auto_hscrollbar__" >
@@ -70,7 +70,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="LabelType" >
                 <Property name="Area" value="{{0,9},{0,5},{0,129},{0,45}}" />
-                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Font" value="DejaVuSans-12-NoScale" />
                 <Property name="Text" value="Sample type:" />
                 <Property name="TextColours" value="tl:DD000000 tr:DD000000 bl:DD000000 br:DD000000" />
                 <Property name="HorzScrollPageSize" value="94" />
@@ -96,7 +96,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="UsedFiles" >
                 <Property name="Area" value="{{0,9},{0,373},{0,340},{0,480}}" />
-                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Font" value="DejaVuSans-12-NoScale" />
                 <Property name="Text" value="Used files:" />
                 <Property name="VertScrollbar" value="True" />
                 <Property name="HorzScrollPageSize" value="305" />
@@ -123,7 +123,7 @@
             </Window>
             <Window type="SampleBrowserSkin/StaticText" name="Description" >
                 <Property name="Area" value="{{0,9},{0,146},{0,340},{0,369}}" />
-                <Property name="Font" value="DejaVuSans-10-NoScale" />
+                <Property name="Font" value="DejaVuSans-12-NoScale" />
                 <Property name="Text" value="Description: asdasdafasdasdddddddddddddddddddd dddddddddddddddd dddddddddddddddd ddddddddddddddd" />
                 <Property name="VertScrollbar" value="True" />
                 <Property name="HorzScrollPageSize" value="305" />

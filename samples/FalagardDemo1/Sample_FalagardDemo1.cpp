@@ -70,7 +70,7 @@ bool FalagardDemo1Sample::initialise(CEGUI::GUIContext* guiContext)
     // set the background image
     d_root->setProperty("Image", "BackgroundImageFalagardDemo");
 
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
     // load some demo windows and attach to the background 'root'
     d_root->addChild(winMgr.loadLayoutFromFile("VanillaWindows.layout"));
