@@ -33,6 +33,11 @@ bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
+
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
     guiContext->getMouseCursor().setDefaultImage("AlfiskoSkin/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();

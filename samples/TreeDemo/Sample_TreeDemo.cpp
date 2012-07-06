@@ -106,9 +106,12 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    // Get window manager which we will use for a few jobs here.
    WindowManager& winMgr = WindowManager::getSingleton();
 
-//   CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Standard);
-//   CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
    CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Insane);
+
+   // load font and setup default if not loaded via scheme
+   Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+   // Set default font for the gui context
+   guiContext->setDefaultFont(&defaultFont);
 
    // Load the scheme to initialise the skin which we use in this sample
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);

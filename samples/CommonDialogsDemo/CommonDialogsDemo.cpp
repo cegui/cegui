@@ -41,6 +41,11 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
+
     // load resources and set up system defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaCommonDialogs.scheme");
