@@ -72,16 +72,17 @@ public:
     {
         d_guiContext = guiContext;
 
+        // load font and setup default if not loaded via scheme
+        Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+        // Set default font for the gui context
+        guiContext->setDefaultFont(&defaultFont);
+
         // we will use of the WindowManager.
         WindowManager& winMgr = WindowManager::getSingleton();
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
         d_guiContext->getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
-        // Ensure font is loaded
-        // First font gets set as the default font automatically
-        CEGUI::Font& font(FontManager::getSingleton().createFromFile("DejaVuSans-12.font"));
-        d_guiContext->setDefaultFont(&font);
 
         // load an image to use as a background
         ImageManager::getSingleton().addFromImageFile("BackgroundImageTabControl", "GPN-2000-001437.png");

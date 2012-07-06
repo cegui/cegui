@@ -39,11 +39,12 @@ bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
 
     // load font and setup default if not loaded via scheme
-    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
 
     // set up defaults
     guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
-    d_guiContext->setDefaultFont("DejaVuSans-12");
 
     // load the drive icons imageset
     ImageManager::getSingleton().loadImageset("DriveIcons.imageset");

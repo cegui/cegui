@@ -107,6 +107,11 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     // Register Timer Window
     WindowFactoryManager::getSingleton().addFactory( &getTimerFactory() );
 
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
+
     d_gameStarted = false;
 
     // Get window manager which we wil use for a few jobs here.
@@ -119,9 +124,6 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
 
     // set default mouse image
     guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
-
-    // Load font
-    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
     // load an image to use as a background
     ImageManager::getSingleton().addFromImageFile("BackgroundImageMineSweeper", "GPN-2000-001437.png");

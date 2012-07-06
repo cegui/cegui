@@ -6,7 +6,7 @@
         summary         = "2"
         description     = "3"
     />
-<!--
+
 	<SampleDefinition
         sampleName      = "CEGUIFirstWindow"
         sampleType      = "C++ Module"
@@ -74,5 +74,4 @@
         summary         = "2"
         description     = "3"
     />  
-  -->
 </Samples>
