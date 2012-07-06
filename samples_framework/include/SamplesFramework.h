@@ -83,13 +83,13 @@ public:
 
     SampleData* findSampleData(CEGUI::Window* sampleWindow);
 
-    virtual void injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
-    virtual void injectKeyUp(const CEGUI::Key::Scan& ceguiKey);
-    virtual void injectChar(int character);
-    virtual void injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton);
-    virtual void injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton);
-    virtual void injectMouseWheelChange(float position);
-    virtual void injectMousePosition(float x, float y);
+    virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
+    virtual bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey);
+    virtual bool injectChar(int character);
+    virtual bool injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton);
+    virtual bool injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton);
+    virtual bool injectMouseWheelChange(float position);
+    virtual bool injectMousePosition(float x, float y);
 
     bool handleExitSampleView(const CEGUI::EventArgs& args);
     

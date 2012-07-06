@@ -204,94 +204,108 @@ void SamplesFramework::setDefaultResourceGroup(const String& resourceGroup)
 }
 
 
-void SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
+bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
     if(d_selectedSampleData)
     {
         if(Key::Escape != ceguiKey)
-            d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
+            return d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
         else
             handleStopDisplaySample();
     }
     else
     {
         if(Key::Escape != ceguiKey)
-            CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
+            return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
         else
             setQuitting(true);
     }
+
+    return false;
 }
 
-void SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
+bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectKeyUp(ceguiKey);
+        return d_selectedSampleData->getGuiContext()->injectKeyUp(ceguiKey);
     }
     else
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(ceguiKey);
     }
+
+    return false;
 }
 
-void SamplesFramework::injectChar(int character)
+bool SamplesFramework::injectChar(int character)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectChar(character);
+        return d_selectedSampleData->getGuiContext()->injectChar(character);
     }
     else
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(character);
     }
+
+    return false;
 }
 
-void SamplesFramework::injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton)
+bool SamplesFramework::injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectMouseButtonDown(ceguiMouseButton);
+        return d_selectedSampleData->getGuiContext()->injectMouseButtonDown(ceguiMouseButton);
     }
     else
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(ceguiMouseButton);
     }
+
+    return false;
 }
 
-void SamplesFramework::injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton)
+bool SamplesFramework::injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectMouseButtonUp(ceguiMouseButton);
+        return d_selectedSampleData->getGuiContext()->injectMouseButtonUp(ceguiMouseButton);
     }
     else
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(ceguiMouseButton);
     }
+
+    return false;
 }
 
-void SamplesFramework::injectMouseWheelChange(float position)
+bool SamplesFramework::injectMouseWheelChange(float position)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectMouseWheelChange(position);
+        return d_selectedSampleData->getGuiContext()->injectMouseWheelChange(position);
     }
     else
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(position);
     }
+
+    return false;
 }
 
-void SamplesFramework::injectMousePosition(float x, float y)
+bool SamplesFramework::injectMousePosition(float x, float y)
 {
     if(d_selectedSampleData)
     {
-        d_selectedSampleData->getGuiContext()->injectMousePosition(x, y);
+        return d_selectedSampleData->getGuiContext()->injectMousePosition(x, y);
     }
     else
     {
         CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(x, y);
     }
+
+    return false;
 }
 
 

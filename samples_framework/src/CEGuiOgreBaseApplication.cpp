@@ -39,7 +39,7 @@
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
-#include "CEGuiSample.h"
+#include "SamplesFrameworkBase.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
 
@@ -51,8 +51,14 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
     d_windowEventListener(0)
 {
     using namespace Ogre;
+    
+#ifdef DEBUG
+    Ogre::String pluginsFileName = "plugins_d.cfg";
+#else
+    Ogre::String pluginsFileName = "plugins.cfg";
+#endif
 
-    d_ogreRoot = new Root();
+    d_ogreRoot = new Root(pluginsFileName);
 
     if (d_ogreRoot->showConfigDialog())
     {
@@ -70,7 +76,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
-        vp->setBackgroundColour(ColourValue(0, 0, 0));
+        vp->setBackgroundColour(ColourValue(1.f, 1.f, 1.f, 1.f));
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
@@ -81,7 +87,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_resourceProvider = &renderer.createOgreResourceProvider();
 
         // create frame listener
-        d_frameListener= new CEGuiDemoFrameListener(this, d_window, d_camera);
+        d_frameListener= new CEGuiDemoFrameListener(this, d_sampleApp, d_window, d_camera);
         d_ogreRoot->addFrameListener(d_frameListener);
 
         // add a listener for OS framework window events (for resizing)
@@ -118,7 +124,7 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiOgreBaseApplication::execute_impl(CEGuiSample* sampleApp)
+bool CEGuiOgreBaseApplication::execute_impl()
 {
     // if base initialisation failed or app was cancelled by user, bail out now.
     if (!d_ogreRoot || !d_initialised)
@@ -126,7 +132,7 @@ bool CEGuiOgreBaseApplication::execute_impl(CEGuiSample* sampleApp)
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
     // perform sample initialisation
-    sampleApp->initialiseSample();
+    d_sampleApp->initialise();
 
     // start rendering via Ogre3D engine.
     CEGUI_TRY
@@ -173,6 +179,7 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     rgm.createResourceGroup("looknfeels");
     rgm.createResourceGroup("lua_scripts");
     rgm.createResourceGroup("schemas");
+    rgm.createResourceGroup("samples");
 
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
@@ -195,6 +202,8 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "samples/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "samples");
 }
 
 //----------------------------------------------------------------------------//
@@ -203,7 +212,8 @@ void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
 
     gui_system.injectTimePulse(elapsed);
-    gui_system.getDefaultGUIContext().injectTimePulse(elapsed);
+    d_sampleApp->update(static_cast<float>(elapsed));
+
     updateFPS(elapsed);
     updateLogo(elapsed);
 }
@@ -217,7 +227,10 @@ void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
 ////////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------//
-CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
+CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp,
+    Ogre::RenderWindow* window, Ogre::Camera* camera, bool useBufferedInputKeys, bool useBufferedInputMouse)
+    : d_baseApp(baseApp),
+    d_sampleApp(sampleApp)
 {
     // OIS setup
     OIS::ParamList paramList;
@@ -273,12 +286,6 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Og
     // store inputs we want to make use of
     d_camera = camera;
     d_window = window;
-
-    // we've not quit yet.
-    d_quit = false;
-
-    // setup base app ptr
-    d_baseApp = baseApp;
 }
 
 //----------------------------------------------------------------------------//
@@ -290,13 +297,12 @@ CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
         d_inputManager->destroyInputObject(d_keyboard);
         OIS::InputManager::destroyInputSystem(d_inputManager);
     }
-
 }
 
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 {
-    if(d_window->isClosed() || d_quit || d_baseApp->isQuitting())
+    if(d_window->isClosed() || d_sampleApp->isQuitting())
         return false;
 
     static_cast<CEGuiOgreBaseApplication*>(d_baseApp)->
@@ -320,11 +326,8 @@ bool CEGuiDemoFrameListener::frameEnded(const Ogre::FrameEvent& evt)
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
 {
-
-    CEGUI::GUIContext& ctx = CEGUI::System::getSingleton().getDefaultGUIContext();
-
-    ctx.injectMouseMove(e.state.X.rel, e.state.Y.rel);
-    ctx.injectMouseWheelChange(e.state.Z.rel / 120.0f);
+    d_sampleApp->injectMousePosition(e.state.X.abs, e.state.Y.abs);
+    d_sampleApp->injectMouseWheelChange(e.state.Z.rel / 120.0f);
 
     return true;
 }
@@ -332,23 +335,8 @@ bool CEGuiDemoFrameListener::mouseMoved(const OIS::MouseEvent &e)
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 {
-    CEGUI::System& gui_system(CEGUI::System::getSingleton());
-
-    // give 'quitting' priority
-    if (e.key == OIS::KC_ESCAPE)
-    {
-        d_quit = true;
-        return true;
-    }
-
-    // do event injection
-    CEGUI::GUIContext& ctx = CEGUI::System::getSingleton().getDefaultGUIContext();
-
-    // key down
-    ctx.injectKeyDown(static_cast<CEGUI::Key::Scan>(e.key));
-
-    // now character
-    ctx.injectChar(e.text);
+    d_sampleApp->injectKeyDown(static_cast<CEGUI::Key::Scan>(e.key));
+    d_sampleApp->injectChar(e.text);
 
     return true;
 }
@@ -357,16 +345,15 @@ bool CEGuiDemoFrameListener::keyPressed(const OIS::KeyEvent &e)
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::keyReleased(const OIS::KeyEvent &e)
 {
-    CEGUI::System::getSingleton().getDefaultGUIContext().
-        injectKeyUp(static_cast<CEGUI::Key::Scan>(e.key));
+    d_sampleApp->injectKeyUp(static_cast<CEGUI::Key::Scan>(e.key));
+
     return true;
 }
 
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().getDefaultGUIContext().
-        injectMouseButtonDown(convertOISButtonToCegui(id));
+    d_sampleApp->injectMouseButtonDown(convertOISButtonToCegui(id));
 
     return true;
 }
@@ -374,8 +361,7 @@ bool CEGuiDemoFrameListener::mousePressed(const OIS::MouseEvent &e, OIS::MouseBu
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id)
 {
-    CEGUI::System::getSingleton().getDefaultGUIContext().
-        injectMouseButtonUp(convertOISButtonToCegui(id));
+   d_sampleApp->injectMouseButtonUp(convertOISButtonToCegui(id));
 
     return true;
 }

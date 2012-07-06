@@ -47,10 +47,14 @@
 #endif
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI/RendererModules/Irrlicht/Renderer.h"
-#include "CEGUI/CEGUI.h"
+#include "CEGUI/Size.h"
 
 #include <irrlicht.h>
+
+namespace CEGUI
+{
+    class IrrlichtEventPusher;
+}
 
 class CEGuiIrrlichtBaseApplication : public CEGuiBaseApplication,
                                      public irr::IEventReceiver
@@ -71,15 +75,23 @@ protected:
     void checkWindowResize();
 
     // implementation of base class abstract methods.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
+
+    bool processEvent(const irr::SEvent& event);
+
+    bool OnKeyDown(irr::EKEY_CODE key, wchar_t wch, bool /*ctrl*/, bool /*shift*/);
+    bool OnKeyUp(irr::EKEY_CODE key, wchar_t /*wch*/, bool /*ctrl*/, bool /*shift*/);
+    bool OnMouse(irr::s32 x, irr::s32 y, irr::f32 w, irr::EMOUSE_INPUT_EVENT e);
 
     irr::IrrlichtDevice*       d_device;
     irr::video::IVideoDriver*  d_driver;
     irr::scene::ISceneManager* d_smgr;
     irr::u32                   d_lastTime;
+
+    const CEGUI::IrrlichtEventPusher* d_eventPusher;
 
     //! size of display last time a change was detected.
     CEGUI::Sizef d_lastDisplaySize;
