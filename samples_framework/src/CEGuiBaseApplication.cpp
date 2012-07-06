@@ -85,16 +85,17 @@ CEGuiBaseApplication::~CEGuiBaseApplication()
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
 {
-    d_sampleApp->update(static_cast<float>(elapsed));
-
     CEGUI::System& gui_system(CEGUI::System::getSingleton());
-    CEGUI::Renderer* gui_renderer(gui_system.getRenderer());
 
     gui_system.injectTimePulse(elapsed);
+    d_sampleApp->update(static_cast<float>(elapsed));
+
     updateFPS(elapsed);
     updateLogo(elapsed);
 
     beginRendering(elapsed);
+
+    CEGUI::Renderer* gui_renderer(gui_system.getRenderer());
     gui_renderer->beginRendering();
 
     d_sampleApp->drawGUIContexts();

@@ -135,6 +135,18 @@ public :
 
     }
 
+    /*! translate the irrlicht keycode to cegui keycode
+    \param kc
+    the irrlicht keycode
+
+    \return
+    the cegui keycode
+    */
+    CEGUI::Key::Scan getKeyCode(irr::EKEY_CODE kc) const
+    {
+        return irr2ceCODE[kc];
+    }
+
 protected:
     CEGUI::Key::Scan irr2ceCODE[irr::KEY_KEY_CODES_COUNT];
 
@@ -288,17 +300,6 @@ protected:
         irr2ceCODE[KEY_OEM_CLEAR ] = Key::Unknown;  // Clear key
     }
 
-    /*! translate the irrlicht keycode to cegui keycode
-    \param kc
-        the irrlicht keycode
-
-    \return
-        the cegui keycode
-    */
-    CEGUI::Key::Scan getKeyCode(irr::EKEY_CODE kc)
-    {
-        return irr2ceCODE[kc];
-    }
 };
 
 }

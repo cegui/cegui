@@ -105,44 +105,58 @@ public:
     /*!
     \brief
     Function to inject key down to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectKeyDown(const CEGUI::Key::Scan& ceguiKey) = 0;
+    virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey) = 0;
 
     /*!
     \brief
     Function to inject key up to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectKeyUp(const CEGUI::Key::Scan& ceguiKey) = 0;
+    virtual bool injectKeyUp(const CEGUI::Key::Scan& ceguiKey) = 0;
 
     /*!
     \brief
     Function to inject characters to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectChar(int character) = 0;
+    virtual bool injectChar(int character) = 0;
 
     /*!
     \brief
     Function to inject mouse button down to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+    virtual bool injectMouseButtonDown(const CEGUI::MouseButton& ceguiMouseButton) = 0;
 
     /*!
     \brief
     Function to inject mouse button up to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) = 0;
+    virtual bool injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseButton) = 0;
 
     /*!
     \brief
     Function to inject mouse wheel changes to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectMouseWheelChange(float position) = 0;
+    virtual bool injectMouseWheelChange(float position) = 0;
 
     /*!
     \brief
     Function to inject the mouse position to GUIContexts
+    \return
+    true if event was handled.
     */
-    virtual void injectMousePosition(float x, float y) = 0;
+    virtual bool injectMousePosition(float x, float y) = 0;
 
     /*!
     \brief

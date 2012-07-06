@@ -69,7 +69,7 @@ protected:
     void initialiseResourceGroupDirectories();
 
     // Implementation of base class abstract methods.
-    bool execute_impl(CEGuiSample* sampleApp);
+    bool execute_impl();
     void cleanup_impl();
     void beginRendering(const float elapsed);
     void endRendering();
@@ -95,7 +95,7 @@ class CEGuiDemoFrameListener : public Ogre::FrameListener, public OIS::KeyListen
 {
 public:
     // Construction and Destruction
-    CEGuiDemoFrameListener(CEGuiBaseApplication* baseApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
+    CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp, SamplesFrameworkBase*& sampleApp, Ogre::RenderWindow* win, Ogre::Camera* cam, bool useBufferedInputKeys = false, bool useBufferedInputMouse = false);
     ~CEGuiDemoFrameListener();
 
     // Processing to be done at start and end of each frame.
@@ -122,8 +122,9 @@ protected:
     OIS::Mouse* d_mouse;
     Ogre::Camera* d_camera;
     Ogre::RenderWindow* d_window;
-    bool d_quit;
-    CEGuiBaseApplication* d_baseApp;
+
+    CEGuiOgreBaseApplication*   d_baseApp;
+    SamplesFrameworkBase*&      d_sampleApp;
 };
 
 //! window event listener class we use to hear abour window resizing
