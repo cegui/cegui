@@ -105,6 +105,29 @@ protected:
     CEGUI::Window* d_window;
 };
 
+class ElasticWindowEffect : public CEGUI::RenderEffect
+{
+public:
+    ElasticWindowEffect(CEGUI::Window* window);
+
+    // implement required functions from RenderEffect interface.
+    int getPassCount() const;
+    void performPreRenderFunctions(const int pass);
+    void performPostRenderFunctions();
+    bool realiseGeometry(CEGUI::RenderingWindow& window, CEGUI::GeometryBuffer& geometry);
+    bool update(const float elapsed, CEGUI::RenderingWindow& window);
+
+protected:
+    CEGUI::Vector2f d_currentPosition;
+    CEGUI::Vector2f d_currentVelocity;
+
+    bool d_initialised;
+
+    static const unsigned int ds_vertexCount = 6;
+    CEGUI::Vertex d_vertices[ds_vertexCount];
+
+    CEGUI::Window* d_window;
+};
 
 // Sample class
 class Demo7Sample : public CEGuiSample
