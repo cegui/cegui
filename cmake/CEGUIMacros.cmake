@@ -547,6 +547,7 @@ macro (cegui_add_test_executable _NAME)
     )
     endif()
 
+    add_test(NAME ${_NAME} COMMAND ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${CEGUI_TARGET_NAME})
 endmacro()
 
 ################################################################################

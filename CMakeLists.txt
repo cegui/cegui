@@ -445,6 +445,8 @@ add_subdirectory(datafiles)
 #add_subdirectory(doc)
 
 if (CEGUI_BUILD_TESTS)
+    enable_testing()
+
     add_subdirectory(tests)
 endif()
 
