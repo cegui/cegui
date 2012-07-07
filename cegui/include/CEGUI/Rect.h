@@ -45,6 +45,8 @@ class Rect:
     public AllocatedObject<Rect<T> >
 {
 public:
+    typedef T value_type;
+
 	inline Rect()
     {}
 

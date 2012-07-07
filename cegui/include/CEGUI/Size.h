@@ -67,6 +67,8 @@ class Size:
     public AllocatedObject<Size<T> >
 {
 public:
+    typedef T value_type;
+
     inline Size()
     {}
 
