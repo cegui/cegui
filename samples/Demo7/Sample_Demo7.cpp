@@ -410,6 +410,115 @@ bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& 
     return true;
 }
 
+//----------------------------------------------------------------------------//
+ElasticWindowEffect::ElasticWindowEffect(CEGUI::Window* window) :
+    d_initialised(false),
+    d_window(window)
+{}
+
+//----------------------------------------------------------------------------//
+int ElasticWindowEffect::getPassCount() const
+{
+    return 1;
+}
+
+//----------------------------------------------------------------------------//
+void ElasticWindowEffect::performPreRenderFunctions(const int /*pass*/)
+{
+    // nothing we need here
+}
+
+//----------------------------------------------------------------------------//
+void ElasticWindowEffect::performPostRenderFunctions()
+{
+    // nothing we need here
+}
+
+//----------------------------------------------------------------------------//
+bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
+                               CEGUI::GeometryBuffer& geometry)
+{
+    using namespace CEGUI;
+    Texture& tex = window.getTextureTarget().getTexture();
+
+    static const CEGUI::Colour c(1, 1, 1, 1);
+
+    const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
+    const Vector2f& currentTopLeft = d_currentPosition;
+    const Vector2f currentBottomRight = d_currentPosition +
+        Vector2f(window.getSize().d_width, window.getSize().d_height);
+
+    {
+        // first triangle
+
+        // vertex 0 - top left
+        d_vertices[0].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
+        d_vertices[0].colour_val = c;
+        d_vertices[0].tex_coords = Vector2f(0, 1);
+
+        // vertex 1 - bottom left
+        d_vertices[1].position   = Vector3f(currentTopLeft.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[1].colour_val = c;
+        d_vertices[1].tex_coords = Vector2f(0, 0);
+
+        // vertex 2 - bottom right
+        d_vertices[2].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
+        d_vertices[2].colour_val = c;
+        d_vertices[2].tex_coords = Vector2f(1, 0);
+
+        // second triangle
+
+        // vertex 3 - bottom right
+        d_vertices[3].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
+        d_vertices[3].colour_val = c;
+        d_vertices[3].tex_coords = Vector2f(1, 0);
+
+        // vertex 4 - top right
+        d_vertices[4].position   = Vector3f(currentBottomRight.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[4].colour_val = c;
+        d_vertices[4].tex_coords = Vector2f(1, 1);
+
+        // vertex 5 - top left
+        d_vertices[5].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
+        d_vertices[5].colour_val = c;
+        d_vertices[5].tex_coords = Vector2f(0, 1);
+    }
+
+    geometry.setActiveTexture(&tex);
+    geometry.appendGeometry(d_vertices, ds_vertexCount);
+
+    // false, because we do not want the default geometry added!
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
+{
+    using namespace CEGUI;
+
+    // initialise ourself upon the first update call.
+    if (!d_initialised)
+    {
+        d_currentPosition = window.getPosition();
+        d_currentVelocity = Vector2f(0, 0);
+
+        d_initialised = true;
+        return true;
+    }
+
+    const Vector2f delta = window.getPosition() - d_currentPosition;
+
+    const float speed = 300.0f;
+    d_currentVelocity *= pow(0.00001f, elapsed);
+    d_currentVelocity += delta * (speed * elapsed);
+    d_currentPosition += d_currentVelocity * elapsed;
+
+    // note we just need system to redraw the geometry; we do not need a
+    // full redraw of all window/widget content - which is unchanged.
+    d_window->getGUIContext().markAsDirty();
+    return false;
+}
+
 
 //----------------------------------------------------------------------------//
 // The following are for the main Demo7Sample class.
@@ -425,6 +534,7 @@ bool Demo7Sample::initialiseSample()
     // Register our effects with the system
     RenderEffectManager::getSingleton().addEffect<WobblyWindowEffect>("WobblyWindow");
     RenderEffectManager::getSingleton().addEffect<OldWobblyWindowEffect>("OldWobblyWindow");
+    RenderEffectManager::getSingleton().addEffect<ElasticWindowEffect>("ElasticWindow");
 
     // Now we make a Falagard mapping for a frame window that uses this effect.
     // We create a type "TaharezLook/WobblyFrameWindow".  Note that it would be
