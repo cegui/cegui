@@ -91,6 +91,15 @@ void Titlebar::setDraggingEnabled(bool setting)
 
 }
 
+bool Titlebar::isDragged() const
+{
+    return d_dragging;
+}
+
+const Vector2f& Titlebar::getDragPoint() const
+{
+    return d_dragPoint;
+}
 
 /*************************************************************************
 	Handler for mouse movement events

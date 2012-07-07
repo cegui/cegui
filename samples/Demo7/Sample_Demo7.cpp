@@ -43,17 +43,187 @@ int main(int /*argc*/, char* /*argv*/[])
 }
 
 //----------------------------------------------------------------------------//
+WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
+    d_initialised(false),
+    d_window(dynamic_cast<CEGUI::FrameWindow*>(window))
+{
+    if (!d_window)
+        CEGUI_THROW(CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!"));
+}
+
+//----------------------------------------------------------------------------//
+int WobblyWindowEffect::getPassCount() const
+{
+    return 1;
+}
+
+//----------------------------------------------------------------------------//
+void WobblyWindowEffect::performPreRenderFunctions(const int /*pass*/)
+{
+    // nothing we need here
+}
+
+//----------------------------------------------------------------------------//
+void WobblyWindowEffect::performPostRenderFunctions()
+{
+    // nothing we need here
+}
+
+void WobblyWindowEffect::syncPivots(CEGUI::RenderingWindow& window)
+{
+    const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
+
+    for (size_t y = 0; y < ds_yPivotCount; ++y)
+    {
+        for (size_t x = 0; x < ds_xPivotCount; ++x)
+        {
+            const float factorMinX = static_cast<float>(ds_xPivotCount - x) / (ds_xPivotCount - 1);
+            const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);
+            const float factorMinY = static_cast<float>(ds_yPivotCount - y) / (ds_yPivotCount - 1);
+            const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
+
+            d_pivots[x][y] = CEGUI::Vector2f(
+                    factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
+                    factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
+
+            d_pivotVelocities[x][y] = CEGUI::Vector2f(
+                    0.0f,
+                    0.0f);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
+                               CEGUI::GeometryBuffer& geometry)
+{
+    using namespace CEGUI;
+    Texture& tex = window.getTextureTarget().getTexture();
+
+    static const CEGUI::Colour c(1, 1, 1, 1);
+
+    // qw is the width of one subdivision "box", qh is the height of it
+    const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
+    const float qh = window.getSize().d_height / (ds_yPivotCount - 1);
+    const float tcx = qw * tex.getTexelScaling().d_x;
+    const float tcy =
+        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
+            tex.getTexelScaling().d_y;
+
+    const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
+
+    for (size_t y = 0; y < ds_yPivotCount - 1; ++y)
+    {
+        for (size_t x = 0; x < ds_xPivotCount - 1; ++x)
+        {
+            // index of the first vertex of the quad we will construct with
+            // this iteration
+            const size_t idx = (y * (ds_xPivotCount - 1) + x) * 6;
+
+            // first triangle
+
+            // vertex 0 - top left
+            d_vertices[idx + 0].position   = Vector3f(d_pivots[x][y], 0.0f) - windowPosition;
+            d_vertices[idx + 0].colour_val = c;
+            d_vertices[idx + 0].tex_coords = Vector2f(x * tcx, y * tcy);
+
+            // vertex 1 - bottom left
+            d_vertices[idx + 1].position   = Vector3f(d_pivots[x][y + 1], 0.0f) - windowPosition;
+            d_vertices[idx + 1].colour_val = c;
+            d_vertices[idx + 1].tex_coords = Vector2f(x * tcx, (y + 1) * tcy);
+
+            // vertex 2 - bottom right
+            d_vertices[idx + 2].position   = Vector3f(d_pivots[x + 1][y + 1], 0.0f) - windowPosition;
+            d_vertices[idx + 2].colour_val = c;
+            d_vertices[idx + 2].tex_coords = Vector2f((x + 1) * tcx, (y + 1) * tcy);
+
+            // second triangle
+
+            // vertex 3 - bottom right
+            d_vertices[idx + 3].position   = Vector3f(d_pivots[x + 1][y + 1], 0.0f) - windowPosition;
+            d_vertices[idx + 3].colour_val = c;
+            d_vertices[idx + 3].tex_coords = Vector2f((x + 1) * tcx, (y + 1) * tcy);
+
+            // vertex 4 - top right
+            d_vertices[idx + 4].position   = Vector3f(d_pivots[x + 1][y], 0.0f) - windowPosition;
+            d_vertices[idx + 4].colour_val = c;
+            d_vertices[idx + 4].tex_coords = Vector2f((x + 1) * tcx, y * tcy);
+
+            // vertex 5 - top left
+            d_vertices[idx + 5].position   = Vector3f(d_pivots[x][y], 0.0f) - windowPosition;
+            d_vertices[idx + 5].colour_val = c;
+            d_vertices[idx + 5].tex_coords = Vector2f(x * tcx, y * tcy);
+        }
+    }
+
+    geometry.setActiveTexture(&tex);
+    geometry.appendGeometry(d_vertices, ds_vertexCount);
+
+    // false, because we do not want the default geometry added!
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
+{
+    using namespace CEGUI;
+
+    // initialise ourself upon the first update call.
+    if (!d_initialised)
+    {
+        syncPivots(window);
+        d_initialised = true;
+        return true;
+    }
+
+    const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
+
+    const CEGUI::MouseCursor& cursor = d_window->getGUIContext().getMouseCursor();
+
+    for (size_t y = 0; y < ds_yPivotCount; ++y)
+    {
+        for (size_t x = 0; x < ds_xPivotCount; ++x)
+        {
+            const float factorMinX = static_cast<float>(ds_xPivotCount - 1- x) / (ds_xPivotCount - 1);
+            const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);
+            const float factorMinY = static_cast<float>(ds_yPivotCount - 1 - y) / (ds_yPivotCount - 1);
+            const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
+
+            const Vector2f desiredPos = Vector2f(
+                    factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
+                    factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
+
+            const Vector2f delta = desiredPos - d_pivots[x][y];
+
+            float speed = 300.0f;
+            const Vector2f cursorDelta = d_window->getTitlebar()->isDragged() ? window.getPosition() + d_window->getTitlebar()->getDragPoint() - d_pivots[x][y] : Vector2f(0.0f, 0.0f);
+            const float cursorDeltaLength = sqrtf(cursorDelta.d_x * cursorDelta.d_x + cursorDelta.d_y * cursorDelta.d_y);
+            speed /= cursorDeltaLength > 64 ? sqrtf(cursorDeltaLength) * 0.125f : 1;
+
+            d_pivotVelocities[x][y] *= pow(0.00001f, elapsed);
+            d_pivotVelocities[x][y] += delta * (speed * elapsed);
+            d_pivots[x][y] += d_pivotVelocities[x][y] * elapsed;
+        }
+    }
+
+    // note we just need system to redraw the geometry; we do not need a
+    // full redraw of all window/widget content - which is unchanged.
+    d_window->getGUIContext().markAsDirty();
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 // The following are related to the RenderEffect
 //
 // Note: This be the land of magic numbers and compound hacks upon hacks :-p
 //       Any final version of this we might provide will likely be cleaned up
 //       considerably.
 //----------------------------------------------------------------------------//
-const float MyEffect::tess_x = 8;
-const float MyEffect::tess_y = 8;
+const float OldWobblyWindowEffect::tess_x = 8;
+const float OldWobblyWindowEffect::tess_y = 8;
 
 //----------------------------------------------------------------------------//
-MyEffect::MyEffect(CEGUI::Window* window) :
+OldWobblyWindowEffect::OldWobblyWindowEffect(CEGUI::Window* window) :
     initialised(false),
     dragX(0), dragY(0),
     elasX(0), elasY(0),
@@ -62,25 +232,25 @@ MyEffect::MyEffect(CEGUI::Window* window) :
 }
 
 //----------------------------------------------------------------------------//
-int MyEffect::getPassCount() const
+int OldWobblyWindowEffect::getPassCount() const
 {
     return 1;
 }
 
 //----------------------------------------------------------------------------//
-void MyEffect::performPreRenderFunctions(const int /*pass*/)
+void OldWobblyWindowEffect::performPreRenderFunctions(const int /*pass*/)
 {
     // nothing we need here
 }
 
 //----------------------------------------------------------------------------//
-void MyEffect::performPostRenderFunctions()
+void OldWobblyWindowEffect::performPostRenderFunctions()
 {
     // nothing we need here
 }
 
 //----------------------------------------------------------------------------//
-bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
+bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
                                CEGUI::GeometryBuffer& geometry)
 {
     using namespace CEGUI;
@@ -151,7 +321,7 @@ bool MyEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 }
 
 //----------------------------------------------------------------------------//
-bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
+bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 {
     using namespace CEGUI;
     
@@ -252,8 +422,9 @@ bool Demo7Sample::initialiseSample()
 {
     using namespace CEGUI;
 
-    // Register our effect with the system
-    RenderEffectManager::getSingleton().addEffect<MyEffect>("WobblyWindow");
+    // Register our effects with the system
+    RenderEffectManager::getSingleton().addEffect<WobblyWindowEffect>("WobblyWindow");
+    RenderEffectManager::getSingleton().addEffect<OldWobblyWindowEffect>("OldWobblyWindow");
 
     // Now we make a Falagard mapping for a frame window that uses this effect.
     // We create a type "TaharezLook/WobblyFrameWindow".  Note that it would be
