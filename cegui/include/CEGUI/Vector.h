@@ -55,6 +55,8 @@ class Vector2:
     public AllocatedObject<Vector2<T> >
 {
 public:
+    typedef T value_type;
+
     inline Vector2()
     {}
     
@@ -213,6 +215,8 @@ class Vector3:
     public AllocatedObject<Vector3<T> >
 {
 public:
+    typedef T value_type;
+
     inline Vector3()
     {}
 
