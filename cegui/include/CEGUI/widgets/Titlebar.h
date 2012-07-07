@@ -76,6 +76,17 @@ public:
 	*/
 	void	setDraggingEnabled(bool setting);
 
+    /*!
+    \brief
+        Checks whether the title bar widget is being dragged at the moment
+    */
+    bool isDragged() const;
+
+    /*!
+    \brief
+        Gets the point at which the title bar widget is/was being dragged
+    */
+    const Vector2f& getDragPoint() const;
 
 	/*************************************************************************
 		Construction / Destruction
