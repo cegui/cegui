@@ -37,6 +37,7 @@ author:     Lukas E Meindl
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/widgets/PushButton.h"
+#include "CEGUI/widgets/ProgressBar.h"
 
 
 #include <string>
@@ -69,7 +70,9 @@ SamplesFramework::SamplesFramework()
     : d_metaDataWinMgr(0),
     d_samplesWinMgr(0),
     d_selectedSampleData(0),
-    d_sampleExitButton(0)
+    d_sampleExitButton(0),
+    d_quittingSampleView(false),
+    d_loadingProgressBar(0)
 {
 }
 
@@ -85,23 +88,7 @@ bool SamplesFramework::initialise()
 {
     using namespace CEGUI;
 
-    CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-
-    initialiseFrameworkLayout();
-
-    loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
-
-    initialiseSamples();
-
-    if(d_samples.size() > 0)
-    {
-        CEGUI::Window* wnd = d_samples[0]->getSampleWindow();
-        if(wnd)
-        {
-            handleSampleSelection(wnd);
-            d_samplesWinMgr->selectSampleWindow(wnd);
-        }
-    }
+    initialiseLoadScreenLayout();
 
     // return true to signalize the initialisation was sucessful and run the SamplesFramework
     return true;
@@ -112,7 +99,7 @@ void SamplesFramework::cleanupSample()
     unloadSamples();
 }
 
-void SamplesFramework::initialiseFrameworkLayout()
+void SamplesFramework::initialiseLoadScreenLayout()
 {
     CEGUI::Font& font = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     CEGUI::System::getSingleton().getDefaultGUIContext().setDefaultFont(&font);
@@ -122,30 +109,13 @@ void SamplesFramework::initialiseFrameworkLayout()
     System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
 
     WindowManager& winMgr(WindowManager::getSingleton());
+    Window* loadScreenRoot = winMgr.loadLayoutFromFile("SampleBrowserLoadScreen.layout");
+    System::getSingleton().getDefaultGUIContext().setRootWindow(loadScreenRoot);
 
-    d_root = static_cast<DefaultWindow*>(winMgr.createWindow("DefaultWindow", "Root"));
-    
-    d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
+    d_loadingProgressBar = static_cast<CEGUI::ProgressBar*>(loadScreenRoot->getChild("LoadScreenProgressBar"));
+    d_loadingScreenText = loadScreenRoot->getChild("LoadScreenText");
 
-    CEGUI::Window* metaDataWindow = d_root->getChild("SampleBrowserMetaData");
-    d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
-
-    CEGUI::Window* samplesScrollablePane = d_root->getChild("SampleFrameWindowContainer/SamplesFrameWindow/SamplesScrollablePane");
-    d_samplesWinMgr = new SamplesBrowserManager(this, samplesScrollablePane);
-
-
-    d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
-
-    d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(46.f), cegui_absdim(46.f)));
-    d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(0.f)));
-    d_sampleExitButton->setHorizontalAlignment(HA_RIGHT);
-    d_sampleExitButton->setVerticalAlignment(VA_TOP);
-    d_sampleExitButton->setProperty("NormalImage", "SampleBrowserSkin/ExitButtonNormal");
-    d_sampleExitButton->setProperty("HoverImage", "SampleBrowserSkin/ExitButtonHover");
-    d_sampleExitButton->setProperty("PushedImage", "SampleBrowserSkin/ExitButtonClicked");
-    d_sampleExitButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesFramework::handleExitSampleView, this));
-    d_sampleExitButton->setAlwaysOnTop(true);
+    d_loadingScreenText->setText("Parsing samples XML file...");
 }
 
 void SamplesFramework::unloadSamples()
@@ -211,7 +181,7 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
         if(Key::Escape != ceguiKey)
             return d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
         else
-            handleStopDisplaySample();
+            stopDisplaySample();
     }
     else
     {
@@ -312,18 +282,27 @@ bool SamplesFramework::injectMousePosition(float x, float y)
 
 void SamplesFramework::update(float passedTime)
 {
+    static bool init(false);
+    if(!init)
+        init = updateInitialisationStep();
+    else
+    {
+        if(d_quittingSampleView)
+            stopDisplaySample();
+
+        std::vector<SampleData*>::iterator iter = d_samples.begin();
+        std::vector<SampleData*>::iterator end = d_samples.end();
+        for(; iter != end; ++iter)
+        {
+            SampleData* sampleData = *iter;
+
+            GUIContext* guiContext = sampleData->getGuiContext();
+            guiContext->injectTimePulse(passedTime);
+        }
+    }
+
     CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
     context.injectTimePulse(passedTime);
-
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
-    for(; iter != end; ++iter)
-    {
-        SampleData* sampleData = *iter;
-
-        GUIContext* guiContext = sampleData->getGuiContext();
-        guiContext->injectTimePulse(passedTime);
-    }
 }
 
 void SamplesFramework::handleNewWindowSize(float width, float height)
@@ -405,15 +384,21 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     d_selectedSampleData = correspondingSampleData;
 }
 
-void SamplesFramework::handleStopDisplaySample()
+void SamplesFramework::stopDisplaySample()
 {
     GUIContext* sampleGUIContext = d_selectedSampleData->getGuiContext();
+
+    // Since we switch our contexts, the mouse release won't be injected if we don't do it manually
+    sampleGUIContext->injectMouseButtonUp(CEGUI::LeftButton);
+    sampleGUIContext->injectTimePulse(0.f);
+
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
     CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().setPosition(sampleGUIContext->getMouseCursor().getPosition());
 
     d_selectedSampleData = 0;
+    d_quittingSampleView = false;
 }
 
 
@@ -433,25 +418,114 @@ SampleData* SamplesFramework::findSampleData(CEGUI::Window* sampleWindow)
     return 0;
 }
 
-bool SamplesFramework::handleExitSampleView(const CEGUI::EventArgs& args)
+bool SamplesFramework::handleSampleExitButtonClicked(const CEGUI::EventArgs& args)
 {
-    handleStopDisplaySample();
+    d_quittingSampleView = true;
 
     return true;
 }
 
-void SamplesFramework::initialiseSamples()
+bool SamplesFramework::initialiseSample(unsigned int sampleNumber)
 {
-    std::vector<SampleData*>::iterator iter = d_samples.begin();
-    std::vector<SampleData*>::iterator end = d_samples.end();
-    for(; iter != end; ++iter)
-    {
-        SampleData* sampleData = *iter;
+    if(d_samples.size() <= sampleNumber)
+        return true;
 
-        sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
-        CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
-        sampleData->setSampleWindow(sampleWindow);
+    int totalNum = d_samples.size() + 2;
+
+    SampleData* sampleData = d_samples[sampleNumber];
+
+    CEGUI::String loadText = sampleData->getName() + "Loading " + sampleNumber + "/" + totalNum + "     ";
+    d_loadingScreenText->setText(loadText);
+    d_loadingProgressBar->setProgress( (sampleNumber + 2.f) / totalNum );
+
+    sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
+    CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
+    sampleData->setSampleWindow(sampleWindow);
+
+    return false;
+}
+
+void SamplesFramework::initialiseSampleBrowserLayout()
+{
+    int totalNum = d_samples.size() + 1;
+    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser layout...     1/") + totalNum;
+    d_loadingScreenText->setText(loadText);
+    d_loadingProgressBar->setProgress(1.f / totalNum);
+
+    WindowManager& winMgr(WindowManager::getSingleton());
+
+    d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
+
+    CEGUI::Window* metaDataWindow = d_root->getChild("SampleBrowserMetaData");
+    d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
+
+    CEGUI::Window* samplesScrollablePane = d_root->getChild("SampleFrameWindowContainer/SamplesFrameWindow/SamplesScrollablePane");
+    d_samplesWinMgr = new SamplesBrowserManager(this, samplesScrollablePane);
+
+    d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
+
+    d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(34.f), cegui_absdim(34.f)));
+    d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(0.f)));
+    d_sampleExitButton->setHorizontalAlignment(HA_RIGHT);
+    d_sampleExitButton->setVerticalAlignment(VA_TOP);
+    d_sampleExitButton->setProperty("NormalImage", "SampleBrowserSkin/ExitButtonNormal");
+    d_sampleExitButton->setProperty("HoverImage", "SampleBrowserSkin/ExitButtonHover");
+    d_sampleExitButton->setProperty("PushedImage", "SampleBrowserSkin/ExitButtonClicked");
+    d_sampleExitButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SamplesFramework::handleSampleExitButtonClicked, this));
+    d_sampleExitButton->setAlwaysOnTop(true);
+}
+
+bool SamplesFramework::updateInitialisationStep()
+{
+    static int i(0);
+
+    switch(i)
+    {
+    case 0:
+        {
+            CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
+            loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
+            ++i;  
+        }
+        break;
+    case 1:
+        {
+            initialiseSampleBrowserLayout();
+            ++i;
+        }
+        break;
+    default:
+        {
+            bool sampleInitFinished = initialiseSample(i - 2);
+            if(sampleInitFinished)
+            {
+                //Loading finished, switching layout to sample browser
+                switchToSampleBrowser();
+                return true;
+            }
+            else
+                ++i;
+
+            break;
+        }
     }
 
+    return false;
+}
+
+void SamplesFramework::switchToSampleBrowser()
+{
     d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
+
+    System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
+
+    if(d_samples.size() > 0)
+    {
+        CEGUI::Window* wnd = d_samples[0]->getSampleWindow();
+        if(wnd)
+        {
+            handleSampleSelection(wnd);
+            d_samplesWinMgr->selectSampleWindow(wnd);
+        }
+    }
 }
