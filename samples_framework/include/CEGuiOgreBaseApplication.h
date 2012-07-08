@@ -52,7 +52,7 @@ class CEGuiDemoFrameListener;
 // Window event listener forward ref (see class below)
 class WndEvtListener;
 
-class CEGuiOgreBaseApplication : public CEGuiBaseApplication
+class CEGuiOgreBaseApplication : public CEGuiBaseApplication, public Ogre::FrameListener
 {
 public:
     //! Constructor.
@@ -63,6 +63,9 @@ public:
 
     //! called by the frame listener to perform requried per-frame updates.
     void doFrameUpdate(float elapsed);
+
+    //! Ogre frame listener callback that will trigger our specific context rendering
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 protected:
     // override from base class since we use a non-default resource provider.

@@ -155,7 +155,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
         this));
 
     const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
-    d_sampleApp->setApplicationWindowSize(area.getWidth(), area.getHeight());
+    d_sampleApp->setApplicationWindowSize(static_cast<int>(area.getWidth()), static_cast<int>(area.getHeight()));
 
     return execute_impl();
 }
