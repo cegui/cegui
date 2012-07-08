@@ -97,11 +97,6 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-12-NoScale.font");
     d_guiContext->setDefaultFont(d_font);
 
-    // to look more like a real application, we override the autoscale setting
-    // for both skin and font
-//    Imageset& wndlook = ImageManager::getSingleton().get("WindowsLook");
-//    wndlook.setAutoScalingEnabled(false);
-
     // set the mouse cursor
     d_system = System::getSingletonPtr();
     d_guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
@@ -122,11 +117,10 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // create a menubar.
     // this will fit in the top of the screen and have options for the demo
-    UDim bar_bottom(0,d_font->getLineSpacing(2));
+    UDim bar_bottom(0,d_font->getLineSpacing(1.5f));
 
     Window* bar = d_wm->createWindow("WindowsLook/Menubar");
     bar->setArea(UDim(0,0),UDim(0,0),UDim(1,0),bar_bottom);
-    bar->setAlwaysOnTop(true); // we want the menu on top
     d_root->addChild(bar);
 
     // fill out the menubar
@@ -138,7 +132,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // this scrollable pane will be a kind of virtual desktop in the sense that it's bigger than
     // the screen. 3000 x 3000 pixels
     d_pane->setContentPaneAutoSized(false);
-    d_pane->setContentPaneArea(CEGUI::Rectf(0, 0, 3000, 3000));
+    d_pane->setContentPaneArea(CEGUI::Rectf(0, 0, 5000, 5000));
     d_root->addChild(d_pane);
 
     // add a dialog to this pane so we have something to drag around :)
