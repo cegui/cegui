@@ -1247,5 +1247,105 @@
         <StateImagery name="Disabled"/>
     </WidgetLook>
 
+    
+     <!--
+    Progress Bar
+-->
+    <WidgetLook name="SampleBrowserSkin/ProgressBar">
+        <NamedArea name="ProgressArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <UnifiedDim scale="1" type="RightEdge"/>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <UnifiedDim scale="1" type="BottomEdge"/>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="frame">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="Width">
+                        <UnifiedDim scale="1" type="Width"/>
+                    </Dim>
+                    <Dim type="Height">
+                        <UnifiedDim scale="1" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/ProgessBarTopLeft"/>
+                <Image component="TopRightCorner" name="SampleBrowserSkin/ProgessBarTopRight"/>
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/ProgessBarBotLeft"/>
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/ProgessBarBotRight"/>
+                <Image component="LeftEdge" name="SampleBrowserSkin/ProgessBarLeft"/>
+                <Image component="TopEdge" name="SampleBrowserSkin/ProgessBarTop"/>
+                <Image component="RightEdge" name="SampleBrowserSkin/ProgessBarRight"/>
+                <Image component="BottomEdge" name="SampleBrowserSkin/ProgessBarBot"/>
+                <Image component="Background" name="SampleBrowserSkin/ProgessBarMiddle"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="progress">
+            <FrameComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="Width">
+                        <OperatorDim op="Multiply">
+                            <UnifiedDim scale="1" type="Width"/>
+                            <PropertyDim name="CurrentProgress"/>
+                        </OperatorDim>
+                    </Dim>
+                    <Dim type="Height">
+                        <UnifiedDim scale="1" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image component="TopLeftCorner" name="SampleBrowserSkin/ProgessBarOverTopLeft"/>
+                <Image component="TopRightCorner" name="SampleBrowserSkin/ProgessBarOverTopRight"/>
+                <Image component="BottomLeftCorner" name="SampleBrowserSkin/ProgessBarOverBotLeft"/>
+                <Image component="BottomRightCorner" name="SampleBrowserSkin/ProgessBarOverBotRight"/>
+                <Image component="LeftEdge" name="SampleBrowserSkin/ProgessBarOverLeft"/>
+                <Image component="TopEdge" name="SampleBrowserSkin/ProgessBarOverTop"/>
+                <Image component="RightEdge" name="SampleBrowserSkin/ProgessBarOverRight"/>
+                <Image component="BottomEdge" name="SampleBrowserSkin/ProgessBarOverBot"/>
+                <Image component="Background" name="SampleBrowserSkin/ProgessBarOverMiddle"/>
+            </FrameComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="frame"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="frame"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress"/>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>
 
