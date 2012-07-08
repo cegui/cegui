@@ -18,6 +18,7 @@
     <FalagardMapping windowType="SampleBrowserSkin/HorizontalScrollbar" targetType="CEGUI/Scrollbar" renderer="Core/Scrollbar" lookNFeel="SampleBrowserSkin/HorizontalScrollbar" />
     <FalagardMapping windowType="SampleBrowserSkin/Thumb" targetType="CEGUI/Thumb" renderer="Core/Button" lookNFeel="SampleBrowserSkin/Thumb" />
     <FalagardMapping windowType="SampleBrowserSkin/ScrollablePane" targetType="CEGUI/ScrollablePane" renderer="Core/ScrollablePane" lookNFeel="SampleBrowserSkin/ScrollablePane" /> 
+    <FalagardMapping windowType="SampleBrowserSkin/ProgressBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="SampleBrowserSkin/ProgressBar" /> 
 
     </GUIScheme>
 
