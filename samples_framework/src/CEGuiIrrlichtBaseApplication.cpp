@@ -179,16 +179,6 @@ bool CEGuiIrrlichtBaseApplication::OnEvent(const irr::SEvent& event)
 bool CEGuiIrrlichtBaseApplication::OnEvent(irr::SEvent event)
 #endif
 {
-    // cegui samples always quit on escape
-    if (event.EventType == irr::EET_KEY_INPUT_EVENT)
-    {
-        if (event.KeyInput.Key == irr::KEY_ESCAPE)
-        {
-            d_sampleApp->setQuitting(true);
-            return true;
-        }
-    }
-
     return (d_renderer != 0) ?
         processEvent(event) :
     false;

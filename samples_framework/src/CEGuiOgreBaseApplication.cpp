@@ -95,6 +95,10 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
 
+      
+        d_ogreRoot->addFrameListener(this);
+        renderer.setRenderingEnabled(false);
+
         d_initialised = true;
     }
     else
@@ -216,6 +220,13 @@ void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
 
     updateFPS(elapsed);
     updateLogo(elapsed);
+}
+//----------------------------------------------------------------------------//
+bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent&)
+{
+   d_sampleApp->drawGUIContexts();
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
