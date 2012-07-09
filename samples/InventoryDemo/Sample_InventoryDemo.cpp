@@ -33,28 +33,23 @@
 #include <CEGUI/CEGUI.h>
 
 //----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    InventoryDemo app;
-    return app.run();
-}
-
-//----------------------------------------------------------------------------//
-bool InventoryDemo::initialiseSample()
+bool InventoryDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
-    
+
+     d_usedFiles = CEGUI::String(__FILE__);
+
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
+
     // basic system init using TaharezLook.
     WindowManager& winMgr = WindowManager::getSingleton();
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
     Window* root = winMgr.createWindow("DefaultWindow", "root");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    guiContext->setRootWindow(root);
 
     // register custom objects with CEGUI.
     WindowFactoryManager::addFactory<TplWindowFactory<InventoryReceiver> >();
@@ -140,10 +135,19 @@ bool InventoryDemo::initialiseSample()
 }
 
 //----------------------------------------------------------------------------//
-void InventoryDemo::cleanupSample()
+void InventoryDemo::deinitialise()
 {
     // nothing to do here!
 }
 
 //----------------------------------------------------------------------------//
 
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static InventoryDemo sample;
+    return sample;
+}

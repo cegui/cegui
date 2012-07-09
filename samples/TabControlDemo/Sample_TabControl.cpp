@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 using namespace CEGUI;
@@ -64,24 +64,29 @@ public:
 };
 
 // Sample class
-class TabControlDemo : public CEGuiSample
+class TabControlDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample()
+    bool initialise(CEGUI::GUIContext* guiContext)
     {
+        d_guiContext = guiContext;
+        d_usedFiles = CEGUI::String(__FILE__);
+
+        // load font and setup default if not loaded via scheme
+        Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+        // Set default font for the gui context
+        guiContext->setDefaultFont(&defaultFont);
+
         // we will use of the WindowManager.
         WindowManager& winMgr = WindowManager::getSingleton();
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
-        // Ensure font is loaded
-        // First font gets set as the default font automatically
-        FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+        d_guiContext->getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
 
         // load an image to use as a background
-        ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+        ImageManager::getSingleton().addFromImageFile("BackgroundImageTabControl", "GPN-2000-001437.png");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow(SKIN "/StaticImage");
@@ -92,12 +97,12 @@ public:
         background->setProperty("FrameEnabled", "false");
         background->setProperty("BackgroundEnabled", "false");
         // set the background image
-        background->setProperty("Image", "BackgroundImage");
+        background->setProperty("Image", "BackgroundImageTabControl");
         // install this as the root GUI sheet
-        System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+        d_guiContext->setRootWindow(background);
 
         // set tooltip styles (by default there is none)
-        System::getSingleton().getDefaultGUIContext().setDefaultTooltipType(SKIN "/Tooltip");
+        d_guiContext->setDefaultTooltipType(SKIN "/Tooltip");
 
         // load some demo windows and attach to the background 'root'
         background->addChild(winMgr.loadLayoutFromFile("TabControlDemo.layout"));
@@ -169,14 +174,13 @@ public:
     }
 
     // method to perform any required cleanup operations.
-    void cleanupSample()
+    void deinitialise()
     {
-        // me? cleanup? what?
     }
 
     void refreshPageList()
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -222,7 +226,7 @@ public:
         }
 
         // Check if the window exists
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         if (root->isChild("Frame/TabControl"))
         {
@@ -239,7 +243,7 @@ public:
                             static_cast<const WindowEventArgs&>(e).window);
 
         // Check if the window exists
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         if (root->isChild("Frame/TabControl"))
         {
@@ -258,7 +262,7 @@ public:
                             static_cast<const WindowEventArgs&>(e).window);
 
         // Check if the window exists
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         if (root->isChild("Frame/TabControl"))
         {
@@ -272,7 +276,7 @@ public:
 
     bool handleAddTab(const EventArgs&)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
 
         // Check if the window exists
         if (root->isChild("Frame/TabControl"))
@@ -291,16 +295,10 @@ public:
                     continue;
 
                 Window* pg = 0;
-                CEGUI_TRY
-                {
-                    pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-                    pg->setName(String(pgname.str()));
-                }
-                CEGUI_CATCH(CEGUI::Exception&)
-                {
-                    outputExceptionMessage("Some error occured while adding a tabpage. Please see the logfile.");
-                    break;
-                }
+
+                pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
+                pg->setName(String(pgname.str()));
+
 
                 // This window has just been created while loading the layout
                 if (pg->isChild("Text"))
@@ -322,7 +320,7 @@ public:
 
     bool handleGoto(const EventArgs&)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -354,7 +352,7 @@ public:
 
     bool handleShow(const EventArgs&)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -386,7 +384,7 @@ public:
 
     bool handleDel(const EventArgs&)
     {
-        Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+        Window* root = d_guiContext->getRootWindow();
         // Check if the windows exists
         Listbox* lbox = 0;
         TabControl* tc = 0;
@@ -420,15 +418,17 @@ public:
 
         return true;
     }
+
+
+    protected:
+        CEGUI::GUIContext* d_guiContext;
 };
 
-int main(int /*argc*/, char* /*argv*/[])
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    TabControlDemo app;
-    return app.run();
+    static TabControlDemo sample;
+    return sample;
 }

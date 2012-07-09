@@ -29,19 +29,19 @@
 #include "CEGUI/CEGUI.h"
 
 //----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
-{
-    EditboxValidation app;
-    return app.run();
-}
-
-//----------------------------------------------------------------------------//
-bool EditboxValidation::initialiseSample()
+bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
+    d_usedFiles = CEGUI::String(__FILE__);
+
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
+
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("AlfiskoSkin/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("AlfiskoSkin/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
     Window* root = winMgr.createWindow("DefaultWindow");
@@ -106,10 +106,18 @@ bool EditboxValidation::quitButtonHandler(const CEGUI::EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void EditboxValidation::cleanupSample()
+void EditboxValidation::deinitialise()
 {
     // nothing to do here!
 }
 
 //----------------------------------------------------------------------------//
 
+/*************************************************************************
+Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static EditboxValidation sample;
+    return sample;
+}
