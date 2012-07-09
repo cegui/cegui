@@ -28,7 +28,7 @@
 #ifndef _Sample_Demo7_h_
 #define _Sample_Demo7_h_
 
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
 class WobblyWindowEffect : public CEGUI::RenderEffect
@@ -130,14 +130,14 @@ protected:
 };
 
 // Sample class
-class Demo7Sample : public CEGuiSample
+class Demo7Sample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
 protected:
     // initialisation helpers
@@ -149,6 +149,8 @@ protected:
     bool handleSlider(const CEGUI::EventArgs& e);
     bool handleRadio(const CEGUI::EventArgs& e);
     bool handleCheck(const CEGUI::EventArgs& e);
+
+    CEGUI::GUIContext* d_guiContext;
 };
 
 
