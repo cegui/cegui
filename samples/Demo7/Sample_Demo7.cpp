@@ -238,9 +238,10 @@ bool MyEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
 *************************************************************************/
 bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
 {
-    d_guiContext = guiContext;
-
     using namespace CEGUI;
+
+    d_usedFiles = CEGUI::String(__FILE__);
+    d_guiContext = guiContext;
 
     // Register our effect with the system
     RenderEffectManager::getSingleton().addEffect<MyEffect>("WobblyWindow");

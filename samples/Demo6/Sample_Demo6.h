@@ -62,8 +62,6 @@ protected:
     bool handleSelectChanged(const CEGUI::EventArgs& e);
     bool handleSelectModeChanged(const CEGUI::EventArgs& e);
     bool handleContentsChanged(const CEGUI::EventArgs& e);
-
-    CEGUI::String d_usedFiles;
 };
 
 #endif  // end of guard _Sample_Demo6_h_

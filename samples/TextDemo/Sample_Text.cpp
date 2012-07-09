@@ -37,6 +37,7 @@ using namespace CEGUI;
 bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     d_guiContext = guiContext;
+    d_usedFiles = CEGUI::String(__FILE__);
 
     // we will make extensive use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();

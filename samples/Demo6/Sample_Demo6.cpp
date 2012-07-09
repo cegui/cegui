@@ -32,12 +32,14 @@
 #include <stdio.h>
 #include <string>
 
+using namespace CEGUI;
+
 /*************************************************************************
-    Sample specific initialisation goes here.
+Sample specific initialisation goes here.
 *************************************************************************/
 bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
 {
-    using namespace CEGUI;
+    d_usedFiles = CEGUI::String(__FILE__);
 
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();

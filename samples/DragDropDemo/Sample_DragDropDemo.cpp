@@ -31,9 +31,10 @@
 //----------------------------------------------------------------------------//
 bool DragDropDemo::initialise(CEGUI::GUIContext* guiContext)
 {
-    d_guiContext = guiContext;
-
     using namespace CEGUI;
+
+    d_guiContext = guiContext;
+    d_usedFiles = CEGUI::String(__FILE__);
 
     // load windows look
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
