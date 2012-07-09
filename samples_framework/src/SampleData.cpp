@@ -209,8 +209,8 @@ void SampleDataModule::initialise(int width, int height)
 
     getSampleInstanceFromDLL();
 
-    d_usedFilesString = d_sample->getUsedFilesString();
     d_sample->initialise(d_guiContext);
+    d_usedFilesString = d_sample->getUsedFilesString();
 }
 
 void SampleDataModule::deinitialise()

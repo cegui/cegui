@@ -89,8 +89,8 @@ bool SamplesFramework::initialise()
     using namespace CEGUI;
 
     initialiseLoadScreenLayout();
-
     // return true to signalize the initialisation was sucessful and run the SamplesFramework
+
     return true;
 }
 
@@ -106,8 +106,6 @@ void SamplesFramework::initialiseLoadScreenLayout()
 
     SchemeManager::getSingleton().createFromFile("SampleBrowser.scheme");
 
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
-
     WindowManager& winMgr(WindowManager::getSingleton());
     Window* loadScreenRoot = winMgr.loadLayoutFromFile("SampleBrowserLoadScreen.layout");
     System::getSingleton().getDefaultGUIContext().setRootWindow(loadScreenRoot);
@@ -116,6 +114,7 @@ void SamplesFramework::initialiseLoadScreenLayout()
     d_loadingScreenText = loadScreenRoot->getChild("LoadScreenText");
 
     d_loadingScreenText->setText("Parsing samples XML file...");
+    d_loadingProgressBar->setProgress(0.f);
 }
 
 void SamplesFramework::unloadSamples()
@@ -283,6 +282,7 @@ bool SamplesFramework::injectMousePosition(float x, float y)
 void SamplesFramework::update(float passedTime)
 {
     static bool init(false);
+
     if(!init)
         init = updateInitialisationStep();
     else
@@ -290,15 +290,7 @@ void SamplesFramework::update(float passedTime)
         if(d_quittingSampleView)
             stopDisplaySample();
 
-        std::vector<SampleData*>::iterator iter = d_samples.begin();
-        std::vector<SampleData*>::iterator end = d_samples.end();
-        for(; iter != end; ++iter)
-        {
-            SampleData* sampleData = *iter;
-
-            GUIContext* guiContext = sampleData->getGuiContext();
-            guiContext->injectTimePulse(passedTime);
-        }
+        updateSampleGUIContexts(passedTime);
     }
 
     CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
@@ -434,7 +426,7 @@ bool SamplesFramework::initialiseSample(unsigned int sampleNumber)
 
     SampleData* sampleData = d_samples[sampleNumber];
 
-    CEGUI::String loadText = sampleData->getName() + "Loading " + sampleNumber + "/" + totalNum + "     ";
+    CEGUI::String loadText = sampleData->getName() + "Loading " + PropertyHelper<int>::toString(sampleNumber + 2) + "/" + PropertyHelper<int>::toString(totalNum) + "     ";
     d_loadingScreenText->setText(loadText);
     d_loadingProgressBar->setProgress( (sampleNumber + 2.f) / totalNum );
 
@@ -448,13 +440,19 @@ bool SamplesFramework::initialiseSample(unsigned int sampleNumber)
 void SamplesFramework::initialiseSampleBrowserLayout()
 {
     int totalNum = d_samples.size() + 1;
-    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser layout...     1/") + totalNum;
+    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser layout...     1/") + PropertyHelper<int>::toString(totalNum);
     d_loadingScreenText->setText(loadText);
     d_loadingProgressBar->setProgress(1.f / totalNum);
 
+    CEGUI::Font& buttonFont = CEGUI::FontManager::getSingleton().createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
+
     WindowManager& winMgr(WindowManager::getSingleton());
+    
+    CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10-NoScale.font");
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
+
 
     CEGUI::Window* metaDataWindow = d_root->getChild("SampleBrowserMetaData");
     d_metaDataWinMgr = new MetaDataWindowManager(metaDataWindow);
@@ -477,26 +475,27 @@ void SamplesFramework::initialiseSampleBrowserLayout()
 
 bool SamplesFramework::updateInitialisationStep()
 {
-    static int i(0);
+    static int step(0);
 
-    switch(i)
+    switch(step)
     {
     case 0:
         {
-            CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
             loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
-            ++i;  
+            ++step;
+            break;
         }
         break;
     case 1:
         {
             initialiseSampleBrowserLayout();
-            ++i;
+            ++step;
+            break;
         }
-        break;
+        
     default:
         {
-            bool sampleInitFinished = initialiseSample(i - 2);
+            bool sampleInitFinished = initialiseSample(step - 2);
             if(sampleInitFinished)
             {
                 //Loading finished, switching layout to sample browser
@@ -504,7 +503,7 @@ bool SamplesFramework::updateInitialisationStep()
                 return true;
             }
             else
-                ++i;
+                ++step;
 
             break;
         }
@@ -527,5 +526,18 @@ void SamplesFramework::switchToSampleBrowser()
             handleSampleSelection(wnd);
             d_samplesWinMgr->selectSampleWindow(wnd);
         }
+    }
+}
+
+void SamplesFramework::updateSampleGUIContexts(float passedTime)
+{
+    std::vector<SampleData*>::iterator iter = d_samples.begin();
+    std::vector<SampleData*>::iterator end = d_samples.end();
+    for(; iter != end; ++iter)
+    {
+        SampleData* sampleData = *iter;
+
+        GUIContext* guiContext = sampleData->getGuiContext();
+        guiContext->injectTimePulse(passedTime);
     }
 }

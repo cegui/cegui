@@ -212,7 +212,7 @@ CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const
     WindowManager& winMgr(WindowManager::getSingleton());
 
     CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
-    windowName->setSize(CEGUI::USize(cegui_absdim(260.f), cegui_absdim(40.f)));
+    windowName->setSize(CEGUI::USize(cegui_reldim(0.6f), cegui_absdim(40.f)));
     windowName->setText(name);
     windowName->setFont("DejaVuSans-12-NoScale");
     windowName->setProperty("HorzFormatting", "Centre");
