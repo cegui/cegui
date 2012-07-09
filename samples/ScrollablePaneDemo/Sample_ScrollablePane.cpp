@@ -82,13 +82,14 @@ private:
 
 
 /*************************************************************************
-    Sample specific initialisation goes here.
+Sample specific initialisation goes here.
 *************************************************************************/
 bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 {
-    d_guiContext = guiContext;
-
     using namespace CEGUI;
+
+    d_guiContext = guiContext;
+    d_usedFiles = CEGUI::String(__FILE__);
 
     // this sample will use WindowsLook
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");

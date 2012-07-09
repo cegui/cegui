@@ -171,6 +171,8 @@ public:
 
 bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_usedFiles = CEGUI::String(__FILE__);
+
     d_guiContext = guiContext;
 
     // we will use of the WindowManager.

@@ -44,6 +44,8 @@ bool FalagardDemo1Sample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
+    d_usedFiles = CEGUI::String(__FILE__);
+
     Logger::getSingleton().setLoggingLevel(Informative);
 
     // Get window manager which we wil use for a few jobs here.

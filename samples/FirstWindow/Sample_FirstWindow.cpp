@@ -36,6 +36,8 @@ bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
+     d_usedFiles = CEGUI::String(__FILE__);
+
     // CEGUI relies on various systems being set-up, so this is what we do
     // here first.
     //

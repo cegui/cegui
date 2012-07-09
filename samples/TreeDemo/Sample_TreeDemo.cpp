@@ -86,21 +86,24 @@ int randInt(int low, int high)
 
 
 /*************************************************************************
-    Sample specific initialisation goes here.
+Sample specific initialisation goes here.
 *************************************************************************/
 bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
-   {
-   using namespace CEGUI;
-   Tree *      theTree;
-   TreeItem *  newTreeCtrlEntryLvl1;  // Level 1 TreeCtrlEntry (branch)
-   TreeItem *  newTreeCtrlEntryLvl2;  // Level 2 TreeCtrlEntry (branch)
-   TreeItem *  newTreeCtrlEntryLvl3;  // Level 3 TreeCtrlEntry (branch)
-   TreeItem *  newTreeCtrlEntryParent;
-   Image *     iconArray[9];
+{
+    using namespace CEGUI;
+
+    d_usedFiles = CEGUI::String(__FILE__);
+
+    Tree *      theTree;
+    TreeItem *  newTreeCtrlEntryLvl1;  // Level 1 TreeCtrlEntry (branch)
+    TreeItem *  newTreeCtrlEntryLvl2;  // Level 2 TreeCtrlEntry (branch)
+    TreeItem *  newTreeCtrlEntryLvl3;  // Level 3 TreeCtrlEntry (branch)
+    TreeItem *  newTreeCtrlEntryParent;
+    Image *     iconArray[9];
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
-   // Windows specific code.
-   srand(time(NULL));
+    // Windows specific code.
+    srand(time(NULL));
 #endif
 
    // Get window manager which we will use for a few jobs here.

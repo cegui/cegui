@@ -37,6 +37,8 @@ bool InventoryDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
+     d_usedFiles = CEGUI::String(__FILE__);
+
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     // Set default font for the gui context

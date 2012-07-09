@@ -71,6 +71,7 @@ public:
     bool initialise(CEGUI::GUIContext* guiContext)
     {
         d_guiContext = guiContext;
+        d_usedFiles = CEGUI::String(__FILE__);
 
         // load font and setup default if not loaded via scheme
         Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
