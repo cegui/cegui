@@ -33,13 +33,15 @@ class CommonDialogsDemo : public Sample
 {
 public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
-    void cleanupSample(void) {}
+    void deinitialise(void) {}
 };
 
 //----------------------------------------------------------------------------//
 bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
+
+    d_usedFiles = CEGUI::String(__FILE__);
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -61,20 +63,21 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
         winMgr.createWindow("Vanilla/FrameWindow"));
     root->addChild(wnd);
 
+    wnd->setAlwaysOnTop(true);
+
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
     wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
     wnd->setText("Common Dialogs Demo - Main Window");
+    wnd->setCloseButtonEnabled(false);
 
     // Add a colour picker & label
-    Window* colourPickerLabel = winMgr.createWindow("Vanilla/StaticText");
+    Window* colourPickerLabel = winMgr.createWindow("Vanilla/Label");
     wnd->addChild(colourPickerLabel);
-    colourPickerLabel->setSize(USize(UDim(0, 110), UDim(0, 30)));
-    colourPickerLabel->setProperty("FrameEnabled", "False");
-    colourPickerLabel->setProperty("BackgroundEnabled", "False");
+    colourPickerLabel->setSize(USize(UDim(0, 170), UDim(0, 30)));
     colourPickerLabel->setText("Colour (click it!):");
     Window* colourPicker = winMgr.createWindow("Vanilla/ColourPicker");
     wnd->addChild(colourPicker);
-    colourPicker->setPosition(UVector2(UDim(0,110), UDim(0, 0)));
+    colourPicker->setPosition(UVector2(UDim(0,170), UDim(0, 0)));
     colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
 
     return true;
@@ -82,3 +85,12 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 
 //----------------------------------------------------------------------------//
 
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static CommonDialogsDemo sample;
+    return sample;
+}
