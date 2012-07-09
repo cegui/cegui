@@ -516,7 +516,7 @@
         <PropertyLinkDefinition targetProperty="Colour" widget="__auto_oldcolourrect__" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="PreviousColour"/>
         <PropertyLinkDefinition targetProperty="Colour" widget="__auto_newcolourrect__" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="NewColour"/>
         <PropertyLinkDefinition targetProperty="CaptionColour" widget="__auto_titlebar__" initialValue="FF4A4A4A" type="ColourRect" name="CaptionColour"/>
-        <PropertyLinkDefinition initialValue="DejaVuSans-12-NoScale" type="Font" name="ColourPickerFontType">
+        <PropertyLinkDefinition initialValue="DejaVuSans-10-NoScale" type="Font" name="ColourPickerFontType">
             <PropertyLinkTarget widget="__auto_cancelbutton__" property="Font"/>
             <PropertyLinkTarget widget="__auto_acceptbutton__" property="Font"/>
             <PropertyLinkTarget widget="__auto_titlebar__" property="Font"/>
