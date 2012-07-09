@@ -72,7 +72,7 @@ public:
 
     virtual void update(float passedTime);
 
-    bool updateInitialisationStep();
+
 
     void switchToSampleBrowser();
     virtual void handleNewWindowSize(float width, float height);
@@ -109,6 +109,9 @@ protected:
     void addSample(SampleData* sampleData);
 
     void stopDisplaySample();
+
+    void updateSampleGUIContexts(float passedTime);
+    bool updateInitialisationStep();
 
     CEGUI::Window*              d_root;
 
