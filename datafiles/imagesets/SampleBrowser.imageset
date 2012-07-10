@@ -10,15 +10,15 @@
     <Image height="389" name="SampleFrameRight" width="28" xPos="875" yPos="27" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
     <Image height="27" name="SampleFrameTop" width="690" xPos="185" yPos="0" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
     <Image height="27" name="SampleFrameTopLeft" width="28" xPos="157" yPos="0" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="7" name="TextBoxB" width="6" xPos="13" yPos="122" />
+    <Image height="13" name="TextBoxB" width="6" xPos="13" yPos="116" />
     <Image height="13" name="TextBoxTR" width="13" xPos="19" yPos="97" />
-    <Image height="7" name="TextBoxT" width="6" xPos="13" yPos="97" />
+    <Image height="13" name="TextBoxT" width="6" xPos="13" yPos="97" />
     <Image height="13" name="TextBoxTL" width="13" xPos="0" yPos="97" />
-    <Image height="6" name="TextBoxR" width="7" xPos="25" yPos="110" />
+    <Image height="6" name="TextBoxR" width="13" xPos="19" yPos="110" />
     <Image height="13" name="TextBoxBR" width="13" xPos="19" yPos="116" />
     <Image height="6" name="TextBoxM" width="6" xPos="13" yPos="110" />
     <Image height="13" name="TextBoxBL" width="13" xPos="0" yPos="116" />
-    <Image height="6" name="TextBoxL" width="7" xPos="0" yPos="110" />
+    <Image height="6" name="TextBoxL" width="13" xPos="0" yPos="110" />
     <Image height="26" name="CaptionM" width="7" xPos="51" yPos="102" />
     <Image height="26" name="CaptionL" width="12" xPos="39" yPos="102" />
     <Image height="26" name="CaptionR" width="12" xPos="58" yPos="102" />
