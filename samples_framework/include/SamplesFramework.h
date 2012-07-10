@@ -74,11 +74,12 @@ public:
 
 
 
-    void switchToSampleBrowser();
+    void initialisationFinalisation();
     virtual void handleNewWindowSize(float width, float height);
 
-    virtual void drawGUIContexts();
+    virtual void renderGUIContexts();
 
+    void renderSampleGUIContexts();
     SampleData* findSampleData(CEGUI::Window* sampleWindow);
 
     virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
@@ -126,6 +127,7 @@ protected:
 
     CEGUI::ProgressBar*         d_loadingProgressBar;
     CEGUI::Window*              d_loadingScreenText;
+    CEGUI::Window*              d_loadScreenChunkProgressText;
 
     bool                        d_quittingSampleView;
 };

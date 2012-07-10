@@ -100,7 +100,7 @@ public:
     \brief
     Draw function to draw GUIContexts
     */
-    virtual void drawGUIContexts() = 0;
+    virtual void renderGUIContexts() = 0;
 
     /*!
     \brief

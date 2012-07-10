@@ -199,8 +199,7 @@ void SamplesBrowserManager::init()
 
     d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
 
-    d_verticalLayoutContainerSamples->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
-
+    d_verticalLayoutContainerSamples->setMargin(CEGUI::UBox(cegui_reldim(0.f), cegui_reldim(0.1f), cegui_absdim(14.f), cegui_reldim(0.1f)));
     d_verticalLayoutContainerSamples->setMouseInputPropagationEnabled(true);
 
     d_root->addChild(d_verticalLayoutContainerSamples);
@@ -212,7 +211,7 @@ CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const
     WindowManager& winMgr(WindowManager::getSingleton());
 
     CEGUI::DefaultWindow* windowName = static_cast<DefaultWindow*>(winMgr.createWindow("SampleBrowserSkin/StaticText"));
-    windowName->setSize(CEGUI::USize(cegui_reldim(0.6f), cegui_absdim(40.f)));
+    windowName->setSize(CEGUI::USize(cegui_reldim(0.6f), cegui_absdim(44.f)));
     windowName->setText(name);
     windowName->setFont("DejaVuSans-12-NoScale");
     windowName->setProperty("HorzFormatting", "Centre");
@@ -226,8 +225,9 @@ CEGUI::VerticalLayoutContainer* SamplesBrowserManager::createPreviewLayoutContai
     WindowManager& winMgr(WindowManager::getSingleton());
 
     CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
+    root->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(1.f)));
     root->setMouseInputPropagationEnabled(true);
-    root->setMargin(CEGUI::UBox(UDim(0.f, 0.f),UDim(0.f, 0.f),UDim(0.f, 12.f), UDim(0.f, 0.f)));
+    root->setMargin(CEGUI::UBox(UDim(0.f, 0.f),UDim(0.f, 0.f),UDim(0.f, 8.f), UDim(0.f, 0.f)));
 
     return root;
 }
