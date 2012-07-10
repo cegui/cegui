@@ -224,7 +224,7 @@ void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
 //----------------------------------------------------------------------------//
 bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent&)
 {
-   d_sampleApp->drawGUIContexts();
+   d_sampleApp->renderGUIContexts();
 
     return true;
 }

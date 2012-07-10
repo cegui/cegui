@@ -76,7 +76,7 @@ CEGUI::String SampleData::getName()
 
 CEGUI::String SampleData::getSummary()
 {
-    return d_summary;
+    return "Summary:\n" + d_summary;
 }
 
 CEGUI::String SampleData::getSampleTypeString()
@@ -98,12 +98,12 @@ CEGUI::String SampleData::getSampleTypeString()
 
 CEGUI::String SampleData::getDescription()
 {
-    return d_description;
+    return "Description:\n" + d_description;
 }
 
 CEGUI::String SampleData::getUsedFilesString()
 {
-    return d_usedFilesString;
+    return "Used files:\n" + d_usedFilesString;
 }
 
 void SampleData::setSampleWindow(CEGUI::Window* sampleWindow)

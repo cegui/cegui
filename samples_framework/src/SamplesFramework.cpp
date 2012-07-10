@@ -112,6 +112,7 @@ void SamplesFramework::initialiseLoadScreenLayout()
 
     d_loadingProgressBar = static_cast<CEGUI::ProgressBar*>(loadScreenRoot->getChild("LoadScreenProgressBar"));
     d_loadingScreenText = loadScreenRoot->getChild("LoadScreenText");
+    d_loadScreenChunkProgressText = d_loadingScreenText->getChild("LoadScreenTextChunkProgress");
 
     d_loadingScreenText->setText("Parsing samples XML file...");
     d_loadingProgressBar->setProgress(0.f);
@@ -284,17 +285,30 @@ void SamplesFramework::update(float passedTime)
     static bool init(false);
 
     if(!init)
+    {
         init = updateInitialisationStep();
+
+        CEGUI::GUIContext& defaultGUIContext(CEGUI::System::getSingleton().getDefaultGUIContext());
+        defaultGUIContext.injectTimePulse(passedTime);
+    }
     else
     {
         if(d_quittingSampleView)
             stopDisplaySample();
 
-        updateSampleGUIContexts(passedTime);
+        if(!d_selectedSampleData)
+        {
+            CEGUI::GUIContext& defaultGUIContext(CEGUI::System::getSingleton().getDefaultGUIContext());
+            defaultGUIContext.injectTimePulse(passedTime);
+
+            updateSampleGUIContexts(passedTime);
+        }
+        else
+        {
+            d_selectedSampleData->getGuiContext()->injectTimePulse(passedTime);
+        }
     }
 
-    CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
-    context.injectTimePulse(passedTime);
 }
 
 void SamplesFramework::handleNewWindowSize(float width, float height)
@@ -321,31 +335,15 @@ void SamplesFramework::addSample(SampleData* sampleData)
 }
 
 
-void SamplesFramework::drawGUIContexts()
+void SamplesFramework::renderGUIContexts()
 {
     if(!d_selectedSampleData)
     {
         CEGUI::System& gui_system(CEGUI::System::getSingleton());
         gui_system.getDefaultGUIContext().draw();
 
-        std::vector<SampleData*>::iterator iter = d_samples.begin();
-        std::vector<SampleData*>::iterator end = d_samples.end();
-        for(; iter != end; ++iter)
-        {
-            SampleData* sampleData = *iter;
+        renderSampleGUIContexts();
 
-            if(!sampleData->getGuiContext())
-                continue;
-
-            bool isContextDirty = sampleData->getGuiContext()->isDirty();
-            if(isContextDirty)
-            {
-                sampleData->clearRTTTexture();
-                sampleData->getGuiContext()->draw();
-
-                sampleData->getSampleWindow()->invalidate();
-            }
-        }
     }
     else
     {
@@ -426,9 +424,13 @@ bool SamplesFramework::initialiseSample(unsigned int sampleNumber)
 
     SampleData* sampleData = d_samples[sampleNumber];
 
-    CEGUI::String loadText = sampleData->getName() + "Loading " + PropertyHelper<int>::toString(sampleNumber + 2) + "/" + PropertyHelper<int>::toString(totalNum) + "     ";
+    CEGUI::String loadText = "Loading " + sampleData->getName() + " ...";
     d_loadingScreenText->setText(loadText);
-    d_loadingProgressBar->setProgress( (sampleNumber + 2.f) / totalNum );
+
+    CEGUI::String progressText = PropertyHelper<int>::toString(sampleNumber + 2) + "/" + PropertyHelper<int>::toString(totalNum - 1);
+    d_loadScreenChunkProgressText->setText(progressText);
+
+    d_loadingProgressBar->setProgress( (sampleNumber + 2.f) / (totalNum - 1.f) );
 
     sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
     CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
@@ -439,17 +441,23 @@ bool SamplesFramework::initialiseSample(unsigned int sampleNumber)
 
 void SamplesFramework::initialiseSampleBrowserLayout()
 {
-    int totalNum = d_samples.size() + 1;
-    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser layout...     1/") + PropertyHelper<int>::toString(totalNum);
+    int totalNum = d_samples.size() + 2;
+
+    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin...");
     d_loadingScreenText->setText(loadText);
-    d_loadingProgressBar->setProgress(1.f / totalNum);
+
+    CEGUI::String progressText =  PropertyHelper<int>::toString(1) + "/" + PropertyHelper<int>::toString(totalNum - 1);
+    d_loadScreenChunkProgressText->setText(progressText);
+
+    d_loadingProgressBar->setProgress(1.f / (totalNum - 1.f));
 
     CEGUI::Font& buttonFont = CEGUI::FontManager::getSingleton().createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
 
     WindowManager& winMgr(WindowManager::getSingleton());
     
     CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10-NoScale.font");
+    CEGUI::FontManager::getSingleton().createFromFile("Junicode-13.font");
+    
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
 
@@ -499,7 +507,7 @@ bool SamplesFramework::updateInitialisationStep()
             if(sampleInitFinished)
             {
                 //Loading finished, switching layout to sample browser
-                switchToSampleBrowser();
+                initialisationFinalisation();
                 return true;
             }
             else
@@ -512,8 +520,9 @@ bool SamplesFramework::updateInitialisationStep()
     return false;
 }
 
-void SamplesFramework::switchToSampleBrowser()
+void SamplesFramework::initialisationFinalisation()
 {
+    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("SampleBrowserSkin/MouseArrow");
     d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
 
     System::getSingleton().getDefaultGUIContext().setRootWindow(d_root);
@@ -539,5 +548,27 @@ void SamplesFramework::updateSampleGUIContexts(float passedTime)
 
         GUIContext* guiContext = sampleData->getGuiContext();
         guiContext->injectTimePulse(passedTime);
+    }
+}
+
+void SamplesFramework::renderSampleGUIContexts()
+{
+    std::vector<SampleData*>::iterator iter = d_samples.begin();
+    std::vector<SampleData*>::iterator end = d_samples.end();
+    for(; iter != end; ++iter)
+    {
+        SampleData* sampleData = *iter;
+
+        if(!sampleData->getGuiContext())
+            continue;
+
+        bool isContextDirty = sampleData->getGuiContext()->isDirty();
+        if(isContextDirty)
+        {
+            sampleData->clearRTTTexture();
+            sampleData->getGuiContext()->draw();
+
+            sampleData->getSampleWindow()->invalidate();
+        }
     }
 }
