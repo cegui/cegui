@@ -328,7 +328,7 @@ void MultiLineEditbox::ensureCaretIsVisible(void)
 		size_t caretLineIdx = d_caretPos - d_lines[caretLine].d_startIdx;
 
 		float ypos = caretLine * fnt->getLineSpacing();
-        float xpos = fnt->getTextExtent(getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
+        float xpos = fnt->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
 
 		// adjust position for scroll bars
 		xpos -= horzScrollbar->getScrollPosition();
@@ -1030,7 +1030,7 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 
 	if (caretLine > 0)
 	{
-        float caretPixelOffset = getFont()->getTextExtent(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
+        float caretPixelOffset = getFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
 
 		--caretLine;
 
@@ -1060,7 +1060,7 @@ void MultiLineEditbox::handleLineDown(uint sysKeys)
 
 	if ((d_lines.size() > 1) && (caretLine < (d_lines.size() - 1)))
 	{
-        float caretPixelOffset = getFont()->getTextExtent(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
+        float caretPixelOffset = getFont()->getTextAdvance(getText().substr(d_lines[caretLine].d_startIdx, d_caretPos - d_lines[caretLine].d_startIdx));
 
 		++caretLine;
 

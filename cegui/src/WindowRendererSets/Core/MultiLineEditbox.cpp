@@ -130,7 +130,7 @@ void FalagardMultiLineEditbox::cacheCaretImagery(const Rectf& textArea)
             // calculate pixel offsets to where caret should be drawn
             size_t caretLineIdx = w->getCaretIndex() - d_lines[caretLine].d_startIdx;
             float ypos = caretLine * fnt->getLineSpacing();
-            float xpos = fnt->getTextExtent(w->getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
+            float xpos = fnt->getTextAdvance(w->getText().substr(d_lines[caretLine].d_startIdx, caretLineIdx));
 
 //             // get base offset to target layer for cursor.
 //             Renderer* renderer = System::getSingleton().getRenderer();
@@ -247,7 +247,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                     sectIdx += sectLen;
 
                     // get the pixel offset to the beginning of the selection area highlight.
-                    selStartOffset = fnt->getTextExtent(sect);
+                    selStartOffset = fnt->getTextAdvance(sect);
 
                     // draw this portion of the text
                     colours = normalTextCol;
@@ -266,7 +266,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
                 sectIdx += sectLen;
 
                 // get the extent to use as the width of the selection area highlight
-                selAreaWidth = fnt->getTextExtent(sect);
+                selAreaWidth = fnt->getTextAdvance(sect);
 
                 const float text_top = lineRect.top();
                 lineRect.top(old_top);
