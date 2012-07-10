@@ -1,6 +1,6 @@
 <?xml version="1.0" ?>
 <GUILayout version="4">
-    <Window name="root" type="DefaultWindow">
+   <Window name="root" type="DefaultWindow">
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Window name="Window1" type="TaharezLook/FrameWindow">
@@ -129,21 +129,6 @@
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="Area" value="{{0.52,0},{0.30,0},{0.90,0},{0.47,0}}" />
                 <Property name="BackgroundEnabled" value="False" />
-            </Window>
-        </Window>
-        <Window name="Window3" type="TaharezLook/FrameWindow">
-            <Property name="Text" value="Demo 7 - Window 3" />
-            <Property name="MaxSize" value="{{0.8,0},{0.8,0}}" />
-            <Property name="MinSize" value="{{0.2,0},{0.2,0}}" />
-            <Property name="Area" value="{{0.25,0},{0.4,0},{0.75,0},{0.9,0}}" />
-            <Property name="CloseButtonEnabled" value="False" />
-            <Window name="MLEditbox" type="TaharezLook/MultiLineEditbox">
-                <Property name="Text">This text is a multiline text:
-Line 1
-Line 2 
-Line 3</Property>
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="Area" value="{{0.02,0},{0.03,0},{0.98,0},{0.98,0}}" />
             </Window>
         </Window>
     </Window>

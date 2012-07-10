@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   Sample_Demo7.h
-    created:    20/8/2005
-    author:     Paul D Turner
+    filename:   EffectsDemo.h
+    created:    9/7/2012
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Demo7_h_
-#define _Sample_Demo7_h_
+#ifndef _Effects_Demo_
+#define _Effects_Demo_
 
 #include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
@@ -130,7 +130,7 @@ protected:
 };
 
 // Sample class
-class Demo7Sample : public Sample
+class EffectsDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
@@ -166,4 +166,4 @@ public:
 };
 
 
-#endif  // end of guard _Sample_Demo7_h_
+#endif

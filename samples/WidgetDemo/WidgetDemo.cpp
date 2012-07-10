@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   Sample_Demo7.cpp
-    created:    20/8/2005
-    author:     Paul D Turner
+    filename:   EffectsDemo.cpp
+    created:    9/7/2012
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "Sample_Demo7.h"
+#include "WidgetDemo.h"
 #include "CEGUI/CEGUI.h"
 
 #include <cstdlib>
@@ -509,13 +509,13 @@ bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& wi
 
 
 //----------------------------------------------------------------------------//
-// The following are for the main Demo7Sample class.
+// The following are for the main EffectsDemo class.
 //----------------------------------------------------------------------------//
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
+bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -541,7 +541,7 @@ bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
         "Core/FrameWindow",                 // WindowRenderer to use.
         "WobblyWindow");                    // effect to use.
 
-    // Since we want to be able to load the Demo7Windows.layout in the editor
+    // Since we want to be able to load the EffectsDemo.layout in the editor
     // tools (where the above mapping is not available), we now alias the
     // new window type onto the original TaharezLook/FrameWindow.  This has
     // the effect that - after the alias is added - any time a window of
@@ -566,7 +566,7 @@ bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(&defaultFont);
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImageDemo7", "GPN-2000-001437.png");
+    ImageManager::getSingleton().addFromImageFile("BackgroundImageEffectsDemo", "GPN-2000-001437.png");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -577,16 +577,14 @@ bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImageDemo7");
+    background->setProperty("Image", "BackgroundImageEffectsDemo");
     // install this as the root GUI sheet
     guiContext->setRootWindow(background);
 
-    // load the windows for Demo7 from the layout file.
-    Window* sheet = winMgr.loadLayoutFromFile("Demo7Windows.layout");
+    // load the windows for the EffectsDemo from the layout file.
+    Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
     // attach this to the 'real' root
     background->addChild(sheet);
-    // set-up the contents of the list boxes.
-    createListContent(sheet);
     // initialise the event handling.
     initDemoEventWiring(sheet);
 
@@ -604,7 +602,7 @@ bool Demo7Sample::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void Demo7Sample::deinitialise()
+void EffectsDemo::deinitialise()
 {
     // nothing to do here!
 }
@@ -612,7 +610,7 @@ void Demo7Sample::deinitialise()
 /*************************************************************************
     create the windows & widgets for this demo
 *************************************************************************/
-void Demo7Sample::createListContent(CEGUI::Window* root)
+void EffectsDemo::createListContent(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
@@ -673,42 +671,42 @@ void Demo7Sample::createListContent(CEGUI::Window* root)
 /*************************************************************************
     Perform required event hook-ups for this demo.
 *************************************************************************/
-void Demo7Sample::initDemoEventWiring(CEGUI::Window* root)
+void EffectsDemo::initDemoEventWiring(CEGUI::Window* root)
 {
     using namespace CEGUI;
 
     // Subscribe handler that quits the application
     root->getChild("Window1/Quit")->
-        subscribeEvent(PushButton::EventClicked, Event::Subscriber(&Demo7Sample::handleQuit, this));
+        subscribeEvent(PushButton::EventClicked, Event::Subscriber(&EffectsDemo::handleQuit, this));
 
     // Subscribe handler that processes changes to the slider position.
     root->getChild("Window1/Slider1")->
-        subscribeEvent(Slider::EventValueChanged, Event::Subscriber(&Demo7Sample::handleSlider, this));
+        subscribeEvent(Slider::EventValueChanged, Event::Subscriber(&EffectsDemo::handleSlider, this));
 
     // Subscribe handler that processes changes to the checkbox selection state.
     root->getChild("Window1/Checkbox")->
-        subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleCheck, this));
+        subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleCheck, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
     root->getChild("Window1/Radio1")->
-        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
+        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleRadio, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
     root->getChild("Window1/Radio2")->
-        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
+        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleRadio, this));
 
     // Subscribe handler that processes changes to the radio button selection state.
     root->getChild("Window1/Radio3")->
-        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&Demo7Sample::handleRadio, this));
+        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleRadio, this));
 }
 
-bool Demo7Sample::handleQuit(const CEGUI::EventArgs&)
+bool EffectsDemo::handleQuit(const CEGUI::EventArgs&)
 {
     // event was handled
     return true;
 }
 
-bool Demo7Sample::handleSlider(const CEGUI::EventArgs& e)
+bool EffectsDemo::handleSlider(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
@@ -726,7 +724,7 @@ bool Demo7Sample::handleSlider(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
+bool EffectsDemo::handleRadio(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
@@ -739,7 +737,7 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     switch (id)
     {
     case 0:
-        img->setProperty("Image", "BackgroundImageDemo7");
+        img->setProperty("Image", "BackgroundImageEffectsDemo");
         break;
 
     case 1:
@@ -755,7 +753,7 @@ bool Demo7Sample::handleRadio(const CEGUI::EventArgs& e)
     return true;
 }
 
-bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
+bool EffectsDemo::handleCheck(const CEGUI::EventArgs& e)
 {
     using namespace CEGUI;
 
@@ -774,6 +772,6 @@ bool Demo7Sample::handleCheck(const CEGUI::EventArgs& e)
 *************************************************************************/
 extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    static Demo7Sample sample;
+    static EffectsDemo sample;
     return sample;
 }
