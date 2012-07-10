@@ -9,27 +9,16 @@
         </Window>
         <Window type="SampleBrowserSkin/StaticText" name="LoadScreenText" >
             <Property name="Area" value="{{0.35,0},{0.41,0},{0.65,0},{0.48,0}}" />
-            <Property name="Text" value="Loading" />
+            <Property name="Text" value="" />
             <Property name="HorzScrollPageSize" value="342.4" />
             <Property name="VertScrollPageSize" value="18.8" />
             <Property name="HorzScrollDocumentSize" value="64" />
             <Property name="VertScrollDocumentSize" value="18.625" />
-            <AutoWindow namePath="__auto_hscrollbar__" >
-                <AutoWindow namePath="__auto_decbtn__" >
-                    <Property name="Visible" value="False" />
-                </AutoWindow>
-                <AutoWindow namePath="__auto_incbtn__" >
-                    <Property name="Visible" value="False" />
-                </AutoWindow>
-            </AutoWindow>
-            <AutoWindow namePath="__auto_vscrollbar__" >
-                <AutoWindow namePath="__auto_decbtn__" >
-                    <Property name="Visible" value="False" />
-                </AutoWindow>
-                <AutoWindow namePath="__auto_incbtn__" >
-                    <Property name="Visible" value="False" />
-                </AutoWindow>
-            </AutoWindow>
+            <Window type="SampleBrowserSkin/Label" name="LoadScreenTextChunkProgress" >
+                <Property name="Area" value="{{0,0},{0,0},{1,-12},{1,0}}" />
+                <Property name="Text" value="" />
+                <Property name="HorzFormatting" value="RightAligned" />
+            </Window>
         </Window>
     </Window>
 </GUILayout>

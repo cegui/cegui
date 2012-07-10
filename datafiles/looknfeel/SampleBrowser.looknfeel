@@ -11,8 +11,8 @@
 
 <Falagard version="7">
     <WidgetLook name="SampleBrowserSkin/Label">
-        <PropertyDefinition name="NormalTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="Colour" />
-        <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="NormalTextColour" initialValue="FF000000" redrawOnWrite="true" type="Colour" />
+        <PropertyDefinition name="DisabledTextColour" initialValue="FF444444" redrawOnWrite="true" type="Colour" />
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
         <ImagerySection name="Label">
@@ -42,83 +42,6 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-
-    <WidgetLook name="SampleBrowserSkin/Shared">
-        <ImagerySection name="Frame">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-                </Area>
-                <Image component="TopLeftCorner" name="SampleBrowserSkin/SampleFrameTopLeft" />
-                <Image component="TopRightCorner" name="SampleBrowserSkin/SampleFrameTopRight" />
-                <Image component="BottomLeftCorner" name="SampleBrowserSkin/SampleFrameBottomLeft" />
-                <Image component="BottomRightCorner" name="SampleBrowserSkin/SampleFrameBottomRight" />
-                <Image component="LeftEdge" name="SampleBrowserSkin/SampleFrameLeft" />
-                <Image component="TopEdge" name="SampleBrowserSkin/SampleFrameTop" />
-                <Image component="RightEdge" name="SampleBrowserSkin/SampleFrameRight" />
-                <Image component="BottomEdge" name="SampleBrowserSkin/SampleFrameBottom" />
-                <Image component="Background" name="SampleBrowserSkin/GenericFiller" />
-            </FrameComponent>
-        </ImagerySection>
-
-        <ImagerySection name="FrameOnly">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-                </Area>
-                <Image component="TopLeftCorner" name="SampleBrowserSkin/SampleFrameTopLeft" />
-                <Image component="TopRightCorner" name="SampleBrowserSkin/SampleFrameTopRight" />
-                <Image component="BottomLeftCorner" name="SampleBrowserSkin/SampleFrameBottomLeft" />
-                <Image component="BottomRightCorner" name="SampleBrowserSkin/SampleFrameBottomRight" />
-                <Image component="LeftEdge" name="SampleBrowserSkin/SampleFrameLeft" />
-                <Image component="TopEdge" name="SampleBrowserSkin/SampleFrameTop" />
-                <Image component="RightEdge" name="SampleBrowserSkin/SampleFrameRight" />
-                <Image component="BottomEdge" name="SampleBrowserSkin/SampleFrameBottom" />
-            </FrameComponent>
-        </ImagerySection>
-
-        <ImagerySection name="BackgroundOnly">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge"><ImageDim name="SampleBrowserSkin/SampleFrameLeft" dimension="Width" /></Dim>
-                    <Dim type="TopEdge"><ImageDim name="SampleBrowserSkin/SampleFrameTop" dimension="Height" /></Dim>
-                    <Dim type="RightEdge">
-                        <OperatorDim op="Subtract">
-                            <UnifiedDim scale="1" type="RightEdge" />
-                            <ImageDim name="SampleBrowserSkin/SampleFrameRight" dimension="Width" />
-                        </OperatorDim>
-                    </Dim>
-                    <Dim type="BottomEdge">
-                        <OperatorDim op="Subtract">
-                            <UnifiedDim scale="1" type="BottomEdge" />
-                            <ImageDim name="SampleBrowserSkin/SampleFrameBottom" dimension="Height" />
-                        </OperatorDim>
-                    </Dim>
-                </Area>
-                <Image component="Background" name="SampleBrowserSkin/GenericFiller" />
-            </FrameComponent>
-        </ImagerySection>
-
-        <ImagerySection name="BackgroundOnlyFull">
-            <FrameComponent>
-                <Area>
-                    <Dim type="LeftEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
-                    <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
-                    <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
-                </Area>
-                <Image component="Background" name="SampleBrowserSkin/GenericFiller" />
-            </FrameComponent>
-        </ImagerySection>
-
-    </WidgetLook>
-
 
     <!--
 :::: Shared static widget components.

@@ -7,7 +7,7 @@
 	<LookNFeel filename="SampleBrowser.looknfeel" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 
-	<FalagardMapping windowType="SampleBrowserSkin/Label" targetType="DefaultWindow" renderer="Core/StaticText" lookNFeel="SampleBrowserSkin/Label" />
+	<FalagardMapping windowType="SampleBrowserSkin/Label" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="SampleBrowserSkin/Label" />
 	<FalagardMapping windowType="SampleBrowserSkin/SampleWindow" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="SampleBrowserSkin/SampleWindow" />
 	<FalagardMapping windowType="SampleBrowserSkin/Button" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="SampleBrowserSkin/Button" />
 	<FalagardMapping windowType="SampleBrowserSkin/ProgressBar" targetType="CEGUI/ProgressBar" renderer="Core/ProgressBar" lookNFeel="SampleBrowserSkin/ProgressBar" />
