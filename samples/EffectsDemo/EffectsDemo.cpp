@@ -28,7 +28,7 @@
 #include "EffectsDemo.h"
 #include "CEGUI/CEGUI.h"
 
-#include "Cegui/RenderingWindow.h"
+#include "CEGUI/RenderingWindow.h"
 
 #include <cstdlib>
 
