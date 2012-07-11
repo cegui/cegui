@@ -121,7 +121,8 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    guiContext->getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
-   ImageManager::getSingleton().addFromImageFile("BackgroundImageTreeDemo", "GPN-2000-001437.png");
+   if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+       ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
    // Load some icon images for our test tree
    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
@@ -135,7 +136,7 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    background->setProperty("FrameEnabled", "false");
    background->setProperty("BackgroundEnabled", "false");
    // set the background image
-   background->setProperty("Image", "BackgroundImageTreeDemo");
+   background->setProperty("Image", "SpaceBackgroundImage");
    // install this as the root GUI sheet
    guiContext->setRootWindow(background);
 

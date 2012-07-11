@@ -55,7 +55,8 @@ bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(&defaultFont);
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImageDemo6", "GPN-2000-001437.png");
+    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "root_wnd");
@@ -66,7 +67,7 @@ bool Demo6Sample::initialise(CEGUI::GUIContext* guiContext)
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImageDemo6");
+    background->setProperty("Image", "SpaceBackgroundImage");
     // install this as the root GUI sheet
     guiContext->setRootWindow(background);
 
