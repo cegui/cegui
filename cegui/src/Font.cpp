@@ -192,6 +192,20 @@ float Font::getTextExtent(const String& text, float x_scale) const
 }
 
 //----------------------------------------------------------------------------//
+float Font::getTextAdvance(const String& text, float x_scale) const
+{
+    float advance = 0.0f;
+
+    for (size_t c = 0; c < text.length(); ++c)
+    {
+        if (const FontGlyph* glyph = getGlyphData(text[c]))
+            advance += glyph->getAdvance(x_scale);
+    }
+
+    return advance;
+}
+
+//----------------------------------------------------------------------------//
 size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
                             float x_scale) const
 {
@@ -220,7 +234,7 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 }
 
 //----------------------------------------------------------------------------//
-void Font::drawText(GeometryBuffer& buffer, const String& text,
+float Font::drawText(GeometryBuffer& buffer, const String& text,
                     const Vector2f& position, const Rectf* clip_rect,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale) const
@@ -244,6 +258,8 @@ void Font::drawText(GeometryBuffer& buffer, const String& text,
                 glyph_pos.d_x += space_extra;
         }
     }
+
+    return glyph_pos.d_x;
 }
 
 //----------------------------------------------------------------------------//
