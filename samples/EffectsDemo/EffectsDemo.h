@@ -136,18 +136,33 @@ public:
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
-    void initialiseEffectsCombobox(CEGUI::Window* sheet);
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
+protected:
+    // Initialiser for the effects in the combobox 
+    void initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox);
+
+    // Handler for the selection changes in the effects combobox
     bool handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& args);
 
-    static const CEGUI::String s_elasticWindowEffectString;
-    static const CEGUI::String s_wobblyWindowEffectString;
-    static const CEGUI::String s_oldWobblyWindowEffectString;
+    // Initialise the RenderEffects we will switch between using the combobox
+    void initialiseEffects(CEGUI::Window* effectsWindow);
 
+    // Names for the effects
+    static const CEGUI::String s_effectNameElastic;
+    static const CEGUI::String s_effectNameWobblyNew;
+    static const CEGUI::String s_effectNameWobblyOld;
 
-protected:
+    CEGUI::RenderEffect* d_renderEffectElastic;
+    CEGUI::RenderEffect* d_renderEffectWobblyNew;
+    CEGUI::RenderEffect* d_renderEffectWobblyOld;
+
+    // The listbox items of the effects combobox
+    CEGUI::ListboxItem* d_listItemEffectElastic;
+    CEGUI::ListboxItem* d_listItemEffectWobblyNew;
+    CEGUI::ListboxItem* d_listItemEffectWobblyOld;
+    CEGUI::ListboxItem* d_listItemEffectNone;
 
     CEGUI::GUIContext* d_guiContext;
 };

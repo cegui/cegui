@@ -28,6 +28,8 @@
 #include "EffectsDemo.h"
 #include "CEGUI/CEGUI.h"
 
+#include "Cegui/RenderingWindow.h"
+
 #include <cstdlib>
 
 //----------------------------------------------------------------------------//
@@ -257,7 +259,7 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     {
         for (int i = 0; i < tess_x; ++i)
         {
-            int idx = (j * tess_x + i) * 6;
+            int idx = static_cast<int>( (j * tess_x + i) * 6 );
 
             float top_adj = dragX * ((1.0f / tess_x) * j);
             float bot_adj = dragX * ((1.0f / tess_x) * (j+1));
@@ -329,7 +331,7 @@ bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& 
     //
     if (pos.d_x != lastX)
     {
-        dragX += (pos.d_x - lastX) * 0.2;
+        dragX += (pos.d_x - lastX) * 0.2f;
         elasX = 0.05f;
         lastX = pos.d_x;
 
@@ -362,14 +364,14 @@ bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& 
         if (dragX < 0)
         {
             dragX += (elasX * 800 * elapsed);
-            elasX += 0.075 * elapsed;
+            elasX += 0.075f * elapsed;
             if (dragX >0)
                 dragX = 0;
         }
         else
         {
             dragX -= (elasX * 800 * elapsed);
-            elasX += 0.075 * elapsed;
+            elasX += 0.075f * elapsed;
             if (dragX < 0)
                 dragX = 0;
         }
@@ -377,14 +379,14 @@ bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& 
         if (dragY < 0)
         {
             dragY += elasY * 800 * elapsed;
-            elasY += 0.075 * elapsed;
+            elasY += 0.075f * elapsed;
             if (dragY >0)
                 dragY = 0;
         }
         else
         {
             dragY -= elasY * 800 * elapsed;
-            elasY += 0.075 * elapsed;
+            elasY += 0.075f * elapsed;
             if (dragY < 0)
                 dragY = 0;
         }
@@ -512,9 +514,9 @@ bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& wi
 // The following are for the main EffectsDemo class.
 //----------------------------------------------------------------------------//
 
-const CEGUI::String EffectsDemo::s_elasticWindowEffectString = "Elastic Window Effect";
-const CEGUI::String EffectsDemo::s_wobblyWindowEffectString = "Wobbly Window Effect";
-const CEGUI::String EffectsDemo::s_oldWobblyWindowEffectString = "Old Wobbly Window Effect";
+const CEGUI::String EffectsDemo::s_effectNameElastic = "ElasticWindow";
+const CEGUI::String EffectsDemo::s_effectNameWobblyNew = "WobblyWindow";
+const CEGUI::String EffectsDemo::s_effectNameWobblyOld = "OldWobblyWindow";
 
 /*************************************************************************
 Sample specific initialisation goes here.
@@ -527,23 +529,22 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext = guiContext;
 
     // Register our effects with the system
-    RenderEffectManager::getSingleton().addEffect<WobblyWindowEffect>("WobblyWindow");
-    RenderEffectManager::getSingleton().addEffect<OldWobblyWindowEffect>("OldWobblyWindow");
-    RenderEffectManager::getSingleton().addEffect<ElasticWindowEffect>("ElasticWindow");
-    
-    
+    RenderEffectManager::getSingleton().addEffect<ElasticWindowEffect>(s_effectNameElastic);
+    RenderEffectManager::getSingleton().addEffect<WobblyWindowEffect>(s_effectNameWobblyNew);
+    RenderEffectManager::getSingleton().addEffect<OldWobblyWindowEffect>(s_effectNameWobblyOld);
+
     // Now we make a Falagard mapping for a frame window that uses this effect.
-    // We create a type "TaharezLook/WobblyFrameWindow".  Note that it would be
+    // We create a type "Vanilla/WobblyFrameWindow".  Note that it would be
     // more usual for this mapping to be specified in the scheme xml file,
     // though here we are doing in manually to save from needing either multiple
     // versions of the schemes or from having demo specific definitions in
     // the schemes.
     WindowFactoryManager::getSingleton().addFalagardWindowMapping(
-        "TaharezLook/WobblyFrameWindow",    // type to create
-        "CEGUI/FrameWindow",                // 'base' widget type
-        "TaharezLook/FrameWindow",          // WidgetLook to use.
-        "Core/FrameWindow",                 // WindowRenderer to use.
-        "WobblyWindow");                    // effect to use.
+        "Vanilla/WobblyFrameWindow",    // type to create
+        "CEGUI/FrameWindow",            // 'base' widget type
+        "Vanilla/FrameWindow",          // WidgetLook to use.
+        "Core/FrameWindow",             // WindowRenderer to use.
+        s_effectNameWobblyNew);         // effect to use.
 
     // Since we want to be able to load the EffectsDemo.layout in the editor
     // tools (where the above mapping is not available), we now alias the
@@ -553,15 +554,15 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     // "TaharezLook/WobblyFrameWindow" instead.
 
     WindowFactoryManager::getSingleton().addWindowTypeAlias(
-        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
-        "TaharezLook/WobblyFrameWindow"); // target type to create.
-
+        "Vanilla/FrameWindow",  // alias name - can shadow existing types
+        "Vanilla/WobblyFrameWindow"); // target type to create.
 
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // load font and setup default if not loaded via scheme
@@ -570,7 +571,11 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(&defaultFont);
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImageEffectsDemo", "GPN-2000-001437.png");
+    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+
+    if( !ImageManager::getSingleton().isDefined("AliasingTestImage") )
+        ImageManager::getSingleton().addFromImageFile("AliasingTestImage", "Aliasing.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -581,21 +586,63 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImageEffectsDemo");
-    // install this as the root GUI sheet
+    background->setProperty("Image", "SpaceBackgroundImage");
+    // set the background window as the root window for our GUIContext
     guiContext->setRootWindow(background);
 
     // load the windows for the EffectsDemo from the layout file.
     Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
+ 
+    // Get the combobox created from within the layout
+    CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(sheet->getChild("EffectsFrameWindow/EffectsCombobox"));
+
     // attach this to the 'real' root
     background->addChild(sheet);
+    //Initialise the render effects
+    initialiseEffects(effectsCombobox->getParent());
 
-    initialiseEffectsCombobox(sheet);
-
-
+    // Initialise the items and subscribe the event for the combobox
+    initialiseEffectsCombobox(effectsCombobox);
+    
+    // We can switch the automatic effects mapping off now
     WindowFactoryManager::getSingleton().removeWindowTypeAlias(
-        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
-        "TaharezLook/WobblyFrameWindow"); // target type to create.
+        "Vanilla/FrameWindow",  // alias name - can shadow existing types
+        "Vanilla/WobblyFrameWindow"); // target type to create.
+
+
+
+
+    // We create a mapping for the elastic windows effect too,
+    // and we will apply it to a window we create from code
+    WindowFactoryManager::getSingleton().addFalagardWindowMapping(
+        "Vanilla/ElasticFrameWindow",   // type to create
+        "CEGUI/FrameWindow",            // 'base' widget type
+        "Vanilla/FrameWindow",          // WidgetLook to use.
+        "Core/FrameWindow",             // WindowRenderer to use.
+        s_effectNameElastic);    // effect to use.
+
+    // We will create another window using the effects-mapping we created before, this time directly from code
+    CEGUI::FrameWindow* aliasingFrameWnd = static_cast<CEGUI::FrameWindow*>(
+        WindowManager::getSingleton().createWindow("Vanilla/ElasticFrameWindow", "AliasingTestWindow") );
+
+    // Add it to the layout root
+    sheet->addChild(aliasingFrameWnd);
+
+    // We will add an image to it using a StaticImage window
+    Window* aliasingWnd = WindowManager::getSingleton().createWindow("Vanilla/StaticImage", "AliasingTestImage");
+    aliasingFrameWnd->addChild(aliasingWnd);
+    aliasingFrameWnd->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.15f)));
+    aliasingFrameWnd->setSize(CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.28f)));
+    aliasingFrameWnd->setSizingEnabled(true);
+    aliasingFrameWnd->setCloseButtonEnabled(false);
+    aliasingFrameWnd->setTitleBarEnabled(true);
+    aliasingFrameWnd->setText("Aliasing Testimage");
+
+    // Image window setup
+    aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
+    aliasingWnd->setProperty("FrameEnabled", "False");
+    aliasingWnd->setProperty("BackgroundEnabled", "False");
+    aliasingWnd->setProperty("Image", "AliasingTestImage");
 
     // success!
     return true;
@@ -610,18 +657,24 @@ void EffectsDemo::deinitialise()
 }
 
 /*************************************************************************
-    Initialises the effects ListItems for the Combobox.
+Initialises the effects ListItems for the Combobox.
 *************************************************************************/
-void EffectsDemo::initialiseEffectsCombobox(CEGUI::Window* sheet)
+void EffectsDemo::initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox)
 {
-    CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(sheet->getChild("EffectsCombobox"));
+    d_listItemEffectWobblyNew = new MyListItem("Wobbly Window Effect");
+    d_listItemEffectElastic = new MyListItem("Elastic Window Effect");
+    d_listItemEffectWobblyOld = new MyListItem("Old Wobbly Window Effect");
+    d_listItemEffectNone = new MyListItem("None");
 
-    effectsCombobox->addItem(new MyListItem(s_elasticWindowEffectString));
-    effectsCombobox->addItem(new MyListItem(s_wobblyWindowEffectString));
-    effectsCombobox->addItem(new MyListItem(s_oldWobblyWindowEffectString));
+
+    effectsCombobox->addItem(d_listItemEffectWobblyNew);
+    effectsCombobox->addItem(d_listItemEffectElastic);
+    effectsCombobox->addItem(d_listItemEffectWobblyOld);
+    effectsCombobox->addItem(d_listItemEffectNone);
 
     effectsCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber(&EffectsDemo::handleEffectsComboboxSelectionChanged, this));
 
+    effectsCombobox->setItemSelectState(d_listItemEffectElastic, true);
 }
 
 /*************************************************************************
@@ -631,24 +684,46 @@ bool EffectsDemo::handleEffectsComboboxSelectionChanged(const CEGUI::EventArgs& 
 {
     const CEGUI::WindowEventArgs& winArgs(static_cast<const CEGUI::WindowEventArgs&>(args));
 
-    CEGUI::Combobox* effectsCombobox= static_cast<CEGUI::Combobox*>(winArgs.window);
+    CEGUI::Combobox* effectsCombobox = static_cast<CEGUI::Combobox*>(winArgs.window);
+    CEGUI::ListboxItem* selectionItem = effectsCombobox->getSelectedItem();
 
-    CEGUI::String selectionText = effectsCombobox->getSelectedItem()->getText();
+    CEGUI::FrameWindow* effectsWindow = static_cast<CEGUI::FrameWindow*>(effectsCombobox->getParent());
+    CEGUI::RenderingWindow* effectsWindowRenderingWnd = static_cast<CEGUI::RenderingWindow*>(effectsWindow->getRenderingSurface());
 
-    if(selectionText.compare(s_elasticWindowEffectString) == 0)
+    if(selectionItem == d_listItemEffectElastic)
     {
-
+        effectsWindowRenderingWnd->setRenderEffect(d_renderEffectElastic);
     }
-    else if(selectionText.compare(s_elasticWindowEffectString) == 0)
+    else if(selectionItem == d_listItemEffectWobblyNew)
     {
-
+        effectsWindowRenderingWnd->setRenderEffect(d_renderEffectWobblyNew);
     }
-    else if(selectionText.compare(s_elasticWindowEffectString) == 0)
+    else if(selectionItem == d_listItemEffectWobblyOld)
     {
-
+        effectsWindowRenderingWnd->setRenderEffect(d_renderEffectWobblyOld);
     }
+    else
+    {
+        effectsWindowRenderingWnd->setRenderEffect(0);
+    }
+
 
     return true;
+}
+
+void EffectsDemo::initialiseEffects(CEGUI::Window* effectsWindow)
+{
+    d_renderEffectElastic = &CEGUI::RenderEffectManager::getSingleton().create(
+        s_effectNameElastic,
+        effectsWindow);
+
+    d_renderEffectWobblyNew = &CEGUI::RenderEffectManager::getSingleton().create(
+        s_effectNameWobblyNew,
+        effectsWindow);
+
+    d_renderEffectWobblyOld = &CEGUI::RenderEffectManager::getSingleton().create(
+        s_effectNameWobblyOld,
+        effectsWindow);
 }
 
 /*************************************************************************
