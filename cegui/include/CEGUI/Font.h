@@ -135,12 +135,14 @@ public:
         considered to be 'normal'.
 
     \return
-        Nothing.
+        The x co-ord where subsequent text should be rendered to ensure correct
+        positioning (which is not possible to determine accurately by using the
+        extent measurement functions).
     */
-    void drawText(GeometryBuffer& buffer, const String& text,
-                  const Vector2f& position, const Rectf* clip_rect,
-                  const ColourRect& colours, const float space_extra = 0.0f,
-                  const float x_scale = 1.0f, const float y_scale = 1.0f) const;
+    float drawText(GeometryBuffer& buffer, const String& text,
+                   const Vector2f& position, const Rectf* clip_rect,
+                   const ColourRect& colours, const float space_extra = 0.0f,
+                   const float x_scale = 1.0f, const float y_scale = 1.0f) const;
 
     /*!
     \brief
@@ -251,8 +253,52 @@ public:
     \return
         Number of pixels that \a text will occupy when rendered with
         this Font.
+
+    \note
+        The difference between the advance and the extent of a text string is
+        important for numerous reasons. Picture some scenario where a glyph
+        has a swash which extends way beyond the subsequent glyph - the text
+        extent of those two glyphs is to the end of the swash on the first glyph
+        whereas the advance of those two glyphs is to the start of a theoretical
+        third glyph - still beneath the swash of the first glyph.
+        The difference can basically be summarised as follows:
+        - the extent is the total rendered width of all glyphs in the string.
+        - the advance is the width to the point where the next character would
+          have been drawn.
+
+    \see getTextAdvance
     */
     float getTextExtent(const String& text, float x_scale = 1.0f) const;
+
+    /*!
+    \brief
+        Return pixel advance of the specified text when rendered with this Font.
+
+    \param text
+        String object containing the text to return the pixel advance for.
+
+    \param x_scale
+        Scaling factor to be applied to each glyph's x axis when
+        measuring the advance, where 1.0f is considered to be 'normal'.
+
+    \return
+        pixel advance of \a text when rendered with this Font.
+
+    \note
+        The difference between the advance and the extent of a text string is
+        important for numerous reasons. Picture some scenario where a glyph
+        has a swash which extends way beyond the subsequent glyph - the text
+        extent of those two glyphs is to the end of the swash on the first glyph
+        whereas the advance of those two glyphs is to the start of a theoretical
+        third glyph - still beneath the swash of the first glyph.
+        The difference can basically be summarised as follows:
+        - the extent is the total rendered width of all glyphs in the string.
+        - the advance is the width to the point where the next character would
+          have been drawn.
+
+    \see getTextExtent
+    */
+    float getTextAdvance(const String& text, float x_scale = 1.0f) const;
 
     /*!
     \brief

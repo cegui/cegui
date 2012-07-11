@@ -308,6 +308,8 @@ namespace CEGUI
         d_enableVertScrollbar = setting;
         configureScrollbars();
         d_window->performChildWindowLayout();
+        d_formatValid = false;
+        d_window->invalidate();
     }
 
     /*************************************************************************
@@ -318,6 +320,8 @@ namespace CEGUI
         d_enableHorzScrollbar = setting;
         configureScrollbars();
         d_window->performChildWindowLayout();
+        d_formatValid = false;
+        d_window->invalidate();
     }
 
     /*************************************************************************
