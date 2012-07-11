@@ -522,36 +522,6 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     d_usedFiles = CEGUI::String(__FILE__);
     d_guiContext = guiContext;
 
-    // Register our effects with the system
-    RenderEffectManager::getSingleton().addEffect<WobblyWindowEffect>("WobblyWindow");
-    RenderEffectManager::getSingleton().addEffect<OldWobblyWindowEffect>("OldWobblyWindow");
-    RenderEffectManager::getSingleton().addEffect<ElasticWindowEffect>("ElasticWindow");
-      
-    // Now we make a Falagard mapping for a frame window that uses this effect.
-    // We create a type "TaharezLook/WobblyFrameWindow".  Note that it would be
-    // more usual for this mapping to be specified in the scheme xml file,
-    // though here we are doing in manually to save from needing either multiple
-    // versions of the schemes or from having demo specific definitions in
-    // the schemes.
-    WindowFactoryManager::getSingleton().addFalagardWindowMapping(
-        "TaharezLook/WobblyFrameWindow",    // type to create
-        "CEGUI/FrameWindow",                // 'base' widget type
-        "TaharezLook/FrameWindow",          // WidgetLook to use.
-        "Core/FrameWindow",                 // WindowRenderer to use.
-        "WobblyWindow");                    // effect to use.
-
-    // Since we want to be able to load the EffectsDemo.layout in the editor
-    // tools (where the above mapping is not available), we now alias the
-    // new window type onto the original TaharezLook/FrameWindow.  This has
-    // the effect that - after the alias is added - any time a window of
-    // type "TaharezLook/FrameWindow" is requested, the system will create a
-    // "TaharezLook/WobblyFrameWindow" instead.
-
-    WindowFactoryManager::getSingleton().addWindowTypeAlias(
-        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
-        "TaharezLook/WobblyFrameWindow"); // target type to create.
-
-
     // we will use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
@@ -582,17 +552,11 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setRootWindow(background);
 
     // load the windows for the EffectsDemo from the layout file.
-    Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
+    //Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
     // attach this to the 'real' root
-    background->addChild(sheet);
+    //background->addChild(sheet);
     // initialise the event handling.
-    initDemoEventWiring(sheet);
-
-
-    WindowFactoryManager::getSingleton().removeWindowTypeAlias(
-        "TaharezLook/FrameWindow",  // alias name - can shadow existing types
-        "TaharezLook/WobblyFrameWindow"); // target type to create.
-
+    //initDemoEventWiring(sheet);
 
 
     // success!
