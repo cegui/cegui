@@ -45,7 +45,7 @@ bool EditboxValidation::initialise(CEGUI::GUIContext* guiContext)
     WindowManager& winMgr = WindowManager::getSingleton();
 
     Window* root = winMgr.createWindow("DefaultWindow");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    guiContext->setRootWindow(root);
 
     Window* wnd = root->createChild("AlfiskoSkin/FrameWindow");
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
