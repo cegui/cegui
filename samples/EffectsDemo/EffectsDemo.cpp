@@ -672,9 +672,8 @@ void EffectsDemo::initialiseEffectsCombobox(CEGUI::Combobox* effectsCombobox)
     effectsCombobox->addItem(d_listItemEffectWobblyOld);
     effectsCombobox->addItem(d_listItemEffectNone);
 
+    effectsCombobox->setItemSelectState(d_listItemEffectWobblyNew, true);
     effectsCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, CEGUI::Event::Subscriber(&EffectsDemo::handleEffectsComboboxSelectionChanged, this));
-
-    effectsCombobox->setItemSelectState(d_listItemEffectElastic, true);
 }
 
 /*************************************************************************
