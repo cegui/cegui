@@ -526,8 +526,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     RenderEffectManager::getSingleton().addEffect<WobblyWindowEffect>("WobblyWindow");
     RenderEffectManager::getSingleton().addEffect<OldWobblyWindowEffect>("OldWobblyWindow");
     RenderEffectManager::getSingleton().addEffect<ElasticWindowEffect>("ElasticWindow");
-    
-    
+      
     // Now we make a Falagard mapping for a frame window that uses this effect.
     // We create a type "TaharezLook/WobblyFrameWindow".  Note that it would be
     // more usual for this mapping to be specified in the scheme xml file,
@@ -566,7 +565,8 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultFont(&defaultFont);
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImageEffectsDemo", "GPN-2000-001437.png");
+    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -577,7 +577,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImageEffectsDemo");
+    background->setProperty("Image", "SpaceBackgroundImage");
     // install this as the root GUI sheet
     guiContext->setRootWindow(background);
 
@@ -737,7 +737,7 @@ bool EffectsDemo::handleRadio(const CEGUI::EventArgs& e)
     switch (id)
     {
     case 0:
-        img->setProperty("Image", "BackgroundImageEffectsDemo");
+        img->setProperty("Image", "SpaceBackgroundImage");
         break;
 
     case 1:
