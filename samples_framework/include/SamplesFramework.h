@@ -63,7 +63,7 @@ public:
     static void setDefaultResourceGroup(const String& resourceGroup);
 
     bool initialise();
-    void cleanupSample();
+    void deinitialise();
 
     void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum);
 
@@ -72,14 +72,10 @@ public:
 
     virtual void update(float passedTime);
 
-
-
-    void initialisationFinalisation();
     virtual void handleNewWindowSize(float width, float height);
 
     virtual void renderGUIContexts();
 
-    void renderSampleGUIContexts();
     SampleData* findSampleData(CEGUI::Window* sampleWindow);
 
     virtual bool injectKeyDown(const CEGUI::Key::Scan& ceguiKey);
@@ -90,29 +86,28 @@ public:
     virtual bool injectMouseWheelChange(float position);
     virtual bool injectMousePosition(float x, float y);
 
-    bool handleSampleExitButtonClicked(const CEGUI::EventArgs& args);
-
     static const String XMLSchemaName;
-    static String s_defaultResourceGroup;
-
 
 protected:
     void initialiseLoadScreenLayout();
 
     void initialiseSampleBrowserLayout();
-    void loadSamplesDataFromXML(const String& filename, const String& resourceGroup);
+    void loadSamplesDataFromXML(const String& filename);
     void getSampleInstanceFromDLL(SampleData& sampleData);
 
-    void unloadSamples();
+    void addSample(SampleData* sampleData);
 
     bool initialiseSample(unsigned int sampleNumber);
-
-    void addSample(SampleData* sampleData);
+    void initialisationFinalisation();
+    void unloadSamples();
 
     void stopDisplaySample();
 
     void updateSampleGUIContexts(float passedTime);
     bool updateInitialisationStep();
+
+    bool handleSampleExitButtonClicked(const CEGUI::EventArgs& args);
+       void renderSampleGUIContexts();
 
     CEGUI::Window*              d_root;
 

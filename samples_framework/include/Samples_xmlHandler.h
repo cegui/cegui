@@ -46,7 +46,6 @@ public:
 
     // XMLHandler overrides
     const String& getSchemaName() const;
-    const String& getDefaultResourceGroup() const;
 
 protected:
     // implement ChainedXMLHandler interface.

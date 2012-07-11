@@ -49,12 +49,8 @@ using namespace CEGUI;
     #include "windows.h"
 #endif
 
-// Name of the xsd schema file used to validate animation XML files.
-const String SamplesFramework::XMLSchemaName("Animation.xsd");
-
-// String that holds the default resource group for loading samples
-String SamplesFramework::s_defaultResourceGroup("");
-
+// Name of the xsd schema file used to validate samples XML files.
+const String SamplesFramework::XMLSchemaName("Samples.xsd");
 
 int main(int /*argc*/, char* /*argv*/[])
 {
@@ -94,7 +90,7 @@ bool SamplesFramework::initialise()
     return true;
 }
 
-void SamplesFramework::cleanupSample()
+void SamplesFramework::deinitialise()
 {
     unloadSamples();
 }
@@ -132,8 +128,7 @@ void SamplesFramework::unloadSamples()
 }
 
 //----------------------------------------------------------------------------//
-void SamplesFramework::loadSamplesDataFromXML(const String& filename,
-                                             const String& resourceGroup)
+void SamplesFramework::loadSamplesDataFromXML(const String& filename)
 {
     if (filename.empty())
         CEGUI_THROW(InvalidRequestException(
@@ -146,8 +141,7 @@ void SamplesFramework::loadSamplesDataFromXML(const String& filename,
     CEGUI_TRY
     {
         System::getSingleton().getXMLParser()->
-            parseXMLFile(handler, filename, XMLSchemaName,
-                         resourceGroup.empty() ? resourceGroup : s_defaultResourceGroup);
+            parseXMLFile(handler, filename, XMLSchemaName, "");
     }
     CEGUI_CATCH(...)
     {
@@ -166,11 +160,6 @@ void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName, CEGUI::S
     SampleData* sampleData = new SampleDataModule(sampleName, summary, description, sampleTypeEnum);
 
     addSample(sampleData);
-}
-
-void SamplesFramework::setDefaultResourceGroup(const String& resourceGroup)
-{
-    s_defaultResourceGroup = resourceGroup;
 }
 
 
@@ -443,7 +432,7 @@ void SamplesFramework::initialiseSampleBrowserLayout()
 {
     int totalNum = d_samples.size() + 2;
 
-    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin...");
+    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin ...");
     d_loadingScreenText->setText(loadText);
 
     CEGUI::String progressText =  PropertyHelper<int>::toString(1) + "/" + PropertyHelper<int>::toString(totalNum - 1);
@@ -489,7 +478,7 @@ bool SamplesFramework::updateInitialisationStep()
     {
     case 0:
         {
-            loadSamplesDataFromXML("samples.samps", s_defaultResourceGroup);
+            loadSamplesDataFromXML("samples.xml");
             ++step;
             break;
         }

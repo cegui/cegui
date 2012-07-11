@@ -183,7 +183,6 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     rgm.createResourceGroup("looknfeels");
     rgm.createResourceGroup("lua_scripts");
     rgm.createResourceGroup("schemas");
-    rgm.createResourceGroup("samples");
 
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
@@ -206,8 +205,6 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "samples/");
-    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "samples");
 }
 
 //----------------------------------------------------------------------------//

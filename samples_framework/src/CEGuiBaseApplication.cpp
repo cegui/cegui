@@ -198,9 +198,7 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
     rp->setResourceGroupDirectory("schemas", resourcePath);   
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    rp->setResourceGroupDirectory("animations", resourcePath);
-    sprintf(resourcePath, "%s/%s", dataPathPrefix, "samples/");
-    rp->setResourceGroupDirectory("samples", resourcePath); 
+    rp->setResourceGroupDirectory("animations", resourcePath); 
 }
 
 //----------------------------------------------------------------------------//
@@ -214,8 +212,6 @@ void CEGuiBaseApplication::initialiseDefaultResourceGroups()
     CEGUI::WindowManager::setDefaultResourceGroup("layouts");
     CEGUI::ScriptModule::setDefaultResourceGroup("lua_scripts");
     CEGUI::AnimationManager::setDefaultResourceGroup("animations");
-
-    SamplesFramework::setDefaultResourceGroup("samples");
 
     // setup default group for validation schemas
     CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();

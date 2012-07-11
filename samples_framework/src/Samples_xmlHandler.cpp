@@ -65,12 +65,6 @@ const String& Samples_xmlHandler::getSchemaName() const
 }
 
 //----------------------------------------------------------------------------//
-const String& Samples_xmlHandler::getDefaultResourceGroup() const
-{
-    return SamplesFramework::s_defaultResourceGroup;
-}
-
-//----------------------------------------------------------------------------//
 void Samples_xmlHandler::elementStartLocal(const String& element,
                                              const XMLAttributes& attributes)
 {

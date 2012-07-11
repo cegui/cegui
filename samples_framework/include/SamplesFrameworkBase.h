@@ -80,9 +80,9 @@ public:
 
     /*!
     \brief
-        Cleans up resources allocated in the initialise call.
+        deinitialise the resources allocated in the initialise if needed.
     */
-    virtual void cleanupSample() = 0;
+    virtual void deinitialise() = 0;
 
     /*!
     \brief
