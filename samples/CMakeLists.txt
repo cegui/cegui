@@ -1,8 +1,8 @@
 # We clear the samples.xml file, which will be used by the samples browser, and
 # add the samples header to it before starting to add the samples 
-file(WRITE ${CMAKE_BINARY_DIR}/bin/samples.xml "")
+file(WRITE ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "")
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlHeader.xml DEMO_META_DATA)
-file(APPEND ${CMAKE_BINARY_DIR}/bin/samples.xml ${DEMO_META_DATA})
+file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
 
 add_subdirectory(WidgetDemo)
 add_subdirectory(EffectsDemo)
@@ -37,5 +37,5 @@ endif()
 
 # Finally we add the samples footer to the samples.xml
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlFooter.xml DEMO_META_DATA)
-file(APPEND ${CMAKE_BINARY_DIR}/bin/samples.xml ${DEMO_META_DATA})
+file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
 

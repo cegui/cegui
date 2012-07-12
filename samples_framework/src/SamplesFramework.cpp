@@ -478,7 +478,7 @@ bool SamplesFramework::updateInitialisationStep()
     {
     case 0:
         {
-            loadSamplesDataFromXML("samples.xml");
+            loadSamplesDataFromXML("../datafiles/samples/samples.xml");
             ++step;
             break;
         }
