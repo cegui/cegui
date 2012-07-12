@@ -387,7 +387,7 @@ macro (cegui_add_sample _NAME)
 
     # Add the MetaData chunk of the sample to the final xml
     file(READ ${CMAKE_CURRENT_SOURCE_DIR}/SampleMetaData.xml DEMO_META_DATA)
-    file(APPEND ${CMAKE_BINARY_DIR}/bin/samples.xml "${DEMO_META_DATA}")
+    file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "${DEMO_META_DATA}")
  
 endmacro()
 
