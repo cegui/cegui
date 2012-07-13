@@ -60,7 +60,7 @@
 #define tolua_tofieldutf8string tolua_tofieldstring
 
 typedef CEGUI::String string;
-typedef CEGUI::utf8* utf8string;
+typedef CEGUI::encoded_char* utf8string;
 
 namespace CEGUI
 {
