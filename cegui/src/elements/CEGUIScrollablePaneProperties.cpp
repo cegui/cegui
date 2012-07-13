@@ -121,7 +121,7 @@ namespace ScrollablePaneProperties
 
     String VertStepSize::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalStepSize());
+        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getVerticalStepSize());
     }
 
     void VertStepSize::set(PropertyReceiver* receiver, const String& value)
@@ -133,7 +133,7 @@ namespace ScrollablePaneProperties
 
     String VertOverlapSize::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalOverlapSize());
+        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getVerticalOverlapSize());
     }
 
     void VertOverlapSize::set(PropertyReceiver* receiver, const String& value)
@@ -145,7 +145,7 @@ namespace ScrollablePaneProperties
 
     String VertScrollPosition::get(const PropertyReceiver* receiver) const
     {
-        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getHorizontalScrollPosition());
+        return PropertyHelper::floatToString(static_cast<const ScrollablePane*>(receiver)->getVerticalScrollPosition());
     }
 
     void VertScrollPosition::set(PropertyReceiver* receiver, const String& value)
