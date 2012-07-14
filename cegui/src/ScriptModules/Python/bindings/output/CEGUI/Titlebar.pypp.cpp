@@ -1325,6 +1325,33 @@ void register_Titlebar_class(){
            Constructor for Titlebar base class.\n\
         *\n") );
         bp::scope Titlebar_scope( Titlebar_exposer );
+        { //::CEGUI::Titlebar::getDragPoint
+        
+            typedef ::CEGUI::Vector2f const & ( ::CEGUI::Titlebar::*getDragPoint_function_type )(  ) const;
+            
+            Titlebar_exposer.def( 
+                "getDragPoint"
+                , getDragPoint_function_type( &::CEGUI::Titlebar::getDragPoint )
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "*!\n\
+            \n\
+                Gets the point at which the title bar widget iswas being dragged\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::Titlebar::isDragged
+        
+            typedef bool ( ::CEGUI::Titlebar::*isDragged_function_type )(  ) const;
+            
+            Titlebar_exposer.def( 
+                "isDragged"
+                , isDragged_function_type( &::CEGUI::Titlebar::isDragged )
+                , "*!\n\
+            \n\
+                Checks whether the title bar widget is being dragged at the moment\n\
+            *\n" );
+        
+        }
         { //::CEGUI::Titlebar::isDraggingEnabled
         
             typedef bool ( ::CEGUI::Titlebar::*isDraggingEnabled_function_type )(  ) const;

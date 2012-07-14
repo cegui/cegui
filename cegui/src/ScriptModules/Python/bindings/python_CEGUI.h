@@ -273,6 +273,7 @@ namespace pyplusplus
         typedef ::CEGUI::EventSet::EventIterator EventIterator;
         
         typedef ::CEGUI::FontManager::FontIterator FontIterator;
+        typedef ::CEGUI::ImageManager::ImageIterator ImageIterator;
         typedef ::CEGUI::PropertySet::PropertyIterator PropertyIterator;
         typedef ::CEGUI::Scheme::LoadableUIElementIterator LoadableUIElementIterator;
         typedef ::CEGUI::SchemeManager::SchemeIterator SchemeIterator;
@@ -352,6 +353,7 @@ namespace python_CEGUI
             sizeof ( ::CEGUI::Event::Subscriber) ;
             
             sizeof ( ::CEGUI::FontManager::FontIterator);
+            sizeof ( ::CEGUI::ImageManager::ImageIterator);
             sizeof ( ::CEGUI::PropertySet::PropertyIterator);
             sizeof ( ::CEGUI::Scheme::LoadableUIElementIterator);
             sizeof ( ::CEGUI::SchemeManager::SchemeIterator);

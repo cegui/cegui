@@ -35,6 +35,7 @@
 #include "CEGUI/ImageFactory.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/IteratorBase.h"
 #include <map>
 
 #if defined(_MSC_VER)
@@ -186,6 +187,21 @@ public:
     const String& getSchemaName() const;
     const String& getDefaultResourceGroup() const;
 
+    //! container type used to hold the images.
+    typedef std::map<String, std::pair<Image*, ImageFactory*>,
+                     StringFastLessCompare
+                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
+
+    //! ConstBaseIterator type definition.
+    typedef ConstMapIterator<ImageMap> ImageIterator;
+
+    /*!
+    \brief
+        Return a ImageManager::ImageIterator object to iterate over the available
+        Image objects.
+    */
+    ImageIterator getIterator() const;
+
 private:
     // implement chained xml handler abstract interface
     void elementStartLocal(const String& element, const XMLAttributes& attributes);
@@ -193,12 +209,7 @@ private:
 
     //! container type used to hold the registered Image types.
     typedef std::map<String, ImageFactory*, StringFastLessCompare
-        CEGUI_MAP_ALLOC(String, RenderEffectFactory*)> ImageFactoryRegistry;
-
-    //! container type used to hold the images.
-    typedef std::map<String, std::pair<Image*, ImageFactory*>,
-                     StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
+        CEGUI_MAP_ALLOC(String, ImageFactory*)> ImageFactoryRegistry;
 
     //! helper to delete an image given an map iterator.
     void destroy(ImageMap::iterator& iter);

@@ -70,6 +70,8 @@
 
 #include "ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b.pypp.hpp"
 
+#include "ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364.pypp.hpp"
+
 #include "ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd.pypp.hpp"
 
 #include "ConstBaseIterator_e31fba8abb652b91e7a416a794506e4f.pypp.hpp"
@@ -157,6 +159,8 @@
 #include "ImageCodec.pypp.hpp"
 
 #include "ImageDim.pypp.hpp"
+
+#include "ImageIterator.pypp.hpp"
 
 #include "ImageManager.pypp.hpp"
 
@@ -649,6 +653,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ConstBaseIterator_d0a5fcfab7d8e4121b568ec58e88f4fd_class();
 
+    register_ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364_class();
+
     register_ConstBaseIterator_78cd23dcc51d261e1f508a899854e1a9_class();
 
     register_ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b_class();
@@ -668,6 +674,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_TypeAliasIterator_class();
 
     register_FalagardMappingIterator_class();
+
+    register_ImageIterator_class();
 
     register_LoadableUIElementIterator_class();
 

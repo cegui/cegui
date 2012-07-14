@@ -134,7 +134,7 @@ void register_Font_class(){
         }
         { //::CEGUI::Font::drawText
         
-            typedef void ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2f const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const &,float const,float const,float const ) const;
+            typedef float ( ::CEGUI::Font::*drawText_function_type )( ::CEGUI::GeometryBuffer &,::CEGUI::String const &,::CEGUI::Vector2f const &,::CEGUI::Rectf const *,::CEGUI::ColourRect const &,float const,float const,float const ) const;
             
             Font_exposer.def( 
                 "drawText"
@@ -376,6 +376,44 @@ void register_Font_class(){
                 *\n" );
         
         }
+        { //::CEGUI::Font::getTextAdvance
+        
+            typedef float ( ::CEGUI::Font::*getTextAdvance_function_type )( ::CEGUI::String const &,float ) const;
+            
+            Font_exposer.def( 
+                "getTextAdvance"
+                , getTextAdvance_function_type( &::CEGUI::Font::getTextAdvance )
+                , ( bp::arg("text"), bp::arg("x_scale")=1.0e+0f )
+                , "*!\n\
+                \n\
+                    Return pixel advance of the specified text when rendered with this Font.\n\
+            \n\
+                @param text\n\
+                    String object containing the text to return the pixel advance for.\n\
+            \n\
+                @param x_scale\n\
+                    Scaling factor to be applied to each glyph's x axis when\n\
+                    measuring the advance, where 1.0f is considered to be 'normal'.\n\
+            \n\
+                @return\n\
+                    pixel advance of  text when rendered with this Font.\n\
+            \n\
+                \note\n\
+                    The difference between the advance and the extent of a text string is\n\
+                    important for numerous reasons. Picture some scenario where a glyph\n\
+                    has a swash which extends way beyond the subsequent glyph - the text\n\
+                    extent of those two glyphs is to the end of the swash on the first glyph\n\
+                    whereas the advance of those two glyphs is to the start of a theoretical\n\
+                    third glyph - still beneath the swash of the first glyph.\n\
+                    The difference can basically be summarised as follows:\n\
+                    - the extent is the total rendered width of all glyphs in the string.\n\
+                    - the advance is the width to the point where the next character would\n\
+                      have been drawn.\n\
+            \n\
+                @see getTextExtent\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Font::getTextExtent
         
             typedef float ( ::CEGUI::Font::*getTextExtent_function_type )( ::CEGUI::String const &,float ) const;
@@ -400,6 +438,20 @@ void register_Font_class(){
                 @return\n\
                     Number of pixels that  text will occupy when rendered with\n\
                     this Font.\n\
+            \n\
+                \note\n\
+                    The difference between the advance and the extent of a text string is\n\
+                    important for numerous reasons. Picture some scenario where a glyph\n\
+                    has a swash which extends way beyond the subsequent glyph - the text\n\
+                    extent of those two glyphs is to the end of the swash on the first glyph\n\
+                    whereas the advance of those two glyphs is to the start of a theoretical\n\
+                    third glyph - still beneath the swash of the first glyph.\n\
+                    The difference can basically be summarised as follows:\n\
+                    - the extent is the total rendered width of all glyphs in the string.\n\
+                    - the advance is the width to the point where the next character would\n\
+                      have been drawn.\n\
+            \n\
+                @see getTextAdvance\n\
                 *\n" );
         
         }
