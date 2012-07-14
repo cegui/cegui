@@ -344,6 +344,12 @@ const String& ImageManager::getDefaultResourceGroup() const
 }
 
 //----------------------------------------------------------------------------//
+ImageManager::ImageIterator ImageManager::getIterator() const
+{
+    return ImageIterator(d_images.begin(), d_images.end());
+}
+
+//----------------------------------------------------------------------------//
 void ImageManager::elementStartLocal(const String& element,
                                      const XMLAttributes& attributes)
 {

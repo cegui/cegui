@@ -173,6 +173,20 @@ void register_ImageManager_class(){
                 *\n" );
         
         }
+        { //::CEGUI::ImageManager::getIterator
+        
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, std::pair<CEGUI::Image*, CEGUI::ImageFactory*>, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, std::pair<CEGUI::Image*, CEGUI::ImageFactory*> > > > > ( ::CEGUI::ImageManager::*getIterator_function_type )(  ) const;
+            
+            ImageManager_exposer.def( 
+                "getIterator"
+                , getIterator_function_type( &::CEGUI::ImageManager::getIterator )
+                , "*!\n\
+            \n\
+                Return a ImageManager.ImageIterator object to iterate over the available\n\
+                Image objects.\n\
+            *\n" );
+        
+        }
         { //::CEGUI::ImageManager::getSchemaName
         
             typedef ::CEGUI::String const & ( ::CEGUI::ImageManager::*getSchemaName_function_type )(  ) const;
