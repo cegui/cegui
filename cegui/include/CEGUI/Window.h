@@ -149,8 +149,7 @@ public:
     classes.
 */
 class CEGUIEXPORT Window :
-    public NamedElement,
-    public AllocatedObject<Window>
+    public NamedElement
 {
 public:
     /*************************************************************************

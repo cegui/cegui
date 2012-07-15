@@ -67,8 +67,7 @@ public:
 };
 
 class CEGUIEXPORT GUIContext : public RenderingSurface,
-                               public InjectedInputReceiver,
-                               public AllocatedObject<GUIContext>
+                               public InjectedInputReceiver
 {
 public:
     static const float DefaultMouseButtonClickTimeout;

@@ -167,7 +167,7 @@ protected:
     RawDataContainer d_fontData;
     //! Type definition for TextureVector.
     typedef std::vector<Texture*
-        CEGUI_VECTOR_ALLOC(Imageset*)> TextureVector;
+        CEGUI_VECTOR_ALLOC(Texture*)> TextureVector;
     //! Textures that hold the glyph imagery for this font.
     mutable TextureVector d_glyphTextures;
     typedef std::vector<BasicImage*

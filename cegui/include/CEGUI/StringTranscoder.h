@@ -114,7 +114,7 @@ public:
     virtual String stringFromStdWString(const std::wstring& input) const = 0;
 
     //! deletes a buffer returned from the stringToUTF16 function.
-    virtual void deleteUTF16Buffer(const uint16* input) const = 0;
+    virtual void deleteUTF16Buffer(uint16* input) const = 0;
 
 protected:
     virtual ~StringTranscoder() {}

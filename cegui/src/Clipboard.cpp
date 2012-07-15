@@ -50,7 +50,7 @@ Clipboard::~Clipboard()
 {
     if (d_buffer != 0)
     {
-        CEGUI_DELETE_ARRAY_PT(d_buffer, void, d_bufferSize, Clipboard);
+        CEGUI_DELETE_ARRAY_PT(d_buffer, BufferElement, d_bufferSize, Clipboard);
     }
 }
 
