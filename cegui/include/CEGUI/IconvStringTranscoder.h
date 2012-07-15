@@ -44,7 +44,7 @@ public:
     std::wstring stringToStdWString(const String& input) const;
     String stringFromUTF16(const uint16* input) const;
     String stringFromStdWString(const std::wstring& input) const;
-    void deleteUTF16Buffer(const uint16* input) const;
+    void deleteUTF16Buffer(uint16* input) const;
 };
 
 }

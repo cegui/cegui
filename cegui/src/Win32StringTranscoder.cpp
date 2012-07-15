@@ -107,7 +107,7 @@ String Win32StringTranscoder::stringFromStdWString(const std::wstring& input) co
 }
 
 //----------------------------------------------------------------------------//
-void Win32StringTranscoder::deleteUTF16Buffer(const uint16* input) const
+void Win32StringTranscoder::deleteUTF16Buffer(uint16* input) const
 {
     const uint16* b = input;
     while (*b++);

@@ -60,8 +60,7 @@ public:
 \brief Adds name to the Element class, including name path traversal
 */
 class CEGUIEXPORT NamedElement :
-    public Element,
-    public AllocatedObject<NamedElement>
+    public Element
 {
 public:
     //! Namespace for global events

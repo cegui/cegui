@@ -59,11 +59,11 @@ void NamedElement::setName(const String& name)
 {
     if (d_name == name)
         return;
-    
+
     if (getParentElement())
     {
         NamedElement* parent = dynamic_cast<NamedElement*>(getParentElement());
-        
+
         if (parent && parent->isChild(name))
         {
             CEGUI_THROW(AlreadyExistsException("Failed to rename "
@@ -76,9 +76,9 @@ void NamedElement::setName(const String& name)
     Logger::getSingleton().logEvent("Renamed element at: " + getNamePath() +
                                     " as: " + name,
                                     Informative);
-    
+
     d_name = name;
-    
+
     NamedElementEventArgs args(this);
     onNameChanged(args);
 }
@@ -90,7 +90,7 @@ String NamedElement::getNamePath() const
 
     Element* parent_element = getParentElement();
     NamedElement* parent_named_element = dynamic_cast<NamedElement*>(parent_element);
-    
+
     if (parent_element)
     {
         if (parent_named_element)

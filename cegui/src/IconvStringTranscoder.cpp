@@ -143,7 +143,7 @@ static size_t getStringLength(const T* buffer)
 //----------------------------------------------------------------------------//
 // Helper to correctly delete a buffer returned from iconvTranscode
 template<typename T>
-static void deleteTranscodeBuffer(const T* buffer)
+static void deleteTranscodeBuffer(T* buffer)
 {
     CEGUI_DELETE_ARRAY_PT(
         buffer, T, getStringLength(buffer) + 1, CEGUI::BufferAllocator);
@@ -265,7 +265,7 @@ String IconvStringTranscoder::stringFromStdWString(const std::wstring& input) co
 }
 
 //----------------------------------------------------------------------------//
-void IconvStringTranscoder::deleteUTF16Buffer(const uint16* input) const
+void IconvStringTranscoder::deleteUTF16Buffer(uint16* input) const
 {
     deleteTranscodeBuffer(input);
 }
