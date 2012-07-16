@@ -1,31 +1,31 @@
 /***********************************************************************
-    filename:   Sample_Minesweepze.cpp
-    created:    05/08/2006
-    author:     Olivier Delannoy (Dalfy)
+filename:   Sample_Minesweepze.cpp
+created:    05/08/2006
+author:     Olivier Delannoy (Dalfy)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
- *
- *   Permission is hereby granted, free of charge, to any person obtaining
- *   a copy of this software and associated documentation files (the
- *   "Software"), to deal in the Software without restriction, including
- *   without limitation the rights to use, copy, modify, merge, publish,
- *   distribute, sublicense, and/or sell copies of the Software, and to
- *   permit persons to whom the Software is furnished to do so, subject to
- *   the following conditions:
- *
- *   The above copyright notice and this permission notice shall be
- *   included in all copies or substantial portions of the Software.
- *
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
- *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- *   OTHER DEALINGS IN THE SOFTWARE.
- ***************************************************************************/
-#include "CEGuiSample.h"
+*   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+*
+*   Permission is hereby granted, free of charge, to any person obtaining
+*   a copy of this software and associated documentation files (the
+*   "Software"), to deal in the Software without restriction, including
+*   without limitation the rights to use, copy, modify, merge, publish,
+*   distribute, sublicense, and/or sell copies of the Software, and to
+*   permit persons to whom the Software is furnished to do so, subject to
+*   the following conditions:
+*
+*   The above copyright notice and this permission notice shall be
+*   included in all copies or substantial portions of the Software.
+*
+*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+*   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+*   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+*   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+*   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+*   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+*   OTHER DEALINGS IN THE SOFTWARE.
+***************************************************************************/
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 #include "Minesweeper_Timer.h"
 #include <ctime>
@@ -38,14 +38,14 @@ struct Location
 const size_t MinesweeperSize = 10;
 const size_t MineCount = 15;
 
-class MinesweeperSample : public CEGuiSample
+class MinesweeperSample : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
 protected:
     // Handle new game
@@ -90,56 +90,47 @@ protected:
     // Custom window type to force refresh of the timer
     Timer* d_alarm;
 };
-///////////////////////////////////////////////////////////////////////////
-/**************************************************************************
 
-    Main
-
-**************************************************************************/
-int main(int /*argc*/, char* /*argv*/[])
-{
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    MinesweeperSample app;
-    return app.run();
-}
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
 
-    MinesweeperSample class
+MinesweeperSample class
 
 *************************************************************************/
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
-    Sample specific initialisation goes here.
+Sample specific initialisation goes here.
 *************************************************************************/
-bool MinesweeperSample::initialiseSample()
+bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
+
+    d_usedFiles = CEGUI::String(__FILE__);
+
     // Register Timer Window
     WindowFactoryManager::getSingleton().addFactory( &getTimerFactory() );
+
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
 
     d_gameStarted = false;
 
     // Get window manager which we wil use for a few jobs here.
     WindowManager& winMgr = WindowManager::getSingleton();
 
-	// Load the scheme to initialse the VanillaSkin which we use in this sample
+    // Load the scheme to initialse the VanillaSkin which we use in this sample
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().setDefaultTooltipType("TaharezLook/Tooltip");
+    guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
     // set default mouse image
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
-
-    // Load font
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("Vanilla/StaticImage");
@@ -152,10 +143,10 @@ bool MinesweeperSample::initialiseSample()
     background->setProperty("BackgroundEnabled", "false");
 
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "SpaceBackgroundImage");
 
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    guiContext->setRootWindow(background);
     d_alarm = (Timer*)winMgr.createWindow("Timer");
     background->addChild(d_alarm);
     d_alarm->setDelay(0.5); // Tick each 0.5 seconds
@@ -230,7 +221,7 @@ bool MinesweeperSample::initialiseSample()
             d_buttons[i][j] = (PushButton*)winMgr.createWindow("Vanilla/Button");
             row->addChild(d_buttons[i][j]);
             d_buttons[i][j]->setArea(URect(UDim(d_inc * j, 0), UDim(0,0),
-                                 UDim(d_inc * (j + 1), 0), UDim(1,0)));
+                UDim(d_inc * (j + 1), 0), UDim(1,0)));
             d_buttons[i][j]->setEnabled(false);
             // Associate user data
             d_buttons[i][j]->setUserData(&(d_buttonsMapping[i][j]));
@@ -258,14 +249,14 @@ bool MinesweeperSample::initialiseSample()
 
 
 /*************************************************************************
-    Cleans up resources allocated in the initialiseSample call.
+Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void MinesweeperSample::cleanupSample()
+void MinesweeperSample::deinitialise()
 {
     //delete d_console;
 }
 /*************************************************************************
-    Handle new game started event
+Handle new game started event
 *************************************************************************/
 bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs&)
 {
@@ -291,7 +282,7 @@ bool MinesweeperSample::handleGameStartClicked(const CEGUI::EventArgs&)
     return true;
 }
 /************************************************************************
-    Handle click on a mine button
+Handle click on a mine button
 ************************************************************************/
 bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
 {
@@ -336,7 +327,7 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     return true;
 }
 /************************************************************************
-    Handle click on a mine button (any mouse button)
+Handle click on a mine button (any mouse button)
 ************************************************************************/
 bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
 {
@@ -362,7 +353,7 @@ bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
     return false;
 }
 /***********************************************************************
-    Handle timer refresh
+Handle timer refresh
 ***********************************************************************/
 bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs&)
 {
@@ -379,7 +370,7 @@ bool MinesweeperSample::handleUpdateTimer(const CEGUI::EventArgs&)
     return true;
 }
 /************************************************************************
-    Create the board
+Create the board
 ************************************************************************/
 void MinesweeperSample::boardReset()
 {
@@ -393,7 +384,7 @@ void MinesweeperSample::boardReset()
     }
 }
 /************************************************************************
-    Position mine on the board
+Position mine on the board
 ************************************************************************/
 void MinesweeperSample::boardPositionMines()
 {
@@ -413,7 +404,7 @@ void MinesweeperSample::boardPositionMines()
         if (x > 0)
         {
             if (y > 0)
-               ++ d_board[x - 1][y - 1];
+                ++ d_board[x - 1][y - 1];
 
             ++ d_board[x - 1][y    ];
 
@@ -440,7 +431,7 @@ void MinesweeperSample::boardPositionMines()
     }
 }
 /************************************************************************
-    Check wether the game is won or not
+Check wether the game is won or not
 ************************************************************************/
 bool MinesweeperSample::isGameWin()
 {
@@ -526,4 +517,11 @@ bool MinesweeperSample::boardDiscover(const Location& loc)
         }
     }
     return true;
+}
+
+
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static MinesweeperSample sample;
+    return sample;
 }
