@@ -286,7 +286,7 @@ public:
                 std::stringstream pgname;
                 pgname << "Page" << num;
 
-                if (root->isChild("Frame/TabControl/" + pgname.str()))
+                if (root->isChild(String("Frame/TabControl/") + pgname.str().c_str()))
                     // Next
                     continue;
 
@@ -294,7 +294,7 @@ public:
                 CEGUI_TRY
                 {
                     pg = WindowManager::getSingleton().loadLayoutFromFile("TabPage.layout");
-                    pg->setName(String(pgname.str()));
+                    pg->setName(String(pgname.str().c_str()));
                 }
                 CEGUI_CATCH(CEGUI::Exception&)
                 {
@@ -308,7 +308,7 @@ public:
                     Window* txt = pg->getChild("Text");
                     txt->setText(PageText [num - 3]);
 
-                    pg->setText(pgname.str());
+                    pg->setText(pgname.str().c_str());
                     tc->addTab(pg);
 
                     refreshPageList();
