@@ -182,6 +182,7 @@ public:
     const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
+    const IrrlichtEventPusher* getEventPusher() const;
 
 protected:
     //! Constructor
