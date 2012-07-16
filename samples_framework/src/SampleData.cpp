@@ -160,9 +160,12 @@ void SampleData::handleNewWindowSize(float width, float height)
     setTextureTargetImageArea(height, width);
 
     CEGUI::Sizef windowSize(width, height);
-    d_textureTarget->declareRenderSize(windowSize);
-   
-    d_sampleWindow->getRenderingSurface()->invalidate();
+    if(d_textureTarget)
+    {
+        d_textureTarget->declareRenderSize(windowSize);
+
+        d_sampleWindow->getRenderingSurface()->invalidate();
+    }
 }
 
 CEGUI::Image& SampleData::getRTTImage()
@@ -182,14 +185,19 @@ void SampleData::clearRTTTexture()
 
 void SampleData::setTextureTargetImageArea(float height, float width)
 {
-    bool isTextureTargetVerticallyFlipped = d_textureTarget->isRenderingInverted();
-    CEGUI::Rectf renderArea;
-    if(isTextureTargetVerticallyFlipped)
-        renderArea = CEGUI::Rectf(0.f, height, width, 0.f);
-    else
-        renderArea = CEGUI::Rectf(0.f, 0.f, width, height);
+    if(d_textureTarget)
+    {
+        bool isTextureTargetVerticallyFlipped = d_textureTarget->isRenderingInverted();
+        CEGUI::Rectf renderArea;
+        if(isTextureTargetVerticallyFlipped)
+            renderArea = CEGUI::Rectf(0.f, height, width, 0.f);
+        else
+            renderArea = CEGUI::Rectf(0.f, 0.f, width, height);
 
-    d_textureTargetImage->setArea(renderArea);
+
+        if(d_textureTargetImage)
+            d_textureTargetImage->setArea(renderArea);
+    }
 }
 
 
