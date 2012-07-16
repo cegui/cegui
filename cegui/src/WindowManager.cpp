@@ -369,13 +369,7 @@ String WindowManager::getLayoutAsString(const Window& window) const
     std::ostringstream str;
     writeLayoutToStream(window, str);
 
-#if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
-    // we are holding utf8 string in std::string which is something CEGUI::String doesn't expect,
-    // therefore we are forcing it to treat it as utf8 by this cast
-    return String(reinterpret_cast<const utf8*>(str.str().c_str()));
-#else
-    return String(str.str());
-#endif
+    return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
 }
 
 //----------------------------------------------------------------------------//
@@ -393,9 +387,8 @@ void WindowManager::saveLayoutToFile(const Window& window,
 
 String WindowManager::generateUniqueWindowName()
 {
-    // build name
-    std::ostringstream uidname;
-    uidname << GeneratedWindowNameBase.c_str() << d_uid_counter;
+    const String ret = GeneratedWindowNameBase +
+        PropertyHelper<unsigned long>::toString(d_uid_counter);
 
     // update counter for next time
     unsigned long old_uid = d_uid_counter;
@@ -403,12 +396,11 @@ String WindowManager::generateUniqueWindowName()
 
     // log if we ever wrap-around (which should be pretty unlikely)
     if (d_uid_counter < old_uid)
-        Logger::getSingleton().logEvent("UID counter for generated window names has wrapped around - the fun shall now commence!");
+        Logger::getSingleton().logEvent("UID counter for generated Window "
+            "names has wrapped around - the fun shall now commence!");
 
-    // return generated name as a CEGUI::String.
-    return String(uidname.str().c_str());
+    return ret;
 }
-
 
 /*************************************************************************
 	Return a WindowManager::WindowIterator object to iterate over the

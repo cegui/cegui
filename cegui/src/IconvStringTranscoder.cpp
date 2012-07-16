@@ -51,7 +51,7 @@ public:
         if (d_cd == reinterpret_cast<iconv_t>(-1))
             CEGUI_THROW(InvalidRequestException(String(
                 "Failed to create conversion descriptor from \"") +
-                d_fromCode + "\" to \"" + d_toCode + "\"."));
+                d_fromCode.c_str() + "\" to \"" + d_toCode.c_str() + "\"."));
     }
 
     //------------------------------------------------------------------------//
@@ -81,8 +81,8 @@ public:
             reason = "Unknown error.";
 
         CEGUI_THROW(InvalidRequestException(String(
-            "Failed to convert from \"") + d_fromCode +
-            "\" to \"" + d_toCode + "\": " + reason));
+            "Failed to convert from \"") + d_fromCode.c_str() +
+            "\" to \"" + d_toCode.c_str() + "\": " + reason.c_str()));
     }
 
     //------------------------------------------------------------------------//

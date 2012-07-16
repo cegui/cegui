@@ -408,15 +408,14 @@ String AnimationManager::getAnimationDefinitionAsString(const Animation& animati
     std::ostringstream str;
     writeAnimationDefinitionToStream(animation, str);
 
-    return String(str.str());
+    return String(reinterpret_cast<const encoded_char*>(str.str().c_str()));
 }
 
 //---------------------------------------------------------------------------//
 String AnimationManager::generateUniqueAnimationName()
 {
-    // build name
-    std::ostringstream uidname;
-    uidname << GeneratedAnimationNameBase.c_str() << d_uid_counter;
+    const String ret = GeneratedAnimationNameBase +
+        PropertyHelper<unsigned long>::toString(d_uid_counter);
 
     // update counter for next time
     unsigned long old_uid = d_uid_counter;
@@ -427,8 +426,7 @@ String AnimationManager::generateUniqueAnimationName()
         Logger::getSingleton().logEvent("UID counter for generated Animation "
             "names has wrapped around - the fun shall now commence!");
 
-    // return generated name as a CEGUI::String.
-    return String(uidname.str());
+    return ret;
 }
 
 } // End of  CEGUI namespace section

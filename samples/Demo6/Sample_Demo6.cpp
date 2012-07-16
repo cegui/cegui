@@ -619,7 +619,7 @@ bool Demo6Sample::handleSelectChanged(const CEGUI::EventArgs& args)
 
     tmp += buff;
 
-    static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SelCount")->setText(tmp);
+    static_cast<const WindowEventArgs&>(args).window->getRootWindow()->getChild("ControlPanel/SetItemPanel/SelCount")->setText(tmp.c_str());
 
     // event was handled.
     return true;
@@ -709,13 +709,13 @@ bool Demo6Sample::handleContentsChanged(const CEGUI::EventArgs& args)
     tmp = "Current Column Count: ";
     sprintf(buff, "%d", mcl->getColumnCount());
     tmp += buff;
-    colText->setText(tmp);
+    colText->setText(tmp.c_str());
 
     // update the row count
     tmp = "Current Row Count: ";
     sprintf(buff, "%d", mcl->getRowCount());
     tmp += buff;
-    rowText->setText(tmp);
+    rowText->setText(tmp.c_str());
 
     // event was handled.
     return true;
