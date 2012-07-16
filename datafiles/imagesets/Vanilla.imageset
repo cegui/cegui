@@ -46,4 +46,7 @@
     <Image height="8" name="TooltipLeftEdge" width="2" xPos="22" yPos="74" />
     <Image height="8" name="TooltipMiddle" width="24" xPos="26" yPos="74" />
     <Image height="4" name="TooltipBottomRight" width="4" xPos="50" yPos="82" />
+    <Image height="40" name="DropDownButtonNormal" width="40" xPos="23" yPos="87" />
+    <Image height="40" name="DropDownButtonHover" width="40" xPos="23" yPos="128" />
+    <Image height="40" name="DropDownButtonPushed" width="40" xPos="23" yPos="169" />
 </Imageset>
