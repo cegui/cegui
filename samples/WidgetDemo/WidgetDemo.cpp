@@ -1,533 +1,102 @@
 /***********************************************************************
-    filename:   EffectsDemo.cpp
-    created:    9/7/2012
-    author:     Lukas E Meindl
+filename:   WidgetDemo.cpp
+created:    12/7/2012
+author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
- *
- *   Permission is hereby granted, free of charge, to any person obtaining
- *   a copy of this software and associated documentation files (the
- *   "Software"), to deal in the Software without restriction, including
- *   without limitation the rights to use, copy, modify, merge, publish,
- *   distribute, sublicense, and/or sell copies of the Software, and to
- *   permit persons to whom the Software is furnished to do so, subject to
- *   the following conditions:
- *
- *   The above copyright notice and this permission notice shall be
- *   included in all copies or substantial portions of the Software.
- *
- *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
- *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
- *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
- *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
- *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
- *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
- *   OTHER DEALINGS IN THE SOFTWARE.
- ***************************************************************************/
+*   Copyright (C) 2004 - 2012 Paul D Turner & Thce CEGUI Development Team
+*
+*   Permission is hereby granted, free of charge, to any person obtaining
+*   a copy of this software and associated documentation files (the
+*   "Software"), to deal in the Software without restriction, including
+*   without limitation the rights to use, copy, modify, merge, publish,
+*   distribute, sublicense, and/or sell copies of the Software, and to
+*   permit persons to whom the Software is furnished to do so, subject to
+*   the following conditions:
+*
+*   The above copyright notice and this permission notice shall be
+*   included in all copies or substantial portions of the Software.
+*
+*   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+*   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+*   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+*   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+*   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+*   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+*   OTHER DEALINGS IN THE SOFTWARE.
+***************************************************************************/
 #include "WidgetDemo.h"
+
 #include "CEGUI/CEGUI.h"
 
-#include <cstdlib>
+
+using namespace CEGUI;
 
 //----------------------------------------------------------------------------//
-WobblyWindowEffect::WobblyWindowEffect(CEGUI::Window* window) :
-    d_initialised(false),
-    d_window(dynamic_cast<CEGUI::FrameWindow*>(window))
+// Sample sub-class for ListboxTextItem that auto-sets the selection brush
+// image.  This saves doing it manually every time in the code.
+//----------------------------------------------------------------------------//
+
+class MyListItem : public ListboxTextItem
 {
-    if (!d_window)
-        CEGUI_THROW(CEGUI::InvalidRequestException("This effect is only applicable to FrameWindows!"));
-}
+public:
+    MyListItem(const String& text, CEGUI::uint item_id = 0) :
+      ListboxTextItem(text, item_id)
+      {
+          setSelectionBrushImage("Vanilla-Images/GenericBrush");
+      }
+};
 
 //----------------------------------------------------------------------------//
-int WobblyWindowEffect::getPassCount() const
+// Helper class to deal with the different event names, used to output the name
+// of the event for generic events
+//----------------------------------------------------------------------------//
+class EventHandlerObject
 {
-    return 1;
-}
+public: 
+    EventHandlerObject(CEGUI::String eventName, WidgetDemo* owner);
+    bool handleEvent(const CEGUI::EventArgs& args);
+private:
+    CEGUI::String d_eventName;
+    WidgetDemo* d_owner;
+};
 
-//----------------------------------------------------------------------------//
-void WobblyWindowEffect::performPreRenderFunctions(const int /*pass*/)
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-void WobblyWindowEffect::performPostRenderFunctions()
-{
-    // nothing we need here
-}
-
-void WobblyWindowEffect::syncPivots(CEGUI::RenderingWindow& window)
-{
-    const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
-
-    for (size_t y = 0; y < ds_yPivotCount; ++y)
-    {
-        for (size_t x = 0; x < ds_xPivotCount; ++x)
-        {
-            const float factorMinX = static_cast<float>(ds_xPivotCount - x) / (ds_xPivotCount - 1);
-            const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);
-            const float factorMinY = static_cast<float>(ds_yPivotCount - y) / (ds_yPivotCount - 1);
-            const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
-
-            d_pivots[x][y] = CEGUI::Vector2f(
-                    factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
-                    factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
-
-            d_pivotVelocities[x][y] = CEGUI::Vector2f(
-                    0.0f,
-                    0.0f);
-        }
-    }
-}
-
-//----------------------------------------------------------------------------//
-bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
-                               CEGUI::GeometryBuffer& geometry)
-{
-    using namespace CEGUI;
-    Texture& tex = window.getTextureTarget().getTexture();
-
-    static const CEGUI::Colour c(1, 1, 1, 1);
-
-    // qw is the width of one subdivision "box", qh is the height of it
-    const float qw = window.getSize().d_width / (ds_xPivotCount - 1);
-    const float qh = window.getSize().d_height / (ds_yPivotCount - 1);
-    const float tcx = qw * tex.getTexelScaling().d_x;
-    const float tcy =
-        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
-            tex.getTexelScaling().d_y;
-
-    const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
-
-    for (size_t y = 0; y < ds_yPivotCount - 1; ++y)
-    {
-        for (size_t x = 0; x < ds_xPivotCount - 1; ++x)
-        {
-            // index of the first vertex of the quad we will construct with
-            // this iteration
-            const size_t idx = (y * (ds_xPivotCount - 1) + x) * 6;
-
-            // first triangle
-
-            // vertex 0 - top left
-            d_vertices[idx + 0].position   = Vector3f(d_pivots[x][y], 0.0f) - windowPosition;
-            d_vertices[idx + 0].colour_val = c;
-            d_vertices[idx + 0].tex_coords = Vector2f(x * tcx, y * tcy);
-
-            // vertex 1 - bottom left
-            d_vertices[idx + 1].position   = Vector3f(d_pivots[x][y + 1], 0.0f) - windowPosition;
-            d_vertices[idx + 1].colour_val = c;
-            d_vertices[idx + 1].tex_coords = Vector2f(x * tcx, (y + 1) * tcy);
-
-            // vertex 2 - bottom right
-            d_vertices[idx + 2].position   = Vector3f(d_pivots[x + 1][y + 1], 0.0f) - windowPosition;
-            d_vertices[idx + 2].colour_val = c;
-            d_vertices[idx + 2].tex_coords = Vector2f((x + 1) * tcx, (y + 1) * tcy);
-
-            // second triangle
-
-            // vertex 3 - bottom right
-            d_vertices[idx + 3].position   = Vector3f(d_pivots[x + 1][y + 1], 0.0f) - windowPosition;
-            d_vertices[idx + 3].colour_val = c;
-            d_vertices[idx + 3].tex_coords = Vector2f((x + 1) * tcx, (y + 1) * tcy);
-
-            // vertex 4 - top right
-            d_vertices[idx + 4].position   = Vector3f(d_pivots[x + 1][y], 0.0f) - windowPosition;
-            d_vertices[idx + 4].colour_val = c;
-            d_vertices[idx + 4].tex_coords = Vector2f((x + 1) * tcx, y * tcy);
-
-            // vertex 5 - top left
-            d_vertices[idx + 5].position   = Vector3f(d_pivots[x][y], 0.0f) - windowPosition;
-            d_vertices[idx + 5].colour_val = c;
-            d_vertices[idx + 5].tex_coords = Vector2f(x * tcx, y * tcy);
-        }
-    }
-
-    geometry.setActiveTexture(&tex);
-    geometry.appendGeometry(d_vertices, ds_vertexCount);
-
-    // false, because we do not want the default geometry added!
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
-{
-    using namespace CEGUI;
-
-    // initialise ourself upon the first update call.
-    if (!d_initialised)
-    {
-        syncPivots(window);
-        d_initialised = true;
-        return true;
-    }
-
-    const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
-
-    const CEGUI::MouseCursor& cursor = d_window->getGUIContext().getMouseCursor();
-
-    for (size_t y = 0; y < ds_yPivotCount; ++y)
-    {
-        for (size_t x = 0; x < ds_xPivotCount; ++x)
-        {
-            const float factorMinX = static_cast<float>(ds_xPivotCount - 1- x) / (ds_xPivotCount - 1);
-            const float factorMaxX = static_cast<float>(x) / (ds_xPivotCount - 1);
-            const float factorMinY = static_cast<float>(ds_yPivotCount - 1 - y) / (ds_yPivotCount - 1);
-            const float factorMaxY = static_cast<float>(y) / (ds_yPivotCount - 1);
-
-            const Vector2f desiredPos = Vector2f(
-                    factorMinX * pixelRect.d_min.d_x + factorMaxX * pixelRect.d_max.d_x,
-                    factorMinY * pixelRect.d_min.d_y + factorMaxY * pixelRect.d_max.d_y);
-
-            const Vector2f delta = desiredPos - d_pivots[x][y];
-
-            float speed = 300.0f;
-            const Vector2f cursorDelta = d_window->getTitlebar()->isDragged() ? window.getPosition() + d_window->getTitlebar()->getDragPoint() - d_pivots[x][y] : Vector2f(0.0f, 0.0f);
-            const float cursorDeltaLength = sqrtf(cursorDelta.d_x * cursorDelta.d_x + cursorDelta.d_y * cursorDelta.d_y);
-            speed /= cursorDeltaLength > 64 ? sqrtf(cursorDeltaLength) * 0.125f : 1;
-
-            d_pivotVelocities[x][y] *= pow(0.00001f, elapsed);
-            d_pivotVelocities[x][y] += delta * (speed * elapsed);
-            d_pivots[x][y] += d_pivotVelocities[x][y] * elapsed;
-        }
-    }
-
-    // note we just need system to redraw the geometry; we do not need a
-    // full redraw of all window/widget content - which is unchanged.
-    d_window->getGUIContext().markAsDirty();
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-// The following are related to the RenderEffect
-//
-// Note: This be the land of magic numbers and compound hacks upon hacks :-p
-//       Any final version of this we might provide will likely be cleaned up
-//       considerably.
-//----------------------------------------------------------------------------//
-const float OldWobblyWindowEffect::tess_x = 8;
-const float OldWobblyWindowEffect::tess_y = 8;
-
-//----------------------------------------------------------------------------//
-OldWobblyWindowEffect::OldWobblyWindowEffect(CEGUI::Window* window) :
-    initialised(false),
-    dragX(0), dragY(0),
-    elasX(0), elasY(0),
-    d_window(window)
+EventHandlerObject::EventHandlerObject(CEGUI::String eventName, WidgetDemo* owner)
+    : d_eventName(eventName),
+    d_owner(owner)
 {
 }
 
-//----------------------------------------------------------------------------//
-int OldWobblyWindowEffect::getPassCount() const
+bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 {
-    return 1;
-}
-
-//----------------------------------------------------------------------------//
-void OldWobblyWindowEffect::performPreRenderFunctions(const int /*pass*/)
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-void OldWobblyWindowEffect::performPostRenderFunctions()
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
-                               CEGUI::GeometryBuffer& geometry)
-{
-    using namespace CEGUI;
-    Texture& tex = window.getTextureTarget().getTexture();
-
-    static const CEGUI::Colour c(1, 1, 1, 1);
-
-    const float qw = window.getSize().d_width / tess_x;
-    const float qh = window.getSize().d_height / tess_y;
-    const float tcx = qw * tex.getTexelScaling().d_x;
-    const float tcy =
-        (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
-            tex.getTexelScaling().d_y;
-
-    for (int j = 0; j < tess_y; ++j)
-    {
-        for (int i = 0; i < tess_x; ++i)
-        {
-            int idx = (j * tess_x + i) * 6;
-
-            float top_adj = dragX * ((1.0f / tess_x) * j);
-            float bot_adj = dragX * ((1.0f / tess_x) * (j+1));
-            top_adj = ((top_adj*top_adj) / 3) * (dragX < 0 ? -1 : 1);
-            bot_adj = ((bot_adj*bot_adj) / 3) * (dragX < 0 ? -1 : 1);
-
-            float lef_adj = dragY * ((1.0f / tess_y) * i);
-            float rig_adj = dragY * ((1.0f / tess_y) * (i+1));
-            lef_adj = ((lef_adj*lef_adj) / 3) * (dragY < 0 ? -1 : 1);
-            rig_adj = ((rig_adj*rig_adj) / 3) * (dragY < 0 ? -1 : 1);
-
-            // vertex 0
-            vb[idx + 0].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
-            vb[idx + 0].colour_val = c;
-            vb[idx + 0].tex_coords = Vector2f(i * tcx, j*tcy);
-
-            // vertex 1
-            vb[idx + 1].position   = Vector3f(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
-            vb[idx + 1].colour_val = c;
-            vb[idx + 1].tex_coords = Vector2f(i*tcx, j*tcy+tcy);
-
-            // vertex 2
-            vb[idx + 2].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
-            vb[idx + 2].colour_val = c;
-            vb[idx + 2].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
-
-            // vertex 3
-            vb[idx + 3].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
-            vb[idx + 3].colour_val = c;
-            vb[idx + 3].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
-
-            // vertex 4
-            vb[idx + 4].position   = Vector3f(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
-            vb[idx + 4].colour_val = c;
-            vb[idx + 4].tex_coords = Vector2f(i*tcx+tcx, j*tcy);
-
-            // vertex 5
-            vb[idx + 5].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
-            vb[idx + 5].colour_val = c;
-            vb[idx + 5].tex_coords = Vector2f(i * tcx, j*tcy);
-        }
-    }
-
-    geometry.setActiveTexture(&tex);
-    geometry.appendGeometry(vb, buffsize);
-
-    // false, because we do not want the default geometry added!
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-bool OldWobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
-{
-    using namespace CEGUI;
-    
-    // initialise ourself upon the first update call.
-    if (!initialised)
-    {
-        initialised=true;
-        lastX = window.getPosition().d_x;
-        lastY = window.getPosition().d_y;
-        return true;
-    }
-
-    const Vector2f pos(window.getPosition());
-
-    //
-    // Set up for X axis animation.
-    //
-    if (pos.d_x != lastX)
-    {
-        dragX += (pos.d_x - lastX) * 0.2;
-        elasX = 0.05f;
-        lastX = pos.d_x;
-
-        if (dragX > 25)
-            dragX = 25;
-        else if (dragX < -25)
-            dragX = -25;
-    }
-
-    //
-    // Set up for y axis animation
-    //
-    if (pos.d_y != lastY)
-    {
-        dragY += (pos.d_y - lastY) * 0.2f;
-        elasY = 0.05f;
-        lastY = pos.d_y;
-
-        if (dragY > 25)
-            dragY = 25;
-        else if (dragY < -25)
-            dragY = -25;
-    }
-
-    //
-    // Perform required animation steps
-    //
-    if ((dragX != 0) || (dragY != 0))
-    {
-        if (dragX < 0)
-        {
-            dragX += (elasX * 800 * elapsed);
-            elasX += 0.075 * elapsed;
-            if (dragX >0)
-                dragX = 0;
-        }
-        else
-        {
-            dragX -= (elasX * 800 * elapsed);
-            elasX += 0.075 * elapsed;
-            if (dragX < 0)
-                dragX = 0;
-        }
-
-        if (dragY < 0)
-        {
-            dragY += elasY * 800 * elapsed;
-            elasY += 0.075 * elapsed;
-            if (dragY >0)
-                dragY = 0;
-        }
-        else
-        {
-            dragY -= elasY * 800 * elapsed;
-            elasY += 0.075 * elapsed;
-            if (dragY < 0)
-                dragY = 0;
-        }
-
-        // note we just need system to redraw the geometry; we do not need a
-        // full redraw of all window/widget content - which is unchanged.
-        d_window->getGUIContext().markAsDirty();
-        return false;
-    }
+    d_owner->handleWidgetEventFired(d_eventName);
 
     return true;
 }
 
-//----------------------------------------------------------------------------//
-ElasticWindowEffect::ElasticWindowEffect(CEGUI::Window* window) :
-    d_initialised(false),
-    d_window(window)
-{}
 
 //----------------------------------------------------------------------------//
-int ElasticWindowEffect::getPassCount() const
-{
-    return 1;
-}
-
-//----------------------------------------------------------------------------//
-void ElasticWindowEffect::performPreRenderFunctions(const int /*pass*/)
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-void ElasticWindowEffect::performPostRenderFunctions()
-{
-    // nothing we need here
-}
-
-//----------------------------------------------------------------------------//
-bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
-                               CEGUI::GeometryBuffer& geometry)
-{
-    using namespace CEGUI;
-    Texture& tex = window.getTextureTarget().getTexture();
-
-    static const CEGUI::Colour c(1, 1, 1, 1);
-
-    const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
-    const Vector2f& currentTopLeft = d_currentPosition;
-    const Vector2f currentBottomRight = d_currentPosition +
-        Vector2f(window.getSize().d_width, window.getSize().d_height);
-
-    {
-        // first triangle
-
-        // vertex 0 - top left
-        d_vertices[0].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
-        d_vertices[0].colour_val = c;
-        d_vertices[0].tex_coords = Vector2f(0, 1);
-
-        // vertex 1 - bottom left
-        d_vertices[1].position   = Vector3f(currentTopLeft.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
-        d_vertices[1].colour_val = c;
-        d_vertices[1].tex_coords = Vector2f(0, 0);
-
-        // vertex 2 - bottom right
-        d_vertices[2].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
-        d_vertices[2].colour_val = c;
-        d_vertices[2].tex_coords = Vector2f(1, 0);
-
-        // second triangle
-
-        // vertex 3 - bottom right
-        d_vertices[3].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
-        d_vertices[3].colour_val = c;
-        d_vertices[3].tex_coords = Vector2f(1, 0);
-
-        // vertex 4 - top right
-        d_vertices[4].position   = Vector3f(currentBottomRight.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
-        d_vertices[4].colour_val = c;
-        d_vertices[4].tex_coords = Vector2f(1, 1);
-
-        // vertex 5 - top left
-        d_vertices[5].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
-        d_vertices[5].colour_val = c;
-        d_vertices[5].tex_coords = Vector2f(0, 1);
-    }
-
-    geometry.setActiveTexture(&tex);
-    geometry.appendGeometry(d_vertices, ds_vertexCount);
-
-    // false, because we do not want the default geometry added!
-    return false;
-}
-
-//----------------------------------------------------------------------------//
-bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& window)
-{
-    using namespace CEGUI;
-
-    // initialise ourself upon the first update call.
-    if (!d_initialised)
-    {
-        d_currentPosition = window.getPosition();
-        d_currentVelocity = Vector2f(0, 0);
-
-        d_initialised = true;
-        return true;
-    }
-
-    const Vector2f delta = window.getPosition() - d_currentPosition;
-
-    const float speed = 300.0f;
-    d_currentVelocity *= pow(0.00001f, elapsed);
-    d_currentVelocity += delta * (speed * elapsed);
-    d_currentPosition += d_currentVelocity * elapsed;
-
-    // note we just need system to redraw the geometry; we do not need a
-    // full redraw of all window/widget content - which is unchanged.
-    d_window->getGUIContext().markAsDirty();
-    return false;
-}
-
-
-//----------------------------------------------------------------------------//
-// The following are for the main EffectsDemo class.
+// The following are for the main WidgetDemo class.
 //----------------------------------------------------------------------------//
 
 /*************************************************************************
-    Sample specific initialisation goes here.
+Sample specific initialisation goes here.
 *************************************************************************/
-bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
+const CEGUI::String WidgetDemo::s_widgetDemoWindowPrefix = "WidgetDemoWindow_";
+
+bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
     d_usedFiles = CEGUI::String(__FILE__);
     d_guiContext = guiContext;
 
-    // we will use of the WindowManager.
-    WindowManager& winMgr = WindowManager::getSingleton();
-
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
+    SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
+    d_guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -538,25 +107,14 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
         ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
-    // here we will use a StaticImage as the root, then we can use it to place a background image
-    Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
-    // set position and size
-    background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
-    background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
-    // disable frame and standard background
-    background->setProperty("FrameEnabled", "false");
-    background->setProperty("BackgroundEnabled", "false");
-    // set the background image
-    background->setProperty("Image", "SpaceBackgroundImage");
-    // install this as the root GUI sheet
-    guiContext->setRootWindow(background);
+    // Retrieve the available widget types and save them inside a map
+    initialiseAvailableWidgetsMap();
+    initialiseEventHandlerObjects();
 
-    // load the windows for the EffectsDemo from the layout file.
-    //Window* sheet = winMgr.loadLayoutFromFile("EffectsDemo.layout");
-    // attach this to the 'real' root
-    //background->addChild(sheet);
-    // initialise the event handling.
-    //initDemoEventWiring(sheet);
+    d_currentlyDisplayedWidgetRoot = 0;
+    //Create windows and initialise them 
+    createLayout();
+
 
 
     // success!
@@ -564,18 +122,28 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 }
 
 /*************************************************************************
-    Cleans up resources allocated in the initialiseSample call.
+Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void EffectsDemo::deinitialise()
+void WidgetDemo::deinitialise()
 {
-    // nothing to do here!
+    if(d_currentlyDisplayedWidgetRoot != 0)
+    {
+        d_widgetDisplayWindow->removeChild(d_currentlyDisplayedWidgetRoot);
+
+        destroyWidgetWindows();
+
+
+        deinitWidgetListItems();
+    }
+
 }
 
 /*************************************************************************
-    create the windows & widgets for this demo
+create the windows & widgets for this demo
 *************************************************************************/
-void EffectsDemo::createListContent(CEGUI::Window* root)
+void WidgetDemo::createListContent(CEGUI::Window* root)
 {
+    /*
     using namespace CEGUI;
 
     //
@@ -628,114 +196,355 @@ void EffectsDemo::createListContent(CEGUI::Window* root)
     // Set fifth row item texts for the MCL
     mclbox->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
     mclbox->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
-    mclbox->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
+    mclbox->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);*/
+
 }
 
-
-/*************************************************************************
-    Perform required event hook-ups for this demo.
-*************************************************************************/
-void EffectsDemo::initDemoEventWiring(CEGUI::Window* root)
+bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 {
-    using namespace CEGUI;
+    const WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
 
-    // Subscribe handler that quits the application
-    root->getChild("Window1/Quit")->
-        subscribeEvent(PushButton::EventClicked, Event::Subscriber(&EffectsDemo::handleQuit, this));
+    CEGUI::Combobox* combobox = static_cast<CEGUI::Combobox*>(winArgs.window);
+    CEGUI::String schemeName = combobox->getSelectedItem()->getText();
 
-    // Subscribe handler that processes changes to the slider position.
-    root->getChild("Window1/Slider1")->
-        subscribeEvent(Slider::EventValueChanged, Event::Subscriber(&EffectsDemo::handleSlider, this));
+    WidgetListType& widgetsList = d_skinListItemsMap[schemeName];
 
-    // Subscribe handler that processes changes to the checkbox selection state.
-    root->getChild("Window1/Checkbox")->
-        subscribeEvent(ToggleButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleCheck, this));
+    d_widgetSelectorListbox->resetList();
 
-    // Subscribe handler that processes changes to the radio button selection state.
-    root->getChild("Window1/Radio1")->
-        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleRadio, this));
-
-    // Subscribe handler that processes changes to the radio button selection state.
-    root->getChild("Window1/Radio2")->
-        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleRadio, this));
-
-    // Subscribe handler that processes changes to the radio button selection state.
-    root->getChild("Window1/Radio3")->
-        subscribeEvent(RadioButton::EventSelectStateChanged, Event::Subscriber(&EffectsDemo::handleRadio, this));
-}
-
-bool EffectsDemo::handleQuit(const CEGUI::EventArgs&)
-{
-    // event was handled
-    return true;
-}
-
-bool EffectsDemo::handleSlider(const CEGUI::EventArgs& e)
-{
-    using namespace CEGUI;
-
-    // get the current slider value
-    float val = static_cast<Slider*>(static_cast<const WindowEventArgs&>(e).window)->getCurrentValue();
-
-    // set the progress for the first bar according to the slider value
-    static_cast<ProgressBar*>(static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Progbar1"))->setProgress(val);
-    // set second bar's progress - this time the reverse of the first one
-    static_cast<ProgressBar*>(static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Progbar2"))->setProgress(1.0f - val);
-    // set the alpha on the window containing all the controls.
-    static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root")->setAlpha(val);
-
-    // event was handled.
-    return true;
-}
-
-bool EffectsDemo::handleRadio(const CEGUI::EventArgs& e)
-{
-    using namespace CEGUI;
-
-    // get the ID of the selected radio button
-    CEGUI::uint id = static_cast<RadioButton*>(static_cast<const WindowEventArgs&>(e).window)->getSelectedButtonInGroup()->getID();
-    // get the StaticImage window
-    Window* img = static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window2/Image1");
-
-    // set an image into the StaticImage according to the ID of the selected radio button.
-    switch (id)
+    for(unsigned int i = 0; i < widgetsList.size(); ++i)
     {
-    case 0:
-        img->setProperty("Image", "SpaceBackgroundImage");
-        break;
-
-    case 1:
-        img->setProperty("Image", "TaharezLook/MouseArrow");
-        break;
-
-    default:
-        img->setProperty("Image", "");
-        break;
+        MyListItem* item = widgetsList[i];
+        d_widgetSelectorListbox->addItem(item);
     }
 
     // event was handled
     return true;
 }
 
-bool EffectsDemo::handleCheck(const CEGUI::EventArgs& e)
+bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
 {
-    using namespace CEGUI;
+    const WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
 
-    // show or hide the FrameWindow containing the multi-line editbox according to the state of the
-    // checkbox widget
-    static_cast<const WindowEventArgs&>(e).window->getRootWindow()->getChild("root/Window3")->
-        setVisible(static_cast<ToggleButton*>(static_cast<const WindowEventArgs&>(e).window)->isSelected());
+    CEGUI::Listbox* listbox = static_cast<CEGUI::Listbox*>(winArgs.window);
 
-    // event was handled.
+    //Recreate the widget's type
+    CEGUI::String widgetTypeString;
+    if(d_skinSelectionCombobox->getSelectedItem()->getText().compare("No Skin") != 0)
+        widgetTypeString= d_skinSelectionCombobox->getSelectedItem()->getText() + "/";
+
+    widgetTypeString += listbox->getFirstSelectedItem()->getText();
+
+    //Remove previous children window from the widget-display window
+    if(d_currentlyDisplayedWidgetRoot)
+        d_widgetDisplayWindow->removeChild(d_currentlyDisplayedWidgetRoot);
+
+
+    CEGUI::Window* widgetWindow;
+    ListboxItem* listboxItem = listbox->getFirstSelectedItem();
+
+    std::map<CEGUI::String, CEGUI::Window*>::iterator iter = d_widgetsMap.find(widgetTypeString);
+    if(iter != d_widgetsMap.end())
+    {
+        widgetWindow = iter->second;
+        d_widgetDisplayWindow->addChild(widgetWindow);
+    }
+    else
+    {
+        widgetWindow = createWidget(widgetTypeString);
+
+        d_widgetsMap[widgetTypeString] = widgetWindow;
+    }
+
+    d_widgetDisplayWindow->addChild(widgetWindow);
+    d_currentlyDisplayedWidgetRoot = widgetWindow;
+
+    d_widgetDisplayWindow->setText("Demo of widget: \"" + widgetTypeString + "\"");
+
+    // event was handled
     return true;
 }
 
 
+void WidgetDemo::initialiseAvailableWidgetsMap()
+{
+    //Retrieve the widget look types and add a Listboxitem for each widget, to the right scheme in the map
+    CEGUI::WindowFactoryManager& windowFactorymanager = CEGUI::WindowFactoryManager::getSingleton();
+    CEGUI::WindowFactoryManager::FalagardMappingIterator falMappingIter = windowFactorymanager.getFalagardMappingIterator();
+
+    while(!falMappingIter.isAtEnd())
+    {
+        CEGUI::String falagardBaseType = falMappingIter.getCurrentValue().d_windowType;
+
+        int slashPos = falagardBaseType.find_first_of('/');
+        CEGUI::String group = falagardBaseType.substr(0, slashPos);
+        CEGUI::String name = falagardBaseType.substr(slashPos + 1, falagardBaseType.size() - 1);
+
+        if(group.compare("SampleBrowserSkin") != 0)
+        {
+
+            std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.find(group);
+            if(iter == d_skinListItemsMap.end())
+            {
+                //Create new list
+                d_skinListItemsMap[group];
+            }
+
+            WidgetListType& widgetList = d_skinListItemsMap.find(group)->second;
+            addItemToWidgetList(name, widgetList);
+        }
+
+        ++falMappingIter;
+    }
+
+    //Add the default types as well
+    d_skinListItemsMap["No Skin"];
+    WidgetListType& defaultWidgetsList = d_skinListItemsMap["No Skin"];
+
+    addItemToWidgetList("DefaultWindow", defaultWidgetsList);
+    addItemToWidgetList("DragContainer", defaultWidgetsList);
+    addItemToWidgetList("VerticalLayoutContainer", defaultWidgetsList);
+    addItemToWidgetList("HorizontalLayoutContainer", defaultWidgetsList);
+    addItemToWidgetList("GridLayoutContainer", defaultWidgetsList);
+}
+
+
+void WidgetDemo::createLayout()
+{
+    // we will use of the WindowManager.
+    WindowManager& winMgr = WindowManager::getSingleton();
+
+    // here we will use a StaticImage as the root, then we can use it to place a background image
+    Window* background = winMgr.createWindow("TaharezLook/StaticImage", "BackgroundWindow");
+    initialiseBackgroundWindow(background);
+    // install this as the root GUI sheet
+    d_guiContext->setRootWindow(background);
+
+    d_skinSelectionCombobox = static_cast<CEGUI::Combobox*>(winMgr.createWindow("Vanilla/Combobox", "SkinSelectionCombobox"));
+    initialiseSkinCombobox();
+    background->addChild(d_skinSelectionCombobox);
+
+    CEGUI::Window* widgetSelectorContainer = winMgr.createWindow("Vanilla/StaticText", "WidgetSelectorContainer");
+    initialiseWidgetSelectorContainer(widgetSelectorContainer);
+    background->addChild(widgetSelectorContainer);
+
+    d_widgetsEventsLog = static_cast<CEGUI::MultiLineEditbox*>(winMgr.createWindow("Vanilla/MultiLineEditbox", "WidgetEventsLog"));
+    initialiseWidgetsEventsLog();
+    background->addChild(d_widgetsEventsLog);
+
+    d_widgetSelectorListbox = static_cast<CEGUI::Listbox*>(winMgr.createWindow("Vanilla/Listbox", "WidgetSelectorListbox"));
+    initialiseWidgetSelectorListbox();
+    widgetSelectorContainer->addChild(d_widgetSelectorListbox);
+
+    d_widgetDisplayWindow = winMgr.createWindow("Vanilla/FrameWindow", "WidgetDisplayWindow");
+    d_widgetDisplayWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.085f), cegui_reldim(0.1f)));
+    d_widgetDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.6f)));
+    d_widgetDisplayWindow->setText("Widget Demo");
+    background->addChild(d_widgetDisplayWindow);
+}
+
+void WidgetDemo::initialiseSkinCombobox()
+{
+    d_skinSelectionCombobox->setPosition(CEGUI::UVector2(cegui_reldim(0.65f), cegui_reldim(0.165f)));
+    d_skinSelectionCombobox->setSize(CEGUI::USize(cegui_reldim(0.24f), cegui_reldim(0.3f)));
+    d_skinSelectionCombobox->setText("Select a Widget Skin");
+    d_skinSelectionCombobox->setReadOnly(true);
+    d_skinSelectionCombobox->setSortingEnabled(false);
+
+    d_skinSelectionCombobox->subscribeEvent(CEGUI::Combobox::EventListSelectionAccepted, Event::Subscriber(&WidgetDemo::handleSkinSelectionAccepted, this));
+
+    std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
+    while(iter != d_skinListItemsMap.end())
+    {
+        d_skinSelectionCombobox->addItem(new MyListItem(iter->first));
+
+        ++iter;
+    }
+}
+
+void WidgetDemo::initialiseBackgroundWindow(CEGUI::Window* background)
+{
+    background->setPosition(UVector2(cegui_reldim(0), cegui_reldim( 0)));
+    background->setSize(USize(cegui_reldim(1), cegui_reldim( 1)));
+    background->setProperty("FrameEnabled", "false");
+    background->setProperty("BackgroundEnabled", "false");
+    background->setProperty("Image", "SpaceBackgroundImage");
+}
+
+void WidgetDemo::initialiseWidgetSelectorListbox()
+{
+    d_widgetSelectorListbox->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.075f)));
+    d_widgetSelectorListbox->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(0.925f)));
+    d_widgetSelectorListbox->setShowVertScrollbar(false);
+
+    d_widgetSelectorListbox->subscribeEvent(CEGUI::Listbox::EventSelectionChanged, Event::Subscriber(&WidgetDemo::handleWidgetSelectionChanged, this));   
+}
+
+void WidgetDemo::initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer)
+{
+    widgetSelectorContainer->setPosition(CEGUI::UVector2(cegui_reldim(0.6f), cegui_reldim(0.25f)));
+    widgetSelectorContainer->setSize(CEGUI::USize(cegui_reldim(0.325f), cegui_reldim(0.56f)));
+    widgetSelectorContainer->setText("Widget Selector");
+    widgetSelectorContainer->setProperty("VertFormatting", "TopAligned");
+    widgetSelectorContainer->setProperty("HorzFormatting", "CentreAligned");
+}
+
+void WidgetDemo::initialiseWidgetsEventsLog()
+{
+    d_widgetsEventsLog->setPosition(CEGUI::UVector2(cegui_reldim(0.085f), cegui_reldim(0.70f)));
+    d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.2f)));
+    d_widgetsEventsLog->setReadOnly(true);
+}
+
 /*************************************************************************
-    Define the module function that returns an instance of the sample
+Helper function to add MyListItem's to the widget list
+*************************************************************************/
+void WidgetDemo::addItemToWidgetList(const CEGUI::String& widgetName, WidgetListType &widgetList)
+{
+    MyListItem* widgetListItem = new MyListItem(widgetName);
+    widgetListItem->setAutoDeleted(false);
+    widgetList.push_back(widgetListItem);
+}
+
+void WidgetDemo::initialiseEventHandlerObjects()
+{
+    addEventHandlerObjectToMap(CEGUI::Window::EventActivated);
+    addEventHandlerObjectToMap(CEGUI::Window::EventAlphaChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventAlwaysOnTopChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventCharacterKey);
+    addEventHandlerObjectToMap(CEGUI::Window::EventKeyDown);
+    addEventHandlerObjectToMap(CEGUI::Window::EventClippedByParentChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventDeactivated);
+    addEventHandlerObjectToMap(CEGUI::Window::EventDestroyedByParentChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventDestructionStarted);
+    addEventHandlerObjectToMap(CEGUI::Window::EventDragDropItemDropped);
+    addEventHandlerObjectToMap(CEGUI::Window::EventDragDropItemEnters);
+    addEventHandlerObjectToMap(CEGUI::Window::EventDragDropItemLeaves);
+    addEventHandlerObjectToMap(CEGUI::Window::EventEnabled);
+    addEventHandlerObjectToMap(CEGUI::Window::EventFontChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventHidden);
+    addEventHandlerObjectToMap(CEGUI::Window::EventIDChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventInheritsAlphaChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventInputCaptureGained);
+    addEventHandlerObjectToMap(CEGUI::Window::EventInputCaptureLost);
+    addEventHandlerObjectToMap(CEGUI::Window::EventInvalidated);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMarginChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseEntersArea);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseEntersSurface);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseLeavesArea);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseLeavesSurface);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseMove);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseTripleClick);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMouseWheel);
+    addEventHandlerObjectToMap(CEGUI::Window::EventNamespace);
+    addEventHandlerObjectToMap(CEGUI::Window::EventRenderingEnded);
+    addEventHandlerObjectToMap(CEGUI::Window::EventRenderingStarted);
+    addEventHandlerObjectToMap(CEGUI::Window::EventShown);
+    addEventHandlerObjectToMap(CEGUI::Window::EventTextChanged);
+/*    addEventHandlerObjectToMap(CEGUI::Window::EventUpdated);*/
+    addEventHandlerObjectToMap(CEGUI::Window::EventWindowRendererAttached);
+    addEventHandlerObjectToMap(CEGUI::Window::EventWindowRendererDetached);
+    addEventHandlerObjectToMap(CEGUI::Window::EventChildAdded);
+    addEventHandlerObjectToMap(CEGUI::Window::EventChildRemoved);
+    addEventHandlerObjectToMap(CEGUI::Window::EventHorizontalAlignmentChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventMoved);
+    addEventHandlerObjectToMap(CEGUI::Window::EventNameChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventVerticalAlignmentChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventNonClientChanged);
+    addEventHandlerObjectToMap(CEGUI::Window::EventRotated);
+    addEventHandlerObjectToMap(CEGUI::Window::EventParentSized);
+    addEventHandlerObjectToMap(CEGUI::Window::EventSized);
+    addEventHandlerObjectToMap(CEGUI::Window::EventZOrderChanged);
+}
+
+CEGUI::Window* WidgetDemo::createWidget(CEGUI::String &widgetTypeString)
+{
+    //Create default widget of the selected type
+    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
+    CEGUI::Window* widgetWindow = windowManager.createWindow(widgetTypeString, s_widgetDemoWindowPrefix + widgetTypeString);
+
+
+    size_t pos = widgetTypeString.rfind("Label");
+    if(pos != CEGUI::String::npos)
+        widgetWindow->setText("Label");
+    else
+        widgetWindow->setText("Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt"
+        "ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+        "laboris nisi ut aliquid ex ea commodi consequat.Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n\n"
+        "Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+
+    std::map<CEGUI::String, EventHandlerObject*>::iterator iter = d_eventHandlerObjectsMap.begin();
+    while(iter != d_eventHandlerObjectsMap.end())
+    {
+         widgetWindow->subscribeEvent(iter->first, Event::Subscriber(&EventHandlerObject::handleEvent, iter->second));
+
+        ++iter;
+    }
+
+    return widgetWindow;
+}
+
+
+void WidgetDemo::handleWidgetEventFired(CEGUI::String eventName)
+{
+    CEGUI::String eventsLog = d_widgetsEventsLog->getText();
+
+    eventsLog += eventName + " event was fired by \"" + d_widgetSelectorListbox->getFirstSelectedItem()->getText() + "\"";
+
+    //Remove line
+    int pos = std::max<int>(static_cast<int>(eventsLog.length() - 512), 0);
+    int len = std::min<int>(static_cast<int>(eventsLog.length()), 512);
+    eventsLog = eventsLog.substr(pos, len);
+    if(len == 512)
+    {
+        int newlinePos = eventsLog.find_first_of("\n");
+        if(newlinePos != std::string::npos)
+            eventsLog = eventsLog.substr(newlinePos, std::string::npos);
+    }
+    d_widgetsEventsLog->setText(eventsLog);
+
+    //Scroll to end
+    d_widgetsEventsLog->getVertScrollbar()->setScrollPosition(d_widgetsEventsLog->getVertScrollbar()->getDocumentSize() - d_widgetsEventsLog->getVertScrollbar()->getPageSize());
+}
+
+void WidgetDemo::addEventHandlerObjectToMap(CEGUI::String eventName)
+{
+    d_eventHandlerObjectsMap[eventName] = new EventHandlerObject(eventName, this);
+}
+
+void WidgetDemo::deinitWidgetListItems()
+{
+    std::map<CEGUI::String, WidgetListType>::iterator iter = d_skinListItemsMap.begin();
+    while(iter != d_skinListItemsMap.end())
+    {
+        WidgetListType& widgetsList = iter->second;
+
+        while(widgetsList.size() > 0)
+        {
+            MyListItem* item = widgetsList.back();
+            delete item;
+            widgetsList.pop_back();
+        }
+
+        ++iter;
+    }
+}
+
+void WidgetDemo::destroyWidgetWindows()
+{
+    CEGUI::WindowManager& winMan = CEGUI::WindowManager::getSingleton();
+    std::map<CEGUI::String, CEGUI::Window*>::iterator iter = d_widgetsMap.begin();
+    while(iter != d_widgetsMap.end())
+    {
+        winMan.destroyWindow(iter->second);
+
+        ++iter;
+    }
+}
+/*************************************************************************
+Define the module function that returns an instance of the sample
 *************************************************************************/
 extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    static EffectsDemo sample;
+    static WidgetDemo sample;
     return sample;
 }
