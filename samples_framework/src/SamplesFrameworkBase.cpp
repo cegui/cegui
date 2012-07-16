@@ -263,7 +263,7 @@ bool SamplesFrameworkBase::runApplication()
             break;
         }
 
-        // execute the base application (which sets up the demo via 'this' and runs it.
+        // run the base application (which sets up the demo via 'this' and runs it.
         if (d_sampleApp->execute(this))
         {
             // signal that app initialised and ran

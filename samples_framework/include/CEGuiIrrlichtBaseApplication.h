@@ -75,8 +75,7 @@ protected:
     void checkWindowResize();
 
     // implementation of base class abstract methods.
-    bool execute_impl();
-    void cleanup_impl();
+    void run();
     void beginRendering(const float elapsed);
     void endRendering();
 

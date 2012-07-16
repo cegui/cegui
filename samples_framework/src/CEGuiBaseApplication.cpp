@@ -112,7 +112,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     d_sampleApp = sampleApp;
 
     if (!d_renderer)
-        throw CEGUI::InvalidRequestException("CEGuiBaseApplication::execute: "
+        throw CEGUI::InvalidRequestException("CEGuiBaseApplication::run: "
             "Base application subclass did not create Renderer!");
 
     // start up CEGUI system using objects created in subclass constructor.
@@ -157,14 +157,14 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
     d_sampleApp->setApplicationWindowSize(static_cast<int>(area.getWidth()), static_cast<int>(area.getHeight()));
 
-    return execute_impl();
+    run();
+
+    return true;
 }
 
 //----------------------------------------------------------------------------//
 void CEGuiBaseApplication::cleanup()
 {
-    cleanup_impl();
-
     CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
     d_renderer->destroyGeometryBuffer(*d_logoGeometry);
     d_renderer->destroyGeometryBuffer(*d_FPSGeometry);

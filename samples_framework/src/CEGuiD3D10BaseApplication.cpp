@@ -104,10 +104,10 @@ CEGuiD3D10BaseApplication::~CEGuiD3D10BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D10BaseApplication::execute_impl()
+void CEGuiD3D10BaseApplication::run()
 {
-    Win32AppHelper::setSamplesFramework(d_sampleApp);
     d_sampleApp->initialise();
+    Win32AppHelper::setSamplesFramework(d_sampleApp);
 
     float clear_colour[4] = {1.0f, 1.0f, 1.0f, 0.0f};
 
@@ -150,14 +150,6 @@ bool CEGuiD3D10BaseApplication::execute_impl()
         if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiD3D10BaseApplication::cleanup_impl()
-{
-    // nothing to do here.
 }
 
 //----------------------------------------------------------------------------//

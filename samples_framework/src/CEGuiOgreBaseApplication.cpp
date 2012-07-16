@@ -128,14 +128,13 @@ CEGuiOgreBaseApplication::~CEGuiOgreBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiOgreBaseApplication::execute_impl()
+void CEGuiOgreBaseApplication::run()
 {
     // if base initialisation failed or app was cancelled by user, bail out now.
     if (!d_ogreRoot || !d_initialised)
-        return false;
+        return;
 
     Ogre::ResourceGroupManager::getSingleton().initialiseAllResourceGroups();
-    // perform sample initialisation
     d_sampleApp->initialise();
 
     // start rendering via Ogre3D engine.
@@ -145,14 +144,6 @@ bool CEGuiOgreBaseApplication::execute_impl()
     }
     CEGUI_CATCH(...)
     {}
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiOgreBaseApplication::cleanup_impl()
-{
-    // nothing to do here.
 }
 
 //----------------------------------------------------------------------------//

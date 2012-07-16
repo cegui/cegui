@@ -103,10 +103,10 @@ CEGuiD3D9BaseApplication::~CEGuiD3D9BaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiD3D9BaseApplication::execute_impl()
+void CEGuiD3D9BaseApplication::run()
 {
-    Win32AppHelper::setSamplesFramework(d_sampleApp);
     d_sampleApp->initialise();
+    Win32AppHelper::setSamplesFramework(d_sampleApp);
 
     //
     //  This is basically a modified Win32 message pump
@@ -156,14 +156,6 @@ bool CEGuiD3D9BaseApplication::execute_impl()
         if (d_sampleApp->isQuitting())
             PostQuitMessage(0);
     }
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiD3D9BaseApplication::cleanup_impl()
-{
-    // nothing to do here.
 }
 
 //----------------------------------------------------------------------------//
