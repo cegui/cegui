@@ -5,6 +5,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFDDDDDD" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -142,6 +143,7 @@
     <WidgetLook name="Vanilla/Titlebar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
         <Property name="NonClient" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="caption">
             <TextComponent>
                 <Area>
@@ -191,6 +193,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 64}, {0, 64}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -331,6 +334,7 @@
         <Property name="RollUpEnabled" value="False"/>
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}"/>
         <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="Size" value="{{0.2, 0}, {0.2, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -610,6 +614,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -706,6 +711,7 @@
     <WidgetLook name="Vanilla/VerticalScrollbarThumb">
         <Property name="VertFree" value="True"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -747,6 +753,7 @@
     <WidgetLook name="Vanilla/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="thumb">
             <ImageryComponent>
                 <Area>
@@ -786,6 +793,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="Vanilla/HorizontalScrollbar">
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -901,6 +909,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="True"/>
+        <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1020,6 +1029,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
                 <Area>
@@ -1134,6 +1144,7 @@
         <PropertyLinkDefinition targetProperty="DocumentSize" widget="__auto_vscrollbar__" type="float" name="VertScrollDocumentSize"/>
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1355,6 +1366,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/Listbox">
         <Property name="ForceVertScrollbar" value="True"/>
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1432,6 +1444,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="SelectionBrushImage" value="Vanilla-Images/GenericBrush"/>
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1609,6 +1622,10 @@
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FFFFFFFF" type="ColourRect" name="SelectedEditTextColour"/>
         <PropertyLinkDefinition targetProperty="ActiveSelectionColour" widget="__auto_editbox__" initialValue="FF607FFF" type="ColourRect" name="ActiveEditSelectionColour"/>
         <PropertyLinkDefinition targetProperty="InactiveSelectionColour" widget="__auto_editbox__" initialValue="FF808080" type="ColourRect" name="InactiveEditSelectionColour"/>
+        <PropertyLinkDefinition targetProperty="NormalImage" widget="__auto_button__" initialValue="Vanilla-Images/DropDownButtonNormal" name="DropDownButtonNormalImage"/>
+        <PropertyLinkDefinition targetProperty="HoverImage" widget="__auto_button__" initialValue="Vanilla-Images/DropDownButtonHover" name="DropDownButtonHoverImage"/>
+        <PropertyLinkDefinition targetProperty="PushedImage" widget="__auto_button__" initialValue="Vanilla-Images/DropDownButtonPushed" name="DropDownButtonPushedImage"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <Child nameSuffix="__auto_editbox__" type="Vanilla/Editbox">
             <Area>
                 <Dim type="LeftEdge">
@@ -1784,6 +1801,7 @@
     <WidgetLook name="Vanilla/ProgressBar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="EnabledColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="DisabledColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1857,6 +1875,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF7F7F7F" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
