@@ -122,10 +122,9 @@ CEGuiIrrlichtBaseApplication::~CEGuiIrrlichtBaseApplication()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiIrrlichtBaseApplication::execute_impl()
+void CEGuiIrrlichtBaseApplication::run()
 {
     d_sampleApp->initialise();
-
     CEGUI::System& guiSystem = CEGUI::System::getSingleton();
 
     // draw everything
@@ -149,14 +148,6 @@ bool CEGuiIrrlichtBaseApplication::execute_impl()
         if (d_sampleApp->isQuitting())
             d_device->closeDevice();
     }
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiIrrlichtBaseApplication::cleanup_impl()
-{
-    // Nothing to do here.
 }
 
 //----------------------------------------------------------------------------//

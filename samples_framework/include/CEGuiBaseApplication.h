@@ -61,7 +61,7 @@ class EventArgs;
 \brief
     Base application abstract base class.
 
-    The "BaseApplication" family of classes are used to start up and execute a
+    The "BaseApplication" family of classes are used to start up and run a
     host application for CeGui samples in a consistent manner.
 */
 class CEGuiBaseApplication
@@ -79,7 +79,7 @@ public:
 
         This will fully initialise the application, finish initialisation of the
         demo via calls to 'sampleApp', and finally control execution of the
-        sample.  This calls calls the virtual execute_impl function.
+        sample.  This calls calls the virtual run function.
 
     \param sampleApp
         Pointer to the CEGuiSample object that the CEGuiBaseApplication is being
@@ -95,8 +95,7 @@ public:
 
     /*!
     \brief
-        Performs any required cleanup of the base application system.  This
-        calls the cleanup_impl function.
+        Performs any required cleanup of the base application system.
     */
     void cleanup();
 
@@ -118,9 +117,7 @@ protected:
     static const char DATAPATH_VAR_NAME[];
 
     //! implementation provided execution implementaion.
-    virtual bool execute_impl() = 0;
-    //! implementation provided cleanup implementation.
-    virtual void cleanup_impl() = 0;
+    virtual void run() = 0;
     //! Implementation function to perform required pre-render operations.
     virtual void beginRendering(const float elapsed) = 0;
     //! Implementation function to perform required post-render operations.

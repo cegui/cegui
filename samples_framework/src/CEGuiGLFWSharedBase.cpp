@@ -61,8 +61,10 @@ CEGuiGLFWSharedBase::~CEGuiGLFWSharedBase()
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiGLFWSharedBase::execute_impl()
+void CEGuiGLFWSharedBase::run()
 {
+    d_sampleApp->initialise();
+
     // Input callbacks of glfw for CEGUI
     glfwSetKeyCallback(glfwKeyCallback);
     glfwSetCharCallback(glfwCharCallback);
@@ -74,8 +76,6 @@ bool CEGuiGLFWSharedBase::execute_impl()
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
     d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-
-    d_sampleApp->initialise();
 
     // set starting time
     d_frameTime = glfwGetTime();
@@ -95,15 +95,11 @@ bool CEGuiGLFWSharedBase::execute_impl()
         drawFrame();
     }
 
+    bool bla = glfwGetWindowParam(GLFW_OPENED);
+    d_sampleApp->deinitialise();
+
+
     glfwTerminate();
-
-    return true;
-}
-
-//----------------------------------------------------------------------------//
-void CEGuiGLFWSharedBase::cleanup_impl()
-{
-    // nothing to do here.
 }
 
 //----------------------------------------------------------------------------//

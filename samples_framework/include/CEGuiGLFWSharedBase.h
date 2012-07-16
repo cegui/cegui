@@ -42,8 +42,7 @@ public:
 
 protected:
     // implementation of base class abstract functions.
-    bool execute_impl();
-    void cleanup_impl();
+    void run();
     void beginRendering(const float elapsed);
     void endRendering();
 
