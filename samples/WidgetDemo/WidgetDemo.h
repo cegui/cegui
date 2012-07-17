@@ -57,9 +57,6 @@ public:
 
     // method to perform any required cleanup operations.
     virtual void deinitialise();
-
-    void destroyWidgetWindows();
-    void deinitWidgetListItems();
 protected:
     // initialisation helpers
     void initialiseAvailableWidgetsMap();
@@ -67,6 +64,7 @@ protected:
     void addItemToWidgetList(const CEGUI::String& widgetName, WidgetListType &widgetList);
     void createLayout();
 
+    void initialiseEventLights(CEGUI::Window* background);
     void initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer);
     void initialiseWidgetSelectorListbox();
     void initialiseBackgroundWindow(CEGUI::Window* background);
@@ -82,7 +80,17 @@ protected:
 
     CEGUI::Window* createWidget(CEGUI::String &widgetTypeString);
 
-    void addEventHandlerObjectToMap( CEGUI::String eventName );
+    void addEventHandlerObjectToMap(CEGUI::String eventName);
+
+    
+    void logFiredEvent(const CEGUI::String& eventName);
+
+    void destroyWidgetWindows();
+    void deinitWidgetListItems();
+
+    bool handleRenderingEnded(const CEGUI::EventArgs& args);
+
+
     static const CEGUI::String s_widgetDemoWindowPrefix;
 
     CEGUI::GUIContext* d_guiContext;
@@ -93,6 +101,9 @@ protected:
     CEGUI::MultiLineEditbox* d_widgetsEventsLog;
 
     CEGUI::Window* d_currentlyDisplayedWidgetRoot;
+
+    CEGUI::Window* d_windowLightMouseMoveEvent;
+    CEGUI::Window* d_windowLightUpdatedEvent;
 
     std::map<CEGUI::String, WidgetListType> d_skinListItemsMap;
     std::map<CEGUI::String, CEGUI::Window*> d_widgetsMap;
