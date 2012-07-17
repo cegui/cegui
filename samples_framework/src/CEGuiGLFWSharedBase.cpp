@@ -95,10 +95,11 @@ void CEGuiGLFWSharedBase::run()
         drawFrame();
     }
 
-    bool bla = glfwGetWindowParam(GLFW_OPENED);
     d_sampleApp->deinitialise();
-
-
+}
+//----------------------------------------------------------------------------//
+void CEGuiGLFWSharedBase::destroyWindow()
+{
     glfwTerminate();
 }
 

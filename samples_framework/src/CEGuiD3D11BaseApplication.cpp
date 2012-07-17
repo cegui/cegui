@@ -154,6 +154,13 @@ void CEGuiD3D11BaseApplication::run()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiD3D11BaseApplication::destroyWindow()
+{
+
+}
+
+
+//----------------------------------------------------------------------------//
 void CEGuiD3D11BaseApplication::beginRendering(const float elapsed)
 {
 }

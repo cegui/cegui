@@ -159,6 +159,9 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 
     run();
 
+    cleanup();
+    destroyWindow();
+
     return true;
 }
 

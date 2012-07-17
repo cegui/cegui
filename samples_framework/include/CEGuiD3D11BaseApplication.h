@@ -53,6 +53,7 @@ protected:
 
     // Implementation of base class.
     void run();
+    void destroyWindow();
     void beginRendering(const float elapsed);
     void endRendering();
 
