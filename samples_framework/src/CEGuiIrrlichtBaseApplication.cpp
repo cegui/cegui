@@ -151,6 +151,12 @@ void CEGuiIrrlichtBaseApplication::run()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiIrrlichtBaseApplication::destroyWindow()
+{
+
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiIrrlichtBaseApplication::beginRendering(const float /*elapsed*/)
 {
     d_driver->beginScene(true, true, irr::video::SColor(0, 255, 255, 255));

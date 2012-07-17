@@ -147,6 +147,12 @@ void CEGuiOgreBaseApplication::run()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::destroyWindow()
+{
+
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::beginRendering(const float elapsed)
 {
     // this is nover called under Ogre, since we're not in control of the

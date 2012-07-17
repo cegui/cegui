@@ -148,6 +148,12 @@ void SampleData::deinitialise()
         system.getRenderer()->destroyTextureTarget(d_textureTarget);
         d_textureTarget = 0;
     }
+
+    if(d_textureTargetImage)
+    {
+        CEGUI::ImageManager::getSingleton().destroy(*d_textureTargetImage);
+        d_textureTargetImage = 0;
+    }
 }
 
 GUIContext* SampleData::getGuiContext()
@@ -223,9 +229,9 @@ void SampleDataModule::initialise(int width, int height)
 
 void SampleDataModule::deinitialise()
 {
-    SampleData::deinitialise();
-
     d_sample->deinitialise();
+
+    SampleData::deinitialise();   
 }
 
 void SampleDataModule::getSampleInstanceFromDLL()

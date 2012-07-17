@@ -116,8 +116,10 @@ protected:
     //! name of env var that holds the path prefix to the data files.
     static const char DATAPATH_VAR_NAME[];
 
-    //! implementation provided execution implementaion.
+    //! The abstract function for initialising and running the application.
     virtual void run() = 0;
+    //! The abstract function for destroying the renderer and the window.
+    virtual void destroyWindow() = 0;
     //! Implementation function to perform required pre-render operations.
     virtual void beginRendering(const float elapsed) = 0;
     //! Implementation function to perform required post-render operations.

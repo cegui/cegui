@@ -43,6 +43,7 @@ public:
 protected:
     // implementation of base class abstract functions.
     void run();
+    void destroyWindow();
     void beginRendering(const float elapsed);
     void endRendering();
 

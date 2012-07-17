@@ -127,7 +127,7 @@ int SamplesFrameworkBase::run()
 {
     CEGUI_TRY
     {
-        if (runApplication())
+        if(runApplication())
             cleanup();
     }
     CEGUI_CATCH (CEGUI::Exception& exc)
@@ -288,13 +288,10 @@ bool SamplesFrameworkBase::runApplication()
     Cleanup the sample application.
 *************************************************************************/
 void SamplesFrameworkBase::cleanup()
-{
-    if (d_sampleApp)
-    {
-        d_sampleApp->cleanup();
-        delete d_sampleApp;
-        d_sampleApp = 0;
-    }
+{   
+    delete d_sampleApp;
+    d_sampleApp = 0;
+
 
     if (d_rendererSelector)
     {

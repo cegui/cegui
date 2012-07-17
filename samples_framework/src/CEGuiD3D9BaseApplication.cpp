@@ -159,6 +159,12 @@ void CEGuiD3D9BaseApplication::run()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiD3D9BaseApplication::destroyWindow()
+{
+
+}
+
+//----------------------------------------------------------------------------//
 void CEGuiD3D9BaseApplication::beginRendering(const float elapsed)
 {
     pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET,

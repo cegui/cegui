@@ -74,6 +74,7 @@ protected:
 
     // Implementation of base class abstract methods.
     void run();
+    void destroyWindow();
     void beginRendering(const float elapsed);
     void endRendering();
 
