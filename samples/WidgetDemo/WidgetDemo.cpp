@@ -115,7 +115,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     //Create windows and initialise them 
     createLayout();
 
-
+    d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetDemo::handleRenderingEnded, this));
 
     // success!
     return true;
@@ -127,15 +127,11 @@ Cleans up resources allocated in the initialiseSample call.
 void WidgetDemo::deinitialise()
 {
     if(d_currentlyDisplayedWidgetRoot != 0)
-    {
         d_widgetDisplayWindow->removeChild(d_currentlyDisplayedWidgetRoot);
 
-        destroyWidgetWindows();
+    destroyWidgetWindows();
 
-
-        deinitWidgetListItems();
-    }
-
+    deinitWidgetListItems();
 }
 
 /*************************************************************************
@@ -218,6 +214,14 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
     }
 
     // event was handled
+    return true;
+}
+
+bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
+{
+    d_windowLightMouseMoveEvent->disable();
+    d_windowLightUpdatedEvent->disable();
+
     return true;
 }
 
@@ -335,9 +339,12 @@ void WidgetDemo::createLayout()
     initialiseWidgetSelectorListbox();
     widgetSelectorContainer->addChild(d_widgetSelectorListbox);
 
+    initialiseEventLights(background);
+
+
     d_widgetDisplayWindow = winMgr.createWindow("Vanilla/FrameWindow", "WidgetDisplayWindow");
     d_widgetDisplayWindow->setPosition(CEGUI::UVector2(cegui_reldim(0.085f), cegui_reldim(0.1f)));
-    d_widgetDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.6f)));
+    d_widgetDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.55f)));
     d_widgetDisplayWindow->setText("Widget Demo");
     background->addChild(d_widgetDisplayWindow);
 }
@@ -393,6 +400,7 @@ void WidgetDemo::initialiseWidgetsEventsLog()
     d_widgetsEventsLog->setPosition(CEGUI::UVector2(cegui_reldim(0.085f), cegui_reldim(0.70f)));
     d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.2f)));
     d_widgetsEventsLog->setReadOnly(true);
+    d_widgetsEventsLog->setFont("DejaVuSans-10-NoScale");
 }
 
 /*************************************************************************
@@ -407,53 +415,15 @@ void WidgetDemo::addItemToWidgetList(const CEGUI::String& widgetName, WidgetList
 
 void WidgetDemo::initialiseEventHandlerObjects()
 {
-    addEventHandlerObjectToMap(CEGUI::Window::EventActivated);
-    addEventHandlerObjectToMap(CEGUI::Window::EventAlphaChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventAlwaysOnTopChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventCharacterKey);
-    addEventHandlerObjectToMap(CEGUI::Window::EventKeyDown);
-    addEventHandlerObjectToMap(CEGUI::Window::EventClippedByParentChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventDeactivated);
-    addEventHandlerObjectToMap(CEGUI::Window::EventDestroyedByParentChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventDestructionStarted);
-    addEventHandlerObjectToMap(CEGUI::Window::EventDragDropItemDropped);
-    addEventHandlerObjectToMap(CEGUI::Window::EventDragDropItemEnters);
-    addEventHandlerObjectToMap(CEGUI::Window::EventDragDropItemLeaves);
-    addEventHandlerObjectToMap(CEGUI::Window::EventEnabled);
-    addEventHandlerObjectToMap(CEGUI::Window::EventFontChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventHidden);
-    addEventHandlerObjectToMap(CEGUI::Window::EventIDChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventInheritsAlphaChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventInputCaptureGained);
-    addEventHandlerObjectToMap(CEGUI::Window::EventInputCaptureLost);
-    addEventHandlerObjectToMap(CEGUI::Window::EventInvalidated);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMarginChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseEntersArea);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseEntersSurface);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseLeavesArea);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseLeavesSurface);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseMove);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseTripleClick);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMouseWheel);
-    addEventHandlerObjectToMap(CEGUI::Window::EventNamespace);
-    addEventHandlerObjectToMap(CEGUI::Window::EventRenderingEnded);
-    addEventHandlerObjectToMap(CEGUI::Window::EventRenderingStarted);
-    addEventHandlerObjectToMap(CEGUI::Window::EventShown);
-    addEventHandlerObjectToMap(CEGUI::Window::EventTextChanged);
-/*    addEventHandlerObjectToMap(CEGUI::Window::EventUpdated);*/
-    addEventHandlerObjectToMap(CEGUI::Window::EventWindowRendererAttached);
-    addEventHandlerObjectToMap(CEGUI::Window::EventWindowRendererDetached);
-    addEventHandlerObjectToMap(CEGUI::Window::EventChildAdded);
-    addEventHandlerObjectToMap(CEGUI::Window::EventChildRemoved);
-    addEventHandlerObjectToMap(CEGUI::Window::EventHorizontalAlignmentChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventMoved);
-    addEventHandlerObjectToMap(CEGUI::Window::EventNameChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventVerticalAlignmentChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventNonClientChanged);
-    addEventHandlerObjectToMap(CEGUI::Window::EventRotated);
-    addEventHandlerObjectToMap(CEGUI::Window::EventParentSized);
-    addEventHandlerObjectToMap(CEGUI::Window::EventSized);
-    addEventHandlerObjectToMap(CEGUI::Window::EventZOrderChanged);
+#include "AllEvents.inc"
+
+    std::set<String>::iterator iter = allEvents.begin();
+    while(iter != allEvents.end())
+    {
+        addEventHandlerObjectToMap(*iter);
+
+        ++iter;
+    }
 }
 
 CEGUI::Window* WidgetDemo::createWidget(CEGUI::String &widgetTypeString)
@@ -486,24 +456,19 @@ CEGUI::Window* WidgetDemo::createWidget(CEGUI::String &widgetTypeString)
 
 void WidgetDemo::handleWidgetEventFired(CEGUI::String eventName)
 {
-    CEGUI::String eventsLog = d_widgetsEventsLog->getText();
-
-    eventsLog += eventName + " event was fired by \"" + d_widgetSelectorListbox->getFirstSelectedItem()->getText() + "\"";
-
-    //Remove line
-    int pos = std::max<int>(static_cast<int>(eventsLog.length() - 512), 0);
-    int len = std::min<int>(static_cast<int>(eventsLog.length()), 512);
-    eventsLog = eventsLog.substr(pos, len);
-    if(len == 512)
+    if(eventName == CEGUI::Window::EventMouseMove)
     {
-        int newlinePos = eventsLog.find_first_of("\n");
-        if(newlinePos != std::string::npos)
-            eventsLog = eventsLog.substr(newlinePos, std::string::npos);
+        d_windowLightMouseMoveEvent->enable();
     }
-    d_widgetsEventsLog->setText(eventsLog);
+    else if(eventName == CEGUI::Window::EventUpdated)
+    {
+        d_windowLightUpdatedEvent->enable();
+    }
+    else
+    {
+        logFiredEvent(eventName);
+    }
 
-    //Scroll to end
-    d_widgetsEventsLog->getVertScrollbar()->setScrollPosition(d_widgetsEventsLog->getVertScrollbar()->getDocumentSize() - d_widgetsEventsLog->getVertScrollbar()->getPageSize());
 }
 
 void WidgetDemo::addEventHandlerObjectToMap(CEGUI::String eventName)
@@ -539,6 +504,65 @@ void WidgetDemo::destroyWidgetWindows()
 
         ++iter;
     }
+}
+
+void WidgetDemo::initialiseEventLights(CEGUI::Window* background)
+{
+    CEGUI::WindowManager &winMgr = CEGUI::WindowManager::getSingleton();
+
+    CEGUI::Window* horizontalLayout = winMgr.createWindow("HorizontalLayoutContainer", "EventLightsContainer");
+    horizontalLayout->setPosition(CEGUI::UVector2(cegui_reldim(0.085f), cegui_reldim(0.91f)));
+    background->addChild(horizontalLayout);
+
+
+    d_windowLightUpdatedEvent = winMgr.createWindow("SampleBrowserSkin/Light");
+    horizontalLayout->addChild(d_windowLightUpdatedEvent);
+    d_windowLightUpdatedEvent->setSize(CEGUI::USize(cegui_reldim(0.f), cegui_reldim(0.04f)));
+    d_windowLightUpdatedEvent->setAspectMode(CEGUI::AM_EXPAND);
+    d_windowLightUpdatedEvent->setProperty("LightColour", "FF66FF66");
+
+    CEGUI::Window* updateEventLabel = winMgr.createWindow("Vanilla/Label");
+    horizontalLayout->addChild(updateEventLabel);
+    updateEventLabel->setSize(CEGUI::USize(cegui_reldim(0.12f), cegui_reldim(0.04f)));
+    updateEventLabel->setText("EventUpdated");
+    updateEventLabel->setFont("DejaVuSans-12-NoScale");
+
+    d_windowLightMouseMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
+    horizontalLayout->addChild(d_windowLightMouseMoveEvent);
+    d_windowLightMouseMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.f), cegui_reldim(0.04f)));
+    d_windowLightMouseMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
+    d_windowLightMouseMoveEvent->setProperty("LightColour", "FF77BBFF");
+
+    CEGUI::Window* mouseMoveEventLabel = winMgr.createWindow("Vanilla/Label");
+    horizontalLayout->addChild(mouseMoveEventLabel);
+    mouseMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.12f), cegui_reldim(0.04f)));
+    mouseMoveEventLabel->setText("EventMouseMove");
+    mouseMoveEventLabel->setFont("DejaVuSans-12-NoScale");
+}
+
+void WidgetDemo::logFiredEvent(const CEGUI::String& eventName)
+{
+    ListboxItem* item = d_widgetSelectorListbox->getFirstSelectedItem();
+    if(!item)
+        return;
+
+    CEGUI::String eventsLog = d_widgetsEventsLog->getText();
+    eventsLog += eventName + " event was fired by \"" + item->getText() + "\"";
+
+    //Remove line
+    int pos = std::max<int>(static_cast<int>(eventsLog.length() - 512), 0);
+    int len = std::min<int>(static_cast<int>(eventsLog.length()), 512);
+    eventsLog = eventsLog.substr(pos, len);
+    if(len == 512)
+    {
+        int newlinePos = eventsLog.find_first_of("\n");
+        if(newlinePos != std::string::npos)
+            eventsLog = eventsLog.substr(newlinePos, std::string::npos);
+    }
+    d_widgetsEventsLog->setText(eventsLog);
+
+    //Scroll to end
+    d_widgetsEventsLog->getVertScrollbar()->setScrollPosition(d_widgetsEventsLog->getVertScrollbar()->getDocumentSize() - d_widgetsEventsLog->getVertScrollbar()->getPageSize());
 }
 /*************************************************************************
 Define the module function that returns an instance of the sample
