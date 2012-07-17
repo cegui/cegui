@@ -1,15 +1,15 @@
-<Imageset autoScaled="vertical" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1280" nativeVertRes="720" version="2">
+<Imageset autoScaled="vertical" imagefile="SampleBrowser.png" name="SampleBrowserSkin" nativeHorzRes="1920" nativeVertRes="1080" version="2">
     <Image height="3" name="GenericFiller" width="3" xPos="1" yPos="49" />
-    <Image height="45" name="MouseArrow" width="36" xPos="0" yPos="0" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="45" name="MouseArrowHover" width="36" xPos="94" yPos="102" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="29" name="SampleFrameBottom" width="690" xPos="185" yPos="416" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="29" name="SampleFrameBottomRight" width="28" xPos="875" yPos="416" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="29" name="SampleFrameBottomLeft" width="28" xPos="157" yPos="416" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="389" name="SampleFrameLeft" width="28" xPos="157" yPos="27" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="27" name="SampleFrameTopRight" width="28" xPos="875" yPos="0" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="389" name="SampleFrameRight" width="28" xPos="875" yPos="27" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="27" name="SampleFrameTop" width="690" xPos="185" yPos="0" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
-    <Image height="27" name="SampleFrameTopLeft" width="28" xPos="157" yPos="0" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" />
+    <Image height="45" name="MouseArrow" width="36" xPos="0" yPos="0" />
+    <Image height="45" name="MouseArrowHover" width="36" xPos="94" yPos="102" />
+    <Image height="29" name="SampleFrameBottom" width="690" xPos="185" yPos="416" />
+    <Image height="29" name="SampleFrameBottomRight" width="28" xPos="875" yPos="416" />
+    <Image height="29" name="SampleFrameBottomLeft" width="28" xPos="157" yPos="416" />
+    <Image height="389" name="SampleFrameLeft" width="28" xPos="157" yPos="27" />
+    <Image height="27" name="SampleFrameTopRight" width="28" xPos="875" yPos="0" />
+    <Image height="389" name="SampleFrameRight" width="28" xPos="875" yPos="27" />
+    <Image height="27" name="SampleFrameTop" width="690" xPos="185" yPos="0" />
+    <Image height="27" name="SampleFrameTopLeft" width="28" xPos="157" yPos="0" />
     <Image height="13" name="TextBoxB" width="6" xPos="13" yPos="116" />
     <Image height="13" name="TextBoxTR" width="13" xPos="19" yPos="97" />
     <Image height="13" name="TextBoxT" width="6" xPos="13" yPos="97" />
@@ -31,13 +31,13 @@
     <Image height="15" name="TrayT" width="34" xPos="105" yPos="0" />
     <Image height="15" name="TrayBR" width="15" xPos="139" yPos="49" />
     <Image height="34" name="TrayR" width="15" xPos="139" yPos="15" />
-    <Image height="16" name="Handle" width="16" xPos="0" yPos="130" nativeHorzRes="1280" nativeVertRes="720" autoScaled="vertical" />
+    <Image height="16" name="Handle" width="16" xPos="0" yPos="130" />
     <Image height="15" name="HorzTrackR" width="5" xPos="54" yPos="130" />
     <Image height="15" name="HorzTrackM" width="14" xPos="40" yPos="130" />
-    <Image height="5" name="VertTrackT" width="14" xPos="19" yPos="130" nativeHorzRes="1280" nativeVertRes="720" autoScaled="vertical" />
+    <Image height="5" name="VertTrackT" width="14" xPos="19" yPos="130" />
     <Image height="15" name="HorzTrackL" width="5" xPos="35" yPos="130" />
-    <Image height="14" name="VertTrackM" width="14" xPos="19" yPos="135" nativeHorzRes="1280" nativeVertRes="720" autoScaled="vertical" />
-    <Image height="5" name="VertTrackB" width="14" xPos="19" yPos="149" nativeHorzRes="1280" nativeVertRes="720" autoScaled="vertical" />
+    <Image height="14" name="VertTrackM" width="14" xPos="19" yPos="135" />
+    <Image height="5" name="VertTrackB" width="14" xPos="19" yPos="149" />
     <Image height="8" name="MiniTrayM" width="8" xPos="102" yPos="77" />
     <Image height="12" name="MiniTrayTR" width="12" xPos="110" yPos="65" />
     <Image height="12" name="MiniTrayTL" width="12" xPos="90" yPos="65" />
@@ -72,4 +72,6 @@
     <Image height="18" name="ProgessBarOverBotLeft" width="18" xPos="95" yPos="245" />
     <Image height="16" name="ProgessBarOverRight" width="18" xPos="129" yPos="229" />
     <Image height="18" name="ProgessBarOverTopRight" width="18" xPos="129" yPos="211" />
+    <Image height="117" name="LightBackground" width="117" xPos="1" yPos="725" />
+    <Image height="117" name="LightOverlay" width="117" xPos="1" yPos="875" />
 </Imageset>
