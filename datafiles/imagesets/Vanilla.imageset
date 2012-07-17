@@ -9,7 +9,7 @@
     <Image height="6" name="FrameTop" width="1" xPos="18" yPos="1" />
     <Image height="6" name="FrameBottom" width="1" xPos="18" yPos="10" />
     <Image height="20" name="ScrollUpArrow" width="20" xPos="1" yPos="22" />
-    <Image height="20" name="ScrollDownArrow" width="20" xPos="22" yPos="22" />
+    <Image height="20" name="ScrollDownArrow" width="20" xPos="22" yPos="23" />
     <Image height="1" name="VertScrollContainer" width="20" xPos="69" yPos="3" />
     <Image height="20" name="ScrollLeftArrow" width="20" xPos="21" yPos="1" />
     <Image height="20" name="ScrollRightArrow" width="20" xPos="42" yPos="1" />
