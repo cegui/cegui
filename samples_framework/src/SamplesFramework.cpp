@@ -404,42 +404,27 @@ bool SamplesFramework::handleSampleExitButtonClicked(const CEGUI::EventArgs& arg
     return true;
 }
 
-bool SamplesFramework::initialiseSample(unsigned int sampleNumber)
+bool SamplesFramework::initialiseSampleStepwise(int sampleNumber)
 {
-    if(d_samples.size() <= sampleNumber)
+    if(static_cast<int>(d_samples.size()) <= sampleNumber)
         return true;
 
-    int totalNum = d_samples.size() + 2;
+    if(static_cast<int>(d_samples.size()) > sampleNumber + 1)
+        displaySampleLoadProgress(sampleNumber);
 
-    SampleData* sampleData = d_samples[sampleNumber];
-
-    CEGUI::String loadText = "Loading " + sampleData->getName() + " ...";
-    d_loadingScreenText->setText(loadText);
-
-    CEGUI::String progressText = PropertyHelper<int>::toString(sampleNumber + 2) + "/" + PropertyHelper<int>::toString(totalNum - 1);
-    d_loadScreenChunkProgressText->setText(progressText);
-
-    d_loadingProgressBar->setProgress( (sampleNumber + 2.f) / (totalNum - 1.f) );
-
-    sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
-    CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
-    sampleData->setSampleWindow(sampleWindow);
+    if(sampleNumber >= 0) 
+    {
+        SampleData* sampleData = d_samples[sampleNumber];
+        sampleData->initialise(d_appWindowWidth, d_appWindowHeight);
+        CEGUI::FrameWindow* sampleWindow = d_samplesWinMgr->createSampleWindow(sampleData->getName(), sampleData->getRTTImage());
+        sampleData->setSampleWindow(sampleWindow);
+    }
 
     return false;
 }
 
 void SamplesFramework::initialiseSampleBrowserLayout()
 {
-    int totalNum = d_samples.size() + 2;
-
-    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin ...");
-    d_loadingScreenText->setText(loadText);
-
-    CEGUI::String progressText =  PropertyHelper<int>::toString(1) + "/" + PropertyHelper<int>::toString(totalNum - 1);
-    d_loadScreenChunkProgressText->setText(progressText);
-
-    d_loadingProgressBar->setProgress(1.f / (totalNum - 1.f));
-
     CEGUI::Font& buttonFont = CEGUI::FontManager::getSingleton().createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
@@ -480,6 +465,8 @@ bool SamplesFramework::updateInitialisationStep()
         {
             loadSamplesDataFromXML("../datafiles/samples/samples.xml");
             ++step;
+            displaySampleBrowserLayoutLoadProgress();
+
             break;
         }
         break;
@@ -492,7 +479,7 @@ bool SamplesFramework::updateInitialisationStep()
         
     default:
         {
-            bool sampleInitFinished = initialiseSample(step - 2);
+            bool sampleInitFinished = initialiseSampleStepwise(step - 3); // -2 for the previous 2 steps, -1 for extra step to display the text before actually loading
             if(sampleInitFinished)
             {
                 //Loading finished, switching layout to sample browser
@@ -560,4 +547,31 @@ void SamplesFramework::renderSampleGUIContexts()
             sampleData->getSampleWindow()->invalidate();
         }
     }
+}
+
+void SamplesFramework::displaySampleBrowserLayoutLoadProgress()
+{
+    int totalNum = d_samples.size() + 2;
+
+    CEGUI::String loadText = CEGUI::String("Loading SampleBrowser skin ...");
+    d_loadingScreenText->setText(loadText);
+
+    CEGUI::String progressText =  PropertyHelper<int>::toString(1) + "/" + PropertyHelper<int>::toString(totalNum - 1);
+    d_loadScreenChunkProgressText->setText(progressText);
+
+    d_loadingProgressBar->setProgress(1.f / (totalNum - 1.f));
+}
+
+void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
+{
+    SampleData* sampleData = d_samples[sampleNumber + 1];
+
+    int totalNum = d_samples.size() + 2;
+    CEGUI::String loadText = "Loading " + sampleData->getName() + " ...";
+    d_loadingScreenText->setText(loadText);
+
+    CEGUI::String progressText = PropertyHelper<int>::toString(sampleNumber + 3) + "/" + PropertyHelper<int>::toString(totalNum - 1);
+    d_loadScreenChunkProgressText->setText(progressText);
+
+    d_loadingProgressBar->setProgress( (sampleNumber + 3.f) / (totalNum - 1.f) );
 }
