@@ -193,7 +193,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
         <Property name="WantsMultiClickEvents" value="False"/>
-        <Property name="Size" value="{{0, 64}, {0, 64}}" />
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -334,7 +334,7 @@
         <Property name="RollUpEnabled" value="False"/>
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}"/>
         <Property name="AutoRenderingSurface" value="True"/>
-        <Property name="Size" value="{{0.2, 0}, {0.2, 0}}" />
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -1144,7 +1144,7 @@
         <PropertyLinkDefinition targetProperty="DocumentSize" widget="__auto_vscrollbar__" type="float" name="VertScrollDocumentSize"/>
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
-        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1366,7 +1366,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/Listbox">
         <Property name="ForceVertScrollbar" value="True"/>
-        <Property name="Size" value="{{0, 128}, {0, 128}}" />
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1444,7 +1444,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="SelectionBrushImage" value="Vanilla-Images/GenericBrush"/>
-        <Property name="Size" value="{{0, 128}, {0, 128}}" />
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1625,7 +1625,7 @@
         <PropertyLinkDefinition targetProperty="NormalImage" widget="__auto_button__" initialValue="Vanilla-Images/DropDownButtonNormal" name="DropDownButtonNormalImage"/>
         <PropertyLinkDefinition targetProperty="HoverImage" widget="__auto_button__" initialValue="Vanilla-Images/DropDownButtonHover" name="DropDownButtonHoverImage"/>
         <PropertyLinkDefinition targetProperty="PushedImage" widget="__auto_button__" initialValue="Vanilla-Images/DropDownButtonPushed" name="DropDownButtonPushedImage"/>
-        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="Vanilla/Editbox">
             <Area>
                 <Dim type="LeftEdge">
@@ -1801,7 +1801,7 @@
     <WidgetLook name="Vanilla/ProgressBar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="EnabledColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="DisabledColour"/>
-        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2027,6 +2027,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF7F7F7F" type="ColourRect" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="1.0" type="float" name="RadioButtonRelativeWidth"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="1.0" type="float" name="RadioButtonRelativeHeight"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -2221,6 +2222,7 @@
     </WidgetLook>
     
     <WidgetLook name="Vanilla/Tooltip">
+    <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="Vanilla-Images/TooltipLeftEdge" dimension="Width" /></Dim>
