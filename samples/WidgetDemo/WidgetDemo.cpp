@@ -29,6 +29,8 @@ author:     Lukas E Meindl
 
 #include "CEGUI/CEGUI.h"
 
+#include <cmath>
+
 
 using namespace CEGUI;
 
@@ -96,10 +98,12 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("AlfiskoSkin.scheme");
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
+    SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
     d_guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
     // Set default font for the gui context
     guiContext->setDefaultFont(&defaultFont);
 
@@ -116,6 +120,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     createLayout();
 
     d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetDemo::handleRenderingEnded, this));
+    d_guiContext->getRootWindow()->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&WidgetDemo::handleRootWindowUpdate, this));
 
     // success!
     return true;
@@ -127,73 +132,11 @@ Cleans up resources allocated in the initialiseSample call.
 void WidgetDemo::deinitialise()
 {
     if(d_currentlyDisplayedWidgetRoot != 0)
-        d_widgetDisplayWindow->removeChild(d_currentlyDisplayedWidgetRoot);
+        d_widgetDisplayWindowInnerWindow->removeChild(d_currentlyDisplayedWidgetRoot);
 
     destroyWidgetWindows();
 
     deinitWidgetListItems();
-}
-
-/*************************************************************************
-create the windows & widgets for this demo
-*************************************************************************/
-void WidgetDemo::createListContent(CEGUI::Window* root)
-{
-    /*
-    using namespace CEGUI;
-
-    //
-    // Combobox setup
-    //
-    Combobox* cbobox = static_cast<Combobox*>(root->getChild("Window2/Combobox"));
-    // add items to the combobox list
-    cbobox->addItem(new MyListItem("Combobox Item 1"));
-    cbobox->addItem(new MyListItem("Combobox Item 2"));
-    cbobox->addItem(new MyListItem("Combobox Item 3"));
-    cbobox->addItem(new MyListItem("Combobox Item 4"));
-    cbobox->addItem(new MyListItem("Combobox Item 5"));
-    cbobox->addItem(new MyListItem("Combobox Item 6"));
-    cbobox->addItem(new MyListItem("Combobox Item 7"));
-    cbobox->addItem(new MyListItem("Combobox Item 8"));
-    cbobox->addItem(new MyListItem("Combobox Item 9"));
-    cbobox->addItem(new MyListItem("Combobox Item 10"));
-
-    //
-    // Multi-Column List setup
-    //
-    MultiColumnList* mclbox = static_cast<MultiColumnList*>(root->getChild("Window2/MultiColumnList"));
-    // Add some empty rows to the MCL
-    mclbox->addRow();
-    mclbox->addRow();
-    mclbox->addRow();
-    mclbox->addRow();
-    mclbox->addRow();
-
-    // Set first row item texts for the MCL
-    mclbox->setItem(new MyListItem("Laggers World"), 0, 0);
-    mclbox->setItem(new MyListItem("yourgame.some-server.com"), 1, 0);
-    mclbox->setItem(new MyListItem("[colour='FFFF0000']1000ms"), 2, 0);
-
-    // Set second row item texts for the MCL
-    mclbox->setItem(new MyListItem("Super-Server"), 0, 1);
-    mclbox->setItem(new MyListItem("whizzy.fakenames.net"), 1, 1);
-    mclbox->setItem(new MyListItem("[colour='FF00FF00']8ms"), 2, 1);
-
-    // Set third row item texts for the MCL
-    mclbox->setItem(new MyListItem("Cray-Z-Eds"), 0, 2);
-    mclbox->setItem(new MyListItem("crayzeds.notarealserver.co.uk"), 1, 2);
-    mclbox->setItem(new MyListItem("[colour='FF00FF00']43ms"), 2, 2);
-
-    // Set fourth row item texts for the MCL
-    mclbox->setItem(new MyListItem("Fake IPs"), 0, 3);
-    mclbox->setItem(new MyListItem("123.320.42.242"), 1, 3);
-    mclbox->setItem(new MyListItem("[colour='FFFFFF00']63ms"), 2, 3);
-
-    // Set fifth row item texts for the MCL
-    mclbox->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
-    mclbox->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
-    mclbox->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);*/
-
 }
 
 bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
@@ -225,44 +168,74 @@ bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
     return true;
 }
 
+bool WidgetDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
+{
+    const CEGUI::UpdateEventArgs& updateArgs = static_cast<const CEGUI::UpdateEventArgs&>(args);
+    float passedTime = updateArgs.d_timeSinceLastFrame;
+
+    if(d_currentlyDisplayedWidgetRoot == 0)
+        return true;
+
+    CEGUI::ProgressBar* progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot);
+    if(progressBar != 0)
+    {
+        float newProgress = progressBar->getProgress() + passedTime * 0.2f;
+        if(newProgress < 1.f)
+            progressBar->setProgress(newProgress);
+    }
+
+
+    return true;
+}
+
 bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
 
     CEGUI::Listbox* listbox = static_cast<CEGUI::Listbox*>(winArgs.window);
+    CEGUI::ListboxItem* skinListboxItem = d_skinSelectionCombobox->getSelectedItem();
+    CEGUI::ListboxItem* widgetListboxItem = listbox->getFirstSelectedItem();
+
+    if(!skinListboxItem || !widgetListboxItem)
+        return true;
+
+    d_widgetsEventsLog->setText("");
 
     //Recreate the widget's type
     CEGUI::String widgetTypeString;
-    if(d_skinSelectionCombobox->getSelectedItem()->getText().compare("No Skin") != 0)
-        widgetTypeString= d_skinSelectionCombobox->getSelectedItem()->getText() + "/";
+    if(skinListboxItem->getText().compare("No Skin") != 0)
+        widgetTypeString= skinListboxItem->getText() + "/";
 
-    widgetTypeString += listbox->getFirstSelectedItem()->getText();
+    widgetTypeString += widgetListboxItem->getText();
 
     //Remove previous children window from the widget-display window
     if(d_currentlyDisplayedWidgetRoot)
-        d_widgetDisplayWindow->removeChild(d_currentlyDisplayedWidgetRoot);
+        d_widgetDisplayWindowInnerWindow->removeChild(d_currentlyDisplayedWidgetRoot);
 
 
-    CEGUI::Window* widgetWindow;
-    ListboxItem* listboxItem = listbox->getFirstSelectedItem();
+    CEGUI::Window* widgetWindowRoot;
 
     std::map<CEGUI::String, CEGUI::Window*>::iterator iter = d_widgetsMap.find(widgetTypeString);
     if(iter != d_widgetsMap.end())
     {
-        widgetWindow = iter->second;
-        d_widgetDisplayWindow->addChild(widgetWindow);
+        widgetWindowRoot = iter->second;
     }
     else
     {
-        widgetWindow = createWidget(widgetTypeString);
+        widgetWindowRoot = createWidget(widgetTypeString, widgetListboxItem->getText());
 
-        d_widgetsMap[widgetTypeString] = widgetWindow;
+        d_widgetsMap[widgetTypeString] = widgetWindowRoot;
     }
 
-    d_widgetDisplayWindow->addChild(widgetWindow);
-    d_currentlyDisplayedWidgetRoot = widgetWindow;
+    d_widgetDisplayWindowInnerWindow->addChild(widgetWindowRoot);
+    d_currentlyDisplayedWidgetRoot = widgetWindowRoot;
 
     d_widgetDisplayWindow->setText("Demo of widget: \"" + widgetTypeString + "\"");
+
+
+    CEGUI::ProgressBar* progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot);
+    if(progressBar != 0)
+        progressBar->setProgress(0.f);
 
     // event was handled
     return true;
@@ -347,6 +320,10 @@ void WidgetDemo::createLayout()
     d_widgetDisplayWindow->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.55f)));
     d_widgetDisplayWindow->setText("Widget Demo");
     background->addChild(d_widgetDisplayWindow);
+
+    d_widgetDisplayWindowInnerWindow =  winMgr.createWindow("DefaultWindow", "WidgetDisplayWindowInnerContainer");
+    d_widgetDisplayWindowInnerWindow->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
+    d_widgetDisplayWindow->addChild(d_widgetDisplayWindowInnerWindow);
 }
 
 void WidgetDemo::initialiseSkinCombobox()
@@ -400,7 +377,7 @@ void WidgetDemo::initialiseWidgetsEventsLog()
     d_widgetsEventsLog->setPosition(CEGUI::UVector2(cegui_reldim(0.085f), cegui_reldim(0.70f)));
     d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.425f), cegui_reldim(0.2f)));
     d_widgetsEventsLog->setReadOnly(true);
-    d_widgetsEventsLog->setFont("DejaVuSans-10-NoScale");
+    d_widgetsEventsLog->setFont("DejaVuSans-10");
 }
 
 /*************************************************************************
@@ -426,29 +403,22 @@ void WidgetDemo::initialiseEventHandlerObjects()
     }
 }
 
-CEGUI::Window* WidgetDemo::createWidget(CEGUI::String &widgetTypeString)
+CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType)
 {
     //Create default widget of the selected type
     CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
-    CEGUI::Window* widgetWindow = windowManager.createWindow(widgetTypeString, s_widgetDemoWindowPrefix + widgetTypeString);
+
+    CEGUI::Window* widgetWindow = windowManager.createWindow(widgetMapping, s_widgetDemoWindowPrefix + widgetMapping);
+    //Subscribe to all possible events the window could fire, the handler will output them to the log
+    subscribeToAllEvents(widgetWindow);
+
+    //Set a default text
+    CEGUI::Spinner* spinner = dynamic_cast<CEGUI::Spinner*>(widgetWindow); // A spinner requires a number
+    if(!spinner)
+        widgetWindow->setText(widgetType);
 
 
-    size_t pos = widgetTypeString.rfind("Label");
-    if(pos != CEGUI::String::npos)
-        widgetWindow->setText("Label");
-    else
-        widgetWindow->setText("Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt"
-        "ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco"
-        "laboris nisi ut aliquid ex ea commodi consequat.Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n\n"
-        "Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
-
-    std::map<CEGUI::String, EventHandlerObject*>::iterator iter = d_eventHandlerObjectsMap.begin();
-    while(iter != d_eventHandlerObjectsMap.end())
-    {
-         widgetWindow->subscribeEvent(iter->first, Event::Subscriber(&EventHandlerObject::handleEvent, iter->second));
-
-        ++iter;
-    }
+    widgetWindow = initialiseSpecialWidgets(widgetWindow, widgetType);
 
     return widgetWindow;
 }
@@ -547,7 +517,7 @@ void WidgetDemo::logFiredEvent(const CEGUI::String& eventName)
         return;
 
     CEGUI::String eventsLog = d_widgetsEventsLog->getText();
-    eventsLog += eventName + " event was fired by \"" + item->getText() + "\"";
+    eventsLog += eventName + " event fired";
 
     //Remove line
     int pos = std::max<int>(static_cast<int>(eventsLog.length() - 512), 0);
@@ -564,6 +534,147 @@ void WidgetDemo::logFiredEvent(const CEGUI::String& eventName)
     //Scroll to end
     d_widgetsEventsLog->getVertScrollbar()->setScrollPosition(d_widgetsEventsLog->getVertScrollbar()->getDocumentSize() - d_widgetsEventsLog->getVertScrollbar()->getPageSize());
 }
+
+void WidgetDemo::subscribeToAllEvents(CEGUI::Window* widgetWindow)
+{
+    //Register all events for the widget window
+    std::map<CEGUI::String, EventHandlerObject*>::iterator iter = d_eventHandlerObjectsMap.begin();
+    while(iter != d_eventHandlerObjectsMap.end())
+    {
+        widgetWindow->subscribeEvent(iter->first, Event::Subscriber(&EventHandlerObject::handleEvent, iter->second));
+
+        ++iter;
+    }
+}
+
+CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow, const CEGUI::String &widgetType)
+{
+   
+
+    CEGUI::RadioButton* radioButton = dynamic_cast<CEGUI::RadioButton*>(widgetWindow);
+    if(radioButton)
+    {
+        initRadioButtons(radioButton, widgetWindow);
+    }
+
+    CEGUI::MultiLineEditbox* multilineEditbox = dynamic_cast<CEGUI::MultiLineEditbox*>(widgetWindow);
+    if(multilineEditbox || widgetType.compare("StaticText") == 0)
+    {
+        widgetWindow->setText("Lorem ipsum dolor sit amet, consectetur adipisici elit, sed eiusmod tempor incidunt"
+            "ut labore et dolore magna aliqua.Ut enim ad minim veniam, quis nostrud exercitation ullamco"
+            "laboris nisi ut aliquid ex ea commodi consequat.Quis aute iure reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.\n\n\n"
+            "Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
+    }
+
+    if(widgetType.compare("StaticImage") == 0)
+    {
+        widgetWindow->setProperty("Image", "SpaceBackgroundImage");
+    }
+
+    CEGUI::Listbox* listbox = dynamic_cast<CEGUI::Listbox*>(widgetWindow);
+    if(listbox)
+    {
+        initListbox(listbox);
+    }
+
+
+    CEGUI::Combobox* combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow);
+    if(combobox)
+    {
+        initCombobox(combobox);
+    }
+
+    CEGUI::MultiColumnList* multilineColumnList = dynamic_cast<CEGUI::MultiColumnList*>(widgetWindow);
+    if(multilineColumnList)
+    {
+        initMultiColumnList(multilineColumnList);
+    }
+
+    return widgetWindow;
+}
+
+void WidgetDemo::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList)
+{
+    // Add some empty rows to the MCL
+    multilineColumnList->addRow();
+    multilineColumnList->addRow();
+    multilineColumnList->addRow();
+    multilineColumnList->addRow();
+    multilineColumnList->addRow();
+
+    // Set first row item texts for the MCL
+    multilineColumnList->setItem(new MyListItem("Laggers World"), 0, 0);
+    multilineColumnList->setItem(new MyListItem("yourgame.some-server.com"), 1, 0);
+    multilineColumnList->setItem(new MyListItem("[colour='FFFF0000']1000ms"), 2, 0);
+
+    // Set second row item texts for the MCL
+    multilineColumnList->setItem(new MyListItem("Super-Server"), 0, 1);
+    multilineColumnList->setItem(new MyListItem("whizzy.fakenames.net"), 1, 1);
+    multilineColumnList->setItem(new MyListItem("[colour='FF00FF00']8ms"), 2, 1);
+
+    // Set third row item texts for the MCL
+    multilineColumnList->setItem(new MyListItem("Cray-Z-Eds"), 0, 2);
+    multilineColumnList->setItem(new MyListItem("crayzeds.notarealserver.co.uk"), 1, 2);
+    multilineColumnList->setItem(new MyListItem("[colour='FF00FF00']43ms"), 2, 2);
+
+    // Set fourth row item texts for the MCL
+    multilineColumnList->setItem(new MyListItem("Fake IPs"), 0, 3);
+    multilineColumnList->setItem(new MyListItem("123.320.42.242"), 1, 3);
+    multilineColumnList->setItem(new MyListItem("[colour='FFFFFF00']63ms"), 2, 3);
+
+    // Set fifth row item texts for the MCL
+    multilineColumnList->setItem(new MyListItem("Yet Another Game Server"), 0, 4);
+    multilineColumnList->setItem(new MyListItem("abc.abcdefghijklmn.org"), 1, 4);
+    multilineColumnList->setItem(new MyListItem("[colour='FFFF6600']284ms"), 2, 4);
+}
+
+void WidgetDemo::initCombobox(CEGUI::Combobox* combobox)
+{
+    combobox->addItem(new MyListItem("Combobox Item 1"));
+    combobox->addItem(new MyListItem("Combobox Item 2"));
+
+    MyListItem* item = new MyListItem("Combobox Item 3");
+    item->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.f));
+    combobox->addItem(item);
+
+    item = new MyListItem("Combobox Item 4");
+    item->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.f));
+    combobox->addItem(item);
+}
+
+void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
+{
+    listbox->addItem(new MyListItem("Listbox Item 1"));
+    listbox->addItem(new MyListItem("Listbox Item 2"));
+
+    MyListItem* item = new MyListItem("Listbox Item 3");
+    item->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.f));
+    listbox->addItem(item);
+
+    item = new MyListItem("Listbox Item 4");
+    item->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.f));
+    listbox->addItem(item);
+}
+
+void WidgetDemo::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow)
+{
+    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
+
+    CEGUI::RadioButton* radioButton1 = radioButton;
+    widgetWindow = windowManager.createWindow("DefaultWindow", "RadioButtonWidgetDemoRoot");
+    widgetWindow->addChild(radioButton1);
+
+    CEGUI::Window* radioButton2 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton1");
+    widgetWindow->addChild(radioButton2);
+    widgetWindow->setText("Additional Radiobutton1");
+    radioButton2->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.2f)));
+
+    CEGUI::Window* radioButton3 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton2");
+    widgetWindow->addChild(radioButton3);
+    widgetWindow->setText("Additional Radiobutton2");
+    radioButton3->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.4f)));
+}
+
 /*************************************************************************
 Define the module function that returns an instance of the sample
 *************************************************************************/
