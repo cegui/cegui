@@ -666,13 +666,13 @@ void WidgetDemo::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window
 
     CEGUI::Window* radioButton2 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton1");
     widgetWindow->addChild(radioButton2);
-    widgetWindow->setText("Additional Radiobutton1");
-    radioButton2->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.2f)));
+    radioButton2->setText("Additional Radiobutton1");
+    radioButton2->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.17f)));
 
     CEGUI::Window* radioButton3 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton2");
     widgetWindow->addChild(radioButton3);
-    widgetWindow->setText("Additional Radiobutton2");
-    radioButton3->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.4f)));
+    radioButton3->setText("Additional Radiobutton2");
+    radioButton3->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.27f)));
 }
 
 /*************************************************************************
