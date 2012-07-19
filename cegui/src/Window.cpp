@@ -3749,7 +3749,11 @@ GUIContext& Window::getGUIContext() const
 //----------------------------------------------------------------------------//
 void Window::setGUIContext(GUIContext* context)
 {
+    if (d_guiContext == context)
+        return;
+
     d_guiContext = context;
+    syncTargetSurface();
 }
 
 //----------------------------------------------------------------------------//
