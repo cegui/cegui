@@ -97,7 +97,9 @@ protected:
 
     void addSample(SampleData* sampleData);
 
-    bool initialiseSample(unsigned int sampleNumber);
+    bool initialiseSampleStepwise(int sampleNumber);
+
+    void displaySampleLoadProgress(int sampleNumber);
     void initialisationFinalisation();
     void unloadSamples();
 
@@ -106,6 +108,7 @@ protected:
     void updateSampleGUIContexts(float passedTime);
     bool updateInitialisationStep();
 
+    void displaySampleBrowserLayoutLoadProgress();
     bool handleSampleExitButtonClicked(const CEGUI::EventArgs& args);
        void renderSampleGUIContexts();
 
