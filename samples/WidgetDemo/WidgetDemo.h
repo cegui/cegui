@@ -78,8 +78,15 @@ protected:
     bool handleSkinSelectionAccepted(const CEGUI::EventArgs& args);
     bool handleWidgetSelectionChanged(const CEGUI::EventArgs& args);
 
-    CEGUI::Window* createWidget(CEGUI::String &widgetTypeString);
+    CEGUI::Window* createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType);
 
+    CEGUI::Window* initialiseSpecialWidgets(CEGUI::Window* widgetWindow, const CEGUI::String &widgetType);
+
+    void initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow);
+    void initListbox(CEGUI::Listbox* listbox);
+    void initCombobox(CEGUI::Combobox* combobox);
+    void initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList);
+    void subscribeToAllEvents(CEGUI::Window* widgetWindow);
     void addEventHandlerObjectToMap(CEGUI::String eventName);
 
     
@@ -89,7 +96,7 @@ protected:
     void deinitWidgetListItems();
 
     bool handleRenderingEnded(const CEGUI::EventArgs& args);
-
+    bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
 
     static const CEGUI::String s_widgetDemoWindowPrefix;
 
@@ -98,6 +105,7 @@ protected:
     CEGUI::Listbox* d_widgetSelectorListbox;
     CEGUI::Combobox* d_skinSelectionCombobox;
     CEGUI::Window* d_widgetDisplayWindow;
+    CEGUI::Window* d_widgetDisplayWindowInnerWindow;
     CEGUI::MultiLineEditbox* d_widgetsEventsLog;
 
     CEGUI::Window* d_currentlyDisplayedWidgetRoot;
