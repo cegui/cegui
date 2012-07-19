@@ -340,35 +340,21 @@ namespace CEGUI
         Sizef documentSize(getDocumentSize(renderArea));
 
         // show or hide vertical scroll bar as required (or as specified by option)
-        bool showVert = ((documentSize.d_height > renderAreaSize.d_height) && d_enableVertScrollbar);
-        bool showHorz = ((documentSize.d_width > renderAreaSize.d_width) && d_enableHorzScrollbar);
-        // show or hide vertical scroll bar
-        if (showVert)
-        {
-            vertScrollbar->show();
-        }
-        else
-        {
-            vertScrollbar->hide();
-        }
-
-        // show or hide horizontal scroll bar
-        if (showHorz)
-        {
-            horzScrollbar->show();
-        }
-        else
-        {
-            horzScrollbar->hide();
-        }
+        const bool showVert = ((documentSize.d_height > renderAreaSize.d_height) && d_enableVertScrollbar);
+        const bool showHorz = ((documentSize.d_width > renderAreaSize.d_width) && d_enableHorzScrollbar);
+ 
+        vertScrollbar->setVisible(showVert);
+        horzScrollbar->setVisible(showHorz);
 
         // if scrollbar visibility just changed we have might have a better TextRenderArea
         // if so we go with that instead
-        Rectf updatedRenderArea = getTextRenderArea();
+        const Rectf updatedRenderArea = getTextRenderArea();
         if (renderArea!=updatedRenderArea)
         {
+            d_formatValid = false;
             renderArea = updatedRenderArea;
             renderAreaSize = renderArea.getSize();
+            documentSize = getDocumentSize(renderArea);
         }
 
         // Set up scroll bar values
