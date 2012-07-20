@@ -149,9 +149,6 @@ public:
     /************************************************************************
         Manipulators
     *************************************************************************/
-    // Overridden from base class
-    virtual void initialiseComponents(void);
-
     /*!
     \brief
         Set whether or not multiple selections should be allowed.
@@ -250,6 +247,9 @@ protected:
     */
     ItemEntry* findSelectedItem(size_t start_index) const;
 
+    // overridden from ItemListBase
+    bool handle_PaneChildRemoved(const EventArgs& e);
+
     /************************************************************************
         New event handlers
     ************************************************************************/
@@ -270,8 +270,6 @@ protected:
 
 private:
     void addItemListboxProperties(void);
-    //! Handler called when window is removed from the content pane
-    bool handle_PaneChildRemoved(const EventArgs& e);
 };
 
 } // end CEGUI namespace
