@@ -57,9 +57,14 @@ ScrolledItemListBase::ScrolledItemListBase(const String& type, const String& nam
     d_forceVScroll(false),
     d_forceHScroll(false)
 {
-    // Make sure the content pane is initially empty
-    // NOTE: initialiseComponents() is responsible for creating it
-    d_pane = 0;
+    d_pane = WindowManager::getSingletonPtr()->
+        createWindow("ClippedContainer", ContentPaneName);
+
+    d_pane->setAutoWindow(true);
+    static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
+    d_pane->setMouseInputPropagationEnabled(true);
+
+    addChild(d_pane);
 
     // add properties for this class
     addScrolledItemListBaseProperties();
@@ -70,6 +75,8 @@ ScrolledItemListBase::ScrolledItemListBase(const String& type, const String& nam
 ************************************************************************/
 ScrolledItemListBase::~ScrolledItemListBase()
 {
+    if (d_pane && d_pane != this)
+        WindowManager::getSingletonPtr()->destroyWindow(d_pane);
 }
 
 /************************************************************************
@@ -77,31 +84,6 @@ ScrolledItemListBase::~ScrolledItemListBase()
 ************************************************************************/
 void ScrolledItemListBase::initialiseComponents()
 {
-    // Only process the content pane if it hasn't been done in the past
-    // NOTE: This ensures that a duplicate content pane is not created. An example where
-    // this would be possible would be when changing the Look'N'Feel of the widget
-    // (for instance an ItemListBox), an operation which would reconstruct the child components
-    // of the widget by destroying the previous ones and creating new ones with the
-    // new Look'N'Feel. However, since the content pane is not defined in the
-    // look and feel file and thus not associated with the look'N'Feel itself
-    // but instead created here manually, the destruction would not contemplate the content
-    // pane itself, so when the children would be rebuilt, a duplicate content pane
-    // would be attempted (and an exception would be issued).
-    if(!d_pane)
-    {
-        // IMPORTANT:
-        // we must do this before the base class handling or we'll lose the onChildRemoved subscriber!!!
-        d_pane = WindowManager::getSingletonPtr()->createWindow("ClippedContainer", ContentPaneName);
-        d_pane->setAutoWindow(true);
-
-        // set up clipping
-        static_cast<ClippedContainer*>(d_pane)->setClipperWindow(this);
-        // allow propagation back to us
-        d_pane->setMouseInputPropagationEnabled(true);
-
-        addChild(d_pane);
-    }
-
     // base class handling
     ItemListBase::initialiseComponents();
 
