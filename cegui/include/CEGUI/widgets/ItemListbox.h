@@ -270,7 +270,6 @@ protected:
 
 private:
     void addItemListboxProperties(void);
-    void addItemListboxEvents(void);
     //! Handler called when window is removed from the content pane
     bool handle_PaneChildRemoved(const EventArgs& e);
 };
