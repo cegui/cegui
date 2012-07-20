@@ -542,6 +542,17 @@ protected:
     //virtual void    onDestructionStarted(WindowEventArgs& e);
 
 
+    /*!
+    \brief
+        Handler to manage items being removed from the content pane.
+        If there is one!
+
+    \note
+        If you override this, you should call this base class version to
+        ensure correct behaviour is maintained.
+    */
+    virtual bool handle_PaneChildRemoved(const EventArgs& e);
+
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
@@ -575,13 +586,6 @@ private:
 	\copydoc Element::addChild_impl
 	*/
 	virtual void addChild_impl(Element* element);
-
-	/*!
-	\brief
-	    Handler to manage items being removed from the content pane.
-	    If there is one!
-	*/
-    bool handle_PaneChildRemoved(const EventArgs& e);
 };
 
 
