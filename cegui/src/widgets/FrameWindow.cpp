@@ -537,7 +537,7 @@ void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 void FrameWindow::onRollupToggled(WindowEventArgs& e)
 {
     invalidate(true);
-    notifyClippingChanged();
+    notifyScreenAreaChanged();
     ElementEventArgs size_args(e.window);
     onSized(size_args);
 
