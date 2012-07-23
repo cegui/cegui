@@ -39,6 +39,7 @@ namespace CEGUI
     class Window;
     class Combobox;
     class MultiLineEditbox;
+    class MultiColumnList;
 }
 
 class EventHandlerObject;
@@ -64,11 +65,16 @@ protected:
     void addItemToWidgetList(const CEGUI::String& widgetName, WidgetListType &widgetList);
     void createLayout();
 
-    void initialiseEventLights(CEGUI::Window* background);
+    void initialiseWidgetInspector(CEGUI::Window* container);
+
+    void initPropertiesDisplayWindow(CEGUI::Window* widgetPropertiesInspectionContainer);
+    void initialiseWidgetSelector(CEGUI::Window* container);
+    void initialiseWidgetDisplayWindow();
+    void initialiseEventLights(CEGUI::Window* container);
     void initialiseWidgetSelectorContainer(CEGUI::Window* widgetSelectorContainer);
     void initialiseWidgetSelectorListbox();
     void initialiseBackgroundWindow(CEGUI::Window* background);
-    void initialiseSkinCombobox();
+    void initialiseSkinCombobox(CEGUI::Window* container);
     void initialiseWidgetsEventsLog();
 
     void initialiseEventHandlerObjects();
@@ -78,6 +84,10 @@ protected:
     bool handleSkinSelectionAccepted(const CEGUI::EventArgs& args);
     bool handleWidgetSelectionChanged(const CEGUI::EventArgs& args);
 
+    void fillWidgetInspectorPropertyItems( CEGUI::Window* widgetWindowRoot );
+    void handleSpecialWindowCases( CEGUI::Window* widgetWindowRoot, CEGUI::String widgetTypeString );
+    CEGUI::Window* retrieveOrCreateWidgetWindow(const CEGUI::String& widgetTypeString, const CEGUI::String& widgetName);
+    bool getWidgetType(CEGUI::String &widgetName, CEGUI::String &widgetTypeString);
     CEGUI::Window* createWidget(const CEGUI::String &widgetMapping, const CEGUI::String &widgetType);
 
     CEGUI::Window* initialiseSpecialWidgets(CEGUI::Window* widgetWindow, const CEGUI::String &widgetType);
@@ -98,6 +108,8 @@ protected:
     bool handleRenderingEnded(const CEGUI::EventArgs& args);
     bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
 
+    void saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, const CEGUI::Window* widgetWindow);
+
     static const CEGUI::String s_widgetDemoWindowPrefix;
 
     CEGUI::GUIContext* d_guiContext;
@@ -113,9 +125,12 @@ protected:
     CEGUI::Window* d_windowLightMouseMoveEvent;
     CEGUI::Window* d_windowLightUpdatedEvent;
 
+    CEGUI::MultiColumnList* d_widgetPropertiesDisplayWindow;
+
     std::map<CEGUI::String, WidgetListType> d_skinListItemsMap;
     std::map<CEGUI::String, CEGUI::Window*> d_widgetsMap;
     std::map<CEGUI::String, EventHandlerObject*> d_eventHandlerObjectsMap;
+    std::map<const CEGUI::Window*, std::vector<const CEGUI::Property*>> d_widgetPropertiesMap;
 };
 
 #endif
