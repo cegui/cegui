@@ -10,6 +10,7 @@
         <PropertyDefinition name="DisabledTextColour" initialValue="FFDDDDDD" redrawOnWrite="true" type="Colour" />
         <PropertyDefinition name="VertFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="VerticalTextFormatting" />
         <PropertyDefinition name="HorzFormatting" initialValue="CentreAligned" redrawOnWrite="true" type="HorizontalTextFormatting" />
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -55,7 +56,8 @@
         <PropertyDefinition name="PushedImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="DisabledImage" initialValue="" redrawOnWrite="true" type="Image"/>
         <PropertyDefinition name="VertImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="VerticalFormatting" />
-        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />
+        <PropertyDefinition name="HorzImageFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting" />  
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <VertFormatProperty name="VertLabelFormatting" />
@@ -164,6 +166,7 @@
         <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -268,6 +271,7 @@
         <PropertyDefinition name="HoverTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedTextColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="DisabledTextColour" initialValue="FF7F7F7F" redrawOnWrite="true" type="ColourRect"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -373,6 +377,7 @@
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
@@ -455,6 +460,7 @@
     <WidgetLook name="TaharezLook/Titlebar">
         <PropertyDefinition name="CaptionColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <Property name="NonClient" value="True" />
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="main">
             <ImageryComponent>
                 <Image name="TaharezLook/NewTitlebarLeft" />
@@ -564,6 +570,7 @@
         <Property name="NESWSizingCursorImage" value="TaharezLook/MouseNeSwCursor" />
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}" />
         <Property name="AutoRenderingSurface" value="True" />
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/WindowTopLeft" dimension="Width" /></Dim>
@@ -913,6 +920,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ProgressBar">
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge" >
@@ -979,6 +987,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/AltProgressBar">
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/AltProgressLeft" dimension="Width" /></Dim>
@@ -1230,6 +1239,7 @@
         <Property name="VerticalSlider" value="True" />
         <Property name="MouseAutoRepeatEnabled" value="True" />
         <Property name="WantsMultiClickEvents" value="False" />
+        <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea" />
         <Child  type="TaharezLook/SliderThumb" nameSuffix="__auto_thumb__">
             <Area>
@@ -1269,6 +1279,7 @@
     <WidgetLook name="TaharezLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Image component="LeftEdge" name="TaharezLook/MiniHorzScrollThumbLeftNormal" />
@@ -1313,6 +1324,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/HorizontalScrollbar">
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MiniHorzScrollLeftNormal" dimension="Width" /></Dim>
@@ -1385,6 +1397,7 @@
     <WidgetLook name="TaharezLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True" />
         <Property name="MouseInputPropagationEnabled" value="True" />
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Image component="TopEdge" name="TaharezLook/MiniVertScrollThumbTopNormal" />
@@ -1429,6 +1442,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/VerticalScrollbar">
+        <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <Property name="VerticalScrollbar" value="True" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -1500,6 +1514,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Listbox">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
@@ -1619,6 +1634,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ComboDropList">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ComboboxListLeft" dimension="Width" /></Dim>
@@ -1743,6 +1759,7 @@
         <PropertyDefinition name="ActiveSelectionColour" initialValue="FF607FFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><AbsoluteDim value="5" /></Dim>
@@ -1817,6 +1834,7 @@
         <PropertyLinkDefinition name="SelectedEditTextColour" widget="__auto_editbox__" targetProperty="SelectedTextColour" initialValue="FF000000" type="ColourRect"/>
         <PropertyLinkDefinition name="ActiveEditSelectionColour" widget="__auto_editbox__" targetProperty="ActiveSelectionColour" initialValue="FF6060FF" type="ColourRect"/>
         <PropertyLinkDefinition name="InactiveEditSelectionColour" widget="__auto_editbox__" targetProperty="InactiveSelectionColour" initialValue="FF808080" type="ColourRect"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child  type="TaharezLook/ComboEditbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="RightEdge" >
@@ -1856,6 +1874,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/Spinner">
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <Child  type="TaharezLook/Editbox" nameSuffix="__auto_editbox__">
             <Area>
                 <Dim type="RightEdge" >
@@ -1961,6 +1980,7 @@
         <PropertyDefinition name="HorzFormatting" initialValue="Stretched" redrawOnWrite="true" type="HorizontalFormatting"/>
         <Property name="BackgroundEnabled" value="True" />
         <Property name="FrameEnabled" value="True" />
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
                 <Area>
@@ -2056,6 +2076,7 @@
 
         <Property name="FrameEnabled" value="True" />
         <Property name="BackgroundEnabled" value="True" />
+        <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/StaticLeft" dimension="Width" /></Dim>
@@ -2532,6 +2553,7 @@
         <PropertyDefinition name="InactiveSelectionColour" initialValue="FF808080" redrawOnWrite="true" type="ColourRect"/>
         <Property name="MouseCursorImage" value="TaharezLook/MouseTextBar" />
         <Property name="SelectionBrushImage" value="TaharezLook/MultiLineEditboxSelectionBrush" />
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/MultiLineEditboxLeft" dimension="Width" /></Dim>
@@ -2667,6 +2689,7 @@
     -->
     <WidgetLook name="TaharezLook/Tooltip">
         <Property name="Alpha" value="0" />
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/TooltipLeftEdge" dimension="Width" /></Dim>
@@ -3866,6 +3889,7 @@
     ***************************************************
     -->
     <WidgetLook name="TaharezLook/ItemListbox">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>

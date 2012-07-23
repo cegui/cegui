@@ -16,6 +16,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF444444" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -52,6 +53,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="OgreTray/BGTest">
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>
@@ -94,6 +96,7 @@
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
         <Property name="NonClient" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -166,6 +169,7 @@
         <Property name="NWSESizingCursorImage" value="OgreTrayImages/MouseArrow"/>
         <Property name="NESWSizingCursorImage" value="OgreTrayImages/MouseArrow"/>
         <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -427,6 +431,7 @@
 :::: (don't forget to specify free axis in <Child> definition!)
 -->
     <WidgetLook name="OgreTray/Thumb">
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>
@@ -470,6 +475,7 @@
     <WidgetLook name="OgreTray/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="True"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -578,6 +584,7 @@
     <WidgetLook name="OgreTray/HorizontalScrollbar">
         <Property name="VerticalScrollbar" value="False"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -773,6 +780,7 @@
         <Property name="FrameEnabled" value="True"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
         <Property name="HorzFormatting" value="WordWrapLeftAligned"/>
+        <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1059,6 +1067,7 @@
         <Property name="FrameEnabled" value="True"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
         <Property name="HorzFormatting" value="WordWrapLeftAligned"/>
+        <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1445,6 +1454,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF888888" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -1591,6 +1601,7 @@
 :::: Progress Bar
 -->
     <WidgetLook name="OgreTray/ProgressBar">
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1691,6 +1702,7 @@
     <WidgetLook name="OgreTray/Editbox">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="NormalTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1837,6 +1849,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="SelectionBrushImage" value="OgreTrayImages/MiniTextBoxOverM"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2057,6 +2070,7 @@
 :::: Listbox
 -->
     <WidgetLook name="OgreTray/Listbox">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2158,6 +2172,7 @@
             </Area>
         </NamedArea>
         <Child nameSuffix="__auto_hscrollbar__" type="OgreTray/HorizontalScrollbar">
+            <Property name="Size" value="{{1, 0}, {0, 32}}" />
             <Area>
                 <Dim type="LeftEdge">
                     <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
@@ -2252,6 +2267,7 @@
     <WidgetLook name="OgreTray/Combobox">
         <PropertyLinkDefinition targetProperty="NormalTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="NormalEditTextColour"/>
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="SelectedEditTextColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="OgreTray/Editbox">
             <Area>
                 <Dim type="LeftEdge">
@@ -2377,6 +2393,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="TextColour"/>
         <PropertyDefinition initialValue="TopAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="inner_rect">
             <Area>
                 <Dim type="LeftEdge">
@@ -2483,6 +2500,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -2632,6 +2650,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -2779,6 +2798,7 @@
         <Property name="VerticalSlider" value="False"/>
         <Property name="MouseAutoRepeatEnabled" value="True"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2890,6 +2910,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
                 <Area>
@@ -2992,6 +3013,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="True" type="bool" name="FrameEnabled"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="Image"/>
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image">
             <ImageryComponent>
                 <Area>
@@ -3059,6 +3081,7 @@
 -->
     <WidgetLook name="OgreTray/Tooltip">
         <Property name="Alpha" value="0" />
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3165,6 +3188,7 @@
 :::: ItemListbox
 -->
     <WidgetLook name="OgreTray/ItemListbox">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3504,6 +3528,7 @@
 :::: Spinner
 -->
     <WidgetLook name="OgreTray/Spinner">
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <Child nameSuffix="__auto_decbtn__" type="OgreTray/Button">
             <Area>
                 <Dim type="LeftEdge">
@@ -3565,6 +3590,7 @@
 :::: ScrollablePane
 -->
     <WidgetLook name="OgreTray/ScrollablePane">
+        <Property name="Size" value="{{0, 0.3}, {0, 0.3}}" />
         <NamedArea name="ViewableArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3931,6 +3957,7 @@
 :::: Multi column list
 -->
     <WidgetLook name="OgreTray/MultiColumnList">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -4296,6 +4323,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="TextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF779977" type="ColourRect" name="PushedOffColour"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -4835,6 +4863,7 @@
     <WidgetLook name="OgreTray/TabButtonPane">
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" type="uint" name="EnableTop"/>
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" type="uint" name="EnableBottom"/>
+        <Property name="Size" value="{{0, 0.3}, {0, 0.3}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -4879,6 +4908,7 @@
     <WidgetLook name="OgreTray/TabContentPane">
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" type="uint" name="EnableTop"/>
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" type="uint" name="EnableBottom"/>
+        <Property name="Size" value="{{0, 0.3}, {0, 0.3}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>

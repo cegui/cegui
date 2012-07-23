@@ -1,0 +1,6 @@
+<SampleDefinition
+    sampleName      = "CEGUIFirstWindow"
+    sampleType      = "C++ Module"
+    summary         = "Hello world demo of cegui"
+    description     = ""
+/>
