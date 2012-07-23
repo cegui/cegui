@@ -305,7 +305,7 @@ public:
                 }
                 CEGUI_CATCH(CEGUI::Exception&)
                 {
-                    outputExceptionMessage("Some error occured while adding a tabpage. Please see the logfile.");
+                    Logger::getSingleton().logEvent("Some error occured while adding a tabpage. Please see the logfile.");
                     break;
                 }
 
