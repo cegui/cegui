@@ -336,51 +336,23 @@ endmacro()
 # Define a CEGUI sample app
 #
 macro (cegui_add_sample _NAME)
+    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_SAMPLEFRAMEWORK_EXENAME}
+                            ${CEGUI_TARGET_NAME} ${_NAME}${CEGUI_SLOT_VERSION}
+    )
+      
     set (CEGUI_TARGET_NAME ${_NAME}${CEGUI_SLOT_VERSION})
 
     include_directories(${CMAKE_SOURCE_DIR}/samples/common/include)
-
-    if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10)
-        link_directories(${DIRECTXSDK_LIBRARY_DIR})
-    endif()
-
+	
     cegui_gather_files()
-
-    ###########################################################################
-    #                     Statically Linked Executable
-    ###########################################################################
-    if (CEGUI_BUILD_STATIC_CONFIGURATION)
-        add_executable(${CEGUI_TARGET_NAME}_Static ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
-        set_property(TARGET ${CEGUI_TARGET_NAME}_Static APPEND PROPERTY COMPILE_DEFINITIONS CEGUI_STATIC)
-
-        # append the _d (or whatever) for debug builds as needed.
-        if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
-            set_target_properties(${CEGUI_TARGET_NAME}_Static PROPERTIES
-                OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}_Static${CEGUI_BUILD_SUFFIX}"
-            )
-        endif()
-
-        # This works around an issue in the prebuilt deps and can be removed once those are fixed :)
-        if (WIN32)
-            set_target_properties(${CEGUI_TARGET_NAME}_Static PROPERTIES LINK_FLAGS_DEBUG /NODEFAULTLIB:freeglut.lib)
-        endif()
-
-        if (APPLE)
-            cegui_apple_app_setup(${CEGUI_TARGET_NAME}_Static TRUE)
-        endif()
-    endif()
-
-    ###########################################################################
-    #                   Dynamically Linked Executable
-    ###########################################################################
-    add_executable(${CEGUI_TARGET_NAME} ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
-
-    # append the _d (or whatever) for debug builds as needed.
-    if (CEGUI_HAS_BUILD_SUFFIX AND CEGUI_BUILD_SUFFIX)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-            OUTPUT_NAME_DEBUG "${CEGUI_TARGET_NAME}${CEGUI_BUILD_SUFFIX}"
-        )
-    endif()
+	
+	set(CORE_HEADER_FILES ${CORE_HEADER_FILES}
+		${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
+		${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
+	)
+    
+    # Each demo will become a dynamically linked library as plugin (module)
+	add_library(${CEGUI_TARGET_NAME} MODULE ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
 
     if (NOT APPLE)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
@@ -400,26 +372,12 @@ macro (cegui_add_sample _NAME)
         cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
     endif()
 
-    
-    ###########################################################################
-    #                      LIBRARY LINK SETUP
-    ###########################################################################
+    #Library link setup
     cegui_target_link_libraries(${CEGUI_TARGET_NAME}
         ${CEGUI_BASE_LIBNAME}
-        ${CEGUI_SAMPLEHELPER_LIBNAME}
     )
 
-    if (CEGUI_BUILD_STATIC_CONFIGURATION)
-        target_link_libraries(${CEGUI_TARGET_NAME}_Static
-            ${CEGUI_STATIC_XMLPARSER_MODULE}_Static
-            ${CEGUI_STATIC_IMAGECODEC_MODULE}_Static
-            ${CEGUI_CORE_WR_LIBNAME}_Static
-        )
-    endif()
-
-    ###########################################################################
-    #                           INSTALLATION
-    ###########################################################################
+    # Installation
     install(TARGETS ${CEGUI_TARGET_NAME}
         RUNTIME DESTINATION bin
         LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
@@ -427,15 +385,10 @@ macro (cegui_add_sample _NAME)
         BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
     )
 
-    if (CEGUI_BUILD_STATIC_CONFIGURATION)
-        install(TARGETS ${CEGUI_TARGET_NAME}_Static
-            RUNTIME DESTINATION bin
-            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-            ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-            BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-    )
-    endif()
-
+    # Add the MetaData chunk of the sample to the final xml
+    file(READ ${CMAKE_CURRENT_SOURCE_DIR}/SampleMetaData.xml DEMO_META_DATA)
+    file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "${DEMO_META_DATA}")
+ 
 endmacro()
 
 #
