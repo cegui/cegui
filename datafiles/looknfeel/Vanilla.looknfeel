@@ -1683,6 +1683,7 @@
     </WidgetLook>
     <WidgetLook name="Vanilla/ComboDropList">
         <Property name="ForceVertScrollbar" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2290,7 +2291,7 @@
             </Layer>
         </StateImagery>
         
-        <AnimationDefinition name="FadeInddd" duration="0.33" replayMode="once">
+        <AnimationDefinition name="FadeIn" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="1" progression="linear" />
@@ -2299,7 +2300,7 @@
             <Subscription event="TooltipActive" action="Start" />
         </AnimationDefinition>
         
-        <AnimationDefinition name="FadeOutddd" duration="0.33" replayMode="once">
+        <AnimationDefinition name="FadeOut" duration="0.33" replayMode="once">
             <Affector property="Alpha" interpolator="float">
                 <KeyFrame position="0" sourceProperty="Alpha" />
                 <KeyFrame position="0.33" value="0" progression="linear" />
