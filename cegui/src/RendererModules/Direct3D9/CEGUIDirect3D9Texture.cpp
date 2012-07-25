@@ -36,6 +36,209 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+// Internal helper class to wrap the internal handling needed to copy from a
+// D3D9 texture.
+class D3DSurfaceBlitter
+{
+public:
+    //------------------------------------------------------------------------//
+    D3DSurfaceBlitter(LPDIRECT3DDEVICE9 d3d_device, LPDIRECT3DTEXTURE9 tex) :
+        d_device(d3d_device),
+        d_texture(tex),
+        d_renderTarget(0),
+        d_offscreen(0)
+    {
+        populateTextureSurfaceDescription();
+    }
+
+    //------------------------------------------------------------------------//
+    ~D3DSurfaceBlitter()
+    {
+        cleanupSurfaces();
+    }
+
+    //------------------------------------------------------------------------//
+    void blitToMemory(uint32* dest)
+    {
+        if (!d_texture)
+            return;
+
+        lockRect(0, true);
+
+        blitD3DCOLORSurfaceToRGBA(
+            static_cast<uint32*>(d_lockedRect.pBits), dest,
+            Size(static_cast<float>(d_surfDesc.Width),
+                 static_cast<float>(d_surfDesc.Height)),
+            d_lockedRect.Pitch);
+
+        unlockRect();
+    }
+
+    //------------------------------------------------------------------------//
+    bool isRenderTarget() const
+    {
+        return d_surfDesc.Usage == D3DUSAGE_RENDERTARGET;
+    }
+
+    //------------------------------------------------------------------------//
+
+private:
+    LPDIRECT3DDEVICE9 d_device;
+    LPDIRECT3DTEXTURE9 d_texture;
+    LPDIRECT3DSURFACE9 d_renderTarget;
+    LPDIRECT3DSURFACE9 d_offscreen;
+    D3DSURFACE_DESC d_surfDesc;
+    D3DLOCKED_RECT d_lockedRect;
+    RECT d_fullArea;
+
+    //------------------------------------------------------------------------//
+    void initialiseSurfaces()
+    {
+        if (!d_offscreen)
+            createOffscreenSurface();
+
+        if (!d_renderTarget)
+            getTextureSurface();
+    }
+
+    //------------------------------------------------------------------------//
+    void cleanupSurfaces()
+    {
+        if (d_renderTarget)
+        {
+            d_renderTarget->Release();
+            d_renderTarget = 0;
+        }
+
+        if (d_offscreen)
+        {
+            d_offscreen->Release();
+            d_offscreen = 0;
+        }
+    }
+
+    //------------------------------------------------------------------------//
+    void lockRect(RECT* area = 0, bool for_reading = false)
+    {
+        if (isRenderTarget())
+        {
+            initialiseSurfaces();
+
+            if (for_reading)
+                getRenderTargetData();
+
+            lockSurfaceRect(area);
+        }
+        else
+        {
+            lockTextureRect(area);
+        }
+    }
+
+    //------------------------------------------------------------------------//
+    void unlockRect(RECT* area = 0, bool needs_update = false)
+    {
+        if (isRenderTarget())
+        {
+            d_offscreen->UnlockRect();
+
+            if (needs_update)
+                updateRenderTarget(area);
+        }
+        else
+            d_texture->UnlockRect(0);
+    }
+
+    //------------------------------------------------------------------------//
+    void populateTextureSurfaceDescription()
+    {
+        if (FAILED(d_texture->GetLevelDesc(0, &d_surfDesc)))
+            CEGUI_THROW(RendererException(
+                "IDirect3DTexture9::GetLevelDesc failed."));
+
+        d_fullArea.left = 0;
+        d_fullArea.top = 0;
+        d_fullArea.right = d_surfDesc.Width;
+        d_fullArea.bottom = d_surfDesc.Height;
+    }
+
+    //------------------------------------------------------------------------//
+    void createOffscreenSurface()
+    {
+        if (FAILED(d_device->CreateOffscreenPlainSurface(
+            d_surfDesc.Width, d_surfDesc.Height, d_surfDesc.Format,
+            D3DPOOL_SYSTEMMEM, &d_offscreen, 0)))
+        {
+            CEGUI_THROW(RendererException(
+                "IDirect3DDevice9::CreateOffscreenPlainSurface failed."));
+        }
+    }
+
+    //------------------------------------------------------------------------//
+    void getTextureSurface()
+    {
+        if (FAILED(d_texture->GetSurfaceLevel(0, &d_renderTarget)))
+            CEGUI_THROW(RendererException(
+                "IDirect3DTexture9::GetSurfaceLevel failed."));
+    }
+
+    //------------------------------------------------------------------------//
+    void lockSurfaceRect(RECT* area)
+    {
+        if (FAILED(d_offscreen->LockRect(&d_lockedRect, area, 0)))
+            CEGUI_THROW(RendererException(
+                "IDirect3DSurface9::LockRect failed."));
+    }
+
+    //------------------------------------------------------------------------//
+    void lockTextureRect(RECT* area)
+    {
+        if (FAILED(d_texture->LockRect(0, &d_lockedRect, area, 0)))
+            CEGUI_THROW(RendererException(
+                "IDirect3DTexture9::LockRect failed."));
+    }
+
+    //------------------------------------------------------------------------//
+    void updateRenderTarget(RECT* area)
+    {
+        POINT pt = {area ? area->left : 0, area ? area->top : 0};
+        if (FAILED(d_device->UpdateSurface(d_offscreen,
+                                           area ? area : &d_fullArea,
+                                           d_renderTarget, &pt)))
+        {
+            CEGUI_THROW(RendererException(
+                "IDirect3DDevice9::UpdateSurface failed."));
+        }
+    }
+
+    //------------------------------------------------------------------------//
+    void getRenderTargetData()
+    {
+        if (FAILED(d_device->GetRenderTargetData(d_renderTarget, d_offscreen)))
+            CEGUI_THROW(RendererException(
+                "IDirect3DDevice9::GetRenderTargetData failed."));
+    }
+
+    //------------------------------------------------------------------------//
+    static void blitD3DCOLORSurfaceToRGBA(const uint32* src, uint32* dst,
+                                          const Size& sz, size_t source_pitch)
+    {
+        for (uint i = 0; i < sz.d_height; ++i)
+        {
+            for (uint j = 0; j < sz.d_width; ++j)
+            {
+                const uint32 pixel = src[j];
+                const uint32 tmp = pixel & 0x00FF00FF;
+                dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
+            }
+
+            src += source_pitch / sizeof(uint32);
+            dst += static_cast<uint32>(sz.d_width);
+        }
+    }
+};
+
+//----------------------------------------------------------------------------//
 Direct3D9Texture::Direct3D9Texture(Direct3D9Renderer& owner) :
     d_owner(owner),
     d_texture(0),
@@ -277,9 +480,8 @@ void Direct3D9Texture::loadFromMemory(const void* buffer,
 //----------------------------------------------------------------------------//
 void Direct3D9Texture::saveToMemory(void* buffer)
 {
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "Direct3D9Texture::saveToMemory - Unimplemented!"));
+    D3DSurfaceBlitter blitter(d_owner.getDevice(), d_texture);
+    blitter.blitToMemory(static_cast<uint32*>(buffer));
 }
 
 //----------------------------------------------------------------------------//

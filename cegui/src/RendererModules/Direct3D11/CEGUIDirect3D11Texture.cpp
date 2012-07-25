@@ -37,6 +37,26 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+// Helper utility function that copies a region of a buffer containing D3DCOLOR
+// values into a second buffer as RGBA values.
+static void blitFromSurface(const uint32* src, uint32* dst,
+                     const Size& sz, size_t source_pitch)
+{
+    for (uint i = 0; i < sz.d_height; ++i)
+    {
+        for (uint j = 0; j < sz.d_width; ++j)
+        {
+            const uint32 pixel = src[j];
+            const uint32 tmp = pixel & 0x00FF00FF;
+            dst[j] = pixel & 0xFF00FF00 | (tmp << 16) | (tmp >> 16);
+        }
+
+        src += source_pitch / sizeof(uint32);
+        dst += static_cast<uint32>(sz.d_width);
+    }
+}
+
+//----------------------------------------------------------------------------//
 void Direct3D11Texture::setDirect3DTexture(ID3D11Texture2D* tex)
 {
     if (d_texture != tex)
@@ -183,9 +203,46 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
 //----------------------------------------------------------------------------//
 void Direct3D11Texture::saveToMemory(void* buffer)
 {
-    // TODO:
-    CEGUI_THROW(RendererException(
-        "Direct3D11Texture::saveToMemory: unimplemented!"));
+    if (!d_texture)
+        return;
+
+    String exception_msg;
+
+    D3D11_TEXTURE2D_DESC tex_desc;
+    d_texture->GetDesc(&tex_desc);
+
+    tex_desc.Usage = D3D11_USAGE_STAGING;
+    tex_desc.BindFlags = 0;
+    tex_desc.CPUAccessFlags = D3D11_CPU_ACCESS_READ;
+
+    ID3D11Texture2D* offscreen;
+    if (SUCCEEDED(d_device.d_device->CreateTexture2D(&tex_desc, 0, &offscreen)))
+    {
+        d_device.d_context->CopyResource(offscreen, d_texture);
+
+        D3D11_MAPPED_SUBRESOURCE mapped_tex;
+        if (SUCCEEDED(d_device.d_context->Map(offscreen, 0, D3D11_MAP_READ,
+                                              0, &mapped_tex)))
+        {
+            blitFromSurface(static_cast<uint32*>(mapped_tex.pData),
+                            static_cast<uint32*>(buffer),
+                            Size(static_cast<float>(tex_desc.Width),
+                                   static_cast<float>(tex_desc.Height)),
+                            mapped_tex.RowPitch);
+
+            d_device.d_context->Unmap(offscreen, 0);
+        }
+        else
+            exception_msg.assign("ID3D11Texture2D::Map failed.");
+
+        offscreen->Release();
+    }
+    else
+        exception_msg.assign(
+            "ID3D11Device::CreateTexture2D failed for 'offscreen'.");
+
+    if (!exception_msg.empty())
+        CEGUI_THROW(RendererException(exception_msg));
 }
 
 //----------------------------------------------------------------------------//
