@@ -1,2 +1,2 @@
 <?xml version="1.0" ?>
-<Font Name="fkp-16" Filename="fkp.de.pcf" Type="FreeType" Size="16" NativeHorzRes="800" NativeVertRes="600" AutoScaled="true"/>
+<Font version="3" name="fkp-16" filename="fkp.de.pcf" type="FreeType" size="16" nativeHorzRes="800" nativeVertRes="600" autoScaled="vertical"/>
