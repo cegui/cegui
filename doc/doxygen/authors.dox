@@ -29,6 +29,9 @@ The following have made large, important, or on-going contributions to the syste
     - Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
 - Eugene Marcotte:
     - Implementation of the NullRenderer module classes.
+- Hans Mackowiak:
+    - Composite resource provider
+    - Migrating properties to TplProperty
 - Jeff A. Marr:
     - Implementation of the MinizipResourceProvider class.
 - Jose A Milan:
@@ -38,10 +41,6 @@ The following have made large, important, or on-going contributions to the syste
     - Original version of the DirectFB renderer module and supporting sample base application.
 - Magnus Osterlind:
     - Original version of the Direct3D 9 GUI renderer module.
-- Martin Preisler:
-    - Layout Container classes.
-    - Animation system.
-    - Window::clone functionality.
 - Assaf Raman:
     - Support for bi-directional text.
 - Lars Rinde:
@@ -88,7 +87,9 @@ The following have contributed patches, bug reports, and other such valuable thi
 - Te'ja
 - Xavier
 - s5zone
+- Jason "Avengre" Assalita
 - Lukas Meindl
+- Pavlos Touboulidis
 
 <br>
 @section authors_sec_6 Special Thanks
