@@ -188,6 +188,10 @@ mySwapChain->Present(0, 0);
 // user function to draw 3D scene
 draw3DScene();
 
+// make sure that before calling renderGUI, that any bound textures and shaders 
+// used to render the scene above are disabled using glBindTexture(0) and glUseProgram(0) respectively
+// also set glActiveTexture(GL_TEXTURE_0) 
+
     // draw GUI (should not be between glBegin/glEnd pair)
     CEGUI::System::getSingleton().renderGUI();
 @endcode
