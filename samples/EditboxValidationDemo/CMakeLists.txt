@@ -1,0 +1,2 @@
+cegui_add_sample(CEGUIEditboxValidationDemo)
+

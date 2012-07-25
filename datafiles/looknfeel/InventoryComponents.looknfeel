@@ -1,8 +1,8 @@
 <?xml version="1.0" ?>
-<Falagard>
+<Falagard version="7">
 
     <WidgetLook name="TaharezLook/InventoryReceiver">
-        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>
@@ -23,7 +23,7 @@
     </WidgetLook>
 
     <WidgetLook name="TaharezLook/InventoryItem">
-        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
+        <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" type="Image"/>
         <ImagerySection name="main">
             <ImageryComponent>
                 <Area>
@@ -45,7 +45,7 @@
                     <Dim type="RightEdge"><UnifiedDim scale="1" type="RightEdge" /></Dim>
                     <Dim type="BottomEdge"><UnifiedDim scale="1" type="BottomEdge" /></Dim>
                 </Area>
-                <Image imageset="TaharezLook" image="GenericBrush" />
+                <Image name="TaharezLook/GenericBrush" />
                 <VertFormat type="Stretched" />
                 <HorzFormat type="Stretched" />
             </ImageryComponent>
