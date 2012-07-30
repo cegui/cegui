@@ -46,7 +46,7 @@ using namespace CEGUI;
 
 //platform-dependant DLL delay-loading includes
 #if (defined( __WIN32__ ) || defined( _WIN32 )) 
-    #include "windows.h"
+#include "windows.h"
 #endif
 
 // Name of the xsd schema file used to validate samples XML files.
@@ -132,8 +132,8 @@ void SamplesFramework::loadSamplesDataFromXML(const String& filename)
 {
     if (filename.empty())
         CEGUI_THROW(InvalidRequestException(
-            "SamplesFramework::loadSamplesDataFromXML: "
-            "filename supplied for file loading must be valid."));
+        "SamplesFramework::loadSamplesDataFromXML: "
+        "filename supplied for file loading must be valid."));
 
     Samples_xmlHandler handler(this);
 
@@ -175,7 +175,13 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
     else
     {
         if(Key::Escape != ceguiKey)
-            return CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyDown(ceguiKey);
+        {
+            CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+            if(ceguiSystem)
+                return ceguiSystem->getDefaultGUIContext().injectKeyDown(ceguiKey);
+            else
+                return false;
+        }
         else
             setQuitting(true);
     }
@@ -191,7 +197,9 @@ bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectKeyUp(ceguiKey);
+        CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+        if(ceguiSystem)
+            ceguiSystem->getDefaultGUIContext().injectKeyUp(ceguiKey);
     }
 
     return false;
@@ -205,7 +213,9 @@ bool SamplesFramework::injectChar(int character)
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectChar(character);
+        CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+        if(ceguiSystem)
+            ceguiSystem->getDefaultGUIContext().injectChar(character);
     }
 
     return false;
@@ -219,7 +229,9 @@ bool SamplesFramework::injectMouseButtonDown(const CEGUI::MouseButton& ceguiMous
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(ceguiMouseButton);
+        CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+        if(ceguiSystem)
+            ceguiSystem->getDefaultGUIContext().injectMouseButtonDown(ceguiMouseButton);
     }
 
     return false;
@@ -233,7 +245,9 @@ bool SamplesFramework::injectMouseButtonUp(const CEGUI::MouseButton& ceguiMouseB
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(ceguiMouseButton);
+        CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+        if(ceguiSystem)
+            ceguiSystem->getDefaultGUIContext().injectMouseButtonUp(ceguiMouseButton);
     }
 
     return false;
@@ -247,7 +261,9 @@ bool SamplesFramework::injectMouseWheelChange(float position)
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMouseWheelChange(position);
+        CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+        if(ceguiSystem)
+            ceguiSystem->getDefaultGUIContext().injectMouseWheelChange(position);
     }
 
     return false;
@@ -261,7 +277,9 @@ bool SamplesFramework::injectMousePosition(float x, float y)
     }
     else
     {
-        CEGUI::System::getSingleton().getDefaultGUIContext().injectMousePosition(x, y);
+        CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr();
+        if(ceguiSystem)
+            ceguiSystem->getDefaultGUIContext().injectMousePosition(x, y);
     }
 
     return false;
@@ -428,10 +446,10 @@ void SamplesFramework::initialiseSampleBrowserLayout()
     CEGUI::Font& buttonFont = CEGUI::FontManager::getSingleton().createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
-    
+
     CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10-NoScale.font");
     CEGUI::FontManager::getSingleton().createFromFile("Junicode-13.font");
-    
+
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
 
@@ -476,7 +494,7 @@ bool SamplesFramework::updateInitialisationStep()
             ++step;
             break;
         }
-        
+
     default:
         {
             bool sampleInitFinished = initialiseSampleStepwise(step - 3); // -2 for the previous 2 steps, -1 for extra step to display the text before actually loading
