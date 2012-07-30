@@ -50,6 +50,15 @@ public:
 };
 
 //----------------------------------------------------------------------------//
+// Helper struct to handle widget properties
+//----------------------------------------------------------------------------//
+struct WidgetPropertiesObject
+{
+    std::vector<const CEGUI::Property*> d_propertyList;
+    const CEGUI::Window* d_widget;
+}; 
+
+//----------------------------------------------------------------------------//
 // Helper class to deal with the different event names, used to output the name
 // of the event for generic events
 //----------------------------------------------------------------------------//
@@ -71,9 +80,41 @@ EventHandlerObject::EventHandlerObject(CEGUI::String eventName, WidgetDemo* owne
 
 bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
 {
-    d_owner->handleWidgetEventFired(d_eventName);
+    CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF']";
+    logMessage += CEGUI::String(" (");
 
-    return true;
+    if(dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
+    {
+        logMessage += "MouseEvent";
+    }
+    else if(dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
+    {
+        logMessage += "MouseCursorEvent";
+    }
+    else if(const CEGUI::KeyEventArgs* keyArgs = dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+    {
+        logMessage += "KeyEvent" + keyArgs->codepoint;
+    }
+    else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
+    {
+        logMessage += "WindowEvent";
+    }
+    else if(dynamic_cast<const CEGUI::ActivationEventArgs*>(&args))
+    {
+        logMessage += "ActivationEvent";
+    }
+    else if(dynamic_cast<const CEGUI::DragDropEventArgs*>(&args))
+    {
+        logMessage += "DragDropEvent";
+    }
+
+
+    logMessage += CEGUI::String(")");
+
+    logMessage += "\n";
+    d_owner->handleWidgetEventFired(d_eventName, logMessage);
+
+    return false;
 }
 
 
@@ -122,8 +163,15 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->subscribeEvent(CEGUI::GUIContext::EventRenderQueueEnded, Event::Subscriber(&WidgetDemo::handleRenderingEnded, this));
     d_guiContext->getRootWindow()->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&WidgetDemo::handleRootWindowUpdate, this));
 
-    d_skinSelectionCombobox->setItemSelectState(d_skinSelectionCombobox->getListboxItemFromIndex(0), true);
-
+    if(CEGUI::ListboxItem* skinItem = d_skinSelectionCombobox->getListboxItemFromIndex(0))
+    {
+        d_skinSelectionCombobox->setItemSelectState(skinItem, true);
+        handleSkinSelectionAccepted(CEGUI::WindowEventArgs(d_skinSelectionCombobox));
+    }
+    if(CEGUI::ListboxItem* widgetItem = d_widgetSelectorListbox->getListboxItemFromIndex(0))
+    {
+        d_widgetSelectorListbox->setItemSelectState(widgetItem, true);
+    }
 
     // success!
     return true;
@@ -187,7 +235,6 @@ bool WidgetDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
             progressBar->setProgress(newProgress);
     }
 
-
     return true;
 }
 
@@ -221,7 +268,7 @@ bool WidgetDemo::handleWidgetSelectionChanged(const CEGUI::EventArgs& args)
     handleSpecialWindowCases(widgetWindowRoot, widgetTypeString);
 
     //Set the property items for the property inspector
-    fillWidgetInspectorPropertyItems(widgetWindowRoot);
+    fillWidgetPropertiesDisplayWindow(widgetWindowRoot);
 
 
     // event was handled
@@ -349,11 +396,16 @@ void WidgetDemo::initialiseWidgetsEventsLog()
 {
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    d_widgetsEventsLog = static_cast<CEGUI::MultiLineEditbox*>(winMgr.createWindow("Vanilla/MultiLineEditbox", "WidgetEventsLog"));
+    d_widgetsEventsLog = winMgr.createWindow("Vanilla/StaticText", "WidgetEventsLog");
     d_widgetsEventsLog->setPosition(CEGUI::UVector2(cegui_reldim(0.05f), cegui_reldim(0.65f)));
     d_widgetsEventsLog->setSize(CEGUI::USize(cegui_reldim(0.9f), cegui_reldim(0.25f)));
-    d_widgetsEventsLog->setReadOnly(true);
-    d_widgetsEventsLog->setFont("DejaVuSans-10");
+    d_widgetsEventsLog->setFont("DejaVuSans-12");
+
+    d_widgetsEventsLog->setProperty("VertScrollbar", "True"); 
+
+    d_widgetsEventsLog->setProperty("HorzFormatting", "WordWrapLeftAligned");
+
+    d_widgetsEventsLog->setProperty("VertFormatting", "TopAligned");
 }
 
 /*************************************************************************
@@ -403,7 +455,7 @@ CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, cons
 }
 
 
-void WidgetDemo::handleWidgetEventFired(CEGUI::String eventName)
+void WidgetDemo::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage)
 {
     if(eventName == CEGUI::Window::EventMouseMove)
     {
@@ -415,9 +467,8 @@ void WidgetDemo::handleWidgetEventFired(CEGUI::String eventName)
     }
     else
     {
-        logFiredEvent(eventName);
+        logFiredEvent(logMessage);
     }
-
 }
 
 void WidgetDemo::addEventHandlerObjectToMap(CEGUI::String eventName)
@@ -493,20 +544,20 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
     mouseMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
 }
 
-void WidgetDemo::logFiredEvent(const CEGUI::String& eventName)
+void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)
 {
     ListboxItem* item = d_widgetSelectorListbox->getFirstSelectedItem();
     if(!item)
         return;
 
     CEGUI::String eventsLog = d_widgetsEventsLog->getText();
-    eventsLog += eventName + " event fired";
+    eventsLog += logMessage;
 
     //Remove line
-    int pos = std::max<int>(static_cast<int>(eventsLog.length() - 512), 0);
-    int len = std::min<int>(static_cast<int>(eventsLog.length()), 512);
+    int pos = std::max<int>(static_cast<int>(eventsLog.length() - 2056), 0);
+    int len = std::min<int>(static_cast<int>(eventsLog.length()), 2056);
     eventsLog = eventsLog.substr(pos, len);
-    if(len == 512)
+    if(len == 2056)
     {
         int newlinePos = eventsLog.find_first_of("\n");
         if(newlinePos != std::string::npos)
@@ -515,7 +566,8 @@ void WidgetDemo::logFiredEvent(const CEGUI::String& eventName)
     d_widgetsEventsLog->setText(eventsLog);
 
     //Scroll to end
-    d_widgetsEventsLog->getVertScrollbar()->setScrollPosition(d_widgetsEventsLog->getVertScrollbar()->getDocumentSize() - d_widgetsEventsLog->getVertScrollbar()->getPageSize());
+    CEGUI::Scrollbar* scrollbar = static_cast<CEGUI::Scrollbar*>(d_widgetsEventsLog->getChild("__auto_vscrollbar__"));
+    scrollbar->setScrollPosition(scrollbar->getDocumentSize() - scrollbar->getPageSize());
 }
 
 void WidgetDemo::subscribeToAllEvents(CEGUI::Window* widgetWindow)
@@ -547,6 +599,20 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
             "Excepteur sint obcaecat cupiditat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.");
     }
 
+    if(widgetType.compare("CaptionedStaticText") == 0)
+    {
+        widgetWindow->setProperty("Text", "Caption");
+    }
+
+    if(widgetType.compare("StaticText") == 0)
+    {
+        if(widgetWindow->isPropertyPresent("VertScrollbar"))
+            widgetWindow->setProperty("VertScrollbar", "True"); 
+
+        if(widgetWindow->isPropertyPresent("HorzFormatting"))
+            widgetWindow->setProperty("HorzFormatting", "WordWrapLeftAligned");
+    }
+
     if(widgetType.compare("StaticImage") == 0)
     {
         widgetWindow->setProperty("Image", "SpaceBackgroundImage");
@@ -564,6 +630,11 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
         initListbox(combodroplist);
     }
 
+    CEGUI::ItemListbox* itemListbox = dynamic_cast<CEGUI::ItemListbox*>(widgetWindow);
+    if(itemListbox)
+    {
+        initItemListbox(itemListbox);
+    }
 
     CEGUI::Combobox* combobox = dynamic_cast<CEGUI::Combobox*>(widgetWindow);
     if(combobox)
@@ -577,6 +648,13 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
         initMultiColumnList(multilineColumnList);
     }
 
+    CEGUI::Menubar* menuBar = dynamic_cast<CEGUI::Menubar*>(widgetWindow);
+    if(menuBar)
+    {     
+        initMenubar(menuBar);
+
+    }
+
     return widgetWindow;
 }
 
@@ -584,9 +662,9 @@ void WidgetDemo::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList
 {
     multilineColumnList->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(0.4f)));
 
-    multilineColumnList->addColumn("Server Name", 0, cegui_reldim(0.3f));
-    multilineColumnList->addColumn("Address ", 1, cegui_reldim(0.5f));
-    multilineColumnList->addColumn("Ping", 2, cegui_reldim(0.2f));
+    multilineColumnList->addColumn("Server Name", 0, cegui_reldim(0.38f));
+    multilineColumnList->addColumn("Address ", 1, cegui_reldim(0.44f));
+    multilineColumnList->addColumn("Ping", 2, cegui_reldim(0.15f));
 
     // Add some empty rows to the MCL
     multilineColumnList->addRow();
@@ -650,7 +728,8 @@ void WidgetDemo::saveWidgetPropertiesToMap(const CEGUI::Window* widgetRoot, cons
 {
     CEGUI::PropertySet::PropertyIterator propertyIter = widgetWindow->getPropertyIterator();
 
-    std::vector<const CEGUI::Property*>& propertyList = d_widgetPropertiesMap[widgetRoot];
+    std::vector<const CEGUI::Property*>& propertyList = d_widgetPropertiesMap[widgetRoot].d_propertyList;
+    d_widgetPropertiesMap[widgetRoot].d_widget = widgetWindow;
 
     while(!propertyIter.isAtEnd())
     {
@@ -682,6 +761,29 @@ void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
         item3->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
         item4->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
     }
+}
+
+void WidgetDemo::initItemListbox(CEGUI::ItemListbox* itemListbox)
+{
+    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton();
+
+    CEGUI::ItemEntry* itemListboxItem;
+
+    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem1"));
+    itemListbox->addItem(itemListboxItem);
+    itemListbox->setText("Item 1");
+
+    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem2"));
+    itemListbox->addItem(itemListboxItem);
+    itemListbox->setText("Item 2");
+
+    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem3"));
+    itemListbox->addItem(itemListboxItem);
+    itemListbox->setText("Item 3");
+
+    itemListboxItem = static_cast<CEGUI::ItemEntry*>(windowManager.createWindow("TaharezLook/ListboxItem", "ItemListboxTestItem4"));
+    itemListbox->addItem(itemListboxItem);
+    itemListbox->setText("Item 4");
 }
 
 void WidgetDemo::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window*& widgetWindow)
@@ -753,7 +855,7 @@ void WidgetDemo::initialiseWidgetInspector(CEGUI::Window* container)
     tabControl->addTab(widgetPropertiesInspectionContainer);
 
     //Create properties window
-    initPropertiesDisplayWindow(widgetPropertiesInspectionContainer);
+    initialiseWidgetPropertiesDisplayWindow(widgetPropertiesInspectionContainer);
 
     //Create the widget display windows
     initialiseWidgetDisplayWindow();
@@ -820,33 +922,49 @@ void WidgetDemo::handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI
         d_widgetDisplayWindowInnerWindow->setTooltip(0);
 }
 
-void WidgetDemo::fillWidgetInspectorPropertyItems(CEGUI::Window* widgetWindowRoot)
+void WidgetDemo::fillWidgetPropertiesDisplayWindow(CEGUI::Window* widgetWindowRoot)
 {
     d_widgetPropertiesDisplayWindow->resetList();
 
-    std::vector<const CEGUI::Property*> propertyList = d_widgetPropertiesMap[widgetWindowRoot];
+    std::vector<const CEGUI::Property*> propertyList = d_widgetPropertiesMap[widgetWindowRoot].d_propertyList;
+    const CEGUI::Window* widget = d_widgetPropertiesMap[widgetWindowRoot].d_widget;
 
     std::vector<const CEGUI::Property*>::iterator iter = propertyList.begin();
-    int i = 0;
+    unsigned int i = 0;
     while(iter != propertyList.end())
     {
         const CEGUI::Property* curProperty = *iter;
 
         // Add an empty row to the MultiColumnList
-        d_widgetPropertiesDisplayWindow->addRow();
+        if(i >= d_widgetPropertiesDisplayWindow->getRowCount())
+            d_widgetPropertiesDisplayWindow->addRow();
 
-        // Set first row item (name) for the property
-        d_widgetPropertiesDisplayWindow->setItem(new MyListItem(curProperty->getName()), 0, i);
+        unsigned int rowID = d_widgetPropertiesDisplayWindow->getRowID(i);
 
-        // Set first row item (name) for the property
-        d_widgetPropertiesDisplayWindow->setItem(new MyListItem(curProperty->getDataType()), 1, i);
+        // Set the first row item (name) for the property
+        d_widgetPropertiesDisplayWindow->setItem(new MyListItem(curProperty->getName()), 0, rowID);
+
+        // Set the third row item (type) for the property
+        d_widgetPropertiesDisplayWindow->setItem(new MyListItem(curProperty->getDataType()), 1, rowID);
+
+        try
+        {
+            // Set the second row item (value) for the property if it is gettable
+            if(widget->isPropertyPresent(curProperty->getName()))
+                d_widgetPropertiesDisplayWindow->setItem(new MyListItem(widget->getProperty(curProperty->getName())), 2, rowID);
+        }
+        catch(CEGUI::InvalidRequestException exception)
+        {
+        }
 
         ++iter;
         ++i;
     }
+
+    d_widgetPropertiesDisplayWindow->handleUpdatedItemData();
 }
 
-void WidgetDemo::initPropertiesDisplayWindow(CEGUI::Window* widgetPropertiesInspectionContainer)
+void WidgetDemo::initialiseWidgetPropertiesDisplayWindow(CEGUI::Window* widgetPropertiesInspectionContainer)
 {
     WindowManager& winMgr = WindowManager::getSingleton();
     d_widgetPropertiesDisplayWindow = static_cast<CEGUI::MultiColumnList*>(
@@ -859,16 +977,58 @@ void WidgetDemo::initPropertiesDisplayWindow(CEGUI::Window* widgetPropertiesInsp
 
     widgetPropertiesInspectionContainer->addChild(d_widgetPropertiesDisplayWindow);
 
-    d_widgetPropertiesDisplayWindow->addColumn("Name", 0, cegui_reldim(0.5f));
-    d_widgetPropertiesDisplayWindow->addColumn("Type ", 1, cegui_reldim(0.4f));
+    d_widgetPropertiesDisplayWindow->addColumn("Name", 0, cegui_reldim(0.45f));
+    d_widgetPropertiesDisplayWindow->addColumn("Type ", 1, cegui_reldim(0.25f));
+    d_widgetPropertiesDisplayWindow->addColumn("Value", 2, cegui_reldim(0.8f));
+   
     d_widgetPropertiesDisplayWindow->setShowHorzScrollbar(false);
     d_widgetPropertiesDisplayWindow->setUserColumnDraggingEnabled(false);
-    d_widgetPropertiesDisplayWindow->setUserColumnSizingEnabled(false);
+    d_widgetPropertiesDisplayWindow->setUserColumnSizingEnabled(true);
 
     d_widgetPropertiesDisplayWindow->setSortColumnByID(0);
-    d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::Descending);
+    d_widgetPropertiesDisplayWindow->setSortDirection(CEGUI::ListHeaderSegment::Ascending);
 }
 
+void WidgetDemo::initMenubar(CEGUI::Menubar* menuBar)
+{
+    CEGUI::String skin = menuBar->getType();
+    skin = skin.substr(0, skin.find_first_of('/'));
+    CEGUI::String menuItemMapping = skin + "/MenuItem";
+    CEGUI::String popupMenuMapping = skin + "/PopupMenu";
+
+    CEGUI::WindowManager& windowManager = CEGUI::WindowManager::getSingleton(); 
+    CEGUI::MenuItem* fileMenuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "FileMenuItem"));
+    fileMenuItem->setText("File");
+    menuBar->addChild(fileMenuItem);
+ 
+    CEGUI::PopupMenu* filePopupMenu = static_cast<CEGUI::PopupMenu*>(windowManager.createWindow(popupMenuMapping, "FilePopupMenu"));
+    fileMenuItem->addChild(filePopupMenu);
+
+    CEGUI::MenuItem* menuItem;
+    menuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "FileTestMenuItem1"));
+    menuItem->setText("Open");
+    filePopupMenu->addItem(menuItem);
+
+    menuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "FileTestMenuItem2"));
+    menuItem->setText("Save");
+    filePopupMenu->addItem(menuItem);
+
+    menuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "FileTestMenuItem3"));
+    menuItem->setText("Exit");
+    filePopupMenu->addItem(menuItem);
+
+
+    CEGUI::MenuItem* viewMenuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "ViewMenuItem"));
+    fileMenuItem->setText("View");
+    menuBar->addChild(viewMenuItem);
+
+    CEGUI::PopupMenu* viewPopupMenu = static_cast<CEGUI::PopupMenu*>(windowManager.createWindow(popupMenuMapping, "ViewPopupMenu"));
+    viewMenuItem->addChild(viewPopupMenu);
+
+    menuItem = static_cast<CEGUI::MenuItem*>(windowManager.createWindow(menuItemMapping, "ViewTestMenuItem1"));
+    menuItem->setText("Midgets");
+    viewPopupMenu->addItem(menuItem);
+}
 /*************************************************************************
 Define the module function that returns an instance of the sample
 *************************************************************************/

@@ -1702,7 +1702,7 @@
     <WidgetLook name="OgreTray/Editbox">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="NormalTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
-        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2333,6 +2333,7 @@
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="SelectedEditTextColour"/>
         <Property name="ReadOnly" value="True"/>
         <Property name="SingleClickMode" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="OgreTray/Editbox">
             <Area>
                 <Dim type="LeftEdge">
