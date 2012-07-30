@@ -905,7 +905,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
-        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">

@@ -791,7 +791,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar"/>
-        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1764,6 +1764,7 @@
     <WidgetLook name="WindowsLook/Menubar">
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" type="ColourRect" name="BackgroundColours"/>
         <PropertyDefinition layoutOnWrite="true" initialValue="5" type="float" name="BorderWidth"/>
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge">
