@@ -155,10 +155,10 @@
             </Window>
         </Window>
         <Window type="DefaultWindow" name="SampleFrameWindowContainer" >
-            <Property name="Area" value="{{0,0},{0,0},{1,-377},{1,0}}" />
+            <Property name="Area" value="{{0,115},{0,0},{1,-377},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Window type="SampleBrowserSkin/FrameWindow" name="SamplesFrameWindow" >
-                <Property name="Area" value="{{0,-120},{0,0},{1,-20},{1,0}}" />
+                <Property name="Area" value="{{0,0},{0,0},{1,100},{1,0}}" />
                 <Property name="Font" value="DejaVuSans-14-NoScale" />
                 <Property name="Text" value="Samples" />
                 <Property name="MaxSize" value="{{0,600},{0,0}}" />
@@ -169,7 +169,7 @@
                 <Property name="DragMovingEnabled" value="False" />
                 <Property name="VerticalAlignment" value="Centre" />
                 <Property name="CloseButtonEnabled" value="False" />
-                <Property name="HorizontalAlignment" value="Right" />
+                <Property name="HorizontalAlignment" value="Centre" />
                 <AutoWindow namePath="__auto_titlebar__" >
                     <Property name="DraggingEnabled" value="False" />
                 </AutoWindow>
@@ -179,6 +179,7 @@
                 <Window type="SampleBrowserSkin/ScrollablePane" name="SamplesScrollablePane" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="ForceVertScrollbar" value="True" />
+                    <Property name="HorizontalAlignment" value="Centre" />
                     <Property name="AutoRenderingSurface" value="True" />
                     <AutoWindow namePath="__auto_container__" >
                         <Property name="MouseInputPropagationEnabled" value="True" />
