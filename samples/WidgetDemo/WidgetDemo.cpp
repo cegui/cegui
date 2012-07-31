@@ -93,7 +93,7 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     }
     else if(const CEGUI::KeyEventArgs* keyArgs = dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
     {
-        logMessage += "KeyEvent" + keyArgs->codepoint;
+        logMessage += "KeyEvent: '" + CEGUI::String(1, keyArgs->codepoint) + "'";
     }
     else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
     {
