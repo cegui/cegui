@@ -379,6 +379,8 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     sampleContext->getMouseCursor().setPosition(CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().getPosition());
 
     d_selectedSampleData = correspondingSampleData;
+
+    d_selectedSampleData->onEnteringSample();
 }
 
 void SamplesFramework::stopDisplaySample()
