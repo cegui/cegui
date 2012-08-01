@@ -1,0 +1,14 @@
+<Imageset autoScaled="" imagefile="GameMenu.png" name="GameMenuImages" nativeHorzRes="1280" nativeVertRes="720" version="2">
+    <Image height="220" name="CenterImageInside" width="220" xPos="55" yPos="1256" />
+    <Image height="352" name="CenterImageOutside1" width="351" xPos="747" yPos="242" />
+    <Image height="360" name="CenterImageOutside2" width="360" xPos="322" yPos="240" />
+    <Image height="193" name="CenterImageInside2" width="192" xPos="69" yPos="322" />
+    <Image height="99" name="CenterImageButtonBG" width="99" xPos="1619" yPos="459" />
+    <Image height="40" name="CenterImageButtonStartLab" width="100" xPos="1742" yPos="465" />
+    <Image height="99" name="CenterImageButtonBOTH" width="99" xPos="1887" yPos="454" />
+    <Image height="40" name="CenterImageButtonStartButt" width="100" xPos="1742" yPos="526" />
+    <Image height="37" name="MouseCursor" width="36" xPos="1983" yPos="202" />
+    <Image height="1" name="Background" width="1" xPos="220" yPos="1400" />
+    <Image height="140" name="TopBar" width="1920" xPos="0" yPos="0" />
+    <Image height="140" name="BotBar" width="1844" xPos="0" yPos="1908" />
+</Imageset>
