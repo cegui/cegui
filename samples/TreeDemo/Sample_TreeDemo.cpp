@@ -61,20 +61,6 @@ const unsigned int TreeDemoSample::EditBoxID = 2;
 #endif
 
 
-//
-// int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine,int nCmdShow)
-// #else
-int main(int /*argc*/, char* /*argv*/[])
-   {
-   // This is a basic start-up for the sample application which is
-   // object orientated in nature, so we just need an instance of
-   // the CEGuiSample based object and then tell that sample application
-   // to run.  All of the samples will use code similar to this in the
-   // main/WinMain function.
-   TreeDemoSample app;
-   return app.run();
-   }
-
 int randInt(int low, int high)
    {
    int   num;
@@ -100,38 +86,43 @@ int randInt(int low, int high)
 
 
 /*************************************************************************
-    Sample specific initialisation goes here.
+Sample specific initialisation goes here.
 *************************************************************************/
-bool TreeDemoSample::initialiseSample()
-   {
-   using namespace CEGUI;
-   Tree *      theTree;
-   TreeItem *  newTreeCtrlEntryLvl1;  // Level 1 TreeCtrlEntry (branch)
-   TreeItem *  newTreeCtrlEntryLvl2;  // Level 2 TreeCtrlEntry (branch)
-   TreeItem *  newTreeCtrlEntryLvl3;  // Level 3 TreeCtrlEntry (branch)
-   TreeItem *  newTreeCtrlEntryParent;
-   Image *     iconArray[9];
+bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
+{
+    using namespace CEGUI;
+
+    d_usedFiles = CEGUI::String(__FILE__);
+
+    Tree *      theTree;
+    TreeItem *  newTreeCtrlEntryLvl1;  // Level 1 TreeCtrlEntry (branch)
+    TreeItem *  newTreeCtrlEntryLvl2;  // Level 2 TreeCtrlEntry (branch)
+    TreeItem *  newTreeCtrlEntryLvl3;  // Level 3 TreeCtrlEntry (branch)
+    TreeItem *  newTreeCtrlEntryParent;
+    Image *     iconArray[9];
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
-   // Windows specific code.
-   srand(time(NULL));
+    // Windows specific code.
+    srand(time(NULL));
 #endif
 
    // Get window manager which we will use for a few jobs here.
    WindowManager& winMgr = WindowManager::getSingleton();
 
-//   CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Standard);
-//   CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Informative);
-   CEGUI::Logger::getSingleton().setLoggingLevel(CEGUI::Insane);
+   // load font and setup default if not loaded via scheme
+   Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+   // Set default font for the gui context
+   guiContext->setDefaultFont(&defaultFont);
 
    // Load the scheme to initialise the skin which we use in this sample
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
-   System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
+   guiContext->getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
-   ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+   if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+       ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
    // Load some icon images for our test tree
    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");
@@ -145,16 +136,11 @@ bool TreeDemoSample::initialiseSample()
    background->setProperty("FrameEnabled", "false");
    background->setProperty("BackgroundEnabled", "false");
    // set the background image
-   background->setProperty("Image", "BackgroundImage");
+   background->setProperty("Image", "SpaceBackgroundImage");
    // install this as the root GUI sheet
-   System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+   guiContext->setRootWindow(background);
 
-//   CEGUI::System::getSingleton().setTooltip(TOOLTIP_NAME);
-
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
-//	if(!FontManager::getSingleton().isFontPresent("Commonwealth-10"))
-//		FontManager::getSingleton().createFont("Commonwealth-10.font");
-
+   FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
    TreeDemoWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
 
@@ -310,7 +296,7 @@ bool TreeDemoSample::initialiseSample()
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void TreeDemoSample::cleanupSample()
+void TreeDemoSample::deinitialise()
    {
    }
 
@@ -389,3 +375,13 @@ bool TreeDemoSample::handleEventBranchClosed(const CEGUI::EventArgs& args)
    editBox->setText("Closed: " + treeArgs.treeItem->getText());
    return true;
    }
+
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static TreeDemoSample sample;
+    return sample;
+}

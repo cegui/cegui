@@ -429,6 +429,11 @@ float IrrlichtRenderer::getNextPOTSize(const float f)
 
     return static_cast<float>(size);
 }
+//----------------------------------------------------------------------------//
+const IrrlichtEventPusher* IrrlichtRenderer::getEventPusher() const
+{
+    return d_eventPusher;
+}
 
 //----------------------------------------------------------------------------//
 

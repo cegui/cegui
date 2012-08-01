@@ -10,6 +10,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF444444" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -55,6 +56,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF888888" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -335,6 +337,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF888888" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -467,6 +470,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
         <Property name="WantsMultiClickEvents" value="False"/>
         <Property name="NonClient" value="True"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -559,6 +563,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/ComboDropList">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -717,6 +722,7 @@
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FFFFFFFF" type="ColourRect" name="SelectedEditTextColour"/>
         <PropertyLinkDefinition targetProperty="ActiveSelectionColour" widget="__auto_editbox__" initialValue="FF607FFF" type="ColourRect" name="ActiveEditSelectionColour"/>
         <PropertyLinkDefinition targetProperty="InactiveSelectionColour" widget="__auto_editbox__" initialValue="FF808080" type="ColourRect" name="InactiveEditSelectionColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="WindowsLook/Editbox">
             <Area>
                 <Dim type="LeftEdge">
@@ -785,6 +791,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -918,6 +925,7 @@
         <Property name="NESWSizingCursorImage" value="WindowsLook/MouseNeSwCursor"/>
         <Property name="MinSize" value="{{0.1,0},{0.1,0}}"/>
         <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -1344,6 +1352,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Listbox">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="ItemRenderingArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1755,6 +1764,7 @@
     <WidgetLook name="WindowsLook/Menubar">
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFDFEFF5 tr:FFDFDFF5 bl:FFF4F3F5 br:FFF4F3F5" type="ColourRect" name="BackgroundColours"/>
         <PropertyDefinition layoutOnWrite="true" initialValue="5" type="float" name="BorderWidth"/>
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ItemRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2495,6 +2505,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar"/>
         <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2760,6 +2771,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/ProgressBar">
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2890,6 +2902,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="HoverTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF888888" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -3129,6 +3142,7 @@
         <Property name="VertFree" value="True"/>
         <Property name="MinSize" value="{{0,0},{0,16}}"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3345,6 +3359,7 @@
     <WidgetLook name="WindowsLook/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="True"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3475,6 +3490,7 @@
         <Property name="HorzFree" value="True"/>
         <Property name="MinSize" value="{{0,16},{0,0}}"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -3689,6 +3705,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/HorizontalScrollbar">
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <Property name="WantsMultiClickEvents" value="False"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -3887,9 +3904,10 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Slider">
-        <Property name="HorizontalSlider" value="True"/>
+        <Property name="VerticalSlider" value="True"/>
         <Property name="MouseAutoRepeatEnabled" value="True"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3978,6 +3996,7 @@
     ***************************************************
     -->
     <WidgetLook name="WindowsLook/Spinner">
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <Child nameSuffix="__auto_editbox__" type="WindowsLook/Editbox">
             <Area>
                 <Dim type="LeftEdge">
@@ -4131,6 +4150,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -4220,6 +4240,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
         <ImagerySection name="image_withframe">
             <ImageryComponent>
                 <Area>
@@ -4338,6 +4359,7 @@
         <Property name="BackgroundEnabled" value="True"/>
         <Property name="FrameEnabled" value="True"/>
         <Property name="TextColours" value="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000"/>
+        <Property name="Size" value="{{0, 256}, {0, 128}}" />
         <NamedArea name="WithFrameTextRenderArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -4564,6 +4586,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="PushedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000010" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF888888" type="ColourRect" name="DisabledTextColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -4708,6 +4731,7 @@
     <WidgetLook name="WindowsLook/TabContentPane">
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" name="EnableTop"/>
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="0" name="EnableBottom"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -4806,6 +4830,7 @@
     <WidgetLook name="WindowsLook/TabButtonPane">
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" name="EnableTop"/>
         <PropertyDefinition layoutOnWrite="true" redrawOnWrite="true" initialValue="1" name="EnableBottom"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -4897,6 +4922,7 @@
     <WidgetLook name="WindowsLook/TabControl">
         <Property name="TabButtonType" value="WindowsLook/TabButton"/>
         <Property name="TabTextPadding" value="{0,4}"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <Child nameSuffix="__auto_TabPane__" type="WindowsLook/TabContentPane">
             <Area>
                 <Dim type="LeftEdge">
@@ -5028,6 +5054,7 @@
     <WidgetLook name="WindowsLook/Titlebar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="CaptionColour"/>
         <Property name="NonClient" value="True"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
                 <Area>
@@ -5110,6 +5137,7 @@
     -->
     <WidgetLook name="WindowsLook/Tooltip">
         <Property name="Alpha" value="0" />
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
