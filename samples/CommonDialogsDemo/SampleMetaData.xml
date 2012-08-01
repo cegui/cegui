@@ -1,0 +1,6 @@
+<SampleDefinition
+    sampleName      = "CEGUICommonDialogsDemo"
+    sampleType      = "C++ Module"
+    summary         = "Shows the functionalities of the Common Dialogues library. Currently this consists only of the ColourPicker of CEGUI. It can be opened by clicking the coloured rectangle in the demo."
+    description     = ""
+/>
