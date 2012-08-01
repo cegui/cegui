@@ -220,3 +220,11 @@ Font vendor Link: http://www.therisenrealm.com
 
 The official page of the MizuFontAlphabet font is at 
 http://www.therisenrealm.com/?page=font_mizufontalphabet
+
+===============================================================================
+Jura font family (Jura-Regular.ttf, Jura-Medium.ttf, Jura-Light.ttf, Jura-DemiBold.ttf):
+----------------------------------------------------------- 
+Copyright (c) 2009, 2010, 2011 Daniel Johnson (<il.basso.buffo@gmail.com>).
+This Font Software is licensed under the SIL Open Font License, Version 1.1.
+This license is available in this folder (LicenseSIL.txt), and is also available with a FAQ at:
+http://scripts.sil.org/OFL
