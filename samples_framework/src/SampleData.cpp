@@ -250,3 +250,8 @@ void SampleDataModule::getSampleInstanceFromDLL()
 
     d_sample =  &(functionPointerGetSample());
 }
+
+ void SampleDataModule::onEnteringSample()
+ {
+     d_sample->onEnteringSample();
+ }

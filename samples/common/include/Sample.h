@@ -46,6 +46,8 @@ public:
     virtual bool initialise(CEGUI::GUIContext* guiContext) = 0;
     virtual void deinitialise() = 0;
 
+    virtual void onEnteringSample() {}
+
     const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
 
 protected:

@@ -72,6 +72,8 @@ public:
     virtual void setGUIContextRTT();
     virtual void clearRTTTexture();
 
+    virtual void onEnteringSample() = 0;
+
     void setSampleWindow(CEGUI::Window* sampleWindow);
     CEGUI::Window* getSampleWindow();
 
@@ -106,6 +108,8 @@ public:
 
     virtual void initialise(int width, int height);
     virtual void deinitialise();
+
+    virtual void onEnteringSample();
 
 private:
 
