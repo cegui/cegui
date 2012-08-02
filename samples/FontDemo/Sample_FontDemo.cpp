@@ -214,7 +214,7 @@ bool FontDemo::initialise(CEGUI::GUIContext* guiContext)
 
     //Here we create a font and apply it to the renew font name button
     CEGUI::Font& buttonFont = fontManager.createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf",
-        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.0f, 720.0f));
     d_renewFontNameButton =  static_cast<CEGUI::PushButton*>(d_root->getChild("FontDemoWindow/FontCreator/RenewNameButton"));
     d_renewFontNameButton->setFont(&buttonFont);
 
@@ -274,7 +274,7 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
 
     CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
     float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
-    if(fontSize == 0.f)
+    if(fontSize == 0.0f)
         return true;
 
     bool antiAlias = d_fontAntiAliasCheckbox->isSelected();
@@ -287,12 +287,12 @@ bool FontDemo::handleFontCreationButtonClicked(const EventArgs& e)
     if(pos != -1)
     {
         CEGUI::Font& createdFont = fontMgr.createPixmapFont(fontName, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode,
-            CEGUI::Sizef(1280.f, 720.f), XREA_THROW);
+            CEGUI::Sizef(1280.0f, 720.0f), XREA_THROW);
     }
     else
     {
         CEGUI::Font& createdFont = fontMgr.createFreeTypeFont(fontName, fontSize, antiAlias, fontFileName, Font::getDefaultResourceGroup(), autoScaleMode, 
-            CEGUI::Sizef(1280.f, 720.f), XREA_THROW);
+            CEGUI::Sizef(1280.0f, 720.0f), XREA_THROW);
     }
 
     ListboxItem* item = new MyListItem(fontName, 0);
@@ -322,7 +322,7 @@ bool FontDemo::handleFontEditButtonClicked(const EventArgs& e)
     {
         CEGUI::String fontSizeString = d_fontSizeEditbox->getText();
         float fontSize = CEGUI::PropertyHelper<float>::fromString(fontSizeString);
-        if(fontSize != 0.f)
+        if(fontSize != 0.0f)
             font.setProperty<float>("PointSize", fontSize);
     }
 
@@ -396,9 +396,9 @@ bool FontDemo::handleFontSelectionChanged(const EventArgs& e)
 
             //Change the font colour for pixmap fonts
             if(font.getTypeName().compare(Font_xmlHandler::FontTypePixmap) == 0)
-                d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(1.f, 1.f, 1.f, 1.f)));
+                d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(1.0f, 1.0f, 1.0f, 1.0f)));
             else
-                d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(0.f, 0.f, 0.f, 1.f)));
+                d_textDisplayMultiLineEditbox->setProperty<CEGUI::ColourRect>("NormalTextColour", CEGUI::ColourRect(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f)));
 
         }
     }
@@ -678,31 +678,31 @@ void FontDemo::initialiseDemoFonts()
 {
     FontManager& fontManager(FontManager::getSingleton());
     fontManager.createFreeTypeFont("Junicode-14", 14.f, true, "Junicode.ttf",
-        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("Klingon-pIqaD-HaSta-24", 24.f, true, "Klingon-pIqaD-HaSta.ttf",
-        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("TnuaLibre-12", 12.f, true, "Tnua-Libre.ttf",
-        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("RichStyle-22", 22.5f, true, "RichStyle.ttf",
-        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Vertical, CEGUI::Sizef(1280.0f, 720.0f));
 
-    fontManager.createFreeTypeFont("FetteUNZFraktur-20", 20.f, true, "FetteClassicUNZFraktur.ttf",
-        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+    fontManager.createFreeTypeFont("FetteUNZFraktur-20", 20.0f, true, "FetteClassicUNZFraktur.ttf",
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("GreatVibes-22", 22.f, true, "GreatVibes-Regular.ttf",
-        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("FellType-12.5", 12.5f, true, "IMFePIrm29P.ttf",
-        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("FutharkAdapted-18", 18.f, true, "Futhark Adapted.ttf",
-        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.0f, 720.0f));
 
     fontManager.createFreeTypeFont("mizufalp-12", 12.f, true, "mizufalp.ttf",
-        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.f, 720.f));
+        Font::getDefaultResourceGroup(), ASM_Disabled, CEGUI::Sizef(1280.0f, 720.0f));
 }
 
 /*************************************************************************

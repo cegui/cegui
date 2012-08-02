@@ -76,7 +76,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create a viewport covering whole window
         Viewport* vp = d_window->addViewport(d_camera);
-        vp->setBackgroundColour(ColourValue(1.f, 1.f, 1.f, 1.f));
+        vp->setBackgroundColour(ColourValue(1.0f, 1.0f, 1.0f, 1.0f));
         // Update the camera aspect ratio to that of the viewport
         d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 

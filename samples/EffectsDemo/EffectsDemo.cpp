@@ -639,7 +639,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     aliasingFrameWnd->setText("Aliasing Testimage");
 
     // Image window setup
-    aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
+    aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     aliasingWnd->setProperty("FrameEnabled", "False");
     aliasingWnd->setProperty("BackgroundEnabled", "False");
     aliasingWnd->setProperty("Image", "AliasingTestImage");
