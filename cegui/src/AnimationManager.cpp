@@ -81,6 +81,7 @@ AnimationManager::AnimationManager(void)
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UVector2>("UVector2"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<URect>("URect"));
     addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<UBox>("UBox"));
+    addBasicInterpolator(CEGUI_NEW_AO TplLinearInterpolator<USize>("USize"));
 }
 
 
