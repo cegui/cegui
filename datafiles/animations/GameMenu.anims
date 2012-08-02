@@ -1,58 +1,77 @@
-<?xml version="1.0" ?>
 <Animations>
-    <AnimationDefinition name="StartButtonPulsating" duration="1.4" replayMode="loop">
-        <Affector property="Alpha" interpolator="float">
-            <KeyFrame position="0" value="0.5" />
-            <KeyFrame position="0.7" value="1.0" progression="quadratic decelerating" />
-            <KeyFrame position="1.4" value="0.5" progression="quadratic accelerating" />
+    <AnimationDefinition autoStart="False" duration="1.4" name="StartButtonPulsating" replayMode="loop">
+        <Affector applicationMethod="absolute" interpolator="float" property="Alpha">
+            <KeyFrame position="0" progression="linear" value="0.5" />
+            <KeyFrame position="0.7" progression="quadratic decelerating" value="1.0" />
+            <KeyFrame position="1.4" progression="quadratic accelerating" value="0.5" />
+        </Affector>
+    </AnimationDefinition>
+    <AnimationDefinition autoStart="False" duration="3" name="InsideImage1Pulsating" replayMode="bounce">
+        <Affector applicationMethod="absolute" interpolator="float" property="Alpha">
+            <KeyFrame position="0" progression="linear" value="0.5" />
+            <KeyFrame position="2.7" progression="linear" value="1.0" />
+        </Affector>
+    </AnimationDefinition>
+    <AnimationDefinition autoStart="False" duration="2.0" name="BotBarMoveInAnimation" replayMode="once">
+        <Affector applicationMethod="absolute" interpolator="UVector2" property="Position">
+            <KeyFrame position="0.5" progression="linear" value="{{0, 0}, {0.4, 0}}" />
+            <KeyFrame position="0.95703" progression="quadratic decelerating" value="{{0, 0}, {-0.02, 0}}" />
+            <KeyFrame position="1.07406" progression="linear" value="{{0, 0}, {0, 0}}" />
+        </Affector>
+    </AnimationDefinition>
+    <AnimationDefinition autoStart="False" duration="2.0" name="TopBarMoveInAnimation" replayMode="once">
+        <Affector applicationMethod="absolute" interpolator="UVector2" property="Position">
+            <KeyFrame position="0.5" progression="linear" value="{{0, 0}, {-0.4, 0}}" />
+            <KeyFrame position="0.95703" progression="quadratic decelerating" value="{{0, 0}, {0.02, 0}}" />
+            <KeyFrame position="1.07406" progression="linear" value="{{0, 0}, {0, 0}}" />
+        </Affector>
+    </AnimationDefinition>
+    <AnimationDefinition autoStart="False" duration="3" name="InsideBlendIn" replayMode="once">
+        <Affector applicationMethod="absolute" interpolator="float" property="Alpha">
+            <KeyFrame position="0.0" progression="linear" value="0.0" />
+            <KeyFrame position="0.5" progression="linear" value="0.0" />
+            <KeyFrame position="2.0" progression="quadratic accelerating" value="1.0" />
         </Affector>
     </AnimationDefinition>
     
-    <AnimationDefinition name="InsideImage1Pulsating" duration="3.0" replayMode="bounce">
-        <Affector property="Alpha" interpolator="float">
-            <KeyFrame position="0" value="0.5" />
-            <KeyFrame position="2.7" value="1.0" progression="linear" />
+    <AnimationDefinition autoStart="False" duration="6.0" name="InsideImage4RotateIn" replayMode="once">
+        <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
+            <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="2.0" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="3.0" progression="linear" value="x:0 y:0 z:-180" />
+            <KeyFrame position="4.0" progression="linear" value="x:0 y:0 z:-360" />
+            <KeyFrame position="4.000001" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="5.0" progression="linear" value="x:0 y:0 z:-180" />
+            <KeyFrame position="6.0" progression="quadratic decelerating" value="x:0 y:0 z:-360" />
         </Affector>
     </AnimationDefinition>
     
-    <AnimationDefinition name="InsideImage2Pulsating" duration="2.7" replayMode="loop">
-        <Affector property="Alpha" interpolator="float">
-            <KeyFrame position="0" value="0.5" />
-            <KeyFrame position="0.7" value="1.0" progression="quadratic decelerating" />
-            <KeyFrame position="1.4" value="0.5" progression="quadratic decelerating" />
+    
+    <AnimationDefinition autoStart="False" duration="6.0" name="InsideImage3RotateIn" replayMode="once">
+        <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
+            <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="2.0" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="2.5" progression="linear" value="x:0 y:0 z:180" />
+            <KeyFrame position="3.0" progression="linear" value="x:0 y:0 z:360" />
+            <KeyFrame position="3.000001" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="3.5" progression="linear" value="x:0 y:0 z:180" />
+            <KeyFrame position="4.0" progression="linear" value="x:0 y:0 z:360" />
+            <KeyFrame position="4.000001" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="4.5" progression="linear" value="x:0 y:0 z:180" />
+            <KeyFrame position="5.0" progression="linear" value="x:0 y:0 z:360" />
+            <KeyFrame position="5.000001" progression="linear" value="x:0 y:0 z:0" />
+            <KeyFrame position="5.5" progression="linear" value="x:0 y:0 z:180" />
+            <KeyFrame position="6.0" progression="quadratic decelerating" value="x:0 y:0 z:360" />
         </Affector>
     </AnimationDefinition>
     
-    <AnimationDefinition name="InsideImage3Pulsating" duration="4.1" replayMode="loop">
-        <Affector property="Alpha" interpolator="float">
-            <KeyFrame position="0" value="0.5" />
-            <KeyFrame position="0.7" value="1.0" progression="quadratic decelerating" />
-            <KeyFrame position="1.4" value="0.5" progression="quadratic decelerating" />
+    
+    <AnimationDefinition autoStart="False" duration="6.0" name="RingsContainerSizeIn" replayMode="once">
+        <Affector property="Size" interpolator="USize" applicationMethod="absolute">
+            <KeyFrame position="0.0" value="{{0.0, 0}, {0.0, 0}}" />
+            <KeyFrame position="2.0" progression="quadratic decelerating" value="{{0.0, 0}, {0.0, 0}}" />
+            <KeyFrame position="4.78" progression="quadratic decelerating" value="{{1.0, 0}, {1.0, 0}}" />
         </Affector>
     </AnimationDefinition>
     
-    <AnimationDefinition name="InsideImage4Pulsating" duration="3.7" replayMode="loop">
-        <Affector property="Alpha" interpolator="float">
-            <KeyFrame position="0" value="0.5" />
-            <KeyFrame position="0.7" value="1.0" progression="quadratic decelerating" />
-            <KeyFrame position="1.4" value="0.5" progression="quadratic decelerating" />
-        </Affector>
-    </AnimationDefinition>
-    
-    <AnimationDefinition name="TopBarMoveInAnimation" duration="0.7" replayMode="once">
-        <Affector property="Position" interpolator="UVector2">
-            <KeyFrame position="0" value="{{0, 0}, {-0.5, 0}}" />
-            <KeyFrame position="0.7" value="{{0, 0}, {0, 0}}" progression="quadratic decelerating" />
-        </Affector>
-    </AnimationDefinition>
-    
-    <AnimationDefinition name="BotBarStartStartAnimation" duration="0.7" replayMode="once">
-        <Affector property="Alpha" interpolator="float">
-            <KeyFrame position="0" value="0.5" />
-            <KeyFrame position="0.7" value="1.0" progression="quadratic decelerating" />
-            <KeyFrame position="1.4" value="0.5" progression="quadratic decelerating" />
-        </Affector>
-    </AnimationDefinition>
-
 </Animations>
-

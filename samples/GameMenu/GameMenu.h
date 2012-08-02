@@ -58,6 +58,11 @@ protected:
     CEGUI::Window* d_root;
 
     CEGUI::AnimationInstance* d_topBarAnimInst;
+    CEGUI::AnimationInstance* d_botBarAnimInst;
+    CEGUI::AnimationInstance* d_insideBlendInAnimInst;
+    CEGUI::AnimationInstance* d_insideImage3RotateInInst;
+    CEGUI::AnimationInstance* d_insideImage4RotateInInst;
+    CEGUI::AnimationInstance* d_insideImageRingsContainerSizeInInst;
 };
 
 #endif

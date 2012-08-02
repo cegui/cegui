@@ -90,12 +90,48 @@ void GameMenuDemo::setupAnimations()
     CEGUI::Window* topBarWindow = d_root->getChild("TopBar");
     d_topBarAnimInst->setTargetWindow(topBarWindow);
     d_topBarAnimInst->start();
+
+    CEGUI::Animation* botBarAnim = animMgr.getAnimation("BotBarMoveInAnimation");
+    d_botBarAnimInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(botBarAnim);
+    CEGUI::Window* botBarWindow = d_root->getChild("BotBar");
+    d_botBarAnimInst->setTargetWindow(botBarWindow);
+    d_botBarAnimInst->start();
+
+    CEGUI::Animation* insideBlendInAnim = animMgr.getAnimation("InsideBlendIn");
+    d_insideBlendInAnimInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideBlendInAnim);
+    CEGUI::Window* innerPartContainer = d_root->getChild("InnerPartContainer");
+    d_insideBlendInAnimInst->setTargetWindow(innerPartContainer);
+    d_insideBlendInAnimInst->start();
+
+    
+    CEGUI::Animation* insideImage3RotateIn = animMgr.getAnimation("InsideImage3RotateIn");
+    d_insideImage3RotateInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideImage3RotateIn);
+    CEGUI::Window* insideImage3 = d_root->getChild("InnerPartContainer/OuterRingsContainer/InsideImage3");
+    d_insideImage3RotateInInst->setTargetWindow(insideImage3);
+    d_insideImage3RotateInInst->start();
+
+    CEGUI::Animation* insideImage4RotateIn = animMgr.getAnimation("InsideImage4RotateIn");
+    d_insideImage4RotateInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideImage4RotateIn);
+    CEGUI::Window* insideImage4 = d_root->getChild("InnerPartContainer/OuterRingsContainer/InsideImage4");
+    d_insideImage4RotateInInst->setTargetWindow(insideImage4);
+    d_insideImage4RotateInInst->start();
+
+    CEGUI::Animation* insideImageRingsContainerSizeIn = animMgr.getAnimation("RingsContainerSizeIn");
+    d_insideImageRingsContainerSizeInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideImageRingsContainerSizeIn);
+    CEGUI::Window* insideImageContainer = d_root->getChild("InnerPartContainer/OuterRingsContainer");
+    d_insideImageRingsContainerSizeInInst->setTargetWindow(insideImageContainer);
+    d_insideImageRingsContainerSizeInInst->start();
 }
 
 
 void GameMenuDemo::onEnteringSample()
 {
     d_topBarAnimInst->start();
+    d_botBarAnimInst->start();
+    d_insideBlendInAnimInst->start();
+    d_insideImage3RotateInInst->start();
+    d_insideImage4RotateInInst->start();
+    d_insideImageRingsContainerSizeInInst->start();
 }
 
 /*************************************************************************

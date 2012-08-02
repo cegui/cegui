@@ -1,7 +1,7 @@
-<Imageset autoScaled="" imagefile="GameMenu.png" name="GameMenuImages" nativeHorzRes="1280" nativeVertRes="720" version="2">
+<Imageset autoScaled="vertical" imagefile="GameMenu.png" name="GameMenuImages" nativeHorzRes="1024" nativeVertRes="720" version="2">
     <Image height="220" name="CenterImageInside" width="220" xPos="55" yPos="1256" />
-    <Image height="352" name="CenterImageOutside1" width="351" xPos="747" yPos="242" />
-    <Image height="360" name="CenterImageOutside2" width="360" xPos="322" yPos="240" />
+    <Image height="353" name="CenterImageOutside1" width="353" xPos="747" yPos="242" />
+    <Image height="328" name="CenterImageOutside2" width="328" xPos="340" yPos="254" />
     <Image height="193" name="CenterImageInside2" width="192" xPos="69" yPos="322" />
     <Image height="99" name="CenterImageButtonBG" width="99" xPos="1619" yPos="459" />
     <Image height="40" name="CenterImageButtonStartLab" width="100" xPos="1742" yPos="465" />
@@ -11,4 +11,9 @@
     <Image height="1" name="Background" width="1" xPos="220" yPos="1400" />
     <Image height="140" name="TopBar" width="1920" xPos="0" yPos="0" />
     <Image height="140" name="BotBar" width="1844" xPos="0" yPos="1908" />
+    <Image height="50" name="ButtonOptionsIcon" width="50" xPos="1975" yPos="280" />
+    <Image height="40" name="ButtonLoadIcon" width="40" xPos="1916" yPos="285" />
+    <Image height="40" name="ButtonCharactersIcon" width="40" xPos="1862" yPos="285" />
+    <Image height="30" name="ButtonOffIcon" width="30" xPos="1761" yPos="290" />
+    <Image height="40" name="ButtonSaveIcon" width="40" xPos="1806" yPos="285" />
 </Imageset>
