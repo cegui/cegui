@@ -82,25 +82,25 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
     wnd->addChild(colourPicker);
     colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 40)));
     colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
-    colourPicker->setColour(CEGUI::Colour(1.f, 0.f, 0.f, 0.5f));
+    colourPicker->setColour(CEGUI::Colour(1.0f, 0.0f, 0.0f, 0.5f));
 
     colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
     colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 80)));
     colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
-    colourPicker->setColour(CEGUI::Colour(0.f, 1.f, 1.f, 0.f));
+    colourPicker->setColour(CEGUI::Colour(0.0f, 1.0f, 1.0f, 0.0f));
 
     colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
     colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 120)));
     colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
-    colourPicker->setColour(CEGUI::Colour(0.4f, 0.4f, 0.f, 1.f));
+    colourPicker->setColour(CEGUI::Colour(0.4f, 0.4f, 0.0f, 1.0f));
 
     colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
     colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 160)));
     colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
-    colourPicker->setColour(CEGUI::Colour(1.f, 0.2f, 0.5f, 0.8f));
+    colourPicker->setColour(CEGUI::Colour(1.0f, 0.2f, 0.5f, 0.8f));
 
     return true;
 }
