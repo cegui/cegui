@@ -2,7 +2,7 @@
     filename:   CEGUIColourPickerConversions.cpp
     created:    20th February 2010
     author:     Lukas E Meindl
-
+    
     purpose:    Implementation of the class used to provide conversions
                 between the ColourPicker colour types
 *************************************************************************/
@@ -264,8 +264,8 @@ unsigned char ColourPickerConversions::linearInterpolationAlpha(float interPolBa
 //----------------------------------------------------------------------------//
 void ColourPickerConversions::clampInterpolationValue(float& interPolBalance)
 {
-    interPolBalance = std::max(0.f, interPolBalance);
-    interPolBalance = std::min(1.f, interPolBalance);
+    interPolBalance = std::max(0.0f, interPolBalance);
+    interPolBalance = std::min(1.0f, interPolBalance);
 }
 
 //----------------------------------------------------------------------------//

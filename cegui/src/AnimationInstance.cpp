@@ -381,9 +381,9 @@ void AnimationInstance::step(float delta)
 
         float newPosition = d_position + delta;
 
-        while (newPosition < 0.f || newPosition > duration)
+        while (newPosition < 0.0f || newPosition > duration)
         {
-            if (newPosition < 0.f)
+            if (newPosition < 0.0f)
             {
                 d_bounceBackwards = false;
 

@@ -128,7 +128,9 @@ public:
         if (mode == AM_IGNORE)
             return;
 
-        assert(d_width > 0 || d_height > 0);
+        if(d_width <= 0 && d_height <= 0)
+            return;
+
         assert(ratio > 0);
 
         const T expectedWidth = d_height * ratio;
@@ -191,6 +193,11 @@ public:
 // the main reason for this is to keep C++ API in sync with other languages
 typedef Size<float> Sizef;
 typedef Size<UDim> USize;
+
+inline USize operator*(const USize& i, float x)
+{
+    return i * UDim(x,x);
+}
 
 } // End of  CEGUI namespace section
 
