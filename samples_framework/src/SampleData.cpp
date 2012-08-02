@@ -196,9 +196,9 @@ void SampleData::setTextureTargetImageArea(float height, float width)
         bool isTextureTargetVerticallyFlipped = d_textureTarget->isRenderingInverted();
         CEGUI::Rectf renderArea;
         if(isTextureTargetVerticallyFlipped)
-            renderArea = CEGUI::Rectf(0.f, height, width, 0.f);
+            renderArea = CEGUI::Rectf(0.0f, height, width, 0.0f);
         else
-            renderArea = CEGUI::Rectf(0.f, 0.f, width, height);
+            renderArea = CEGUI::Rectf(0.0f, 0.0f, width, height);
 
 
         if(d_textureTargetImage)

@@ -111,7 +111,7 @@ void SamplesFramework::initialiseLoadScreenLayout()
     d_loadScreenChunkProgressText = d_loadingScreenText->getChild("LoadScreenTextChunkProgress");
 
     d_loadingScreenText->setText("Parsing samples XML file...");
-    d_loadingProgressBar->setProgress(0.f);
+    d_loadingProgressBar->setProgress(0.0f);
 }
 
 void SamplesFramework::unloadSamples()
@@ -389,7 +389,7 @@ void SamplesFramework::stopDisplaySample()
 
     // Since we switch our contexts, the mouse release won't be injected if we don't do it manually
     sampleGUIContext->injectMouseButtonUp(CEGUI::LeftButton);
-    sampleGUIContext->injectTimePulse(0.f);
+    sampleGUIContext->injectTimePulse(0.0f);
 
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
@@ -465,7 +465,7 @@ void SamplesFramework::initialiseSampleBrowserLayout()
     d_sampleExitButton = static_cast<CEGUI::PushButton*>(winMgr.createWindow("SampleBrowserSkin/Button", "SampleExitButton"));
 
     d_sampleExitButton->setSize(CEGUI::USize(cegui_absdim(34.f), cegui_absdim(34.f)));
-    d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.f), cegui_absdim(0.f)));
+    d_sampleExitButton->setPosition(CEGUI::UVector2(cegui_absdim(0.0f), cegui_absdim(0.0f)));
     d_sampleExitButton->setHorizontalAlignment(HA_RIGHT);
     d_sampleExitButton->setVerticalAlignment(VA_TOP);
     d_sampleExitButton->setProperty("NormalImage", "SampleBrowserSkin/ExitButtonNormal");
@@ -579,7 +579,7 @@ void SamplesFramework::displaySampleBrowserLayoutLoadProgress()
     CEGUI::String progressText =  PropertyHelper<int>::toString(1) + "/" + PropertyHelper<int>::toString(totalNum - 1);
     d_loadScreenChunkProgressText->setText(progressText);
 
-    d_loadingProgressBar->setProgress(1.f / (totalNum - 1.f));
+    d_loadingProgressBar->setProgress(1.0f / (totalNum - 1.0f));
 }
 
 void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
@@ -593,5 +593,5 @@ void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
     CEGUI::String progressText = PropertyHelper<int>::toString(sampleNumber + 3) + "/" + PropertyHelper<int>::toString(totalNum - 1);
     d_loadScreenChunkProgressText->setText(progressText);
 
-    d_loadingProgressBar->setProgress( (sampleNumber + 3.f) / (totalNum - 1.f) );
+    d_loadingProgressBar->setProgress( (sampleNumber + 3.f) / (totalNum - 1.0f) );
 }

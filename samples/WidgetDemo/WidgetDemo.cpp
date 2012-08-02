@@ -144,7 +144,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
+    FontManager::getSingleton().createFromFile("DejaVuSans-10.0font");
     // Set default font for the gui context
     guiContext->setDefaultFont(&defaultFont);
 
@@ -231,7 +231,7 @@ bool WidgetDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
     if(progressBar != 0)
     {
         float newProgress = progressBar->getProgress() + passedTime * 0.2f;
-        if(newProgress < 1.f)
+        if(newProgress < 1.0f)
             progressBar->setProgress(newProgress);
     }
 
@@ -375,8 +375,8 @@ void WidgetDemo::initialiseWidgetSelectorListbox()
     WindowManager& winMgr = WindowManager::getSingleton();
 
     d_widgetSelectorListbox = static_cast<CEGUI::Listbox*>(winMgr.createWindow("Vanilla/Listbox", "WidgetSelectorListbox"));
-    d_widgetSelectorListbox->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.075f)));
-    d_widgetSelectorListbox->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(0.925f)));
+    d_widgetSelectorListbox->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.075f)));
+    d_widgetSelectorListbox->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.925f)));
     d_widgetSelectorListbox->setShowVertScrollbar(false);
     d_widgetSelectorListbox->setSortingEnabled(true);
 
@@ -519,7 +519,7 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
 
     d_windowLightUpdatedEvent = winMgr.createWindow("SampleBrowserSkin/Light");
     horizontalLayout->addChild(d_windowLightUpdatedEvent);
-    d_windowLightUpdatedEvent->setSize(CEGUI::USize(cegui_reldim(0.f), cegui_reldim(0.04f)));
+    d_windowLightUpdatedEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
     d_windowLightUpdatedEvent->setAspectMode(CEGUI::AM_EXPAND);
     d_windowLightUpdatedEvent->setProperty("LightColour", "FF66FF66");
 
@@ -532,7 +532,7 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
 
     d_windowLightMouseMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
     horizontalLayout->addChild(d_windowLightMouseMoveEvent);
-    d_windowLightMouseMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.f), cegui_reldim(0.04f)));
+    d_windowLightMouseMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
     d_windowLightMouseMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
     d_windowLightMouseMoveEvent->setProperty("LightColour", "FF77BBFF");
 
@@ -660,7 +660,7 @@ CEGUI::Window* WidgetDemo::initialiseSpecialWidgets(CEGUI::Window* widgetWindow,
 
 void WidgetDemo::initMultiColumnList(CEGUI::MultiColumnList* multilineColumnList)
 {
-    multilineColumnList->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(0.4f)));
+    multilineColumnList->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.4f)));
 
     multilineColumnList->addColumn("Server Name", 0, cegui_reldim(0.38f));
     multilineColumnList->addColumn("Address ", 1, cegui_reldim(0.44f));
@@ -707,19 +707,19 @@ void WidgetDemo::initCombobox(CEGUI::Combobox* combobox)
     combobox->addItem(item2);
 
     MyListItem* item3 = new MyListItem("Combobox Item 3");
-    item3->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.f));
+    item3->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.0f));
     combobox->addItem(item3);
 
     MyListItem* item4 = new MyListItem("Combobox Item 4");
-    item4->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.f));
+    item4->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.0f));
     combobox->addItem(item4);
 
     if(combobox->getType().compare("WindowsLook/Combobox") == 0)
     {
-        item1->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
-        item2->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
-        item3->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
-        item4->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
+        item1->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        item2->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        item3->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        item4->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }
 }
 
@@ -747,19 +747,19 @@ void WidgetDemo::initListbox(CEGUI::Listbox* listbox)
     listbox->addItem(item2);
 
     MyListItem* item3 = new MyListItem("Listbox Item 3");
-    item3->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.f));
+    item3->setSelectionColours(CEGUI::Colour(0.3f, 0.7f, 1.0f, 1.0f));
     listbox->addItem(item3);
 
     MyListItem* item4 = new MyListItem("Listbox Item 4");
-    item4->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.f));
+    item4->setSelectionColours(CEGUI::Colour(0.3f, 1.0f, 0.7f, 1.0f));
     listbox->addItem(item4);
 
     if(listbox->getType().compare("WindowsLook/Listbox") == 0)
     {
-        item1->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
-        item2->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
-        item3->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
-        item4->setTextColours(CEGUI::Colour(0.f, 0.f, 0.f, 1.f));
+        item1->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        item2->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        item3->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
+        item4->setTextColours(CEGUI::Colour(0.0f, 0.0f, 0.0f, 1.0f));
     }
 }
 
@@ -797,12 +797,12 @@ void WidgetDemo::initRadioButtons(CEGUI::RadioButton* radioButton, CEGUI::Window
     CEGUI::Window* radioButton2 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton1");
     widgetWindow->addChild(radioButton2);
     radioButton2->setText("Additional Radiobutton1");
-    radioButton2->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.17f)));
+    radioButton2->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.17f)));
 
     CEGUI::Window* radioButton3 = windowManager.createWindow(radioButton1->getType(), "WidgetDemoRadiobutton2");
     widgetWindow->addChild(radioButton3);
     radioButton3->setText("Additional Radiobutton2");
-    radioButton3->setPosition(CEGUI::UVector2(cegui_reldim(0.f), cegui_reldim(0.27f)));
+    radioButton3->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_reldim(0.27f)));
 }
 
 void WidgetDemo::initialiseWidgetDisplayWindow()
@@ -815,7 +815,7 @@ void WidgetDemo::initialiseWidgetDisplayWindow()
     d_widgetDisplayWindow->setText("Widget Demo");
 
     d_widgetDisplayWindowInnerWindow =  winMgr.createWindow("DefaultWindow", "WidgetDisplayWindowInnerContainer");
-    d_widgetDisplayWindowInnerWindow->setSize(CEGUI::USize(cegui_reldim(1.f), cegui_reldim(1.f)));
+    d_widgetDisplayWindowInnerWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     d_widgetDisplayWindow->addChild(d_widgetDisplayWindowInnerWindow);
 }
 
@@ -907,7 +907,7 @@ void WidgetDemo::handleSpecialWindowCases(CEGUI::Window* widgetWindowRoot, CEGUI
     //Reset to 0 progress in case of a progressbar
     CEGUI::ProgressBar* progressBar = dynamic_cast<CEGUI::ProgressBar*>(d_currentlyDisplayedWidgetRoot);
     if(progressBar != 0)
-        progressBar->setProgress(0.f);
+        progressBar->setProgress(0.0f);
 
     //Apply the tooltip to the widget display window in case of a tooltip
     CEGUI::Tooltip* tooltip = dynamic_cast<CEGUI::Tooltip*>(d_currentlyDisplayedWidgetRoot);
