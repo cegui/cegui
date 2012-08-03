@@ -34,20 +34,20 @@
         </Affector>
     </AnimationDefinition>
     
-    <AnimationDefinition autoStart="False" duration="6.0" name="InsideImage4RotateIn" replayMode="once">
+    <AnimationDefinition autoStart="False" duration="7.0" name="InsideImage4RotateIn" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
             <KeyFrame position="2.0" progression="linear" value="x:0 y:0 z:0" />
             <KeyFrame position="3.0" progression="linear" value="x:0 y:0 z:-180" />
             <KeyFrame position="4.0" progression="linear" value="x:0 y:0 z:-360" />
             <KeyFrame position="4.000001" progression="linear" value="x:0 y:0 z:0" />
-            <KeyFrame position="5.0" progression="linear" value="x:0 y:0 z:-180" />
-            <KeyFrame position="6.0" progression="quadratic decelerating" value="x:0 y:0 z:-360" />
+            <KeyFrame position="5.6" progression="linear" value="x:0 y:0 z:-180" />
+            <KeyFrame position="8.0" progression="quadratic decelerating" value="x:0 y:0 z:-360" />
         </Affector>
     </AnimationDefinition>
     
     
-    <AnimationDefinition autoStart="False" duration="6.0" name="InsideImage3RotateIn" replayMode="once">
+    <AnimationDefinition autoStart="False" duration="7.0" name="InsideImage3RotateIn" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
             <KeyFrame position="2.0" progression="linear" value="x:0 y:0 z:0" />
@@ -60,8 +60,8 @@
             <KeyFrame position="4.5" progression="linear" value="x:0 y:0 z:180" />
             <KeyFrame position="5.0" progression="linear" value="x:0 y:0 z:360" />
             <KeyFrame position="5.000001" progression="linear" value="x:0 y:0 z:0" />
-            <KeyFrame position="5.5" progression="linear" value="x:0 y:0 z:180" />
-            <KeyFrame position="6.0" progression="quadratic decelerating" value="x:0 y:0 z:360" />
+            <KeyFrame position="6.3" progression="linear" value="x:0 y:0 z:180" />
+            <KeyFrame position="8.0" progression="quadratic decelerating" value="x:0 y:0 z:360" />
         </Affector>
     </AnimationDefinition>
     
@@ -73,5 +73,39 @@
             <KeyFrame position="4.78" progression="quadratic decelerating" value="{{1.0, 0}, {1.0, 0}}" />
         </Affector>
     </AnimationDefinition>
+    
+    
+    <AnimationDefinition autoStart="False" duration="8.0" name="ButtonFadeIn" replayMode="once">
+        
+        <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
+            <KeyFrame position="0.0" progression="linear" value="{{0, 0}, {0, 0}}" />
+            <KeyFrame position="1.0" progression="quadratic accelerating" value="{{0, 0}, {0, 0}}" />
+            <KeyFrame position="5.0" progression="quadratic accelerating" sourceProperty="Position" />
+        </Affector>
+                
+        <Affector property="Size" interpolator="USize" applicationMethod="absolute">
+            <KeyFrame position="0.0" progression="linear" value="{{0, 0}, {0, 0}}" />
+            <KeyFrame position="1.0" progression="linear" value="{{0, 0}, {0, 0}}" />
+            <KeyFrame position="5.0" progression="linear" sourceProperty="Size" />
+        </Affector>
+        
+        <Affector property="Alpha" interpolator="float" applicationMethod="absolute">
+            <KeyFrame position="0.0" progression="linear" value="0.0" />
+            <KeyFrame position="1.0" progression="linear" value="0.0" />
+            <KeyFrame position="5.0" progression="linear" value="1.0" />
+        </Affector>
+    </AnimationDefinition>
+
+    
+       <AnimationDefinition autoStart="False" duration="8.0" name="LoginMoveIn" replayMode="once">
+            <Affector property="Visible" interpolator="bool" applicationMethod="absolute">
+                <KeyFrame position="0.0" value="True" />
+            </Affector>
+            <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
+                <KeyFrame position="0.0" progression="linear" value="{{0.2, 0}, {0, 0}}" />
+                <KeyFrame position="0.723" progression="quadratic decelerating" sourceProperty="Position" />
+            </Affector>
+        </AnimationDefinition>
+        
     
 </Animations>
