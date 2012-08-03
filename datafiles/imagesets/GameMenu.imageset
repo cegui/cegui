@@ -11,9 +11,23 @@
     <Image height="1" name="Background" width="1" xPos="220" yPos="1400" />
     <Image height="140" name="TopBar" width="1920" xPos="0" yPos="0" />
     <Image height="140" name="BotBar" width="1844" xPos="0" yPos="1908" />
-    <Image height="50" name="ButtonOptionsIcon" width="50" xPos="1975" yPos="280" />
-    <Image height="40" name="ButtonLoadIcon" width="40" xPos="1916" yPos="285" />
-    <Image height="40" name="ButtonCharactersIcon" width="40" xPos="1862" yPos="285" />
-    <Image height="30" name="ButtonOffIcon" width="30" xPos="1761" yPos="290" />
-    <Image height="40" name="ButtonSaveIcon" width="40" xPos="1806" yPos="285" />
+    <Image height="56" name="ButtonOptionsIcon" width="56" xPos="1972" yPos="277" />
+    <Image height="46" name="ButtonLoadIcon" width="46" xPos="1913" yPos="282" />
+    <Image height="46" name="ButtonCharactersIcon" width="46" xPos="1859" yPos="282" />
+    <Image height="36" name="ButtonQuitIcon" width="36" xPos="1758" yPos="287" />
+    <Image height="46" name="ButtonSaveIcon" width="46" xPos="1803" yPos="282" />
+    <Image height="26" name="BotBarLeftArrow" width="33" xPos="1535" yPos="763" />
+    <Image height="26" name="BotBarRightArrow" width="33" xPos="1968" yPos="763" />
+    <Image height="22" name="EditboxLeft" width="4" xPos="1784" yPos="208" />
+    <Image height="4" name="EditboxLeftTop" width="4" xPos="1784" yPos="204" />
+    <Image height="4" name="EditboxLeftBot" width="4" xPos="1784" yPos="230" />
+    <Image height="4" name="EditboxBot" width="17" xPos="1788" yPos="230" />
+    <Image height="4" name="EditboxRightTop" width="4" xPos="1805" yPos="204" />
+    <Image height="22" name="EditboxRight" width="4" xPos="1805" yPos="208" />
+    <Image height="4" name="EditboxRightBot" width="4" xPos="1805" yPos="230" />
+    <Image height="4" name="EditboxTop" width="17" xPos="1788" yPos="204" />
+    <Image height="22" name="EditboxMid" width="17" xPos="1788" yPos="208" />
+    <Image height="1" name="GenericBrush" width="1" xPos="1850" yPos="220" />
+    <Image height="30" name="MouseTextBar" width="11" xPos="1813" yPos="204" />
+    <Image height="95" name="IconChangeDestination" width="74" xPos="1634" yPos="627" />
 </Imageset>
