@@ -5,12 +5,22 @@
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="Image" value="GameMenuImages/Background" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Property name="MousePassThroughEnabled" value="True" />
         <Window type="GameMenu/Image" name="TopBar" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0,0}}" />
             <Property name="Image" value="GameMenuImages/TopBar" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="AspectMode" value="Expand" />
             <Property name="AspectRatio" value="13.714" />
+            <Property name="MousePassThroughEnabled" value="True" />
+            <Window type="GameMenu/Label" name="TopBarLabel" >
+                <Property name="Area" value="{{0,0},{0.2,0},{0.4,0},{0.5,0}}" />
+                <Property name="Font" value="Jura-10" />
+                <Property name="Text" value="Welcome Syg" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="NormalTextColour" value="FF00A9FF" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
         </Window>
         <Window type="GameMenu/Image" name="BotBar" >
             <Property name="Area" value="{{0,-1},{0,1},{1,-1},{0,1}}" />
@@ -19,20 +29,21 @@
             <Property name="AspectMode" value="Expand" />
             <Property name="AspectRatio" value="13.714" />
             <Property name="VerticalAlignment" value="Bottom" />
+            <Property name="MousePassThroughEnabled" value="True" />
+            <Window type="GameMenu/Label" name="BotBarLabel" >
+                <Property name="Area" value="{{0,0},{0.32,0},{0.4,0},{0.87,0}}" />
+                <Property name="Text" value="Welcome Syg" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="NormalTextColour" value="FFFFF900" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
         </Window>
         <Window type="DefaultWindow" name="InnerPartContainer" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0.8,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="VerticalAlignment" value="Centre" />
-            <Window type="GameMenu/Image" name="InsideImage2" >
-                <Property name="Area" value="{{0,0},{0,0},{0,0},{0.3,0}}" />
-                <Property name="Image" value="GameMenuImages/CenterImageInside2" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="AspectMode" value="Expand" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="MousePassThroughEnabled" value="True" />
-            </Window>
+            <Property name="MousePassThroughEnabled" value="True" />
             <Window type="GameMenu/Image" name="InsideImage1" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{0.347222,0}}" />
                 <Property name="Image" value="GameMenuImages/CenterImageInside" />
@@ -49,6 +60,7 @@
                 <Property name="AlwaysOnTop" value="True" />
                 <Property name="VerticalAlignment" value="Centre" />
                 <Property name="HorizontalAlignment" value="Centre" />
+                <Property name="MousePassThroughEnabled" value="True" />
                 <Window type="GameMenu/Label" name="StartButtonLabel" >
                     <Property name="Area" value="{{0,0},{0.3,0},{1,0},{0.45,0}}" />
                     <Property name="Font" value="Jura-18" />
@@ -73,6 +85,7 @@
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VerticalAlignment" value="Centre" />
                 <Property name="HorizontalAlignment" value="Centre" />
+                <Property name="MousePassThroughEnabled" value="True" />
                 <Window type="GameMenu/Image" name="InsideImage3" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{0.54,0}}" />
                     <Property name="Image" value="GameMenuImages/CenterImageOutside1" />
@@ -94,14 +107,125 @@
                     <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
             </Window>
+            <Window type="GameMenu/Image" name="InsideImage2" >
+                <Property name="Area" value="{{0,0},{0,0},{0,0},{0.3,0}}" />
+                <Property name="Image" value="GameMenuImages/CenterImageInside2" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Expand" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+                <Property name="MousePassThroughEnabled" value="True" />
+            </Window>
         </Window>
         <Window type="DefaultWindow" name="InnerButtonsContainer" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Window type="GameMenu/Image" name="Image" >
-                <Property name="Area" value="{{0,0},{0,0},{0,128},{0,128}}" />
+            <Property name="MousePassThroughEnabled" value="True" />
+            <Window type="GameMenu/Image" name="ButtonOptions" >
+                <Property name="Area" value="{{0.123437,3},{-0.1375,0.5},{0.160157,7},{-0.0791666,3.5}}" />
+                <Property name="Image" value="GameMenuImages/ButtonOptionsIcon" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
                 <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonSave" >
+                <Property name="Area" value="{{-0.0964846,3},{-0.189584,-6},{-0.0704846,3},{-0.137584,-6}}" />
+                <Property name="Image" value="GameMenuImages/ButtonSaveIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonLoad" >
+                <Property name="Area" value="{{-0.0640627,0},{-0.227084,0},{-0.0380627,0},{-0.175084,0}}" />
+                <Property name="Image" value="GameMenuImages/ButtonLoadIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonCharacters" >
+                <Property name="Area" value="{{-0.129297,2},{-0.115278,-4},{-0.103297,2},{-0.063278,-4}}" />
+                <Property name="Image" value="GameMenuImages/ButtonCharactersIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonQuit" >
+                <Property name="Area" value="{{0.0996092,1},{0.170833,2},{0.123828,5},{0.222223,4}}" />
+                <Property name="Image" value="GameMenuImages/ButtonQuitIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+        </Window>
+        <Window type="DefaultWindow" name="LoginContainer" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="MousePassThroughEnabled" value="True" />
+            <Window type="GameMenu/Editbox" name="LoginEditbox" >
+                <Property name="Area" value="{{0.828906,0},{0.154167,0},{0.928906,0},{0.179167,0}}" />
+                <Property name="Font" value="Jura-10" />
+                <Property name="MouseCursorImage" value="" />
+            </Window>
+            <Window type="GameMenu/Editbox" name="PasswordEditbox" >
+                <Property name="Area" value="{{0.849219,0},{0.202778,0},{0.949219,0},{0.227778,0}}" />
+                <Property name="Font" value="Jura-10" />
+                <Property name="MouseCursorImage" value="" />
+            </Window>
+            <Window type="GameMenu/Label" name="PasswordLabel" >
+                <Property name="Area" value="{{0.746094,0},{0.202778,0},{0.846094,0},{0.227778,0}}" />
+                <Property name="Font" value="Jura-10" />
+                <Property name="Text" value="Password" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorzFormatting" value="RightAligned" />
+                <Property name="NormalTextColour" value="FF0094FF" />
+            </Window>
+            <Window type="GameMenu/Label" name="LoginLabel" >
+                <Property name="Area" value="{{0.727343,0},{0.155556,0},{0.827343,0},{0.180556,0}}" />
+                <Property name="Font" value="Jura-10" />
+                <Property name="Text" value="Login" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorzFormatting" value="RightAligned" />
+                <Property name="NormalTextColour" value="FF0094FF" />
+            </Window>
+        </Window>
+        <Window type="DefaultWindow" name="BotNavigationContainer" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="MousePassThroughEnabled" value="True" />
+            <Window type="GameMenu/Image" name="NaviLeft" >
+                <Property name="Area" value="{{0.29375,0},{0.826389,0},{0.314063,0},{0.8625,0}}" />
+                <Property name="Image" value="GameMenuImages/BotBarLeftArrow" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Expand" />
+            </Window>
+            <Window type="GameMenu/Image" name="NaviRight" >
+                <Property name="Area" value="{{0.685156,0},{0.822222,0},{0.705469,0},{0.858333,0}}" />
+                <Property name="Image" value="GameMenuImages/BotBarRightArrow" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Expand" />
+            </Window>
+            <Window type="GameMenu/Image" name="NavigationIcon" >
+                <Property name="Area" value="{{-0,0},{0.7875,0},{0.0382812,0},{0.883333,0}}" />
+                <Property name="Image" value="GameMenuImages/IconChangeDestination" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Label" name="NavigationLabel" >
+                <Property name="Area" value="{{0.00234375,0},{0.805556,2},{0.202344,0},{0.85,0}}" />
+                <Property name="Font" value="Jura-10" />
+                <Property name="Text" value="Change Destination" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="NormalTextColour" value="FF0094FF" />
                 <Property name="HorizontalAlignment" value="Centre" />
             </Window>
         </Window>
