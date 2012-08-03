@@ -43,6 +43,7 @@ public:
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
+    void setupWindows();
     void setupAnimations();
 
     // method to perform any required cleanup operations.
@@ -51,8 +52,9 @@ public:
     virtual void onEnteringSample();
 
 protected:
+    void update(float passedTime);
 
-
+    bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
 
     CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
@@ -63,6 +65,22 @@ protected:
     CEGUI::AnimationInstance* d_insideImage3RotateInInst;
     CEGUI::AnimationInstance* d_insideImage4RotateInInst;
     CEGUI::AnimationInstance* d_insideImageRingsContainerSizeInInst;
+
+    CEGUI::AnimationInstance* d_buttonFadeInAnimInst1;
+    CEGUI::AnimationInstance* d_buttonFadeInAnimInst2;
+    CEGUI::AnimationInstance* d_buttonFadeInAnimInst3;
+    CEGUI::AnimationInstance* d_buttonFadeInAnimInst4;
+    CEGUI::AnimationInstance* d_buttonFadeInAnimInst5;
+
+    CEGUI::AnimationInstance* d_loginContainerMoveInInst;
+
+    CEGUI::Window* d_topBarLabel;
+    CEGUI::Window* d_botBarLabel;
+    CEGUI::Window* d_loginContainer;
+    CEGUI::Window* d_botNavigationContainer;
+
+    float d_timeSinceStart;
+
 };
 
 #endif

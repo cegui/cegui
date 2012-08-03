@@ -30,6 +30,7 @@ author:     Lukas E Meindl
 #include "CEGUI/CEGUI.h"
 
 #include <cmath>
+#include <algorithm>
 
 
 using namespace CEGUI;
@@ -47,14 +48,18 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->getMouseCursor().setDefaultImage("GameMenuImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
-    Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-14.font");
+    Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");
     // Set default font for the gui context
     d_guiContext->setDefaultFont(&defaultFont);
+
+    FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     d_root = winMgr.loadLayoutFromFile("GameMenu.layout");
     d_guiContext->setRootWindow(d_root);
+
+    setupWindows();
 
     setupAnimations();
 
@@ -89,49 +94,141 @@ void GameMenuDemo::setupAnimations()
     d_topBarAnimInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(topBarAnim);
     CEGUI::Window* topBarWindow = d_root->getChild("TopBar");
     d_topBarAnimInst->setTargetWindow(topBarWindow);
-    d_topBarAnimInst->start();
 
     CEGUI::Animation* botBarAnim = animMgr.getAnimation("BotBarMoveInAnimation");
     d_botBarAnimInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(botBarAnim);
     CEGUI::Window* botBarWindow = d_root->getChild("BotBar");
     d_botBarAnimInst->setTargetWindow(botBarWindow);
-    d_botBarAnimInst->start();
 
     CEGUI::Animation* insideBlendInAnim = animMgr.getAnimation("InsideBlendIn");
     d_insideBlendInAnimInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideBlendInAnim);
     CEGUI::Window* innerPartContainer = d_root->getChild("InnerPartContainer");
     d_insideBlendInAnimInst->setTargetWindow(innerPartContainer);
-    d_insideBlendInAnimInst->start();
 
-    
     CEGUI::Animation* insideImage3RotateIn = animMgr.getAnimation("InsideImage3RotateIn");
     d_insideImage3RotateInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideImage3RotateIn);
     CEGUI::Window* insideImage3 = d_root->getChild("InnerPartContainer/OuterRingsContainer/InsideImage3");
     d_insideImage3RotateInInst->setTargetWindow(insideImage3);
-    d_insideImage3RotateInInst->start();
 
     CEGUI::Animation* insideImage4RotateIn = animMgr.getAnimation("InsideImage4RotateIn");
     d_insideImage4RotateInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideImage4RotateIn);
     CEGUI::Window* insideImage4 = d_root->getChild("InnerPartContainer/OuterRingsContainer/InsideImage4");
     d_insideImage4RotateInInst->setTargetWindow(insideImage4);
-    d_insideImage4RotateInInst->start();
 
     CEGUI::Animation* insideImageRingsContainerSizeIn = animMgr.getAnimation("RingsContainerSizeIn");
     d_insideImageRingsContainerSizeInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(insideImageRingsContainerSizeIn);
     CEGUI::Window* insideImageContainer = d_root->getChild("InnerPartContainer/OuterRingsContainer");
     d_insideImageRingsContainerSizeInInst->setTargetWindow(insideImageContainer);
-    d_insideImageRingsContainerSizeInInst->start();
+
+    CEGUI::Animation* buttonFadeInAnim = animMgr.getAnimation("ButtonFadeIn");
+    d_buttonFadeInAnimInst1 = CEGUI::AnimationManager::getSingleton().instantiateAnimation(buttonFadeInAnim);
+    CEGUI::Window* buttonWindow = d_root->getChild("InnerButtonsContainer/ButtonOptions");
+    d_buttonFadeInAnimInst1->setTargetWindow(buttonWindow);
+    d_buttonFadeInAnimInst2 = CEGUI::AnimationManager::getSingleton().instantiateAnimation(buttonFadeInAnim);
+    buttonWindow = d_root->getChild("InnerButtonsContainer/ButtonLoad");
+    d_buttonFadeInAnimInst2->setTargetWindow(buttonWindow);
+    d_buttonFadeInAnimInst3 = CEGUI::AnimationManager::getSingleton().instantiateAnimation(buttonFadeInAnim);
+    buttonWindow = d_root->getChild("InnerButtonsContainer/ButtonSave");
+    d_buttonFadeInAnimInst3->setTargetWindow(buttonWindow);
+    d_buttonFadeInAnimInst4 = CEGUI::AnimationManager::getSingleton().instantiateAnimation(buttonFadeInAnim);
+    buttonWindow = d_root->getChild("InnerButtonsContainer/ButtonCharacters");
+    d_buttonFadeInAnimInst4->setTargetWindow(buttonWindow);
+    d_buttonFadeInAnimInst5 = CEGUI::AnimationManager::getSingleton().instantiateAnimation(buttonFadeInAnim);
+    buttonWindow = d_root->getChild("InnerButtonsContainer/ButtonQuit");
+    d_buttonFadeInAnimInst5->setTargetWindow(buttonWindow);
+
+    CEGUI::Animation* loginContainerMoveInAnim = animMgr.getAnimation("LoginMoveIn");
+    d_loginContainerMoveInInst = CEGUI::AnimationManager::getSingleton().instantiateAnimation(loginContainerMoveInAnim);
+    d_loginContainerMoveInInst->setTargetWindow(d_loginContainer);
 }
 
 
 void GameMenuDemo::onEnteringSample()
 {
+    d_timeSinceStart = 0.0f;
+
+    d_topBarLabel->setText("");
+    d_botBarLabel->setText("");
+
+    d_loginContainer->setVisible(false);
+
     d_topBarAnimInst->start();
     d_botBarAnimInst->start();
     d_insideBlendInAnimInst->start();
     d_insideImage3RotateInInst->start();
     d_insideImage4RotateInInst->start();
     d_insideImageRingsContainerSizeInInst->start();
+
+    d_buttonFadeInAnimInst1->start();
+    d_buttonFadeInAnimInst2->start();
+    d_buttonFadeInAnimInst3->start();
+    d_buttonFadeInAnimInst4->start();
+    d_buttonFadeInAnimInst5->start();
+}
+
+void GameMenuDemo::update(float passedTime)
+{
+    d_timeSinceStart += passedTime;
+
+    static const CEGUI::String firstPart = "Connection established...";
+    static const CEGUI::String secondPart = "Warning! User Authentication required!";
+    const float firstStartDelay = 5.f;
+    const float secondStartDelay = 8.f;
+    const float loginDisplayStartDelay = 12.77f;
+
+    CEGUI::String finalText;
+
+    int firstPartTypeProgress = static_cast<int>((d_timeSinceStart - firstStartDelay) / 0.08f);
+    if(firstPartTypeProgress > 0)
+        finalText += firstPart.substr(0, std::min<unsigned int>(firstPart.length(), firstPartTypeProgress));
+
+
+
+    int secondPartTypeProgress = static_cast<int>((d_timeSinceStart - secondStartDelay) / 0.08f);
+    if(secondPartTypeProgress > 0)
+        finalText += "\n" + secondPart.substr(0, std::min<unsigned int>(secondPart.length(), secondPartTypeProgress));
+
+    finalText += "[font='DejaVuSans-12']";
+
+    static double blinkStartDelay = 3.6f;
+    double blinkPeriod = 0.8;
+    double blinkTime = std::modf(static_cast<double>(d_timeSinceStart), &blinkPeriod);
+    if(blinkTime > 0.55 || d_timeSinceStart < blinkStartDelay)
+        finalText += "[colour='00000000']";
+
+    finalText += reinterpret_cast<const encoded_char*>("❚");
+
+    d_botBarLabel->setText(finalText);
+
+
+    if(d_timeSinceStart > loginDisplayStartDelay && !d_loginContainer->isVisible())
+        d_loginContainerMoveInInst->start();
+
+}
+
+
+bool GameMenuDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
+{
+    const CEGUI::UpdateEventArgs& updateArgs = static_cast<const CEGUI::UpdateEventArgs&>(args);
+    float passedTime = updateArgs.d_timeSinceLastFrame;
+
+
+    update(passedTime);
+
+    return false;
+}
+
+void GameMenuDemo::setupWindows()
+{
+    d_botBarLabel = d_root->getChild("BotBar/BotBarLabel");
+    d_topBarLabel = d_root->getChild("TopBar/TopBarLabel");
+
+    d_loginContainer = d_root->getChild("LoginContainer");
+
+    d_botNavigationContainer = d_root->getChild("BotNavigationContainer");
+    d_botNavigationContainer->setVisible(false);
+
+    d_root->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&GameMenuDemo::handleRootWindowUpdate, this));
 }
 
 /*************************************************************************
