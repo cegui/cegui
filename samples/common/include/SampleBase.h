@@ -30,8 +30,6 @@ author:     Lukas E Meindl
 
 #include "Sample.h"
 
-#include <string>
-
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
 
