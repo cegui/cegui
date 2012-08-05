@@ -34,6 +34,9 @@
 
 #if defined( __WIN32__ ) || defined( _WIN32)
 #include <Windows.h>
+#endif
+
+#if defined(_MSC_VER)
 #include <DbgHelp.h>
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
 #include <execinfo.h>
@@ -52,7 +55,7 @@ bool Exception::d_stdErrEnabled(true);
 static void dumpBacktrace(size_t frames)
 {
 #if defined(_DEBUG) || defined(DEBUG)
-#if defined( __WIN32__ ) || defined( _WIN32)
+#if defined(_MSC_VER)
     SymSetOptions(SYMOPT_DEFERRED_LOADS | SYMOPT_INCLUDE_32BIT_MODULES);
 
     if (!SymInitialize(GetCurrentProcess(), 0, TRUE))
