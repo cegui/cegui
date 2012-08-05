@@ -37,7 +37,6 @@ namespace CEGUI
 {
     class GUIContext;
     class EventArgs;
-    class String;
     class Window;
     class Combobox;
     class ToggleButton;
