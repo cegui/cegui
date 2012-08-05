@@ -37,7 +37,6 @@ namespace CEGUI
 {
     class Window;
     class GUIContext;
-    class String;
 }
 
 class Sample
