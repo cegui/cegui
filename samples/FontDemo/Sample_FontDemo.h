@@ -33,17 +33,7 @@ author:     Lukas E Meindl
 #include <vector>
 #include <map>
 
-namespace CEGUI
-{
-    class GUIContext;
-    class EventArgs;
-    class Window;
-    class Combobox;
-    class ToggleButton;
-    class Listbox;
-    class MenuItem;
-    class MultiLineEditbox;
-}
+#include "CEGUI/ForwardRefs.h"
 
 struct FontOption;
 

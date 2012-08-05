@@ -32,12 +32,7 @@ author:     Lukas E Meindl
 
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
-
-namespace CEGUI
-{
-    class Window;
-    class GUIContext;
-}
+#include "CEGUI/ForwardRefs.h"
 
 class Sample
 {

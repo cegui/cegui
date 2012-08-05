@@ -30,19 +30,11 @@ author:     Lukas E Meindl
 
 #include "SampleBase.h"
 
-#include "CEGUI/ForwardRefs.h"
-
 #include <vector>
 #include <map>
 
 
-namespace CEGUI
-{
-    class Window;
-    class Combobox;
-    class MultiColumnList;
-    class ItemListbox;
-}
+#include "CEGUI/ForwardRefs.h"
 
 class EventHandlerObject;
 class MyListItem;

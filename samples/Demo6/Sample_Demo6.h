@@ -34,7 +34,6 @@
 
 namespace CEGUI
 {
-    class Window;
     class EventArgs;
 }
 
