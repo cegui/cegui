@@ -32,9 +32,6 @@
 
 namespace CEGUI
 {
-    class GUIContext;
-    class String;
-    class EventArgs;
     class SubscriberSlot;
 }
 
