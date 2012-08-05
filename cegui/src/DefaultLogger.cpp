@@ -139,7 +139,7 @@ void DefaultLogger::setLogFilename(const String& filename, bool append)
         d_ostream.close();
 
 
-#if defined(__WIN32__) || defined(_WIN32)
+#if defined(_MSC_VER)
     d_ostream.open(System::getStringTranscoder().stringToStdWString(filename).c_str(),
                    std::ios_base::out |
                    (append ? std::ios_base::app : std::ios_base::trunc));
