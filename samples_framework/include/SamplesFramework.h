@@ -34,14 +34,7 @@ author:     Lukas E Meindl
 #include <vector>
 
 // forward declarations
-namespace CEGUI
-{
-    class DefaultWindow;
-    class String;
-    class Texture;
-    class PushButton;
-    class ProgressBar;
-}
+#include "CEGUI/ForwardRefs.h"
 
 class SampleData;
 class Sample;

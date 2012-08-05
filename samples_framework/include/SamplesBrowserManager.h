@@ -34,14 +34,7 @@ author:     Lukas E Meindl
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 
-namespace CEGUI
-{
-    class Window;
-    class EventArgs;
-    class VerticalLayoutContainer;
-    class FrameWindow;
-    class PushButton;
-}
+#include "CEGUI/ForwardRefs.h"
 
 class SamplesFramework;
 

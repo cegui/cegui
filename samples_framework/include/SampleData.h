@@ -31,15 +31,11 @@ author:     Lukas E Meindl
 #include "CEGUI/String.h"
 
 // forward declarations
+#include "CEGUI/ForwardRefs.h"
+
 namespace CEGUI
 {
-    class DynamicModule;
-    class GUIContext;
-    class Image;
-    class Window;
-    class GUIContext;
     class BasicImage;
-    class TextureTarget;
 }
 
 enum SampleType

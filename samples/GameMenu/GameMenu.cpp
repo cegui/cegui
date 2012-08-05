@@ -363,6 +363,8 @@ void GameMenuDemo::blendOutInteractiveElements()
 
 void GameMenuDemo::blendInInteractiveElements()
 {
+    d_leftArrowPartialBlendOutInst->pause();
+
     d_leftArrowBlendInInst->start();
     d_rightArrowBlendInInst->start();
     d_naviIconBlendInInst->start();
