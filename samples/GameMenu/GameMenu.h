@@ -54,10 +54,20 @@ public:
 protected:
     void update(float passedTime);
 
+    void blendOutInteractiveElements();
+    void blendInInteractiveElements();
+
     bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
+    bool handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args);
+    bool handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args);
+
 
     CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
+
+    float d_timeSinceStart;
+
+    bool d_interactiveElementsAreActivated;
 
     CEGUI::AnimationInstance* d_topBarAnimInst;
     CEGUI::AnimationInstance* d_botBarAnimInst;
@@ -73,13 +83,37 @@ protected:
     CEGUI::AnimationInstance* d_buttonFadeInAnimInst5;
 
     CEGUI::AnimationInstance* d_loginContainerMoveInInst;
+    CEGUI::AnimationInstance* d_naviButtonLeftMoveInInst;
+    CEGUI::AnimationInstance* d_naviButtonRightMoveInInst;
+    CEGUI::AnimationInstance* d_naviBotMoveInInst;
+    CEGUI::AnimationInstance* d_startButtonBlendInAnimInst;
+    CEGUI::AnimationInstance* d_navigationLabelBlendInAnimInst;
+
+    CEGUI::AnimationInstance* d_leftArrowPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_rightArrowPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_naviIconPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_buttonLoadPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_buttonOptionsPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_buttonSavePartialBlendOutInst;
+    CEGUI::AnimationInstance* d_buttonCharactersPartialBlendOutInst;
+
+    CEGUI::AnimationInstance* d_leftArrowBlendInInst;
+    CEGUI::AnimationInstance* d_rightArrowBlendInInst;
+    CEGUI::AnimationInstance* d_naviIconBlendInInst;
+    CEGUI::AnimationInstance* d_buttonLoadBlendInInst;
+    CEGUI::AnimationInstance* d_buttonOptionsBlendInInst;
+    CEGUI::AnimationInstance* d_buttonSaveBlendInInst;
+    CEGUI::AnimationInstance* d_buttonCharactersBlendInInst;
 
     CEGUI::Window* d_topBarLabel;
     CEGUI::Window* d_botBarLabel;
     CEGUI::Window* d_loginContainer;
-    CEGUI::Window* d_botNavigationContainer;
-
-    float d_timeSinceStart;
+    CEGUI::Window* d_botNaviLeftArrow;
+    CEGUI::Window* d_botNaviRightArrow;
+    CEGUI::Window* d_botNaviCenter;
+    CEGUI::Window* d_loginAcceptButton;
+    CEGUI::Window* d_innerPartStartClickArea;
+    CEGUI::Window* d_navigationDestinationLabel;
 
 };
 

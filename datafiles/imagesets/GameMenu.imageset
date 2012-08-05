@@ -30,4 +30,5 @@
     <Image height="1" name="GenericBrush" width="1" xPos="1850" yPos="220" />
     <Image height="30" name="MouseTextBar" width="11" xPos="1813" yPos="204" />
     <Image height="95" name="IconChangeDestination" width="74" xPos="1634" yPos="627" />
+    <Image height="30" name="LoginButtonBG" width="50" xPos="1725" yPos="204" />
 </Imageset>
