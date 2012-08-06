@@ -46,8 +46,49 @@ namespace CEGUI
 {
 /*!
 \brief
-    Class representing a unified dimension; that is a dimension that has both
-    a relative 'scale' portion and and absolute 'offset' portion.
+    Dimension that has both a relative 'scale' portion and and absolute 'offset' portion
+
+\par
+    The meaning of this class depends on where you use it, it is just a
+    float tuple. We will only describe the usual usecase for CEGUI::Window
+    position and size. CEGUI::Window gets that behavior from CEGUI::Element.
+
+    UDims are used for both positioning and sizing (hence the name dimension).
+
+    The scale component describes the amount of dimension we take from the
+    parent CEGUI::Element. The offset component describes the amount of pixels
+    and is not dependent on any element in the tree.
+
+\par Example: 50% of parent's width
+    \code{.cpp}
+    UDim(0.5f, 0);
+    \endcode
+
+\par Example: 100px
+    \code{.cpp}
+    UDim(0, 100.0f);
+    \endcode
+
+\par Negative components
+    You can use negative components in UDim and they are in fact very useful!
+    \code{.cpp}
+    UDim(1.0f, -100.0f); // 100px to the left from the right edge of parent widget
+    \endcode
+
+\par Floating point
+    Both components are floats, that means that expressing fractions of pixels
+    is allowed even though such construct goes against the definition of pixel.
+    \code{.cpp}
+    UDim(0.0f, 1.123456f); // perfectly valid UDim
+    \endcode
+
+    Keep in mind that if you use such dimensions they will likely get pixel
+    aligned before rendering. You can disable such behavior via
+    Element::setPixelAligned.
+
+\see CEGUI::UVector2
+\see CEGUI::USize
+\see CEGUI::URect
 */
 class CEGUIEXPORT UDim :
     public AllocatedObject<UDim>

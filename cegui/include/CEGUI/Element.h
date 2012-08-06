@@ -201,8 +201,10 @@ public:
 
 /*!
 \brief
-    EventArgs based class that is used for objects passed to handlers triggered for events
-    concerning some Element object.
+    EventArgs based class that is used for objects passed to handlers triggered
+    for events concerning some Element object.
+
+\see CEGUI::Element
 */
 class CEGUIEXPORT ElementEventArgs : public EventArgs
 {
@@ -211,19 +213,30 @@ public:
         element(element)
     {}
 
-    Element* element;     //!< pointer to an Element object of relevance to the event.
+    //! pointer to an Element object of relevance to the event.
+    Element* element;
 };
 
 /*!
-\brief Represents a positioned and sized node in a tree graph (think of it as a widget graph)
+\brief A positioned and sized rectangular node in a tree graph
+
+This class implements positioning, alignment, sizing including minimum and
+maximum size constraining. In its bare essense it's an unnamed rectangular node
+that may contain other unnamed rectangular nodes.
+
+Unless you are implementing new CEGUI functionality you do NOT want to use this
+class directly. You most likely want to use CEGUI::Window.
+
+\see CEGUI::Window
 
 \internal
-    Currently only CEGUI::Window uses this but in the future Falagard might use it for all
-    widget parts, this would unify currently repeated code.
+    Currently only CEGUI::Window uses this but in the future Falagard might use
+    it for all widget parts, this would unify much of currently repeated code.
 
 \internal
-    Methods retrieving Element (like getParentElement) have Element suffix so that deriving
-    classes can easily make their getParent and return the proper type (Window* for example)
+    Methods retrieving Element (like getParentElement) have Element suffix so
+    that deriving classes can easily make their getParent and return the proper
+    casted type (Window* for example).
 */
 class CEGUIEXPORT Element :
     public PropertySet,
@@ -290,33 +303,33 @@ public:
      * changed.
      */
     static const String EventNonClientChanged;
-    
+
     /*!
-    \brief Element caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty work
+    \brief A tiny wrapper to hide some of the dirty work of rect caching
     */
     class CachedRectf
     {
     public:
         //! the bool parameter - if true all will PixelAlignment settings be overridden and no pixel alignment will take place
         typedef Rectf (Element::*DataGenerator)(bool) const;
-        
+
         CachedRectf(Element const* element, DataGenerator generator):
             d_element(element),
             d_generator(generator),
             // we don't have to initialise d_cachedData, it will get regenerated and reset anyways
             d_cacheValid(false)
         {}
-        
+
         inline const Rectf& get() const
         {
             if (!d_cacheValid)
             {
                 regenerateCache();
             }
-            
+
             return d_cachedData;
         }
-        
+
         /*!
         \brief skips all caching and calls the generator
         */
@@ -328,37 +341,37 @@ public:
             {
                 return get();
             }
-            
+
             return CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(skipAllPixelAlignment);
         }
-        
+
         inline void invalidateCache() const
         {
             d_cacheValid = false;
         }
-        
+
         inline bool isCacheValid() const
         {
             return d_cacheValid;
         }
-        
+
         inline void regenerateCache() const
         {
             // false, since when we are caching we don't want to skip anything, we want everything to act
             // exactly as it was setup
             d_cachedData = CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(false);
-            
+
             d_cacheValid = true;
         }
-        
+
     private:
         Element const* d_element;
         DataGenerator d_generator;
-        
+
         mutable Rectf d_cachedData;
         mutable bool  d_cacheValid;
     };
-    
+
     /*!
     \brief Constructor
     */
@@ -370,7 +383,11 @@ public:
     virtual ~Element();
 
     /*!
-    \brief Retrieves parent of this element, 0 means that this Element is a root of a tree it represents
+    \brief Retrieves parent of this element
+   
+    \returns
+        pointer to parent or 0, 0 means that this Element is a root of
+        the subtree it represents
     */
     inline Element* getParentElement() const
     {
@@ -384,71 +401,32 @@ public:
         Sets the area occupied by this Element. The defined area is offset from
         one of the corners of this Element's parent element (depending on alignments)
         or from the top-left corner of the display if this element has no parent
-        (i.e. it is the root element).
-
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
+        (i.e. if it is the root element).
 
     \param pos
-        UVector2 describing the new position (top-left corner) of the element
-        area.
+        UVector2 describing the new position of the element area. Meaning of
+        position depends on currently set alignments. By default it is the
+        offset from the top-left corner of widget's parent.
 
     \param size
         UVector2 describing the new size of the element area.
-     */
+
+    \see UDim
+    */
     virtual void setArea(const UVector2& pos, const USize& size);
 
     /*!
-    \brief
-        Set the Element area.
-
-        Sets the area occupied by this Element. The defined area is offset from
-        one of the corners of this Element's parent element (depending on alignments)
-        or from the top-left corner of the display if this element has no parent
-        (i.e. it is the root element).
-
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param xpos
-        UDim describing the new x co-ordinate (left edge) of the element area.
-
-    \param ypos
-        UDim describing the new y co-ordinate (top-edge) of the element area.
-
-    \param width
-        UDim describing the new width of the element area.
-
-    \param height
-        UDim describing the new height of the element area.
-     */
+    \overload
+    */
     inline void setArea(const UDim& xpos, const UDim& ypos,
                         const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
     }
-    
+
     /*!
-    \brief
-        Set the Element area.
-
-        Sets the area occupied by this Element. The defined area is offset from
-        one of the corners of this Element's parent element (depending on alignments)
-        or from the top-left corner of the display if this element has no parent
-        (i.e. it is the root element).
-
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
-    \param area
-        URect describing the new area rectangle of the element area.
-     */
+    \overload
+    */
     inline void setArea(const URect& area)
     {
         setArea(area.d_min, area.getSize());
@@ -463,14 +441,11 @@ public:
         or from the top-left corner of the display if this element has no parent
         (i.e. it is the root element).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \return
         URect describing the rectangle of the element area.
-     */
+
+    \see UDim
+    */
     inline const URect& getArea() const
     {
         return d_area;
@@ -485,15 +460,12 @@ public:
         or from the top-left corner of the display if this element has no parent
         (i.e. it is the root element).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \param pos
-        UVector2 describing the new position (top-left corner) of the element
-        area.
-     */
+        UVector2 describing the new position of the element area.
+
+    \see UDim
+    \see Element::setArea(const UVector2& pos, const USize& size)
+    */
     inline void setPosition(const UVector2& pos)
     {
         setArea_impl(pos, d_area.getSize());
@@ -503,7 +475,7 @@ public:
     {
         setPosition(UVector2(pos, getYPosition()));
     }
-    
+
     inline void setYPosition(const UDim& pos)
     {
         setPosition(UVector2(getXPosition(), pos));
@@ -518,29 +490,26 @@ public:
         or from the top-left corner of the display if this element has no parent
         (i.e. it is the root element).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \return
-        UVector2 describing the position (top-left corner) of the element area.
-     */
+        UVector2 describing the position of the element area.
+
+    \see UDim
+    */
     inline const UVector2& getPosition() const
     {
         return d_area.getPosition();
     }
-    
+
     inline const UDim& getXPosition() const
     {
         return getPosition().d_x;
     }
-    
+
     inline const UDim& getYPosition() const
     {
         return getPosition().d_y;
     }
-    
+
     /*!
     \brief
         Set the horizontal alignment.
@@ -552,7 +521,7 @@ public:
         One of the HorizontalAlignment enumerated values.
      */
     virtual void setHorizontalAlignment(const HorizontalAlignment alignment);
-    
+
     /*!
     \brief
         Get the horizontal alignment.
@@ -579,7 +548,7 @@ public:
         One of the VerticalAlignment enumerated values.
      */
     virtual void setVerticalAlignment(const VerticalAlignment alignment);
-    
+
     /*!
     \brief
         Get the vertical alignment.
@@ -601,14 +570,11 @@ public:
 
         Sets the size of the area occupied by this element.
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \param size
         USize describing the new size of the element's area.
-     */
+
+    \see UDim
+    */
     inline void setSize(const USize& size)
     {
         setArea(d_area.getPosition(), size);
@@ -620,14 +586,11 @@ public:
 
         Gets the size of the area occupied by this element.
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \return
         USize describing the size of the element's area.
-     */
+
+    \see UDim
+    */
     inline USize getSize() const
     {
         return d_area.getSize();
@@ -661,16 +624,13 @@ public:
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \param size
         USize describing the new minimum size of the element's area.
-     */
+
+    \see Element::setSize
+    */
     void setMinSize(const USize& size);
-    
+
     /*!
     \brief
         Get the element's minimum size.
@@ -679,14 +639,11 @@ public:
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \return
         UVector2 describing the minimum size of the element's area.
-     */
+
+    \see Element::setSize
+    */
     inline const USize& getMinSize() const
     {
         return d_minSize;
@@ -700,16 +657,13 @@ public:
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \param size
         USize describing the new maximum size of the element's area.  Note that
         zero is used to indicate that the Element's maximum area size will be
         unbounded.
-     */
+
+    \see Element::setSize
+    */
     void setMaxSize(const USize& size);
 
     /*!
@@ -720,13 +674,10 @@ public:
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
 
-    \note
-        This method makes use of "Unified Dimensions". These contain both
-        parent relative and absolute pixel components, which are used in
-        determining the final value used.
-
     \return
         UVector2 describing the maximum size of the element's area.
+
+    \see Element::setSize
      */
     inline const USize& getMaxSize() const
     {
@@ -769,7 +720,7 @@ public:
     {
         return d_aspectRatio;
     }
-    
+
     /*!
     \brief
         Sets whether this Element is pixel aligned (both position and size, basically the 4 "corners").
@@ -780,7 +731,7 @@ public:
         fluid. Feel free to experiment with the setting.
     */
     void setPixelAligned(const bool setting);
-    
+
     /*!
     \brief
         Checks whether this Element is pixel aligned
@@ -804,7 +755,7 @@ public:
     {
         return getUnclippedOuterRect().get().d_min;
     }
-    
+
     /*!
     \brief
         Return the element's size in pixels.
@@ -876,7 +827,7 @@ public:
         Element::addChild
     */
     void removeChild(Element* element);
-    
+
     /*!
     \brief
         return a pointer to the child element that is attached to 'this' at the
@@ -894,7 +845,7 @@ public:
     {
         return d_children[idx];
     }
-    
+
     inline size_t getChildCount() const
     {
         return d_children.size();
@@ -915,7 +866,7 @@ public:
         - false if \a element is not an ancestor of this element.
     */
     bool isAncestor(const Element* element) const;
-    
+
     /*!
     \brief
         Set whether the Element is non-client.
@@ -931,12 +882,12 @@ public:
         to the inner rect area of it's parent.
     */
     void setNonClient(const bool setting);
-    
+
     inline bool isNonClient() const
     {
         return d_nonClient;
     }
-    
+
     /*!
     \brief
         Return a Rect that describes the unclipped outer rect area of the Element
