@@ -415,18 +415,14 @@ public:
     */
     virtual void setArea(const UVector2& pos, const USize& size);
 
-    /*!
-    \overload
-    */
+    //! \overload
     inline void setArea(const UDim& xpos, const UDim& ypos,
                         const UDim& width, const UDim& height)
     {
         setArea(UVector2(xpos, ypos), USize(width, height));
     }
 
-    /*!
-    \overload
-    */
+    //! \overload
     inline void setArea(const URect& area)
     {
         setArea(area.d_min, area.getSize());
@@ -471,11 +467,13 @@ public:
         setArea_impl(pos, d_area.getSize());
     }
 
+    //! \overload
     inline void setXPosition(const UDim& pos)
     {
         setPosition(UVector2(pos, getYPosition()));
     }
 
+    //! \overload
     inline void setYPosition(const UDim& pos)
     {
         setPosition(UVector2(getXPosition(), pos));
@@ -500,11 +498,13 @@ public:
         return d_area.getPosition();
     }
 
+    //! \overload
     inline const UDim& getXPosition() const
     {
         return getPosition().d_x;
     }
 
+    //! \overload
     inline const UDim& getYPosition() const
     {
         return getPosition().d_y;
@@ -580,6 +580,18 @@ public:
         setArea(d_area.getPosition(), size);
     }
 
+    //! \overload
+    inline void setWidth(const UDim& width)
+    {
+        setSize(USize(width, getSize().d_height));
+    }
+
+    //! \overload
+    inline void setHeight(const UDim& height)
+    {
+        setSize(USize(getSize().d_width, height));
+    }
+
     /*!
     \brief
         Get the element's size.
@@ -596,21 +608,13 @@ public:
         return d_area.getSize();
     }
 
-    inline void setWidth(const UDim& width)
-    {
-        setSize(USize(width, getSize().d_height));
-    }
-
+    //! \overload
     inline UDim getWidth() const
     {
         return getSize().d_width;
     }
 
-    inline void setHeight(const UDim& height)
-    {
-        setSize(USize(getSize().d_width, height));
-    }
-
+    //! \overload
     inline UDim getHeight() const
     {
         return getSize().d_height;
@@ -623,6 +627,10 @@ public:
         Sets the minimum size that this element's area may occupy (whether size
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
+
+    \note
+        The scale component of UDim takes display size as the base.
+        It is not dependent on parent element's size!
 
     \param size
         USize describing the new minimum size of the element's area.
@@ -642,7 +650,7 @@ public:
     \return
         UVector2 describing the minimum size of the element's area.
 
-    \see Element::setSize
+    \see Element::setMinSize
     */
     inline const USize& getMinSize() const
     {
@@ -656,6 +664,10 @@ public:
         Sets the maximum size that this element area may occupy (whether size
         changes occur by user interaction, general system operation, or by
         direct setting by client code).
+
+    \note
+        The scale component of UDim takes display size as the base.
+        It is not dependent on parent element's size!
 
     \param size
         USize describing the new maximum size of the element's area.  Note that
@@ -677,7 +689,7 @@ public:
     \return
         UVector2 describing the maximum size of the element's area.
 
-    \see Element::setSize
+    \see Element::setMaxSize
      */
     inline const USize& getMaxSize() const
     {
@@ -688,14 +700,19 @@ public:
     \brief
         Sets current aspect mode and recalculates the area rect
 
-    \param
-        mode the new aspect mode to set
+    \param mode
+        the new aspect mode to set
+
+    \see CEGUI::AspectMode
+    \see CEGUI::setAspectRatio
     */
     void setAspectMode(const AspectMode mode);
 
     /*!
     \brief
         Retrieves currently used aspect mode
+
+    \see Element::setAspectMode
     */
     inline AspectMode getAspectMode() const
     {
@@ -706,7 +723,14 @@ public:
     \brief
         Sets target aspect ratio
 
-    This is ignored if AspectMode is AM_IGNORE.
+    \param ratio
+        The desired ratio as width / height. For example 4.0f / 3.0f,
+        16.0f / 9.0.f, ...
+
+    \note
+        This is ignored if AspectMode is AM_IGNORE.
+
+    \see Element::setAspectMode
     */
     void setAspectRatio(const float ratio);
 
