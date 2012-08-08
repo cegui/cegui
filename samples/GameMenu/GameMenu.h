@@ -35,6 +35,14 @@ namespace CEGUI
     class GUIContext;
 }
 
+enum WriteFocus
+{
+    WF_TopBar,
+    WF_BotBar,
+
+    WF_Count
+};
+
 
 // Sample class
 class GameMenuDemo : public Sample
@@ -44,6 +52,8 @@ public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     void setupWindows();
+
+    void setupNaviIconAnimationEventHandlers();
     void setupAnimations();
 
     // method to perform any required cleanup operations.
@@ -54,12 +64,29 @@ public:
 protected:
     void update(float passedTime);
 
-    void blendOutInteractiveElements();
-    void blendInInteractiveElements();
+    void updateIntroText();
+    void updateLoginWelcomeText(float passedTime);
+    void disableInteractivePlanetElements();
+    void enableInteractivePlanetElements();
+    void enableNavigationBarElements();
+    void disableNavigationBarElements();
 
     bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
     bool handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args);
     bool handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args);
+    bool handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args);
+    bool handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args);
+
+    bool handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& args);
+    bool handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& args);
+    bool handleMouseEntersRightArrowArea(const CEGUI::EventArgs& args);
+    bool handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& args);
+
+    bool handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args);
+
+    static const float s_firstStartDelay;
+    static const float s_secondStartDelay;
+    static const float s_loginDisplayStartDelay;
 
 
     CEGUI::GUIContext* d_guiContext;
@@ -67,7 +94,17 @@ protected:
 
     float d_timeSinceStart;
 
-    bool d_interactiveElementsAreActivated;
+    float d_timeSinceLoginAccepted;
+
+    bool d_interactiveElementsWereInitiallyBlendedOut;
+    bool d_interactivePlanetElementsAreEnabled;
+    bool d_navigationIsEnabled;
+    bool d_loginWasAccepted;
+    bool d_mouseIsHoveringNavi;
+
+    WriteFocus d_currentWriteFocus;
+
+    CEGUI::String d_userName;
 
     CEGUI::AnimationInstance* d_topBarAnimInst;
     CEGUI::AnimationInstance* d_botBarAnimInst;
@@ -83,37 +120,37 @@ protected:
     CEGUI::AnimationInstance* d_buttonFadeInAnimInst5;
 
     CEGUI::AnimationInstance* d_loginContainerMoveInInst;
+    CEGUI::AnimationInstance* d_loginContainerMoveOutInst;
     CEGUI::AnimationInstance* d_naviButtonLeftMoveInInst;
     CEGUI::AnimationInstance* d_naviButtonRightMoveInInst;
     CEGUI::AnimationInstance* d_naviBotMoveInInst;
     CEGUI::AnimationInstance* d_startButtonBlendInAnimInst;
     CEGUI::AnimationInstance* d_navigationLabelBlendInAnimInst;
+    CEGUI::AnimationInstance* d_navigationLabelPartialBlendOutInst;
 
-    CEGUI::AnimationInstance* d_leftArrowPartialBlendOutInst;
-    CEGUI::AnimationInstance* d_rightArrowPartialBlendOutInst;
-    CEGUI::AnimationInstance* d_naviIconPartialBlendOutInst;
-    CEGUI::AnimationInstance* d_buttonLoadPartialBlendOutInst;
-    CEGUI::AnimationInstance* d_buttonOptionsPartialBlendOutInst;
-    CEGUI::AnimationInstance* d_buttonSavePartialBlendOutInst;
-    CEGUI::AnimationInstance* d_buttonCharactersPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_naviPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_naviBlendInInst;
+    CEGUI::AnimationInstance* d_centerButtonsPartialBlendOutInst;
+    CEGUI::AnimationInstance* d_centerButtonsBlendInInst;
 
-    CEGUI::AnimationInstance* d_leftArrowBlendInInst;
-    CEGUI::AnimationInstance* d_rightArrowBlendInInst;
-    CEGUI::AnimationInstance* d_naviIconBlendInInst;
-    CEGUI::AnimationInstance* d_buttonLoadBlendInInst;
-    CEGUI::AnimationInstance* d_buttonOptionsBlendInInst;
-    CEGUI::AnimationInstance* d_buttonSaveBlendInInst;
-    CEGUI::AnimationInstance* d_buttonCharactersBlendInInst;
+    CEGUI::AnimationInstance* d_botBarLabelBlendOutInst;
+
+    CEGUI::AnimationInstance* d_popupLinesSaveAnimInst;
+
 
     CEGUI::Window* d_topBarLabel;
     CEGUI::Window* d_botBarLabel;
     CEGUI::Window* d_loginContainer;
-    CEGUI::Window* d_botNaviLeftArrow;
-    CEGUI::Window* d_botNaviRightArrow;
+    CEGUI::Window* d_botNaviLeftArrowArea;
+    CEGUI::Window* d_botNaviRightArrowArea;
     CEGUI::Window* d_botNaviCenter;
     CEGUI::Window* d_loginAcceptButton;
-    CEGUI::Window* d_innerPartStartClickArea;
-    CEGUI::Window* d_navigationDestinationLabel;
+    CEGUI::Window* d_startButtonClickArea;
+    CEGUI::Window* d_navigationTravelIcon;
+    CEGUI::Window* d_navigationSelectionIcon;
+    CEGUI::Window* d_botNaviContainer;
+
+
 
 };
 
