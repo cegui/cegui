@@ -51,17 +51,21 @@ public:
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
-    void setupWindows();
-
-    void setupNaviIconAnimationEventHandlers();
-    void setupAnimations();
-
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
     virtual void onEnteringSample();
 
+
 protected:
+    void setupWindows();
+
+    void setupNaviIconAnimationEventHandlers();
+    void setupAnimations();
+
+    void resetAnimations();
+    void startEntranceAnimations();
+
     void update(float passedTime);
 
     void updateIntroText();
@@ -83,6 +87,10 @@ protected:
     bool handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& args);
 
     bool handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args);
+    bool handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args);
+    bool handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& args);
+    bool handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& args);
+    bool handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args);
 
     static const float s_firstStartDelay;
     static const float s_secondStartDelay;
@@ -101,6 +109,7 @@ protected:
     bool d_navigationIsEnabled;
     bool d_loginWasAccepted;
     bool d_mouseIsHoveringNavi;
+    bool d_startButtonClicked;
 
     WriteFocus d_currentWriteFocus;
 
@@ -136,7 +145,10 @@ protected:
     CEGUI::AnimationInstance* d_botBarLabelBlendOutInst;
 
     CEGUI::AnimationInstance* d_popupLinesSaveAnimInst;
-
+    CEGUI::AnimationInstance* d_popupLinesLoadAnimInst;
+    CEGUI::AnimationInstance* d_popupLinesCharactersAnimInst;
+    CEGUI::AnimationInstance* d_popupLinesOptionsAnimInst;
+    CEGUI::AnimationInstance* d_popupLinesQuitAnimInst;
 
     CEGUI::Window* d_topBarLabel;
     CEGUI::Window* d_botBarLabel;

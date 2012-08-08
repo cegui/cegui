@@ -242,7 +242,7 @@
 
     <AnimationDefinition name="SizeGrowth" duration="0.8" replayMode="once">
     
-        <Affector property="Size" interpolator="float" applicationMethod="relative multiply">
+        <Affector property="Size" interpolator="USize" applicationMethod="relative multiply">
             <KeyFrame position="0.0" value="0.0" />
             <KeyFrame position="0.8" progression="linear" value="1.0" />
         </Affector>
