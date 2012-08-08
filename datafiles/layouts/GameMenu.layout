@@ -165,6 +165,108 @@
                 </Window>
             </Window>
         </Window>
+        <Window type="DefaultWindow" name="InnerButtonsContainer" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="MousePassThroughEnabled" value="True" />
+            <Window type="GameMenu/Image" name="ButtonOptions" >
+                <Property name="Area" value="{{0.125781,0},{-0.136806,0},{0.160937,0},{-0.0743055,0}}" />
+                <Property name="Image" value="GameMenuImages/ButtonOptionsIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonLoad" >
+                <Property name="Area" value="{{-0.0941409,0},{-0.197917,0},{-0.0681408,0},{-0.145917,0}}" />
+                <Property name="Image" value="GameMenuImages/ButtonLoadIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonCharacters" >
+                <Property name="Area" value="{{-0.127734,0},{-0.120834,0},{-0.101734,0},{-0.0688336,0}}" />
+                <Property name="Image" value="GameMenuImages/ButtonCharactersIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonQuit" >
+                <Property name="Area" value="{{0.10039,0},{0.173611,0},{0.127734,0},{0.222222,0}}" />
+                <Property name="Image" value="GameMenuImages/ButtonQuitIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+            <Window type="GameMenu/Image" name="PopupLinesSave" >
+                <Property name="Area" value="{{-0.57043,0},{0.239896,0},{-0.485899,0},{0.287118,0}}" />
+                <Property name="Image" value="GameMenuImages/PopupLinesSave" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="MinSize" value="{{0,0},{0.0472222,0}}" />
+                <Property name="HorzFormatting" value="RightAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="HorizontalAlignment" value="Right" />
+                <Property name="AutoRenderingSurface" value="True" />
+            </Window>
+            <Window type="GameMenu/Image" name="PopupLinesLoad" >
+                <Property name="Area" value="{{-0.601875,0},{0.269062,0},{-0.518282,0},{0.316284,0}}" />
+                <Property name="Image" value="GameMenuImages/PopupLinesSave" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="MinSize" value="{{0,0},{0.0472222,0}}" />
+                <Property name="HorzFormatting" value="RightAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="HorizontalAlignment" value="Right" />
+                <Property name="AutoRenderingSurface" value="True" />
+                <Property name="MousePassThroughEnabled" value="True" />
+            </Window>
+            <Window type="GameMenu/Image" name="PopupLinesCharacters" >
+                <Property name="Area" value="{{-0.63586,0},{0.324618,0},{-0.428048,0},{0.567674,0}}" />
+                <Property name="Image" value="GameMenuImages/PopupLinesCharacter" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="MinSize" value="{{0,0},{0.243055,0}}" />
+                <Property name="HorzFormatting" value="RightAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="HorizontalAlignment" value="Right" />
+                <Property name="AutoRenderingSurface" value="True" />
+                <Property name="MousePassThroughEnabled" value="True" />
+            </Window>
+            <Window type="GameMenu/Image" name="PopupLinesOptions" >
+                <Property name="Area" value="{{0.638554,0},{0.29441,0},{0.839336,0},{0.372187,0}}" />
+                <Property name="Image" value="GameMenuImages/PopupLinesOptions" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="MinSize" value="{{0,0},{0.0777778,0}}" />
+                <Property name="HorzFormatting" value="LeftAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="AutoRenderingSurface" value="True" />
+                <Property name="MousePassThroughEnabled" value="True" />
+            </Window>
+            <Window type="GameMenu/Image" name="PopupLinesQuit" >
+                <Property name="Area" value="{{0.609648,0},{0.68052,0},{0.799492,0},{0.766631,0}}" />
+                <Property name="Image" value="GameMenuImages/PopupLinesQuit" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="MinSize" value="{{0,0},{0.861111,0}}" />
+                <Property name="HorzFormatting" value="LeftAligned" />
+                <Property name="VertFormatting" value="TopAligned" />
+                <Property name="AutoRenderingSurface" value="True" />
+                <Property name="MousePassThroughEnabled" value="True" />
+            </Window>
+            <Window type="GameMenu/Image" name="ButtonSave" >
+                <Property name="Area" value="{{-0.0640627,0},{-0.227084,0},{-0.0380627,0},{-0.175084,0}}" />
+                <Property name="Image" value="GameMenuImages/ButtonSaveIcon" />
+                <Property name="MaxSize" value="{{1,0},{1,0}}" />
+                <Property name="AspectMode" value="Shrink" />
+                <Property name="PixelAligned" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="HorizontalAlignment" value="Centre" />
+            </Window>
+        </Window>
         <Window type="DefaultWindow" name="BotNavigationContainer" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
@@ -246,103 +348,6 @@
                 <Property name="Area" value="{{0.605,0},{0.806,0},{0.655,0},{0.866,0}}" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="AlwaysOnTop" value="True" />
-            </Window>
-        </Window>
-        <Window type="DefaultWindow" name="InnerButtonsContainer" >
-            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-            <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Property name="MousePassThroughEnabled" value="True" />
-            <Window type="GameMenu/Image" name="ButtonOptions" >
-                <Property name="Area" value="{{0.125781,0},{-0.136806,0},{0.160937,0},{-0.0743055,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonOptionsIcon" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="AspectMode" value="Shrink" />
-                <Property name="PixelAligned" value="False" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="HorizontalAlignment" value="Centre" />
-            </Window>
-            <Window type="GameMenu/Image" name="ButtonLoad" >
-                <Property name="Area" value="{{-0.0941409,0},{-0.197917,0},{-0.0681408,0},{-0.145917,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonLoadIcon" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="AspectMode" value="Shrink" />
-                <Property name="PixelAligned" value="False" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="HorizontalAlignment" value="Centre" />
-            </Window>
-            <Window type="GameMenu/Image" name="ButtonCharacters" >
-                <Property name="Area" value="{{-0.127734,0},{-0.120834,0},{-0.101734,0},{-0.0688336,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonCharactersIcon" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="AspectMode" value="Shrink" />
-                <Property name="PixelAligned" value="False" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="HorizontalAlignment" value="Centre" />
-            </Window>
-            <Window type="GameMenu/Image" name="ButtonQuit" >
-                <Property name="Area" value="{{0.10039,0},{0.173611,0},{0.127734,0},{0.222222,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonQuitIcon" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="AspectMode" value="Shrink" />
-                <Property name="PixelAligned" value="False" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="HorizontalAlignment" value="Centre" />
-            </Window>
-            <Window type="GameMenu/Image" name="PopupLinesSave" >
-                <Property name="Area" value="{{-0.112422,0},{0.246146,0},{-0.0288284,0},{0.293368,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesSave" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorzFormatting" value="RightAligned" />
-                <Property name="VertFormatting" value="TopAligned" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="AutoRenderingSurface" value="True" />
-            </Window>
-            <Window type="GameMenu/Image" name="PopupLinesLoad" >
-                <Property name="Area" value="{{-0.144454,0},{0.271145,0},{-0.0608599,0},{0.318368,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesSave" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorzFormatting" value="RightAligned" />
-                <Property name="VertFormatting" value="TopAligned" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
-            </Window>
-            <Window type="GameMenu/Image" name="PopupLinesCharacters" >
-                <Property name="Area" value="{{0,-308.401},{0,239.225},{0.207813,-308.401},{0.243056,239.225}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesCharacter" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
-            </Window>
-            <Window type="GameMenu/Image" name="PopupLinesOptions" >
-                <Property name="Area" value="{{0.23914,0},{0.300312,0},{0.439921,0},{0.37809,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesOptions" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorzFormatting" value="LeftAligned" />
-                <Property name="VertFormatting" value="TopAligned" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
-            </Window>
-            <Window type="GameMenu/Image" name="PopupLinesQuit" >
-                <Property name="Area" value="{{0.200078,0},{0.676701,0},{0.389922,0},{0.762812,0}}" />
-                <Property name="Image" value="GameMenuImages/PopupLinesQuit" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="HorzFormatting" value="LeftAligned" />
-                <Property name="VertFormatting" value="TopAligned" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
-            </Window>
-            <Window type="GameMenu/Image" name="ButtonSave" >
-                <Property name="Area" value="{{-0.0640627,0},{-0.227084,0},{-0.0380627,0},{-0.175084,0}}" />
-                <Property name="Image" value="GameMenuImages/ButtonSaveIcon" />
-                <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="AspectMode" value="Shrink" />
-                <Property name="PixelAligned" value="False" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="HorizontalAlignment" value="Centre" />
             </Window>
         </Window>
     </Window>
