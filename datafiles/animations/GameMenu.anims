@@ -46,7 +46,7 @@
         </Affector>
     </AnimationDefinition>
 
-
+   
     <AnimationDefinition autoStart="False" duration="12.0" name="InsideImage3RotateIn" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
@@ -181,7 +181,7 @@
     </AnimationDefinition>
 
 
-    <AnimationDefinition name="LoopRotateRight" duration="0.8000001" replayMode="loop">
+    <AnimationDefinition name="LoopRotateRight" duration="0.8" replayMode="loop">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
             <KeyFrame position="0.4" progression="linear" value="x:0 y:0 z:180" />
@@ -240,18 +240,17 @@
     </AnimationDefinition>
 
 
-    <AnimationDefinition name="SizeGrowth" duration="0.8" replayMode="once">
-    
+    <AnimationDefinition name="SizeGrowth" duration="1.7" replayMode="once">
         <Affector property="Size" interpolator="USize" applicationMethod="relative multiply">
             <KeyFrame position="0.0" value="0.0" />
-            <KeyFrame position="0.8" progression="linear" value="1.0" />
+            <KeyFrame position="1.7" progression="linear" value="1.0" />
         </Affector>
 
         <Affector property="Visible" interpolator="bool" applicationMethod="absolute">
             <KeyFrame position="0.0" value="True" />
         </Affector>
-        <Subscription event="ssadasfpasdas" action="Stop" />
-         <Subscription event="ssadasfp" action="Start" />
     </AnimationDefinition>
+    
+
 
 </Animations>

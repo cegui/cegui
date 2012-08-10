@@ -1,7 +1,7 @@
 <Imageset autoScaled="vertical" imagefile="GameMenu.png" name="GameMenuImages" nativeHorzRes="1024" nativeVertRes="720" version="2">
     <Image height="220" name="CenterImageInside" width="220" xPos="55" yPos="1256" />
-    <Image height="353" name="CenterImageOutside1" width="353" xPos="747" yPos="242" />
-    <Image height="329" name="CenterImageOutside2" width="328" xPos="340" yPos="254" />
+    <Image height="356" name="CenterImageOutside1" width="353" xPos="747" yPos="242" />
+    <Image height="332" name="CenterImageOutside2" width="328" xPos="340" yPos="254" />
     <Image height="193" name="CenterImageInside2" width="192" xPos="69" yPos="322" />
     <Image height="99" name="CenterImageButtonBG" width="99" xPos="1619" yPos="459" />
     <Image height="40" name="CenterImageButtonStartLab" width="100" xPos="1742" yPos="465" />
@@ -36,9 +36,9 @@
     <Image height="28" name="DotInner" width="28" xPos="1788" yPos="358" />
     <Image height="28" name="DotDot" width="28" xPos="1846" yPos="358" />
     <Image height="28" name="DotInnest" width="28" xPos="1817" yPos="358" />
-    <Image height="55" name="PopupLinesOptions" width="224" xPos="761" yPos="809" />
+    <Image height="129" name="PopupLinesOptions" width="224" xPos="761" yPos="773" />
     <Image height="16" name="PopupLinesSave" width="103" xPos="343" yPos="723" />
     <Image height="24" name="PopupLinesLoad" width="115" xPos="283" yPos="773" />
-    <Image height="167" name="PopupLinesCharacter" width="262" xPos="89" yPos="822" />
-    <Image height="59" name="PopupLinesQuit" width="219" xPos="711" yPos="1086" />
+    <Image height="249" name="PopupLinesCharacter" width="262" xPos="89" yPos="800" />
+    <Image height="101" name="PopupLinesQuit" width="219" xPos="711" yPos="1066" />
 </Imageset>

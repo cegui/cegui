@@ -60,9 +60,14 @@ public:
 protected:
     void setupWindows();
 
+    void setupInnerButtonsSubOptionsLabels();
+    void setupNaviArrowWindows();
+    void setupButtonClickHandlers();
     void setupNaviIconAnimationEventHandlers();
     void setupAnimations();
 
+    void setupSelectionIconAnimations();
+    void setupPopupLinesAnimations();
     void resetAnimations();
     void startEntranceAnimations();
 
@@ -70,6 +75,7 @@ protected:
 
     void updateIntroText();
     void updateLoginWelcomeText(float passedTime);
+    void updateLoginStartButtonText(float passedTime);
     void disableInteractivePlanetElements();
     void enableInteractivePlanetElements();
     void enableNavigationBarElements();
@@ -91,6 +97,14 @@ protected:
     bool handleStartPopupLinesCharactersDisplay(const CEGUI::EventArgs& args);
     bool handleStartPopupLinesOptionsDisplay(const CEGUI::EventArgs& args);
     bool handleStartPopupLinesQuitDisplay(const CEGUI::EventArgs& args);
+
+    bool handleInnerButtonsLabelEntered(const CEGUI::EventArgs& args);
+
+    CEGUI::Window* getIconWindowFromLabel(CEGUI::Window* window);
+    bool handleInnerButtonsLabelLeft(const CEGUI::EventArgs& args);
+
+    void makeAllSelectionIconsInvisible();
+    void stopStartPopupLinesAnimations();
 
     static const float s_firstStartDelay;
     static const float s_secondStartDelay;
