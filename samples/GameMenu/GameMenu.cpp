@@ -289,6 +289,8 @@ void GameMenuDemo::update(float passedTime)
     updateIntroText();
     if(d_loginWasAccepted)
     {
+        d_timeSinceLoginAccepted += passedTime;
+
         updateLoginWelcomeText(passedTime);
         updateLoginStartButtonText(passedTime);
     }
@@ -705,7 +707,6 @@ void GameMenuDemo::updateIntroText()
 
 void GameMenuDemo::updateLoginWelcomeText(float passedTime)
 {
-    d_timeSinceLoginAccepted += passedTime;
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
 
@@ -732,11 +733,10 @@ void GameMenuDemo::updateLoginWelcomeText(float passedTime)
 
 void GameMenuDemo::updateLoginStartButtonText(float passedTime)
 {
-    d_timeSinceLoginAccepted += passedTime;
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
 
-    static const float writeDelay = 5.3f;
+    static const float writeDelay = 3.2f;
     static const CEGUI::String displayText = "Proceed by selecting a planet";
 
     CEGUI::String finalText;
