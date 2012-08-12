@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   Sample_FirstWindow.cpp
-    created:    10/3/2005
-    author:     Paul D Turner
+    filename:   HelloWorld.cpp
+    created:    11/8/2012
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,14 +25,16 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "Sample_FirstWindow.h"
+#include "HelloWorld.h"
 #include "CEGUI/CEGUI.h"
+
+#include <iostream>
 
 
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
+bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -120,6 +122,8 @@ bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
     // FrameWindow's titlebar.
     wnd->setText("Hello World!");
 
+    wnd->subscribeEvent(CEGUI::Window::EventMouseClick,  Event::Subscriber(&HelloWorldDemo::handleHelloWorldClicked, this));
+
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.
     return true;
@@ -129,9 +133,15 @@ bool FirstWindowSample::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void FirstWindowSample::deinitialise()
+void HelloWorldDemo::deinitialise()
 {
-    // nothing to do here!
+}
+
+bool HelloWorldDemo::handleHelloWorldClicked(const CEGUI::EventArgs& args)
+{
+    std::cout << "Hello World!" << std::endl;
+
+    return false;
 }
 
 /*************************************************************************
@@ -139,6 +149,6 @@ void FirstWindowSample::deinitialise()
 *************************************************************************/
 extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    static FirstWindowSample sample;
+    static HelloWorldDemo sample;
     return sample;
 }
