@@ -883,6 +883,12 @@ public:
         Pointer to the Element object to be added.
 
     \exception InvalidRequestException
+        thrown if Element \a element is NULL.
+
+    \exception InvalidRequestException
+        thrown if Element \a element is "this" element
+
+    \exception InvalidRequestException
         thrown if Element \a element is an ancestor of this Element, to prevent
         cyclic Element structures.
     */
@@ -892,6 +898,9 @@ public:
     \brief
         Remove the Element Element's child list.
         
+    \exception InvalidRequestException
+        thrown if Element \a element is NULL.
+
     \see
         Element::addChild
     */
