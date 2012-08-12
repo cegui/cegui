@@ -173,6 +173,7 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager& rgm = ResourceGroupManager::getSingleton();
 
     // add resource groups that we use
+    rgm.createResourceGroup("animations");
     rgm.createResourceGroup("imagesets");
     rgm.createResourceGroup("fonts");
     rgm.createResourceGroup("layouts");
@@ -181,12 +182,13 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     rgm.createResourceGroup("lua_scripts");
     rgm.createResourceGroup("schemas");
 
+
     // add CEGUI sample framework datafile dirs as resource locations
     ResourceGroupManager::getSingleton().addResourceLocation("./", "FileSystem");
 
     const char* dataPathPrefix = getDataPathPrefix();
     char resourcePath[PATH_MAX];
-
+        
     // for each resource type, set a resource group directory
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "schemes/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemes");
@@ -200,6 +202,8 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "looknfeels");
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "lua_scripts");
+    sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
+    ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "animations");
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
     ResourceGroupManager::getSingleton().addResourceLocation(resourcePath, "FileSystem", "schemas");
 }
