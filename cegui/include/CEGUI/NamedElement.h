@@ -27,6 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
 #ifndef _CEGUINamedElement_h_
 #define _CEGUINamedElement_h_
 
@@ -43,8 +44,8 @@ namespace CEGUI
 
 /*!
 \brief
-    EventArgs based class that is used for objects passed to handlers triggered for events
-    concerning some NamedElement object.
+    EventArgs based class that is used for objects passed to handlers triggered
+    for events concerning some NamedElement object.
 */
 class CEGUIEXPORT NamedElementEventArgs : public EventArgs
 {
@@ -53,11 +54,23 @@ public:
         element(element)
     {}
 
-    NamedElement* element;     //!< pointer to an Element object of relevance to the event.
+    //! pointer to an Element object of relevance to the event.
+    NamedElement* element;
 };
 
 /*!
 \brief Adds name to the Element class, including name path traversal
+
+\par Name path
+A name path is a string that describes a path down the element
+hierarchy using names and the forward slash '/' as a separator.
+For example, if this element has a child attached to it named "Panel"
+which has its own children attached named "Okay" and "Cancel",
+you can check for the element "Okay" from this element by using the
+name path "Panel/Okay".  To check for "Panel", you would simply pass
+the name "Panel".
+
+\see Element
 */
 class CEGUIEXPORT NamedElement :
     public Element
@@ -72,7 +85,7 @@ public:
      * NamedElementEventArgs::element set to the Element whose name was changed.
      */
     static const String EventNameChanged;
-    
+
     /*!
     \brief Constructor
     
@@ -84,10 +97,9 @@ public:
     \brief Destructor
     */
     virtual ~NamedElement();
-    
+
     /*!
-    \brief
-        Renames the element.
+    \brief Renames the element.
 
     \param name
         String object holding the new name for the element.
@@ -96,39 +108,23 @@ public:
         thrown if an element named \a name already exists in the parent of this element.
     */
     virtual void setName(const String& name);
-    
+
     /*!
-    \brief
-        return a String object holding the name of this Element.
+    \brief Return a String object holding the name of this Element.
     */
     inline const String& getName() const
     {
         return d_name;
     }
-    
-    /**
-    \brief
-        return a String object that describes the name path for this Element.
 
-        A name path is a string that describes a path down the element
-        hierarchy using element names and the forward slash '/' as a separator.
+    /**
+    \brief Return a String object that describes the name path for this Element.
     */
     String getNamePath() const;
-    
+
     using Element::isChild;
     /*!
-    \brief
-        returns whether the specified name path references a NamedElement that is
-        currently attached to this Element.
-
-        A name path is a string that describes a path down the element
-        hierarchy using names and the forward slash '/' as a separator.
-        \par
-        For example, if this element has a child attached to it named "Panel"
-        which has its own children attached named "Okay" and "Cancel",
-        you can check for the element "Okay" from this element by using the
-        name path "Panel/Okay".  To check for "Panel", you would simply pass
-        the name "Panel".
+    \brief Checks whether given name path references a NamedElement that is attached to this Element.
 
     \param name_path
         String object holding the name path of the child element to test.
@@ -138,11 +134,10 @@ public:
          - false if the element referenced by \a name_path is not attached.
     */
     bool isChild(const String& name_path) const;
-    
+
     using Element::isAncestor;
     /*!
-    \brief
-        return true if the specified element name is a name of some ancestor of this Element
+    \brief Return true if the specified element name is a name of some ancestor of this Element
 
     \param name
         String object holding the name to check for.
@@ -154,19 +149,9 @@ public:
           element.
     */
     bool isAncestor(const String& name) const;
-    
-    /*!
-    \brief
-        return the attached child element that the given name path references.
 
-        A name path is a string that describes a path down the element
-        hierarchy using names and the forward slash '/' as a separator.
-        \par
-        For example, if this element has a child attached to it named "Panel"
-        which has its own children attached named "Okay" and "Cancel",
-        you can check for the element "Okay" from this element by using the
-        name path "Panel/Okay".  To check for "Panel", you would simply pass
-        the name "Panel".
+    /*!
+    \brief Return the attached child element that the given name path references.
 
     \param name_path
         String object holding the name path of the child element to return.
@@ -179,7 +164,7 @@ public:
         Element.
     */
     NamedElement* getChildElement(const String& name_path) const;
-    
+
     using Element::removeChild;
     /*!
     \brief
@@ -196,22 +181,19 @@ public:
 protected:
     //! \copydoc Element::addChild_impl
     virtual void addChild_impl(Element* element);
-    
+
     /*!
-    \brief
-        retrieves a child at \a name_path or 0 if none such exists
+    \brief Retrieves a child at \a name_path or 0 if none such exists
     */
     virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
-    
+
     /*!
-    \brief
-        Add standard CEGUI::NamedElement properties.
+    \brief Add standard CEGUI::NamedElement properties.
     */
     void addNamedElementProperties();
-    
+
     /*!
-    \brief
-        Handler called when the element's name changes.
+    \brief Handler called when the element's name changes.
 
     \param e
         NamedElementEventArgs object whose 'element' pointer field is set to the element
@@ -219,7 +201,7 @@ protected:
         'this'.
     */
     virtual void onNameChanged(NamedElementEventArgs& e);
-    
+
     //! The name of the element, unique in the parent of this element
     String d_name;
 

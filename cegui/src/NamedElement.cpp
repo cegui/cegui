@@ -67,15 +67,14 @@ void NamedElement::setName(const String& name)
         if (parent && parent->isChild(name))
         {
             CEGUI_THROW(AlreadyExistsException("Failed to rename "
-                "NamedElement at: " + getNamePath() + " as: " + name + ".  A Window "
+                "NamedElement at: " + getNamePath() + " as: " + name + ". A Window "
                 "with that name is already attached as a sibling."));
         }
     }
 
     // log this under informative level
     Logger::getSingleton().logEvent("Renamed element at: " + getNamePath() +
-                                    " as: " + name,
-                                    Informative);
+                                    " as: " + name, Informative);
 
     d_name = name;
 
@@ -114,19 +113,19 @@ bool NamedElement::isChild(const String& name_path) const
 bool NamedElement::isAncestor(const String& name) const
 {
     Element const* current = this;
-    
+
     while (true)
     {
         const Element* parent = current->getParentElement();
-        
+
         if (!parent)
             return false;
-        
+
         const NamedElement* named_parent = dynamic_cast<const NamedElement*>(parent);
-        
+
         if (named_parent && named_parent->getName() == name)
             return true;
-        
+
         current = parent;
     }
 }
@@ -161,18 +160,18 @@ void NamedElement::removeChild(const String& name_path)
 void NamedElement::addChild_impl(Element* element)
 {
     NamedElement* named_element = dynamic_cast<NamedElement*>(element);
-    
+
     if (named_element)
     {
         const NamedElement* const existing = getChildByNamePath_impl(named_element->getName());
-        
+
         if (existing && named_element != existing)
             CEGUI_THROW(AlreadyExistsException("Failed to add "
                 "Element named: " + named_element->getName() + " to element at: " +
                 getNamePath() + " since an Element with that name is already "
                 "attached."));
     }
-            
+
     Element::addChild_impl(element);
 }
 
@@ -188,10 +187,10 @@ NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) con
     {
         Element* child = getChildElementAtIdx(i);
         NamedElement* named_child = dynamic_cast<NamedElement*>(child);
-        
+
         if (!named_child)
             continue;
-        
+
         if (named_child->getName() == base_child)
         {
             if (sep != String::npos && sep < name_path.length() - 1)
@@ -208,7 +207,7 @@ NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) con
 void NamedElement::addNamedElementProperties()
 {
     const String propertyOrigin("NamedElement");
-    
+
     // "Name" is already stored in <Window> element
     CEGUI_DEFINE_PROPERTY_NO_XML(NamedElement, String,
         "Name", "Property to get/set the name of the Element. Make sure it's unique in its parent if any.",
