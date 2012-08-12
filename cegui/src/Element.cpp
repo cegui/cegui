@@ -541,7 +541,7 @@ void Element::setParent(Element* parent)
 void Element::addChild_impl(Element* element)
 {
     // if element is attached elsewhere, detach it first (will fire normal events)
-    const Element* const old_parent = element->getParentElement();
+    Element* const old_parent = element->getParentElement();
     if (old_parent)
         old_parent->removeChild(element);
 
