@@ -379,10 +379,7 @@ macro (cegui_add_sample _NAME)
 
     # Installation
     install(TARGETS ${CEGUI_TARGET_NAME}
-        RUNTIME DESTINATION bin
-        LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
-        BUNDLE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+    LIBRARY DESTINATION bin
     )
 
     # Add the MetaData chunk of the sample to the final xml
