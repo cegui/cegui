@@ -58,9 +58,9 @@ const String Element::EventNonClientChanged("NonClientChanged");
 //----------------------------------------------------------------------------//
 Element::Element():
     d_parent(0),
-    
+
     d_nonClient(false),
-    
+
     d_area(cegui_reldim(0), cegui_reldim(0), cegui_reldim(0), cegui_reldim(0)),
     d_horizontalAlignment(HA_LEFT),
     d_verticalAlignment(VA_TOP),
@@ -71,7 +71,7 @@ Element::Element():
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
     d_rotation(Quaternion::IDENTITY),
-    
+
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
 {

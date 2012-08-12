@@ -28,6 +28,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
 #ifndef _CEGUIElement_h_
 #define _CEGUIElement_h_
 
@@ -41,13 +42,13 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
 /*!
-\brief
-    Enumerated type used when specifying horizontal alignments.
+\brief Enumerated type used when specifying horizontal alignments for Element
+
+\see VerticalAlignment
  */
 enum HorizontalAlignment
 {
@@ -123,8 +124,9 @@ public:
 };
 
 /*!
-\brief
-    Enumerated type used when specifying vertical alignments.
+\brief Enumerated type used when specifying vertical alignments for Element
+
+\see HorizontalAlignment
  */
 enum VerticalAlignment
 {
@@ -247,7 +249,6 @@ public:
     //! Namespace for global events
     static const String EventNamespace;
 
-    // generated internally by Element
     /** Event fired when the Element size has changed.
      * Handlers are passed a const ElementEventArgs reference with
      * ElementEventArgs::element set to the Element whose size was changed.
@@ -306,20 +307,33 @@ public:
 
     /*!
     \brief A tiny wrapper to hide some of the dirty work of rect caching
+
+    This is used internally by CEGUI::Element and other classes, it is passed
+    to the user in several methods. In those circumstances you most likely
+    want the result of either the "get()" or "getFresh(..)" methods.
     */
     class CachedRectf
     {
     public:
-        //! the bool parameter - if true all will PixelAlignment settings be overridden and no pixel alignment will take place
+        /*!
+        \brief Function to generate fresh data that might later be cached
+
+        If the bool is true all PixelAlignment settings will be overridden
+        and no pixel alignment will take place.
+        */
         typedef Rectf (Element::*DataGenerator)(bool) const;
 
-        CachedRectf(Element const* element, DataGenerator generator):
+        CachedRectf(const Element const* element, DataGenerator generator):
             d_element(element),
             d_generator(generator),
-            // we don't have to initialise d_cachedData, it will get regenerated and reset anyways
+            // we don't have to initialise d_cachedData here, it will get
+            // regenerated and reset anyways
             d_cacheValid(false)
         {}
 
+        /*!
+        \brief Retrieves cached Rectf or generated a fresh one and caches it
+        */
         inline const Rectf& get() const
         {
             if (!d_cacheValid)
@@ -331,7 +345,10 @@ public:
         }
 
         /*!
-        \brief skips all caching and calls the generator
+        \brief Skips all caching and calls the generator
+
+        This method will cache the result if cache is invalid and
+        alignment is not being skipped.
         */
         inline Rectf getFresh(bool skipAllPixelAlignment = false) const
         {
@@ -345,6 +362,12 @@ public:
             return CEGUI_CALL_MEMBER_FN(*d_element, d_generator)(skipAllPixelAlignment);
         }
 
+        /*!
+        \brief Invalidates the cached Rectf causing it to be regenerated
+
+        The regeneration will not happen immediately, it will happen when user
+        requests the data.
+        */
         inline void invalidateCache() const
         {
             d_cacheValid = false;
@@ -365,8 +388,8 @@ public:
         }
 
     private:
-        Element const* d_element;
-        DataGenerator d_generator;
+        const Element const* d_element;
+        const DataGenerator d_generator;
 
         mutable Rectf d_cachedData;
         mutable bool  d_cacheValid;
@@ -399,7 +422,7 @@ public:
         Set the Element area.
 
         Sets the area occupied by this Element. The defined area is offset from
-        one of the corners of this Element's parent element (depending on alignments)
+        one of the corners and edges of this Element's parent element (depending on alignments)
         or from the top-left corner of the display if this element has no parent
         (i.e. if it is the root element).
 
@@ -433,7 +456,7 @@ public:
         Return the element's area.
 
         Sets the area occupied by this Element. The defined area is offset from
-        one of the corners of this Element's parent element (depending on alignments)
+        one of the corners and edges of this Element's parent element (depending on alignments)
         or from the top-left corner of the display if this element has no parent
         (i.e. it is the root element).
 
@@ -452,7 +475,7 @@ public:
         Set the element's position.
 
         Sets the position of the area occupied by this element. The position is offset from
-        one of the corners of this Element's parent element (depending on alignments)
+        one of the corners and edges of this Element's parent element (depending on alignments)
         or from the top-left corner of the display if this element has no parent
         (i.e. it is the root element).
 
@@ -697,11 +720,9 @@ public:
     }
 
     /*!
-    \brief
-        Sets current aspect mode and recalculates the area rect
+    \brief Sets current aspect mode and recalculates the area rect
 
-    \param mode
-        the new aspect mode to set
+    \param mode the new aspect mode to set
 
     \see CEGUI::AspectMode
     \see CEGUI::setAspectRatio
@@ -749,9 +770,21 @@ public:
     \brief
         Sets whether this Element is pixel aligned (both position and size, basically the 4 "corners").
         
-    \note
-        Pixel aligning is enabled by default and for most widgets it makes a lot of sense and just looks better.
-        Especially with text. However for HUD or decorative elements pixel aligning might make transitions less
+    \par Impact on the element tree
+        Lets say we have Element A with child Element B, A is pixel aligned
+        and it's position is 99.5, 99.5 px in screenspace. This gives us
+        100, 100 px pixel aligned position.
+
+        B's position is always relative to the pixel-aligned position of its
+        parent. Say B isn't pixel-aligned and it's position is 0.5, 0.5 px.
+        Its final position will be 100.5, 100.5 px in screenspace, not 100, 100 px!
+
+        If it were pixel-aligned the final position would be 101, 101 px.
+
+    \par Why you should pixel-align widgets
+        Pixel aligning is enabled by default and for most widgets it makes
+        a lot of sense and just looks better. Especially with text. However for
+        HUD or decorative elements pixel aligning might make transitions less
         fluid. Feel free to experiment with the setting.
     */
     void setPixelAligned(const bool setting);
@@ -770,7 +803,7 @@ public:
 
     /*!
     \brief
-        Return the element's absolute (or screen, depending no the type of the element) position in pixels.
+        Return the element's absolute (or screen, depending on the type of the element) position in pixels.
 
     \return
         Vector2f object describing this element's absolute position in pixels.
@@ -792,15 +825,26 @@ public:
         return d_pixelSize;
     }
 
+    /*!
+    \brief Calculates this element's pixel size
+
+    \param skipAllPixelAlignment 
+        Should all pixel-alignment be skipped when calculating the pixel size?
+
+    If you want to get the pixel size you most probably want to use the
+    Element::getPixelSize method. This method skips caching and might
+    impact performance!
+    */
     Sizef calculatePixelSize(bool skipAllPixelAlignment = false) const;
 
     /*!
-    \brief
-        Return the pixel size of the parent element.  This always returns a
-        valid object.
+    \brief Return the pixel size of the parent element.
+
+    If this element doesn't have any parent, the display size will be returned.
+    This method returns a valid Sizef object in all cases.
 
     \return
-        Size object that describes the pixel dimensions of this Element object's parent
+        Size object that describes the pixel dimensions of this Element's parent
     */
     Sizef getParentPixelSize(bool skipAllPixelAlignment = false) const;
 
@@ -810,10 +854,11 @@ public:
     \param rotation
         A Quaternion describing the rotation
 
-    CEGUI used Euler angles previously. Whilst this is easy to use and seems
-    intuitive, it causes Gimbal locks when animating and is just the worse
-    solution than using Quaternions. You can still use Euler angles, see
-    the \a Quaternion class for more info about that.
+    \par Euler angles
+        CEGUI used Euler angles previously. While these are easy to use and seem
+        intuitive they cause Gimbal locks when animating and are overall the worse
+        solution than using Quaternions. You can still use Euler angles, see
+        the CEGUI::Quaternion class for more info about that.
     */
     void setRotation(const Quaternion& rotation);
 
@@ -829,9 +874,10 @@ public:
 
     /*!
     \brief
-        Add the specified Element as a child of this Element. If the Element
-        \a element is already attached to a different Element, it is detached
-        before being added to this Element.
+        Add the specified Element as a child of this Element.
+
+    If the Element \a element is already attached to a different Element,
+    it is detached before being added to this Element.
 
     \param element
         Pointer to the Element object to be added.
@@ -844,8 +890,7 @@ public:
 
     /*!
     \brief
-        Remove the Element referenced by the given name path from this Element's
-        child list.
+        Remove the Element Element's child list.
         
     \see
         Element::addChild
@@ -870,19 +915,26 @@ public:
         return d_children[idx];
     }
 
+    /*!
+    \brief Returns number of child elements attached to this Element
+    */
     inline size_t getChildCount() const
     {
         return d_children.size();
     }
 
+    /*!
+    \brief Checks whether given element is attached to this Element
+    */
     bool isChild(const Element* element) const;
 
     /*!
-    \brief
-        return true if the specified Element is some ancestor of this Element.
+    \brief Checks whether the specified Element is an ancestor of this Element
 
     \param element
         Pointer to the Element object to look for.
+
+    This element itself is not its own ancestor!
 
     \return
         - true if \a element was found to be an ancestor (parent, or parent of
@@ -892,12 +944,11 @@ public:
     bool isAncestor(const Element* element) const;
 
     /*!
-    \brief
-        Set whether the Element is non-client.
+    \brief Set whether the Element is non-client.
 
-        A non-client element is clipped, positioned and sized according to the
-        parent element's full area as opposed to just the inner rect area used
-        for normal client element.
+    A non-client element is clipped, positioned and sized according to the
+    parent element's full area as opposed to just the inner rect area used
+    for normal client element.
 
     \param setting
         - true if the element should be clipped, positioned and sized according
@@ -907,15 +958,28 @@ public:
     */
     void setNonClient(const bool setting);
 
+    /*!
+    \brief Checks whether this element was set to be non client
+
+    \see Element::setNonClient
+    */
     inline bool isNonClient() const
     {
         return d_nonClient;
     }
 
     /*!
-    \brief
-        Return a Rect that describes the unclipped outer rect area of the Element
-        in screen pixels.
+    \brief Return a Rect that describes the unclipped outer rect area of the Element
+
+    The unclipped outer rectangle is the entire area of the element, including
+    frames and other outside decorations.
+
+    \note
+        Unclipped in this context means not limited by any ancestor Element's area.
+
+    \note
+        If you take position of the result rectangle it is the same as pixel
+        position of the Element in screenspace.
     */
     inline const CachedRectf& getUnclippedOuterRect() const
     {
@@ -923,11 +987,13 @@ public:
     }
 
     /*!
-    \brief
-        Return a Rect object that describes, unclipped, the inner rectangle for
-        this element.  The inner rectangle is typically an area that excludes
-        some frame or other rendering that should not be touched by subsequent
-        rendering.
+    \brief Return a Rect that describes the unclipped inner rect area of the Element
+
+    The inner rectangle is typically an area that excludes some frame or other decorations
+    that should not be touched by rendering of client clipped child elements.
+
+    \note
+        Unclipped in this context means not limited by any ancestor Element's area.
 
     \return
         Rect object that describes, in unclipped screen pixel co-ordinates, the
@@ -939,29 +1005,50 @@ public:
     }
 
     /*!
-    \brief
-        Return a Rect that describes the unclipped area covered by the Element.
+    \brief Return a Rect that describes the unclipped area covered by the Element.
 
-        This function can return either the inner or outer area dependant upon
-        the boolean values passed in.
+    This function can return either the inner or outer area dependant upon
+    the boolean values passed in.
 
     \param inner
         - true if the inner rect area should be returned.
         - false if the outer rect area should be returned.
+
+    \see Element::getUnclippedOuterRect
+    \see Element::getUnclippedInnerRect
     */
     inline const CachedRectf& getUnclippedRect(const bool inner) const
     {
         return inner ? getUnclippedInnerRect() : getUnclippedOuterRect();
     }
 
+    /*!
+    \brief Return a Rect that is used by client child elements as content area
+
+    Client content area is used for relative sizing, positioning and clipping
+    of child elements that are client (their NonClient property is "false").
+
+    \see Element::getChildContentArea
+    */
     virtual const CachedRectf& getClientChildContentArea() const;
+
+    /*!
+    \brief Return a Rect that is used by client child elements as content area
+
+    Client content area is used for relative sizing, positioning and clipping
+    of child elements that are non-client (their NonClient property is "true").
+
+    \see Element::getChildContentArea
+    */
     virtual const CachedRectf& getNonClientChildContentArea() const;
 
     /*!
-    \brief
-        Return a Rect that describes the area that is used to position
-        and - for scale values - size child content attached to this Element.
+    \brief Return a Rect that is used to position and size child elements
 
+    It is used as the reference area for positioning and its size is used for
+    the scale components of position and size.
+ 
+    \note
         By and large the area returned here will be the same as the unclipped
         inner rect (for client content) or the unclipped outer rect (for non
         client content), although certain advanced uses will require
@@ -969,8 +1056,8 @@ public:
 
     \note
         The behaviour of this function is modified by overriding the
-        protected Element::getClientChildContentArea_impl and/or
-        Element::getNonClientChildContentArea_impl functions.
+        protected Element::getClientChildContentArea and/or
+        Element::getNonClientChildContentArea functions.
 
     \param non_client
         - true to return the non-client child content area.
@@ -980,11 +1067,14 @@ public:
     {
         return non_client ? getNonClientChildContentArea() : getClientChildContentArea();
     }
-    
+
     /*!
-    \brief
-        Inform the element, and optionally all children, that screen area
-        rectangles have changed.
+    \brief Inform the element and (optionally) all children that screen area has changed
+
+    \note
+        This will cause recomputation and recaching of various rectangles used.
+        Such an action, especially if applied recursively, will impact performance
+        before everything is cached again.
 
     \param recursive
         - true to recursively call notifyScreenAreaChanged on attached child
@@ -993,7 +1083,15 @@ public:
     */
     virtual void notifyScreenAreaChanged(bool recursive = true);
 
-    //! return the size of the root container (such as screen size) 
+    /*!
+    \brief Return the size of the root container (such as screen size).
+
+    This is size of the hypothetical parent of the root element that has no
+    parent element. Display size is usually used.
+
+    The value is significant and is used to size and position the root if
+    it is using scale UDim component in position and/or size.
+    */
     virtual const Sizef& getRootContainerSize() const;
 
 protected:
@@ -1043,7 +1141,7 @@ protected:
         d_unclippedInnerRect.invalidateCache();
         return old_sz != d_unclippedInnerRect.get().getSize();
     }
-    
+
     /*!
     \brief
         Set the parent element for this element object.
@@ -1068,7 +1166,7 @@ protected:
         Remove given element from child list
     */
     virtual void removeChild_impl(Element* element);
-    
+
     //! Default implementation of function to return Element's outer rect area.
     virtual Rectf getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const;
     //! Default implementation of function to return Element's inner rect area.
@@ -1091,7 +1189,7 @@ protected:
         that triggered the event.
     */
     virtual void onSized(ElementEventArgs& e);
-    
+
     /*!
     \brief
         Handler called when this element's parent element has been resized.  If
@@ -1126,7 +1224,7 @@ protected:
           changed (typically 'this').
     */
     virtual void onHorizontalAlignmentChanged(ElementEventArgs& e);
-    
+
     /*!
     \brief
         Handler called when the vertical alignment setting for the element is
@@ -1138,7 +1236,7 @@ protected:
           changed (typically 'this').
     */
     virtual void onVerticalAlignmentChanged(ElementEventArgs& e);
-    
+
     /*!
     \brief
         Handler called when the element's rotation is changed.
@@ -1148,7 +1246,7 @@ protected:
         that triggered the event.
     */
     virtual void onRotated(ElementEventArgs& e);
-    
+
     /*!
     \brief
         Handler called when a child element is added to this element.
@@ -1168,7 +1266,7 @@ protected:
         that has been removed.
     */
     virtual void onChildRemoved(ElementEventArgs& e);
-    
+
     /*!
     \brief
         Handler called when the element's non-client setting, affecting it's
@@ -1180,7 +1278,7 @@ protected:
         'this'.
     */
     virtual void onNonClientChanged(ElementEventArgs& e);
-    
+
     /*************************************************************************
         Implementation Data
     *************************************************************************/
@@ -1192,10 +1290,10 @@ protected:
     ChildList d_children;
     //! Holds pointer to the parent element.
     Element* d_parent;
-    
+
     //! true if element is in non-client (outside InnerRect) area of parent.
     bool d_nonClient;
-    
+
     //! This element objects area as defined by a URect.
     URect d_area;
     //! Specifies the base for horizontal alignment.
@@ -1216,7 +1314,7 @@ protected:
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
     Quaternion d_rotation;
-    
+
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;
     //! inner area rect in screen pixels
@@ -1227,7 +1325,7 @@ private:
         May not copy or assign Element objects
     *************************************************************************/
     Element(const Element&);
-    
+
     Element& operator=(const Element&) {return *this;}
 };
 
