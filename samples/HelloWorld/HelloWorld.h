@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   Sample_FirstWindow.h
-    created:    10/3/2005
-    author:     Paul D Turner
+    filename:   HelloWorld.h
+    created:    11/8/2012
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_FirstWindow_h_
-#define _Sample_FirstWindow_h_
+#ifndef _Sample_Hello_World_h_
+#define _Sample_Hello_World_h_
 
 #include "SampleBase.h"
 
@@ -36,13 +36,15 @@ namespace CEGUI
     class DefaultWindow;
 }
 
-class FirstWindowSample : public Sample
+class HelloWorldDemo : public Sample
 {
 public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
     virtual void deinitialise();
 
 private:
+    bool handleHelloWorldClicked(const CEGUI::EventArgs& args);
+
     CEGUI::DefaultWindow*      d_root;
 };
 
