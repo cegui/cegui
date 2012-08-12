@@ -147,7 +147,7 @@ void Element::setMinSize(const USize& size)
 void Element::setMaxSize(const USize& size)
 {
     d_maxSize = size;
-    
+
     // TODO: Perhaps we could be more selective and skip this if min size won't
     //       affect the size
     setSize(getSize());
@@ -162,8 +162,8 @@ void Element::setAspectMode(AspectMode mode)
     d_aspectMode = mode;
 
     // TODO: We want an Event and more smart rect update handling
-    
-    // ensure the area is calculated with the new aspect mode
+
+    // Ensure the area is calculated with the new aspect mode
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
     setArea(getArea());
@@ -178,8 +178,8 @@ void Element::setAspectRatio(float ratio)
     d_aspectRatio = ratio;
 
     // TODO: We want an Event and more smart rect update handling
-    
-    // ensure the area is calculated with the new aspect ratio
+
+    // Ensure the area is calculated with the new aspect ratio
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
     setArea(getArea());
@@ -190,12 +190,12 @@ void Element::setPixelAligned(const bool setting)
 {
     if (d_pixelAligned == setting)
         return;
-    
+
     d_pixelAligned = setting;
-    
+
     // TODO: We want an Event and more smart rect update handling
-    
-    // ensure the area is calculated with the new pixel aligned setting
+
+    // Ensure the area is calculated with the new pixel aligned setting
     // TODO: This potentially wastes effort, we should just mark it as dirty
     //       and postpone the calculation for as long as possible
     setArea(getArea());
@@ -232,21 +232,23 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
     if (absMax.d_width != 0.0f && absMin.d_width > absMax.d_width)
     {
         absMin.d_width = absMax.d_width;
-        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of width larger than what MaxSize resulted in");
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size with "
+                        "width larger than what MaxSize resulted in");
     }
-    
+
     if (absMax.d_height != 0.0f && absMin.d_height > absMax.d_height)
     {
         absMin.d_height = absMax.d_height;
-        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size of height larger than what MaxSize resulted in");
+        CEGUI_LOGINSANE("MinSize resulted in an absolute pixel size with "
+                        "height larger than what MaxSize resulted in");
     }
-    
+
     // limit new pixel size to: minSize <= newSize <= maxSize
     if (ret.d_width < absMin.d_width)
         ret.d_width = absMin.d_width;
     else if (absMax.d_width != 0.0f && ret.d_width > absMax.d_width)
         ret.d_width = absMax.d_width;
-    
+
     if (ret.d_height < absMin.d_height)
         ret.d_height = absMin.d_height;
     else if (absMax.d_height != 0.0f && ret.d_height > absMax.d_height)
@@ -298,13 +300,13 @@ Sizef Element::calculatePixelSize(bool skipAllPixelAlignment) const
         // NOTE: When the hard min max limits are unsatisfiable with the aspect lock mode,
         //       the result won't be limited by both limits!
     }
-    
+
     if (d_pixelAligned)
     {
         ret.d_width = CoordConverter::alignToPixels(ret.d_width);
         ret.d_height = CoordConverter::alignToPixels(ret.d_height);
     }
-    
+
     return ret;
 }
 
@@ -313,7 +315,8 @@ Sizef Element::getParentPixelSize(bool skipAllPixelAlignment) const
 {
     if (d_parent)
     {
-        return skipAllPixelAlignment ? d_parent->calculatePixelSize(true) : d_parent->getPixelSize();
+        return skipAllPixelAlignment ?
+            d_parent->calculatePixelSize(true) : d_parent->getPixelSize();
     }
     else
     {
@@ -339,10 +342,14 @@ void Element::setRotation(const Quaternion& rotation)
 //----------------------------------------------------------------------------//
 void Element::addChild(Element* element)
 {
-    // don't add null element or ourself as a child
-    // TODO: IMO we should throw exceptions in both of these cases
-    if (!element || element == this)
-        return;
+    if (!element)
+        CEGUI_THROW(
+                InvalidRequestException("Can't add NULL to Element as a child!"));
+
+    if (element == this)
+        CEGUI_THROW(
+                InvalidRequestException("Can't make element its own child - "
+                                        "this->addChild(this); is forbidden."));
 
     addChild_impl(element);
     ElementEventArgs args(element);
@@ -352,6 +359,12 @@ void Element::addChild(Element* element)
 //----------------------------------------------------------------------------//
 void Element::removeChild(Element* element)
 {
+    if (!element)
+        CEGUI_THROW(
+                InvalidRequestException("NULL can't be a child of any Element, "
+                                        "it makes little sense to ask for its "
+                                        "removal"));
+
     removeChild_impl(element);
     ElementEventArgs args(element);
     onChildRemoved(args);
@@ -371,7 +384,7 @@ bool Element::isAncestor(const Element* element) const
         // no parent, no ancestor, nothing can be our ancestor
         return false;
     }
-    
+
     return d_parent == element || d_parent->isAncestor(element);
 }
 
@@ -382,7 +395,7 @@ void Element::setNonClient(const bool setting)
     {
         return;
     }
-    
+
     d_nonClient = setting;
 
     ElementEventArgs args(this);
@@ -401,10 +414,11 @@ const Element::CachedRectf& Element::getNonClientChildContentArea() const
     return getUnclippedOuterRect();
 }
 
+//----------------------------------------------------------------------------//
 void Element::addElementProperties()
 {
     const String propertyOrigin("Element");
-    
+
     CEGUI_DEFINE_PROPERTY(Element, URect,
         "Area", "Property to get/set the unified area rectangle. Value is a \"URect\".",
         &Element::setArea, &Element::getArea, URect(UDim(0, 0), UDim(0, 0), UDim(0, 0), UDim(0, 0))
@@ -414,7 +428,7 @@ void Element::addElementProperties()
         "Position", "Property to get/set the unified position. Value is a \"UVector2\".",
         &Element::setPosition, &Element::getPosition, UVector2(UDim(0, 0), UDim(0, 0))
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Element, VerticalAlignment,
         "VerticalAlignment", "Property to get/set the vertical alignment.  Value is one of \"Top\", \"Centre\" or \"Bottom\".",
         &Element::setVerticalAlignment, &Element::getVerticalAlignment, VA_TOP
@@ -440,7 +454,7 @@ void Element::addElementProperties()
         "Note that zero means no maximum size.",
         &Element::setMaxSize, &Element::getMaxSize, USize(UDim(0, 0), UDim(0, 0))
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Element, AspectMode,
         "AspectMode", "Property to get/set the 'aspect mode' setting. Value is either \"Ignore\", \"Shrink\" or \"Expand\".",
         &Element::setAspectMode, &Element::getAspectMode, AM_IGNORE
@@ -450,20 +464,20 @@ void Element::addElementProperties()
         "AspectRatio", "Property to get/set the aspect ratio. Only applies when aspect mode is not \"Ignore\".",
         &Element::setAspectRatio, &Element::getAspectRatio, 1.0 / 1.0
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Element, bool,
         "PixelAligned", "Property to get/set whether the Element's size and position should be pixel aligned. "
         "Value is either \"True\" or \"False\".",
         &Element::setPixelAligned, &Element::isPixelAligned, true
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Element, Quaternion,
         "Rotation", "Property to get/set the Element's rotation. Value is a quaternion: "
         "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\""
         "or \"x:[x_float] y:[y_float] z:[z_float]\" to convert from Euler angles (in degrees).",
         &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Element, bool,
         "NonClient", "Property to get/set whether the Element is 'non-client'. "
         "Value is either \"True\" or \"False\".",
@@ -482,7 +496,7 @@ void Element::setArea_impl(const UVector2& pos, const USize& size,
 
     // save original size so we can work out how to behave later on
     const Sizef oldSize(d_pixelSize);
-    
+
     d_area.setSize(size);
     d_pixelSize = calculatePixelSize();
 
@@ -527,10 +541,10 @@ void Element::setParent(Element* parent)
 void Element::addChild_impl(Element* element)
 {
     // if element is attached elsewhere, detach it first (will fire normal events)
-    Element* const old_parent = element->getParentElement();
+    const Element* const old_parent = element->getParentElement();
     if (old_parent)
         old_parent->removeChild(element);
-    
+
     // add element to child list
     d_children.push_back(element);
 
@@ -539,7 +553,7 @@ void Element::addChild_impl(Element* element)
 
     // update area rects and content for the added element
     element->notifyScreenAreaChanged(true);
-    
+
     // correctly call parent sized notification if needed.
     if (!old_parent || old_parent->getPixelSize() != getPixelSize())
     {
@@ -567,11 +581,12 @@ void Element::removeChild_impl(Element* element)
 //----------------------------------------------------------------------------//
 Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
 {
-    const Sizef pixel_size = skipAllPixelAlignment ? calculatePixelSize(true) : getPixelSize();
+    const Sizef pixel_size = skipAllPixelAlignment ?
+        calculatePixelSize(true) : getPixelSize();
     Rectf ret(Vector2f(0, 0), pixel_size);
-    
+
     const Element* parent = getParentElement();
-    
+
     Rectf parent_rect;
     if (parent)
     {
@@ -582,9 +597,9 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
     {
         parent_rect = Rectf(Vector2f(0, 0), getRootContainerSize());
     }
-    
+
     const Sizef parent_size = parent_rect.getSize();
-    
+
     Vector2f offset = parent_rect.d_min + CoordConverter::asAbsolute(getArea().d_min, parent_size, false);
 
     switch (getHorizontalAlignment())
@@ -598,7 +613,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
         default:
             break;
     }
-    
+
     switch (getVerticalAlignment())
     {
         case VA_CENTRE:
@@ -616,7 +631,7 @@ Rectf Element::getUnclippedOuterRect_impl(bool skipAllPixelAlignment) const
         offset = Vector2f(CoordConverter::alignToPixels(offset.d_x),
                           CoordConverter::alignToPixels(offset.d_y));
     }
-    
+
     ret.offset(offset);
     return ret;
 }
@@ -681,18 +696,20 @@ void Element::onMoved(ElementEventArgs& e)
     fireEvent(EventMoved, e, EventNamespace);
 }
 
+//----------------------------------------------------------------------------//
 void Element::onHorizontalAlignmentChanged(ElementEventArgs& e)
 {
     notifyScreenAreaChanged();
 
-    fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);   
+    fireEvent(EventHorizontalAlignmentChanged, e, EventNamespace);
 }
-   
+
+//----------------------------------------------------------------------------//
 void Element::onVerticalAlignmentChanged(ElementEventArgs& e)
 {
     notifyScreenAreaChanged();
 
-    fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);   
+    fireEvent(EventVerticalAlignmentChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -722,4 +739,4 @@ void Element::onNonClientChanged(ElementEventArgs& e)
     fireEvent(EventNonClientChanged, e, EventNamespace);
 }
 
-} // End of  CEGUI namespace section
+} // End of CEGUI namespace section
