@@ -323,7 +323,7 @@ public:
         */
         typedef Rectf (Element::*DataGenerator)(bool) const;
 
-        CachedRectf(const Element const* element, DataGenerator generator):
+        CachedRectf(Element const* element, DataGenerator generator):
             d_element(element),
             d_generator(generator),
             // we don't have to initialise d_cachedData here, it will get
@@ -388,7 +388,7 @@ public:
         }
 
     private:
-        const Element const* d_element;
+        Element const* d_element;
         const DataGenerator d_generator;
 
         mutable Rectf d_cachedData;
