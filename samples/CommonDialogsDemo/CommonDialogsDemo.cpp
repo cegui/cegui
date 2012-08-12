@@ -25,62 +25,94 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGuiSample.h"
+#include "SampleBase.h"
 #include "CEGUI/CEGUI.h"
 
+#include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
+
 //----------------------------------------------------------------------------//
-class CommonDialogsDemo : public CEGuiSample
+class CommonDialogsDemo : public Sample
 {
 public:
-    bool initialiseSample();
-    void cleanupSample(void) {}
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    void deinitialise(void) {}
 };
 
 //----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
-{
-    CommonDialogsDemo app;
-    return app.run();
-}
-
-//----------------------------------------------------------------------------//
-bool CommonDialogsDemo::initialiseSample()
+bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
+
+    d_usedFiles = CEGUI::String(__FILE__);
+
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
 
     // load resources and set up system defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaCommonDialogs.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // set up the root window / gui sheet
     WindowManager& winMgr = WindowManager::getSingleton();
     Window* root = winMgr.createWindow("DefaultWindow", "Root");
-    System::getSingleton().getDefaultGUIContext().setRootWindow(root);
+    guiContext->setRootWindow(root);
 
     // create container window for the demo
     FrameWindow* wnd = static_cast<FrameWindow*>(
         winMgr.createWindow("Vanilla/FrameWindow"));
     root->addChild(wnd);
 
-    wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
+    wnd->setAlwaysOnTop(true);
+
+    wnd->setPosition(UVector2(cegui_reldim(0.05f), cegui_reldim( 0.25f)));
     wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
     wnd->setText("Common Dialogs Demo - Main Window");
+    wnd->setCloseButtonEnabled(false);
 
     // Add a colour picker & label
-    Window* colourPickerLabel = winMgr.createWindow("Vanilla/StaticText");
+    Window* colourPickerLabel = winMgr.createWindow("Vanilla/Label");
     wnd->addChild(colourPickerLabel);
-    colourPickerLabel->setSize(USize(UDim(0, 110), UDim(0, 30)));
-    colourPickerLabel->setProperty("FrameEnabled", "False");
-    colourPickerLabel->setProperty("BackgroundEnabled", "False");
-    colourPickerLabel->setText("Colour (click it!):");
-    Window* colourPicker = winMgr.createWindow("Vanilla/ColourPicker");
+    colourPickerLabel->setSize(USize(UDim(0, 270), UDim(0, 30)));
+    colourPickerLabel->setText("Open the colour picker by clicking on the respective box:");
+
+    CEGUI::ColourPicker* colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
     wnd->addChild(colourPicker);
-    colourPicker->setPosition(UVector2(UDim(0,110), UDim(0, 0)));
+    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 40)));
     colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setColour(CEGUI::Colour(1.0f, 0.0f, 0.0f, 0.5f));
+
+    colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
+    wnd->addChild(colourPicker);
+    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 80)));
+    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setColour(CEGUI::Colour(0.0f, 1.0f, 1.0f, 0.0f));
+
+    colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
+    wnd->addChild(colourPicker);
+    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 120)));
+    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setColour(CEGUI::Colour(0.4f, 0.4f, 0.0f, 1.0f));
+
+    colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));
+    wnd->addChild(colourPicker);
+    colourPicker->setPosition(UVector2(UDim(0, 20), UDim(0, 160)));
+    colourPicker->setSize(USize(UDim(0, 100), UDim(0, 30)));
+    colourPicker->setColour(CEGUI::Colour(1.0f, 0.2f, 0.5f, 0.8f));
 
     return true;
 }
 
 //----------------------------------------------------------------------------//
 
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
+{
+    static CommonDialogsDemo sample;
+    return sample;
+}
