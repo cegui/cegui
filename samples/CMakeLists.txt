@@ -4,6 +4,7 @@ file(WRITE ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "")
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlHeader.xml DEMO_META_DATA)
 file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
 
+add_subdirectory(HelloWorld)
 add_subdirectory(WidgetDemo)
 add_subdirectory(EffectsDemo)
 add_subdirectory(FontDemo)
@@ -12,7 +13,7 @@ add_subdirectory(Demo6)
 add_subdirectory(DragDropDemo)
 add_subdirectory(EditboxValidationDemo)
 add_subdirectory(FalagardDemo1)
-add_subdirectory(FirstWindow)
+add_subdirectory(FirstPersonHUD)
 add_subdirectory(GameMenu)
 add_subdirectory(InventoryDemo)
 add_subdirectory(Minesweeper)
@@ -40,3 +41,6 @@ endif()
 file(READ ${CMAKE_CURRENT_SOURCE_DIR}/common/SamplesXmlFooter.xml DEMO_META_DATA)
 file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
 
+# And add it to the install
+install(FILES ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml
+        DESTINATION datafiles/samples/)
