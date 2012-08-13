@@ -91,7 +91,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         d_ogreRoot->addFrameListener(d_frameListener);
 
         // add a listener for OS framework window events (for resizing)
-        d_windowEventListener = new WndEvtListener(&renderer);
+        d_windowEventListener = new WndEvtListener(d_frameListener->getOISMouse());
         WindowEventUtilities::addWindowEventListener(d_window,
                                                      d_windowEventListener);
 
@@ -390,7 +390,13 @@ CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
         return CEGUI::MiddleButton;
     default:
         return CEGUI::LeftButton;
-    }
+   }
+}
+
+//----------------------------------------------------------------------------//
+OIS::Mouse* CEGuiDemoFrameListener::getOISMouse()
+{
+    return d_mouse;
 }
 
 //----------------------------------------------------------------------------//
@@ -402,9 +408,10 @@ CEGUI::MouseButton CEGuiDemoFrameListener::convertOISButtonToCegui(int buttonID)
 ////////////////////////////////////////////////////////////////////////////////
 
 //----------------------------------------------------------------------------//
-WndEvtListener::WndEvtListener(CEGUI::OgreRenderer* renderer) :
-    d_renderer(renderer)
-{}
+WndEvtListener::WndEvtListener(OIS::Mouse* mouse) :
+    d_mouse(mouse)
+{
+}
 
 //----------------------------------------------------------------------------//
 void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
@@ -412,8 +419,13 @@ void WndEvtListener::windowResized(Ogre::RenderWindow* rw)
     CEGUI::System* const sys = CEGUI::System::getSingletonPtr();
     if (sys)
         sys->notifyDisplaySizeChanged(
-            CEGUI::Sizef(static_cast<float>(rw->getWidth()),
-                          static_cast<float>(rw->getHeight())));
+        CEGUI::Sizef(static_cast<float>(rw->getWidth()),
+        static_cast<float>(rw->getHeight())));
+
+
+    const OIS::MouseState& mouseState = d_mouse->getMouseState();
+    mouseState.width = rw->getWidth();
+    mouseState.height = rw->getHeight();
 }
 
 //----------------------------------------------------------------------------//
