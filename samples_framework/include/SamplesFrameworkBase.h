@@ -207,7 +207,7 @@ protected:
         Data fields
     *************************************************************************/
     CEGuiRendererSelector*  d_rendererSelector;     //!< Points to the renderer selector object.
-    CEGuiBaseApplication*   d_sampleApp;            //!< Pointer to the base application object.
+    CEGuiBaseApplication*   d_baseApp;            //!< Pointer to the base application object.
 
     bool                    d_quitting;              //!< Bool defining if application should quit.
 

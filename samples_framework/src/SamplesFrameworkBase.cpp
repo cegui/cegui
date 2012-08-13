@@ -94,7 +94,7 @@
 *************************************************************************/
 SamplesFrameworkBase::SamplesFrameworkBase() :
         d_rendererSelector(0),
-        d_sampleApp(0),
+        d_baseApp(0),
         d_quitting(false),
         d_appWindowWidth(0),
         d_appWindowHeight(0)
@@ -106,10 +106,10 @@ SamplesFrameworkBase::SamplesFrameworkBase() :
 *************************************************************************/
 SamplesFrameworkBase::~SamplesFrameworkBase()
 {
-    if (d_sampleApp)
+    if (d_baseApp)
     {
-        d_sampleApp->cleanup();
-        delete d_sampleApp;
+        d_baseApp->cleanup();
+        delete d_baseApp;
     }
 
     if (d_rendererSelector)
@@ -212,49 +212,55 @@ bool SamplesFrameworkBase::runApplication()
         {
 #ifdef CEGUI_SAMPLES_USE_OGRE
         case OgreGuiRendererType:
-            d_sampleApp = new CEGuiOgreBaseApplication();
+            {
+                CEGuiOgreBaseApplication* ogreBaseApp = new CEGuiOgreBaseApplication();
+                if(!ogreBaseApp->isInitialised())
+                    return false;
+
+                d_baseApp = ogreBaseApp;
+            }
             break;
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D8
         case Direct3D81GuiRendererType:
-            d_sampleApp = new CEGuiD3D81BaseApplication();
+            d_baseApp = new CEGuiD3D81BaseApplication();
             break;
 #endif
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D9
         case Direct3D9GuiRendererType:
-            d_sampleApp = new CEGuiD3D9BaseApplication();
+            d_baseApp = new CEGuiD3D9BaseApplication();
             break;
 #endif // DX9
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D10
         case Direct3D10GuiRendererType:
-            d_sampleApp = new CEGuiD3D10BaseApplication();
+            d_baseApp = new CEGuiD3D10BaseApplication();
             break;
 #endif // DX10
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D11
         case Direct3D11GuiRendererType:
-            d_sampleApp = new CEGuiD3D11BaseApplication();
+            d_baseApp = new CEGuiD3D11BaseApplication();
             break;
 #endif // DX11
 #endif // Win32
 #ifdef CEGUI_SAMPLES_USE_OPENGL
         case OpenGLGuiRendererType:
-			d_sampleApp = new CEGuiOpenGLBaseApplication();
+			d_baseApp = new CEGuiOpenGLBaseApplication();
 			break;
 #endif
 #ifdef CEGUI_SAMPLES_USE_OPENGL3
 		case OpenGL3GuiRendererType:
-			d_sampleApp = new CEGuiOpenGL3BaseApplication();
+			d_baseApp = new CEGuiOpenGL3BaseApplication();
 			break;
 #endif
 #ifdef CEGUI_SAMPLES_USE_IRRLICHT
         case IrrlichtGuiRendererType:
-            d_sampleApp = new CEGuiIrrlichtBaseApplication();
+            d_baseApp = new CEGuiIrrlichtBaseApplication();
             break;
 #endif
 #ifdef CEGUI_SAMPLES_USE_DIRECTFB
         case DirectFBGuiRendererType:
-            d_sampleApp = new CEGuiDirectFBBaseApplication();
+            d_baseApp = new CEGuiDirectFBBaseApplication();
             break;
 #endif
 
@@ -264,15 +270,15 @@ bool SamplesFrameworkBase::runApplication()
         }
 
         // run the base application (which sets up the demo via 'this' and runs it.
-        if (d_sampleApp->execute(this))
+        if (d_baseApp->execute(this))
         {
             // signal that app initialised and ran
             return true;
         }
 
         // sample app did not initialise, delete the object.
-        delete d_sampleApp;
-        d_sampleApp = 0;
+        delete d_baseApp;
+        d_baseApp = 0;
     }
 
     // delete renderer selector object
@@ -289,8 +295,8 @@ bool SamplesFrameworkBase::runApplication()
 *************************************************************************/
 void SamplesFrameworkBase::cleanup()
 {   
-    delete d_sampleApp;
-    d_sampleApp = 0;
+    delete d_baseApp;
+    d_baseApp = 0;
 
 
     if (d_rendererSelector)
