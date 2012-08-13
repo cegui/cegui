@@ -112,6 +112,9 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     // this will be a static, to give a nice app'ish background
     d_root = d_wm->createWindow("WindowsLook/Static");
     d_root->setProperty("FrameEnabled", "false");
+    d_root->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    d_root->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
+
     // root window will take care of hotkeys
     d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
     d_guiContext->setRootWindow(d_root);
