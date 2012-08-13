@@ -350,7 +350,6 @@ void SamplesFramework::renderGUIContexts()
         gui_system.getDefaultGUIContext().draw();
 
         renderSampleGUIContexts();
-
     }
     else
     {

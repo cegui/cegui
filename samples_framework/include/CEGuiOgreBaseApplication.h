@@ -112,6 +112,8 @@ public:
     bool mousePressed(const OIS::MouseEvent &e, OIS::MouseButtonID id);
     bool mouseReleased(const OIS::MouseEvent &e, OIS::MouseButtonID id);
 
+    OIS::Mouse* getOISMouse();
+
 protected:
     // convert an OIS mouse button into a CEGUI mouse button
     CEGUI::MouseButton convertOISButtonToCegui(int buttonID);
@@ -133,12 +135,12 @@ protected:
 //! window event listener class we use to hear abour window resizing
 class WndEvtListener : public Ogre::WindowEventListener
 {
-    CEGUI::OgreRenderer* d_renderer;
-
 public:
-    WndEvtListener(CEGUI::OgreRenderer* renderer);
+    WndEvtListener(OIS::Mouse* mouse);
 
     void windowResized(Ogre::RenderWindow* rw);
+protected:
+    OIS::Mouse* d_mouse;
 };
 
 
