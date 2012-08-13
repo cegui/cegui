@@ -220,9 +220,9 @@ void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
     updateLogo(elapsed);
 }
 //----------------------------------------------------------------------------//
-bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent&)
+bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args)
 {
-   d_sampleApp->renderGUIContexts();
+    renderSingleFrame(static_cast<float>(args.timeSinceLastFrame));
 
     return true;
 }
