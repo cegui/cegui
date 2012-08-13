@@ -332,16 +332,7 @@ void Win32AppHelper::doDirectInputEvents(const Win32AppHelper::DirectInputState&
         {
             if (LOBYTE(devDat.dwData) & 0x80)
             {
-                // force quit on ESCAPE key
-                if (devDat.dwOfs == CEGUI::Key::Escape)
-                {
-                    PostQuitMessage(0);
-                }
-                else
-                {
-                    s_samplesFramework->injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
-                }
-
+                s_samplesFramework->injectKeyDown((CEGUI::Key::Scan)devDat.dwOfs);
             }
             else
             {
