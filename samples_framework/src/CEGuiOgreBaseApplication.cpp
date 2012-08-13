@@ -229,6 +229,13 @@ bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args
 
 //----------------------------------------------------------------------------//
 
+bool CEGuiOgreBaseApplication::isInitialised()
+{
+    return d_initialised;
+}
+
+//----------------------------------------------------------------------------//
+
 ////////////////////////////////////////////////////////////////////////////////
 /*******************************************************************************
     Start of CEGuiDemoFrameListener mehods

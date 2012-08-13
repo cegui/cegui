@@ -112,6 +112,10 @@ public:
     */
     void renderSingleFrame(const float elapsed);
 
+    /* Returns if the renderer (DX or OpenGL) was selected and the initialisation
+    was subsequently finished */
+    bool isInitialised();
+
 protected:
     //! name of env var that holds the path prefix to the data files.
     static const char DATAPATH_VAR_NAME[];

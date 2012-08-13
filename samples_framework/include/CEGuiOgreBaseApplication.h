@@ -67,6 +67,8 @@ public:
     //! Ogre frame listener callback that will trigger our specific context rendering
     bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
+    bool isInitialised();
+
 protected:
     // override from base class since we use a non-default resource provider.
     void initialiseResourceGroupDirectories();
