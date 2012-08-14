@@ -56,6 +56,8 @@ public:
 
     virtual void onEnteringSample();
 
+    virtual void update(float timeSinceLastUpdate);
+
 
 protected:
     void setupWindows();
@@ -71,8 +73,6 @@ protected:
     void resetAnimations();
     void startEntranceAnimations();
 
-    void update(float passedTime);
-
     void updateIntroText();
     void updateLoginWelcomeText(float passedTime);
     void updateLoginStartButtonText(float passedTime);
@@ -81,7 +81,6 @@ protected:
     void enableNavigationBarElements();
     void disableNavigationBarElements();
 
-    bool handleRootWindowUpdate(const CEGUI::EventArgs& args);
     bool handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args);
     bool handleInnerPartStartClickAreaClick(const CEGUI::EventArgs& args);
     bool handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args);

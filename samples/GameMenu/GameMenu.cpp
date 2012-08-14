@@ -52,6 +52,7 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("GameMenu.scheme");
+    SchemeManager::getSingleton().createFromFile("Generic.scheme");
     d_guiContext->getMouseCursor().setDefaultImage("GameMenuImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
@@ -282,17 +283,17 @@ void GameMenuDemo::onEnteringSample()
     makeAllSelectionIconsInvisible();
 }
 
-void GameMenuDemo::update(float passedTime)
+void GameMenuDemo::update(float timeSinceLastUpdate)
 {
-    d_timeSinceStart += passedTime;
+    d_timeSinceStart += timeSinceLastUpdate;
 
     updateIntroText();
     if(d_loginWasAccepted)
     {
-        d_timeSinceLoginAccepted += passedTime;
+        d_timeSinceLoginAccepted += timeSinceLastUpdate;
 
-        updateLoginWelcomeText(passedTime);
-        updateLoginStartButtonText(passedTime);
+        updateLoginWelcomeText(timeSinceLastUpdate);
+        updateLoginStartButtonText(timeSinceLastUpdate);
     }
 
     if(d_timeSinceStart >= s_loginDisplayStartDelay && !d_loginContainer->isVisible())
@@ -303,16 +304,6 @@ void GameMenuDemo::update(float passedTime)
         disableInteractivePlanetElements();
         disableNavigationBarElements();
     }
-}
-
-
-bool GameMenuDemo::handleRootWindowUpdate(const CEGUI::EventArgs& args)
-{
-    const CEGUI::UpdateEventArgs& updateArgs = static_cast<const CEGUI::UpdateEventArgs&>(args);
-    float passedTime = updateArgs.d_timeSinceLastFrame;
-    update(passedTime);
-
-    return false;
 }
 
 bool GameMenuDemo::handleLoginAcceptButtonClicked(const CEGUI::EventArgs& args)
@@ -627,8 +618,6 @@ void GameMenuDemo::setupWindows()
 
     d_navigationTravelIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");
     d_navigationSelectionIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NaviBotSelectionIcon");
-
-    d_root->subscribeEvent(CEGUI::Window::EventUpdated, Event::Subscriber(&GameMenuDemo::handleRootWindowUpdate, this));
 
     d_navigationSelectionIcon->subscribeEvent(CEGUI::AnimationInstance::EventAnimationStarted, Event::Subscriber(&GameMenuDemo::handleNaviSelectionIconAnimStart, this));
 
