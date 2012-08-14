@@ -1,0 +1,11 @@
+<?xml version="1.0" ?>
+<GUIScheme version="5" name="Generic">
+<Imageset filename="HUDDemo.imageset" />
+	<LookNFeel filename="Generic.looknfeel" />
+	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
+
+	<FalagardMapping windowType="Generic/Label" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/Label" />
+    <FalagardMapping windowType="Generic/Image" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/Image" />
+	
+    </GUIScheme>
+
