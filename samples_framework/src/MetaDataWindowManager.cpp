@@ -47,6 +47,7 @@ void MetaDataWindowManager::init()
     d_wndSummary = d_root->getChild("Summary");
     d_wndDescription = d_root->getChild("Description");
     d_wndUsedFiles = d_root->getChild("UsedFiles");
+    d_wndCredits = d_root->getChild("Credits");
 }
 
 
@@ -62,4 +63,5 @@ void MetaDataWindowManager::setSampleInfo(SampleData* sampleData)
     d_wndSampleType->setText(sampleData->getSampleTypeString());
     d_wndDescription->setText(sampleData->getDescription());
     d_wndUsedFiles->setText(sampleData->getUsedFilesString());
+    d_wndCredits->setText(sampleData->getCredits());
 }
