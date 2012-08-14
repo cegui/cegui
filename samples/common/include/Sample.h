@@ -41,6 +41,7 @@ public:
     virtual void deinitialise() = 0;
 
     virtual void onEnteringSample() {}
+    virtual void update(float timeSinceLastUpdate) {}
 
     const CEGUI::String& getUsedFilesString() {return d_usedFiles;}
 
