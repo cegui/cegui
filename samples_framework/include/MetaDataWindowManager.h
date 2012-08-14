@@ -57,6 +57,7 @@ private:
     CEGUI::Window* d_wndSummary;
     CEGUI::Window* d_wndDescription;
     CEGUI::Window* d_wndUsedFiles;
+    CEGUI::Window* d_wndCredits;
 };
 
 #endif
