@@ -53,7 +53,7 @@ class SampleData
 {
 public:
     SampleData(CEGUI::String sampleName, CEGUI::String summary,
-        CEGUI::String description, SampleType sampleTypeEnum);
+        CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
     virtual ~SampleData();
 
     virtual void initialise(int width, int height);
@@ -69,6 +69,7 @@ public:
     virtual void clearRTTTexture();
 
     virtual void onEnteringSample() = 0;
+    virtual void update(float timeSinceLastUpdate) {};
 
     void setSampleWindow(CEGUI::Window* sampleWindow);
     CEGUI::Window* getSampleWindow();
@@ -78,6 +79,7 @@ public:
     CEGUI::String getSampleTypeString();
     CEGUI::String getDescription();
     CEGUI::String getUsedFilesString();
+    CEGUI::String getCredits();
 
 protected:
     CEGUI::String           d_name;
@@ -85,6 +87,7 @@ protected:
     CEGUI::String           d_description;
     SampleType              d_type;
     CEGUI::String           d_usedFilesString;
+    CEGUI::String           d_credits;
 
     CEGUI::Window*          d_sampleWindow;
 
@@ -97,7 +100,7 @@ class SampleDataModule : public SampleData
 {
 public:
     SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, SampleType sampleTypeEnum);
+    CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
     virtual ~SampleDataModule();
 
     virtual void getSampleInstanceFromDLL();
@@ -106,6 +109,8 @@ public:
     virtual void deinitialise();
 
     virtual void onEnteringSample();
+
+    virtual void update(float timeSinceLastUpdate);
 
 private:
 

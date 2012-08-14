@@ -11,6 +11,7 @@
         <xsd:attribute name="type" type="sampsSampleTypeEnum" use="required" />
         <xsd:attribute name="summary" type="xsd:string" use="optional"  default="" />
         <xsd:attribute name="description" type="xsd:string" use="optional"  default="" />
+        <xsd:attribute name="credits" type="xsd:string" use="optional"  default="" />
 	</xsd:complexType>
     <xsd:simpleType name="sampsSampleTypeEnum">
         <xsd:restriction base="xsd:string">

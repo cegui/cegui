@@ -42,6 +42,8 @@ const String SampleDataHandler::ElementName("SampleDefinition");
 const String SampleDataHandler::NameAttribute("sampleName");
 const String SampleDataHandler::SummaryAttribute("summary");
 const String SampleDataHandler::DescriptionAttribute("description");
+const String SampleDataHandler::CreditsAttribute("credits");
+
 
 const String SampleDataHandler::SampleTypeAttribute("sampleType");
 const String SampleDataHandler::SampleTypeCppModule("C++ Module");
@@ -105,6 +107,7 @@ SampleDataHandler::SampleDataHandler(
     const String summary(attributes.getValueAsString(SummaryAttribute));
     const String description(attributes.getValueAsString(DescriptionAttribute));
     const String sampleType(attributes.getValueAsString(SampleTypeAttribute));
+    const String credits(attributes.getValueAsString(CreditsAttribute));
 
     CEGUI_LOGINSANE(
         "Defining sample named: " +
@@ -114,7 +117,9 @@ SampleDataHandler::SampleDataHandler(
         "  Description: " +
         description +
         "  Sample Type: " +
-        sampleType
+        sampleType +
+        "  Credits: " +
+        credits
         );
 
     SampleType sampleTypeEnum;
@@ -126,7 +131,7 @@ SampleDataHandler::SampleDataHandler(
     else
         sampleTypeEnum = ST_Lua;
 
-    d_samplesFramework->addSampleDataCppModule(sampleName, summary, description, sampleTypeEnum);
+    d_samplesFramework->addSampleDataCppModule(sampleName, summary, description, sampleTypeEnum, credits);
 }
 
 //----------------------------------------------------------------------------//

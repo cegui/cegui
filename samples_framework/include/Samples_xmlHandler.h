@@ -67,11 +67,13 @@ public:
     static const String NameAttribute;
     static const String SummaryAttribute;
     static const String DescriptionAttribute;
+    static const String CreditsAttribute;
 
     static const String SampleTypeAttribute;
     static const String SampleTypeCppModule;
     static const String SampleTypeLua;
     static const String SampleTypePython;
+
 
     SampleDataHandler(const XMLAttributes& attributes,
                                const String& name_prefix,

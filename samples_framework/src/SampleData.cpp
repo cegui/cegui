@@ -51,11 +51,12 @@ typedef Sample& (*getSampleInstance)();
 #define GetSampleInstanceFuncName "getSampleInstance"
 
 SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, SampleType sampleTypeEnum)
+    CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits)
     : d_name(sampleName),
     d_summary(summary),
     d_description(description),
     d_type(sampleTypeEnum),
+    d_credits(credits),
     d_guiContext(0),
     d_textureTarget(0),
     d_textureTargetImage(0),
@@ -77,6 +78,11 @@ CEGUI::String SampleData::getName()
 CEGUI::String SampleData::getSummary()
 {
     return "Summary:\n" + d_summary;
+}
+
+CEGUI::String SampleData::getCredits()
+{
+    return "Credits:\n" + d_credits;
 }
 
 CEGUI::String SampleData::getSampleTypeString()
@@ -208,8 +214,8 @@ void SampleData::setTextureTargetImageArea(float height, float width)
 
 
 SampleDataModule::SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, SampleType sampleTypeEnum)
-    : SampleData(sampleName, summary, description ,sampleTypeEnum)
+    CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits)
+    : SampleData(sampleName, summary, description, sampleTypeEnum, credits)
 {
 }
 
@@ -251,7 +257,12 @@ void SampleDataModule::getSampleInstanceFromDLL()
     d_sample =  &(functionPointerGetSample());
 }
 
- void SampleDataModule::onEnteringSample()
- {
-     d_sample->onEnteringSample();
- }
+void SampleDataModule::onEnteringSample()
+{
+    d_sample->onEnteringSample();
+}
+
+void SampleDataModule::update(float timeSinceLastUpdate)
+{
+    d_sample->update(timeSinceLastUpdate);
+}
