@@ -433,8 +433,8 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
 
     static const CEGUI::Colour c(1, 1, 1, 1);
 
-    int uvTop = window.getTextureTarget().isRenderingInverted() ? 1 : 0;
-    int uvBot = window.getTextureTarget().isRenderingInverted() ? 0 : 1;
+    float uvTop = window.getTextureTarget().isRenderingInverted() ? 1.0f : 0.0f;
+    float uvBot = window.getTextureTarget().isRenderingInverted() ? 0.0f : 1.0f;
 
     const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
     const Vector2f& currentTopLeft = d_currentPosition ;
@@ -447,34 +447,34 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         // vertex 0 - top left
         d_vertices[0].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
         d_vertices[0].colour_val = c;
-        d_vertices[0].tex_coords = Vector2f(0, uvTop);
+        d_vertices[0].tex_coords = Vector2f(0.0f, uvTop);
 
         // vertex 1 - bottom left
         d_vertices[1].position   = Vector3f(currentTopLeft.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
         d_vertices[1].colour_val = c;
-        d_vertices[1].tex_coords = Vector2f(0, uvBot);
+        d_vertices[1].tex_coords = Vector2f(0.0f, uvBot);
 
         // vertex 2 - bottom right
         d_vertices[2].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
         d_vertices[2].colour_val = c;
-        d_vertices[2].tex_coords = Vector2f(1, uvBot);
+        d_vertices[2].tex_coords = Vector2f(1.0f, uvBot);
 
         // second triangle
 
         // vertex 3 - bottom right
         d_vertices[3].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
         d_vertices[3].colour_val = c;
-        d_vertices[3].tex_coords = Vector2f(1, uvBot);
+        d_vertices[3].tex_coords = Vector2f(1.0f, uvBot);
 
         // vertex 4 - top right
         d_vertices[4].position   = Vector3f(currentBottomRight.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
         d_vertices[4].colour_val = c;
-        d_vertices[4].tex_coords = Vector2f(1, uvTop);
+        d_vertices[4].tex_coords = Vector2f(1.0f, uvTop);
 
         // vertex 5 - top left
         d_vertices[5].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
         d_vertices[5].colour_val = c;
-        d_vertices[5].tex_coords = Vector2f(0, uvTop);
+        d_vertices[5].tex_coords = Vector2f(0.0f, uvTop);
     }
 
     geometry.setActiveTexture(&tex);
@@ -639,7 +639,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     aliasingFrameWnd->setSizingEnabled(true);
     aliasingFrameWnd->setCloseButtonEnabled(false);
     aliasingFrameWnd->setTitleBarEnabled(true);
-    aliasingFrameWnd->setText("Aliasing Testimage");
+    aliasingFrameWnd->setText("Elastic Window - Aliasing Testimage");
 
     // Image window setup
     aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
