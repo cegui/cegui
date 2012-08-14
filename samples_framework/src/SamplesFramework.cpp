@@ -155,9 +155,9 @@ void SamplesFramework::loadSamplesDataFromXML(const String& filename)
 }
 
 
-void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum)
+void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits)
 {
-    SampleData* sampleData = new SampleDataModule(sampleName, summary, description, sampleTypeEnum);
+    SampleData* sampleData = new SampleDataModule(sampleName, summary, description, sampleTypeEnum, credits);
 
     addSample(sampleData);
 }
@@ -308,11 +308,13 @@ void SamplesFramework::update(float passedTime)
             CEGUI::GUIContext& defaultGUIContext(CEGUI::System::getSingleton().getDefaultGUIContext());
             defaultGUIContext.injectTimePulse(passedTime);
 
-            updateSampleGUIContexts(passedTime);
+            updateSamples(passedTime);
         }
         else
         {
             d_selectedSampleData->getGuiContext()->injectTimePulse(passedTime);
+
+            d_selectedSampleData->update(passedTime);
         }
     }
 
@@ -533,7 +535,7 @@ void SamplesFramework::initialisationFinalisation()
     }
 }
 
-void SamplesFramework::updateSampleGUIContexts(float passedTime)
+void SamplesFramework::updateSamples(float passedTime)
 {
     std::vector<SampleData*>::iterator iter = d_samples.begin();
     std::vector<SampleData*>::iterator end = d_samples.end();
@@ -543,6 +545,8 @@ void SamplesFramework::updateSampleGUIContexts(float passedTime)
 
         GUIContext* guiContext = sampleData->getGuiContext();
         guiContext->injectTimePulse(passedTime);
+
+        sampleData->update(passedTime);
     }
 }
 
@@ -557,6 +561,11 @@ void SamplesFramework::renderSampleGUIContexts()
         if(!sampleData->getGuiContext())
             continue;
 
+        CEGUI::Window* sampleWindow = sampleData->getSampleWindow();
+
+        if(!areWindowsIntersecting(d_samplesWinMgr->getWindow(), sampleWindow))
+            continue;
+
         bool isContextDirty = sampleData->getGuiContext()->isDirty();
         if(isContextDirty)
         {
@@ -565,6 +574,8 @@ void SamplesFramework::renderSampleGUIContexts()
 
             sampleData->getSampleWindow()->invalidate();
         }
+
+
     }
 }
 
@@ -593,4 +604,16 @@ void SamplesFramework::displaySampleLoadProgress(int sampleNumber)
     d_loadScreenChunkProgressText->setText(progressText);
 
     d_loadingProgressBar->setProgress( (sampleNumber + 3.f) / (totalNum - 1.0f) );
+}
+
+bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1, CEGUI::Window* window2)
+{
+    const CEGUI::Rectf& clipRect1 = window1->getOuterRectClipper();
+    const CEGUI::Rectf& clipRect2 = window2->getOuterRectClipper();
+
+    return  clipRect1.left() < clipRect2.right()
+        && clipRect1.right() > clipRect2.left()
+        && clipRect1.top() < clipRect2.bottom()
+        && clipRect1.bottom() > clipRect2.top()
+        ;
 }

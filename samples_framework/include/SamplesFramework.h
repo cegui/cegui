@@ -58,7 +58,7 @@ public:
     bool initialise();
     void deinitialise();
 
-    void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum);
+    void addSampleDataCppModule(CEGUI::String sampleName, CEGUI::String summary, CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits);
 
     void handleSampleSelection(CEGUI::Window* sampleWindow);
     void handleStartDisplaySample(CEGUI::Window* sampleWindow);
@@ -98,12 +98,14 @@ protected:
 
     void stopDisplaySample();
 
-    void updateSampleGUIContexts(float passedTime);
+    void updateSamples(float passedTime);
     bool updateInitialisationStep();
 
     void displaySampleBrowserLayoutLoadProgress();
     bool handleSampleExitButtonClicked(const CEGUI::EventArgs& args);
-       void renderSampleGUIContexts();
+    void renderSampleGUIContexts();
+
+    bool areWindowsIntersecting(CEGUI::Window* window1, CEGUI::Window* window2);
 
     CEGUI::Window*              d_root;
 
