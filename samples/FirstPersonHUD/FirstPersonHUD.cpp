@@ -33,7 +33,7 @@ author:     Lukas E Meindl
 using namespace CEGUI;
 
 
-bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
+bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
@@ -46,7 +46,6 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
     d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
 
     d_guiContext->setRootWindow(d_root);
-  
 
     return true;
 }
@@ -54,14 +53,22 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
 Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void GameMenuDemo::deinitialise()
+void HUDDemo::deinitialise()
 {
 }
+
+
+void HUDDemo::onEnteringSample()
+{
+
+}
+
+
 /*************************************************************************
 Define the module function that returns an instance of the sample
 *************************************************************************/
 extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    static GameMenuDemo sample;
+    static HUDDemo sample;
     return sample;
 }

@@ -37,7 +37,7 @@ namespace CEGUI
 
 
 // Sample class
-class GameMenuDemo : public Sample
+class HUDDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
@@ -46,6 +46,7 @@ public:
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
+    virtual void onEnteringSample();
 
 protected:
     CEGUI::GUIContext* d_guiContext;
