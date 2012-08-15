@@ -30,11 +30,14 @@ author:     Lukas E Meindl
 
 #include "SampleBase.h"
 
+#include <vector>
+
 namespace CEGUI
 {
     class GUIContext;
 }
 
+struct GamePlate;
 
 // Sample class
 class HUDDemo : public Sample
@@ -43,15 +46,43 @@ public:
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
+    void setupMouseCursor();
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
     virtual void onEnteringSample();
 
+    virtual void update(float timeSinceLastUpdate);
+
+    CEGUI::Window* spawnPlate();
+
+    static const CEGUI::String s_imageNamePlate;
+    static const CEGUI::String s_imageNameBread;
+    static const CEGUI::String s_imageNamePoo;
+    static const CEGUI::String s_imageNamePrizza;
+    static const CEGUI::String s_imageNameSteak;
+    static const CEGUI::String s_imageNameVegPeople;
+    static const CEGUI::String s_imageNameVegFruits;
+
+
 protected:
+    static const CEGUI::String& getRandomGameImage();
+
+    void updateMouseCursor();
+    void updatePlates(float timeSinceLastUpdate);
+
+    bool handlePlateWindowClicked(const CEGUI::EventArgs& args);
+
+    void updateScore(int change);
+
     CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
 
+    CEGUI::Window* d_mouseCursorWnd;
+
+    int d_score;
+
+    std::vector<GamePlate*> d_gamePlates;
 };
 
 #endif

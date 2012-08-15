@@ -1,0 +1,10 @@
+<Imageset autoScaled="vertical" imagefile="HUDDemo.png" name="HUDDemo" nativeHorzRes="1280" nativeVertRes="720" version="2">
+    <Image height="162" name="Poo" width="162" xPos="0" yPos="7" />
+    <Image height="344" name="Spoon" width="344" xPos="918" yPos="739" />
+    <Image height="146" name="Plate" width="483" xPos="779" yPos="1113" />
+    <Image height="300" name="Bread" width="300" xPos="980" yPos="37" />
+    <Image height="260" name="Prizza" width="260" xPos="35" yPos="283" />
+    <Image height="310" name="Steak" width="310" xPos="937" yPos="351" />
+    <Image height="260" name="VegetablePeople" width="260" xPos="20" yPos="632" />
+    <Image height="360" name="VegetablesAndFruits" width="360" xPos="3" yPos="920" />
+</Imageset>
