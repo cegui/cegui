@@ -1,0 +1,6 @@
+<?xml version="1.0" ?>
+<GUIScheme version="5" name="HUDDemo">
+	<Imageset filename="HUDDemo.imageset" />
+    <Font filename="Jura-10.font" />
+</GUIScheme>
+
