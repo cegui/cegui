@@ -725,7 +725,7 @@ void GameMenuDemo::updateLoginStartButtonText(float passedTime)
     if(d_timeSinceLoginAccepted <= 0.0f)
         return;
 
-    static const float writeDelay = 3.2f;
+    static const float writeDelay = 1.7f;
     static const CEGUI::String displayText = "Proceed by selecting a planet";
 
     CEGUI::String finalText;
