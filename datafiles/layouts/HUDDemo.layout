@@ -6,19 +6,20 @@
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Property name="MousePassThroughEnabled" value="True" />
         <Window type="Vanilla/StaticText" name="ScoreCounter" >
-            <Property name="Area" value="{{0,0},{0.00555556,0},{0.142188,0},{0.0416667,0}}" />
-            <Property name="Font" value="Jura-10" />
+            <Property name="Area" value="{{0,0},{0.00555556,0},{0.147656,0},{0.0444444,0}}" />
+            <Property name="Font" value="DejaVuSans-12" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="HorzFormatting" value="RightAligned" />
-            <Property name="HorzScrollPageSize" value="170" />
-            <Property name="VertScrollPageSize" value="14" />
+            <Property name="HorzScrollPageSize" value="177" />
+            <Property name="VertScrollPageSize" value="16" />
             <Property name="HorizontalAlignment" value="Centre" />
             <Window type="Generic/Label" name="Label" >
                 <Property name="Area" value="{{0.05,0},{0,0},{1,0},{1,0}}" />
-                <Property name="Font" value="Jura-10" />
+                <Property name="Font" value="Jura-13" />
                 <Property name="Text" value="Score:" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="HorzFormatting" value="LeftAligned" />
+                <Property name="NormalTextColour" value="FFFFFFFF" />
             </Window>
         </Window>
     </Window>

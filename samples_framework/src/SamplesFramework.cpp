@@ -41,6 +41,7 @@ author:     Lukas E Meindl
 
 
 #include <string>
+#include <iostream>
 
 using namespace CEGUI;
 
@@ -305,10 +306,10 @@ void SamplesFramework::update(float passedTime)
 
         if(!d_selectedSampleData)
         {
+            updateSamples(passedTime);
+
             CEGUI::GUIContext& defaultGUIContext(CEGUI::System::getSingleton().getDefaultGUIContext());
             defaultGUIContext.injectTimePulse(passedTime);
-
-            updateSamples(passedTime);
         }
         else
         {
@@ -348,10 +349,10 @@ void SamplesFramework::renderGUIContexts()
 {
     if(!d_selectedSampleData)
     {
+        renderSampleGUIContexts();
+
         CEGUI::System& gui_system(CEGUI::System::getSingleton());
         gui_system.getDefaultGUIContext().draw();
-
-        renderSampleGUIContexts();
     }
     else
     {
@@ -574,8 +575,6 @@ void SamplesFramework::renderSampleGUIContexts()
 
             sampleData->getSampleWindow()->invalidate();
         }
-
-
     }
 }
 

@@ -54,6 +54,7 @@ public:
 
     virtual void update(float timeSinceLastUpdate);
 
+    void delayDestroyWindows();
     CEGUI::Window* spawnPlate();
 
     static const CEGUI::String s_imageNamePlate;
@@ -72,8 +73,10 @@ protected:
     void updatePlates(float timeSinceLastUpdate);
 
     bool handlePlateWindowClicked(const CEGUI::EventArgs& args);
+    bool handleScorePopupAnimationEnded(const CEGUI::EventArgs& args);
 
-    void updateScore(int change);
+    void updateScoreWindow();
+    void createScorePopup(const CEGUI::Vector2<float>& mousePos, int points);
 
     CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
@@ -83,6 +86,7 @@ protected:
     int d_score;
 
     std::vector<GamePlate*> d_gamePlates;
+    std::vector<CEGUI::Window*> d_delayDestroyWindows;
 };
 
 #endif
