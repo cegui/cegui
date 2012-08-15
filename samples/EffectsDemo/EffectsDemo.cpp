@@ -170,6 +170,8 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     const CEGUI::MouseCursor& cursor = d_window->getGUIContext().getMouseCursor();
 
+    bool changed = false;
+
     for (size_t y = 0; y < ds_yPivotCount; ++y)
     {
         for (size_t x = 0; x < ds_xPivotCount; ++x)
@@ -192,13 +194,18 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
             d_pivotVelocities[x][y] *= pow(0.00001f, elapsed);
             d_pivotVelocities[x][y] += delta * (speed * elapsed);
+
+            const Vector2f old_pivot(d_pivots[x][y]);
             d_pivots[x][y] += d_pivotVelocities[x][y] * elapsed;
+            changed |= (old_pivot != d_pivots[x][y]);
         }
     }
 
     // note we just need system to redraw the geometry; we do not need a
     // full redraw of all window/widget content - which is unchanged.
-    d_window->getGUIContext().markAsDirty();
+    if (changed)
+        d_window->getGUIContext().markAsDirty();
+
     return false;
 }
 
@@ -504,11 +511,16 @@ bool ElasticWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& wi
     const float speed = 300.0f;
     d_currentVelocity *= pow(0.00001f, elapsed);
     d_currentVelocity += delta * (speed * elapsed);
+
+    const Vector2f old_position(d_currentPosition);
     d_currentPosition += d_currentVelocity * elapsed;
+    const bool changed = d_currentPosition != old_position;
 
     // note we just need system to redraw the geometry; we do not need a
     // full redraw of all window/widget content - which is unchanged.
-    d_window->getGUIContext().markAsDirty();
+    if (changed)
+        d_window->getGUIContext().markAsDirty();
+
     return false;
 }
 
