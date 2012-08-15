@@ -60,7 +60,10 @@ GamePlate::GamePlate(HUDDemo* hudDemo)
     if(d_isComingFromRight)
     {
         d_window->setHorizontalAlignment(HA_RIGHT);
+        d_window->setPosition(d_window->getPosition() + CEGUI::UVector2(cegui_reldim(0.2f), cegui_absdim(0.0f)));
     }
+    else
+        d_window->setPosition(d_window->getPosition() + CEGUI::UVector2(cegui_reldim(-0.2f), cegui_absdim(0.0f)));
 }
 
 GamePlate::~GamePlate()
@@ -72,11 +75,11 @@ GamePlate::~GamePlate()
 void GamePlate::update(float timeSinceLastUpdate)
 {
     CEGUI::UVector2 positionOffset;
-    
+
     if(d_isComingFromRight)
-        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * -0.05f), cegui_absdim(0.f));
+        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * -0.11f), cegui_absdim(0.f));
     else
-        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * 0.05f), cegui_absdim(0.f));
+        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * 0.11f), cegui_absdim(0.f));
 
     d_window->setPosition(d_window->getPosition() + positionOffset);
 
@@ -84,12 +87,12 @@ void GamePlate::update(float timeSinceLastUpdate)
 
     if(d_isComingFromRight)
     {
-        if(position.d_x.d_scale < -1.5f)
+        if(position.d_x.d_scale < -1.2f)
             d_isDestroyed = true;
     }
     else
     {
-        if(position.d_x.d_scale > 1.5f)
+        if(position.d_x.d_scale > 1.2f)
             d_isDestroyed = true;
     }
 }
@@ -103,9 +106,9 @@ int GamePlate::getPoints()
     if(objectImage.compare(HUDDemo::s_imageNameBread) == 0)
         return 2;
     else if(objectImage.compare(HUDDemo::s_imageNamePoo) == 0)
-        return -3;
+        return -6;
     else if(objectImage.compare(HUDDemo::s_imageNameSteak) == 0)
-        return -8;
+        return -13;
     else if(objectImage.compare(HUDDemo::s_imageNamePrizza) == 0)
         return 3;
     else if(objectImage.compare(HUDDemo::s_imageNameVegPeople) == 0)
@@ -135,16 +138,32 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
 
+    FontManager::getSingleton().createFromFile("DejaVuSans-14.font");
+    FontManager::getSingleton().createFromFile("Jura-13.font");
+
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
     // Load the HUDDemo Layout
     d_root = winMgr.loadLayoutFromFile("HUDDemo.layout");
-    d_guiContext->setRootWindow(d_root);
+
+    CEGUI::Window* bg = winMgr.createWindow("Generic/Image");
+    if(!ImageManager::getSingleton().isDefined("HUDBackground"))
+        ImageManager::getSingleton().addFromImageFile("HUDBackground", "HUDBackground.jpg");
+    bg->setProperty("Image", "HUDBackground");
+    bg->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    bg->setAspectMode(CEGUI::AM_EXPAND);
+    bg->setAspectRatio(1.5f);
+    bg->setMousePassThroughEnabled(true);
+    bg->addChild(d_root);
+
+    d_guiContext->setRootWindow(bg);
+
 
     setupMouseCursor();
 
     srand(static_cast<unsigned int >(time(0)));
 
     d_score = 0;
+    updateScoreWindow();
 
     return true;
 }
@@ -167,6 +186,7 @@ void HUDDemo::deinitialise()
 void HUDDemo::onEnteringSample()
 {
     d_score = 0;
+    updateScoreWindow();
 }
 
 void HUDDemo::update(float timeSinceLastUpdate)
@@ -174,17 +194,20 @@ void HUDDemo::update(float timeSinceLastUpdate)
     static float timeSinceLastSpawn(0.0f);
 
     timeSinceLastSpawn += timeSinceLastUpdate;
- 
+
     updateMouseCursor();
 
-    
+
     if(timeSinceLastSpawn> 1.2f)
     {
         d_gamePlates.push_back(new GamePlate(this));
         timeSinceLastSpawn -= 1.2f;
     }
 
-   updatePlates(timeSinceLastUpdate);
+    updatePlates(timeSinceLastUpdate);
+
+    delayDestroyWindows();
+
 }
 
 void HUDDemo::setupMouseCursor()
@@ -195,7 +218,7 @@ void HUDDemo::setupMouseCursor()
     d_mouseCursorWnd->setProperty("Image", "HUDDemo/Spoon");
     d_mouseCursorWnd->setAspectMode(CEGUI::AM_EXPAND);
     d_mouseCursorWnd->setAspectRatio(1.f);
-    d_mouseCursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.05f)));
+    d_mouseCursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_mouseCursorWnd->setAlwaysOnTop(true);
     d_mouseCursorWnd->setMousePassThroughEnabled(true);
     d_root->addChild(d_mouseCursorWnd);
@@ -222,9 +245,11 @@ CEGUI::Window* HUDDemo::spawnPlate()
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* plateRoot = winMgr.createWindow("DefaultWindow");
-    plateRoot->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.12f)));
+    plateRoot->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.16f)));
     plateRoot->setAspectMode(CEGUI::AM_EXPAND);
     plateRoot->setAspectRatio(1.0f);
+    plateRoot->setRiseOnClickEnabled(false);
+    plateRoot->setPixelAligned(false);
     plateRoot->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
     d_root->addChild(plateRoot);
 
@@ -288,6 +313,9 @@ void HUDDemo::updatePlates(float timeSinceLastUpdate)
     {
         GamePlate* currentPlate = d_gamePlates[i];
 
+        //CEGUI bug: this shouldnt be necessary
+        currentPlate->d_window->invalidate();
+
         currentPlate->update(timeSinceLastUpdate);
         if(currentPlate->d_isDestroyed)
         {
@@ -302,33 +330,84 @@ void HUDDemo::updatePlates(float timeSinceLastUpdate)
 
 }
 
-void HUDDemo::updateScore(int change)
+void HUDDemo::updateScoreWindow()
 {
-    d_score += change;
-
     CEGUI::Window* scoreWnd = d_root->getChild("ScoreCounter");
     scoreWnd->setText(CEGUI::PropertyHelper<int>::toString(d_score));
 }
 
 bool HUDDemo::handlePlateWindowClicked(const CEGUI::EventArgs& args)
 {
-    const CEGUI::WindowEventArgs& winArgs = static_cast<const CEGUI::WindowEventArgs&>(args);
-    
+    const CEGUI::MouseEventArgs& mouseArgs = static_cast<const CEGUI::MouseEventArgs&>(args);
+
 
     for(unsigned int i = 0; i < d_gamePlates.size(); ++i)
     {
         GamePlate* gamePlate = d_gamePlates[i];
 
-        if(gamePlate->d_window == winArgs.window)
+        if(gamePlate->d_window == mouseArgs.window)
         {
-            updateScore(gamePlate->getPoints());
+            int points = gamePlate->getPoints();
+            d_score += points;
+            updateScoreWindow();
+
             gamePlate->d_isDestroyed = true;
+            createScorePopup(mouseArgs.position, points);
         }
     }
 
     return false;
 }
 
+void HUDDemo::createScorePopup(const CEGUI::Vector2<float>& mousePos, int points)
+{
+    CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
+
+    CEGUI::Window* popupWindow = winMgr.createWindow("HUDDemo/PopupLabel");
+    d_root->addChild(popupWindow);
+    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(mousePos.d_x), cegui_absdim(mousePos.d_y)));
+    popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
+    popupWindow->setRiseOnClickEnabled(false);
+    popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&HUDDemo::handleScorePopupAnimationEnded, this));
+    popupWindow->setFont("DejaVuSans-14");
+    popupWindow->setPixelAligned(false);
+
+    popupWindow->setPosition(popupWindow->getPosition() + CEGUI::UVector2(cegui_reldim(0.03f), cegui_reldim(-0.02f)));
+
+    if(points < 0)
+        popupWindow->setProperty("NormalTextColour", "FFDD0000");
+    else
+    {
+        popupWindow->setText( "+" + popupWindow->getText());
+        popupWindow->setProperty("NormalTextColour", "FF00CC00");
+    }
+
+    CEGUI::EventArgs args;
+    popupWindow->fireEvent("StartAnimation", args);
+}
+
+bool HUDDemo::handleScorePopupAnimationEnded(const CEGUI::EventArgs& args)
+{
+    const CEGUI::AnimationEventArgs& animArgs = static_cast<const CEGUI::AnimationEventArgs&>(args);
+
+    CEGUI::Window* window = static_cast<CEGUI::Window*>( animArgs.instance->getTarget());
+    d_delayDestroyWindows.push_back(window);
+
+    return false;
+}
+
+void HUDDemo::delayDestroyWindows()
+{
+    CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
+
+    while(!d_delayDestroyWindows.empty())
+    {
+        CEGUI::Window* curWindow = d_delayDestroyWindows.back();
+        winMgr.destroyWindow(curWindow);
+
+        d_delayDestroyWindows.pop_back();
+    }
+}
 /*************************************************************************
 Define the module function that returns an instance of the sample
 *************************************************************************/
