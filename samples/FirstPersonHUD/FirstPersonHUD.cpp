@@ -208,6 +208,7 @@ void HUDDemo::update(float timeSinceLastUpdate)
 
     delayDestroyWindows();
 
+    d_guiContext->markAsDirty();
 }
 
 void HUDDemo::setupMouseCursor()
@@ -312,9 +313,6 @@ void HUDDemo::updatePlates(float timeSinceLastUpdate)
     for(unsigned int i = 0; i < vectorSize;)
     {
         GamePlate* currentPlate = d_gamePlates[i];
-
-        //CEGUI bug: this shouldnt be necessary
-        currentPlate->d_window->invalidate();
 
         currentPlate->update(timeSinceLastUpdate);
         if(currentPlate->d_isDestroyed)
