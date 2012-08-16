@@ -570,10 +570,9 @@ void SamplesFramework::renderSampleGUIContexts()
         bool isContextDirty = sampleData->getGuiContext()->isDirty();
         if(isContextDirty)
         {
-            sampleData->clearRTTTexture();
-            sampleData->getGuiContext()->draw();
-
             sampleData->getSampleWindow()->invalidate();
+            sampleData->clearRTTTexture();
+            sampleData->getGuiContext()->draw(); 
         }
     }
 }
