@@ -211,13 +211,6 @@ void CEGuiOgreBaseApplication::initialiseResourceGroupDirectories()
 //----------------------------------------------------------------------------//
 void CEGuiOgreBaseApplication::doFrameUpdate(const float elapsed)
 {
-    CEGUI::System& gui_system(CEGUI::System::getSingleton());
-
-    gui_system.injectTimePulse(elapsed);
-    d_sampleApp->update(static_cast<float>(elapsed));
-
-    updateFPS(elapsed);
-    updateLogo(elapsed);
 }
 //----------------------------------------------------------------------------//
 bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args)
