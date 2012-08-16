@@ -38,14 +38,17 @@ void register_ElementEventArgs_class(){
         typedef bp::class_< ElementEventArgs_wrapper, bp::bases< CEGUI::EventArgs > > ElementEventArgs_exposer_t;
         ElementEventArgs_exposer_t ElementEventArgs_exposer = ElementEventArgs_exposer_t( "ElementEventArgs", "*!\n\
         \n\
-            EventArgs based class that is used for objects passed to handlers triggered for events\n\
-            concerning some Element object.\n\
+            EventArgs based class that is used for objects passed to handlers triggered\n\
+            for events concerning some Element object.\n\
+        \n\
+        @see CEGUI.Element\n\
         *\n", bp::init< CEGUI::Element * >(( bp::arg("element") )) );
         bp::scope ElementEventArgs_scope( ElementEventArgs_exposer );
         bp::implicitly_convertible< CEGUI::Element *, CEGUI::ElementEventArgs >();
         ElementEventArgs_exposer.add_property( "element"
                     , bp::make_function( (::CEGUI::Element * (*)( ::CEGUI::ElementEventArgs const & ))(&ElementEventArgs_wrapper::get_element), bp::return_internal_reference< >() )
-                    , bp::make_function( (void (*)( ::CEGUI::ElementEventArgs &,::CEGUI::Element * ))(&ElementEventArgs_wrapper::set_element), bp::with_custodian_and_ward_postcall< 1, 2 >() ) );
+                    , bp::make_function( (void (*)( ::CEGUI::ElementEventArgs &,::CEGUI::Element * ))(&ElementEventArgs_wrapper::set_element), bp::with_custodian_and_ward_postcall< 1, 2 >() )
+                    , "! pointer to an Element object of relevance to the event.\n" );
     }
 
 }

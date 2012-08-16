@@ -3872,32 +3872,7 @@ void register_ScrollablePane_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param xpos\n\
-                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
-            \n\
-                @param ypos\n\
-                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the element area.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setArea
@@ -3908,23 +3883,7 @@ void register_ScrollablePane_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("area") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param area\n\
-                    URect describing the new area rectangle of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Window::setArea_impl
