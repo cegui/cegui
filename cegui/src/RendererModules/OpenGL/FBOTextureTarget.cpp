@@ -47,6 +47,9 @@ OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
     if (!GLEW_EXT_framebuffer_object)
         CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
 
+    // no need to initialise d_previousFrameBuffer here, it will be
+    // initialised in activate()
+
     initialiseRenderTexture();
 
     // setup area and cause the initial texture to be generated.
@@ -69,6 +72,10 @@ void OpenGLFBOTextureTarget::declareRenderSize(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void OpenGLFBOTextureTarget::activate()
 {
+    // remember previously bound FBO to make sure we set it back
+    // when deactivating
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &d_previousFrameBuffer);
+
     // switch to rendering to the texture
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
 
@@ -80,8 +87,8 @@ void OpenGLFBOTextureTarget::deactivate()
 {
     OpenGLTextureTarget::deactivate();
 
-    // switch back to rendering to default buffer
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    // switch back to rendering to the previously bound framebuffer
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_previousFrameBuffer);
 }
 
 //----------------------------------------------------------------------------//
