@@ -1188,7 +1188,12 @@ void Window::addChild_impl(Element* element)
 void Window::removeChild_impl(Element* element)
 {
     Window* wnd = static_cast<Window*>(element);
-    
+
+    Window* const capture_wnd = getCaptureWindow();
+    if ((capture_wnd && wnd) &&
+        (capture_wnd == wnd || capture_wnd->isAncestor(wnd)))
+            getCaptureWindow()->releaseInput();
+
     // remove from draw list
     removeWindowFromDrawList(*wnd);
 
