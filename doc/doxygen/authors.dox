@@ -47,6 +47,8 @@ The following have made large, important, or on-going contributions to the syste
     - Original TaharezLook graphics design.
 - Tobias Schlegel:
     - STBImageCodec module.
+- Sunil Shah:
+    - Item visibility functions for MultiColumnList.
 - Steve Streeting:
     - TabControl widget base classes & related 'TaharezLook' classes.
 - Mark Strom:
