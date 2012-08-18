@@ -358,6 +358,35 @@ public:
 };
 
 
+/*!
+\brief
+    Property to access whether the multi-column list will consider the width of
+    the column header segment when auto-sizing a column.
+
+    \par Usage:
+        - Name: AutoSizeColumnUsesHeader
+        - Format: "[text]"
+
+    \par Where [Text] is:
+        - "True" to indicate that when auto-sizing a column, the size of the
+                 header should also be used.
+        - "False" to indicate that the column width will only be auto-sized
+                  using the column contents.
+*/
+class AutoSizeColumnUsesHeader : public Property
+{
+public:
+    AutoSizeColumnUsesHeader() : Property(
+        "AutoSizeColumnUsesHeader",
+        "Property to get/set the 'use header size' flag when auto-sizing a "
+        "column.  Value is either \"True\" or \"False\".",
+        "False")
+    {}
+
+    String  get(const PropertyReceiver* receiver) const;
+    void    set(PropertyReceiver* receiver, const String& value);
+};
+
 } // End of  MultiColumnListProperties namespace section
 
 } // End of  CEGUI namespace section
