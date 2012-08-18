@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.92 on Wed Mar 16 14:28:52 2011.
+** Generated automatically by tolua++-1.0.93 on Sat Aug 18 11:49:59 2012.
 */
 
 #ifndef __cplusplus
@@ -46547,6 +46547,264 @@ static int tolua_CEGUI_CEGUI_MultiColumnList_setRowID00(lua_State* tolua_S)
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: ensureRowIsVisible of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_ensureRowIsVisible00
+static int tolua_CEGUI_CEGUI_MultiColumnList_ensureRowIsVisible00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  unsigned int row_idx = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureRowIsVisible'",NULL);
+#endif
+ {
+  self->ensureRowIsVisible(row_idx);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ensureRowIsVisible'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ensureColumnIsVisible of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_ensureColumnIsVisible00
+static int tolua_CEGUI_CEGUI_MultiColumnList_ensureColumnIsVisible00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  unsigned int col_idx = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureColumnIsVisible'",NULL);
+#endif
+ {
+  self->ensureColumnIsVisible(col_idx);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ensureColumnIsVisible'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ensureItemRowIsVisible of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_ensureItemRowIsVisible00
+static int tolua_CEGUI_CEGUI_MultiColumnList_ensureItemRowIsVisible00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ListboxItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::ListboxItem* item = ((const CEGUI::ListboxItem*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureItemRowIsVisible'",NULL);
+#endif
+ {
+  self->ensureItemRowIsVisible(item);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ensureItemRowIsVisible'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ensureItemColumnIsVisible of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_ensureItemColumnIsVisible00
+static int tolua_CEGUI_CEGUI_MultiColumnList_ensureItemColumnIsVisible00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ListboxItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::ListboxItem* item = ((const CEGUI::ListboxItem*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureItemColumnIsVisible'",NULL);
+#endif
+ {
+  self->ensureItemColumnIsVisible(item);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ensureItemColumnIsVisible'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ensureItemIsVisible of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible00
+static int tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ListboxItem",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::ListboxItem* item = ((const CEGUI::ListboxItem*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureItemIsVisible'",NULL);
+#endif
+ {
+  self->ensureItemIsVisible(item);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'ensureItemIsVisible'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: ensureItemIsVisible of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible01
+static int tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::MCLGridRef",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::MCLGridRef* grid_ref = ((const CEGUI::MCLGridRef*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'ensureItemIsVisible'",NULL);
+#endif
+ {
+  self->ensureItemIsVisible(*grid_ref);
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible00(tolua_S);
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: setAutoSizeColumnUsesHeader of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_setAutoSizeColumnUsesHeader00
+static int tolua_CEGUI_CEGUI_MultiColumnList_setAutoSizeColumnUsesHeader00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::MultiColumnList* self = (CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+  bool include_header = ((bool)  tolua_toboolean(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'setAutoSizeColumnUsesHeader'",NULL);
+#endif
+ {
+  self->setAutoSizeColumnUsesHeader(include_header);
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'setAutoSizeColumnUsesHeader'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getAutoSizeColumnUsesHeader of class  CEGUI::MultiColumnList */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_MultiColumnList_getAutoSizeColumnUsesHeader00
+static int tolua_CEGUI_CEGUI_MultiColumnList_getAutoSizeColumnUsesHeader00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::MultiColumnList",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::MultiColumnList* self = (const CEGUI::MultiColumnList*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getAutoSizeColumnUsesHeader'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->getAutoSizeColumnUsesHeader();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getAutoSizeColumnUsesHeader'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: getItemPixelSize of class  CEGUI::ItemEntry */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ItemEntry_getItemPixelSize00
 static int tolua_CEGUI_CEGUI_ItemEntry_getItemPixelSize00(lua_State* tolua_S)
@@ -60024,6 +60282,14 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setUserColumnDraggingEnabled",tolua_CEGUI_CEGUI_MultiColumnList_setUserColumnDraggingEnabled00);
    tolua_function(tolua_S,"autoSizeColumnHeader",tolua_CEGUI_CEGUI_MultiColumnList_autoSizeColumnHeader00);
    tolua_function(tolua_S,"setRowID",tolua_CEGUI_CEGUI_MultiColumnList_setRowID00);
+   tolua_function(tolua_S,"ensureRowIsVisible",tolua_CEGUI_CEGUI_MultiColumnList_ensureRowIsVisible00);
+   tolua_function(tolua_S,"ensureColumnIsVisible",tolua_CEGUI_CEGUI_MultiColumnList_ensureColumnIsVisible00);
+   tolua_function(tolua_S,"ensureItemRowIsVisible",tolua_CEGUI_CEGUI_MultiColumnList_ensureItemRowIsVisible00);
+   tolua_function(tolua_S,"ensureItemColumnIsVisible",tolua_CEGUI_CEGUI_MultiColumnList_ensureItemColumnIsVisible00);
+   tolua_function(tolua_S,"ensureItemIsVisible",tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible00);
+   tolua_function(tolua_S,"ensureItemIsVisible",tolua_CEGUI_CEGUI_MultiColumnList_ensureItemIsVisible01);
+   tolua_function(tolua_S,"setAutoSizeColumnUsesHeader",tolua_CEGUI_CEGUI_MultiColumnList_setAutoSizeColumnUsesHeader00);
+   tolua_function(tolua_S,"getAutoSizeColumnUsesHeader",tolua_CEGUI_CEGUI_MultiColumnList_getAutoSizeColumnUsesHeader00);
   tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ItemEntry","CEGUI::ItemEntry","CEGUI::Window",NULL);
   tolua_beginmodule(tolua_S,"ItemEntry");
