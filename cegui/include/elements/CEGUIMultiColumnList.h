@@ -763,6 +763,17 @@ public:
     */
     float   getHighestRowItemHeight(uint row_idx) const;
 
+    /*!
+    \brief
+        Get whether or not column auto-sizing (autoSizeColumnHeader()) will use
+        the list header segment size.
+
+    \return
+        Return true if the header segment will be included in the width
+        calculation.
+    */
+    bool getAutoSizeColumnUsesHeader() const;
+
 	/*************************************************************************
 		Manipulator Methods
 	*************************************************************************/
@@ -1330,6 +1341,111 @@ public:
 	*/
 	void	setRowID(uint row_idx, uint row_id);
 
+    /*!
+    \brief
+        Ensure the specified item is made visible within the multi-column
+        listbox.
+
+    \param item
+        Pointer to the ListboxItem to be made visible in the multi-column
+        listbox.
+
+    \return
+        Nothing.
+
+    \exception  InvalidRequestException thrown if \a item is not attached to
+                this multicolumnlist.
+    */
+    void ensureItemIsVisible(const ListboxItem* item);
+
+    /*!
+    \brief
+        Ensure the item at the specified grid coordinate is visible within the
+        multi-column listbox.
+
+    \param grid_ref
+        MCLGridRef object holding the grid coordinate that is to be made
+        visible.
+
+    \return
+        Nothing.
+    */
+    void ensureItemIsVisible(const MCLGridRef& grid_ref);
+
+    /*!
+    \brief
+        Ensure that the row of the \a item is visible within the multi-column
+        listbox.
+
+    \note
+        This doesn't necessarily make \a item visible.
+
+    \param item
+        Pointer to the ListboxItem whose row is to be made visible in the
+        multi-column listbox.
+
+    \return
+        Nothing.
+    */
+    void ensureItemRowIsVisible(const ListboxItem* item);
+
+    /*!
+    \brief
+        Ensure that the column of \a item is visible within the multi-column
+        listbox.
+
+    \note
+        This doesn't necessarily make \a item visible.
+
+    \param item
+        Pointer to the ListboxItem whose column is to be made visible in the
+        multi-column listbox.
+
+    \return
+        Nothing.
+    */
+    void ensureItemColumnIsVisible(const ListboxItem* item);
+
+    /*!
+    \brief
+        Ensure that the row with index \a row_idx is visible within the
+        multi-column listbox.
+
+    \param row_id
+        row_idx is the zero-based index of the row to be made visible.
+
+    \return
+        Nothing.
+    */
+    void ensureRowIsVisible(uint row_idx);
+
+    /*!
+    \brief
+        Ensure that the column with ID \a column_idx is visible within the
+        multi-column listbox.
+
+    \param column_idx
+        column_idx is the zero-based index of the column to be made visible.
+
+    \return
+        Nothing.
+    */
+    void ensureColumnIsVisible(uint column_idx);
+
+    /*!
+    \brief
+        Instruct column auto-sizing (autoSizeColumnHeader()) to also use the
+        list header segment size.
+
+    \param include_header
+        Whether method autoSizeColumnHeader() also should use the size of the
+        column header segment.
+
+    \return
+        Nothing.
+    */
+    void setAutoSizeColumnUsesHeader(bool include_header);
+
 
 	/*************************************************************************
 		Construction and Destruction
@@ -1633,6 +1749,9 @@ protected:
 	typedef std::vector<ListRow>		ListItemGrid;
 	ListItemGrid	d_grid;			//!< Holds the list box data.
 
+    //! whether header size will be considered when auto-sizing columns.
+    bool d_autoSizeColumnUsesHeader;
+
     friend class MultiColumnListWindowRenderer;
 
 
@@ -1652,6 +1771,7 @@ private:
 	static MultiColumnListProperties::SortSettingEnabled			d_sortSettingProperty;
 	static MultiColumnListProperties::ColumnHeader					d_columnHeaderProperty;
 	static MultiColumnListProperties::RowCount						d_rowCountProperty;
+    static MultiColumnListProperties::AutoSizeColumnUsesHeader      d_autoSizeColumnUsesHeaderProperty;
 
 
 	/*************************************************************************

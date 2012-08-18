@@ -353,6 +353,18 @@ void RowCount::set(PropertyReceiver* receiver, const String&)
 		static_cast<const MultiColumnList*>(receiver)->getName() + "'.", Errors);
 }
 
+String AutoSizeColumnUsesHeader::get(const PropertyReceiver* receiver) const
+{
+    return PropertyHelper::boolToString(
+        static_cast<const MultiColumnList*>(receiver)->
+            getAutoSizeColumnUsesHeader());
+}
+
+void AutoSizeColumnUsesHeader::set(PropertyReceiver* receiver, const String& value)
+{
+    static_cast<MultiColumnList*>(receiver)->
+        setAutoSizeColumnUsesHeader(PropertyHelper::stringToBool(value));
+}
 
 } // End of  MultiColumnListProperties namespace section
 

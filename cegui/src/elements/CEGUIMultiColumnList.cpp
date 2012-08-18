@@ -68,6 +68,7 @@ MultiColumnListProperties::SortDirection				MultiColumnList::d_sortDirectionProp
 MultiColumnListProperties::SortSettingEnabled			MultiColumnList::d_sortSettingProperty;
 MultiColumnListProperties::ColumnHeader					MultiColumnList::d_columnHeaderProperty;
 MultiColumnListProperties::RowCount						MultiColumnList::d_rowCountProperty;
+MultiColumnListProperties::AutoSizeColumnUsesHeader     MultiColumnList::d_autoSizeColumnUsesHeaderProperty;
 
 /*************************************************************************
 	Constants
@@ -103,7 +104,8 @@ MultiColumnList::MultiColumnList(const String& type, const String& name) :
 	d_nominatedSelectCol(0),
 	d_nominatedSelectRow(0),
 	d_lastSelected(0),
-    d_columnCount(0)
+    d_columnCount(0),
+    d_autoSizeColumnUsesHeader(false)
 {
 	// add properties
 	addMultiColumnListProperties();
@@ -2165,6 +2167,7 @@ void MultiColumnList::addMultiColumnListProperties(void)
 	addProperty(&d_sortSettingProperty);
 	addProperty(&d_columnHeaderProperty);
 	addProperty(&d_rowCountProperty);
+	addProperty(&d_autoSizeColumnUsesHeaderProperty);
 }
 
 
@@ -2358,6 +2361,143 @@ Rect MultiColumnList::getListRenderArea() const
     }
 }
 
+//----------------------------------------------------------------------------//
+void MultiColumnList::ensureItemIsVisible(const ListboxItem* item)
+{
+    // NB: throws InvalidRequestException if non-existant item
+    ensureItemIsVisible(getItemGridReference(item));
+}
+
+//----------------------------------------------------------------------------//
+void MultiColumnList::ensureItemIsVisible(const MCLGridRef& grid_ref)
+{
+    ensureRowIsVisible(grid_ref.row);
+    ensureColumnIsVisible(grid_ref.column);
+}
+
+//----------------------------------------------------------------------------//
+void MultiColumnList::ensureItemRowIsVisible(const ListboxItem* item)
+{
+    // NB: throws InvalidRequestException if non-existant item
+    ensureRowIsVisible(getItemGridReference(item).row);
+}
+
+//----------------------------------------------------------------------------//
+void MultiColumnList::ensureItemColumnIsVisible(const ListboxItem* item)
+{
+    // NB: throws InvalidRequestException if non-existant item
+    ensureColumnIsVisible(getItemGridReference(item).column);
+}
+
+//----------------------------------------------------------------------------//
+void MultiColumnList::ensureRowIsVisible(uint row_idx)
+{
+    uint rows = getRowCount();
+
+    Scrollbar* vertScrollbar = getVertScrollbar();
+
+    // handle horizontal scrolling
+    // handle simple "scroll to the bottom" case
+    if (row_idx >= rows)
+    {
+        vertScrollbar->setScrollPosition(
+            vertScrollbar->getDocumentSize() - vertScrollbar->getPageSize());
+    }
+    else
+    {
+        float bottom;
+        float top = 0.0f;
+        float listHeight = getListRenderArea().getHeight();
+
+        // get distance to top of item
+        uint row;
+        for (row = 0; row < row_idx; ++row)
+            top += getHighestRowItemHeight(row);
+
+        // calculate distance to bottom of item
+        bottom = top + getHighestRowItemHeight(row);
+
+        // account for current scrollbar value
+        float currPos = vertScrollbar->getScrollPosition();
+        top      -= currPos;
+        bottom   -= currPos;
+
+        // if top edge is above the view area, or if the item is too big to fit
+        if ((top < 0.0f) || ((bottom - top) > listHeight))
+        {
+            // scroll top of item to top of box.
+            vertScrollbar->setScrollPosition(currPos + top);
+        }
+        // if the bottom edge is below the view area
+        else if (bottom >= listHeight)
+        {
+            // position bottom of item at the bottom of the list
+            vertScrollbar->setScrollPosition(currPos + bottom - listHeight);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void MultiColumnList::ensureColumnIsVisible(uint col_idx)
+{
+    uint cols = getColumnCount();
+    Scrollbar* horzScrollbar = getHorzScrollbar();
+
+    // handle horizontal scrolling
+    // first the simple "scroll to the right edge" case
+    if (col_idx >= cols)
+    {
+        horzScrollbar->setScrollPosition(
+            horzScrollbar->getDocumentSize() - horzScrollbar->getPageSize());
+    }
+    else
+    {
+        float right;
+        float left = 0.0f;
+        float listWidth = getListRenderArea().getWidth();
+
+        // get distance to left edge of item
+        uint col;
+        for (col = 0; col < col_idx; ++col)
+            left += getColumnHeaderWidth(col).asAbsolute(getParentPixelWidth());
+
+        // get the distance to the right edge of the item
+        right = left + getColumnHeaderWidth(col).asAbsolute(getParentPixelWidth());
+
+        // account for current scrollbar value
+        float currPos = horzScrollbar->getScrollPosition();
+        left    -= currPos;
+        right   -= currPos;
+
+        // if the left edge is to the left of the view area, or if the item is
+        // too big to fit
+        if ((left < 0.0f) || ((right - left) > listWidth))
+        {
+            // scroll left edge of item to left edge of box.
+            horzScrollbar->setScrollPosition(currPos + left);
+        }
+        // if right edge is to the right of the view area
+        else if (right >= listWidth)
+        {
+            // position the right edge of the item at the right edge of the list
+            horzScrollbar->setScrollPosition(currPos + right - listWidth);
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void MultiColumnList::setAutoSizeColumnUsesHeader(bool include_header)
+{
+    d_autoSizeColumnUsesHeader = include_header;
+}
+
+//----------------------------------------------------------------------------//
+bool MultiColumnList::getAutoSizeColumnUsesHeader() const
+{
+    return d_autoSizeColumnUsesHeader;
+}
+
+//----------------------------------------------------------------------------//
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
