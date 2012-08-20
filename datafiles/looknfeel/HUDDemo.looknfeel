@@ -50,22 +50,102 @@
                 </Section>
             </Layer>
         </StateImagery>
-        
-        
-    <AnimationDefinition autoStart="False" duration="2.5" name="PopupAnimation" replayMode="once">
-        <Affector property="Position" interpolator="UVector2" applicationMethod="relative">
-            <KeyFrame position="0.0" value="{{0, 0}, {0, 0}}" />
-            <KeyFrame position="2.5" progression="linear" value="{{0, 0}, {-0.2, 0}}" />
-        </Affector>
-        <Affector property="Alpha" interpolator="float" applicationMethod="absolute">
-            <KeyFrame position="0.8" value="1.0" />
-            <KeyFrame position="2.5" progression="linear" value="0.0" />
-        </Affector>
-        <Subscription event="StartAnimation" action="Start" />
-    </AnimationDefinition>
+
+
+        <AnimationDefinition autoStart="False" duration="2.5" name="PopupAnimation" replayMode="once">
+            <Affector property="Position" interpolator="UVector2" applicationMethod="relative">
+                <KeyFrame position="0.0" value="{{0, 0}, {0, 0}}" />
+                <KeyFrame position="2.5" progression="linear" value="{{0, 0}, {-0.2, 0}}" />
+            </Affector>
+            <Affector property="Alpha" interpolator="float" applicationMethod="absolute">
+                <KeyFrame position="0.8" value="1.0" />
+                <KeyFrame position="2.5" progression="linear" value="0.0" />
+            </Affector>
+            <Subscription event="StartAnimation" action="Start" />
+        </AnimationDefinition>
     </WidgetLook>
- 
-   
-   
-    
+
+
+    <WidgetLook name="HUDDemo/ProgressBar">
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="ProgressArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <AbsoluteDim value="0"/>
+                </Dim>
+                <Dim type="Width">
+                    <UnifiedDim scale="1" type="Width"/>
+                </Dim>
+                <Dim type="Height">
+                    <UnifiedDim scale="1" type="Height"/>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="background">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="Width">
+                        <UnifiedDim scale="1" type="Width"/>
+                    </Dim>
+                    <Dim type="Height">
+                        <UnifiedDim scale="1" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="HUDDemo/LifeBarBG"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="progress">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="Width">
+                        <UnifiedDim scale="1" type="Width"/>
+                    </Dim>
+                    <Dim type="Height">
+                        <UnifiedDim scale="1" type="Height"/>
+                    </Dim>
+                </Area>
+                <Image name="HUDDemo/LifeBarFill"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="background"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="background"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledProgress">
+            <Layer>
+                <Section section="progress"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="DisabledProgress">
+            <Layer>
+                <Section section="progress" />
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
 </Falagard>
