@@ -73,6 +73,8 @@ protected:
 
     //! Frame buffer object.
     GLuint d_frameBuffer;
+    //! Frame buffer object that was bound before we bound this one
+    GLint d_previousFrameBuffer;
 };
 
 } // End of  CEGUI namespace section

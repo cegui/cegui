@@ -40,12 +40,12 @@ public:
     {
         defineProperty();
     }
-    
+
     void setMemberValue(int value)
     {
         d_memberValue = value;
     }
-    
+
     int getMemberValue() const
     {
         return d_memberValue;
@@ -54,7 +54,7 @@ public:
     void defineProperty()
     {
         const CEGUI::String propertyOrigin = "TestPropertySet";
-        
+
         CEGUI_DEFINE_PROPERTY(TestPropertySet, int, "MemberValue", "", &TestPropertySet::setMemberValue, &TestPropertySet::getMemberValue, 0);
     }
 
@@ -65,10 +65,12 @@ private:
 BOOST_AUTO_TEST_CASE(Definition)
 {
     TestPropertySet set;
-    
+
     BOOST_REQUIRE(set.isPropertyPresent("MemberValue"));
-    
+
     // non-existing retrieval must throw
+    BOOST_CHECK_THROW(set.getProperty("NonExistant"), CEGUI::UnknownObjectException);
+    // non-existing set must throw
     BOOST_CHECK_THROW(set.setProperty("NonExistant", "Whoo"), CEGUI::UnknownObjectException);
     // duplicate definition must throw
     BOOST_CHECK_THROW(set.defineProperty(), CEGUI::AlreadyExistsException);
@@ -77,14 +79,16 @@ BOOST_AUTO_TEST_CASE(Definition)
 BOOST_AUTO_TEST_CASE(SettingGetting)
 {
     TestPropertySet set;
-    
+
+    BOOST_CHECK(!set.isPropertyPresent("BogusValue"));
+
     BOOST_REQUIRE(set.isPropertyPresent("MemberValue"));
-    
+
     // Value retrieval
     BOOST_CHECK_EQUAL(set.getProperty<int>("MemberValue"), 0);
     BOOST_CHECK_EQUAL(set.getProperty<float>("MemberValue"), 0); // this should fallback to string and still work!
     BOOST_CHECK_EQUAL(set.getProperty("MemberValue"), "0");
-    
+
     // Value setting
     BOOST_CHECK_NO_THROW(set.setProperty<int>("MemberValue", 10));
     BOOST_CHECK_EQUAL(set.getProperty<int>("MemberValue"), 10);

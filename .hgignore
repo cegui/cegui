@@ -18,6 +18,7 @@ dependencies/
 build/
 debug/
 release/
+doc/doxygen/html/
 
 xcuserdata/
 *.xcworkspace/

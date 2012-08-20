@@ -387,6 +387,18 @@ struct PopupMenu_wrapper : CEGUI::PopupMenu, bp::wrapper< CEGUI::PopupMenu > {
         return CEGUI::Window::handleFontRenderSizeChange( boost::ref(args) );
     }
 
+    virtual bool handle_PaneChildRemoved( ::CEGUI::EventArgs const & e ){
+        if( bp::override func_handle_PaneChildRemoved = this->get_override( "handle_PaneChildRemoved" ) )
+            return func_handle_PaneChildRemoved( boost::ref(e) );
+        else{
+            return this->CEGUI::ItemListBase::handle_PaneChildRemoved( boost::ref(e) );
+        }
+    }
+    
+    virtual bool default_handle_PaneChildRemoved( ::CEGUI::EventArgs const & e ){
+        return CEGUI::ItemListBase::handle_PaneChildRemoved( boost::ref(e) );
+    }
+
     void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
         CEGUI::Window::initialiseClippers( boost::ref(ctx) );
     }
@@ -2122,6 +2134,25 @@ void register_PopupMenu_class(){
                 , "! handler function for when font render size changes.\n" );
         
         }
+        { //::CEGUI::ItemListBase::handle_PaneChildRemoved
+        
+            typedef bool ( PopupMenu_wrapper::*handle_PaneChildRemoved_function_type )( ::CEGUI::EventArgs const & ) ;
+            
+            PopupMenu_exposer.def( 
+                "handle_PaneChildRemoved"
+                , handle_PaneChildRemoved_function_type( &PopupMenu_wrapper::default_handle_PaneChildRemoved )
+                , ( bp::arg("e") )
+                , "*!\n\
+                \n\
+                    Handler to manage items being removed from the content pane.\n\
+                    If there is one!\n\
+            \n\
+                \note\n\
+                    If you override this, you should call this base class version to\n\
+                    ensure correct behaviour is maintained.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::Window::initialiseClippers
         
             typedef void ( PopupMenu_wrapper::*initialiseClippers_function_type )( ::CEGUI::RenderingContext const & ) ;
@@ -3431,32 +3462,7 @@ void register_PopupMenu_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param xpos\n\
-                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
-            \n\
-                @param ypos\n\
-                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the element area.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setArea
@@ -3467,23 +3473,7 @@ void register_PopupMenu_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("area") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param area\n\
-                    URect describing the new area rectangle of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Window::setArea_impl
