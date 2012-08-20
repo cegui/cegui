@@ -77,9 +77,9 @@ void GamePlate::update(float timeSinceLastUpdate)
     CEGUI::UVector2 positionOffset;
 
     if(d_isComingFromRight)
-        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * -0.11f), cegui_absdim(0.f));
+        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * -0.24f), cegui_absdim(0.f));
     else
-        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * 0.11f), cegui_absdim(0.f));
+        positionOffset = CEGUI::UVector2(cegui_reldim(timeSinceLastUpdate * 0.24f), cegui_absdim(0.f));
 
     d_window->setPosition(d_window->getPosition() + positionOffset);
 
@@ -138,33 +138,22 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
 
-    FontManager::getSingleton().createFromFile("DejaVuSans-14.font");
-    FontManager::getSingleton().createFromFile("Jura-13.font");
-
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
     // Load the HUDDemo Layout
     d_root = winMgr.loadLayoutFromFile("HUDDemo.layout");
-
-    CEGUI::Window* bg = winMgr.createWindow("Generic/Image");
-    if(!ImageManager::getSingleton().isDefined("HUDBackground"))
-        ImageManager::getSingleton().addFromImageFile("HUDBackground", "HUDBackground.jpg");
-    bg->setProperty("Image", "HUDBackground");
-    bg->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    bg->setAspectMode(CEGUI::AM_EXPAND);
-    bg->setAspectRatio(1.5f);
-    bg->setMousePassThroughEnabled(true);
-    bg->addChild(d_root);
-
-    d_guiContext->setRootWindow(bg);
-
+    d_guiContext->setRootWindow(d_root);
 
     setupMouseCursor();
 
     srand(static_cast<unsigned int >(time(0)));
 
-    d_score = 0;
-    updateScoreWindow();
+    d_lifeBar = static_cast<CEGUI::ProgressBar*>(d_root->getChild("TopBar/LifeBar"));
 
+    initGame();
+
+    d_root->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
+    d_root->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
+  
     return true;
 }
 
@@ -185,8 +174,7 @@ void HUDDemo::deinitialise()
 
 void HUDDemo::onEnteringSample()
 {
-    d_score = 0;
-    updateScoreWindow();
+    initGame();
 }
 
 void HUDDemo::update(float timeSinceLastUpdate)
@@ -251,7 +239,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventMouseButtonDown, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
     d_root->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");
@@ -280,7 +268,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     int randumNumber = rand() % 10000;
     float posY = randumNumber / 10000.0f;
 
-    plateRoot->setPosition(CEGUI::UVector2(cegui_absdim(0.0f), cegui_reldim(0.8f * posY)));
+    plateRoot->setPosition(CEGUI::UVector2(cegui_absdim(0.0f), cegui_reldim(0.1f + 0.6f * posY)));
 
     return plateRoot;
 }
@@ -330,7 +318,7 @@ void HUDDemo::updatePlates(float timeSinceLastUpdate)
 
 void HUDDemo::updateScoreWindow()
 {
-    CEGUI::Window* scoreWnd = d_root->getChild("ScoreCounter");
+    CEGUI::Window* scoreWnd = d_root->getChild("TopBar/ScoreBGImage/Score");
     scoreWnd->setText(CEGUI::PropertyHelper<int>::toString(d_score));
 }
 
@@ -348,6 +336,21 @@ bool HUDDemo::handlePlateWindowClicked(const CEGUI::EventArgs& args)
             int points = gamePlate->getPoints();
             d_score += points;
             updateScoreWindow();
+
+            if(points < 0)
+            {
+                float newProgress = d_lifeBar->getProgress() - 0.35f;
+
+
+                if(newProgress < 0.0f)
+                {
+                    d_lives--;
+                    handleLivesChanged();
+                    newProgress = 1.0f;
+                }
+
+                d_lifeBar->setProgress(newProgress);
+            }
 
             gamePlate->d_isDestroyed = true;
             createScorePopup(mouseArgs.position, points);
@@ -367,17 +370,16 @@ void HUDDemo::createScorePopup(const CEGUI::Vector2<float>& mousePos, int points
     popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&HUDDemo::handleScorePopupAnimationEnded, this));
-    popupWindow->setFont("DejaVuSans-14");
     popupWindow->setPixelAligned(false);
 
     popupWindow->setPosition(popupWindow->getPosition() + CEGUI::UVector2(cegui_reldim(0.03f), cegui_reldim(-0.02f)));
 
     if(points < 0)
-        popupWindow->setProperty("NormalTextColour", "FFDD0000");
+        popupWindow->setProperty("NormalTextColour", "FF880000");
     else
     {
         popupWindow->setText( "+" + popupWindow->getText());
-        popupWindow->setProperty("NormalTextColour", "FF00CC00");
+        popupWindow->setProperty("NormalTextColour", "FF006600");
     }
 
     CEGUI::EventArgs args;
@@ -406,6 +408,83 @@ void HUDDemo::delayDestroyWindows()
         d_delayDestroyWindows.pop_back();
     }
 }
+
+
+void HUDDemo::handleLivesChanged()
+{
+    bool life1Visible = (d_lives >= 1);
+    bool life2Visible = (d_lives >= 2);
+    bool life3Visible = (d_lives >= 3);
+
+    
+    d_root->getChild("TopBar/Life1")->setAlpha( life1Visible ? 1.0f : 0.5f );
+    d_root->getChild("TopBar/Life2")->setAlpha( life2Visible ? 1.0f : 0.5f );
+    d_root->getChild("TopBar/Life3")->setAlpha( life3Visible ? 1.0f : 0.5f );
+}
+
+void HUDDemo::initGame()
+{
+    d_lives = 3;
+    handleLivesChanged();
+
+    selectedWeapon(SW_Spoon);
+
+    d_score = 0;
+    updateScoreWindow();
+
+    d_lifeBar->setProgress(1.0f);
+}
+
+void HUDDemo::selectedWeapon(SelectedWeapon weapon)
+{
+    d_selectedWeapon = weapon;
+
+    switch(d_selectedWeapon)
+    {
+    case SW_Spoon:
+        d_root->getChild("BotBar/WeaponSpoon")->setAlpha(1.0f);
+        d_root->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
+        d_root->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
+        d_root->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Spoon");
+        
+        break;
+    case SW_Fork:
+        d_root->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
+        d_root->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
+        d_root->getChild("BotBar/WeaponFork")->setAlpha(1.0f);
+        d_root->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Fork");
+        break;
+    case SW_Knife:
+        d_root->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
+        d_root->getChild("BotBar/WeaponKnife")->setAlpha(1.0f);
+        d_root->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
+        d_root->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Knife");
+        break;
+    default:
+        break;
+    }
+}
+
+bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
+{
+    int weaponIndex = static_cast<int>(d_selectedWeapon);
+    selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );
+
+    return false;
+}
+
+
+bool HUDDemo::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args)
+{
+    int weaponIndex = static_cast<int>(d_selectedWeapon);
+    weaponIndex = (weaponIndex - 1) % 3;
+    if(weaponIndex < 0)
+        weaponIndex += 3;
+    selectedWeapon( static_cast<SelectedWeapon>(weaponIndex) );
+
+    return false;
+}
+
 /*************************************************************************
 Define the module function that returns an instance of the sample
 *************************************************************************/
