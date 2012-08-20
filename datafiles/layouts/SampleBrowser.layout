@@ -4,10 +4,70 @@
     <Window type="DefaultWindow" name="SampleBrowserRoot" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="Generic/Image" name="BackgroundImage" >
+            <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+            <Property name="MaxSize" value="{{999,0},{999,0}}" />
+            <Property name="AspectMode" value="Shrink" />
+            <Property name="VerticalAlignment" value="Centre" />
+            <Property name="HorizontalAlignment" value="Centre" />
+        </Window>
+        <Window type="DefaultWindow" name="SampleFrameWindowContainer" >
+            <Property name="Area" value="{{0,115},{0,0},{1,-377},{1,0}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="AlwaysOnTop" value="True" />
+            <Window type="SampleBrowserSkin/FrameWindow" name="SamplesFrameWindow" >
+                <Property name="Area" value="{{0,0},{0,0},{1,100},{1,0}}" />
+                <Property name="Font" value="DejaVuSans-14-NoScale" />
+                <Property name="Text" value="Samples" />
+                <Property name="MaxSize" value="{{0,600},{0,0}}" />
+                <Property name="AlwaysOnTop" value="True" />
+                <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
+                <Property name="RollUpEnabled" value="False" />
+                <Property name="SizingEnabled" value="False" />
+                <Property name="DragMovingEnabled" value="False" />
+                <Property name="VerticalAlignment" value="Centre" />
+                <Property name="CloseButtonEnabled" value="False" />
+                <Property name="HorizontalAlignment" value="Centre" />
+                <AutoWindow namePath="__auto_titlebar__" >
+                    <Property name="DraggingEnabled" value="False" />
+                </AutoWindow>
+                <AutoWindow namePath="__auto_closebutton__" >
+                    <Property name="NonClient" value="True" />
+                </AutoWindow>
+                <Window type="SampleBrowserSkin/ScrollablePane" name="SamplesScrollablePane" >
+                    <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
+                    <Property name="ForceVertScrollbar" value="True" />
+                    <Property name="HorizontalAlignment" value="Centre" />
+                    <Property name="AutoRenderingSurface" value="True" />
+                    <AutoWindow namePath="__auto_container__" >
+                        <Property name="MouseInputPropagationEnabled" value="True" />
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_hscrollbar__" >
+                        <Property name="AlwaysOnTop" value="True" />
+                        <AutoWindow namePath="__auto_incbtn__" >
+                            <Property name="Visible" value="False" />
+                        </AutoWindow>
+                        <AutoWindow namePath="__auto_decbtn__" >
+                            <Property name="Visible" value="False" />
+                        </AutoWindow>
+                    </AutoWindow>
+                    <AutoWindow namePath="__auto_vscrollbar__" >
+                        <Property name="AlwaysOnTop" value="True" />
+                        <AutoWindow namePath="__auto_incbtn__" >
+                            <Property name="Visible" value="False" />
+                        </AutoWindow>
+                        <AutoWindow namePath="__auto_decbtn__" >
+                            <Property name="Visible" value="False" />
+                        </AutoWindow>
+                    </AutoWindow>
+                </Window>
+            </Window>
+        </Window>
         <Window type="SampleBrowserSkin/FrameWindow" name="SampleBrowserMetaData" >
             <Property name="Area" value="{{-0.015,0},{0,0},{0.258438,0},{0.92,0}}" />
             <Property name="Font" value="DejaVuSans-14-NoScale" />
             <Property name="Text" value="Title" />
+            <Property name="AlwaysOnTop" value="True" />
             <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
             <Property name="RollUpEnabled" value="False" />
             <Property name="SizingEnabled" value="False" />
@@ -180,57 +240,6 @@
                         <Property name="Visible" value="False" />
                     </AutoWindow>
                 </AutoWindow>
-            </Window>
-        </Window>
-        <Window type="DefaultWindow" name="SampleFrameWindowContainer" >
-            <Property name="Area" value="{{0,115},{0,0},{1,-377},{1,0}}" />
-            <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Window type="SampleBrowserSkin/FrameWindow" name="SamplesFrameWindow" >
-                <Property name="Area" value="{{0,0},{0,0},{1,100},{1,0}}" />
-                <Property name="Font" value="DejaVuSans-14-NoScale" />
-                <Property name="Text" value="Samples" />
-                <Property name="MaxSize" value="{{0,600},{0,0}}" />
-                <Property name="AlwaysOnTop" value="True" />
-                <Property name="CaptionColour" value="tl:FF003300 tr:FF003300 bl:FF003300 br:FF003300" />
-                <Property name="RollUpEnabled" value="False" />
-                <Property name="SizingEnabled" value="False" />
-                <Property name="DragMovingEnabled" value="False" />
-                <Property name="VerticalAlignment" value="Centre" />
-                <Property name="CloseButtonEnabled" value="False" />
-                <Property name="HorizontalAlignment" value="Centre" />
-                <AutoWindow namePath="__auto_titlebar__" >
-                    <Property name="DraggingEnabled" value="False" />
-                </AutoWindow>
-                <AutoWindow namePath="__auto_closebutton__" >
-                    <Property name="NonClient" value="True" />
-                </AutoWindow>
-                <Window type="SampleBrowserSkin/ScrollablePane" name="SamplesScrollablePane" >
-                    <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
-                    <Property name="ForceVertScrollbar" value="True" />
-                    <Property name="HorizontalAlignment" value="Centre" />
-                    <Property name="AutoRenderingSurface" value="True" />
-                    <AutoWindow namePath="__auto_container__" >
-                        <Property name="MouseInputPropagationEnabled" value="True" />
-                    </AutoWindow>
-                    <AutoWindow namePath="__auto_hscrollbar__" >
-                        <Property name="AlwaysOnTop" value="True" />
-                        <AutoWindow namePath="__auto_incbtn__" >
-                            <Property name="Visible" value="False" />
-                        </AutoWindow>
-                        <AutoWindow namePath="__auto_decbtn__" >
-                            <Property name="Visible" value="False" />
-                        </AutoWindow>
-                    </AutoWindow>
-                    <AutoWindow namePath="__auto_vscrollbar__" >
-                        <Property name="AlwaysOnTop" value="True" />
-                        <AutoWindow namePath="__auto_incbtn__" >
-                            <Property name="Visible" value="False" />
-                        </AutoWindow>
-                        <AutoWindow namePath="__auto_decbtn__" >
-                            <Property name="Visible" value="False" />
-                        </AutoWindow>
-                    </AutoWindow>
-                </Window>
             </Window>
         </Window>
     </Window>
