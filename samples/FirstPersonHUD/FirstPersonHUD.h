@@ -39,6 +39,15 @@ namespace CEGUI
 
 struct GamePlate;
 
+enum SelectedWeapon
+{
+    SW_Spoon,
+    SW_Fork,
+    SW_Knife,
+
+    SW_Count
+};
+
 // Sample class
 class HUDDemo : public Sample
 {
@@ -46,6 +55,7 @@ public:
     // method to initialse the samples windows and events.
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
+    void initGame();
     void setupMouseCursor();
     // method to perform any required cleanup operations.
     virtual void deinitialise();
@@ -54,7 +64,6 @@ public:
 
     virtual void update(float timeSinceLastUpdate);
 
-    void delayDestroyWindows();
     CEGUI::Window* spawnPlate();
 
     static const CEGUI::String s_imageNamePlate;
@@ -74,9 +83,16 @@ protected:
 
     bool handlePlateWindowClicked(const CEGUI::EventArgs& args);
     bool handleScorePopupAnimationEnded(const CEGUI::EventArgs& args);
+    bool handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args);
+    bool handleWeaponRightArrowClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
     void createScorePopup(const CEGUI::Vector2<float>& mousePos, int points);
+
+    void handleLivesChanged();
+
+    void delayDestroyWindows();
+    void selectedWeapon(SelectedWeapon weapon);
 
     CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
@@ -87,6 +103,10 @@ protected:
 
     std::vector<GamePlate*> d_gamePlates;
     std::vector<CEGUI::Window*> d_delayDestroyWindows;
+
+    CEGUI::ProgressBar* d_lifeBar;
+    int d_lives;
+    SelectedWeapon d_selectedWeapon;
 };
 
 #endif
