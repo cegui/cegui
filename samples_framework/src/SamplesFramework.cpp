@@ -454,8 +454,13 @@ void SamplesFramework::initialiseSampleBrowserLayout()
     CEGUI::FontManager::getSingleton().createFromFile("DejaVuSans-10-NoScale.font");
     CEGUI::FontManager::getSingleton().createFromFile("Junicode-13.font");
 
+    CEGUI::SchemeManager::getSingleton().createFromFile("Generic.scheme");
+
+    if(!ImageManager::getSingleton().isDefined("BackgroundSampleBrowser"))
+        ImageManager::getSingleton().addFromImageFile("BackgroundSampleBrowser", "BackgroundSampleBrowser.jpg");
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
+    d_root->getChild("BackgroundImage")->setProperty("Image", "BackgroundSampleBrowser");
 
 
     CEGUI::Window* metaDataWindow = d_root->getChild("SampleBrowserMetaData");
