@@ -75,7 +75,7 @@ void CEGuiGLFWSharedBase::run()
     //Window callbacks
     glfwSetWindowSizeCallback(glfwWindowResizeCallback);
     d_windowSized = false; //The resize callback is being called immediately after setting it in this version of glfw
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 
     // set starting time
     d_frameTime = glfwGetTime();
