@@ -31,16 +31,16 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
         return CEGUI::ItemListbox::getContentSize( );
     }
 
-    virtual void initialiseComponents(  ) {
-        if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
-            func_initialiseComponents(  );
+    virtual bool handle_PaneChildRemoved( ::CEGUI::EventArgs const & e ){
+        if( bp::override func_handle_PaneChildRemoved = this->get_override( "handle_PaneChildRemoved" ) )
+            return func_handle_PaneChildRemoved( boost::ref(e) );
         else{
-            this->CEGUI::ItemListbox::initialiseComponents(  );
+            return this->CEGUI::ItemListbox::handle_PaneChildRemoved( boost::ref(e) );
         }
     }
     
-    void default_initialiseComponents(  ) {
-        CEGUI::ItemListbox::initialiseComponents( );
+    virtual bool default_handle_PaneChildRemoved( ::CEGUI::EventArgs const & e ){
+        return CEGUI::ItemListbox::handle_PaneChildRemoved( boost::ref(e) );
     }
 
     virtual void layoutItemWidgets(  ) {
@@ -393,6 +393,18 @@ struct ItemListbox_wrapper : CEGUI::ItemListbox, bp::wrapper< CEGUI::ItemListbox
 
     void initialiseClippers( ::CEGUI::RenderingContext const & ctx ){
         CEGUI::Window::initialiseClippers( boost::ref(ctx) );
+    }
+
+    virtual void initialiseComponents(  ) {
+        if( bp::override func_initialiseComponents = this->get_override( "initialiseComponents" ) )
+            func_initialiseComponents(  );
+        else{
+            this->CEGUI::ScrolledItemListBase::initialiseComponents(  );
+        }
+    }
+    
+    void default_initialiseComponents(  ) {
+        CEGUI::ScrolledItemListBase::initialiseComponents( );
     }
 
     void invalidate_impl( bool const recursive ){
@@ -1653,15 +1665,15 @@ void register_ItemListbox_class(){
             *\n" );
         
         }
-        { //::CEGUI::ItemListbox::initialiseComponents
+        { //::CEGUI::ItemListbox::handle_PaneChildRemoved
         
-            typedef void ( ::CEGUI::ItemListbox::*initialiseComponents_function_type )(  ) ;
-            typedef void ( ItemListbox_wrapper::*default_initialiseComponents_function_type )(  ) ;
+            typedef bool ( ItemListbox_wrapper::*handle_PaneChildRemoved_function_type )( ::CEGUI::EventArgs const & ) ;
             
             ItemListbox_exposer.def( 
-                "initialiseComponents"
-                , initialiseComponents_function_type(&::CEGUI::ItemListbox::initialiseComponents)
-                , default_initialiseComponents_function_type(&ItemListbox_wrapper::default_initialiseComponents) );
+                "handle_PaneChildRemoved"
+                , handle_PaneChildRemoved_function_type( &ItemListbox_wrapper::default_handle_PaneChildRemoved )
+                , ( bp::arg("e") )
+                , "overridden from ItemListBase\n" );
         
         }
         { //::CEGUI::ItemListbox::isItemSelected
@@ -1807,7 +1819,10 @@ void register_ItemListbox_class(){
                 "setMultiSelectEnabled"
                 , setMultiSelectEnabled_function_type( &::CEGUI::ItemListbox::setMultiSelectEnabled )
                 , ( bp::arg("state") )
-                , "*!\n\
+                , "************************************************************************\n\
+                Manipulators\n\
+            *************************************************************************\n\
+            *!\n\
             \n\
                 Set whether or not multiple selections should be allowed.\n\
             *\n" );
@@ -2301,6 +2316,17 @@ void register_ItemListbox_class(){
                 , initialiseClippers_function_type( &ItemListbox_wrapper::initialiseClippers )
                 , ( bp::arg("ctx") )
                 , "! Helper to intialise the needed clipping for geometry and render surface.\n" );
+        
+        }
+        { //::CEGUI::ScrolledItemListBase::initialiseComponents
+        
+            typedef void ( ::CEGUI::ScrolledItemListBase::*initialiseComponents_function_type )(  ) ;
+            typedef void ( ItemListbox_wrapper::*default_initialiseComponents_function_type )(  ) ;
+            
+            ItemListbox_exposer.def( 
+                "initialiseComponents"
+                , initialiseComponents_function_type(&::CEGUI::ScrolledItemListBase::initialiseComponents)
+                , default_initialiseComponents_function_type(&ItemListbox_wrapper::default_initialiseComponents) );
         
         }
         { //::CEGUI::Window::invalidate_impl
@@ -3654,32 +3680,7 @@ void register_ItemListbox_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param xpos\n\
-                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
-            \n\
-                @param ypos\n\
-                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the element area.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setArea
@@ -3690,23 +3691,7 @@ void register_ItemListbox_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("area") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param area\n\
-                    URect describing the new area rectangle of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Window::setArea_impl

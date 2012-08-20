@@ -1712,6 +1712,145 @@ void register_MultiColumnList_class(){
             *\n" );
         
         }
+        { //::CEGUI::MultiColumnList::ensureColumnIsVisible
+        
+            typedef void ( ::CEGUI::MultiColumnList::*ensureColumnIsVisible_function_type )( ::CEGUI::uint ) ;
+            
+            MultiColumnList_exposer.def( 
+                "ensureColumnIsVisible"
+                , ensureColumnIsVisible_function_type( &::CEGUI::MultiColumnList::ensureColumnIsVisible )
+                , ( bp::arg("column_idx") )
+                , "*!\n\
+                \n\
+                    Ensure that the column with ID  column_idx is visible within the\n\
+                    multi-column listbox.\n\
+            \n\
+                @param column_idx\n\
+                    column_idx is the zero-based index of the column to be made visible.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::ensureItemColumnIsVisible
+        
+            typedef void ( ::CEGUI::MultiColumnList::*ensureItemColumnIsVisible_function_type )( ::CEGUI::ListboxItem const * ) ;
+            
+            MultiColumnList_exposer.def( 
+                "ensureItemColumnIsVisible"
+                , ensureItemColumnIsVisible_function_type( &::CEGUI::MultiColumnList::ensureItemColumnIsVisible )
+                , ( bp::arg("item") )
+                , "*!\n\
+                \n\
+                    Ensure that the column of  item is visible within the multi-column\n\
+                    listbox.\n\
+            \n\
+                \note\n\
+                    This doesn't necessarily make  item visible.\n\
+            \n\
+                @param item\n\
+                    Pointer to the ListboxItem whose column is to be made visible in the\n\
+                    multi-column listbox.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::ensureItemIsVisible
+        
+            typedef void ( ::CEGUI::MultiColumnList::*ensureItemIsVisible_function_type )( ::CEGUI::ListboxItem const * ) ;
+            
+            MultiColumnList_exposer.def( 
+                "ensureItemIsVisible"
+                , ensureItemIsVisible_function_type( &::CEGUI::MultiColumnList::ensureItemIsVisible )
+                , ( bp::arg("item") )
+                , "*!\n\
+                \n\
+                    Ensure the specified item is made visible within the multi-column\n\
+                    listbox.\n\
+            \n\
+                @param item\n\
+                    Pointer to the ListboxItem to be made visible in the multi-column\n\
+                    listbox.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+            \n\
+                @exception  InvalidRequestException thrown if  item is not attached to\n\
+                            this multicolumnlist.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::ensureItemIsVisible
+        
+            typedef void ( ::CEGUI::MultiColumnList::*ensureItemIsVisible_function_type )( ::CEGUI::MCLGridRef const & ) ;
+            
+            MultiColumnList_exposer.def( 
+                "ensureItemIsVisible"
+                , ensureItemIsVisible_function_type( &::CEGUI::MultiColumnList::ensureItemIsVisible )
+                , ( bp::arg("grid_ref") )
+                , "*!\n\
+                \n\
+                    Ensure the item at the specified grid coordinate is visible within the\n\
+                    multi-column listbox.\n\
+            \n\
+                @param grid_ref\n\
+                    MCLGridRef object holding the grid coordinate that is to be made\n\
+                    visible.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::ensureItemRowIsVisible
+        
+            typedef void ( ::CEGUI::MultiColumnList::*ensureItemRowIsVisible_function_type )( ::CEGUI::ListboxItem const * ) ;
+            
+            MultiColumnList_exposer.def( 
+                "ensureItemRowIsVisible"
+                , ensureItemRowIsVisible_function_type( &::CEGUI::MultiColumnList::ensureItemRowIsVisible )
+                , ( bp::arg("item") )
+                , "*!\n\
+                \n\
+                    Ensure that the row of the  item is visible within the multi-column\n\
+                    listbox.\n\
+            \n\
+                \note\n\
+                    This doesn't necessarily make  item visible.\n\
+            \n\
+                @param item\n\
+                    Pointer to the ListboxItem whose row is to be made visible in the\n\
+                    multi-column listbox.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::ensureRowIsVisible
+        
+            typedef void ( ::CEGUI::MultiColumnList::*ensureRowIsVisible_function_type )( ::CEGUI::uint ) ;
+            
+            MultiColumnList_exposer.def( 
+                "ensureRowIsVisible"
+                , ensureRowIsVisible_function_type( &::CEGUI::MultiColumnList::ensureRowIsVisible )
+                , ( bp::arg("row_idx") )
+                , "*!\n\
+                \n\
+                    Ensure that the row with index  row_idx is visible within the\n\
+                    multi-column listbox.\n\
+            \n\
+                @param row_id\n\
+                    row_idx is the zero-based index of the row to be made visible.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
+        
+        }
         { //::CEGUI::MultiColumnList::findColumnItemWithText
         
             typedef ::CEGUI::ListboxItem * ( ::CEGUI::MultiColumnList::*findColumnItemWithText_function_type )( ::CEGUI::String const &,::CEGUI::uint,::CEGUI::ListboxItem const * ) const;
@@ -1804,6 +1943,24 @@ void register_MultiColumnList_class(){
                @exception InvalidRequestException  thrown if  start_item is not attached to the list box, or if\
                row_idx is out of range.\n\
                *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::getAutoSizeColumnUsesHeader
+        
+            typedef bool ( ::CEGUI::MultiColumnList::*getAutoSizeColumnUsesHeader_function_type )(  ) const;
+            
+            MultiColumnList_exposer.def( 
+                "getAutoSizeColumnUsesHeader"
+                , getAutoSizeColumnUsesHeader_function_type( &::CEGUI::MultiColumnList::getAutoSizeColumnUsesHeader )
+                , "*!\n\
+                \n\
+                    Get whether or not column auto-sizing (autoSizeColumnHeader()) will use\n\
+                    the list header segment size.\n\
+            \n\
+                @return\n\
+                    Return true if the header segment will be included in the width\n\
+                    calculation.\n\
+                *\n" );
         
         }
         { //::CEGUI::MultiColumnList::getColumnCount
@@ -3238,6 +3395,28 @@ void register_MultiColumnList_class(){
                select all strings between positions  start and  end.  (inclusive).  Returns true if something\
                was modified.\n\
             *\n" );
+        
+        }
+        { //::CEGUI::MultiColumnList::setAutoSizeColumnUsesHeader
+        
+            typedef void ( ::CEGUI::MultiColumnList::*setAutoSizeColumnUsesHeader_function_type )( bool ) ;
+            
+            MultiColumnList_exposer.def( 
+                "setAutoSizeColumnUsesHeader"
+                , setAutoSizeColumnUsesHeader_function_type( &::CEGUI::MultiColumnList::setAutoSizeColumnUsesHeader )
+                , ( bp::arg("include_header") )
+                , "*!\n\
+                \n\
+                    Instruct column auto-sizing (autoSizeColumnHeader()) to also use the\n\
+                    list header segment size.\n\
+            \n\
+                @param include_header\n\
+                    Whether method autoSizeColumnHeader() also should use the size of the\n\
+                    column header segment.\n\
+            \n\
+                @return\n\
+                    Nothing.\n\
+                *\n" );
         
         }
         { //::CEGUI::MultiColumnList::setColumnHeaderWidth
@@ -5424,32 +5603,7 @@ void register_MultiColumnList_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param xpos\n\
-                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
-            \n\
-                @param ypos\n\
-                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the element area.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setArea
@@ -5460,23 +5614,7 @@ void register_MultiColumnList_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("area") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param area\n\
-                    URect describing the new area rectangle of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Window::setArea_impl

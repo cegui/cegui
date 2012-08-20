@@ -50,6 +50,9 @@ const float OpenGL3FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
     OpenGL3TextureTarget(owner)
 {
+    // no need to initialise d_previousFrameBuffer here, it will be
+    // initialised in activate()
+
     initialiseRenderTexture();
 
     // setup area and cause the initial texture to be generated.
@@ -72,6 +75,10 @@ void OpenGL3FBOTextureTarget::declareRenderSize(const Sizef& sz)
 //----------------------------------------------------------------------------//
 void OpenGL3FBOTextureTarget::activate()
 {
+    // remember previously bound FBO to make sure we set it back
+    // when deactivating
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING, &d_previousFrameBuffer);
+
     // switch to rendering to the texture
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
@@ -83,8 +90,8 @@ void OpenGL3FBOTextureTarget::deactivate()
 {
     OpenGL3TextureTarget::deactivate();
 
-    // switch back to rendering to default buffer
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    // switch back to rendering to the previously bound framebuffer
+    glBindFramebuffer(GL_FRAMEBUFFER, d_previousFrameBuffer);
 }
 
 //----------------------------------------------------------------------------//

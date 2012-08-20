@@ -133,6 +133,16 @@ class MultiColumnList : public Window
 	void setUserColumnSizingEnabled(bool setting);
 	void setUserColumnDraggingEnabled(bool setting);
 	void autoSizeColumnHeader(unsigned int col_idx);
-	
+
 	void setRowID(unsigned int row_idx, unsigned int row_id);
+
+    void ensureRowIsVisible(unsigned int row_idx);
+    void ensureColumnIsVisible(unsigned int col_idx);
+    void ensureItemRowIsVisible(const ListboxItem* item);
+    void ensureItemColumnIsVisible(const ListboxItem* item);
+    void ensureItemIsVisible(const ListboxItem* item);
+    void ensureItemIsVisible(const MCLGridRef& grid_ref);
+
+    void setAutoSizeColumnUsesHeader(bool include_header);
+    bool getAutoSizeColumnUsesHeader() const;
 };

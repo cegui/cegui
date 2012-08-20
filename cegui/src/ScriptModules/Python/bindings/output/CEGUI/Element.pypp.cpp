@@ -316,9 +316,12 @@ void register_Element_class(){
         { //::CEGUI::Element::CachedRectf
             typedef bp::class_< CEGUI::Element::CachedRectf > CachedRectf_exposer_t;
             CachedRectf_exposer_t CachedRectf_exposer = CachedRectf_exposer_t( "CachedRectf", "*!\n\
-             Element caches many rectangles, this class is a tiny wrapper to hide at least some of the dirty\
-             work\n\
-            *\n", bp::no_init );
+                 A tiny wrapper to hide some of the dirty work of rect caching\n\
+            \n\
+                This is used internally by CEGUI.Element and other classes, it is passed\n\
+                to the user in several methods. In those circumstances you most likely\n\
+                want the result of either the get() or getFresh(..) methods.\n\
+                *\n", bp::no_init );
             bp::scope CachedRectf_scope( CachedRectf_exposer );
             { //::CEGUI::Element::CachedRectf::get
             
@@ -327,7 +330,10 @@ void register_Element_class(){
                 CachedRectf_exposer.def( 
                     "get"
                     , get_function_type( &::CEGUI::Element::CachedRectf::get )
-                    , bp::return_value_policy< bp::copy_const_reference >() );
+                    , bp::return_value_policy< bp::copy_const_reference >()
+                    , "*!\n\
+                 Retrieves cached Rectf or generated a fresh one and caches it\n\
+                *\n" );
             
             }
             { //::CEGUI::Element::CachedRectf::getFresh
@@ -339,8 +345,11 @@ void register_Element_class(){
                     , getFresh_function_type( &::CEGUI::Element::CachedRectf::getFresh )
                     , ( bp::arg("skipAllPixelAlignment")=(bool)(false) )
                     , "*!\n\
-                 skips all caching and calls the generator\n\
-                *\n" );
+                         Skips all caching and calls the generator\n\
+                \n\
+                        This method will cache the result if cache is invalid and\n\
+                        alignment is not being skipped.\n\
+                        *\n" );
             
             }
             { //::CEGUI::Element::CachedRectf::invalidateCache
@@ -349,7 +358,13 @@ void register_Element_class(){
                 
                 CachedRectf_exposer.def( 
                     "invalidateCache"
-                    , invalidateCache_function_type( &::CEGUI::Element::CachedRectf::invalidateCache ) );
+                    , invalidateCache_function_type( &::CEGUI::Element::CachedRectf::invalidateCache )
+                    , "*!\n\
+                         Invalidates the cached Rectf causing it to be regenerated\n\
+                \n\
+                        The regeneration will not happen immediately, it will happen when user\n\
+                        requests the data.\n\
+                        *\n" );
             
             }
             { //::CEGUI::Element::CachedRectf::isCacheValid
@@ -381,12 +396,19 @@ void register_Element_class(){
                 , ( bp::arg("element") )
                 , "*!\n\
                 \n\
-                    Add the specified Element as a child of this Element. If the Element\n\
-                     element is already attached to a different Element, it is detached\n\
-                    before being added to this Element.\n\
+                    Add the specified Element as a child of this Element.\n\
+            \n\
+                If the Element  element is already attached to a different Element,\n\
+                it is detached before being added to this Element.\n\
             \n\
                 @param element\n\
                     Pointer to the Element object to be added.\n\
+            \n\
+                @exception InvalidRequestException\n\
+                    thrown if Element  element is NULL.\n\
+            \n\
+                @exception InvalidRequestException\n\
+                    thrown if Element  element is this element\n\
             \n\
                 @exception InvalidRequestException\n\
                     thrown if Element  element is an ancestor of this Element, to prevent\n\
@@ -428,7 +450,17 @@ void register_Element_class(){
             Element_exposer.def( 
                 "calculatePixelSize"
                 , calculatePixelSize_function_type( &::CEGUI::Element::calculatePixelSize )
-                , ( bp::arg("skipAllPixelAlignment")=(bool)(false) ) );
+                , ( bp::arg("skipAllPixelAlignment")=(bool)(false) )
+                , "*!\n\
+                 Calculates this element's pixel size\n\
+            \n\
+                @param skipAllPixelAlignment \n\
+                    Should all pixel-alignment be skipped when calculating the pixel size?\n\
+            \n\
+                If you want to get the pixel size you most probably want to use the\n\
+                Element.getPixelSize method. This method skips caching and might\n\
+                impact performance!\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::fireAreaChangeEvents
@@ -455,18 +487,15 @@ void register_Element_class(){
                     Return the element's area.\n\
             \n\
                     Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
+                    one of the corners and edges of this Element's parent element (depending on alignments)\n\
                     or from the top-left corner of the display if this element has no parent\n\
                     (i.e. it is the root element).\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @return\n\
                     URect describing the rectangle of the element area.\n\
-                 *\n" );
+            \n\
+                @see UDim\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::getAspectMode
@@ -477,9 +506,11 @@ void register_Element_class(){
                 "getAspectMode"
                 , getAspectMode_function_type( &::CEGUI::Element::getAspectMode )
                 , "*!\n\
+                \n\
+                    Retrieves currently used aspect mode\n\
             \n\
-                Retrieves currently used aspect mode\n\
-            *\n" );
+                @see Element.setAspectMode\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::getAspectRatio
@@ -507,10 +538,12 @@ void register_Element_class(){
                 , ( bp::arg("non_client")=(bool const)(false) )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                \n\
-                    Return a Rect that describes the area that is used to position\n\
-                    and - for scale values - size child content attached to this Element.\n\
+                 Return a Rect that is used to position and size child elements\n\
             \n\
+                It is used as the reference area for positioning and its size is used for\n\
+                the scale components of position and size.\n\
+             \n\
+                \note\n\
                     By and large the area returned here will be the same as the unclipped\n\
                     inner rect (for client content) or the unclipped outer rect (for non\n\
                     client content), although certain advanced uses will require\n\
@@ -518,8 +551,8 @@ void register_Element_class(){
             \n\
                 \note\n\
                     The behaviour of this function is modified by overriding the\n\
-                    protected Element.getClientChildContentArea_impl andor\n\
-                    Element.getNonClientChildContentArea_impl functions.\n\
+                    protected Element.getClientChildContentArea andor\n\
+                    Element.getNonClientChildContentArea functions.\n\
             \n\
                 @param non_client\n\
                     - true to return the non-client child content area.\n\
@@ -533,7 +566,10 @@ void register_Element_class(){
             
             Element_exposer.def( 
                 "getChildCount"
-                , getChildCount_function_type( &::CEGUI::Element::getChildCount ) );
+                , getChildCount_function_type( &::CEGUI::Element::getChildCount )
+                , "*!\n\
+             Returns number of child elements attached to this Element\n\
+            *\n" );
         
         }
         { //::CEGUI::Element::getChildElementAtIdx
@@ -576,7 +612,8 @@ void register_Element_class(){
             
             Element_exposer.def( 
                 "getHeight"
-                , getHeight_function_type( &::CEGUI::Element::getHeight ) );
+                , getHeight_function_type( &::CEGUI::Element::getHeight )
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::getHorizontalAlignment
@@ -614,13 +651,10 @@ void register_Element_class(){
                     changes occur by user interaction, general system operation, or by\n\
                     direct setting by client code).\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @return\n\
                     UVector2 describing the maximum size of the element's area.\n\
+            \n\
+                @see Element.setMaxSize\n\
                  *\n" );
         
         }
@@ -640,14 +674,11 @@ void register_Element_class(){
                     changes occur by user interaction, general system operation, or by\n\
                     direct setting by client code).\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @return\n\
                     UVector2 describing the minimum size of the element's area.\n\
-                 *\n" );
+            \n\
+                @see Element.setMinSize\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::getNonClientChildContentArea
@@ -669,8 +700,12 @@ void register_Element_class(){
                 , getParentElement_function_type( &::CEGUI::Element::getParentElement )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-             Retrieves parent of this element, 0 means that this Element is a root of a tree it represents\n\
-            *\n" );
+              Retrieves parent of this element\n\
+            \n\
+             @returns\n\
+                 pointer to parent or 0, 0 means that this Element is a root of\n\
+                 the subtree it represents\n\
+             *\n" );
         
         }
         { //::CEGUI::Element::getParentPixelSize
@@ -682,12 +717,13 @@ void register_Element_class(){
                 , getParentPixelSize_function_type( &::CEGUI::Element::getParentPixelSize )
                 , ( bp::arg("skipAllPixelAlignment")=(bool)(false) )
                 , "*!\n\
-                \n\
-                    Return the pixel size of the parent element.  This always returns a\n\
-                    valid object.\n\
+                 Return the pixel size of the parent element.\n\
+            \n\
+                If this element doesn't have any parent, the display size will be returned.\n\
+                This method returns a valid Sizef object in all cases.\n\
             \n\
                 @return\n\
-                    Size object that describes the pixel dimensions of this Element object's parent\n\
+                    Size object that describes the pixel dimensions of this Element's parent\n\
                 *\n" );
         
         }
@@ -701,7 +737,7 @@ void register_Element_class(){
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
                 \n\
-                    Return the element's absolute (or screen, depending no the type of the element) position in\
+                    Return the element's absolute (or screen, depending on the type of the element) position in\
                     pixels.\n\
             \n\
                 @return\n\
@@ -743,14 +779,11 @@ void register_Element_class(){
                     or from the top-left corner of the display if this element has no parent\n\
                     (i.e. it is the root element).\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @return\n\
-                    UVector2 describing the position (top-left corner) of the element area.\n\
-                 *\n" );
+                    UVector2 describing the position of the element area.\n\
+            \n\
+                @see UDim\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::getRootContainerSize
@@ -791,14 +824,11 @@ void register_Element_class(){
             \n\
                     Gets the size of the area occupied by this element.\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @return\n\
                     USize describing the size of the element's area.\n\
-                 *\n" );
+            \n\
+                @see UDim\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::getUnclippedInnerRect
@@ -810,11 +840,13 @@ void register_Element_class(){
                 , getUnclippedInnerRect_function_type( &::CEGUI::Element::getUnclippedInnerRect )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                \n\
-                    Return a Rect object that describes, unclipped, the inner rectangle for\n\
-                    this element.  The inner rectangle is typically an area that excludes\n\
-                    some frame or other rendering that should not be touched by subsequent\n\
-                    rendering.\n\
+                 Return a Rect that describes the unclipped inner rect area of the Element\n\
+            \n\
+                The inner rectangle is typically an area that excludes some frame or other decorations\n\
+                that should not be touched by rendering of client clipped child elements.\n\
+            \n\
+                \note\n\
+                    Unclipped in this context means not limited by any ancestor Element's area.\n\
             \n\
                 @return\n\
                     Rect object that describes, in unclipped screen pixel co-ordinates, the\n\
@@ -843,10 +875,18 @@ void register_Element_class(){
                 , getUnclippedOuterRect_function_type( &::CEGUI::Element::getUnclippedOuterRect )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
+                 Return a Rect that describes the unclipped outer rect area of the Element\n\
             \n\
-                Return a Rect that describes the unclipped outer rect area of the Element\n\
-                in screen pixels.\n\
-            *\n" );
+                The unclipped outer rectangle is the entire area of the element, including\n\
+                frames and other outside decorations.\n\
+            \n\
+                \note\n\
+                    Unclipped in this context means not limited by any ancestor Element's area.\n\
+            \n\
+                \note\n\
+                    If you take position of the result rectangle it is the same as pixel\n\
+                    position of the Element in screenspace.\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::getUnclippedOuterRect_impl
@@ -870,15 +910,17 @@ void register_Element_class(){
                 , ( bp::arg("inner") )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-                \n\
-                    Return a Rect that describes the unclipped area covered by the Element.\n\
+                 Return a Rect that describes the unclipped area covered by the Element.\n\
             \n\
-                    This function can return either the inner or outer area dependant upon\n\
-                    the boolean values passed in.\n\
+                This function can return either the inner or outer area dependant upon\n\
+                the boolean values passed in.\n\
             \n\
                 @param inner\n\
                     - true if the inner rect area should be returned.\n\
                     - false if the outer rect area should be returned.\n\
+            \n\
+                @see Element.getUnclippedOuterRect\n\
+                @see Element.getUnclippedInnerRect\n\
                 *\n" );
         
         }
@@ -907,7 +949,8 @@ void register_Element_class(){
             
             Element_exposer.def( 
                 "getWidth"
-                , getWidth_function_type( &::CEGUI::Element::getWidth ) );
+                , getWidth_function_type( &::CEGUI::Element::getWidth )
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::getXPosition
@@ -917,7 +960,8 @@ void register_Element_class(){
             Element_exposer.def( 
                 "getXPosition"
                 , getXPosition_function_type( &::CEGUI::Element::getXPosition )
-                , bp::return_value_policy< bp::copy_const_reference >() );
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::getYPosition
@@ -927,7 +971,8 @@ void register_Element_class(){
             Element_exposer.def( 
                 "getYPosition"
                 , getYPosition_function_type( &::CEGUI::Element::getYPosition )
-                , bp::return_value_policy< bp::copy_const_reference >() );
+                , bp::return_value_policy< bp::copy_const_reference >()
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::isAncestor
@@ -939,11 +984,12 @@ void register_Element_class(){
                 , isAncestor_function_type( &::CEGUI::Element::isAncestor )
                 , ( bp::arg("element") )
                 , "*!\n\
-                \n\
-                    return true if the specified Element is some ancestor of this Element.\n\
+                 Checks whether the specified Element is an ancestor of this Element\n\
             \n\
                 @param element\n\
                     Pointer to the Element object to look for.\n\
+            \n\
+                This element itself is not its own ancestor!\n\
             \n\
                 @return\n\
                     - true if  element was found to be an ancestor (parent, or parent of\n\
@@ -959,7 +1005,10 @@ void register_Element_class(){
             Element_exposer.def( 
                 "isChild"
                 , isChild_function_type( &::CEGUI::Element::isChild )
-                , ( bp::arg("element") ) );
+                , ( bp::arg("element") )
+                , "*!\n\
+             Checks whether given element is attached to this Element\n\
+            *\n" );
         
         }
         { //::CEGUI::Element::isInnerRectSizeChanged
@@ -978,7 +1027,12 @@ void register_Element_class(){
             
             Element_exposer.def( 
                 "isNonClient"
-                , isNonClient_function_type( &::CEGUI::Element::isNonClient ) );
+                , isNonClient_function_type( &::CEGUI::Element::isNonClient )
+                , "*!\n\
+                 Checks whether this element was set to be non client\n\
+            \n\
+                @see Element.setNonClient\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::isPixelAligned
@@ -1202,13 +1256,15 @@ void register_Element_class(){
                 , removeChild_function_type( &::CEGUI::Element::removeChild )
                 , ( bp::arg("element") )
                 , "*!\n\
-            \n\
-                Remove the Element referenced by the given name path from this Element's\n\
-                child list.\n\
                 \n\
-            @see\n\
-                Element.addChild\n\
-            *\n" );
+                    Remove the Element Element's child list.\n\
+                    \n\
+                @exception InvalidRequestException\n\
+                    thrown if Element  element is NULL.\n\
+            \n\
+                @see\n\
+                    Element.addChild\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::removeChild_impl
@@ -1245,32 +1301,7 @@ void register_Element_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("xpos"), bp::arg("ypos"), bp::arg("width"), bp::arg("height") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param xpos\n\
-                    UDim describing the new x co-ordinate (left edge) of the element area.\n\
-            \n\
-                @param ypos\n\
-                    UDim describing the new y co-ordinate (top-edge) of the element area.\n\
-            \n\
-                @param width\n\
-                    UDim describing the new width of the element area.\n\
-            \n\
-                @param height\n\
-                    UDim describing the new height of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setArea
@@ -1281,23 +1312,7 @@ void register_Element_class(){
                 "setArea"
                 , setArea_function_type( &::CEGUI::Element::setArea )
                 , ( bp::arg("area") )
-                , "*!\n\
-                \n\
-                    Set the Element area.\n\
-            \n\
-                    Sets the area occupied by this Element. The defined area is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
-                    or from the top-left corner of the display if this element has no parent\n\
-                    (i.e. it is the root element).\n\
-            \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
-                @param area\n\
-                    URect describing the new area rectangle of the element area.\n\
-                 *\n" );
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setArea_impl
@@ -1349,11 +1364,12 @@ void register_Element_class(){
                 , setAspectMode_function_type( &::CEGUI::Element::setAspectMode )
                 , ( bp::arg("mode") )
                 , "*!\n\
-                \n\
-                    Sets current aspect mode and recalculates the area rect\n\
+                 Sets current aspect mode and recalculates the area rect\n\
             \n\
-                @param\n\
-                    mode the new aspect mode to set\n\
+                @param mode the new aspect mode to set\n\
+            \n\
+                @see CEGUI.AspectMode\n\
+                @see CEGUI.setAspectRatio\n\
                 *\n" );
         
         }
@@ -1369,7 +1385,14 @@ void register_Element_class(){
                 \n\
                     Sets target aspect ratio\n\
             \n\
-                This is ignored if AspectMode is AM_IGNORE.\n\
+                @param ratio\n\
+                    The desired ratio as width  height. For example 4.0f  3.0f,\n\
+                    16.0f  9.0.f, ...\n\
+            \n\
+                \note\n\
+                    This is ignored if AspectMode is AM_IGNORE.\n\
+            \n\
+                @see Element.setAspectMode\n\
                 *\n" );
         
         }
@@ -1380,7 +1403,8 @@ void register_Element_class(){
             Element_exposer.def( 
                 "setHeight"
                 , setHeight_function_type( &::CEGUI::Element::setHeight )
-                , ( bp::arg("height") ) );
+                , ( bp::arg("height") )
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setHorizontalAlignment
@@ -1412,15 +1436,16 @@ void register_Element_class(){
                     direct setting by client code).\n\
             \n\
                 \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
+                    The scale component of UDim takes display size as the base.\n\
+                    It is not dependent on parent element's size!\n\
             \n\
                 @param size\n\
                     USize describing the new maximum size of the element's area.  Note that\n\
                     zero is used to indicate that the Element's maximum area size will be\n\
                     unbounded.\n\
-                 *\n" );
+            \n\
+                @see Element.setSize\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::setMinSize
@@ -1440,13 +1465,14 @@ void register_Element_class(){
                     direct setting by client code).\n\
             \n\
                 \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
+                    The scale component of UDim takes display size as the base.\n\
+                    It is not dependent on parent element's size!\n\
             \n\
                 @param size\n\
                     USize describing the new minimum size of the element's area.\n\
-                 *\n" );
+            \n\
+                @see Element.setSize\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::setNonClient
@@ -1458,12 +1484,11 @@ void register_Element_class(){
                 , setNonClient_function_type( &::CEGUI::Element::setNonClient )
                 , ( bp::arg("setting") )
                 , "*!\n\
-                \n\
-                    Set whether the Element is non-client.\n\
+                 Set whether the Element is non-client.\n\
             \n\
-                    A non-client element is clipped, positioned and sized according to the\n\
-                    parent element's full area as opposed to just the inner rect area used\n\
-                    for normal client element.\n\
+                A non-client element is clipped, positioned and sized according to the\n\
+                parent element's full area as opposed to just the inner rect area used\n\
+                for normal client element.\n\
             \n\
                 @param setting\n\
                     - true if the element should be clipped, positioned and sized according\n\
@@ -1503,16 +1528,27 @@ void register_Element_class(){
                 , setPixelAligned_function_type( &::CEGUI::Element::setPixelAligned )
                 , ( bp::arg("setting") )
                 , "*!\n\
-            \n\
-                Sets whether this Element is pixel aligned (both position and size, basically the 4 corners).\n\
                 \n\
-            \note\n\
-                Pixel aligning is enabled by default and for most widgets it makes a lot of sense and just looks\
-                better.\n\
-                Especially with text. However for HUD or decorative elements pixel aligning might make\
-                transitions less\n\
-                fluid. Feel free to experiment with the setting.\n\
-            *\n" );
+                    Sets whether this Element is pixel aligned (both position and size, basically the 4\
+                    corners).\n\
+                    \n\
+                 Impact on the element tree\n\
+                    Lets say we have Element A with child Element B, A is pixel aligned\n\
+                    and it's position is 99.5, 99.5 px in screenspace. This gives us\n\
+                    100, 100 px pixel aligned position.\n\
+            \n\
+                    B's position is always relative to the pixel-aligned position of its\n\
+                    parent. Say B isn't pixel-aligned and it's position is 0.5, 0.5 px.\n\
+                    Its final position will be 100.5, 100.5 px in screenspace, not 100, 100 px!\n\
+            \n\
+                    If it were pixel-aligned the final position would be 101, 101 px.\n\
+            \n\
+                 Why you should pixel-align widgets\n\
+                    Pixel aligning is enabled by default and for most widgets it makes\n\
+                    a lot of sense and just looks better. Especially with text. However for\n\
+                    HUD or decorative elements pixel aligning might make transitions less\n\
+                    fluid. Feel free to experiment with the setting.\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::setPosition
@@ -1528,19 +1564,16 @@ void register_Element_class(){
                     Set the element's position.\n\
             \n\
                     Sets the position of the area occupied by this element. The position is offset from\n\
-                    one of the corners of this Element's parent element (depending on alignments)\n\
+                    one of the corners and edges of this Element's parent element (depending on alignments)\n\
                     or from the top-left corner of the display if this element has no parent\n\
                     (i.e. it is the root element).\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @param pos\n\
-                    UVector2 describing the new position (top-left corner) of the element\n\
-                    area.\n\
-                 *\n" );
+                    UVector2 describing the new position of the element area.\n\
+            \n\
+                @see UDim\n\
+                @see Element.setArea(const UVector2& pos, const USize& size)\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::setRotation
@@ -1557,10 +1590,11 @@ void register_Element_class(){
                 @param rotation\n\
                     A Quaternion describing the rotation\n\
             \n\
-                CEGUI used Euler angles previously. Whilst this is easy to use and seems\n\
-                intuitive, it causes Gimbal locks when animating and is just the worse\n\
-                solution than using Quaternions. You can still use Euler angles, see\n\
-                the  Quaternion class for more info about that.\n\
+                 Euler angles\n\
+                    CEGUI used Euler angles previously. While these are easy to use and seem\n\
+                    intuitive they cause Gimbal locks when animating and are overall the worse\n\
+                    solution than using Quaternions. You can still use Euler angles, see\n\
+                    the CEGUI.Quaternion class for more info about that.\n\
                 *\n" );
         
         }
@@ -1578,14 +1612,11 @@ void register_Element_class(){
             \n\
                     Sets the size of the area occupied by this element.\n\
             \n\
-                \note\n\
-                    This method makes use of Unified Dimensions. These contain both\n\
-                    parent relative and absolute pixel components, which are used in\n\
-                    determining the final value used.\n\
-            \n\
                 @param size\n\
                     USize describing the new size of the element's area.\n\
-                 *\n" );
+            \n\
+                @see UDim\n\
+                *\n" );
         
         }
         { //::CEGUI::Element::setVerticalAlignment
@@ -1607,7 +1638,8 @@ void register_Element_class(){
             Element_exposer.def( 
                 "setWidth"
                 , setWidth_function_type( &::CEGUI::Element::setWidth )
-                , ( bp::arg("width") ) );
+                , ( bp::arg("width") )
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setXPosition
@@ -1617,7 +1649,8 @@ void register_Element_class(){
             Element_exposer.def( 
                 "setXPosition"
                 , setXPosition_function_type( &::CEGUI::Element::setXPosition )
-                , ( bp::arg("pos") ) );
+                , ( bp::arg("pos") )
+                , "!  overload\n" );
         
         }
         { //::CEGUI::Element::setYPosition
@@ -1627,7 +1660,8 @@ void register_Element_class(){
             Element_exposer.def( 
                 "setYPosition"
                 , setYPosition_function_type( &::CEGUI::Element::setYPosition )
-                , ( bp::arg("pos") ) );
+                , ( bp::arg("pos") )
+                , "!  overload\n" );
         
         }
         Element_exposer.add_static_property( "EventChildAdded"

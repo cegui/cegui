@@ -27,6 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
 #ifndef _CEGUIWindow_h_
 #define _CEGUIWindow_h_
 
@@ -50,12 +51,10 @@
 #include <vector>
 #include <set>
 
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
-
 
 // Start of CEGUI namespace section
 namespace CEGUI
