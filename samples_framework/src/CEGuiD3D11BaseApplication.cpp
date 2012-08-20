@@ -110,7 +110,7 @@ void CEGuiD3D11BaseApplication::run()
     d_sampleApp->initialise();
     Win32AppHelper::setSamplesFramework(d_sampleApp);
 
-    float clear_colour[4] = {1.0f, 1.0f, 1.0f, 0.0f};
+    float clear_colour[4] = {0.0f, 0.0f, 0.0f, 0.0f};
 
     //
     //  This is basically a modified Win32 message pump

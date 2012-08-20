@@ -168,7 +168,7 @@ void CEGuiD3D9BaseApplication::destroyWindow()
 void CEGuiD3D9BaseApplication::beginRendering(const float elapsed)
 {
     pimpl->d_3DDevice->Clear(0, 0, D3DCLEAR_TARGET,
-                             D3DCOLOR_XRGB(255, 255, 255), 1.0f, 0);
+                             D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 }
 
 //----------------------------------------------------------------------------//
