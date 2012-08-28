@@ -1,6 +1,7 @@
 <SampleDefinition
     sampleName      = "CEGUITreeDemo"
     sampleType      = "C++ Module"
-    summary         = ""
-    description     = ""
+    summary         = "The demos contains a tree of items that can be expanded and collapsed."
+    description     = "The TreeDemo showcases the &quot;CEGUI/Tree&quot; functionality for windows. The &quot;TaharezLook/Tree&quot; widget is used for this purpose."
+    credits         = "David Durant"
 />

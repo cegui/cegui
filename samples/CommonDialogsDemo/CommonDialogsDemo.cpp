@@ -75,7 +75,7 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
     // Add a colour picker & label
     Window* colourPickerLabel = winMgr.createWindow("Vanilla/Label");
     wnd->addChild(colourPickerLabel);
-    colourPickerLabel->setSize(USize(UDim(0, 270), UDim(0, 30)));
+    colourPickerLabel->setSize(USize(UDim(1.0f, 0.0f), UDim(0.0f, 30.0f)));
     colourPickerLabel->setText("Open the colour picker by clicking on the respective box:");
 
     CEGUI::ColourPicker* colourPicker = static_cast<CEGUI::ColourPicker*>(winMgr.createWindow("Vanilla/ColourPicker"));

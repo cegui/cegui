@@ -5,6 +5,6 @@ Aliasing.jpg                - Aliasing test image created by Lukas "Ident" Meind
 TaharezLook.tga			    - Original Taharez imagery created by Lars "Taharez" Rinde.
 WindowsLook.tga			    - Windows look imagery created by Paul "CrazyEddie" Turner.
 vanilla.tga			    	- Original "Vanilla GUI" imagery created by Shane Parker, used with permission.
-HUDDemo.png                 - Created by Lukas "Ident" Meindl, images mostly taken from http://openclipart.org/ and edited
+HUDDemo.png                 - Interface graphics created by "syg". Food objects created by Lukas "Ident" Meindl, images mostly taken from http://openclipart.org/ and edited.
 GameMenu.png                - Created and provided by "syg". Modified by Lukas "Ident" Meindl
 BackgroundSampleBrowser.jpg - Taken from NASA images http://nssdc.gsfc.nasa.gov/photo_gallery/photogallery-mars.html

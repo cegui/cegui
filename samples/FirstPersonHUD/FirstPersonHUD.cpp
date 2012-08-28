@@ -136,7 +136,8 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
 
     SchemeManager::getSingleton().createFromFile("HUDDemo.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
+
+    FontManager::getSingleton().createFromFile("DejaVuSans-14.font");
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
     // Load the HUDDemo Layout
@@ -371,6 +372,7 @@ void HUDDemo::createScorePopup(const CEGUI::Vector2<float>& mousePos, int points
     popupWindow->setRiseOnClickEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&HUDDemo::handleScorePopupAnimationEnded, this));
     popupWindow->setPixelAligned(false);
+    popupWindow->setFont("DejaVuSans-14");
 
     popupWindow->setPosition(popupWindow->getPosition() + CEGUI::UVector2(cegui_reldim(0.03f), cegui_reldim(-0.02f)));
 
@@ -468,7 +470,10 @@ void HUDDemo::selectedWeapon(SelectedWeapon weapon)
 bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
-    selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );
+    weaponIndex = (weaponIndex - 1) % 3;
+    if(weaponIndex < 0)
+        weaponIndex += 3;
+    selectedWeapon( static_cast<SelectedWeapon>(weaponIndex) );
 
     return false;
 }
@@ -477,10 +482,7 @@ bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
 bool HUDDemo::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args)
 {
     int weaponIndex = static_cast<int>(d_selectedWeapon);
-    weaponIndex = (weaponIndex - 1) % 3;
-    if(weaponIndex < 0)
-        weaponIndex += 3;
-    selectedWeapon( static_cast<SelectedWeapon>(weaponIndex) );
+    selectedWeapon( static_cast<SelectedWeapon>(++weaponIndex % 3) );
 
     return false;
 }
