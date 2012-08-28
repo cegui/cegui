@@ -74,7 +74,8 @@ void OpenGLFBOTextureTarget::activate()
 {
     // remember previously bound FBO to make sure we set it back
     // when deactivating
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT, &d_previousFrameBuffer);
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
+            reinterpret_cast<GLint*>(&d_previousFrameBuffer));
 
     // switch to rendering to the texture
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
@@ -98,13 +99,18 @@ void OpenGLFBOTextureTarget::clear()
     GLfloat old_col[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, old_col);
 
+    // remember previously bound FBO to make sure we set it back
+    GLuint previousFBO = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
+            reinterpret_cast<GLint*>(&previousFBO));
+
     // switch to our FBO
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
     // Clear it.
     glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
-    // switch back to rendering to view port
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    // switch back to rendering to the previously bound FBO
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, previousFBO);
 
     // restore previous clear colour
     glClearColor(old_col[0], old_col[1], old_col[2], old_col[3]);
@@ -119,6 +125,12 @@ void OpenGLFBOTextureTarget::initialiseRenderTexture()
 
     // create FBO
     glGenFramebuffersEXT(1, &d_frameBuffer);
+
+    // remember previously bound FBO to make sure we set it back
+    GLuint previousFBO = 0;
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
+            reinterpret_cast<GLint*>(&previousFBO));
+
     glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
 
     // set up the texture the FBO will draw to
@@ -135,8 +147,8 @@ void OpenGLFBOTextureTarget::initialiseRenderTexture()
 
     // TODO: Check for completeness and then maybe try some alternative stuff?
 
-    // switch from our frame buffer back to using default buffer.
-    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
+    // switch from our frame buffer back to the previously bound buffer.
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, previousFBO);
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
