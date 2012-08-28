@@ -218,7 +218,7 @@
         <PropertyDefinition name="ImageColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="FrameColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="ForegroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
-        <PropertyDefinition name="BackgroundColours" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" redrawOnWrite="true" type="ColourRect"/> 
+        <PropertyDefinition name="BackgroundColours" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" redrawOnWrite="true" type="ColourRect"/> 
         <PropertyDefinition name="ForegroundFadeColours" initialValue="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="Image" initialValue="" redrawOnWrite="true" />
 
