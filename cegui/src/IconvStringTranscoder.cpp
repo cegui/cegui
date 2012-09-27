@@ -93,6 +93,14 @@ public:
 template<typename T>
 static T* iconvTranscode(IconvHelper& ich, const char* in_buf, size_t in_len)
 {
+    // Handle empty strings
+    if (in_len == 0)
+    {
+        T* ret_buff = CEGUI_NEW_ARRAY_PT(T, 1, CEGUI::BufferAllocator);
+        ret_buff[0] = 0;
+        return ret_buff;
+    }
+
     std::vector<T CEGUI_VECTOR_ALLOC(T)> out_vec;
     out_vec.resize(in_len);
     size_t out_count = 0;
