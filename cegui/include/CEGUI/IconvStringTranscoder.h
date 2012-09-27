@@ -45,6 +45,9 @@ public:
     String stringFromUTF16(const uint16* input) const;
     String stringFromStdWString(const std::wstring& input) const;
     void deleteUTF16Buffer(uint16* input) const;
+
+private:
+    const char* UTF16PE;
 };
 
 }
