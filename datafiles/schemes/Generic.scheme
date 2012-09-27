@@ -5,6 +5,6 @@
 
 	<FalagardMapping windowType="Generic/Label" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/Label" />
     <FalagardMapping windowType="Generic/Image" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="Generic/Image" />
-	
-    </GUIScheme>
-
+    <FalagardMapping windowType="Generic/ImageButton" targetType="CEGUI/PushButton" renderer="Core/Button" lookNFeel="Generic/ImageButton" />
+    
+</GUIScheme>
