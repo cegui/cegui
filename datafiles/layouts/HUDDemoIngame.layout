@@ -103,12 +103,14 @@
                 <Property name="VerticalAlignment" value="Bottom" />
                 <Property name="RiseOnClickEnabled" value="False" />
                 <Property name="HorizontalAlignment" value="Right" />
+                <Property name="MousePassThroughEnabled" value="True" />
                 <Window type="Generic/Label" name="BreadLabel" >
                     <Property name="Area" value="{{0.15,0},{0.369186,0},{1,0},{0.459186,0}}" />
                     <Property name="Font" value="GreatVibes-16" />
                     <Property name="Text" value="Bread ...                     +2pts" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="LeftAligned" />
+                    <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Label" name="PrizzaLabel" >
                     <Property name="Area" value="{{0.15,0},{0.473837,0},{1,0},{0.563837,0}}" />
@@ -116,6 +118,7 @@
                     <Property name="Text" value="Prizza ...                    +3pts" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="LeftAligned" />
+                    <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Label" name="SteakLabel" >
                     <Property name="Area" value="{{0.15,0},{0.572674,0},{1,0},{0.662674,0}}" />
@@ -123,6 +126,7 @@
                     <Property name="Text" value="Bloody steak ... -0.35hp -13pts" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="LeftAligned" />
+                    <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Label" name="PooLabel" >
                     <Property name="Area" value="{{0.15,0},{0.677325,0},{1,0},{0.767325,0}}" />
@@ -130,6 +134,7 @@
                     <Property name="Text" value="Poo ...           -0.35hp -9pts" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="LeftAligned" />
+                    <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Label" name="VegetableLabel" >
                     <Property name="Area" value="{{0.15,0},{0.773255,0},{1,0},{0.863255,0}}" />
@@ -137,6 +142,7 @@
                     <Property name="Text" value="Vegetable people ...         +1pts" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="LeftAligned" />
+                    <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Label" name="VegFruitsLabel" >
                     <Property name="Area" value="{{0.15,0},{0.869185,0},{1.00001,0},{0.959185,0}}" />
@@ -144,6 +150,7 @@
                     <Property name="Text" value="Vegetables and fruits ...    +88pts" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="LeftAligned" />
+                    <Property name="MousePassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="DefaultWindow" name="BonusItemsWindow" >
@@ -248,6 +255,7 @@
                 <Property name="ClippedByParent" value="False" />
                 <Property name="VerticalAlignment" value="Bottom" />
                 <Property name="RiseOnClickEnabled" value="False" />
+                <Property name="MousePassThroughEnabled" value="True" />
             </Window>
             <Window type="Generic/Image" name="WeaponKnife" >
                 <Property name="Area" value="{{0.130469,0},{-0.813953,0},{0.158906,0},{-0.813953,0}}" />
@@ -258,6 +266,7 @@
                 <Property name="ClippedByParent" value="False" />
                 <Property name="VerticalAlignment" value="Bottom" />
                 <Property name="RiseOnClickEnabled" value="False" />
+                <Property name="MousePassThroughEnabled" value="True" />
             </Window>
             <Window type="Generic/Image" name="WeaponFork" >
                 <Property name="Area" value="{{0.0304688,0},{-0.848837,0},{0.0796877,0},{-0.848837,0}}" />
@@ -268,6 +277,7 @@
                 <Property name="ClippedByParent" value="False" />
                 <Property name="VerticalAlignment" value="Bottom" />
                 <Property name="RiseOnClickEnabled" value="False" />
+                <Property name="MousePassThroughEnabled" value="True" />
             </Window>
         </Window>
     </Window>

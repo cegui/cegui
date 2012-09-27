@@ -141,20 +141,30 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
 
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
     // Load the HUDDemo Layout
-    d_root = winMgr.loadLayoutFromFile("HUDDemo.layout");
+    d_rootIngame = winMgr.loadLayoutFromFile("HUDDemoIngame.layout");
+    d_rootGameOver = winMgr.loadLayoutFromFile("HUDDemoGameOver.layout");
+    d_root = winMgr.createWindow("DefaultWindow", "HUDDemoRoot");
+    d_root->addChild(d_rootIngame);
     d_guiContext->setRootWindow(d_root);
+
+    if(!ImageManager::getSingleton().isDefined("HUDDemoGameOver"))
+        ImageManager::getSingleton().addFromImageFile("HUDDemoGameOver", "HUDDemoGameOver.png");
+    d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "HUDDemoGameOver");
 
     setupMouseCursor();
 
     srand(static_cast<unsigned int >(time(0)));
 
-    d_lifeBar = static_cast<CEGUI::ProgressBar*>(d_root->getChild("TopBar/LifeBar"));
+    d_lifeBar = static_cast<CEGUI::ProgressBar*>(d_rootIngame->getChild("TopBar/LifeBar"));
 
     initGame();
 
-    d_root->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
-    d_root->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
+   
+    d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&HUDDemo::handleRestartButtonClicked, this));
   
+
     return true;
 }
 
@@ -211,7 +221,7 @@ void HUDDemo::setupMouseCursor()
     d_mouseCursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_mouseCursorWnd->setAlwaysOnTop(true);
     d_mouseCursorWnd->setMousePassThroughEnabled(true);
-    d_root->addChild(d_mouseCursorWnd);
+    d_rootIngame->addChild(d_mouseCursorWnd);
 }
 
 void HUDDemo::updateMouseCursor()
@@ -241,7 +251,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
     plateRoot->subscribeEvent(CEGUI::Window::EventMouseButtonDown, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
-    d_root->addChild(plateRoot);
+    d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");
     plateImgWnd->setProperty("Image", s_imageNamePlate);
@@ -314,12 +324,11 @@ void HUDDemo::updatePlates(float timeSinceLastUpdate)
         else
             ++i;
     }
-
 }
 
 void HUDDemo::updateScoreWindow()
 {
-    CEGUI::Window* scoreWnd = d_root->getChild("TopBar/ScoreBGImage/Score");
+    CEGUI::Window* scoreWnd = d_rootIngame->getChild("TopBar/ScoreBGImage/Score");
     scoreWnd->setText(CEGUI::PropertyHelper<int>::toString(d_score));
 }
 
@@ -366,7 +375,7 @@ void HUDDemo::createScorePopup(const CEGUI::Vector2<float>& mousePos, int points
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* popupWindow = winMgr.createWindow("HUDDemo/PopupLabel");
-    d_root->addChild(popupWindow);
+    d_rootIngame->addChild(popupWindow);
     popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(mousePos.d_x), cegui_absdim(mousePos.d_y)));
     popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
@@ -419,9 +428,15 @@ void HUDDemo::handleLivesChanged()
     bool life3Visible = (d_lives >= 3);
 
     
-    d_root->getChild("TopBar/Life1")->setAlpha( life1Visible ? 1.0f : 0.5f );
-    d_root->getChild("TopBar/Life2")->setAlpha( life2Visible ? 1.0f : 0.5f );
-    d_root->getChild("TopBar/Life3")->setAlpha( life3Visible ? 1.0f : 0.5f );
+    d_rootIngame->getChild("TopBar/Life1")->setAlpha( life1Visible ? 1.0f : 0.5f );
+    d_rootIngame->getChild("TopBar/Life2")->setAlpha( life2Visible ? 1.0f : 0.5f );
+    d_rootIngame->getChild("TopBar/Life3")->setAlpha( life3Visible ? 1.0f : 0.5f );
+
+    if(d_lives <= 0)
+    {
+        d_root->addChild(d_rootGameOver);
+        d_rootGameOver->addChild(d_mouseCursorWnd);
+    }
 }
 
 void HUDDemo::initGame()
@@ -444,23 +459,23 @@ void HUDDemo::selectedWeapon(SelectedWeapon weapon)
     switch(d_selectedWeapon)
     {
     case SW_Spoon:
-        d_root->getChild("BotBar/WeaponSpoon")->setAlpha(1.0f);
-        d_root->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
-        d_root->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
-        d_root->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Spoon");
+        d_rootIngame->getChild("BotBar/WeaponSpoon")->setAlpha(1.0f);
+        d_rootIngame->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
+        d_rootIngame->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
+        d_rootIngame->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Spoon");
         
         break;
     case SW_Fork:
-        d_root->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
-        d_root->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
-        d_root->getChild("BotBar/WeaponFork")->setAlpha(1.0f);
-        d_root->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Fork");
+        d_rootIngame->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
+        d_rootIngame->getChild("BotBar/WeaponKnife")->setAlpha(0.5f);
+        d_rootIngame->getChild("BotBar/WeaponFork")->setAlpha(1.0f);
+        d_rootIngame->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Fork");
         break;
     case SW_Knife:
-        d_root->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
-        d_root->getChild("BotBar/WeaponKnife")->setAlpha(1.0f);
-        d_root->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
-        d_root->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Knife");
+        d_rootIngame->getChild("BotBar/WeaponSpoon")->setAlpha(0.5f);
+        d_rootIngame->getChild("BotBar/WeaponKnife")->setAlpha(1.0f);
+        d_rootIngame->getChild("BotBar/WeaponFork")->setAlpha(0.5f);
+        d_rootIngame->getChild("BotBar/WeaponBGImage/WeaponLabel")->setText("Le Knife");
         break;
     default:
         break;
@@ -478,6 +493,15 @@ bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
     return false;
 }
 
+bool HUDDemo::handleRestartButtonClicked(const CEGUI::EventArgs& args)
+{
+    d_root->removeChild(d_rootGameOver);
+    d_rootIngame->addChild(d_mouseCursorWnd);
+
+    initGame();
+
+    return false;
+}
 
 bool HUDDemo::handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args)
 {
