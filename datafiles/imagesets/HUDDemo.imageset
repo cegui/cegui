@@ -21,9 +21,12 @@
     <Image height="80" name="ToolGlove" width="80" xPos="685" yPos="147" />
     <Image height="80" name="ToolPot" width="80" xPos="820" yPos="145" />
     <Image height="104" name="ToolBG" width="171" xPos="334" yPos="196" />
-    <Image height="1" name="BGBar" width="1" xPos="284" yPos="10" />
+    <Image height="1" name="BGBar" width="1" xPos="285" yPos="11" />
     <Image height="213" name="IconSpoonHL" width="86" xPos="501" yPos="805" />
     <Image height="197" name="IconKnifeHL" width="42" xPos="727" yPos="821" />
     <Image height="164" name="IconFork" width="69" xPos="568" yPos="1041" />
     <Image height="125" name="Spoon" width="103" xPos="365" yPos="320" />
+    <Image height="1" name="Filler" width="1" xPos="285" yPos="22" />
+    <Image height="36" name="ButtonNormal" width="130" xPos="274" yPos="148" />
+    <Image height="36" name="ButtonPressed" width="130" xPos="417" yPos="148" />
 </Imageset>
