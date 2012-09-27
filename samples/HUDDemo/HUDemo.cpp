@@ -1,5 +1,5 @@
 /***********************************************************************
-filename:   FirstPersonHUD.cpp
+filename:   HUDDemo.cpp
 created:    11/8/2012
 author:     Lukas E Meindl
 *************************************************************************/
@@ -25,7 +25,7 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "FirstPersonHUD.h"
+#include "HUDDemo.h"
 
 #include "CEGUI/CEGUI.h"
 
