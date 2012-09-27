@@ -85,6 +85,7 @@ protected:
     bool handleScorePopupAnimationEnded(const CEGUI::EventArgs& args);
     bool handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args);
     bool handleWeaponRightArrowClicked(const CEGUI::EventArgs& args);
+    bool handleRestartButtonClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
     void createScorePopup(const CEGUI::Vector2<float>& mousePos, int points);
@@ -96,6 +97,8 @@ protected:
 
     CEGUI::GUIContext* d_guiContext;
     CEGUI::Window* d_root;
+    CEGUI::Window* d_rootIngame;
+    CEGUI::Window* d_rootGameOver;
 
     CEGUI::Window* d_mouseCursorWnd;
 
