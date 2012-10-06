@@ -1,6 +1,10 @@
-<Imageset name="" imagefile="../../datafiles/imagesets/AlfiskoSkin_new.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="false" version="2">
+<Imageset name="" imagefile="../../datafiles/imagesets/AlfiskoSkin_new.png" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" version="2">
     <Image name="AlfiskoSkin/CheckboxUnchecked" xPos="0" yPos="0" width="20" height="20" xOffset="0" YOffset="0" />
     <Image name="AlfiskoSkin/CheckboxUncheckedHover" xPos="20" yPos="0" width="20" height="20" xOffset="0" YOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxChecked" xPos="0" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="20" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxChecked" xPos="40" yPos="0" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="0" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonNormal" xPos="20" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonNormalHover" xPos="40" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonSelected" xPos="0" yPos="40" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonSelectedHover" xPos="20" yPos="40" width="20" height="20" xOffset="0" YOffset="0" />
 </Imageset>

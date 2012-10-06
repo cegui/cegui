@@ -1,9 +1,14 @@
-<MetaImageset output="../../datafiles/imagesets/AlfiskoSkin_new.imageset" onlyPOT="false">
+<MetaImageset output="../../datafiles/imagesets/AlfiskoSkin_new.imageset" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" onlyPOT="false">
     <InkscapeSVG path="AlfiskoSkin/Checkbox.svg">
         <Component name="AlfiskoSkin/CheckboxUnchecked" layers="Base" x="0" y="0" width="20" height="20"/>
         <Component name="AlfiskoSkin/CheckboxUncheckedHover" layers="Base Hover" x="0" y="0" width="20" height="20"/>
         <Component name="AlfiskoSkin/CheckboxChecked" layers="Base Check" x="0" y="0" width="20" height="20"/>
         <Component name="AlfiskoSkin/CheckboxCheckedHover" layers="Base Hover CheckHover" x="0" y="0" width="20" height="20"/>
     </InkscapeSVG>
+    <InkscapeSVG path="AlfiskoSkin/RadioButton.svg">
+        <Component name="AlfiskoSkin/RadioButtonNormal" layers="Base" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/RadioButtonNormalHover" layers="Base Hover" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/RadioButtonSelected" layers="Base Selected" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/RadioButtonSelectedHover" layers="Base Hover SelectedHover" x="0" y="0" width="20" height="20"/>
+    </InkscapeSVG>
 </MetaImageset>
-
