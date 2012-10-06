@@ -27,7 +27,6 @@
  ***************************************************************************/
 #include "Sample_Text.h"
 #include "CEGUI/CEGUI.h"
-#include "CEGuiBaseApplication.h"
 #include <cstdlib>
 
 using namespace CEGUI;
@@ -35,24 +34,26 @@ using namespace CEGUI;
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool TextDemo::initialiseSample()
+bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
 {
+    d_guiContext = guiContext;
+    d_usedFiles = CEGUI::String(__FILE__);
+
     // we will make extensive use of the WindowManager.
     WindowManager& winMgr = WindowManager::getSingleton();
 
+    // load font and setup default if not loaded via scheme
+    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    // Set default font for the gui context
+    guiContext->setDefaultFont(&defaultFont);
+
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
-    // We need a font
-    FontManager::getSingleton().createFromFile("DejaVuSans-10.font");
-    // Font defaulting
-    if(FontManager::getSingleton().isDefined("DejaVuSans-10"))
-    {
-		System::getSingleton().getDefaultGUIContext().setDefaultFont("DejaVuSans-10");
-    }
+    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     // load an image to use as a background
-    ImageManager::getSingleton().addFromImageFile("BackgroundImage", "GPN-2000-001437.png");
+    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
+        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -63,9 +64,9 @@ bool TextDemo::initialiseSample()
     background->setProperty("FrameEnabled", "false");
     background->setProperty("BackgroundEnabled", "false");
     // set the background image
-    background->setProperty("Image", "BackgroundImage");
+    background->setProperty("Image", "SpaceBackgroundImage");
     // install this as the root GUI sheet
-    System::getSingleton().getDefaultGUIContext().setRootWindow(background);
+    d_guiContext->setRootWindow(background);
 
     // Load our layout as a basic
     background->addChild(winMgr.loadLayoutFromFile("TextDemo.layout"));
@@ -85,38 +86,38 @@ bool TextDemo::initialiseSample()
 void TextDemo::initStaticText()
 {
     // Name, Group, Selected
-    initRadio("Root/TextDemo/HorzLeft", 0, true);
-    initRadio("Root/TextDemo/HorzRight", 0, false);
-    initRadio("Root/TextDemo/HorzCentered", 0, false);
+    initRadio("Root/TextDemo/StaticGroup/HorzLeft", 0, true);
+    initRadio("Root/TextDemo/StaticGroup/HorzRight", 0, false);
+    initRadio("Root/TextDemo/StaticGroup/HorzCentered", 0, false);
     // New group!
-    initRadio("Root/TextDemo/VertTop", 1, true);
-    initRadio("Root/TextDemo/VertBottom", 1, false);
-    initRadio("Root/TextDemo/VertCentered", 1, false);
+    initRadio("Root/TextDemo/StaticGroup/VertTop", 1, true);
+    initRadio("Root/TextDemo/StaticGroup/VertBottom", 1, false);
+    initRadio("Root/TextDemo/StaticGroup/VertCentered", 1, false);
     //
     // Events
     //
     // Word-wrap checkbox (we can't re-use a handler struct for the last argument!!)
-    subscribeEvent("Root/TextDemo/Wrap", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/VertTop", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/VertBottom", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
-    subscribeEvent("Root/TextDemo/VertCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/Wrap", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/HorzLeft", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/HorzRight", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/HorzCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/VertTop", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/VertBottom", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
+    subscribeEvent("Root/TextDemo/StaticGroup/VertCentered", RadioButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::formatChangedHandler, this));
 }
 
 void TextDemo::initSingleLineEdit()
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     // Only accepts digits for the age field
-    if (root->isChild("Root/TextDemo/editAge"))
+    if (root->isChild("Root/TextDemo/SingleLineGroup/editAge"))
     {
-        static_cast<Editbox*>(root->getChild("Root/TextDemo/editAge"))->setValidationString("[0-9]*");
+        static_cast<Editbox*>(root->getChild("Root/TextDemo/SingleLineGroup/editAge"))->setValidationString("[0-9]*");
     }
     // Set password restrictions
-    if (root->isChild("Root/TextDemo/editPasswd"))
+    if (root->isChild("Root/TextDemo/SingleLineGroup/editPasswd"))
     {
-        Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextDemo/editPasswd"));
+        Editbox* passwd = static_cast<Editbox*>(root->getChild("Root/TextDemo/SingleLineGroup/editPasswd"));
         passwd->setValidationString("[A-Za-z0-9]*");
         // Render masked
         passwd->setTextMasked(true);
@@ -126,12 +127,12 @@ void TextDemo::initSingleLineEdit()
 void TextDemo::initMultiLineEdit()
 {
     // Scrollbar checkbox
-    subscribeEvent("Root/TextDemo/forceScroll", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
+    subscribeEvent("Root/TextDemo/MultiLineGroup/forceScroll", ToggleButton::EventSelectStateChanged, Event::Subscriber(&TextDemo::vertScrollChangedHandler, this));
 }
 
 void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     if (root->isChild(radio))
     {
         RadioButton* button = static_cast<RadioButton*>(root->getChild(radio));
@@ -142,7 +143,7 @@ void TextDemo::initRadio(const CEGUI::String& radio, int group, bool selected)
 
 void TextDemo::subscribeEvent(const String& widget, const String& event, const Event::Subscriber& method)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     if (root->isChild(widget))
     {
         Window* window = root->getChild(widget);
@@ -152,7 +153,7 @@ void TextDemo::subscribeEvent(const String& widget, const String& event, const E
 
 bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     // Check
     if (root->isChild(radio))
     {
@@ -164,7 +165,7 @@ bool TextDemo::isRadioSelected(const CEGUI::String& radio)
 
 bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
     // Check
     if (root->isChild(checkbox))
     {
@@ -176,29 +177,29 @@ bool TextDemo::isCheckboxSelected(const CEGUI::String& checkbox)
 
 bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
 
-    if (root->isChild("Root/TextDemo/StaticText"))
+    if (root->isChild("Root/TextDemo/StaticGroup/StaticText"))
     {
         // and also the static text for which we will set the formatting options
-        Window* st = root->getChild("Root/TextDemo/StaticText");
+        Window* st = root->getChild("Root/TextDemo/StaticGroup/StaticText");
 
         // handle vertical formatting settings
-        if (isRadioSelected("Root/TextDemo/VertTop"))
+        if (isRadioSelected("Root/TextDemo/StaticGroup/VertTop"))
             st->setProperty("VertFormatting", "TopAligned");
-        else if (isRadioSelected("Root/TextDemo/VertBottom"))
+        else if (isRadioSelected("Root/TextDemo/StaticGroup/VertBottom"))
             st->setProperty("VertFormatting", "BottomAligned");
-        else if (isRadioSelected("Root/TextDemo/VertCentered"))
+        else if (isRadioSelected("Root/TextDemo/StaticGroup/VertCentered"))
             st->setProperty("VertFormatting", "CentreAligned");
 
         // handle horizontal formatting settings
-        bool wrap = isCheckboxSelected("Root/TextDemo/Wrap");
+        bool wrap = isCheckboxSelected("Root/TextDemo/StaticGroup/Wrap");
 
-        if (isRadioSelected("Root/TextDemo/HorzLeft"))
+        if (isRadioSelected("Root/TextDemo/StaticGroup/HorzLeft"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapLeftAligned" : "LeftAligned");
-        else if (isRadioSelected("Root/TextDemo/HorzRight"))
+        else if (isRadioSelected("Root/TextDemo/StaticGroup/HorzRight"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapRightAligned" : "RightAligned");
-        else if (isRadioSelected("Root/TextDemo/HorzCentered"))
+        else if (isRadioSelected("Root/TextDemo/StaticGroup/HorzCentered"))
             st->setProperty("HorzFormatting", wrap ? "WordWrapCentreAligned" : "CentreAligned");
     }
 
@@ -208,13 +209,13 @@ bool TextDemo::formatChangedHandler(const CEGUI::EventArgs&)
 
 bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 {
-    Window* root = System::getSingleton().getDefaultGUIContext().getRootWindow();
+    Window* root = d_guiContext->getRootWindow();
 
-    if (root->isChild("Root/TextDemo/editMulti"))
+    if (root->isChild("Root/TextDemo/MultiLineGroup/editMulti"))
     {
-        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(root->getChild("Root/TextDemo/editMulti"));
+        MultiLineEditbox* multiEdit = static_cast<MultiLineEditbox*>(root->getChild("Root/TextDemo/MultiLineGroup/editMulti"));
         // Use setter for a change
-        multiEdit->setShowVertScrollbar(isCheckboxSelected("Root/TextDemo/forceScroll"));
+        multiEdit->setShowVertScrollbar(isCheckboxSelected("Root/TextDemo/MultiLineGroup/forceScroll"));
     }
 
     // event was handled
@@ -223,8 +224,6 @@ bool TextDemo::vertScrollChangedHandler(const CEGUI::EventArgs&)
 
 bool TextDemo::quit(const CEGUI::EventArgs&)
 {
-    // signal quit
-    d_sampleApp->setQuitting();
 
     // event was handled
     return true;
@@ -233,19 +232,17 @@ bool TextDemo::quit(const CEGUI::EventArgs&)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void TextDemo::cleanupSample()
+void TextDemo::deinitialise()
 {
     // nothing to do here!
 }
 
-// Main app
-int main(int /*argc*/, char* /*argv*/[])
+
+/*************************************************************************
+    Define the module function that returns an instance of the sample
+*************************************************************************/
+extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
-    // This is a basic start-up for the sample application which is
-    // object orientated in nature, so we just need an instance of
-    // the CEGuiSample based object and then tell that sample application
-    // to run.  All of the samples will use code similar to this in the
-    // main/WinMain function.
-    TextDemo app;
-    return app.run();
+    static TextDemo sample;
+    return sample;
 }

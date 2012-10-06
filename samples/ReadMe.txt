@@ -1,12 +1,6 @@
-This ReadMe lists the items in the Samples directory and describes what the sample applications are.
+This ReadMe lists the items in the samples directory.
 
-bin           - directory to receive final executables.
-common        - directory containing source code for the samples support framework.
-datafiles     - directory containing all the data files used by the samples, plus additional sample files.
-Demo4         - A version of the original CEGUI Mk-2 preview application "Demo4"
-Demo6         - A version of the original CEGUI Mk-2 preview application "Demo6"
-Demo7         - A version of the original CEGUI Mk-2 preview application "Demo7"
-Demo8         - A version of the original CEGUI Mk-2 preview application "Demo8"
-FalagardDemo1 - A sample application showing the Falagard skinning system in use.
-FirstWindow   - Initial sample app showing initialisation of data files and creation of a simple window.
-FontDemo      - A demonstration of what the Font rendering subsystem can do
+common - directory containing interface files used by both the samples framework and the samples
+GLESTest - A specific OpenGL ES sample by CrazyEddie that is currently not part of the samples framework
+
+The other folders are folders for each demo. For further information read the xml file contained in each demo's folder, or start the samples browser.

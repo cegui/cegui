@@ -5,6 +5,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFDDDDDD" type="Colour" name="DisabledTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>
@@ -43,6 +44,7 @@
     <WidgetLook name="AlfiskoSkin/Button">
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertLabelFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzLabelFormatting"/>
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -277,6 +279,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="DisabledImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
+        <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <ImageProperty name="NormalImage"/>
@@ -333,6 +336,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/RadioButton">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -428,6 +432,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/Checkbox">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -523,6 +528,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/Titlebar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <ImagerySection name="active">
             <FrameComponent>
                 <Image component="TopLeftCorner" name="AlfiskoSkin/TitlebarActiveTL"/>
@@ -684,6 +690,7 @@
         <PropertyLinkDefinition targetProperty="CaptionColour" widget="__auto_titlebar__" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
         <PropertyLinkDefinition targetProperty="Font" widget="__auto_titlebar__" type="Font" name="TitlebarFont"/>
         <Property name="AutoRenderingSurface" value="True"/>
+        <Property name="Size" value="{{0.3, 0}, {0.3, 0}}" />
         <NamedArea name="ClientWithTitleWithFrame">
             <Area>
                 <Dim type="LeftEdge">
@@ -898,6 +905,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -987,6 +995,7 @@
     <WidgetLook name="AlfiskoSkin/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -1245,6 +1254,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/HorizontalScrollbar">
+        <Property name="Size" value="{{1, 0}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="TopEdge">
@@ -1431,6 +1441,7 @@
     <WidgetLook name="AlfiskoSkin/VerticalScrollbarThumb">
         <Property name="VertFree" value="True"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>
@@ -1690,6 +1701,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="True"/>
+        <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -1880,6 +1892,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
         <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
         <Property name="SelectionBrushImage" value="AlfiskoSkin/GenericBrush"/>
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -2035,6 +2048,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/ProgressBar">
         <Property name="CurrentProgress" value=".01"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ProgressArea"/>
         <ImagerySection name="progress_empty">
             <FrameComponent>
@@ -2111,6 +2125,7 @@
     <WidgetLook name="AlfiskoSkin/HorizontalSliderThumb">
         <Property name="HorzFree" value="True"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Image name="AlfiskoSkin/HorzSliderThumbNormal"/>
@@ -2158,6 +2173,7 @@
     <WidgetLook name="AlfiskoSkin/HorizontalSlider">
         <Property name="MouseAutoRepeatEnabled" value="True"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea"/>
         <Child nameSuffix="__auto_thumb__" type="AlfiskoSkin/HorizontalSliderThumb">
             <Area>
@@ -2236,6 +2252,7 @@
     <WidgetLook name="AlfiskoSkin/VerticalSliderThumb">
         <Property name="VertFree" value="True"/>
         <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Image name="AlfiskoSkin/VertSliderThumbNormal"/>
@@ -2284,6 +2301,7 @@
         <Property name="VerticalSlider" value="True"/>
         <Property name="MouseAutoRepeatEnabled" value="True"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea"/>
         <Child nameSuffix="__auto_thumb__" type="AlfiskoSkin/VerticalSliderThumb">
             <Area>
@@ -2362,6 +2380,7 @@
     <WidgetLook name="AlfiskoSkin/MenuItem">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelTextColour"/>
         <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="Width">
