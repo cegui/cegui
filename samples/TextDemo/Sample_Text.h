@@ -28,18 +28,22 @@
 #ifndef _Sample_Text_h_
 #define _Sample_Text_h_
 
-#include "CEGuiSample.h"
-#include "CEGUI/CEGUI.h"
+#include "SampleBase.h"
+
+namespace CEGUI
+{
+    class SubscriberSlot;
+}
 
 // Sample class
-class TextDemo : public CEGuiSample
+class TextDemo : public Sample
 {
 public:
     // method to initialse the samples windows and events.
-    bool initialiseSample();
+    virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     // method to perform any required cleanup operations.
-    void cleanupSample(void);
+    virtual void deinitialise();
 
     /*************************************************************************
         member functions used as event handlers
@@ -53,7 +57,7 @@ private:
     /** Sets group- and selected for given radio name.*/
     void initRadio(const CEGUI::String& radio, int group, bool selected);
     /** Generic subscribe helper.*/
-    void subscribeEvent(const CEGUI::String& widgetName, const CEGUI::String& eventName, const CEGUI::Event::Subscriber& method);
+    void subscribeEvent(const CEGUI::String& widgetName, const CEGUI::String& eventName, const CEGUI::SubscriberSlot& method);
     /** Returns whether the given radio is selected.*/
     bool isRadioSelected(const CEGUI::String& radio);
     /** Returns whether the given checkbox is selected.*/
@@ -64,6 +68,8 @@ private:
     bool vertScrollChangedHandler(const CEGUI::EventArgs& e);
     /** Called when the user clicks the Quit button.*/
     bool quit(const CEGUI::EventArgs& e);
+
+    CEGUI::GUIContext* d_guiContext;
 };
 
 #endif  // end of guard _Sample_Demo4_h_
