@@ -41,6 +41,110 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+    <WidgetLook name="AlfiskoSkin/Checkbox">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelColour"/>
+        <Property name="Size" value="{{0, 128}, {0, 32}}" />
+        <ImagerySection name="label">
+            <TextComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <OperatorDim op="Add">
+                            <ImageDim name="/AlfiskoSkin/CheckboxUnchecked" dimension="Width"/>
+                            <AbsoluteDim value="3"/>
+                        </OperatorDim>
+                    </Dim>
+                </Area>
+                <ColourProperty name="LabelColour"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </TextComponent>
+        </ImagerySection>
+        <ImagerySection name="normal">
+            <ImageryComponent>
+                <Image name="/AlfiskoSkin/CheckboxUnchecked"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="hover">
+            <ImageryComponent>
+                <Image name="/AlfiskoSkin/CheckboxUncheckedHover"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selected">
+            <ImageryComponent>
+                <Image name="/AlfiskoSkin/CheckboxChecked"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="selected_hover">
+            <ImageryComponent>
+                <Image name="/AlfiskoSkin/CheckboxCheckedHover"/>
+                <VertFormat type="CentreAligned"/>
+                <HorzFormat type="LeftAligned"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Normal">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Hover">
+            <Layer>
+                <Section section="hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Pushed">
+            <Layer>
+                <Section section="selected"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedNormal">
+            <Layer>
+                <Section section="selected"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedHover">
+            <Layer>
+                <Section section="selected_hover"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedPushed">
+            <Layer>
+                <Section section="normal"/>
+                <Section section="label"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="SelectedDisabled">
+            <Layer>
+                <Section section="selected">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+                <Section section="label">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
+
     <WidgetLook name="AlfiskoSkin/Button">
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertLabelFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzLabelFormatting"/>
@@ -369,102 +473,6 @@
         <ImagerySection name="selected">
             <ImageryComponent>
                 <Image name="AlfiskoSkin/RadioButtonChecked"/>
-                <VertFormat type="CentreAligned"/>
-                <HorzFormat type="LeftAligned"/>
-            </ImageryComponent>
-        </ImagerySection>
-        <StateImagery name="Normal">
-            <Layer>
-                <Section section="normal"/>
-                <Section section="label"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Hover">
-            <Layer>
-                <Section section="hover"/>
-                <Section section="label"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Pushed">
-            <Layer>
-                <Section section="selected"/>
-                <Section section="label"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Disabled">
-            <Layer>
-                <Section section="normal">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-                <Section section="label">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedNormal">
-            <Layer>
-                <Section section="selected"/>
-                <Section section="label"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedHover">
-            <Layer>
-                <Section section="hover"/>
-                <Section section="label"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedPushed">
-            <Layer>
-                <Section section="normal"/>
-                <Section section="label"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="SelectedDisabled">
-            <Layer>
-                <Section section="selected">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-                <Section section="label">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
-    <WidgetLook name="AlfiskoSkin/Checkbox">
-        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelColour"/>
-        <Property name="Size" value="{{0, 128}, {0, 32}}" />
-        <ImagerySection name="label">
-            <TextComponent>
-                <Area>
-                    <Dim type="LeftEdge">
-                        <OperatorDim op="Add">
-                            <ImageDim name="AlfiskoSkin/CheckboxNormal" dimension="Width"/>
-                            <AbsoluteDim value="3"/>
-                        </OperatorDim>
-                    </Dim>
-                </Area>
-                <ColourProperty name="LabelColour"/>
-                <VertFormat type="CentreAligned"/>
-                <HorzFormat type="LeftAligned"/>
-            </TextComponent>
-        </ImagerySection>
-        <ImagerySection name="normal">
-            <ImageryComponent>
-                <Image name="AlfiskoSkin/CheckboxNormal"/>
-                <VertFormat type="CentreAligned"/>
-                <HorzFormat type="LeftAligned"/>
-            </ImageryComponent>
-        </ImagerySection>
-        <ImagerySection name="hover">
-            <ImageryComponent>
-                <Image name="AlfiskoSkin/CheckboxHover"/>
-                <VertFormat type="CentreAligned"/>
-                <HorzFormat type="LeftAligned"/>
-            </ImageryComponent>
-        </ImagerySection>
-        <ImagerySection name="selected">
-            <ImageryComponent>
-                <Image name="AlfiskoSkin/CheckboxChecked"/>
                 <VertFormat type="CentreAligned"/>
                 <HorzFormat type="LeftAligned"/>
             </ImageryComponent>

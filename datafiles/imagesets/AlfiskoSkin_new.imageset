@@ -1,0 +1,6 @@
+<Imageset name="" imagefile="../../datafiles/imagesets/AlfiskoSkin_new.png" nativeHorzRes="800" nativeVertRes="600" autoScaled="false" version="2">
+    <Image name="AlfiskoSkin/CheckboxUnchecked" xPos="0" yPos="0" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxUncheckedHover" xPos="20" yPos="0" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxChecked" xPos="0" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="20" yPos="20" width="20" height="20" xOffset="0" YOffset="0" />
+</Imageset>

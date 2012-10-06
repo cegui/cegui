@@ -1,0 +1,9 @@
+<MetaImageset output="../../datafiles/imagesets/AlfiskoSkin_new.imageset" onlyPOT="false">
+    <InkscapeSVG path="AlfiskoSkin/Checkbox.svg">
+        <Component name="AlfiskoSkin/CheckboxUnchecked" layers="Base" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/CheckboxUncheckedHover" layers="Base Hover" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/CheckboxChecked" layers="Base Check" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/CheckboxCheckedHover" layers="Base Hover CheckHover" x="0" y="0" width="20" height="20"/>
+    </InkscapeSVG>
+</MetaImageset>
+
