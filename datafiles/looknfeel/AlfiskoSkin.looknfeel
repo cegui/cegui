@@ -247,6 +247,99 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+    <WidgetLook name="AlfiskoSkin/Editbox">
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="NormalTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
+        <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
+        <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <NamedArea name="TextArea">
+            <Area>
+                <Dim type="LeftEdge">
+                    <ImageDim name="/AlfiskoSkin/EditboxNormalLeft" dimension="Width"/>
+                </Dim>
+                <Dim type="TopEdge">
+                    <ImageDim name="/AlfiskoSkin/EditboxNormalTop" dimension="Height"/>
+                </Dim>
+                <Dim type="RightEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge"/>
+                        <ImageDim name="/AlfiskoSkin/EditboxNormalRight" dimension="Width"/>
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge">
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge"/>
+                        <ImageDim name="/AlfiskoSkin/EditboxNormalBottom" dimension="Height"/>
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <ImagerySection name="container_normal">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="/AlfiskoSkin/EditboxNormalTopLeft"/>
+                <Image component="TopRightCorner" name="/AlfiskoSkin/EditboxNormalTopRight"/>
+                <Image component="BottomLeftCorner" name="/AlfiskoSkin/EditboxNormalBottomLeft"/>
+                <Image component="BottomRightCorner" name="/AlfiskoSkin/EditboxNormalBottomRight"/>
+                <Image component="LeftEdge" name="/AlfiskoSkin/EditboxNormalLeft"/>
+                <Image component="RightEdge" name="/AlfiskoSkin/EditboxNormalRight"/>
+                <Image component="TopEdge" name="/AlfiskoSkin/EditboxNormalTop"/>
+                <Image component="BottomEdge" name="/AlfiskoSkin/EditboxNormalBottom"/>
+                <Image component="Background" name="/AlfiskoSkin/EditboxNormalCentre"/>
+            </FrameComponent>
+        </ImagerySection>
+        <ImagerySection name="selection">
+            <ImageryComponent>
+                <Image name="AlfiskoSkin/GenericBrush"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <ImagerySection name="Caret">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="Width">
+                        <AbsoluteDim value="2"/>
+                    </Dim>
+                </Area>
+                <Image name="AlfiskoSkin/GenericBrush"/>
+                <VertFormat type="Stretched"/>
+                <HorzFormat type="Stretched"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="container_normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="container_normal">
+                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ActiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="ActiveSelectionColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="InactiveSelection">
+            <Layer>
+                <Section section="selection">
+                    <ColourProperty name="InactiveSelectionColour"/>
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
 
     <WidgetLook name="AlfiskoSkin/Button">
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertLabelFormatting"/>
@@ -910,99 +1003,6 @@
             <Layer>
                 <Section section="notitle_noframe_client_area">
                     <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-    </WidgetLook>
-    <WidgetLook name="AlfiskoSkin/Editbox">
-        <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="NormalTextColour"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
-        <Property name="Size" value="{{0, 256}, {0, 32}}" />
-        <NamedArea name="TextArea">
-            <Area>
-                <Dim type="LeftEdge">
-                    <ImageDim name="AlfiskoSkin/EditboxL" dimension="Width"/>
-                </Dim>
-                <Dim type="TopEdge">
-                    <ImageDim name="AlfiskoSkin/EditboxT" dimension="Height"/>
-                </Dim>
-                <Dim type="RightEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="RightEdge"/>
-                        <ImageDim name="AlfiskoSkin/EditboxR" dimension="Width"/>
-                    </OperatorDim>
-                </Dim>
-                <Dim type="BottomEdge">
-                    <OperatorDim op="Subtract">
-                        <UnifiedDim scale="1" type="BottomEdge"/>
-                        <ImageDim name="AlfiskoSkin/EditboxB" dimension="Height"/>
-                    </OperatorDim>
-                </Dim>
-            </Area>
-        </NamedArea>
-        <ImagerySection name="container_normal">
-            <FrameComponent>
-                <Image component="TopLeftCorner" name="AlfiskoSkin/EditboxTL"/>
-                <Image component="TopRightCorner" name="AlfiskoSkin/EditboxTR"/>
-                <Image component="BottomLeftCorner" name="AlfiskoSkin/EditboxBL"/>
-                <Image component="BottomRightCorner" name="AlfiskoSkin/EditboxBR"/>
-                <Image component="LeftEdge" name="AlfiskoSkin/EditboxL"/>
-                <Image component="RightEdge" name="AlfiskoSkin/EditboxR"/>
-                <Image component="TopEdge" name="AlfiskoSkin/EditboxT"/>
-                <Image component="BottomEdge" name="AlfiskoSkin/EditboxB"/>
-                <Image component="Background" name="AlfiskoSkin/EditboxFill"/>
-            </FrameComponent>
-        </ImagerySection>
-        <ImagerySection name="selection">
-            <ImageryComponent>
-                <Image name="AlfiskoSkin/GenericBrush"/>
-                <VertFormat type="Stretched"/>
-                <HorzFormat type="Stretched"/>
-            </ImageryComponent>
-        </ImagerySection>
-        <ImagerySection name="Caret">
-            <ImageryComponent>
-                <Area>
-                    <Dim type="Width">
-                        <AbsoluteDim value="3"/>
-                    </Dim>
-                </Area>
-                <Image name="AlfiskoSkin/GenericBrush"/>
-                <VertFormat type="Stretched"/>
-                <HorzFormat type="Stretched"/>
-            </ImageryComponent>
-        </ImagerySection>
-        <StateImagery name="Enabled">
-            <Layer>
-                <Section section="container_normal"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="ReadOnly">
-            <Layer>
-                <Section section="container_normal"/>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="Disabled">
-            <Layer>
-                <Section section="container_normal">
-                    <Colours topLeft="FF7F7F7F" bottomLeft="FF7F7F7F" topRight="FF7F7F7F" bottomRight="FF7F7F7F"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="ActiveSelection">
-            <Layer>
-                <Section section="selection">
-                    <ColourProperty name="ActiveSelectionColour"/>
-                </Section>
-            </Layer>
-        </StateImagery>
-        <StateImagery name="InactiveSelection">
-            <Layer>
-                <Section section="selection">
-                    <ColourProperty name="InactiveSelectionColour"/>
                 </Section>
             </Layer>
         </StateImagery>
