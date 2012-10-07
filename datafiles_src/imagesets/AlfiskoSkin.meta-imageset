@@ -11,4 +11,7 @@
         <Component name="AlfiskoSkin/RadioButtonSelected" layers="Base Selected" x="0" y="0" width="20" height="20"/>
         <Component name="AlfiskoSkin/RadioButtonSelectedHover" layers="Base Hover SelectedHover" x="0" y="0" width="20" height="20"/>
     </InkscapeSVG>
+    <InkscapeSVG path="AlfiskoSkin/Editbox.svg">
+        <FrameComponent name="AlfiskoSkin/EditboxNormal" layers="Normal" x="0" y="0" width="80" height="25" cornerWidth="7" cornerHeight="7"/>
+    </InkscapeSVG>
 </MetaImageset>
