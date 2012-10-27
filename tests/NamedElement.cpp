@@ -73,4 +73,27 @@ BOOST_AUTO_TEST_CASE(NamePath)
     delete root;
 }
 
+BOOST_AUTO_TEST_CASE(FindRecursive)
+{
+    CEGUI::NamedElement* root = new CEGUI::NamedElement("root");
+    CEGUI::NamedElement* child = new CEGUI::NamedElement("child");
+    CEGUI::NamedElement* inner_child = new CEGUI::NamedElement("inner_child");
+    root->addChild(child);
+    child->addChild(inner_child);
+    
+    BOOST_CHECK_EQUAL(child, root->getChildWindowRecursive("child");
+    BOOST_CHECK_EQUAL(inner_child, root->getChildWindowRecursive("inner_child");
+    BOOST_CHECK_EQUAL(inner_child, child->getChildWindowRecursive("inner_child");
+    
+    BOOST_CHECK_EQUAL(0, root->getChildWindowRecursive("ChIlD"); // case sensitive
+    BOOST_CHECK_EQUAL(0, root->getChildWindowRecursive("InNeR_ChIlD");
+    BOOST_CHECK_EQUAL(0, child->getChildWindowRecursive("InNeR_ChIlD");
+    
+    BOOST_CHECK_EQUAL(0, root->getChildWindowRecursive("blah"); // blah-tantly wrong
+    
+    delete inner_child;
+    delete child;
+    delete root;
+}
+
 BOOST_AUTO_TEST_SUITE_END()

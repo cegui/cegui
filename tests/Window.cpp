@@ -155,6 +155,30 @@ BOOST_AUTO_TEST_CASE(Hierarchy)
     CEGUI::WindowManager::getSingleton().destroyWindow(child);
 }
 
+BOOST_AUTO_TEST_CASE(RecursiveSearch)
+{
+    int previousID[3];
+    previousID[0] = d_root->getID();
+    previousID[1] = d_insideRoot->getID();
+    previousID[2] = d_insideInsideRoot->getID();
+    
+    d_root->setID(2);
+    d_insideRoot->setID(3);
+    d_insideInsideRoot->setID(5);
+    
+    BOOST_CHECK_EQUAL(d_insideInsideRoot, d_root->getChildRecursive(5)); // finding the correct window
+    BOOST_CHECK_EQUAL(d_insideRoot, d_root->getChildRecursive(3));
+    BOOST_CHECK_EQUAL(d_insideInsideRoot, d_insideRoot->getChildRecursive(5));
+    
+    BOOST_CHECK(0 == d_root->getChildRecursive(10)); // not finding these
+    BOOST_CHECK(0 == d_root->getChildRecursive(6));
+    BOOST_CHECK(0 == d_insideRoot->getChildRecursive(10));
+    
+    d_root->setID(previousID[0]);
+    d_insideRoot->setID(previousID[1]);
+    d_insideInsideRoot->setID(previousID[2]);
+}
+
 struct DrawListPerformanceFixture
 {
     DrawListPerformanceFixture()

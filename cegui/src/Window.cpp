@@ -50,6 +50,7 @@
 #include <iterator>
 #include <cmath>
 #include <stdio.h>
+#include <queue>
 
 #if defined (CEGUI_USE_FRIBIDI)
     #include "CEGUI/FribidiVisualMapping.h"
@@ -379,14 +380,33 @@ Window* Window::getChildRecursive(uint ID) const
 {
     const size_t child_count = getChildCount();
 
-    for (size_t i = 0; i < child_count; ++i)
-    {
-        if (getChildAtIdx(i)->getID() == ID)
-            return getChildAtIdx(i);
+    std::queue<Element*> ElementsToSearch;
 
-        Window* tmp = getChildAtIdx(i)->getChildRecursive(ID);
-        if (tmp)
-            return tmp;
+    for (size_t i = 0; i < child_count; ++i) // load all children into the queue
+    {
+        Element* child = getChildElementAtIdx(i);
+        ElementsToSearch.push(child);
+    }
+
+    while (!ElementsToSearch.empty()) // breadth-first search for the child to find
+    {
+        Element* child = ElementsToSearch.front();
+        ElementsToSearch.pop();
+
+        Window* window = dynamic_cast<Window*>(child);
+        if (window)
+        {
+            if (window->getID() == ID)
+            {
+                return window;
+            }
+        }
+
+        const size_t element_child_count = child->getChildCount();
+        for(size_t i = 0; i < element_child_count; ++i)
+        {
+            ElementsToSearch.push(child->getChildElementAtIdx(i));
+        }
     }
 
     return 0;

@@ -135,6 +135,25 @@ public:
     */
     bool isChild(const String& name_path) const;
 
+    /*!
+    \brief
+        returns whether at least one window with the given name is attached
+        to this Window or any of it's children as a child.
+
+    \note
+        WARNING! This function can be very expensive and should only be used
+        when you have no other option available. If you decide to use it anyway,
+        make sure the window hierarchy from the entry point is small.
+
+    \param ID
+        uint ID code to look for.
+
+    \return
+       - true if at least one child window was found with the name \a name
+        - false if no child window was found with the name \a name.
+    */
+    bool isChildRecursive(const String& name) const;
+
     using Element::isAncestor;
     /*!
     \brief Return true if the specified element name is a name of some ancestor of this Element
@@ -165,6 +184,18 @@ public:
     */
     NamedElement* getChildElement(const String& name_path) const;
 
+    /*!
+    \brief Find the first child with the given name, recursively and breadth-first.
+
+    \param name
+        String object holding the name of the child element to find.
+
+    \return
+        Pointer to the (first) Element object attached to this Element that has
+        the name \a name
+    */
+    NamedElement* getChildElementRecursive(const String& name) const;
+
     using Element::removeChild;
     /*!
     \brief
@@ -186,6 +217,11 @@ protected:
     \brief Retrieves a child at \a name_path or 0 if none such exists
     */
     virtual NamedElement* getChildByNamePath_impl(const String& name_path) const;
+
+    /*!
+    \brief Finds a child by \a name or 0 if none such exists
+    */
+    virtual NamedElement* getChildByNameRecursive_impl(const String& name) const;
 
     /*!
     \brief Add standard CEGUI::NamedElement properties.

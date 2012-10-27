@@ -27,6 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include <queue>
+
 #ifdef HAVE_CONFIG_H
 #   include "config.h"
 #endif
@@ -110,6 +112,12 @@ bool NamedElement::isChild(const String& name_path) const
 }
 
 //----------------------------------------------------------------------------//
+bool NamedElement::isChildRecursive(const String& name) const
+{
+    return getChildByNameRecursive_impl(name) != 0;
+}
+
+//----------------------------------------------------------------------------//
 bool NamedElement::isAncestor(const String& name) const
 {
     Element const* current = this;
@@ -141,6 +149,12 @@ NamedElement* NamedElement::getChildElement(const String& name_path) const
     CEGUI_THROW(UnknownObjectException("The Element object "
         "referenced by '" + name_path + "' is not attached to Element at '"
         + getNamePath() + "'."));
+}
+
+//----------------------------------------------------------------------------//
+NamedElement* NamedElement::getChildElementRecursive(const String& name_path) const
+{
+    return getChildByNameRecursive_impl(name_path);
 }
 
 //----------------------------------------------------------------------------//
@@ -197,6 +211,43 @@ NamedElement* NamedElement::getChildByNamePath_impl(const String& name_path) con
                 return named_child->getChildByNamePath_impl(name_path.substr(sep + 1));
             else
                 return named_child;
+        }
+    }
+
+    return 0;
+}
+
+//----------------------------------------------------------------------------//
+NamedElement* NamedElement::getChildByNameRecursive_impl(const String& name) const
+{
+    const size_t child_count = d_children.size();
+
+    std::queue<Element*> ElementsToSearch;
+
+    for (size_t i = 0; i < child_count; ++i) // load all children into the queue
+    {
+        Element* child = getChildElementAtIdx(i);
+        ElementsToSearch.push(child);
+    }
+
+    while (!ElementsToSearch.empty()) // breadth-first search for the child to find
+    {
+        Element* child = ElementsToSearch.front();
+        ElementsToSearch.pop();
+
+        NamedElement* named_child = dynamic_cast<NamedElement*>(child);
+        if (named_child)
+        {
+            if (named_child->getName() == name)
+            {
+                return named_child;
+            }
+        }
+
+        const size_t element_child_count = child->getChildCount();
+        for(size_t i = 0; i < element_child_count; ++i)
+        {
+            ElementsToSearch.push(child->getChildElementAtIdx(i));
         }
     }
 
