@@ -679,18 +679,18 @@ public:
     \brief
         return a pointer to the first attached child window with the specified
         name. Children are traversed recursively.
-        
+
         Contrary to the non recursive version of this function, this one will
         not throw an exception, but return 0 in case no child was found.
-        
+
     \note
         WARNING! This function can be very expensive and should only be used
         when you have no other option available. If you decide to use it anyway,
         make sure the window hierarchy from the entry point is small.
-        
+
     \param name
         String object holding the name of the window to return a pointer to.
-        
+
     \return
         Pointer to the (first) Window object attached to this window that has
         the name \a name.

@@ -80,17 +80,17 @@ BOOST_AUTO_TEST_CASE(FindRecursive)
     CEGUI::NamedElement* inner_child = new CEGUI::NamedElement("inner_child");
     root->addChild(child);
     child->addChild(inner_child);
-    
-    BOOST_CHECK_EQUAL(child, root->getChildWindowRecursive("child");
-    BOOST_CHECK_EQUAL(inner_child, root->getChildWindowRecursive("inner_child");
-    BOOST_CHECK_EQUAL(inner_child, child->getChildWindowRecursive("inner_child");
-    
-    BOOST_CHECK_EQUAL(0, root->getChildWindowRecursive("ChIlD"); // case sensitive
-    BOOST_CHECK_EQUAL(0, root->getChildWindowRecursive("InNeR_ChIlD");
-    BOOST_CHECK_EQUAL(0, child->getChildWindowRecursive("InNeR_ChIlD");
-    
-    BOOST_CHECK_EQUAL(0, root->getChildWindowRecursive("blah"); // blah-tantly wrong
-    
+
+    BOOST_CHECK_EQUAL(child, root->getChildElementRecursive("child"));
+    BOOST_CHECK_EQUAL(inner_child, root->getChildElementRecursive("inner_child"));
+    BOOST_CHECK_EQUAL(inner_child, child->getChildElementRecursive("inner_child"));
+
+    BOOST_CHECK(0 == root->getChildElementRecursive("ChIlD")); // case sensitive
+    BOOST_CHECK(0 == root->getChildElementRecursive("InNeR_ChIlD"));
+    BOOST_CHECK(0 == child->getChildElementRecursive("InNeR_ChIlD"));
+
+    BOOST_CHECK(0 == root->getChildElementRecursive("blah")); // blah-tantly wrong
+
     delete inner_child;
     delete child;
     delete root;
