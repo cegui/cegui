@@ -43,17 +43,31 @@ struct SpinnerFixture
     SpinnerFixture()
     {
         d_spinner = static_cast<CEGUI::Spinner*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/Spinner"));
+        d_defaultSpinner = static_cast<CEGUI::Spinner*>(CEGUI::WindowManager::getSingleton().createWindow("TaharezLook/Spinner"));
     }
 
     ~SpinnerFixture()
     {
+        CEGUI::WindowManager::getSingleton().destroyWindow(d_defaultSpinner);
         CEGUI::WindowManager::getSingleton().destroyWindow(d_spinner);
     }
 
     CEGUI::Spinner* d_spinner;
+    CEGUI::Spinner* d_defaultSpinner;
 };
 
 BOOST_FIXTURE_TEST_SUITE(Spinner, SpinnerFixture)
+
+BOOST_AUTO_TEST_CASE(Defaults)
+{
+    // we can't use d_spinner because we have no idea what has been done to it
+    BOOST_CHECK_EQUAL(d_defaultSpinner->getCurrentValue(), 0);
+
+    BOOST_CHECK_EQUAL(d_defaultSpinner->getMinimumValue(), -32768);
+    BOOST_CHECK_EQUAL(d_defaultSpinner->getMaximumValue(), 32767);
+
+    BOOST_CHECK_EQUAL(d_defaultSpinner->getTextInputMode(), CEGUI::Spinner::Integer);
+}
 
 BOOST_AUTO_TEST_CASE(MinMax)
 {
