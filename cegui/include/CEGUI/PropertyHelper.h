@@ -222,7 +222,7 @@ public:
     static inline return_type fromString(const String& str)
     {
         double val = 0;
-        sscanf(str.c_str(), " %g", (float*)&val);
+        sscanf(str.c_str(), " %lg", &val);
         
         return val;
     }
