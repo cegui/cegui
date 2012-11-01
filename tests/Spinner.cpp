@@ -80,11 +80,11 @@ BOOST_AUTO_TEST_CASE(MinMaxStringProperty)
 {
     d_spinner->setProperty("MinimumValue", "-123.0");
     BOOST_CHECK_EQUAL(d_spinner->getMinimumValue(), -123.0f);
-    BOOST_CHECK_EQUAL(d_spinner->getProperty("MinimumValue"), "-123.0");
+    BOOST_CHECK_EQUAL(d_spinner->getProperty("MinimumValue"), "-123");
 
     d_spinner->setProperty("MaximumValue", "123.0");
     BOOST_CHECK_EQUAL(d_spinner->getMaximumValue(), 123.0f);
-    BOOST_CHECK_EQUAL(d_spinner->getProperty("MaximumValue"), "123.0");
+    BOOST_CHECK_EQUAL(d_spinner->getProperty("MaximumValue"), "123");
 }
 
 BOOST_AUTO_TEST_CASE(CurrentValueStringProperty)
