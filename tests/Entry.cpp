@@ -56,7 +56,7 @@
 #define CEGUI_SAMPLE_DATAPATH_VAR "CEGUI_SAMPLE_DATAPATH"
 // setup default-default path
 #ifndef CEGUI_SAMPLE_DATAPATH
-    #define CEGUI_SAMPLE_DATAPATH "../datafiles"
+    #define CEGUI_SAMPLE_DATAPATH "../../datafiles"
 #endif
 
 /**
