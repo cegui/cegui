@@ -26,6 +26,10 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
+#include "CEGUI/Base.h"
+
+#ifdef CEGUI_HAS_PCRE_REGEX
+
 #include "CEGUI/widgets/Spinner.h"
 #include "CEGUI/WindowManager.h"
 
@@ -117,3 +121,5 @@ BOOST_AUTO_TEST_CASE(CurrentValueStringProperty)
 }
 
 BOOST_AUTO_TEST_SUITE_END()
+
+#endif
