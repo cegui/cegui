@@ -95,6 +95,13 @@ OperatorDim::OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right) :
 }
 
 //----------------------------------------------------------------------------//
+OperatorDim::~OperatorDim()
+{
+    delete d_right;
+    delete d_left;
+}
+
+//----------------------------------------------------------------------------//
 void OperatorDim::setLeftOperand(const BaseDim* operand)
 {
     CEGUI_DELETE_AO d_left;
