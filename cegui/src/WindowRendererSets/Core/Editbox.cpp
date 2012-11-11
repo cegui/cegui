@@ -144,7 +144,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
 #ifdef CEGUI_BIDI_SUPPORT
     // the char before the caret bidi type
     bool currCharIsRtl = false;
-    if ((visual_text.size() > 0) && (caretIndex > 0))
+    if (!visual_text.empty() && caretIndex > 0)
     {
         size_t curCaretIndex = w->getCaretIndex();
         BidiCharType charBeforeCaretType = w->getBidiVisualMapping()->
@@ -178,7 +178,7 @@ size_t FalagardEditbox::getCaretIndex(const String& visual_text) const
     if (isFirstChar)
     {
         bool firstCharRtl =
-            (visual_text.size() > 0) &&
+            !visual_text.empty() &&
             (BCT_RIGHT_TO_LEFT == w->getBidiVisualMapping()->
                 getBidiCharType(visual_text[0]));
 
