@@ -641,7 +641,7 @@ void Listbox::configureScrollbars(void)
 void Listbox::selectRange(size_t start, size_t end)
 {
 	// only continue if list has some items
-	if (d_listItems.size() > 0)
+	if (!d_listItems.empty())
 	{
 		// if start is out of range, start at begining.
 		if (start > d_listItems.size())
