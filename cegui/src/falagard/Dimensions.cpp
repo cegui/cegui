@@ -97,8 +97,8 @@ OperatorDim::OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right) :
 //----------------------------------------------------------------------------//
 OperatorDim::~OperatorDim()
 {
-    delete d_right;
-    delete d_left;
+    CEGUI_DELETE_AO d_right;
+    CEGUI_DELETE_AO d_left;
 }
 
 //----------------------------------------------------------------------------//
