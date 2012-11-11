@@ -135,6 +135,10 @@ static T* iconvTranscode(IconvHelper& ich, const char* in_buf, size_t in_len)
     }
 
     ich.throwErrorException(errno);
+
+    // this is there mostly to silence compiler warnings, this code should
+    // never be executed
+    return 0;
 }
 
 //----------------------------------------------------------------------------//
