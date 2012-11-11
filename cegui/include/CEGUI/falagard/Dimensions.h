@@ -120,6 +120,7 @@ public:
     OperatorDim();
     OperatorDim(DimensionOperator op);
     OperatorDim(DimensionOperator op, BaseDim* left, BaseDim* right);
+    ~OperatorDim();
 
     //! set the left hand side operand (passed object is cloned)
     void setLeftOperand(const BaseDim* operand);
