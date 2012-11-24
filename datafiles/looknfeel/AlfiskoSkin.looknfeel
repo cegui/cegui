@@ -873,23 +873,23 @@
                         <AbsoluteDim value="0.5"/>
                         <OperatorDim op="Subtract">
                             <WidgetDim widget="__auto_titlebar__" dimension="Height"/>
-                            <ImageDim name="AlfiskoSkin/CloseButtonNormal" dimension="Height"/>
+                            <ImageDim name="/AlfiskoSkin/CloseButtonNormal" dimension="Height"/>
                         </OperatorDim>
                     </OperatorDim>
                 </Dim>
                 <Dim type="Width">
-                    <ImageDim name="AlfiskoSkin/CloseButtonNormal" dimension="Width"/>
+                    <ImageDim name="/AlfiskoSkin/CloseButtonNormal" dimension="Width"/>
                 </Dim>
                 <Dim type="Height">
-                    <ImageDim name="AlfiskoSkin/CloseButtonNormal" dimension="Height"/>
+                    <ImageDim name="/AlfiskoSkin/CloseButtonNormal" dimension="Height"/>
                 </Dim>
             </Area>
             <HorzAlignment type="RightAligned"/>
             <Property name="AlwaysOnTop" value="True"/>
             <Property name="NonClient" value="True"/>
-            <Property name="NormalImage" value="AlfiskoSkin/CloseButtonNormal"/>
-            <Property name="HoverImage" value="AlfiskoSkin/CloseButtonNormal"/>
-            <Property name="PushedImage" value="AlfiskoSkin/CloseButtonPushed"/>
+            <Property name="NormalImage" value="/AlfiskoSkin/CloseButtonNormal"/>
+            <Property name="HoverImage" value="/AlfiskoSkin/CloseButtonHover"/>
+            <Property name="PushedImage" value="/AlfiskoSkin/CloseButtonPushed"/>
         </Child>
         <ImagerySection name="withtitle_frame">
             <FrameComponent>

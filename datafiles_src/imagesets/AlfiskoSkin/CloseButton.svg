@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="19.571037"
+   height="19.978844"
+   id="svg6379"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="CloseButton.svg">
+  <defs
+     id="defs6381" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="22.4"
+     inkscape:cx="12.807729"
+     inkscape:cy="9.0417901"
+     inkscape:document-units="px"
+     inkscape:current-layer="g6532"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="1916"
+     inkscape:window-height="1041"
+     inkscape:window-x="0"
+     inkscape:window-y="18"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata6384">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Normal"
+     style="display:inline"
+     transform="translate(1.4560316e-6,7.0966694)">
+    <g
+       id="g7850"
+       transform="matrix(1.5176161,0,0,1.5525329,-173.55491,-936.532)">
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         id="rect12404-3-6-6-4-2-9-5-9-9"
+         d="m 116.26141,599.25345 c -0.328,0 -0.6635,0.1254 -0.9147,0.3766 -0.5028,0.5028 -0.5028,1.3268 0,1.8296 l 3.6051,3.6051 -3.6051,3.659 c -0.5028,0.5027 -0.5028,1.3268 0,1.8295 0.5026,0.5027 1.3267,0.5027 1.8293,0 l 3.6052,-3.6589 3.659,3.6589 c 0.5027,0.5027 1.3269,0.5027 1.8295,0 0.5027,-0.5027 0.5027,-1.3268 0,-1.8295 l -3.6589,-3.659 3.6589,-3.6051 c 0.5027,-0.5028 0.5027,-1.3268 0,-1.8296 -0.5026,-0.5026 -1.3268,-0.5026 -1.8295,0 l -3.659,3.6053 -3.6052,-3.6053 c -0.2512,-0.2512 -0.5866,-0.3766 -0.9146,-0.3766 z"
+         style="fill:#ff9936;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.20500004;stroke-miterlimit:4;stroke-opacity:0.42352941;stroke-dasharray:none"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path12425-6-2-2-4-9-5-1-5-6"
+         d="m 115.77201,600.02035 c 0,0 0.5804,-0.3667 0.9777,0 0.397,0.3666 4.0024,4.0635 4.0024,4.0635 l 0.029,0.9631 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path12427-5-9-6-6-6-3-9-4-4"
+         d="m 120.76561,605.04025 0.9948,0.052 4.1246,4.0942 c 0,0 0.2751,0.6416 -0.031,0.9472"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path12429-9-9-5-6-6-3-2-6-4"
+         d="m 121.76041,605.09215 4.0636,-4.1246 c 0,0 0.3972,-0.3973 0.061,-0.8861 l -5.101,4.9692 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:connector-curvature="0"
+         id="path12431-2-1-3-7-9-0-2-0-3"
+         d="M 120.81311,605.03105 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:connector-curvature="0"
+         id="path12433-7-7-9-1-9-3-7-5-7"
+         d="m 120.72151,606.13095 0.061,-1.1304 -4.9802,5.1329 c 0,0 0.4584,0.3972 0.8249,0.061 0.3666,-0.3361 4.0941,-4.0636 4.0941,-4.0636 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+    </g>
+  </g>
+  <g
+     inkscape:label="Hover"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-31.508995,-18.824421)"
+     style="display:inline">
+    <g
+       id="g7842"
+       transform="matrix(1.5176161,0,0,1.5525329,-142.04591,-878.19278)">
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         id="rect12404-3-6-6-4-2-9-7-3"
+         d="m 116.26141,578.37265 c -0.328,0 -0.6635,0.1254 -0.9147,0.3766 -0.5028,0.5028 -0.5028,1.3268 0,1.8296 l 3.6051,3.6051 -3.6051,3.659 c -0.5028,0.5027 -0.5028,1.3268 0,1.8295 0.5026,0.5027 1.3267,0.5027 1.8293,0 l 3.6052,-3.6589 3.659,3.6589 c 0.5027,0.5027 1.3269,0.5027 1.8295,0 0.5027,-0.5027 0.5027,-1.3268 0,-1.8295 l -3.6589,-3.659 3.6589,-3.6051 c 0.5027,-0.5028 0.5027,-1.3268 0,-1.8296 -0.5026,-0.5026 -1.3268,-0.5026 -1.8295,0 l -3.659,3.6053 -3.6052,-3.6053 c -0.2512,-0.2512 -0.5866,-0.3766 -0.9146,-0.3766 z"
+         style="fill:#ff0000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.20500004;stroke-miterlimit:4;stroke-opacity:0.42352941;stroke-dasharray:none"
+         inkscape:connector-curvature="0" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path12425-6-2-2-4-9-5-3-6"
+         d="m 115.77201,579.13955 c 0,0 0.5804,-0.3667 0.9777,0 0.397,0.3666 4.0024,4.0635 4.0024,4.0635 l 0.029,0.9631 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         sodipodi:nodetypes="cccc"
+         inkscape:connector-curvature="0"
+         id="path12427-5-9-6-6-6-3-0-0"
+         d="m 120.76561,584.15945 0.9948,0.052 4.1246,4.0942 c 0,0 0.2751,0.6416 -0.031,0.9472"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         sodipodi:nodetypes="ccccc"
+         inkscape:connector-curvature="0"
+         id="path12429-9-9-5-6-6-3-1-9"
+         d="m 121.76041,584.21135 4.0636,-4.1246 c 0,0 0.3972,-0.3973 0.061,-0.8861 l -5.101,4.9692 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:connector-curvature="0"
+         id="path12431-2-1-3-7-9-0-8-4"
+         d="M 120.81311,584.15025 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+      <path
+         inkscape:export-ydpi="110.06"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:connector-curvature="0"
+         id="path12433-7-7-9-1-9-3-9-8"
+         d="m 120.72151,585.25015 0.061,-1.1304 -4.9802,5.1329 c 0,0 0.4584,0.3972 0.8249,0.061 0.3666,-0.3361 4.0941,-4.0636 4.0941,-4.0636 z"
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none" />
+    </g>
+  </g>
+  <g
+     transform="translate(1.4560316e-6,7.0966694)"
+     style="display:inline"
+     inkscape:label="Pushed"
+     id="g6532"
+     inkscape:groupmode="layer">
+    <g
+       transform="matrix(1.5176161,0,0,1.5525329,-173.55491,-936.532)"
+       id="g6534">
+      <path
+         inkscape:connector-curvature="0"
+         style="fill:#ff9936;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:1.20500004;stroke-miterlimit:4;stroke-opacity:0.42352941;stroke-dasharray:none"
+         d="m 116.26141,599.25345 c -0.328,0 -0.6635,0.1254 -0.9147,0.3766 -0.5028,0.5028 -0.5028,1.3268 0,1.8296 l 3.6051,3.6051 -3.6051,3.659 c -0.5028,0.5027 -0.5028,1.3268 0,1.8295 0.5026,0.5027 1.3267,0.5027 1.8293,0 l 3.6052,-3.6589 3.659,3.6589 c 0.5027,0.5027 1.3269,0.5027 1.8295,0 0.5027,-0.5027 0.5027,-1.3268 0,-1.8295 l -3.6589,-3.659 3.6589,-3.6051 c 0.5027,-0.5028 0.5027,-1.3268 0,-1.8296 -0.5026,-0.5026 -1.3268,-0.5026 -1.8295,0 l -3.659,3.6053 -3.6052,-3.6053 c -0.2512,-0.2512 -0.5866,-0.3766 -0.9146,-0.3766 z"
+         id="path6536"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-ydpi="110.06" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="m 115.77201,600.02035 c 0,0 0.5804,-0.3667 0.9777,0 0.397,0.3666 4.0024,4.0635 4.0024,4.0635 l 0.029,0.9631 z"
+         id="path6538"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccc"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-ydpi="110.06" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="m 120.76561,605.04025 0.9948,0.052 4.1246,4.0942 c 0,0 0.2751,0.6416 -0.031,0.9472"
+         id="path6540"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="cccc"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-ydpi="110.06" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="m 121.76041,605.09215 4.0636,-4.1246 c 0,0 0.3972,-0.3973 0.061,-0.8861 l -5.101,4.9692 z"
+         id="path6542"
+         inkscape:connector-curvature="0"
+         sodipodi:nodetypes="ccccc"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-ydpi="110.06" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="M 120.81311,605.03105 z"
+         id="path6544"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-ydpi="110.06" />
+      <path
+         style="fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none"
+         d="m 120.72151,606.13095 0.061,-1.1304 -4.9802,5.1329 c 0,0 0.4584,0.3972 0.8249,0.061 0.3666,-0.3361 4.0941,-4.0636 4.0941,-4.0636 z"
+         id="path6546"
+         inkscape:connector-curvature="0"
+         inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+         inkscape:export-xdpi="110.06"
+         inkscape:export-ydpi="110.06" />
+    </g>
+  </g>
+</svg>

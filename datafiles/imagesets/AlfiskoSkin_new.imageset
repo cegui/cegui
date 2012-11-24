@@ -7,15 +7,18 @@
     <Image name="AlfiskoSkin/EditboxNormalBottomRight" xPos="46" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/CursorTextBar" xPos="55" yPos="1" width="14" height="25" xOffset="-6" yOffset="-2" />
     <Image name="AlfiskoSkin/CursorDefault" xPos="71" yPos="1" width="16" height="25" xOffset="-1" yOffset="-1" />
-    <Image name="AlfiskoSkin/CheckboxUnchecked" xPos="89" yPos="1" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxUncheckedHover" xPos="19" yPos="10" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxChecked" xPos="89" yPos="23" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="46" yPos="28" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonNormal" xPos="1" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonNormalHover" xPos="71" yPos="45" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonSelected" xPos="46" yPos="50" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonSelectedHover" xPos="1" yPos="54" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalCentre" xPos="1" yPos="76" width="64" height="9" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalTop" xPos="1" yPos="87" width="64" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalBottom" xPos="1" yPos="96" width="64" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CloseButtonNormal" xPos="89" yPos="1" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CloseButtonHover" xPos="19" yPos="10" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CloseButtonPushed" xPos="89" yPos="23" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxUnchecked" xPos="46" yPos="28" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxUncheckedHover" xPos="1" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxChecked" xPos="71" yPos="45" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="46" yPos="50" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonNormal" xPos="1" yPos="54" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonNormalHover" xPos="71" yPos="67" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonSelected" xPos="46" yPos="72" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonSelectedHover" xPos="1" yPos="76" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalCentre" xPos="46" yPos="94" width="64" height="9" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalTop" xPos="1" yPos="105" width="64" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalBottom" xPos="1" yPos="114" width="64" height="7" xOffset="0" yOffset="0" />
 </Imageset>

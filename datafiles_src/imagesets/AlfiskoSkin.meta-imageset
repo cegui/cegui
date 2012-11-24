@@ -6,6 +6,12 @@
         <Component name="AlfiskoSkin/CursorTextBar" layers="Normal" x="0" y="0" width="14" height="25" xOffset="-6" yOffset="-2"/>
     </InkscapeSVG>
 
+    <InkscapeSVG path="AlfiskoSkin/CloseButton.svg">
+        <Component name="AlfiskoSkin/CloseButtonNormal" layers="Normal" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/CloseButtonHover" layers="Hover" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/CloseButtonPushed" layers="Pushed" x="0" y="0" width="20" height="20"/>
+    </InkscapeSVG>
+
     <InkscapeSVG path="AlfiskoSkin/Checkbox.svg">
         <Component name="AlfiskoSkin/CheckboxUnchecked" layers="Base" x="0" y="0" width="20" height="20"/>
         <Component name="AlfiskoSkin/CheckboxUncheckedHover" layers="Base Hover" x="0" y="0" width="20" height="20"/>
