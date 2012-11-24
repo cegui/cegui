@@ -5,6 +5,9 @@
     <InkscapeSVG path="AlfiskoSkin/CursorTextBar.svg">
         <Component name="AlfiskoSkin/CursorTextBar" layers="Normal" x="0" y="0" width="14" height="25" xOffset="-6" yOffset="-2"/>
     </InkscapeSVG>
+    <InkscapeSVG path="AlfiskoSkin/CursorMove.svg">
+        <Component name="AlfiskoSkin/CursorMove" layers="Normal" x="0" y="0" width="26" height="26" xOffset="-13" yOffset="-13"/>
+    </InkscapeSVG>
 
     <InkscapeSVG path="AlfiskoSkin/CloseButton.svg">
         <Component name="AlfiskoSkin/CloseButtonNormal" layers="Normal" x="0" y="0" width="20" height="20"/>
