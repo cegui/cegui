@@ -637,6 +637,7 @@
     <WidgetLook name="AlfiskoSkin/Titlebar">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="CaptionColour"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
+        <Property name="MouseCursorImage" value="/AlfiskoSkin/CursorMove"/>
         <ImagerySection name="active">
             <FrameComponent>
                 <Image component="TopLeftCorner" name="AlfiskoSkin/TitlebarActiveTL"/>

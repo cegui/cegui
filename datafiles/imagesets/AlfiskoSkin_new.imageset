@@ -18,7 +18,8 @@
     <Image name="AlfiskoSkin/RadioButtonNormalHover" xPos="71" yPos="67" width="20" height="20" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/RadioButtonSelected" xPos="46" yPos="72" width="20" height="20" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/RadioButtonSelectedHover" xPos="1" yPos="76" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalCentre" xPos="46" yPos="94" width="64" height="9" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalTop" xPos="1" yPos="105" width="64" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalBottom" xPos="1" yPos="114" width="64" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CursorMove" xPos="71" yPos="89" width="26" height="26" xOffset="-13" yOffset="-13" />
+    <Image name="AlfiskoSkin/EditboxNormalCentre" xPos="1" yPos="98" width="64" height="9" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalTop" xPos="1" yPos="109" width="64" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalBottom" xPos="1" yPos="118" width="64" height="7" xOffset="0" yOffset="0" />
 </Imageset>
