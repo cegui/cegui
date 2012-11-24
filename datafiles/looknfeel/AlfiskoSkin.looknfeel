@@ -345,6 +345,7 @@
         <PropertyDefinition initialValue="CentreAligned" type="VerticalTextFormatting" name="VertLabelFormatting"/>
         <PropertyDefinition initialValue="CentreAligned" type="HorizontalTextFormatting" name="HorzLabelFormatting"/>
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
+        <Property name="MouseCursorImage" value="/AlfiskoSkin/CursorHand"/>
         <ImagerySection name="label">
             <TextComponent>
                 <Area>
@@ -888,6 +889,7 @@
             <HorzAlignment type="RightAligned"/>
             <Property name="AlwaysOnTop" value="True"/>
             <Property name="NonClient" value="True"/>
+            <Property name="MouseCursorImage" value="/AlfiskoSkin/CursorHand"/>
             <Property name="NormalImage" value="/AlfiskoSkin/CloseButtonNormal"/>
             <Property name="HoverImage" value="/AlfiskoSkin/CloseButtonHover"/>
             <Property name="PushedImage" value="/AlfiskoSkin/CloseButtonPushed"/>
