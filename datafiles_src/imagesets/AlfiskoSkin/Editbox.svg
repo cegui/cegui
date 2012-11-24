@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="80.195992"
+   height="24.768883"
+   id="svg6387"
+   version="1.1"
+   inkscape:version="0.48.2 r9819"
+   sodipodi:docname="Editbox.svg">
+  <defs
+     id="defs6389" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="4.7413334"
+     inkscape:cx="38.855799"
+     inkscape:cy="1.7365215"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     fit-margin-top="0"
+     fit-margin-left="0"
+     fit-margin-right="0"
+     fit-margin-bottom="0"
+     inkscape:window-width="956"
+     inkscape:window-height="1041"
+     inkscape:window-x="960"
+     inkscape:window-y="18"
+     inkscape:window-maximized="0" />
+  <metadata
+     id="metadata6392">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Normal"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-264.0668,-448.8754)">
+    <rect
+       style="fill:#232323;fill-opacity:0.99607843;fill-rule:evenodd;stroke:#d2ff10;stroke-width:1.38134837;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none"
+       id="rect4738-0-3-7-7-9-5"
+       width="78.814644"
+       height="23.387535"
+       x="264.75748"
+       y="449.56607"
+       ry="5.4704866"
+       inkscape:export-filename="C:\Users\Adam\Desktop\the-eleventh\CEGUI GUI\cegui4_notext2.png"
+       inkscape:export-xdpi="110.06"
+       inkscape:export-ydpi="110.06" />
+  </g>
+</svg>
