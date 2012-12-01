@@ -79,4 +79,33 @@
         <Component name="AlfiskoSkin/ComboDropListEntryHover" layers="DropListEntryHover" x="3" y="26" width="114" height="20"/>
         <Component name="AlfiskoSkin/ComboDropListEntryClicked" layers="DropListEntryClicked" x="3" y="46" width="114" height="20"/>
     </InkscapeSVG>
+    <!-- not used yet! -->
+    <InkscapeSVG path="AlfiskoSkin/HorizontalScrollbar.svg">
+        <Component name="AlfiskoSkin/HorizontalScrollbarBaseCentre" layers="Base" x="20" y="0" width="160" height="20"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarNormalLeftButton" layers="Base NormalOverlay Buttons" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarNormalRightButton" layers="Base NormalOverlay Buttons" x="180" y="0" width="20" height="20"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarHoverLeftButton" layers="Base HoverOverlay Buttons" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarHoverRightButton" layers="Base HoverOverlay Buttons" x="180" y="0" width="20" height="20"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarPushedLeftButton" layers="Base PushedOverlay Buttons" x="0" y="0" width="20" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarPushedRightButton" layers="Base PushedOverlay Buttons" x="180" y="0" width="20" height="20"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarThumbShadowLeft" layers="ThumbShadow" x="52" y="1" width="28" height="18"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarThumbShadowCentre" layers="ThumbShadow" x="80" y="1" width="40" height="18"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarThumbShadowRight" layers="ThumbShadow" x="120" y="1" width="28" height="18"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarNormalThumbLeft" layers="Base NormalOverlay Buttons" x="68" y="0" width="10" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarNormalThumbCentre" layers="Base NormalOverlay Buttons" x="78" y="0" width="40" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarNormalThumbRight" layers="Base NormalOverlay Buttons" x="118" y="0" width="10" height="20"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarHoverThumbLeft" layers="Base HoverOverlay Buttons" x="68" y="0" width="10" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarHoverThumbCentre" layers="Base HoverOverlay Buttons" x="78" y="0" width="40" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarHoverThumbRight" layers="Base HoverOverlay Buttons" x="118" y="0" width="10" height="20"/>
+
+        <Component name="AlfiskoSkin/HorizontalScrollbarPushedThumbLeft" layers="Base PushedOverlay Buttons" x="68" y="0" width="10" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarPushedThumbCentre" layers="Base PushedOverlay Buttons" x="78" y="0" width="40" height="20"/>
+        <Component name="AlfiskoSkin/HorizontalScrollbarPushedThumbRight" layers="Base PushedOverlay Buttons" x="118" y="0" width="10" height="20"/>
+    </InkscapeSVG>
 </MetaImageset>
