@@ -59,4 +59,12 @@
         <Component name="AlfiskoSkin/PushButtonPushedLowerLeft" layers="Pushed" x="0" y="15" width="2" height="7"/>
         <Component name="AlfiskoSkin/PushButtonPushedLowerRight" layers="Pushed" x="88" y="15" width="2" height="7"/>
     </InkscapeSVG>
+    <!-- not used yet! -->
+    <InkscapeSVG path="AlfiskoSkin/FrameWindow.svg">
+        <FrameComponent name="AlfiskoSkin/ActiveTitlebar" layers="ActiveTitlebar" x="0" y="0" width="120" height="32" cornerWidth="7" cornerHeight="7"/>
+        <FrameComponent name="AlfiskoSkin/InactiveTitlebar" layers="InactiveTitlebar" x="0" y="0" width="120" height="32" cornerWidth="7" cornerHeight="7"/>
+
+        <FrameComponent name="AlfiskoSkin/ActiveFrameWindow" layers="Active" x="0" y="0" width="120" height="60" cornerWidth="7" cornerHeight="7"/>
+        <FrameComponent name="AlfiskoSkin/InactiveFrameWindow" layers="Inactive" x="0" y="0" width="120" height="60" cornerWidth="7" cornerHeight="7"/>
+    </InkscapeSVG>
 </MetaImageset>
