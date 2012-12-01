@@ -33,4 +33,30 @@
     <InkscapeSVG path="AlfiskoSkin/Editbox.svg">
         <FrameComponent name="AlfiskoSkin/EditboxNormal" layers="Normal" x="0" y="0" width="80" height="25" cornerWidth="7" cornerHeight="7"/>
     </InkscapeSVG>
+    <!-- not used yet! -->
+    <InkscapeSVG path="AlfiskoSkin/PushButton.svg">
+        <FrameComponent name="AlfiskoSkin/PushButtonNormal" layers="Normal" x="0" y="0" width="90" height="30" cornerWidth="7" cornerHeight="7" skip="centre left right"/>
+        <Component name="AlfiskoSkin/PushButtonNormalUpperCentre" layers="Normal" x="2" y="7" width="86" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonNormalUpperLeft" layers="Normal" x="0" y="7" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonNormalUpperRight" layers="Normal" x="88" y="7" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonNormalLowerCentre" layers="Normal" x="2" y="15" width="86" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonNormalLowerLeft" layers="Normal" x="0" y="15" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonNormalLowerRight" layers="Normal" x="88" y="15" width="2" height="7"/>
+
+        <FrameComponent name="AlfiskoSkin/PushButtonHover" layers="Hover" x="0" y="0" width="90" height="30" cornerWidth="7" cornerHeight="7" skip="centre left right"/>
+        <Component name="AlfiskoSkin/PushButtonHoverUpperCentre" layers="Hover" x="2" y="7" width="86" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonHoverUpperLeft" layers="Hover" x="0" y="7" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonHoverUpperRight" layers="Hover" x="88" y="7" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonHoverLowerCentre" layers="Hover" x="2" y="15" width="86" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonHoverLowerLeft" layers="Hover" x="0" y="15" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonHoverLowerRight" layers="Hover" x="88" y="15" width="2" height="7"/>
+
+        <FrameComponent name="AlfiskoSkin/PushButtonPushed" layers="Pushed" x="0" y="0" width="90" height="30" cornerWidth="7" cornerHeight="7" skip="centre left right"/>
+        <Component name="AlfiskoSkin/PushButtonPushedUpperCentre" layers="Pushed" x="2" y="7" width="86" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonPushedUpperLeft" layers="Pushed" x="0" y="7" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonPushedUpperRight" layers="Pushed" x="88" y="7" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonPushedLowerCentre" layers="Pushed" x="2" y="15" width="86" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonPushedLowerLeft" layers="Pushed" x="0" y="15" width="2" height="7"/>
+        <Component name="AlfiskoSkin/PushButtonPushedLowerRight" layers="Pushed" x="88" y="15" width="2" height="7"/>
+    </InkscapeSVG>
 </MetaImageset>
