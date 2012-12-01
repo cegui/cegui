@@ -67,4 +67,16 @@
         <FrameComponent name="AlfiskoSkin/ActiveFrameWindow" layers="Active" x="0" y="0" width="120" height="60" cornerWidth="7" cornerHeight="7"/>
         <FrameComponent name="AlfiskoSkin/InactiveFrameWindow" layers="Inactive" x="0" y="0" width="120" height="60" cornerWidth="7" cornerHeight="7"/>
     </InkscapeSVG>
+    <!-- not used yet! -->
+    <InkscapeSVG path="AlfiskoSkin/Combobox.svg">
+        <FrameComponent name="AlfiskoSkin/ComboEditboxCollapsed" layers="CollapsedBox" x="0" y="0" width="120" height="25" cornerWidth="5" cornerHeight="5"/>
+        <Component name="AlfiskoSkin/ComboEditboxCollapsedArrow" layers="CollapsedArrow" x="100" y="7" width="15" height="11"/>
+
+        <FrameComponent name="AlfiskoSkin/ComboEditboxExpanded" layers="ExpandedBox" x="0" y="0" width="120" height="25" cornerWidth="5" cornerHeight="5"/>
+        <Component name="AlfiskoSkin/ComboEditboxExpandedArrow" layers="ExpandedArrow" x="100" y="7" width="15" height="11"/>
+
+        <FrameComponent name="AlfiskoSkin/ComboDropList" layers="DropList" x="0" y="0" width="120" height="70" cornerWidth="7" cornerHeight="7"/>
+        <Component name="AlfiskoSkin/ComboDropListEntryHover" layers="DropListEntryHover" x="3" y="26" width="114" height="20"/>
+        <Component name="AlfiskoSkin/ComboDropListEntryClicked" layers="DropListEntryClicked" x="3" y="46" width="114" height="20"/>
+    </InkscapeSVG>
 </MetaImageset>
