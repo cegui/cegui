@@ -1151,6 +1151,18 @@ struct Window_wrapper : CEGUI::Window, bp::wrapper< CEGUI::Window > {
         return CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
     }
 
+    virtual ::CEGUI::NamedElement * getChildByNameRecursive_impl( ::CEGUI::String const & name ) const {
+        if( bp::override func_getChildByNameRecursive_impl = this->get_override( "getChildByNameRecursive_impl" ) )
+            return func_getChildByNameRecursive_impl( boost::ref(name) );
+        else{
+            return this->CEGUI::NamedElement::getChildByNameRecursive_impl( boost::ref(name) );
+        }
+    }
+    
+    virtual ::CEGUI::NamedElement * default_getChildByNameRecursive_impl( ::CEGUI::String const & name ) const {
+        return CEGUI::NamedElement::getChildByNameRecursive_impl( boost::ref(name) );
+    }
+
     ::CEGUI::ScriptModule * getScriptModule(  ) const {
         return CEGUI::EventSet::getScriptModule(  );
     }
@@ -2012,6 +2024,38 @@ void register_Window_class(){
                 @return\n\
                     Pointer to the child Window that was hit according to the location\n\
                      position, or 0 if no child of this window was hit.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::Window::getChildRecursive
+        
+            typedef ::CEGUI::Window * ( ::CEGUI::Window::*getChildRecursive_function_type )( ::CEGUI::String const & ) const;
+            
+            Window_exposer.def( 
+                "getChildRecursive"
+                , getChildRecursive_function_type( &::CEGUI::Window::getChildRecursive )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                \n\
+                    return a pointer to the first attached child window with the specified\n\
+                    name. Children are traversed recursively.\n\
+            \n\
+                    Contrary to the non recursive version of this function, this one will\n\
+                    not throw an exception, but return 0 in case no child was found.\n\
+            \n\
+                \note\n\
+                    WARNING! This function can be very expensive and should only be used\n\
+                    when you have no other option available. If you decide to use it anyway,\n\
+                    make sure the window hierarchy from the entry point is small.\n\
+            \n\
+                @param name\n\
+                    String object holding the name of the window to return a pointer to.\n\
+            \n\
+                @return\n\
+                    Pointer to the (first) Window object attached to this window that has\n\
+                    the name  name.\n\
+                    If no child is found with the name  name, 0 is returned.\n\
                 *\n" );
         
         }
@@ -6327,8 +6371,7 @@ void register_Window_class(){
                 "addNamedElementProperties"
                 , addNamedElementProperties_function_type( &Window_wrapper::addNamedElementProperties )
                 , "*!\n\
-            \n\
-                Add standard CEGUI.NamedElement properties.\n\
+             Add standard CEGUI.NamedElement properties.\n\
             *\n" );
         
         }
@@ -6376,8 +6419,21 @@ void register_Window_class(){
                 , ( bp::arg("name_path") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-            \n\
-                retrieves a child at  name_path or 0 if none such exists\n\
+             Retrieves a child at  name_path or 0 if none such exists\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::getChildByNameRecursive_impl
+        
+            typedef ::CEGUI::NamedElement * ( Window_wrapper::*getChildByNameRecursive_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            Window_exposer.def( 
+                "getChildByNameRecursive_impl"
+                , getChildByNameRecursive_impl_function_type( &Window_wrapper::default_getChildByNameRecursive_impl )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+             Finds a child by  name or 0 if none such exists\n\
             *\n" );
         
         }
@@ -6473,8 +6529,7 @@ void register_Window_class(){
                 , onNameChanged_function_type( &Window_wrapper::default_onNameChanged )
                 , ( bp::arg("e") )
                 , "*!\n\
-                \n\
-                    Handler called when the element's name changes.\n\
+                 Handler called when the element's name changes.\n\
             \n\
                 @param e\n\
                     NamedElementEventArgs object whose 'element' pointer field is set to the element\n\
