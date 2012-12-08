@@ -49,15 +49,14 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
- 
-    
+
     <WidgetLook name="Generic/Image">
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ImageColours"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
-        <PropertyDefinition redrawOnWrite="true" initialValue="" name="Image"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="Image"/>
         <Property name="Size" value="{{0, 128}, {0, 128}}" />
-  
+
         <ImagerySection name="imageSection">
             <ImageryComponent>
                 <Area>
@@ -91,7 +90,7 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-   
+
     <WidgetLook name="Generic/ImageButton">
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="NormalImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="HoverImage"/>
@@ -154,5 +153,5 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
-    
+
 </Falagard>
