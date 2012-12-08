@@ -288,7 +288,7 @@ namespace boost { namespace python { namespace indexing {
 
     boost::python::object length
       ((boost::python::handle<>
-        (PyInt_FromLong (Algorithms::size (c)))));
+        (PyLong_FromLong (Algorithms::size (c)))));
 
     slice sl
       ((boost::python::handle<>
