@@ -1,0 +1,13 @@
+/***********************************************************************
+	ScrolledContainer
+***********************************************************************/
+class ScrolledContainer : public Window
+{
+	bool isContentPaneAutoSized() const;
+	void setContentPaneAutoSized(bool setting);
+
+	const Rect& getContentArea() const;
+	void setContentArea(const Rect& area);
+
+	Rect getChildExtentsArea() const;
+};

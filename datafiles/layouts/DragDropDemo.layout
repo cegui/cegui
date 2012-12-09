@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+    <Window Type="DefaultWindow" Name="Root" >
+
+        <Window Type="WindowsLook/FrameWindow" Name="Root/MainWindow" >
+            <Property Name="UnifiedAreaRect" Value="{{0.25,0},{0.25,0},{0.75,0},{0.75,0}" />
+            <Property Name="Text" Value="Drag and Drop Demo" />
+            <Property Name="RollUpEnabled" Value="False" />
+            <Property Name="SizingEnabled" Value="False" />
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot1" >
+                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.05,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+
+                <Window Type="DragContainer" Name="DragContainer1" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
+
+                    <Window Type="WindowsLook/StaticImage" Name="DragContainer1/Image" >
+                        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}" />
+                        <Property Name="Image" Value="set:DriveIcons image:Lime" />
+                        <Property Name="MousePassThroughEnabled" Value="True" />
+                    </Window>
+
+                </Window>
+
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot2" >
+                <Property Name="UnifiedPosition" Value="{{0.283,0},{0.05,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot3" >
+                <Property Name="UnifiedPosition" Value="{{0.516,0},{0.05,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot4" >
+                <Property Name="UnifiedPosition" Value="{{0.749,0},{0.05,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot5" >
+                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.37,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot6" >
+                <Property Name="UnifiedPosition" Value="{{0.283,0},{0.37,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+
+                <Window Type="DragContainer" Name="DragContainer2" >
+                    <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.05,0},{0.95,0},{0.95,0}" />
+
+                    <Window Type="WindowsLook/StaticImage" Name="DragContainer2/Image" >
+                        <Property Name="UnifiedAreaRect" Value="{{0,0},{0,0},{1,0},{1,0}" />
+                        <Property Name="Image" Value="set:DriveIcons image:GlobalDrive" />
+                        <Property Name="MousePassThroughEnabled" Value="True" />
+                    </Window>
+
+                </Window>
+
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot7" >
+                <Property Name="UnifiedPosition" Value="{{0.516,0},{0.37,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot8" >
+                <Property Name="UnifiedPosition" Value="{{0.749,0},{0.37,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot9" >
+                <Property Name="UnifiedPosition" Value="{{0.05,0},{0.69,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot10" >
+                <Property Name="UnifiedPosition" Value="{{0.283,0},{0.69,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot11" >
+                <Property Name="UnifiedPosition" Value="{{0.516,0},{0.69,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+            <Window Type="WindowsLook/Static" Name="Root/MainWindow/Slot12" >
+                <Property Name="UnifiedPosition" Value="{{0.749,0},{0.69,0}}" />
+                <Property Name="UnifiedSize" Value="{{0.2,0},{0.26,0}}" />
+            </Window>
+
+        </Window>
+
+    </Window>
+</GUILayout>
+

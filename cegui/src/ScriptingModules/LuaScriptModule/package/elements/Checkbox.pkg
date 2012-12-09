@@ -1,0 +1,8 @@
+/***********************************************************************
+	Checkbox
+***********************************************************************/
+class Checkbox : public ButtonBase
+{
+	bool isSelected() const;
+	void setSelected(bool select);
+};

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout >
+        <Window Type="TaharezLook/FrameWindow" Name="Console/Frame" >
+            <Property Name="Text" Value="Console" />
+            <Property Name="TitlebarFont" Value="DejaVuSans-10" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="TitlebarEnabled" Value="True" />
+            <Property Name="UnifiedAreaRect" Value="{{0.208832,0},{0.650387,0},{0.80736,0},{0.998062,0}}" />
+            <Window Type="TaharezLook/MultiLineEditbox" Name="Console/Frame/ConsoleText" >
+                <Property Name="Text" Value=""/>
+                <Property Name="ReadOnly" Value="True" />
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.019238,0},{0.030633,0},{0.973721,0},{0.769186,0}}" />
+            </Window>
+            <Window Type="TaharezLook/Editbox" Name="Console/Frame/Input" >
+                <Property Name="MaxTextLength" Value="1073741823" />
+                <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+                <Property Name="UnifiedAreaRect" Value="{{0.019238,0},{0.772141,0},{0.973721,0},{0.980658,0}}" />
+            </Window>
+        </Window>
+</GUILayout>

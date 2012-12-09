@@ -1,0 +1,15 @@
+/***********************************************************************
+	Image
+***********************************************************************/
+class Image
+{
+	Size getSize() const;
+	float getWidth() const;
+	float getHeight() const;
+	Vector2 getOffsets() const;
+	float getOffsetX() const;
+	float getOffsetY() const;
+	string getName() const;
+	string getImagesetName() const;
+	Rect getSourceTextureArea() const;
+};

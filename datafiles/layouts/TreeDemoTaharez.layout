@@ -1,0 +1,34 @@
+<?xml version="1.0" ?>
+<GUILayout>
+	<Window Type="TaharezLook/FrameWindow" Name="DemoWindow">
+		<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+		<Property Name="UnifiedMinSize" Value="{{0,128},{0,128}}" />
+		<Property Name="UnifiedSize" Value="{{0.5,0},{0.8,0}}" />
+
+            <Property Name="Text" Value="Tree Demo" />
+            <Property Name="CloseButtonEnabled" Value="False" />
+		<Property Name="SizingEnabled" Value="True" />
+		<Property Name="FrameEnabled" Value="True" />
+		<Property Name="RollUpEnabled" Value="True" />
+		<Property Name="SizingBorderThickness" Value="8.0" />
+
+    <Window Type="TaharezLook/Tree" Name="DemoWindow/Tree">
+			<Property Name="ID" Value="1" />
+			<Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+		
+			<Property Name="UnifiedSize" Value="{{0.96,0},{0.90,0}}" />
+			<Property Name="UnifiedPosition" Value="{{0.02,0},{0.02,0}}" />
+		</Window>
+
+		<Window Type="TaharezLook/Editbox" Name="DemoWindow/Editbox">
+			<Property Name="ID" Value="2" />
+			<Property Name="VerticalAlignment" Value="Bottom" />
+			<Property Name="UnifiedMinSize" Value="{{0.1,0},{0.04,0}}" />
+			<Property Name="UnifiedSize" Value="{{0.96,0},{0.05,0}}" />
+			<Property Name="UnifiedPosition" Value="{{0.02,0},{-0.02,0}}" />
+			<Property Name="ReadOnly" Value="True" />
+			<Property Name="Text" Value="" />
+			<Property Name="Tooltip" Value="World Location X" />
+		</Window>
+	</Window>
+</GUILayout>

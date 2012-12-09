@@ -1,0 +1,75 @@
+<?xml version="1.0" ?>
+<GUILayout>
+    <Window Type="DefaultGUISheet" Name="Page1">
+        <Property Name="Text" Value="Page one" />
+
+        <Window Type="TaharezLook/RadioButton" Name="Page1/TabPaneTop" >
+            <Property Name="ID" Value="0" />
+            <Property Name="Text" Value="Tab pane at top" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.1,0},{0.45,0},{0.2,0}}" />
+        </Window>
+
+        <Window Type="TaharezLook/RadioButton" Name="Page1/TabPaneBottom" >
+            <Property Name="ID" Value="1" />
+            <Property Name="Text" Value="Tab pane at bottom" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.2,0},{0.45,0},{0.3,0}}" />
+        </Window>
+
+        <Window Type="TaharezLook/Button" Name="Page1/AddTab">
+            <Property Name="Text" Value="Add a new tab" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.35,0},{0.45,0},{0.45,0}}" />
+            <Property Name="Tooltip" Value="Switch active page to selected" />
+        </Window>
+
+        <Window Type="TaharezLook/Listbox" Name="Page1/PageList">
+            <Property Name="UnifiedAreaRect" Value="{{0.55,0},{0.1,0},{0.95,0},{0.48,0}}" />
+            <Property Name="Tooltip" Value="A list of available tabs to experiment with" />
+        </Window>
+
+        <Window Type="TaharezLook/Button" Name="Page1/Go">
+            <Property Name="Text" Value="Goto" />
+            <Property Name="UnifiedAreaRect" Value="{{0.55,0},{0.5,0},{0.67,0},{0.57,0}}" />
+            <Property Name="Tooltip" Value="Switch active page to selected" />
+        </Window>
+
+        <Window Type="TaharezLook/Button" Name="Page1/Show">
+            <Property Name="Text" Value="Show" />
+            <Property Name="UnifiedAreaRect" Value="{{0.69,0},{0.5,0},{0.81,0},{0.57,0}}" />
+            <Property Name="Tooltip" Value="Make the selected tab visible in the tab pane" />
+        </Window>
+
+        <Window Type="TaharezLook/Button" Name="Page1/Del">
+            <Property Name="Text" Value="Del" />
+            <Property Name="UnifiedAreaRect" Value="{{0.83,0},{0.5,0},{0.95,0},{0.57,0}}" />
+            <Property Name="Tooltip" Value="Delete the selected pane" />
+        </Window>
+
+        <Window Type="TaharezLook/StaticText" Name="Page1/TabHeightDesc" >
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.6,0},{0.95,0},{0.7,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+            <Property Name="Text" Value="Change the height of tab buttons in pixels" />
+        </Window>
+        <Window Type="TaharezLook/HorizontalScrollbar" Name="Page1/TabHeight">
+            <Property Name="DocumentSize" Value="64" />
+            <Property Name="PageSize" Value="4" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="OverlapSize" Value="0" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.7,0},{0.95,0},{0.7,12}}" />
+        </Window>
+
+        <Window Type="TaharezLook/StaticText" Name="Page1/TabPaddingDesc" >
+            <Property Name="FrameEnabled" Value="False" />
+            <Property Name="UnifiedAreaRect" Value="{{0.05,0},{0.8,0},{0.95,0},{0.9,0}}" />
+            <Property Name="BackgroundEnabled" Value="False" />
+            <Property Name="Text" Value="Change the padding of the text on buttons in pixels" />
+        </Window>
+        <Window Type="TaharezLook/HorizontalScrollbar" Name="Page1/TabPadding">
+            <Property Name="DocumentSize" Value="100" />
+            <Property Name="PageSize" Value="5" />
+            <Property Name="StepSize" Value="1" />
+            <Property Name="OverlapSize" Value="0" />
+            <Property Name="UnifiedAreaRect" Value="{{0.06,0},{0.9,0},{0.95,0},{0.9,12}}" />
+        </Window>
+    </Window>
+</GUILayout>

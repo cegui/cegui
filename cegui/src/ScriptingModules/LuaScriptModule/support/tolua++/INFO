@@ -1,0 +1,4 @@
+The source code included in this package is tolua++ 1.0.92, modified to allow
+building as a shared library in Microsoft Visual C++.
+
+For more information see 'README'.

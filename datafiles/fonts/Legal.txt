@@ -1,0 +1,29 @@
+The file fkp.de.pcf is a X11 bitmap font, taken from the artwiz font collection:
+http://artwizaleczapka.sourceforge.net
+
+artwiz-aleczapka is released under the terms of GNU General Public License
+(GPL) version 2. Read file 'COPYING' from the artwiz package for detailed info.
+
+================================================================================
+
+DejaVuSans.ttf is a international TrueType font from the excellent DejaVu font
+package, which is distributed under the conditions of the Bitstream Vera Fonts
+Copyright, which can be found in the DejaVu package.
+
+DejaVu fonts 2.2 (c)2004-2006 Stepan Roh and DejaVu fonts team
+--------------------------------------------------------------
+
+The DejaVu fonts are a font family based on the Bitstream Vera Fonts
+(http://gnome.org/fonts/). Its purpose is to provide a wider range of
+characters (see status.txt for more information) while maintaining the
+original look and feel.
+
+DejaVu fonts are based on Bitstream Vera fonts version 1.10.
+
+================================================================================
+
+FairChar.font is a image-based font from the good old days of the demo scene,
+when 320x240 and 320x480 were the best resolutions invented ever ;-) I don't
+know who is the original author of these nice glyphs, everything but the .GIF
+file was lost in the long road from early 90s, when I got it from some BBS
+to nowadays... -- Andrew Zabolotny.

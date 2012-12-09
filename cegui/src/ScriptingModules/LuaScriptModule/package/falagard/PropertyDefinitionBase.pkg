@@ -1,0 +1,10 @@
+/******************************************************************************
+  PropertyDefinitionBase 
+*******************************************************************************/
+
+class PropertyDefinitionBase : public Property 
+{
+  //void set(PropertyReceiver* receiver, utf8string value);
+  void set(Window* receiver, utf8string value);
+  //virtual void writeXMLToStream(OutStream& out_stream) const;
+};

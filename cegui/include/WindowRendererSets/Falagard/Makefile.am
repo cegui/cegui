@@ -1,0 +1,40 @@
+pkgincludedir=$(includedir)/CEGUI/WindowRendererSets/Falagard
+pkginclude_HEADERS = FalButton.h \
+                 FalToggleButton.h \
+                 FalDefault.h \
+                 FalEditbox.h \
+                 FalEditboxProperties.h \
+                 FalFrameWindow.h \
+                 FalItemEntry.h \
+                 FalItemListbox.h \
+                 FalListHeader.h \
+                 FalListHeaderProperties.h \
+                 FalListHeaderSegment.h \
+                 FalListbox.h \
+                 FalMenubar.h \
+                 FalMenuItem.h \
+                 FalModule.h \
+                 FalMultiColumnList.h \
+                 FalMultiLineEditbox.h \
+                 FalMultiLineEditboxProperties.h \
+                 FalPopupMenu.h \
+                 FalProgressBar.h \
+                 FalProgressBarProperties.h \
+                 FalScrollablePane.h \
+                 FalScrollbar.h \
+                 FalScrollbarProperties.h \
+                 FalSlider.h \
+                 FalSliderProperties.h \
+                 FalStatic.h \
+                 FalStaticImage.h \
+                 FalStaticImageProperties.h \
+                 FalStaticProperties.h \
+                 FalStaticText.h \
+                 FalStaticTextProperties.h \
+                 FalSystemButton.h \
+                 FalTabButton.h \
+                 FalTabControl.h \
+                 FalTabControlProperties.h \
+                 FalTitlebar.h \
+                 FalTooltip.h \
+                 FalTree.h

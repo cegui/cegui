@@ -1,0 +1,49 @@
+<?xml version="1.0" ?>
+<GUILayout>
+    <Window Type="Vanilla/FrameWindow" Name="Vanilla/Console">
+        <Property Name="AlwaysOnTop" Value="True" />
+        <Property Name="UnifiedMinSize" Value="{{0.2,0},{0.2,0}}" />
+        <Property Name="UnifiedMaxSize" Value="{{0.8,0},{0.8,0}}" />
+        <Property Name="UnifiedPosition" Value="{{0.5,0},{0.5,0}}" />
+        <Property Name="UnifiedSize" Value="{{0.5,0},{0.45,0}}" />
+        <Property Name="Text" Value="Console" />
+        <Property Name="CloseButtonEnabled" Value="False" />
+
+        <Window Type="Vanilla/Button" Name="Vanilla/Console/Submit">
+            <Property Name="ID" Value="1" />
+            <Property Name="VerticalAlignment" Value="Bottom" />
+            <Property Name="HorizontalAlignment" Value="Right" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedPosition" Value="{{0,-7},{0,-7}}" />
+            <Property Name="UnifiedSize" Value="{{0.25,0},{0,30}}" />
+            <Property Name="Text" Value="Submit" />
+        </Window>
+
+        <Window Type="Vanilla/Editbox" Name="Vanilla/Console/Editbox">
+            <Property Name="ID" Value="2" />
+            <Property Name="VerticalAlignment" Value="Bottom" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedPosition" Value="{{0,7},{0,-7}}" />
+            <Property Name="UnifiedSize" Value="{{0.75,-21},{0,30}}" />
+            <Property Name="Text" Value="" />
+        </Window>
+
+        <Window Type="Vanilla/MultiLineEditbox" Name="Vanilla/Console/History">
+            <Property Name="ID" Value="3" />
+            <Property Name="ReadOnly" Value="True" />
+            <Property Name="UnifiedMaxSize" Value="{{1,0},{1,0}}" />
+            <Property Name="UnifiedPosition" Value="{{0,7},{0,7}}" />
+            <Property Name="UnifiedSize" Value="{{1,-14},{1,-47}}" />
+            <Property Name="Text">CEGUI Demo Console - F12 toggles this window
+
+It's now easy to add multiline text property.
+Line 1
+<![CDATA[
+You can now put <xml>stuff</xml> in your property easly " " "
+]]>
+Line 2
+Line 3
+</Property>
+        </Window>
+    </Window>
+</GUILayout>

@@ -1,0 +1,133 @@
+/**
+@page compiling Supported systems and compilation.
+@author Paul D Turner
+
+@section compiling_sec_1 Supported Systems
+Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
+following systems:
+
+- Various flavors of Linux using gcc.
+- Microsoft Windows using Visual C++ - both express and professional versions
+where applicable. (Tested on Windows XP with MSVC++ 2010).
+- Apple Mac OS X running Xcode (tested on version 10.7.4 with Xcode 4.3.3).
+
+It is very possible that the system will compile with other compilers and run on
+other systems, though those mentioned above have been tested.
+
+
+@section compiling_sec_2 Requirements
+As well as one of the above supported systems, Crazy Eddie's GUI System Mk-2
+can also make use of some third party external libraries.  These libraries are
+as follows:
+
+- Optionally: Freetype2 (http://www.freetype.org)
+- Optionally: PCRE (http://www.pcre.org)
+- Optionally: Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
+- Optionally: Expat XML parser (http://expat.sourceforge.net)
+- Optionally: LibXML XML parser (http://www.xmlsoft.org)
+- Optionally: DevIL image loading library (http://openil.sourceforge.net)
+- Optionally: Corona image loading library (http://corona.sourceforge.net)
+- Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
+- Optionally: SILLY image loading library (http://www.cegui.org.uk/wiki/index.php/SILLY)
+- Optionally: Lua programming language (http://www.lua.org/)
+
+<br>
+@section compiling_sec_3 Compiling on Microsoft Windows with MSVC++
+To compile on MSVC++ the first thing you need is the dependencies package, for
+details about where to obtain this please see @ref downloading.  The
+dependencies zip file should be extracted into the source package root directory
+so that you end up with a new directory named 'dependencies'.
+
+If you're using code directly from mercurial you will need a copy of the
+premake executable (currently you need version 3.6, which is available
+<a href="http://sourceforge.net/projects/premake/files/Premake/3.6/premake-win32-3.6.zip/download">here</a>.
+This executable should either be placed in the <tt>projects/premake</tt>
+directory or somewhere on your path.
+
+Now you should navigate to the <tt>projects/premake</tt> directory in the source
+and open the <tt>config.lua</tt> file in a text editor of some kind.  Take a few
+moments to look over the available options and make any required configuration
+changes you desire.
+
+Next you should execute one of the provided 'build_*.bat' batch files.  These do
+not actually build the code, but rather they invoke premake to generate an
+appropriate solution file and project files for the selected version of MSVC++
+(so for example, build_vs2008.bat generates the solution for MSVC++ 2008).  If
+there is no batch file for your specific version of MSVC++ you should use the
+batch file for the nearest version - MSVC++ will load and upgrade the solution
+as needed.
+
+Once this has run all you need to do is load the generated solution (CEGUI.sln)
+into MSVC++, select an appropriate build configuration (Debug, Release, etc) and
+press the build solution button.
+
+The exact same approach is used when building the samples solution (unless you
+chose to build them as part of the main solution).
+
+<br>
+@section compiling_sec_4 Compiling on GNU/Linux systems
+Compiling on GNU/Linux and similar systems follows the familiar configure, make,
+make install idiom.
+
+If you're using the code directly from mercurial, the first thing you need to
+do is generate the configure script.  This is achieved by running the bootstrap
+script in the source root directory (Note that running this requires Automake,
+Autoconf and Libtool).
+
+Firstly it's highly recommended to look at the available configuration options
+for CEGUI, so run:
+@verbatim
+./configure --help
+@endverbatim
+
+Once you've decided on the options you would like to set, you can invoke
+configure (add any options you need, obviously!):
+@verbatim
+./configure
+@endverbatim
+Hopefully this will finish successfully and give you a summary of what options
+were configured.  If the summary shows something you didn't want, go back and
+check your configure options.
+
+Now you can build the code:
+@verbatim
+make
+@endverbatim
+
+Once this has successfully completed, you can install the system.  If you're
+installing in the 'usual' places, such as /usr or /usr/local you will need to
+install as root, so perhaps you would run
+@verbatim
+sudo make install
+@endverbatim
+
+Finally, you'll probably need to run ldconfig so that the system configure and
+caches the newly installed libraries:
+@verbatim
+sudo ldconfig
+@endverbatim
+
+<br>
+@section compiling_sec_5 Compiling on Mac OS X with Xcode
+To compile with Xcode the first thing you need is the dependencies package, for
+details about where to obtain this please see @ref downloading.  The
+dependencies zip file should be extracted into the source package root directory
+so that you end up with a new directory named 'dependencies'.
+
+Next you should navigate to the <tt>projects/Xcode</tt> directory and open the
+Xcode project file 'CEGUI.xcodeproj' in Xcode.
+
+Now it's recommended that you take a few moments to look over the file at
+<tt>CEGUI/CEGUI/Base/include/CEGUIConfig.h</tt> in the Groups & Files panel.  This
+file contains many of the options that you can change when building the system
+(some other options, related to external libraries, are available by selecting
+the project root and bringing up an Info window by pressing <tt>Command + I</tt>,
+select the @c Build tab, choose an appropriate build configuration and choose
+to show <tt>User-Defined Settings</tt> and make any desired changes.
+
+Finally to build the code just select an appropriate target (like the default
+'Crazy Eddie's GUI System' that builds everything except the Ogre and Irrlicht
+renderer frameworks), choose your build configuration and press the Build
+button.
+
+*/
