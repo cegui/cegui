@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -55,6 +55,7 @@ class Root;
 class RenderSystem;
 class RenderTarget;
 class TexturePtr;
+class Matrix4;
 }
 
 // Start of CEGUI namespace section
@@ -267,6 +268,78 @@ public:
     */
     void setDefaultRootRenderTarget(Ogre::RenderTarget& target);
 
+    /*!
+    \brief
+        Returns whether the OgreRenderer is currently set to use shaders when
+        doing its rendering operations.
+
+    \return
+        - true if rendering is being done using shaders.
+        - false if rendering is being done using the fixed function pipeline
+    */
+    bool isUsingShaders() const;
+
+    /*!
+    \brief
+        Set whether the OgreRenderer shound use shaders when performing its
+        rendering operations.
+
+    \param use_shaders
+        - true if rendering shaders should be used to perform rendering.
+        - false if the fixed function pipeline should be used to perform
+          rendering.
+
+    \note
+        In order to use Ogre's Direct3D 11 support you /em must enable
+        shaders.
+    */
+    void setUsingShaders(const bool use_shaders);
+
+    /*!
+    \brief
+        Perform required operations to bind shaders (or unbind them) depending
+        on whether shader based rendering is currently enabled.
+
+        Normally you would not need to call this function directly, although
+        that might be required if you are using RenderEffect objects that
+        also use shaders.
+    */
+    void bindShaders();
+
+    /*!
+    \brief
+        Updates the shader constant parameters (i.e. uniforms).
+
+        You do not normally need to call this function directly. Some may need
+        to call this function if you're doing non-standard or advanced things.
+    */
+    void updateShaderParams() const;
+
+    //! Set the current world matrix to the given matrix.
+    void setWorldMatrix(const Ogre::Matrix4& m);
+    //! Set the current view matrix to the given matrix.
+    void setViewMatrix(const Ogre::Matrix4& m);
+    //! Set the current projection matrix to the given matrix.
+    void setProjectionMatrix(const Ogre::Matrix4& m);
+    //! return a const reference to the current world matrix.
+    const Ogre::Matrix4& getWorldMatrix() const;
+    //! return a const reference to the current view matrix.
+    const Ogre::Matrix4& getViewMatrix() const;
+    //! return a const reference to the current projection matrix.
+    const Ogre::Matrix4& getProjectionMatrix() const;
+
+    /*!
+    \brief
+        Return a const reference to the final transformation matrix that
+        should be used when transforming geometry.
+
+    \note
+        The projection used when building this matrix is correctly adjusted
+        according to whether the current Ogre::RenderTarget requires textures
+        to be flipped (i.e it does the right thing for both D3D and OpenGL).
+    */
+    const Ogre::Matrix4& getWorldViewProjMatrix() const;
+
     // implement CEGUI::Renderer interface
     RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
@@ -312,6 +385,10 @@ protected:
 
     //! common parts of constructor
     void constructor_impl(Ogre::RenderTarget& target);
+    //! helper that creates and sets up shaders
+    void initialiseShaders();
+    //! helper to clean up shaders
+    void cleanupShaders();
 
     //! Pointer to the hidden implementation data
     OgreRenderer_impl* d_pimpl;

@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -136,12 +136,9 @@ void OgreGeometryBuffer::draw() const
     if (!d_sync)
         syncHardwareBuffer();
 
-    if (!d_matrixValid)
-        updateMatrix();
-
-    d_renderSystem._setWorldMatrix(d_matrix);
-
+    d_owner.setWorldMatrix(getMatrix());
     d_owner.setupRenderingBlendMode(d_blendMode);
+    d_owner.updateShaderParams();
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)
