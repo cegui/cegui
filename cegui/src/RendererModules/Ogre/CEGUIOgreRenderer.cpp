@@ -549,7 +549,9 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_defaultRoot =
         new RenderingRoot(*d_pimpl->d_defaultTarget);
 
-    initialiseShaders();
+    // default to using shaders when that is the sane thing to do.
+    if (!d_pimpl->d_renderSystem->getFixedPipelineEnabled())
+        setUsingShaders(true);
 
     // hook into the rendering process
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
@@ -569,7 +571,7 @@ void OgreRenderer::initialiseShaders()
 
     d_pimpl->d_vertexShader->setParameter("entry_point", "main");
 
-    if (!d_pimpl->d_useGLSL)
+    if (d_pimpl->d_useGLSL)
         d_pimpl->d_vertexShader->setParameter("target", "arbvp1");
     else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
         d_pimpl->d_vertexShader->setParameter("target", "vs_4_0");
@@ -593,14 +595,14 @@ void OgreRenderer::initialiseShaders()
                Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
                d_pimpl->d_useGLSL ? "glsl" : "hlsl", Ogre::GPT_FRAGMENT_PROGRAM);
 
-    d_pimpl->d_vertexShader->setParameter("entry_point", "main");
+    d_pimpl->d_pixelShader->setParameter("entry_point", "main");
 
     if (d_pimpl->d_useGLSL)
-        d_pimpl->d_vertexShader->setParameter("target", "arbfp1");
+        d_pimpl->d_pixelShader->setParameter("target", "arbfp1");
     else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_4_0"))
-        d_pimpl->d_vertexShader->setParameter("target", "ps_4_0");
+        d_pimpl->d_pixelShader->setParameter("target", "ps_4_0");
     else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_2_0"))
-        d_pimpl->d_vertexShader->setParameter("target", "ps_2_0");
+        d_pimpl->d_pixelShader->setParameter("target", "ps_2_0");
     else
     {
         d_pimpl->d_vertexShader.setNull();
@@ -742,6 +744,14 @@ bool OgreRenderer::isUsingShaders() const
 //----------------------------------------------------------------------------//
 void OgreRenderer::setUsingShaders(const bool use_shaders)
 {
+    if (d_pimpl->d_useShaders == use_shaders)
+        return;
+
+    if (use_shaders)
+        initialiseShaders();
+    else
+        cleanupShaders();
+
     d_pimpl->d_useShaders = use_shaders;
 }
 
