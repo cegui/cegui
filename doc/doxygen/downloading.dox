@@ -19,8 +19,8 @@ Source code from the stable mercurial branch is released at various points in
 time and made available as source code packages.
 
 The current stable packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.7/CEGUI-0.7.7.tar.gz/download">CEGUI-0.7.7.tar.gz</a> Source code package for GNU/Linux and Apple Mac
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.7/CEGUI-0.7.7.zip/download">CEGUI-0.7.7.zip</a> Source code package for Microsoft Windows
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.8/CEGUI-0.7.8.tar.gz/download">CEGUI-0.7.8.tar.gz</a> Source code package for GNU/Linux and Apple Mac
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.7.8/CEGUI-0.7.8.zip/download">CEGUI-0.7.8.zip</a> Source code package for Microsoft Windows
 
 These archives are identical with the exception that the .zip file
 contains a copy of the premake executable which is used to generate the MSVC++
