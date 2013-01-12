@@ -12,44 +12,45 @@
 			<xsd:element name="WindowAlias" type="WindowAliasType" />
             <xsd:element name="FalagardMapping" type="FalagardMapType" />
 		</xsd:choice>
-		<xsd:attribute name="Name" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
+		<xsd:attribute name="version" type="xsd:nonNegativeInteger" use="optional" default="0" />
 	</xsd:complexType>
 	<xsd:complexType name="WindowSetType">
 		<xsd:sequence>
             <xsd:element name="WindowFactory" type="WindowFactoryType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
-		<xsd:attribute name="Filename" type="xsd:string" use="required" />
+		<xsd:attribute name="filename" type="xsd:string" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="WindowRendererSetType">
 		<xsd:sequence>
             <xsd:element name="WindowRendererFactory" type="WindowRendererFactoryType" minOccurs="0" maxOccurs="unbounded" />
 		</xsd:sequence>
-		<xsd:attribute name="Filename" type="xsd:string" use="required" />
+		<xsd:attribute name="filename" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="FileDataType">
-        <xsd:attribute name="Filename" type="xsd:string" use="required" />
-        <xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
+        <xsd:attribute name="filename" type="xsd:string" use="required" />
+        <xsd:attribute name="resourceGroup" type="xsd:string" use="optional"  default="" />
     </xsd:complexType>
 	<xsd:complexType name="NamedDataType">
-		<xsd:attribute name="Name" type="xsd:string" use="optional" default="" />
-		<xsd:attribute name="Filename" type="xsd:string" use="required" />
-		<xsd:attribute name="ResourceGroup" type="xsd:string" use="optional"  default="" />
+		<xsd:attribute name="name" type="xsd:string" use="optional" default="" />
+		<xsd:attribute name="filename" type="xsd:string" use="required" />
+		<xsd:attribute name="resourceGroup" type="xsd:string" use="optional"  default="" />
 	</xsd:complexType>
 	<xsd:complexType name="WindowFactoryType">
-		<xsd:attribute name="Name" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="WindowRendererFactoryType">
-		<xsd:attribute name="Name" type="xsd:string" use="required" />
+		<xsd:attribute name="name" type="xsd:string" use="required" />
 	</xsd:complexType>
 	<xsd:complexType name="WindowAliasType">
-		<xsd:attribute name="Alias" type="xsd:string" use="required" />
-		<xsd:attribute name="Target" type="xsd:string" use="required" />
+		<xsd:attribute name="alias" type="xsd:string" use="required" />
+		<xsd:attribute name="target" type="xsd:string" use="required" />
 	</xsd:complexType>
     <xsd:complexType name="FalagardMapType">
-        <xsd:attribute name="WindowType" type="xsd:string" use="required" />
-        <xsd:attribute name="TargetType" type="xsd:string" use="required" />
-		<xsd:attribute name="Renderer" type="xsd:string" use="required" />
-        <xsd:attribute name="LookNFeel" type="xsd:string" use="required" />
-        <xsd:attribute name="RenderEffect" type="xsd:string" use="optional" default="" />
+        <xsd:attribute name="windowType" type="xsd:string" use="required" />
+        <xsd:attribute name="targetType" type="xsd:string" use="required" />
+		<xsd:attribute name="renderer" type="xsd:string" use="required" />
+        <xsd:attribute name="lookNFeel" type="xsd:string" use="required" />
+        <xsd:attribute name="renderEffect" type="xsd:string" use="optional" default="" />
     </xsd:complexType>
 </xsd:schema>
