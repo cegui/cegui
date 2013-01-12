@@ -47,7 +47,11 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_pivot(0, 0, 0),
     d_effect(0),
     d_matrixValid(false),
+#if IRRLICHT_VERSION_MAJOR > 1 || (IRRLICHT_VERSION_MAJOR == 1 && IRRLICHT_VERSION_MINOR >= 8)
+    d_xViewDir(1.0f),
+#else
     d_xViewDir(driver.getDriverType() != irr::video::EDT_OPENGL ? 1.0f : -1.0f),
+#endif
     d_texelOffset(driver.getDriverType() != irr::video::EDT_OPENGL ? -0.5f : 0.0f)
 {
     d_material.BackfaceCulling = false;
@@ -56,7 +60,12 @@ IrrlichtGeometryBuffer::IrrlichtGeometryBuffer(irr::video::IVideoDriver& driver)
     d_material.ZWriteEnable = false;
     #if CEGUI_IRR_SDK_VERSION >= 16
         d_material.MaterialType = irr::video::EMT_ONETEXTURE_BLEND;
-        d_material.MaterialTypeParam = irr::video::pack_texureBlendFunc(
+        d_material.MaterialTypeParam =
+#if IRRLICHT_VERSION_MAJOR > 1 || (IRRLICHT_VERSION_MAJOR == 1 && IRRLICHT_VERSION_MINOR >= 8)
+            irr::video::pack_textureBlendFunc(
+#else
+            irr::video::pack_texureBlendFunc(
+#endif
                 irr::video::EBF_SRC_ALPHA,
                 irr::video::EBF_ONE_MINUS_SRC_ALPHA,
                 irr::video::EMFN_MODULATE_1X,
