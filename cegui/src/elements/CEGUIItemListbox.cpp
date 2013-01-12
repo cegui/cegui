@@ -138,18 +138,14 @@ size_t ItemListbox::getSelectedCount() const
 ************************************************************************/
 ItemEntry* ItemListbox::findSelectedItem(size_t start_index) const
 {
-    size_t max = d_listItems.size();
-    if (start_index >= max)
-    {
-        return 0;
-    }
+    const size_t max = d_listItems.size();
 
-    for (size_t i=start_index; i<max; ++i)
+    for (size_t i = start_index; i < max; ++i)
     {
         ItemEntry* li = d_listItems[i];
         if (li->isSelected())
         {
-            d_nextSelectionIndex = i;
+            d_nextSelectionIndex = i + 1;
             return li;
         }
     }
