@@ -36,6 +36,7 @@
 #include "CEGUILogger.h"
 #include "CEGUIIteratorBase.h"
 #include "CEGUIWindowFactory.h"
+#include "CEGUIExceptions.h"
 #include <map>
 #include <vector>
 
