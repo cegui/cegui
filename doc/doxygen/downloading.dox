@@ -3,7 +3,7 @@
 @author Paul D Turner
 
 CEGUI is available in source code form - either as stable release code packages
-or from the mercurial repository at sourceforge.net (both unstable default branch
+or from the mercurial repository at bitbucket.org (both unstable default branch
 and stable branch code).
 
 All released packages are made available through the sourceforge.net file
@@ -54,9 +54,9 @@ This Mac OS X binary package is provided as a 32bit i386/ppc universal binary.
 
 <br>
 @section dl_hg Mercurial Source Code Repository
-The source code for CEGUI is kept in a mercurial repositiory at sourceforge.net.
+The source code for CEGUI is kept in a mercurial repositiory at bitbucket.org.
 We also have the code repositories for other CEGUI related items hosted at
-sourceforge; the repository for the main CEGUI libraries is named 'cegui_mk2'.
+bitbucket; the repository for the main CEGUI libraries is named 'cegui'.
 
 Within this repository, we maintain the main unstable code (as the default
 branch) and a secondary branch for the current stable releases (which is v0-7 as
@@ -67,7 +67,7 @@ who want or need that older code.
 To obtain a copy of the code from mercurial, you might use the following commands
 (or thier equivalent, if you use a GUI based mercurial client)
 @verbatim
-hg clone http://crayzedsgui.hg.sourceforge.net/hgroot/crayzedsgui/cegui_mk2 cegui-source
+hg clone https://bitbucket.org/cegui/cegui cegui-source
 @endverbatim
 
 Once you have this, the cloned repository is updated to the default (unstable)
@@ -79,5 +79,5 @@ hg update -C v0-7
 @endverbatim
 
 You can also browse the repository from your web browser here:
-http://crayzedsgui.hg.sourceforge.net/hgweb/crayzedsgui/cegui_mk2/
+https://bitbucket.org/cegui/cegui/src/
 */
