@@ -280,7 +280,15 @@ The first thing we need is to tell the system where the left edge of the middle 
 </Area>
 @endcode
 
-Now comes the fun part. Due to the fact we want the skin to operate correctly without knowing ahead of time how large the images are, we must use mathematical calculations in order to establish the required width of the middle section. If we knew for sure the image sizes, this could all be pre-calculated and we could simply use AbsoluteDim to tell the system the width we require. Unfortunately we are not this lucky. We are lucky, however, in the fact that the system provides a means for us to specify, within the XML, what calculations should be done to arrive at the final value for a dimension. The DimOperator element is what provides this ability.
+Now comes the fun part. Due to the fact we want the skin to operate correctly
+without knowing ahead of time how large the images are, we must use mathematical
+calculations in order to establish the required width of the middle section. If
+we knew for sure the image sizes, this could all be pre-calculated and we could
+simply use AbsoluteDim to tell the system the width we require. Unfortunately we
+are not this lucky. We are lucky, however, in the fact that the system provides
+a means for us to specify, within the XML, what calculations should be done to
+arrive at the final value for a dimension. The OperatorDim element is what
+provides this ability.
 
 Before going further we should look at what we need to calculate.  The width of the middle section is basically the width of the widget, minus the combined width of the two end sections:
 
@@ -290,99 +298,60 @@ However, due to the fact that the area can accept either a width or right edge c
 
 @f$ rightEdge=widgetWidth-rightEndWidth @f$
 
-The result from both calculations is the same, so wherever possible we will use the simpler option. To specify this calculation in XML we first start off with our widget width:
+The result from both calculations is the same, so wherever possible we will use
+the simpler option. Since we need to perform some calculation, to specify this
+in XML we start off with an OperatorDim element that specifies the mathematical
+operation that we need to perform:
 @code
 <Dim type="RightEdge">
-  <UnifiedDim scale="1" type="Width">
-  </UnifiedDim>
+
+  <OperatorDim op="Subtract">
+  </OperatorDim>
+
 </Dim>
 @endcode
 
-Since we need to perform some calculation on this, we embed a DimOperator element that specifies the mathematical operation that we need to perform:
+Next we will specify the first operand, which will be the left side of the
+operation being defined.  In this example this will be the width of the
+widget:
 @code
 <Dim type="RightEdge">
-  <UnifiedDim scale="1" type="Width">
+  <OperatorDim op="Subtract">
 
-    <DimOperator op="Subtract">
-    </DimOperator>
+  <UnifiedDim scale="1" type="Width" />
 
-  </UnifiedDim>
+  </OperatorDim>
 </Dim>
 @endcode
 
-To complete the dimension specification we just insert a second *Dim element to tell the system what to subtract. In this case it's the width of the image for the right end, so we will use the ImageDim element for this purpose. The final specification for this dimension looks as follows:
+To complete the dimension specification we just insert a second *Dim element to
+tell the system what is to be subtracted. In this case it's the width of the
+image for the right end, so we will use the ImageDim element for this purpose.
+The final specification for this dimension looks as follows:
 @code
 <Dim type="RightEdge">
-  <UnifiedDim scale="1" type="Width">
-    <DimOperator op="Subtract">
+  <OperatorDim op="Subtract">
+    <UnifiedDim scale="1" type="Width" />
 
-      <ImageDim
-        imageset="TaharezLook"
-        image="ButtonRightNormal"
-        dimension="Width"
-      />
+    <ImageDim
+      imageset="TaharezLook"
+      image="ButtonRightNormal"
+      dimension="Width"
+    />
 
-    </DimOperator>
-  </UnifiedDim>
+  </OperatorDim>
 </Dim>
 @endcode
 
-It is possible to chain further mathematical operations within the dimension specification. It would have been possible to do our original width calculation using two DimOperator elements chained together, however this leads us to two small oddities of the system:
+It is possible to chain further mathematical operations within the dimension
+specification. It would have been possible to do our original width calculation
+using two OperatorDim elements chained together to form an expression tree. The
+system is flexible enough that any expression using the supported operators
+can be expressed in this manner.
 
-@arg pairs of dimension operands are taken in reverse order; working from the innermost operation to the outermost operation.
-@arg there is no real operator precedence. All operations are performed linearly starting at the innermost pair of values and working outwards.
-
-To explain this further, the example from the reference section will be used. Basically, in that example we want to take the height of the widget font, add four pixels and multiply the result by two. This might lead us to write the following, incorrect, specification:
-@code
-...
-<FontDim type="LineSpacing">
-  <DimOperator op="Add">
-    <AbsoluteDim value="4">
-      <DimOperator op="Multiply">
-        <AbsoluteDim value="2" />
-      </DimOperator>
-    </AbsoluteDim>
-  </DimOperator>
-</FontDim>
-...
-@endcode
-
-The operation that the above would perform is as follows:
-
-@f$ (4 * 2) + LineSpacing @f$
-
-Obviously this is not what we were after. We need to switch the operands around so that the pairs are reversed:
-@code
-...
-<AbsoluteDim value="2">
-  <DimOperator op="Multiply">
-    <AbsoluteDim value="4">
-      <DimOperator op="Add">
-        <FontDim type="LineSpacing" />
-      </DimOperator>
-    </AbsoluteDim>
-  </DimOperator>
-</AbsoluteDim>
-...
-@endcode
-
-The operations this will perform, in order, are:
-
-@f$ tmp = 4 + LineSpacing @f$
-
-Followed by:
-
-@f$ 2 * tmp @f$ 
-
-Giving us what we wanted which was:
-
-@f$ (2 * (4 + LineSpacing)) @f$
-
-Note also lack of 'normal' operator precedence, you might have been surprised to find the operation was not:
-
-@f$ ((2 {*} 4) + LineSpacing) @f$
-
-Anyway, I digress. Lets get back to our button imagery. We now have enough information to define the middle section of the button, which looks like this:
+Anyway, I digress slightly. Lets get back to our button imagery. We now have
+enough information to define the middle section of the button, which looks like
+this:
 @code
 <ImageryComponent>
   <Area>
@@ -395,15 +364,14 @@ Anyway, I digress. Lets get back to our button imagery. We now have enough infor
     </Dim>
     <Dim type="TopEdge"><AbsoluteDim value="0" /></Dim>
     <Dim type="RightEdge">
-      <UnifiedDim scale="1" type="Width">
-        <DimOperator op="Subtract">
-          <ImageDim
-            imageset="TaharezLook"
-            image="ButtonRightNormal"
-            dimension="Width"
-          />
-        </DimOperator>
-      </UnifiedDim>
+      <OperatorDim op="Subtract">
+        <UnifiedDim scale="1" type="Width" />
+        <ImageDim
+          imageset="TaharezLook"
+          image="ButtonRightNormal"
+          dimension="Width"
+        />
+      </OperatorDim>
     </Dim>
     <Dim type="Height"><UnifiedDim scale="1" type="Height" /></Dim>
   </Area>
