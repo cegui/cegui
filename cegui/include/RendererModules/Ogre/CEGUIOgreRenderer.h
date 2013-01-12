@@ -278,8 +278,12 @@ public:
           rendering.
 
     \note
-        In order to use Ogre's Direct3D 11 support you /em must enable
-        shaders.
+        When compiled against Ogre 1.8 or later, shaders will automatically
+        be enabled if the render sytem does not support the fixed function
+        pipeline (such as with Direct3D 11). If you are compiling against
+        earlier releases of Ogre, you must explicity enable the use of
+        shaders by calling this function - if you are unsure what you'll be
+        compiling against, it is safe to call this function anyway.
     */
     void setUsingShaders(const bool use_shaders);
 
