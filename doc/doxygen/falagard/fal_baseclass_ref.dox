@@ -119,7 +119,7 @@ Assigned WidgetLook should provide the following:
     <li>Child widget definitions:</li>
     <ul>
         <li>Titlebar based widget with name suffix "__auto_titlebar__".  This widget will be used as the title bar for the frame window.</li>
-        <li>SystemButton based widget with name suffix "__auto_closebutton__".  This widget will be used as the close button for the frame window.</li>
+        <li>PushButton based widget with name suffix "__auto_closebutton__".  This widget will be used as the close button for the frame window.</li>
     </ul>
 </ul>
 
@@ -269,7 +269,7 @@ Assigned WidgetLook should provide the following:
 @section fal_baseclass_ref_sec_19 CEGUI/PushButton
 Base class providing logic for a simple push button type widget.
 
-You should use a "Falagard/Button" or "Falagard/SystemButton" window renderer for this widget.
+You should use a "Falagard/Button" window renderer for this widget.
 
 Assigned WidgetLook should provide the following:
 <ul>
