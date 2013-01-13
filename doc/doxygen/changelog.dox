@@ -3,13 +3,23 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.9</b>
+- Bug Fix: CEGUI produced no rendering under irrlicht 1.8+
+- Bug Fix: CEGUI would not build against Irrlicht 1.8+
+- Bug Fix: ItemListbox::findSelectedItem stored wrong index for 'next' search.
+- Bug Fix: We can only test for fixed pipeline in Ogre >= 1.8.
+- Bug Fix: Build issue with Xcode 4.4+ http://www.cegui.org.uk/mantis/view.php?id=912
+
+- Documentation: Update references to sf.net repos to bitbucket.org
+
+
 <b>Release 0.7.8</b>
 - Bug Fix: Non-client windows using rendering surface were clipped to client area.
 - Bug Fix: Child content was not always updated when FrameWindow rollup toggled.
 - Bug Fix: VertScrollbar ScrollablePane properties accessing values for horizontal bar.
 - Bug Fix: Tab buttons sized to raw text width, not RenderedString width.
 
-- Added: Added option for OgreRenderer to render using (internal) shaders - defaults to enabled when fixed pipline is unavailable.
+- Added: Added option for OgreRenderer to render using (internal) shaders - defaults to enabled when fixed pipeline is unavailable.
 - Added: Added functions to MCL to ensure rows, columns and items are visible.
 - Added: Implement Texture::saveToMemory for D3D11 renderer.
 - Added: Implement Texture::saveToMemory for D3D10 renderer.
