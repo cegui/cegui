@@ -158,8 +158,6 @@ uint FreeTypeFont::getTextureSize(CodepointMap::const_iterator s,
 //----------------------------------------------------------------------------//
 void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
 {
-    createFontGlyphMappings(start_codepoint, end_codepoint);
-
     CodepointMap::const_iterator s = d_cp_map.lower_bound(start_codepoint);
     if (s == d_cp_map.end())
         return;
@@ -290,15 +288,6 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         if (finished)
             break;
     }
-}
-
-//----------------------------------------------------------------------------//
-void FreeTypeFont::createFontGlyphMappings(utf32 start_codepoint,
-                                           utf32 end_codepoint) const
-{
-    // ensure mapping exists for available codepoints in the range
-    for (utf32 cp = start_codepoint; cp != end_codepoint; ++cp)
-        findFontGlyph(cp);
 }
 
 //----------------------------------------------------------------------------//
@@ -445,11 +434,11 @@ void FreeTypeFont::updateFont()
         d_height = d_specificLineSpacing;
     }
 
-    setMaxCodepoint(getLastCodepoint());
+    initialiseGlyphMap();
 }
 
 //----------------------------------------------------------------------------//
-utf32 FreeTypeFont::getLastCodepoint() const
+void FreeTypeFont::initialiseGlyphMap()
 {
     FT_UInt gindex;
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
@@ -460,36 +449,41 @@ utf32 FreeTypeFont::getLastCodepoint() const
         if (max_codepoint < codepoint)
             max_codepoint = codepoint;
 
+        d_cp_map[codepoint] = FontGlyph();
+
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
 
-    return max_codepoint;
+    setMaxCodepoint(max_codepoint);
 }
 
 //----------------------------------------------------------------------------//
 const FontGlyph* FreeTypeFont::findFontGlyph(const utf32 codepoint) const
 {
-    if (const FontGlyph* result = Font::findFontGlyph(codepoint))
-        return result;
-    else
-        return createFontGlyphMapping(codepoint);
+    CodepointMap::iterator pos = d_cp_map.find(codepoint);
+
+    if (pos == d_cp_map.end())
+        return 0;
+
+    if (!pos->second.isValid())
+        initialiseFontGlyph(pos);
+
+    return &pos->second;
 }
 
 //----------------------------------------------------------------------------//
-const FontGlyph* FreeTypeFont::createFontGlyphMapping(const utf32 codepoint) const
+void FreeTypeFont::initialiseFontGlyph(CodepointMap::iterator cp) const
 {
     // load-up required glyph metrics (don't render)
-    if (FT_Load_Char(d_fontFace, codepoint,
+    if (FT_Load_Char(d_fontFace, cp->first,
                      FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
-        return 0;
+        return;
 
     const float adv =
         d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(FT_POS_COEF);
 
-    CodepointMap::const_iterator pos =
-        d_cp_map.insert(std::make_pair(codepoint, FontGlyph(adv))).first;
-
-    return &pos->second;
+    cp->second.setAdvance(adv);
+    cp->second.setValid(true);
 }
 
 //----------------------------------------------------------------------------//

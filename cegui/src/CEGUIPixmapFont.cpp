@@ -155,7 +155,7 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
         d_maxCodepoint = codepoint;
 
     // create a new FontGlyph with given character code
-    const FontGlyph glyph(adv, &image);
+    const FontGlyph glyph(adv, &image, true);
 
     if (image.getOffsetY() < -d_ascender)
         d_ascender = -image.getOffsetY();

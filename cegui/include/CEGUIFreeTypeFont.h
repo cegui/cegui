@@ -151,15 +151,10 @@ protected:
     //! Free all allocated font data.
     void free();
 
-    //! returns the last codepoint available in the loaded FT font.
-    utf32 getLastCodepoint() const;
+    //! initialise FontGlyph for given codepoint.
+    void initialiseFontGlyph(CodepointMap::iterator cp) const;
 
-    //! create FontGlyph mapping in d_cp_map for given codepoint.
-    const FontGlyph* createFontGlyphMapping(const utf32 codepoint) const;
-
-    //! create an inclusive range of mappings.
-    void createFontGlyphMappings(utf32 start_codepoint,
-                                 utf32 end_codepoint) const;
+    void initialiseGlyphMap();
 
     // overrides of functions in Font base class.
     const FontGlyph* findFontGlyph(const utf32 codepoint) const;
