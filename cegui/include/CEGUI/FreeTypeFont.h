@@ -150,7 +150,13 @@ protected:
     //! Free all allocated font data.
     void free();
 
+    //! initialise FontGlyph for given codepoint.
+    void initialiseFontGlyph(CodepointMap::iterator cp) const;
+
+    void initialiseGlyphMap();
+
     // overrides of functions in Font base class.
+    const FontGlyph* findFontGlyph(const utf32 codepoint) const;
     void rasterise(utf32 start_codepoint, utf32 end_codepoint) const;
     void updateFont();
     void writeXMLToStream_impl (XMLSerializer& xml_stream) const;

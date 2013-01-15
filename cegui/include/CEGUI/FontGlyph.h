@@ -45,9 +45,10 @@ class CEGUIEXPORT FontGlyph:
 {
 public:
     //! Constructor.
-    FontGlyph(float advance = 0.0f, Image* image = 0) :
+    FontGlyph(float advance = 0.0f, Image* image = 0, bool valid = false) :
         d_image(image),
-        d_advance(advance)
+        d_advance(advance),
+        d_valid(valid)
     {}
 
     //! Return the CEGUI::Image object rendered for this glyph.
@@ -97,11 +98,21 @@ public:
     void setImage(Image* image)
     { d_image = image; }
 
+    //! mark the FontGlyph as valid
+    void setValid(bool valid)
+    { d_valid = valid; }
+
+    //! return whether the FontGlyph is marked as valid
+    bool isValid() const
+    { return d_valid; }
+
 private:
     //! The image which will be rendered for this glyph.
     Image* d_image;
     //! Amount to advance the pen after rendering this glyph
     float d_advance;
+    //! says whether this glyph info is actually valid
+    bool d_valid;
 };
 
 } // End of  CEGUI namespace section

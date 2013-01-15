@@ -462,30 +462,56 @@ void FreeTypeFont::updateFont()
         d_height = d_specificLineSpacing;
     }
 
-    // Create an empty FontGlyph structure for every glyph of the font
+    initialiseGlyphMap();
+}
+
+//----------------------------------------------------------------------------//
+void FreeTypeFont::initialiseGlyphMap()
+{
     FT_UInt gindex;
     FT_ULong codepoint = FT_Get_First_Char(d_fontFace, &gindex);
     FT_ULong max_codepoint = codepoint;
+
     while (gindex)
     {
         if (max_codepoint < codepoint)
             max_codepoint = codepoint;
 
-        // load-up required glyph metrics (don't render)
-        if (FT_Load_Char(d_fontFace, codepoint,
-                         FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
-            continue; // glyph error
+        d_cp_map[codepoint] = FontGlyph();
 
-        float adv = d_fontFace->glyph->metrics.horiAdvance * float(FT_POS_COEF);
-
-        // create a new empty FontGlyph with given character code
-        d_cp_map[codepoint] = FontGlyph(adv);
-
-        // proceed to next glyph
         codepoint = FT_Get_Next_Char(d_fontFace, codepoint, &gindex);
     }
 
     setMaxCodepoint(max_codepoint);
+}
+
+//----------------------------------------------------------------------------//
+const FontGlyph* FreeTypeFont::findFontGlyph(const utf32 codepoint) const
+{
+    CodepointMap::iterator pos = d_cp_map.find(codepoint);
+
+    if (pos == d_cp_map.end())
+        return 0;
+
+    if (!pos->second.isValid())
+        initialiseFontGlyph(pos);
+
+    return &pos->second;
+}
+
+//----------------------------------------------------------------------------//
+void FreeTypeFont::initialiseFontGlyph(CodepointMap::iterator cp) const
+{
+    // load-up required glyph metrics (don't render)
+    if (FT_Load_Char(d_fontFace, cp->first,
+                     FT_LOAD_DEFAULT | FT_LOAD_FORCE_AUTOHINT))
+        return;
+
+    const float adv =
+        d_fontFace->glyph->metrics.horiAdvance * static_cast<float>(FT_POS_COEF);
+
+    cp->second.setAdvance(adv);
+    cp->second.setValid(true);
 }
 
 //----------------------------------------------------------------------------//

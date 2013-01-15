@@ -449,6 +449,9 @@ protected:
     */
     void setMaxCodepoint(utf32 codepoint);
 
+    //! finds FontGlyph in map and returns it, or 0 if none.
+    virtual const FontGlyph* findFontGlyph(const utf32 codepoint) const;
+
     //! Name of this font.
     String d_name;
     //! Type name string for this font (not used internally)
