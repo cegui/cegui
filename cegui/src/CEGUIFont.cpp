@@ -103,6 +103,8 @@ const FontGlyph* Font::getGlyphData(utf32 codepoint) const
     if (codepoint > d_maxCodepoint)
         return 0;
 
+    const FontGlyph* const glyph = findFontGlyph(codepoint);
+
     if (d_glyphPageLoaded)
     {
         // Check if glyph page has been rasterised
@@ -116,6 +118,12 @@ const FontGlyph* Font::getGlyphData(utf32 codepoint) const
         }
     }
 
+    return glyph;
+}
+
+//----------------------------------------------------------------------------//
+const FontGlyph* Font::findFontGlyph(const utf32 codepoint) const
+{
     CodepointMap::const_iterator pos = d_cp_map.find(codepoint);
     return (pos != d_cp_map.end()) ? &pos->second : 0;
 }

@@ -384,6 +384,9 @@ protected:
     */
     void setMaxCodepoint(utf32 codepoint);
 
+    //! finds FontGlyph in map and returns it, or 0 if none.
+    virtual const FontGlyph* findFontGlyph(const utf32 codepoint) const;
+
     //! Name of this font.
     String d_name;
     //! Type name string for this font (not used internally)
@@ -433,8 +436,10 @@ protected:
 
     //! Definition of CodepointMap type.
     typedef std::map<utf32, FontGlyph> CodepointMap;
-    //! Contains mappings from code points to Image objects
-    CodepointMap d_cp_map;
+    /** Mappings from code points to FontGlyph objects. mutable to allow lazy
+     * initialisation of FontGlyphs where that is beneficial.
+     */
+    mutable CodepointMap d_cp_map;
 };
 
 } // End of  CEGUI namespace section
