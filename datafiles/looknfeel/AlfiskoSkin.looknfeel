@@ -2502,4 +2502,79 @@
             </Layer>
         </StateImagery>
     </WidgetLook>
+    <WidgetLook name="AlfiskoSkin/ProgressOrb">
+        <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="ImageColours"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzFormatting"/>
+        <PropertyDefinition redrawOnWrite="true" initialValue="/AlfiskoSkin/ProgressOrbBase" type="Image" name="Image"/>
+
+        <PropertyLinkDefinition targetProperty="Rotation" widget="CCWSpinner" initialValue="x:0 y:0 z:0" type="Quaternion" name="CCWSpinnerRotation"/>
+        <PropertyLinkDefinition targetProperty="Rotation" widget="CWSpinner" initialValue="x:0 y:0 z:0" type="Quaternion" name="CWSpinnerRotation"/>
+
+        <Property name="Size" value="{{0, 128}, {0, 128}}" />
+
+        <!-- Both of the spinners HAVE to be separate widgets because we
+             need separate rotation for each -->
+
+        <Child nameSuffix="CCWSpinner" type="Generic/Image">
+            <Property name="Position" value="{{0, 0}, {0, 0}}"/>
+            <Property name="Size" value="{{1, 0}, {1, 0}}"/>
+            <Property name="Image" value="/AlfiskoSkin/ProgressOrbCCWSpinner"/>
+        </Child>
+        <Child nameSuffix="CWSpinner" type="Generic/Image">
+            <Property name="Position" value="{{0, 0}, {0, 0}}"/>
+            <Property name="Size" value="{{1, 0}, {1, 0}}"/>
+            <Property name="Image" value="/AlfiskoSkin/ProgressOrbCWSpinner"/>
+        </Child>
+
+        <ImagerySection name="BaseSection">
+            <ImageryComponent>
+                <Area>
+                    <Dim type="LeftEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="TopEdge">
+                        <AbsoluteDim value="0"/>
+                    </Dim>
+                    <Dim type="RightEdge">
+                        <UnifiedDim scale="1.0" type="RightEdge"/>
+                    </Dim>
+                    <Dim type="BottomEdge">
+                        <UnifiedDim scale="1.0" type="BottomEdge"/>
+                    </Dim>
+                </Area>
+                <ImageProperty name="Image"/>
+                <ColourRectProperty name="ImageColours"/>
+                <VertFormatProperty name="VertFormatting"/>
+                <HorzFormatProperty name="HorzFormatting"/>
+            </ImageryComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="BaseSection"/>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="BaseSection"/>
+            </Layer>
+        </StateImagery>
+
+        <AnimationDefinition name="CCWSpinning" duration="1.2" replayMode="loop" autoStart="true">
+            <Affector property="CCWSpinnerRotation" interpolator="QuaternionSlerp">
+                <KeyFrame position="0.0" value="x:0 y:0 z:0" />
+                <KeyFrame position="0.4" value="x:0 y:0 z:-120" />
+                <KeyFrame position="0.8" value="x:0 y:0 z:-240" />
+                <KeyFrame position="1.2" value="x:0 y:0 z:-360" />
+            </Affector>
+        </AnimationDefinition>
+        <AnimationDefinition name="CWSpinning" duration="2.0" replayMode="loop" autoStart="true">
+            <Affector property="CWSpinnerRotation" interpolator="QuaternionSlerp">
+                <KeyFrame position="0.0" value="x:0 y:0 z:0" />
+                <KeyFrame position="0.666667" value="x:0 y:0 z:120" />
+                <KeyFrame position="1.333333" value="x:0 y:0 z:240" />
+                <KeyFrame position="2.0" value="x:0 y:0 z:360" />
+            </Affector>
+        </AnimationDefinition>
+    </WidgetLook>
 </Falagard>

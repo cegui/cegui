@@ -33,6 +33,11 @@
     <InkscapeSVG path="AlfiskoSkin/Editbox.svg">
         <FrameComponent name="AlfiskoSkin/EditboxNormal" layers="Normal" x="0" y="0" width="80" height="25" cornerWidth="7" cornerHeight="7"/>
     </InkscapeSVG>
+    <InkscapeSVG path="AlfiskoSkin/ProgressOrb.svg">
+        <Component name="AlfiskoSkin/ProgressOrbBase" layers="Base" x="0" y="0" width="128" height="128"/>
+        <Component name="AlfiskoSkin/ProgressOrbCCWSpinner" layers="CCWSpinner" x="0" y="0" width="128" height="128"/>
+        <Component name="AlfiskoSkin/ProgressOrbCWSpinner" layers="CWSpinner" x="0" y="0" width="128" height="128"/>
+    </InkscapeSVG>
     <!-- not used yet! -->
     <InkscapeSVG path="AlfiskoSkin/PushButton.svg">
         <FrameComponent name="AlfiskoSkin/PushButtonNormal" layers="Normal" x="0" y="0" width="90" height="30" cornerWidth="7" cornerHeight="7" skip="centre left right"/>
