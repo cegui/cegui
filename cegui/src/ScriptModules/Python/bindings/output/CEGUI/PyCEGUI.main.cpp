@@ -503,7 +503,12 @@ struct CEGUI_String_from_python
     static void* convertible(PyObject* obj_ptr)
     {
         // we allow str() and unicode() objects to be converted to CEGUI::String
-        if (PyString_Check(obj_ptr) || PyUnicode_Check(obj_ptr))
+        // NOTE: Python3 only has unicode strings
+        if (PyUnicode_Check(obj_ptr)
+#if PY_MAJOR_VERSION < 3
+            || PyString_Check(obj_ptr)
+#endif
+        )
         {
             return obj_ptr;
         }
@@ -514,33 +519,39 @@ struct CEGUI_String_from_python
       PyObject* obj_ptr,
       boost::python::converter::rvalue_from_python_stage1_data* data)
     {
-        if (PyUnicode_Check(obj_ptr))
+#if PY_MAJOR_VERSION < 3
+        if (!PyUnicode_Check(obj_ptr))
+        {
+            // no need for unicode, this is just plain str()
+            const char* value = PyString_AsString(obj_ptr);
+            if (value == 0)
+                boost::python::throw_error_already_set();
+
+            void* storage = ((boost::python::converter::rvalue_from_python_storage<CEGUI::String>*)data)->storage.bytes;
+            new (storage) CEGUI::String(value);
+            data->convertible = storage;
+        }
+        else
+#endif
         {
             // we have to employ a bit more machinery since this is utf16 coded string
             // we encode given unicode object (ucs2 - utf16) to utf8
             PyObject* utf8 = PyUnicode_AsUTF8String(obj_ptr);
             // then we get the raw bytes of the utf8 python object
+#if PY_MAJOR_VERSION < 3
             const CEGUI::utf8* value = (CEGUI::utf8*)PyString_AsString(utf8);
+#else
+            const CEGUI::utf8* value = (CEGUI::utf8*)PyBytes_AsString(utf8);
+#endif
             if (value == 0)
                 boost::python::throw_error_already_set();
-            
+
             void* storage = ((boost::python::converter::rvalue_from_python_storage<CEGUI::String>*)data)->storage.bytes;
             new (storage) CEGUI::String(value);
             data->convertible = storage;
             // now we don't need utf8 anymore, CEGUI::String holds the data for us now, by decreasing
             // refcount to utf8, we are practically deallocating it
             boost::python::decref(utf8);
-        }
-        else
-        {
-            // no need for unicode, this is just plain str()
-            const char* value = PyString_AsString(obj_ptr);
-            if (value == 0)
-                boost::python::throw_error_already_set();
-            
-            void* storage = ((boost::python::converter::rvalue_from_python_storage<CEGUI::String>*)data)->storage.bytes;
-            new (storage) CEGUI::String(value);
-            data->convertible = storage;
         }
     }
 };

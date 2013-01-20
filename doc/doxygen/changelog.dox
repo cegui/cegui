@@ -3,6 +3,19 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.7.8</b>
+- Bug Fix: Non-client windows using rendering surface were clipped to client area.
+- Bug Fix: Child content was not always updated when FrameWindow rollup toggled.
+- Bug Fix: VertScrollbar ScrollablePane properties accessing values for horizontal bar.
+- Bug Fix: Tab buttons sized to raw text width, not RenderedString width.
+
+- Added: Added option for OgreRenderer to render using (internal) shaders - defaults to enabled when fixed pipline is unavailable.
+- Added: Added functions to MCL to ensure rows, columns and items are visible.
+- Added: Implement Texture::saveToMemory for D3D11 renderer.
+- Added: Implement Texture::saveToMemory for D3D10 renderer.
+- Added: Implement Direct3D9Texture::saveToMemory (backported impl from default)
+
+
 <b>Release 0.7.7</b>
 - Bug Fix: make dist missed premake.lua for InventoryDemo
 - Bug Fix: ImagerySection bounds calculations were incorrectly starting from zero.

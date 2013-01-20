@@ -291,6 +291,18 @@ struct ComboDropList_wrapper : CEGUI::ComboDropList, bp::wrapper< CEGUI::ComboDr
         return CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
     }
 
+    virtual ::CEGUI::NamedElement * getChildByNameRecursive_impl( ::CEGUI::String const & name ) const {
+        if( bp::override func_getChildByNameRecursive_impl = this->get_override( "getChildByNameRecursive_impl" ) )
+            return func_getChildByNameRecursive_impl( boost::ref(name) );
+        else{
+            return this->CEGUI::NamedElement::getChildByNameRecursive_impl( boost::ref(name) );
+        }
+    }
+    
+    virtual ::CEGUI::NamedElement * default_getChildByNameRecursive_impl( ::CEGUI::String const & name ) const {
+        return CEGUI::NamedElement::getChildByNameRecursive_impl( boost::ref(name) );
+    }
+
     virtual ::CEGUI::Rectf getHitTestRect_impl(  ) const {
         if( bp::override func_getHitTestRect_impl = this->get_override( "getHitTestRect_impl" ) )
             return func_getHitTestRect_impl(  );
@@ -1662,8 +1674,7 @@ void register_ComboDropList_class(){
                 "addNamedElementProperties"
                 , addNamedElementProperties_function_type( &ComboDropList_wrapper::addNamedElementProperties )
                 , "*!\n\
-            \n\
-                Add standard CEGUI.NamedElement properties.\n\
+             Add standard CEGUI.NamedElement properties.\n\
             *\n" );
         
         }
@@ -1930,8 +1941,21 @@ void register_ComboDropList_class(){
                 , ( bp::arg("name_path") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-            \n\
-                retrieves a child at  name_path or 0 if none such exists\n\
+             Retrieves a child at  name_path or 0 if none such exists\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::getChildByNameRecursive_impl
+        
+            typedef ::CEGUI::NamedElement * ( ComboDropList_wrapper::*getChildByNameRecursive_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            ComboDropList_exposer.def( 
+                "getChildByNameRecursive_impl"
+                , getChildByNameRecursive_impl_function_type( &ComboDropList_wrapper::default_getChildByNameRecursive_impl )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+             Finds a child by  name or 0 if none such exists\n\
             *\n" );
         
         }
@@ -2910,8 +2934,7 @@ void register_ComboDropList_class(){
                 , onNameChanged_function_type( &ComboDropList_wrapper::default_onNameChanged )
                 , ( bp::arg("e") )
                 , "*!\n\
-                \n\
-                    Handler called when the element's name changes.\n\
+                 Handler called when the element's name changes.\n\
             \n\
                 @param e\n\
                     NamedElementEventArgs object whose 'element' pointer field is set to the element\n\
