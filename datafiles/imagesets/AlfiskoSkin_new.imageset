@@ -1,148 +1,151 @@
 <Imageset name="" imagefile="../../datafiles/imagesets/AlfiskoSkin_new.png" nativeHorzRes="1920" nativeVertRes="1080" autoScaled="vertical" version="2">
-    <Image name="AlfiskoSkin/ActiveFrameWindowBottom" xPos="1" yPos="204" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowBottomLeft" xPos="151" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowBottomRight" xPos="160" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowCentre" xPos="133" yPos="186" width="104" height="44" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowLeft" xPos="1" yPos="10" width="7" height="44" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowRight" xPos="13" yPos="10" width="7" height="44" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowTop" xPos="1" yPos="195" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowTopLeft" xPos="25" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveFrameWindowTopRight" xPos="37" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarBottom" xPos="1" yPos="168" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarBottomLeft" xPos="331" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarBottomRight" xPos="340" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarCentre" xPos="133" yPos="150" width="104" height="16" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarLeft" xPos="295" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarRight" xPos="304" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarTop" xPos="1" yPos="159" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarTopLeft" xPos="313" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ActiveTitlebarTopRight" xPos="322" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxChecked" xPos="331" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="133" yPos="34" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxUnchecked" xPos="268" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CheckboxUncheckedHover" xPos="295" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CloseButtonHover" xPos="105" yPos="30" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CloseButtonNormal" xPos="241" yPos="19" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CloseButtonPushed" xPos="25" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListBottom" xPos="1" yPos="268" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListBottomLeft" xPos="259" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListBottomRight" xPos="268" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListCentre" xPos="133" yPos="250" width="104" height="54" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListEntryClicked" xPos="1" yPos="321" width="114" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListEntryHover" xPos="133" yPos="320" width="114" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListLeft" xPos="223" yPos="10" width="7" height="54" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListRight" xPos="232" yPos="10" width="7" height="54" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListTop" xPos="1" yPos="259" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListTopLeft" xPos="241" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboDropListTopRight" xPos="250" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxCollapsedArrow" xPos="105" yPos="17" width="15" height="11" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxCollapsedBottom" xPos="1" yPos="299" width="108" height="5" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowBottom" xPos="119" yPos="128" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowBottomLeft" xPos="331" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowBottomRight" xPos="340" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowCentre" xPos="367" yPos="121" width="104" height="44" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowLeft" xPos="295" yPos="1" width="7" height="44" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowRight" xPos="304" yPos="1" width="7" height="44" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowTop" xPos="1" yPos="124" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowTopLeft" xPos="313" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveFrameWindowTopRight" xPos="322" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarBottom" xPos="367" yPos="103" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarBottomLeft" xPos="223" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarBottomRight" xPos="232" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarCentre" xPos="1" yPos="97" width="104" height="16" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarLeft" xPos="187" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarRight" xPos="196" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarTop" xPos="223" yPos="101" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarTopLeft" xPos="205" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ActiveTitlebarTopRight" xPos="214" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxChecked" xPos="91" yPos="17" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxCheckedHover" xPos="119" yPos="17" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxUnchecked" xPos="37" yPos="16" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CheckboxUncheckedHover" xPos="63" yPos="17" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CloseButtonHover" xPos="448" yPos="10" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CloseButtonNormal" xPos="421" yPos="10" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CloseButtonPushed" xPos="475" yPos="10" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListBottom" xPos="367" yPos="176" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListBottomLeft" xPos="439" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListBottomRight" xPos="448" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListCentre" xPos="119" yPos="155" width="104" height="54" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListEntryClicked" xPos="119" yPos="211" width="114" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListEntryHover" xPos="1" yPos="209" width="114" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListLeft" xPos="403" yPos="1" width="7" height="54" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListRight" xPos="412" yPos="1" width="7" height="54" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListTop" xPos="367" yPos="167" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListTopLeft" xPos="421" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboDropListTopRight" xPos="430" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxCollapsedArrow" xPos="277" yPos="10" width="15" height="11" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxCollapsedBottom" xPos="367" yPos="192" width="108" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxCollapsedBottomLeft" xPos="77" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxCollapsedBottomRight" xPos="84" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxCollapsedCentre" xPos="1" yPos="277" width="108" height="13" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxCollapsedCentre" xPos="1" yPos="179" width="108" height="13" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxCollapsedLeft" xPos="49" yPos="1" width="5" height="13" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxCollapsedRight" xPos="56" yPos="1" width="5" height="13" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxCollapsedTop" xPos="1" yPos="292" width="108" height="5" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxCollapsedTop" xPos="367" yPos="185" width="108" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxCollapsedTopLeft" xPos="63" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxCollapsedTopRight" xPos="70" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxExpandedArrow" xPos="25" yPos="19" width="15" height="11" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxExpandedBottom" xPos="133" yPos="313" width="108" height="5" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxExpandedArrow" xPos="313" yPos="10" width="15" height="11" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxExpandedBottom" xPos="367" yPos="206" width="108" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxExpandedBottomLeft" xPos="119" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxExpandedBottomRight" xPos="126" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxExpandedCentre" xPos="1" yPos="306" width="108" height="13" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxExpandedCentre" xPos="1" yPos="194" width="108" height="13" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxExpandedLeft" xPos="91" yPos="1" width="5" height="13" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxExpandedRight" xPos="98" yPos="1" width="5" height="13" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/ComboEditboxExpandedTop" xPos="133" yPos="306" width="108" height="5" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ComboEditboxExpandedTop" xPos="367" yPos="199" width="108" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxExpandedTopLeft" xPos="105" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/ComboEditboxExpandedTopRight" xPos="112" yPos="1" width="5" height="5" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/CursorDefault" xPos="187" yPos="19" width="16" height="25" xOffset="-1" yOffset="-1" />
-    <Image name="AlfiskoSkin/CursorHand" xPos="214" yPos="66" width="27" height="17" xOffset="-13" yOffset="-3" />
-    <Image name="AlfiskoSkin/CursorMove" xPos="49" yPos="66" width="26" height="26" xOffset="-13" yOffset="-13" />
-    <Image name="AlfiskoSkin/CursorTextBar" xPos="63" yPos="17" width="14" height="25" xOffset="-6" yOffset="-2" />
-    <Image name="AlfiskoSkin/EditboxNormalBottom" xPos="1" yPos="105" width="64" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/CursorDefault" xPos="367" yPos="10" width="16" height="25" xOffset="-1" yOffset="-1" />
+    <Image name="AlfiskoSkin/CursorHand" xPos="25" yPos="38" width="27" height="17" xOffset="-13" yOffset="-3" />
+    <Image name="AlfiskoSkin/CursorMove" xPos="367" yPos="37" width="26" height="26" xOffset="-13" yOffset="-13" />
+    <Image name="AlfiskoSkin/CursorTextBar" xPos="259" yPos="10" width="14" height="25" xOffset="-6" yOffset="-2" />
+    <Image name="AlfiskoSkin/EditboxNormalBottom" xPos="295" yPos="65" width="64" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/EditboxNormalBottomLeft" xPos="169" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/EditboxNormalBottomRight" xPos="178" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalCentre" xPos="49" yPos="94" width="64" height="9" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalCentre" xPos="1" yPos="59" width="64" height="9" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/EditboxNormalLeft" xPos="133" yPos="1" width="7" height="9" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/EditboxNormalRight" xPos="142" yPos="1" width="7" height="9" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/EditboxNormalTop" xPos="268" yPos="96" width="64" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/EditboxNormalTop" xPos="223" yPos="59" width="64" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/EditboxNormalTopLeft" xPos="151" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/EditboxNormalTopRight" xPos="160" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarBaseCentre" xPos="133" yPos="342" width="160" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarHoverLeftButton" xPos="295" yPos="54" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarHoverRightButton" xPos="331" yPos="54" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarHoverThumbCentre" xPos="214" yPos="85" width="40" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarHoverThumbLeft" xPos="331" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarHoverThumbRight" xPos="133" yPos="12" width="10" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarNormalLeftButton" xPos="25" yPos="54" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarNormalRightButton" xPos="268" yPos="54" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarNormalThumbCentre" xPos="1" yPos="78" width="40" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarNormalThumbLeft" xPos="277" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarNormalThumbRight" xPos="313" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarPushedLeftButton" xPos="1" yPos="56" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarPushedRightButton" xPos="133" yPos="56" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarPushedThumbCentre" xPos="133" yPos="88" width="40" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarPushedThumbLeft" xPos="49" yPos="16" width="10" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarPushedThumbRight" xPos="91" yPos="16" width="10" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarThumbShadowCentre" xPos="268" yPos="76" width="40" height="18" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarThumbShadowLeft" xPos="160" yPos="68" width="28" height="18" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/HorizontalScrollbarThumbShadowRight" xPos="91" yPos="74" width="28" height="18" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowBottom" xPos="133" yPos="241" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowBottomLeft" xPos="205" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowBottomRight" xPos="214" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowCentre" xPos="1" yPos="213" width="104" height="44" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowLeft" xPos="169" yPos="10" width="7" height="44" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowRight" xPos="178" yPos="10" width="7" height="44" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowTop" xPos="133" yPos="232" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowTopLeft" xPos="187" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveFrameWindowTopRight" xPos="196" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarBottom" xPos="1" yPos="186" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarBottomLeft" xPos="105" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarBottomRight" xPos="119" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarCentre" xPos="133" yPos="168" width="104" height="16" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarLeft" xPos="349" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarRight" xPos="358" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarTop" xPos="1" yPos="177" width="104" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarTopLeft" xPos="63" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/InactiveTitlebarTopRight" xPos="77" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverBottom" xPos="214" yPos="114" width="74" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverBottomLeft" xPos="241" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverBottomRight" xPos="250" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverLowerCentre" xPos="1" yPos="141" width="86" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarBaseCentre" xPos="1" yPos="363" width="160" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarHoverLeftButton" xPos="421" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarHoverRightButton" xPos="448" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarHoverThumbCentre" xPos="421" yPos="54" width="40" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarHoverThumbLeft" xPos="151" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarHoverThumbRight" xPos="169" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarNormalLeftButton" xPos="196" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarNormalRightButton" xPos="223" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarNormalThumbCentre" xPos="169" yPos="54" width="40" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarNormalThumbLeft" xPos="13" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarNormalThumbRight" xPos="25" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarPushedLeftButton" xPos="475" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarPushedRightButton" xPos="250" yPos="37" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarPushedThumbCentre" xPos="475" yPos="54" width="40" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarPushedThumbLeft" xPos="205" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarPushedThumbRight" xPos="223" yPos="10" width="10" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarThumbShadowCentre" xPos="119" yPos="54" width="40" height="18" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarThumbShadowLeft" xPos="63" yPos="39" width="28" height="18" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/HorizontalScrollbarThumbShadowRight" xPos="313" yPos="45" width="28" height="18" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowBottom" xPos="119" yPos="146" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowBottomLeft" xPos="385" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowBottomRight" xPos="394" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowCentre" xPos="1" yPos="133" width="104" height="44" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowLeft" xPos="349" yPos="1" width="7" height="44" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowRight" xPos="358" yPos="1" width="7" height="44" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowTop" xPos="119" yPos="137" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowTopLeft" xPos="367" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveFrameWindowTopRight" xPos="376" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarBottom" xPos="1" yPos="115" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarBottomLeft" xPos="277" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarBottomRight" xPos="286" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarCentre" xPos="119" yPos="110" width="104" height="16" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarLeft" xPos="241" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarRight" xPos="250" yPos="1" width="7" height="16" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarTop" xPos="367" yPos="112" width="104" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarTopLeft" xPos="259" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/InactiveTitlebarTopRight" xPos="268" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ProgressOrbBase" xPos="367" yPos="213" width="128" height="128" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ProgressOrbCCWSpinner" xPos="1" yPos="233" width="128" height="128" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/ProgressOrbCWSpinner" xPos="367" yPos="343" width="128" height="128" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverBottom" xPos="367" yPos="76" width="74" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverBottomLeft" xPos="511" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverBottomRight" xPos="63" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverLowerCentre" xPos="223" yPos="92" width="86" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonHoverLowerLeft" xPos="25" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonHoverLowerRight" xPos="29" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverTop" xPos="1" yPos="114" width="74" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverTopLeft" xPos="223" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverTopRight" xPos="232" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonHoverUpperCentre" xPos="133" yPos="132" width="86" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverTop" xPos="119" yPos="76" width="74" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverTopLeft" xPos="493" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverTopRight" xPos="502" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonHoverUpperCentre" xPos="1" yPos="88" width="86" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonHoverUpperLeft" xPos="17" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonHoverUpperRight" xPos="21" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalBottom" xPos="133" yPos="110" width="74" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalBottomLeft" xPos="205" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalBottomRight" xPos="214" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalLowerCentre" xPos="1" yPos="132" width="86" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalBottom" xPos="223" yPos="74" width="74" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalBottomLeft" xPos="475" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalBottomRight" xPos="484" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalLowerCentre" xPos="367" yPos="85" width="86" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonNormalLowerLeft" xPos="9" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonNormalLowerRight" xPos="13" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalTop" xPos="268" yPos="105" width="74" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalTopLeft" xPos="187" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalTopRight" xPos="196" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonNormalUpperCentre" xPos="214" yPos="123" width="86" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalTop" xPos="1" yPos="70" width="74" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalTopLeft" xPos="457" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalTopRight" xPos="466" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonNormalUpperCentre" xPos="119" yPos="85" width="86" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonNormalUpperLeft" xPos="1" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonNormalUpperRight" xPos="5" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedBottom" xPos="1" yPos="123" width="74" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedBottomLeft" xPos="277" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedBottomRight" xPos="286" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedLowerCentre" xPos="1" yPos="150" width="86" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedBottom" xPos="223" yPos="83" width="74" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedBottomLeft" xPos="119" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedBottomRight" xPos="1" yPos="10" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedLowerCentre" xPos="367" yPos="94" width="86" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonPushedLowerLeft" xPos="41" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonPushedLowerRight" xPos="45" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedTop" xPos="133" yPos="119" width="74" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedTopLeft" xPos="259" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedTopRight" xPos="268" yPos="1" width="7" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/PushButtonPushedUpperCentre" xPos="133" yPos="141" width="86" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedTop" xPos="1" yPos="79" width="74" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedTopLeft" xPos="77" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedTopRight" xPos="105" yPos="8" width="7" height="7" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/PushButtonPushedUpperCentre" xPos="119" yPos="94" width="86" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonPushedUpperLeft" xPos="33" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
     <Image name="AlfiskoSkin/PushButtonPushedUpperRight" xPos="37" yPos="1" width="2" height="7" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonNormal" xPos="241" yPos="41" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonNormalHover" xPos="49" yPos="44" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonSelected" xPos="187" yPos="46" width="20" height="20" xOffset="0" yOffset="0" />
-    <Image name="AlfiskoSkin/RadioButtonSelectedHover" xPos="91" yPos="52" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonNormal" xPos="313" yPos="23" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonNormalHover" xPos="1" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonSelected" xPos="142" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
+    <Image name="AlfiskoSkin/RadioButtonSelectedHover" xPos="169" yPos="32" width="20" height="20" xOffset="0" yOffset="0" />
 </Imageset>

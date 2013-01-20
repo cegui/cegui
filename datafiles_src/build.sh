@@ -2,7 +2,7 @@
 
 # crude and horrible, I know!
 
-CEED_PATH=../../CEED
+CEED_PATH=../../ceed
 
 # this is a hack that simply runs echo instead of forking a new bash
 # we get the paths and nothing is forked

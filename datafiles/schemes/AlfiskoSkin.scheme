@@ -57,6 +57,7 @@
 	<FalagardMapping windowType="AlfiskoSkin/GroupBox" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="AlfiskoSkin/GroupBox" />
     <FalagardMapping windowType="AlfiskoSkin/Tree" targetType="CEGUI/Tree" renderer="Core/Tree" lookNFeel="AlfiskoSkin/Tree" />
 -->
+    <FalagardMapping windowType="AlfiskoSkin/ProgressOrb" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="AlfiskoSkin/ProgressOrb" />
 
 </GUIScheme>
 
