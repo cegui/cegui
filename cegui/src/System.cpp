@@ -6,7 +6,7 @@
 	purpose:	Implementation of main system object
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -388,7 +388,9 @@ const String& System::getVerboseVersion()
         ret += "9.0";
 #elif _MSC_VER == 1600
         ret += "10.0";
-#elif _MSC_VER > 1600
+#elif _MSC_VER == 1700
+        ret += "11.0";
+#elif _MSC_VER > 1700
         ret += "Great Scott!";
 #endif
 

@@ -43,6 +43,18 @@ struct NamedElement_wrapper : CEGUI::NamedElement, bp::wrapper< CEGUI::NamedElem
         return CEGUI::NamedElement::getChildByNamePath_impl( boost::ref(name_path) );
     }
 
+    virtual ::CEGUI::NamedElement * getChildByNameRecursive_impl( ::CEGUI::String const & name ) const {
+        if( bp::override func_getChildByNameRecursive_impl = this->get_override( "getChildByNameRecursive_impl" ) )
+            return func_getChildByNameRecursive_impl( boost::ref(name) );
+        else{
+            return this->CEGUI::NamedElement::getChildByNameRecursive_impl( boost::ref(name) );
+        }
+    }
+    
+    virtual ::CEGUI::NamedElement * default_getChildByNameRecursive_impl( ::CEGUI::String const & name ) const {
+        return CEGUI::NamedElement::getChildByNameRecursive_impl( boost::ref(name) );
+    }
+
     virtual void onNameChanged( ::CEGUI::NamedElementEventArgs & e ){
         if( bp::override func_onNameChanged = this->get_override( "onNameChanged" ) )
             func_onNameChanged( boost::ref(e) );
@@ -375,8 +387,7 @@ void register_NamedElement_class(){
                 "addNamedElementProperties"
                 , addNamedElementProperties_function_type( &NamedElement_wrapper::addNamedElementProperties )
                 , "*!\n\
-            \n\
-                Add standard CEGUI.NamedElement properties.\n\
+             Add standard CEGUI.NamedElement properties.\n\
             *\n" );
         
         }
@@ -390,8 +401,21 @@ void register_NamedElement_class(){
                 , ( bp::arg("name_path") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-            \n\
-                retrieves a child at  name_path or 0 if none such exists\n\
+             Retrieves a child at  name_path or 0 if none such exists\n\
+            *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::getChildByNameRecursive_impl
+        
+            typedef ::CEGUI::NamedElement * ( NamedElement_wrapper::*getChildByNameRecursive_impl_function_type )( ::CEGUI::String const & ) const;
+            
+            NamedElement_exposer.def( 
+                "getChildByNameRecursive_impl"
+                , getChildByNameRecursive_impl_function_type( &NamedElement_wrapper::default_getChildByNameRecursive_impl )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+             Finds a child by  name or 0 if none such exists\n\
             *\n" );
         
         }
@@ -405,17 +429,7 @@ void register_NamedElement_class(){
                 , ( bp::arg("name_path") )
                 , bp::return_value_policy< bp::reference_existing_object >()
                 , "*!\n\
-                \n\
-                    return the attached child element that the given name path references.\n\
-            \n\
-                    A name path is a string that describes a path down the element\n\
-                    hierarchy using names and the forward slash '' as a separator.\n\
-                    \n\
-                    For example, if this element has a child attached to it named Panel\n\
-                    which has its own children attached named Okay and Cancel,\n\
-                    you can check for the element Okay from this element by using the\n\
-                    name path PanelOkay.  To check for Panel, you would simply pass\n\
-                    the name Panel.\n\
+                 Return the attached child element that the given name path references.\n\
             \n\
                 @param name_path\n\
                     String object holding the name path of the child element to return.\n\
@@ -429,6 +443,27 @@ void register_NamedElement_class(){
                 *\n" );
         
         }
+        { //::CEGUI::NamedElement::getChildElementRecursive
+        
+            typedef ::CEGUI::NamedElement * ( ::CEGUI::NamedElement::*getChildElementRecursive_function_type )( ::CEGUI::String const & ) const;
+            
+            NamedElement_exposer.def( 
+                "getChildElementRecursive"
+                , getChildElementRecursive_function_type( &::CEGUI::NamedElement::getChildElementRecursive )
+                , ( bp::arg("name") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "*!\n\
+                 Find the first child with the given name, recursively and breadth-first.\n\
+            \n\
+                @param name\n\
+                    String object holding the name of the child element to find.\n\
+            \n\
+                @return\n\
+                    Pointer to the (first) Element object attached to this Element that has\n\
+                    the name  name\n\
+                *\n" );
+        
+        }
         { //::CEGUI::NamedElement::getName
         
             typedef ::CEGUI::String const & ( ::CEGUI::NamedElement::*getName_function_type )(  ) const;
@@ -438,8 +473,7 @@ void register_NamedElement_class(){
                 , getName_function_type( &::CEGUI::NamedElement::getName )
                 , bp::return_value_policy< bp::copy_const_reference >()
                 , "*!\n\
-            \n\
-                return a String object holding the name of this Element.\n\
+             Return a String object holding the name of this Element.\n\
             *\n" );
         
         }
@@ -451,12 +485,8 @@ void register_NamedElement_class(){
                 "getNamePath"
                 , getNamePath_function_type( &::CEGUI::NamedElement::getNamePath )
                 , "**\n\
-                \n\
-                    return a String object that describes the name path for this Element.\n\
-            \n\
-                    A name path is a string that describes a path down the element\n\
-                    hierarchy using element names and the forward slash '' as a separator.\n\
-                *\n" );
+             Return a String object that describes the name path for this Element.\n\
+            *\n" );
         
         }
         { //::CEGUI::NamedElement::isAncestor
@@ -468,8 +498,7 @@ void register_NamedElement_class(){
                 , isAncestor_function_type( &::CEGUI::NamedElement::isAncestor )
                 , ( bp::arg("name") )
                 , "*!\n\
-                \n\
-                    return true if the specified element name is a name of some ancestor of this Element\n\
+                 Return true if the specified element name is a name of some ancestor of this Element\n\
             \n\
                 @param name\n\
                     String object holding the name to check for.\n\
@@ -491,18 +520,7 @@ void register_NamedElement_class(){
                 , isChild_function_type( &::CEGUI::NamedElement::isChild )
                 , ( bp::arg("name_path") )
                 , "*!\n\
-                \n\
-                    returns whether the specified name path references a NamedElement that is\n\
-                    currently attached to this Element.\n\
-            \n\
-                    A name path is a string that describes a path down the element\n\
-                    hierarchy using names and the forward slash '' as a separator.\n\
-                    \n\
-                    For example, if this element has a child attached to it named Panel\n\
-                    which has its own children attached named Okay and Cancel,\n\
-                    you can check for the element Okay from this element by using the\n\
-                    name path PanelOkay.  To check for Panel, you would simply pass\n\
-                    the name Panel.\n\
+                 Checks whether given name path references a NamedElement that is attached to this Element.\n\
             \n\
                 @param name_path\n\
                     String object holding the name path of the child element to test.\n\
@@ -510,6 +528,33 @@ void register_NamedElement_class(){
                 @return\n\
                      - true if the element referenced by  name_path is attached.\n\
                      - false if the element referenced by  name_path is not attached.\n\
+                *\n" );
+        
+        }
+        { //::CEGUI::NamedElement::isChildRecursive
+        
+            typedef bool ( ::CEGUI::NamedElement::*isChildRecursive_function_type )( ::CEGUI::String const & ) const;
+            
+            NamedElement_exposer.def( 
+                "isChildRecursive"
+                , isChildRecursive_function_type( &::CEGUI::NamedElement::isChildRecursive )
+                , ( bp::arg("name") )
+                , "*!\n\
+                \n\
+                    returns whether at least one window with the given name is attached\n\
+                    to this Window or any of it's children as a child.\n\
+            \n\
+                \note\n\
+                    WARNING! This function can be very expensive and should only be used\n\
+                    when you have no other option available. If you decide to use it anyway,\n\
+                    make sure the window hierarchy from the entry point is small.\n\
+            \n\
+                @param ID\n\
+                    uint ID code to look for.\n\
+            \n\
+                @return\n\
+                   - true if at least one child window was found with the name  name\n\
+                    - false if no child window was found with the name  name.\n\
                 *\n" );
         
         }
@@ -522,8 +567,7 @@ void register_NamedElement_class(){
                 , onNameChanged_function_type( &NamedElement_wrapper::default_onNameChanged )
                 , ( bp::arg("e") )
                 , "*!\n\
-                \n\
-                    Handler called when the element's name changes.\n\
+                 Handler called when the element's name changes.\n\
             \n\
                 @param e\n\
                     NamedElementEventArgs object whose 'element' pointer field is set to the element\n\

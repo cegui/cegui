@@ -4,7 +4,7 @@
     author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -132,8 +132,8 @@ void OgreRenderTarget<T>::activate()
         updateViewport();
 
     d_renderSystem._setViewport(d_viewport);
-    d_renderSystem._setProjectionMatrix(d_matrix);
-    d_renderSystem._setViewMatrix(Ogre::Matrix4::IDENTITY);
+    d_owner.setProjectionMatrix(d_matrix);
+    d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
 }
 
 //----------------------------------------------------------------------------//
