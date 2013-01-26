@@ -242,10 +242,7 @@ void SampleDataModule::deinitialise()
 
 void SampleDataModule::getSampleInstanceFromDLL()
 {
-    // Version suffix for the dlls
-    static const CEGUI::String versionSuffix( "-" STRINGIZE(CEGUI_VERSION_MAJOR) "." STRINGIZE(CEGUI_VERSION_MINOR) );
-
-    CEGUI::DynamicModule* sampleModule = new CEGUI::DynamicModule(d_name + versionSuffix);
+    CEGUI::DynamicModule* sampleModule = new CEGUI::DynamicModule(d_name);
     getSampleInstance functionPointerGetSample = (getSampleInstance)sampleModule->getSymbolAddress(CEGUI::String(GetSampleInstanceFuncName));
 
     if(functionPointerGetSample == 0)
