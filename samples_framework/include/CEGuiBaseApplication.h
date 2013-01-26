@@ -116,6 +116,16 @@ public:
     was subsequently finished */
     bool isInitialised();
 
+    /*!
+     \brief
+        Return the path prefix to use for datafiles.  The value returned
+        is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
+        if the variable is not set, a default will be used depending on the
+        build system in use.
+     */
+    const char* getDataPathPrefix() const;
+    
+
 protected:
     //! name of env var that holds the path prefix to the data files.
     static const char DATAPATH_VAR_NAME[];
@@ -150,15 +160,6 @@ protected:
     bool overlayHandler(const CEGUI::EventArgs& args);
     //! event handler function called when main view is resized
     bool resizeHandler(const CEGUI::EventArgs& args);
-
-    /*!
-    \brief
-        Return the path prefix to use for datafiles.  The value returned
-        is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
-        if the variable is not set, a default will be used depending on the
-        build system in use.
-        */
-    const char* getDataPathPrefix() const;
 
     //! SampleFramework base used in the application
     static SamplesFrameworkBase* d_sampleApp;
