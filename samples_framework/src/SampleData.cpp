@@ -56,12 +56,12 @@ SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
     d_summary(summary),
     d_description(description),
     d_type(sampleTypeEnum),
+    d_usedFilesString(""),
     d_credits(credits),
+    d_sampleWindow(0),
     d_guiContext(0),
     d_textureTarget(0),
-    d_textureTargetImage(0),
-    d_sampleWindow(0),
-    d_usedFilesString("")
+    d_textureTargetImage(0)
 {
 }
 
