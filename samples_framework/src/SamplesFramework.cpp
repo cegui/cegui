@@ -63,13 +63,13 @@ int main(int /*argc*/, char* /*argv*/[])
 }
 
 
-SamplesFramework::SamplesFramework()
-    : d_metaDataWinMgr(0),
+SamplesFramework::SamplesFramework() :
+    d_sampleExitButton(0),
+    d_metaDataWinMgr(0),
     d_samplesWinMgr(0),
     d_selectedSampleData(0),
-    d_sampleExitButton(0),
-    d_quittingSampleView(false),
-    d_loadingProgressBar(0)
+    d_loadingProgressBar(0),
+    d_quittingSampleView(false)
 {
 }
 
@@ -447,7 +447,8 @@ bool SamplesFramework::initialiseSampleStepwise(int sampleNumber)
 
 void SamplesFramework::initialiseSampleBrowserLayout()
 {
-    CEGUI::Font& buttonFont = CEGUI::FontManager::getSingleton().createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
+    CEGUI::FontManager::getSingleton().
+        createFreeTypeFont("DejaVuSans-14", 14.f, true, "DejaVuSans.ttf");
 
     WindowManager& winMgr(WindowManager::getSingleton());
 

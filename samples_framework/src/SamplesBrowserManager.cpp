@@ -98,8 +98,6 @@ void SamplesBrowserManager::setWindowRatio(float aspectRatio)
 
 void SamplesBrowserManager::updateWindows()
 {
-    float vertOffset = 0.0f;
-
     int max = d_sampleWindows.size();
     for(int i = 0; i < max; ++i)
     {
