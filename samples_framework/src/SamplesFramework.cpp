@@ -30,6 +30,7 @@ author:     Lukas E Meindl
 #include "Samples_xmlHandler.h"
 #include "Sample.h"
 #include "SampleData.h"
+#include "CEGuiBaseApplication.h"
 
 #include "MetaDataWindowManager.h"
 #include "SamplesBrowserManager.h"
@@ -491,7 +492,8 @@ bool SamplesFramework::updateInitialisationStep()
     {
     case 0:
         {
-            loadSamplesDataFromXML("../datafiles/samples/samples.xml");
+            loadSamplesDataFromXML(String(d_baseApp->getDataPathPrefix()) +
+                                   "/samples/samples.xml");
             ++step;
             displaySampleBrowserLayoutLoadProgress();
 
