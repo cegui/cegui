@@ -101,7 +101,7 @@ void CEGuiBaseApplication::renderSingleFrame(const float elapsed)
     d_sampleApp->renderGUIContexts();
 
     gui_renderer->endRendering();
-    WindowManager::getSingleton().cleanDeadPool();
+    CEGUI::WindowManager::getSingleton().cleanDeadPool();
 
     endRendering();
 }
@@ -154,8 +154,10 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
         CEGUI::Event::Subscriber(&CEGuiBaseApplication::resizeHandler,
         this));
 
-    const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
-    d_sampleApp->setApplicationWindowSize(static_cast<int>(area.getWidth()), static_cast<int>(area.getHeight()));
+    const CEGUI::Rectf& area(CEGUI::System::getSingleton().getRenderer()->
+                             getDefaultRenderTarget().getArea());
+    d_sampleApp->setApplicationWindowSize(static_cast<int>(area.getWidth()),
+                                          static_cast<int>(area.getHeight()));
 
     run();
 
@@ -330,7 +332,8 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
     d_FPSGeometry->reset();
     d_FPSValue = 0;
 
-    const Rectf& area(CEGUI::System::getSingleton().getRenderer()->getDefaultRenderTarget().getArea());
+    const CEGUI::Rectf& area(CEGUI::System::getSingleton().getRenderer()->
+                             getDefaultRenderTarget().getArea());
     d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
 
     positionLogo();
