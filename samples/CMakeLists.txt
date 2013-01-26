@@ -42,4 +42,4 @@ file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml ${DEMO_META_DATA})
 
 # And add it to the install
 install(FILES ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml
-        DESTINATION datafiles/samples/)
+        DESTINATION ${CEGUI_DATA_INSTALL_DIR}/samples/)
