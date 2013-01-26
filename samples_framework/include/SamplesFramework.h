@@ -49,7 +49,7 @@ This is
 class SamplesFramework : public SamplesFrameworkBase
 {
 public:
-    SamplesFramework();
+    SamplesFramework(const CEGUI::String& xml_filename);
     virtual ~SamplesFramework();
 
     static void setDefaultResourceGroup(const CEGUI::String& resourceGroup);
@@ -124,6 +124,8 @@ protected:
     CEGUI::Window*              d_loadScreenChunkProgressText;
 
     bool                        d_quittingSampleView;
+
+    CEGUI::String d_samplesXMLFilename;
 };
 
 #endif

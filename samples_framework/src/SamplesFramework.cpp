@@ -56,23 +56,24 @@ using namespace CEGUI;
 const String SamplesFramework::XMLSchemaName("Samples.xsd");
 
 //----------------------------------------------------------------------------//
-int main(int /*argc*/, char* /*argv*/[])
+int main(int argc, char* argv[])
 {
     // Basic start-up for the sample browser application.
     // Will remain in run() until quitting
 
-    SamplesFramework sampleFramework;
+    SamplesFramework sampleFramework(argc > 1 ? argv[1] : "");
     return sampleFramework.run();
 }
 
 //----------------------------------------------------------------------------//
-SamplesFramework::SamplesFramework() :
+SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
     d_sampleExitButton(0),
     d_metaDataWinMgr(0),
     d_samplesWinMgr(0),
     d_selectedSampleData(0),
     d_loadingProgressBar(0),
-    d_quittingSampleView(false)
+    d_quittingSampleView(false),
+    d_samplesXMLFilename(xml_filename)
 {
 }
 
@@ -523,8 +524,11 @@ bool SamplesFramework::updateInitialisationStep()
     {
     case 0:
     {
-        loadSamplesDataFromXML(String(d_baseApp->getDataPathPrefix()) +
-                               "/samples/samples.xml");
+        const String filename(d_samplesXMLFilename.empty() ?
+            String(d_baseApp->getDataPathPrefix()) + "/samples/samples.xml" :
+            d_samplesXMLFilename);
+
+        loadSamplesDataFromXML(filename);
         ++step;
         displaySampleBrowserLayoutLoadProgress();
 
