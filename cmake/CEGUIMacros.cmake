@@ -333,53 +333,28 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
 endmacro()
 
 #
-# Define a CEGUI sample app
+# Define a CEGUI sample module
 #
 macro (cegui_add_sample _NAME)
-    add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_SAMPLEFRAMEWORK_EXENAME}
-                            ${CEGUI_TARGET_NAME} ${_NAME}${CEGUI_SLOT_VERSION}
-    )
-      
-    set (CEGUI_TARGET_NAME ${_NAME}${CEGUI_SLOT_VERSION})
+    set (CEGUI_TARGET_NAME ${_NAME})
 
-    include_directories(${CMAKE_SOURCE_DIR}/samples/common/include)
-	
     cegui_gather_files()
-	
+
 	set(CORE_HEADER_FILES ${CORE_HEADER_FILES}
 		${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
 		${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
 	)
     
     # Each demo will become a dynamically linked library as plugin (module)
-	add_library(${CEGUI_TARGET_NAME} MODULE ${CORE_SOURCE_FILES} ${CORE_HEADER_FILES})
+    cegui_add_library_impl(${CEGUI_TARGET_NAME} TRUE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
 
-    if (NOT APPLE)
-        set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
-            INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
-        )
-    endif()
+    add_dependencies(${CEGUI_SAMPLEFRAMEWORK_EXENAME} ${CEGUI_TARGET_NAME})
 
-    if (APPLE)
-        # we add these to ensure the dynamically loaded modules we will be
-        # using are built before the .app's post build step that copies
-        # libs into the app bundle.
-        add_dependencies(${CEGUI_TARGET_NAME} ${CEGUI_CORE_WR_LIBNAME}
-                                              CEGUI${CEGUI_OPTION_DEFAULT_XMLPARSER}
-                                              CEGUI${CEGUI_OPTION_DEFAULT_IMAGECODEC}
-        )
-
-        cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
-    endif()
+    include_directories(${CMAKE_SOURCE_DIR}/samples/common/include)
 
     #Library link setup
     cegui_target_link_libraries(${CEGUI_TARGET_NAME}
         ${CEGUI_BASE_LIBNAME}
-    )
-
-    # Installation
-    install(TARGETS ${CEGUI_TARGET_NAME}
-    LIBRARY DESTINATION bin
     )
 
     # Add the MetaData chunk of the sample to the final xml
