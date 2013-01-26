@@ -290,7 +290,7 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
         set (_ACTIONCMD ln -sf)
         set (_ACTIONMSG "symlinks to")
     else()
-        set (_ACTIONCMD cp -Rf)
+        set (_ACTIONCMD rsync -r)
         set (_ACTIONMSG "copies of")
     endif()
 
@@ -330,6 +330,16 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
     add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
         COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; ${_ACTIONCMD} ${CMAKE_SOURCE_DIR}/datafiles \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources/\"
         COMMENT "Creating ${_ACTIONMSG} sample datafiles ${_TARGET_NAME}.app")
+
+    # When CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS is TRUE, this
+    # command symlinks from the build dir back into the source dir, which is
+    # not ideal, however under that scenario there is no other option. Do
+    # not whine about it, if you don't want that, then set
+    # CEGUI_APPLE_SYMLINK_DEPENDENCIES_TO_SAMPLE_APPS to false and the thing
+    # will be copied to the output app bundle instead.
+    add_custom_command(TARGET ${_TARGET_NAME} POST_BUILD 
+        COMMAND if [ x${_CEGUI_BUILD_CONFIG} == xDebug ]\; then ce_ext=\"${CEGUI_BUILD_SUFFIX}\"\; else ce_ext=\"\"\; fi\; ${_ACTIONCMD} ${CMAKE_BINARY_DIR}/datafiles/samples \"${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/${_TARGET_NAME}$$ce_ext.app/Contents/Resources/datafiles\"
+        COMMENT "Creating ${_ACTIONMSG} samples.xml ${_TARGET_NAME}.app")
 endmacro()
 
 #
