@@ -60,8 +60,16 @@ int main(int argc, char* argv[])
 {
     // Basic start-up for the sample browser application.
     // Will remain in run() until quitting
-
-    SamplesFramework sampleFramework(argc > 1 ? argv[1] : "");
+    int argidx = 1;
+#ifdef __APPLE__
+    if (argc > 1 && !std::strncmp(argv[argidx], "-psn", 4))
+    {
+        --argc;
+        ++argidx;
+    }
+#endif
+    
+    SamplesFramework sampleFramework(argc > 1 ? argv[argidx] : "");
     return sampleFramework.run();
 }
 
