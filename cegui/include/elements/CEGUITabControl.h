@@ -430,7 +430,8 @@ protected:
     */
     Window* getTabPane() const;
 
-	void performChildWindowLayout();
+    void performChildWindowLayout(bool nonclient_sized_hint = false,
+                                  bool client_sized_hint = false);
     int writeChildWindowsXML(XMLSerializer& xml_stream) const;
 
     // validate window renderer
