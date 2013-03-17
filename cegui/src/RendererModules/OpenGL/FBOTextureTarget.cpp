@@ -95,6 +95,10 @@ void OpenGLFBOTextureTarget::deactivate()
 //----------------------------------------------------------------------------//
 void OpenGLFBOTextureTarget::clear()
 {
+    const Sizef sz(d_area.getSize());
+    if(sz.d_height == 0.f || sz.d_height == 0.f)
+        return;
+
     // save old clear colour
     GLfloat old_col[4];
     glGetFloatv(GL_COLOR_CLEAR_VALUE, old_col);
