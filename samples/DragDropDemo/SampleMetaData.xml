@@ -1,6 +1,6 @@
 <SampleDefinition
-    sampleName      = "CEGUIDragDropDemo"
-    sampleType      = "C++ Module"
+    name      = "CEGUIDragDropDemo"
+    type      = "C++ Module"
     summary         = "2"
     description     = "3"
 />

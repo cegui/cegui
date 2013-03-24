@@ -52,7 +52,7 @@
         </StateImagery>
 
 
-        <AnimationDefinition autoStart="False" duration="2.5" name="PopupAnimation" replayMode="once">
+        <AnimationDefinition autoStart="false" duration="2.5" name="PopupAnimation" replayMode="once">
             <Affector property="Position" interpolator="UVector2" applicationMethod="relative">
                 <KeyFrame position="0.0" value="{{0, 0}, {0, 0}}" />
                 <KeyFrame position="2.5" progression="linear" value="{{0, 0}, {-0.2, 0}}" />
