@@ -2172,7 +2172,6 @@
             </Area>
         </NamedArea>
         <Child nameSuffix="__auto_hscrollbar__" type="OgreTray/HorizontalScrollbar">
-            <Property name="Size" value="{{1, 0}, {0, 32}}" />
             <Area>
                 <Dim type="LeftEdge">
                     <ImageDim name="OgreTrayImages/MiniTrayL" dimension="Width"/>
@@ -2197,6 +2196,7 @@
                 </Dim>
             </Area>
             <VertAlignment type="BottomAligned"/>
+            <Property name="Size" value="{{1, 0}, {0, 32}}" />
             <Property name="NonClient" value="True"/>
         </Child>
         <Child nameSuffix="__auto_vscrollbar__" type="OgreTray/VerticalScrollbar">
