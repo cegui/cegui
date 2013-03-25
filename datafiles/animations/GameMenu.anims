@@ -1,32 +1,32 @@
 <Animations>
-    <AnimationDefinition autoStart="False" duration="1.4" name="StartButtonPulsating" replayMode="loop">
+    <AnimationDefinition autoStart="false" duration="1.4" name="StartButtonPulsating" replayMode="loop">
         <Affector applicationMethod="absolute" interpolator="float" property="Alpha">
             <KeyFrame position="0" progression="linear" value="0.5" />
             <KeyFrame position="0.7" progression="quadratic decelerating" value="1.0" />
             <KeyFrame position="1.4" progression="quadratic accelerating" value="0.5" />
         </Affector>
     </AnimationDefinition>
-    <AnimationDefinition autoStart="False" duration="3" name="InsideImage1Pulsating" replayMode="bounce">
+    <AnimationDefinition autoStart="false" duration="3" name="InsideImage1Pulsating" replayMode="bounce">
         <Affector applicationMethod="absolute" interpolator="float" property="Alpha">
             <KeyFrame position="0" progression="linear" value="0.5" />
             <KeyFrame position="2.7" progression="linear" value="1.0" />
         </Affector>
     </AnimationDefinition>
-    <AnimationDefinition autoStart="False" duration="2.0" name="BotBarMoveInAnimation" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="2.0" name="BotBarMoveInAnimation" replayMode="once">
         <Affector applicationMethod="absolute" interpolator="UVector2" property="Position">
             <KeyFrame position="0.5" progression="linear" value="{{0, 0}, {0.4, 0}}" />
             <KeyFrame position="1.15" progression="quadratic decelerating" value="{{0, 0}, {-0.02, 0}}" />
             <KeyFrame position="1.27" progression="linear" value="{{0, 0}, {0, 0}}" />
         </Affector>
     </AnimationDefinition>
-    <AnimationDefinition autoStart="False" duration="2.0" name="TopBarMoveInAnimation" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="2.0" name="TopBarMoveInAnimation" replayMode="once">
         <Affector applicationMethod="absolute" interpolator="UVector2" property="Position">
             <KeyFrame position="0.5" progression="linear" value="{{0, 0}, {-0.4, 0}}" />
             <KeyFrame position="1.15" progression="quadratic decelerating" value="{{0, 0}, {0.02, 0}}" />
             <KeyFrame position="1.27" progression="linear" value="{{0, 0}, {0, 0}}" />
         </Affector>
     </AnimationDefinition>
-    <AnimationDefinition autoStart="False" duration="3" name="InsideBlendIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="3" name="InsideBlendIn" replayMode="once">
         <Affector applicationMethod="absolute" interpolator="float" property="Alpha">
             <KeyFrame position="0.0" progression="linear" value="0.0" />
             <KeyFrame position="0.5" progression="linear" value="0.0" />
@@ -34,7 +34,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="12.0" name="InsideImage4RotateIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="12.0" name="InsideImage4RotateIn" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
             <KeyFrame position="2.0" progression="linear" value="x:0 y:0 z:0" />
@@ -47,7 +47,7 @@
     </AnimationDefinition>
 
    
-    <AnimationDefinition autoStart="False" duration="12.0" name="InsideImage3RotateIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="12.0" name="InsideImage3RotateIn" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="x:0 y:0 z:0" />
             <KeyFrame position="2.0" progression="linear" value="x:0 y:0 z:0" />
@@ -65,7 +65,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="6.0" name="RingsContainerSizeIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="6.0" name="RingsContainerSizeIn" replayMode="once">
         <Affector property="Size" interpolator="USize" applicationMethod="absolute">
             <KeyFrame position="0.0" value="{{0.0, 0}, {0.0, 0}}" />
             <KeyFrame position="2.0" progression="quadratic decelerating" value="{{0.0, 0}, {0.0, 0}}" />
@@ -73,7 +73,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="8.0" name="ButtonFadeIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="8.0" name="ButtonFadeIn" replayMode="once">
         <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="{{0, 0}, {0, 0}}" />
             <KeyFrame position="1.0" progression="quadratic accelerating" value="{{0, 0}, {0, 0}}" />
@@ -93,7 +93,7 @@
     </AnimationDefinition>
 
 
-    <AnimationDefinition autoStart="False" duration="0.723" name="LoginMoveIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="0.723" name="LoginMoveIn" replayMode="once">
         <Affector property="Visible" interpolator="bool" applicationMethod="absolute">
             <KeyFrame position="0.0" value="True" />
         </Affector>
@@ -103,7 +103,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="0.22" name="LoginMoveOut" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="0.22" name="LoginMoveOut" replayMode="once">
         <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="{{0, 0}, {0, 0}}" />
             <KeyFrame position="0.14" progression="linear" value="{{-0.02, 0}, {0, 0}}" />
@@ -112,7 +112,7 @@
     </AnimationDefinition>
 
 
-    <AnimationDefinition autoStart="False" duration="10.0" name="NaviButtonLeftMoveIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="10.0" name="NaviButtonLeftMoveIn" replayMode="once">
         <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="{{-0.510625, 0}, {0.885278, 0}}" />
             <KeyFrame position="7.3" progression="quadratic decelerating" value="{{-0.510625, 0}, {0.885278, 0}}" />
@@ -120,7 +120,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="10.0" name="NaviButtonRightMoveIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="10.0" name="NaviButtonRightMoveIn" replayMode="once">
         <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="{{0.510625, 0}, {0.885278, 0}}" />
             <KeyFrame position="7.3" progression="quadratic decelerating" value="{{0.510625, 0}, {0.885278, 0}}" />
@@ -128,7 +128,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="12.0" name="NaviBotCenterMoveIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="12.0" name="NaviBotCenterMoveIn" replayMode="once">
         <Affector property="Position" interpolator="UVector2" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" value="{{0, 0}, {0.5, 0}}" />
             <KeyFrame position="7.3" progression="quadratic decelerating" value="{{0, 0}, {0.5, 0}}" />
@@ -136,7 +136,7 @@
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="2.0" name="BlendIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="2.0" name="BlendIn" replayMode="once">
         <Affector property="Visible" interpolator="bool" applicationMethod="absolute">
             <KeyFrame position="0.0" value="True" />
         </Affector>
@@ -147,21 +147,21 @@
     </AnimationDefinition>
 
 
-    <AnimationDefinition autoStart="False" duration="2.0" name="PartialBlendOut" replayMode="once">  
+    <AnimationDefinition autoStart="false" duration="2.0" name="PartialBlendOut" replayMode="once">  
         <Affector property="Alpha" interpolator="float" applicationMethod="absolute">
             <KeyFrame position="0.0" sourceProperty="Alpha" />
             <KeyFrame position="0.6" progression="quadratic decelerating" value="0.33" />
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="0.6" name="FullBlendOut" replayMode="once">  
+    <AnimationDefinition autoStart="false" duration="0.6" name="FullBlendOut" replayMode="once">  
         <Affector property="Alpha" interpolator="float" applicationMethod="absolute">
             <KeyFrame position="0.0" sourceProperty="Alpha" />
             <KeyFrame position="0.6" progression="quadratic decelerating" value="0.0" />
         </Affector>
     </AnimationDefinition>
 
-    <AnimationDefinition autoStart="False" duration="0.4" name="TravelRotateIn" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="0.4" name="TravelRotateIn" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" sourceProperty="Rotation" />
             <KeyFrame position="0.4" progression="linear" value="x:0 y:0 z:20" />
@@ -171,7 +171,7 @@
     </AnimationDefinition>
 
 
-    <AnimationDefinition autoStart="False" duration="0.4" name="TravelRotateOut" replayMode="once">
+    <AnimationDefinition autoStart="false" duration="0.4" name="TravelRotateOut" replayMode="once">
         <Affector property="Rotation" interpolator="QuaternionSlerp" applicationMethod="absolute">
             <KeyFrame position="0.0" progression="linear" sourceProperty="Rotation" />
             <KeyFrame position="0.4" progression="linear" value="x:0 y:0 z:0" />
