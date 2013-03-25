@@ -33,11 +33,11 @@
 #include <iostream>
 
 #if defined( __WIN32__ ) || defined( _WIN32)
-#include <Windows.h>
+#include <windows.h>
 #endif
 
 #if defined(_MSC_VER)
-#include <DbgHelp.h>
+#include <dbghelp.h>
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
 #include <execinfo.h>
 #include <dlfcn.h>
