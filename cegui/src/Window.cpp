@@ -587,8 +587,14 @@ bool Window::isHit(const Vector2f& position, const bool allow_disabled) const
 //----------------------------------------------------------------------------//
 Window* Window::getChildAtPosition(const Vector2f& position) const
 {
-    const ChildDrawList::const_reverse_iterator end = d_drawList.rend();
+    return getChildAtPosition(position, &Window::isHit);
+}
 
+//----------------------------------------------------------------------------//
+Window* Window::getChildAtPosition(const Vector2f& position,
+                    bool (Window::*hittestfunc)(const Vector2f&, bool) const,
+                    bool allow_disabled) const
+{
     Vector2f p;
     // if the window has RenderingWindow backing
     if (d_surface && d_surface->isRenderingWindow())
@@ -596,20 +602,19 @@ Window* Window::getChildAtPosition(const Vector2f& position) const
     else
         p = position;
 
+    const ChildDrawList::const_reverse_iterator end = d_drawList.rend();
     ChildDrawList::const_reverse_iterator child;
+
     for (child = d_drawList.rbegin(); child != end; ++child)
     {
         if ((*child)->isEffectiveVisible())
         {
-            // recursively scan children of this child windows...
-            Window* const wnd = (*child)->getChildAtPosition(p);
-
-            // return window pointer if we found a hit down the chain somewhere
-            if (wnd)
+            // recursively scan for hit on children of this child window...
+            if (Window* const wnd = (*child)->getChildAtPosition(p, hittestfunc, allow_disabled))
                 return wnd;
             // see if this child is hit and return it's pointer if it is
-            else if ((*child)->isHit(p))
-                return (*child);
+            else if (((*child)->*hittestfunc)(p, allow_disabled))
+                return *child;
         }
     }
 
@@ -621,36 +626,13 @@ Window* Window::getChildAtPosition(const Vector2f& position) const
 Window* Window::getTargetChildAtPosition(const Vector2f& position,
                                          const bool allow_disabled) const
 {
-    const ChildDrawList::const_reverse_iterator end = d_drawList.rend();
+    return getChildAtPosition(position, &Window::isHitTargetWindow, allow_disabled);
+}
 
-    Vector2f p;
-    // if the window has RenderingWindow backing
-    if (d_surface && d_surface->isRenderingWindow())
-        static_cast<RenderingWindow*>(d_surface)->unprojectPoint(position, p);
-    else
-        p = position;
-
-    ChildDrawList::const_reverse_iterator child;
-    for (child = d_drawList.rbegin(); child != end; ++child)
-    {
-        if ((*child)->isEffectiveVisible())
-        {
-            // recursively scan children of this child windows...
-            Window* const wnd =
-                (*child)->getTargetChildAtPosition(p, allow_disabled);
-
-            // return window pointer if we found a 'hit' down the chain somewhere
-            if (wnd)
-                return wnd;
-            // see if this child is hit and return it's pointer if it is
-            else if (!(*child)->isMousePassThroughEnabled() &&
-                     (*child)->isHit(p, allow_disabled))
-                return (*child);
-        }
-    }
-
-    // nothing hit
-    return 0;
+//----------------------------------------------------------------------------//
+bool Window::isHitTargetWindow(const Vector2f& position, bool allow_disabled) const
+{
+    return !isMousePassThroughEnabled() && isHit(position, allow_disabled);
 }
 
 //----------------------------------------------------------------------------//
