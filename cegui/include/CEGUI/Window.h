@@ -3458,6 +3458,12 @@ protected:
     void markCachedWindowRectsInvalid();
     void layoutLookNFeelChildWidgets();
 
+    Window* getChildAtPosition(const Vector2f& position,
+                               bool (Window::*hittestfunc)(const Vector2f&, bool) const,
+                               bool allow_disabled = false) const;
+
+    bool isHitTargetWindow(const Vector2f& position, bool allow_disabled) const;
+
     /*************************************************************************
         Properties for Window base class
     *************************************************************************/
