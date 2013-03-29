@@ -181,8 +181,9 @@ public:
         manually inform the system of such events.
     */
     bool isMouseClickEventGenerationEnabled() const;
-    //! returns whether the window containing the mouse had changed.
-    bool updateWindowContainingMouse();
+
+    //! Tell the context to reconsider which window it thinks the mouse is in.
+    void updateWindowContainingMouse();
 
     Window* getInputCaptureWindow() const;
     void setInputCaptureWindow(Window* window);
@@ -285,14 +286,18 @@ protected:
     bool mouseMoveInjection_impl(MouseEventArgs& ma);
     Window* getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
     Window* getKeyboardTargetWindow() const;
-    Window* getCommonAncestor(Window* w1, Window* w2);
+    Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]
     void notifyMouseTransition(Window* top, Window* bottom,
                                void (Window::*func)(MouseEventArgs&),
-                               MouseEventArgs& args);
+                               MouseEventArgs& args) const;
 
     bool areaChangedHandler(const EventArgs& args);
     bool windowDestroyedHandler(const EventArgs& args);
+    
+    //! returns whether the window containing the mouse had changed.
+    bool updateWindowContainingMouse_impl() const;
+    void resetWindowConatiningMouse();
 
     // event trigger functions.
     virtual void onRootWindowChanged(WindowEventArgs& args);
@@ -329,7 +334,8 @@ protected:
     //! a cache of the target surface size, allows returning by ref.
     Sizef d_surfaceSize;
 
-    Window* d_windowContainingMouse;
+    mutable Window* d_windowContainingMouse;
+    mutable bool    d_windowContainingMouseIsUpToDate;
     Window* d_modalWindow;
     Window* d_captureWindow;
 
