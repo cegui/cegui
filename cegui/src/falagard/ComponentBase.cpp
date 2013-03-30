@@ -114,8 +114,7 @@ void FalagardComponentBase::initColoursRect(const Window& wnd,
     if (!d_colourPropertyName.empty())
     {
         // if property accesses a ColourRect or a colour
-        cr = PropertyHelper<ColourRect>::fromString(
-            wnd.getProperty(d_colourPropertyName));
+        cr = wnd.getProperty<ColourRect>(d_colourPropertyName);
     }
     // use explicit ColourRect.
     else
