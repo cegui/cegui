@@ -815,21 +815,44 @@ AC_DEFUN([CEGUI_CHECK_RAPIDXML],[
 ])
 
 AC_DEFUN([CEGUI_CHECK_LUA],[
-    PKG_CHECK_MODULES(Lua, lua >= 5.1,
+
+    AC_ARG_WITH([lua-5.2], AS_HELP_STRING([--without-lua-5.2], [Ignore the presence of Lua 5.2 and use 5.1 if available.]),
+                [cegui_without_lua_52=$enableval], [cegui_without_lua_52=no])
+
+    if test "x$cegui_without_lua_52" = "xno"; then
+
+        dnl Use the old behaviour to maintain compatibility
+
+        PKG_CHECK_MODULES(Lua, lua >= 5.1,
                       [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
                       [cegui_found_lua=no])
 
-    dnl If that did not work, try again with alternate names for the packages (as used on various distros)
-    if test x$cegui_found_lua = xno; then
-        PKG_CHECK_MODULES(Lua, lua5.2,
-                        [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=52"],
-                        [cegui_found_lua=no])
-    fi
-    if test x$cegui_found_lua = xno; then
-        PKG_CHECK_MODULES(Lua, lua5.1,
+        dnl If that did not work, try again with an alternate name for the packages (as used on (K)Ubuntu etc)
+        if test x$cegui_found_lua = xno; then
+          PKG_CHECK_MODULES(Lua, lua5.1,
                         [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
                         [cegui_found_lua=no])
+        fi
+    else
+
+        dnl Look for exactly lua 5.1
+
+        PKG_CHECK_MODULES([Lua], [lua5.1],
+                          [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
+                          [cegui_found_lua=no])
+
+        if test x$cegui_found_lua = xno; then
+            PKG_CHECK_MODULES([Lua], [lua-5.1],
+                          [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
+                          [cegui_found_lua=no])
+        fi
+        if test x$cegui_found_lua = xno; then
+            PKG_CHECK_MODULES([Lua], [lua >= 5.1 lua < 5.2],
+                            [cegui_found_lua=yes; Lua_CFLAGS="$Lua_CFLAGS -DCEGUI_LUA_VER=51"],
+                            [cegui_found_lua=no])
+        fi
     fi
+
 
     AC_ARG_ENABLE([lua-module], AC_HELP_STRING([--disable-lua-module], [Disables building of the Lua scripting module.]),
                 [cegui_with_lua=$enableval], [cegui_with_lua=yes])
