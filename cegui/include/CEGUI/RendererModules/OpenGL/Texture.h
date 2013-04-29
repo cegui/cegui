@@ -107,7 +107,7 @@ public:
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rectf& area);
+    void blitFromMemory(const void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
     bool isPixelFormatSupported(const PixelFormat fmt) const;
 
@@ -152,7 +152,7 @@ protected:
     void loadUncompressedTextureBuffer(const Rectf& dest_area,
                                        const GLvoid* buffer) const;
 
-    void loadCompressedTextureBuffer(const Sizef& buffer_size,
+    void loadCompressedTextureBuffer(const Rectf& dest_area,
                                      const GLvoid* buffer) const;
 
     //! The OpenGL texture we're wrapping.
