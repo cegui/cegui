@@ -228,21 +228,7 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    // do the real work of getting the data into the texture
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
-        loadCompressedTextureBuffer(buffer_size, buffer);
-    else
-        loadUncompressedTextureBuffer(
-            Rectf(Vector2f(0, 0), buffer_size), buffer);
-
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -263,7 +249,7 @@ void OpenGLTexture::loadUncompressedTextureBuffer(const Rectf& dest_area,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
+void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
                                                 const GLvoid* buffer) const
 {
     GLsizei blocksize = 16;
@@ -273,13 +259,13 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
         blocksize = 8;
     }
 
-    const GLsizei image_size = (std::ceil(buffer_size.d_width / 4) *
-                                std::ceil(buffer_size.d_height / 4)) *
+    const GLsizei image_size = (std::ceil(dest_area.getWidth() / 4) *
+                                std::ceil(dest_area.getHeight() / 4)) *
                                 blocksize;
 
     glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
-                           static_cast<GLsizei>(buffer_size.d_width),
-                           static_cast<GLsizei>(buffer_size.d_height),
+                           static_cast<GLsizei>(dest_area.getWidth()),
+                           static_cast<GLsizei>(dest_area.getHeight()),
                            0, image_size, buffer);
 }
 
@@ -355,17 +341,21 @@ void OpenGLTexture::restoreTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::blitFromMemory(void* sourceData, const Rectf& area)
+void OpenGLTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
-    // save existing config
+    // save old texture binding
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
+    // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
 
-    loadUncompressedTextureBuffer(area, sourceData);
+    if (d_isCompressed)
+        loadCompressedTextureBuffer(area, sourceData);
+    else
+        loadUncompressedTextureBuffer(area, sourceData);
 
-    // restore previous config.
+    // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
