@@ -71,7 +71,8 @@ Editbox::Editbox(const String& type, const String& name) :
     d_validator(System::getSingleton().createRegexMatcher()),
     d_weOwnValidator(true),
     d_dragging(false),
-    d_validatorMatchState(RegexMatcher::MS_VALID)
+    d_validatorMatchState(RegexMatcher::MS_VALID),
+    d_previousValidityChangeResponse(true)
 {
     addEditboxProperties();
 
@@ -169,14 +170,7 @@ void Editbox::setValidationString(const String& validation_string)
     WindowEventArgs args(this);
     onValidationStringChanged(args);
 
-    // also notify if text validation state has changed.
-    const MatchState state = getStringMatchState(getText());
-    if (d_validatorMatchState != state)
-    {
-        RegexMatchStateEventArgs rms_args(this, state);
-        onTextValidityChanged(rms_args);
-        d_validatorMatchState = state;
-    }
+    handleValidityChangeForString(getText());
 }
 
 //----------------------------------------------------------------------------//
@@ -375,19 +369,22 @@ bool Editbox::performCut(Clipboard& clipboard)
 //----------------------------------------------------------------------------//
 bool Editbox::handleValidityChangeForString(const String& str)
 {
-    const MatchState state = getStringMatchState(str);
+    const MatchState new_state = getStringMatchState(str);
 
-    if (state == d_validatorMatchState)
-        return true;
+    if (new_state == d_validatorMatchState)
+        return d_previousValidityChangeResponse;
 
-    RegexMatchStateEventArgs args(this, state);
+    RegexMatchStateEventArgs args(this, new_state);
     onTextValidityChanged(args);
 
-    if (args.handled == 0)
-        return false;
+    const bool response = (args.handled != 0);
+    if (response)
+    {
+        d_validatorMatchState = new_state;
+        d_previousValidityChangeResponse = response;
+    }
 
-    d_validatorMatchState = state;
-    return true;
+    return response;
 }
 
 //----------------------------------------------------------------------------//

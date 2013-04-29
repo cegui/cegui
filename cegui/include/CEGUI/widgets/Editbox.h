@@ -487,6 +487,8 @@ protected:
      *
      * This effectively asks permission from event handlers to proceed with the
      * change, updates d_validatorMatchState and returns an appropriate bool.
+     * The return value basically says whether or not to set the input string
+     * as the current text for the Editbox.
      */
     bool handleValidityChangeForString(const String& str);
 
@@ -619,6 +621,8 @@ protected:
     size_t d_dragAnchorIdx;
     //! Current match state of EditboxText
     MatchState d_validatorMatchState;
+    //! Previous match state change response
+    bool d_previousValidityChangeResponse;
 
 private:
 
