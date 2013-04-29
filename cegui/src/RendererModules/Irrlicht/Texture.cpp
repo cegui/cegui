@@ -157,7 +157,7 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::blitFromMemory(void* sourceData, const Rectf& area)
+void IrrlichtTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     if (!d_texture)
         return;

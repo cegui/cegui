@@ -171,7 +171,7 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::blitFromMemory(void* sourceData, const Rectf& area)
+void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     if (d_texture.isNull()) // TODO: exception?
         return;
