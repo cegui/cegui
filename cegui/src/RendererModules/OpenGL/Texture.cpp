@@ -252,6 +252,18 @@ void OpenGLTexture::loadUncompressedTextureBuffer(const Rectf& dest_area,
 void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
                                                 const GLvoid* buffer) const
 {
+    const GLsizei image_size = getCompressedTextureSize(dest_area.getSize());
+
+    glCompressedTexSubImage2D(GL_TEXTURE_2D, 0, 
+                              dest_area.left(), dest_area.top(),
+                              static_cast<GLsizei>(dest_area.getWidth()),
+                              static_cast<GLsizei>(dest_area.getHeight()),
+                              d_format, image_size, buffer);
+}
+
+//----------------------------------------------------------------------------//
+GLsizei OpenGLTexture::getCompressedTextureSize(const Sizef& pixel_size) const
+{
     GLsizei blocksize = 16;
     if (d_format == GL_COMPRESSED_RGB_S3TC_DXT1_EXT ||
         d_format == GL_COMPRESSED_RGBA_S3TC_DXT1_EXT)
@@ -259,14 +271,9 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
         blocksize = 8;
     }
 
-    const GLsizei image_size = (std::ceil(dest_area.getWidth() / 4) *
-                                std::ceil(dest_area.getHeight() / 4)) *
-                                blocksize;
-
-    glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
-                           static_cast<GLsizei>(dest_area.getWidth()),
-                           static_cast<GLsizei>(dest_area.getHeight()),
-                           0, image_size, buffer);
+    return (std::ceil(pixel_size.d_width / 4) *
+            std::ceil(pixel_size.d_height / 4)) *
+            blocksize;
 }
 
 //----------------------------------------------------------------------------//
@@ -286,9 +293,6 @@ void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
     const Sizef size(d_owner.getAdjustedTextureSize(sz));
     d_size = size;
 
-    if (d_isCompressed)
-        return;
-
     // make sure size is within boundaries
     GLfloat maxSize;
     glGetFloatv(GL_MAX_TEXTURE_SIZE, &maxSize);
@@ -301,10 +305,22 @@ void OpenGLTexture::setTextureSize_impl(const Sizef& sz)
 
     // set texture to required size
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
-                 static_cast<GLsizei>(size.d_width),
-                 static_cast<GLsizei>(size.d_height),
-                 0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
+
+    if (d_isCompressed)
+    {
+        const GLsizei image_size = getCompressedTextureSize(size);
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
+                               static_cast<GLsizei>(size.d_width),
+                               static_cast<GLsizei>(size.d_height),
+                               0, image_size, 0);
+    }
+    else
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8,
+                     static_cast<GLsizei>(size.d_width),
+                     static_cast<GLsizei>(size.d_height),
+                     0, GL_RGBA , GL_UNSIGNED_BYTE, 0);
+    }
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
@@ -365,15 +381,25 @@ void OpenGLTexture::blitToMemory(void* targetData)
     // save existing config
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-    GLint old_pack;
-    glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
 
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glPixelStorei(GL_PACK_ALIGNMENT, 1);
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, targetData);
+
+    if (d_isCompressed)
+    {
+        glGetCompressedTexImage(GL_TEXTURE_2D, 0, targetData);
+    }
+    else
+    {
+        GLint old_pack;
+        glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
+
+        glPixelStorei(GL_PACK_ALIGNMENT, 1);
+        glGetTexImage(GL_TEXTURE_2D, 0, d_format, d_subpixelFormat, targetData);
     
+        glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
+    }
+
     // restore previous config.
-    glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
