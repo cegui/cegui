@@ -189,6 +189,12 @@ public:
         Validation is performed by means of a regular expression.  If the text
         matches the regex, the text is said to have passed validation.  If the
         text does not match with the regex then the text fails validation.
+        The default RegexMatcher uses the pcre library to perform regular
+        expression operations, details about the pattern syntax can be found
+        on unix-like systems by way of <tt>man pcrepattern</tt> (or online at
+        http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+        Alternatively, see the perl regex documentation at
+        http://perldoc.perl.org/perlre.html
 
     \return
         One of the MatchState enumerated values indicating the current match state.
@@ -203,6 +209,12 @@ public:
         Validation is performed by means of a regular expression.  If the text
         matches the regex, the text is said to have passed validation.  If the
         text does not match with the regex then the text fails validation.
+        The default RegexMatcher uses the pcre library to perform regular
+        expression operations, details about the pattern syntax can be found
+        on unix-like systems by way of <tt>man pcrepattern</tt> (or online at
+        http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+        Alternatively, see the perl regex documentation at
+        http://perldoc.perl.org/perlre.html
 
     \return
         String object containing the current validation regex data
@@ -314,6 +326,12 @@ public:
         Validation is performed by means of a regular expression.  If the text
         matches the regex, the text is said to have passed validation.  If the
         text does not match with the regex then the text fails validation.
+        The default RegexMatcher uses the pcre library to perform regular
+        expression operations, details about the pattern syntax can be found
+        on unix-like systems by way of <tt>man pcrepattern</tt> (or online at
+        http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+        Alternatively, see the perl regex documentation at
+        http://perldoc.perl.org/perlre.html
 
     \param validation_string
         String object containing the validation regex data to be used.
