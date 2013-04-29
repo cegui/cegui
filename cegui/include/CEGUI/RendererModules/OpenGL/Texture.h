@@ -155,6 +155,8 @@ protected:
     void loadCompressedTextureBuffer(const Rectf& dest_area,
                                      const GLvoid* buffer) const;
 
+    GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
+
     //! The OpenGL texture we're wrapping.
     GLuint d_ogltexture;
     //! Size of the texture.
