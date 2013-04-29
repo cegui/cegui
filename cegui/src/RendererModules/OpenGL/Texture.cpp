@@ -330,20 +330,27 @@ void OpenGLTexture::grabTexture()
     if (d_grabBuffer)
         return;
 
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    // bind the texture we want to grab
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    // allocate the buffer for storing the image data
     d_grabBuffer = new uint8[static_cast<int>(4*d_size.d_width*d_size.d_height)];
-    glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
-    // delete the texture
-    glDeleteTextures(1, &d_ogltexture);
 
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+    blitToMemory(d_grabBuffer);
+
+    glDeleteTextures(1, &d_ogltexture);
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLTexture::restoreTexture()
+{
+    if (!d_grabBuffer)
+        return;
+
+    generateOpenGLTexture();
+    setTextureSize_impl(d_size);
+
+    blitFromMemory(d_grabBuffer, Rectf(Vector2f(0, 0), d_size));
+
+    // free the grabbuffer
+    delete [] d_grabBuffer;
+    d_grabBuffer = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -385,35 +392,6 @@ void OpenGLTexture::blitToMemory(void* targetData)
     // restore previous config.
     glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
     glBindTexture(GL_TEXTURE_2D, old_tex);
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLTexture::restoreTexture()
-{
-    if (d_grabBuffer)
-    {
-        generateOpenGLTexture();
-
-        // save old texture binding
-        GLuint old_tex;
-        glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-        // bind the texture to restore to
-        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-        // reload the saved image data
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                     static_cast<GLsizei>(d_size.d_width),
-                     static_cast<GLsizei>(d_size.d_height),
-                     0, GL_RGBA, GL_UNSIGNED_BYTE, d_grabBuffer);
-
-        // restore previous texture binding.
-        glBindTexture(GL_TEXTURE_2D, old_tex);
-
-        // free the grabbuffer
-        delete [] d_grabBuffer;
-        d_grabBuffer = 0;
-    }
 }
 
 //----------------------------------------------------------------------------//
