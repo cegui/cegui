@@ -35,7 +35,16 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Implementation of RegexMatcher using PCRE
+/*!
+/brief
+    Implementation of RegexMatcher using PCRE.
+
+    Details about the pattern syntax used by PCRE can be found on unix-like
+    systems by way of <tt>man pcrepattern</tt> (or online at
+    http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+    Alternatively, see the perl regex documentation at
+    http://perldoc.perl.org/perlre.html
+*/
 class PCRERegexMatcher : public RegexMatcher
 {
 public:
