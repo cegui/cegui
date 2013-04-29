@@ -238,14 +238,15 @@ void OpenGLTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
     if (d_isCompressed)
         loadCompressedTextureBuffer(buffer_size, buffer);
     else
-        loadUncompressedTextureBuffer(buffer_size, buffer);
+        loadUncompressedTextureBuffer(
+            Rectf(Vector2f(0, 0), buffer_size), buffer);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
+void OpenGLTexture::loadUncompressedTextureBuffer(const Rectf& dest_area,
                                                   const GLvoid* buffer) const
 {
     GLint old_pack;
@@ -253,9 +254,9 @@ void OpenGLTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                    static_cast<GLsizei>(buffer_size.d_width),
-                    static_cast<GLsizei>(buffer_size.d_height),
+    glTexSubImage2D(GL_TEXTURE_2D, 0, dest_area.left(), dest_area.top(),
+                    static_cast<GLsizei>(dest_area.getWidth()),
+                    static_cast<GLsizei>(dest_area.getHeight()),
                     d_format, d_subpixelFormat, buffer);
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
@@ -359,20 +360,12 @@ void OpenGLTexture::blitFromMemory(void* sourceData, const Rectf& area)
     // save existing config
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-    GLint old_pack;
-    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
 
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    
-    glTexSubImage2D(GL_TEXTURE_2D, 0,
-        area.left(), area.top(),
-        area.getWidth(), area.getHeight(),
-        GL_RGBA8, GL_UNSIGNED_BYTE, sourceData
-    );
+
+    loadUncompressedTextureBuffer(area, sourceData);
 
     // restore previous config.
-    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
