@@ -149,7 +149,7 @@ protected:
     //! internal texture resize function (does not reset format or other fields)
     void setTextureSize_impl(const Sizef& sz);
 
-    void loadUncompressedTextureBuffer(const Sizef& buffer_size,
+    void loadUncompressedTextureBuffer(const Rectf& dest_area,
                                        const GLvoid* buffer) const;
 
     void loadCompressedTextureBuffer(const Sizef& buffer_size,
