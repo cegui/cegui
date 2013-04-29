@@ -349,12 +349,14 @@ void OpenGLTexture::grabTexture()
 //----------------------------------------------------------------------------//
 void OpenGLTexture::blitFromMemory(void* sourceData, const Rectf& area)
 {
-    // save old texture binding
+    // save existing config
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+    GLint old_pack;
+    glGetIntegerv(GL_UNPACK_ALIGNMENT, &old_pack);
 
-    // set texture to required size
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     
     glTexSubImage2D(GL_TEXTURE_2D, 0,
         area.left(), area.top(),
@@ -362,23 +364,26 @@ void OpenGLTexture::blitFromMemory(void* sourceData, const Rectf& area)
         GL_RGBA8, GL_UNSIGNED_BYTE, sourceData
     );
 
-    // restore previous texture binding.
+    // restore previous config.
+    glPixelStorei(GL_UNPACK_ALIGNMENT, old_pack);
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLTexture::blitToMemory(void* targetData)
 {
-    // save old texture binding
+    // save existing config
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+    GLint old_pack;
+    glGetIntegerv(GL_PACK_ALIGNMENT, &old_pack);
 
-    // set texture to required size
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
     glGetTexImage(GL_TEXTURE_2D, 0, GL_RGBA, GL_UNSIGNED_BYTE, targetData);
     
-    // restore previous texture binding.
+    // restore previous config.
+    glPixelStorei(GL_PACK_ALIGNMENT, old_pack);
     glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
