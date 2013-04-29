@@ -224,7 +224,7 @@ void OpenGLESTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESTexture::blitFromMemory(void* sourceData, const Rectf& area)
+void OpenGLESTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     // store size of original data we are loading
     d_dataSize = area.getSize();

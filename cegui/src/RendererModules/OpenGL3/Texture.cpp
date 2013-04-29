@@ -348,7 +348,7 @@ void OpenGL3Texture::grabTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Texture::blitFromMemory(void* sourceData, const Rectf& area)
+void OpenGL3Texture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     // save old texture binding
     GLuint old_tex;
