@@ -69,8 +69,8 @@ static void APIENTRY activeTextureDummy(GLenum) {}
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    virtual TextureTarget* create(OpenGL3Renderer& r) const
-        { return new T(r); }
+    TextureTarget* create(OpenGLRendererBase& r) const
+        { return new T(static_cast<OpenGL3Renderer&>(r)); }
 };
 
 //----------------------------------------------------------------------------//
