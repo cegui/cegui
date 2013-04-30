@@ -505,8 +505,7 @@ bool OpenGLTexture::isPixelFormatSupported(const PixelFormat fmt) const
     case PF_RGBA_DXT1:
     case PF_RGBA_DXT3:
     case PF_RGBA_DXT5:
-        // TODO: return d_owner.isS3TCSupported();
-        return GLEW_EXT_texture_compression_s3tc;
+        return d_owner.isS3TCSupported();
 
     default:
         return false;
