@@ -33,6 +33,7 @@
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+#include "glm/gtc/type_ptr.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -46,11 +47,11 @@ OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::draw() const
 {
+    CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
+
     // setup clip region
-    GLint vp[4];
-    glGetIntegerv(GL_VIEWPORT, vp);
     glScissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(vp[3] - d_clipRect.bottom()),
+              static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
               static_cast<GLint>(d_clipRect.getWidth()),
               static_cast<GLint>(d_clipRect.getHeight()));
 
@@ -58,8 +59,9 @@ void OpenGLGeometryBuffer::draw() const
     if (!d_matrixValid)
         updateMatrix();
 
+    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix()->d_matrix * d_matrix->d_matrix;
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(&d_matrix->d_matrix[0][0]);
+    glLoadMatrixf(glm::value_ptr(modelViewProjectionMatrix));
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
