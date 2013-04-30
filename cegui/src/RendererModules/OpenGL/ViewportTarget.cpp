@@ -35,7 +35,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner) :
+OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRendererBase& owner) :
     OpenGLRenderTarget<>(owner)
 {
     // viewport area defaults to whatever the current OpenGL viewport is set to
@@ -49,7 +49,7 @@ OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRenderer& owner,
+OpenGLViewportTarget::OpenGLViewportTarget(OpenGLRendererBase& owner,
     const Rectf& area) :
         OpenGLRenderTarget<>(owner)
 {

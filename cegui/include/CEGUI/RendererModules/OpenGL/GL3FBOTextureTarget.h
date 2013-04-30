@@ -28,8 +28,8 @@
 #ifndef _CEGUIOpenGL3FBOTextureTarget_h_
 #define _CEGUIOpenGL3FBOTextureTarget_h_
 
-#include "CEGUI/RendererModules/OpenGL3/TextureTarget.h"
-#include "CEGUI/RendererModules/OpenGL3/GL.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "../../Rect.h"
 
 
@@ -42,9 +42,10 @@
 namespace CEGUI
 {
 class OpenGL3Texture;
+class OpenGL3Renderer;
 
 //! ~OpenGL3FBOTextureTarget - allows rendering to an OpenGL texture via FBO.
-class OPENGL3_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGL3TextureTarget
+class OPENGL_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGLTextureTarget
 {
 public:
     OpenGL3FBOTextureTarget(OpenGL3Renderer& owner);

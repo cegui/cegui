@@ -48,7 +48,7 @@ class OPENGL_GUIRENDERER_API OpenGLTextureTarget : public OpenGLRenderTarget<Tex
 {
 public:
     //! constructor.
-    OpenGLTextureTarget(OpenGLRenderer& owner);
+    OpenGLTextureTarget(OpenGLRendererBase& owner);
     //! destructor
     virtual ~OpenGLTextureTarget();
 

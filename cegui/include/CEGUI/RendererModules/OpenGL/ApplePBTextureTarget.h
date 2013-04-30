@@ -44,7 +44,7 @@ class OpenGLTexture;
 class OpenGLApplePBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLApplePBTextureTarget(OpenGLRenderer& owner);
+    OpenGLApplePBTextureTarget(OpenGLRendererBase& owner);
     virtual ~OpenGLApplePBTextureTarget();
 
     // overrides from OpenGLRenderTarget

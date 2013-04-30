@@ -1,10 +1,11 @@
 /***********************************************************************
     filename:   CEGUIOpenGLGeometryBuffer.h
     created:    Thu Jan 8 2009
-    author:     Paul D Turner
+    authors:    Paul D Turner <paul@cegui.org.uk>
+                Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,13 +29,7 @@
 #ifndef _CEGUIOpenGLGeometryBuffer_h_
 #define _CEGUIOpenGLGeometryBuffer_h_
 
-#include "../../GeometryBuffer.h"
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
-#include "../../Rect.h"
-#include "../../Quaternion.h"
-
-#include <utility>
-#include <vector>
+#include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -45,91 +40,21 @@
 namespace CEGUI
 {
 class OpenGLTexture;
+class OpenGLRenderer;
 
 /*!
 \brief
     OpenGL based implementation of the GeometryBuffer interface.
 */
-class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public GeometryBuffer
+class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public OpenGLGeometryBufferBase
 {
 public:
     //! Constructor
     OpenGLGeometryBuffer(OpenGLRenderer& owner);
 
-    // implementation of abstract members from GeometryBuffer
+    // implementation/overrides of members from GeometryBuffer
     void draw() const;
-    void setTranslation(const Vector3f& t);
-    void setRotation(const Quaternion& r);
-    void setPivot(const Vector3f& p);
-    void setClippingRegion(const Rectf& region);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-    void setActiveTexture(Texture* texture);
-    void reset();
-    Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
-    void setRenderEffect(RenderEffect* effect);
-    RenderEffect* getRenderEffect();
-    void setClippingActive(const bool active);
-    bool isClippingActive() const;
-
-    //! return the GL modelview matrix used for this buffer.
-    const double* getMatrix() const;
-
-protected:
-    //! perform batch management operations prior to adding new geometry.
-    void performBatchManagement();
-
-    //! update cached matrix
-    void updateMatrix() const;
-
-    //! internal Vertex structure used for GL based geometry.
-    struct GLVertex
-    {
-        float tex[2];
-        float colour[4];
-        float position[3];
-    };
-
-    //! type to track info for per-texture sub batches of geometry
-    struct BatchInfo
-    {
-        uint texture;
-        uint vertexCount;
-        bool clip;
-    };
-
-    //! OpenGLRenderer object that owns the GeometryBuffer.
-    OpenGLRenderer* d_owner;
-    //! last texture that was set as active
-    OpenGLTexture* d_activeTexture;
-    //! type of container that tracks BatchInfos.
-    typedef std::vector<BatchInfo> BatchList;
-    //! list of batches added to the geometry buffer
-    BatchList d_batches;
-    //! type of container used to queue the geometry
-    typedef std::vector<GLVertex> VertexList;
-    //! container where added geometry is stored.
-    VertexList d_vertices;
-    //! rectangular clip region
-    Rectf d_clipRect;
-    //! whether clipping will be active for the current batch
-    bool d_clippingActive;
-    //! translation vector
-    Vector3f d_translation;
-    //! rotation quaternion
-    Quaternion d_rotation;
-    //! pivot point for rotation
-    Vector3f d_pivot;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect* d_effect;
-    //! model matrix cache - we use double because gluUnproject takes double
-    mutable double d_matrix[16];
-    //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
 };
-
 
 } // End of  CEGUI namespace section
 

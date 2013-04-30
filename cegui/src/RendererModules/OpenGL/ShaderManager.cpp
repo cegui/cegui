@@ -26,12 +26,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUI/RendererModules/OpenGL3/ShaderManager.h"
+#include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 
-#include "CEGUI/RendererModules/OpenGL3/Shader.h"
+#include "CEGUI/RendererModules/OpenGL/Shader.h"
 
-#include "CEGUI/RendererModules/OpenGL3/StandardShaderVert.h"
-#include "CEGUI/RendererModules/OpenGL3/StandardShaderFrag.h"
+#include "CEGUI/RendererModules/OpenGL/StandardShaderVert.h"
+#include "CEGUI/RendererModules/OpenGL/StandardShaderFrag.h"
 
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"

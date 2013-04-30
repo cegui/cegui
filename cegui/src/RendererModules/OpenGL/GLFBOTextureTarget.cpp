@@ -26,12 +26,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
-#include "CEGUI/RendererModules/OpenGL/FBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 
 // Start of CEGUI namespace section
@@ -41,7 +41,7 @@ namespace CEGUI
 const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRenderer& owner) :
+OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
     OpenGLTextureTarget(owner)
 {
     if (!GLEW_EXT_framebuffer_object)

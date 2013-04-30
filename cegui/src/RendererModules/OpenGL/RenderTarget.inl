@@ -25,10 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/RendererModules/OpenGL3/RenderTarget.h"
+#include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
 #include "CEGUI/RenderQueue.h"
-#include "CEGUI/RendererModules/OpenGL3/GeometryBuffer.h"
-#include "CEGUI/RendererModules/OpenGL3/GlmPimpl.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
+#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 
 #include <cmath>
 
@@ -40,11 +40,11 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
-const double OpenGL3RenderTarget<T>::d_yfov_tan = 0.267949192431123;
+const double OpenGLRenderTarget<T>::d_yfov_tan = 0.267949192431123;
 
 //----------------------------------------------------------------------------//
 template <typename T>
-OpenGL3RenderTarget<T>::OpenGL3RenderTarget(OpenGL3Renderer& owner) :
+OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
     d_matrix(0),
@@ -56,28 +56,28 @@ OpenGL3RenderTarget<T>::OpenGL3RenderTarget(OpenGL3Renderer& owner) :
 
 //----------------------------------------------------------------------------//
 template <typename T>
-OpenGL3RenderTarget<T>::~OpenGL3RenderTarget()
+OpenGLRenderTarget<T>::~OpenGLRenderTarget()
 {
     delete d_matrix;
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::draw(const GeometryBuffer& buffer)
+void OpenGLRenderTarget<T>::draw(const GeometryBuffer& buffer)
 {
     buffer.draw();
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::draw(const RenderQueue& queue)
+void OpenGLRenderTarget<T>::draw(const RenderQueue& queue)
 {
     queue.draw();
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::setArea(const Rectf& area)
+void OpenGLRenderTarget<T>::setArea(const Rectf& area)
 {
     d_area = area;
     d_matrixValid = false;
@@ -88,14 +88,14 @@ void OpenGL3RenderTarget<T>::setArea(const Rectf& area)
 
 //----------------------------------------------------------------------------//
 template <typename T>
-const Rectf& OpenGL3RenderTarget<T>::getArea() const
+const Rectf& OpenGLRenderTarget<T>::getArea() const
 {
     return d_area;
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::activate()
+void OpenGLRenderTarget<T>::activate()
 {
     glViewport(static_cast<GLsizei>(d_area.left()),
                static_cast<GLsizei>(d_area.top()),
@@ -112,20 +112,20 @@ void OpenGL3RenderTarget<T>::activate()
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::deactivate()
+void OpenGLRenderTarget<T>::deactivate()
 {
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
+void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const Vector2f& p_in, Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
 
-    const OpenGL3GeometryBuffer& gb =
-        static_cast<const OpenGL3GeometryBuffer&>(buff);
+    const OpenGLGeometryBufferBase& gb =
+        static_cast<const OpenGLGeometryBufferBase&>(buff);
 
     const GLint vp[4] = {
         static_cast<GLint>(d_area.left()),
@@ -191,7 +191,7 @@ void OpenGL3RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
 //----------------------------------------------------------------------------//
 template <typename T>
-void OpenGL3RenderTarget<T>::updateMatrix() const
+void OpenGLRenderTarget<T>::updateMatrix() const
 {
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();
