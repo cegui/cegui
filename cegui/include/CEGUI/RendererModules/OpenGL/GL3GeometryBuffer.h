@@ -4,7 +4,7 @@
     author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,31 +28,16 @@
 #ifndef _CEGUIOpenGL3GeometryBuffer_h_
 #define _CEGUIOpenGL3GeometryBuffer_h_
 
-#include "../../GeometryBuffer.h"
-#include "CEGUI/RendererModules/OpenGL3/Renderer.h"
-#include "../../Rect.h"
-#include "../../Quaternion.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 
-#include <utility>
-#include <vector>
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-class OpenGL3Texture;
 class OpenGL3Shader;
 class OpenGL3StateChangeWrapper;
+class OpenGL3Renderer;
 
-/*!
-\brief
-    OpenGL based implementation of the GeometryBuffer interface.
-*/
-class OPENGL3_GUIRENDERER_API OpenGL3GeometryBuffer : public GeometryBuffer
+//! OpenGL3 based implementation of the GeometryBuffer interface.
+class OPENGL_GUIRENDERER_API OpenGL3GeometryBuffer : public OpenGLGeometryBufferBase
 {
 public:
     //! Constructor
@@ -61,106 +46,35 @@ public:
 
     void initialiseOpenGLBuffers();
     void deinitialiseOpenGLBuffers();
-
-    // implementation of abstract members from GeometryBuffer
-    void draw() const;
-    void setTranslation(const Vector3f& t);
-    void setRotation(const Quaternion& r);
-    void setPivot(const Vector3f& p);
-    void setClippingRegion(const Rectf& region);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-    void setActiveTexture(Texture* texture);
-    void reset();
-    Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
-    void setRenderEffect(RenderEffect* effect);
-    RenderEffect* getRenderEffect();
-    void setClippingActive(const bool active);
-    bool isClippingActive() const;
-
-    //! return the GL modelview matrix used for this buffer.
-    const mat4Pimpl* getMatrix() const;
-
     void updateOpenGLBuffers();
 
+    // implementation/overrides of members from GeometryBuffer
+    void draw() const;
+    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    void reset();
+
 protected:
-    //! perform batch management operations prior to adding new geometry.
-    void performBatchManagement();
-
-    //! update cached matrix
-    void updateMatrix() const;
-
-    //! internal Vertex structure used for GL based geometry.
-    struct GLVertex
-    {
-        float tex[2];
-        float colour[4];
-        float position[3];
-    };
-
-    //! type to track info for per-texture sub batches of geometry
-    struct BatchInfo
-    {
-        uint texture;
-        uint vertexCount;
-        bool clip;
-    };
-
-    //! OpenGL3Renderer object that owns the GeometryBuffer.
-    OpenGL3Renderer* d_owner;
-    //! last texture that was set as active
-    OpenGL3Texture* d_activeTexture;
-    //! type of container that tracks BatchInfos.
-    typedef std::vector<BatchInfo> BatchList;
-    //! list of texture batches added to the geometry buffer
-    BatchList d_batches;
-    //! type of container used to queue the geometry
-    typedef std::vector<GLVertex> VertexList;
-    //! container where added geometry is stored.
-    VertexList d_vertices;
-    //! rectangular clip region
-    Rectf d_clipRect;
-    //! whether clipping will be active for the current batch
-    bool d_clippingActive;
-    //! translation vector
-    Vector3f d_translation;
-    //! rotation quaternion
-    Quaternion d_rotation;
-    //! pivot point for rotation
-    Vector3f d_pivot;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect* d_effect;
-    //! model matrix cache - we use double because gluUnproject takes double
-    mutable mat4Pimpl*              d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool                    d_matrixValid;
     //! OpenGL vao used for the vertices
-    GLuint                          d_verticesVAO;
+    GLuint d_verticesVAO;
     //! OpenGL vbo containing all vertex data
-    GLuint                          d_verticesVBO;
+    GLuint d_verticesVBO;
     //! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
-    CEGUI::OpenGL3Shader*&          d_shader;
+    CEGUI::OpenGL3Shader*& d_shader;
     //! Position variable location inside the shader, for OpenGL
-    const GLint                     d_shaderPosLoc;
+    const GLint d_shaderPosLoc;
     //! TexCoord variable location inside the shader, for OpenGL
-    const GLint                     d_shaderTexCoordLoc;
+    const GLint d_shaderTexCoordLoc;
     //! Color variable location inside the shader, for OpenGL
-    const GLint                     d_shaderColourLoc;
+    const GLint d_shaderColourLoc;
     //! Matrix uniform location inside the shader, for OpenGL
-    const GLint                     d_shaderStandardMatrixLoc;
+    const GLint d_shaderStandardMatrixLoc;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
-    OpenGL3StateChangeWrapper*      d_glStateChanger;
+    OpenGL3StateChangeWrapper* d_glStateChanger;
     //! Size of the buffer that is currently in use
-    GLuint                          d_bufferSize;
+    GLuint d_bufferSize;
 };
 
+}
 
-} // End of  CEGUI namespace section
-
-#if defined(_MSC_VER)
-#   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIOpenGLGeometryBuffer_h_

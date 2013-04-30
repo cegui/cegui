@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGuiOpenGLBaseApplication.h"
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 
 //----------------------------------------------------------------------------//
 CEGuiOpenGLBaseApplication::CEGuiOpenGLBaseApplication()

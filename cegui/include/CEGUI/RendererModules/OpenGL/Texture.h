@@ -31,7 +31,7 @@
 #include "../../Base.h"
 #include "../../Renderer.h"
 #include "../../Texture.h"
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -113,23 +113,23 @@ public:
 
 protected:
     // Friends (to allow construction and destruction)
-    friend Texture& OpenGLRenderer::createTexture(const String&);
-    friend Texture& OpenGLRenderer::createTexture(const String&, const String&, const String&);
-    friend Texture& OpenGLRenderer::createTexture(const String&, const Sizef&);
-    friend Texture& OpenGLRenderer::createTexture(const String&, GLuint, const Sizef&);
-    friend void OpenGLRenderer::destroyTexture(Texture&);
-    friend void OpenGLRenderer::destroyTexture(const String&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&, const String&, const String&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&, const Sizef&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&, GLuint, const Sizef&);
+    friend void OpenGLRendererBase::destroyTexture(Texture&);
+    friend void OpenGLRendererBase::destroyTexture(const String&);
 
     //! Basic constructor.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name);
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name);
     //! Constructor that creates a Texture from an image file.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                   const String& filename, const String& resourceGroup);
     //! Constructor that creates a Texture with a given size.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                   const Sizef& size);
     //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                   GLuint tex, const Sizef& size);
     //! Destructor.
     virtual ~OpenGLTexture();
@@ -168,7 +168,7 @@ protected:
     //! cached pixel to texel mapping scale values.
     Vector2f d_texelScaling;
     //! OpenGLRenderer that created and owns this OpenGLTexture
-    OpenGLRenderer& d_owner;
+    OpenGLRendererBase& d_owner;
     //! The name given for this texture.
     const String d_name;
     //! Texture format

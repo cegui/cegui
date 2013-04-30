@@ -36,7 +36,7 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name) :
+OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name) :
     d_size(0, 0),
     d_grabBuffer(0),
     d_dataSize(0, 0),
@@ -49,7 +49,7 @@ OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
+OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                              const String& filename,
                              const String& resourceGroup) :
     d_size(0, 0),
@@ -64,7 +64,7 @@ OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
+OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                              const Sizef& size) :
     d_size(0, 0),
     d_grabBuffer(0),
@@ -78,7 +78,7 @@ OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
 }
 
 //----------------------------------------------------------------------------//
-OpenGLTexture::OpenGLTexture(OpenGLRenderer& owner, const String& name,
+OpenGLTexture::OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                              GLuint tex, const Sizef& size) :
     d_ogltexture(tex),
     d_size(size),

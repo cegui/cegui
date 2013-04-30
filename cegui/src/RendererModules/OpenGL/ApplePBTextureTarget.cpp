@@ -31,7 +31,7 @@
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 
 // Start of CEGUI namespace section
@@ -51,7 +51,7 @@ static CGLPixelFormatAttribute fmtAttrs[] =
 };
 
 //----------------------------------------------------------------------------//
-OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRenderer& owner) :
+OpenGLApplePBTextureTarget::OpenGLApplePBTextureTarget(OpenGLRendererBase& owner) :
     OpenGLTextureTarget(owner),
     d_pbuffer(0),
     d_context(0)

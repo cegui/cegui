@@ -1,7 +1,8 @@
 /***********************************************************************
     filename:   CEGUIOpenGLRenderer.cpp
     created:    Sun Jan 11 2009
-    author:     Paul D Turner
+    authors:    Paul D Turner <paul@cegui.org.uk>
+                Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
@@ -27,14 +28,16 @@
  ***************************************************************************/
 #include <GL/glew.h>
 
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
-#include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
-#include "CEGUI/RendererModules/OpenGL/FBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
+
+#include "CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h"
+
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
@@ -64,46 +67,21 @@ namespace CEGUI
 #ifndef APIENTRY
 #   define APIENTRY
 #endif
-//! Function to perform extentsions initialisation.
-static void initialiseGLExtensions();
 //! Pointer to a function to use as glActiveTexture
-PFNGLACTIVETEXTUREPROC CEGUI_activeTexture;
+static PFNGLACTIVETEXTUREPROC CEGUI_activeTexture;
 //! Pointer to a function to use as glClientActiveTexture
-PFNGLCLIENTACTIVETEXTUREPROC CEGUI_clientActiveTexture;
+static PFNGLCLIENTACTIVETEXTUREPROC CEGUI_clientActiveTexture;
 //! Dummy function for if real ones are not present (saves testing each render)
-void APIENTRY activeTextureDummy(GLenum) {}
+static void APIENTRY activeTextureDummy(GLenum) {}
 
 //----------------------------------------------------------------------------//
-//
-// Here we have an internal class that allows us to implement a factory template
-// for creating / destroying any type of TextureTarget.  The code that detects
-// the computer's abilities will generate an appropriate factory for a
-// TextureTarget based on what the host system can provide - or use the default
-// 'null' factory if no suitable TextureTargets are available.
-//
-// base factory class - mainly used as a polymorphic interface
-class OGLTextureTargetFactory
-{
-public:
-    OGLTextureTargetFactory() {}
-    virtual ~OGLTextureTargetFactory() {}
-    virtual TextureTarget* create(OpenGLRenderer&) const
-        { return 0; }
-    virtual void destory(TextureTarget* target) const
-        { delete target; }
-};
-
 // template specialised class that does the real work for us
 template<typename T>
 class OGLTemplateTargetFactory : public OGLTextureTargetFactory
 {
-    virtual TextureTarget* create(OpenGLRenderer& r) const
+    virtual TextureTarget* create(OpenGLRendererBase& r) const
         { return new T(r); }
 };
-
-//----------------------------------------------------------------------------//
-String OpenGLRenderer::d_rendererID(
-"CEGUI::OpenGLRenderer - Official OpenGL based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
 OpenGLRenderer& OpenGLRenderer::bootstrapSystem(const TextureTargetType tt_type,
@@ -183,21 +161,9 @@ void OpenGLRenderer::destroy(OpenGLRenderer& renderer)
 }
 
 //----------------------------------------------------------------------------//
-OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
-    d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID)
+OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type)
 {
-    // get rough max texture size
-    GLint max_tex_size;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
-    d_maxTextureSize = max_tex_size;
-
-    // initialise display size
-    GLint vp[4];
-    glGetIntegerv(GL_VIEWPORT, vp);
-    d_displaySize = Sizef(static_cast<float>(vp[2]), static_cast<float>(vp[3]));
-
+    initialiseRendererIDString();
     initialiseGLExtensions();
     initialiseTextureTargetFactory(tt_type);
 
@@ -206,209 +172,48 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type) :
     // logged.
     if (!GLEW_VERSION_1_4 && !GLEW_EXT_blend_func_separate)
         d_rendererID += "  No glBlendFuncSeparate(EXT) support.";
-
-    d_defaultTarget = new OpenGLViewportTarget(*this);
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRenderer::OpenGLRenderer(const Sizef& display_size,
                                const TextureTargetType tt_type) :
-    d_displaySize(display_size),
-    d_displayDPI(96, 96),
-    d_initExtraStates(false),
-    d_activeBlendMode(BM_INVALID)
+    OpenGLRendererBase(display_size)
 {
-    // get rough max texture size
-    GLint max_tex_size;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
-    d_maxTextureSize = max_tex_size;
-
+    initialiseRendererIDString();
     initialiseGLExtensions();
     initialiseTextureTargetFactory(tt_type);
 
-    d_defaultTarget = new OpenGLViewportTarget(*this);
+    // we _really_ need separate rgb/alpha blend modes, if this support is not
+    // available, add a note to the renderer ID string so that this fact is
+    // logged.
+    if (!GLEW_VERSION_1_4 && !GLEW_EXT_blend_func_separate)
+        d_rendererID += "  No glBlendFuncSeparate(EXT) support.";
 }
 
 //----------------------------------------------------------------------------//
 OpenGLRenderer::~OpenGLRenderer()
 {
-    destroyAllGeometryBuffers();
-    destroyAllTextureTargets();
-    destroyAllTextures();
-
-    delete d_defaultTarget;
     delete d_textureTargetFactory;
 }
 
 //----------------------------------------------------------------------------//
-RenderTarget& OpenGLRenderer::getDefaultRenderTarget()
+void OpenGLRenderer::initialiseRendererIDString()
 {
-    return *d_defaultTarget;
+    d_rendererID = 
+        "CEGUI::OpenGLRenderer - Official OpenGL based 2nd generation "
+        "renderer module.";
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& OpenGLRenderer::createGeometryBuffer()
+OpenGLGeometryBufferBase* OpenGLRenderer::createGeometryBuffer_impl()
 {
-    OpenGLGeometryBuffer* b= new OpenGLGeometryBuffer(*this);
-    d_geometryBuffers.push_back(b);
-    return *b;
+    return new OpenGLGeometryBuffer(*this);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
+TextureTarget* OpenGLRenderer::createTextureTarget_impl()
 {
-    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
-                                               d_geometryBuffers.end(),
-                                               &buffer);
-
-    if (d_geometryBuffers.end() != i)
-    {
-        d_geometryBuffers.erase(i);
-        delete &buffer;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyAllGeometryBuffers()
-{
-    while (!d_geometryBuffers.empty())
-        destroyGeometryBuffer(**d_geometryBuffers.begin());
-}
-
-//----------------------------------------------------------------------------//
-TextureTarget* OpenGLRenderer::createTextureTarget()
-{
-    TextureTarget* t = d_textureTargetFactory->create(*this);
-    d_textureTargets.push_back(t);
-    return t;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyTextureTarget(TextureTarget* target)
-{
-    TextureTargetList::iterator i = std::find(d_textureTargets.begin(),
-                                              d_textureTargets.end(),
-                                              target);
-
-    if (d_textureTargets.end() != i)
-    {
-        d_textureTargets.erase(i);
-        d_textureTargetFactory->destory(target);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyAllTextureTargets()
-{
-    while (!d_textureTargets.empty())
-        destroyTextureTarget(*d_textureTargets.begin());
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLRenderer::createTexture(const String& name)
-{
-    if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
-
-    OpenGLTexture* tex = new OpenGLTexture(*this, name);
-    d_textures[name] = tex;
-
-    logTextureCreation(name);
-
-    return *tex;
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLRenderer::createTexture(const String& name,
-                                       const String& filename,
-                                       const String& resourceGroup)
-{
-    if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
-
-    OpenGLTexture* tex = new OpenGLTexture(*this, name, filename, resourceGroup);
-    d_textures[name] = tex;
-
-    logTextureCreation(name);
-
-    return *tex;
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLRenderer::createTexture(const String& name, const Sizef& size)
-{
-    if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
-
-    OpenGLTexture* tex = new OpenGLTexture(*this, name, size);
-    d_textures[name] = tex;
-
-    logTextureCreation(name);
-
-    return *tex;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::logTextureCreation(const String& name)
-{
-    Logger* logger = Logger::getSingletonPtr();
-    if (logger)
-        logger->logEvent("[OpenGLRenderer] Created texture: " + name);
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyTexture(Texture& texture)
-{
-    destroyTexture(texture.getName());
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyTexture(const String& name)
-{
-    TextureMap::iterator i = d_textures.find(name);
-
-    if (d_textures.end() != i)
-    {
-        logTextureDestruction(name);
-        delete i->second;
-        d_textures.erase(i);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::logTextureDestruction(const String& name)
-{
-    Logger* logger = Logger::getSingletonPtr();
-    if (logger)
-        logger->logEvent("[OpenGLRenderer] Destroyed texture: " + name);
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::destroyAllTextures()
-{
-    while (!d_textures.empty())
-        destroyTexture(d_textures.begin()->first);
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLRenderer::getTexture(const String& name) const
-{
-    TextureMap::const_iterator i = d_textures.find(name);
-    
-    if (i == d_textures.end())
-        CEGUI_THROW(UnknownObjectException(
-            "No texture named '" + name + "' is available."));
-
-    return *i->second;
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLRenderer::isTextureDefined(const String& name) const
-{
-    return d_textures.find(name) != d_textures.end();
+    return d_textureTargetFactory->create(*this);
 }
 
 //----------------------------------------------------------------------------//
@@ -466,66 +271,6 @@ void OpenGLRenderer::endRendering()
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& OpenGLRenderer::getDisplaySize() const
-{
-    return d_displaySize;
-}
-
-//----------------------------------------------------------------------------//
-const Vector2f& OpenGLRenderer::getDisplayDPI() const
-{
-    return d_displayDPI;
-}
-
-//----------------------------------------------------------------------------//
-uint OpenGLRenderer::getMaxTextureSize() const
-{
-    return d_maxTextureSize;
-}
-
-//----------------------------------------------------------------------------//
-const String& OpenGLRenderer::getIdentifierString() const
-{
-    return d_rendererID;
-}
-
-//----------------------------------------------------------------------------//
-Texture& OpenGLRenderer::createTexture(const String& name, GLuint tex,
-                                       const Sizef& sz)
-{
-    if (d_textures.find(name) != d_textures.end())
-        CEGUI_THROW(AlreadyExistsException(
-            "A texture named '" + name + "' already exists."));
-
-    OpenGLTexture* t = new OpenGLTexture(*this, name, tex, sz);
-    d_textures[name] = t;
-
-    logTextureCreation(name);
-
-    return *t;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::setDisplaySize(const Sizef& sz)
-{
-    if (sz != d_displaySize)
-    {
-        d_displaySize = sz;
-
-        // update the default target's area
-        Rectf area(d_defaultTarget->getArea());
-        area.setSize(sz);
-        d_defaultTarget->setArea(area);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::enableExtraStateSettings(bool setting)
-{
-    d_initExtraStates = setting;
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLRenderer::setupExtraStates()
 {
     glMatrixMode(GL_TEXTURE);
@@ -556,34 +301,6 @@ void OpenGLRenderer::cleanupExtraStates()
 {
     glMatrixMode(GL_TEXTURE);
     glPopMatrix();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::grabTextures()
-{
-    // perform grab operations for texture targets
-    TextureTargetList::iterator target_iterator = d_textureTargets.begin();
-    for (; target_iterator != d_textureTargets.end(); ++target_iterator)
-        static_cast<OpenGLTextureTarget*>(*target_iterator)->grabTexture();
-
-    // perform grab on regular textures
-    TextureMap::iterator texture_iterator = d_textures.begin();
-    for (; texture_iterator != d_textures.end(); ++texture_iterator)
-        texture_iterator->second->grabTexture();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLRenderer::restoreTextures()
-{
-    // perform restore on textures
-    TextureMap::iterator texture_iterator = d_textures.begin();
-    for (; texture_iterator != d_textures.end(); ++texture_iterator)
-        texture_iterator->second->restoreTexture();
-
-    // perform restore operations for texture targets
-    TextureTargetList::iterator target_iterator = d_textureTargets.begin();
-    for (; target_iterator != d_textureTargets.end(); ++target_iterator)
-        static_cast<OpenGLTextureTarget*>(*target_iterator)->restoreTexture();
 }
 
 //----------------------------------------------------------------------------//
@@ -638,42 +355,6 @@ void OpenGLRenderer::initialiseTextureTargetFactory(
 }
 
 //----------------------------------------------------------------------------//
-Sizef OpenGLRenderer::getAdjustedTextureSize(const Sizef& sz) const
-{
-    Sizef out(sz);
-
-    // if we can't support non power of two sizes, get appropriate POT values.
-    if (!GLEW_ARB_texture_non_power_of_two)
-    {
-        out.d_width = getNextPOTSize(out.d_width);
-        out.d_height = getNextPOTSize(out.d_height);
-    }
-
-    return out;
-}
-
-//----------------------------------------------------------------------------//
-float OpenGLRenderer::getNextPOTSize(const float f)
-{
-    uint size = static_cast<uint>(f);
-
-    // if not power of 2
-    if ((size & (size - 1)) || !size)
-    {
-        int log = 0;
-
-        // get integer log of 'size' to base 2
-        while (size >>= 1)
-            ++log;
-
-        // use log to calculate value to use as size.
-        size = (2 << log);
-    }
-
-    return static_cast<float>(size);
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
                                              const bool force)
 {
@@ -701,8 +382,7 @@ void OpenGLRenderer::setupRenderingBlendMode(const BlendMode mode,
 }
 
 //----------------------------------------------------------------------------//
-
-void initialiseGLExtensions()
+void OpenGLRenderer::initialiseGLExtensions()
 {
     // initialise GLEW
     GLenum err = glewInit();
@@ -733,6 +413,12 @@ void initialiseGLExtensions()
         CEGUI_activeTexture = activeTextureDummy;
         CEGUI_clientActiveTexture = activeTextureDummy;
     }
+}
+
+//----------------------------------------------------------------------------//
+bool OpenGLRenderer::isS3TCSupported() const
+{
+    return GLEW_EXT_texture_compression_s3tc;
 }
 
 //----------------------------------------------------------------------------//

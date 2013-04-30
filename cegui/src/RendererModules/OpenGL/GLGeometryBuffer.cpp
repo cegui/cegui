@@ -1,10 +1,11 @@
 /***********************************************************************
     filename:   CEGUIOpenGLGeometryBuffer.cpp
     created:    Thu Jan 8 2009
-    author:     Paul D Turner
+    authors:    Paul D Turner <paul@cegui.org.uk>
+                Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -26,35 +27,20 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
-#include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
+#include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
+#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
-    d_owner(&owner),
-    d_activeTexture(0),
-    d_clipRect(0, 0, 0, 0),
-    d_clippingActive(true),
-    d_translation(0, 0, 0),
-    d_rotation(Quaternion::IDENTITY),
-    d_pivot(0, 0, 0),
-    d_effect(0),
-    d_matrixValid(false)
+    OpenGLGeometryBufferBase(owner)
 {
-    //d_matrix does not need to be initialised here, we have d_matrixValid
-    //for(unsigned int i = 0; i < 16;++i)
-    //    d_matrix[i]=0.0;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::appendVertex(const Vertex& vertex)
-{
-    appendGeometry(&vertex, 1);
 }
 
 //----------------------------------------------------------------------------//
@@ -73,7 +59,7 @@ void OpenGLGeometryBuffer::draw() const
         updateMatrix();
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixd(d_matrix);
+    glLoadMatrixf(&d_matrix->d_matrix[0][0]);
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
@@ -112,191 +98,6 @@ void OpenGLGeometryBuffer::draw() const
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setTranslation(const Vector3f& v)
-{
-    d_translation = v;
-    d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setRotation(const Quaternion& r)
-{
-    d_rotation = r;
-    d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setPivot(const Vector3f& p)
-{
-    d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
-    d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setClippingRegion(const Rectf& region)
-{
-    d_clipRect.top(ceguimax(0.0f, region.top()));
-    d_clipRect.left(ceguimax(0.0f, region.left()));
-    d_clipRect.bottom(ceguimax(0.0f, region.bottom()));
-    d_clipRect.right(ceguimax(0.0f, region.right()));
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::appendGeometry(const Vertex* const vbuff,
-    uint vertex_count)
-{
-    performBatchManagement();
-
-    // update size of current batch
-    d_batches.back().vertexCount += vertex_count;
-
-    // buffer these vertices
-    GLVertex vd;
-    const Vertex* vs = vbuff;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
-    {
-        // copy vertex info the buffer, converting from CEGUI::Vertex to
-        // something directly usable by OpenGL as needed.
-        vd.tex[0]      = vs->tex_coords.d_x;
-        vd.tex[1]      = vs->tex_coords.d_y;
-        vd.colour[0]   = vs->colour_val.getRed();
-        vd.colour[1]   = vs->colour_val.getGreen();
-        vd.colour[2]   = vs->colour_val.getBlue();
-        vd.colour[3]   = vs->colour_val.getAlpha();
-        vd.position[0] = vs->position.d_x;
-        vd.position[1] = vs->position.d_y;
-        vd.position[2] = vs->position.d_z;
-        d_vertices.push_back(vd);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setActiveTexture(Texture* texture)
-{
-    d_activeTexture = static_cast<OpenGLTexture*>(texture);
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::reset()
-{
-    d_batches.clear();
-    d_vertices.clear();
-    d_activeTexture = 0;
-}
-
-//----------------------------------------------------------------------------//
-Texture* OpenGLGeometryBuffer::getActiveTexture() const
-{
-    return d_activeTexture;
-}
-
-//----------------------------------------------------------------------------//
-uint OpenGLGeometryBuffer::getVertexCount() const
-{
-    return d_vertices.size();
-}
-
-//----------------------------------------------------------------------------//
-uint OpenGLGeometryBuffer::getBatchCount() const
-{
-    return d_batches.size();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::performBatchManagement()
-{
-    const GLuint gltex = d_activeTexture ?
-                            d_activeTexture->getOpenGLTexture() : 0;
-
-    // create a new batch if there are no batches yet, or if the active texture
-    // differs from that used by the current batch.
-    if (d_batches.empty() ||
-        gltex != d_batches.back().texture ||
-        d_clippingActive != d_batches.back().clip)
-    {
-        const BatchInfo batch = {gltex, 0, d_clippingActive};
-        d_batches.push_back(batch);
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setRenderEffect(RenderEffect* effect)
-{
-    d_effect = effect;
-}
-
-//----------------------------------------------------------------------------//
-RenderEffect* OpenGLGeometryBuffer::getRenderEffect()
-{
-    return d_effect;
-}
-
-//----------------------------------------------------------------------------//
-const double* OpenGLGeometryBuffer::getMatrix() const
-{
-    if (!d_matrixValid)
-        updateMatrix();
-
-    return d_matrix;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::updateMatrix() const
-{
-    glMatrixMode(GL_MODELVIEW);
-    glPushMatrix();
-
-    const Vector3f final_trans(d_translation.d_x + d_pivot.d_x,
-                                d_translation.d_y + d_pivot.d_y,
-                                d_translation.d_z + d_pivot.d_z);
-
-    glLoadIdentity();
-    glTranslatef(final_trans.d_x, final_trans.d_y, final_trans.d_z);
-
-    float rotation_matrix[16];
-    rotation_matrix[ 0] = 1.0f - 2.0f * (d_rotation.d_y * d_rotation.d_y + d_rotation.d_z * d_rotation.d_z);
-    rotation_matrix[ 1] = 2.0f * (d_rotation.d_x * d_rotation.d_y + d_rotation.d_z * d_rotation.d_w);
-    rotation_matrix[ 2] = 2.0f * (d_rotation.d_x * d_rotation.d_z - d_rotation.d_y * d_rotation.d_w);
-    rotation_matrix[ 3] = 0.0f;
-
-    rotation_matrix[ 4] = 2.0f * (d_rotation.d_x * d_rotation.d_y - d_rotation.d_z * d_rotation.d_w);
-    rotation_matrix[ 5] = 1.0f - 2.0f * (d_rotation.d_x * d_rotation.d_x + d_rotation.d_z * d_rotation.d_z);
-    rotation_matrix[ 6] = 2.0f * (d_rotation.d_z * d_rotation.d_y + d_rotation.d_x * d_rotation.d_w);
-    rotation_matrix[ 7] = 0.0f;
-
-    rotation_matrix[ 8] = 2.0f * (d_rotation.d_x * d_rotation.d_z + d_rotation.d_y * d_rotation.d_w);
-    rotation_matrix[ 9] = 2.0f * (d_rotation.d_y * d_rotation.d_z - d_rotation.d_x * d_rotation.d_w);
-    rotation_matrix[10] = 1.0f - 2.0f * (d_rotation.d_x * d_rotation.d_x + d_rotation.d_y * d_rotation.d_y);
-    rotation_matrix[11] = 0.0f;
-
-    rotation_matrix[12] = 0.0f;
-    rotation_matrix[13] = 0.0f;
-    rotation_matrix[14] = 0.0f;
-    rotation_matrix[15] = 1.0f;
-
-    glMultMatrixf(rotation_matrix);
-
-    glTranslatef(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-
-    glGetDoublev(GL_MODELVIEW_MATRIX, d_matrix);
-    glPopMatrix();
-
-    d_matrixValid = true;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBuffer::setClippingActive(const bool active)
-{
-    d_clippingActive = active;
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLGeometryBuffer::isClippingActive() const
-{
-    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//

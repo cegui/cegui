@@ -53,7 +53,7 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLWGLPBTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLWGLPBTextureTarget(OpenGLRenderer& owner);
+    OpenGLWGLPBTextureTarget(OpenGLRendererBase& owner);
     virtual ~OpenGLWGLPBTextureTarget();
 
     // overrides from OpenGLRenderTarget

@@ -47,7 +47,7 @@ public:
         Construct a default OpenGLViewportTarget that uses the currently
         defined OpenGL viewport as it's initial area.
     */
-    OpenGLViewportTarget(OpenGLRenderer& owner);
+    OpenGLViewportTarget(OpenGLRendererBase& owner);
 
     /*!
     \brief
@@ -58,7 +58,7 @@ public:
         Rect object describing the initial viewport area that should be used for
         the RenderTarget.
     */
-    OpenGLViewportTarget(OpenGLRenderer& owner, const Rectf& area);
+    OpenGLViewportTarget(OpenGLRendererBase& owner, const Rectf& area);
 
     // implementations of RenderTarget interface
     bool isImageryCache() const;

@@ -27,13 +27,13 @@
  ***************************************************************************/
 #include <GL/glew.h>
 
-#include "CEGUI/RendererModules/OpenGL3/FBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GL3FBOTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUI/RendererModules/OpenGL3/Renderer.h"
-#include "CEGUI/RendererModules/OpenGL3/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
 
 #include "CEGUI/Logger.h"
 
@@ -48,7 +48,7 @@ const float OpenGL3FBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
 OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
-    OpenGL3TextureTarget(owner)
+    OpenGLTextureTarget(owner)
 {
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()
@@ -83,13 +83,13 @@ void OpenGL3FBOTextureTarget::activate()
     // switch to rendering to the texture
     glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
 
-    OpenGL3TextureTarget::activate();
+    OpenGLTextureTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3FBOTextureTarget::deactivate()
 {
-    OpenGL3TextureTarget::deactivate();
+    OpenGLTextureTarget::deactivate();
 
     // switch back to rendering to the previously bound framebuffer
     glBindFramebuffer(GL_FRAMEBUFFER, d_previousFrameBuffer);
@@ -195,13 +195,13 @@ void OpenGL3FBOTextureTarget::grabTexture()
     glDeleteFramebuffers(1, &d_frameBuffer);
     d_frameBuffer = 0;
 
-    OpenGL3TextureTarget::grabTexture();
+    OpenGLTextureTarget::grabTexture();
 }
 
 //----------------------------------------------------------------------------//
 void OpenGL3FBOTextureTarget::restoreTexture()
 {
-    OpenGL3TextureTarget::restoreTexture();
+    OpenGLTextureTarget::restoreTexture();
 
     initialiseRenderTexture();
     resizeRenderTexture();

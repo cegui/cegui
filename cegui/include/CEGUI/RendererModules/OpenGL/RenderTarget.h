@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLRenderTarget.h
-    created:    Wed Jan 14 2009
-    author:     Paul D Turner
+    filename:   CEGUIOpenGL3RenderTarget.h
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -28,7 +28,7 @@
 #ifndef _CEGUIOpenGLRenderTarget_h_
 #define _CEGUIOpenGLRenderTarget_h_
 
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "../../RenderTarget.h"
 #include "../../Rect.h"
 
@@ -37,7 +37,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -49,7 +48,8 @@ class OPENGL_GUIRENDERER_API OpenGLRenderTarget : public T
 {
 public:
     //! Constructor
-    OpenGLRenderTarget(OpenGLRenderer& owner);
+    OpenGLRenderTarget(OpenGLRendererBase& owner);
+    virtual ~OpenGLRenderTarget();
 
     // implement parts of RenderTarget interface
     void draw(const GeometryBuffer& buffer);
@@ -65,24 +65,25 @@ protected:
     //! helper that initialises the cached matrix
     virtual void updateMatrix() const;
 
-    //! OpenGLRenderer that created this object
-    OpenGLRenderer& d_owner;
+    //! OpenGLRendererBase that created this object
+    OpenGLRendererBase& d_owner;
     //! holds defined area for the RenderTarget
     Rectf d_area;
     //! tangent of the y FOV half-angle; used to calculate viewing distance.
     static const double d_yfov_tan;
     //! saved copy of projection matrix
-    mutable double d_matrix[16];
+    mutable mat4Pimpl* d_matrix;
     //! true if saved matrix is up to date
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)
     mutable double d_viewDistance;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIOpenGLRenderTarget_h_
+#endif
+
