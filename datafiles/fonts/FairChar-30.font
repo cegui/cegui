@@ -1,30 +1,30 @@
 <?xml version="1.0" ?>
-<Font Name="FairChar-30" Filename="FairChar.imageset" Type="Pixmap" NativeHorzRes="640" NativeVertRes="480" AutoScaled="false">
-	<Mapping Codepoint="32" Image=" " HorzAdvance="15" />
-	<Mapping Codepoint="65" Image="A" />
-	<Mapping Codepoint="66" Image="B" />
-	<Mapping Codepoint="67" Image="C" />
-	<Mapping Codepoint="68" Image="D" />
-	<Mapping Codepoint="69" Image="E" />
-	<Mapping Codepoint="70" Image="F" />
-	<Mapping Codepoint="71" Image="G" />
-	<Mapping Codepoint="72" Image="H" />
-	<Mapping Codepoint="73" Image="I" />
-	<Mapping Codepoint="74" Image="J" />
-	<Mapping Codepoint="75" Image="K" />
-	<Mapping Codepoint="76" Image="L" />
-	<Mapping Codepoint="77" Image="M" />
-	<Mapping Codepoint="78" Image="N" />
-	<Mapping Codepoint="79" Image="O" />
-	<Mapping Codepoint="80" Image="P" />
-	<Mapping Codepoint="81" Image="Q" />
-	<Mapping Codepoint="82" Image="R" />
-	<Mapping Codepoint="83" Image="S" />
-	<Mapping Codepoint="84" Image="T" />
-	<Mapping Codepoint="85" Image="U" />
-	<Mapping Codepoint="86" Image="V" />
-	<Mapping Codepoint="87" Image="W" />
-	<Mapping Codepoint="88" Image="X" />
-	<Mapping Codepoint="89" Image="Y" />
-	<Mapping Codepoint="90" Image="Z" />
+<Font version="3" name="FairChar" filename="FairChar.imageset" type="Pixmap" nativeHorzRes="640" nativeVertRes="480" autoScaled="false">
+	<Mapping codepoint="32" image=" " horzAdvance="15" />
+	<Mapping codepoint="65" image="A" />
+	<Mapping codepoint="66" image="B" />
+	<Mapping codepoint="67" image="C" />
+	<Mapping codepoint="68" image="D" />
+	<Mapping codepoint="69" image="E" />
+	<Mapping codepoint="70" image="F" />
+	<Mapping codepoint="71" image="G" />
+	<Mapping codepoint="72" image="H" />
+	<Mapping codepoint="73" image="I" />
+	<Mapping codepoint="74" image="J" />
+	<Mapping codepoint="75" image="K" />
+	<Mapping codepoint="76" image="L" />
+	<Mapping codepoint="77" image="M" />
+	<Mapping codepoint="78" image="N" />
+	<Mapping codepoint="79" image="O" />
+	<Mapping codepoint="80" image="P" />
+	<Mapping codepoint="81" image="Q" />
+	<Mapping codepoint="82" image="R" />
+	<Mapping codepoint="83" image="S" />
+	<Mapping codepoint="84" image="T" />
+	<Mapping codepoint="85" image="U" />
+	<Mapping codepoint="86" image="V" />
+	<Mapping codepoint="87" image="W" />
+	<Mapping codepoint="88" image="X" />
+	<Mapping codepoint="89" image="Y" />
+	<Mapping codepoint="90" image="Z" />
 </Font>

@@ -152,8 +152,15 @@ Assigned WidgetLook should provide the following:
         <li>Enabled - General imagery for when the widget is enabled.
         <li>Disabled - General imagery for when the widget is disabled.
     </ul>
-
-    <li>NamedArea definitions:
+    
+    <li>NamedArea definitions (you should choose one set, or the other):
+    <ul>
+        <li>ItemRenderArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
+        <li>ItemRenderAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.
+        <li>ItemRenderAreaVScroll - Target area where list items will appear when the vertical scrollbar is visible. Optional.
+        <li>ItemRenderAreaHVScroll - Target area where list items will appear when both the horizontal and vertical scrollbars are visible. Optional.
+    </ul>    
+    <li>OR:
     <ul>
         <li>ItemRenderingArea - Target area where list items will appear when no scrollbars are visible (also acts as default area). Required.
         <li>ItemRenderingAreaHScroll - Target area where list items will appear when the horizontal scrollbar is visible. Optional.

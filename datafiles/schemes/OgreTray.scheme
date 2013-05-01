@@ -1,46 +1,49 @@
 <?xml version="1.0" ?>
-<GUIScheme Name="OgreTray">
-    <Imageset Filename="OgreTray.imageset" />
-    <Font Filename="DejaVuSans-10.font" />
-    <LookNFeel Filename="OgreTray.looknfeel" />
-    <WindowRendererSet Filename="CEGUIFalagardWRBase" />
-    <FalagardMapping WindowType="OgreTray/Button"               TargetType="CEGUI/PushButton"       Renderer="Falagard/Button"              LookNFeel="OgreTray/PushButton" />
-    <FalagardMapping WindowType="OgreTray/Titlebar"             TargetType="CEGUI/Titlebar"         Renderer="Falagard/Titlebar"            LookNFeel="OgreTray/Titlebar" />
-    <FalagardMapping WindowType="OgreTray/FrameWindow"          TargetType="CEGUI/FrameWindow"      Renderer="Falagard/FrameWindow"         LookNFeel="OgreTray/FrameWindow" />
-    <FalagardMapping WindowType="OgreTray/Thumb"                TargetType="CEGUI/Thumb"            Renderer="Falagard/Button"              LookNFeel="OgreTray/Thumb" />
-    <FalagardMapping WindowType="OgreTray/VerticalScrollbar"    TargetType="CEGUI/Scrollbar"        Renderer="Falagard/Scrollbar"           LookNFeel="OgreTray/VerticalScrollbar" />
-    <FalagardMapping WindowType="OgreTray/HorizontalScrollbar"  TargetType="CEGUI/Scrollbar"        Renderer="Falagard/Scrollbar"           LookNFeel="OgreTray/HorizontalScrollbar" />
-    <FalagardMapping WindowType="OgreTray/StaticText"           TargetType="DefaultWindow"          Renderer="Falagard/StaticText"          LookNFeel="OgreTray/StaticText" />
-    <FalagardMapping WindowType="OgreTray/Title"                TargetType="DefaultWindow"          Renderer="Falagard/Default"             LookNFeel="OgreTray/MiniTray" />
-    <FalagardMapping WindowType="OgreTray/CaptionedStaticText"  TargetType="DefaultWindow"          Renderer="Falagard/StaticText"          LookNFeel="OgreTray/CaptionedStaticText" />
-    <FalagardMapping WindowType="OgreTray/ProgressBar"          TargetType="CEGUI/ProgressBar"      Renderer="Falagard/ProgressBar"         LookNFeel="OgreTray/ProgressBar" />
-    <FalagardMapping WindowType="OgreTray/Editbox"              TargetType="CEGUI/Editbox"          Renderer="Falagard/Editbox"             LookNFeel="OgreTray/Editbox" />
-    <FalagardMapping WindowType="OgreTray/MultiLineEditbox"     TargetType="CEGUI/MultiLineEditbox" Renderer="Falagard/MultiLineEditbox"    LookNFeel="OgreTray/MultiLineEditbox" />
-    <FalagardMapping WindowType="OgreTray/Listbox"              TargetType="CEGUI/Listbox"          Renderer="Falagard/Listbox"             LookNFeel="OgreTray/Listbox" />
-    <FalagardMapping WindowType="OgreTray/ComboDropList"        TargetType="CEGUI/ComboDropList"    Renderer="Falagard/Listbox"             LookNFeel="OgreTray/Listbox" />
-    <FalagardMapping WindowType="OgreTray/Combobox"             TargetType="CEGUI/Combobox"         Renderer="Falagard/Default"             LookNFeel="OgreTray/Combobox" />
-    <FalagardMapping WindowType="OgreTray/DropDownMenu"         TargetType="CEGUI/Combobox"         Renderer="Falagard/Default"             LookNFeel="OgreTray/DropDownMenu" />
-    <FalagardMapping WindowType="OgreTray/Group"                TargetType="DefaultWindow"          Renderer="Falagard/Default"             LookNFeel="OgreTray/Group" />
-    <FalagardMapping WindowType="OgreTray/Checkbox"             TargetType="CEGUI/Checkbox"         Renderer="Falagard/ToggleButton"        LookNFeel="OgreTray/Checkbox" />
-    <FalagardMapping WindowType="OgreTray/RadioButton"          TargetType="CEGUI/RadioButton"      Renderer="Falagard/ToggleButton"        LookNFeel="OgreTray/RadioButton" />
-    <FalagardMapping WindowType="OgreTray/Slider"               TargetType="CEGUI/Slider"           Renderer="Falagard/Slider"              LookNFeel="OgreTray/Slider" />
-    <FalagardMapping WindowType="OgreTray/StaticImage"          TargetType="DefaultWindow"          Renderer="Falagard/StaticImage"         LookNFeel="OgreTray/StaticImage" />
-    <FalagardMapping WindowType="OgreTray/AltStaticImage"       TargetType="DefaultWindow"          Renderer="Falagard/Default"             LookNFeel="OgreTray/AltStaticImage" />
-    <FalagardMapping WindowType="OgreTray/Tooltip"              TargetType="CEGUI/Tooltip"          Renderer="Falagard/Tooltip"             LookNFeel="OgreTray/Tooltip" />
-    <FalagardMapping WindowType="OgreTray/ItemListbox"          TargetType="CEGUI/ItemListbox"      Renderer="Falagard/ItemListbox"         LookNFeel="OgreTray/ItemListbox" />
-    <FalagardMapping WindowType="OgreTray/ListboxItem"          TargetType="CEGUI/ItemEntry"        Renderer="Falagard/ItemEntry"           LookNFeel="OgreTray/ListboxItem" />
-    <FalagardMapping WindowType="OgreTray/Spinner"              TargetType="CEGUI/Spinner"          Renderer="Falagard/Default"             LookNFeel="OgreTray/Spinner" /> 
-    <FalagardMapping WindowType="OgreTray/ScrollablePane"       TargetType="CEGUI/ScrollablePane"   Renderer="Falagard/ScrollablePane"      LookNFeel="OgreTray/ScrollablePane" />  
-    <FalagardMapping WindowType="OgreTray/ListHeaderSegment"    TargetType="CEGUI/ListHeaderSegment" Renderer="Falagard/ListHeaderSegment"  LookNFeel="OgreTray/ListHeaderSegment" />
-    <FalagardMapping WindowType="OgreTray/ListHeader"           TargetType="CEGUI/ListHeader"       Renderer="Falagard/ListHeader"          LookNFeel="OgreTray/ListHeader" />
-    <FalagardMapping WindowType="OgreTray/MultiColumnList"      TargetType="CEGUI/MultiColumnList"  Renderer="Falagard/MultiColumnList"     LookNFeel="OgreTray/MultiColumnList" />
-    <FalagardMapping WindowType="OgreTray/MenuItem"             TargetType="CEGUI/MenuItem"         Renderer="Falagard/MenuItem"            LookNFeel="OgreTray/MenuItem" />
-    <FalagardMapping WindowType="OgreTray/Menubar"              TargetType="CEGUI/Menubar"          Renderer="Falagard/Menubar"             LookNFeel="OgreTray/Menubar" />
-    <FalagardMapping WindowType="OgreTray/PopupMenu"            TargetType="CEGUI/PopupMenu"        Renderer="Falagard/PopupMenu"           LookNFeel="OgreTray/PopupMenu" />
-    <FalagardMapping WindowType="OgreTray/TabButton"            TargetType="CEGUI/TabButton"        Renderer="Falagard/TabButton"           LookNFeel="OgreTray/TabButton" />
-    <FalagardMapping WindowType="OgreTray/TabButtonPane"        TargetType="DefaultWindow"          Renderer="Falagard/Default"             LookNFeel="OgreTray/TabButtonPane" />
-    <FalagardMapping WindowType="OgreTray/TabContentPane"       TargetType="DefaultWindow"          Renderer="Falagard/Default"             LookNFeel="OgreTray/TabContentPane" />
-    <FalagardMapping WindowType="OgreTray/TabControl"           TargetType="CEGUI/TabControl"       Renderer="Falagard/TabControl"          LookNFeel="OgreTray/TabControl" />
+<GUIScheme version="5" name="OgreTray">
+    <Imageset filename="OgreTray.imageset" />
+    <Font filename="DejaVuSans-12.font" />
+    <LookNFeel filename="OgreTray.looknfeel" />
+    <WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 
-    <FalagardMapping WindowType="OgreTray/BG" TargetType="DefaultWindow" Renderer="Falagard/Default" LookNFeel="OgreTray/BGTest" />
+    <FalagardMapping windowType="OgreTray/Label"                targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/Label" />
+    <FalagardMapping windowType="OgreTray/Button"               targetType="CEGUI/PushButton"       renderer="Core/Button"              lookNFeel="OgreTray/PushButton" />
+    <FalagardMapping windowType="OgreTray/Titlebar"             targetType="CEGUI/Titlebar"         renderer="Core/Titlebar"            lookNFeel="OgreTray/Titlebar" />
+    <FalagardMapping windowType="OgreTray/FrameWindow"          targetType="CEGUI/FrameWindow"      renderer="Core/FrameWindow"         lookNFeel="OgreTray/FrameWindow" />
+    <FalagardMapping windowType="OgreTray/Thumb"                targetType="CEGUI/Thumb"            renderer="Core/Button"              lookNFeel="OgreTray/Thumb" />
+    <FalagardMapping windowType="OgreTray/VerticalScrollbar"    targetType="CEGUI/Scrollbar"        renderer="Core/Scrollbar"           lookNFeel="OgreTray/VerticalScrollbar" />
+    <FalagardMapping windowType="OgreTray/HorizontalScrollbar"  targetType="CEGUI/Scrollbar"        renderer="Core/Scrollbar"           lookNFeel="OgreTray/HorizontalScrollbar" />
+    <FalagardMapping windowType="OgreTray/StaticText"           targetType="DefaultWindow"          renderer="Core/StaticText"          lookNFeel="OgreTray/StaticText" />
+    <FalagardMapping windowType="OgreTray/Title"                targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/MiniTray" />
+    <FalagardMapping windowType="OgreTray/CaptionedStaticText"  targetType="DefaultWindow"          renderer="Core/StaticText"          lookNFeel="OgreTray/CaptionedStaticText" />
+    <FalagardMapping windowType="OgreTray/ProgressBar"          targetType="CEGUI/ProgressBar"      renderer="Core/ProgressBar"         lookNFeel="OgreTray/ProgressBar" />
+    <FalagardMapping windowType="OgreTray/Editbox"              targetType="CEGUI/Editbox"          renderer="Core/Editbox"             lookNFeel="OgreTray/Editbox" />
+    <FalagardMapping windowType="OgreTray/MultiLineEditbox"     targetType="CEGUI/MultiLineEditbox" renderer="Core/MultiLineEditbox"    lookNFeel="OgreTray/MultiLineEditbox" />
+    <FalagardMapping windowType="OgreTray/Listbox"              targetType="CEGUI/Listbox"          renderer="Core/Listbox"             lookNFeel="OgreTray/Listbox" />
+    <FalagardMapping windowType="OgreTray/ComboDropList"        targetType="CEGUI/ComboDropList"    renderer="Core/Listbox"             lookNFeel="OgreTray/Listbox" />
+    <FalagardMapping windowType="OgreTray/Combobox"             targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/Combobox" />
+    <FalagardMapping windowType="OgreTray/DropDownMenu"         targetType="CEGUI/Combobox"         renderer="Core/Default"             lookNFeel="OgreTray/DropDownMenu" />
+    <FalagardMapping windowType="OgreTray/Group"                targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/Group" />
+    <FalagardMapping windowType="OgreTray/Checkbox"             targetType="CEGUI/ToggleButton"         renderer="Core/ToggleButton"        lookNFeel="OgreTray/Checkbox" />
+    <FalagardMapping windowType="OgreTray/RadioButton"          targetType="CEGUI/RadioButton"      renderer="Core/ToggleButton"        lookNFeel="OgreTray/RadioButton" />
+    <FalagardMapping windowType="OgreTray/Slider"               targetType="CEGUI/Slider"           renderer="Core/Slider"              lookNFeel="OgreTray/Slider" />
+    <FalagardMapping windowType="OgreTray/StaticImage"          targetType="DefaultWindow"          renderer="Core/StaticImage"         lookNFeel="OgreTray/StaticImage" />
+    <FalagardMapping windowType="OgreTray/AltStaticImage"       targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/AltStaticImage" />
+    <FalagardMapping windowType="OgreTray/Tooltip"              targetType="CEGUI/Tooltip"          renderer="Core/Tooltip"             lookNFeel="OgreTray/Tooltip" />
+    <FalagardMapping windowType="OgreTray/ItemListbox"          targetType="CEGUI/ItemListbox"      renderer="Core/ItemListbox"         lookNFeel="OgreTray/ItemListbox" />
+    <FalagardMapping windowType="OgreTray/ListboxItem"          targetType="CEGUI/ItemEntry"        renderer="Core/ItemEntry"           lookNFeel="OgreTray/ListboxItem" />
+    <FalagardMapping windowType="OgreTray/Spinner"              targetType="CEGUI/Spinner"          renderer="Core/Default"             lookNFeel="OgreTray/Spinner" /> 
+    <FalagardMapping windowType="OgreTray/ScrollablePane"       targetType="CEGUI/ScrollablePane"   renderer="Core/ScrollablePane"      lookNFeel="OgreTray/ScrollablePane" />  
+    <FalagardMapping windowType="OgreTray/ListHeaderSegment"    targetType="CEGUI/ListHeaderSegment" renderer="Core/ListHeaderSegment"  lookNFeel="OgreTray/ListHeaderSegment" />
+    <FalagardMapping windowType="OgreTray/ListHeader"           targetType="CEGUI/ListHeader"       renderer="Core/ListHeader"          lookNFeel="OgreTray/ListHeader" />
+    <FalagardMapping windowType="OgreTray/MultiColumnList"      targetType="CEGUI/MultiColumnList"  renderer="Core/MultiColumnList"     lookNFeel="OgreTray/MultiColumnList" />
+    <FalagardMapping windowType="OgreTray/MenuItem"             targetType="CEGUI/MenuItem"         renderer="Core/MenuItem"            lookNFeel="OgreTray/MenuItem" />
+    <FalagardMapping windowType="OgreTray/Menubar"              targetType="CEGUI/Menubar"          renderer="Core/Menubar"             lookNFeel="OgreTray/Menubar" />
+    <FalagardMapping windowType="OgreTray/PopupMenu"            targetType="CEGUI/PopupMenu"        renderer="Core/PopupMenu"           lookNFeel="OgreTray/PopupMenu" />
+    <FalagardMapping windowType="OgreTray/TabButton"            targetType="CEGUI/TabButton"        renderer="Core/TabButton"           lookNFeel="OgreTray/TabButton" />
+    <FalagardMapping windowType="OgreTray/TabButtonPane"        targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/TabButtonPane" />
+    <FalagardMapping windowType="OgreTray/TabContentPane"       targetType="DefaultWindow"          renderer="Core/Default"             lookNFeel="OgreTray/TabContentPane" />
+    <FalagardMapping windowType="OgreTray/TabControl"           targetType="CEGUI/TabControl"       renderer="Core/TabControl"          lookNFeel="OgreTray/TabControl" />
+
+    <FalagardMapping windowType="OgreTray/BG" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="OgreTray/BGTest" />
 </GUIScheme>
+
