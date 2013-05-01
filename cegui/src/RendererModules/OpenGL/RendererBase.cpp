@@ -56,16 +56,8 @@ OpenGLRendererBase::OpenGLRendererBase() :
     d_viewProjectionMatrix(new mat4Pimpl()),
     d_activeRenderTarget(0)
 {
-    // get rough max texture size
-    GLint max_tex_size;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
-    d_maxTextureSize = max_tex_size;
-
-    // initialise display size
-    GLint vp[4];
-    glGetIntegerv(GL_VIEWPORT, vp);
-    d_displaySize = Sizef(static_cast<float>(vp[2]),
-                          static_cast<float>(vp[3]));
+    initialiseMaxTextureSize();
+    initialiseDisplaySizeWithViewportSize();
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
 }
@@ -79,10 +71,7 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_viewProjectionMatrix(new mat4Pimpl()),
     d_activeRenderTarget(0)
 {
-    // get rough max texture size
-    GLint max_tex_size;
-    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
-    d_maxTextureSize = max_tex_size;
+    initialiseMaxTextureSize();
 
     d_defaultTarget = new OpenGLViewportTarget(*this);
 }
@@ -96,6 +85,23 @@ OpenGLRendererBase::~OpenGLRendererBase()
 
     delete d_defaultTarget;
     delete d_viewProjectionMatrix;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRendererBase::initialiseDisplaySizeWithViewportSize()
+{
+    GLint vp[4];
+    glGetIntegerv(GL_VIEWPORT, vp);
+    d_displaySize = Sizef(static_cast<float>(vp[2]),
+                          static_cast<float>(vp[3]));
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRendererBase::initialiseMaxTextureSize()
+{
+    GLint max_tex_size;
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &max_tex_size);
+    d_maxTextureSize = max_tex_size;
 }
 
 //----------------------------------------------------------------------------//
