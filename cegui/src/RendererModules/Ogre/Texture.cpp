@@ -171,13 +171,16 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
-void OgreTexture::blitFromMemory(void* sourceData, const Rectf& area)
+void OgreTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     if (d_texture.isNull()) // TODO: exception?
         return;
 
+    // NOTE: const_cast because Ogre takes pointer to non-const here. Rather
+    // than allow that to dictate poor choices in our own APIs, we choose to
+    // address the issue as close to the source of the problem as possible.
     Ogre::PixelBox pb(area.getWidth(), area.getHeight(),
-                      1, Ogre::PF_A8R8G8B8, sourceData);
+                      1, Ogre::PF_A8R8G8B8, const_cast<void*>(sourceData));
     Ogre::Image::Box box(area.left(), area.top(), area.right(), area.bottom());
     d_texture->getBuffer()->blitFromMemory(pb, box);
 }

@@ -29,8 +29,8 @@
 #ifndef _CEGUIOpenGL3StateChangeWrapper_h_
 #define _CEGUIOpenGL3StateChangeWrapper_h_
 
-#include "CEGUI/RendererModules/OpenGL3/GL.h"
-#include "CEGUI/RendererModules/OpenGL3/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -45,7 +45,7 @@ namespace CEGUI
     \brief
     OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
     */
-    class OPENGL3_GUIRENDERER_API OpenGL3StateChangeWrapper
+    class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper
     {
     protected:
         struct BlendFuncParams

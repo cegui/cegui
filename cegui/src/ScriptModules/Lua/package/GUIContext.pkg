@@ -40,7 +40,7 @@ class GUIContext : public RenderingSurface
     void setMouseClickEventGenerationEnabled(const bool enable);
     bool isMouseClickEventGenerationEnabled() const;
 
-    bool updateWindowContainingMouse();
+    void updateWindowContainingMouse();
 
     //void setInputCaptureWindow(Window* window);
     Window* getInputCaptureWindow() const;

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIOpenGL3RenderTarget.h
+    filename:   CEGUIOpenGLFBOTextureTarget.h
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
@@ -25,60 +25,57 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifndef _CEGUIOpenGL3FBOTextureTarget_h_
+#define _CEGUIOpenGL3FBOTextureTarget_h_
 
-#ifndef _CEGUIOpenGL3RenderTarget_h_
-#define _CEGUIOpenGL3RenderTarget_h_
-
-#include "CEGUI/RendererModules/OpenGL3/Renderer.h"
-#include "../../RenderTarget.h"
+#include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 #include "../../Rect.h"
+
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4251)
+#   pragma warning(disable : 4250)
 #endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-/*!
-\brief
-    Intermediate OpenGL implementation of a RenderTarget.
-*/
-template <typename T = RenderTarget>
-class OPENGL3_GUIRENDERER_API OpenGL3RenderTarget : public T
+class OpenGL3Texture;
+class OpenGL3Renderer;
+
+//! ~OpenGL3FBOTextureTarget - allows rendering to an OpenGL texture via FBO.
+class OPENGL_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGLTextureTarget
 {
 public:
-    //! Constructor
-    OpenGL3RenderTarget(OpenGL3Renderer& owner);
-    virtual ~OpenGL3RenderTarget();
+    OpenGL3FBOTextureTarget(OpenGL3Renderer& owner);
+    virtual ~OpenGL3FBOTextureTarget();
 
-    // implement parts of RenderTarget interface
-    void draw(const GeometryBuffer& buffer);
-    void draw(const RenderQueue& queue);
-    void setArea(const Rectf& area);
-    const Rectf& getArea() const;
+    // overrides from OpenGL3RenderTarget
     void activate();
     void deactivate();
-    void unprojectPoint(const GeometryBuffer& buff,
-                        const Vector2f& p_in, Vector2f& p_out) const;
+    // implementation of TextureTarget interface
+    void clear();
+    void declareRenderSize(const Sizef& sz);
+    // specialise functions from OpenGL3TextureTarget
+    void grabTexture();
+    void restoreTexture();
 
 protected:
-    //! helper that initialises the cached matrix
-    virtual void updateMatrix() const;
+    //! default size of created texture objects
+    static const float DEFAULT_SIZE;
 
-    //! OpenGL3Renderer that created this object
-    OpenGL3Renderer& d_owner;
-    //! holds defined area for the RenderTarget
-    Rectf d_area;
-    //! tangent of the y FOV half-angle; used to calculate viewing distance.
-    static const double d_yfov_tan;
-    //! saved copy of projection matrix
-    mutable mat4Pimpl* d_matrix;
-    //! true if saved matrix is up to date
-    mutable bool d_matrixValid;
-    //! tracks viewing distance (this is set up at the same time as d_matrix)
-    mutable double d_viewDistance;
+    //! allocate and set up the texture used with the FBO.
+    void initialiseRenderTexture();
+    //! resize the texture
+    void resizeRenderTexture();
+    //! Checks for OpenGL framebuffer completeness
+    void checkFramebufferStatus();
+
+    //! Frame buffer object.
+    GLuint d_frameBuffer;
+    //! Frame buffer object that was bound before we bound this one
+    GLuint d_previousFrameBuffer;
 };
 
 } // End of  CEGUI namespace section
@@ -87,4 +84,4 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIOpenGL3RenderTarget_h_
+#endif  // end of guard _CEGUIOpenGLFBOTextureTarget_h_

@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Sat Aug 18 14:04:56 2012.
+** Generated automatically by tolua++-1.0.93 on Mon Apr 29 09:53:24 2013.
 */
 
 #ifndef __cplusplus
@@ -25092,11 +25092,10 @@ static int tolua_CEGUI_CEGUI_GUIContext_updateWindowContainingMouse00(lua_State*
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'updateWindowContainingMouse'",NULL);
 #endif
  {
-  bool tolua_ret = (bool)  self->updateWindowContainingMouse();
- tolua_pushboolean(tolua_S,(bool)tolua_ret);
+  self->updateWindowContainingMouse();
  }
  }
- return 1;
+ return 0;
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'updateWindowContainingMouse'.",&tolua_err);

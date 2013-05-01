@@ -30,7 +30,7 @@
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 
 #include <iostream>
@@ -55,7 +55,7 @@ int pbAttrs[] =
 };
 
 //----------------------------------------------------------------------------//
-OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRenderer& owner) :
+OpenGLGLXPBTextureTarget::OpenGLGLXPBTextureTarget(OpenGLRendererBase& owner) :
     OpenGLTextureTarget(owner),
     d_pbuffer(0)
 {

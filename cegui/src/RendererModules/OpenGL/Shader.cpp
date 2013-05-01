@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include <GL/glew.h>
 
-#include "CEGUI/RendererModules/OpenGL3/Shader.h"
+#include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 

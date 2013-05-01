@@ -31,7 +31,7 @@
 
 #include <map>
 #include <string>
-#include "CEGUI/RendererModules/OpenGL3/GL.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

@@ -102,7 +102,7 @@ public:
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rectf& area);
+    void blitFromMemory(const void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
     bool isPixelFormatSupported(const PixelFormat fmt) const;
 
@@ -151,6 +151,8 @@ protected:
     //! load uncompressed data from buffer to GL texture.
     void loadCompressedTextureBuffer(const Sizef& buffer_size,
                                      const void* buffer) const;
+
+    GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
 
     //! The OpenGLES texture we're wrapping.
     GLuint d_ogltexture;

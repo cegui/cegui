@@ -1,10 +1,11 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLRenderer.h
-    created:    Sun Jan 11 2009
-    author:     Paul D Turner
+    filename:   RendererBase.h
+    created:    Tue Apr 30 2013
+    authors:    Paul D Turner <paul@cegui.org.uk>
+                Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,13 +26,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLRenderer_h_
-#define _CEGUIOpenGLRenderer_h_
+#ifndef _CEGUIRendererBase_h_
+#define _CEGUIRendererBase_h_
 
 #include "../../Base.h"
 #include "../../Renderer.h"
 #include "../../Size.h"
 #include "../../Vector.h"
+#include "../../Rect.h"
+#include "../../TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 #include <vector>
 #include <map>
@@ -51,149 +54,16 @@
 #   pragma warning(disable : 4251)
 #endif
 
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class OpenGLTexture;
-class OpenGLGeometryBuffer;
-class OGLTextureTargetFactory;
+class OpenGLGeometryBufferBase;
+struct mat4Pimpl;
 
-/*!
-\brief
-    Renderer class to interface with OpenGL
-*/
-class OPENGL_GUIRENDERER_API OpenGLRenderer : public Renderer
+//! Common base class used for other OpenGL based renderer modules.
+class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 {
 public:
-    //! Enumeration of valid texture target types.
-    enum TextureTargetType
-    {
-        //! Automatically choose the best type available.
-        TTT_AUTO,
-        //! Use targets based on frame buffer objects if available, else none.
-        TTT_FBO,
-        //! Use targets based on pbuffer support if available, else none.
-        TTT_PBUFFER,
-        //! Disable texture targets.
-        TTT_NONE
-    };
-
-    /*!
-    \brief
-        Convenience function that creates the required objects to initialise the
-        CEGUI system.
-
-        The created Renderer will use the current OpenGL viewport as it's
-        default surface size.
-
-        This will create and initialise the following objects for you:
-        - CEGUI::OpenGLRenderer
-        - CEGUI::DefaultResourceProvider
-        - CEGUI::System
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
-
-    \param abi
-        This must be set to CEGUI_VERSION_ABI
-
-    \return
-        Reference to the CEGUI::OpenGLRenderer object that was created.
-    */
-    static OpenGLRenderer& bootstrapSystem(
-                                    const TextureTargetType tt_type = TTT_AUTO,
-                                    const int abi = CEGUI_VERSION_ABI);
-
-    /*!
-    \brief
-        Convenience function that creates the required objects to initialise the
-        CEGUI system.
-
-        The created Renderer will use the current OpenGL viewport as it's
-        default surface size.
-
-        This will create and initialise the following objects for you:
-        - CEGUI::OpenGLRenderer
-        - CEGUI::DefaultResourceProvider
-        - CEGUI::System
-
-    \param display_size
-        Size object describing the initial display resolution.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.  Defaults to TTT_AUTO.
-
-    \param abi
-        This must be set to CEGUI_VERSION_ABI
-
-    \return
-        Reference to the CEGUI::OpenGLRenderer object that was created.
-    */
-    static OpenGLRenderer& bootstrapSystem(const Sizef& display_size,
-                                           const TextureTargetType tt_type = TTT_AUTO,
-                                           const int abi = CEGUI_VERSION_ABI);
-
-    /*!
-    \brief
-        Convenience function to cleanup the CEGUI system and related objects
-        that were created by calling the bootstrapSystem function.
-
-        This function will destroy the following objects for you:
-        - CEGUI::System
-        - CEGUI::DefaultResourceProvider
-        - CEGUI::OpenGLRenderer
-
-    \note
-        If you did not initialise CEGUI by calling the bootstrapSystem function,
-        you should \e not call this, but rather delete any objects you created
-        manually.
-    */
-    static void destroySystem();
-
-    /*!
-    \brief
-        Create an OpenGLRenderer object.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
-
-    \param abi
-        This must be set to CEGUI_VERSION_ABI
-    */
-    static OpenGLRenderer& create(const TextureTargetType tt_type = TTT_AUTO,
-                                  const int abi = CEGUI_VERSION_ABI);
-
-    /*!
-    \brief
-        Create an OpenGLRenderer object.
-
-    \param display_size
-        Size object describing the initial display resolution.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
-
-    \param abi
-        This must be set to CEGUI_VERSION_ABI
-    */
-    static OpenGLRenderer& create(const Sizef& display_size,
-                                  const TextureTargetType tt_type = TTT_AUTO,
-                                  const int abi = CEGUI_VERSION_ABI);
-
-    /*!
-    \brief
-        Destroy an OpenGLRenderer object.
-
-    \param renderer
-        The OpenGLRenderer object to be destroyed.
-    */
-    static void destroy(OpenGLRenderer& renderer);
-
     // implement Renderer interface
     RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBuffer();
@@ -212,8 +82,6 @@ public:
     void destroyAllTextures();
     Texture& getTexture(const String& name) const;
     bool isTextureDefined(const String& name) const;
-    void beginRendering();
-    void endRendering();
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;
     const Vector2f& getDisplayDPI() const;
@@ -284,7 +152,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    Sizef getAdjustedTextureSize(const Sizef& sz) const;
+    virtual Sizef getAdjustedTextureSize(const Sizef& sz) const;
 
     /*!
     \brief
@@ -294,51 +162,88 @@ public:
     static float getNextPOTSize(const float f);
 
     //! set the render states for the specified BlendMode.
-    void setupRenderingBlendMode(const BlendMode mode, const bool force = false);
+    virtual void setupRenderingBlendMode(const BlendMode mode,
+                                         const bool force = false) = 0;
+
+    //! Return whether EXT_texture_compression_s3tc is supported
+    virtual bool isS3TCSupported() const = 0;
+
+    /*!
+    \brief
+        Helper to return view projection matrix.
+
+    \return
+        The view projection matrix.
+    */
+    const mat4Pimpl* getViewProjectionMatrix();
+
+    /*!
+    \brief
+        Helper to set the view projection matrix.
+
+    \param viewProjectionMatrix
+        The view projection matrix.
+    */
+    void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
+
+    /*!
+    \brief
+        Helper to get the viewport.
+
+    \return
+        The viewport.
+    */
+    const CEGUI::Rectf& getActiveViewPort();
+
+    /*!
+    \brief
+        Helper to set the active render target.
+
+    \param renderTarget
+        The active RenderTarget.
+    */
+    void setActiveRenderTarget(RenderTarget* renderTarget);
+        
+    /*!
+    \brief
+        Helper to get the active render target.
+
+    \return
+        The active RenderTarget.
+    */
+    RenderTarget* getActiveRenderTarget();
 
 protected:
-    /*!
-    \brief
-        Constructor for OpenGL Renderer objects
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
-    */
-    OpenGLRenderer(const TextureTargetType tt_type);
+    OpenGLRendererBase();
 
     /*!
     \brief
-        Constructor for OpenGL Renderer objects.
+        Constructor.
 
     \param display_size
         Size object describing the initial display resolution.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
-    OpenGLRenderer(const Sizef& display_size, const TextureTargetType tt_type);
+    OpenGLRendererBase(const Sizef& display_size);
 
-    /*!
-    \brief
-        Destructor for OpenGLRenderer objects
-    */
-    virtual ~OpenGLRenderer();
-
-    //! init the extra GL states enabled via enableExtraStateSettings
-    void setupExtraStates();
-
-    //! cleanup the extra GL states enabled via enableExtraStateSettings
-    void cleanupExtraStates();
-
-    //! initialise OGLTextureTargetFactory that will generate TextureTargets
-    void initialiseTextureTargetFactory(const TextureTargetType tt_type);
+    //! Destructor!
+    virtual ~OpenGLRendererBase();
 
     //! helper to safely log the creation of a named texture
     static void logTextureCreation(const String& name);
     //! helper to safely log the destruction of a named texture
     static void logTextureDestruction(const String& name);
+
+    //! helper to set (rough) max texture size.
+    void initialiseMaxTextureSize();
+
+    //! helper to set display size with current viewport size.
+    void initialiseDisplaySizeWithViewportSize();
+
+    //! return some appropriate OpenGLGeometryBufferBase subclass instance.
+    virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl() = 0;
+
+    //! return some appropriate TextureTarget subclass instance.
+    virtual TextureTarget* createTextureTarget_impl() = 0;
 
     //! String holding the renderer identification text.
     static String d_rendererID;
@@ -352,8 +257,8 @@ protected:
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
-    //! container type used to hold GeometryBuffers we create.
-    typedef std::vector<OpenGLGeometryBuffer*> GeometryBufferList;
+    //! container type used to hold GeometryBuffers created.
+    typedef std::vector<OpenGLGeometryBufferBase*> GeometryBufferList;
     //! Container used to track geometry buffers.
     GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
@@ -365,16 +270,35 @@ protected:
     uint d_maxTextureSize;
     //! option of whether to initialise extra states that may not be at default
     bool d_initExtraStates;
-    //! pointer to a helper that creates TextureTargets supported by the system.
-    OGLTextureTargetFactory* d_textureTargetFactory;
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
+    //! View projection matrix
+    mat4Pimpl* d_viewProjectionMatrix;
+    //! The active RenderTarget
+    RenderTarget* d_activeRenderTarget;
 };
 
-} // End of  CEGUI namespace section
+/**
+    This class allows us to implement a factory template for creating and
+    destroying any type of TextureTarget.  The code that detects
+    the computer's abilities will generate an appropriate factory for a
+    TextureTarget based on what the host system can provide - or use the
+    default 'null' factory if no suitable TextureTargets are available.
+*/
+class OGLTextureTargetFactory
+{
+public:
+    OGLTextureTargetFactory() {}
+    virtual ~OGLTextureTargetFactory() {}
+    virtual TextureTarget* create(OpenGLRendererBase&) const
+        { return 0; }
+};
+
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif // end of guard _CEGUIOpenGLRenderer_h_
+#endif
+

@@ -175,13 +175,7 @@ const Image* FrameComponent::getImage(FrameImageComponent part,
     if (d_frameImages[part].d_propertyName.empty())
         return d_frameImages[part].d_image;
 
-    const String& image_name(
-        wnd.getProperty(d_frameImages[part].d_propertyName));
-
-    if (image_name.empty())
-        return 0;
-
-    return &ImageManager::getSingleton().get(image_name);
+    return wnd.getProperty<Image*>(d_frameImages[part].d_propertyName);
 }
 
 //----------------------------------------------------------------------------//

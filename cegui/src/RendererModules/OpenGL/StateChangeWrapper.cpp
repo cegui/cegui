@@ -28,7 +28,7 @@
 
 #include <GL/glew.h>
 
-#include "CEGUI/RendererModules/OpenGL3/StateChangeWrapper.h"  
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"  
 
 namespace CEGUI
 {

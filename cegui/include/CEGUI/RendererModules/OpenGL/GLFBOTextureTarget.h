@@ -46,7 +46,7 @@ class OpenGLTexture;
 class OPENGL_GUIRENDERER_API OpenGLFBOTextureTarget : public OpenGLTextureTarget
 {
 public:
-    OpenGLFBOTextureTarget(OpenGLRenderer& owner);
+    OpenGLFBOTextureTarget(OpenGLRendererBase& owner);
     virtual ~OpenGLFBOTextureTarget();
 
     // overrides from OpenGLRenderTarget

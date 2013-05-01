@@ -189,6 +189,12 @@ public:
         Validation is performed by means of a regular expression.  If the text
         matches the regex, the text is said to have passed validation.  If the
         text does not match with the regex then the text fails validation.
+        The default RegexMatcher uses the pcre library to perform regular
+        expression operations, details about the pattern syntax can be found
+        on unix-like systems by way of <tt>man pcrepattern</tt> (or online at
+        http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+        Alternatively, see the perl regex documentation at
+        http://perldoc.perl.org/perlre.html
 
     \return
         One of the MatchState enumerated values indicating the current match state.
@@ -203,6 +209,12 @@ public:
         Validation is performed by means of a regular expression.  If the text
         matches the regex, the text is said to have passed validation.  If the
         text does not match with the regex then the text fails validation.
+        The default RegexMatcher uses the pcre library to perform regular
+        expression operations, details about the pattern syntax can be found
+        on unix-like systems by way of <tt>man pcrepattern</tt> (or online at
+        http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+        Alternatively, see the perl regex documentation at
+        http://perldoc.perl.org/perlre.html
 
     \return
         String object containing the current validation regex data
@@ -314,6 +326,12 @@ public:
         Validation is performed by means of a regular expression.  If the text
         matches the regex, the text is said to have passed validation.  If the
         text does not match with the regex then the text fails validation.
+        The default RegexMatcher uses the pcre library to perform regular
+        expression operations, details about the pattern syntax can be found
+        on unix-like systems by way of <tt>man pcrepattern</tt> (or online at
+        http://www.pcre.org/pcre.txt (scroll / search "PCREPATTERN(3)").
+        Alternatively, see the perl regex documentation at
+        http://perldoc.perl.org/perlre.html
 
     \param validation_string
         String object containing the validation regex data to be used.
@@ -487,6 +505,8 @@ protected:
      *
      * This effectively asks permission from event handlers to proceed with the
      * change, updates d_validatorMatchState and returns an appropriate bool.
+     * The return value basically says whether or not to set the input string
+     * as the current text for the Editbox.
      */
     bool handleValidityChangeForString(const String& str);
 
@@ -619,6 +639,8 @@ protected:
     size_t d_dragAnchorIdx;
     //! Current match state of EditboxText
     MatchState d_validatorMatchState;
+    //! Previous match state change response
+    bool d_previousValidityChangeResponse;
 
 private:
 

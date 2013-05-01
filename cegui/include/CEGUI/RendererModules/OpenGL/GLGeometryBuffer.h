@@ -1,10 +1,11 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLFBOTextureTarget.h
-    created:    Wed, 8th Feb 2012
-    author:     Lukas E Meindl (based on code by Paul D Turner)
+    filename:   CEGUIOpenGLGeometryBuffer.h
+    created:    Thu Jan 8 2009
+    authors:    Paul D Turner <paul@cegui.org.uk>
+                Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,56 +26,34 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGL3FBOTextureTarget_h_
-#define _CEGUIOpenGL3FBOTextureTarget_h_
+#ifndef _CEGUIOpenGLGeometryBuffer_h_
+#define _CEGUIOpenGLGeometryBuffer_h_
 
-#include "CEGUI/RendererModules/OpenGL3/TextureTarget.h"
-#include "CEGUI/RendererModules/OpenGL3/GL.h"
-#include "../../Rect.h"
-
+#include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
-#   pragma warning(disable : 4250)
+#   pragma warning(disable : 4251)
 #endif
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class OpenGL3Texture;
+class OpenGLTexture;
+class OpenGLRenderer;
 
-//! ~OpenGL3FBOTextureTarget - allows rendering to an OpenGL texture via FBO.
-class OPENGL3_GUIRENDERER_API OpenGL3FBOTextureTarget : public OpenGL3TextureTarget
+/*!
+\brief
+    OpenGL based implementation of the GeometryBuffer interface.
+*/
+class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public OpenGLGeometryBufferBase
 {
 public:
-    OpenGL3FBOTextureTarget(OpenGL3Renderer& owner);
-    virtual ~OpenGL3FBOTextureTarget();
+    //! Constructor
+    OpenGLGeometryBuffer(OpenGLRenderer& owner);
 
-    // overrides from OpenGL3RenderTarget
-    void activate();
-    void deactivate();
-    // implementation of TextureTarget interface
-    void clear();
-    void declareRenderSize(const Sizef& sz);
-    // specialise functions from OpenGL3TextureTarget
-    void grabTexture();
-    void restoreTexture();
-
-protected:
-    //! default size of created texture objects
-    static const float DEFAULT_SIZE;
-
-    //! allocate and set up the texture used with the FBO.
-    void initialiseRenderTexture();
-    //! resize the texture
-    void resizeRenderTexture();
-    //! Checks for OpenGL framebuffer completeness
-    void checkFramebufferStatus();
-
-    //! Frame buffer object.
-    GLuint d_frameBuffer;
-    //! Frame buffer object that was bound before we bound this one
-    GLuint d_previousFrameBuffer;
+    // implementation/overrides of members from GeometryBuffer
+    void draw() const;
 };
 
 } // End of  CEGUI namespace section
@@ -83,4 +62,4 @@ protected:
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIOpenGLFBOTextureTarget_h_
+#endif  // end of guard _CEGUIOpenGLGeometryBuffer_h_

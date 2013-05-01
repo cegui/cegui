@@ -1,10 +1,10 @@
 /***********************************************************************
     filename:   CEGUIOpenGLFBOTextureTarget.cpp
-    created:    Wed, 8th Feb 2012
-    author:     Lukas E Meindl (based on code by Paul D Turner)
+    created:    Sun Jan 11 2009
+    author:     Paul D Turner
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -26,30 +26,27 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include <GL/glew.h>
-
-#include "CEGUI/RendererModules/OpenGL3/FBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/GeometryBuffer.h"
 
-#include "CEGUI/RendererModules/OpenGL3/Renderer.h"
-#include "CEGUI/RendererModules/OpenGL3/Texture.h"
-
-#include "CEGUI/Logger.h"
-
-#include <sstream>
-#include <iostream>
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-const float OpenGL3FBOTextureTarget::DEFAULT_SIZE = 128.0f;
+const float OpenGLFBOTextureTarget::DEFAULT_SIZE = 128.0f;
 
 //----------------------------------------------------------------------------//
-OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
-    OpenGL3TextureTarget(owner)
+OpenGLFBOTextureTarget::OpenGLFBOTextureTarget(OpenGLRendererBase& owner) :
+    OpenGLTextureTarget(owner)
 {
+    if (!GLEW_EXT_framebuffer_object)
+        CEGUI_THROW(InvalidRequestException("Hardware does not support FBO"));
+
     // no need to initialise d_previousFrameBuffer here, it will be
     // initialised in activate()
 
@@ -60,43 +57,43 @@ OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
 }
 
 //----------------------------------------------------------------------------//
-OpenGL3FBOTextureTarget::~OpenGL3FBOTextureTarget()
+OpenGLFBOTextureTarget::~OpenGLFBOTextureTarget()
 {
-    glDeleteFramebuffers(1, &d_frameBuffer);
+    glDeleteFramebuffersEXT(1, &d_frameBuffer);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::declareRenderSize(const Sizef& sz)
+void OpenGLFBOTextureTarget::declareRenderSize(const Sizef& sz)
 {
     setArea(Rectf(d_area.getPosition(), d_owner.getAdjustedTextureSize(sz)));
     resizeRenderTexture();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::activate()
+void OpenGLFBOTextureTarget::activate()
 {
     // remember previously bound FBO to make sure we set it back
     // when deactivating
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING,
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
             reinterpret_cast<GLint*>(&d_previousFrameBuffer));
 
     // switch to rendering to the texture
-    glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
 
-    OpenGL3TextureTarget::activate();
+    OpenGLTextureTarget::activate();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::deactivate()
+void OpenGLFBOTextureTarget::deactivate()
 {
-    OpenGL3TextureTarget::deactivate();
+    OpenGLTextureTarget::deactivate();
 
     // switch back to rendering to the previously bound framebuffer
-    glBindFramebuffer(GL_FRAMEBUFFER, d_previousFrameBuffer);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_previousFrameBuffer);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::clear()
+void OpenGLFBOTextureTarget::clear()
 {
     const Sizef sz(d_area.getSize());
     if(sz.d_height == 0.f || sz.d_height == 0.f)
@@ -108,37 +105,37 @@ void OpenGL3FBOTextureTarget::clear()
 
     // remember previously bound FBO to make sure we set it back
     GLuint previousFBO = 0;
-    glGetIntegerv(GL_FRAMEBUFFER_BINDING,
+    glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
             reinterpret_cast<GLint*>(&previousFBO));
 
     // switch to our FBO
-    glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
     // Clear it.
     glClearColor(0,0,0,0);
     glClear(GL_COLOR_BUFFER_BIT);
     // switch back to rendering to the previously bound FBO
-    glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, previousFBO);
 
     // restore previous clear colour
     glClearColor(old_col[0], old_col[1], old_col[2], old_col[3]);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::initialiseRenderTexture()
+void OpenGLFBOTextureTarget::initialiseRenderTexture()
 {
     // save old texture binding
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
     // create FBO
-    glGenFramebuffers(1, &d_frameBuffer);
+    glGenFramebuffersEXT(1, &d_frameBuffer);
 
     // remember previously bound FBO to make sure we set it back
     GLuint previousFBO = 0;
     glGetIntegerv(GL_FRAMEBUFFER_BINDING_EXT,
             reinterpret_cast<GLint*>(&previousFBO));
 
-    glBindFramebuffer(GL_FRAMEBUFFER, d_frameBuffer);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, d_frameBuffer);
 
     // set up the texture the FBO will draw to
     glGenTextures(1, &d_texture);
@@ -149,14 +146,13 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  static_cast<GLsizei>(DEFAULT_SIZE),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
+    glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT,
                               GL_TEXTURE_2D, d_texture, 0);
 
-    //Check for framebuffer completeness
-    checkFramebufferStatus();
+    // TODO: Check for completeness and then maybe try some alternative stuff?
 
     // switch from our frame buffer back to the previously bound buffer.
-    glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
+    glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, previousFBO);
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, d_area.getSize());
@@ -166,7 +162,7 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::resizeRenderTexture()
+void OpenGLFBOTextureTarget::resizeRenderTexture()
 {
     // save old texture binding
     GLuint old_tex;
@@ -190,71 +186,23 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::grabTexture()
+void OpenGLFBOTextureTarget::grabTexture()
 {
-    glDeleteFramebuffers(1, &d_frameBuffer);
+    glDeleteFramebuffersEXT(1, &d_frameBuffer);
     d_frameBuffer = 0;
 
-    OpenGL3TextureTarget::grabTexture();
+    OpenGLTextureTarget::grabTexture();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::restoreTexture()
+void OpenGLFBOTextureTarget::restoreTexture()
 {
-    OpenGL3TextureTarget::restoreTexture();
+    OpenGLTextureTarget::restoreTexture();
 
     initialiseRenderTexture();
     resizeRenderTexture();
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3FBOTextureTarget::checkFramebufferStatus()
-{
-    GLenum status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
-
-    // Check for completeness
-    if(status != GL_FRAMEBUFFER_COMPLETE)
-    {
-        std::stringstream stringStream;
-        stringStream << "OpenGL3Renderer: Error  Framebuffer is not complete\n";
-
-        switch(status)
-        {
-        case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT\n";
-            break;
-        case GL_FRAMEBUFFER_UNDEFINED:
-            stringStream << "GL_FRAMEBUFFER_UNDEFINED \n";
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER :
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER \n";
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT\n";
-            break;
-        case GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE:
-            stringStream << "GL_FRAMEBUFFER_INCOMPLETE_MULTISAMPLE\n";
-            break;
-        case GL_FRAMEBUFFER_UNSUPPORTED:
-            stringStream << "GL_FRAMEBUFFER_UNSUPPORTED\n";
-            break;
-        default:
-            stringStream << "Undefined Framebuffer error\n";
-            break;
-        }
-
-        if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
-            logger->logEvent(stringStream.str());
-        else
-            std::cerr << stringStream.str() << std::endl;
-    }
-}
-
-//----------------------------------------------------------------------------//
-
-
 
 } // End of  CEGUI namespace section
