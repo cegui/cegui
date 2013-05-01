@@ -45,20 +45,20 @@ struct SampleAnimationSetupFixture
             affector->createKeyFrame(1.0f, "1");
         }
         {
-            d_zeroLength = CEGUI::AnimationManager::getSingleton().createAnimation("ZeroLength");
-            d_zeroLength->setDuration(0.0f);
-            CEGUI::Affector* affector = d_zeroLength->createAffector("Alpha", "float");
+            d_zeroDuration = CEGUI::AnimationManager::getSingleton().createAnimation("ZeroLength");
+            d_zeroDuration->setDuration(0.0f);
+            CEGUI::Affector* affector = d_zeroDuration->createAffector("Alpha", "float");
         }
     }
 
     ~SampleAnimationSetupFixture()
     {
         CEGUI::AnimationManager::getSingleton().destroyAnimation(d_zeroToOne);
-        CEGUI::AnimationManager::getSingleton().destroyAnimation(d_zeroLength);
+        CEGUI::AnimationManager::getSingleton().destroyAnimation(d_zeroDuration);
     }
 
     CEGUI::Animation* d_zeroToOne;
-    CEGUI::Animation* d_zeroLength;
+    CEGUI::Animation* d_zeroDuration;
 };
 
 BOOST_FIXTURE_TEST_SUITE(AnimationSystem, SampleAnimationSetupFixture)
@@ -137,11 +137,11 @@ BOOST_AUTO_TEST_CASE(PlayBounceReplayMode)
     CEGUI::AnimationManager::getSingleton().destroyAnimationInstance(instance);
 }
 
-/*BOOST_AUTO_TEST_CASE(ZeroLengthReplayModes)
+BOOST_AUTO_TEST_CASE(ZeroDurationReplayModes)
 {
     {
-        CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroLength);
-        d_zeroLength->setReplayMode(CEGUI::Animation::RM_Once);
+        CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroDuration);
+        d_zeroDuration->setReplayMode(CEGUI::Animation::RM_Once);
 
         instance->start(false);
         BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -153,8 +153,8 @@ BOOST_AUTO_TEST_CASE(PlayBounceReplayMode)
         CEGUI::AnimationManager::getSingleton().destroyAnimationInstance(instance);
     }
     {
-        CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroLength);
-        d_zeroLength->setReplayMode(CEGUI::Animation::RM_Loop);
+        CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroDuration);
+        d_zeroDuration->setReplayMode(CEGUI::Animation::RM_Loop);
 
         instance->start(false);
         BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -166,8 +166,8 @@ BOOST_AUTO_TEST_CASE(PlayBounceReplayMode)
         CEGUI::AnimationManager::getSingleton().destroyAnimationInstance(instance);
     }
     {
-        CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroLength);
-        d_zeroLength->setReplayMode(CEGUI::Animation::RM_Bounce);
+        CEGUI::AnimationInstance* instance = CEGUI::AnimationManager::getSingleton().instantiateAnimation(d_zeroDuration);
+        d_zeroDuration->setReplayMode(CEGUI::Animation::RM_Bounce);
 
         instance->start(false);
         BOOST_CHECK_SMALL(instance->getPosition(), 0.0001f);
@@ -178,6 +178,6 @@ BOOST_AUTO_TEST_CASE(PlayBounceReplayMode)
 
         CEGUI::AnimationManager::getSingleton().destroyAnimationInstance(instance);
     }
-}*/
+}
 
 BOOST_AUTO_TEST_SUITE_END()
