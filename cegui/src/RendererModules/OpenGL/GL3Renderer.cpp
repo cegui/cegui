@@ -267,6 +267,12 @@ void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
 }
 
 //----------------------------------------------------------------------------//
+Sizef OpenGL3Renderer::getAdjustedTextureSize(const Sizef& sz) const
+{
+    return Sizef(sz);
+}
+
+//----------------------------------------------------------------------------//
 OpenGL3Shader*& OpenGL3Renderer::getShaderStandard()
 {
     return d_shaderStandard;

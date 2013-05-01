@@ -211,6 +211,7 @@ public:
     // base class overrides / abstract function implementations
     void beginRendering();
     void endRendering();
+    Sizef getAdjustedTextureSize(const Sizef& sz) const;
     bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
