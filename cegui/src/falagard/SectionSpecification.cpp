@@ -200,7 +200,7 @@ namespace CEGUI
         else if (!d_colourPropertyName.empty())
         {
             // if property accesses a ColourRect or a colour
-            cr = PropertyHelper<ColourRect>::fromString(wnd.getProperty(d_colourPropertyName));
+            cr = wnd.getProperty<ColourRect>(d_colourPropertyName);
         }
         // override is an explicitly defined ColourRect.
         else
@@ -283,11 +283,11 @@ bool SectionSpecification::shouldBeDrawn(const Window& wnd) const
 
     // return whether to draw based on property value.
     if (d_renderControlValue.empty())
-        return PropertyHelper<bool>::fromString(
-            property_source->getProperty(d_renderControlProperty));
-    else
         return property_source->
-            getProperty(d_renderControlProperty) == d_renderControlValue;
+            getProperty<bool>(d_renderControlProperty);
+    else
+        return
+            property_source->getProperty(d_renderControlProperty) == d_renderControlValue;
 }
 
 //----------------------------------------------------------------------------//

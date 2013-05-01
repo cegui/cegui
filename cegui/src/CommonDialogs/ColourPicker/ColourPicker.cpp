@@ -103,7 +103,7 @@ void ColourPicker::initialiseComponents(void)
     performChildWindowLayout();
 
     d_selectedColour =
-        PropertyHelper<ColourRect>::fromString(getProperty("Colour")).d_top_left;
+        getProperty<ColourRect>("Colour").d_top_left;
 
     initialiseColourPickerControlsWindow();
 }
@@ -142,8 +142,7 @@ void ColourPicker::initialiseColourPickerControlsWindow()
     String colourPickerControlsStyle =
         this->getProperty("ColourPickerControlsStyle");
 
-    d_shareColourPickerControlsWindow = PropertyHelper<bool>::fromString(
-        this->getProperty("ShareColourPickerControlsWidget"));
+    d_shareColourPickerControlsWindow = this->getProperty<bool>("ShareColourPickerControlsWidget");
 
     if (d_shareColourPickerControlsWindow)
     {
