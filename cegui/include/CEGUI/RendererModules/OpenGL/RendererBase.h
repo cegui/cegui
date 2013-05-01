@@ -233,6 +233,12 @@ protected:
     //! helper to safely log the destruction of a named texture
     static void logTextureDestruction(const String& name);
 
+    //! helper to set (rough) max texture size.
+    void initialiseMaxTextureSize();
+
+    //! helper to set display size with current viewport size.
+    void initialiseDisplaySizeWithViewportSize();
+
     //! return some appropriate OpenGLGeometryBufferBase subclass instance.
     virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl() = 0;
 
