@@ -1,9 +1,0 @@
-/***********************************************************************
-    RenderingContext
-***********************************************************************/
-struct RenderingContext
-{
-    RenderingSurface* surface;
-    const Window* owner;
-    Vector2 offset;
-};

@@ -12,7 +12,9 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_7 <br>
 @ref fal_elem_ref_sec_8 <br>
 @ref fal_elem_ref_sec_9 <br>
-@ref fal_elem_ref_sec_10 <br>
+@ref fal_elem_ref_eventaction <br>
+@ref fal_elem_ref_eventlinkdefintion <br>
+@ref fal_elem_ref_eventlinktarget <br>
 @ref fal_elem_ref_sec_11 <br>
 @ref fal_elem_ref_sec_12 <br>
 @ref fal_elem_ref_sec_13 <br>
@@ -22,11 +24,13 @@ The following pages contain reference material for the XML elements defined for 
 @ref fal_elem_ref_sec_17 <br>
 @ref fal_elem_ref_sec_18 <br>
 @ref fal_elem_ref_sec_19 <br>
+@ref fal_elem_ref_sec_imagepropertydim <br>
 @ref fal_elem_ref_sec_20 <br>
 @ref fal_elem_ref_sec_21 <br>
 @ref fal_elem_ref_sec_22 <br>
 @ref fal_elem_ref_sec_23 <br>
 @ref fal_elem_ref_sec_24 <br>
+@ref fal_elem_ref_sec_operatordim <br>
 @ref fal_elem_ref_sec_25 <br>
 @ref fal_elem_ref_sec_26 <br>
 @ref fal_elem_ref_sec_27 <br>
@@ -69,9 +73,8 @@ The @c \<AbsoluteDim\> element is used to define a component dimension for an ar
 @arg @c value  specifies the a number of pixels. Required attribute.
 
 @subsection fal_elem_ref_sec_2_3 Usage:
-@li The @c \<AbsoluteDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.
 @li The @c \<AbsoluteDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.
-@li The @c \<AbsoluteDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.
+@li The @c \<AbsoluteDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify an operand for a dimension calculation.
 
 @subsection fal_elem_ref_sec_2_4 Examples:
 The following shows @c \<AbsoluteDim\> used to define an area rectangle. In the example, all four component dimensions of the area rectangle are specified using @c \<AbsoluteDim\>:
@@ -96,26 +99,24 @@ The following shows @c \<AbsoluteDim\> in use as part of a dimension calculation
 @code
 <Area>
   <Dim type="LeftEdge" >
-    <WidgetDim widget="myWidget" dimension="Width" >
-      <DimOperator op="Subtract" >
-        <AbsoluteDim value="2" />
-      </DimOperator>
-    </WidgetDim>
+    <OperatorDim op="Subtract" >
+      <WidgetDim widget="myWidget" dimension="Width" />
+      <AbsoluteDim value="2" />
+    </OperatorDim>
   </Dim>
   ...
 </Area>
 @endcode
 
-Finally, we see @c \<AbsoluteDim\> as the starting dimension for a dimension calculation sequence. In the example, we are adding the value of some window property to the starting absolute value of six:
+Finally, we see @c \<AbsoluteDim\> as part of a dimension calculation sequence. In the example, we are adding the value of some window property to the starting absolute value of six:
 @code
 <Area>
   ...
   <Dim type="Height" >
-    <AbsoluteDim value="6">
-      <DimOperator op="Add" >
-        <PropertyDim name="someHeightProperty" />
-      </DimOperator>
-    </AbsoluteDim>
+    <OperatorDim op="Add" >
+      <AbsoluteDim value="6" />
+      <PropertyDim name="someHeightProperty" />
+    </OperatorDim>
   </Dim>
 </Area>
 @endcode
@@ -187,17 +188,29 @@ The @c \<AreaProperty\> element is intended to allow the system to access a prop
 @section fal_elem_ref_sec_5 \<Child\> Element
 
 @subsection fal_elem_ref_sec_5_1 Purpose:
-The @c \<Child\> element defines a component widget that will be created and added to each instance of any window using the @c \<WidgetLook\> being defined. Some base widgets have requirements for @c \<Child\> element definition that must be provided.
+The @c \<Child\> element defines a component widget that will be created and
+added to each instance of any window using the @c \<WidgetLook\> being defined.
+Some base widgets have requirements for @c \<Child\> element definition that
+must be provided.
 
 @subsection fal_elem_ref_sec_5_2 Attributes:
 @arg @c type  specifies the widget type to create. Required attribute.
-@arg @c nameSuffix  specifies a suffix which will be used when naming the widget. The final name of the child widget will be that of the parent with this suffix appended. Required attribute.
-@arg @c look  specifies the name of a widget look to apply to the child widget. You should only use this if 'type' specifies a Falagard base widget type. Optional attribute.
+@arg @c nameSuffix  specifies a suffix which will be used when naming the
+widget. The final name of the child widget will be that of the parent with
+this suffix appended. Required attribute.
+@arg @c look  specifies the name of a widget look to apply to the child widget.
+You should only use this if 'type' specifies a Falagard base widget type.
+Optional attribute.
+@arg @c autoWindow specifies whether this child window is to be flagged as an
+auto-window. Optional attribute, default value is @c true.
 
 @subsection fal_elem_ref_sec_5_3 Usage:
 Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
+    <li>The @c \<Child\> element may contain any number of @c \<EventAction\>
+        elements that define actions to be taken by the containing widget in
+        response to events being fired on the child widget being defined.</li>
     <li>The @c \<Child\> element must contain an @c \<Area\> element that defines the location of the child widget in relation to the component being defined.</li>
     <li>You may optionally specify a single @c \<VertAlignment\> element to set the vertical alignment for the child.</li>
     <li>You may optionally specify a single @c \<HorzAlignment\> element to set the horizontal alignment for the child.</li>
@@ -217,11 +230,10 @@ In this example, taken from TaharezLook.looknfeel, we see how the title bar chil
       <Dim type="TopEdge" ><AbsoluteDim value="0" /></Dim>
       <Dim type="Width" ><UnifiedDim scale="1" type="Width" /></Dim>
       <Dim type="Height" >
-        <FontDim type="LineSpacing">
-          <DimOperator op="Multiply">
-            <AbsoluteDim value="1.5" />
-          </DimOperator>
-        </FontDim>
+        <OperatorDim op="Multiply">
+          <FontDim type="LineSpacing" />
+          <AbsoluteDim value="1.5" />
+        </OperatorDim>
       </Dim>
     </Area>
     <Property name="AlwaysOnTop" value="False" />
@@ -370,83 +382,118 @@ The @c \<Dim\> element is intended as a container element for a single dimension
         <li>@c \<AbsoluteDim\></li>
         <li>@c \<FontDim\></li>
         <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
         <li>@c \<PropertyDim\></li>
         <li>@c \<UnifiedDim\></li>
         <li>@c \<WidgetDim\></li>
+        <li>@c \<OperatorDim\></li>
     </ul>
 </ul>
 
 @subsection fal_elem_ref_sec_9_4 Examples:
 
 
-@section fal_elem_ref_sec_10 \<DimOperator\> Element
+@section fal_elem_ref_eventaction \<EventAction\> Element
 
-@subsection fal_elem_ref_sec_10_1 Purpose:
-The @c \<DimOperator\> element allows you to combine two of the specialised dimension specifier elements via a simple mathematical operator. Since the dimension used as the second operand may also contain a @c \<DimOperator\> it is possible to create quite complex operations.
+@subsection fal_elem_ref_eventaction_1 Purpose:
+The @c \<EventAction\> element is used to specify a predefined action that
+should be performed by the containing widget for the child widget being
+defined, in response to a specified event being fired by the child widget.
+@par This is useful in situations where the containing widget has imagery or
+other content that is tied to some state on the child wiget.  By using the
+facilities provided by \<EventAction\> the containing widget is updated on
+demand in response to changes on the child.
 
-Of important note is the fact that in a large chain of operations, the calculations are done in reverse order. Also, there is no operator precedence as such, all operations are applied linearly.
+@subsection fal_elem_ref_eventaction_2 Attributes:
+@arg @c event specifies the name of the event on the Child component being
+defined that will trigger the action.  Required attribute.
+@arg @c action specifies one of the values defined for the
+@ref fal_enum_ref_sec_12 "ChildEventAction" enumeration. Required attribute.
 
-@subsection fal_elem_ref_sec_10_2 Attributes:
-@arg @c op  specifies one of the vales from the DimensionOperator enumeration indicating the mathematical operation to be performed. Required attribute.
-
-@subsection fal_elem_ref_sec_10_3 Usage:
+@subsection fal_elem_ref_eventaction_3 Usage:
 <ul>
-    <li>A single @c \<DimOperator\> element may appear as a sub-element within any of the following specialised dimension elements:</li>
-    <ul>
-        <li>@c \<AbsoluteDim\></li>
-        <li>@c \<FontDim\></li>
-        <li>@c \<ImageDim\></li>
-        <li>@c \<PropertyDim\></li>
-        <li>@c \<UnifiedDim\></li>
-        <li>@c \<WidgetDim\></li>
-    </ul>
-    
-    <li>The @c \<DimOperator\> element may contain any of the following specialised dimension elements:</li>
-    <ul>
-        <li>@c \<AbsoluteDim\></li>
-        <li>@c \<FontDim\></li>
-        <li>@c \<ImageDim\></li>
-        <li>@c \<PropertyDim\></li>
-        <li>@c \<UnifiedDim\></li>
-        <li>@c \<WidgetDim\></li>
-    </ul>
+    <li>The @c \<EventAction\> element may not conatin any sub-elements.</li>
+    <li>The @c \<EventAction\> element may only appear as a sub-element
+        within @c \<Child\> elements.</li>
 </ul>
 
-@subsection fal_elem_ref_sec_10_4 Examples:
-The following multiplies two simple AbsoluteDim dimensions:
+@subsection fal_elem_ref_eventaction_4 Examples:
+In this example, an EventAction is defined for the thumb of a slider widget.
+The definition indicates that when the @c Moved is fired for the thumb
+widget, the containing slider should redraw itself.  This is useful in scenarios
+where the slider has imagery whose position is dependent upon the position of
+the thumb - by using the \<EventAction\> system, the required updates are fully
+automated.
 @code
-...
-<AbsoluteDim value="10">
-  <DimOperator op="Multiply">
-    <AbsoluteDim value="4" />
-  </DimOperator>
-</AbsoluteDim>
-...
+<Falagard>
+  <WidgetLook name="ANewLook/Slider">
+  ...
+    <Child  type="ANewLook/SliderThumb" nameSuffix="__auto_thumb__">
+      <EventAction event="Moved" action="Redraw" />
+      <Area>
+        <Dim type="LeftEdge" ><AbsoluteDim value="0" /></Dim>
+        ...
+      </Area>
+      ...
+  </WidgetLook>
+  ...
+</Falagard>
 @endcode
 
-The next example takes the height of the font used for the target window, adds four pixels and multiplies the result by two.
 
-Note the effectively reversed order and lack of 'normal' operator precedence, the operation performed will be:
+@section fal_elem_ref_eventlinkdefintion \<EventLinkDefinition\> Element
 
-@f$ (2 {*} (4 + LineSpacing)) @f$
+@subsection fal_elem_ref_eventlinkdefintion_1 Purpose:
+The @c \<EventLinkDefinition\> element is used to define an event on a window
+using the @c \<WidgetLook\> being defined.  The new event can be linked to
+other events on the window, or to events on child windows.  For child windows,
+the window must exist, and the facility is largely intended to be able to link
+to events on windows defined via the @c \<Child\> element.
 
-and not:
+@subsection fal_elem_ref_eventlinkdefintion_2 Attributes:
+@arg @c name specifies the unique name to use for the new event.  Required attribute.
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined.  Optional attribute.
+@arg @c event specifies the name of an event on widget identified via @cwidget that
+is to be linked to the new event being defined. If this is omitted but @c widget is
+specified, it will be assumed that the event to link to has the same name as the
+event being defined. Optional attribute.
 
-@f$ ((2 {*} 4) + LineSpacing) @f$
+@subsection fal_elem_ref_eventlinkdefintion_3 Usage:
+<ul>
+    <li>The @c \<EventLinkDefinition\> element may contain any number of @c \<EventLinkTarget\> sub-elements.</li>
+    <li>The @c \<EventLinkDefinition\> element may only appear as a sub-element within @c \<WidgetLook\> elements.</li>
+</ul>
 
-@code
-...
-<AbsoluteDim value="2">
-  <DimOperator op="Multiply">
-    <AbsoluteDim value="4">
-      <DimOperator op="Add">
-        <FontDim type="LineSpacing" />
-      </DimOperator>
-    </AbsoluteDim>
-  </DimOperator>
-</AbsoluteDim>
-...
-@endcode
+@subsection fal_elem_ref_eventlinkdefintion_4 Examples:
+TODO
+
+
+@section fal_elem_ref_eventlinktarget \<EventLinkTarget\> Element
+
+@subsection fal_elem_ref_eventlinktarget_1 Purpose:
+The @c \<EventLinkTarget\> element specifies a target widget suffix and
+event name to be used with a @c \<EventLinkDefinition\>.  Whenever the
+event specified here fires, the event defined by the
+enclosing @c \<EventLinkDefinition\> will also fire.
+
+@subsection fal_elem_ref_eventlinktarget_2 Attributes:
+@arg @c widget specifies the name suffix of the child widget containing an event that
+will be linked to the new event being defined by the enclosing @c \<EventLinkDefinition\>.
+Optional attribute.
+@arg @c event specifies the name of an event on the widget identified via @cwidget that
+is to be linked to the event being defined by the enclosing @c \<EventLinkDefinition\>.
+If this is omitted but @c widget is specified, it will be assumed that the event to link
+to has the same name as the event being defined. Optional attribute.
+
+@subsection fal_elem_ref_eventlinktarget_3 Usage:
+<ul>
+    <li>The @c \<EventLinkTarget\> element may not contain sub-elements.</li>
+    <li>The @c \<EventLinkTarget\> element may only appear as a sub-element within @c \<EventLinkDefinition\> elements.</li>
+</ul>
+
+@subsection fal_elem_ref_eventlinktarget_4 Examples:
+TODO
 
 
 @section fal_elem_ref_sec_11 \<Falagard\> Element
@@ -494,9 +541,8 @@ The @c \<FontDim\> element is used to take some measurement of a Font, and use i
 
 @subsection fal_elem_ref_sec_12_3 Usage:
 <ul>
-    <li>The @c \<FontDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<FontDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<FontDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<FontDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_12_4 Examples:
@@ -535,7 +581,9 @@ The @c \<FontProperty\> element is intended to allow the system to access a prop
 @section fal_elem_ref_sec_14 \<FrameComponent\> Element
 
 @subsection fal_elem_ref_sec_14_1 Purpose:
-The @c \<FrameComponent\> element is used to define an imagery frame using a maximum of eight images for the corners and edges, and a single, formatted, image for the background. Any of the images may be omitted if not required.
+The @c \<FrameComponent\> element is used to define an imagery frame using a
+maximum of eight images for the corners and edges, and a single, formatted,
+image for the background. Any of the images may be omitted if not required.
 
 @subsection fal_elem_ref_sec_14_2 Attributes:
 No attributes are currently defined for the @c \<FrameComponent\> element.
@@ -545,7 +593,10 @@ Note: the sub-elements should appear in the order that they are defined here.
 
 <ul>
     <li>@c \<Area\> defining the target area for this frame.</li>
-    <li>Up to nine @c \<Image\> elements specifying the images to be drawn and in what positions.</li>
+    <li>Up to nine @c \<Image\> or @c \<ImageProperty\> elements specifying the
+        images to be drawn and in what positions. Note that it is acceptable to
+        freely mix @c \<Image\> and @c \<ImageProperty\> in a single 
+        @c \<FrameComponent\> definition.</li>
 
     <li>Optionally specifying the colours for the entire frame, one of the colour elements:</li>
     <ul>
@@ -650,11 +701,16 @@ This example defines a scrollbar type child widget. We have used the @c \<HorzAl
 The @c \<HorzFormat\> element is used to specify the required horizontal formatting for an image, frame, or text component.
 
 @subsection fal_elem_ref_sec_16_2 Attributes:
-@arg @c type  specifies the required horizontal formatting option.
-
 <ul>
-    <li>For use in ImageryComponents or FrameComponents, this will be one of the values from the HorizontalFormat enumeration.</li>
-    <li>For use in TextComponents, this will one of the values form the HorizontalTextFormat enumeration.</li>
+    <li>@c type  specifies the required horizontal formatting option.</li>
+    <ul>
+        <li>For use in ImageryComponents or FrameComponents, this will be one of the values from the HorizontalFormat enumeration.</li>
+        <li>For use in TextComponents, this will one of the values form the HorizontalTextFormat enumeration.</li>
+    </ul>
+    <li>@c component  Only for FrameComponent. Specifies the part of the frame
+        that this formatting is to be used for. Should be "TopEdge",
+        "BottomEdge" or "Background" from the FrameImageComponent enumeration.
+        Optional attribute, defaults to "Background".</li>
 </ul>
 
 @subsection fal_elem_ref_sec_16_3 Usage:
@@ -708,6 +764,10 @@ The @c \<HorzFormatProperty\> element is intended to allow the system to access 
 
 @subsection fal_elem_ref_sec_17_2 Attributes:
 @arg @c name  specifies the name of the property to access. The named property must access a string value that will be set to one of the enumeration values appropriate for the component being defined (HorizontalTextFormat for TextComponent, and HorizontalFormat for either FrameComponent or ImageryComponent). Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame
+that this formatting is to be used for. Should be "TopEdge",
+"BottomEdge" or "Background" from the FrameImageComponent enumeration.
+Optional attribute, defaults to "Background".</li>
 
 @subsection fal_elem_ref_sec_17_3 Usage:
 <ul>
@@ -732,7 +792,7 @@ The @c \<Image\> element is used to specify an Imageset and Image pair, and for 
 @subsection fal_elem_ref_sec_18_2 Attributes:
 @arg @c imageset  specifies the name of an Imageset which contains the image to be used. Required attribute.
 @arg @c image  specifies the name of the image from the specified Imageset to be used. Required attribute.
-@arg @c type  Only for FrameComponent. Specifies the part of the frame that this image is to be used for. One of the values from the FrameImageComponent enumeration. Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame that this image is to be used for. One of the values from the FrameImageComponent enumeration. Required attribute.
 
 @subsection fal_elem_ref_sec_18_3 Usage:
 <ul>
@@ -762,27 +822,72 @@ Here you can see the @c \<Image\> element used to specify the image to render fo
 @section fal_elem_ref_sec_19 \<ImageDim\> Element
 
 @subsection fal_elem_ref_sec_19_1 Purpose:
-The @c \<ImageDim\> element is used to define a component dimension for an area rectangle. @c \<ImageDim\> is used to specify some dimension of an image for use as an area dimension.
+The @c \<ImageDim\> element is used to define a component dimension for an area
+rectangle. @c \<ImageDim\> is used to specify some dimension of an image for use
+as an area dimension.
 
 @subsection fal_elem_ref_sec_19_2 Attributes:
-@arg @c imageset  specifies the name of an Imageset which contains the image to be used. Required attribute.
-@arg @c image  specifies the name of the image from the specified Imageset to be used. Required attribute.
-@arg @c dimension  specifies the image dimension to be used. This should be set to one of the values defined in the DimensionType enumeration.  Required attribute.
+@arg @c name  specifies the name of the image to be used. Required attribute.
+@arg @c dimension  specifies the image dimension to be used. This should be set
+to one of the values defined in the DimensionType enumeration.
+Required attribute.
 
 @subsection fal_elem_ref_sec_19_3 Usage:
 <ul>
-    <li>The @c \<ImageDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
-    <li>The @c \<ImageDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<ImageDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<ImageDim\> element can appear as a sub-element in @c \<Dim\>
+        to form a dimension specification for an area.</li>
+    <li>The @c \<ImageDim\> element can appear as a sub-element of
+        @c \<OperatorDim\> to specify one of the operands for a dimension
+        calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_19_4 Examples:
-This example shows a dimension that uses @c \<ImageDim\> to fetch the width of a specified image for use as the dimensions value:
+This example shows a dimension that uses @c \<ImageDim\> to fetch the width of a
+specified image for use as the dimensions value:
 @code
 ...
 <Area>
   <Dim type="LeftEdge">
-    <ImageDim imageset="myImages" image="leftImage" dimension="Width" />
+    <ImageDim name="myImages/leftImage" dimension="Width" />
+  </Dim>
+  ...
+</Area>
+...
+@endcode
+
+
+@section fal_elem_ref_sec_imagepropertydim \<ImagePropertyDim\> Element
+
+@subsection fal_elem_ref_sec_imagepropertydim_1 Purpose:
+The @c \<ImagePropertyDim\> element is used to define a component dimension for
+an area rectangle. @c \<ImagePropertyDim\> is used to specify some dimension of
+an image that is named by a property for use as an area dimension.
+
+@subsection fal_elem_ref_sec_imagepropertydim_2 Attributes:
+@arg @c name  specifies the name of the property that will fetch the name of the
+Image to be used. Required attribute.
+@arg @c dimension  specifies the image dimension to be used. This should be set
+to one of the values defined in the DimensionType enumeration.
+Required attribute.
+
+@subsection fal_elem_ref_sec_imagepropertydim_3 Usage:
+<ul>
+    <li>The @c \<ImagePropertyDim\> element can appear as a sub-element in
+        @c \<Dim\> to form a dimension specification for an area.</li>
+    <li>The @c \<ImagePropertyDim\> element can appear as a sub-element of
+        @c \<OperatorDim\> to specify one of the operands for a dimension
+        calculation.</li>
+</ul>
+
+@subsection fal_elem_ref_sec_imagepropertydim_4 Examples:
+This example shows a dimension that uses @c \<ImagePropertyDim\> to fetch the
+Height of the image specified in the property @c FrameTopImage for use as the
+dimension's value:
+@code
+...
+<Area>
+  <Dim type="TopEdge">
+    <ImagePropertyDim name="FrameTopImage" dimension="Height" />
   </Dim>
   ...
 </Area>
@@ -858,18 +963,22 @@ The following was taken from TaharezLook.looknfeel and shows a full ImageryCompo
 @section fal_elem_ref_sec_21 \<ImageProperty\> Element
 
 @subsection fal_elem_ref_sec_21_1 Purpose:
-The @c \<ImageProperty\> element is intended to allow the system to access a property on the target window to obtain the final image to be used when rendering the ImageryComponent being defined.
+The @c \<ImageProperty\> element is intended to allow the system to access a
+property on the target window to obtain the final image to be used when
+rendering the component being defined.
 
 @subsection fal_elem_ref_sec_21_2 Attributes:
-@arg @c name  specifies the name of the property to access. Required attribute. The named property must access a imageset \& image value pair of the form:
-@code
-"set:<imageset_name> image:<image_name>"
-@endcode
+@arg @c name  specifies the name of the property to access that will provide the
+name of the Image to be used. Required attribute.
+@arg @c component  Only for @c \<FrameComponent\>. Specifies the part of the frame
+that this image is to be used for. One of the values from the
+FrameImageComponent enumeration. Required attribute.
 
 @subsection fal_elem_ref_sec_21_3 Usage:
 <ul>
     <li>The @c \<ImageProperty\> element may not contain sub-elements.</li>
-    <li>The @c \<ImageProperty\> element may appear as a sub-element only within the @c \<ImageryComponent\> elements.</li>
+    <li>The @c \<ImageProperty\> element may appear as a sub-element within
+        either @c \<ImageryComponent\> or @c \<FrameComponent\> elements.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_21_4 Examples:
@@ -989,6 +1098,70 @@ This example defines a named area called 'TextArea'. It is defined as being an a
 @endcode
 
 
+@section fal_elem_ref_sec_operatordim \<OperatorDim\> Element
+
+@subsection fal_elem_ref_sec_operatordim_1 Purpose:
+The @c \<OperatorDim\> element allows you to use the result of performing a
+mathematical calculation on two two dimension elements. Since either dimension
+used as operands may also be an @c \<OperatorDim\> it is possible to create
+expression trees to perform any mathematical calculation that can be expressed
+using the supported operators.
+
+@subsection fal_elem_ref_sec_operatordim_2 Attributes:
+@arg @c op  specifies one of the vales from the DimensionOperator enumeration
+indicating the mathematical operation to be performed. Required attribute.
+
+@subsection fal_elem_ref_sec_operatordim_3 Usage:
+<ul>
+    <li>A single @c \<OperatorDim\> element may appear as a sub-element within the following:</li>
+    <ul>
+        <li>@c \<Dim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+    
+    <li>The @c \<OperatorDim\> element must contain any of two the following dimension elements:</li>
+    <ul>
+        <li>@c \<AbsoluteDim\></li>
+        <li>@c \<FontDim\></li>
+        <li>@c \<ImageDim\></li>
+        <li>@c \<ImagePropertyDim\></li>
+        <li>@c \<PropertyDim\></li>
+        <li>@c \<UnifiedDim\></li>
+        <li>@c \<WidgetDim\></li>
+        <li>@c \<OperatorDim\></li>
+    </ul>
+</ul>
+
+@subsection fal_elem_ref_sec_operatordim_4 Examples:
+The following multiplies two simple AbsoluteDim dimensions:
+@code
+...
+<OperatorDim op="Multiply">
+  <AbsoluteDim value="10" />
+  <AbsoluteDim value="4" />
+</OperatorDim>
+...
+@endcode
+
+The next example takes the height of the font used for the target window, adds four pixels and multiplies the result by two.
+
+The operation performed will be:
+
+@f$ (LineSpacing + 4) {*} 2 @f$
+
+@code
+...
+<OperatorDim op="Multiply">
+  <OperatorDim op="Add">
+    <FontDim type="LineSpacing" />
+    <AbsoluteDim value="4" />
+  </OperatorDim>
+  <AbsoluteDim value="2" />
+</OperatorDim>
+...
+@endcode
+
+
 @section fal_elem_ref_sec_25 \<Property\> Element
 
 @subsection fal_elem_ref_sec_25_1 Purpose:
@@ -1032,9 +1205,14 @@ The @c \<PropertyDefinition\> element creates a new named property for the widge
 @subsection fal_elem_ref_sec_26_2 Attributes:
 @arg @c name  specifies the name to use for the new property. Required attribute.
 @arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
-@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
+@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Defaults to @c Generic. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
 @arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. Optional attribute.
 
 @subsection fal_elem_ref_sec_26_3 Usage:
 <ul>
@@ -1086,9 +1264,16 @@ the first property to be linked to the property being defined, or the special
 value @c "__parent__" to indicate a back-link to the parent. Optional attribute.
 @arg @c targetProperty  specifies the name of the property on the child widget that is to be the first property linked to the new property being defined. If this is omitted but @c widget is specified, it will be assumed that the target property has the same name as the property being defined. Optional attribute.
 @arg @c initialValue  specifies the initial value to be assigned to the property. Optional attribute.
-@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Optional attribute.
+@arg @c type  specifies the data type of the property. This should be one of the values defined for the PropertyType enumeration. Defaults to @c Generic. Optional attribute.
 @arg @c redrawOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to redraw itself. Optional attribute.
 @arg @c layoutOnWrite  boolean setting specifies whether writing a new value to this property should cause the widget being defined to re-layout it's defined child widgets. Optional attribute.
+@arg @c fireEvent  specifies the name of an event to fire when this property is
+written to. The event is passed a CEGUI::WindowEventArgs reference with the
+window field initialised to the window upon which the property was written. For
+the CEGUI::GlobalEventSet, the event uses the name of the WidgetLook being
+defined as the event namespace. It is the responsibility of the WidgetLook
+author to ensure that collisions with predefined events are avoided.
+Optional attribute.
 
 @subsection fal_elem_ref_sec_27_3 Usage:
 <ul>
@@ -1174,9 +1359,8 @@ Optional attribute.
 
 @subsection fal_elem_ref_sec_28_3 Usage:
 <ul>
-    <li>The @c \<PropertyDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<PropertyDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<PropertyDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<PropertyDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_28_4 Examples:
@@ -1431,9 +1615,8 @@ The @c \<UnifiedDim\> element is used to define a component dimension for an are
 
 @subsection fal_elem_ref_sec_34_3 Usage:
 <ul>
-    <li>The @c \<UnifiedDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<UnifiedDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<UnifiedDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<UnifiedDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_34_4 Examples:
@@ -1493,6 +1676,10 @@ The @c \<VertFormat\> element is used to specify the required vertical formattin
         <li>For use in ImageryComponents and FrameComponents, this will be one of the values from the VerticalFormat enumeration.</li>
         <li>For use in TextComponents, this will one of the values form the VerticalTextFormat enumeration.</li>
     </ul>
+    <li>@c component  Only for FrameComponent. Specifies the part of the frame
+        that this formatting is to be used for. Should be "LeftEdge",
+        "RightEdge" or "Background" from the FrameImageComponent enumeration.
+        Optional attribute, defaults to "Background".</li>
 </ul>
 
 @subsection fal_elem_ref_sec_36_3 Usage:
@@ -1547,6 +1734,10 @@ The @c \<VertFormatProperty\> element is intended to allow the system to access 
 
 @subsection fal_elem_ref_sec_37_2 Attributes:
 @arg @c name  specifies the name of the property to access. The named property must access a string value that will be set to one of the enumeration values appropriate for the component being defined (VerticalTextFormat for TextComponent, and VerticalFormat for FrameComponent and ImageryComponent).  Required attribute.
+@arg @c component  Only for FrameComponent. Specifies the part of the frame
+that this formatting is to be used for. Should be "LeftEdge",
+"RightEdge" or "Background" from the FrameImageComponent enumeration.
+Optional attribute, defaults to "Background".</li>
 
 @subsection fal_elem_ref_sec_37_3 Usage:
 <ul>
@@ -1574,9 +1765,8 @@ The @c \<WidgetDim\> element is used to define a component dimension for an area
 
 @subsection fal_elem_ref_sec_38_3 Usage:
 <ul>
-    <li>The @c \<WidgetDim\> element may contain a single @c \<DimOperator\> element in order to form a dimension calculation.</li>
     <li>The @c \<WidgetDim\> element can appear as a sub-element in @c \<Dim\> to form a dimension specification for an area.</li>
-    <li>The @c \<WidgetDim\> element can appear as a sub-element of @c \<DimOperator\> to specify the second operand for a dimension calculation.</li>
+    <li>The @c \<WidgetDim\> element can appear as a sub-element of @c \<OperatorDim\> to specify one of the operands for a dimension calculation.</li>
 </ul>
 
 @subsection fal_elem_ref_sec_38_4 Examples:

@@ -1,11 +1,11 @@
-prefix=@prefix@
-exec_prefix=@exec_prefix@
-libdir=@libdir@
-includedir=@includedir@
-datafiles=@datarootdir@/@PACKAGE@
+prefix=@CMAKE_INSTALL_PREFIX@
+exec_prefix=${prefix}
+libdir=${prefix}/@CEGUI_LIB_INSTALL_DIR@
+includedir=${prefix}/@CEGUI_INCLUDE_INSTALL_DIR@
+datafiles=${prefix}/@CEGUI_DATA_INSTALL_DIR@
 
 Name: CEGUI OpenGL Renderer
 Description: OpenGL based renderer module for CEGUI.
-Version: @VERSION@
-Requires: CEGUI = @VERSION@
-Libs: -lCEGUIOpenGLRenderer@cegui_bsfx@
+Version: @CEGUI_VERSION@
+Requires: CEGUI@CEGUI_SLOT_VERSION@ = @CEGUI_VERSION@
+Libs: -l@CEGUI_OPENGL_RENDERER_LIBNAME@
