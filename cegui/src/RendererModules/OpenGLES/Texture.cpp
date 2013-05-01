@@ -168,23 +168,9 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
 
     // store size of original data we are loading
     d_dataSize = buffer_size;
-    // update scale values
     updateCachedScaleValues();
 
-    // save old texture binding
-    GLuint old_tex;
-    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
-
-    // do the real work of getting the data into the texture
-    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-
-    if (d_isCompressed)
-        loadCompressedTextureBuffer(buffer_size, buffer);
-    else
-        loadUncompressedTextureBuffer(buffer_size, buffer);
-
-    // restore previous texture binding.
-    glBindTexture(GL_TEXTURE_2D, old_tex);
+    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//
@@ -208,14 +194,7 @@ void OpenGLESTexture::loadUncompressedTextureBuffer(const Sizef& buffer_size,
 void OpenGLESTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
                                                   const void* buffer) const
 {
-    // Calculate buffer size in bytes
-    GLsizei image_space = 
-        static_cast<GLsizei>(buffer_size.d_width * buffer_size.d_height);
-
-    GLsizei num_bits =
-        (d_format == GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG ? 4 : 2);
-
-    GLsizei image_size = (image_space * num_bits + 7) / 8;
+    GLsizei image_size = getCompressedTextureSize(buffer_size); 
 
     glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
                            static_cast<GLsizei>(buffer_size.d_width),
@@ -224,24 +203,32 @@ void OpenGLESTexture::loadCompressedTextureBuffer(const Sizef& buffer_size,
 }
 
 //----------------------------------------------------------------------------//
+GLsizei getCompressedTextureSize(const Sizef& pixel_size) const
+{
+    // Calculate buffer size in bytes
+    GLsizei image_space = 
+        static_cast<GLsizei>(pixel_size.d_width * pixel_size.d_height);
+
+    GLsizei num_bits =
+        (d_format == GL_COMPRESSED_RGBA_PVRTC_4BPPV1_IMG ? 4 : 2);
+
+    return (image_space * num_bits + 7) / 8;
+}
+
+//----------------------------------------------------------------------------//
 void OpenGLESTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
-    // store size of original data we are loading
-    d_dataSize = area.getSize();
-    setTextureSize(d_dataSize);
-    // update scale values
-    updateCachedScaleValues();
-
     // save old texture binding
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
     // do the real work of getting the data into the texture
     glBindTexture(GL_TEXTURE_2D, d_ogltexture);
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0,
-                    static_cast<GLsizei>(d_dataSize.d_width),
-                    static_cast<GLsizei>(d_dataSize.d_height),
-                    GL_RGBA, GL_UNSIGNED_BYTE, sourceData);
+
+    if (d_isCompressed)
+        loadCompressedTextureBuffer(area, sourceData);
+    else
+        loadUncompressedTextureBuffer(area, sourceData);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
@@ -269,31 +256,38 @@ void OpenGLESTexture::setTextureSize(const Sizef& sz)
 void OpenGLESTexture::setTextureSize_impl(const Sizef& sz)
 {
     const Sizef size(d_owner.getAdjustedTextureSize(sz));
+    d_size = size;
 
-    if (!d_isCompressed)
+    // make sure size is within boundaries
+    GLfloat maxSize = static_cast<GLfloat>(d_owner.getMaxTextureSize());
+    if ((size.d_width > maxSize) || (size.d_height > maxSize))
+        CEGUI_THROW(RendererException("size too big"));
+
+    // save old texture binding
+    GLuint old_tex;
+    glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
+
+    glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+
+    // set texture to required size
+    if (d_isCompressed)
     {
-        // make sure size is within boundaries
-        GLfloat maxSize = static_cast<GLfloat>(d_owner.getMaxTextureSize());
-        if ((size.d_width > maxSize) || (size.d_height > maxSize))
-            CEGUI_THROW(RendererException("size too big"));
-
-        // save old texture binding
-        GLuint old_tex;
-        glGetIntegerv(GL_TEXTURE_BINDING_2D,
-                      reinterpret_cast<GLint*>(&old_tex));
-
-        // set texture to required size
-        glBindTexture(GL_TEXTURE_2D, d_ogltexture);
+        const GLsizei image_size = getCompressedTextureSize(size);
+        glCompressedTexImage2D(GL_TEXTURE_2D, 0, d_format, 
+                               static_cast<GLsizei>(size.d_width),
+                               static_cast<GLsizei>(size.d_height),
+                               0, image_size, 0);
+    }
+    else
+    {
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
                      static_cast<GLsizei>(size.d_width),
                      static_cast<GLsizei>(size.d_height),
                      0, d_format , d_subpixelFormat, 0);
-
-        // restore previous texture binding.
-        glBindTexture(GL_TEXTURE_2D, old_tex);
     }
 
-    d_size = size;
+    // restore previous texture binding.
+    glBindTexture(GL_TEXTURE_2D, old_tex);
 }
 
 //----------------------------------------------------------------------------//
