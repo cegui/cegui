@@ -32,6 +32,7 @@
 #include "CEGUIExceptions.h"
 #include "CEGUIWindow.h"
 #include "CEGUIAffector.h"
+#include "CEGUILogger.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -229,9 +230,21 @@ float AnimationInstance::getMaxStepDeltaClamp() const
 void AnimationInstance::start(bool skipNextStep)
 {
     setPosition(0.0);
-    d_running = true;
     d_skipNextStep = skipNextStep;
-    onAnimationStarted();
+
+    if (d_definition && d_definition->getDuration() > 0)
+    {
+        d_running = true;
+        onAnimationStarted();
+    }
+    else
+    {
+        Logger::getSingleton().logEvent(
+            "AnimationInstance::start - Starting an animation instance with "
+            "no animation definition or 0 duration has no effect!", Warnings);
+        onAnimationStarted();
+        onAnimationEnded();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -252,9 +265,21 @@ void AnimationInstance::pause()
 //----------------------------------------------------------------------------//
 void AnimationInstance::unpause(bool skipNextStep)
 {
-    d_running = true;
     d_skipNextStep = skipNextStep;
-    onAnimationUnpaused();
+
+    if (d_definition && d_definition->getDuration() > 0)
+    {
+        d_running = true;
+        onAnimationUnpaused();
+    }
+    else
+    {
+        Logger::getSingleton().logEvent(
+            "AnimationInstance::unpause - Unpausing an animation instance with "
+            "no animation definition or 0 duration has no effect!", Warnings);
+        onAnimationUnpaused();
+        onAnimationEnded();
+    }
 }
 
 //----------------------------------------------------------------------------//
