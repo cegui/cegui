@@ -53,7 +53,8 @@ OpenGLRendererBase::OpenGLRendererBase() :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(new mat4Pimpl())
+    d_viewProjectionMatrix(new mat4Pimpl()),
+    d_activeRenderTarget(0)
 {
     // get rough max texture size
     GLint max_tex_size;
@@ -75,7 +76,8 @@ OpenGLRendererBase::OpenGLRendererBase(const Sizef& display_size) :
     d_displayDPI(96, 96),
     d_initExtraStates(false),
     d_activeBlendMode(BM_INVALID),
-    d_viewProjectionMatrix(new mat4Pimpl())
+    d_viewProjectionMatrix(new mat4Pimpl()),
+    d_activeRenderTarget(0)
 {
     // get rough max texture size
     GLint max_tex_size;

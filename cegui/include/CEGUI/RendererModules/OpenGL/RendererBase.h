@@ -152,7 +152,7 @@ public:
     \return
         Size object containing - possibly different - output size.
     */
-    Sizef getAdjustedTextureSize(const Sizef& sz) const;
+    virtual Sizef getAdjustedTextureSize(const Sizef& sz) const;
 
     /*!
     \brief
