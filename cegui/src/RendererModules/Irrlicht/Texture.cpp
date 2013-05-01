@@ -157,13 +157,13 @@ void IrrlichtTexture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtTexture::blitFromMemory(void* sourceData, const Rectf& area)
+void IrrlichtTexture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     if (!d_texture)
         return;
 
     const size_t pitch = d_texture->getPitch();
-    const uint32* src = static_cast<uint32*>(sourceData);
+    const uint32* src = static_cast<const uint32*>(sourceData);
     uint32* dst = static_cast<uint32*>(d_texture->lock());
 
     if (!dst)

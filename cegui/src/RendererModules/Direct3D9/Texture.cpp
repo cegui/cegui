@@ -596,7 +596,7 @@ IDirect3DSurface9* Direct3D9Texture::getTextureSurface() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9Texture::blitFromMemory(void* sourceData, const Rectf& area)
+void Direct3D9Texture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     D3DSurfaceBlitter blitter(d_owner.getDevice(), d_texture);
     blitter.blitFromMemory(static_cast<const uint32*>(sourceData), area);

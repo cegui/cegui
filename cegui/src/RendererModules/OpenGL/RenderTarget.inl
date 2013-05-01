@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLRenderTarget.cpp
-    created:    Wed Jan 14 2009
-    author:     Paul D Turner
+    filename:   CEGUIOpenGL3RenderTarget.cpp
+    created:    Wed, 8th Feb 2012
+    author:     Lukas E Meindl (based on code by Paul D Turner)
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -27,9 +27,13 @@
  ***************************************************************************/
 #include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
 #include "CEGUI/RenderQueue.h"
-#include "CEGUI/RendererModules/OpenGL/GeometryBuffer.h"
-#include "CEGUI/RendererModules/OpenGL/GL.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
+#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+
 #include <cmath>
+
+#include "glm/glm.hpp"
+#include "glm/gtc/matrix_transform.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -40,13 +44,21 @@ const double OpenGLRenderTarget<T>::d_yfov_tan = 0.267949192431123;
 
 //----------------------------------------------------------------------------//
 template <typename T>
-OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRenderer& owner) :
+OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
+    d_matrix(0),
     d_matrixValid(false),
     d_viewDistance(0)
 {
-    //d_matrix does not need to be initialised here, we have d_matrixValid
+    d_matrix = new mat4Pimpl();
+}
+
+//----------------------------------------------------------------------------//
+template <typename T>
+OpenGLRenderTarget<T>::~OpenGLRenderTarget()
+{
+    delete d_matrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -93,8 +105,9 @@ void OpenGLRenderTarget<T>::activate()
     if (!d_matrixValid)
         updateMatrix();
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadMatrixd(d_matrix);
+    d_owner.setViewProjectionMatrix(d_matrix);
+
+    d_owner.setActiveRenderTarget(this);
 }
 
 //----------------------------------------------------------------------------//
@@ -111,8 +124,8 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     if (!d_matrixValid)
         updateMatrix();
 
-    const OpenGLGeometryBuffer& gb =
-        static_cast<const OpenGLGeometryBuffer&>(buff);
+    const OpenGLGeometryBufferBase& gb =
+        static_cast<const OpenGLGeometryBufferBase&>(buff);
 
     const GLint vp[4] = {
         static_cast<GLint>(d_area.left()),
@@ -123,88 +136,79 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 
     GLdouble in_x, in_y, in_z = 0.0;
 
+    glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
+    const glm::mat4& projMatrix = d_matrix->d_matrix;
+    const glm::mat4& modelMatrix = gb.getMatrix()->d_matrix;
+
     // unproject the ends of the ray
-    GLdouble r1_x, r1_y, r1_z;
-    GLdouble r2_x, r2_y, r2_z;
+    glm::vec3 unprojected1;
+    glm::vec3 unprojected2;
     in_x = vp[2] * 0.5;
     in_y = vp[3] * 0.5;
     in_z = -d_viewDistance;
-    gluUnProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
-                 &r1_x, &r1_y, &r1_z);
+    unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = p_in.d_x;
     in_y = vp[3] - p_in.d_y;
     in_z = 0.0;
-    gluUnProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
-                 &r2_x, &r2_y, &r2_z);
+    unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
     // project points to orientate them with GeometryBuffer plane
-    GLdouble p1_x, p1_y, p1_z;
-    GLdouble p2_x, p2_y, p2_z;
-    GLdouble p3_x, p3_y, p3_z;
+    glm::vec3 projected1;
+    glm::vec3 projected2;
+    glm::vec3 projected3;
     in_x = 0.0;
     in_y = 0.0;
-    gluProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
-               &p1_x, &p1_y, &p1_z);
+    projected1 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = 1.0;
     in_y = 0.0;
-    gluProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
-               &p2_x, &p2_y, &p2_z);
+    projected2 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
     in_x = 0.0;
     in_y = 1.0;
-    gluProject(in_x, in_y, in_z, gb.getMatrix(), d_matrix, vp,
-               &p3_x, &p3_y, &p3_z);
+    projected3 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
     // calculate vectors for generating the plane
-    const double pv1_x = p2_x - p1_x;
-    const double pv1_y = p2_y - p1_y;
-    const double pv1_z = p2_z - p1_z;
-    const double pv2_x = p3_x - p1_x;
-    const double pv2_y = p3_y - p1_y;
-    const double pv2_z = p3_z - p1_z;
+    const glm::vec3 pv1 = projected2 - projected1;
+    const glm::vec3 pv2 = projected3 - projected1;
     // given the vectors, calculate the plane normal
-    const double pn_x = pv1_y * pv2_z - pv1_z * pv2_y;
-    const double pn_y = pv1_z * pv2_x - pv1_x * pv2_z;
-    const double pn_z = pv1_x * pv2_y - pv1_y * pv2_x;
+    const glm::vec3 planeNormal = glm::cross(pv1, pv2);
     // calculate plane
-    const double pn_len = std::sqrt(pn_x * pn_x + pn_y * pn_y + pn_z * pn_z);
-    const double pl_a = pn_x / pn_len;
-    const double pl_b = pn_y / pn_len;
-    const double pl_c = pn_z / pn_len;
-    const double pl_d = -(p1_x * pl_a + p1_y * pl_b + p1_z * pl_c);
+    const glm::vec3 planeNormalNormalized = glm::normalize(planeNormal);
+    const double pl_d = - glm::dot(projected1, planeNormalNormalized);
     // calculate vector of picking ray
-    const double rv_x = r1_x - r2_x;
-    const double rv_y = r1_y - r2_y;
-    const double rv_z = r1_z - r2_z;
+    const glm::vec3 rv = unprojected1 - unprojected2;
     // calculate intersection of ray and plane
-    const double pn_dot_r1 = (r1_x * pn_x + r1_y * pn_y + r1_z * pn_z);
-    const double pn_dot_rv = (rv_x * pn_x + rv_y * pn_y + rv_z * pn_z);
+    const double pn_dot_r1 = glm::dot(unprojected1, planeNormal);
+    const double pn_dot_rv = glm::dot(rv, planeNormal);
     const double tmp1 = pn_dot_rv != 0.0 ? (pn_dot_r1 + pl_d) / pn_dot_rv : 0.0;
-    const double is_x = r1_x - rv_x * tmp1;
-    const double is_y = r1_y - rv_y * tmp1;
+    const double is_x = unprojected1.x - rv.x * tmp1;
+    const double is_y = unprojected1.y - rv.y * tmp1;
 
     p_out.d_x = static_cast<float>(is_x);
     p_out.d_y = static_cast<float>(is_y);
+
+    p_out = p_in; // CrazyEddie wanted this
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void OpenGLRenderTarget<T>::updateMatrix() const
 {
-    const double w = d_area.getWidth();
-    const double h = d_area.getHeight();
-    const double aspect = w / h;
-    const double midx = w * 0.5;
-    const double midy = h * 0.5;
+    const float w = d_area.getWidth();
+    const float h = d_area.getHeight();
+    const float aspect = w / h;
+    const float midx = w * 0.5f;
+    const float midy = h * 0.5f;
     d_viewDistance = midx / (aspect * d_yfov_tan);
 
-    glMatrixMode(GL_PROJECTION);
-    glPushMatrix();
-    glLoadIdentity();
-    gluPerspective(30.0, aspect, d_viewDistance * 0.5, d_viewDistance * 2.0);
+    glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
+    glm::vec3 center = glm::vec3(midx, midy, 1);
+    glm::vec3 up = glm::vec3(0, -1, 0);
+
+    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
     // Projection matrix abuse!
-    gluLookAt(midx, midy, -d_viewDistance, midx, midy, 1, 0, -1, 0);
-    glGetDoublev(GL_PROJECTION_MATRIX, d_matrix);
-    glPopMatrix();
+    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
+  
+    d_matrix->d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
 }

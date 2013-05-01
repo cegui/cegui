@@ -203,14 +203,7 @@ endif()
 if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
-endif()
-
-if (CEGUI_SAMPLES_USE_OPENGL)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
-endif()
-
-if (CEGUI_SAMPLES_USE_OPENGL3)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL3_RENDERER_LIBNAME})
 endif()
 
 if (CEGUI_SAMPLES_USE_OGRE)

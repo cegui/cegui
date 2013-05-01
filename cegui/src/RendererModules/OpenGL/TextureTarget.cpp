@@ -35,7 +35,7 @@ namespace CEGUI
 uint OpenGLTextureTarget::s_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
-OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRenderer& owner) :
+OpenGLTextureTarget::OpenGLTextureTarget(OpenGLRendererBase& owner) :
     OpenGLRenderTarget<TextureTarget>(owner),
     d_texture(0)
 {

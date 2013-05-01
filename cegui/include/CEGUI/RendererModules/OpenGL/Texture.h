@@ -31,7 +31,7 @@
 #include "../../Base.h"
 #include "../../Renderer.h"
 #include "../../Texture.h"
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -107,29 +107,29 @@ public:
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
-    void blitFromMemory(void* sourceData, const Rectf& area);
+    void blitFromMemory(const void* sourceData, const Rectf& area);
     void blitToMemory(void* targetData);
     bool isPixelFormatSupported(const PixelFormat fmt) const;
 
 protected:
     // Friends (to allow construction and destruction)
-    friend Texture& OpenGLRenderer::createTexture(const String&);
-    friend Texture& OpenGLRenderer::createTexture(const String&, const String&, const String&);
-    friend Texture& OpenGLRenderer::createTexture(const String&, const Sizef&);
-    friend Texture& OpenGLRenderer::createTexture(const String&, GLuint, const Sizef&);
-    friend void OpenGLRenderer::destroyTexture(Texture&);
-    friend void OpenGLRenderer::destroyTexture(const String&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&, const String&, const String&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&, const Sizef&);
+    friend Texture& OpenGLRendererBase::createTexture(const String&, GLuint, const Sizef&);
+    friend void OpenGLRendererBase::destroyTexture(Texture&);
+    friend void OpenGLRendererBase::destroyTexture(const String&);
 
     //! Basic constructor.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name);
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name);
     //! Constructor that creates a Texture from an image file.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                   const String& filename, const String& resourceGroup);
     //! Constructor that creates a Texture with a given size.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                   const Sizef& size);
     //! Constructor that wraps an existing GL texture.
-    OpenGLTexture(OpenGLRenderer& owner, const String& name,
+    OpenGLTexture(OpenGLRendererBase& owner, const String& name,
                   GLuint tex, const Sizef& size);
     //! Destructor.
     virtual ~OpenGLTexture();
@@ -149,11 +149,13 @@ protected:
     //! internal texture resize function (does not reset format or other fields)
     void setTextureSize_impl(const Sizef& sz);
 
-    void loadUncompressedTextureBuffer(const Sizef& buffer_size,
+    void loadUncompressedTextureBuffer(const Rectf& dest_area,
                                        const GLvoid* buffer) const;
 
-    void loadCompressedTextureBuffer(const Sizef& buffer_size,
+    void loadCompressedTextureBuffer(const Rectf& dest_area,
                                      const GLvoid* buffer) const;
+
+    GLsizei getCompressedTextureSize(const Sizef& pixel_size) const;
 
     //! The OpenGL texture we're wrapping.
     GLuint d_ogltexture;
@@ -166,7 +168,7 @@ protected:
     //! cached pixel to texel mapping scale values.
     Vector2f d_texelScaling;
     //! OpenGLRenderer that created and owns this OpenGLTexture
-    OpenGLRenderer& d_owner;
+    OpenGLRendererBase& d_owner;
     //! The name given for this texture.
     const String d_name;
     //! Texture format

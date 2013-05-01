@@ -190,7 +190,7 @@ public:
             return typedProperty->getNative(this);
         }
         else
-        {
+        {   
             // fall back to string get
             return PropertyHelper<T>::fromString(baseProperty->get(this));
         }

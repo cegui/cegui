@@ -350,8 +350,8 @@ void FalagardMultiLineEditbox::setColourRectToOptionalPropertyColour(
                                                 ColourRect& colour_rect) const
 {
     if (d_window->isPropertyPresent(propertyName))
-        colour_rect = PropertyHelper<ColourRect>::fromString(
-            d_window->getProperty(propertyName));
+        colour_rect = 
+            d_window->getProperty<ColourRect>(propertyName);
     else
         colour_rect.setColours(0);
 }

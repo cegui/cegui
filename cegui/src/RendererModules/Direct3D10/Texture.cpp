@@ -265,7 +265,7 @@ void Direct3D10Texture::loadFromMemory(const void* buffer,
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10Texture::blitFromMemory(void* sourceData, const Rectf& area)
+void Direct3D10Texture::blitFromMemory(const void* sourceData, const Rectf& area)
 {
     if (!d_texture)
         return;

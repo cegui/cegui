@@ -26,7 +26,7 @@ author:     Paul D Turner
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGuiOpenGL3BaseApplication.h"
-#include "CEGUI/RendererModules/OpenGL3/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 
 //----------------------------------------------------------------------------//
 CEGuiOpenGL3BaseApplication::CEGuiOpenGL3BaseApplication()

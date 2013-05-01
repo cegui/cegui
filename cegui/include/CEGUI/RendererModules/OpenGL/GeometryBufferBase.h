@@ -1,10 +1,11 @@
 /***********************************************************************
-    filename:   CEGUIOpenGLGeometryBuffer.h
-    created:    Thu Jan 8 2009
-    author:     Paul D Turner
+    filename:   GeometryBufferBase.h
+    created:    Tue Apr 30 2013
+    authors:    Paul D Turner <paul@cegui.org.uk>
+                Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,11 +26,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIOpenGLGeometryBuffer_h_
-#define _CEGUIOpenGLGeometryBuffer_h_
+#ifndef _CEGUIGeometryBufferBase_h_
+#define _CEGUIGeometryBufferBase_h_
 
 #include "../../GeometryBuffer.h"
-#include "CEGUI/RendererModules/OpenGL/Renderer.h"
+#include "CEGUI/RendererModules/OpenGL/RendererBase.h"
 #include "../../Rect.h"
 #include "../../Quaternion.h"
 
@@ -41,7 +42,6 @@
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class OpenGLTexture;
@@ -50,14 +50,14 @@ class OpenGLTexture;
 \brief
     OpenGL based implementation of the GeometryBuffer interface.
 */
-class OPENGL_GUIRENDERER_API OpenGLGeometryBuffer : public GeometryBuffer
+class OPENGL_GUIRENDERER_API OpenGLGeometryBufferBase : public GeometryBuffer
 {
 public:
     //! Constructor
-    OpenGLGeometryBuffer(OpenGLRenderer& owner);
+    OpenGLGeometryBufferBase(OpenGLRendererBase& owner);
+    virtual ~OpenGLGeometryBufferBase();
 
     // implementation of abstract members from GeometryBuffer
-    void draw() const;
     void setTranslation(const Vector3f& t);
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3f& p);
@@ -75,7 +75,7 @@ public:
     bool isClippingActive() const;
 
     //! return the GL modelview matrix used for this buffer.
-    const double* getMatrix() const;
+    const mat4Pimpl* getMatrix() const;
 
 protected:
     //! perform batch management operations prior to adding new geometry.
@@ -100,13 +100,13 @@ protected:
         bool clip;
     };
 
-    //! OpenGLRenderer object that owns the GeometryBuffer.
-    OpenGLRenderer* d_owner;
+    //! OpenGLRendererBase that owns the GeometryBuffer.
+    OpenGLRendererBase* d_owner;
     //! last texture that was set as active
     OpenGLTexture* d_activeTexture;
     //! type of container that tracks BatchInfos.
     typedef std::vector<BatchInfo> BatchList;
-    //! list of batches added to the geometry buffer
+    //! list of texture batches added to the geometry buffer
     BatchList d_batches;
     //! type of container used to queue the geometry
     typedef std::vector<GLVertex> VertexList;
@@ -125,16 +125,16 @@ protected:
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! model matrix cache - we use double because gluUnproject takes double
-    mutable double d_matrix[16];
+    mutable mat4Pimpl*              d_matrix;
     //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
+    mutable bool                    d_matrixValid;
 };
 
-
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIOpenGLGeometryBuffer_h_
+#endif
+
