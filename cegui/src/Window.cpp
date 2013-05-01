@@ -3623,7 +3623,7 @@ void Window::clonePropertiesTo(Window& target) const
                 continue;
         }
 
-        target.setProperty(propertyName, getProperty(propertyName));
+        target.setProperty(propertyName, propertyValue);
     }
 }
 
