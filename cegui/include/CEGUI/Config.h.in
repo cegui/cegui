@@ -175,5 +175,22 @@ setting CMake options and regenerating, rather than editing directly.
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER
 
+//////////////////////////////////////////////////////////////////////////
+// The following define what renderer modules /should/ be available
+// We say should because while they were built, perhaps some packager did
+// not actually include them in the final distribution (or some other
+// event that we do not have control over)
+//////////////////////////////////////////////////////////////////////////
+#cmakedefine CEGUI_BUILD_RENDERER_OPENGL
+#cmakedefine CEGUI_BUILD_RENDERER_OPENGL3
+#cmakedefine CEGUI_BUILD_RENDERER_OGRE
+#cmakedefine CEGUI_BUILD_RENDERER_IRRLICHT
+#cmakedefine CEGUI_BUILD_RENDERER_DIRECTFB
+#cmakedefine CEGUI_BUILD_RENDERER_DIRECT3D9
+#cmakedefine CEGUI_BUILD_RENDERER_DIRECT3D10
+#cmakedefine CEGUI_BUILD_RENDERER_DIRECT3D11
+#cmakedefine CEGUI_BUILD_RENDERER_NULL
+#cmakedefine CEGUI_BUILD_RENDERER_OPENGLES
+
 #endif	// end of guard _CEGUIConfig_h_
 
