@@ -33,6 +33,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Exceptions.h"
+#include <stdlib.h>
 
 #if defined(__WIN32__) || defined(_WIN32)
 #   if defined(_MSC_VER)
@@ -46,6 +47,12 @@
 #   include "dlfcn.h"
 #endif
 
+// setup default-default path
+#ifndef CEGUI_MODULE_DIR
+    #define CEGUI_MODULE_DIR "./bin/"
+#endif
+
+#define MODULE_DIR_VAR_NAME "CEGUI_MODULE_DIR"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -94,9 +101,13 @@ DynamicModule::DynamicModule(const String& name) :
         appendDynamicLibraryExtension(d_moduleName);
     }
 
+    // prefer whatever is set in CEGUI_MODULE_DIR
+    if (const char* envModuleDir = getenv(MODULE_DIR_VAR_NAME))
+        d_handle = DYNLIB_LOAD((envModuleDir +  ("/" + d_moduleName)).c_str());
+
+    if (!d_handle)
     #ifdef __APPLE__
-        String fullpath("@executable_path/../Frameworks/" + d_moduleName);
-        d_handle = DYNLIB_LOAD(fullpath.c_str());
+        d_handle = DYNLIB_LOAD(("@executable_path/../Frameworks/" + d_moduleName).c_str());
 
         // if that failed, try without the path
         if (!d_handle)
@@ -109,9 +120,14 @@ DynamicModule::DynamicModule(const String& name) :
     if (!d_handle && d_moduleName.substr(0, 3) != "lib")
     {
         d_moduleName.insert(0, "lib");
+
+        // prefer whatever is set in CEGUI_MODULE_DIR
+        if (const char* envModuleDir = getenv(MODULE_DIR_VAR_NAME))
+            d_handle = DYNLIB_LOAD((envModuleDir +  ("/" + d_moduleName)).c_str());
+
+        if (!d_handle)
         #ifdef __APPLE__
-            String fullpath("@executable_path/../Frameworks/" + d_moduleName);
-            d_handle = DYNLIB_LOAD(fullpath.c_str());
+            d_handle = DYNLIB_LOAD(("@executable_path/../Frameworks/" + d_moduleName).c_str());
 
             // if that failed, try without the path
             if (!d_handle)
@@ -119,6 +135,9 @@ DynamicModule::DynamicModule(const String& name) :
             d_handle = DYNLIB_LOAD(d_moduleName.c_str());
     }
 #endif
+    // try appending the hard-coded module location if we have not found it yet
+    if (!d_handle)
+        d_handle = DYNLIB_LOAD((CEGUI_MODULE_DIR + d_moduleName).c_str());
 
     // check for library load failure
     if (!d_handle)
