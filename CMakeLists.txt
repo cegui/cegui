@@ -223,6 +223,7 @@ endif()
 # regression and performance tests
 cmake_dependent_option( CEGUI_BUILD_TESTS "Specifies whether to build the regression and performance tests." FALSE "Boost_FOUND" FALSE )
 
+option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to the install location (TRUE) or with no RPATH set (FALSE)." FALSE )
 
 ################################################################################
 # Define vars holding the names for all the libs we can build for CEGUI.

@@ -220,7 +220,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
             set_target_properties(${_LIB_NAME} PROPERTIES SUFFIX ".dylib")
         endif()
 
-    else()
+    elseif(CEGUI_INSTALL_WITH_RPATH)
         set_target_properties(${_LIB_NAME} PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
         )
@@ -410,7 +410,7 @@ macro( cegui_add_python_module PYTHON_MODULE_NAME SOURCE_DIR EXTRA_LIBS )
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES SUFFIX ".pyd")
     endif()
 
-    if (NOT APPLE)
+    if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
         set_target_properties(${PYTHON_MODULE_NAME} PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
         )
@@ -462,7 +462,7 @@ macro (cegui_add_test_executable _NAME)
         )
     endif()
 
-    if (NOT APPLE)
+    if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
             INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/${CEGUI_LIB_INSTALL_DIR}"
         )
