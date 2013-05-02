@@ -233,7 +233,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
         if (NOT APPLE OR CEGUI_APPLE_DYLIB_SET_VERSION_INFO)
             set_target_properties(${_LIB_NAME} PROPERTIES
                 VERSION ${CEGUI_ABI_VERSION}
-                SOVERSION ${CEGUI_ABI_CURRENT}
+                SOVERSION ${CEGUI_SOVERSION}
             )
         endif()
     endif()
