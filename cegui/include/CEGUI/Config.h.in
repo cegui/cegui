@@ -175,5 +175,13 @@ setting CMake options and regenerating, rather than editing directly.
 //////////////////////////////////////////////////////////////////////////
 #cmakedefine CEGUI_HAS_MINIZIP_RESOURCE_PROVIDER
 
+// Define the default place where cegui will look for loadable modules
+// this can be changed at runtime via the CEGUI_MODULE_DIR environment var.
+#if defined(_WIN32) || defined(__WIN32__)
+#   define CEGUI_MODULE_DIR "${CMAKE_BINARY_DIR}/bin/"
+#else
+#   define CEGUI_MODULE_DIR "${CMAKE_INSTALL_PREFIX}/${CEGUI_MODULE_INSTALL_DIR}/"
+#endif
+
 #endif	// end of guard _CEGUIConfig_h_
 
