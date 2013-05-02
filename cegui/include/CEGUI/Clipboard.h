@@ -45,7 +45,7 @@ namespace CEGUI
 \brief
     Lightweight interface providing access to the system-wide native clipboard
 */
-class NativeClipboardProvider
+class CEGUIEXPORT NativeClipboardProvider
 {
 public:
     virtual ~NativeClipboardProvider();
