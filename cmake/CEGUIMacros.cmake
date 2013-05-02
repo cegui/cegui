@@ -242,9 +242,15 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     #                           INSTALLATION
     ###########################################################################
     if (${_INSTALL_BIN})
+        if (${_IS_MODULE})
+            set(_CEGUI_LIB_DEST ${CEGUI_MODULE_INSTALL_DIR})
+        else()
+            set(_CEGUI_LIB_DEST ${CEGUI_LIB_INSTALL_DIR})
+        endif()
+
         install(TARGETS ${_LIB_NAME}
             RUNTIME DESTINATION bin
-            LIBRARY DESTINATION ${CEGUI_LIB_INSTALL_DIR}
+            LIBRARY DESTINATION ${_CEGUI_LIB_DEST}
             ARCHIVE DESTINATION ${CEGUI_LIB_INSTALL_DIR}
         )
 
@@ -259,7 +265,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
 
     if (${_INSTALL_HEADERS})
         string (REPLACE "cegui/src/" "" _REL_HEADER_DIR ${_REL_SRC_DIR})
-        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/${CMAKE_PROJECT_NAME}/${_REL_HEADER_DIR}")
+        install(FILES ${${_HEADER_FILES_VAR}} DESTINATION "${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/${_REL_HEADER_DIR}")
     endif()
 endmacro()
 
@@ -356,7 +362,22 @@ macro (cegui_add_sample _NAME)
 	)
     
     # Each demo will become a dynamically linked library as plugin (module)
-    cegui_add_library_impl(${CEGUI_TARGET_NAME} TRUE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
+    cegui_add_library_impl(${CEGUI_TARGET_NAME} TRUE CORE_SOURCE_FILES CORE_HEADER_FILES FALSE FALSE)
+
+    # Setup custom install location
+    install(TARGETS ${CEGUI_TARGET_NAME}
+        RUNTIME DESTINATION bin
+        LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+        ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+    )
+
+    if (CEGUI_BUILD_STATIC_CONFIGURATION)
+        install(TARGETS ${CEGUI_TARGET_NAME}_Static
+            RUNTIME DESTINATION bin
+            LIBRARY DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+            ARCHIVE DESTINATION ${CEGUI_SAMPLE_INSTALL_DIR}
+        )
+    endif()
 
     add_dependencies(${CEGUI_SAMPLEFRAMEWORK_EXENAME} ${CEGUI_TARGET_NAME})
 
