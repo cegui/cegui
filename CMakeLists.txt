@@ -32,10 +32,28 @@ set( CEGUI_VERSION_MINOR 8)
 set( CEGUI_VERSION_PATCH 9999)
 set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION_PATCH} )
 
+#
+# This controls the binary versioning - which is different to release versions
+# defined above.
+#
+# The following describes what these components are and how they are intended to
+# be managed.
+# 
+#   - CURRENT: The binary interface version provided by the library.
+#   - REVISION: Revision of binary interface specified in CURRENT
+#   - AGE: Number of previous binary interfaces this library is compatible with.
+#
+# Prior to issuing a release, modify the values as follows:
+#   - If there were any changes in the source, increase REVISION.
+#   - If the interface changed at all, increase CURRENT and set REVISION to 0
+#   - If the interface had binary compabilbe additions only (so no ABI breaking
+#     changes) increase AGE, else set AGE to 0.
+#
 set( CEGUI_ABI_CURRENT 2)
 set( CEGUI_ABI_REVISION 0)
 set( CEGUI_ABI_AGE 0)
 set( CEGUI_ABI_VERSION ${CEGUI_ABI_CURRENT}.${CEGUI_ABI_REVISION}.${CEGUI_ABI_AGE} )
+MATH( EXPR CEGUI_SOVERSION ${CEGUI_ABI_CURRENT}-${CEGUI_ABI_AGE} )
 
 
 ################################################################################
