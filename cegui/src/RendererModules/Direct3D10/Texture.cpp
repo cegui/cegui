@@ -272,7 +272,7 @@ void Direct3D10Texture::blitFromMemory(const void* sourceData, const Rectf& area
 
     uint32* buff = new uint32[static_cast<size_t>(area.getWidth()) *
                               static_cast<size_t>(area.getHeight())];
-    blitFromSurface(static_cast<uint32*>(sourceData), buff,
+    blitFromSurface(static_cast<const uint32*>(sourceData), buff,
                     area.getSize(), static_cast<size_t>(area.getWidth()) * 4);
 
     D3D10_BOX dst_box = {static_cast<UINT>(area.left()),
