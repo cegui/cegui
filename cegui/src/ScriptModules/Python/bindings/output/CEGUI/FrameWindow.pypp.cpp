@@ -511,6 +511,10 @@ struct FrameWindow_wrapper : CEGUI::FrameWindow, bp::wrapper< CEGUI::FrameWindow
         CEGUI::Window::invalidate_impl( recursive );
     }
 
+    bool isHitTargetWindow( ::CEGUI::Vector2f const & position, bool allow_disabled ) const {
+        return CEGUI::Window::isHitTargetWindow( boost::ref(position), allow_disabled );
+    }
+
     bool isInnerRectSizeChanged(  ) const {
         return CEGUI::Element::isInnerRectSizeChanged(  );
     }
@@ -2917,6 +2921,16 @@ void register_FrameWindow_class(){
                 , invalidate_impl_function_type( &FrameWindow_wrapper::invalidate_impl )
                 , ( bp::arg("recursive") )
                 , "! helper function to invalidate window and optionally child windows.\n" );
+        
+        }
+        { //::CEGUI::Window::isHitTargetWindow
+        
+            typedef bool ( FrameWindow_wrapper::*isHitTargetWindow_function_type )( ::CEGUI::Vector2f const &,bool ) const;
+            
+            FrameWindow_exposer.def( 
+                "isHitTargetWindow"
+                , isHitTargetWindow_function_type( &FrameWindow_wrapper::isHitTargetWindow )
+                , ( bp::arg("position"), bp::arg("allow_disabled") ) );
         
         }
         { //::CEGUI::Element::isInnerRectSizeChanged

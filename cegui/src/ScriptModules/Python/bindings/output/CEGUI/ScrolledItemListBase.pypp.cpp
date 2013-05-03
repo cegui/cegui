@@ -388,6 +388,10 @@ struct ScrolledItemListBase_wrapper : CEGUI::ScrolledItemListBase, bp::wrapper< 
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
+    bool isHitTargetWindow( ::CEGUI::Vector2f const & position, bool allow_disabled ) const {
+        return CEGUI::Window::isHitTargetWindow( boost::ref(position), allow_disabled );
+    }
+
     bool isInnerRectSizeChanged(  ) const {
         return CEGUI::Element::isInnerRectSizeChanged(  );
     }
@@ -2223,6 +2227,16 @@ void register_ScrolledItemListBase_class(){
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&ScrolledItemListBase_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isHitTargetWindow
+        
+            typedef bool ( ScrolledItemListBase_wrapper::*isHitTargetWindow_function_type )( ::CEGUI::Vector2f const &,bool ) const;
+            
+            ScrolledItemListBase_exposer.def( 
+                "isHitTargetWindow"
+                , isHitTargetWindow_function_type( &ScrolledItemListBase_wrapper::isHitTargetWindow )
+                , ( bp::arg("position"), bp::arg("allow_disabled") ) );
         
         }
         { //::CEGUI::Element::isInnerRectSizeChanged

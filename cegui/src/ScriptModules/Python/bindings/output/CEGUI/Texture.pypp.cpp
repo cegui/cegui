@@ -15,7 +15,7 @@ struct Texture_wrapper : CEGUI::Texture, bp::wrapper< CEGUI::Texture > {
         
     }
 
-    virtual void blitFromMemory( void * sourceData, ::CEGUI::Rectf const & area ){
+    virtual void blitFromMemory( void const * sourceData, ::CEGUI::Rectf const & area ){
         bp::override func_blitFromMemory = this->get_override( "blitFromMemory" );
         func_blitFromMemory( sourceData, boost::ref(area) );
     }
@@ -79,7 +79,7 @@ void register_Texture_class(){
             ;
         { //::CEGUI::Texture::blitFromMemory
         
-            typedef void ( ::CEGUI::Texture::*blitFromMemory_function_type )( void *,::CEGUI::Rectf const & ) ;
+            typedef void ( ::CEGUI::Texture::*blitFromMemory_function_type )( void const *,::CEGUI::Rectf const & ) ;
             
             Texture_exposer.def( 
                 "blitFromMemory"

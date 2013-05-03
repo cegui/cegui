@@ -144,7 +144,7 @@ void register_System_class(){
             System_exposer.def( 
                 "create"
                 , create_function_type( &::CEGUI::System::create )
-                , ( bp::arg("renderer"), bp::arg("resourceProvider")=bp::object(), bp::arg("xmlParser")=bp::object(), bp::arg("imageCodec")=bp::object(), bp::arg("scriptModule")=bp::object(), bp::arg("configFile")="", bp::arg("logFile")="CEGUI.log", bp::arg("abi")=(int const)(99990) )
+                , ( bp::arg("renderer"), bp::arg("resourceProvider")=bp::object(), bp::arg("xmlParser")=bp::object(), bp::arg("imageCodec")=bp::object(), bp::arg("scriptModule")=bp::object(), bp::arg("configFile")="", bp::arg("logFile")="CEGUI.log", bp::arg("abi")=(int const)(208) )
                 , bp::return_value_policy< bp::reference_existing_object >() );
         
         }
