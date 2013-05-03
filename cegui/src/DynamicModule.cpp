@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,10 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifdef HAVE_CONFIG_H
-#   include "config.h"
-#endif
-
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
@@ -47,128 +43,83 @@
 #   include "dlfcn.h"
 #endif
 
+#if defined(__WIN32__) || defined(_WIN32)
+#   define DYNLIB_LOAD( a ) LoadLibrary( (a).c_str() )
+#   define DYNLIB_GETSYM( a, b ) GetProcAddress( a, (b).c_str() )
+#   define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
+#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
+#   define DYNLIB_LOAD( a ) dlopen( (a).c_str(), RTLD_LAZY )
+#   define DYNLIB_GETSYM( a, b ) dlsym( a, (b).c_str() )
+#   define DYNLIB_UNLOAD( a ) dlclose( a )
+#endif
+
 // setup default-default path
 #ifndef CEGUI_MODULE_DIR
     #define CEGUI_MODULE_DIR "./bin/"
 #endif
 
-#define MODULE_DIR_VAR_NAME "CEGUI_MODULE_DIR"
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-// return whether module name has it's extension in place
-bool hasDynamicLibraryExtension(const String& name)
-{
-    #if defined(__WIN32__) || defined(_WIN32)
-        return name.substr(name.length() - 4, 4) == ".dll";
-    #elif defined(__APPLE__)
-        return name.substr(name.length() - 6, 6) == ".dylib";
-    #else
-        return name.substr(name.length() - 3, 3) == ".so";
-    #endif
-}
+//----------------------------------------------------------------------------//
+static const char MODULE_DIR_VAR_NAME[] = "CEGUI_MODULE_DIR";
 
-void appendDynamicLibraryExtension(String& name)
-{
-    #if defined(__WIN32__) || defined(_WIN32)
-        name.append(".dll");
-    #elif defined(__APPLE__)
-        name.append(".dylib");
-    #else
-        name.append(".so");
-    #endif
-}
-
-DynamicModule::DynamicModule(const String& name) :
-    d_moduleName(name),
-    d_handle(0)
-{
-	if (name.empty())
-		return;
-
-    if (!hasDynamicLibraryExtension(d_moduleName))
-    {
-        #ifdef CEGUI_HAS_BUILD_SUFFIX
-            d_moduleName += CEGUI_BUILD_SUFFIX;
-        #endif
-
-        #ifdef CEGUI_HAS_VERSION_SUFFIX
-            d_moduleName += "-";
-            d_moduleName += CEGUI_VERSION_SUFFIX;
-        #endif
-        
-        appendDynamicLibraryExtension(d_moduleName);
-    }
-
-    // prefer whatever is set in CEGUI_MODULE_DIR
-    if (const char* envModuleDir = getenv(MODULE_DIR_VAR_NAME))
-        d_handle = DYNLIB_LOAD((envModuleDir +  ("/" + d_moduleName)).c_str());
-
-    if (!d_handle)
-    #ifdef __APPLE__
-        d_handle = DYNLIB_LOAD(("@executable_path/../Frameworks/" + d_moduleName).c_str());
-
-        // if that failed, try without the path
-        if (!d_handle)
-    #endif
-        d_handle = DYNLIB_LOAD(d_moduleName.c_str());
-
-
-#if defined(__linux__) || defined(__APPLE__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-    // see if adding a leading 'lib' helps us to open the library
-    if (!d_handle && d_moduleName.substr(0, 3) != "lib")
-    {
-        d_moduleName.insert(0, "lib");
-
-        // prefer whatever is set in CEGUI_MODULE_DIR
-        if (const char* envModuleDir = getenv(MODULE_DIR_VAR_NAME))
-            d_handle = DYNLIB_LOAD((envModuleDir +  ("/" + d_moduleName)).c_str());
-
-        if (!d_handle)
-        #ifdef __APPLE__
-            d_handle = DYNLIB_LOAD(("@executable_path/../Frameworks/" + d_moduleName).c_str());
-
-            // if that failed, try without the path
-            if (!d_handle)
-        #endif
-            d_handle = DYNLIB_LOAD(d_moduleName.c_str());
-    }
+//----------------------------------------------------------------------------//
+#if defined(__WIN32__) || defined(_WIN32)
+    static const String LibraryExtension(".dll");
+#elif defined(__APPLE__)
+    static const String LibraryExtension(".dylib");
+#else
+    static const String LibraryExtension(".so");
 #endif
-    // try appending the hard-coded module location if we have not found it yet
-    if (!d_handle)
-        d_handle = DYNLIB_LOAD((CEGUI_MODULE_DIR + d_moduleName).c_str());
 
-    // check for library load failure
-    if (!d_handle)
-        CEGUI_THROW(GenericException("Failed to load module '" +
-            d_moduleName + "': " + getFailureString()));
-}
-
-
-DynamicModule::~DynamicModule()
+//----------------------------------------------------------------------------//
+// return whether module name has it's extension in place
+static bool hasDynamicLibraryExtension(const String& name)
 {
-    DYNLIB_UNLOAD(d_handle);
+    const size_t ext_len = LibraryExtension.length();
+
+    if (name.length() < ext_len)
+        return false;
+
+    return name.compare(name.length() - ext_len, ext_len, LibraryExtension) == 0;
 }
-
-
-const String& DynamicModule::getModuleName() const
+//----------------------------------------------------------------------------//
+static void appendDynamicLibraryExtension(String& name)
 {
-    return d_moduleName;
+    name.append(LibraryExtension);
 }
-
-
-void* DynamicModule::getSymbolAddress(const String& symbol) const
+//----------------------------------------------------------------------------//
+static void addLibraryNameSuffixes(String& name)
 {
-    return (void*)DYNLIB_GETSYM(d_handle, symbol.c_str());
+    #ifdef CEGUI_HAS_BUILD_SUFFIX
+        name += CEGUI_BUILD_SUFFIX;
+    #endif
+
+    #ifdef CEGUI_HAS_VERSION_SUFFIX
+        name += '-';
+        name += CEGUI_VERSION_SUFFIX;
+    #endif
+    
+    appendDynamicLibraryExtension(name);
 }
 
+//----------------------------------------------------------------------------//
+static String getModuleDirEnvVar()
+{
+    if (const char* envModuleDir = getenv(MODULE_DIR_VAR_NAME))
+        return String(envModuleDir);
 
-String DynamicModule::getFailureString() const
+    return String();
+}
+
+//----------------------------------------------------------------------------//
+// Returns a String containing the last failure message from the platform's
+// dynamic loading system.
+static String getFailureString()
 {
     String retMsg;
 #if defined(__linux__) || defined (__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-    retMsg = DYNLIB_ERROR();
+    retMsg = dlerror();
 #elif defined(__WIN32__) || defined(_WIN32)
     LPVOID msgBuffer;
 
@@ -178,7 +129,6 @@ String DynamicModule::getFailureString() const
                       0,
                       GetLastError(),
                       MAKELANGID(LANG_ENGLISH, SUBLANG_ENGLISH_US),
-//                      MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT),
                       reinterpret_cast<LPTSTR>(&msgBuffer),
                       0,
                       0))
@@ -196,4 +146,80 @@ String DynamicModule::getFailureString() const
     return retMsg;
 }
 
-} // End of  CEGUI namespace section
+//----------------------------------------------------------------------------//
+static DYNLIB_HANDLE DynLibLoad(const String& name)
+{
+    DYNLIB_HANDLE handle = 0;
+
+    // prefer whatever location is set in CEGUI_MODULE_DIR environment var
+    const String envModuleDir(getModuleDirEnvVar());
+
+    if (!envModuleDir.empty())
+        handle = DYNLIB_LOAD(envModuleDir + '/' + name);
+
+    if (!handle)
+    #ifdef __APPLE__
+        // on apple, look in the app bundle frameworks directory
+        handle = DYNLIB_LOAD("@executable_path/../Frameworks/" + name);
+
+        if (!handle)
+    #endif
+        // try loading without any explicit location (i.e. use OS search path)
+        handle = DYNLIB_LOAD(name);
+
+    // finally, try using the compiled-in module directory
+    if (!handle)
+        handle = DYNLIB_LOAD(CEGUI_MODULE_DIR + name);
+
+    return handle;
+}
+
+//----------------------------------------------------------------------------//
+DynamicModule::DynamicModule(const String& name) :
+    d_moduleName(name),
+    d_handle(0)
+{
+	if (name.empty())
+		return;
+
+    if (!hasDynamicLibraryExtension(d_moduleName))
+        addLibraryNameSuffixes(d_moduleName);
+
+    d_handle = DynLibLoad(d_moduleName);
+
+#if defined(__linux__) || defined(__APPLE__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
+    // see if adding a leading 'lib' helps us to open the library
+    if (!d_handle && d_moduleName.compare(0, 3, "lib") != 0)
+    {
+        d_moduleName.insert(0, "lib");
+        d_handle = DynLibLoad(d_moduleName);
+    }
+#endif
+
+    // check for library load failure
+    if (!d_handle)
+        CEGUI_THROW(GenericException("Failed to load module '" +
+            d_moduleName + "': " + getFailureString()));
+}
+
+//----------------------------------------------------------------------------//
+DynamicModule::~DynamicModule()
+{
+    DYNLIB_UNLOAD(d_handle);
+}
+
+//----------------------------------------------------------------------------//
+const String& DynamicModule::getModuleName() const
+{
+    return d_moduleName;
+}
+
+//----------------------------------------------------------------------------//
+void* DynamicModule::getSymbolAddress(const String& symbol) const
+{
+    return (void*)DYNLIB_GETSYM(d_handle, symbol);
+}
+
+//----------------------------------------------------------------------------//
+
+}

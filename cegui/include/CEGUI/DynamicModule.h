@@ -4,7 +4,7 @@
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2006 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,28 +30,13 @@
 
 #include "CEGUI/String.h"
 
-/*************************************************************************
-    The following is basically taken from DynLib.h, which is part of
-    the Ogre project (http://www.ogre3d.org/)
-*************************************************************************/
 #if defined(__WIN32__) || defined(_WIN32)
-#   define DYNLIB_HANDLE hInstance
-#   define DYNLIB_LOAD( a ) LoadLibrary( a )
-#   define DYNLIB_GETSYM( a, b ) GetProcAddress( a, b )
-#   define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
-
-    struct HINSTANCE__;
-    typedef struct HINSTANCE__* hInstance;
-
+    #include <WinDef.h>
+    typedef HMODULE DYNLIB_HANDLE;
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-#    define DYNLIB_HANDLE void*
-#    define DYNLIB_LOAD( a ) dlopen( a, RTLD_LAZY )
-#    define DYNLIB_GETSYM( a, b ) dlsym( a, b )
-#    define DYNLIB_UNLOAD( a ) dlclose( a )
-#    define DYNLIB_ERROR( ) dlerror( )
+    typedef void* DYNLIB_HANDLE;
 #endif
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
@@ -70,9 +55,6 @@ public:
 
     \param name
         String object holding the name of a loadable module.
-
-    \return
-        Nothing
     */
     DynamicModule(const String& name);
 
@@ -80,9 +62,6 @@ public:
     \brief
         Destroys the DynamicModule object and unloads the associated loadable
         module.
-
-    \return
-        Nothing
     */
     ~DynamicModule();
 
@@ -108,19 +87,12 @@ public:
     void* getSymbolAddress(const String& symbol) const;
 
 private:
-    /*!
-    \brief
-        Return a String containing the last failure message from the platforms
-        dynamic loading system.
-    */
-    String getFailureString() const;
-
     //! Holds the name of the loaded module.
     String d_moduleName;
     //! Handle for the loaded module
     DYNLIB_HANDLE d_handle;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif // end of guard _CEGUIDynamicModule_h_
+#endif
