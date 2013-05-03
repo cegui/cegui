@@ -611,6 +611,10 @@ struct Tree_wrapper : CEGUI::Tree, bp::wrapper< CEGUI::Tree > {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
+    bool isHitTargetWindow( ::CEGUI::Vector2f const & position, bool allow_disabled ) const {
+        return CEGUI::Window::isHitTargetWindow( boost::ref(position), allow_disabled );
+    }
+
     bool isInnerRectSizeChanged(  ) const {
         return CEGUI::Element::isInnerRectSizeChanged(  );
     }
@@ -3249,6 +3253,16 @@ void register_Tree_class(){
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&Tree_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isHitTargetWindow
+        
+            typedef bool ( Tree_wrapper::*isHitTargetWindow_function_type )( ::CEGUI::Vector2f const &,bool ) const;
+            
+            Tree_exposer.def( 
+                "isHitTargetWindow"
+                , isHitTargetWindow_function_type( &Tree_wrapper::isHitTargetWindow )
+                , ( bp::arg("position"), bp::arg("allow_disabled") ) );
         
         }
         { //::CEGUI::Element::isInnerRectSizeChanged

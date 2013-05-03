@@ -10,7 +10,7 @@ void register_FontGlyph_class(){
 
     { //::CEGUI::FontGlyph
         typedef bp::class_< CEGUI::FontGlyph > FontGlyph_exposer_t;
-        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", bp::init< bp::optional< float, CEGUI::Image * > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object() ), "! Constructor.\n") );
+        FontGlyph_exposer_t FontGlyph_exposer = FontGlyph_exposer_t( "FontGlyph", bp::init< bp::optional< float, CEGUI::Image *, bool > >(( bp::arg("advance")=0.0f, bp::arg("image")=bp::object(), bp::arg("valid")=(bool)(false) ), "! Constructor.\n") );
         bp::scope FontGlyph_scope( FontGlyph_exposer );
         bp::implicitly_convertible< float, CEGUI::FontGlyph >();
         { //::CEGUI::FontGlyph::getAdvance
@@ -93,6 +93,16 @@ void register_FontGlyph_class(){
                 , "! Return the scaled width of the glyph.\n" );
         
         }
+        { //::CEGUI::FontGlyph::isValid
+        
+            typedef bool ( ::CEGUI::FontGlyph::*isValid_function_type )(  ) const;
+            
+            FontGlyph_exposer.def( 
+                "isValid"
+                , isValid_function_type( &::CEGUI::FontGlyph::isValid )
+                , "! return whether the FontGlyph is marked as valid\n" );
+        
+        }
         { //::CEGUI::FontGlyph::setAdvance
         
             typedef void ( ::CEGUI::FontGlyph::*setAdvance_function_type )( float ) ;
@@ -113,6 +123,17 @@ void register_FontGlyph_class(){
                 , setImage_function_type( &::CEGUI::FontGlyph::setImage )
                 , ( bp::arg("image") )
                 , "! Set the CEGUI.Image object rendered for this glyph.\n" );
+        
+        }
+        { //::CEGUI::FontGlyph::setValid
+        
+            typedef void ( ::CEGUI::FontGlyph::*setValid_function_type )( bool ) ;
+            
+            FontGlyph_exposer.def( 
+                "setValid"
+                , setValid_function_type( &::CEGUI::FontGlyph::setValid )
+                , ( bp::arg("valid") )
+                , "! mark the FontGlyph as valid\n" );
         
         }
     }

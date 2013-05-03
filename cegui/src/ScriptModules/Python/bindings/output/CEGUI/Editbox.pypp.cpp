@@ -651,6 +651,10 @@ struct Editbox_wrapper : CEGUI::Editbox, bp::wrapper< CEGUI::Editbox > {
         return CEGUI::Window::isHit( boost::ref(position), allow_disabled );
     }
 
+    bool isHitTargetWindow( ::CEGUI::Vector2f const & position, bool allow_disabled ) const {
+        return CEGUI::Window::isHitTargetWindow( boost::ref(position), allow_disabled );
+    }
+
     bool isInnerRectSizeChanged(  ) const {
         return CEGUI::Element::isInnerRectSizeChanged(  );
     }
@@ -1677,6 +1681,12 @@ void register_Editbox_class(){
                     Validation is performed by means of a regular expression.  If the text\n\
                     matches the regex, the text is said to have passed validation.  If the\n\
                     text does not match with the regex then the text fails validation.\n\
+                    The default RegexMatcher uses the pcre library to perform regular\n\
+                    expression operations, details about the pattern syntax can be found\n\
+                    on unix-like systems by way of <tt>man pcrepattern<tt> (or online at\n\
+                    http:www.pcre.orgpcre.txt (scroll  search PCREPATTERN(3)).\n\
+                    Alternatively, see the perl regex documentation at\n\
+                    http:perldoc.perl.orgperlre.html\n\
             \n\
                 @return\n\
                     One of the MatchState enumerated values indicating the current match state.\n\
@@ -1699,6 +1709,12 @@ void register_Editbox_class(){
                     Validation is performed by means of a regular expression.  If the text\n\
                     matches the regex, the text is said to have passed validation.  If the\n\
                     text does not match with the regex then the text fails validation.\n\
+                    The default RegexMatcher uses the pcre library to perform regular\n\
+                    expression operations, details about the pattern syntax can be found\n\
+                    on unix-like systems by way of <tt>man pcrepattern<tt> (or online at\n\
+                    http:www.pcre.orgpcre.txt (scroll  search PCREPATTERN(3)).\n\
+                    Alternatively, see the perl regex documentation at\n\
+                    http:perldoc.perl.orgperlre.html\n\
             \n\
                 @return\n\
                     String object containing the current validation regex data\n\
@@ -1782,6 +1798,8 @@ void register_Editbox_class(){
              *\n\
              * This effectively asks permission from event handlers to proceed with the\n\
              * change, updates d_validatorMatchState and returns an appropriate bool.\n\
+             * The return value basically says whether or not to set the input string\n\
+             * as the current text for the Editbox.\n\
              *\n" );
         
         }
@@ -2330,6 +2348,12 @@ void register_Editbox_class(){
                     Validation is performed by means of a regular expression.  If the text\n\
                     matches the regex, the text is said to have passed validation.  If the\n\
                     text does not match with the regex then the text fails validation.\n\
+                    The default RegexMatcher uses the pcre library to perform regular\n\
+                    expression operations, details about the pattern syntax can be found\n\
+                    on unix-like systems by way of <tt>man pcrepattern<tt> (or online at\n\
+                    http:www.pcre.orgpcre.txt (scroll  search PCREPATTERN(3)).\n\
+                    Alternatively, see the perl regex documentation at\n\
+                    http:perldoc.perl.orgperlre.html\n\
             \n\
                 @param validation_string\n\
                     String object containing the validation regex data to be used.\n\
@@ -2892,6 +2916,16 @@ void register_Editbox_class(){
                 , isHit_function_type(&::CEGUI::Window::isHit)
                 , default_isHit_function_type(&Editbox_wrapper::default_isHit)
                 , ( bp::arg("position"), bp::arg("allow_disabled")=(bool const)(false) ) );
+        
+        }
+        { //::CEGUI::Window::isHitTargetWindow
+        
+            typedef bool ( Editbox_wrapper::*isHitTargetWindow_function_type )( ::CEGUI::Vector2f const &,bool ) const;
+            
+            Editbox_exposer.def( 
+                "isHitTargetWindow"
+                , isHitTargetWindow_function_type( &Editbox_wrapper::isHitTargetWindow )
+                , ( bp::arg("position"), bp::arg("allow_disabled") ) );
         
         }
         { //::CEGUI::Element::isInnerRectSizeChanged

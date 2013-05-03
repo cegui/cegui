@@ -19,6 +19,18 @@ struct Font_wrapper : CEGUI::Font, bp::wrapper< CEGUI::Font > {
         CEGUI::Font::addFontProperties(  );
     }
 
+    virtual ::CEGUI::FontGlyph const * findFontGlyph( ::CEGUI::utf32 const codepoint ) const {
+        if( bp::override func_findFontGlyph = this->get_override( "findFontGlyph" ) )
+            return func_findFontGlyph( codepoint );
+        else{
+            return this->CEGUI::Font::findFontGlyph( codepoint );
+        }
+    }
+    
+    virtual ::CEGUI::FontGlyph const * default_findFontGlyph( ::CEGUI::utf32 const codepoint ) const {
+        return CEGUI::Font::findFontGlyph( codepoint );
+    }
+
     virtual void notifyDisplaySizeChanged( ::CEGUI::Sizef const & size ) {
         if( bp::override func_notifyDisplaySizeChanged = this->get_override( "notifyDisplaySizeChanged" ) )
             func_notifyDisplaySizeChanged( boost::ref(size) );
@@ -140,6 +152,18 @@ void register_Font_class(){
                 "drawText"
                 , drawText_function_type( &::CEGUI::Font::drawText )
                 , ( bp::arg("buffer"), bp::arg("text"), bp::arg("position"), bp::arg("clip_rect"), bp::arg("colours"), bp::arg("space_extra")=0.0f, bp::arg("x_scale")=1.0e+0f, bp::arg("y_scale")=1.0e+0f ) );
+        
+        }
+        { //::CEGUI::Font::findFontGlyph
+        
+            typedef ::CEGUI::FontGlyph const * ( Font_wrapper::*findFontGlyph_function_type )( ::CEGUI::utf32 const ) const;
+            
+            Font_exposer.def( 
+                "findFontGlyph"
+                , findFontGlyph_function_type( &Font_wrapper::default_findFontGlyph )
+                , ( bp::arg("codepoint") )
+                , bp::return_value_policy< bp::reference_existing_object >()
+                , "! finds FontGlyph in map and returns it, or 0 if none.\n" );
         
         }
         { //::CEGUI::Font::getAutoScaled
