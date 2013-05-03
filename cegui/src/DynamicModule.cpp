@@ -37,20 +37,18 @@
 #   endif
 #   define WIN32_LEAN_AND_MEAN
 #   include <windows.h>
+#   define DYNLIB_LOAD( a ) LoadLibrary( (a).c_str() )
+#   define DYNLIB_GETSYM( a, b ) GetProcAddress( a, (b).c_str() )
+#   define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
+    typedef HMODULE DYNLIB_HANDLE;
 #endif
 
 #if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
 #   include "dlfcn.h"
-#endif
-
-#if defined(__WIN32__) || defined(_WIN32)
-#   define DYNLIB_LOAD( a ) LoadLibrary( (a).c_str() )
-#   define DYNLIB_GETSYM( a, b ) GetProcAddress( a, (b).c_str() )
-#   define DYNLIB_UNLOAD( a ) !FreeLibrary( a )
-#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
 #   define DYNLIB_LOAD( a ) dlopen( (a).c_str(), RTLD_LAZY )
 #   define DYNLIB_GETSYM( a, b ) dlsym( a, (b).c_str() )
 #   define DYNLIB_UNLOAD( a ) dlclose( a )
+    typedef void* DYNLIB_HANDLE;
 #endif
 
 // setup default-default path
@@ -60,6 +58,25 @@
 
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+struct DynamicModule::Impl
+{
+    Impl(const String& name) :
+        d_moduleName(name),
+        d_handle(0)
+    {}
+
+    ~Impl()
+    {
+        DYNLIB_UNLOAD(d_handle);
+    }
+
+    //! Holds the name of the loaded module.
+    String d_moduleName;
+    //! Handle for the loaded module
+    DYNLIB_HANDLE d_handle;
+};
+
 //----------------------------------------------------------------------------//
 static const char MODULE_DIR_VAR_NAME[] = "CEGUI_MODULE_DIR";
 
@@ -176,48 +193,47 @@ static DYNLIB_HANDLE DynLibLoad(const String& name)
 
 //----------------------------------------------------------------------------//
 DynamicModule::DynamicModule(const String& name) :
-    d_moduleName(name),
-    d_handle(0)
+    d_pimpl(new Impl(name))
 {
 	if (name.empty())
 		return;
 
-    if (!hasDynamicLibraryExtension(d_moduleName))
-        addLibraryNameSuffixes(d_moduleName);
+    if (!hasDynamicLibraryExtension(d_pimpl->d_moduleName))
+        addLibraryNameSuffixes(d_pimpl->d_moduleName);
 
-    d_handle = DynLibLoad(d_moduleName);
+    d_pimpl->d_handle = DynLibLoad(d_pimpl->d_moduleName);
 
 #if defined(__linux__) || defined(__APPLE__) || defined(__MINGW32__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
     // see if adding a leading 'lib' helps us to open the library
-    if (!d_handle && d_moduleName.compare(0, 3, "lib") != 0)
+    if (!d_pimpl->d_handle && d_pimpl->d_moduleName.compare(0, 3, "lib") != 0)
     {
-        d_moduleName.insert(0, "lib");
-        d_handle = DynLibLoad(d_moduleName);
+        d_pimpl->d_moduleName.insert(0, "lib");
+        d_pimpl->d_handle = DynLibLoad(d_pimpl->d_moduleName);
     }
 #endif
 
     // check for library load failure
-    if (!d_handle)
+    if (!d_pimpl->d_handle)
         CEGUI_THROW(GenericException("Failed to load module '" +
-            d_moduleName + "': " + getFailureString()));
+            d_pimpl->d_moduleName + "': " + getFailureString()));
 }
 
 //----------------------------------------------------------------------------//
 DynamicModule::~DynamicModule()
 {
-    DYNLIB_UNLOAD(d_handle);
+    delete d_pimpl;
 }
 
 //----------------------------------------------------------------------------//
 const String& DynamicModule::getModuleName() const
 {
-    return d_moduleName;
+    return d_pimpl->d_moduleName;
 }
 
 //----------------------------------------------------------------------------//
 void* DynamicModule::getSymbolAddress(const String& symbol) const
 {
-    return (void*)DYNLIB_GETSYM(d_handle, symbol);
+    return (void*)DYNLIB_GETSYM(d_pimpl->d_handle, symbol);
 }
 
 //----------------------------------------------------------------------------//

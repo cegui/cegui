@@ -28,17 +28,12 @@
 #ifndef _CEGUIDynamicModule_h_
 #define _CEGUIDynamicModule_h_
 
-#include "CEGUI/String.h"
-
-#if defined(__WIN32__) || defined(_WIN32)
-    #include <WinDef.h>
-    typedef HMODULE DYNLIB_HANDLE;
-#elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-    typedef void* DYNLIB_HANDLE;
-#endif
+#include "CEGUI/Base.h"
 
 namespace CEGUI
 {
+class String;
+
 /*!
 \brief
     Class that wraps and gives access to a dynamically linked module
@@ -87,10 +82,8 @@ public:
     void* getSymbolAddress(const String& symbol) const;
 
 private:
-    //! Holds the name of the loaded module.
-    String d_moduleName;
-    //! Handle for the loaded module
-    DYNLIB_HANDLE d_handle;
+    struct Impl;
+    Impl* d_pimpl;
 };
 
 }
