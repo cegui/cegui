@@ -263,7 +263,6 @@ set( CEGUI_PVR_IMAGECODEC_LIBNAME CEGUIPVRImageCodec )
 set( CEGUI_CORE_WR_LIBNAME CEGUICoreWindowRendererSet )
 
 # Scripting module names and related items.
-set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
 set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR} )
 cegui_set_library_name( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
 
