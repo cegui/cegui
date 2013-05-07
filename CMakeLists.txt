@@ -229,19 +229,19 @@ option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to
 # Define vars holding the names for all the libs we can build for CEGUI.
 ################################################################################
 # Core lib name
-set( CEGUI_BASE_LIBNAME CEGUIBase )
+cegui_set_library_name( CEGUI_BASE_LIBNAME CEGUIBase )
 
 # Renderer module names.
-set( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
-set( CEGUI_OPENGL3_RENDERER_LIBNAME CEGUIOpenGL3Renderer )
-set( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
-set( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
-set( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
-set( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
-set( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
-set( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
-set( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
-set( CEGUI_DIRECTFB_RENDERER_LIBNAME CEGUIDirectFBRenderer )
+cegui_set_library_name( CEGUI_OPENGL_RENDERER_LIBNAME CEGUIOpenGLRenderer )
+cegui_set_library_name( CEGUI_OPENGL3_RENDERER_LIBNAME CEGUIOpenGL3Renderer )
+cegui_set_library_name( CEGUI_OGRE_RENDERER_LIBNAME CEGUIOgreRenderer)
+cegui_set_library_name( CEGUI_IRRLICHT_RENDERER_LIBNAME CEGUIIrrlichtRenderer )
+cegui_set_library_name( CEGUI_DIRECT3D9_RENDERER_LIBNAME CEGUIDirect3D9Renderer )
+cegui_set_library_name( CEGUI_DIRECT3D10_RENDERER_LIBNAME CEGUIDirect3D10Renderer )
+cegui_set_library_name( CEGUI_DIRECT3D11_RENDERER_LIBNAME CEGUIDirect3D11Renderer )
+cegui_set_library_name( CEGUI_NULL_RENDERER_LIBNAME CEGUINullRenderer )
+cegui_set_library_name( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
+cegui_set_library_name( CEGUI_DIRECTFB_RENDERER_LIBNAME CEGUIDirectFBRenderer )
 
 # XML parser module names
 set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser )
@@ -265,7 +265,7 @@ set( CEGUI_CORE_WR_LIBNAME CEGUICoreWindowRendererSet )
 # Scripting module names and related items.
 set( CEGUI_TOLUAPP_LIBNAME CEGUItoluapp )
 set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR} )
-set( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
+cegui_set_library_name( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
 
 set( CEGUI_PYCEGUI_CORE_LIBNAME PyCEGUI )
 set( CEGUI_PYCEGUI_OPENGL_RENDERER_LIBNAME PyCEGUIOpenGLRenderer )
@@ -276,7 +276,7 @@ set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 set( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
 
 # Additional lib names
-set( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
+cegui_set_library_name( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )
 
 ################################################################################
 # Select one of the XML parser modules to be the default, warning if none are

@@ -182,7 +182,8 @@ endmacro()
 macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FILES_VAR _INSTALL_BIN _INSTALL_HEADERS)
     file (RELATIVE_PATH _REL_SRC_DIR "${CMAKE_SOURCE_DIR}" "${CMAKE_CURRENT_SOURCE_DIR}")
     string (REPLACE src include _REL_INC_DIR ${_REL_SRC_DIR})
-    string(TOUPPER ${_LIB_NAME} _CEGUI_EXPORT_DEFINE)
+    string(REGEX MATCH "^[^-]*" _CEGUI_EXPORT_BASE ${_LIB_NAME})
+    string(TOUPPER ${_CEGUI_EXPORT_BASE}_EXPORTS _CEGUI_EXPORT_DEFINE)
 
     include_directories("${CMAKE_SOURCE_DIR}/${_REL_INC_DIR}")
 
@@ -200,7 +201,7 @@ macro (cegui_add_library_impl _LIB_NAME _IS_MODULE _SOURCE_FILES_VAR _HEADER_FIL
     #                       SHARED LIBRARY SET UP
     ###########################################################################
     add_library(${_LIB_NAME} ${_LIB_TYPE} ${${_SOURCE_FILES_VAR}} ${${_HEADER_FILES_VAR}})
-    set_target_properties(${_LIB_NAME} PROPERTIES DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE}_EXPORTS)
+    set_target_properties(${_LIB_NAME} PROPERTIES DEFINE_SYMBOL ${_CEGUI_EXPORT_DEFINE})
 
     if (NOT CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
         set_target_properties(${_LIB_NAME} PROPERTIES
@@ -600,5 +601,16 @@ macro (cegui_find_package_handle_standard_args _PKGNAME _LIBBASENAMEVAR)
     endif()
 
     find_package_handle_standard_args(${_PKGNAME} DEFAULT_MSG ${_FPHSA_LIBS} ${ARGN})
+endmacro()
+
+################################################################################
+# Declare a library (not loadable module) name
+#
+# This is used to name things in a consistent way and allow us to change the way
+# things are named without editing lots of stuff (and forgetting some things or
+# changing some other things that should not be changed)
+################################################################################
+macro(cegui_set_library_name _VARIABLE _LIBBASENAME)
+    set(${_VARIABLE} ${_LIBBASENAME}-${CEGUI_VERSION_MAJOR})
 endmacro()
 
