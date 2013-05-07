@@ -112,11 +112,6 @@ static void addLibraryNameSuffixes(String& name)
         name += CEGUI_BUILD_SUFFIX;
     #endif
 
-    #ifdef CEGUI_HAS_VERSION_SUFFIX
-        name += '-';
-        name += CEGUI_VERSION_SUFFIX;
-    #endif
-    
     appendDynamicLibraryExtension(name);
 }
 

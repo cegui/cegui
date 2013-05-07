@@ -41,13 +41,6 @@ setting CMake options and regenerating, rather than editing directly.
 #   define DEBUG 1
 #endif
 
-#cmakedefine CEGUI_HAS_VERSION_SUFFIX
-#ifdef CEGUI_HAS_VERSION_SUFFIX
-#   ifndef CEGUI_VERSION_SUFFIX
-#       define CEGUI_VERSION_SUFFIX "${CEGUI_VERSION_SUFFIX}"
-#   endif
-#endif
-
 #cmakedefine CEGUI_HAS_BUILD_SUFFIX
 #ifdef CEGUI_HAS_BUILD_SUFFIX
 #   ifndef CEGUI_BUILD_SUFFIX
