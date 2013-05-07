@@ -634,3 +634,14 @@ macro(cegui_set_module_name _VARIABLE _MODULEBASENAME)
     set(${_VARIABLE} ${_MODULEBASENAME})
 endmacro()
 
+################################################################################
+# Sanity check for Default ImageCodec (i.e. is it going to be built?)
+################################################################################
+macro(cegui_defaultmodule_sanity_test _DEFAULTVAR _MODNAME _BUILDVAR)
+    if (${_DEFAULTVAR} STREQUAL "${_MODNAME}")
+        if (NOT ${_BUILDVAR})
+            message(SEND_ERROR "${_DEFAULTVAR} is set to ${_MODNAME} but this module is not going to be built (see ${_BUILDVAR})")
+        endif()
+    endif()
+endmacro()
+
