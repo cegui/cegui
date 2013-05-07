@@ -70,6 +70,7 @@ endif()
 find_package(PCRE)
 find_package(Freetype)
 find_package(Minizip)
+find_package(Fribidi)
 if (NOT WIN32)
     find_package(Iconv REQUIRED)
 endif()
@@ -170,11 +171,13 @@ cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build t
 
 option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
-set( CEGUI_BIDI_SUPPORT "0" CACHE STRING "Select whether bi-directional text is enabled and which library should be used:
-    0: Disabled.
-    1: Use integrated minibidi library.
-    2: Use external fribidi library."
-)
+cegui_dependent_option( CEGUI_USE_FRIBIDI "Specifies whether bi-directional text will be supported via the fribidi library." "FRIBIDI_FOUND" )
+cegui_dependent_option( CEGUI_USE_MINIBIDI "Specifies whether bi-directional text will be supported via the embedded minibidi." FALSE )
+
+# sanity check on bidi options
+if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
+    message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
+endif()
 
 cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" "CEGUI_BUILD_RENDERER_OPENGL;GLFW_FOUND" )
 cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer" "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" )
@@ -372,18 +375,6 @@ set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_DEBUG ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELEASE ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_MINSIZEREL ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY_RELWITHDEBINFO ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
-
-# Set up Bidi variables based on option selected
-if ( CEGUI_BIDI_SUPPORT EQUAL 1 )
-    set( CEGUI_USE_MINIBIDI TRUE)
-    set( CEGUI_USE_FRIBIDI FALSE)
-elseif ( CEGUI_BIDI_SUPPORT EQUAL 2 )
-    set( CEGUI_USE_MINIBIDI FALSE)
-    set( CEGUI_USE_FRIBIDI TRUE)
-else ()
-    set( CEGUI_USE_MINIBIDI FALSE)
-    set( CEGUI_USE_FRIBIDI FALSE)
-endif ()
 
 # set up install sub-directories
 if (CMAKE_SIZEOF_VOID_P EQUAL 8 AND EXISTS "${CMAKE_INSTALL_PREFIX}/lib64")
