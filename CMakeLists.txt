@@ -263,7 +263,7 @@ set( CEGUI_PVR_IMAGECODEC_LIBNAME CEGUIPVRImageCodec )
 set( CEGUI_CORE_WR_LIBNAME CEGUICoreWindowRendererSet )
 
 # Scripting module names and related items.
-set( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR} )
+cegui_set_executable_name( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui )
 cegui_set_library_name( CEGUI_LUA_SCRIPTMODULE_LIBNAME CEGUILuaScriptModule )
 
 set( CEGUI_PYCEGUI_CORE_LIBNAME PyCEGUI )
@@ -272,7 +272,7 @@ set( CEGUI_PYCEGUI_OGRE_RENDERER_LIBNAME PyCEGUIOgreRenderer )
 set( CEGUI_PYCEGUI_NULL_RENDERER_LIBNAME PyCEGUINullRenderer )
 
 # SampleFramework executable related names
-set( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
+cegui_set_executable_name( CEGUI_SAMPLEFRAMEWORK_EXENAME CEGUISampleFramework )
 
 # Additional lib names
 cegui_set_library_name( CEGUI_COMMON_DIALOGS_LIBNAME CEGUICommonDialogs )

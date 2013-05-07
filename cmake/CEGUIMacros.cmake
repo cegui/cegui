@@ -614,3 +614,13 @@ macro(cegui_set_library_name _VARIABLE _LIBBASENAME)
     set(${_VARIABLE} ${_LIBBASENAME}-${CEGUI_VERSION_MAJOR})
 endmacro()
 
+################################################################################
+# Declare an executable name
+#
+# This is used to name things in a consistent way and allow us to change the way
+# things are named without editing lots of stuff (and maybe forgetting some)
+################################################################################
+macro(cegui_set_executable_name _VARIABLE _EXEBASENAME)
+    set(${_VARIABLE} ${_EXEBASENAME}-${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR})
+endmacro()
+
