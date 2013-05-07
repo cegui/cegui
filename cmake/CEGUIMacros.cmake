@@ -645,3 +645,12 @@ macro(cegui_defaultmodule_sanity_test _DEFAULTVAR _MODNAME _BUILDVAR)
     endif()
 endmacro()
 
+################################################################################
+# Sanity check regarding renderers being built vs being used in samples
+################################################################################
+macro(cegui_sample_renderer_sanity_test _RENDERERVAR _SAMPLEUSEVAR)
+    if (${_SAMPLEUSEVAR} AND NOT ${_RENDERERVAR})
+        message(SEND_ERROR "${_SAMPLEUSEVAR} is enabled, but corresponding renderer is not going to be built (see: ${_RENDERERVAR})")
+    endif()
+endmacro()
+

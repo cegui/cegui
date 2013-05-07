@@ -200,6 +200,18 @@ if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
 endif()
 
+# Sanity check for samples vs renderers options
+if (CEGUI_SAMPLES_ENABLED)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_OPENGL CEGUI_SAMPLES_USE_OPENGL)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_OPENGL3 CEGUI_SAMPLES_USE_OPENGL3)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_OGRE CEGUI_SAMPLES_USE_OGRE)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_IRRLICHT CEGUI_SAMPLES_USE_IRRLICHT)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECTFB CEGUI_SAMPLES_USE_DIRECTFB)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECT3D9 CEGUI_SAMPLES_USE_DIRECT3D9)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECT3D10 CEGUI_SAMPLES_USE_DIRECT3D10)
+    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECT3D11 CEGUI_SAMPLES_USE_DIRECT3D11)
+endif()
+
 if (WIN32 OR APPLE)
     set (CEGUI_BUILD_SUFFIX "_d" CACHE STRING "String holding a suffix appended to the name of output binaries (under CMake build, only used for debug).")
 else()
