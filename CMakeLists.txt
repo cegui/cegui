@@ -102,7 +102,7 @@ find_package(Lua51)
 find_package(TOLUAPP)
 find_package(PythonInterp)
 find_package(PythonLibs)
-find_package(Boost 1.36.0 COMPONENTS python)
+find_package(Boost 1.36.0 COMPONENTS python unit_test_framework)
 
 find_package(Doxygen)
 find_package(GTK2 COMPONENTS gtk)
@@ -166,7 +166,7 @@ option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES r
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
 cegui_dependent_option( CEGUI_BUILD_LUA_GENERATOR "Specifies whether to build the custom tolua binding generator 'toluappcegui'" "LUA51_FOUND;TOLUAPP_FOUND" )
 
-cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_FOUND" )
+cegui_dependent_option( CEGUI_BUILD_PYTHON_MODULES "Specifies whether to build the Python extension module(s)" "PYTHONINTERP_FOUND;PYTHONLIBS_FOUND;Boost_PYTHON_FOUND" )
 
 option( CEGUI_OPTION_SAFE_LUA_MODULE "Specifies whether to enable extra validation in the Lua script module in non-debug builds" FALSE )
 
@@ -218,7 +218,7 @@ if (APPLE)
 endif()
 
 # regression and performance tests
-cmake_dependent_option( CEGUI_BUILD_TESTS "Specifies whether to build the regression and performance tests." FALSE "Boost_FOUND" FALSE )
+cmake_dependent_option( CEGUI_BUILD_TESTS "Specifies whether to build the regression and performance tests." FALSE "Boost_UNIT_TEST_FRAMEWORK_FOUND" FALSE )
 
 option( CEGUI_INSTALL_WITH_RPATH "Specifies whether to install with RPATH set to the install location (TRUE) or with no RPATH set (FALSE)." FALSE )
 
