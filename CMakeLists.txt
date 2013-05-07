@@ -244,23 +244,23 @@ cegui_set_library_name( CEGUI_OPENGLES_RENDERER_LIBNAME CEGUIOpenGLESRenderer )
 cegui_set_library_name( CEGUI_DIRECTFB_RENDERER_LIBNAME CEGUIDirectFBRenderer )
 
 # XML parser module names
-set( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser )
-set( CEGUI_TINYXML_PARSER_LIBNAME CEGUITinyXMLParser )
-set( CEGUI_XERCES_PARSER_LIBNAME CEGUIXercesParser )
-set( CEGUI_RAPIDXML_PARSER_LIBNAME CEGUIRapidXMLParser )
-set( CEGUI_LIBXML2_PARSER_LIBNAME CEGUILibXMLParser )
+cegui_set_module_name( CEGUI_EXPAT_PARSER_LIBNAME CEGUIExpatParser )
+cegui_set_module_name( CEGUI_TINYXML_PARSER_LIBNAME CEGUITinyXMLParser )
+cegui_set_module_name( CEGUI_XERCES_PARSER_LIBNAME CEGUIXercesParser )
+cegui_set_module_name( CEGUI_RAPIDXML_PARSER_LIBNAME CEGUIRapidXMLParser )
+cegui_set_module_name( CEGUI_LIBXML2_PARSER_LIBNAME CEGUILibXMLParser )
 
 # ImageCodec module names
-set( CEGUI_SILLY_IMAGECODEC_LIBNAME CEGUISILLYImageCodec )
-set( CEGUI_DEVIL_IMAGECODEC_LIBNAME CEGUIDevILImageCodec )
-set( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec )
-set( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec )
-set( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec )
-set( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
-set( CEGUI_PVR_IMAGECODEC_LIBNAME CEGUIPVRImageCodec )
+cegui_set_module_name( CEGUI_SILLY_IMAGECODEC_LIBNAME CEGUISILLYImageCodec )
+cegui_set_module_name( CEGUI_DEVIL_IMAGECODEC_LIBNAME CEGUIDevILImageCodec )
+cegui_set_module_name( CEGUI_FREEIMAGE_IMAGECODEC_LIBNAME CEGUIFreeImageImageCodec )
+cegui_set_module_name( CEGUI_CORONA_IMAGECODEC_LIBNAME CEGUICoronaImageCodec )
+cegui_set_module_name( CEGUI_TGA_IMAGECODEC_LIBNAME CEGUITGAImageCodec )
+cegui_set_module_name( CEGUI_STB_IMAGECODEC_LIBNAME CEGUISTBImageCodec )
+cegui_set_module_name( CEGUI_PVR_IMAGECODEC_LIBNAME CEGUIPVRImageCodec )
 
 # WindowRenderer set module names
-set( CEGUI_CORE_WR_LIBNAME CEGUICoreWindowRendererSet )
+cegui_set_module_name( CEGUI_CORE_WR_LIBNAME CEGUICoreWindowRendererSet )
 
 # Scripting module names and related items.
 cegui_set_executable_name( CEGUI_TOLUAPP_GENERATOR_EXENAME toluappcegui )
