@@ -72,7 +72,7 @@ macro(cegui_find_package _PREFIX _LIB _H _H_SUFFIXES _PC_MOD)
 
     _find_dep_lib(${_PREFIX} ${_LIB} dynamic)
     _find_dep_lib(${_PREFIX} ${_LIB}_d dynamic _DBG)
-    _find_dep_lib(${_PREFIX} ${_LIB}_d static _STATIC TRUE)
+    _find_dep_lib(${_PREFIX} ${_LIB} static _STATIC TRUE)
     _find_dep_lib(${_PREFIX} ${_LIB}_d static _STATIC_DBG TRUE)
 
     cegui_find_package_handle_standard_args(${_PREFIX} ${_PREFIX}_FOUND_ALL_LIBS ${_PREFIX}_INCLUDE_DIR)
