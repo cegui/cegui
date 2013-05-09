@@ -13,7 +13,7 @@ macro(_find_dep_lib _PREFIX _FALLBACKLIBS _PATH_SUFFIXES) # _LIBS_VAR_EXT _STATI
         set(_STATIC "_STATIC")
 
         if(UNIX)
-            set(CMAKE_FIND_LIBRARY_SUFFIXES ".a")
+            set(CMAKE_FIND_LIBRARY_SUFFIXES ".a;.so;.dynlib")
         endif()
 
     else()
@@ -23,8 +23,8 @@ macro(_find_dep_lib _PREFIX _FALLBACKLIBS _PATH_SUFFIXES) # _LIBS_VAR_EXT _STATI
     # decide which libs to look for, prefer list we get from pkg-config rather
     # than making idiotic assumptions or guesses (which we resort to if
     # pkg-config did not tell us anything).
-    if (PC_${_PREFIX}_LIBRARIES)
-        set(_FINDLIBS ${PC_${_PREFIX}_LIBRARIES})
+    if (PC_${_PREFIX}${_STATIC}_LIBRARIES)
+        set(_FINDLIBS ${PC_${_PREFIX}${_STATIC}_LIBRARIES})
     else()
         set(_FINDLIBS ${_FALLBACKLIBS})
     endif()
@@ -34,7 +34,7 @@ macro(_find_dep_lib _PREFIX _FALLBACKLIBS _PATH_SUFFIXES) # _LIBS_VAR_EXT _STATI
     set(${_PREFIX}_FOUND_ALL_LIBS${_LIBS_VAR_EXT} TRUE)
     foreach(_L ${_FINDLIBS})
         string(TOUPPER "${_L}" _UL)
-        find_library(${_UL}_LIBRARY${_LIBS_VAR_EXT} NAMES ${_L} HINTS ${PC_${_PREFIX}_LIBDIR} ${PC_${_PREFIX}_LIBRARY_DIRS}${_STATIC} PATH_SUFFIXES ${_PATH_SUFFIXES})
+        find_library(${_UL}_LIBRARY${_LIBS_VAR_EXT} NAMES ${_L} HINTS ${PC_${_PREFIX}_LIBDIR} ${PC_${_PREFIX}${_STATIC}_LIBRARY_DIRS} PATH_SUFFIXES ${_PATH_SUFFIXES})
         if(${_UL}_LIBRARY${_LIBS_VAR_EXT})
             list(APPEND ${_PREFIX}_LIBRARIES${_LIBS_VAR_EXT} ${${_UL}_LIBRARY}${_LIBS_VAR_EXT})
         else()
