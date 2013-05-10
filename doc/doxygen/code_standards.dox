@@ -9,12 +9,12 @@ Here we describe the requirements relating to files; their naming, layout and ar
 
 @subsection code_standards_sec_1_1 Naming and Directory Layout
 This section contains some general guidelines on naming and arranging files.
-- The source code in general exists in two groups; the library code itself, and code for the sample applications:
-    - The library code, beneath the @b cegui directory, is contained within dual directory trees - one beneath the @b src directory to contain all the implementation .cpp files, and one beneath the @b include directory to contain all the header .h files.  Within these directories, there should be a seperate subdirectory for each group of modules or subcomponents within the system.  For example there are subdirectories for @b RendererModules and @b XMLParserModules to hold the renderer module code and XML parser module code respectively; these directories then have further subdirectories for each individual module.
+- The source code in general exists in two groups; the library code itself, and code for the sample browser and sample application modules:
+    - The library code, beneath the @b cegui directory, is contained within dual directory trees - one beneath the @b src directory to contain all the implementation .cpp files, and one beneath the @b include/CEGUI directory to contain all the header .h files.  Within these directories, there is a seperate subdirectory for each group of modules or subcomponents within the system.  For example there are subdirectories for @b RendererModules and @b XMLParserModules to hold the renderer module code and XML parser module code respectively; these directories then have further subdirectories for each individual module.
     - The sample code, beneath the @b samples directory, has individual directories for each sample application.  The implementation and header files for the sample should both appear together in this directory; there should be no separate @b src and @b include subdirectories for the samples.
 - File names should not contain spaces, although the use of the underscore is acceptable where neccessary.
-- File names should begin with the CEGUI prefix and then have the initial letter of all other words captialised.
-- Files should generally be named after the class or module to which they relate.  For example, the file @b CEGUIMyClass.h would be the main header for the class named @b MyClass.
+- File names should the initial letter of each word captialised.
+- Files should generally be named after the class or module to which they relate.  For example, the file @b MyClass.h would be the main header for the class named @b MyClass.
 - Source files within CEGUI should use the following convention:
     - C++ header files should have the @b .h file extension.
     - C++ source files should have the @b .cpp file extension.
@@ -30,7 +30,7 @@ This section contains some general guidelines on naming and arranging files.
     Author:   <name and email of the original file author>
 *******************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -55,7 +55,7 @@ This section contains some general guidelines on naming and arranging files.
 
 - All header files should have include guards implemented via preprocessor @c \#ifdef/\#endif commands.  We do not want any pragma rubbish used for this as it's worse than useless as far as being portable goes.  The macro used to control the header should be based upon the filename.
 
-- Please ensure that all files have a newline at the end of them.  Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to includes.  Plus it gives loads of annoying warnings on gcc :)
+- Please ensure that all files have a newline at the end of them.  Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to headers.  Plus it gives loads of annoying warnings on some compilers :)
 
 - Wherever possible preprocessor macros should <em>not be used</em>.  Always prefer the use of an actual language construct (such as typedef or enum) over a preprocessor @c \#define.
 
@@ -87,7 +87,7 @@ This section contains some general guidelines on naming and arranging files.
     - Class member function definitions.
 
 @section code_standards_sec_2 Code Style and Layout
-The following details the general code style and layout that must be used.
+The following details the general code style and layout that should be used.
 
 @subsection code_standards_sec_2_1 Naming Conventions for Types, Variables, Members and Constants
 - Preprocessor macro names should be all upper case with words separated by the underscore character.  Wherever possible, do not use preprocessor macros.  A general exception to this particular rule is the name of include guards which may have case matching that of the header filename.
@@ -98,7 +98,7 @@ The following details the general code style and layout that must be used.
 
 - Global variables should use camel case; where each word in the name is capitalised except the first word.  Globals should be prefixed with @b G_.  So if we had a global we want to call 'nastyVariable' it should be named @b G_nastyVariable - yes, it looks horrible, and hopefully it's horrible enough that you find another way!
 
-- Class member variables should be camel case; where each word in the name is capitalised except the first word, such as in @b thisVariable.  Normal members should have the prefix @b d_, such as in @b d_thisVariable, while static members should have the prefix @b s_, such as in @b s_anotherVariable.
+- Class member variables should be camel case; where each word in the name is capitalised except the first word, such as in @b thisVariable.  Normal members should have the prefix @b d_ (for data, don't ask!), such as in @b d_thisVariable, while static members should have the prefix @b s_, such as in @b s_anotherVariable.
 
 - Class member functions should be camel case; where each word in the name is capitalised except the first word, such as in @b theFunction.  Member functions do not use prefixes.
 
@@ -107,15 +107,25 @@ The following details the general code style and layout that must be used.
 - Parameter names are treated the same as other local variables, so should be named all lower case with an underscore between words, such as in @b char_count.
 
 @subsection code_standards_sec_2_2 Code Formatting Style and Other Tips
-- Generally speaking no line should be more than 80 characters long.
+- Generally speaking no line in any file - whether code or just plain
+text - should be more than 80 characters long. Long lines are really hard to
+read and lead to general bad programming practice.
 
-- Do not use actual tabs, insert spaces instead.
+- Tab spacing size should be 4. But...
 
-- Tab spacing size should be 4.
+- Do not use actual tabs, have your editor insert spaces instead. This is very
+important.
 
 - Code within functions should be split into logical groups by the use of blank lines where appropriate.  Generally any control structure (if, while, case, do and so on) should be both preceded and followed by a blank line.
 
-- When commenting, write the comment first; always put it before the line or block it pertains to.  This helps to ensure the comment indicates the intent of the code that you then write, rather than parrotting what is obvious from the code, which tends to happen when adding comments afterwards - we can already see what the code \e does, what we're interested in is it's \e purpose; the why as opposed to the what.
+- Regarding comments, we prefer well written, self documenting code that
+requires no comments. However, if it is deemed a comment is needed, write the
+comment first; always put it before the line or block it pertains to.  This
+helps to ensure the comment indicates the intent of the code that you then
+write, rather than parrotting what is obvious from the code, which tends to
+happen when adding comments afterwards - we can already see what the code
+\e does, what we're interested in is it's \e purpose; the why as opposed to the
+what.
 
 - Any and all braces opening a code block should be on their own line, and not attached to the control structure that came before.  That is, like this:
 @code
@@ -306,5 +316,8 @@ a_ptr = &an_object;
 - When defining class constructors, use of member initialiser lists is to be strongly preferred over the use of assignments in the constructor body.
 
 - Only use C++ style casts.  C style casts should not be used.  Or better yet, find a way not to use the cast at all!
+
+- Do not use any language or STL constructs from C++11. We intend to support
+non-c++11 compilers for the forseeable future.
 
 */
