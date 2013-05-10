@@ -5,7 +5,7 @@ namespace CEGUI {
 The following is intended as a high level overview of the CEGUI system; the core
 components are described as are the general relationships between the
 components.  Once you have finished reading this section you should have a
-comfortable understanding of the way CEGUI operates.
+basic understanding of the way CEGUI operates.
 
 <br>
 @section arch_overview_intro Introduction
@@ -18,8 +18,8 @@ solution tailored to the needs of their individual project.
 
 <br>
 @section arch_overview_lowlevel Low Level Interface Objects
-For the most part, the entire CEGUI system is bootstrapped in one step when the
-CEGUI::System object is created.  The user passes the System::create function
+For the most part, the entire CEGUI system is initialised in one step when the
+CEGUI::System object is created.  The user can pass the System::create function
 their choice of Renderer object as well as other options like a
 ResourceProvider, an XMLParser and an ImageCodec (if any of three latter objects
 are not provided default options are used instead).  These four objects - that
@@ -55,18 +55,17 @@ object.
 @section arch_overview_sys_and_mgrs System and Manager Objects
 The System object provides system wide options, settings and functions, as well
 as access to other non-singleton objects (such as the previously described
-Renderer, ResourceProvider, XMLParser and ImageCodec objects).  CEGUI::System
-also contains the input injection interface that you use to pump externally
-generated inputs - such as mouse and keyboard input - into the CEGUI system.
+Renderer, ResourceProvider, XMLParser and ImageCodec objects).
 
 When the core CEGUI::System object is created the system also creates a set of
 manager objects that are subsequently used to interact with various parts of
 CEGUI.  The main group of managers - as used in the majority of applications -
-are the ImagesetManager, the FontManager, the SchemeManager and the
-WindowManager.  The remaining manager objects, the WindowRendererManager, the
-WindowFactoryManager and the WidgetLookManager are generally only needed by
-library users when they come to extend or customise the windows and widgets
-available to the system.
+are the ImageManager, the FontManager, the SchemeManager and the
+WindowManager.  The remaining manager objects, the AnimationManager, the
+RenderEffectManager the WindowRendererManager, the WindowFactoryManager and the
+WidgetLookManager are generally only needed by library users when they come to
+extend or customise the windows and widgets available to the system or to do
+things via code that are more normally accomplished via XML data files.
 
 The key to understanding CEGUI is in these managers.  Generally you do not
 directly create and destroy objects in CEGUI (meaning you do not use the C++ @c
@@ -77,13 +76,23 @@ access to created objects at a later time.  This arrangement also aids in
 cleaning up the system when you're done; CEGUI will destroy any remaining
 objects automatically when it is closed down (via the System::destroy function).
 
-@par CEGUI::ImagesetManager
-The ImagesetManager manages CEGUI::Imageset objects.  An Imageset represents a
-series of named regions defined upon some source surface (texture).  Each named
-region defined represents a CEGUI::Image and is typically the lowest level
-abstraction of imagery used by CEGUI; when you - or the system itself - wants to
-draw something, this typically entails an Image object submitting geometry to a
-GeometryBuffer provided via the Renderer.
+@par CEGUI::ImageManager
+The ImageManager manages CEGUI::Image based objects. Image is an interface that
+defines needed operations for CEGUI to handle imagery and is typically the
+lowest level abstraction of imagery used by CEGUI; when you - or the system
+itself - wants to draw something, this typically entails an Image object
+submitting geometry to a GeometryBuffer provided via the Renderer. Each Image
+must have a name that is unique within the system, allowing the Image instances
+to be retrieved via the ImageManager by specifying the name of the Image.
+At least initially, it is likely that all the Image instances you use will be of
+the type CEGUI::BasicImage. BasicImage is an Image subclass that represents a
+rectangular region on a texture. In this way, it is possible for a single
+texture to contain multiple sub-images that can then be used by CEGUI - this is
+a highly efficient approach to texture management and is usually referred to as
+a texture atlas. When using CEGUI, the general way you define the set of images
+provided by a texture atlas is to provide an Imageset definition file - this is
+an XML file that specifies the name of the texture or image file and definitions
+for the sub-images that are part of the atlas.
 
 @par CEGUI::FontManager
 The FontManager manages CEGUI::Font objects.  In CEGUI a Font is -
@@ -102,6 +111,19 @@ represents a top-level means to form a GUI 'skin'.
 @par CEGUI::WindowManager
 The WindowManager manages CEGUI::Window based objects and is the means by which
 you will create and manage the windows and widgets of your GUIs.
+
+@par CEGUI::AnimationManager
+The AnimationManager offers functions to manage animation definitions and create
+instances of those animations within the system. Generally, animations are
+defined via XML - either in their own animation XML file or as part of the
+WidgetLook definitions in the Falagard "look n feel" skin definition XML.
+
+@par CEGUI::RenderEffectManager
+The RenderEffectManager is where RenderEffect types are registered with the
+system. Note that CEGUI does not come with any 'stock' RenderEffects although
+some examples are provided within the CEGUI samples. RenderEffects are
+registered with a name and this name is then used in mappings to associate the
+effect with a window type that you later create via the WindowManager.
 
 @par CEGUI::WindowFactoryManager
 Every type of Window based object is required to have a WindowFactory based
@@ -133,14 +155,16 @@ you will not usually need to use the WidgetLookManager directly.
 The Window, WindowRenderer and WidgetLookFeel objects are the CEGUI system's
 'holy trinity'.  They each provide part of the functionality required to
 represent a fully working, interactive window or widget, and are combined via
-what is known as a "Falagard Mapping" (typically defined in scheme XML files). 
-A falagard mapping is a means to provide a type name to a grouped concrete
-window or widget type providing the core logic of the widget, a window renderer
-providing high-level rendering instructions, and a WidgetLookFeel providing the
-lower-level definitions to be used by the window and window renderer.  It is
-these mapped type names that are typically used when creating windows within the
-system and frees you from the complexity of needing to create and link these
-objects manually.
+what is known as a "Falagard Mapping" (typically defined in scheme XML files,
+though of course can also be made in code by accessing the
+WindowFactoryManager). A falagard mapping is a means to provide a type name to a
+grouped concrete window or widget type providing the core logic of the widget, a
+window renderer providing high-level rendering instructions, a WidgetLookFeel
+providing the lower-level definitions to be used by the window
+and window renderer and, optionally, a RenderEffect to handle any special
+rendering effects required.  It is these mapped type names that are typically
+used when creating windows within the system and frees you from the complexity
+of needing to create and manage instances of these objects manually.
 
 */
 }
