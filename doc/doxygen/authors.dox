@@ -2,13 +2,10 @@
 @page authors List of authors and contributors
 The following is a list of primary authors and contributors for Crazy Eddie's GUI System Mk-2.
 
-@section authors_sec_1 Current CEGUI Core Team Members
+@section authors_sec_1 Current CEGUI Team Members
 - Paul D Turner (crayzed / CrazyEddie / ice-drezday)
 - Martin Preisler (Kulik)
-
-@section authors_sec_3 Current CEGUI Tools Team Members
-- Paul D Turner (crayzed / CrazyEddie / ice-drezday)
-- Martin Preisler (Kulik)
+- Lukas Meindl (Ident)
 
 @section authors_sec_2 Retired or Semi-retired CEGUI Team Members
 - Patrick Kooman (scriptkid)
@@ -90,7 +87,6 @@ The following have contributed patches, bug reports, and other such valuable thi
 - Xavier
 - s5zone
 - Jason "Avengre" Assalita
-- Lukas Meindl
 - Pavlos Touboulidis
 
 <br>
