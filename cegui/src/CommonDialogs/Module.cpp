@@ -25,42 +25,17 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/CommonDialogs/Module.h"
-#include "CEGUI/TplWindowFactoryRegisterer.h"
-
+#include "CEGUI/WindowFactoryManager.h"
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
 #include "CEGUI/CommonDialogs/ColourPicker/Controls.h"
 
 //----------------------------------------------------------------------------//
 extern "C"
-CEGUI::FactoryModule& getWindowFactoryModule()
+void initialiseCEGUICommonDialogs()
 {
-    static CEGUI::CommonDialogsWindowModule module;
-    return module;
+    CEGUI::WindowFactoryManager::addWindowType<CEGUI::ColourPicker>();
+    CEGUI::WindowFactoryManager::addWindowType<CEGUI::ColourPickerControls>();
 }
 
 //----------------------------------------------------------------------------//
-
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-
-//----------------------------------------------------------------------------//
-CommonDialogsWindowModule::CommonDialogsWindowModule()
-{
-    d_registry.push_back(new TplWindowFactoryRegisterer<ColourPicker>);
-    d_registry.push_back(new TplWindowFactoryRegisterer<ColourPickerControls>);
-}
-
-//----------------------------------------------------------------------------//
-CommonDialogsWindowModule::~CommonDialogsWindowModule()
-{
-    FactoryRegistry::iterator i = d_registry.begin();
-    for ( ; i != d_registry.end(); ++i)
-        delete (*i);
-}
-
-//----------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
 
