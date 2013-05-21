@@ -21,31 +21,35 @@ will be considered to be gifted to us, for use as we see fit.  Typically this
 just means we'll be releasing the contributed materials under our MIT license.
 
 - Before you start work, especially on anything major, you should definitely
-join in on the forums (http://forums.cegui.org.uk/) and discuss your ideas and
-intentions.  There is nothing worse in our eyes than somebody spending valuable
-time working on something that turns out to be unsuitable when completed -
-whether due to a design choice we could have advised about, something
+join our developer channel #cegui-devel on irc.freenode.net and discuss your
+ideas and intentions (alternatively, post on the forums at
+http://forums.cegui.org.uk/).  There is nothing worse in our eyes than somebody
+spending valuable time working on something that turns out to be unsuitable when
+completed - whether due to a design choice we could have advised about, something
 conflicting with existing or upcoming work, or some other reason.
 
-- All code and other text based modifications should be submitted in patch form.
-Submitting full, alternate versions of modified files is not helpful and serves
-no purpose other than to waste our time.  Such contributions will be rejected as
-a matter of course.
+- We presently accept modifications exclusively via mercurial pull request - so
+this means no patches, no archives containing files or anything else of that
+nature.
 
-- All patches should be submitted to the appropriate sub-project on the CEGUI
-mantis tracker (http://mantis.cegui.org.uk/).  Posting patches on the forums is
-not advised and will virtually always result in your patch being lost and
-forgotten about.
+- Ideally your clone would be hosted at bitbucket.org and made via the fork
+mechanism that exists there. This way your pull requests can be handled in the
+most effient manner.
 
-- Patches must be submitted in <em>unified diff format only</em>.  Patches
-submitted in any other form will be rejected as a matter of course.
+- If your fork is not hosted at bitbucket.org, please add a ticket to the
+appropriate sub-project on the CEGUI mantis tracker (http://mantis.cegui.org.uk/).
+Posting pull requests on irc or on the forums is not advised and will virtually
+always result in your request being lost and forgotten about.
 
-- Fudged patches that effectively replace every line in target files
-(this is usually caused by file-level whitespace changes) will be immediately
-rejected without further consideration.  <em>We need to be able to see
-specifically what your patch changes</em>, since that's not possible with this
-type of 'patch', they are no better than submitting full replacement files and
-so get rejected for the same reason.
+- It should be clearly stated on your pull request what precisely the change or
+changes are for - including links to forum discussions and/or other mantis
+tickets where appropriate.
+
+- When working on changes, try to keep to small granular commits that each
+<em>do one thing only.</em>  If your commit message states that the change
+fixes a bug, or adds some new feature, the commit should not additionally contain
+changes to other non related parts of the system.  Pull requests with commits
+that fall into this category are likely to be rejected.
 
 - When developing code for CEGUI - whether you're modifying existing code, or
 developing new code - you should ensure that the code conforms to the existing
@@ -54,40 +58,27 @@ style and idioms in use.  The required code style is documented in
 possible.  Contributed code that deviates too much from these guidelines will be
 rejected as a matter of course.
 
-- It should be clearly stated on the patch submission what precisely the patch
-is for - including links to forum discussions and/or other mantis tickets where
-appropriate.
-
-- Patches should <em>do one thing only.</em>  If you're submitting a patch that
-fixes a bug, or adds some new feature, the patch should not additionally contain
-changes to other non related parts of the system.  Patches deemed to fall into
-this category will be rejected as a matter of course.
-
 - Ensure all new classes and/or functions are clearly documented and that any
 documentation for modified classes and/or functions is updated to be correct.
 Documentation should use the same doxygen style as is used elsewhere.  If we
-see new undocumented code or clearly incorrect documentation in your submission
-it will be rejected as a matter of course.
+see new undocumented code or clearly incorrect documentation in your pull request
+will likely be rejected.
 
 - Where possible you should test your code on multiple platforms, and update any
 build mechanisms if appropriate.  If you're unable to test on all platforms,
-your patch submission should clearly state which systems have been tested and
+your pull request should clearly state which systems have been tested and
 which have not.
-
-- If your patch involves adding or removing files, the patch submission should
-clearly state which files are added and their purpose, and which files have
-been removed and the reasons for the removal.
 
 - Modifications should be complete - especially those that affect the abstract
 classes and/or interfaces.  For example, if you're adding to or changing the
-functionality of the rendering system, your patch should include the necessary
+functionality of the rendering system, you should include the necessary
 modifications and implementations for <em>all supported renderers</em> (or as
-many as possible, perhaps with an explanatory note).  Patches that effectively
-break all implementation modules bar the one in the patch can usually expect to
-be rejected; the reason being is that accepting such patches effectively leaves
-the core dev team to do 75% or more of the work - since the remaining modules
+many as possible, perhaps with an explanatory note).  Changes that effectively
+break all implementation modules bar one can usually expect to be rejected, the
+reason being is that accepting such modifications effectively leaves the CEGUI
+developers to do 75% or more of the work - since the remaining modules
 would have to be updated by us - which defeats the purpose of having people
-submit patches in the first place.
+submit code in the first place.
 
 - Lastly, don't forget to update our equivalent of the AUTHORS file at
 <tt>doc/doxygen/authors.dox</tt> with your name and contribution.  If you don't
