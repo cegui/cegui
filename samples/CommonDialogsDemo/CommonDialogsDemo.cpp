@@ -45,6 +45,9 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     d_usedFiles = CEGUI::String(__FILE__);
 
+    // initialise the common dialogs library; this is very important!
+    initialiseCEGUICommonDialogs();
+
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     // Set default font for the gui context

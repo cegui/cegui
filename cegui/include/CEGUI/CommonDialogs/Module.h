@@ -28,8 +28,6 @@
 #ifndef _CEGUICommonDialogsModule_h_
 #define _CEGUICommonDialogsModule_h_
 
-#include "CEGUI/FactoryModule.h"
-
 #if (defined( __WIN32__ ) || defined( _WIN32 )) && !defined(CEGUI_STATIC)
 #   ifdef CEGUICOMMONDIALOGS_EXPORTS
 #       define CEGUI_COMMONDIALOGS_API __declspec(dllexport)
@@ -40,24 +38,14 @@
 #   define CEGUI_COMMONDIALOGS_API
 #endif
 
-//! Function we're required to export.
 extern "C"
-CEGUI_COMMONDIALOGS_API
-CEGUI::FactoryModule& getWindowFactoryModule();
+/*!
+\brief
+Initialise common dialogs library ready for use.
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-//! Implementation of FactoryModule for new windows defined in CEGUICommonDialogs
-class CommonDialogsWindowModule : public CEGUI::FactoryModule
-{
-public:
-    CommonDialogsWindowModule();
-    ~CommonDialogsWindowModule();
-};
+This should be called prior to creating any common dialog windows.
+*/
+CEGUI_COMMONDIALOGS_API void initialiseCEGUICommonDialogs();
 
-
-} // End of  CEGUI namespace section
-
-#endif  // end of guard _CEGUICommonDialogsModule_h_
+#endif
 
