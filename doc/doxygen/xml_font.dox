@@ -57,13 +57,30 @@ The reference for each element is arranged into sections, as described below:
     - @c AntiAlias: Boolean attribute that states whether the font should be
       rendered anti-aliased.  This setting only affects FreeType type fonts.
       Optional attribute, default is true.
-    - @c AutoScaled: Boolean attribute that states whether to scale imagery so
-      it appears the same @e physical size at any resolution.  The specified
-      native resolution values indicate the resolution that will result in a
-      one-to-one (i.e. unscaled) mapping from source to destination.  At
-      resolutions higher than the native, the imagery will be scaled @e up to
-      take up more space, and at resolutions lower than the native, the imagery
-      will be scaled @e down to take up less space.
+    - @c AutoScaled: Property that specifies how to scale glyphs in relation to
+      the specified native resolution. The native resolution values are intended
+      to indicate the resolution that would result in a one-to-one
+      (i.e. unscaled) mapping from source to destination. At display resolutions
+      higher than the native, the glyphs will be scaled @e up to
+      take up more space, and at display resolutions lower than the native,
+      glyphs will be scaled @e down to take up less space.
+      Possible values for this attribute are as follows:
+        - vertical - glyphs are auto scaled depending on the native resolution
+          height and the current resolution height. Horizontal scaling is
+          computed appropriately to maintain aspect ratio.
+        - horizontal - glyphs are auto scaled depending on the native resolution
+          width and the current resolution width. Vertical scaling is
+          computed appropriately to maintain aspect ratio.
+        - min - Vertical and horizontal scaling factors are calculated as above
+          and glyphs are auto scaled according to the smaller of the two scaling
+          factors. Aspect ratio is maintained.
+        - max - Vertical and horizontal scaling factors are calculated as above
+          and glyphs are auto scaled according to the larger of the two scaling
+          factors. Aspect ratio is maintained.
+        - true - Vertical and horizontal scaling factors are calculated as above
+          and glyph height and width are scaled independently.
+          Aspect ratio is @em not maintained.
+        - false - no auto scaling of glyphs will be performed.
       Optional attribute, default is false.
     - @c NativeHorzRes: When AutoScaled is enabled, specifies the horizontal
       screen resolution that will result in an unscaled, one-to-one mapping of

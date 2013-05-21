@@ -8,7 +8,6 @@
 <GUIScheme version="5" name="VanillaCommonDialogs">
 	<Font filename="DejaVuSans-10-NoScale.font" />
 	<LookNFeel filename="VanillaCommonDialogs.looknfeel" />
-    <WindowSet filename="CEGUICommonDialogs" />
 	<WindowRendererSet filename="CEGUICoreWindowRendererSet" />
 	<FalagardMapping windowType="Vanilla/VerticalImageSliderThumb" targetType="CEGUI/Thumb" renderer="Core/Button"  lookNFeel="Vanilla/VerticalImageSliderThumb" />
 	<FalagardMapping windowType="Vanilla/VerticalImageSlider" targetType="CEGUI/Slider" renderer="Core/Slider" lookNFeel="Vanilla/VerticalImageSlider" />

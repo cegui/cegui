@@ -1,133 +1,110 @@
-/**
-@page compiling Supported systems and compilation.
+﻿/**
+@page compiling Supported Systems and Compilation.
 @author Paul D Turner
+@tableofcontents
 
-@section compiling_sec_1 Supported Systems
-Crazy Eddie's GUI System Mk-2 is currently known to compile and run on the
-following systems:
+@section compiling_supportedsystems Supported Systems
+CEGUI uses CMake build generation system (http://www.cmake.org/) to configure
+the build and generate makefiles or project files of whatever kind you choose
+– basically this means that if cmake can spit out build files for it,
+then you should be able to successfully use it to build CEGUI.
 
-- Various flavors of Linux using gcc.
-- Microsoft Windows using Visual C++ - both express and professional versions
-where applicable. (Tested on Windows XP with MSVC++ 2010).
-- Apple Mac OS X running Xcode (tested on version 10.7.4 with Xcode 4.3.3).
+The CEGUI developers have personally tested the build of CEGUI on a variety
+systems, and can say the CEGUI is known to build using the following in both
+32bit and 64bit configurations:
+- GNU/Linux using recent versions of either GCC (http://gcc.gnu.org/) or clang
+(http://clang.llvm.org/)
+- Microsoft Windows using MSVC++ 2008 or above (including express editions)
+- Apple OS X using Xcode 4 or above.
 
-It is very possible that the system will compile with other compilers and run on
-other systems, though those mentioned above have been tested.
+@section compiling_dependencies Dependencies
+You may have already noticed that CEGUI has a lot of dependencies. Don't be
+scared! These are mostly – if not all – optional. CEGUI uses these third-party
+libraries to provide various functionality ranging from the obvious rendering
+and image loading to more obscure things such as providing regular expression
+based validation of edit box content and bi-directional text.
 
+For a list of the various libraries that CEGUI can use and what they are used
+for, please see @ref dependencies.
 
-@section compiling_sec_2 Requirements
-As well as one of the above supported systems, Crazy Eddie's GUI System Mk-2
-can also make use of some third party external libraries.  These libraries are
-as follows:
+For Windows and Apple OS X users, a source based dependency package is
+provided. This contains the source for the dependencies that you may wish
+to use. Please note that this dependency package is the only supported
+approach to getting the dependencies on these systems. See @ref building_deps
+for instructions related to building the dependency pack.
 
-- Optionally: Freetype2 (http://www.freetype.org)
-- Optionally: PCRE (http://www.pcre.org)
-- Optionally: Xerces-C++ XML parser (http://xml.apache.org/xerces-c)
-- Optionally: Expat XML parser (http://expat.sourceforge.net)
-- Optionally: LibXML XML parser (http://www.xmlsoft.org)
-- Optionally: DevIL image loading library (http://openil.sourceforge.net)
-- Optionally: Corona image loading library (http://corona.sourceforge.net)
-- Optionally: FreeImage image loading library (http://freeimage.sourceforge.net)
-- Optionally: SILLY image loading library (http://www.cegui.org.uk/wiki/index.php/SILLY)
-- Optionally: Lua programming language (http://www.lua.org/)
+For GNU/Linux systems, it is expected that you will install the development
+packages for the libraries that you intend to use – either via your
+distribution's package management system or by manually building and installing
+if that is more appropriate for you.
+@note the dependency pack described above is not intended for, and is not
+supported on, GNU/Linux systems – do not even attempt to use it there, thanks!
 
-<br>
-@section compiling_sec_3 Compiling on Microsoft Windows with MSVC++
-To compile on MSVC++ the first thing you need is the dependencies package, for
-details about where to obtain this please see @ref downloading.  The
-dependencies zip file should be extracted into the source package root directory
-so that you end up with a new directory named 'dependencies'.
+@section compiling_build Building the Source
+The procedure for building CEGUI is about as simple as things can get
+and is effectively the same as building any other library you might have
+built. Things to note are that, as already mentioned, CEGUI uses the cmake
+build generator and provides a source based dependency pack for Microsoft
+Windows and Apple OS X users.
 
-If you're using code directly from mercurial you will need a copy of the
-premake executable (currently you need version 3.6, which is available
-<a href="http://sourceforge.net/projects/premake/files/Premake/3.6/premake-win32-3.6.zip/download">here</a>.
-This executable should either be placed in the <tt>projects/premake</tt>
-directory or somewhere on your path.
+I will now overview the basic steps, since these are mostly trivial long
+descriptions are not given for most steps.
+@subsection compiling_build_decide Decide which options and dependencies you want
+Refer to the @ref dependencies and decide which features you wish you use with CEGUI.
+- For GNU/Linux: Install the appropriate development packages for the libraries
+required to provide the functionality that you want available.
+- For Windows and OS X: Build the dependencies from the source package,
+see @ref building_deps. Having built your chosen dependency libraries, copy the
+<tt>dependencies</tt> directory from the location where you built the
+dependencies to the root CEGUI source directory. This means that if your CEGUI
+directory is called <tt>C:\\cegui-0.8.0</tt>, your dependencies should be at
+<tt>C:\\cegui-0.8.0\\dependencies</tt>.
+@subsection compiling_build_configuring Configuring the build
+Now you must use CMake to configure the build and generate the appropriate
+build files so that you can actually compile the source files. I recommend
+the CMake GUI utility – at least initially until you are familiar with the
+available build options. The steps below reflect this choice, if you choose
+not to use the GUI utility for this, then it is assumed you are sufficiently
+familiar with both CMake and CEGUI and therefore do not require additional
+guidance.
 
-Now you should navigate to the <tt>projects/premake</tt> directory in the source
-and open the <tt>config.lua</tt> file in a text editor of some kind.  Take a few
-moments to look over the available options and make any required configuration
-changes you desire.
+Once you have the CMake GUI utility running:
+- Ensure the source and build directories are correct. It is generally advised
+not to build directly in the source directory – it makes recovering back to
+'pristine' source files more difficult and basically creates a mess!
+- Press the Configure button and select the appropriate build system you
+wish you use.
+- Once the initial configure pass has run, you can then select or modify any
+options that you need to. Consult @ref build_options for an overview
+of the options available. When you are done, press the Configure button again.
+- Press the Generate button to generate the build system files appropriate
+for whatever build system you selected above.
+@subsection compiling_build_build Compiling the files
+You should now take the generated build files and build them! This may
+involve loading solution or project files into your IDE and pressing build
+buttons or entering commands – such as <tt>make</tt> – into the terminal. Once
+the build is complete, you should find libraries and perhaps executable
+binaries in subdirectories beneath your chosen build location.
+@subsection compiling_build_install Installation
+Building the 'install' target will copy the files required to use CEGUI to some
+appropriate location on your system:
+- GNU/Linux: By running <tt>make install</tt> – or some equivalent operation to
+trigger the install target – you will cause the libraries, headers and
+other items to be installed to the system. It is likely that you will need
+appropriate privileges to achieve this unless you set the install prefix to
+some other location that you already have access to.
+@note CMake does not provide an uninstall target, so there is no
+equivalent way to easily remove all the files again. However, it does produce
+a file <tt>install_manifest.txt</tt> that contains a list of all files copied during
+install. This allows you to uninstall by doing something similar to:
+<tt>xargs rm <install_manifest.txt</tt>
+- Windows and OS X: It is generally not our intention that you run the
+install target on these platforms – although the option is there for
+advanced users only. Please do not do this if you are not an advanced user
+and therefore may not know the various implications of "installing" on these
+systems.
 
-Next you should execute one of the provided 'build_*.bat' batch files.  These do
-not actually build the code, but rather they invoke premake to generate an
-appropriate solution file and project files for the selected version of MSVC++
-(so for example, build_vs2008.bat generates the solution for MSVC++ 2008).  If
-there is no batch file for your specific version of MSVC++ you should use the
-batch file for the nearest version - MSVC++ will load and upgrade the solution
-as needed.
-
-Once this has run all you need to do is load the generated solution (CEGUI.sln)
-into MSVC++, select an appropriate build configuration (Debug, Release, etc) and
-press the build solution button.
-
-The exact same approach is used when building the samples solution (unless you
-chose to build them as part of the main solution).
-
-<br>
-@section compiling_sec_4 Compiling on GNU/Linux systems
-Compiling on GNU/Linux and similar systems follows the familiar configure, make,
-make install idiom.
-
-If you're using the code directly from mercurial, the first thing you need to
-do is generate the configure script.  This is achieved by running the bootstrap
-script in the source root directory (Note that running this requires Automake,
-Autoconf and Libtool).
-
-Firstly it's highly recommended to look at the available configuration options
-for CEGUI, so run:
-@verbatim
-./configure --help
-@endverbatim
-
-Once you've decided on the options you would like to set, you can invoke
-configure (add any options you need, obviously!):
-@verbatim
-./configure
-@endverbatim
-Hopefully this will finish successfully and give you a summary of what options
-were configured.  If the summary shows something you didn't want, go back and
-check your configure options.
-
-Now you can build the code:
-@verbatim
-make
-@endverbatim
-
-Once this has successfully completed, you can install the system.  If you're
-installing in the 'usual' places, such as /usr or /usr/local you will need to
-install as root, so perhaps you would run
-@verbatim
-sudo make install
-@endverbatim
-
-Finally, you'll probably need to run ldconfig so that the system configure and
-caches the newly installed libraries:
-@verbatim
-sudo ldconfig
-@endverbatim
-
-<br>
-@section compiling_sec_5 Compiling on Mac OS X with Xcode
-To compile with Xcode the first thing you need is the dependencies package, for
-details about where to obtain this please see @ref downloading.  The
-dependencies zip file should be extracted into the source package root directory
-so that you end up with a new directory named 'dependencies'.
-
-Next you should navigate to the <tt>projects/Xcode</tt> directory and open the
-Xcode project file 'CEGUI.xcodeproj' in Xcode.
-
-Now it's recommended that you take a few moments to look over the file at
-<tt>CEGUI/CEGUI/Base/include/CEGUIConfig.h</tt> in the Groups & Files panel.  This
-file contains many of the options that you can change when building the system
-(some other options, related to external libraries, are available by selecting
-the project root and bringing up an Info window by pressing <tt>Command + I</tt>,
-select the @c Build tab, choose an appropriate build configuration and choose
-to show <tt>User-Defined Settings</tt> and make any desired changes.
-
-Finally to build the code just select an appropriate target (like the default
-'Crazy Eddie's GUI System' that builds everything except the Ogre and Irrlicht
-renderer frameworks), choose your build configuration and press the Build
-button.
-
+This has been an overview of the build for CEGUI. You should now have your
+libraries built and be ready and able to make use of the system.
 */
+
