@@ -33,6 +33,11 @@
 
 #include "CEGUI/widgets/LayoutCell.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4355)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -168,5 +173,10 @@ bool LayoutCell::handleChildRemoved(const EventArgs&)
 
     return true;
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
 
 } // End of  CEGUI namespace section
