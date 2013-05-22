@@ -89,7 +89,7 @@ void ComboDropList::initialiseComponents(void)
 }
 
 //----------------------------------------------------------------------------//
-void ComboDropList::resizeToContent(float fit_width, float fit_height)
+void ComboDropList::resizeToContent(bool fit_width, bool fit_height)
 {
     if (!d_windowRenderer)
         CEGUI_THROW(InvalidRequestException(

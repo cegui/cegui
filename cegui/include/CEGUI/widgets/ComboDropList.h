@@ -137,7 +137,7 @@ public:
 	bool	isAutoArmEnabled(void) const		{ return d_autoArm; }
 
     //! resize the widget such that the content is shown without scrollbars.
-    void resizeToContent(float fit_width, float fit_height);
+    void resizeToContent(bool fit_width, bool fit_height);
 
 	/*************************************************************************
 		Constructor & Destructor
