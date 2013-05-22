@@ -192,7 +192,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         const String texture_name(d_name + "_auto_glyph_images_" +
                                    PropertyHelper<int>::toString(s->first));
         Texture& texture = System::getSingleton().getRenderer()->createTexture(
-            texture_name, Sizef(texsize, texsize));
+            texture_name, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)));
         d_glyphTextures.push_back(&texture);
 
         // Create a memory buffer where we will render our glyphs
@@ -304,7 +304,7 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
         }
 
         // Copy our memory buffer into the texture and free it
-        texture.loadFromMemory(mem_buffer, Sizef(texsize, texsize), Texture::PF_RGBA);
+        texture.loadFromMemory(mem_buffer, Sizef(static_cast<float>(texsize), static_cast<float>(texsize)), Texture::PF_RGBA);
         CEGUI_DELETE_ARRAY_PT(mem_buffer, argb_t, texsize * texsize, BufferAllocator);
 
         if (finished)
@@ -402,8 +402,8 @@ void FreeTypeFont::updateFont()
             "cannot be used."));
     }
 
-    uint horzdpi = System::getSingleton().getRenderer()->getDisplayDPI().d_x;
-    uint vertdpi = System::getSingleton().getRenderer()->getDisplayDPI().d_y;
+    uint horzdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().d_x);
+    uint vertdpi = static_cast<uint>(System::getSingleton().getRenderer()->getDisplayDPI().d_y);
 
     float hps = d_ptSize * 64;
     float vps = d_ptSize * 64;

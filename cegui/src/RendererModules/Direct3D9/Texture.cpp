@@ -216,8 +216,8 @@ public:
         if (!d_texture)
             return;
 
-        RECT target_rect = {area.left(), area.top(),
-                            area.right(), area.bottom()};
+        RECT target_rect = {static_cast<LONG>(area.left()), static_cast<LONG>(area.top()),
+                            static_cast<LONG>(area.right()), static_cast<LONG>(area.bottom())};
 
         lockRect(&target_rect);
 
@@ -238,7 +238,7 @@ public:
 
         blitD3DCOLORSurfaceToRGBA(
             static_cast<uint32*>(d_lockedRect.pBits), dest,
-            Sizef(d_surfDesc.Width, d_surfDesc.Height),
+            Sizef(static_cast<float>(d_surfDesc.Width), static_cast<float>(d_surfDesc.Height)),
             d_lockedRect.Pitch);
 
         unlockRect();

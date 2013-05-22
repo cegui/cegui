@@ -34,6 +34,11 @@
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/SimpleTimer.h"
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4355)
+#endif
+
 namespace CEGUI
 {
 /*!
@@ -1105,6 +1110,10 @@ void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
 }
 
 //----------------------------------------------------------------------------//
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 }
 
