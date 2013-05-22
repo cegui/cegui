@@ -99,7 +99,7 @@ void OpenGL3FBOTextureTarget::deactivate()
 void OpenGL3FBOTextureTarget::clear()
 {
     const Sizef sz(d_area.getSize());
-    if(sz.d_height == 0.f || sz.d_height == 0.f)
+    if(sz.d_width == 0.f || sz.d_height == 0.f)
         return;
 
     // save old clear colour
