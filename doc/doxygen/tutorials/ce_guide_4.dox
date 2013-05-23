@@ -2,6 +2,7 @@ namespace CEGUI {
 /**
 @page input_tutorial The Beginners Guide to Injecting Inputs
 @author Paul D Turner
+@tableofcontents
 
 Having read the previous tutorials in this series, you now have your GUI
 rendering set up, the files loaded and even have a window on screen - however
@@ -24,25 +25,25 @@ although these are more advanced concepts best left for another time.
 
 @subsection input_tutorial_intro_injectors Get your inputs injected
 In order to tell CEGUI about the input events going on around it, we have an
-input injection interface.  This consists of a set of functions in the
-CEGUI::System class - there is one member function for each type of base input:
+input injection interface (CEGUI::InjectedInputReceiver). This provides one
+member function for each type of base input:
 
-- bool System::injectMouseMove( float delta_x, float delta_y );
-- bool System::injectMousePosition( float x_pos, float y_pos );
-- bool System::injectMouseLeaves( void );
-- bool System::injectMouseButtonDown( MouseButton button );
-- bool System::injectMouseButtonUp( MouseButton button );
-- bool System::injectKeyDown( uint key_code );
-- bool System::injectKeyUp( uint key_code );
-- bool System::injectChar( utf32 code_point );
-- bool System::injectMouseWheelChange( float delta );
-- bool System::injectTimePulse( float timeElapsed );
+- bool InjectedInputReceiver::injectMouseMove( float delta_x, float delta_y );
+- bool InjectedInputReceiver::injectMousePosition( float x_pos, float y_pos );
+- bool InjectedInputReceiver::injectMouseLeaves( void );
+- bool InjectedInputReceiver::injectMouseButtonDown( MouseButton button );
+- bool InjectedInputReceiver::injectMouseButtonUp( MouseButton button );
+- bool InjectedInputReceiver::injectKeyDown( Key::Scan scan_code );
+- bool InjectedInputReceiver::injectKeyUp( Key::Scan scan_code );
+- bool InjectedInputReceiver::injectChar( utf32 code_point );
+- bool InjectedInputReceiver::injectMouseWheelChange( float delta );
+- bool InjectedInputReceiver::injectTimePulse( float timeElapsed );
 
 And also some optional functions for click and multi-click events (which are
 normally automatically generated internally by the system):
-- bool System::injectMouseButtonClick( MouseButton button );
-- bool System::injectMouseButtonDoubleClick( MouseButton button );
-- bool System::injectMouseButtonTripleClick( MouseButton button );
+- bool InjectedInputReceiver::injectMouseButtonClick( MouseButton button );
+- bool InjectedInputReceiver::injectMouseButtonDoubleClick( MouseButton button );
+- bool InjectedInputReceiver::injectMouseButtonTripleClick( MouseButton button );
 
 Yes, that's quite a collection!  The first thing that you might notice is that
 there appears to be some repetition - things like 'mouse move' and
@@ -64,20 +65,35 @@ some action based on it instead.  Generally for this to work as described, you
 should have a fullscreen DefaultWindow as your layout root with the
 MousePassThroughEnabled property set to true.
 
+Finally, you must know that InjectedInputReceiver is implemented by GUIContext
+and that input injection is <em>per GUIContext</em>, this is a very important
+and a very powerful concept. In the generic case, though, it simply means that
+when you come to inject inputs, you get access to the initial, default
+GUIContext and inject your inputs there:
+@code
+CEGUI::GUIContext& context = CEGUI::System::getSingleton().getDefaultGUIContext();
+@endcode
+
+@note There is currently an oddity in the system that requires time pulses to be
+injected both into whatever GUIContext objects you need input for and
+additionally for CEGUI::System via CEGUI::System::injectTimePulse - if you fail
+to inject into System, you may find some things -- such as animations -- not
+working quite as they should!
+
 <br>
 @section input_tutorial_detail A little more detail: What each injector is used for
 Here we will offer a brief description of what each injection function is used
 for, the data it expects, and what, in general, is done with the input.
 
-@subsection input_tutorial_mousemove bool System::injectMouseMove( float delta_x, float delta_y )
+@subsection input_tutorial_mousemove bool InjectedInputReceiver::injectMouseMove( float delta_x, float delta_y )
 This is used to inject relative mouse movements.  The vales @c delta_x and
 @c delta_y specify the direction and number of screen pixels the mouse has moved
 on the x axis and y axis respectively.  This causes the mouse to move by the
 specified amount (the actual amount moved can be changed by setting a mouse
-scaling factor via the System::setMouseMoveScaling function).  If you use this,
-you generally do not need to use injectMousePosition.
+scaling factor via the InjectedInputReceiver::setMouseMoveScaling function).
+If you use this, you generally do not need to use injectMousePosition.
 
-@subsection input_tutorial_mousepos bool System::injectMousePosition( float x_pos, float y_pos )
+@subsection input_tutorial_mousepos bool InjectedInputReceiver::injectMousePosition( float x_pos, float y_pos )
 This is used to inject the current absolute position of the mouse.  The values
 @c x_pos and @c y_pos specify the position of the mouse in pixels, where a
 position of (0, 0) represents the top-left hand corner of the CEGUI display
@@ -85,14 +101,14 @@ position of (0, 0) represents the top-left hand corner of the CEGUI display
 of the entire screen).  The CEGUI mouse cursor will be set to the new position.
 If you use this, you generally do not need to use injectMouseMove.
 
-@subsection input_tutorial_mouseleaves bool System::injectMouseLeaves( void )
+@subsection input_tutorial_mouseleaves bool InjectedInputReceiver::injectMouseLeaves( void )
 This function informs CEGUI that the mouse cursor has left the host window that
 CEGUI considers it's rendering area.  This is useful if running in windowed mode
 to inform widgets that the mouse has actually left the CEGUI display completely
 (otherwise it may not get to know, since under many systems no more mouse events
 are generated for an OS window once the mouse has left it).
 
-@subsection input_tutorial_mbdown bool System::injectMouseButtonDown( MouseButton button )
+@subsection input_tutorial_mbdown bool InjectedInputReceiver::injectMouseButtonDown( MouseButton button )
 This tells CEGUI that a mouse button has been pressed down.  The value @c button
 is one of the CEGUI::MouseButton enumerated values, which are as follows:
 @code
@@ -111,13 +127,13 @@ enum MouseButton
 If the values from your input library do not match these, you will have to
 perform a translation step.  Also note that the value NoButton is not 0.
 
-@subsection input_tutorial_mbup bool System::injectMouseButtonUp( MouseButton button )
+@subsection input_tutorial_mbup bool InjectedInputReceiver::injectMouseButtonUp( MouseButton button )
 This tells CEGUI that a mouse button has been released.  As for the
-System::injectMouseButtonDown function, the value @c button is one of the
-CEGUI::MouseButton enumerated values.
+InjectedInputReceiver::injectMouseButtonDown function, the value @c button is
+one of the CEGUI::MouseButton enumerated values.
 
-@subsection input_tutorial_keydown bool System::injectKeyDown( uint key_code )
-This tells CEGUI that a key has been pressed.  The value @c key_code is the scan
+@subsection input_tutorial_keydown bool InjectedInputReceiver::injectKeyDown( Key::Scan scan_code )
+This tells CEGUI that a key has been pressed.  The value @c scan_code is the scan
 code for the key - note that this is not an ASCII or other text encoding value.
 The available scan codes are defined in the CEGUI::Key::Scan enumeration.  If
 you are using Microsoft DirectInput, then our scan codes are the same ones
@@ -132,15 +148,17 @@ performed, also there is no integrated key auto-repeat functionality - though
 these functions may appear in future releases.  If you need key auto-repeat then
 you will need to either use an input library that offers this function, or
 implement something directly.  Of course you will almost certainly need
-character input, so for that look at the System::injectChar function below.
+character input, so for that look at the InjectedInputReceiver::injectChar
+function below.
 
-@subsection input_tutorial_keyup bool System::injectKeyUp( uint key_code )
-This tells CEGUI that a key has been released.  As for the System::injectKeyDown
-function, the value @c key_code is a scan code for the key - and again note that
-this is not an ASCII or other text encoding value - see above for a more
-detailed description of the key scan codes.
+@subsection input_tutorial_keyup bool InjectedInputReceiver::injectKeyUp( Key::Scan scan_code )
+This tells CEGUI that a key has been released.  As for the
+InjectedInputReceiver::injectKeyDown function, the value @c scan_code is a scan
+code for the key - and again note that this is not an ASCII or other text
+encoding value - see above for a more detailed description of the key scan
+codes.
 
-@subsection input_tutorial_char bool System::injectChar( utf32 code_point )
+@subsection input_tutorial_char bool InjectedInputReceiver::injectChar( utf32 code_point )
 This function tells CEGUI that a character key has been pressed - you will need
 this in order to input text into CEGUI widgets.  The value @c code_point' is a
 Unicode UTF32 code point value (see the unicode website at http://unicode.org/
@@ -153,13 +171,13 @@ library (it is possible, for example, to get the Microsoft Windows message pump
 to send you key codes in UTF32 form, though exactly how it is done is beyond the
 scope of this introductory tutorial).
 
-@subsection input_tutorial_mwheel bool System::injectMouseWheelChange( float delta )
+@subsection input_tutorial_mwheel bool InjectedInputReceiver::injectMouseWheelChange( float delta )
 This function is used to tell CEGUI about the use of the mouse wheel or scroll
 wheel (whatever you like to call it!).  Use positive values for forward movement
 (rolling the wheel away from the user), and negative values for backwards
 movement (rolling the wheel towards the user).
 
-@subsection input_tutorial_pulse bool System::injectTimePulse( float timeElapsed )
+@subsection input_tutorial_pulse bool InjectedInputReceiver::injectTimePulse( float timeElapsed )
 This function is used to keep CEGUI informed about time (CEGUI doesn't have a
 wristwatch, you see!).  The value @c timeElapsed is a floating point number that
 indicates the number of seconds - or part seconds - that have passed since the
@@ -167,39 +185,45 @@ last time the injector was called (or since CEGUI was started).  The use of this
 function is becoming more and more important - it now controls things such as
 fades and timing for tool-tip widgets, menus, and also auto-repeat for
 mouse buttons.
+@note As mentioned above, there is currently an oddity in the system that
+requires time pulses to be injected both into whatever GUIContext objects you
+need input for and additionally for CEGUI::System via
+CEGUI::System::injectTimePulse - if you fail to inject into System, you may find
+some things -- such as animations -- not working quite as they should!
 
-@subsection input_tutorial_click bool System::injectMouseButtonClick( MouseButton button )
+@subsection input_tutorial_click bool InjectedInputReceiver::injectMouseButtonClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 click has occurred; normally that is a down -> up sequence.  Calling this
 function is only neccessary if the built-in automatic generation of click and
 multi-click events is unsuitable for your needs.  If you decide you need to use
 this function you will normally disable the automatic event generation first by
-way of the System::setMouseClickEventGenerationEnabled function.  While it is
+way of the GUIContext::setMouseClickEventGenerationEnabled function.  While it is
 possible to call this injection function \e without disabling the auto generated
 events, it will affect the behaviour as to the way events are marked as
 'handled' and therefore the return code from this function.
 
-@subsection input_tutorial_doubleclick bool System::injectMouseButtonDoubleClick( MouseButton button )
+@subsection input_tutorial_doubleclick bool InjectedInputReceiver::injectMouseButtonDoubleClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 double-click has occurred; normally that is a down -> up -> down sequence.
 Calling this function is only neccessary if the built-in automatic generation of
 click and multi-click events is unsuitable for your needs.  If you decide you
 need to use this function you will normally disable the automatic event
-generation first by way of the System::setMouseClickEventGenerationEnabled
+generation first by way of the GUIContext::setMouseClickEventGenerationEnabled
 function.  While it is possible to call this injection function \e without
 disabling the auto generated events, it will affect the behaviour as to the way
 events are marked as 'handled' and therefore the return code from this function.
 
-@subsection input_tutorial_tripleclick bool System::injectMouseButtonTripleClick( MouseButton button )
+@subsection input_tutorial_tripleclick bool InjectedInputReceiver::injectMouseButtonTripleClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 triple-click has occurred; normally that is a down -> up -> down -> up -> down
 sequence.  Calling this function is only neccessary if the built-in automatic
 generation of click and multi-click events is unsuitable for your needs.  If you
 decide you need to use this function you will normally disable the automatic
-event generation first by way of the System::setMouseClickEventGenerationEnabled
-function.  While it is possible to call this injection function \e without
-disabling the auto generated events, it will affect the behaviour as to the way
-events are marked as 'handled' and therefore the return code from this function.
+event generation first by way of the
+GUIContext::setMouseClickEventGenerationEnabled function.  While it is possible
+to call this injection function \e without disabling the auto generated events,
+it will affect the behaviour as to the way events are marked as 'handled' and
+therefore the return code from this function.
 
 <br>
 @section input_tutorial_conclusion Conclusion
