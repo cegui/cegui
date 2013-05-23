@@ -2,6 +2,7 @@ namespace CEGUI {
 /**
 @page datafile_tutorial The Beginners Guide to Data Files and Defaults Initialisation
 @author Paul D Turner 
+@tableofcontents
 
 It is assumed that prior to reading this tutorial you are already familiar with
 the concepts surrounding CEGUI's ResourceProvider and have correctly initialised
@@ -29,11 +30,9 @@ based.  This actually leads us to the first potential obstacle that you may run
 into: the .xsd schema files.
 
 @subsection datafile_tutorial_validation Schema Validation with Xerces-C++
-Although the Expat based XML parser module has now (largely) become the default
-choice for parsing the XML data files, the previous long time default - and
-still this authors preferred choice - is the parser based upon the Xerces-C++
-library from the Apache Software Foundation
-(see http://xerces.apache.org/xerces-c).
+Although the Expat based XML parser module is the default choice for parsing the
+XML data files, CEGUI also supports a parser based upon the Xerces-C++ library
+from the Apache Software Foundation (see http://xerces.apache.org/xerces-c).
 
 The advantage of using this particular parser is that it provides
 <em>schema validation</em>.  For the uninitiated, schema validation is a means
@@ -51,6 +50,11 @@ system; this is probably best achieved by setting up a resource group to the
 directory containing the schema files and setting that group as the default to
 be used by CEGUI::XercesParser when loading schema files (the specifics on how
 to do this are covered in @ref resprov_tutorial).
+
+The CEGUI developers recommend using Xerces-C++ during development and testing,
+and then switching to Expat (or one of the other lightweight parsers) for final
+deployment -- this way you minimise the chances of bad XML files slipping into
+your product.
 
 <br>
 @section datafile_tutorial_files The Data Files
@@ -118,7 +122,8 @@ A Scheme can contain one or more of the following:
   alternative names, it can also be used to 'hide' an already registered widget
   type with another widget type (so that other widget type gets used instead).
 - @c FalagardMapping  Creates a new usable window type by linking a concrete
-  window/widget type, a window renderer type and a widget look definition.
+  window/widget type, a window renderer type, a widget look definition and --
+  optionally -- a render effect.
 
 For a complete description of scheme files, please see @ref xml_scheme
 
@@ -155,14 +160,14 @@ Loading the scheme and font files is done as follows:
 @code
 // create (load) the TaharezLook scheme file
 // (this auto-loads the TaharezLook looknfeel and imageset files)
-CEGUI::SchemeManager::getSingleton().create( "TaharezLook.scheme" );
+CEGUI::SchemeManager::getSingleton().createFromFile( "TaharezLook.scheme" );
 
 // create (load) a font.
 // The first font loaded automatically becomes the default font, but note
 // that the scheme might have already loaded a font, so there may already
-// be a default set - if we want the "Commonweath-10" font to definitely
+// be a default set - if we want the "DejaVuSans-10" font to definitely
 // be the default, we should set the default explicitly afterwards.
-CEGUI::FontManager::getSingleton().create( "DejaVuSans-10.font" );
+CEGUI::FontManager::getSingleton().createFromFile( "DejaVuSans-10.font" );
 @endcode
 
 In the above code (and in the CEGUI samples) it is assumed that the resource
@@ -184,20 +189,25 @@ System::getSingleton().setDefaultFont( "DejaVuSans-10" );
 
 Another default object you'll normally set is a mouse cursor.  This ensures
 that when you move the mouse over any element that does not set a cursor of its
-own, the cursor does not disappear.  The code to set the default mouse cursor is
-as follows (This uses the TaharezLook imageset which was loaded by the scheme
-above):
+own, the cursor does not disappear.  The code to set the default mouse cursor
+for the initial, default GUIContext is as follows:
+@note This uses the TaharezLook imageset which was loaded as part of the
+TaharezLook scheme we loaded above.
+
 @code
-System::getSingleton().setDefaultMouseCursor( "TaharezLook", "MouseArrow" );
+System::getSingleton().getDefaultGUIContext().
+    getMouseCursor().setDefaultImage( "TaharezLook/MouseArrow" );
 @endcode
 
-Finally, if you intend to use tool tips, you should specify the name of the
-ToolTip based widget type that you want used for that purpose.  It is actually
+Finally, if you intend to use tool tips, you should specify the type of the
+ToolTip based widget that you want used for that purpose.  It is actually
 possible to set this on a per-window basis, though this is not normally
 required, and is beyond the scope of this introductory tutorial.  The code to
-set the default tool tip window type looks like this:
+set the default tool tip window type for the initial, default GUIContext looks
+like this:
 @code
-System::getSingleton().setDefaultToolTip( "TaharezLook/Tooltip" );
+System::getSingleton().getDefaultGUIContext().
+    setDefaultTooltipType( "TaharezLook/Tooltip" );
 @endcode
 
 <br>
