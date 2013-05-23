@@ -136,7 +136,7 @@ void SampleData::initialise(int width, int height)
     d_textureTargetImage = static_cast<CEGUI::BasicImage*>(&CEGUI::ImageManager::getSingleton().create("BasicImage", "SampleBrowser/" + imageName));
     d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
 
-    setTextureTargetImageArea(height, width);
+    setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
 }
 
 void SampleData::deinitialise()
