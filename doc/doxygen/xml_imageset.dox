@@ -33,14 +33,16 @@ The reference for each element is arranged into sections, as described below:
     files.
 
 - Attributes:
-    - @c Name: Specifies the name that will be assigned to the Imageset in the
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI imageset version is: 2
+    - @c name: Specifies the name that will be assigned to the Imageset in the
       CEGUI system.  Required Attribute.
-    - @c Imagefile: Specifies the path to the image file containing the imagery 
+    - @c imagefile: Specifies the path to the image file containing the imagery 
       for the imageset.  Required attribute.
-    - @c ResourceGroup: Specifies the resource group identifier to pass to the
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
       ResourceProvider when loading the file given in the @c Imagefile
       attribute.  Optional attribute, default is the Imageset default group.
-    - @c AutoScaled: Property that specifies how to scale imagery in relation to
+    - @c autoScaled: Property that specifies how to scale imagery in relation to
       the specified native resolution. The native resolution values are intended
       to indicate the resolution that would result in a one-to-one
       (i.e. unscaled) mapping from source to destination. At display resolutions
@@ -65,11 +67,11 @@ The reference for each element is arranged into sections, as described below:
           Aspect ratio is @em not maintained.
         - false - no auto scaling of images will be performed.
       Optional attribute, default is false.
-    - @c NativeHorzRes: When AutoScaled is enabled, specifies the horizontal
+    - @c nativeHorzRes: When AutoScaled is enabled, specifies the horizontal
       screen resolution that will result in an unscaled, one-to-one mapping of
       pixels from the source image to the destination surface.
       Optional attribute, default is 640.
-    - @c NativeVertRes: When AutoScaled is enabled, specifies the vertical
+    - @c nativeVertRes: When AutoScaled is enabled, specifies the vertical
       screen resolution that will result in an unscaled, one-to-one mapping of
       pixels from the source image to the destination surface.
       Optional attribute, default is 480.
@@ -87,19 +89,19 @@ The reference for each element is arranged into sections, as described below:
     - Defines a single component image of an imageset.
 
 - Attributes:
-    - @c Name: Specifies the name that will be used to identify the image within
+    - @c name: Specifies the name that will be used to identify the image within
       the Imageset.  Required attribute.
-    - @c XPos: Specifies the X pixel co-ordinate of the top-left corner of the
+    - @c xPos: Specifies the X pixel co-ordinate of the top-left corner of the
       image on the source surface.  Required attribute.
-    - @c YPos: Specifies the Y pixel co-ordinate of the top-left corner of the
+    - @c yPos: Specifies the Y pixel co-ordinate of the top-left corner of the
       image on the source surface.  Required attribute.
-    - @c Width: Specifies the width of the image in pixels.
+    - @c width: Specifies the width of the image in pixels.
       Required attribute.
-    - @c Height: Specifies the height of the image in pixels.
+    - @c height: Specifies the height of the image in pixels.
       Required attibute.
-    - @c XOffset: Specifies a horizontal offset to apply when rendering the
+    - @c xOffset: Specifies a horizontal offset to apply when rendering the
       image.  Optional attribute, default is 0.
-    - @c YOffset: Specifies a vertical offset to apply when rendering the
+    - @c yOffset: Specifies a vertical offset to apply when rendering the
       image.  Optional attribute, default is 0.
 
 - Usage:

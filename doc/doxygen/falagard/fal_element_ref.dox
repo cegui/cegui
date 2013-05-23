@@ -502,7 +502,7 @@ TODO
 The @c \<Falagard\> element is the root element in Falagard XML skin definition files. The element serves mainly as a container for @c \<WidgetLook\> elements
 
 @subsection fal_elem_ref_sec_11_2 Attributes:
-Element @c \<Falagard\> has no attributes.
+@arg @c version  specifies the version of the resource file. Should be specified for all files, current CEGUI falagard version is: 7
 
 @subsection fal_elem_ref_sec_11_3 Usage:
 <ul>
