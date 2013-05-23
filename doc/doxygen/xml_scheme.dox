@@ -45,7 +45,9 @@ The reference for each element is arranged into sections, as described below:
     - The \<GUIScheme\> element is the root element of the scheme file.
 
 - Attributes:
-    - @c Name: Specifies the name that the scheme will be known by within the
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI scheme version is: 5
+    - @c name: Specifies the name that the scheme will be known by within the
       system.  Required attribute.
 
 - Usage:
@@ -73,18 +75,18 @@ The reference for each element is arranged into sections, as described below:
       via the CEGUI::WindowManager.
 
 - Attributes:
-    - @c WindowType: Specifies a name for the mapping / window type being
+    - @c windowType: Specifies a name for the mapping / window type being
       created.  Required attribute.
-    - @c TargetType: Specifies the name of the concrete CEGUI::Window based
+    - @c targetType: Specifies the name of the concrete CEGUI::Window based
       object that contains the logic for the window type being specified.
       Required attribute.
-    - @c Renderer: Specifies the name of the concrete CEGUI::WindowRenderer
+    - @c renderer: Specifies the name of the concrete CEGUI::WindowRenderer
       based object that contains the rendering specific code for the window
       type being specified.  Required attribute.
-    - @c LookNFeel: Specifies the name of the Falagard WidgetLook definition
+    - @c lookNFeel: Specifies the name of the Falagard WidgetLook definition
       that contains imagery and other definitions for the window type being
       specified.  Required attribute.
-    - @c RenderEffect: Specifies the name of a registered RenderEffect of which
+    - @c renderEffect: Specifies the name of a registered RenderEffect of which
       an instance will be created to be associated with each created window of
       WindowType.  As the use of a RenderEffect requires an underlying
       RenderingWindow, if this is not automaticaly created by the TargetType,
@@ -110,14 +112,14 @@ The reference for each element is arranged into sections, as described below:
       requested name already exists, the file specified is not loaded.
 
 - Attributes:
-    - @c Name: Specifies the name of the font as specified in the font
+    - @c name: Specifies the name of the font as specified in the font
       xml file.  This is a validation check; if this name is specified it
       @e must match the name given in the font xml file or an exception will
       be thrown.  If this name is not given, the name is extracted from the
       font xml the first time it is loaded.  Optional attibute.
-    - @c Filename: Specifies the path to the font XML file.
+    - @c filename: Specifies the path to the font XML file.
       Required attribute.
-    - @c ResourceGroup: Specifies the resource group identifier to pass to the
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
       ResourceProvider when loading the file specified in the @c Filename
       attribute.  Optional attribute, if this is not specified the default
       resource group for Font files is used.
@@ -136,14 +138,14 @@ The reference for each element is arranged into sections, as described below:
       with the requested name already exists, the file specified is not loaded.
 
 - Attributes:
-    - @c Name: Specifies the name of the imageset as specified in the imagseset
+    - @c name: Specifies the name of the imageset as specified in the imagseset
       xml file.  This is a validation check; if this name is specified it
       @e must match the name given in the imageset xml file or an exception will
       be thrown.  If this name is not given, the name is extracted from the
       imageset the first time it is loaded.  Optional attibute.
-    - @c Filename: Specifies the path to the imageset XML file.
+    - @c filename: Specifies the path to the imageset XML file.
       Required attribute.
-    - @c ResourceGroup: Specifies the resource group identifier to pass to the
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
       ResourceProvider when loading the file specified in the @c Filename
       attribute.  Optional attribute, if this is not specified the default
       resource group for Imageset files is used.
@@ -163,13 +165,13 @@ The reference for each element is arranged into sections, as described below:
       file specified is not loaded.
 
 - Attributes:
-    - @c Name: Specifies the name to be used for the imageset.  If this
+    - @c name: Specifies the name to be used for the imageset.  If this
       attribute is not given, the imageset is given the name of it's file.
       Optional attibute.
-    - @c Filename: Specifies the path to the image file that will be loaded for
+    - @c filename: Specifies the path to the image file that will be loaded for
       this imageset (also used as the name of the Imageset if the @c Name
       attribute is not given).  Required attribute.
-    - @c ResourceGroup: Specifies the resource group identifier to pass to the
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
       ResourceProvider when loading the file specified in the @c Filename
       attribute.  Optional attribute, if this is not specified the default
       resource group for Imageset files is used.
@@ -188,9 +190,9 @@ The reference for each element is arranged into sections, as described below:
       parsed as part of this scheme.
 
 - Attributes:
-    - @c Filename: Specifies the path to the looknfeel xml file that will be
+    - @c filename: Specifies the path to the looknfeel xml file that will be
       parsed.  Required attribute.
-    - @c ResourceGroup: Specifies the resource group identifier to pass to the
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
       ResourceProvider when loading the file specified in the @c Filename
       attribute.  Optional attribute, if this is not specified the default
       resource group for LookNFeel files is used.
@@ -208,9 +210,9 @@ The reference for each element is arranged into sections, as described below:
     - Specifies an alias for a given window type.
 
 - Attributes:
-    - @c Alias: Specifies the name of the alias; this is an alternative name by
+    - @c alias: Specifies the name of the alias; this is an alternative name by
       which the window type specified by the @c Target attribute will be known.
-    - @c Target: Specifies the window type that will be created when a window
+    - @c target: Specifies the window type that will be created when a window
       of the type specified by the attribute @c Alias is specified.
 
 - Usage:
@@ -228,7 +230,7 @@ The reference for each element is arranged into sections, as described below:
       the system.
 
 - Attributes:
-    - @c Name: Specifies the name of the WindowFactory object to be registered
+    - @c name: Specifies the name of the WindowFactory object to be registered
       with the system.  Required attribute.
 
 - Usage:
@@ -246,7 +248,7 @@ The reference for each element is arranged into sections, as described below:
       registered with the system.
 
 - Attributes:
-    - @c Name: Specifies the name of the WindowRendererFactory object to be
+    - @c name: Specifies the name of the WindowRendererFactory object to be
       registered with the system.  Required attribute.
 
 - Usage:
@@ -267,7 +269,7 @@ The reference for each element is arranged into sections, as described below:
       registered.
 
 - Attributes:
-    - @c Filename: Specifies the name of the loadable module (dll / .so / etc).
+    - @c filename: Specifies the name of the loadable module (dll / .so / etc).
       Required attribute.
 
 - Usage:
@@ -288,7 +290,7 @@ The reference for each element is arranged into sections, as described below:
       factories from the module will be registered.
 
 - Attributes:
-    - @c Filename: Specifies the name of the loadable module (dll / .so / etc).
+    - @c filename: Specifies the name of the loadable module (dll / .so / etc).
       Required attribute.
 
 - Usage:
