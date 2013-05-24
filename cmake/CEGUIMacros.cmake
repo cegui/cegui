@@ -463,10 +463,10 @@ macro (cegui_add_test_executable _NAME)
         )
     endif()
 
-	# set boost to use dynamic linking
-	if (NOT CEGUI_BUILD_STATIC_CONFIGURATION)
-		add_definitions( -DBOOST_TEST_DYN_LINK )
-	endif()
+    # set boost to use dynamic linking
+    if (NOT CEGUI_BUILD_STATIC_CONFIGURATION)
+        add_definitions( -DBOOST_TEST_DYN_LINK )
+    endif()
 
     if (NOT APPLE AND CEGUI_INSTALL_WITH_RPATH)
         set_target_properties(${CEGUI_TARGET_NAME} PROPERTIES
