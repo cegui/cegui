@@ -26,7 +26,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#define BOOST_TEST_DYN_LINK
 #define BOOST_TEST_MODULE CEGUITests
 
 #include <boost/test/unit_test.hpp>
