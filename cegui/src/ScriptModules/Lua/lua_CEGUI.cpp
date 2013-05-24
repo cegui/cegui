@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Mon Apr 29 09:53:24 2013.
+** Generated automatically by tolua++-1.0.93 on Fri May 24 09:30:13 2013.
 */
 
 #ifndef __cplusplus
@@ -46962,8 +46962,8 @@ static int tolua_CEGUI_CEGUI_ComboDropList_resizeToContent00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"CEGUI::ComboDropList",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
- !tolua_isnumber(tolua_S,3,0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,2,0,&tolua_err) ||
+ !tolua_isboolean(tolua_S,3,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,4,&tolua_err)
  )
  goto tolua_lerror;
@@ -46971,8 +46971,8 @@ static int tolua_CEGUI_CEGUI_ComboDropList_resizeToContent00(lua_State* tolua_S)
 #endif
  {
   CEGUI::ComboDropList* self = (CEGUI::ComboDropList*)  tolua_tousertype(tolua_S,1,0);
-  float fit_width = ((float)  tolua_tonumber(tolua_S,2,0));
-  float fit_height = ((float)  tolua_tonumber(tolua_S,3,0));
+  bool fit_width = ((bool)  tolua_toboolean(tolua_S,2,0));
+  bool fit_height = ((bool)  tolua_toboolean(tolua_S,3,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'resizeToContent'",NULL);
 #endif
