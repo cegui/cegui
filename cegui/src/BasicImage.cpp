@@ -69,17 +69,17 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
     d_name(attributes.getValueAsString(ImageNameAttribute)),
     d_texture(&System::getSingleton().getRenderer()->getTexture(
               attributes.getValueAsString(ImageTextureAttribute))),
-    d_pixelSize(attributes.getValueAsInteger(ImageWidthAttribute, 0),
-                attributes.getValueAsInteger(ImageHeightAttribute, 0)),
-    d_area(Vector2f(attributes.getValueAsInteger(ImageXPosAttribute, 0),
-                    attributes.getValueAsInteger(ImageYPosAttribute, 0)),
+    d_pixelSize(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
+                static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0))),
+    d_area(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
+                    static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
            d_pixelSize),
     d_pixelOffset(Vector2f(
-        attributes.getValueAsInteger(ImageXOffsetAttribute, 0),
-        attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
+        static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
+        static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0)))),
     d_nativeResolution(Sizef(
-        attributes.getValueAsFloat(ImageNativeHorzResAttribute, 640),
-        attributes.getValueAsFloat(ImageNativeVertResAttribute, 480)))
+        static_cast<float>(attributes.getValueAsInteger(ImageNativeHorzResAttribute, 640)),
+        static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480))))
 {
     d_autoScaled = PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute));
 

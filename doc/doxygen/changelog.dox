@@ -3,6 +3,121 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.8.0 (woefully incomplete log, sorry about that)</b>
+- 0000816: [Documentation] Update Imageset and Font XML doc about autoScaled (CrazyEddie) - resolved.
+- 0000742: [Documentation] CMake does not produce uninstall targets (CrazyEddie) - resolved.
+- 0000867: [Build system] Provide options to control RPATH (CrazyEddie) - resolved.
+- 0000971: [Core library (CEGUIBase)] Property setters changed to use the templated version (CrazyEddie) - resolved.
+- 0000789: [Renderer modules] OpenGL renderers: These all should have the pixel alignment set to 1 in the blitFrom/blitToMemory functions. (CrazyEddie) - resolved.
+- 0000965: [Documentation] Docu lacks info on the regex style used (CrazyEddie) - resolved.
+- 0000964: [Core library (CEGUIBase)] Editbox regexp validation is completely broken. (CrazyEddie) - resolved.
+- 0000968: [Core library (CEGUIBase)] Templated property getter doesnt work in most cases (ColourRect for example) (Kulik) - resolved.
+- 0000963: [Renderer modules] OpenGL FBO crash on my driver (CrazyEddie) - resolved.
+- 0000762: [Scripting Modules] PyCEGUI Python3 support (Kulik) - resolved.
+- 0000927: [Core library (CEGUIBase)] After loading schemes etc., memory will not be deleted after deinitialisation of CEGUI (CrazyEddie) - resolved.
+- 0000922: [Core library (CEGUIBase)] [Patch] IconvStringTranscoder assertion when trying to transcode empty strings (Kulik) - resolved.
+- 0000921: [Core library (CEGUIBase)] [Patch] The IconvStringTranscoder inserts BOM when converting to UTF-16 (Kulik) - resolved.
+- 0000432: [Other] Copy&Paste functionality (Kulik) - resolved.
+- 0000902: [Renderer modules] CEGUI switches FBO back to NULL even if user had FBO enabled before calling renderGUI (Kulik) - resolved.
+- 0000868: [Core library (CEGUIBase)] ItemListBox windows crash on creation when setting a Size Property in the LNF (CrazyEddie) - resolved.
+- 0000865: [Core library (CEGUIBase)] StaticText window does not adapt text rendering area correctly when a text is set (CrazyEddie) - resolved.
+- 0000864: [Core library (CEGUIBase)] Destroying GUIContext makes destruction of associated windows lead to a crash afterwards (CrazyEddie) - resolved.
+- 0000846: [WindowRenderer sets] StaticText window does not adapt text rendering area correctly when a scrollbar is set (CrazyEddie) - resolved.
+- 0000433: [Core library (CEGUIBase)] Add 'soft validation' / partial matching to Editbox regex validation (CrazyEddie) - resolved.
+- 0000440: [Core library (CEGUIBase)] [Bug]Blank line in wrapped rendered string cannot display (CrazyEddie) - resolved.
+- 0000843: [Core library (CEGUIBase)] While selecting text inside the multiline editbox, moving it topwards outside the window selects the text wrongly (CrazyEddie) - resolved.
+- 0000808: [Common Dialogs] [ColourPicker] Under the Ogre renderer, sliders do not always stay in sync with each other and the main palette (CrazyEddie) - resolved.
+- 0000807: [Common Dialogs] [ColourPicker] segfault when using the Irrlicht renderer (CrazyEddie) - resolved.
+- 0000509: [Core library (CEGUIBase)] RenderedWidgetComponent is broken after removing WindowManager::getWindow (CrazyEddie) - resolved.
+- 0000838: [Core library (CEGUIBase)] WidgetLook XML writing is totally broken (CrazyEddie) - resolved.
+- 0000604: [Core library (CEGUIBase)] FrameComponent : VertFormat and HorzFormat should be used for all edges, not only for the background (CrazyEddie) - resolved.
+- 0000773: [Core library (CEGUIBase)] Default window size on creation is restricted to app window size (CrazyEddie) - resolved.
+- 0000834: [Core library (CEGUIBase)] Aspect Ratio resizing resizes the window without correclty updating everything (CrazyEddie) - resolved.
+- 0000521: [Core library (CEGUIBase)] Add ability to set the RegexMatcher in Editbox (CrazyEddie) - resolved.
+- 0000728: [Core library (CEGUIBase)] Add ImageProperty support to FrameComponent. (CrazyEddie) - resolved.
+- 0000718: [Core library (CEGUIBase)] Falagard PropertyIntitialisers are applied in incorrect order (CrazyEddie) - resolved.
+- 0000645: [Core library (CEGUIBase)] UnknownObjectException when more than one property with layoutOnWrite="true" are used (CrazyEddie) - resolved.
+- 0000824: [Build system] Lua generator and module will attempt to build even when tolua is not found (just lua triggers it) (CrazyEddie) - resolved.
+- 0000810: [Core library (CEGUIBase)] There is no mechanism to trigger updates based on Inner rect (and other similar areas) sourced from WidgetLook. (CrazyEddie) - resolved.
+- 0000814: [Core library (CEGUIBase)] Errors when compiling for x64 with MSVC (CrazyEddie) - resolved.
+- 0000815: [Core library (CEGUIBase)] AutoScaled messes up aspect ratio (Kulik) - resolved.
+- 0000791: [Renderer modules] [OgreRenderer] Format of pixels read back from textures is incorrect (i.e. BGR not RGB) (CrazyEddie) - resolved.
+- 0000638: [Core library (CEGUIBase)] TextComponent::getText does not always return the actual string that will be drawn (CrazyEddie) - resolved.
+- 0000336: [Renderer modules] Recent clipping fixes breaks 'clipped' attribute / setting for StateImagery in Falagard and so it currently has no effect. (CrazyEddie) - resolved.
+- 0000449: [Core library (CEGUIBase)] Inverted scrollbar when VertFormatting=BottomAligned (CrazyEddie) - resolved.
+- 0000444: [Core library (CEGUIBase)] [Default Logger] Add support for filenames with unicode characters. (CrazyEddie) - resolved.
+- 0000643: [WindowRenderer sets] Auto-cast boolean properties when used in DimOperators (CrazyEddie) - resolved.
+- 0000393: [WindowRenderer sets] StaticText does not always update/reformat correctly (CrazyEddie) - resolved.
+- 0000785: [Renderer modules] display resize notifications are not handled correctly. (CrazyEddie) - resolved.
+- 0000303: [Core library (CEGUIBase)] There is no mechanism for a font to notify interested parties that its internal state (size and options) has changed. (CrazyEddie) - resolved.
+- 0000712: [Core library (CEGUIBase)] Window::invalidate(bool) should fire an event. (CrazyEddie) - resolved.
+- 0000772: [Renderer modules] Fixed OGL3 renderer to create a silent OpenGL error and fixed warnings/error outputs (CrazyEddie) - resolved.
+- 0000450: [Datafiles] Property Links VertScrollPosition, HorzScrollPosition (Kulik) - resolved.
+- 0000437: [Core library (CEGUIBase)] treeItem memory leak (Kulik) - resolved.
+- 0000724: [Other] Install headers for loadable / plugin modules. (CrazyEddie) - resolved.
+- 0000655: [Documentation] Wrong names for the NamedAreas for Falagard/ItemListbox (CrazyEddie) - resolved.
+- 0000499: [Documentation] Better distinction between EventListSelectionChanged and EventListSelectionAccepted (CrazyEddie) - resolved.
+- 0000716: [Documentation] PropertyDefinition / PropertyLinkDefinition docs are out of date. (CrazyEddie) - resolved.
+- 0000512: [Other] [Dependencies] The IL library produced by the beta3 dependencies package does not load png files - at least on OS X (CrazyEddie) - resolved.
+- 0000711: [Core library (CEGUIBase)] Add mechanism to invalidate a window based on event firing. (CrazyEddie) - resolved.
+- 0000713: [Core library (CEGUIBase)] Add a facility for events to fire based on modification of properties defined in falagard xml. (CrazyEddie) - resolved.
+- 0000486: [Core library (CEGUIBase)] ScrollablePane clipping issue. (CrazyEddie) - resolved.
+- 0000488: [Core library (CEGUIBase)] FalagardDemo1 scrollable pane doesn't account the scrollbar when doing the word wrap (CrazyEddie) - resolved.
+- 0000723: [Other] Do not disable the install target on OS X and Windows. (CrazyEddie) - resolved.
+- 0000460: [Core library (CEGUIBase)] Feature request: auto-adjust for drop-down lists of combo boxes (CrazyEddie) - resolved.
+- 0000451: [Core library (CEGUIBase)] Change the return value for getHorizontalScrollPosition (CrazyEddie) - resolved.
+- 0000439: [Core library (CEGUIBase)] Combobox::setText does not select the corresponding item in its listbox (CrazyEddie) - resolved.
+- 0000650: [Core library (CEGUIBase)] Mouse wheel "scrolls" tab buttons in the opposite direction (CrazyEddie) - resolved.
+- 0000726: [Core library (CEGUIBase)] A Window's 'auto window' status should not be based on it's name. (CrazyEddie) - resolved.
+- 0000536: [Datafiles] TaharezLook Doesn't Conform to Falgard Requirements (CrazyEddie) - resolved.
+- 0000446: [Core library (CEGUIBase)] Checkbox selection event name differs from the internal naming and the getter function for selection (CrazyEddie) - resolved.
+- 0000647: [Core library (CEGUIBase)] ExpressionDim fontdim() should allow the "string" parameter for HorzExtent (CrazyEddie) - resolved.
+- 0000434: [Core library (CEGUIBase)] Bug on RenderedStringParser processing `[' at the end of str (CrazyEddie) - resolved.
+- 0000747: [Core library (CEGUIBase)] Make XML attribute casing consistent (CrazyEddie) - resolved.
+- 0000456: [Core library (CEGUIBase)] Tooltip should use animations for fade out (Kulik) - resolved.
+- 0000725: [Core library (CEGUIBase)] Add <UserString /> tag for layout files. (CrazyEddie) - resolved.
+- 0000727: [WindowRenderer sets] Rename CEGUIFalagardWRBase (CrazyEddie) - resolved.
+- 0000425: [WindowRenderer sets] StaticText marks mouse-wheel-events as handled only if scrollbars are visible (CrazyEddie) - resolved.
+- 0000445: [Renderer modules] Possible crash in Direct3D9TextureTarget (CrazyEddie) - resolved.
+- 0000542: [WindowRenderer sets] Editbox wrong ActiveSelection in ReadOnly-Mode (CrazyEddie) - resolved.
+- 0000744: [Samples Framework / Sample Applications] Sample base apps crash when cleaning up at exit. (CrazyEddie) - resolved.
+- 0000427: [Core library (CEGUIBase)] Editboxes halt propagation of all keyboard input. (CrazyEddie) - resolved.
+- 0000743: [Datafiles] Editbox text colours are not applied correctly (CrazyEddie) - resolved.
+- 0000442: [WindowRenderer sets] missing 'SelectedHover' not fall back to 'SelectedNormal' (CrazyEddie) - resolved.
+- 0000746: [Core library (CEGUIBase)] Combobox scrollbar buttons and thumb are never highlighted (CrazyEddie) - resolved.
+- 0000719: [Core library (CEGUIBase)] Combobox is broken (CrazyEddie) - resolved.
+- 0000722: [Other] Xcode project generated via cmake does not build. (CrazyEddie) - resolved.
+- 0000513: [Samples Framework / Sample Applications] [OS X] resources and libs are copied (or linked) to the wrong place in a debug build (CrazyEddie) - resolved.
+- 0000741: [Other] Remove bundled copy of tolua++ (CrazyEddie) - resolved.
+- 0000740: [Other] Make most CMake options visible by default (CrazyEddie) - resolved.
+- 0000573: [Other] Patch file from Thomas Fischer that came via email (CrazyEddie) - resolved.
+- 0000717: [Renderer modules] Complete initial support for multiple rendering roots. (CrazyEddie) - resolved.
+- 0000453: [Datafiles] Add Label looknfeel and widget type (Kulik) - resolved.
+- 0000729: [Renderer modules] Remove the bundled copy of GLEW from the GL renderer. (CrazyEddie) - resolved.
+- 0000730: [XML parser modules] Remove the bundled copy of tinyxml from the TinyXMLParser module (CrazyEddie) - resolved.
+- 0000736: [Other] Add minizip to dependencies package (CrazyEddie) - resolved.
+- 0000714: [Samples Framework / Sample Applications] Remove use of GLUT in samples and favour GLFW instead. (CrazyEddie) - resolved.
+- 0000735: [Other] Provide an option to build against the system's minizip library (CrazyEddie) - resolved.
+- 0000732: [Renderer modules] OpenGL 3.2+ Core profile compatible CEGUI renderer (CrazyEddie) - resolved.
+- 0000457: [Core library (CEGUIBase)] Animation and Font definitions verbosely spew into logs as INFO (Kulik) - resolved.
+- 0000734: [Datafiles] Add type annotations to as many types as possible in looknfeels (Kulik) - resolved.
+- 0000733: [Core library (CEGUIBase)] Make CEGUI::Exception not output to stderr as an option (Kulik) - resolved.
+- 0000483: [Core library (CEGUIBase)] Get rid of testClass home made RTTI (Kulik) - resolved.
+- 0000708: [Core library (CEGUIBase)] Falagard-Properties-Branch ready for merge (CrazyEddie) - resolved.
+- 0000699: Animation definitions lack XMLSerializer support (Kulik) - resolved.
+- 0000646: [Core library (CEGUIBase)] Quaternion property helper should be able to parse degrees too (Kulik) - resolved.
+- 0000660: [Image codec modules] Update bundled STB (CrazyEddie) - resolved.
+- 0000648: [Other] CMake: Enabling ExpressionDim breaks CEGUIBase build (CrazyEddie) - resolved.
+- 0000459: [Core library (CEGUIBase)] Feature request: library version available at runtime (Kulik) - resolved.
+- 0000487: [Scripting Modules] PyCEGUI won't compile with Bidi disabled (Kulik) - resolved.
+- 0000462: [Other] PyCEGUI inheritance (Kulik) - resolved.
+- 0000635: [Core library (CEGUIBase)] isHit(ignoreDisabled) should ignore effective disabled, not just disabled (Kulik) - resolved.
+- 0000634: [Core library (CEGUIBase)] Element::d_size shouldn't be altered because of min/max size (Kulik) - resolved.
+- 0000415: [Core library (CEGUIBase)] Adds Defaults to UDim, Vector2, Vector3, UVector2 (Kulik) - resolved.
+- 0000490: [Samples Framework / Sample Applications] The Tree demo has visual glitches (Kulik) - resolved.
+- 0000489: [Core library (CEGUIBase)] CEGUI won't compile with Bidi (Kulik) - resolved.
+- 0000454: [Other] PyCEGUI should be able to subscribeEvent with a callable (Kulik) - resolved.
+
 <b>Release 0.7.9</b>
 - Bug Fix: CEGUI produced no rendering under irrlicht 1.8+
 - Bug Fix: CEGUI would not build against Irrlicht 1.8+

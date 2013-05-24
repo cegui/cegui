@@ -149,7 +149,8 @@ void GridLayoutContainer::setGridDimensions(size_t width, size_t height)
 //----------------------------------------------------------------------------//
 void GridLayoutContainer::setGrid(const Sizef &size)
 {
-	setGridDimensions(ceil(std::max(0.0f, size.d_width)),ceil(std::max(0.0f, size.d_height)));
+    setGridDimensions(static_cast<size_t>(ceil(std::max(0.0f, size.d_width))),
+        static_cast<size_t>(ceil(std::max(0.0f, size.d_height))));
 }
 
 //----------------------------------------------------------------------------//
@@ -166,7 +167,7 @@ size_t GridLayoutContainer::getGridHeight() const
 //----------------------------------------------------------------------------//
 Sizef GridLayoutContainer::getGrid() const
 {
-    return Sizef(getGridWidth(),getGridHeight());
+    return Sizef(static_cast<float>(getGridWidth()), static_cast<float>(getGridHeight()));
 }
 
 

@@ -38,10 +38,8 @@ The reference for each element is arranged into sections, as described below:
     - \<GUILayout\> is the root element in layout XML files.
 
 - Attributes:
-    - @c Parent: Specifies the name of an existing window that root window of
-      this gui layout should be attached to after loading the layout.
-      Optional attribute, if this is not specified the root window is not
-      automatically attached to any existing window.
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI layout version is: 4
 
 - Usage:
     - The \<GUILayout\> element is the root element for layout files.
@@ -57,10 +55,10 @@ The reference for each element is arranged into sections, as described below:
       created.
 
 - Attributes:
-    - @c Type: Specifies the type of window to be created.  This may refer to
+    - @c type: Specifies the type of window to be created.  This may refer to
       a concrete window type, an alias, or a falagard mapped type.
       Required attribute.
-    - @c Name: Specifies the name to give the window.  Window names must be
+    - @c name: Specifies the name to give the window.  Window names must be
       unique within the system.  Optional attribute, if the attribute is not
       specified a name will be generated automatically.
 
@@ -86,8 +84,8 @@ The reference for each element is arranged into sections, as described below:
       by the containing \<Window\> element.
 
 - Attributes:
-    - @c Name: Specifies the name of the property to set.  Required attribute.
-    - @c Value: Specifies the value to set on the property.
+    - @c name: Specifies the name of the property to set.  Required attribute.
+    - @c value: Specifies the value to set on the property.
       Optional attribute, if the attribute is not specified the value to be set
       should be given via the element text content.
 
@@ -106,10 +104,10 @@ The reference for each element is arranged into sections, as described below:
       script functions.
 
 - Attributes:
-    - @c Name: Specifies the name of the event to which the handler function
+    - @c name: Specifies the name of the event to which the handler function
       specified by the @c Function attribute will be subscribed.
       Required attribute.
-    - @c Function: Specifis the name of a script function to be subscribed to
+    - @c function: Specifis the name of a script function to be subscribed to
       the event specified by the @c Name attribute.  Required attribute.
 
 - Usage:
@@ -127,11 +125,9 @@ The reference for each element is arranged into sections, as described below:
       Window where the import occurrs.
 
 - Attributes:
-    - @c Filename: Specifies the path to the xml layout file to be imported.
+    - @c filename: Specifies the path to the xml layout file to be imported.
       Required attribute.
-    - @c Prefix: Specifies a prefix that will be prepended to the window name of
-      each window created from the imported layout.  Optional attribute.
-    - @c ResourceGroup: Specifies the resource group identifier to pass to the
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
       ResourceProvider when loading the file given in the @c Filename attribute.
       Optional attribute, default is the WindowManager default group.
 
@@ -150,7 +146,7 @@ The reference for each element is arranged into sections, as described below:
       Window (or AutoWindow).
 
 - Attributes:
-    - @c NameSuffix: Specifies the name suffix of the target auto-window.
+    - @c namePath: Specifies the name path for the target auto-window.
       Required attribute.
 
 - Usage:

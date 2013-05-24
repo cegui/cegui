@@ -7,7 +7,7 @@ Before we get to the good stuff, I'd just like to point out that this section (o
 Before we can start adding widget skins, or WidgetLooks as they are known in the system, to our XML file, we need the basic file outline initialised. This is extremely trivial, and looks like this:
 @code
 <?xml version="1.0" ?>
-<Falagard>
+<Falagard version="7">
 </Falagard>
 @endcode
 

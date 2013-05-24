@@ -147,8 +147,8 @@ namespace CEGUI
 
         strm >> val;
 
-        // success?
-        if (strm.fail())
+        // Check for success and end-of-file
+        if(strm.fail() || !strm.eof())
         {
             CEGUI_THROW(InvalidRequestException(
                 "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to integer."));
@@ -169,8 +169,8 @@ namespace CEGUI
 
         strm >> val;
 
-        // success?
-        if (strm.fail())
+        // Check for success and end-of-file
+        if(strm.fail() || !strm.eof())
         {
             CEGUI_THROW(InvalidRequestException(
                 "failed to convert attribute '" + attrName + "' with value '" + getValue(attrName) + "' to float."));

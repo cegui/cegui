@@ -446,7 +446,7 @@ bool Demo6Sample::handleAddColumn(const CEGUI::EventArgs& args)
     // get ID for new column
     CEGUI::uint id = atoi(idbox->getText().c_str());
     // get width to use for new column (in pixels)
-    float width = atof(widthbox->getText().c_str());
+    float width = static_cast<float>(atof(widthbox->getText().c_str()));
     // get column label text
     String text = textbox->getText();
 

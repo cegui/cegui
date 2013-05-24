@@ -103,7 +103,7 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 
 #if defined( __WIN32__ ) || defined( _WIN32 )
     // Windows specific code.
-    srand(time(NULL));
+    srand(static_cast<unsigned int>(time(NULL)));
 #endif
 
    // Get window manager which we will use for a few jobs here.

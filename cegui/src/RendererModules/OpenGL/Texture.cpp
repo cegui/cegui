@@ -240,7 +240,9 @@ void OpenGLTexture::loadUncompressedTextureBuffer(const Rectf& dest_area,
 
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 
-    glTexSubImage2D(GL_TEXTURE_2D, 0, dest_area.left(), dest_area.top(),
+    glTexSubImage2D(GL_TEXTURE_2D, 0,
+                    static_cast<GLint>(dest_area.left()),
+                    static_cast<GLint>(dest_area.top()),
                     static_cast<GLsizei>(dest_area.getWidth()),
                     static_cast<GLsizei>(dest_area.getHeight()),
                     d_format, d_subpixelFormat, buffer);
@@ -255,7 +257,8 @@ void OpenGLTexture::loadCompressedTextureBuffer(const Rectf& dest_area,
     const GLsizei image_size = getCompressedTextureSize(dest_area.getSize());
 
     glCompressedTexSubImage2D(GL_TEXTURE_2D, 0, 
-                              dest_area.left(), dest_area.top(),
+                              static_cast<GLint>(dest_area.left()),
+                              static_cast<GLint>(dest_area.top()),
                               static_cast<GLsizei>(dest_area.getWidth()),
                               static_cast<GLsizei>(dest_area.getHeight()),
                               d_format, image_size, buffer);
@@ -271,9 +274,11 @@ GLsizei OpenGLTexture::getCompressedTextureSize(const Sizef& pixel_size) const
         blocksize = 8;
     }
 
-    return (std::ceil(pixel_size.d_width / 4) *
-            std::ceil(pixel_size.d_height / 4)) *
-            blocksize;
+    return (
+        static_cast<GLsizei>(
+        std::ceil(pixel_size.d_width / 4) *
+        std::ceil(pixel_size.d_height / 4) *
+        blocksize));
 }
 
 //----------------------------------------------------------------------------//

@@ -2,6 +2,7 @@ namespace {
 /**
 @page resprov_tutorial The Beginners Guide to resource loading with ResourceProviders
 @author Paul D Turner
+@tableofcontents
 
 This tutorial introduces the CEGUI::ResourceProvider concept, explains how to
 set up resource groups and directories in the DefaultResourceProvider and how to
@@ -50,7 +51,7 @@ groups and to specify a directory to be accessed by each of those groups.
 What this means is that you can create a resource group, say
 @c "imagesets", and assign a directory to that group, for example
 @c "./mygame/datafiles/gui/imagesets/".  When loading an Imageset through the
-ImagesetManager, you might then specify the resource group to be used as
+ImageManager, you might then specify the resource group to be used as
 @c "imagesets" and the system will look in the predefined location
 @c "./mygame/datafiles/gui/imagesets/".  Note that at present each resource
 group may only have a single directory associated with it.
@@ -58,7 +59,7 @@ group may only have a single directory associated with it.
 A small code example is in order to clarify what has been said.  Instead of
 loading resources by giving an explicit path, like this:
 @code
-Imageset& wlis = ImagesetManager::getSingleton().create(
+ImageManager::getSingleton().loadImageset(
     "./mygame/datafiles/gui/imagesets/WindowsLook.imageset");
 @endcode
 
@@ -73,11 +74,11 @@ rp->setResourceGroupDirectory("imagesets", "./mygame/datafiles/gui/imagesets/");
 
 Then later on in the code, when you need to load an imageset, just do this:
 @code
-Imageset& wlis = ImagesetManager::getSingleton().create(
+ImageManager::getSingleton().loadImageset(
     "WindowsLook.imageset", "imagesets");
 @endcode
 
-Note how when creating the imageset from a file we do not specify any path
+Note how when loading the imageset from a file we do not specify any path
 information; the path information is obtained from the resource group specified,
 in the example this is @c "imagesets".  We will later show you how you set
 default resource groups for each of the resource types - then you do not have to
@@ -96,27 +97,47 @@ update the resource group paths instead.
 @section resprov_tutorial_default_resource_groups Specifying Default Resource Groups
 Each of the core system classes that represents a loadable resource has static
 members to set and get a default resource group.  This resource group will be
-used when loading the specific data files needed by a given class - in the case
-of the Imageset class, the default resource group should reference a directory
-holding the imageset xml and texture image files.
+used when loading the specific data files needed by a given class.
 
 For each of the resource consuming classes, the static members are named the
-same (special exception is the xerces based XML paser - see below):
+same (special exceptions are the ImageManager and the the xerces-c based XML
+paser - see below):
 @code
 const String& getDefaultResourceGroup();
 void setDefaultResourceGroup(const String& groupname);
 @endcode
 
 The following is a list of the core resource loading classes and the resources that they load:
-- @c CEGUI::Imageset          : Imageset xml and texture image files. 
 - @c CEGUI::Font              : Font xml and freetype loadable font files.
 - @c CEGUI::Scheme            : Scheme xml files.
 - @c CEGUI::WindowManager     : Window layout xml files.
 - @c CEGUI::WidgetLookManager : LookNFeel xml files
 - @c CEGUI::ScriptModule      : Script files in whichever scripted langauge.
 
-There is one special exception, as mentioned above, this is the Xerces-C++ based
-XML parser.  For this there is a special resource group setting to specify where
+@note One final thing to consider, is that the ResourceProvider class also has a
+default resource group.  This should be considered a global or master default;
+it is used whenever a specific resource loading class has no default of it's own
+specified.  This would prove useful if you have all your data in a single
+directory.
+
+There are a couple of special exceptions, as mentioned above, these are the
+ImageManager and the Xerces-C++ based XML parser.
+
+@subsection resprov_tutorial_default_resource_groups_im ImageManager Default Resource Group
+Since there is no acutal Imageset class (an Imageset is now just a set of images
+loaded together from an xml file), the default group used for loading these
+files is set on the CEGUI::ImageManager class and uses functions named
+differently from the 'standard' mentined above, the functions you need are named:
+@code
+const String& ImageManager::getImagesetDefaultResourceGroup();
+void ImageManager::setImagesetDefaultResourceGroup(const String& resourceGroup);
+@endcode
+
+The resource group specified will be used as the default for loading imageset
+XML files as well as image texture files.
+
+@subsection resprov_tutorial_default_resource_groups_xc XercesParser Default Resource Group
+For the XercesParser there is a special resource group setting to specify where
 the .xsd schema files - used for XML schema validation - can be found.  For this
 special case, you instead use the PropertySet interface and access a property
 named @c SchemaDefaultResourceGroup.  The use of the property interface mainly
@@ -137,12 +158,6 @@ CEGUI::XMLParser* parser = CEGUI::System::getSingleton().getXMLParser();
 if (parser->isPropertyPresent("SchemaDefaultResourceGroup"))
     parser->setProperty("SchemaDefaultResourceGroup", "schemas");
 @endcode
-
-One final thing to consider, is that the ResourceProvider class also has a
-default resource group.  This should be considered a global or master default;
-it is used whenever a specific resource loading class has no default of it's own
-specified.  This would prove useful if you have all your data in a single
-directory.
 
 <br>
 @section resprov_tutorial_example A final, Complete Example
@@ -175,7 +190,7 @@ target directories set.  Finally, to get the system to use these directories, we
 set the default resource groups to be used:
 @code
 // set the default resource groups to be used
-CEGUI::Imageset::setDefaultResourceGroup("imagesets");
+CEGUI::ImageManager::setImagesetDefaultResourceGroup("imagesets");
 CEGUI::Font::setDefaultResourceGroup("fonts");
 CEGUI::Scheme::setDefaultResourceGroup("schemes");
 CEGUI::WidgetLookManager::setDefaultResourceGroup("looknfeels");
