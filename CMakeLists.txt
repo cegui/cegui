@@ -29,7 +29,7 @@ project(cegui)
 ################################################################################
 set( CEGUI_VERSION_MAJOR 0)
 set( CEGUI_VERSION_MINOR 8)
-set( CEGUI_VERSION_PATCH 9999)
+set( CEGUI_VERSION_PATCH 0)
 set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION_PATCH} )
 
 #
@@ -49,7 +49,7 @@ set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION
 #   - If the interface had binary compabilbe additions only (so no ABI breaking
 #     changes) increase AGE, else set AGE to 0.
 #
-set( CEGUI_ABI_CURRENT 2)
+set( CEGUI_ABI_CURRENT 3)
 set( CEGUI_ABI_REVISION 0)
 set( CEGUI_ABI_AGE 0)
 set( CEGUI_ABI_VERSION ${CEGUI_ABI_CURRENT}.${CEGUI_ABI_REVISION}.${CEGUI_ABI_AGE} )
