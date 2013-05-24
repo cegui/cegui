@@ -60,6 +60,11 @@
     #include "CEGUI/BidiVisualMapping.h"
 #endif
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4355)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -3811,5 +3816,9 @@ bool Window::isMouseContainedInArea() const
 }
 
 //----------------------------------------------------------------------------//
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 } // End of  CEGUI namespace section

@@ -483,7 +483,13 @@ if (CEGUI_SAMPLES_ENABLED)
 endif()
 
 add_subdirectory(datafiles)
-#add_subdirectory(doc)
+
+if (DOXYGEN_FOUND)
+    add_custom_target(html
+        "${DOXYGEN_EXECUTABLE}"
+        WORKING_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/doc/doxygen"
+        COMMENT "Generating documentation" VERBATIM)
+endif()
 
 if (CEGUI_BUILD_TESTS)
     enable_testing()

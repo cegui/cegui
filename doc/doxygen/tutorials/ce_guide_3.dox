@@ -2,6 +2,7 @@ namespace CEGUI {
 /**
 @page window_tutorial The Beginners Guide to Creating a CEGUI Window
 @author Paul D Turner
+@tableofcontents
 
 The purpose of this tutorial is to show you how to create a simple window and
 get it on screen.  Before continuing here, it is very important that you have
@@ -52,16 +53,17 @@ using namespace CEGUI;
 WindowManager& wmgr = WindowManager::getSingleton();
 @endcode
 
-In general, you will be using what is known as a DefaultWindow (or to use its
-old name, DefaultGUISheet) as the 'root' window in your GUI.  This is not
-required, but is the accepted pattern of usage for CEGUI and, once you start
-adding more top-level windows, helps simplify laying things out.
+In general, you will be using what is known as a DefaultWindow as the 'root'
+window in your GUI layouts.  This is not required, but has a couple of useful
+benefits as regards to input handling, is the accepted pattern of usage for
+CEGUI and, once you start adding more top-level windows, helps simplify laying
+things out.
 
 So, to get the ball rolling, we'll create a DefaultWindow as set it as the root
-'GUI Sheet' for the GUI:
+window for the initial, default GUIContext:
 @code
 Window* myRoot = wmgr.createWindow( "DefaultWindow", "root" );
-System::getSingleton().setGUISheet( myRoot );
+System::getSingleton().getDefaultGUIContext().setRootWindow( myRoot );
 @endcode
 
 The WindowManager::createWindow function takes two strings as its parameters.
@@ -69,24 +71,24 @@ The first one, <c>"DefaultWindow"</c> in this example, tells the system the type
 or class of the window you wish to create.  Generally, the windows you have
 available are those which were registered when you loaded your scheme file,
 although some, like DefaultWindow, are global types and are always available.
-The second parameter, <c>"root"</c> in this example, is a unique name which will
-be assigned to the window; this name can be used to retrieve a pointer to the
-window from the WindowManager at a later time.  Note that naming your root
-window "root" is not required, but is a common convention.
+The second parameter, <c>"root"</c> in this example, is a name which will be
+assigned to the window. Note that naming your root window "root" is not
+required, but is a common convention.
 
-The System::setGUISheet function is used to specify a given window as the root
-of the GUI.  This will replace any current sheet / root window, although do note
-that the previous window hierarchy is not actually destroyed - it is just
-detached from the display - you can easily switch between GUI 'pages' by simply
-flipping between them using the System::setGUISheet function.
+The GUIContext::setRootWindow function is used, unsurprisingly, to specify a
+window to be used as the root of the GUI for a given GUIContext.  This will
+replace any current root window, although do note that the previous window
+hierarchy is not actually destroyed - it is just detached from the
+GUIContext - you can easily switch between GUI 'pages' by flipping between them
+using the GUIContext::setRootWindow function.
 
-Now you have created your first window and attached it to the GUI system, and
-the system will use this window as the root of the GUI when it draws the GUI.
+Now you have created your first window and attached it to the GUIContext; the
+system will use this window as the root of the GUI when it draws the GUI.
 But if you were to compile a simple program using this code, you still can't see
 anything; what gives?  There's nothing wrong with your application, the
 DefaultWindow which we created above is just totally invisible!  This is what
 makes the DefaultWindow ideally suited as a root window; it serves as a blank
-canvas onto which other window and widgets can be attached.  Lets do that now...
+canvas onto which other window and widgets can be attached.  Let's do that now...
 
 Here we will create a frame window; this is a window that functions in a similar
 manner to the windows on your desktop UI, it has a title bar and can be moved
@@ -112,7 +114,7 @@ we must perform a few additional steps.
 
 First, we must attach the window to the root window we established above:
 @code
-myRoot->addChildWindow( fWnd );
+myRoot->addChild( fWnd );
 @endcode
 
 Now we can set an initial position and size for our window.  CEGUI uses a
@@ -136,6 +138,21 @@ fWnd->setText( "Hello World!" );
 And that's it!  When compiled into an application, you will now see a simple
 frame window in the middle of the display.
 
+Note that now you have your FrameWindow "testWindow" attached to your
+DefaultWindow "root". As such, now would be a good time to mention CEGUI's name
+paths. As your layouts become more complex, you will often need to access some
+child window given a known starting point (usually the root window), this is
+where CEGUI's name paths shine. Each window has a name path which is basically
+the names of all ancestor windows separated by a slash character. In our example
+the name path of the FrameWindow is "root/testWindow". You can access any window
+within a hierarchy by way of its name path and the CEGUI::Window::getChild
+function. When requesting a child window, note that the path you specify is
+@e exclusive of the starting point, so to access the FrameWindow from @c "root"
+you ask for the child @c "testWindow" and not @c "root/testWindow", but if the
+FrameWindow had, say, a button attached to it named @c "myButton" to access that
+button from the root you would call Window::getChild with the name path
+@c "testWindow/myButton"
+
 <br>
 @subsection window_tutorial_creating_xml XML layouts
 All of the above is very nice, but there is one major drawback; any time you
@@ -154,11 +171,11 @@ is a layout file equivalent to the code we discussed above:
 @code
 <?xml version="1.0" ?>
 <GUILayout>
-    <Window Type="DefaultWindow" Name="root">
-        <Window Type="TaharezLook/FrameWindow" Name="testWindow">
-            <Property Name="UnifiedPosition" Value="{ {0.25, 0}, {0.25, 0} }" />
-            <Property Name="UnifiedSize" Value="{ {0.5, 0}, {0.5, 0} }" />
-            <Property Name="Text" Value="Hello World!" />
+    <Window type="DefaultWindow" name="root">
+        <Window type="TaharezLook/FrameWindow" name="testWindow">
+            <Property name="UnifiedPosition" value="{ {0.25, 0}, {0.25, 0} }" />
+            <Property name="UnifiedSize" value="{ {0.5, 0}, {0.5, 0} }" />
+            <Property name="Text" value="Hello World!" />
         </Window>
     </Window>
 </GUILayout>
@@ -176,23 +193,13 @@ other windows and widgets are placed.
 The Property elements are used to set properties on the Window being defined.
 There are many properties available for each window/widget class, and each class
 also inherits all properties from it's parent class.
-See the <a href="namespaces.html">Properties namespaces in the API reference</a>
-for documentation on the available hard-coded properties and their value string
-formats.  Since 'Falagard' skins can create their own properties, it is likely
-that the windows you are using contain many more properties than listed in the
-previous link - for these 'soft' properties, you need to consult whichever
-documentation is provided with the skin you are using (for example, see the
-CEGUI Wiki: <a href="http://www.cegui.org.uk/wiki/index.php/SetProperty">
-TaharezLook Properties</a> and
-<a href="http://www.cegui.org.uk/wiki/index.php/SetProperty_(WindowsLook)">
-WindowsLook Properties</a>.
 
 If saved as a file called "test.layout", you could load this layout and set it
-as the GUI root as follows:
+as the GUIContext root as follows:
 @code
 using namespace CEGUI;
-Window* myRoot = WindowManager::getSingleton().loadWindowLayout( "test.layout" );
-System::getSingleton().setGUISheet( myRoot );
+Window* myRoot = WindowManager::getSingleton().loadLayoutFromFile( "test.layout" );
+System::getSingleton().getDefaultGUIContext().setRootWindow( myRoot );
 @endcode
 
 The end result is exactly the same as what was done in C++ code earlier, except

@@ -427,7 +427,7 @@ bool ScrollablePane::handleAutoSizePaneChanged(const EventArgs&)
     // just forward event to client.
     WindowEventArgs args(this);
     fireEvent(EventAutoSizeSettingChanged, args, EventNamespace);
-    return args.handled;
+    return args.handled > 0;
 }
 
 //----------------------------------------------------------------------------//

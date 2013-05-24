@@ -65,7 +65,7 @@ int InventoryBase::gridXLocationFromPixelPosition(float x_pixel_location) const
         x_pixel_location >= static_cast<int>(area.right()))
         return -1;
 
-    return (x_pixel_location - static_cast<int>(area.left())) / (area.getWidth() / d_content.width());
+    return static_cast<int>( (x_pixel_location - area.left()) / (area.getWidth() / d_content.width()) );
 }
 
 //------------------------------------------------------------------------------//
@@ -77,7 +77,7 @@ int InventoryBase::gridYLocationFromPixelPosition(float y_pixel_location) const
         y_pixel_location >= static_cast<int>(area.bottom()))
         return -1;
 
-    return (y_pixel_location - static_cast<int>(area.top())) / (area.getHeight() / d_content.height());
+    return static_cast<int>( (y_pixel_location - area.top()) / (area.getHeight() / d_content.height()) );
 }
 
 //------------------------------------------------------------------------------//
