@@ -43,8 +43,6 @@ as simple as a single function call:
 - Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
 - Library: CEGUIOpenGLRenderer
 @code
-#include <CEGUI/RendererModules/OpenGL/GLRenderer.h>
-
 // Bootstrap CEGUI::System with an OpenGLRenderer object that uses the
 // current GL viewport, the DefaultResourceProvider, and the default
 // ImageCodec.
@@ -55,12 +53,10 @@ CEGUI::OpenGLRenderer& myRenderer =
     CEGUI::OpenGLRenderer::bootstrapSystem();
 @endcode
 
-@subsection rendering_tutorial_bootstrap_opengl3 OpenGL 3 (3.2 Core Profile)
+@subsection rendering_tutorial_bootstrap_opengl3 OpenGL 3
 - Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
 - Library: CEGUIOpenGLRenderer
 @code
-#include <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
-
 // Bootstrap CEGUI::System with an OpenGL3Renderer object that uses the
 // current GL viewport, the DefaultResourceProvider, and the default
 // ImageCodec.
@@ -145,7 +141,7 @@ CEGUI::OpenGLRenderer& myRenderer =
     CEGUI::OpenGLRenderer::create();
 @endcode
 
-@subsubsection rendering_tutorial_renderer_ogl OpenGL 3 (3.2 Core Profile)
+@subsubsection rendering_tutorial_renderer_ogl3 OpenGL 3
 - Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
 - Library: CEGUIOpenGL3Renderer
 @code
@@ -235,7 +231,9 @@ draw3DScene();
 // used to render the scene above are disabled using glBindTexture(0) and glUseProgram(0) respectively
 // also set glActiveTexture(GL_TEXTURE_0) 
 
-    // draw GUI (should not be between glBegin/glEnd pair)
+    // draw GUI
+    // NB: When not using >=3.2 core profile, this call should not occur
+    // between glBegin/glEnd calls.
     CEGUI::System::getSingleton().renderGUI();
 @endcode
 
