@@ -351,32 +351,32 @@ namespace python_CEGUI
     {
         inline void instantiate()
         {
-            sizeof ( ::std::pair<float, float> );
-            sizeof ( ::CEGUI::Event::Connection ) ;
-            sizeof ( ::CEGUI::Event::Subscriber) ;
+            sizeof( ::std::pair<float, float>);
+            sizeof( ::CEGUI::Event::Connection);
+            sizeof( ::CEGUI::Event::Subscriber);
 
-            sizeof ( ::CEGUI::FontManager::FontIterator);
-            sizeof ( ::CEGUI::ImageManager::ImageIterator);
-            sizeof ( ::CEGUI::PropertySet::PropertyIterator);
-            sizeof ( ::CEGUI::Scheme::LoadableUIElementIterator);
-            sizeof ( ::CEGUI::SchemeManager::SchemeIterator);
-            sizeof ( ::CEGUI::WindowFactoryManager::WindowFactoryIterator);
-            sizeof ( ::CEGUI::WindowFactoryManager::TypeAliasIterator);
-            sizeof ( ::CEGUI::WindowFactoryManager::FalagardMappingIterator);
-            sizeof ( ::CEGUI::WindowManager::WindowIterator);
-            sizeof ( ::CEGUI::EventSet::EventIterator );
-            sizeof ( ::CEGUI::String::iterator );
-            sizeof ( ::CEGUI::Vector2< float > );
-            sizeof ( ::CEGUI::Vector3< float > );
-            sizeof ( ::CEGUI::Size< float > );
-            sizeof ( ::CEGUI::Rect< float > );
-            sizeof ( ::CEGUI::Vector2< CEGUI::UDim > );
-            sizeof ( ::CEGUI::Rect< CEGUI::UDim > );
-            sizeof ( ::CEGUI::Size< CEGUI::UDim > );
+            sizeof( ::CEGUI::FontManager::FontIterator);
+            sizeof( ::CEGUI::ImageManager::ImageIterator);
+            sizeof( ::CEGUI::PropertySet::PropertyIterator);
+            sizeof( ::CEGUI::Scheme::LoadableUIElementIterator);
+            sizeof( ::CEGUI::SchemeManager::SchemeIterator);
+            sizeof( ::CEGUI::WindowFactoryManager::WindowFactoryIterator);
+            sizeof( ::CEGUI::WindowFactoryManager::TypeAliasIterator);
+            sizeof( ::CEGUI::WindowFactoryManager::FalagardMappingIterator);
+            sizeof( ::CEGUI::WindowManager::WindowIterator);
+            sizeof( ::CEGUI::EventSet::EventIterator );
+            sizeof( ::CEGUI::String::iterator );
+            sizeof( ::CEGUI::Vector2< float > );
+            sizeof( ::CEGUI::Vector3< float > );
+            sizeof( ::CEGUI::Size< float > );
+            sizeof( ::CEGUI::Rect< float > );
+            sizeof( ::CEGUI::Vector2< CEGUI::UDim > );
+            sizeof( ::CEGUI::Rect< CEGUI::UDim > );
+            sizeof( ::CEGUI::Size< CEGUI::UDim > );
 
-            sizeof ( ::std::pair<float, float> );
-            sizeof ( ::std::pair<CEGUI::String, CEGUI::String> );
-            sizeof ( ::std::pair<CEGUI::Image*, CEGUI::ImageFactory*> );
+            sizeof( ::std::pair<float, float> );
+            sizeof( ::std::pair<CEGUI::String, CEGUI::String> );
+            sizeof( ::std::pair<CEGUI::Image*, CEGUI::ImageFactory*> );
 
             // seems that doing an sizeof ( ::CEGUI::EventSet::Iterator ); doesn't expose the class :(
             sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Property*, CEGUI::StringFastLessCompare   CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Property*) > > );
@@ -388,6 +388,22 @@ namespace python_CEGUI
             sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack) > > );
             sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactory*, CEGUI::StringFastLessCompare CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::WindowFactory*) > > );
             sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::Font*, CEGUI::StringFastLessCompare       CEGUI_MAP_ALLOC(CEGUI::String, CEGUI::Font*) > > );
+            sizeof( CEGUI::ConstVectorIterator<std::multiset<CEGUI::LayerSpecification, std::less<CEGUI::LayerSpecification>, std::allocator<CEGUI::LayerSpecification> > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::ImageryComponent, std::allocator<CEGUI::ImageryComponent> > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::EventAction, std::allocator<CEGUI::EventAction> > > );
+            sizeof( CEGUI::ConstVectorIterator<std::set<CEGUI::String, CEGUI::StringFastLessCompare, std::allocator<CEGUI::String> > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::FrameComponent, std::allocator<CEGUI::FrameComponent> > > );
+            //sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, const CEGUI::PropertyInitialiser*> > );
+            //sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, CEGUI::PropertyDefinitionBase*> > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::ImagerySection> > > > );
+            //sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::PropertyInitialiser, std::allocator<CEGUI::PropertyInitialiser> > > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::NamedArea, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::NamedArea> > > > );
+            //sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, const CEGUI::WidgetComponent*> > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetLookFeel> > > > );
+            //sizeof( CEGUI::ConstVectorIterator<CEGUI::NamedDefinitionCollator<CEGUI::String, const CEGUI::EventLinkDefinition*> > );
+            sizeof( CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::StateImagery> > > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::SectionSpecification, std::allocator<CEGUI::SectionSpecification> > > );
+            sizeof( CEGUI::ConstVectorIterator<std::vector<CEGUI::TextComponent, std::allocator<CEGUI::TextComponent> > > );
         }
     }
 }
