@@ -9,7 +9,8 @@ In order to get CEGUI initialised and rendering -- regardless of your target API
 or engine -- there are basically three steps that need to be performed:
 - Create an instance of a CEGUI::Renderer based object.
 - Create the CEGUI::System object (passing in the renderer created above).
-- Each frame, call the CEGUI::System::renderGUI function to perform the rendering.
+- Each frame, call the CEGUI::System::renderAllGUIContexts function to perform
+the rendering.
 
 Obviously you also need to load some data and perform other basic initialisation,
 which is covered in @ref resprov_tutorial and @ref datafile_tutorial.  You'll also need
@@ -41,7 +42,7 @@ as simple as a single function call:
 
 @subsection rendering_tutorial_bootstrap_opengl OpenGL (Fixed Function)
 - Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
-- Library: CEGUIOpenGLRenderer
+- Library: CEGUIOpenGLRenderer-0
 @code
 // Bootstrap CEGUI::System with an OpenGLRenderer object that uses the
 // current GL viewport, the DefaultResourceProvider, and the default
@@ -55,7 +56,7 @@ CEGUI::OpenGLRenderer& myRenderer =
 
 @subsection rendering_tutorial_bootstrap_opengl3 OpenGL 3
 - Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
-- Library: CEGUIOpenGLRenderer
+- Library: CEGUIOpenGLRenderer-0
 @code
 // Bootstrap CEGUI::System with an OpenGL3Renderer object that uses the
 // current GL viewport, the DefaultResourceProvider, and the default
@@ -69,7 +70,7 @@ CEGUI::OpenGL3Renderer& myRenderer =
 
 @subsection rendering_tutorial_bootstrap_d3d Direct3D
 - Header: <CEGUI/RendererModules/Direct3D9/Renderer.h>
-- Library: CEGUIDirect3D9Renderer
+- Library: CEGUIDirect3D9Renderer-0
 @code
 // Bootstrap CEGUI::System with a Direct3D9Renderer object that uses the
 // DefaultResourceProvider, and the default ImageCodec.
@@ -81,7 +82,7 @@ are largely the same.
 
 @subsection rendering_tutorial_bootstrap_ogre Ogre3D
 - Header: <CEGUI/RendererModules/Ogre/Renderer.h>
-- Library: CEGUIOgreRenderer
+- Library: CEGUIOgreRenderer-0
 @code
 // Bootstrap CEGUI::System with an OgreRenderer object that uses the
 // default Ogre rendering window as the default output surface, an Ogre based
@@ -92,7 +93,7 @@ CEGUI::OgreRenderer& myRenderer =
 
 @subsection rendering_tutorial_bootstrap_irrlicht Irrlicht
 - Header: <CEGUI/RendererModules/Irrlicht/Renderer.h>
-- Library: CEGUIIrrlichtRenderer
+- Library: CEGUIIrrlichtRenderer-0
 @code
 // Bootstrap CEGUI::System with an IrrlichtRenderer object, an Irrlicht based
 // ResourceProvider, and an Irrlicht based ImageCodec.
@@ -117,7 +118,7 @@ for the renderer that you will be using.
 The basic renderer creation code is:
 @subsubsection rendering_tutorial_renderer_d3d9 Direct3D 9
 - Header: <CEGUI/RendererModules/Direct3D9/Renderer.h>
-- Library: CEGUIDirect3D9Renderer
+- Library: CEGUIDirect3D9Renderer-0
 @code
 CEGUI::Direct3D9Renderer& myRenderer =
     CEGUI::Direct3D9Renderer::create( myD3D9Device );
@@ -125,7 +126,7 @@ CEGUI::Direct3D9Renderer& myRenderer =
 
 @subsubsection rendering_tutorial_renderer_d3d10 Direct3D 10
 - Header: <CEGUI/RendererModules/Direct3D10/Renderer.h>
-- Library: CEGUIDirect3D10Renderer
+- Library: CEGUIDirect3D10Renderer-0
 @code
 CEGUI::Direct3D10Renderer& myRenderer =
     CEGUI::Direct3D10Renderer::create( myD3D10Device );
@@ -133,7 +134,7 @@ CEGUI::Direct3D10Renderer& myRenderer =
 
 @subsubsection rendering_tutorial_renderer_ogl OpenGL (Fixed Function)
 - Header: <CEGUI/RendererModules/OpenGL/GLRenderer.h>
-- Library: CEGUIOpenGLRenderer
+- Library: CEGUIOpenGLRenderer-0
 @code
 // Create an OpenGLRenderer object that uses the current GL viewport as
 // the default output surface.
@@ -143,7 +144,7 @@ CEGUI::OpenGLRenderer& myRenderer =
 
 @subsubsection rendering_tutorial_renderer_ogl3 OpenGL 3
 - Header: <CEGUI/RendererModules/OpenGL/GL3Renderer.h>
-- Library: CEGUIOpenGL3Renderer
+- Library: CEGUIOpenGL3Renderer-0
 @code
 // Create an OpenGL3Renderer object that uses the current GL viewport as
 // the default output surface.
@@ -153,7 +154,7 @@ CEGUI::OpenGL3Renderer& myRenderer =
 
 @subsubsection rendering_tutorial_renderer_ogre Ogre3D
 - Header: <CEGUI/RendererModules/Ogre/Renderer.h>
-- Library: CEGUIOgreRenderer
+- Library: CEGUIOgreRenderer-0
 @code
 // Create an OgreRenderer object that uses the default Ogre rendering
 // window as the default output surface.
@@ -163,7 +164,7 @@ CEGUI::OgreRenderer& myRenderer =
 
 @subsubsection rendering_tutorial_renderer_irrlicht Irrlicht Engine
 - Header: <CEGUI/RendererModules/Irrlicht/Renderer.h>
-- Library: CEGUIIrrlichtRenderer
+- Library: CEGUIIrrlichtRenderer-0
 @code
 CEGUI::IrrlichtRenderer& myRenderer =
     CEGUI::IrrlichtRenderer::create( myIrrlichtDevice );
@@ -182,10 +183,10 @@ CEGUI::System::create( myRenderer );
 <br>
 @section rendering_tutorial_draw Call the function to render the GUI
 This is the only step that, depending upon your target engine, can be done
-differently.  Basically what you need to do call the CEGUI::System::renderGUI
-function at the end of your rendering loop.  For users of the Ogre3D engine,
-this step is taken care of automatically.  For everybody else, some simple
-example code can be seen below:
+differently.  Basically what you need to do call the
+CEGUI::System::renderAllGUIContexts function at the end of your rendering loop.
+For users of the Ogre3D engine, this step is taken care of automatically.  For
+everybody else, some simple example code can be seen below:
 @subsection rendering_tutorial_draw_d3d9 Direct3D 9
 @code
 // Start the scene
@@ -196,7 +197,7 @@ myD3DDevice->Clear(0, 0, D3DCLEAR_TARGET, D3DCOLOR_XRGB(0, 0, 0), 1.0f, 0);
 draw3DScene();
 
     // draw GUI
-    CEGUI::System::getSingleton().renderGUI();
+    CEGUI::System::getSingleton().renderAllGUIContexts();
 
 // end the scene
 myD3DDevice->EndScene();
@@ -216,7 +217,7 @@ myD3DDevice->ClearRenderTargetView(myRenderTargetView, clear_colour);
 draw3DScene();
 
     // draw GUI
-    CEGUI::System::getSingleton().renderGUI();
+    CEGUI::System::getSingleton().renderAllGUIContexts();
 
 // present the newly drawn frame.
 mySwapChain->Present(0, 0);
@@ -227,14 +228,15 @@ mySwapChain->Present(0, 0);
 // user function to draw 3D scene
 draw3DScene();
 
-// make sure that before calling renderGUI, that any bound textures and shaders 
-// used to render the scene above are disabled using glBindTexture(0) and glUseProgram(0) respectively
-// also set glActiveTexture(GL_TEXTURE_0) 
+// make sure that before calling renderAllGUIContexts, that any bound textures
+// and shaders used to render the scene above are disabled using
+// glBindTexture(0) and glUseProgram(0) respectively also set
+// glActiveTexture(GL_TEXTURE_0) 
 
     // draw GUI
     // NB: When not using >=3.2 core profile, this call should not occur
     // between glBegin/glEnd calls.
-    CEGUI::System::getSingleton().renderGUI();
+    CEGUI::System::getSingleton().renderAllGUIContexts();
 @endcode
 
 @subsection rendering_tutorial_draw_irrlicht Irrlicht
@@ -245,7 +247,7 @@ myIrrlichtDriver->beginScene(true, true, irr::video::SColor(150,50,50,50));
 myIrrlichtSceneManager->drawAll();
 
     // draw gui
-    CEGUI::System::getSingleton().renderGUI();
+    CEGUI::System::getSingleton().renderAllGUIContexts();
 
 // end the scene
 myIrrlichtDriver->endScene();
