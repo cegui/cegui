@@ -372,6 +372,10 @@
 
 #include "StateImagery.pypp.hpp"
 
+#include "StdPairCEGUIImageImageFactory.pypp.hpp"
+
+#include "StdPairCEGUIStringString.pypp.hpp"
+
 #include "StdPairFloatFloat.pypp.hpp"
 
 #include "Subscriber.pypp.hpp"
@@ -1027,6 +1031,10 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_XMLSerializer_class();
 
     bp::implicitly_convertible< CEGUI::XMLSerializer, bool >();
+
+    register_StdPairCEGUIImageImageFactory_class();
+
+    register_StdPairCEGUIStringString_class();
 
     boost::python::scope().attr("CompileDate__") = __DATE__;
 

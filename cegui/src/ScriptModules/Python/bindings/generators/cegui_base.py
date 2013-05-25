@@ -37,6 +37,8 @@ def filterDeclarations(mb):
 
     # because of std::pair<float, float> CEGUI::Thumb::getHorzRange()
     mb.global_ns.namespace("std").class_("pair<float, float>").include()
+    mb.global_ns.namespace("std").class_("pair<CEGUI::String, CEGUI::String>").include()
+    mb.global_ns.namespace("std").class_("pair<CEGUI::Image*, CEGUI::ImageFactory*>").include()
 
     CEGUI_ns = mb.global_ns.namespace("CEGUI")
 
@@ -597,6 +599,7 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     system = CEGUI_ns.class_("System")
     system.include()
     common_utils.excludeAllPrivate(system)
+    system.mem_fun("getStringTranscoder").exclude()
 
     # SystemKeys.h
     systemKeys = CEGUI_ns.class_("SystemKeys")
