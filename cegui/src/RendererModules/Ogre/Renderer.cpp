@@ -625,7 +625,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_defaultTarget =
         new OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
-#ifdef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
+#if defined RTSHADER_SYSTEM_BUILD_CORE_SHADERS && OGRE_VERSION >= 0x10800
     // default to using shaders when that is the sane thing to do.
     if (!d_pimpl->d_renderSystem->getFixedPipelineEnabled())
         setUsingShaders(true);
