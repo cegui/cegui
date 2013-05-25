@@ -174,6 +174,7 @@ public:
     bool isS3TCSupported() const;
     void setupRenderingBlendMode(const BlendMode mode,
                                  const bool force = false);
+    void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
 
 protected:
     OpenGLGeometryBufferBase* createGeometryBuffer_impl();

@@ -59,9 +59,8 @@ void OpenGLGeometryBuffer::draw() const
     if (!d_matrixValid)
         updateMatrix();
 
-    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix()->d_matrix * d_matrix->d_matrix;
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(glm::value_ptr(modelViewProjectionMatrix));
+    glLoadMatrixf(glm::value_ptr(d_matrix->d_matrix));
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);

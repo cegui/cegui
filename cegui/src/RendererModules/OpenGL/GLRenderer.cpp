@@ -42,6 +42,9 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
 
+#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+#include "glm/gtc/type_ptr.hpp"
+
 #include <sstream>
 #include <algorithm>
 
@@ -419,6 +422,15 @@ void OpenGLRenderer::initialiseGLExtensions()
 bool OpenGLRenderer::isS3TCSupported() const
 {
     return GLEW_EXT_texture_compression_s3tc;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLRenderer::setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix)
+{
+    OpenGLRendererBase::setViewProjectionMatrix(viewProjectionMatrix);
+
+    glMatrixMode(GL_PROJECTION);
+    glLoadMatrixf(glm::value_ptr(d_viewProjectionMatrix->d_matrix));
 }
 
 //----------------------------------------------------------------------------//
