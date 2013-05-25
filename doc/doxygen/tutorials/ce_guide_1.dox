@@ -63,7 +63,7 @@ CEGUI::OpenGLRenderer& myRenderer =
 //
 // NB: Your OpenGL context must already be initialised when you call this; CEGUI
 // will not create the OpenGL context itself.
-CEGUI::OpenGLRenderer& myRenderer =
+CEGUI::OpenGL3Renderer& myRenderer =
     CEGUI::OpenGL3Renderer::bootstrapSystem();
 @endcode
 
