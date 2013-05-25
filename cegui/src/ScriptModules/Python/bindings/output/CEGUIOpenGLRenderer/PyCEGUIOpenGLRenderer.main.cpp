@@ -4,6 +4,14 @@
 
 #include "generators/include/python_CEGUIOpenGLRenderer.h"
 
+#include "OpenGL3Renderer.pypp.hpp"
+
+#include "OpenGL3Shader.pypp.hpp"
+
+#include "OpenGL3StateChangeWrapper.pypp.hpp"
+
+#include "OpenGLGeometryBufferBase.pypp.hpp"
+
 #include "OpenGLRenderer.pypp.hpp"
 
 #include "OpenGLRendererBase.pypp.hpp"
@@ -16,6 +24,14 @@ namespace bp = boost::python;
 
 BOOST_PYTHON_MODULE(PyCEGUIOpenGLRenderer){
     register_OpenGLRendererBase_class();
+
+    register_OpenGL3Renderer_class();
+
+    register_OpenGL3Shader_class();
+
+    register_OpenGL3StateChangeWrapper_class();
+
+    register_OpenGLGeometryBufferBase_class();
 
     register_OpenGLRenderer_class();
 
