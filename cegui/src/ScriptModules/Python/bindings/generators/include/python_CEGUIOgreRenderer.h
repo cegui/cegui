@@ -12,5 +12,6 @@ namespace Ogre
 {
     class RenderTarget {};
     class TexturePtr {};
+    class Matrix4 {};
 }
 
