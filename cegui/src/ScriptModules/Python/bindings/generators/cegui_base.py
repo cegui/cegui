@@ -42,63 +42,63 @@ def filterDeclarations(mb):
 
     ### CORE ###
 
-    # CEGUIAffector.h
+    # Affector.h
     affector = CEGUI_ns.class_("Affector")
     affector.include()
 
-    # CEGUIAnimation.h
+    # Animation.h
     animation = CEGUI_ns.class_("Animation")
     animation.include()
 
-    # CEGUIAnimation_xmlHandler.h
+    # Animation_xmlHandler.h
     # not interesting for python users
 
-    # CEGUIAnimationInstance.h
+    # AnimationInstance.h
     animationInstance = CEGUI_ns.class_("AnimationInstance")
     animationInstance.include()
 
-    # CEGUIAnimationManager.h
+    # AnimationManager.h
     animationManager = CEGUI_ns.class_("AnimationManager")
     animationManager.include()
 
-    # CEGUIBase.h
+    # Base.h
     # nothing interesting for python users
     # todo: maybe pixel align?
 
-    # CEGUIBasicImage.h
+    # BasicImage.h
     basicImage = CEGUI_ns.class_("BasicImage")
     basicImage.include()
 
-    # CEGUIBasicInterpolators.h
+    # BasicInterpolators.h
     # nothing interesting for python users
 
-    # CEGUIBasicRenderedStringParser.h
+    # BasicRenderedStringParser.h
     # todo: is this interesting for python?
     basicRenderedStringParser = CEGUI_ns.class_("BasicRenderedStringParser")
     basicRenderedStringParser.include()
 
-    # CEGUIBiDiVisualMapping.h
+    # BiDiVisualMapping.h
     # Not exposed since this might be disabled at configure time
     #CEGUI_ns.enum("BidiCharType").include()
     #bidiVisualMapping = CEGUI_ns.class_("BidiVisualMapping")
     #bidiVisualMapping.include()
 
-    # CEGUIBoundSlot.h
+    # BoundSlot.h
     boundSlot = CEGUI_ns.class_("BoundSlot")
     boundSlot.include()
     # also include ref counted variant
     CEGUI_ns.class_("RefCounted<CEGUI::BoundSlot>").include()
 
-    # CEGUICentredRenderedString.h
+    # CentredRenderedString.h
     # todo: is this interesting for python?
     centredRenderedString = CEGUI_ns.class_("CentredRenderedString")
     centredRenderedString.include()
 
-    # CEGUIChainedXMLHandler.h
+    # ChainedXMLHandler.h
     #chainedXMLHandler = CEGUI_ns.class_("ChainedXMLHandler")
     #chainedXMLHandler.include()
 
-    # CEGUIClipboard.h
+    # Clipboard.h
     #nativeClipboardProvider = CEGUI_ns.class_("NativeClipboardProvider")
     #nativeClipboardProvider.include()
     clipboard = CEGUI_ns.class_("Clipboard")
@@ -111,56 +111,56 @@ def filterDeclarations(mb):
     clipboard.mem_fun("setData").exclude()
     clipboard.mem_fun("getData").exclude()
 
-    # CEGUIColour.h
+    # Colour.h
     colour = CEGUI_ns.class_("Colour")
     colour.include()
 
-    # CEGUIColourRect.h
+    # ColourRect.h
     colourRect = CEGUI_ns.class_("ColourRect")
     colourRect.include()
 
-    # CEGUIConfig.h
+    # Config.h
     # nothing interesting for python
 
-    # CEGUIConfig_xmlHandler.h
+    # Config_xmlHandler.h
     # nothing interesting for python
 
-    # CEGUICoordConverter.h
+    # CoordConverter.h
     coordConverter = CEGUI_ns.class_("CoordConverter")
     coordConverter.include()
 
-    # CEGUIDataContainer.h
+    # DataContainer.h
     rawDataContainer = CEGUI_ns.class_("RawDataContainer")
     rawDataContainer.include()
     rawDataContainer.mem_funs().exclude()
 
-    # CEGUIDefaultLogger.h
+    # DefaultLogger.h
     defaultLogger = CEGUI_ns.class_("DefaultLogger")
     defaultLogger.include()
 
-    # CEGUIDefaultRenderedStringParser.h
+    # DefaultRenderedStringParser.h
     # not interesting for python
 
-    # CEGUIDefaultResourceProvider.h
+    # DefaultResourceProvider.h
     defaultResourceProvider = CEGUI_ns.class_("DefaultResourceProvider")
     defaultResourceProvider.include()
 
-    # CEGUIDynamicModule.h
+    # DynamicModule.h
     # not doable in python
 
-    # CEGUI/Element.h
+    # /Element.h
     element = CEGUI_ns.class_("Element")
     element.include()
     element.class_("CachedRectf").constructors().exclude()
 
-    # CEGUIEvent.h
+    # Event.h
     event = CEGUI_ns.class_("Event")
     event.include()
 
-    # CEGUIEventArgs.h
+    # EventArgs.h
     # handled separately, all classes ending with "EventArgs" are included
 
-    # CEGUIEventSet.h
+    # EventSet.h
     eventSet = CEGUI_ns.class_("EventSet")
     eventSet.include()
     # this is done via custom code
@@ -285,166 +285,166 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
 """
     )
 
-    # CEGUIExceptions.h
+    # Exceptions.h
     # handled separately
 
-    # CEGUIFactoryModule.h
+    # FactoryModule.h
     # not doable in python
 
-    # CEGUIFont.h
+    # Font.h
     font = CEGUI_ns.class_("Font", recursive = False)
     font.include()
 
-    # CEGUIFont_xmlHandler.h
+    # Font_xmlHandler.h
     # not interesting for python
 
-    # CEGUIFontGlyph.h
+    # FontGlyph.h
     fontGlyph = CEGUI_ns.class_("FontGlyph")
     fontGlyph.include()
 
-    # CEGUIFontManager.h
+    # FontManager.h
     fontManager = CEGUI_ns.class_("FontManager")
     fontManager.include()
 
-    # CEGUIFormattedRenderedString.
+    # FormattedRenderedString.
     # todo: is this interesting for python?
 
-    # CEGUIForwardRefs.h
+    # ForwardRefs.h
     # hell no
 
-    # CEGUIFreeFunctionSlot.h
+    # FreeFunctionSlot.h
     # handled differently elsewhere, see EventSet
 
-    # CEGUIFreeTypeFont.h
+    # FreeTypeFont.h
     # not interesting for python
 
-    # CEGUIFribidiVisualMapping.h
+    # FribidiVisualMapping.h
     # not interesting for python
 
-    # CEGUIFunctorCopySlot.h
+    # FunctorCopySlot.h
     # handled differently elsewhere, see EventSet
 
-    # CEGUIFunctorPointerSlot.h
+    # FunctorPointerSlot.h
     # handled differently elsewhere, see EventSet
 
-    # CEGUIFunctorReferenceBinder.h
+    # FunctorReferenceBinder.h
     # handled differently elsewhere, see EventSet
 
-    # CEGUIFunctorReferenceSlot.h
+    # FunctorReferenceSlot.h
     # handled differently elsewhere, see EventSet
 
-    # CEGUIGeometryBuffer.h
+    # GeometryBuffer.h
     geometryBuffer = CEGUI_ns.class_("GeometryBuffer")
     geometryBuffer.include()
 
-    # CEGUIGlobalEventSet.h
+    # GlobalEventSet.h
     globalEventSet = CEGUI_ns.class_("GlobalEventSet")
     globalEventSet.include()
 
-    # CEGUIGUIContext.h
+    # GUIContext.h
     guiContext = CEGUI_ns.class_("GUIContext")
     guiContext.include()
 
-    # CEGUIGUILayout_xmlHandler.h
+    # GUILayout_xmlHandler.h
     # not needed in python
 
-    # CEGUIImage.h
+    # Image.h
     autoScaledModeEnum = CEGUI_ns.enum("AutoScaledMode")
     autoScaledModeEnum.include()
     image = CEGUI_ns.class_("Image")
     image.include()
 
-    # CEGUIImageCodec.h
+    # ImageCodec.h
     imageCodec = CEGUI_ns.class_("ImageCodec")
     imageCodec.include()
 
-    # CEGUIImageManager.h
+    # ImageManager.h
     imageManager = CEGUI_ns.class_("ImageManager")
     imageManager.include()
 
-    # CEGUIInputEvent.h
+    # InputEvent.h
     key = CEGUI_ns.class_("Key")
     key.include()
 
     mouseButtonEnum = CEGUI_ns.enum("MouseButton")
     mouseButtonEnum.include()
 
-    # CEGUIInterpolator.h
+    # Interpolator.h
     interpolator = CEGUI_ns.class_("Interpolator")
     interpolator.include()
 
-    # CEGUIIteratorBase.h
+    # IteratorBase.h
     # all iterators are sorted later
 
-    # CEGUIJustifiedRenderedString.h
+    # JustifiedRenderedString.h
     # not needed in python
 
-    # CEGUIKeyFrame.h
+    # KeyFrame.h
     keyFrame = CEGUI_ns.class_("KeyFrame")
     keyFrame.include()
 
-    # CEGUILeftAlignedRenderedString.h
+    # LeftAlignedRenderedString.h
     # not needed in python
 
-    # CEGUILogger.h
+    # Logger.h
     logger = CEGUI_ns.class_("Logger")
     logger.include()
 
     loggingLevelEnum = CEGUI_ns.enum("LoggingLevel")
     loggingLevelEnum.include()
 
-    # CEGUIMemberFunctionSlot.h
+    # MemberFunctionSlot.h
     # sorted elsewhere, see EventSet
 
-    # CEGUIMinibidiVisualMapping.h
+    # MinibidiVisualMapping.h
     # not needed for python
 
-    # CEGUIMinizipResourceProvider.h
+    # MinizipResourceProvider.h
     # not needed for python
 
-    # CEGUIMouseCursor.h
+    # MouseCursor.h
     mouseCursor = CEGUI_ns.class_("MouseCursor")
     mouseCursor.include()
     mouseCursor.noncopyable = True
 
-    # CEGUI/NamedElement.h
+    # NamedElement.h
     namedElement = CEGUI_ns.class_("NamedElement")
     namedElement.include()
 
-    # CEGUINamedXMLResourceManager.h
+    # NamedXMLResourceManager.h
     xmlResourceExistsActionEnum = CEGUI_ns.enum("XMLResourceExistsAction")
     xmlResourceExistsActionEnum.include()
 
     resourceEventSet = CEGUI_ns.class_("ResourceEventSet")
     resourceEventSet.include()
 
-    # CEGUIPCRERegexMatcher.h
+    # PCRERegexMatcher.h
     # not needed in python
 
-    # CEGUIPixmapFont.h
+    # PixmapFont.h
     # not needed in python
 
-    # CEGUIProperty.h
+    # Property.h
     propertyReceiver = CEGUI_ns.class_("PropertyReceiver")
     propertyReceiver.include()
 
     property = CEGUI_ns.class_("Property")
     property.include()
 
-    # CEGUIPropertyHelper.h
+    # PropertyHelper.h
     propertyHelper = CEGUI_ns.class_("PropertyHelper_wrapper")
     propertyHelper.include()
     propertyHelper.rename("PropertyHelper")
 
-    # CEGUIPropertySet.h
+    # PropertySet.h
     propertySet = CEGUI_ns.class_("PropertySet")
     propertySet.include()
 
-    # CEGUIQuaternion.h
+    # Quaternion.h
     quaternion = CEGUI_ns.class_("Quaternion")
     quaternion.include()
 
-    # CEGUIRect.h
+    # Rect.h
     rectf = CEGUI_ns.class_("Rect<float>")
     rectf.rename("Rectf")
     rectf.include()
@@ -459,50 +459,50 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     urect.member_function("constrainSizeMax").exclude()
     urect.member_function("constrainSize").exclude()
 
-    # CEGUIRefCounted.h
+    # RefCounted.h
     # handled elsewhere
 
-    # CEGUIRefexMatcher.h
+    # RefexMatcher.h
     regexMatcher = CEGUI_ns.class_("RegexMatcher")
     regexMatcher.include()
 
-    # CEGUIRenderedString.h
+    # RenderedString.h
     renderedString = CEGUI_ns.class_("RenderedString")
     renderedString.include()
 
-    # CEGUIRenderedStringComponent.h
+    # RenderedStringComponent.h
     renderedStringComponent = CEGUI_ns.class_("RenderedStringComponent")
     renderedStringComponent.include()
 
-    # CEGUIRenderedStringImageComponent.h
+    # RenderedStringImageComponent.h
     renderedStringImageComponent = CEGUI_ns.class_("RenderedStringImageComponent")
     renderedStringImageComponent.include()
 
-    # CEGUIRenderedStringTextComponent.h
+    # RenderedStringTextComponent.h
     renderedStringTextComponent = CEGUI_ns.class_("RenderedStringTextComponent")
     renderedStringTextComponent.include()
 
-    # CEGUIRenderedStringParser.h
+    # RenderedStringParser.h
     renderedStringParser = CEGUI_ns.class_("RenderedStringParser")
     renderedStringParser.include()
 
-    # CEGUIRenderedStringWidgetComponent.h
+    # RenderedStringWidgetComponent.h
     renderedStringWidgetComponent = CEGUI_ns.class_("RenderedStringWidgetComponent")
     renderedStringWidgetComponent.include()
 
-    # CEGUIRenderEffect.h
+    # RenderEffect.h
     renderEffect = CEGUI_ns.class_("RenderEffect")
     renderEffect.include()
 
-    # CEGUIRenderEffectFactory.h
+    # RenderEffectFactory.h
     renderEffectFactory = CEGUI_ns.class_("RenderEffectFactory")
     renderEffectFactory.include()
 
-    # CEGUIRenderEffectManager.h
+    # RenderEffectManager.h
     renderEffectManager = CEGUI_ns.class_("RenderEffectManager")
     renderEffectManager.include()
 
-    # CEGUIRenderer.h
+    # Renderer.h
     quadSplitModeEnum = CEGUI_ns.enum("QuadSplitMode")
     quadSplitModeEnum.include()
 
@@ -512,54 +512,54 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     renderer = CEGUI_ns.class_("Renderer")
     renderer.include()
 
-    # CEGUIRenderingContext.h
+    # RenderingContext.h
     renderingContext = CEGUI_ns.class_("RenderingContext")
     renderingContext.include()
 
-    # CEGUIRenderingSurface.h
+    # RenderingSurface.h
     CEGUI_ns.enum("RenderQueueID").include()
     renderingSurface = CEGUI_ns.class_("RenderingSurface")
     renderingSurface.include()
 
-    # CEGUIRenderingWindow.h
+    # RenderingWindow.h
     renderingWindow = CEGUI_ns.class_("RenderingWindow")
     renderingWindow.include()
 
-    # CEGUIRenderQueue.h
+    # RenderQueue.h
     renderQueue = CEGUI_ns.class_("RenderQueue")
     renderQueue.include()
 
-    # CEGUIRenderTarget.h
+    # RenderTarget.h
     renderTarget = CEGUI_ns.class_("RenderTarget")
     renderTarget.include()
 
-    # CEGUIResourceProvider.h
+    # ResourceProvider.h
     resourceProvider = CEGUI_ns.class_("ResourceProvider")
     resourceProvider.include()
 
-    # CEGUIRightAlignedRenderedString.h
+    # RightAlignedRenderedString.h
     # not needed in python
 
-    # CEGUIScheme.h
+    # Scheme.h
     scheme = CEGUI_ns.class_("Scheme")
     scheme.include()
 
-    # CEGUISchemeManager.h
+    # SchemeManager.h
     schemeManager = CEGUI_ns.class_("SchemeManager")
     schemeManager.include()
 
-    # CEGUIScriptModule.h
+    # ScriptModule.h
     scriptModule = CEGUI_ns.class_("ScriptModule")
     scriptModule.include()
 
-    # CEGUISimpleTimer.h
+    # SimpleTimer.h
     simpleTimer = CEGUI_ns.class_("SimpleTimer")
     simpleTimer.include()
 
-    # CEGUISingleton.h
+    # Singleton.h
     # handled separately
 
-    # CEGUISize.h
+    # Size.h
     CEGUI_ns.enum("AspectMode").include()
     size = CEGUI_ns.class_("Size<float>")
     size.rename("Sizef")
@@ -572,14 +572,14 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     usize.member_function("clamp").exclude()
     usize.member_function("scaleToAspect").exclude()
 
-    # CEGUISlotFunctorBase.h
+    # SlotFunctorBase.h
     # not needed in python
 
-    # CEGUIString.h
+    # String.h
     string = CEGUI_ns.class_("String")
     #string.include()
 
-    # CEGUISubscriberSlot.h
+    # SubscriberSlot.h
     # todo: probably not needed with current setup, should we exclude this?
     subscriberSlot = CEGUI_ns.class_("SubscriberSlot")
     subscriberSlot.include()
@@ -588,40 +588,40 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
         if len(c.arguments) > 0:
             c.exclude()
 
-    # CEGUISystem.h
+    # System.h
     system = CEGUI_ns.class_("System")
     system.include()
     common_utils.excludeAllPrivate(system)
 
-    # CEGUISystemKeys.h
+    # SystemKeys.h
     systemKeys = CEGUI_ns.class_("SystemKeys")
     systemKeys.include()
 
-    # CEGUITexture.h
+    # Texture.h
     texture = CEGUI_ns.class_("Texture")
     texture.include()
 
-    # CEGUITextureTarget.h
+    # TextureTarget.h
     textureTarget = CEGUI_ns.class_("TextureTarget")
     textureTarget.include()
 
-    # CEGUITextUtils.h
+    # TextUtils.h
     textUtils = CEGUI_ns.class_("TextUtils")
     textUtils.include()
 
-    # CEGUITplWindowFactory.h
-    # CEGUITplWindowRendererFactory.h
-    # CEGUITplWRFactoryRegisterer.h
+    # TplWindowFactory.h
+    # TplWindowRendererFactory.h
+    # TplWRFactoryRegisterer.h
     # python doesn't like templates :-)
 
-    # CEGUIUDim.h
+    # UDim.h
     udim = CEGUI_ns.class_("UDim")
     udim.include()
 
     ubox = CEGUI_ns.class_("UBox")
     ubox.include()
 
-    # CEGUIVector.h
+    # Vector.h
     vector2f = CEGUI_ns.class_("Vector2<float>")
     vector2f.rename("Vector2f")
     vector2f.include()
@@ -634,17 +634,17 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     uvector2.rename("UVector2")
     uvector2.include()
 
-    # CEGUIVersion.h
+    # Version.h
     # nothing usable for python
 
-    # CEGUIVertex.h
+    # Vertex.h
     vertex = CEGUI_ns.class_("Vertex")
     vertex.include()
 
-    # CEGUIWidgetModule.h
+    # WidgetModule.h
     # not needed in python
 
-    # CEGUIWindow.h
+    # Window.h
     CEGUI_ns.enum("VerticalAlignment").include()
     CEGUI_ns.enum("HorizontalAlignment").include()
     CEGUI_ns.enum("WindowUpdateMode").include()
@@ -693,15 +693,15 @@ typedef void ( ::CEGUI::Window::*removeChild_ptr_function_type )( ::CEGUI::Eleme
     window.add_registration_code("""def ("removeChild", removeChild_string_function_type(&::CEGUI::Window::removeChild));""")
     window.add_registration_code("""def ("removeChild", removeChild_ptr_function_type(&::CEGUI::Window::removeChild));""")
 
-    # CEGUIWindowFactory.h
+    # WindowFactory.h
     windowFactory = CEGUI_ns.class_("WindowFactory")
     windowFactory.include()
 
-    # CEGUIWindowFactoryManager.h
+    # WindowFactoryManager.h
     windowFactoryManager = CEGUI_ns.class_("WindowFactoryManager")
     windowFactoryManager.include()
 
-    # CEGUIWindowManager.h
+    # WindowManager.h
     windowManager = CEGUI_ns.class_("WindowManager")
     windowManager.include()
     # we do all the layout loading in custom code because we can't use PropertyCallback in python
@@ -763,39 +763,39 @@ def ("loadLayoutFromString", &::WindowManager_loadLayoutFromString,\
 """
     )
 
-    # CEGUIWindowProperties.h
+    # WindowProperties.h
     # not needed in python
 
-    # CEGUIWindowRenderer.h
+    # WindowRenderer.h
     windowRenderer = CEGUI_ns.class_("WindowRenderer", recursive = False)
     windowRenderer.include()
 
     windowRendererFactory = CEGUI_ns.class_("WindowRendererFactory")
     windowRendererFactory.include()
 
-    # CEGUIWindowRendererManager.h
+    # WindowRendererManager.h
     windowRendererManager = CEGUI_ns.class_("WindowRendererManager")
     windowRendererManager.include()
 
-    # CEGUIWindowRendererModule.h
+    # WindowRendererModule.h
     # not needed in python
 
-    # CEGUIWRFactoryRegisterer.h
+    # WRFactoryRegisterer.h
     # not needed in python
 
-    # CEGUIXMLAttributes.h
+    # XMLAttributes.h
     xmlAttributes = CEGUI_ns.class_("XMLAttributes")
     xmlAttributes.include()
 
-    # CEGUIXMLHandler.h
+    # XMLHandler.h
     xmlHandler = CEGUI_ns.class_("XMLHandler")
     xmlHandler.include()
 
-    # CEGUIXMLParser.h
+    # XMLParser.h
     xmlParser = CEGUI_ns.class_("XMLParser")
     xmlParser.include()
 
-    # CEGUIXMLSerializer.h
+    # XMLSerializer.h
     xmlSerializer = CEGUI_ns.class_("XMLSerializer")
     xmlSerializer.include()
 
@@ -852,67 +852,67 @@ void Iterator_previous(::CEGUI::%s& t)
 
     # we always skip the Properties files since they are of no use to python users
 
-    # elements/CEGUIButtonBase.h
+    # elements/ButtonBase.h
     buttonBase = CEGUI_ns.class_("ButtonBase")
     buttonBase.include()
 
-    # elements/CEGUICombobox.h
+    # elements/Combobox.h
     combobox = CEGUI_ns.class_("Combobox")
     combobox.include()
 
-    # elements/CEGUIComboDropList.h
+    # elements/ComboDropList.h
     comboDropList = CEGUI_ns.class_("ComboDropList")
     comboDropList.include()
 
-    # elements/CEGUIDefaultWindow.h
+    # elements/DefaultWindow.h
     defaultWindow = CEGUI_ns.class_("DefaultWindow")
     defaultWindow.include()
 
-    # elements/CEGUIDragContainer.h
+    # elements/DragContainer.h
     dragContainer = CEGUI_ns.class_("DragContainer")
     dragContainer.include()
 
-    # elements/CEGUIEditbox.h
+    # elements/Editbox.h
     editbox = CEGUI_ns.class_("Editbox")
     editbox.include()
 
-    # elements/CEGUIFrameWindow.h
+    # elements/FrameWindow.h
     frameWindow = CEGUI_ns.class_("FrameWindow")
     frameWindow.include()
 
-    # elements/CEGUIGridLayoutContainer.h
+    # elements/GridLayoutContainer.h
     gridLayoutContainer = CEGUI_ns.class_("GridLayoutContainer")
     gridLayoutContainer.include()
     # FIXME: Temporary, this should work with transformations
     gridLayoutContainer.mem_fun("mapFromIdxToGrid").exclude()
 
-    # elements/CEGUIGroupBox.h
+    # elements/GroupBox.h
     groupBox = CEGUI_ns.class_("GroupBox")
     groupBox.include()
 
-    # elements/CEGUIHorizontalLayoutContainer.h
+    # elements/HorizontalLayoutContainer.h
     horizontalLayoutContainer = CEGUI_ns.class_("HorizontalLayoutContainer")
     horizontalLayoutContainer.include()
 
-    # elements/CEGUIItemEntry.h
+    # elements/ItemEntry.h
     itemEntry = CEGUI_ns.class_("ItemEntry")
     itemEntry.include()
 
-    # elements/CEGUIItemListBase.h
+    # elements/ItemListBase.h
     itemListBase = CEGUI_ns.class_("ItemListBase")
     itemListBase.include()
     # needs function pointer as argument
     itemListBase.mem_fun("setSortCallback").exclude()
 
-    # elements/CEGUIItemListbox.h
+    # elements/ItemListbox.h
     itemListbox = CEGUI_ns.class_("ItemListbox")
     itemListbox.include()
 
-    # elements/CEGUILayoutContainer.h
+    # elements/LayoutContainer.h
     layoutContainer = CEGUI_ns.class_("LayoutContainer")
     layoutContainer.include()
 
-    # elements/CEGUIListbox.h
+    # elements/Listbox.h
     listbox = CEGUI_ns.class_("Listbox")
     listbox.include()
     # we have to handle this separately because CEGUI is nasty and will deallocate this for us unless
@@ -946,35 +946,35 @@ void Iterator_previous(::CEGUI::%s& t)
     listbox.add_registration_code('def ("addItem", &::Listbox_addItem, (bp::arg("item")));')
     listbox.add_registration_code('def ("removeItem", &::Listbox_removeItem, (bp::arg("item")));')
 
-    # elements/CEGUIListboxItem.h
+    # elements/ListboxItem.h
     listboxItem = CEGUI_ns.class_("ListboxItem")
     listboxItem.include()
 
-    # elements/CEGUIListboxTextItem.h
+    # elements/ListboxTextItem.h
     listboxTextItem = CEGUI_ns.class_("ListboxTextItem")
     listboxTextItem.include()
 
-    # elements/CEGUIListHeader.h
+    # elements/ListHeader.h
     listHeader = CEGUI_ns.class_("ListHeader")
     listHeader.include()
 
-    # elements/CEGUIListHeaderSegment.h
+    # elements/ListHeaderSegment.h
     listHeaderSegment = CEGUI_ns.class_("ListHeaderSegment")
     listHeaderSegment.include()
 
-    # elements/CEGUIMenubar.h
+    # elements/Menubar.h
     menubar = CEGUI_ns.class_("Menubar")
     menubar.include()
 
-    # elements/CEGUIMenuBase.h
+    # elements/MenuBase.h
     menuBase = CEGUI_ns.class_("MenuBase")
     menuBase.include()
 
-    # elements/CEGUIMenuItem.h
+    # elements/MenuItem.h
     menuItem = CEGUI_ns.class_("MenuItem")
     menuItem.include()
 
-    # elements/CEGUIMultiColumnList.h
+    # elements/MultiColumnList.h
     CEGUI_ns.class_("MCLGridRef").include()
     multiColumnList = CEGUI_ns.class_("MultiColumnList")
     multiColumnList.include()
@@ -983,99 +983,99 @@ void Iterator_previous(::CEGUI::%s& t)
     # internal
     multiColumnList.mem_fun("pred_descend").exclude()
 
-    # elements/CEGUIMultiLineEditbox.h
+    # elements/MultiLineEditbox.h
     multiLineEditbox = CEGUI_ns.class_("MultiLineEditbox")
     multiLineEditbox.include()
 
-    # elements/CEGUIPopupMenu.h
+    # elements/PopupMenu.h
     popupMenu = CEGUI_ns.class_("PopupMenu")
     popupMenu.include()
 
-    # elements/CEGUIProgressBar.h
+    # elements/ProgressBar.h
     progressBar = CEGUI_ns.class_("ProgressBar")
     progressBar.include()
 
-    # elements/CEGUIPushButton.h
+    # elements/PushButton.h
     pushButton = CEGUI_ns.class_("PushButton")
     pushButton.include()
 
-    # elements/CEGUIRadioButton.h
+    # elements/RadioButton.h
     radioButton = CEGUI_ns.class_("RadioButton")
     radioButton.include()
 
-    # elements/CEGUIScrollablePane.h
+    # elements/ScrollablePane.h
     scrollablePane = CEGUI_ns.class_("ScrollablePane")
     scrollablePane.include()
 
-    # elements/CEGUIScrollbar.h
+    # elements/Scrollbar.h
     scrollbar = CEGUI_ns.class_("Scrollbar")
     scrollbar.include()
 
-    # elements/CEGUIScrolledContainer.h
+    # elements/ScrolledContainer.h
     scrolledContainer = CEGUI_ns.class_("ScrolledContainer")
     scrolledContainer.include()
 
-    # elements/CEGUIScrolledItemListBase.h
+    # elements/ScrolledItemListBase.h
     scrolledItemListBase = CEGUI_ns.class_("ScrolledItemListBase")
     scrolledItemListBase.include()
 
-    # elements/CEGUISequentialLayoutContainer.h
+    # elements/SequentialLayoutContainer.h
     sequentialLayoutContainer = CEGUI_ns.class_("SequentialLayoutContainer")
     sequentialLayoutContainer.include()
 
-    # elements/CEGUISlider.h
+    # elements/Slider.h
     slider = CEGUI_ns.class_("Slider")
     slider.include()
 
-    # elements/CEGUISpinner.h
+    # elements/Spinner.h
     spinner = CEGUI_ns.class_("Spinner")
     spinner.include()
 
-    # elements/CEGUITabButton.h
+    # elements/TabButton.h
     tabButton = CEGUI_ns.class_("TabButton")
     tabButton.include()
 
-    # elements/CEGUITabButton.h
+    # elements/TabButton.h
     tabControl = CEGUI_ns.class_("TabControl")
     tabControl.include()
 
-    # elements/CEGUIThumb.h
+    # elements/Thumb.h
     thumb = CEGUI_ns.class_("Thumb")
     thumb.include()
 
-    # elements/CEGUITitlebar.h
+    # elements/Titlebar.h
     titlebar = CEGUI_ns.class_("Titlebar")
     titlebar.include()
 
-    # elements/CEGUIToggleButton.h
+    # elements/ToggleButton.h
     toggleButton = CEGUI_ns.class_("ToggleButton")
     toggleButton.include()
 
-    # elements/CEGUITooltip.h
+    # elements/Tooltip.h
     tooltip = CEGUI_ns.class_("Tooltip", recursive = False)
     tooltip.include()
 
-    # elements/CEGUITree.h
+    # elements/Tree.h
     tree = CEGUI_ns.class_("Tree")
     tree.include()
     # todo: this doesn't work, needs function transformation
     tree.mem_fun("getNextSelectedItemFromList").exclude()
 
-    # elements/CEGUITreeItem.h
+    # elements/TreeItem.h
     treeItem = CEGUI_ns.class_("TreeItem")
     treeItem.include()
 
-    # elements/CEGUIVerticalLayoutContainer.h
+    # elements/VerticalLayoutContainer.h
     verticalLayoutContainer = CEGUI_ns.class_("VerticalLayoutContainer")
     verticalLayoutContainer.include()
 
     ### FALAGARD ###
 
-    # falagard/CEGUIFalComponentBase.h
+    # falagard/FalComponentBase.h
     falagardComponentBase = CEGUI_ns.class_("FalagardComponentBase")
     falagardComponentBase.include()
 
-    # falagard/CEGUIFalDimensions.h
+    # falagard/FalDimensions.h
     CEGUI_ns.class_("BaseDim").include()
     CEGUI_ns.class_("OperatorDim").include()
     CEGUI_ns.class_("AbsoluteDim").include()
@@ -1088,7 +1088,7 @@ void Iterator_previous(::CEGUI::%s& t)
     CEGUI_ns.class_("Dimension").include()
     CEGUI_ns.class_("ComponentArea").include()
 
-    # falagard/CEGUIFalEnums.h
+    # falagard/FalEnums.h
     CEGUI_ns.enum("DimensionType").include()
     CEGUI_ns.enum("VerticalFormatting").include()
     CEGUI_ns.enum("HorizontalFormatting").include()
@@ -1103,74 +1103,74 @@ void Iterator_previous(::CEGUI::%s& t)
     eventAction = CEGUI_ns.class_("EventAction")
     eventAction.include()
 
-    # falagard/CEGUIFalEventLinkDefinition.h
+    # falagard/FalEventLinkDefinition.h
     eventLinkDefinition = CEGUI_ns.class_("EventLinkDefinition")
     eventLinkDefinition.include()
 
-    # falagard/CEGUIFalFrameComponent.h
+    # falagard/FalFrameComponent.h
     frameComponent = CEGUI_ns.class_("FrameComponent")
     frameComponent.include()
 
-    # falagard/CEGUIFalImageryComponent.h
+    # falagard/FalImageryComponent.h
     imageryComponent = CEGUI_ns.class_("ImageryComponent")
     imageryComponent.include()
 
-    # falagard/CEGUIFalImagerySection.h
+    # falagard/FalImagerySection.h
     imagerySection = CEGUI_ns.class_("ImagerySection")
     imagerySection.include()
 
-    # falagard/CEGUIFalLayerSpecification.h
+    # falagard/FalLayerSpecification.h
     layerSpecification = CEGUI_ns.class_("LayerSpecification")
     layerSpecification.include()
 
-    # falagard/CEGUIFalNamedArea.h
+    # falagard/FalNamedArea.h
     namedArea = CEGUI_ns.class_("NamedArea")
     namedArea.include()
 
-    # falagard/CEGUIFalPropertyDefinition.h
+    # falagard/FalPropertyDefinition.h
     # FIXME: This is now a template and CE did not know what to do!
     #propertyDefinition = CEGUI_ns.class_("PropertyDefinition")
     #propertyDefinition.include()
 
-    # falagard/CEGUIFalPropertyDefinitionBase.h
+    # falagard/FalPropertyDefinitionBase.h
     # FIXME: This is now a template and CE did not know what to do!
     #propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
     #propertyDefinitionBase.include()
 
-    # falagard/CEGUIFalPropertyInitialiser.h
+    # falagard/FalPropertyInitialiser.h
     propertyInitialiser = CEGUI_ns.class_("PropertyInitialiser")
     propertyInitialiser.include()
 
-    # falagard/CEGUIFalPropertyLinkDefinition.h
+    # falagard/FalPropertyLinkDefinition.h
     # FIXME: This is now a template and CE did not know what to do!
     #propertyLinkDefinition = CEGUI_ns.class_("PropertyLinkDefinition")
     #propertyLinkDefinition.include()
 
-    # falagard/CEGUIFalSectionSpecification.h
+    # falagard/FalSectionSpecification.h
     sectionSpecification = CEGUI_ns.class_("SectionSpecification")
     sectionSpecification.include()
 
-    # falagard/CEGUIFalStateImagery.h
+    # falagard/FalStateImagery.h
     stateImagery = CEGUI_ns.class_("StateImagery")
     stateImagery.include()
 
-    # falagard/CEGUIFalTextComponent.h
+    # falagard/FalTextComponent.h
     textComponent = CEGUI_ns.class_("TextComponent")
     textComponent.include()
 
-    # falagard/CEGUIFalWidgetComponent.h
+    # falagard/FalWidgetComponent.h
     widgetComponent = CEGUI_ns.class_("WidgetComponent")
     widgetComponent.include()
 
-    # falagard/CEGUIFalWidgetLookFeel.h
+    # falagard/FalWidgetLookFeel.h
     widgetLookFeel = CEGUI_ns.class_("WidgetLookFeel")
     widgetLookFeel.include()
 
-    # falagard/CEGUIFalWidgetLookManager.h
+    # falagard/FalWidgetLookManager.h
     widgetLookManager = CEGUI_ns.class_("WidgetLookManager")
     widgetLookManager.include()
 
-    # falagard/CEGUIFalXMLEnumHelper.h
+    # falagard/FalXMLEnumHelper.h
     falagardXMLHelper = CEGUI_ns.class_("FalagardXMLHelper_wrapper")
     falagardXMLHelper.include()
     falagardXMLHelper.rename("FalagardXMLHelper")
