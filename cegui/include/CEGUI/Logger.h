@@ -163,7 +163,7 @@ private:
 #if defined(DEBUG) || defined (_DEBUG)
 #	define CEGUI_LOGINSANE( message ) CEGUI::Logger::getSingleton().logEvent((message), CEGUI::Insane);
 #else
-#	define CEGUI_LOGINSANE( message )
+#	define CEGUI_LOGINSANE( message ) (void)0
 #endif
 
 } // End of  CEGUI namespace section
