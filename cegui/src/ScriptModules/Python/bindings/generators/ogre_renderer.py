@@ -19,6 +19,7 @@
 import os
 
 from pyplusplus import function_transformers as ft
+from pyplusplus import messages
 from pyplusplus.module_builder import call_policies
 from pygccxml import declarations
 
@@ -57,8 +58,15 @@ def filterDeclarations(mb):
     # for users using python-ogre in conjunction to PyCEGUI
     mb.global_ns.class_( "::Ogre::RenderTarget" ).already_exposed = True
     mb.global_ns.class_( "::Ogre::TexturePtr" ).already_exposed = True
+    mb.global_ns.class_( "::Ogre::Matrix4" ).already_exposed = True
 
 def generate():
+    ### disable unnecessary warnings
+    # py++ will create a wrapper
+    messages.disable(messages.W1023, messages.W1025, messages.W1026, messages.W1027, messages.W1031)
+    # can't be overridden in python
+    messages.disable(messages.W1049)
+
     # "CEGUIBASE_EXPORTS" seems to help with internal compiler error with VS2008SP1 and gccxml 0.9
     mb = common_utils.createModuleBuilder("python_CEGUIOgreRenderer.h", ["OGRE_GUIRENDERER_EXPORTS", "CEGUIBASE_EXPORTS"])
     CEGUI_ns = mb.global_ns.namespace("CEGUI")
