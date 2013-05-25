@@ -297,7 +297,7 @@ protected:
     
     //! returns whether the window containing the mouse had changed.
     bool updateWindowContainingMouse_impl() const;
-    void resetWindowConatiningMouse();
+    void resetWindowContainingMouse();
 
     // event trigger functions.
     virtual void onRootWindowChanged(WindowEventArgs& args);
