@@ -355,8 +355,8 @@ struct GUIContext_wrapper : CEGUI::GUIContext, bp::wrapper< CEGUI::GUIContext > 
         CEGUI::GUIContext::renderWindowHierarchyToSurfaces(  );
     }
 
-    void resetWindowConatiningMouse(  ){
-        CEGUI::GUIContext::resetWindowConatiningMouse(  );
+    void resetWindowContainingMouse(  ){
+        CEGUI::GUIContext::resetWindowContainingMouse(  );
     }
 
     void updateRootWindowAreaRects(  ) const {
@@ -1052,13 +1052,13 @@ void register_GUIContext_class(){
                 , renderWindowHierarchyToSurfaces_function_type( &GUIContext_wrapper::renderWindowHierarchyToSurfaces ) );
         
         }
-        { //::CEGUI::GUIContext::resetWindowConatiningMouse
+        { //::CEGUI::GUIContext::resetWindowContainingMouse
         
-            typedef void ( GUIContext_wrapper::*resetWindowConatiningMouse_function_type )(  ) ;
+            typedef void ( GUIContext_wrapper::*resetWindowContainingMouse_function_type )(  ) ;
             
             GUIContext_exposer.def( 
-                "resetWindowConatiningMouse"
-                , resetWindowConatiningMouse_function_type( &GUIContext_wrapper::resetWindowConatiningMouse )
+                "resetWindowContainingMouse"
+                , resetWindowContainingMouse_function_type( &GUIContext_wrapper::resetWindowContainingMouse )
                 , "! returns whether the window containing the mouse had changed.\n" );
         
         }
