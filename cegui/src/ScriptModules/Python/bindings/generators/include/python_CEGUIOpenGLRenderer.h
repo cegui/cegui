@@ -5,5 +5,7 @@
 #include "CEGUI/GUIContext.h"
 
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
+#include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGL/TextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"

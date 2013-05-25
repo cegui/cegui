@@ -3,7 +3,7 @@
 #include "boost/python.hpp"
 #include "indexing_suite/container_suite.hpp"
 #include "indexing_suite/vector.hpp"
-#include "python_CEGUI.h"
+#include "generators/include/python_CEGUI.h"
 #include "_UDim__value_traits.pypp.hpp"
 #include "vector_less__CEGUI_scope_UDim__greater_.pypp.hpp"
 

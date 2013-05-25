@@ -3,7 +3,7 @@
 #include "boost/python.hpp"
 #include "indexing_suite/container_suite.hpp"
 #include "indexing_suite/vector.hpp"
-#include "python_CEGUI.h"
+#include "generators/include/python_CEGUI.h"
 #include "vector_less__CEGUI_scope_PropertyDefinitionBase_ptr___greater_.pypp.hpp"
 
 namespace bp = boost::python;

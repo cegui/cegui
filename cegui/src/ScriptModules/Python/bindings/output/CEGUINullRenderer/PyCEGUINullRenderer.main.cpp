@@ -2,7 +2,7 @@
 
 #include "boost/python.hpp"
 
-#include "python_CEGUINullRenderer.h"
+#include "generators/include/python_CEGUINullRenderer.h"
 
 #include "NullRenderer.pypp.hpp"
 
@@ -13,9 +13,9 @@ BOOST_PYTHON_MODULE(PyCEGUINullRenderer){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("__doc__") = "PyCEGUINullRenderer - version 0.8.9090";
+    boost::python::scope().attr("__doc__") = "PyCEGUINullRenderer - version 0.8.0";
 
-    boost::python::scope().attr("Version__") = "0.8.9090";
+    boost::python::scope().attr("Version__") = "0.8.0";
 
     register_NullRenderer_class();
 }
