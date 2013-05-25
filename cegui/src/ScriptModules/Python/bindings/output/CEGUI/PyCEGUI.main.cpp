@@ -26,6 +26,8 @@
 
 #include "AnimationManager.pypp.hpp"
 
+#include "AnimationNameIterator.pypp.hpp"
+
 #include "BannedXMLPropertySet.pypp.hpp"
 
 #include "BaseDim.pypp.hpp"
@@ -56,6 +58,10 @@
 
 #include "Connection.pypp.hpp"
 
+#include "ConstBaseIterator_23c5f09e76c89ed46f1671ac87f5d133.pypp.hpp"
+
+#include "ConstBaseIterator_2c9936f57a2ad030e0dfadb6e79a326f.pypp.hpp"
+
 #include "ConstBaseIterator_3dfe55a685a628d9556dccd6ce85e923.pypp.hpp"
 
 #include "ConstBaseIterator_45e2d4f27e29c3a5b74179f6cfabbc4c.pypp.hpp"
@@ -64,11 +70,25 @@
 
 #include "ConstBaseIterator_58fce9a3b4ea911d189f971dbf4a6c9b.pypp.hpp"
 
+#include "ConstBaseIterator_6318b664b630c5a4e45127a69c6748cb.pypp.hpp"
+
+#include "ConstBaseIterator_6cea82a17f94b95b10c333412f843a6d.pypp.hpp"
+
 #include "ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174.pypp.hpp"
 
 #include "ConstBaseIterator_78cd23dcc51d261e1f508a899854e1a9.pypp.hpp"
 
+#include "ConstBaseIterator_92b3f0ef60bba0b7bc1aa08b6f3304d6.pypp.hpp"
+
+#include "ConstBaseIterator_937e880515ad590c17d4b2b82a347310.pypp.hpp"
+
+#include "ConstBaseIterator_99d0247943ea008baba14993d63dd301.pypp.hpp"
+
+#include "ConstBaseIterator_9b6259ec5f5ed443accef2ab6f116fda.pypp.hpp"
+
 #include "ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b.pypp.hpp"
+
+#include "ConstBaseIterator_a74f832b0a98ff325f0d295bba46f58b.pypp.hpp"
 
 #include "ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364.pypp.hpp"
 
@@ -76,7 +96,11 @@
 
 #include "ConstBaseIterator_e31fba8abb652b91e7a416a794506e4f.pypp.hpp"
 
+#include "ConstBaseIterator_e6837f87c747b0388313d47a6a1e8556.pypp.hpp"
+
 #include "ConstBaseIterator_e78994bfd2b781a573fdd2cd7ca2ceae.pypp.hpp"
+
+#include "ConstBaseIterator_f0585fb3775a7fa1f905d29be5dc1533.pypp.hpp"
 
 #include "CoordConverter.pypp.hpp"
 
@@ -103,6 +127,8 @@
 #include "Event.pypp.hpp"
 
 #include "EventAction.pypp.hpp"
+
+#include "EventActionIterator.pypp.hpp"
 
 #include "EventArgs.pypp.hpp"
 
@@ -133,6 +159,8 @@
 #include "FontManager.pypp.hpp"
 
 #include "FrameComponent.pypp.hpp"
+
+#include "FrameComponentIterator.pypp.hpp"
 
 #include "FrameWindow.pypp.hpp"
 
@@ -168,6 +196,10 @@
 
 #include "ImageryComponent.pypp.hpp"
 
+#include "ImageryComponentIterator.pypp.hpp"
+
+#include "ImageryIterator.pypp.hpp"
+
 #include "ImagerySection.pypp.hpp"
 
 #include "Interpolator.pypp.hpp"
@@ -185,6 +217,8 @@
 #include "KeyFrame.pypp.hpp"
 
 #include "LBItemList.pypp.hpp"
+
+#include "LayerIterator.pypp.hpp"
 
 #include "LayerSpecification.pypp.hpp"
 
@@ -229,6 +263,8 @@
 #include "MultiLineEditbox.pypp.hpp"
 
 #include "NamedArea.pypp.hpp"
+
+#include "NamedAreaIterator.pypp.hpp"
 
 #include "NamedElement.pypp.hpp"
 
@@ -334,6 +370,8 @@
 
 #include "ScrolledItemListBase.pypp.hpp"
 
+#include "SectionIterator.pypp.hpp"
+
 #include "SectionSpecification.pypp.hpp"
 
 #include "SequentialLayoutContainer.pypp.hpp"
@@ -372,6 +410,8 @@
 
 #include "StateImagery.pypp.hpp"
 
+#include "StateIterator.pypp.hpp"
+
 #include "StdPairCEGUIImageImageFactory.pypp.hpp"
 
 #include "StdPairCEGUIStringString.pypp.hpp"
@@ -391,6 +431,8 @@
 #include "TargetTypeStack.pypp.hpp"
 
 #include "TextComponent.pypp.hpp"
+
+#include "TextComponentIterator.pypp.hpp"
 
 #include "TextUtils.pypp.hpp"
 
@@ -441,6 +483,8 @@
 #include "WidgetDim.pypp.hpp"
 
 #include "WidgetLookFeel.pypp.hpp"
+
+#include "WidgetLookIterator.pypp.hpp"
 
 #include "WidgetLookManager.pypp.hpp"
 
@@ -660,9 +704,17 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ConstBaseIterator_47ddd968107e89ff0051bf3212fbb472_class();
 
+    register_ConstBaseIterator_9b6259ec5f5ed443accef2ab6f116fda_class();
+
+    register_ConstBaseIterator_a74f832b0a98ff325f0d295bba46f58b_class();
+
     register_ConstBaseIterator_3dfe55a685a628d9556dccd6ce85e923_class();
 
     register_ConstBaseIterator_6da79d61dc2d4c154ee9113f9d44d174_class();
+
+    register_ConstBaseIterator_f0585fb3775a7fa1f905d29be5dc1533_class();
+
+    register_ConstBaseIterator_6cea82a17f94b95b10c333412f843a6d_class();
 
     register_ConstBaseIterator_e31fba8abb652b91e7a416a794506e4f_class();
 
@@ -672,7 +724,21 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364_class();
 
+    register_ConstBaseIterator_2c9936f57a2ad030e0dfadb6e79a326f_class();
+
+    register_ConstBaseIterator_23c5f09e76c89ed46f1671ac87f5d133_class();
+
+    register_ConstBaseIterator_6318b664b630c5a4e45127a69c6748cb_class();
+
+    register_ConstBaseIterator_937e880515ad590c17d4b2b82a347310_class();
+
+    register_ConstBaseIterator_e6837f87c747b0388313d47a6a1e8556_class();
+
     register_ConstBaseIterator_78cd23dcc51d261e1f508a899854e1a9_class();
+
+    register_ConstBaseIterator_99d0247943ea008baba14993d63dd301_class();
+
+    register_ConstBaseIterator_92b3f0ef60bba0b7bc1aa08b6f3304d6_class();
 
     register_ConstBaseIterator_9dce73c5f5e3a55d1a66a6e740fbf48b_class();
 
@@ -682,9 +748,17 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_FontIterator_class();
 
+    register_ImageryIterator_class();
+
+    register_NamedAreaIterator_class();
+
     register_PropertyIterator_class();
 
     register_SchemeIterator_class();
+
+    register_StateIterator_class();
+
+    register_WidgetLookIterator_class();
 
     register_WindowFactoryIterator_class();
 
@@ -694,7 +768,21 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     register_ImageIterator_class();
 
+    register_LayerIterator_class();
+
+    register_AnimationNameIterator_class();
+
+    register_EventActionIterator_class();
+
+    register_FrameComponentIterator_class();
+
+    register_ImageryComponentIterator_class();
+
     register_LoadableUIElementIterator_class();
+
+    register_SectionIterator_class();
+
+    register_TextComponentIterator_class();
 
     register_WindowIterator_class();
 
