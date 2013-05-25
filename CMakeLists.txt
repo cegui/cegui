@@ -103,7 +103,7 @@ find_package(Lua51)
 find_package(TOLUAPP)
 find_package(PythonInterp)
 find_package(PythonLibs)
-find_package(Boost 1.36.0 COMPONENTS python unit_test_framework)
+find_package(Boost 1.36.0 COMPONENTS python unit_test_framework system)
 
 find_package(Doxygen)
 find_package(GTK2 COMPONENTS gtk)
@@ -181,7 +181,26 @@ endif()
 
 cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" "CEGUI_BUILD_RENDERER_OPENGL;GLFW_FOUND" )
 cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer" "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" )
-cegui_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" "CEGUI_BUILD_RENDERER_OGRE;OIS_FOUND" )
+
+# This vile construct is needed because of things that changed in boost and the
+# total fail that is Ogre forcing its boost dependency onto its clients.
+if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
+    if (NOT Boost_VERSION LESS 105000)
+        if (Boost_SYSTEM_FOUND)
+            set (CEGUI_OGRE_SAMPLES_EXTRALIBS ${Boost_SYSTEM_LIBRARY})
+            set (CEGUI_OGRE_SAMPLES_AVAILABLE TRUE)
+        else()
+            set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
+            set (CEGUI_OGRE_SAMPLES_AVAILABLE FALSE)
+            message(STATUS "Ogre will not be available in SampleFramework due to missing boost_system library")
+        endif()
+    else()
+        set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
+        set (CEGUI_OGRE_SAMPLES_AVAILABLE TRUE)
+    endif()
+endif()
+
+cegui_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" "CEGUI_OGRE_SAMPLES_AVAILABLE" )
 
 option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" ${CEGUI_BUILD_RENDERER_IRRLICHT} )
 option( CEGUI_SAMPLES_USE_DIRECTFB "Specifies whether the sample applications will use the DirectFB renderer" ${CEGUI_BUILD_RENDERER_DIRECTFB} )

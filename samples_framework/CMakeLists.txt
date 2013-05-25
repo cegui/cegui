@@ -209,7 +209,7 @@ endif()
 if (CEGUI_SAMPLES_USE_OGRE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OIS)
-    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME})
+    cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS})
 endif()
 
 if (CEGUI_SAMPLES_USE_IRRLICHT)
