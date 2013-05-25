@@ -246,6 +246,8 @@
 
 #include "Property.pypp.hpp"
 
+#include "PropertyDefinitionBase.pypp.hpp"
+
 #include "PropertyDim.pypp.hpp"
 
 #include "PropertyHelper.pypp.hpp"
@@ -853,6 +855,8 @@ BOOST_PYTHON_MODULE(PyCEGUI){
     register_ProgressBar_class();
 
     register_Property_class();
+
+    register_PropertyDefinitionBase_class();
 
     register_PropertyDim_class();
 

@@ -579,6 +579,11 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     string = CEGUI_ns.class_("String")
     #string.include()
 
+    # String.h
+    stringTranscoder = CEGUI_ns.class_("StringTranscoder")
+    # not useful from Python and very hard to wrap
+    #stringTranscoder.include()
+
     # SubscriberSlot.h
     # todo: probably not needed with current setup, should we exclude this?
     subscriberSlot = CEGUI_ns.class_("SubscriberSlot")
@@ -1133,9 +1138,8 @@ void Iterator_previous(::CEGUI::%s& t)
     #propertyDefinition.include()
 
     # falagard/FalPropertyDefinitionBase.h
-    # FIXME: This is now a template and CE did not know what to do!
-    #propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
-    #propertyDefinitionBase.include()
+    propertyDefinitionBase = CEGUI_ns.class_("PropertyDefinitionBase")
+    propertyDefinitionBase.include()
 
     # falagard/FalPropertyInitialiser.h
     propertyInitialiser = CEGUI_ns.class_("PropertyInitialiser")
