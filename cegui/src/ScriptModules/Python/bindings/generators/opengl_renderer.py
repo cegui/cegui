@@ -19,6 +19,7 @@
 import os
 
 from pyplusplus import function_transformers as ft
+from pyplusplus import messages
 from pyplusplus.module_builder import call_policies
 from pygccxml import declarations
 
@@ -47,7 +48,14 @@ def filterDeclarations(mb):
     # RendererModules/OpenGL/GLRenderer.h
     renderer = CEGUI_ns.class_("OpenGLRenderer")
     renderer.include()
+    renderer.mem_fun("setViewProjectionMatrix").exclude() # CEGUI::mat4Pimpl
     renderer.noncopyable = True
+
+    # RendererModules/OpenGL/GeometryBufferBase.h
+    geometryBufferBase = CEGUI_ns.class_("OpenGLGeometryBufferBase")
+    geometryBufferBase.include()
+    geometryBufferBase.mem_fun("getMatrix").exclude() # CEGUI::mat4Pimpl
+    geometryBufferBase.noncopyable = True
 
     # RendererModules/OpenGL/OpenGLTextureTarget.h
     textureTarget = CEGUI_ns.class_("OpenGLTextureTarget")
@@ -59,7 +67,28 @@ def filterDeclarations(mb):
     viewportTarget.include()
     viewportTarget.noncopyable = True
 
+    # RendererModules/OpenGL/GL3Renderer.h
+    renderer3 = CEGUI_ns.class_("OpenGL3Renderer")
+    renderer3.include()
+    renderer3.noncopyable = True
+
+    # RendererModules/OpenGL/Shader.h
+    shader3 = CEGUI_ns.class_("OpenGL3Shader")
+    shader3.include()
+    shader3.noncopyable = True
+
+    # RendererModules/OpenGL/StateChangeWrapper.h
+    stateChangeWrapper3 = CEGUI_ns.class_("OpenGL3StateChangeWrapper")
+    stateChangeWrapper3.include()
+    stateChangeWrapper3.noncopyable = True
+
 def generate():
+    ### disable unnecessary warnings
+    # py++ will create a wrapper
+    messages.disable(messages.W1023, messages.W1025, messages.W1026, messages.W1027, messages.W1031)
+    # can't be overridden in python
+    messages.disable(messages.W1049)
+
     # "CEGUIBASE_EXPORTS" seems to help with internal compiler error with VS2008SP1 and gccxml 0.9
     mb = common_utils.createModuleBuilder("python_CEGUIOpenGLRenderer.h", ["OPENGL_GUIRENDERER_EXPORTS", "CEGUIBASE_EXPORTS"])
     CEGUI_ns = mb.global_ns.namespace("CEGUI")

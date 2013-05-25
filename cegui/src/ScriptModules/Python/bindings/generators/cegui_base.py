@@ -1227,7 +1227,7 @@ def generate():
     # operator not supported
     messages.disable(messages.W1014)
     # py++ will create a wrapper
-    messages.disable(messages.W1023, messages.W1025, messages.W1026, messages.W1031)
+    messages.disable(messages.W1023, messages.W1025, messages.W1026, messages.W1027, messages.W1031)
     # static pointer member can't be exported
     messages.disable(messages.W1035)
     # immutable pointer can't be exposed
