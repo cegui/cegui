@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python2
 
 #/***********************************************************************
 #    filename:   generate.py
@@ -8,7 +8,7 @@
 #    purpose:    Generates all CEGUI related python bindings
 #*************************************************************************/
 #/***************************************************************************
-# *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+# *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
 # *
 # *   Thanks to Roman Yakovenko for advices and great work on Py++!
 # *   Thanks to Andy Miller for his python-ogre CEGUI bindings!
@@ -16,33 +16,18 @@
 # *   License: generator is GPL3 (python ogre code generators are also GPL)
 # *            generated code is MIT as the rest of CEGUI
 
-import generateCEGUI
+import generators.cegui_base
 
-import generateCEGUIOpenGLRenderer
-import generateCEGUIOgreRenderer
-import generateCEGUINullRenderer 
- 
-import commonUtils
+import generators.opengl_renderer
+import generators.ogre_renderer
+import generators.null_renderer
 
-import sys, time
+from generators.common_utils import verbose_generate
+import os
 
 if __name__ == "__main__":
-    print "Generating CEGUI bindings..."
-    start_time = time.clock()
-    generateCEGUI.generateCode()
-    print "Finished CEGUI bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))
-    
-    print "Generating CEGUI OpenGLRenderer bindings..."
-    start_time = time.clock()
-    generateCEGUIOpenGLRenderer.generateCode()
-    print "Finished CEGUI OpenGLRenderer bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))
+    verbose_generate("CEGUIBase", generators.cegui_base.generate)
 
-    print "Generating CEGUI OgreRenderer bindings..."
-    start_time = time.clock()
-    generateCEGUIOgreRenderer.generateCode()
-    print "Finished CEGUI OgreRenderer bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))
-
-    print "Generating CEGUI NullRenderer bindings..."
-    start_time = time.clock()
-    generateCEGUINullRenderer.generateCode()
-    print "Finished CEGUI NullRenderer bindings... (took %f seconds)\n\n" % ((time.clock() - start_time))
+    verbose_generate("CEGUINullRenderer", generators.null_renderer.generate)
+    verbose_generate("CEGUIOgreRenderer", generators.ogre_renderer.generate)
+    verbose_generate("CEGUIOpenGLRenderer", generators.opengl_renderer.generate)

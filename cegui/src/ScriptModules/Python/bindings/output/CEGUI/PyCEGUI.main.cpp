@@ -10,7 +10,7 @@
 
 #include "indexing_suite/set.hpp"
 
-#include "python_CEGUI.h"
+#include "generators/include/python_CEGUI.h"
 
 #include "AbsoluteDim.pypp.hpp"
 
@@ -1028,9 +1028,9 @@ BOOST_PYTHON_MODULE(PyCEGUI){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("__doc__") = "PyCEGUI - version 0.8.9090";
+    boost::python::scope().attr("__doc__") = "PyCEGUI - version 0.8.0";
 
-    boost::python::scope().attr("Version__") = "0.8.9090";
+    boost::python::scope().attr("Version__") = "0.8.0";
 
     register_StdPairFloatFloat_class();
 }

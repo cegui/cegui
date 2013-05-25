@@ -2,7 +2,7 @@
 
 #include "boost/python.hpp"
 
-#include "python_CEGUIOgreRenderer.h"
+#include "generators/include/python_CEGUIOgreRenderer.h"
 
 #include "OgreImageCodec.pypp.hpp"
 
@@ -21,9 +21,9 @@ BOOST_PYTHON_MODULE(PyCEGUIOgreRenderer){
 
     boost::python::scope().attr("CompileTime__") = __TIME__;
 
-    boost::python::scope().attr("__doc__") = "PyCEGUIOgreRenderer - version 0.8.9090";
+    boost::python::scope().attr("__doc__") = "PyCEGUIOgreRenderer - version 0.8.0";
 
-    boost::python::scope().attr("Version__") = "0.8.9090";
+    boost::python::scope().attr("Version__") = "0.8.0";
 
     register_OgreResourceProvider_class();
 }

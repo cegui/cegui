@@ -3,7 +3,7 @@
 #include "boost/python.hpp"
 #include "indexing_suite/container_suite.hpp"
 #include "indexing_suite/set.hpp"
-#include "python_CEGUI.h"
+#include "generators/include/python_CEGUI.h"
 #include "BannedXMLPropertySet.pypp.hpp"
 
 namespace bp = boost::python;
