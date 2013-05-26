@@ -39,6 +39,9 @@
 #endif
 
 
+namespace CEGUI
+{
+
 enum ColourPickerSliderMode
 {
     ColourPickerSliderMode_L,
@@ -46,28 +49,12 @@ enum ColourPickerSliderMode
     ColourPickerSliderMode_B
 };
 
-class Position
-{
-public:
-    Position(float xPosition, float yPosition) :
-        x(xPosition), y(yPosition)
-    {}
-
-    Position()
-    {}
-
-    float x;
-    float y;
-};
-
-namespace CEGUI
-{
-
 class CEGUI_COMMONDIALOGS_API Lab_Colour;
 class CEGUI_COMMONDIALOGS_API RGB_Colour;
 class CEGUI_COMMONDIALOGS_API HSV_Colour;
 
-class CEGUI_COMMONDIALOGS_API RGB_Colour
+class CEGUI_COMMONDIALOGS_API RGB_Colour :
+    public AllocatedObject<RGB_Colour>
 {
 public:
     RGB_Colour(unsigned char red, unsigned char green, unsigned char blue) :
@@ -87,7 +74,8 @@ public:
     RGB_Colour operator+(const RGB_Colour& colour) const;
 };
 
-class CEGUI_COMMONDIALOGS_API Lab_Colour
+class CEGUI_COMMONDIALOGS_API Lab_Colour :
+    public AllocatedObject<Lab_Colour>
 {
 public:
     Lab_Colour(float LValue, float aValue, float bValue) :
@@ -105,7 +93,8 @@ public:
     float b;
 };
 
-class CEGUI_COMMONDIALOGS_API HSV_Colour
+class CEGUI_COMMONDIALOGS_API HSV_Colour :
+    public AllocatedObject<HSV_Colour>
 {
 public:
     HSV_Colour(float HValue, float SValue, float VValue) :
