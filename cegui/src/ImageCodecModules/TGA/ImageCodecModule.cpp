@@ -28,17 +28,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/ImageCodecModules/TGA/ImageCodecModule.h" 
+#include "CEGUI/ImageCodecModules/TGA/ImageCodecModule.h"
 
 
 CEGUI::ImageCodec* createImageCodec(void)
 {
-  return new CEGUI::TGAImageCodec();
+    return CEGUI_NEW_AO CEGUI::TGAImageCodec();
 }
-
 
 void destroyImageCodec(CEGUI::ImageCodec* imageCodec)
 {
-  delete imageCodec;
-  
+    CEGUI_DELETE_AO imageCodec;
 }

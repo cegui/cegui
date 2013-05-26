@@ -150,8 +150,8 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
 
     const size_t byte_size = calculateDataSize(buffer_size, pixel_format);
 
-    DataStreamPtr odc(new MemoryDataStream(const_cast<void*>(buffer),
-                                           byte_size, false));
+    DataStreamPtr odc(OGRE_NEW MemoryDataStream(const_cast<void*>(buffer),
+                byte_size, false));
 
     // try to create a Ogre::Texture from the input data
     d_texture = TextureManager::getSingleton().loadRawData(

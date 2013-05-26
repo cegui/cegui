@@ -827,19 +827,19 @@ void System::setupImageCodec(const String& codecName)
     // Cleanup the old image codec
     cleanupImageCodec();
 
-    #if defined(CEGUI_STATIC)
+#    if defined(CEGUI_STATIC)
         // for static build use static createImageCodec to create codec object
         d_imageCodec = createImageCodec();
-    #else
+#    else
         // load the appropriate image codec module
         d_imageCodecModule = codecName.empty() ?
-            new DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
-            new DynamicModule(String("CEGUI") + codecName);
+            CEGUI_NEW_AO DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
+            CEGUI_NEW_AO DynamicModule(String("CEGUI") + codecName);
 
         // use function from module to create the codec object.
         d_imageCodec = ((ImageCodec*(*)(void))d_imageCodecModule->
             getSymbolAddress("createImageCodec"))();
-    #endif
+#    endif
 
     // make sure we mark this as our own object so we can clean it up later.
     d_ourImageCodec = true;
