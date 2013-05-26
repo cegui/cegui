@@ -691,7 +691,8 @@ private:
     dimensional value, but also a record of what the dimension value is supposed
     to represent. (e.g. a co-ordinate on the x axis, or the height of something).
 */
-class CEGUIEXPORT Dimension
+class CEGUIEXPORT Dimension :
+    public AllocatedObject<Dimension>
 {
 public:
     Dimension();
@@ -777,7 +778,8 @@ private:
     represent width and height depending upon what the assigned Dimension(s)
     represent.
 */
-class CEGUIEXPORT ComponentArea
+class CEGUIEXPORT ComponentArea :
+    public AllocatedObject<ComponentArea>
 {
 public:
     ComponentArea();

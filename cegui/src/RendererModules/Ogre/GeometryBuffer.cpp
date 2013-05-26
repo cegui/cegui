@@ -72,7 +72,7 @@ static void initialiseRenderOp(Ogre::RenderOperation& rop,
     using namespace Ogre;
 
     // basic initialisation of render op
-    rop.vertexData = new VertexData;
+    rop.vertexData = OGRE_NEW VertexData();
     rop.operationType = RenderOperation::OT_TRIANGLE_LIST;
     rop.useIndexes = false;
 
@@ -100,7 +100,7 @@ static void initialiseRenderOp(Ogre::RenderOperation& rop,
 static void cleanupRenderOp(Ogre::RenderOperation& rop,
                             Ogre::HardwareVertexBufferSharedPtr& vb)
 {
-    delete rop.vertexData;
+    OGRE_DELETE rop.vertexData;
     rop.vertexData = 0;
     vb.setNull();
 }

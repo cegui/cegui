@@ -19,6 +19,7 @@
 import os
 
 from pyplusplus import function_transformers as ft
+from pyplusplus import messages
 from pyplusplus.module_builder import call_policies
 from pygccxml import declarations
 
@@ -43,6 +44,12 @@ def filterDeclarations(mb):
     renderer.noncopyable = True
 
 def generate():
+    ### disable unnecessary warnings
+    # py++ will create a wrapper
+    messages.disable(messages.W1023, messages.W1025, messages.W1026, messages.W1027, messages.W1031)
+    # can't be overridden in python
+    messages.disable(messages.W1049)
+
     # "CEGUIBASE_EXPORTS" seems to help with internal compiler error with VS2008SP1 and gccxml 0.9
     mb = common_utils.createModuleBuilder("python_CEGUINullRenderer.h", ["NULL_GUIRENDERER_EXPORTS", "CEGUIBASE_EXPORTS"])
     CEGUI_ns = mb.global_ns.namespace("CEGUI")

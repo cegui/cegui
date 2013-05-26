@@ -55,7 +55,8 @@ namespace CEGUI
     While no alternative currently exists, a superior, replacement tree widget
     will be provided prior to the final removal of the current implementation.
  */
-class CEGUIEXPORT TreeItem
+class CEGUIEXPORT TreeItem : public
+    AllocatedObject<TreeItem>
 {
 public:
     typedef std::vector<TreeItem*

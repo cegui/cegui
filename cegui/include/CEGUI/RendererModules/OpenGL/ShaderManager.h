@@ -29,9 +29,11 @@
 #ifndef _CEGUIOpenGL3ShaderManager_h_
 #define _CEGUIOpenGL3ShaderManager_h_
 
+#include "CEGUI/Base.h"
+#include "CEGUI/RendererModules/OpenGL/GL.h"
+
 #include <map>
 #include <string>
-#include "CEGUI/RendererModules/OpenGL/GL.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)
@@ -50,7 +52,8 @@ namespace CEGUI
         SHADER_ID_COUNT
     };
 
-    class OpenGL3ShaderManager
+    class OpenGL3ShaderManager :
+        public AllocatedObject<OpenGL3ShaderManager>
     {
     public:
         OpenGL3ShaderManager();

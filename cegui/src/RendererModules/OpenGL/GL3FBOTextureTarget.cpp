@@ -247,7 +247,7 @@ void OpenGL3FBOTextureTarget::checkFramebufferStatus()
         }
 
         if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
-            logger->logEvent(stringStream.str());
+            logger->logEvent(stringStream.str().c_str());
         else
             std::cerr << stringStream.str() << std::endl;
     }

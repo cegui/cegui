@@ -137,7 +137,7 @@ void register_WidgetLookManager_class(){
         }
         { //::CEGUI::WidgetLookManager::getWidgetLookIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::WidgetLookFeel> > > > ( ::CEGUI::WidgetLookManager::*getWidgetLookIterator_function_type )(  ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WidgetLookFeel, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WidgetLookFeel> > > > ( ::CEGUI::WidgetLookManager::*getWidgetLookIterator_function_type )(  ) const;
             
             WidgetLookManager_exposer.def( 
                 "getWidgetLookIterator"

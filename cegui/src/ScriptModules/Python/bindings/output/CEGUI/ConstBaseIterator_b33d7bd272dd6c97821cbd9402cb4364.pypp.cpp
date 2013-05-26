@@ -34,7 +34,7 @@ void register_ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364_class(){
         { //::CEGUI::ConstBaseIterator< std::map<CEGUI::String, std::pair<CEGUI::Image*, CEGUI::ImageFactory*>, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, std::pair<CEGUI::Image*, CEGUI::ImageFactory*> > > >, std::pair< CEGUI::Image*, CEGUI::ImageFactory* > >::getCurrentValue
         
             typedef CEGUI::ConstBaseIterator< std::map<CEGUI::String, std::pair<CEGUI::Image*, CEGUI::ImageFactory*>, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, std::pair<CEGUI::Image*, CEGUI::ImageFactory*> > > >, std::pair< CEGUI::Image*, CEGUI::ImageFactory* > > exported_class_t;
-            typedef ::std::pair<CEGUI::Image*,CEGUI::ImageFactory*> ( exported_class_t::*getCurrentValue_function_type )(  ) const;
+            typedef ::std::pair<CEGUI::Image*, CEGUI::ImageFactory*> ( exported_class_t::*getCurrentValue_function_type )(  ) const;
             
             ConstBaseIterator_b33d7bd272dd6c97821cbd9402cb4364_exposer.def( 
                 "getCurrentValue"
