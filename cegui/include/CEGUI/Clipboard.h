@@ -45,16 +45,17 @@ namespace CEGUI
 \brief
     Lightweight interface providing access to the system-wide native clipboard
 */
-class CEGUIEXPORT NativeClipboardProvider
+class CEGUIEXPORT NativeClipboardProvider :
+    public AllocatedObject<NativeClipboardProvider>
 {
 public:
     virtual ~NativeClipboardProvider();
-    
+
     /*!
     \brief sends given data to native clipboard
     */
     virtual void sendToClipboard(const String& mimeType, void* buffer, size_t size) = 0;
-    
+
     /*!
     \brief retrieves given data from native clipboard
     */
@@ -79,19 +80,20 @@ public:
     in the future, however for X11 this is really hard and would introduce
     dependency -lX11 to CEGUIBase which is something we would really hate.
 */
-class CEGUIEXPORT Clipboard
+class CEGUIEXPORT Clipboard :
+    public AllocatedObject<NativeClipboardProvider>
 {
 public:
     /*!
     \brief constructor
     */
     Clipboard();
-    
+
     /*!
     \brief destructor
     */
     ~Clipboard();
-    
+
     /*!
     \brief sets native clipboard provider
     
@@ -100,13 +102,13 @@ public:
     You are required to deallocate given provider, this class doesn't take ownership!)
     */
     void setNativeProvider(NativeClipboardProvider* provider);
-    
+
     /*!
     \brief retrieves currently set native clipboard provider
     \see NativeClipboardProvider
     */
     NativeClipboardProvider* getNativeProvider() const;
-    
+
     /*!
     \brief sets contents of this clipboard to given raw data
     
@@ -115,7 +117,7 @@ public:
     \param size size (in bytes) of given data
     */
     void setData(const String& mimeType, const void* buffer, size_t size);
-    
+
     /*!
     \brief retrieves contents of this clipboard as raw data
     
@@ -126,17 +128,17 @@ public:
     You shan't change the buffer contents, only read from it!
     */
     void getData(String& mimeType, const void*& buffer, size_t& size);
-    
+
     /*!
     \brief convenience method that sets contents to given string
     */
     void setText(const String& text);
-    
+
     /*!
     \brief convenience method that retrieves contents as a string
     */
     String getText();
-    
+
 private:
     /// mime type of the current content
     String d_mimeType;
@@ -146,7 +148,7 @@ private:
     BufferElement* d_buffer;
     /// size (in bytes) of the raw buffer
     size_t d_bufferSize;
-    
+
     /// native clipboard provider if any
     NativeClipboardProvider* d_nativeProvider;
 };

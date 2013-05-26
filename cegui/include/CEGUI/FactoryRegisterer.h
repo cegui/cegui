@@ -39,7 +39,8 @@ namespace CEGUI
     Base class encapsulating a type name and common parts of factory
     registration.
 */
-class CEGUIEXPORT FactoryRegisterer
+class CEGUIEXPORT FactoryRegisterer :
+    public AllocatedObject<FactoryRegisterer>
 {
 public:
     //! Destructor.
