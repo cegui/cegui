@@ -46,7 +46,8 @@ namespace CEGUI
     Implementation structure used in tracking up & down mouse button inputs in
     order to generate click, double-click, and triple-click events.
 */
-struct MouseClickTracker
+struct MouseClickTracker :
+    public AllocatedObject<MouseClickTracker>
 {
     MouseClickTracker() :
         d_click_count(0),

@@ -408,7 +408,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getImageryIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::ImagerySection> > > > ( ::CEGUI::WidgetLookFeel::*getImageryIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::ImagerySection, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::ImagerySection> > > > ( ::CEGUI::WidgetLookFeel::*getImageryIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getImageryIterator"
@@ -485,7 +485,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getNamedAreaIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::NamedArea, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::NamedArea> > > > ( ::CEGUI::WidgetLookFeel::*getNamedAreaIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::NamedArea, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::NamedArea> > > > ( ::CEGUI::WidgetLookFeel::*getNamedAreaIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getNamedAreaIterator"
@@ -628,7 +628,7 @@ void register_WidgetLookFeel_class(){
         }
         { //::CEGUI::WidgetLookFeel::getStateIterator
         
-            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare, std::allocator<std::pair<const CEGUI::String, CEGUI::StateImagery> > > > ( ::CEGUI::WidgetLookFeel::*getStateIterator_function_type )( bool ) const;
+            typedef ::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::StateImagery, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::StateImagery> > > > ( ::CEGUI::WidgetLookFeel::*getStateIterator_function_type )( bool ) const;
             
             WidgetLookFeel_exposer.def( 
                 "getStateIterator"

@@ -376,14 +376,8 @@ const String& System::getVerboseVersion()
 
 #elif defined(_MSC_VER)
         ret += " MSVC++ ";
-#if _MSC_VER <= 1200
-        ret += "Dinosaur Edition!";
-#elif _MSC_VER == 1300
-        ret += "7.0";
-#elif _MSC_VER == 1310
-        ret += "7.1";
-#elif _MSC_VER == 1400
-        ret += "8.0";
+#if _MSC_VER < 1500
+        ret += "(Note: Compiler version is old and not officially supported)";
 #elif _MSC_VER == 1500
         ret += "9.0";
 #elif _MSC_VER == 1600
@@ -827,19 +821,19 @@ void System::setupImageCodec(const String& codecName)
     // Cleanup the old image codec
     cleanupImageCodec();
 
-    #if defined(CEGUI_STATIC)
+#    if defined(CEGUI_STATIC)
         // for static build use static createImageCodec to create codec object
         d_imageCodec = createImageCodec();
-    #else
+#    else
         // load the appropriate image codec module
         d_imageCodecModule = codecName.empty() ?
-            new DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
-            new DynamicModule(String("CEGUI") + codecName);
+            CEGUI_NEW_AO DynamicModule(String("CEGUI") + d_defaultImageCodecName) :
+            CEGUI_NEW_AO DynamicModule(String("CEGUI") + codecName);
 
         // use function from module to create the codec object.
         d_imageCodec = ((ImageCodec*(*)(void))d_imageCodecModule->
             getSymbolAddress("createImageCodec"))();
-    #endif
+#    endif
 
     // make sure we mark this as our own object so we can clean it up later.
     d_ourImageCodec = true;

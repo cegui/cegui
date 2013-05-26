@@ -54,7 +54,7 @@ OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
     d_vertexShader = compile(GL_VERTEX_SHADER, vertex_shader_source);
     if (d_vertexShader == 0)
         return;
-    
+
     checkGLErrors();
 
     if(fragment_shader_source.length() > 0)
@@ -67,7 +67,7 @@ OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
 
     checkGLErrors();
 
-    d_program = glCreateProgram(); 
+    d_program = glCreateProgram();
 }
 
 //----------------------------------------------------------------------------//
@@ -134,7 +134,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
     {
         std::stringstream stringStream;
         stringStream << "Critical Error - Could not create shader object of type:" << type << ".";
-        CEGUI_THROW(RendererException(stringStream.str()));
+        CEGUI_THROW(RendererException(stringStream.str().c_str()));
         return 0;
     }
 
@@ -161,7 +161,7 @@ GLuint OpenGL3Shader::compile(GLuint type, const std::string &source)
 
     checkGLErrors();
 
-    return shader;    
+    return shader;
 }
 
 //----------------------------------------------------------------------------//
@@ -225,7 +225,7 @@ void OpenGL3Shader::outputProgramLog(GLuint program)
     {
         std::stringstream sstream;
         sstream << "OpenGL3Shader linking has failed.\n" << logBuffer;
-        CEGUI_THROW(RendererException(sstream.str()));
+        CEGUI_THROW(RendererException(sstream.str().c_str()));
     }
 };
 
@@ -242,7 +242,7 @@ void OpenGL3Shader::outputShaderLog(GLuint shader)
     {
         std::stringstream ss;
         ss << "OpenGL3Shader compilation has failed.\n" << logBuffer;
-          CEGUI_THROW(RendererException(ss.str()));
+          CEGUI_THROW(RendererException(ss.str().c_str()));
     }
 };
 
@@ -278,7 +278,7 @@ void getGLErrors(const char *location)
         }
 
         if (CEGUI::Logger* logger = CEGUI::Logger::getSingletonPtr())
-            logger->logEvent(stringStream.str());
+            logger->logEvent(stringStream.str().c_str());
         else
             std::cerr << stringStream.str() << std::endl;
     }

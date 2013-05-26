@@ -236,7 +236,8 @@ protected:
 \brief
 	Functor class used for binding named script functions to events
 */
-class CEGUIEXPORT ScriptFunctor
+class CEGUIEXPORT ScriptFunctor :
+    public AllocatedObject<ScriptFunctor>
 {
 public:
 	ScriptFunctor(const String& functionName) : scriptFunctionName(functionName) {}

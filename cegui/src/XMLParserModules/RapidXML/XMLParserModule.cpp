@@ -31,13 +31,13 @@
 //----------------------------------------------------------------------------//
 CEGUI::XMLParser* createParser(void)
 {
-    return new CEGUI::RapidXMLParser();
+    return CEGUI_NEW_AO CEGUI::RapidXMLParser();
 }
 
 //----------------------------------------------------------------------------//
 void destroyParser(CEGUI::XMLParser* parser)
 {
-    delete parser;
+    CEGUI_DETELE_AO parser;
 }
 
 //----------------------------------------------------------------------------//

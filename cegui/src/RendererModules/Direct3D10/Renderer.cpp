@@ -57,7 +57,7 @@ Direct3D10Renderer& Direct3D10Renderer::bootstrapSystem(ID3D10Device* device,
             "CEGUI::System object is already initialised."));
 
     Direct3D10Renderer& renderer(create(device));
-    DefaultResourceProvider* rp = new CEGUI::DefaultResourceProvider();
+    DefaultResourceProvider* rp = CEGUI_NEW CEGUI::DefaultResourceProvider();
     System::create(renderer, rp);
 
     return renderer;

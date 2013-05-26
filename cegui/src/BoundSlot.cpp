@@ -33,7 +33,7 @@ namespace CEGUI
 {
 BoundSlot::BoundSlot(Group group, const SubscriberSlot& subscriber, Event& event) :
     d_group(group),
-    d_subscriber(new SubscriberSlot(subscriber)),
+    d_subscriber(CEGUI_NEW_AO SubscriberSlot(subscriber)),
     d_event(&event)
 {}
 
@@ -42,14 +42,13 @@ BoundSlot::BoundSlot(const BoundSlot& other) :
     d_group(other.d_group),
     d_subscriber(other.d_subscriber),
     d_event(other.d_event)
-{
-}
+{}
 
 
 BoundSlot::~BoundSlot()
 {
     disconnect();
-    delete d_subscriber;
+    CEGUI_DELETE_AO d_subscriber;
 }
 
 

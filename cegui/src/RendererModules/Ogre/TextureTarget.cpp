@@ -117,7 +117,7 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
 
     // delete viewport and reset ptr so a new one is generated.  This is
     // required because we have changed d_renderTarget so need a new VP also.
-    delete d_viewport;
+    OGRE_DELETE d_viewport;
     d_viewport = 0;
 
     // because Texture takes ownership, the act of setting the new ogre texture

@@ -58,7 +58,7 @@ Texture* OgreImageCodec::load(const RawDataContainer& data, Texture* result)
 
     // wrap the buffer of the RawDataContainer with an Ogre::MemoryDataStream.
     DataStreamPtr stream(
-        new MemoryDataStream(
+        OGRE_NEW MemoryDataStream(
             const_cast<void*>(static_cast<const void*>(data.getDataPtr())),
             data.getSize(), false));
 
