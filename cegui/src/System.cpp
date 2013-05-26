@@ -376,14 +376,8 @@ const String& System::getVerboseVersion()
 
 #elif defined(_MSC_VER)
         ret += " MSVC++ ";
-#if _MSC_VER <= 1200
-        ret += "Dinosaur Edition!";
-#elif _MSC_VER == 1300
-        ret += "7.0";
-#elif _MSC_VER == 1310
-        ret += "7.1";
-#elif _MSC_VER == 1400
-        ret += "8.0";
+#if _MSC_VER < 1500
+        ret += "(Note: Compiler version is old and not officially supported)";
 #elif _MSC_VER == 1500
         ret += "9.0";
 #elif _MSC_VER == 1600
