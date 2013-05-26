@@ -45,7 +45,8 @@ namespace CEGUI
     \brief
     OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
     */
-    class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper
+    class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper :
+        public AllocatedObject<OpenGL3StateChangeWrapper>
     {
     protected:
         struct BlendFuncParams

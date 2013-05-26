@@ -48,7 +48,8 @@ namespace CEGUI
     \todo
         This is not finished in the slightest!  There will be many changes here...
     */
-    class CEGUIEXPORT WidgetComponent
+    class CEGUIEXPORT WidgetComponent :
+        public AllocatedObject<WidgetComponent>
     {
     public:
         WidgetComponent() {}

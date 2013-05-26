@@ -43,7 +43,8 @@ namespace CEGUI
 {
 class Window;
 
-class CEGUIEXPORT EventAction
+class CEGUIEXPORT EventAction :
+    public AllocatedObject<EventAction>
 {
 public:
     EventAction(const String& event_name, ChildEventAction action);

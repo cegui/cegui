@@ -41,7 +41,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIEXPORT EventLinkDefinition
+class CEGUIEXPORT EventLinkDefinition :
+    public AllocatedObject<EventLinkDefinition>
 {
 public:
     EventLinkDefinition(const String& event_name);
