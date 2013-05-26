@@ -285,7 +285,8 @@ protected:
     TextureTarget based on what the host system can provide - or use the
     default 'null' factory if no suitable TextureTargets are available.
 */
-class OGLTextureTargetFactory
+class OGLTextureTargetFactory :
+    public AllocatedObject<OGLTextureTargetFactory>
 {
 public:
     OGLTextureTargetFactory() {}

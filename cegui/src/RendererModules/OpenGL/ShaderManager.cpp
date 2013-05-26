@@ -63,7 +63,7 @@ namespace CEGUI
     {
         if(d_shaders.find(id) == d_shaders.end())
         {
-            d_shaders[id] = new OpenGL3Shader(vertexShader, fragmentShader);
+            d_shaders[id] = CEGUI_NEW_AO OpenGL3Shader(vertexShader, fragmentShader);
             d_shaders[id]->link();
         }
     }
@@ -95,7 +95,7 @@ namespace CEGUI
     {
         for(shaderContainerType::iterator iter = d_shaders.begin(); iter != d_shaders.end(); ++iter)
         {
-            delete iter->second;
+            CEGUI_DELETE_AO iter->second;
         }
         d_shaders.clear();
     }
