@@ -30,6 +30,8 @@
 
 #include <iostream>
 
+using namespace CEGUI;
+
 /** This sample uses most of the code from the 'HelloWorld' sample. 
     Thus, most of the clarifying comments have been removed for brevity. **/
 
@@ -38,9 +40,7 @@
 *************************************************************************/
 bool FormNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
 {
-    using namespace CEGUI;
-
-     d_usedFiles = CEGUI::String(__FILE__);
+    d_usedFiles = CEGUI::String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
@@ -63,6 +63,8 @@ bool FormNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
 
     wnd->setText("Phony form");
 
+    createForm(wnd);
+
     return true;
 }
 
@@ -71,6 +73,57 @@ bool FormNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
 *************************************************************************/
 void FormNavigationDemo::deinitialise()
 {
+}
+
+void FormNavigationDemo::createForm(FrameWindow* wnd)
+{
+    wnd->addChild(createWidget("TaharezLook/Label", 0.0f, 0.0f, "Char name:"));
+    wnd->addChild(createWidget("TaharezLook/Label", 0.0f, 0.1f, "Guild name:"));
+    wnd->addChild(createWidget("TaharezLook/Label", 0.0f, 0.2f, "Initial gold:"));
+
+    Window* editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.0f);
+    wnd->addChild(editbox);
+    d_editboxes.push_back(editbox);
+
+    editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.1f);
+    wnd->addChild(editbox);
+    d_editboxes.push_back(editbox);
+
+    editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.2f);
+    wnd->addChild(editbox);
+    d_editboxes.push_back(editbox);
+
+    d_isGameMasterCheckbox = static_cast<ToggleButton*>(createWidget("TaharezLook/Checkbox", 0.01f, 0.3f, "Is Game Master"));
+    d_isGameMasterCheckbox->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.1f)));
+    wnd->addChild(d_isGameMasterCheckbox);
+
+    wnd->addChild(createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm"));
+
+    Window* resetButton = createWidget("TaharezLook/Button", 0.3f, 0.4f, "Reset");
+    resetButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&FormNavigationDemo::resetForm, this));
+    wnd->addChild(resetButton);
+}
+
+CEGUI::Window* FormNavigationDemo::createWidget(const String& type, float positionX, float positionY, const String& text)
+{
+    Window* widget = WindowManager::getSingleton().createWindow(type);
+
+    widget->setText(text);
+    widget->setPosition(UVector2(cegui_reldim(positionX), cegui_reldim(positionY)));
+
+    return widget;
+}
+
+bool FormNavigationDemo::resetForm(const CEGUI::EventArgs& e)
+{
+    for(std::vector<Window*>::const_iterator itor = d_editboxes.begin(); itor != d_editboxes.end(); ++itor)
+    {
+        (*itor)->setText("");
+    }
+
+    d_isGameMasterCheckbox->setSelected(false);
+
+    return true;
 }
 
 /*************************************************************************

@@ -29,12 +29,7 @@
 #define _Sample_Form_Navigation_h_
 
 #include "SampleBase.h"
-
-namespace CEGUI
-{
-    class Window;
-    class DefaultWindow;
-}
+#include <vector>
 
 class FormNavigationDemo : public Sample
 {
@@ -43,7 +38,13 @@ public:
     virtual void deinitialise();
 
 private:
+    void createForm(CEGUI::FrameWindow* wnd);
+    CEGUI::Window* createWidget(const CEGUI::String& type, float positionX, float positionY, const CEGUI::String& text = "");
+    bool resetForm(const CEGUI::EventArgs& e);
+
     CEGUI::DefaultWindow*      d_root;
+    CEGUI::ToggleButton* d_isGameMasterCheckbox;
+    std::vector<CEGUI::Window*> d_editboxes;
 };
 
 #endif  // end of guard _Sample_Form_Navigation_h_
