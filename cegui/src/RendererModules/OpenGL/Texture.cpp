@@ -451,7 +451,11 @@ void OpenGLTexture::generateOpenGLTexture()
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, 0x812F); // GL_CLAMP_TO_EDGE
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, 0x812F); // GL_CLAMP_TO_EDGE
-    glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
+
+    // FIXME: This hack was needed to fix #980 in a way that maintains binary
+    // compatibility in v0-8 branch.
+    if (d_owner.getIdentifierString().find("CEGUI::OpenGLRenderer -") == 0)
+        glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
     // restore previous texture binding.
     glBindTexture(GL_TEXTURE_2D, old_tex);
