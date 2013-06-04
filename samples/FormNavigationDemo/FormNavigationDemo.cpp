@@ -97,7 +97,9 @@ void FormNavigationDemo::createForm(FrameWindow* wnd)
     d_isGameMasterCheckbox->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.1f)));
     wnd->addChild(d_isGameMasterCheckbox);
 
-    wnd->addChild(createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm"));
+    d_confirmButton = createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm");
+    d_confirmButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&FormNavigationDemo::disableConfirmButton, this));
+    wnd->addChild(d_confirmButton);
 
     Window* resetButton = createWidget("TaharezLook/Button", 0.3f, 0.4f, "Reset");
     resetButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&FormNavigationDemo::resetForm, this));
@@ -122,6 +124,14 @@ bool FormNavigationDemo::resetForm(const CEGUI::EventArgs& e)
     }
 
     d_isGameMasterCheckbox->setSelected(false);
+    d_confirmButton->setEnabled(true);
+
+    return true;
+}
+
+bool FormNavigationDemo::disableConfirmButton(const CEGUI::EventArgs& e)
+{
+    d_confirmButton->setEnabled(false);
 
     return true;
 }

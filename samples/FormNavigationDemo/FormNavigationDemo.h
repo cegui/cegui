@@ -40,10 +40,13 @@ public:
 private:
     void createForm(CEGUI::FrameWindow* wnd);
     CEGUI::Window* createWidget(const CEGUI::String& type, float positionX, float positionY, const CEGUI::String& text = "");
-    bool resetForm(const CEGUI::EventArgs& e);
 
-    CEGUI::DefaultWindow*      d_root;
-    CEGUI::ToggleButton* d_isGameMasterCheckbox;
+    bool resetForm(const CEGUI::EventArgs& e);
+    bool disableConfirmButton(const CEGUI::EventArgs& e);
+
+    CEGUI::DefaultWindow*       d_root;
+    CEGUI::ToggleButton*        d_isGameMasterCheckbox;
+    CEGUI::Window*              d_confirmButton;
     std::vector<CEGUI::Window*> d_editboxes;
 };
 
