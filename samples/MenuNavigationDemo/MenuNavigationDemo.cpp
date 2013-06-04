@@ -46,22 +46,17 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& winMgr = WindowManager::getSingleton();
-    d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+    d_root = winMgr.loadLayoutFromFile("MenuNavigationDemo.layout");
 
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     guiContext->setDefaultFont(&defaultFont);
 
     guiContext->setRootWindow(d_root);
 
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Demo Window");
-    d_root->addChild(wnd);
+    TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
 
-    wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
-    wnd->setSize(USize(cegui_reldim(0.5f), cegui_reldim( 0.5f)));
-    wnd->setMaxSize(USize(cegui_reldim(1.0f), cegui_reldim( 1.0f)));
-    wnd->setMinSize(USize(cegui_reldim(0.1f), cegui_reldim( 0.1f)));
-
-    wnd->setText("Game menu!");
+    tabControl->addTab(winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout"));
+    tabControl->addTab(winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout"));
 
     return true;
 }

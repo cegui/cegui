@@ -30,12 +30,6 @@
 
 #include "SampleBase.h"
 
-namespace CEGUI
-{
-    class Window;
-    class DefaultWindow;
-}
-
 class MenuNavigationDemo : public Sample
 {
 public:
@@ -43,7 +37,7 @@ public:
     virtual void deinitialise();
 
 private:
-    CEGUI::DefaultWindow*      d_root;
+    CEGUI::Window*      d_root;
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_

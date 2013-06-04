@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window name="Page1" type="DefaultWindow">
+        <Property name="Text" value="Page one" />
+    </Window>
+</GUILayout>
