@@ -99,7 +99,9 @@ void OpenGL3FBOTextureTarget::deactivate()
 void OpenGL3FBOTextureTarget::clear()
 {
     const Sizef sz(d_area.getSize());
-    if(sz.d_width == 0.f || sz.d_height == 0.f)
+    // Some drivers crash when clearing a 0x0 RTT. This is a workaround for
+    // those cases.
+    if (sz.d_width < 1.0f || sz.d_height < 1.0f)
         return;
 
     // save old clear colour
@@ -172,7 +174,16 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
     GLuint old_tex;
     glGetIntegerv(GL_TEXTURE_BINDING_2D, reinterpret_cast<GLint*>(&old_tex));
 
-    const Sizef sz(d_area.getSize());
+    // Some drivers (hint: Intel) segfault when glTexImage2D is called with
+    // any of the dimensions being 0. The downside of this workaround is very
+    // small. We waste a tiny bit of VRAM on cards with sane drivers and
+    // prevent insane drivers from crashing CEGUI.
+    Sizef sz(d_area.getSize());
+    if (sz.d_width < 1.0f || sz.d_height < 1.0f)
+    {
+        sz.d_width = 1.0f;
+        sz.d_height = 1.0f;
+    }
 
     // set the texture to the required size
     glBindTexture(GL_TEXTURE_2D, d_texture);
