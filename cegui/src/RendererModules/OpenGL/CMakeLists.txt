@@ -2,17 +2,17 @@ set (CEGUI_TARGET_NAME ${CEGUI_OPENGL_RENDERER_LIBNAME})
 
 cegui_gather_files()
 
-if (NOT APPLE)
+if (NOT APPLE OR NOT CEGUI_BUILD_RENDERER_OPENGL)
     list (REMOVE_ITEM CORE_SOURCE_FILES ApplePBTextureTarget.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/ApplePBTextureTarget.h)
 endif()
 
-if (NOT WIN32)
+if (NOT WIN32 OR NOT CEGUI_BUILD_RENDERER_OPENGL)
     list (REMOVE_ITEM CORE_SOURCE_FILES WGLPBTextureTarget.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/WGLPBTextureTarget.h)
 endif()
 
-if (NOT UNIX OR APPLE)
+if (NOT UNIX OR APPLE OR NOT CEGUI_BUILD_RENDERER_OPENGL)
     list (REMOVE_ITEM CORE_SOURCE_FILES GLXPBTextureTarget.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLXPBTextureTarget.h)
 endif()

@@ -176,5 +176,10 @@ setting CMake options and regenerating, rather than editing directly.
 #   define CEGUI_MODULE_DIR "${CMAKE_INSTALL_PREFIX}/${CEGUI_MODULE_INSTALL_DIR}/"
 #endif
 
+// This is defined when iconv is expecting a const char** and not a char**
+// as type for its inbuf parameter. This is only used when building cegui
+// itself, and likely will not be useful externally.
+#cmakedefine CEGUI_ICONV_USES_CONST_INBUF
+
 #endif	// end of guard _CEGUIConfig_h_
 

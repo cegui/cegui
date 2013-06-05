@@ -24,6 +24,18 @@ if (ICONV_H_PATH)
         unset(ICONV_LIB)
     endif()
 
+    # This compiles a test to determine whether iconv API takes ptr to const or
+    # non-const as the input buffer
+    set (CMAKE_REQUIRED_LIBRARIES ${ICONV_LIB})
+    check_cxx_source_compiles("
+    #include <iconv.h>
+    int main() {
+        const char* inbuf = 0;
+        iconv(0, &inbuf, 0, 0, 0);
+        return 0;
+    }"
+
+    CEGUI_ICONV_USES_CONST_INBUF)
 endif()
 
 mark_as_advanced(ICONV_H_PATH ICONV_LIB ICONV_LIB_GLIBC)

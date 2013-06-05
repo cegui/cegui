@@ -642,6 +642,21 @@ public:
     */
     bool isChildRecursive(uint ID) const;
 
+
+    /*!
+    \brief
+        returns a pointer to the child window at the specified index. Idx is the
+        index of the window in the child window list. It is based on the order
+        in which the children were added and is stable.
+
+    \param idx
+        Index of the child window list position of the window that should be
+        returned.This value is not bounds checked, client code should ensure that
+        this is less than the value returned by getChildCount().
+
+    \return
+        Pointer to the child window currently attached at index position \a idx
+    */
     inline Window* getChildAtIdx(size_t idx) const
     {
         return static_cast<Window*>(getChildElementAtIdx(idx));

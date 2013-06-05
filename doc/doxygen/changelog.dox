@@ -3,6 +3,12 @@ namespace CEGUI{
 @page change_log Change Log
 The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
 
+<b>Release 0.8.1</b>
+- 0000980: [Renderer modules] void OpenGLTexture::generateOpenGLTexture() uses non-core function (CrazyEddie) - assigned.
+- 0000979: [Core library (CEGUIBase)] iconv build errors on some systems (CrazyEddie) - resolved.
+- 0000978: [Build system] When GL3 is selected and GL is not, GL specific PBuffer files are still compiled in. (CrazyEddie) - resolved.
+- 0000977: [Renderer modules] OpenGL3Renderer uses C++11 features (CrazyEddie) - resolved.
+
 <b>Release 0.8.0 (woefully incomplete log, sorry about that)</b>
 - 0000816: [Documentation] Update Imageset and Font XML doc about autoScaled (CrazyEddie) - resolved.
 - 0000742: [Documentation] CMake does not produce uninstall targets (CrazyEddie) - resolved.
