@@ -36,7 +36,7 @@ macro(_find_dep_lib _PREFIX _FALLBACKLIBS _PATH_SUFFIXES) # _LIBS_VAR_EXT _STATI
         string(TOUPPER "${_L}" _UL)
         find_library(${_UL}_LIBRARY${_LIBS_VAR_EXT} NAMES ${_L} HINTS ${PC_${_PREFIX}_LIBDIR} ${PC_${_PREFIX}${_STATIC}_LIBRARY_DIRS} PATH_SUFFIXES ${_PATH_SUFFIXES})
         if(${_UL}_LIBRARY${_LIBS_VAR_EXT})
-            list(APPEND ${_PREFIX}_LIBRARIES${_LIBS_VAR_EXT} ${${_UL}_LIBRARY}${_LIBS_VAR_EXT})
+            list(APPEND ${_PREFIX}_LIBRARIES${_LIBS_VAR_EXT} ${${_UL}_LIBRARY${_LIBS_VAR_EXT}})
         else()
             set(${_PREFIX}_FOUND_ALL_LIBS${_LIBS_VAR_EXT} FALSE)
         endif()
