@@ -199,11 +199,11 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     if(needNewBuffer)
     {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, d_vertices.data(), GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dataSize, &d_vertices.front(), GL_DYNAMIC_DRAW);
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, d_vertices.data());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, &d_vertices.front());
     }
 }
 
