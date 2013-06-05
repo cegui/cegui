@@ -123,7 +123,6 @@ protected:
     /*************************************************************************
         Data Fields
     *************************************************************************/
-    Ogre::Overlay* d_statsOverlay;
     OIS::InputManager* d_inputManager;
     OIS::Keyboard* d_keyboard;
     OIS::Mouse* d_mouse;
