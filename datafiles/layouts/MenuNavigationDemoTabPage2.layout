@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GUILayout version="4" >
-    <Window name="Page2" type="DefaultWindow">
+    <Window type="DefaultWindow" name="Page2" >
+        <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="Text" value="Page two" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="TaharezLook/Listbox" name="ClassesListBox" >
+            <Property name="Area" value="{{0,141},{0,76},{0,357},{0,353}}" />
+        </Window>
     </Window>
 </GUILayout>
