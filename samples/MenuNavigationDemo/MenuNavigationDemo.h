@@ -38,6 +38,7 @@ public:
 
 private:
     CEGUI::Window*      d_root;
+    void initialiseClasses(CEGUI::Listbox* classesListBox);
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_

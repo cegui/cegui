@@ -30,17 +30,29 @@
 
 #include <iostream>
 
+// Sample sub-class for ListboxTextItem that auto-sets the selection brush
+// image.  This saves doing it manually every time in the code.
+class MyListItem : public CEGUI::ListboxTextItem
+{
+public:
+    MyListItem(const CEGUI::String& text, CEGUI::uint item_id = 0) :
+      ListboxTextItem(text, item_id)
+      {
+          setSelectionBrushImage("TaharezLook/GenericBrush");
+      }
+};
+
 /** This sample uses most of the code from the 'HelloWorld' sample. 
     Thus, most of the clarifying comments have been removed for brevity. **/
 
-/*************************************************************************
+/*************************************************************************ech
     Sample specific initialisation goes here.
 *************************************************************************/
 bool MenuNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
-     d_usedFiles = CEGUI::String(__FILE__);
+    d_usedFiles = CEGUI::String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
@@ -56,7 +68,12 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
 
     tabControl->addTab(winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout"));
-    tabControl->addTab(winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout"));
+
+    Window* page2Window = winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
+    tabControl->addTab(page2Window);
+
+    Listbox* classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
+    initialiseClasses(classesListBox);
 
     return true;
 }
@@ -66,6 +83,23 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
 *************************************************************************/
 void MenuNavigationDemo::deinitialise()
 {
+}
+
+void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
+{
+    static const int ClassesListSize = 5;
+    static const char* ClassesList[] = {
+        "Druid",
+        "Shaman",
+        "Warrior",
+        "Priest",
+        "Death Knight"
+    };
+   
+    for(int i = 0; i < ClassesListSize; ++i)
+    {
+        classesListBox->addItem(new MyListItem(ClassesList[i]));
+    }
 }
 
 /*************************************************************************
