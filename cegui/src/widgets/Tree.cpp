@@ -70,7 +70,8 @@ Tree::Tree(const String& type, const String& name) :
     d_horzScrollbar(0),
     d_lastSelected(0),
     d_openButtonImagery(0),
-    d_closeButtonImagery(0)
+    d_closeButtonImagery(0),
+    d_itemArea(0, 0, 0, 0)
 {
     // add new events specific to tree.
     addTreeEvents();
