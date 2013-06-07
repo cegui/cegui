@@ -61,7 +61,10 @@ public:
         r(red), g(green), b(blue)
     {}
 
-    RGB_Colour() {}
+    RGB_Colour() :
+        r(0.0f), g(0.0f), b(0.0f)
+    {}
+
     RGB_Colour(const Lab_Colour& colour);
     RGB_Colour(const HSV_Colour& colour);
     RGB_Colour(const CEGUI::Colour& colour);
@@ -82,7 +85,10 @@ public:
         L(LValue), a(aValue), b(bValue)
     {}
 
-    Lab_Colour() {}
+    Lab_Colour() :
+        L(0.0f), a(0.0f), b(0.0f)
+    {}
+
     Lab_Colour(const RGB_Colour& colour);
     Lab_Colour(const HSV_Colour& colour);
     Lab_Colour(const CEGUI::Colour& colour);
@@ -101,7 +107,10 @@ public:
         H(HValue), S(SValue), V(VValue)
     {}
 
-    HSV_Colour() {}
+    HSV_Colour() :
+        H(0.0f), S(0.0f), V(0.0f)
+    {}
+
     HSV_Colour(const RGB_Colour& colour);
     HSV_Colour(const Lab_Colour& colour);
     HSV_Colour(const CEGUI::Colour& colour);
