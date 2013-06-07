@@ -48,32 +48,33 @@ public:
 /*************************************************************************ech
     Sample specific initialisation goes here.
 *************************************************************************/
-bool MenuNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
+bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 {
     using namespace CEGUI;
 
     d_usedFiles = CEGUI::String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    gui_context->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
-    WindowManager& winMgr = WindowManager::getSingleton();
-    d_root = winMgr.loadLayoutFromFile("MenuNavigationDemo.layout");
+    WindowManager& win_mgr = WindowManager::getSingleton();
+    d_root = win_mgr.loadLayoutFromFile("MenuNavigationDemo.layout");
 
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    guiContext->setDefaultFont(&defaultFont);
+    gui_context->setDefaultFont(&defaultFont);
 
-    guiContext->setRootWindow(d_root);
+    gui_context->setRootWindow(d_root);
 
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
 
-    tabControl->addTab(winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout"));
+    tabControl->addTab(win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout"));
 
-    Window* page2Window = winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
+    Window* page2Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
     d_logWidget = page2Window->getChild("StaticText");
 
     Window* selectButton = page2Window->getChild("SelectButton");
-    selectButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MenuNavigationDemo::handleSelectButtonClicked, this));
+    selectButton->subscribeEvent(PushButton::EventClicked, 
+        Event::Subscriber(&MenuNavigationDemo::handleSelectButtonClicked, this));
 
     tabControl->addTab(page2Window);
 
@@ -92,8 +93,9 @@ void MenuNavigationDemo::deinitialise()
 
 void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
 {
-    static const int ClassesListSize = 5;
-    static const char* ClassesList[] = {
+    static const int classes_list_size = 5;
+    static const char* classes_list[] = 
+    {
         "Druid",
         "Shaman",
         "Warrior",
@@ -101,9 +103,9 @@ void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
         "Death Knight"
     };
    
-    for(int i = 0; i < ClassesListSize; ++i)
+    for(int i = 0; i < classes_list_size; ++i)
     {
-        classesListBox->addItem(new MyListItem(ClassesList[i]));
+        classesListBox->addItem(new MyListItem(classes_list[i]));
     }
 }
 
@@ -112,7 +114,7 @@ bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
     using namespace CEGUI;
 
     ListboxItem* item = d_classesListBox->getFirstSelectedItem();
-    if (item != NULL)
+    if (item != 0)
     {
         d_logWidget->setText("Selected " + item->getText() + "\n");
     }

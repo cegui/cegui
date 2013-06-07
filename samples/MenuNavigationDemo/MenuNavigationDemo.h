@@ -33,7 +33,7 @@
 class MenuNavigationDemo : public Sample
 {
 public:
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    virtual bool initialise(CEGUI::GUIContext* gui_context);
     virtual void deinitialise();
 
 private:
@@ -41,7 +41,7 @@ private:
     CEGUI::Window*      d_logWidget;
     CEGUI::Listbox*     d_classesListBox;
 
-    void initialiseClasses(CEGUI::Listbox* classesListBox);
+    void initialiseClasses(CEGUI::Listbox* classes_listbox);
     bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
 };
 

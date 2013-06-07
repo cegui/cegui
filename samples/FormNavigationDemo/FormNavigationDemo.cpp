@@ -38,22 +38,23 @@ using namespace CEGUI;
 /*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
-bool FormNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
+bool FormNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 {
     d_usedFiles = CEGUI::String(__FILE__);
 
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    gui_context->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
 
-    WindowManager& winMgr = WindowManager::getSingleton();
-    d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
+    WindowManager& win_mgr = WindowManager::getSingleton();
+    d_root = (DefaultWindow*)win_mgr.createWindow("DefaultWindow", "Root");
 
-    Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
-    guiContext->setDefaultFont(&defaultFont);
+    Font& default_font = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
+    gui_context->setDefaultFont(&default_font);
 
-    guiContext->setRootWindow(d_root);
+    gui_context->setRootWindow(d_root);
 
-    FrameWindow* wnd = (FrameWindow*)winMgr.createWindow("TaharezLook/FrameWindow", "Demo Window");
+    FrameWindow* wnd = (FrameWindow*)win_mgr.createWindow("TaharezLook/FrameWindow", 
+        "Demo Window");
     d_root->addChild(wnd);
 
     wnd->setPosition(UVector2(cegui_reldim(0.25f), cegui_reldim( 0.25f)));
@@ -93,32 +94,37 @@ void FormNavigationDemo::createForm(FrameWindow* wnd)
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
 
-    d_isGameMasterCheckbox = static_cast<ToggleButton*>(createWidget("TaharezLook/Checkbox", 0.01f, 0.3f, "Is Game Master"));
+    d_isGameMasterCheckbox = static_cast<ToggleButton*>(
+        createWidget("TaharezLook/Checkbox", 0.01f, 0.3f, "Is Game Master"));
     d_isGameMasterCheckbox->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.1f)));
     wnd->addChild(d_isGameMasterCheckbox);
 
     d_confirmButton = createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm");
-    d_confirmButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&FormNavigationDemo::disableConfirmButton, this));
+    d_confirmButton->subscribeEvent(PushButton::EventClicked, 
+        Event::Subscriber(&FormNavigationDemo::disableConfirmButton, this));
     wnd->addChild(d_confirmButton);
 
     Window* resetButton = createWidget("TaharezLook/Button", 0.3f, 0.4f, "Reset");
-    resetButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&FormNavigationDemo::resetForm, this));
+    resetButton->subscribeEvent(PushButton::EventClicked, 
+        Event::Subscriber(&FormNavigationDemo::resetForm, this));
     wnd->addChild(resetButton);
 }
 
-CEGUI::Window* FormNavigationDemo::createWidget(const String& type, float positionX, float positionY, const String& text)
+CEGUI::Window* FormNavigationDemo::createWidget(const String& type, 
+    float position_x, float position_y, const String& text)
 {
     Window* widget = WindowManager::getSingleton().createWindow(type);
 
     widget->setText(text);
-    widget->setPosition(UVector2(cegui_reldim(positionX), cegui_reldim(positionY)));
+    widget->setPosition(UVector2(cegui_reldim(position_x), cegui_reldim(position_y)));
 
     return widget;
 }
 
 bool FormNavigationDemo::resetForm(const CEGUI::EventArgs& e)
 {
-    for(std::vector<Window*>::const_iterator itor = d_editboxes.begin(); itor != d_editboxes.end(); ++itor)
+    for(std::vector<Window*>::const_iterator itor = d_editboxes.begin(); 
+        itor != d_editboxes.end(); ++itor)
     {
         (*itor)->setText("");
     }
