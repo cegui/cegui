@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <GUILayout version="4" >
-    <Window type="DefaultWindow" name="Page2" >
+    <Window type="DefaultWindow" name="List selection" >
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="Text" value="Page two" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
         <Window type="TaharezLook/Listbox" name="ClassesListBox" >
             <Property name="Area" value="{{0,141},{0,76},{0,357},{0,353}}" />
+        </Window>
+        <Window type="TaharezLook/Button" name="SelectButton" >
+            <Property name="Area" value="{{0,400},{0,265},{0,496},{0,297}}" />
+            <Property name="Text" value="Select" />
+        </Window>
+        <Window type="TaharezLook/StaticText" name="StaticText" >
+            <Property name="Area" value="{{0,400},{0,308},{0,703},{0,351}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="HorzScrollPageSize" value="291" />
+            <Property name="VertScrollPageSize" value="31" />
         </Window>
     </Window>
 </GUILayout>

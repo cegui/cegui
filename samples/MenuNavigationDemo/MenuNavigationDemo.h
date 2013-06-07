@@ -38,7 +38,11 @@ public:
 
 private:
     CEGUI::Window*      d_root;
+    CEGUI::Window*      d_logWidget;
+    CEGUI::Listbox*     d_classesListBox;
+
     void initialiseClasses(CEGUI::Listbox* classesListBox);
+    bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_
