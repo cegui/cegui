@@ -34,13 +34,13 @@
 class FormNavigationDemo : public Sample
 {
 public:
-    virtual bool initialise(CEGUI::GUIContext* guiContext);
+    virtual bool initialise(CEGUI::GUIContext* gui_context);
     virtual void deinitialise();
 
 private:
     void createForm(CEGUI::FrameWindow* wnd);
-    CEGUI::Window* createWidget(const CEGUI::String& type, float positionX, float positionY, const CEGUI::String& text = "");
 
+    CEGUI::Window* createWidget(const CEGUI::String& type, float position_x, float position_y, const CEGUI::String& text = "");
     bool resetForm(const CEGUI::EventArgs& e);
     bool disableConfirmButton(const CEGUI::EventArgs& e);
 
