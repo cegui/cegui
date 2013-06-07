@@ -70,10 +70,15 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* guiContext)
     tabControl->addTab(winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout"));
 
     Window* page2Window = winMgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
+    d_logWidget = page2Window->getChild("StaticText");
+
+    Window* selectButton = page2Window->getChild("SelectButton");
+    selectButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MenuNavigationDemo::handleSelectButtonClicked, this));
+
     tabControl->addTab(page2Window);
 
-    Listbox* classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
-    initialiseClasses(classesListBox);
+    d_classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
+    initialiseClasses(d_classesListBox);
 
     return true;
 }
@@ -101,6 +106,20 @@ void MenuNavigationDemo::initialiseClasses(CEGUI::Listbox* classesListBox)
         classesListBox->addItem(new MyListItem(ClassesList[i]));
     }
 }
+
+bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
+{
+    using namespace CEGUI;
+
+    ListboxItem* item = d_classesListBox->getFirstSelectedItem();
+    if (item != NULL)
+    {
+        d_logWidget->setText("Selected " + item->getText() + "\n");
+    }
+
+    return true;
+}
+
 
 /*************************************************************************
     Define the module function that returns an instance of the sample
