@@ -49,6 +49,11 @@ struct InputInjectionFixture
         d_button->setPosition(UVector2(cegui_reldim(0.2f), cegui_reldim(0.2f)));
         d_button->setSize(USize(cegui_reldim(0.2f), cegui_reldim(0.2f)));
 
+        d_editbox = WindowManager::getSingleton().createWindow("TaharezLook/Editbox");
+        d_editbox->setPosition(UVector2(cegui_reldim(0.9f), cegui_reldim(0.9f)));
+        d_editbox->setSize(USize(cegui_reldim(0.1f), cegui_reldim(0.1f)));
+
+        d_window->addChild(d_editbox);
         d_window->addChild(d_button);
 
         System::getSingleton().getDefaultGUIContext().setRootWindow(d_window);
@@ -100,45 +105,95 @@ struct InputInjectionFixture
 
     Window* d_window;
     Window* d_button;
+    Window* d_editbox;
 
     std::vector<Event::Connection> d_windowConnections;
     std::vector<Event::Connection> d_buttonConnections;
 };
 
+//----------------------------------------------------------------------------//
+static inline GUIContext& getGUIContext()
+{
+    return System::getSingleton().getDefaultGUIContext();
+}
+
+static void doClick(float position_x, float position_y)
+{
+    getGUIContext().injectMousePosition(position_x, position_y);
+    getGUIContext().injectMouseButtonDown(LeftButton);
+    getGUIContext().injectMouseButtonUp(LeftButton);
+}
+//----------------------------------------------------------------------------//
+
 BOOST_FIXTURE_TEST_SUITE(InputInjection, InputInjectionFixture)
 
-BOOST_AUTO_TEST_CASE(OneClickWindow)
+BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 {
-    System::getSingleton().getDefaultGUIContext().injectMouseButtonClick(
-        LeftButton);
+    // we check for both: a) being handled, b) have the expected final result
+    BOOST_CHECK_EQUAL(getGUIContext().injectMouseButtonClick(LeftButton), true);
 
     BOOST_CHECK_EQUAL(d_windowHandledCount, 1);
     BOOST_CHECK_EQUAL(d_buttonHandledCount, 0);
 }
 
-BOOST_AUTO_TEST_CASE(MultipleClicksWindow)
+BOOST_AUTO_TEST_CASE(MultipleClicksOnWindow)
 {
-    System::getSingleton().getDefaultGUIContext().injectMouseButtonClick(
-        LeftButton);
-    System::getSingleton().getDefaultGUIContext().injectMouseButtonClick(
-        LeftButton);
+    BOOST_CHECK_EQUAL(getGUIContext().injectMouseButtonClick(LeftButton), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectMouseButtonClick(LeftButton), true);
 
     BOOST_CHECK_EQUAL(d_windowHandledCount, 2);
     BOOST_CHECK_EQUAL(d_buttonHandledCount, 0);
 }
 
-BOOST_AUTO_TEST_CASE(OneClickButton)
+BOOST_AUTO_TEST_CASE(OneClickOnButton)
 {
-    //TODO: It doesn't work with injectMouseClick, but only with mouseDown + Up
-    // Shouldn't it?
-    System::getSingleton().getDefaultGUIContext().injectMousePosition(30.0f, 30.0f);
-    System::getSingleton().getDefaultGUIContext().injectMouseButtonDown(
-        LeftButton);
-    System::getSingleton().getDefaultGUIContext().injectMouseButtonUp(
-        LeftButton);
+    doClick(30.0f, 30.0f);
 
     BOOST_CHECK_EQUAL(d_windowHandledCount, 0);
     BOOST_CHECK_EQUAL(d_buttonHandledCount, 1);
+}
+
+BOOST_AUTO_TEST_CASE(InsertSimpleText)
+{
+    // focus the editbox
+    doClick(91.0f, 91.0f);
+
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('W'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('o'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('W'), true);
+
+    BOOST_CHECK_EQUAL(d_editbox->getText(), "WoW");
+}
+
+BOOST_AUTO_TEST_CASE(DeleteTextWithBackspace)
+{
+    // focus the editbox
+    doClick(91.0f, 91.0f);
+
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('W'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('o'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('k'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectKeyDown(Key::Backspace), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('W'), true);
+
+    BOOST_CHECK_EQUAL(d_editbox->getText(), "WoW");
+}
+
+BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
+{
+    // focus the editbox
+    doClick(91.0f, 91.0f);
+
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('W'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('o'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('k'), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectChar('W'), true);
+
+    BOOST_CHECK_EQUAL(getGUIContext().injectKeyDown(Key::ArrowLeft), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectKeyDown(Key::ArrowLeft), true);
+    BOOST_CHECK_EQUAL(getGUIContext().injectKeyDown(Key::Delete), true);
+
+    BOOST_CHECK_EQUAL(d_editbox->getText(), "WoW");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
