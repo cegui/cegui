@@ -28,8 +28,8 @@ project(cegui)
 # Set up version information
 ################################################################################
 set( CEGUI_VERSION_MAJOR 0)
-set( CEGUI_VERSION_MINOR 8)
-set( CEGUI_VERSION_PATCH 2)
+set( CEGUI_VERSION_MINOR 9999)
+set( CEGUI_VERSION_PATCH 0)
 set( CEGUI_VERSION ${CEGUI_VERSION_MAJOR}.${CEGUI_VERSION_MINOR}.${CEGUI_VERSION_PATCH} )
 
 #
