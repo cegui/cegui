@@ -24,8 +24,8 @@ Source code from the stable mercurial branch is released at various points in
 time and made available as source code packages.
 
 The current packages are available here:
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.8/cegui-0.8.1.tar.gz/download">cegui-0.8.1.tar.gz</a>
-- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.8/cegui-0.8.1.zip/download">cegui-0.8.1.zip</a>
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.8/cegui-0.8.2.tar.gz/download">cegui-0.8.2.tar.gz</a>
+- <a href="http://sourceforge.net/projects/crayzedsgui/files/CEGUI Mk-2/0.8/cegui-0.8.2.zip/download">cegui-0.8.2.zip</a>
 
 The content of these archives is identical, multiple archive types are provided
 merely as a convenience.
@@ -47,10 +47,10 @@ We also have the code repositories for other CEGUI related items hosted at
 bitbucket; the repository for the main CEGUI libraries is named 'cegui'.
 
 Within this repository, we maintain the main unstable code (as the default
-branch) and a secondary branch for the current stable releases (which is v0-8 as
-of this writing), older branches are considered obsolete as newer stable code
-branches are created, although the older branches are still accessible for those
-who want or need that older code.
+branch) and secondary branches for the current API stable and ABI stable
+releases (which are v0 and v0-8 respectively as of this writing), older branches
+are considered obsolete as newer stable code branches are created, although the
+older branches are still accessible for those who want or need that older code.
 
 To obtain a copy of the code from mercurial, you might use the following commands
 (or thier equivalent, if you use a GUI based mercurial client)
@@ -59,11 +59,11 @@ hg clone https://bitbucket.org/cegui/cegui cegui-source
 @endverbatim
 
 Once you have this, the cloned repository is updated to the default (unstable)
-code, so you most likely will want to switch to the stable branch instead (be
-aware that the -C option here will discard any local file changes without
+code, so you most likely will want to switch to the API stable branch instead
+(be aware that the -C option here will discard any local file changes without
 additional warning):
 @verbatim
-hg update -C v0-8
+hg update -C v0
 @endverbatim
 
 You can also browse the repository from your web browser here:
