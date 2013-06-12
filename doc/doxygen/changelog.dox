@@ -1,7 +1,21 @@
 namespace CEGUI{
 /**
 @page change_log Change Log
-The following is a high-level view of changes made to Crazy Eddie's GUI System for each release.
+The following is a high-level view of changes made to Crazy Eddie's GUI System
+for each release.
+@note From the 0.8.0 release items are taken from our mantis ticket tracking
+system and not from the commit logs themsevles - this means that releases will
+likely contain additions, fixes and other changes that do not get mentioned in
+this change log. If you're looking for a 100% complete record of all changes
+please consult the commit logs!
+
+
+<b>Release 0.8.2</b>
+- 0000986: [Build system] ABI versioning used for naming .so files is incorrect (CrazyEddie) - resolved.
+- 0000985: [Build system] Linking of fribidi for debug builds fails, due to trying to link to badly formed library name (CrazyEddie) - resolved.
+- 0000982: [Samples Framework / Sample Applications] Ogre base application has #pragma directives bringing in libs that don't exist. (CrazyEddie) - resolved.
+- 0000984: [Samples Framework / Sample Applications] Ogre base app has left over unused Overlay* variable which prevents compilation on newer Ogre versions. (CrazyEddie) - resolved.
+- 0000983: [XML parser modules] CEGUI_DELETE_AO typo in RapidXMLParser (CrazyEddie) - resolved.
 
 <b>Release 0.8.1</b>
 - 0000980: [Renderer modules] void OpenGLTexture::generateOpenGLTexture() uses non-core function (CrazyEddie) - assigned.
