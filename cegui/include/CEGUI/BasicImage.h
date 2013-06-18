@@ -64,7 +64,7 @@ public:
                 const Rectf& dest_area,
                 const Rectf* clip_area,
                 const ColourRect& colours) const;
-    void notifyDisplaySizeChanged(const Sizef& size);
+
     //! Notifies the class that the display size of the renderer has changed so that
     // the window can adapt to the new display size accordingly
     void notifyDisplaySizeChanged(const Sizef& renderer_display_size);
