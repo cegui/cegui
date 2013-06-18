@@ -197,13 +197,19 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
 
+    GLVertex* data;
+    if(d_vertices.empty())
+        data = 0;
+    else
+        data = &d_vertices[0];
+
     if(needNewBuffer)
     {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, &d_vertices.front(), GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_DYNAMIC_DRAW);
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, &d_vertices.front());
+        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, data);
     }
 }
 
