@@ -32,6 +32,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
+#include "CEGUI/InputEvent.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Size.h"
@@ -50,6 +51,8 @@ enum InputEventType
     ReleasedButtonInputEventType    = 0x0003,	//!< A button was released.
     TextInputEventType              = 0x0004,	//!< Text was inputted.
     ScrollInputEventType            = 0x0005,	//!< The scroll operation.
+
+    UserDefinedInputEventType       = 0x500,   //!< This marks the beginning of user-defined events.
 };
 
 
@@ -61,8 +64,73 @@ class CEGUIEXPORT InputEvent
 {
 public:
     InputEvent(int event_type) : eventType(event_type)  {}
+    virtual ~InputEvent() {}
 
 	int eventType;		//!< The type of the input event
+};
+
+/*!
+\brief
+	Represents the movement of the pointer
+*/
+class CEGUIEXPORT MovementInputEvent : public InputEvent
+{
+public:
+    MovementInputEvent() : InputEvent(MovementInputEventType)  {}
+    
+    Vector2f position;      //!< The actual position of the pointer
+    Vector2f delta;         //!< The delta from the last position
+};
+
+/*!
+\brief
+	Represents the input of a character
+*/
+class CEGUIEXPORT TextInputEvent : public InputEvent
+{
+public:
+    TextInputEvent() : InputEvent(TextInputEventType)  {}
+    
+    char character;         //!< The character inputted
+};
+
+/*!
+\brief
+	Represents the pressing of a button
+*/
+class CEGUIEXPORT PressedButtonInputEvent : public InputEvent
+{
+public:
+    PressedButtonInputEvent() : InputEvent(PressedButtonInputEventType)  {}
+    
+    // TODO: aggregate the gamepad/etc buttons too
+    Key button;            //!< The button pressed
+};
+
+/*!
+\brief
+	Represents the releasing of a pressed button
+*/
+class CEGUIEXPORT ReleasedButtonInputEvent : public InputEvent
+{
+public:
+    ReleasedButtonInputEvent() : InputEvent(ReleasedButtonInputEventType)  {}
+    
+    // TODO: aggregate the gamepad/etc buttons too
+    Key button;            //!< The button released
+};
+
+/*!
+\brief
+	Represents the scroll operation (e.g.: mouse)
+*/
+class CEGUIEXPORT ScrollInputEvent : public InputEvent
+{
+public:
+    ScrollInputEvent() : InputEvent(ScrollInputEventType)  {}
+    
+    int delta;              //!< The amount of scroll since last event
+    int scrollDirection;    //!< 0 for horizontal and 1 for vertical
 };
 
 } // End of  CEGUI namespace section

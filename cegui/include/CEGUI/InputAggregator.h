@@ -46,10 +46,7 @@ namespace CEGUI
 class CEGUIEXPORT InputAggregator : public InjectedInputReceiver
 {
 public:
-	InputAggregator(InputEventReceiver* input_receiver) 
-        : d_inputReceiver (input_receiver) 
-    {
-    }
+	InputAggregator(InputEventReceiver* input_receiver);
 
     virtual bool injectTimePulse(float timeElapsed);
 

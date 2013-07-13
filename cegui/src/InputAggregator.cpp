@@ -30,6 +30,11 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    InputAggregator::InputAggregator(InputEventReceiver* input_receiver)
+        : d_inputReceiver (input_receiver) 
+    {
+    }
+
     bool InputAggregator::injectTimePulse(float timeElapsed)
     {
         return true;
@@ -64,6 +69,10 @@ namespace CEGUI
 
     bool InputAggregator::injectChar(String::value_type code_point)
     {
+        TextInputEvent textEvent;
+        textEvent.character = code_point;
+
+        d_inputReceiver->injectInputEvent(&textEvent);
         return true;
     }
     bool InputAggregator::injectMouseWheelChange(float delta)
