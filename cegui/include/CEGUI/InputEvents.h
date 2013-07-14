@@ -63,10 +63,10 @@ enum InputEventType
 class CEGUIEXPORT InputEvent
 {
 public:
-    InputEvent(int event_type) : eventType(event_type)  {}
+    InputEvent(int event_type) : d_eventType(event_type)  {}
     virtual ~InputEvent() {}
 
-	int eventType;		//!< The type of the input event
+	int d_eventType;		//!< The type of the input event
 };
 
 /*!
@@ -78,12 +78,12 @@ class CEGUIEXPORT MovementInputEvent : public InputEvent
 public:
     MovementInputEvent() 
         : InputEvent(MovementInputEventType)
-        , position(0.0f, 0.0f)
-        , delta(0.0f, 0.0f)
+        , d_position(0.0f, 0.0f)
+        , d_delta(0.0f, 0.0f)
     {}
     
-    Vector2f position;      //!< The actual position of the pointer
-    Vector2f delta;         //!< The delta from the last position
+    Vector2f d_position;      //!< The actual position of the pointer
+    Vector2f d_delta;         //!< The delta from the last position
 };
 
 /*!
@@ -95,7 +95,7 @@ class CEGUIEXPORT TextInputEvent : public InputEvent
 public:
     TextInputEvent() : InputEvent(TextInputEventType)  {}
     
-    char character;         //!< The character inputted
+    char d_character;         //!< The character inputted
 };
 
 /*!
@@ -105,10 +105,10 @@ public:
 class CEGUIEXPORT PressedButtonInputEvent : public InputEvent
 {
 public:
-    PressedButtonInputEvent() : InputEvent(PressedButtonInputEventType)  {}
+    PressedButtonInputEvent() : InputEvent(PressedButtonInputEventType) {}
     
-    // TODO: aggregate the gamepad/etc buttons too
-    Key button;            //!< The button pressed
+    // TODO: aggregate the mouse/gamepad/etc buttons too
+    Key d_button;             //!< The button pressed
 };
 
 /*!
@@ -118,10 +118,10 @@ public:
 class CEGUIEXPORT ReleasedButtonInputEvent : public InputEvent
 {
 public:
-    ReleasedButtonInputEvent() : InputEvent(ReleasedButtonInputEventType)  {}
+    ReleasedButtonInputEvent() : InputEvent(ReleasedButtonInputEventType) {}
     
-    // TODO: aggregate the gamepad/etc buttons too
-    Key button;            //!< The button released
+    // TODO: aggregate the mouse/gamepad/etc buttons too
+    Key d_button;            //!< The button released
 };
 
 /*!
@@ -133,12 +133,12 @@ class CEGUIEXPORT ScrollInputEvent : public InputEvent
 public:
     ScrollInputEvent() 
         : InputEvent(ScrollInputEventType)
-        , delta(0)
-        , scrollDirection(0)
+        , d_delta(0)
+        , d_scrollDirection(0)
     {}
     
-    int delta;              //!< The amount of scroll since last event
-    int scrollDirection;    //!< 0 for horizontal and 1 for vertical
+    int d_delta;              //!< The amount of scroll since last event
+    int d_scrollDirection;    //!< 0 for horizontal and 1 for vertical
 };
 
 } // End of  CEGUI namespace section
