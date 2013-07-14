@@ -47,8 +47,8 @@ namespace CEGUI
         d_pointerPosition += delta;
 
         MovementInputEvent movementEvent;
-        movementEvent.delta = delta;
-        movementEvent.position = d_pointerPosition;
+        movementEvent.d_delta = delta;
+        movementEvent.d_position = d_pointerPosition;
 
         d_inputReceiver->injectInputEvent(&movementEvent);
 
@@ -73,6 +73,7 @@ namespace CEGUI
     {
         return true;
     }
+
     bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     {
         return true;
@@ -81,13 +82,19 @@ namespace CEGUI
     bool InputAggregator::injectChar(String::value_type code_point)
     {
         TextInputEvent textEvent;
-        textEvent.character = code_point;
+        textEvent.d_character = code_point;
 
         d_inputReceiver->injectInputEvent(&textEvent);
         return true;
     }
     bool InputAggregator::injectMouseWheelChange(float delta)
     {
+        ScrollInputEvent scrollEvent;
+        scrollEvent.d_delta = delta;
+        scrollEvent.d_scrollDirection = 0;
+
+        d_inputReceiver->injectInputEvent(&scrollEvent);
+
         return true;
     }
     bool InputAggregator::injectMousePosition(float x_pos, float y_pos)

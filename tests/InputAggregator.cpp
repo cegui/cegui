@@ -65,6 +65,7 @@ class MockInputEventReceiver : public InputEventReceiver
 {
 public:
     std::string d_text;
+    float d_totalScroll;
     Vector2f d_pointerPosition;
     Vector2f d_pointerTotalDelta;
 
@@ -72,6 +73,7 @@ public:
         : d_text("")
         , d_pointerPosition(0.0f, 0.0f)
         , d_pointerTotalDelta(0.0f, 0.0f)
+        , d_totalScroll(0)
     {}
 
     ~MockInputEventReceiver()
@@ -87,26 +89,31 @@ public:
 
     void injectInputEvent(const InputEvent* event)
     {
-        HandlersMap::const_iterator itor = d_handlersMap.find(event->eventType);
+        HandlersMap::const_iterator itor = d_handlersMap.find(event->d_eventType);
         if (itor != d_handlersMap.end())
         {
             (*itor).second->handle(event);
         }
         else
         {
-            std::cout << "No event handler for event type: " << event->eventType << std::endl;
+            std::cout << "No event handler for event type: " << event->d_eventType << std::endl;
         }
     }
 
     void handleTextEvent(const TextInputEvent* event)
     {
-        d_text += event->character;
+        d_text += event->d_character;
     }
 
     void handleMovementEvent(const MovementInputEvent* event)
     {
-        d_pointerPosition = event->position;
-        d_pointerTotalDelta += event->delta;
+        d_pointerPosition = event->d_position;
+        d_pointerTotalDelta += event->d_delta;
+    }
+
+    void handleScrollEvent(const ScrollInputEvent* event)
+    {
+        d_totalScroll += event->d_delta;
     }
 
     void initializeEventHandlers() 
@@ -118,6 +125,10 @@ public:
         d_handlersMap.insert(std::make_pair(MovementInputEventType, 
             new InputEventHandlerImpl<MovementInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleMovementEvent, this)));
+
+        d_handlersMap.insert(std::make_pair(ScrollInputEventType, 
+            new InputEventHandlerImpl<ScrollInputEvent, MockInputEventReceiver>(
+            &MockInputEventReceiver::handleScrollEvent, this)));
     }
 
 private:
@@ -240,6 +251,28 @@ BOOST_AUTO_TEST_CASE(MovementEventMultiplePositions)
 
 	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
 	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, -3);
+}
+
+BOOST_AUTO_TEST_CASE(ScrollEventNoDelta)
+{
+    d_inputAggregator->injectMouseWheelChange(0);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_totalScroll, 0);
+}
+
+BOOST_AUTO_TEST_CASE(ScrollEventMultipleDelta)
+{
+    d_inputAggregator->injectMouseWheelChange(1);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_totalScroll, 1);
+
+    d_inputAggregator->injectMouseWheelChange(3);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_totalScroll, 4);
+
+    d_inputAggregator->injectMouseWheelChange(5);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_totalScroll, 9);
+
+    d_inputAggregator->injectMouseWheelChange(-2);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_totalScroll, 7);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
