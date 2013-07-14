@@ -35,6 +35,7 @@
 #include "../Font.h"
 
 #include <vector>
+#include <deque>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -162,6 +163,29 @@ public:
     };
     typedef std::vector<LineInfo
         CEGUI_VECTOR_ALLOC(LineInfo)>   LineList;   //!< Type for collection of LineInfos.
+
+    /*!
+    \brief
+        enum representing undo type (insert, delete)
+    */
+    enum UndoActionType
+    {
+        INSERT = 1,
+        DELETE = 2
+    };
+
+    /*!
+    \brief
+        struct used to store information about undo actions
+    */
+    struct UndoAction
+    {
+        UndoActionType  d_type;     //!< Undo type
+        size_t          d_startIdx; //!< Starting index for this line.
+        String          d_text;
+    };
+    typedef std::deque<UndoAction
+        CEGUI_VECTOR_ALLOC(UndoAction)>   UndoList;   //!< Type for collection of UndoActions.
 
 	/*************************************************************************
 		Accessor Functions
@@ -464,6 +488,27 @@ public:
     */
     void formatText(const bool update_scrollbars);
 
+    //! \copydoc Window::performUndo
+    virtual bool performUndo();
+
+    //! \copydoc Window::performRedo
+    virtual bool performRedo();
+
+    /*!
+    \brief
+        Clear undo history
+    */
+    void clearUndoHistory();
+
+    /*!
+    \brief
+        Set maximum number of undo steps to store.
+
+    \param limit
+        - size of undo list
+    */
+    void setUndoLimit(int limit);
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -673,6 +718,9 @@ protected:
     // validate window renderer
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
 
+    // add a single record to undo history
+    void addUndoHistory(UndoAction &action);
+
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
@@ -763,6 +811,10 @@ protected:
 	static String d_lineBreakChars;	//!< Holds what we consider to be line break characters.
 	bool		d_wordWrap;			//!< true when formatting uses word-wrapping.
 	LineList	d_lines;			//!< Holds the lines for the current formatting.
+	UndoList    d_undoList;         //!< Holds the undo history
+	size_t      d_undoLimit;        //!< Maximum numer of undo entries
+	int         d_undoPosition;     //!< Position in undo list
+	float       d_lastRenderWidth;  //!< Holds last render area width
 	float		d_widestExtent;		//!< Holds the extent of the widest line as calculated in the last formatting pass.
 
 	// component widget settings
