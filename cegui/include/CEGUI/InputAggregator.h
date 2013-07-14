@@ -73,7 +73,8 @@ public:
 
 private:
 	InputEventReceiver*	d_inputReceiver;
-
+    
+    Vector2f d_pointerPosition;
 };
 
 } // End of  CEGUI namespace section

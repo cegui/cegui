@@ -64,13 +64,19 @@ private:
 class MockInputEventReceiver : public InputEventReceiver
 {
 public:
-    std::string text;
+    std::string d_text;
+    Vector2f d_pointerPosition;
+    Vector2f d_pointerTotalDelta;
 
-    MockInputEventReceiver()  {}
+    MockInputEventReceiver()
+        : d_text("")
+        , d_pointerPosition(0.0f, 0.0f)
+        , d_pointerTotalDelta(0.0f, 0.0f)
+    {}
 
     ~MockInputEventReceiver()
     {
-        for(HandlersMap::const_iterator itor = d_handlersMap.begin();
+        for (HandlersMap::const_iterator itor = d_handlersMap.begin();
             itor != d_handlersMap.end(); ++ itor)
         {
             delete (*itor).second;
@@ -94,7 +100,13 @@ public:
 
     void handleTextEvent(const TextInputEvent* event)
     {
-        text += event->character;
+        d_text += event->character;
+    }
+
+    void handleMovementEvent(const MovementInputEvent* event)
+    {
+        d_pointerPosition = event->position;
+        d_pointerTotalDelta += event->delta;
     }
 
     void initializeEventHandlers() 
@@ -102,6 +114,10 @@ public:
         d_handlersMap.insert(std::make_pair(TextInputEventType, 
             new InputEventHandlerImpl<TextInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleTextEvent, this)));
+
+        d_handlersMap.insert(std::make_pair(MovementInputEventType, 
+            new InputEventHandlerImpl<MovementInputEvent, MockInputEventReceiver>(
+                &MockInputEventReceiver::handleMovementEvent, this)));
     }
 
 private:
@@ -136,7 +152,7 @@ BOOST_AUTO_TEST_CASE(TextEventOneChar)
 {
     d_inputAggregator->injectChar('a');
 
-    BOOST_CHECK_EQUAL(d_inputEventReceiver->text, "a");
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_text, "a");
 }
 
 BOOST_AUTO_TEST_CASE(TextEventMultipleChars)
@@ -145,7 +161,85 @@ BOOST_AUTO_TEST_CASE(TextEventMultipleChars)
     d_inputAggregator->injectChar('b');
     d_inputAggregator->injectChar('c');
 
-    BOOST_CHECK_EQUAL(d_inputEventReceiver->text, "abc");
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_text, "abc");
+}
+
+BOOST_AUTO_TEST_CASE(MovementEventNoDelta)
+{
+    d_inputAggregator->injectMouseMove(0, 0);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+        d_inputEventReceiver->d_pointerTotalDelta);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 0);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 0);
+}
+
+BOOST_AUTO_TEST_CASE(MovementEventSingleDelta)
+{
+    d_inputAggregator->injectMouseMove(0, 0);
+    d_inputAggregator->injectMouseMove(3, 5);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+        d_inputEventReceiver->d_pointerTotalDelta);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 5);
+}
+
+BOOST_AUTO_TEST_CASE(MovementEventMultipleDeltas)
+{
+    d_inputAggregator->injectMouseMove(0, 0);
+    d_inputAggregator->injectMouseMove(3, 5);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+        d_inputEventReceiver->d_pointerTotalDelta);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 5);
+
+    d_inputAggregator->injectMouseMove(3, -3);
+
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 6);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 2);
+}
+
+BOOST_AUTO_TEST_CASE(MovementEventZeroPosition)
+{
+	d_inputAggregator->injectMousePosition(0, 0);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+		d_inputEventReceiver->d_pointerTotalDelta);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 0);
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 0);
+}
+
+BOOST_AUTO_TEST_CASE(MovementEventNonZeroPosition)
+{
+	d_inputAggregator->injectMousePosition(30, 40);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+		d_inputEventReceiver->d_pointerTotalDelta);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 30);
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 40);
+}
+
+BOOST_AUTO_TEST_CASE(MovementEventMultiplePositions)
+{
+	d_inputAggregator->injectMousePosition(3, 5);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+		d_inputEventReceiver->d_pointerTotalDelta);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 5);
+
+	d_inputAggregator->injectMousePosition(3, -3);
+
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
+	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, -3);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
