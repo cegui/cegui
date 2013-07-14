@@ -31,7 +31,8 @@
 namespace CEGUI
 {
     InputAggregator::InputAggregator(InputEventReceiver* input_receiver)
-        : d_inputReceiver (input_receiver) 
+        : d_inputReceiver(input_receiver) 
+		, d_pointerPosition(0.0f, 0.0f)
     {
     }
 
@@ -42,8 +43,18 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseMove(float delta_x, float delta_y)
     {
+        Vector2f delta(delta_x, delta_y);
+        d_pointerPosition += delta;
+
+        MovementInputEvent movementEvent;
+        movementEvent.delta = delta;
+        movementEvent.position = d_pointerPosition;
+
+        d_inputReceiver->injectInputEvent(&movementEvent);
+
         return true;
     }
+
     bool InputAggregator::injectMouseLeaves()
     {
         return true;
@@ -81,7 +92,7 @@ namespace CEGUI
     }
     bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
     {
-        return true;
+        return injectMouseMove(x_pos - d_pointerPosition.d_x, y_pos - d_pointerPosition.d_y);
     }
     
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)

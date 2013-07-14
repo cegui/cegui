@@ -76,7 +76,11 @@ public:
 class CEGUIEXPORT MovementInputEvent : public InputEvent
 {
 public:
-    MovementInputEvent() : InputEvent(MovementInputEventType)  {}
+    MovementInputEvent() 
+        : InputEvent(MovementInputEventType)
+        , position(0.0f, 0.0f)
+        , delta(0.0f, 0.0f)
+    {}
     
     Vector2f position;      //!< The actual position of the pointer
     Vector2f delta;         //!< The delta from the last position
@@ -127,7 +131,11 @@ public:
 class CEGUIEXPORT ScrollInputEvent : public InputEvent
 {
 public:
-    ScrollInputEvent() : InputEvent(ScrollInputEventType)  {}
+    ScrollInputEvent() 
+        : InputEvent(ScrollInputEventType)
+        , delta(0)
+        , scrollDirection(0)
+    {}
     
     int delta;              //!< The amount of scroll since last event
     int scrollDirection;    //!< 0 for horizontal and 1 for vertical
