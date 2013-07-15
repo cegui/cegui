@@ -37,6 +37,11 @@
 #include "CEGUI/Vector.h"
 #include "CEGUI/Size.h"
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -137,10 +142,14 @@ public:
         , d_scrollDirection(0)
     {}
     
-    int d_delta;              //!< The amount of scroll since last event
+    float d_delta;            //!< The amount of scroll since last event
     int d_scrollDirection;    //!< 0 for horizontal and 1 for vertical
 };
 
 } // End of  CEGUI namespace section
+
+#if defined (_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif	// end of guard _CEGUIInputEvents_h_
