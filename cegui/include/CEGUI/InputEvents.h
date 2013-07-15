@@ -73,10 +73,10 @@ public:
 \brief
 	Represents the movement of the pointer
 */
-class CEGUIEXPORT MovementInputEvent : public InputEvent
+class CEGUIEXPORT PointerMovementInputEvent : public InputEvent
 {
 public:
-    MovementInputEvent() 
+    PointerMovementInputEvent() 
         : InputEvent(MovementInputEventType)
         , d_position(0.0f, 0.0f)
         , d_delta(0.0f, 0.0f)
