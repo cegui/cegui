@@ -105,7 +105,7 @@ public:
         d_text += event->d_character;
     }
 
-    void handleMovementEvent(const MovementInputEvent* event)
+    void handleMovementEvent(const PointerMovementInputEvent* event)
     {
         d_pointerPosition = event->d_position;
         d_pointerTotalDelta += event->d_delta;
@@ -123,7 +123,7 @@ public:
                 &MockInputEventReceiver::handleTextEvent, this)));
 
         d_handlersMap.insert(std::make_pair(MovementInputEventType, 
-            new InputEventHandlerImpl<MovementInputEvent, MockInputEventReceiver>(
+            new InputEventHandlerImpl<PointerMovementInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleMovementEvent, this)));
 
         d_handlersMap.insert(std::make_pair(ScrollInputEventType, 

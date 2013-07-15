@@ -46,7 +46,7 @@ namespace CEGUI
         Vector2f delta(delta_x, delta_y);
         d_pointerPosition += delta;
 
-        MovementInputEvent movementEvent;
+        PointerMovementInputEvent movementEvent;
         movementEvent.d_delta = delta;
         movementEvent.d_position = d_pointerPosition;
 
