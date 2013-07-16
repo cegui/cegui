@@ -64,9 +64,19 @@ public:
                 const Rectf& dest_area,
                 const Rectf* clip_area,
                 const ColourRect& colours) const;
-    void notifyDisplaySizeChanged(const Sizef& size);
+
+    //! Notifies the class that the display size of the renderer has changed so that
+    // the window can adapt to the new display size accordingly
+    void notifyDisplaySizeChanged(const Sizef& renderer_display_size);
 
 protected:
+    //! Updates the scaled size and offset values according to the new display size of the renderer 
+    void updateScaledSizeAndOffset(const Sizef& renderer_display_size);
+    //! Updates only the scaled size values according to the new display size of the renderer 
+    void updateScaledSize(const Sizef& renderer_display_size);
+    //! Updates only the scaled offset values according to the new display size of the renderer 
+    void updateScaledOffset(const Sizef& renderer_display_size);
+
     //! name used when the BasicImage was created.
     String d_name;
     //! Texture used by this image.

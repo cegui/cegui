@@ -31,6 +31,7 @@
 #define _CEGUISize_h_
 
 #include "CEGUI/UDim.h"
+#include "CEGUI/Vector.h"
 #include <typeinfo>
 #include <ostream>
 
@@ -95,6 +96,16 @@ public:
     inline Size operator*(const T c) const
     {
         return Size(d_width * c, d_height * c);
+    }
+
+    inline Size operator*(const Size& s) const
+    {
+        return Size(d_width * s.d_width, d_height * s.d_height);
+    }
+
+    inline Size operator*(const Vector2f& vec) const
+    {
+        return Size(d_width * vec.d_x, d_height * vec.d_y);
     }
 
     inline Size operator+(const Size& s) const
