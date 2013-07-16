@@ -62,7 +62,7 @@ public:
     {}
 
     RGB_Colour() :
-        r(0.0f), g(0.0f), b(0.0f)
+        r(0), g(0), b(0)
     {}
 
     RGB_Colour(const Lab_Colour& colour);
