@@ -1,7 +1,0 @@
-<SampleDefinition
-    name      = "CEGUIEditboxValidationDemo"
-    type      = "C++ Module"
-    summary         = "Displays how text can be validated. In the demo an editbox is presented which validates incoming text. Partially valid, valid and invalid entries in the editbox are displayed using different text colours"
-    description     = "The &quot;RegexMatchStateEventArgs&quot; are used in the demo to retrieve the validation status of a text matched against a regular expression"
-    credits         = "CrazyEddie"
-/>
