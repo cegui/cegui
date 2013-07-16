@@ -22,6 +22,8 @@ add_subdirectory(TextDemo)
 add_subdirectory(TreeDemo)
 add_subdirectory(CommonDialogsDemo)
 
+add_subdirectory(CustomShapesDrawing)
+
 if (CEGUI_BUILD_LUA_MODULE)
     # add_subdirectory(Demo8)
 endif()
