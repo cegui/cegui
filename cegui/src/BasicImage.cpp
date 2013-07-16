@@ -102,7 +102,7 @@ BasicImage::BasicImage(const String& name, Texture* texture,
 
 {
     // force initialisation of the autoscaling fields.
-    notifyDisplaySizeChanged(
+    updateScaledSizeAndOffset(
         System::getSingleton().getRenderer()->getDisplaySize());
 }
 
@@ -119,8 +119,10 @@ void BasicImage::setArea(const Rectf& pixel_area)
     d_pixelSize = pixel_area.getSize();
 
     if (d_autoScaled != ASM_Disabled)
-        notifyDisplaySizeChanged(
+        updateScaledSize(
             System::getSingleton().getRenderer()->getDisplaySize());
+    else
+        d_scaledSize = d_pixelSize;
 }
 
 //----------------------------------------------------------------------------//
@@ -129,8 +131,10 @@ void BasicImage::setOffset(const Vector2f& pixel_offset)
     d_pixelOffset = pixel_offset;
 
     if (d_autoScaled != ASM_Disabled)
-        notifyDisplaySizeChanged(
+        updateScaledOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
+    else
+        d_scaledOffset = d_pixelOffset;
 }
 
 //----------------------------------------------------------------------------//
@@ -140,7 +144,7 @@ void BasicImage::setAutoScaled(const AutoScaledMode autoscaled)
 
     if (d_autoScaled != ASM_Disabled)
     {
-        notifyDisplaySizeChanged(
+        updateScaledSizeAndOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
     }
     else
@@ -156,7 +160,7 @@ void BasicImage::setNativeResolution(const Sizef& native_res)
     d_nativeResolution = native_res;
 
     if (d_autoScaled != ASM_Disabled)
-        notifyDisplaySizeChanged(
+        updateScaledSizeAndOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
 }
 
@@ -274,24 +278,47 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::notifyDisplaySizeChanged(const Sizef& size)
+void BasicImage::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
 {
-    // TODO: This could be cleaned up by adding some more operators to
-    // Sizef and Vector2f
-
-    float x_scale;
-    float y_scale;
-
-    computeScalingFactors(d_autoScaled, size, d_nativeResolution,
-                          x_scale, y_scale);
-
-    d_scaledSize.d_width = d_pixelSize.d_width * x_scale;
-    d_scaledSize.d_height = d_pixelSize.d_height * y_scale;
-    d_scaledOffset.d_x = d_pixelOffset.d_x * x_scale;
-    d_scaledOffset.d_y = d_pixelOffset.d_y * y_scale;
+    //If we use autoscaling of any sort we must update the scaled size and offset
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSizeAndOffset(renderer_display_size);
 }
 
 //----------------------------------------------------------------------------//
+
+void BasicImage::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
+{
+    Vector2f scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.d_x, scaleFactors.d_y);
+
+    d_scaledSize = d_pixelSize * scaleFactors;
+    d_scaledOffset = d_pixelOffset * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+void BasicImage::updateScaledSize(const Sizef& renderer_display_size)
+{
+    Vector2f scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.d_x, scaleFactors.d_y);
+
+    d_scaledSize = d_pixelSize * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+void BasicImage::updateScaledOffset(const Sizef& renderer_display_size)
+{
+    Vector2f scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.d_x, scaleFactors.d_y);
+
+    d_scaledOffset = d_pixelOffset * scaleFactors;
+}
 
 } // End of  CEGUI namespace section
 
