@@ -52,12 +52,10 @@ namespace CEGUI
 enum InputEventType
 {
     MovementInputEventType          = 0x0001,	//!< The movement of a pointer.
-    PressedButtonInputEventType     = 0x0002,	//!< A button was pressed.
-    ReleasedButtonInputEventType    = 0x0003,	//!< A button was released.
-    TextInputEventType              = 0x0004,	//!< Text was inputted.
-    ScrollInputEventType            = 0x0005,	//!< The scroll operation.
+    TextInputEventType              = 0x0003,	//!< Text was inputted.
+    ScrollInputEventType            = 0x0004,	//!< The scroll operation.
 
-    UserDefinedInputEventType       = 0x500,   //!< This marks the beginning of user-defined events.
+    UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
 };
 
 
@@ -101,32 +99,6 @@ public:
     TextInputEvent() : InputEvent(TextInputEventType)  {}
     
     char d_character;         //!< The character inputted
-};
-
-/*!
-\brief
-	Represents the pressing of a button
-*/
-class CEGUIEXPORT PressedButtonInputEvent : public InputEvent
-{
-public:
-    PressedButtonInputEvent() : InputEvent(PressedButtonInputEventType) {}
-    
-    // TODO: aggregate the mouse/gamepad/etc buttons too
-    Key d_button;             //!< The button pressed
-};
-
-/*!
-\brief
-	Represents the releasing of a pressed button
-*/
-class CEGUIEXPORT ReleasedButtonInputEvent : public InputEvent
-{
-public:
-    ReleasedButtonInputEvent() : InputEvent(ReleasedButtonInputEventType) {}
-    
-    // TODO: aggregate the mouse/gamepad/etc buttons too
-    Key d_button;            //!< The button released
 };
 
 /*!
