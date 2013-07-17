@@ -127,6 +127,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     // setup for FPS value
     d_FPSGeometry = &d_renderer->createGeometryBuffer();
     d_FPSGeometry->setClippingRegion(scrn);
+    positionFPS();
 
     // setup for spinning logo
     d_logoGeometry = &d_renderer->createGeometryBuffer();
@@ -145,7 +146,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     // subscribe handler to render overlay items
     CEGUI::System::getSingleton().getDefaultGUIContext().
         subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-            CEGUI::Event::Subscriber(&CEGuiBaseApplication::overlayHandler,
+            CEGUI::Event::Subscriber(&CEGuiBaseApplication::sampleBrowserOverlayHandler,
                                      this));
 
     // subscribe handler to reposition logo when window is sized.
@@ -257,15 +258,25 @@ const char* CEGuiBaseApplication::getDataPathPrefix() const
 }
 
 //----------------------------------------------------------------------------//
-bool CEGuiBaseApplication::overlayHandler(const CEGUI::EventArgs& args)
+bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& args)
 {
-    using namespace CEGUI;
-
-    if (static_cast<const RenderQueueEventArgs&>(args).queueID != RQ_OVERLAY)
+    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
         return false;
 
     // draw the logo
     d_logoGeometry->draw();
+    // draw FPS value
+    d_FPSGeometry->draw();
+
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
+{
+    if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
+        return false;
+
     // draw FPS value
     d_FPSGeometry->draw();
 
@@ -294,7 +305,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
 
             d_FPSGeometry->reset();
             fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0,
-                        CEGUI::Colour(0xFF000000));
+                        CEGUI::Colour(0xFFFFFFFF));
         }
 
         // reset counter state
@@ -326,6 +337,17 @@ void CEGuiBaseApplication::positionLogo()
 }
 
 //----------------------------------------------------------------------------//
+void CEGuiBaseApplication::positionFPS()
+{
+    const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+
+    d_FPSGeometry->setClippingRegion(scrn);
+    d_FPSGeometry->setTranslation(
+        CEGUI::Vector3f(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f));
+}
+
+
+//----------------------------------------------------------------------------//
 bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
 {
     // clear FPS geometry and see that it gets recreated in the next frame
@@ -339,5 +361,19 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
     positionLogo();
     return true;
 }
+
+//----------------------------------------------------------------------------//
+
+void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_context)
+{
+    // clearing this queue actually makes sure it's created(!)
+    gui_context->clearGeometry(CEGUI::RQ_OVERLAY);
+
+    // subscribe handler to render overlay items
+    gui_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+        CEGUI::Event::Subscriber(&CEGuiBaseApplication::sampleOverlayHandler,
+        this));
+}
+
 
 //----------------------------------------------------------------------------//
