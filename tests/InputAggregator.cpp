@@ -27,6 +27,7 @@
  ***************************************************************************/
 
 #include <boost/test/unit_test.hpp>
+#include <boost/assign.hpp>
 
 #include <vector>
 #include <iostream>
@@ -68,6 +69,7 @@ public:
     float d_totalScroll;
     Vector2f d_pointerPosition;
     Vector2f d_pointerTotalDelta;
+    std::vector<SemanticValue> d_semanticValues;
 
     MockInputEventReceiver()
         : d_text("")
@@ -116,6 +118,11 @@ public:
         d_totalScroll += event->d_delta;
     }
 
+    void handleSemanticEvent(const SemanticInputEvent* event)
+    {
+        d_semanticValues.push_back(event->d_value);
+    }
+
     void initializeEventHandlers() 
     {
         d_handlersMap.insert(std::make_pair(TextInputEventType, 
@@ -129,6 +136,10 @@ public:
         d_handlersMap.insert(std::make_pair(ScrollInputEventType, 
             new InputEventHandlerImpl<ScrollInputEvent, MockInputEventReceiver>(
             &MockInputEventReceiver::handleScrollEvent, this)));
+
+        d_handlersMap.insert(std::make_pair(SemanticInputEventType, 
+            new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
+            &MockInputEventReceiver::handleSemanticEvent, this)));
     }
 
 private:
@@ -273,6 +284,54 @@ BOOST_AUTO_TEST_CASE(ScrollEventMultipleDelta)
 
     d_inputAggregator->injectMouseWheelChange(-2);
     BOOST_CHECK_EQUAL(d_inputEventReceiver->d_totalScroll, 7);
+}
+
+BOOST_AUTO_TEST_CASE(CutRequestToCut)
+{
+    std::vector<SemanticValue> expected_values = 
+        boost::assign::list_of(Cut);
+
+    d_inputAggregator->injectCutRequest();
+
+    BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
+{
+    std::vector<SemanticValue> expected_values = 
+        boost::assign::list_of(Copy);
+
+    d_inputAggregator->injectCopyRequest();
+
+    BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
+{
+    std::vector<SemanticValue> expected_values = 
+        boost::assign::list_of(Paste);
+
+    d_inputAggregator->injectPasteRequest();
+
+    BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
+{
+    std::vector<SemanticValue> expected_values = 
+        boost::assign::list_of(PointerActivate);
+
+    d_inputAggregator->injectMouseButtonClick(LeftButton);
+
+    BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.end());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
