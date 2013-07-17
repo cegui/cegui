@@ -104,7 +104,7 @@ public:
     InputEvent(int event_type) : d_eventType(event_type)  {}
     virtual ~InputEvent() {}
 
-	int d_eventType;		//!< The type of the input event
+    int d_eventType;        //!< The type of the input event
 };
 
 /*!
@@ -114,11 +114,12 @@ public:
 class CEGUIEXPORT PointerMovementInputEvent : public InputEvent
 {
 public:
-    PointerMovementInputEvent() 
-        : InputEvent(MovementInputEventType)
-        , d_position(0.0f, 0.0f)
-        , d_delta(0.0f, 0.0f)
-    {}
+    PointerMovementInputEvent() : 
+        InputEvent(MovementInputEventType),
+        d_position(0.0f, 0.0f),
+        d_delta(0.0f, 0.0f)
+    {
+    }
     
     Vector2f d_position;      //!< The actual position of the pointer
     Vector2f d_delta;         //!< The delta from the last position
@@ -143,11 +144,12 @@ public:
 class CEGUIEXPORT ScrollInputEvent : public InputEvent
 {
 public:
-    ScrollInputEvent() 
-        : InputEvent(ScrollInputEventType)
-        , d_delta(0)
-        , d_scrollDirection(0)
-    {}
+    ScrollInputEvent() : 
+        InputEvent(ScrollInputEventType),
+        d_delta(0),
+        d_scrollDirection(0)
+    {
+    }
     
     float d_delta;            //!< The amount of scroll since last event
     int d_scrollDirection;    //!< 0 for horizontal and 1 for vertical
@@ -161,10 +163,11 @@ public:
 class CEGUIEXPORT SemanticInputEvent : public InputEvent
 {
 public:
-    SemanticInputEvent(SemanticValue value)
-        : InputEvent(SemanticInputEventType)
-        , d_value(value)
-    {}
+    SemanticInputEvent(SemanticValue value) : 
+        InputEvent(SemanticInputEventType),
+        d_value(value)
+    {
+    }
     
     SemanticValue d_value;            //!< The semantic value of this event
 };

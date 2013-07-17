@@ -47,9 +47,9 @@ struct InputEventHandlerImpl : public InputEventHandler
 {
     typedef void(TClass::*HandlerFunctionType)(const TInput*);
 
-    InputEventHandlerImpl(HandlerFunctionType handler_func, TClass* obj)
-        : d_handlerFunc(handler_func)
-        , d_obj(obj)
+    InputEventHandlerImpl(HandlerFunctionType handler_func, TClass* obj) :
+        d_handlerFunc(handler_func),
+        d_obj(obj)
     {}
 
     void handle(const InputEvent* event)
@@ -71,11 +71,11 @@ public:
     Vector2f d_pointerTotalDelta;
     std::vector<SemanticValue> d_semanticValues;
 
-    MockInputEventReceiver()
-        : d_text("")
-        , d_pointerPosition(0.0f, 0.0f)
-        , d_pointerTotalDelta(0.0f, 0.0f)
-        , d_totalScroll(0)
+    MockInputEventReceiver() : 
+        d_text(""),
+        d_pointerPosition(0.0f, 0.0f),
+        d_pointerTotalDelta(0.0f, 0.0f),
+        d_totalScroll(0)
     {}
 
     ~MockInputEventReceiver()
@@ -135,11 +135,11 @@ public:
 
         d_handlersMap.insert(std::make_pair(ScrollInputEventType, 
             new InputEventHandlerImpl<ScrollInputEvent, MockInputEventReceiver>(
-            &MockInputEventReceiver::handleScrollEvent, this)));
+                &MockInputEventReceiver::handleScrollEvent, this)));
 
         d_handlersMap.insert(std::make_pair(SemanticInputEventType, 
             new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
-            &MockInputEventReceiver::handleSemanticEvent, this)));
+                &MockInputEventReceiver::handleSemanticEvent, this)));
     }
 
 private:
