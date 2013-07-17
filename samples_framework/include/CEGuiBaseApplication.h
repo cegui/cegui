@@ -55,6 +55,7 @@ class ImageCodec;
 class ResourceProvider;
 class GeometryBuffer;
 class EventArgs;
+class GUIContext;
 }
 
 /*!
@@ -122,9 +123,15 @@ public:
         is obtained via a environment variable named 'CEGUI_SAMPLE_DATAPATH'
         if the variable is not set, a default will be used depending on the
         build system in use.
-     */
+        */
     const char* getDataPathPrefix() const;
-    
+
+    /*!
+    \brief
+        Registers the overlay handler for rendering the FPS for a specified GUIContext
+    */
+    void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
+
 
 protected:
     //! name of env var that holds the path prefix to the data files.
@@ -156,8 +163,12 @@ protected:
     void updateLogo(const float elapsed);
     //! function that positions the logo in the correct place.
     void positionLogo();
+    //! positions the FPS counter at the correct place.
+    void positionFPS();
     //! event handler function that draws the logo and FPS overlay elements.
-    bool overlayHandler(const CEGUI::EventArgs& args);
+    bool sampleBrowserOverlayHandler(const CEGUI::EventArgs& args);
+    //! event handler function that draws the FPS overlay elements.
+    bool sampleOverlayHandler(const CEGUI::EventArgs& args);
     //! event handler function called when main view is resized
     bool resizeHandler(const CEGUI::EventArgs& args);
 
