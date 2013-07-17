@@ -71,11 +71,13 @@ namespace CEGUI
 
     bool InputAggregator::injectKeyDown(Key::Scan scan_code)
     {
+        /* Ignored for now */
         return true;
     }
 
     bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     {
+
         return true;
     }
 
@@ -104,6 +106,10 @@ namespace CEGUI
     
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     {
+        SemanticInputEvent semanticEvent(PointerActivate);
+
+        d_inputReceiver->injectInputEvent(&semanticEvent);
+
         return true;
     }
     bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
@@ -117,16 +123,28 @@ namespace CEGUI
     
     bool InputAggregator::injectCopyRequest()
     {
+        SemanticInputEvent semanticEvent(Copy);
+
+        d_inputReceiver->injectInputEvent(&semanticEvent);
+
         return true;
     }
 
     bool InputAggregator::injectCutRequest()
     {
+        SemanticInputEvent semanticEvent(Cut);
+
+        d_inputReceiver->injectInputEvent(&semanticEvent);
+
         return true;
     }
 
     bool InputAggregator::injectPasteRequest()
     {
+        SemanticInputEvent semanticEvent(Paste);
+
+        d_inputReceiver->injectInputEvent(&semanticEvent);
+
         return true;
     }
 } // End of  CEGUI namespace section

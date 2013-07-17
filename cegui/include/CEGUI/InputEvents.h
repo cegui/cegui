@@ -161,9 +161,9 @@ public:
 class CEGUIEXPORT SemanticInputEvent : public InputEvent
 {
 public:
-    SemanticInputEvent() 
+    SemanticInputEvent(SemanticValue value)
         : InputEvent(SemanticInputEventType)
-        , d_value(NoValue)
+        , d_value(value)
     {}
     
     SemanticValue d_value;            //!< The semantic value of this event
