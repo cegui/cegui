@@ -30,9 +30,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    InputAggregator::InputAggregator(InputEventReceiver* input_receiver)
-        : d_inputReceiver(input_receiver) 
-		, d_pointerPosition(0.0f, 0.0f)
+    InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
+        d_inputReceiver(input_receiver),
+        d_pointerPosition(0.0f, 0.0f)
     {
     }
 
@@ -46,11 +46,11 @@ namespace CEGUI
         Vector2f delta(delta_x, delta_y);
         d_pointerPosition += delta;
 
-        PointerMovementInputEvent movementEvent;
-        movementEvent.d_delta = delta;
-        movementEvent.d_position = d_pointerPosition;
+        PointerMovementInputEvent movement_event;
+        movement_event.d_delta = delta;
+        movement_event.d_position = d_pointerPosition;
 
-        d_inputReceiver->injectInputEvent(&movementEvent);
+        d_inputReceiver->injectInputEvent(&movement_event);
 
         return true;
     }
@@ -83,19 +83,19 @@ namespace CEGUI
 
     bool InputAggregator::injectChar(String::value_type code_point)
     {
-        TextInputEvent textEvent;
-        textEvent.d_character = code_point;
+        TextInputEvent text_event;
+        text_event.d_character = code_point;
 
-        d_inputReceiver->injectInputEvent(&textEvent);
+        d_inputReceiver->injectInputEvent(&text_event);
         return true;
     }
     bool InputAggregator::injectMouseWheelChange(float delta)
     {
-        ScrollInputEvent scrollEvent;
-        scrollEvent.d_delta = delta;
-        scrollEvent.d_scrollDirection = 0;
+        ScrollInputEvent scroll_event;
+        scroll_event.d_delta = delta;
+        scroll_event.d_scrollDirection = 0;
 
-        d_inputReceiver->injectInputEvent(&scrollEvent);
+        d_inputReceiver->injectInputEvent(&scroll_event);
 
         return true;
     }
@@ -106,9 +106,9 @@ namespace CEGUI
     
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     {
-        SemanticInputEvent semanticEvent(PointerActivate);
+        SemanticInputEvent semantic_event(PointerActivate);
 
-        d_inputReceiver->injectInputEvent(&semanticEvent);
+        d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
     }
@@ -123,27 +123,27 @@ namespace CEGUI
     
     bool InputAggregator::injectCopyRequest()
     {
-        SemanticInputEvent semanticEvent(Copy);
+        SemanticInputEvent semantic_event(Copy);
 
-        d_inputReceiver->injectInputEvent(&semanticEvent);
+        d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
     }
 
     bool InputAggregator::injectCutRequest()
     {
-        SemanticInputEvent semanticEvent(Cut);
+        SemanticInputEvent semantic_event(Cut);
 
-        d_inputReceiver->injectInputEvent(&semanticEvent);
+        d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
     }
 
     bool InputAggregator::injectPasteRequest()
     {
-        SemanticInputEvent semanticEvent(Paste);
+        SemanticInputEvent semantic_event(Paste);
 
-        d_inputReceiver->injectInputEvent(&semanticEvent);
+        d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
     }
