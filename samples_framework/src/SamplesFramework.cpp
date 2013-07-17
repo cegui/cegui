@@ -466,6 +466,8 @@ bool SamplesFramework::initialiseSampleStepwise(int sampleNumber)
             sampleData->getName(), sampleData->getRTTImage());
 
         sampleData->setSampleWindow(sampleWindow);
+
+        d_baseApp->registerSampleOverlayHandler(sampleData->getGuiContext());
     }
 
     return false;
