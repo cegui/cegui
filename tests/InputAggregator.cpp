@@ -27,7 +27,6 @@
  ***************************************************************************/
 
 #include <boost/test/unit_test.hpp>
-#include <boost/assign.hpp>
 
 #include <vector>
 #include <iostream>
@@ -288,8 +287,8 @@ BOOST_AUTO_TEST_CASE(ScrollEventMultipleDelta)
 
 BOOST_AUTO_TEST_CASE(CutRequestToCut)
 {
-    std::vector<SemanticValue> expected_values =
-        boost::assign::list_of(Cut);
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(Cut);
 
     d_inputAggregator->injectCutRequest();
 
@@ -300,8 +299,8 @@ BOOST_AUTO_TEST_CASE(CutRequestToCut)
 
 BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 {
-    std::vector<SemanticValue> expected_values =
-        boost::assign::list_of(Copy);
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(Copy);
 
     d_inputAggregator->injectCopyRequest();
 
@@ -312,8 +311,8 @@ BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 
 BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 {
-    std::vector<SemanticValue> expected_values =
-        boost::assign::list_of(Paste);
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(Paste);
 
     d_inputAggregator->injectPasteRequest();
 
@@ -324,8 +323,8 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 
 BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
 {
-    std::vector<SemanticValue> expected_values =
-        boost::assign::list_of(PointerActivate);
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(PointerActivate);
 
     d_inputAggregator->injectMouseButtonClick(LeftButton);
 
