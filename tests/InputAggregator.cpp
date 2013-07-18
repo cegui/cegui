@@ -38,7 +38,7 @@
 using namespace CEGUI;
 
 struct InputEventHandler
-{ 
+{
     virtual void handle(const InputEvent* event) = 0;
 };
 
@@ -71,7 +71,7 @@ public:
     Vector2f d_pointerTotalDelta;
     std::vector<SemanticValue> d_semanticValues;
 
-    MockInputEventReceiver() : 
+    MockInputEventReceiver() :
         d_text(""),
         d_pointerPosition(0.0f, 0.0f),
         d_pointerTotalDelta(0.0f, 0.0f),
@@ -123,21 +123,21 @@ public:
         d_semanticValues.push_back(event->d_value);
     }
 
-    void initializeEventHandlers() 
+    void initializeEventHandlers()
     {
-        d_handlersMap.insert(std::make_pair(TextInputEventType, 
+        d_handlersMap.insert(std::make_pair(TextInputEventType,
             new InputEventHandlerImpl<TextInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleTextEvent, this)));
 
-        d_handlersMap.insert(std::make_pair(MovementInputEventType, 
+        d_handlersMap.insert(std::make_pair(MovementInputEventType,
             new InputEventHandlerImpl<PointerMovementInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleMovementEvent, this)));
 
-        d_handlersMap.insert(std::make_pair(ScrollInputEventType, 
+        d_handlersMap.insert(std::make_pair(ScrollInputEventType,
             new InputEventHandlerImpl<ScrollInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleScrollEvent, this)));
 
-        d_handlersMap.insert(std::make_pair(SemanticInputEventType, 
+        d_handlersMap.insert(std::make_pair(SemanticInputEventType,
             new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleSemanticEvent, this)));
     }
@@ -190,7 +190,7 @@ BOOST_AUTO_TEST_CASE(MovementEventNoDelta)
 {
     d_inputAggregator->injectMouseMove(0, 0);
 
-    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition,
         d_inputEventReceiver->d_pointerTotalDelta);
 
     BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 0);
@@ -202,7 +202,7 @@ BOOST_AUTO_TEST_CASE(MovementEventSingleDelta)
     d_inputAggregator->injectMouseMove(0, 0);
     d_inputAggregator->injectMouseMove(3, 5);
 
-    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition,
         d_inputEventReceiver->d_pointerTotalDelta);
 
     BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
@@ -214,7 +214,7 @@ BOOST_AUTO_TEST_CASE(MovementEventMultipleDeltas)
     d_inputAggregator->injectMouseMove(0, 0);
     d_inputAggregator->injectMouseMove(3, 5);
 
-    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition,
         d_inputEventReceiver->d_pointerTotalDelta);
 
     BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
@@ -228,40 +228,40 @@ BOOST_AUTO_TEST_CASE(MovementEventMultipleDeltas)
 
 BOOST_AUTO_TEST_CASE(MovementEventZeroPosition)
 {
-	d_inputAggregator->injectMousePosition(0, 0);
+    d_inputAggregator->injectMousePosition(0, 0);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
-		d_inputEventReceiver->d_pointerTotalDelta);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition,
+        d_inputEventReceiver->d_pointerTotalDelta);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 0);
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 0);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 0);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 0);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventNonZeroPosition)
 {
-	d_inputAggregator->injectMousePosition(30, 40);
+    d_inputAggregator->injectMousePosition(30, 40);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
-		d_inputEventReceiver->d_pointerTotalDelta);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition,
+        d_inputEventReceiver->d_pointerTotalDelta);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 30);
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 40);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 30);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 40);
 }
 
 BOOST_AUTO_TEST_CASE(MovementEventMultiplePositions)
 {
-	d_inputAggregator->injectMousePosition(3, 5);
+    d_inputAggregator->injectMousePosition(3, 5);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition, 
-		d_inputEventReceiver->d_pointerTotalDelta);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition,
+        d_inputEventReceiver->d_pointerTotalDelta);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 5);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, 5);
 
-	d_inputAggregator->injectMousePosition(3, -3);
+    d_inputAggregator->injectMousePosition(3, -3);
 
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
-	BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, -3);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_x, 3);
+    BOOST_CHECK_EQUAL(d_inputEventReceiver->d_pointerPosition.d_y, -3);
 }
 
 BOOST_AUTO_TEST_CASE(ScrollEventNoDelta)
@@ -288,49 +288,49 @@ BOOST_AUTO_TEST_CASE(ScrollEventMultipleDelta)
 
 BOOST_AUTO_TEST_CASE(CutRequestToCut)
 {
-    std::vector<SemanticValue> expected_values = 
+    std::vector<SemanticValue> expected_values =
         boost::assign::list_of(Cut);
 
     d_inputAggregator->injectCutRequest();
 
     BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.begin(),
         d_inputEventReceiver->d_semanticValues.end());
 }
 
 BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 {
-    std::vector<SemanticValue> expected_values = 
+    std::vector<SemanticValue> expected_values =
         boost::assign::list_of(Copy);
 
     d_inputAggregator->injectCopyRequest();
 
     BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.begin(),
         d_inputEventReceiver->d_semanticValues.end());
 }
 
 BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 {
-    std::vector<SemanticValue> expected_values = 
+    std::vector<SemanticValue> expected_values =
         boost::assign::list_of(Paste);
 
     d_inputAggregator->injectPasteRequest();
 
     BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.begin(),
         d_inputEventReceiver->d_semanticValues.end());
 }
 
 BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
 {
-    std::vector<SemanticValue> expected_values = 
+    std::vector<SemanticValue> expected_values =
         boost::assign::list_of(PointerActivate);
 
     d_inputAggregator->injectMouseButtonClick(LeftButton);
 
     BOOST_CHECK_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
-        d_inputEventReceiver->d_semanticValues.begin(), 
+        d_inputEventReceiver->d_semanticValues.begin(),
         d_inputEventReceiver->d_semanticValues.end());
 }
 
