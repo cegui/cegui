@@ -53,7 +53,7 @@ struct InputEventHandlerImpl : public InputEventHandler
 
     void handle(const InputEvent* event)
     {
-        (d_obj->*d_handlerFunc)((const TInput*)event);
+        (d_obj->*d_handlerFunc)(static_cast<const TInput*>(event));
     }
 
 private:
