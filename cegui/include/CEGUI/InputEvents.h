@@ -61,41 +61,6 @@ enum InputEventType
 
 /*!
 \brief
-    Represents the value of a semantic input event, generated from a specific
-    operation or sequence of operations.
-*/
-enum SemanticValue
-{
-    NoValue                         = 0x0000,
-    PointerActivate                 = 0x0001,
-    PointerDeactivate               = 0x0002,
-    SelectMultipleItems             = 0x0003,
-    SelectCumulative                = 0x0004,
-    SelectWord                      = 0x0005,
-    SelectAll                       = 0x0006,
-    SelectLeftCharacter             = 0x0007,
-    SelectRightCharacter            = 0x0008,
-    GoToPreviousCharacter           = 0x0009,
-    GoToNextCharacter               = 0x0010,
-    GoToPreviousWord                = 0x0011,
-    GoToNextWord                    = 0x0012,
-    GoToStartOfLine                 = 0x0013,
-    GoToEndOfLine                   = 0x0014,
-    DeleteLastCharacter             = 0x0015,
-    DeletePreviousCharacter         = 0x0016,
-    Confirm                         = 0x0017,
-    Back                            = 0x0018,
-    Undo                            = 0x0019,
-    Redo                            = 0x0020,
-    Cut                             = 0x0021,
-    Copy                            = 0x0022,
-    Paste                           = 0x0023,
-
-    UserDefinedSemanticValue        = 0x5000,   //!< This marks the beginning of user-defined semantic values.
-};
-
-/*!
-\brief
     The base class for all input events.
 */
 class CEGUIEXPORT InputEvent
@@ -153,22 +118,6 @@ public:
 
     float d_delta;            //!< The amount of scroll since last event
     int d_scrollDirection;    //!< 0 for horizontal and 1 for vertical
-};
-
-/*!
-\brief
-    Represents a semantic input event (e.g.: delete a previous character, confirm)
-*/
-class CEGUIEXPORT SemanticInputEvent : public InputEvent
-{
-public:
-    SemanticInputEvent(SemanticValue value) :
-        InputEvent(SemanticInputEventType),
-        d_value(value)
-    {
-    }
-
-    SemanticValue d_value;            //!< The semantic value of this event
 };
 
 } // End of  CEGUI namespace section
