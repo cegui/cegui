@@ -90,6 +90,7 @@ public:
     }
 
     SemanticValue d_value;            //!< The semantic value of this event
+    float d_payload;                  //!< Extra data associated to this event
 };
 
 } // End of  CEGUI namespace section
