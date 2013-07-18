@@ -63,10 +63,18 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseButtonDown(MouseButton button)
     {
+        SemanticInputEvent semantic_event(PointerHold);
+
+        d_inputReceiver->injectInputEvent(&semantic_event);
+
         return true;
     }
     bool InputAggregator::injectMouseButtonUp(MouseButton button)
     {
+        SemanticInputEvent semantic_event(PointerActivate);
+
+        d_inputReceiver->injectInputEvent(&semantic_event);
+
         return true;
     }
 
@@ -90,6 +98,7 @@ namespace CEGUI
         d_inputReceiver->injectInputEvent(&text_event);
         return true;
     }
+
     bool InputAggregator::injectMouseWheelChange(float delta)
     {
         SemanticInputEvent semantic_event(VerticalScroll);
@@ -99,6 +108,7 @@ namespace CEGUI
 
         return true;
     }
+
     bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
     {
         return injectMouseMove(x_pos - d_pointerPosition.d_x, y_pos - d_pointerPosition.d_y);
@@ -112,12 +122,22 @@ namespace CEGUI
 
         return true;
     }
+
     bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
     {
+        SemanticInputEvent semantic_event(SelectWord);
+
+        d_inputReceiver->injectInputEvent(&semantic_event);
+
         return true;
     }
+
     bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
     {
+        SemanticInputEvent semantic_event(SelectAll);
+
+        d_inputReceiver->injectInputEvent(&semantic_event);
+
         return true;
     }
 

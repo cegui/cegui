@@ -334,12 +334,74 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
         d_inputEventReceiver->d_semanticValues.end());
 }
 
+BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(PointerHold);
+
+    d_inputAggregator->injectMouseButtonDown(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(PointerActivate);
+
+    d_inputAggregator->injectMouseButtonUp(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(PointerHold);
+    expected_values.push_back(PointerActivate);
+
+    d_inputAggregator->injectMouseButtonDown(LeftButton);
+    d_inputAggregator->injectMouseButtonUp(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
 BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
 {
     std::vector<SemanticValue> expected_values;
     expected_values.push_back(PointerActivate);
 
     d_inputAggregator->injectMouseButtonClick(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseDoubleClickToSelectWord)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SelectWord);
+
+    d_inputAggregator->injectMouseButtonDoubleClick(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseTripleClickToSelectAll)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SelectAll);
+
+    d_inputAggregator->injectMouseButtonTripleClick(LeftButton);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
