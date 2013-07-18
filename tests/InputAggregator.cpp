@@ -112,14 +112,22 @@ public:
         d_pointerTotalDelta += event->d_delta;
     }
 
-    void handleScrollEvent(const ScrollInputEvent* event)
+    void handleScrollEvent(const SemanticInputEvent* event)
     {
-        d_totalScroll += event->d_delta;
+        d_totalScroll += event->d_payload;
     }
 
     void handleSemanticEvent(const SemanticInputEvent* event)
     {
-        d_semanticValues.push_back(event->d_value);
+        HandlersMap::const_iterator itor = d_semanticEventsHandlersMap.find(event->d_value);
+        if (itor != d_semanticEventsHandlersMap.end())
+        {
+            (*itor).second->handle(event);
+        }
+        else
+        {
+            d_semanticValues.push_back(event->d_value);
+        }
     }
 
     void initializeEventHandlers()
@@ -132,17 +140,21 @@ public:
             new InputEventHandlerImpl<PointerMovementInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleMovementEvent, this)));
 
-        d_handlersMap.insert(std::make_pair(ScrollInputEventType,
-            new InputEventHandlerImpl<ScrollInputEvent, MockInputEventReceiver>(
-                &MockInputEventReceiver::handleScrollEvent, this)));
-
         d_handlersMap.insert(std::make_pair(SemanticInputEventType,
             new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleSemanticEvent, this)));
     }
 
+    void initializeSemanticEventHandlers()
+    {
+        d_semanticEventsHandlersMap.insert(std::make_pair(VerticalScroll,
+            new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
+            &MockInputEventReceiver::handleScrollEvent, this)));
+    }
+
 private:
     typedef std::map<int, InputEventHandler*> HandlersMap;
+    HandlersMap d_semanticEventsHandlersMap;
     HandlersMap d_handlersMap;
 };
 
@@ -152,6 +164,7 @@ struct InputAggregatorFixture
     {
         d_inputEventReceiver = new MockInputEventReceiver;
         d_inputEventReceiver->initializeEventHandlers();
+        d_inputEventReceiver->initializeSemanticEventHandlers();
         d_inputAggregator = new InputAggregator(d_inputEventReceiver);
     }
 
