@@ -2,7 +2,7 @@
 	filename: 	CEGUI.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Main system include for client code
 *************************************************************************/
 /***************************************************************************
@@ -102,6 +102,7 @@
 #include "CEGUI/Scheme.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/ScriptModule.h"
+#include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/String.h"

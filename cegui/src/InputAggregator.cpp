@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/InputAggregator.h"
+#include "CEGUI/SemanticInputEvent.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
