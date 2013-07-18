@@ -52,9 +52,8 @@ namespace CEGUI
 enum InputEventType
 {
     MovementInputEventType          = 0x0001,   //!< The movement of a pointer.
-    TextInputEventType              = 0x0003,   //!< Text was inputted.
-    ScrollInputEventType            = 0x0004,   //!< The scroll operation.
-    SemanticInputEventType          = 0x0005,   //!< An event with a certain semantic
+    TextInputEventType              = 0x0002,   //!< Text was inputted.
+    SemanticInputEventType          = 0x0003,   //!< An event with a certain semantic
 
     UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
 };
@@ -100,24 +99,6 @@ public:
     TextInputEvent() : InputEvent(TextInputEventType) {}
 
     char d_character;         //!< The character inputted
-};
-
-/*!
-\brief
-    Represents the scroll operation (e.g.: mouse)
-*/
-class CEGUIEXPORT ScrollInputEvent : public InputEvent
-{
-public:
-    ScrollInputEvent() :
-        InputEvent(ScrollInputEventType),
-        d_delta(0),
-        d_scrollDirection(0)
-    {
-    }
-
-    float d_delta;            //!< The amount of scroll since last event
-    int d_scrollDirection;    //!< 0 for horizontal and 1 for vertical
 };
 
 } // End of  CEGUI namespace section

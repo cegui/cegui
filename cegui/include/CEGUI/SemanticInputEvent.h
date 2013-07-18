@@ -72,6 +72,8 @@ enum SemanticValue
     Cut                             = 0x0021,
     Copy                            = 0x0022,
     Paste                           = 0x0023,
+    HorizontalScroll                = 0x0024,
+    VerticalScroll                  = 0x0025,
 
     UserDefinedSemanticValue        = 0x5000,   //!< This marks the beginning of user-defined semantic values.
 };
@@ -85,7 +87,8 @@ class CEGUIEXPORT SemanticInputEvent : public InputEvent
 public:
     SemanticInputEvent(SemanticValue value) :
         InputEvent(SemanticInputEventType),
-        d_value(value)
+        d_value(value),
+        d_payload(0)
     {
     }
 

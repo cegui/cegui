@@ -92,11 +92,10 @@ namespace CEGUI
     }
     bool InputAggregator::injectMouseWheelChange(float delta)
     {
-        ScrollInputEvent scroll_event;
-        scroll_event.d_delta = delta;
-        scroll_event.d_scrollDirection = 0;
+        SemanticInputEvent semantic_event(VerticalScroll);
+        semantic_event.d_payload = delta;
 
-        d_inputReceiver->injectInputEvent(&scroll_event);
+        d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
     }
