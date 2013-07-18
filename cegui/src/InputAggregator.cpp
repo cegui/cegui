@@ -1,7 +1,7 @@
 /***********************************************************************
-	filename: 	InputAggregator.cpp
-	created:	10/7/2013
-	author:		Timotei Dolean <timotei21@gmail.com>
+    filename:   InputAggregator.cpp
+    created:    10/7/2013
+    author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
@@ -103,7 +103,7 @@ namespace CEGUI
     {
         return injectMouseMove(x_pos - d_pointerPosition.d_x, y_pos - d_pointerPosition.d_y);
     }
-    
+
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     {
         SemanticInputEvent semantic_event(PointerActivate);
@@ -120,7 +120,7 @@ namespace CEGUI
     {
         return true;
     }
-    
+
     bool InputAggregator::injectCopyRequest()
     {
         SemanticInputEvent semantic_event(Copy);

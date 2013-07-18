@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	InputAggregator.h
-	created:	10/7/2013
-	author:		Timotei Dolean <timotei21@gmail.com>
+    filename:   InputAggregator.h
+    created:    10/7/2013
+    author:     Timotei Dolean <timotei21@gmail.com>
 
-	purpose:	Generates input events from injected input
+    purpose:    Generates input events from injected input
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
@@ -51,7 +51,7 @@ namespace CEGUI
 class CEGUIEXPORT InputAggregator : public InjectedInputReceiver
 {
 public:
-	InputAggregator(InputEventReceiver* input_receiver);
+    InputAggregator(InputEventReceiver* input_receiver);
 
     virtual bool injectTimePulse(float timeElapsed);
 
@@ -67,18 +67,18 @@ public:
     virtual bool injectChar(String::value_type code_point);
     virtual bool injectMouseWheelChange(float delta);
     virtual bool injectMousePosition(float x_pos, float y_pos);
-    
+
     virtual bool injectMouseButtonClick(const MouseButton button);
     virtual bool injectMouseButtonDoubleClick(const MouseButton button);
     virtual bool injectMouseButtonTripleClick(const MouseButton button);
-    
-    virtual bool injectCopyRequest();    
+
+    virtual bool injectCopyRequest();
     virtual bool injectCutRequest();
     virtual bool injectPasteRequest();
 
 private:
-	InputEventReceiver*	d_inputReceiver;
-    
+    InputEventReceiver* d_inputReceiver;
+
     Vector2f d_pointerPosition;
 };
 
@@ -88,4 +88,4 @@ private:
 #   pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIInputEvents_h_
+#endif  // end of guard _CEGUIInputEvents_h_
