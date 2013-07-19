@@ -43,6 +43,18 @@ namespace CEGUI
 
 /*!
 \brief
+    Represents the source of an event that uses the pointer.
+*/
+enum PointerSource
+{
+    PS_Left,        //!< Left pointer source
+    PS_Right,       //!< Right pointer source
+    PS_Middle,      //!< Middle pointer source
+    PS_None,        //!< No specific pointer source
+};
+
+/*!
+\brief
     Represents the value of a semantic input event, generated from a specific
     operation or sequence of operations.
 */
@@ -98,7 +110,8 @@ public:
     union {
         float array[2];
         float single;
-    } d_payload;                                //!< Extra data associated to this event
+        PointerSource source;
+    } d_payload;                      //!< Extra data associated to this event
 };
 
 } // End of  CEGUI namespace section

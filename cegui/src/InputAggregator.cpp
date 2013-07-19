@@ -31,6 +31,20 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    static PointerSource convertToPointerSource(MouseButton button)
+    {
+        if (button == LeftButton)
+            return PS_Left;
+
+        if (button == RightButton)
+            return PS_Right;
+
+        if (button == MiddleButton)
+            return PS_Middle;
+
+        return PS_None;
+    }
+
     InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
         d_inputReceiver(input_receiver),
         d_pointerPosition(0.0f, 0.0f)
@@ -69,6 +83,7 @@ namespace CEGUI
     bool InputAggregator::injectMouseButtonDown(MouseButton button)
     {
         SemanticInputEvent semantic_event(SV_PointerHold);
+        semantic_event.d_payload.source = convertToPointerSource(button);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -77,6 +92,7 @@ namespace CEGUI
     bool InputAggregator::injectMouseButtonUp(MouseButton button)
     {
         SemanticInputEvent semantic_event(SV_PointerActivate);
+        semantic_event.d_payload.source = convertToPointerSource(button);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -117,6 +133,7 @@ namespace CEGUI
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     {
         SemanticInputEvent semantic_event(SV_PointerActivate);
+        semantic_event.d_payload.source = convertToPointerSource(button);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -126,6 +143,7 @@ namespace CEGUI
     bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
     {
         SemanticInputEvent semantic_event(SV_SelectWord);
+        semantic_event.d_payload.source = convertToPointerSource(button);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -135,6 +153,7 @@ namespace CEGUI
     bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
     {
         SemanticInputEvent semantic_event(SV_SelectAll);
+        semantic_event.d_payload.source = convertToPointerSource(button);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
