@@ -51,10 +51,10 @@ namespace CEGUI
 */
 enum InputEventType
 {
-    TextInputEventType              = 0x0001,   //!< Text was inputted.
-    SemanticInputEventType          = 0x0002,   //!< An event with a certain semantic
+    IET_TextInputEventType              = 0x0001,   //!< Text was inputted.
+    IET_SemanticInputEventType          = 0x0002,   //!< An event with a certain semantic
 
-    UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
+    IET_UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
 };
 
 /*!
@@ -77,7 +77,7 @@ public:
 class CEGUIEXPORT TextInputEvent : public InputEvent
 {
 public:
-    TextInputEvent() : InputEvent(TextInputEventType) {}
+    TextInputEvent() : InputEvent(IET_TextInputEventType) {}
 
     char d_character;         //!< The character inputted
 };
