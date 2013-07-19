@@ -44,14 +44,19 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseMove(float delta_x, float delta_y)
     {
-        Vector2f delta(delta_x, delta_y);
-        d_pointerPosition += delta;
+        return injectMousePosition(delta_x + d_pointerPosition.d_x,
+            delta_y + d_pointerPosition.d_y);
+    }
 
-        PointerMovementInputEvent movement_event;
-        movement_event.d_delta = delta;
-        movement_event.d_position = d_pointerPosition;
+    bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
+    {
+        d_pointerPosition = Vector2f(x_pos, y_pos);
 
-        d_inputReceiver->injectInputEvent(&movement_event);
+        SemanticInputEvent semantic_event(PointerMove);
+        semantic_event.d_payload.array[0] = x_pos;
+        semantic_event.d_payload.array[1] = y_pos;
+
+        d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
     }
@@ -102,16 +107,11 @@ namespace CEGUI
     bool InputAggregator::injectMouseWheelChange(float delta)
     {
         SemanticInputEvent semantic_event(VerticalScroll);
-        semantic_event.d_payload = delta;
+        semantic_event.d_payload.single = delta;
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
         return true;
-    }
-
-    bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
-    {
-        return injectMouseMove(x_pos - d_pointerPosition.d_x, y_pos - d_pointerPosition.d_y);
     }
 
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)
