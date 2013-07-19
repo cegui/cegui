@@ -41,6 +41,10 @@ struct InputInjectionFixture
         : d_buttonHandledCount(0)
         , d_windowHandledCount(0)
     {
+        System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
+        Rectf constraint_area(0, 0, 100, 100);
+        System::getSingleton().getDefaultGUIContext().getMouseCursor().setConstraintArea(&constraint_area);
+
         d_window = WindowManager::getSingleton().createWindow("DefaultWindow");
         d_window->setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)));
         d_window->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
@@ -57,7 +61,6 @@ struct InputInjectionFixture
         d_window->addChild(d_button);
 
         System::getSingleton().getDefaultGUIContext().setRootWindow(d_window);
-        System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
 
         d_windowConnections.push_back(
             d_window->subscribeEvent(Window::EventMouseClick,
