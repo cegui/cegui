@@ -51,9 +51,8 @@ namespace CEGUI
 */
 enum InputEventType
 {
-    MovementInputEventType          = 0x0001,   //!< The movement of a pointer.
-    TextInputEventType              = 0x0002,   //!< Text was inputted.
-    SemanticInputEventType          = 0x0003,   //!< An event with a certain semantic
+    TextInputEventType              = 0x0001,   //!< Text was inputted.
+    SemanticInputEventType          = 0x0002,   //!< An event with a certain semantic
 
     UserDefinedInputEventType       = 0x5000,   //!< This marks the beginning of user-defined events.
 };
@@ -69,24 +68,6 @@ public:
     virtual ~InputEvent() {}
 
     int d_eventType;        //!< The type of the input event
-};
-
-/*!
-\brief
-    Represents the movement of the pointer
-*/
-class CEGUIEXPORT PointerMovementInputEvent : public InputEvent
-{
-public:
-    PointerMovementInputEvent() :
-        InputEvent(MovementInputEventType),
-        d_position(0.0f, 0.0f),
-        d_delta(0.0f, 0.0f)
-    {
-    }
-
-    Vector2f d_position;      //!< The actual position of the pointer
-    Vector2f d_delta;         //!< The delta from the last position
 };
 
 /*!

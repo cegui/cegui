@@ -52,6 +52,7 @@ enum SemanticValue
     PointerActivate                 = 0x0001,
     PointerDeactivate               = 0x0002,
     PointerHold                     = 0x0003,
+    PointerMove                     = 0x0004,
     SelectMultipleItems             = 0x0010,
     SelectCumulative                = 0x0011,
     SelectWord                      = 0x0012,
@@ -89,12 +90,15 @@ public:
     SemanticInputEvent(SemanticValue value) :
         InputEvent(SemanticInputEventType),
         d_value(value),
-        d_payload(0)
+        d_payload()
     {
     }
 
     SemanticValue d_value;            //!< The semantic value of this event
-    float d_payload;                  //!< Extra data associated to this event
+    union {
+        float array[2];
+        float single;
+    } d_payload;                                //!< Extra data associated to this event
 };
 
 } // End of  CEGUI namespace section
