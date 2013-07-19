@@ -131,22 +131,22 @@ public:
 
     void initializeEventHandlers()
     {
-        d_handlersMap.insert(std::make_pair(TextInputEventType,
+        d_handlersMap.insert(std::make_pair(IET_TextInputEventType,
             new InputEventHandlerImpl<TextInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleTextEvent, this)));
 
-        d_handlersMap.insert(std::make_pair(SemanticInputEventType,
+        d_handlersMap.insert(std::make_pair(IET_SemanticInputEventType,
             new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
                 &MockInputEventReceiver::handleSemanticEvent, this)));
     }
 
     void initializeSemanticEventHandlers()
     {
-        d_semanticEventsHandlersMap.insert(std::make_pair(VerticalScroll,
+        d_semanticEventsHandlersMap.insert(std::make_pair(SV_VerticalScroll,
             new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
             &MockInputEventReceiver::handleScrollEvent, this)));
 
-        d_semanticEventsHandlersMap.insert(std::make_pair(PointerMove,
+        d_semanticEventsHandlersMap.insert(std::make_pair(SV_PointerMove,
             new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
             &MockInputEventReceiver::handleMovementEvent, this)));
     }
@@ -282,7 +282,7 @@ BOOST_AUTO_TEST_CASE(ScrollEventMultipleDelta)
 BOOST_AUTO_TEST_CASE(CutRequestToCut)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(Cut);
+    expected_values.push_back(SV_Cut);
 
     d_inputAggregator->injectCutRequest();
 
@@ -294,7 +294,7 @@ BOOST_AUTO_TEST_CASE(CutRequestToCut)
 BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(Copy);
+    expected_values.push_back(SV_Copy);
 
     d_inputAggregator->injectCopyRequest();
 
@@ -306,7 +306,7 @@ BOOST_AUTO_TEST_CASE(CopyRequestToCopy)
 BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(Paste);
+    expected_values.push_back(SV_Paste);
 
     d_inputAggregator->injectPasteRequest();
 
@@ -318,7 +318,7 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(PointerHold);
+    expected_values.push_back(SV_PointerHold);
 
     d_inputAggregator->injectMouseButtonDown(LeftButton);
 
@@ -330,7 +330,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
 BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(PointerActivate);
+    expected_values.push_back(SV_PointerActivate);
 
     d_inputAggregator->injectMouseButtonUp(LeftButton);
 
@@ -342,8 +342,8 @@ BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(PointerHold);
-    expected_values.push_back(PointerActivate);
+    expected_values.push_back(SV_PointerHold);
+    expected_values.push_back(SV_PointerActivate);
 
     d_inputAggregator->injectMouseButtonDown(LeftButton);
     d_inputAggregator->injectMouseButtonUp(LeftButton);
@@ -356,7 +356,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(PointerActivate);
+    expected_values.push_back(SV_PointerActivate);
 
     d_inputAggregator->injectMouseButtonClick(LeftButton);
 
@@ -368,7 +368,7 @@ BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
 BOOST_AUTO_TEST_CASE(MouseDoubleClickToSelectWord)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SelectWord);
+    expected_values.push_back(SV_SelectWord);
 
     d_inputAggregator->injectMouseButtonDoubleClick(LeftButton);
 
@@ -380,7 +380,7 @@ BOOST_AUTO_TEST_CASE(MouseDoubleClickToSelectWord)
 BOOST_AUTO_TEST_CASE(MouseTripleClickToSelectAll)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SelectAll);
+    expected_values.push_back(SV_SelectAll);
 
     d_inputAggregator->injectMouseButtonTripleClick(LeftButton);
 

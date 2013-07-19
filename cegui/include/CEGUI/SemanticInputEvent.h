@@ -48,36 +48,36 @@ namespace CEGUI
 */
 enum SemanticValue
 {
-    NoValue                         = 0x0000,
-    PointerActivate                 = 0x0001,
-    PointerDeactivate               = 0x0002,
-    PointerHold                     = 0x0003,
-    PointerMove                     = 0x0004,
-    SelectMultipleItems             = 0x0010,
-    SelectCumulative                = 0x0011,
-    SelectWord                      = 0x0012,
-    SelectAll                       = 0x0013,
-    SelectLeftCharacter             = 0x0014,
-    SelectRightCharacter            = 0x0015,
-    GoToPreviousCharacter           = 0x0020,
-    GoToNextCharacter               = 0x0021,
-    GoToPreviousWord                = 0x0022,
-    GoToNextWord                    = 0x0023,
-    GoToStartOfLine                 = 0x0024,
-    GoToEndOfLine                   = 0x0025,
-    DeleteLastCharacter             = 0x0030,
-    DeletePreviousCharacter         = 0x0031,
-    Confirm                         = 0x0050,
-    Back                            = 0x0051,
-    Undo                            = 0x0052,
-    Redo                            = 0x0053,
-    Cut                             = 0x0054,
-    Copy                            = 0x0055,
-    Paste                           = 0x0056,
-    HorizontalScroll                = 0x0060,
-    VerticalScroll                  = 0x0061,
+    SV_NoValue                         = 0x0000,
+    SV_PointerActivate                 = 0x0001,
+    SV_PointerDeactivate               = 0x0002,
+    SV_PointerHold                     = 0x0003,
+    SV_PointerMove                     = 0x0004,
+    SV_SelectMultipleItems             = 0x0010,
+    SV_SelectCumulative                = 0x0011,
+    SV_SelectWord                      = 0x0012,
+    SV_SelectAll                       = 0x0013,
+    SV_SelectLeftCharacter             = 0x0014,
+    SV_SelectRightCharacter            = 0x0015,
+    SV_GoToPreviousCharacter           = 0x0020,
+    SV_GoToNextCharacter               = 0x0021,
+    SV_GoToPreviousWord                = 0x0022,
+    SV_GoToNextWord                    = 0x0023,
+    SV_GoToStartOfLine                 = 0x0024,
+    SV_GoToEndOfLine                   = 0x0025,
+    SV_DeleteLastCharacter             = 0x0030,
+    SV_DeletePreviousCharacter         = 0x0031,
+    SV_Confirm                         = 0x0050,
+    SV_Back                            = 0x0051,
+    SV_Undo                            = 0x0052,
+    SV_Redo                            = 0x0053,
+    SV_Cut                             = 0x0054,
+    SV_Copy                            = 0x0055,
+    SV_Paste                           = 0x0056,
+    SV_HorizontalScroll                = 0x0060,
+    SV_VerticalScroll                  = 0x0061,
 
-    UserDefinedSemanticValue        = 0x5000,   //!< This marks the beginning of user-defined semantic values.
+    SV_UserDefinedSemanticValue        = 0x5000,   //!< This marks the beginning of user-defined semantic values.
 };
 
 /*!
@@ -88,7 +88,7 @@ class CEGUIEXPORT SemanticInputEvent : public InputEvent
 {
 public:
     SemanticInputEvent(SemanticValue value) :
-        InputEvent(SemanticInputEventType),
+        InputEvent(IET_SemanticInputEventType),
         d_value(value),
         d_payload()
     {

@@ -52,7 +52,7 @@ namespace CEGUI
     {
         d_pointerPosition = Vector2f(x_pos, y_pos);
 
-        SemanticInputEvent semantic_event(PointerMove);
+        SemanticInputEvent semantic_event(SV_PointerMove);
         semantic_event.d_payload.array[0] = x_pos;
         semantic_event.d_payload.array[1] = y_pos;
 
@@ -68,7 +68,7 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseButtonDown(MouseButton button)
     {
-        SemanticInputEvent semantic_event(PointerHold);
+        SemanticInputEvent semantic_event(SV_PointerHold);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -76,7 +76,7 @@ namespace CEGUI
     }
     bool InputAggregator::injectMouseButtonUp(MouseButton button)
     {
-        SemanticInputEvent semantic_event(PointerActivate);
+        SemanticInputEvent semantic_event(SV_PointerActivate);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -106,7 +106,7 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseWheelChange(float delta)
     {
-        SemanticInputEvent semantic_event(VerticalScroll);
+        SemanticInputEvent semantic_event(SV_VerticalScroll);
         semantic_event.d_payload.single = delta;
 
         d_inputReceiver->injectInputEvent(&semantic_event);
@@ -116,7 +116,7 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseButtonClick(const MouseButton button)
     {
-        SemanticInputEvent semantic_event(PointerActivate);
+        SemanticInputEvent semantic_event(SV_PointerActivate);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -125,7 +125,7 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
     {
-        SemanticInputEvent semantic_event(SelectWord);
+        SemanticInputEvent semantic_event(SV_SelectWord);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -134,7 +134,7 @@ namespace CEGUI
 
     bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
     {
-        SemanticInputEvent semantic_event(SelectAll);
+        SemanticInputEvent semantic_event(SV_SelectAll);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -143,7 +143,7 @@ namespace CEGUI
 
     bool InputAggregator::injectCopyRequest()
     {
-        SemanticInputEvent semantic_event(Copy);
+        SemanticInputEvent semantic_event(SV_Copy);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -152,7 +152,7 @@ namespace CEGUI
 
     bool InputAggregator::injectCutRequest()
     {
-        SemanticInputEvent semantic_event(Cut);
+        SemanticInputEvent semantic_event(SV_Cut);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
@@ -161,7 +161,7 @@ namespace CEGUI
 
     bool InputAggregator::injectPasteRequest()
     {
-        SemanticInputEvent semantic_event(Paste);
+        SemanticInputEvent semantic_event(SV_Paste);
 
         d_inputReceiver->injectInputEvent(&semantic_event);
 
