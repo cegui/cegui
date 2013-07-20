@@ -49,8 +49,12 @@ public:
 
     \param event
         The input event to be injected.
+    
+    \return
+        - true if the input was processed by the input receiver.
+        - false if the input was not processed by the input receiver.
     */
-	virtual void injectInputEvent(const InputEvent* event) = 0;
+	virtual bool injectInputEvent(const InputEvent* event) = 0;
 };
 
 } // End of  CEGUI namespace section
