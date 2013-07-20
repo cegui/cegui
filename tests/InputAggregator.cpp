@@ -86,16 +86,18 @@ public:
         d_handlersMap.clear();
     }
 
-    void injectInputEvent(const InputEvent* event)
+    bool injectInputEvent(const InputEvent* event)
     {
         HandlersMap::const_iterator itor = d_handlersMap.find(event->d_eventType);
         if (itor != d_handlersMap.end())
         {
             (*itor).second->handle(event);
+            return true;
         }
         else
         {
             std::cout << "No event handler for event type: " << event->d_eventType << std::endl;
+            return false;
         }
     }
 
