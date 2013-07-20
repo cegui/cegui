@@ -33,6 +33,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/InjectedInputReceiver.h"
 #include "CEGUI/InputEventReceiver.h"
+#include "CEGUI/SemanticInputEvent.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -77,9 +78,17 @@ public:
     virtual bool injectPasteRequest();
 
 private:
+    void initializeSimpleKeyMappings();
+
+    bool isControlPressed();
+    bool isAltPressed();
+    bool isShiftPressed();
+
     InputEventReceiver* d_inputReceiver;
 
     Vector2f d_pointerPosition;
+    SemanticValue d_keyValuesMappings[0xFF]; //!< Mapping from a key to its semantic
+    bool d_keysPressed[0xFF];
 };
 
 } // End of  CEGUI namespace section

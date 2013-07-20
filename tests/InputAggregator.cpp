@@ -327,6 +327,32 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
         d_inputEventReceiver->d_semanticValues.end());
 }
 
+BOOST_AUTO_TEST_CASE(MouseButtonDownAndControlToSelectCumulative)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_SelectCumulative);
+
+    d_inputAggregator->injectKeyDown(Key::LeftControl);
+    d_inputAggregator->injectMouseButtonDown(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseButtonDownAndShiftToSelectMultiple)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_SelectMultipleItems);
+
+    d_inputAggregator->injectKeyDown(Key::LeftShift);
+    d_inputAggregator->injectMouseButtonDown(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
 BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
 {
     std::vector<SemanticValue> expected_values;
@@ -365,6 +391,32 @@ BOOST_AUTO_TEST_CASE(MouseClickToPointerActivate)
         d_inputEventReceiver->d_semanticValues.end());
 }
 
+BOOST_AUTO_TEST_CASE(MouseClickAndControlToSelectCumulative)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_SelectCumulative);
+
+    d_inputAggregator->injectKeyDown(Key::LeftControl);
+    d_inputAggregator->injectMouseButtonClick(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(MouseClickAndShiftToSelectMultipleItems)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_PointerActivate);
+
+    d_inputAggregator->injectKeyDown(Key::LeftShift);
+    d_inputAggregator->injectMouseButtonClick(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
 BOOST_AUTO_TEST_CASE(MouseDoubleClickToSelectWord)
 {
     std::vector<SemanticValue> expected_values;
@@ -383,6 +435,73 @@ BOOST_AUTO_TEST_CASE(MouseTripleClickToSelectAll)
     expected_values.push_back(SV_SelectAll);
 
     d_inputAggregator->injectMouseButtonTripleClick(LeftButton);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(KeyDownBackspaceToDeletePreviousCharacter)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_DeletePreviousCharacter);
+
+    d_inputAggregator->injectKeyDown(Key::Backspace);
+    d_inputAggregator->injectKeyUp(Key::Backspace);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(KeyDownDeleteToDeleteNextCharacter)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_DeleteNextCharacter);
+
+    d_inputAggregator->injectKeyDown(Key::Delete);
+    d_inputAggregator->injectKeyUp(Key::Delete);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(KeyDownLeftArrowToGoToPreviousCharacter)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_GoToPreviousCharacter);
+
+    d_inputAggregator->injectKeyDown(Key::ArrowLeft);
+    d_inputAggregator->injectKeyUp(Key::ArrowLeft);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(KeyDownLeftArrowAndShiftToSelectPreviousCharacter)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_SelectPreviousCharacter);
+
+    d_inputAggregator->injectKeyDown(Key::LeftShift);
+    d_inputAggregator->injectKeyDown(Key::ArrowLeft);
+    d_inputAggregator->injectKeyUp(Key::ArrowLeft);
+
+    BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
+        d_inputEventReceiver->d_semanticValues.begin(),
+        d_inputEventReceiver->d_semanticValues.end());
+}
+
+BOOST_AUTO_TEST_CASE(KeyDownLeftArrowAndControlToGoToPreviousWord)
+{
+    std::vector<SemanticValue> expected_values;
+    expected_values.push_back(SV_GoToPreviousWord);
+
+    d_inputAggregator->injectKeyDown(Key::LeftControl);
+    d_inputAggregator->injectKeyDown(Key::ArrowLeft);
+    d_inputAggregator->injectKeyUp(Key::ArrowLeft);
 
     BOOST_REQUIRE_EQUAL_COLLECTIONS(expected_values.begin(), expected_values.end(),
         d_inputEventReceiver->d_semanticValues.begin(),
