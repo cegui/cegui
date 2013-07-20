@@ -251,6 +251,19 @@ public:
     */
     Font* getDefaultFont() const;
 
+    /*!
+    \brief
+        Function to inject time pulses into the receiver.
+
+    \param timeElapsed
+        float value indicating the amount of time passed, in seconds, since the last time this method was called.
+
+    \return
+        Currently, this method always returns true unless there is no root
+        window or it is not effectively visible
+    */
+    bool injectTimePulse(float timeElapsed);
+
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
     bool injectMouseLeaves(void);
@@ -261,7 +274,6 @@ public:
     bool injectChar(String::value_type code_point);
     bool injectMouseWheelChange(float delta);
     bool injectMousePosition(float x_pos, float y_pos);
-    bool injectTimePulse(float timeElapsed);
     bool injectMouseButtonClick(const MouseButton button);
     bool injectMouseButtonDoubleClick(const MouseButton button);
     bool injectMouseButtonTripleClick(const MouseButton button);
@@ -294,7 +306,7 @@ protected:
 
     bool areaChangedHandler(const EventArgs& args);
     bool windowDestroyedHandler(const EventArgs& args);
-    
+
     //! returns whether the window containing the mouse had changed.
     bool updateWindowContainingMouse_impl() const;
     void resetWindowContainingMouse();
