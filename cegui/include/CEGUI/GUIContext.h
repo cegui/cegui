@@ -267,7 +267,7 @@ public:
     bool injectTimePulse(float timeElapsed);
 
     // Implementation of InputEventReceiver interface
-    bool injectInputEvent(const InputEvent* event);
+    bool injectInputEvent(const InputEvent& event);
 
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
