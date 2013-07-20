@@ -673,6 +673,12 @@ Window* GUIContext::getKeyboardTargetWindow() const
 }
 
 //----------------------------------------------------------------------------//
+bool GUIContext::injectInputEvent(const InputEvent* event)
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
 bool GUIContext::injectMouseLeaves(void)
 {
     if (!getWindowContainingMouse())

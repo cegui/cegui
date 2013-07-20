@@ -30,6 +30,7 @@
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InjectedInputReceiver.h"
+#include "CEGUI/InputEventReceiver.h"
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/SystemKeys.h"
 
@@ -67,7 +68,8 @@ public:
 };
 
 class CEGUIEXPORT GUIContext : public RenderingSurface,
-                               public InjectedInputReceiver
+                               public InjectedInputReceiver,
+                               public InputEventReceiver
 {
 public:
     static const float DefaultMouseButtonClickTimeout;
@@ -263,6 +265,9 @@ public:
         window or it is not effectively visible
     */
     bool injectTimePulse(float timeElapsed);
+
+    // Implementation of InputEventReceiver interface
+    bool injectInputEvent(const InputEvent* event);
 
     // Implementation of InjectedInputReceiver interface
     bool injectMouseMove(float delta_x, float delta_y);
