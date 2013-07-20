@@ -73,7 +73,7 @@ bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
     semantic_event.d_payload.array[0] = x_pos;
     semantic_event.d_payload.array[1] = y_pos;
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -94,7 +94,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
     SemanticInputEvent semantic_event(value);
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -103,7 +103,7 @@ bool InputAggregator::injectMouseButtonUp(MouseButton button)
     SemanticInputEvent semantic_event(SV_PointerActivate);
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -138,7 +138,7 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     {
         SemanticInputEvent semantic_event(value);
 
-        d_inputReceiver->injectInputEvent(&semantic_event);
+        d_inputReceiver->injectInputEvent(semantic_event);
 
         d_keysPressed[scan_code] = false;
     }
@@ -150,7 +150,7 @@ bool InputAggregator::injectChar(String::value_type code_point)
     TextInputEvent text_event;
     text_event.d_character = code_point;
 
-    d_inputReceiver->injectInputEvent(&text_event);
+    d_inputReceiver->injectInputEvent(text_event);
     return true;
 }
 
@@ -159,7 +159,7 @@ bool InputAggregator::injectMouseWheelChange(float delta)
     SemanticInputEvent semantic_event(SV_VerticalScroll);
     semantic_event.d_payload.single = delta;
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -173,7 +173,7 @@ bool InputAggregator::injectMouseButtonClick(const MouseButton button)
 
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -183,7 +183,7 @@ bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
     SemanticInputEvent semantic_event(SV_SelectWord);
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -193,7 +193,7 @@ bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
     SemanticInputEvent semantic_event(SV_SelectAll);
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -202,7 +202,7 @@ bool InputAggregator::injectCopyRequest()
 {
     SemanticInputEvent semantic_event(SV_Copy);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -211,7 +211,7 @@ bool InputAggregator::injectCutRequest()
 {
     SemanticInputEvent semantic_event(SV_Cut);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }
@@ -220,7 +220,7 @@ bool InputAggregator::injectPasteRequest()
 {
     SemanticInputEvent semantic_event(SV_Paste);
 
-    d_inputReceiver->injectInputEvent(&semantic_event);
+    d_inputReceiver->injectInputEvent(semantic_event);
 
     return true;
 }

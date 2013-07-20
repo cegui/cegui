@@ -54,7 +54,7 @@ public:
         - true if the input was processed by the input receiver.
         - false if the input was not processed by the input receiver.
     */
-	virtual bool injectInputEvent(const InputEvent* event) = 0;
+	virtual bool injectInputEvent(const InputEvent& event) = 0;
 };
 
 } // End of  CEGUI namespace section

@@ -38,22 +38,22 @@ using namespace CEGUI;
 
 struct InputEventHandler
 {
-    virtual bool handle(const InputEvent* event) = 0;
+    virtual bool handle(const InputEvent& event) = 0;
 };
 
 template <typename TInput, typename TClass>
 struct InputEventHandlerImpl : public InputEventHandler
 {
-    typedef bool (TClass::*HandlerFunctionType)(const TInput*);
+    typedef bool (TClass::*HandlerFunctionType)(const TInput&);
 
     InputEventHandlerImpl(HandlerFunctionType handler_func, TClass* obj) :
         d_handlerFunc(handler_func),
         d_obj(obj)
     {}
 
-    bool handle(const InputEvent* event)
+    bool handle(const InputEvent& event)
     {
-        return (d_obj->*d_handlerFunc)(static_cast<const TInput*>(event));
+        return (d_obj->*d_handlerFunc)(static_cast<const TInput&>(event));
     }
 
 private:
@@ -86,50 +86,50 @@ public:
         d_handlersMap.clear();
     }
 
-    bool injectInputEvent(const InputEvent* event)
+    bool injectInputEvent(const InputEvent& event)
     {
-        HandlersMap::const_iterator itor = d_handlersMap.find(event->d_eventType);
+        HandlersMap::const_iterator itor = d_handlersMap.find(event.d_eventType);
         if (itor != d_handlersMap.end())
         {
             return (*itor).second->handle(event);
         }
         else
         {
-            std::cout << "No event handler for event type: " << event->d_eventType << std::endl;
+            std::cout << "No event handler for event type: " << event.d_eventType << std::endl;
             return false;
         }
     }
 
-    bool handleTextEvent(const TextInputEvent* event)
+    bool handleTextEvent(const TextInputEvent& event)
     {
-        d_text += event->d_character;
+        d_text += event.d_character;
         return true;
     }
 
-    bool handleMovementEvent(const SemanticInputEvent* event)
+    bool handleMovementEvent(const SemanticInputEvent& event)
     {
-        d_pointerPosition = Vector2f(event->d_payload.array[0],
-            event->d_payload.array[1]);
+        d_pointerPosition = Vector2f(event.d_payload.array[0],
+            event.d_payload.array[1]);
         return true;
     }
 
-    bool handleScrollEvent(const SemanticInputEvent* event)
+    bool handleScrollEvent(const SemanticInputEvent& event)
     {
-        d_totalScroll += event->d_payload.single;
+        d_totalScroll += event.d_payload.single;
         return true;
     }
 
-    bool handleSemanticEvent(const SemanticInputEvent* event)
+    bool handleSemanticEvent(const SemanticInputEvent& event)
     {
         HandlersMap::const_iterator itor =
-            d_semanticEventsHandlersMap.find(event->d_value);
+            d_semanticEventsHandlersMap.find(event.d_value);
         if (itor != d_semanticEventsHandlersMap.end())
         {
             (*itor).second->handle(event);
         }
         else
         {
-            d_semanticValues.push_back(event->d_value);
+            d_semanticValues.push_back(event.d_value);
         }
 
         return true;

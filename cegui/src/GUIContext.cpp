@@ -673,7 +673,7 @@ Window* GUIContext::getKeyboardTargetWindow() const
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectInputEvent(const InputEvent* event)
+bool GUIContext::injectInputEvent(const InputEvent& event)
 {
     return true;
 }
