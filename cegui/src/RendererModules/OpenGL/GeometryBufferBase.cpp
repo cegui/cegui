@@ -37,11 +37,13 @@
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+#include "CEGUI/RefCounted.h"
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner) :
+OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
+    GeometryBuffer(renderMaterial),
     d_owner(&owner),
     d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
@@ -161,16 +163,13 @@ uint OpenGLGeometryBufferBase::getBatchCount() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::performBatchManagement()
 {
-    const GLuint gltex = d_activeTexture ?
-                            d_activeTexture->getOpenGLTexture() : 0;
-
     // create a new batch if there are no batches yet, or if the active texture
     // differs from that used by the current batch.
     if (d_batches.empty() ||
-        gltex != d_batches.back().texture ||
+        d_activeTexture != d_batches.back().texture ||
         d_clippingActive != d_batches.back().clip)
     {
-        const BatchInfo batch = {gltex, 0, d_clippingActive};
+        const BatchInfo batch = {d_activeTexture, 0, d_clippingActive};
         d_batches.push_back(batch);
     }
 }

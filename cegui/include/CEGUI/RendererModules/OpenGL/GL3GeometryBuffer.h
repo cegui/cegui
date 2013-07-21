@@ -29,19 +29,21 @@
 #define _CEGUIOpenGL3GeometryBuffer_h_
 
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
+#include "CEGUI/RefCounted.h"
 
 namespace CEGUI
 {
 class OpenGL3Shader;
 class OpenGL3StateChangeWrapper;
 class OpenGL3Renderer;
+class RenderMaterial;
 
 //! OpenGL3 based implementation of the GeometryBuffer interface.
 class OPENGL_GUIRENDERER_API OpenGL3GeometryBuffer : public OpenGLGeometryBufferBase
 {
 public:
     //! Constructor
-    OpenGL3GeometryBuffer(OpenGL3Renderer& owner);
+    OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGL3GeometryBuffer();
 
     void initialiseOpenGLBuffers();
@@ -58,16 +60,6 @@ protected:
     GLuint d_verticesVAO;
     //! OpenGL vbo containing all vertex data
     GLuint d_verticesVBO;
-    //! Reference to the OpenGL shader inside the Renderer, that is used to render all geometry
-    CEGUI::OpenGL3Shader*& d_shader;
-    //! Position variable location inside the shader, for OpenGL
-    const GLint d_shaderPosLoc;
-    //! TexCoord variable location inside the shader, for OpenGL
-    const GLint d_shaderTexCoordLoc;
-    //! Color variable location inside the shader, for OpenGL
-    const GLint d_shaderColourLoc;
-    //! Matrix uniform location inside the shader, for OpenGL
-    const GLint d_shaderStandardMatrixLoc;
     //! Pointer to the OpenGL state changer wrapper that was created inside the Renderer
     OpenGL3StateChangeWrapper* d_glStateChanger;
     //! Size of the buffer that is currently in use

@@ -33,99 +33,99 @@
 namespace CEGUI
 {
 
-    OpenGL3StateChangeWrapper::BlendFuncParams::BlendFuncParams()
-    {
-        reset();
-    }
+OpenGL3StateChangeWrapper::BlendFuncParams::BlendFuncParams()
+{
+    reset();
+}
 
-    void OpenGL3StateChangeWrapper::BlendFuncParams::reset()    
-    {
-        d_dFactor = -1;
-        d_sFactor = -1;
-    }
+void OpenGL3StateChangeWrapper::BlendFuncParams::reset()    
+{
+    d_dFactor = -1;
+    d_sFactor = -1;
+}
 
-    bool OpenGL3StateChangeWrapper::BlendFuncParams::equal(GLenum sFactor, GLenum dFactor)
+bool OpenGL3StateChangeWrapper::BlendFuncParams::equal(GLenum sFactor, GLenum dFactor)
+{
+    bool equal = (d_sFactor == sFactor) && (d_dFactor == dFactor);
+    if(!equal)
     {
-        bool equal = (d_sFactor == sFactor) && (d_dFactor == dFactor);
-        if(!equal)
-        {
-            d_sFactor = sFactor;
-            d_dFactor = dFactor;
-        }
-        return equal;
+        d_sFactor = sFactor;
+        d_dFactor = dFactor;
     }
+    return equal;
+}
 
-    OpenGL3StateChangeWrapper::BlendFuncSeperateParams::BlendFuncSeperateParams()   
-    {
-        reset();
-    }
+OpenGL3StateChangeWrapper::BlendFuncSeperateParams::BlendFuncSeperateParams()   
+{
+    reset();
+}
 
-    void OpenGL3StateChangeWrapper::BlendFuncSeperateParams::reset()    
-    {
-        d_sfactorRGB = -1;
-        d_dfactorRGB = -1;
-        d_sfactorAlpha = -1;
-        d_dfactorAlpha = -1;
-    }
+void OpenGL3StateChangeWrapper::BlendFuncSeperateParams::reset()    
+{
+    d_sfactorRGB = -1;
+    d_dfactorRGB = -1;
+    d_sfactorAlpha = -1;
+    d_dfactorAlpha = -1;
+}
 
-    bool OpenGL3StateChangeWrapper::BlendFuncSeperateParams::equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
+bool OpenGL3StateChangeWrapper::BlendFuncSeperateParams::equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
+{
+    bool equal = (d_sfactorRGB == sfactorRGB) && (d_dfactorRGB == dfactorRGB) && (d_sfactorAlpha == sfactorAlpha) && (d_dfactorAlpha == dfactorAlpha);
+    if(!equal)
     {
-        bool equal = (d_sfactorRGB == sfactorRGB) && (d_dfactorRGB == dfactorRGB) && (d_sfactorAlpha == sfactorAlpha) && (d_dfactorAlpha == dfactorAlpha);
-        if(!equal)
-        {
-            d_sfactorRGB = sfactorRGB;
-            d_dfactorRGB = dfactorRGB;
-            d_sfactorAlpha = sfactorAlpha;
-            d_dfactorAlpha = dfactorAlpha;
-        }
-        return equal;
+        d_sfactorRGB = sfactorRGB;
+        d_dfactorRGB = dfactorRGB;
+        d_sfactorAlpha = sfactorAlpha;
+        d_dfactorAlpha = dfactorAlpha;
     }
+    return equal;
+}
 
-    OpenGL3StateChangeWrapper::PortParams::PortParams() 
-    {
-        reset();
-    }
-    void OpenGL3StateChangeWrapper::PortParams::reset() 
-    {
-        d_x = -1;
-        d_y = -1;
-        d_width = -1;
-        d_height = -1;
-    }
+OpenGL3StateChangeWrapper::PortParams::PortParams() 
+{
+    reset();
+}
+void OpenGL3StateChangeWrapper::PortParams::reset() 
+{
+    d_x = -1;
+    d_y = -1;
+    d_width = -1;
+    d_height = -1;
+}
 
-    bool OpenGL3StateChangeWrapper::PortParams::equal(GLint x, GLint y, GLsizei width, GLsizei height)
+bool OpenGL3StateChangeWrapper::PortParams::equal(GLint x, GLint y, GLsizei width, GLsizei height)
+{
+    bool equal = (d_x == x) && (d_y == y) && (d_width == width) && (d_height == height);
+    if(!equal)
     {
-        bool equal = (d_x == x) && (d_y == y) && (d_width == width) && (d_height == height);
-        if(!equal)
-        {
-            d_x = x;
-            d_y = y;
-            d_width = width;
-            d_height = height;
-        }
-        return equal;
+        d_x = x;
+        d_y = y;
+        d_width = width;
+        d_height = height;
     }
+    return equal;
+}
 
-    OpenGL3StateChangeWrapper::BindBufferParams::BindBufferParams()
-    {
-        reset();
-    }
-    void OpenGL3StateChangeWrapper::BindBufferParams::reset()           
-    {
-        d_target = -1;
-        d_buffer = -1;
-    }
+OpenGL3StateChangeWrapper::BindBufferParams::BindBufferParams()
+{
+    reset();
+}
+void OpenGL3StateChangeWrapper::BindBufferParams::reset()           
+{
+    d_target = -1;
+    d_buffer = -1;
+}
 
-    bool OpenGL3StateChangeWrapper::BindBufferParams::equal(GLenum target, GLuint buffer)
+bool OpenGL3StateChangeWrapper::BindBufferParams::equal(GLenum target, GLuint buffer)
+{
+    bool equal = (d_target == target) && (d_buffer == buffer);
+    if(!equal)
     {
-        bool equal = (d_target == target) && (d_buffer == buffer);
-        if(!equal)
-        {
-            d_target = target;
-            d_buffer = buffer;
-        }
-        return equal;
+        d_target = target;
+        d_buffer = buffer;
     }
+    return equal;
+}
 
 
 
@@ -144,6 +144,7 @@ OpenGL3StateChangeWrapper::~OpenGL3StateChangeWrapper()
 void OpenGL3StateChangeWrapper::reset()
 {
     d_vertexArrayObject = -1;
+    d_shaderProgram = -1;
     d_blendFuncParams.reset();
     d_blendFuncSeperateParams.reset();
     d_viewPortParams.reset();
@@ -160,6 +161,16 @@ void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
     }
 
 }
+
+void OpenGL3StateChangeWrapper::useProgram(GLuint program)
+{
+    if(program != d_shaderProgram)
+    {
+        glUseProgram(program);
+        d_shaderProgram = program;
+    }
+}   
+
 void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 {
     bool callIsRedundant = d_blendFuncParams.equal(sfactor, dfactor);

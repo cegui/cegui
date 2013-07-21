@@ -34,6 +34,8 @@
 #include "../../Rect.h"
 #include "../../Quaternion.h"
 
+#include "CEGUI/RefCounted.h"
+
 #include <utility>
 #include <vector>
 
@@ -45,6 +47,7 @@
 namespace CEGUI
 {
 class OpenGLTexture;
+class RenderMaterial;
 
 /*!
 \brief
@@ -54,7 +57,7 @@ class OPENGL_GUIRENDERER_API OpenGLGeometryBufferBase : public GeometryBuffer
 {
 public:
     //! Constructor
-    OpenGLGeometryBufferBase(OpenGLRendererBase& owner);
+    OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGLGeometryBufferBase();
 
     // implementation of abstract members from GeometryBuffer
@@ -95,7 +98,7 @@ protected:
     //! type to track info for per-texture sub batches of geometry
     struct BatchInfo
     {
-        uint texture;
+        CEGUI::Texture* texture;
         uint vertexCount;
         bool clip;
     };
