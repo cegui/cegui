@@ -30,8 +30,11 @@
 
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InputEventReceiver.h"
+#include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/SystemKeys.h"
+
+#include <map>
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -279,9 +282,6 @@ public:
     bool injectMouseButtonClick(const MouseButton button);
     bool injectMouseButtonDoubleClick(const MouseButton button);
     bool injectMouseButtonTripleClick(const MouseButton button);
-    bool injectCopyRequest();
-    bool injectCutRequest();
-    bool injectPasteRequest();
 
     // public overrides
     void draw();
@@ -325,7 +325,13 @@ protected:
     // protected overrides
     void drawContent();
 
+    void initializeSemanticEventHandlers();
+
     bool handleTextInputEvent(const TextInputEvent& event);
+    bool handleSemanticInputEvent(const SemanticInputEvent& event);
+    bool handleCopyRequest(const SemanticInputEvent& event);
+    bool handleCutRequest(const SemanticInputEvent& event);
+    bool handlePasteRequest(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;
@@ -360,6 +366,7 @@ protected:
 
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_windowDestroyedEventConnection;
+    std::map<int, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
 };
 
 }
