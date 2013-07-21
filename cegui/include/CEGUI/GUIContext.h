@@ -29,7 +29,6 @@
 #define _CEGUIGUIContext_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/InjectedInputReceiver.h"
 #include "CEGUI/InputEventReceiver.h"
 #include "CEGUI/MouseCursor.h"
 #include "CEGUI/SystemKeys.h"
@@ -68,7 +67,6 @@ public:
 };
 
 class CEGUIEXPORT GUIContext : public RenderingSurface,
-                               public InjectedInputReceiver,
                                public InputEventReceiver
 {
 public:
@@ -276,7 +274,6 @@ public:
     bool injectMouseButtonUp(MouseButton button);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
-    bool injectChar(String::value_type code_point);
     bool injectMouseWheelChange(float delta);
     bool injectMousePosition(float x_pos, float y_pos);
     bool injectMouseButtonClick(const MouseButton button);
@@ -327,6 +324,8 @@ protected:
 
     // protected overrides
     void drawContent();
+
+    bool handleTextInputEvent(const TextInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;

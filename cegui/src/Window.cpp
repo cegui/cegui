@@ -2722,13 +2722,13 @@ void Window::onKeyUp(KeyEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onCharacter(KeyEventArgs& e)
+void Window::onCharacter(TextEventArgs& e)
 {
     fireEvent(EventCharacterKey, e, EventNamespace);
 
     // As of 0.7.0 CEGUI::System no longer does input event propogation, so by
     // default we now do that here.  Generally speaking key handling widgets
-    // may need to override this behaviour to halt further propogation.
+    // may need to override this behaviour to halt further propagation.
     if (!e.handled && d_parent &&
         this != getGUIContext().getModalWindow())
     {

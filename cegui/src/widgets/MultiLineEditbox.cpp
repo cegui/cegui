@@ -1305,11 +1305,11 @@ void MultiLineEditbox::onCaptureLost(WindowEventArgs& e)
 /*************************************************************************
 	Handler for when character (printable keys) are typed
 *************************************************************************/
-void MultiLineEditbox::onCharacter(KeyEventArgs& e)
+void MultiLineEditbox::onCharacter(TextEventArgs& e)
 {
-    // NB: We are not calling the base class handler here because it propogates
-    // inputs back up the window hierarchy, whereas, as a consumer of key
-    // events, we want such propogation to cease with us regardless of whether
+    // NB: We are not calling the base class handler here because it propagates
+    // inputs back up the window hierarchy, whereas, as a consumer of input
+    // events, we want such propagation to cease with us regardless of whether
     // we actually handle the event.
 
     // fire event.
@@ -1317,7 +1317,7 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 
 	// only need to take notice if we have focus
 	if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.codepoint))
+        getFont()->isCodepointAvailable(e.character))
 	{
 		// erase selected text
 		eraseSelectedText();
@@ -1326,7 +1326,7 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
        if (getText().length() - 1 < d_maxTextLen)
 		{
            String newText = getText();
-           newText.insert(getCaretIndex(), 1, e.codepoint);
+           newText.insert(getCaretIndex(), 1, e.character);
            setText(newText);
 
 			d_caretPos++;

@@ -322,6 +322,18 @@ public:
 	uint               sysKeys;   //!< current state of the system keys and mouse buttons.
 };
 
+/*!
+\brief
+	EventArgs based class that is used for objects passed to input event handlers
+	concerning text input.
+*/
+class CEGUIEXPORT TextEventArgs : public WindowEventArgs
+{
+public:
+	TextEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
+	String::value_type character; //!< utf32 or char (depends on used String class) codepoint for the character of the text.
+};
 
 /*!
 \brief
