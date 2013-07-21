@@ -81,6 +81,7 @@ SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
     d_selectedSampleData(0),
     d_loadingProgressBar(0),
     d_quittingSampleView(false),
+    d_sampleInputAggregator(0),
     d_samplesXMLFilename(xml_filename)
 {
 }
@@ -92,14 +93,15 @@ SamplesFramework::~SamplesFramework()
         delete d_metaDataWinMgr;
 }
 
-
-
 //----------------------------------------------------------------------------//
 bool SamplesFramework::initialise()
 {
     using namespace CEGUI;
 
     initialiseLoadScreenLayout();
+
+    d_systemInputAggregator = new InputAggregator(
+        &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
 
     // return true to signalize the initialisation was sucessful and run the
     // SamplesFramework
@@ -110,6 +112,18 @@ bool SamplesFramework::initialise()
 void SamplesFramework::deinitialise()
 {
     unloadSamples();
+
+    if (d_systemInputAggregator != 0)
+    {
+        delete d_systemInputAggregator;
+        d_systemInputAggregator = 0;
+    }
+
+    if (d_sampleInputAggregator != 0)
+    {
+        delete d_sampleInputAggregator;
+        d_sampleInputAggregator = 0;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -234,13 +248,7 @@ bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectChar(int character)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->injectChar(character);
-
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectChar(character);
-
-    return false;
+    return getCurrentInputAggregator()->injectChar(character);
 }
 
 //----------------------------------------------------------------------------//
@@ -400,6 +408,7 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
             getPosition());
 
     d_selectedSampleData = correspondingSampleData;
+    d_sampleInputAggregator = new InputAggregator(sampleContext);
 
     d_selectedSampleData->onEnteringSample();
 }
@@ -422,6 +431,8 @@ void SamplesFramework::stopDisplaySample()
 
     d_selectedSampleData = 0;
     d_quittingSampleView = false;
+    delete d_sampleInputAggregator;
+    d_sampleInputAggregator = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -673,6 +684,15 @@ bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1,
         && clipRect1.top() < clipRect2.bottom()
         && clipRect1.bottom() > clipRect2.top()
         ;
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::InputAggregator* SamplesFramework::getCurrentInputAggregator()
+{
+    if (d_sampleInputAggregator != 0)
+        return d_sampleInputAggregator;
+
+    return d_systemInputAggregator;
 }
 
 //----------------------------------------------------------------------------//
