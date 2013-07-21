@@ -71,6 +71,8 @@ class ImageCodec;
 class ImageManager;
 class ImagerySection;
 class Interpolator;
+class InputAggregator;
+class InputEvent;
 class JustifiedRenderedString;
 class KeyFrame;
 class LeftAlignedRenderedString;
