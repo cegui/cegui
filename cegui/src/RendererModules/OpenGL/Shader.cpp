@@ -46,7 +46,7 @@ OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
                              const std::string& fragment_shader_source,
                              OpenGL3StateChangeWrapper* glStateChanger) :
     d_glStateChanger(glStateChanger),
-    d_createdSucessfully(false),
+    d_createdSuccessfully(false),
     d_vertexShader(0),
     d_fragmentShader(0),
     d_geometryShader(0),
@@ -117,7 +117,7 @@ void OpenGL3Shader::bindFragDataLocation(const std::string &name)
 //----------------------------------------------------------------------------//
 bool OpenGL3Shader::isCreatedSuccessfully()
 {
-    return d_createdSucessfully;
+    return d_createdSuccessfully;
 }
 
 //----------------------------------------------------------------------------//
@@ -194,7 +194,7 @@ void OpenGL3Shader::link()
     if (d_program == 0)
         return;
 
-    d_createdSucessfully = true;
+    d_createdSuccessfully = true;
     checkGLErrors();
 
 
