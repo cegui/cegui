@@ -35,6 +35,7 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Size.h"
+#include "CEGUI/SemanticInputEvent.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -291,6 +292,21 @@ public:
 	uint        clickCount;     //!< Holds number of mouse button down events currently counted in a multi-click sequence (for button inputs only).
 };
 
+/*!
+\brief
+    EventArgs based class that is used for objects passed to input event handlers
+    concerning pointer input.
+*/
+class CEGUIEXPORT PointerEventArgs : public WindowEventArgs
+{
+public:
+    PointerEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
+    Vector2f        position;       //!< holds current pointer position.
+    Vector2f        moveDelta;      //!< holds variation of pointer position from last pointer input
+    PointerSource   source;         //!< one of the PointerSource enumerated values describing the source causing the event
+    float           scroll;         //!< holds the amount of the scroll
+};
 
 /*!
 \brief

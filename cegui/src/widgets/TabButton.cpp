@@ -146,12 +146,12 @@ void TabButton::onMouseMove(MouseEventArgs& e)
 	ButtonBase::onMouseMove(e);
 }
 
-void TabButton::onMouseWheel(MouseEventArgs& e)
+void TabButton::onScroll(PointerEventArgs& e)
 {
     fireEvent(EventScrolled, e, EventNamespace);
 
 	// default handling
-	ButtonBase::onMouseMove(e);
+	ButtonBase::onPointerMove(e);
 }
 
 } // End of  CEGUI namespace section

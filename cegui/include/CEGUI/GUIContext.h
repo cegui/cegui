@@ -277,7 +277,6 @@ public:
     bool injectMouseButtonUp(MouseButton button);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
-    bool injectMouseWheelChange(float delta);
     bool injectMousePosition(float x_pos, float y_pos);
     bool injectMouseButtonClick(const MouseButton button);
     bool injectMouseButtonDoubleClick(const MouseButton button);
@@ -332,6 +331,7 @@ protected:
     bool handleCopyRequest(const SemanticInputEvent& event);
     bool handleCutRequest(const SemanticInputEvent& event);
     bool handlePasteRequest(const SemanticInputEvent& event);
+    bool handleScrollEvent(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;

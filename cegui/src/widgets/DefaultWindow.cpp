@@ -57,11 +57,11 @@ void DefaultWindow::onMouseMove(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseWheel(MouseEventArgs& e)
+void DefaultWindow::onScroll(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseWheel(e);
-    updateMouseEventHandled(e);
+    Window::onScroll(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
@@ -108,6 +108,15 @@ void DefaultWindow::onMouseTripleClicked(MouseEventArgs& e)
 
 //----------------------------------------------------------------------------//
 void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
+{
+    // by default, if we are a root window (no parent) with pass-though enabled
+    // we do /not/ mark mouse events as handled.
+    if (!d_parent && e.handled && d_mousePassThroughEnabled)
+        --e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void DefaultWindow::updatePointerEventHandled(PointerEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
     // we do /not/ mark mouse events as handled.

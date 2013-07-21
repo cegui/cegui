@@ -103,7 +103,7 @@ const String Window::EventMouseLeavesArea("MouseLeavesArea");
 const String Window::EventMouseEntersSurface( "MouseEntersSurface" );
 const String Window::EventMouseLeavesSurface( "MouseLeavesSurface" );
 const String Window::EventMouseMove("MouseMove");
-const String Window::EventMouseWheel("MouseWheel");
+const String Window::EventScroll("Scroll");
 const String Window::EventMouseButtonDown("MouseButtonDown");
 const String Window::EventMouseButtonUp("MouseButtonUp");
 const String Window::EventMouseClick("MouseClick");
@@ -2542,16 +2542,16 @@ void Window::onMouseMove(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseWheel(MouseEventArgs& e)
+void Window::onScroll(PointerEventArgs& e)
 {
-    fireEvent(EventMouseWheel, e, EventNamespace);
+    fireEvent(EventScroll, e, EventNamespace);
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onMouseWheel(e);
+        getParent()->onScroll(e);
 
         return;
     }
@@ -3813,6 +3813,12 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 bool Window::isMouseContainedInArea() const
 {
     return d_containsMouse;
+}
+
+//----------------------------------------------------------------------------//
+void Window::onPointerMove(PointerEventArgs& e)
+{
+
 }
 
 //----------------------------------------------------------------------------//

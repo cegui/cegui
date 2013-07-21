@@ -203,13 +203,13 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 /*************************************************************************
 	Handler for scroll wheel changes
 *************************************************************************/
-void Slider::onMouseWheel(MouseEventArgs& e)
+void Slider::onScroll(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseWheel(e);
+	Window::onScroll(e);
 
-	// scroll by e.wheelChange * stepSize
-	setCurrentValue(d_value + d_step * e.wheelChange);
+	// scroll by vertical scroll * stepSize
+	setCurrentValue(d_value + d_step * e.scroll);
 
 	// ensure the message does not go to our parent.
 	++e.handled;

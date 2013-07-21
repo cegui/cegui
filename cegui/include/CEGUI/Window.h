@@ -374,12 +374,11 @@ public:
      * valid.
      */
     static const String EventMouseMove;
-    /** Event fired when the mouse wheel is scrolled when the mouse cursor is
-     * within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when there is a scroll event within the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseWheel;
+    static const String EventScroll;
     /** Event fired when a mouse button is pressed down within the Window.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
@@ -3054,13 +3053,23 @@ protected:
 
     /*!
     \brief
-        Handler called when the mouse wheel (z-axis) position changes within
+        Handler called when the pointer cursor has been moved within this window's
+        area.
+
+    \param e
+        PointerEventArgs object.  All fields are valid.
+    */
+    virtual void onPointerMove(PointerEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when the pointer scroll value changes within
         this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onScroll(PointerEventArgs& e);
 
     /*!
     \brief
