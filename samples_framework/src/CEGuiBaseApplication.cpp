@@ -125,12 +125,14 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
 
     // setup for FPS value
-    d_FPSGeometry = &d_renderer->createGeometryBuffer();
+    d_FPSGeometry = &d_renderer->createGeometryBuffer(
+        d_renderer->createRenderMaterial(CEGUI::DS_TEXTURED));
     d_FPSGeometry->setClippingRegion(scrn);
     positionFPS();
 
     // setup for spinning logo
-    d_logoGeometry = &d_renderer->createGeometryBuffer();
+    d_logoGeometry = &d_renderer->createGeometryBuffer(
+        d_renderer->createRenderMaterial(CEGUI::DS_TEXTURED));
     d_logoGeometry->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
     positionLogo();
 

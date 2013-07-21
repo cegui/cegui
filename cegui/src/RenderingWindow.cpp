@@ -43,7 +43,8 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_renderer(*System::getSingleton().getRenderer()),
     d_textarget(target),
     d_owner(&owner),
-    d_geometry(&d_renderer.createGeometryBuffer()),
+    d_geometry(&d_renderer.createGeometryBuffer(
+               d_renderer.createRenderMaterial(DS_TEXTURED))),
     d_geometryValid(false),
     d_position(0, 0),
     d_size(0, 0),

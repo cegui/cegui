@@ -31,8 +31,9 @@
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//
-GeometryBuffer::GeometryBuffer() :
+GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial) :
     d_blendMode(BM_NORMAL)
+    , d_renderMaterial(renderMaterial)
 {
 }
 
