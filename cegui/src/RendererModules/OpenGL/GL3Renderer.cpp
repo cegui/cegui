@@ -337,7 +337,7 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 
         return render_material;
     }
-    else if(shaderType == DS_SOLID);
+    else if(shaderType == DS_SOLID)
     {
         RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperSolid));
 
