@@ -31,10 +31,20 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/Rect.h"
+#include "CEGUI/RefCounted.h"
+#include "CEGUI/RenderMaterial.h"
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    class RenderMaterial;
+
 /*!
 \brief
     Abstract class defining the interface for objects that buffer geometry for
@@ -44,7 +54,6 @@ class CEGUIEXPORT GeometryBuffer :
     public AllocatedObject<GeometryBuffer>
 {
 public:
-    //! Destructor
     virtual ~GeometryBuffer();
 
     /*!
@@ -234,19 +243,26 @@ public:
     \return
         - true if vertices subsequently added to the GeometryBuffer will
           be clipped to the clipping region defined for this GeometryBuffer.
-        - false if vertices subsequently added will not be clippled (other than
+        - false if vertices subsequently added will not be clipped (other than
           to the edges of the rendering target).
     */
     virtual bool isClippingActive() const = 0;
 
 protected:
     //! Constructor.
-    GeometryBuffer();
+    GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode d_blendMode;
+
+    //! Reference to the RenderMaterial used for this GeometryBuffer
+    RefCounted<RenderMaterial> d_renderMaterial;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIGeometryBuffer_h_
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
+#endif

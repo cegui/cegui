@@ -62,7 +62,8 @@ MouseCursor::MouseCursor(void) :
     d_defaultCursorImage(0),
     d_position(0.0f, 0.0f),
     d_visible(true),
-    d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer()),
+    d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer(
+               System::getSingleton().getRenderer()->createRenderMaterial(DS_TEXTURED))),
     d_customSize(0.0f, 0.0f),
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
