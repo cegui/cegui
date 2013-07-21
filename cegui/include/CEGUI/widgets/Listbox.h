@@ -739,7 +739,7 @@ protected:
 	*************************************************************************/
 	virtual void	onSized(ElementEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
+    virtual void    onScroll(PointerEventArgs& e);
 	virtual void	onMouseMove(MouseEventArgs& e);
 
 

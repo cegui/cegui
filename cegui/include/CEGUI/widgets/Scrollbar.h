@@ -540,7 +540,7 @@ protected:
 
     // Overridden event handlers
     virtual void onMouseButtonDown(MouseEventArgs& e);
-    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onScroll(PointerEventArgs& e);
 
     // base class overrides
     void banPropertiesForAutoWindow();

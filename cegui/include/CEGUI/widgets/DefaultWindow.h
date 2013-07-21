@@ -76,7 +76,8 @@ public:
 
 
 protected:
-    //! helper to update mouse input handled state
+    //! helper to update pointer input handled state
+    void updatePointerEventHandled(PointerEventArgs& e) const; 
     void updateMouseEventHandled(MouseEventArgs& e) const;
 
     // overridden functions from Window base class
@@ -84,12 +85,12 @@ protected:
 
     // override the mouse event handlers
     void onMouseMove(MouseEventArgs& e);
-    void onMouseWheel(MouseEventArgs& e);
+    void onScroll(PointerEventArgs& e);
     void onMouseButtonDown(MouseEventArgs& e);
     void onMouseButtonUp(MouseEventArgs& e);
     void onMouseClicked(MouseEventArgs& e);
     void onMouseDoubleClicked(MouseEventArgs& e);
-    void onMouseTripleClicked(MouseEventArgs& e);
+    void onMouseTripleClicked(MouseEventArgs& e);   
 };
 
 } // End of  CEGUI namespace section

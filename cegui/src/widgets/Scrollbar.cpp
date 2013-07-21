@@ -232,13 +232,13 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onMouseWheel(MouseEventArgs& e)
+void Scrollbar::onScroll(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
 
-    // scroll by e.wheelChange * stepSize
-    setScrollPosition(d_position + d_stepSize * -e.wheelChange);
+    // scroll by vertical scroll * stepSize
+    setScrollPosition(d_position + d_stepSize * -e.scroll);
 
     // ensure the message does not go to our parent.
     ++e.handled;

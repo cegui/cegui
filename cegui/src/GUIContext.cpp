@@ -872,29 +872,6 @@ bool GUIContext::injectKeyUp(Key::Scan scan_code)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectMouseWheelChange(float delta)
-{
-    MouseEventArgs ma(0);
-    ma.position = d_mouseCursor.getPosition();
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
-    ma.button = NoButton;
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = delta;
-    ma.clickCount = 0;
-    ma.window = getTargetWindow(ma.position, false);
-    // make mouse position sane for this target window
-    if (ma.window)
-        ma.position = ma.window->getUnprojectedPosition(ma.position);
-
-    // if there is no target window, input can not be handled.
-    if (!ma.window)
-        return false;
-
-    ma.window->onMouseWheel(ma);
-    return ma.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::injectMousePosition(float x_pos, float y_pos)
 {
     const Vector2f new_position(x_pos, y_pos);
@@ -1149,6 +1126,30 @@ void GUIContext::initializeSemanticEventHandlers()
     d_semanticEventHandlers.insert(std::make_pair(SV_Paste,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handlePasteRequest, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SV_VerticalScroll,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handleScrollEvent, this)));
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
+{
+    PointerEventArgs pa(0);
+    pa.position = d_mouseCursor.getPosition();
+    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.source = PS_None;
+    pa.scroll = event.d_payload.single;
+    pa.window = getTargetWindow(pa.position, false);
+    // make pointer position sane for this target window
+    if (pa.window)
+        pa.position = pa.window->getUnprojectedPosition(pa.position);
+
+    // if there is no target window, input can not be handled.
+    if (!pa.window)
+        return false;
+
+    pa.window->onScroll(pa);
+    return pa.handled != 0;
 }
 
 //----------------------------------------------------------------------------//

@@ -1156,15 +1156,15 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
 /*************************************************************************
     Handler for mouse wheel changes
 *************************************************************************/
-void Tree::onMouseWheel(MouseEventArgs& e)
+void Tree::onScroll(PointerEventArgs& e)
 {
     // base class processing.
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
     
     if (d_vertScrollbar->isEffectiveVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.scroll);
     else if (d_horzScrollbar->isEffectiveVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
-        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.scroll);
     
     ++e.handled;
 }
