@@ -28,6 +28,11 @@
 #include "CEGUI/InputAggregator.h"
 #include "CEGUI/SemanticInputEvent.h"
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4351)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -257,5 +262,9 @@ bool InputAggregator::isControlPressed()
 {
     return d_keysPressed[Key::LeftControl] || d_keysPressed[Key::RightControl];
 }
+
+#if defined (_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 } // End of  CEGUI namespace section
