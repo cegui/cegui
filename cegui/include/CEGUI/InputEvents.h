@@ -33,6 +33,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/InputEvent.h"
+#include "CEGUI/SlotFunctorBase.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Size.h"
@@ -80,6 +81,40 @@ public:
     TextInputEvent() : InputEvent(IET_TextInputEventType) {}
 
     char d_character;         //!< The character inputted
+};
+
+/*!
+\brief
+    Slot template class that creates a functor that calls back via a class
+    member function and send a casted input event subclass as the parameter.
+
+\tparam T
+    The type of the class the contains the handler
+
+\tparam TInput
+    A subclass of InputEvent or InputEvent itself to cast the input event to
+    before calling the functor
+*/
+template<typename T, typename TInput>
+class InputEventHandlerSlot : public SlotFunctorBase<InputEvent>
+{
+public:
+    //! Member function slot type.
+    typedef bool(T::*MemberFunctionType)(const TInput&);
+
+    InputEventHandlerSlot(MemberFunctionType func, T* obj) :
+        d_function(func),
+        d_object(obj)
+    {}
+
+    virtual bool operator()(const InputEvent& arg)
+    {
+        return (d_object->*d_function)(static_cast<const TInput&>(arg));
+    }
+
+private:
+    MemberFunctionType d_function;
+    T* d_object;
 };
 
 } // End of  CEGUI namespace section
