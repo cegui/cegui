@@ -36,31 +36,6 @@
 
 using namespace CEGUI;
 
-struct InputEventHandler
-{
-    virtual bool handle(const InputEvent& event) = 0;
-};
-
-template <typename TInput, typename TClass>
-struct InputEventHandlerImpl : public InputEventHandler
-{
-    typedef bool (TClass::*HandlerFunctionType)(const TInput&);
-
-    InputEventHandlerImpl(HandlerFunctionType handler_func, TClass* obj) :
-        d_handlerFunc(handler_func),
-        d_obj(obj)
-    {}
-
-    bool handle(const InputEvent& event)
-    {
-        return (d_obj->*d_handlerFunc)(static_cast<const TInput&>(event));
-    }
-
-private:
-    HandlerFunctionType d_handlerFunc;
-    TClass* d_obj;
-};
-
 class MockInputEventReceiver : public InputEventReceiver
 {
 public:
@@ -91,7 +66,7 @@ public:
         HandlersMap::const_iterator itor = d_handlersMap.find(event.d_eventType);
         if (itor != d_handlersMap.end())
         {
-            return (*itor).second->handle(event);
+            return (*(*itor).second)(event);
         }
         else
         {
@@ -125,7 +100,7 @@ public:
             d_semanticEventsHandlersMap.find(event.d_value);
         if (itor != d_semanticEventsHandlersMap.end())
         {
-            (*itor).second->handle(event);
+            return (*(*itor).second)(event);
         }
         else
         {
@@ -138,27 +113,27 @@ public:
     void initializeEventHandlers()
     {
         d_handlersMap.insert(std::make_pair(IET_TextInputEventType,
-            new InputEventHandlerImpl<TextInputEvent, MockInputEventReceiver>(
+            new InputEventHandlerSlot<MockInputEventReceiver, TextInputEvent>(
                 &MockInputEventReceiver::handleTextEvent, this)));
 
         d_handlersMap.insert(std::make_pair(IET_SemanticInputEventType,
-            new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
+            new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
                 &MockInputEventReceiver::handleSemanticEvent, this)));
     }
 
     void initializeSemanticEventHandlers()
     {
         d_semanticEventsHandlersMap.insert(std::make_pair(SV_VerticalScroll,
-            new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
-            &MockInputEventReceiver::handleScrollEvent, this)));
+            new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
+                &MockInputEventReceiver::handleScrollEvent, this)));
 
         d_semanticEventsHandlersMap.insert(std::make_pair(SV_PointerMove,
-            new InputEventHandlerImpl<SemanticInputEvent, MockInputEventReceiver>(
-            &MockInputEventReceiver::handleMovementEvent, this)));
+            new InputEventHandlerSlot<MockInputEventReceiver, SemanticInputEvent>(
+                &MockInputEventReceiver::handleMovementEvent, this)));
     }
 
 private:
-    typedef std::map<int, InputEventHandler*> HandlersMap;
+    typedef std::map<int, SlotFunctorBase<InputEvent>*> HandlersMap;
     HandlersMap d_semanticEventsHandlersMap;
     HandlersMap d_handlersMap;
 };
