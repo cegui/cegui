@@ -675,7 +675,10 @@ Window* GUIContext::getKeyboardTargetWindow() const
 //----------------------------------------------------------------------------//
 bool GUIContext::injectInputEvent(const InputEvent& event)
 {
-    return true;
+    if (event.d_eventType == IET_TextInputEventType)
+        return handleTextInputEvent(static_cast<const TextInputEvent&>(event));
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
@@ -860,22 +863,6 @@ bool GUIContext::injectKeyUp(Key::Scan scan_code)
     args.sysKeys = d_systemKeys.get();
 
     args.window->onKeyUp(args);
-    return args.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::injectChar(String::value_type code_point)
-{
-    KeyEventArgs args(getKeyboardTargetWindow());
-
-    // if there's no destination window, input can't be handled.
-    if (!args.window)
-        return false;
-
-    args.codepoint = code_point;
-    args.sysKeys = d_systemKeys.get();
-
-    args.window->onCharacter(args);
     return args.handled != 0;
 }
 
@@ -1114,6 +1101,21 @@ void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
 
     for (size_t i = 0; i < hierarchy_root->getChildCount(); ++i)
         notifyDefaultFontChanged(hierarchy_root->getChildAtIdx(i));
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
+{
+    TextEventArgs args(getKeyboardTargetWindow());
+
+    // if there's no destination window, input can't be handled.
+    if (!args.window)
+        return false;
+
+    args.character = event.d_character;
+
+    args.window->onCharacter(args);
+    return args.handled != 0;
 }
 
 //----------------------------------------------------------------------------//

@@ -3137,19 +3137,17 @@ protected:
         was generated.  All other fields should be considered as 'junk'.
     */
     virtual void onKeyUp(KeyEventArgs& e);
-
+    
     /*!
     \brief
-        Handler called when a character-key has been pressed while this window
+        Handler called when a character has been injected while this window
         has input focus.
 
     \param e
-        KeyEventArgs object whose 'codepoint' field is set to the Unicode code
-        point (encoded as utf32) for the character typed, and whose 'sysKeys'
-        field represents the combination of SystemKey that were active when the
-        event was generated.  All other fields should be considered as 'junk'.
+        TextEventArgs object whose 'character' field is set to the Unicode code
+        point (encoded as utf32) for the character inputted.
     */
-    virtual void onCharacter(KeyEventArgs& e);
+    virtual void onCharacter(TextEventArgs& e);
 
     /*!
     \brief

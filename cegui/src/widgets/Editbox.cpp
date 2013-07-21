@@ -549,11 +549,11 @@ void Editbox::onCaptureLost(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onCharacter(KeyEventArgs& e)
+void Editbox::onCharacter(TextEventArgs& e)
 {
-    // NB: We are not calling the base class handler here because it propogates
-    // inputs back up the window hierarchy, whereas, as a consumer of key
-    // events, we want such propogation to cease with us regardless of whether
+    // NB: We are not calling the base class handler here because it propagates
+    // inputs back up the window hierarchy, whereas, as a consumer of input
+    // events, we want such propagation to cease with us regardless of whether
     // we actually handle the event.
 
     // fire event.
@@ -561,7 +561,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
     // only need to take notice if we have focus
     if (e.handled == 0 && hasInputFocus() && !isReadOnly() &&
-        getFont()->isCodepointAvailable(e.codepoint))
+        getFont()->isCodepointAvailable(e.character))
     {
         // backup current text
         String tmp(getText());
@@ -570,7 +570,7 @@ void Editbox::onCharacter(KeyEventArgs& e)
         // if there is room
         if (tmp.length() < d_maxTextLen)
         {
-            tmp.insert(getSelectionStartIndex(), 1, e.codepoint);
+            tmp.insert(getSelectionStartIndex(), 1, e.character);
 
             if (handleValidityChangeForString(tmp))
             {

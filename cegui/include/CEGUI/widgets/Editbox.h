@@ -609,7 +609,7 @@ protected:
     void onMouseTripleClicked(MouseEventArgs& e);
     void onMouseMove(MouseEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);
-    void onCharacter(KeyEventArgs& e);
+    void onCharacter(TextEventArgs& e);
     void onKeyDown(KeyEventArgs& e);
     void onTextChanged(WindowEventArgs& e);
 
