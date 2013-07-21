@@ -120,6 +120,12 @@ static inline GUIContext& getGUIContext()
     return System::getSingleton().getDefaultGUIContext();
 }
 
+static inline InputAggregator& getInputAggregator()
+{
+    static InputAggregator inputAggregator(&System::getSingleton().getDefaultGUIContext());
+    return inputAggregator;
+}
+
 static void doClick(float position_x, float position_y)
 {
     getGUIContext().injectMousePosition(position_x, position_y);
@@ -161,9 +167,9 @@ BOOST_AUTO_TEST_CASE(InsertSimpleText)
     // focus the editbox
     doClick(91.0f, 91.0f);
 
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('W'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('o'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('o'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -173,11 +179,11 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithBackspace)
     // focus the editbox
     doClick(91.0f, 91.0f);
 
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('W'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('o'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('k'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('o'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('k'), true);
     BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Backspace), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -187,10 +193,10 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
     // focus the editbox
     doClick(91.0f, 91.0f);
 
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('W'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('o'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('k'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('o'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('k'), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::ArrowLeft), true);
     BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::ArrowLeft), true);
