@@ -36,10 +36,12 @@
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
+#include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+#include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -47,13 +49,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner) :
-    OpenGLGeometryBufferBase(owner),
-    d_shader(owner.getShaderStandard()),
-    d_shaderPosLoc(owner.getShaderStandardPositionLoc()),
-    d_shaderTexCoordLoc(owner.getShaderStandardTexCoordLoc()),
-    d_shaderColourLoc(owner.getShaderStandardColourLoc()),
-    d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc()),
+OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
+    OpenGLGeometryBufferBase(owner, renderMaterial),
     d_glStateChanger(owner.getOpenGLStateChanger()),
     d_bufferSize(0)
 {
@@ -80,9 +77,10 @@ void OpenGL3GeometryBuffer::draw() const
     if (!d_matrixValid)
         updateMatrix();
 
-    // Send ModelViewProjection matrix to shader
+    CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
+    // Set the ModelViewProjection matrix in the bindings
     glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix()->d_matrix * d_matrix->d_matrix;
-    glUniformMatrix4fv(d_shaderStandardMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
@@ -110,7 +108,9 @@ void OpenGL3GeometryBuffer::draw() const
             else
                 glDisable(GL_SCISSOR_TEST);
 
-            glBindTexture(GL_TEXTURE_2D, currentBatch.texture);
+            shaderParameterBindings->setParameter("texture0", currentBatch.texture);
+
+            d_renderMaterial->prepareForRendering();
 
             // draw the geometry
             const unsigned int numVertices = currentBatch.vertexCount;
@@ -152,20 +152,21 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 
-    d_shader->bind();
-    
     GLsizei stride = 9 * sizeof(GL_FLOAT);
 
-    glVertexAttribPointer(d_shaderTexCoordLoc, 2, GL_FLOAT, GL_FALSE, stride, 0);
-    glEnableVertexAttribArray(d_shaderTexCoordLoc);
+    CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
 
-    glVertexAttribPointer(d_shaderColourLoc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(d_shaderColourLoc);
+    GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
+    glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, 0);
+    glEnableVertexAttribArray(texture_coord_loc);
 
-    glVertexAttribPointer(d_shaderPosLoc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(6 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(d_shaderPosLoc);
+    GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
+    glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(shader_colour_loc);
 
-    d_shader->unbind();
+    GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
+    glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(6 * sizeof(GL_FLOAT)));
+    glEnableVertexAttribArray(shader_pos_loc);
 
     // Unbind Vertex Attribute Array (VAO)
     glBindVertexArray(0);

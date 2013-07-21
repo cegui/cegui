@@ -89,6 +89,7 @@ namespace CEGUI
     void reset();
 
     void bindVertexArray(GLuint vertexArray);
+    void useProgram(GLuint program);
     void blendFunc(GLenum sfactor, GLenum dfactor);
     void blendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
     void viewport(GLint x, GLint y, GLsizei width, GLsizei height);
@@ -97,6 +98,7 @@ namespace CEGUI
 
 protected:
     GLuint                      d_vertexArrayObject;
+    GLuint                      d_shaderProgram;
     BlendFuncParams             d_blendFuncParams;
     BlendFuncSeperateParams     d_blendFuncSeperateParams;
     PortParams                  d_viewPortParams;

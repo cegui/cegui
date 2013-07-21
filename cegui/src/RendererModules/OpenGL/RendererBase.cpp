@@ -111,9 +111,9 @@ RenderTarget& OpenGLRendererBase::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& OpenGLRendererBase::createGeometryBuffer()
+GeometryBuffer& OpenGLRendererBase::createGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl();
+    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl(renderMaterial);
     d_geometryBuffers.push_back(b);
     return *b;
 }

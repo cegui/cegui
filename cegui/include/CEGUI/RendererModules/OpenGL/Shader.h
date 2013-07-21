@@ -39,6 +39,8 @@ author:     Lukas E Meindl
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class OpenGL3StateChangeWrapper;
+
 class OpenGL3Shader :
     public AllocatedObject<OpenGL3Shader>
 {
@@ -49,7 +51,8 @@ public:
         Creates and loads shader programs from the two strings supplied to it
     */
     OpenGL3Shader(const std::string& vertex_shader_source,
-                  const std::string& fragment_shader_source);
+                  const std::string& fragment_shader_source,
+                  OpenGL3StateChangeWrapper* glStateChanger);
 
     ~OpenGL3Shader();
 
@@ -61,21 +64,15 @@ public:
 
     /*!
     \brief
-        Unbind the shader
-    */
-    void unbind() const;
-
-    /*!
-    \brief
         Query the location of a vertex attribute inside the shader.
     */
-    GLuint getAttribLocation(const std::string &name) const;
+    GLint getAttribLocation(const std::string &name) const;
 
     /*!
     \brief
         Query the location of a uniform variable inside the shader.
     */
-    GLuint getUniformLocation(const std::string &name) const;
+    GLint getUniformLocation(const std::string &name) const;
 
     /*!
     \brief
@@ -93,6 +90,8 @@ private:
 
     void outputShaderLog(GLuint shader);
     void outputProgramLog(GLuint program);
+
+    OpenGL3StateChangeWrapper* d_glStateChanger;
 
     std::string d_shaderName;
     bool d_createdSucessfully;
