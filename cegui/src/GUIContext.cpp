@@ -101,9 +101,11 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_windowDestroyedEventConnection(
         WindowManager::getSingleton().subscribeEvent(
             WindowManager::EventWindowDestroyed,
-            Event::Subscriber(&GUIContext::windowDestroyedHandler, this)))
+            Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
+    d_semanticEventHandlers()
 {
     resetWindowContainingMouse();
+    initializeSemanticEventHandlers();
 }
 
 //----------------------------------------------------------------------------//
@@ -678,6 +680,9 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
     if (event.d_eventType == IET_TextInputEventType)
         return handleTextInputEvent(static_cast<const TextInputEvent&>(event));
 
+    if (event.d_eventType == IET_SemanticInputEventType)
+        return handleSemanticInputEvent(static_cast<const SemanticInputEvent&>(event));
+
     return false;
 }
 
@@ -1001,21 +1006,21 @@ bool GUIContext::injectMouseButtonTripleClick(const MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectCopyRequest()
+bool GUIContext::handleCopyRequest(const SemanticInputEvent& event)
 {
     Window* source = getKeyboardTargetWindow();
     return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectCutRequest()
+bool GUIContext::handleCutRequest(const SemanticInputEvent& event)
 {
     Window* source = getKeyboardTargetWindow();
     return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectPasteRequest()
+bool GUIContext::handlePasteRequest(const SemanticInputEvent& event)
 {
     Window* target = getKeyboardTargetWindow();
     return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
@@ -1116,6 +1121,34 @@ bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
 
     args.window->onCharacter(args);
     return args.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
+{
+    // dispatch to a handler if we have one
+    std::map<int, SlotFunctorBase<InputEvent>*>::const_iterator itor =
+        d_semanticEventHandlers.find(event.d_value);
+    if (itor != d_semanticEventHandlers.end())
+    {
+        return (*(*itor).second)(event);
+    }
+
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::initializeSemanticEventHandlers()
+{
+    d_semanticEventHandlers.insert(std::make_pair(SV_Cut,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handleCutRequest, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SV_Copy,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handleCopyRequest, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SV_Paste,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handlePasteRequest, this)));
 }
 
 //----------------------------------------------------------------------------//

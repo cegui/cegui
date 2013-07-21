@@ -53,7 +53,7 @@ struct InputInjectionFixture
         d_button->setPosition(UVector2(cegui_reldim(0.2f), cegui_reldim(0.2f)));
         d_button->setSize(USize(cegui_reldim(0.2f), cegui_reldim(0.2f)));
 
-        d_editbox = WindowManager::getSingleton().createWindow("TaharezLook/Editbox");
+        d_editbox = static_cast<Editbox*>(WindowManager::getSingleton().createWindow("TaharezLook/Editbox"));
         d_editbox->setPosition(UVector2(cegui_reldim(0.9f), cegui_reldim(0.9f)));
         d_editbox->setSize(USize(cegui_reldim(0.1f), cegui_reldim(0.1f)));
 
@@ -108,7 +108,7 @@ struct InputInjectionFixture
 
     Window* d_window;
     Window* d_button;
-    Window* d_editbox;
+    Editbox* d_editbox;
 
     std::vector<Event::Connection> d_windowConnections;
     std::vector<Event::Connection> d_buttonConnections;
@@ -203,6 +203,27 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
     BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Delete), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
+}
+
+BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
+{
+    // focus the editbox
+    doClick(91.0f, 91.0f);
+
+    d_editbox->setText("WoW");
+
+    // select all text
+    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonTripleClick(MouseButton::LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 3);
+
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectCopyRequest(), true);
+
+    // deselect the text
+    d_editbox->setSelection(0, 0);
+
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectPasteRequest(), true);
+
+    BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoWWoW");
 }
 
 BOOST_AUTO_TEST_SUITE_END()
