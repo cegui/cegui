@@ -343,6 +343,13 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 
         return render_material;
     }
+    else
+    {
+        CEGUI_THROW(RendererException(
+            "A default shader of this type does not exist."));
+
+        return RefCounted<RenderMaterial>();
+    }
 }
 
 //----------------------------------------------------------------------------//
