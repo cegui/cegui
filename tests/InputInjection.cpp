@@ -128,7 +128,7 @@ static inline InputAggregator& getInputAggregator()
 
 static void doClick(float position_x, float position_y)
 {
-    getGUIContext().injectMousePosition(position_x, position_y);
+    getInputAggregator().injectMousePosition(position_x, position_y);
     getGUIContext().injectMouseButtonDown(LeftButton);
     getGUIContext().injectMouseButtonUp(LeftButton);
 }

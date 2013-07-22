@@ -91,7 +91,7 @@ void MenuItem::updateInternalState(const Vector2f& mouse_pos)
     const Window* capture_wnd = getCaptureWindow();
 
     if (capture_wnd == 0)
-        d_hovering = (getGUIContext().getWindowContainingMouse() == this && isHit(mouse_pos));
+        d_hovering = (getGUIContext().getWindowContainingPointer() == this && isHit(mouse_pos));
     else
         d_hovering = (capture_wnd == this && isHit(mouse_pos));
 

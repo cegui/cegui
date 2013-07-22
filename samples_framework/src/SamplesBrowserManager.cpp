@@ -39,6 +39,7 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/InputAggregator.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 
 using namespace CEGUI;
@@ -152,8 +153,7 @@ bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& 
         float absPosX = relPosX * contextSize.d_width;
         float absPosY = relPosY * contextSize.d_height;
 
-
-        sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);
+        sampleData->getInputAggregator()->injectMousePosition(absPosX, absPosY);
         sampleData->getGuiContext()->markAsDirty();
 
         wnd->setMouseCursor("SampleBrowserSkin/MouseArrowHover");
@@ -241,7 +241,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     sampleWindow->setSize(USize(UDim(1.0f, -10.0f), cegui_absdim(1.0f)));
     sampleWindow->setMouseInputPropagationEnabled(true);
 
-    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleMouseMoveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SamplesBrowserManager::handleMouseMoveSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
 

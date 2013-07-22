@@ -130,7 +130,7 @@ public:
     //! Return a pointer to the Window that is currently set as modal.
     Window* getModalWindow() const;
 
-    Window* getWindowContainingMouse() const;
+    Window* getWindowContainingPointer() const;
 
     const Sizef& getSurfaceSize() const;
 
@@ -185,8 +185,8 @@ public:
     */
     bool isMouseClickEventGenerationEnabled() const;
 
-    //! Tell the context to reconsider which window it thinks the mouse is in.
-    void updateWindowContainingMouse();
+    //! Tell the context to reconsider which window it thinks the pointer is in.
+    void updateWindowContainingPointer();
 
     Window* getInputCaptureWindow() const;
     void setInputCaptureWindow(Window* window);
@@ -271,13 +271,11 @@ public:
     bool injectInputEvent(const InputEvent& event);
 
     // Implementation of InjectedInputReceiver interface
-    bool injectMouseMove(float delta_x, float delta_y);
     bool injectMouseLeaves(void);
     bool injectMouseButtonDown(MouseButton button);
     bool injectMouseButtonUp(MouseButton button);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
-    bool injectMousePosition(float x_pos, float y_pos);
     bool injectMouseButtonClick(const MouseButton button);
     bool injectMouseButtonDoubleClick(const MouseButton button);
     bool injectMouseButtonTripleClick(const MouseButton button);
@@ -296,7 +294,6 @@ protected:
     //! notify windows in a hierarchy using default font, when font changes.
     void notifyDefaultFontChanged(Window* hierarchy_root) const;
 
-    bool mouseMoveInjection_impl(MouseEventArgs& ma);
     Window* getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
     Window* getKeyboardTargetWindow() const;
     Window* getCommonAncestor(Window* w1, Window* w2) const;
@@ -332,12 +329,14 @@ protected:
     bool handleCutRequest(const SemanticInputEvent& event);
     bool handlePasteRequest(const SemanticInputEvent& event);
     bool handleScrollEvent(const SemanticInputEvent& event);
+    bool handlePointerMoveEvent(const SemanticInputEvent& event);
+    bool handlePointerMove_impl(PointerEventArgs& pa);
 
     Window* d_rootWindow;
     bool d_isDirty;
     MouseCursor d_mouseCursor;
-    //! Scaling factor applied to injected mouse move deltas.
-    float d_mouseMovementScalingFactor;
+    //! Scaling factor applied to injected pointer move deltas.
+    float d_pointerMovementScalingFactor;
     //! should mouse click/multi-click events be automatically generated.
     bool d_generateMouseClickEvents;
     //! Timeout used to when detecting a single-click.

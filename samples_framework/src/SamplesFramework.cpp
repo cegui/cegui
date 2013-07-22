@@ -290,13 +290,7 @@ bool SamplesFramework::injectMouseWheelChange(float position)
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMousePosition(float x, float y)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->injectMousePosition(x, y);
-
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectMousePosition(x, y);
-
-    return false;
+    return getCurrentInputAggregator()->injectMousePosition(x, y);
 }
 
 //----------------------------------------------------------------------------//
