@@ -369,11 +369,11 @@ public:
      * event see the Window::EventMouseLeavesArea event.
      */
     static const String EventMouseLeavesSurface;
-    /** Event fired when the mouse cursor moves within the area of the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when the pointer moves within the area of the Window.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseMove;
+    static const String EventPointerMove;
     /** Event fired when there is a scroll event within the Window's area.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.

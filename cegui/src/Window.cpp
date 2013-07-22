@@ -102,7 +102,7 @@ const String Window::EventMouseEntersArea("MouseEntersArea");
 const String Window::EventMouseLeavesArea("MouseLeavesArea");
 const String Window::EventMouseEntersSurface( "MouseEntersSurface" );
 const String Window::EventMouseLeavesSurface( "MouseLeavesSurface" );
-const String Window::EventMouseMove("MouseMove");
+const String Window::EventPointerMove("PointerMove");
 const String Window::EventScroll("Scroll");
 const String Window::EventMouseButtonDown("MouseButtonDown");
 const String Window::EventMouseButtonUp("MouseButtonUp");
@@ -689,7 +689,7 @@ void Window::setEnabled(bool setting)
         onDisabled(args);
     }
 
-    getGUIContext().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingPointer();
 }
 
 //----------------------------------------------------------------------------//
@@ -709,7 +709,7 @@ void Window::setVisible(bool setting)
     WindowEventArgs args(this);
     d_visible ? onShown(args) : onHidden(args);
 
-    getGUIContext().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingPointer();
 }
 
 //----------------------------------------------------------------------------//
@@ -1240,7 +1240,7 @@ void Window::onZChange_impl(void)
 
     }
 
-    getGUIContext().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingPointer();
 }
 
 //----------------------------------------------------------------------------//
@@ -1264,7 +1264,7 @@ void Window::setMouseCursor(const Image* image)
 {
     d_mouseCursor = image;
 
-    if (getGUIContext().getWindowContainingMouse() == this)
+    if (getGUIContext().getWindowContainingPointer() == this)
         getGUIContext().getMouseCursor().setImage(image);
 }
 
@@ -1837,7 +1837,7 @@ void Window::setArea_impl(const UVector2& pos, const USize& size,
 
     //if (moved || sized)
     // FIXME: This is potentially wasteful
-    getGUIContext().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingPointer();
 
     // update geometry position and clipping if nothing from above appears to
     // have done so already (NB: may be occasionally wasteful, but fixes bugs!)
@@ -2370,10 +2370,14 @@ void Window::onCaptureLost(WindowEventArgs& e)
         d_oldCapture = 0;
     }
 
-    // handle case where mouse is now in a different window
-    // (this is a bit of a hack that uses the mouse input injector to handle
+    // handle case where pointer is now in a different window
+    // (this is a bit of a hack that uses the injection of a semantic event to handle
     // this for us).
-    getGUIContext().injectMouseMove(0, 0);
+    SemanticInputEvent moveEvent(SV_PointerMove);
+    Vector2f cursorPosition = getGUIContext().getMouseCursor().getPosition();
+    moveEvent.d_payload.array[0] = cursorPosition.d_x;
+    moveEvent.d_payload.array[1] = cursorPosition.d_y;
+    getGUIContext().injectInputEvent(moveEvent);
 
     fireEvent(EventInputCaptureLost, e, EventNamespace);
 }
@@ -2508,7 +2512,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
 void Window::onMouseLeaves(MouseEventArgs& e)
 {
     // perform tooltip control
-    const Window* const mw = getGUIContext().getWindowContainingMouse();
+    const Window* const mw = getGUIContext().getWindowContainingPointer();
     Tooltip* const tip = getTooltip();
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
@@ -2524,7 +2528,7 @@ void Window::onMouseMove(MouseEventArgs& e)
     if (tip)
         tip->resetTimer();
 
-    fireEvent(EventMouseMove, e, EventNamespace);
+    fireEvent(EventPointerMove, e, EventNamespace);
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
@@ -3818,7 +3822,26 @@ bool Window::isMouseContainedInArea() const
 //----------------------------------------------------------------------------//
 void Window::onPointerMove(PointerEventArgs& e)
 {
+    // perform tooltip control
+    Tooltip* const tip = getTooltip();
+    if (tip)
+        tip->resetTimer();
 
+    fireEvent(EventPointerMove, e, EventNamespace);
+
+    // optionally propagate to parent
+    if (!e.handled && d_propagateMouseInputs &&
+        d_parent && this != getGUIContext().getModalWindow())
+    {
+        e.window = getParent();
+        getParent()->onPointerMove(e);
+
+        return;
+    }
+
+    // by default we now mark pointer events as handled
+    // (derived classes may override, of course!)
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

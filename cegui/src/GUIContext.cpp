@@ -82,7 +82,7 @@ GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
     d_rootWindow(0),
     d_isDirty(false),
-    d_mouseMovementScalingFactor(1.0f),
+    d_pointerMovementScalingFactor(1.0f),
     d_generateMouseClickEvents(true),
     d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
@@ -246,7 +246,7 @@ Window* GUIContext::getModalWindow() const
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getWindowContainingMouse() const
+Window* GUIContext::getWindowContainingPointer() const
 {
     if (!d_windowContainingMouseIsUpToDate)
     {
@@ -337,7 +337,7 @@ const MouseCursor& GUIContext::getMouseCursor() const
 //----------------------------------------------------------------------------//
 void GUIContext::setMouseMoveScalingFactor(float factor)
 {
-    d_mouseMovementScalingFactor = factor;
+    d_pointerMovementScalingFactor = factor;
 
     GUIContextEventArgs args(this);
     onMouseMoveScalingFactorChanged(args);
@@ -346,7 +346,7 @@ void GUIContext::setMouseMoveScalingFactor(float factor)
 //----------------------------------------------------------------------------//
 float GUIContext::getMouseMoveScalingFactor() const
 {
-    return d_mouseMovementScalingFactor;
+    return d_pointerMovementScalingFactor;
 }
 
 //----------------------------------------------------------------------------//
@@ -427,7 +427,7 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
     if (window == d_rootWindow)
         d_rootWindow = 0;
 
-    if (window == getWindowContainingMouse())
+    if (window == getWindowContainingPointer())
         resetWindowContainingMouse();
 
     if (window == d_modalWindow)
@@ -481,49 +481,7 @@ void GUIContext::onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& ar
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectMouseMove(float delta_x, float delta_y)
-{
-    MouseEventArgs ma(0);
-    ma.moveDelta.d_x = delta_x * d_mouseMovementScalingFactor;
-    ma.moveDelta.d_y = delta_y * d_mouseMovementScalingFactor;
-
-    // no movement means no event
-    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
-        return false;
-
-    d_mouseCursor.offsetPosition(ma.moveDelta);
-
-    ma.position = d_mouseCursor.getPosition();
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = 0;
-    ma.clickCount = 0;
-    ma.button = NoButton;
-
-    return mouseMoveInjection_impl(ma);
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::mouseMoveInjection_impl(MouseEventArgs& ma)
-{
-    updateWindowContainingMouse();
-
-    // input can't be handled if there is no window to handle it.
-    if (!getWindowContainingMouse())
-        return false;
-
-    // make mouse position sane for this target window
-    ma.position = getWindowContainingMouse()->getUnprojectedPosition(ma.position);
-    // inform window about the input.
-    ma.window = getWindowContainingMouse();
-    ma.handled = 0;
-    ma.window->onMouseMove(ma);
-
-    // return whether window handled the input.
-    return ma.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::updateWindowContainingMouse()
+void GUIContext::updateWindowContainingPointer()
 {
     d_windowContainingMouseIsUpToDate = false;
 }
@@ -689,20 +647,20 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMouseLeaves(void)
 {
-    if (!getWindowContainingMouse())
+    if (!getWindowContainingPointer())
         return false;
 
     MouseEventArgs ma(0);
-    ma.position = getWindowContainingMouse()->getUnprojectedPosition(
+    ma.position = getWindowContainingPointer()->getUnprojectedPosition(
         d_mouseCursor.getPosition());
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = 0;
-    ma.window = getWindowContainingMouse();
+    ma.window = getWindowContainingPointer();
     ma.clickCount = 0;
 
-    getWindowContainingMouse()->onMouseLeaves(ma);
+    getWindowContainingPointer()->onMouseLeaves(ma);
     resetWindowContainingMouse();
 
     return ma.handled != 0;
@@ -872,32 +830,6 @@ bool GUIContext::injectKeyUp(Key::Scan scan_code)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectMousePosition(float x_pos, float y_pos)
-{
-    const Vector2f new_position(x_pos, y_pos);
-
-    // setup mouse movement event args object.
-    MouseEventArgs ma(0);
-    ma.moveDelta = new_position - d_mouseCursor.getPosition();
-
-    // no movement means no event
-    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
-        return false;
-
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = 0;
-    ma.clickCount = 0;
-    ma.button = NoButton;
-
-    // move mouse cursor to new position
-    d_mouseCursor.setPosition(new_position);
-    // update position in args (since actual position may be constrained)
-    ma.position = d_mouseCursor.getPosition();
-
-    return mouseMoveInjection_impl(ma);
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::injectTimePulse(float timeElapsed)
 {
     // if no visible active sheet, input can't be handled
@@ -905,7 +837,7 @@ bool GUIContext::injectTimePulse(float timeElapsed)
         return false;
 
     // ensure window containing mouse is now valid
-    getWindowContainingMouse();
+    getWindowContainingPointer();
 
     // else pass to sheet for distribution.
     d_rootWindow->update(timeElapsed);
@@ -1129,6 +1061,9 @@ void GUIContext::initializeSemanticEventHandlers()
     d_semanticEventHandlers.insert(std::make_pair(SV_VerticalScroll,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleScrollEvent, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SV_PointerMove,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+            &GUIContext::handlePointerMoveEvent, this)));
 }
 
 //----------------------------------------------------------------------------//
@@ -1153,7 +1088,51 @@ bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
+bool GUIContext::handlePointerMove_impl(PointerEventArgs& pa)
+{
+    updateWindowContainingPointer();
 
+    // input can't be handled if there is no window to handle it.
+    if (!getWindowContainingPointer())
+        return false;
+
+    // make pointer position sane for this target window
+    pa.position = getWindowContainingPointer()->getUnprojectedPosition(pa.position);
+    // inform window about the input.
+    pa.window = getWindowContainingPointer();
+    pa.handled = 0;
+    pa.window->onPointerMove(pa);
+
+    // return whether window handled the input.
+    return pa.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
+{
+    const Vector2f new_position(event.d_payload.array[0], 
+        event.d_payload.array[1]);
+
+    // setup pointer movement event args object.
+    PointerEventArgs pa(0);
+    pa.moveDelta = new_position - d_mouseCursor.getPosition();
+
+    // no movement means no event
+    if ((pa.moveDelta.d_x == 0) && (pa.moveDelta.d_y == 0))
+        return false;
+
+    pa.scroll = 0;
+    pa.source = PS_None;
+
+    // move pointer cursor to new position
+    d_mouseCursor.setPosition(new_position);
+    // update position in args (since actual position may be constrained)
+    pa.position = d_mouseCursor.getPosition();
+
+    return handlePointerMove_impl(pa);
+}
+
+//----------------------------------------------------------------------------//
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif

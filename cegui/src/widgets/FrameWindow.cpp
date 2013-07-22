@@ -207,7 +207,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        getGUIContext().updateWindowContainingMouse();
+        getGUIContext().updateWindowContainingPointer();
     }
 
 }
@@ -563,7 +563,7 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 	Window::onMouseMove(e);
 
 	// if we are not the window containing the mouse, do NOT change the cursor
-	if (getGUIContext().getWindowContainingMouse() != this)
+	if (getGUIContext().getWindowContainingPointer() != this)
 	{
 		return;
 	}
