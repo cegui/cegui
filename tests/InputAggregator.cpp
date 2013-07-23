@@ -299,7 +299,7 @@ BOOST_AUTO_TEST_CASE(PasteRequestToPaste)
 BOOST_AUTO_TEST_CASE(MouseButtonDownToPointerHold)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerHold);
+    expected_values.push_back(SV_PointerPressHold);
 
     d_inputAggregator->injectMouseButtonDown(LeftButton);
 
@@ -349,7 +349,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonUpToPointerActivate)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndUpCombined)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_PointerHold);
+    expected_values.push_back(SV_PointerPressHold);
     expected_values.push_back(SV_PointerActivate);
 
     d_inputAggregator->injectMouseButtonDown(LeftButton);

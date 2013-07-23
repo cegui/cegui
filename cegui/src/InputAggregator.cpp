@@ -94,7 +94,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
     if (d_inputReceiver == 0)
         return false;
 
-    SemanticValue value = SV_PointerHold;
+    SemanticValue value = SV_PointerPressHold;
     if (isControlPressed())
         value = SV_SelectCumulative;
     else if (isShiftPressed())
