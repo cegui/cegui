@@ -108,7 +108,8 @@ void OpenGL3GeometryBuffer::draw() const
             else
                 glDisable(GL_SCISSOR_TEST);
 
-            shaderParameterBindings->setParameter("texture0", currentBatch.texture);
+            if(currentBatch.texture != 0)
+                shaderParameterBindings->setParameter("texture0", currentBatch.texture);
 
             d_renderMaterial->prepareForRendering();
 
@@ -126,14 +127,6 @@ void OpenGL3GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::appendGeometry(const Vertex* const vbuff,
-    uint vertex_count)
-{
-    OpenGLGeometryBufferBase::appendGeometry(vbuff, vertex_count);
-    updateOpenGLBuffers();
-}
-
-//----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::reset()
 {
     OpenGLGeometryBufferBase::reset();
@@ -144,36 +137,69 @@ void OpenGL3GeometryBuffer::reset()
 void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 {
     glGenVertexArrays(1, &d_verticesVAO);
-    glBindVertexArray(d_verticesVAO);
+    d_glStateChanger->bindVertexArray(d_verticesVAO);
 
     // Generate and bind position vbo
     glGenBuffers(1, &d_verticesVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 
-    GLsizei stride = 9 * sizeof(GL_FLOAT);
+    // Unbind Vertex Attribute Array (VAO)
+    d_glStateChanger->bindVertexArray(0);
+
+    // Unbind array and element array buffers
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::finaliseVertexAttributes()
+{  
+    d_glStateChanger->bindVertexArray(d_verticesVAO);
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
 
     CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
 
-    GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
-    glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, 0);
-    glEnableVertexAttribArray(texture_coord_loc);
-
-    GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
-    glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(shader_colour_loc);
-
-    GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
-    glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(6 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(shader_pos_loc);
-
-    // Unbind Vertex Attribute Array (VAO)
-    glBindVertexArray(0);
-
-    // Unbind array and element array buffers
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
+    int dataOffset = 0;
+    const unsigned int attribute_count = d_vertexAttributes.size();
+    for (unsigned int i = 0; i < attribute_count; ++i)
+    {
+        switch(d_vertexAttributes.at(i))
+        {
+        case VAT_POSITION0:
+            {
+                GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
+                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(shader_pos_loc);
+                dataOffset += 3;
+            }
+            break;
+        case VAT_COLOUR0:
+            {
+                GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
+                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(shader_colour_loc);
+                dataOffset += 4;
+            }
+            break;
+        case VAT_TEXCOORD0:
+            {
+                GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
+                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(texture_coord_loc);
+                dataOffset += 2;
+            }
+            break;
+        default:
+            break;
+        }
+    }
 }
+
 
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
@@ -186,7 +212,7 @@ void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 {
     bool needNewBuffer = false;
-    unsigned int vertexCount = d_vertices.size();
+    unsigned int vertexCount = d_vertexData.size();
 
     if(d_bufferSize < vertexCount)
     {
@@ -196,23 +222,31 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
-
-    GLVertex* data;
-    if(d_vertices.empty())
-        data = 0;
+    float* vertexData;
+    if(d_vertexData.empty())
+        vertexData = 0;
     else
-        data = &d_vertices[0];
+        vertexData = &d_vertexData[0];
+
+    GLsizei dataSize = d_bufferSize * sizeof(float);
 
     if(needNewBuffer)
     {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_DYNAMIC_DRAW);
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, data);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, vertexData);
     }
 }
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
+{
+    OpenGLGeometryBufferBase::appendGeometry(vertex_data);
+    updateOpenGLBuffers();
+}
+
 
 //----------------------------------------------------------------------------//
 

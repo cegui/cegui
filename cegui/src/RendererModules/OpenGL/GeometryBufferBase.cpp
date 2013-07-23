@@ -64,12 +64,6 @@ OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::appendVertex(const Vertex& vertex)
-{
-    appendGeometry(&vertex, 1);
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setTranslation(const Vector3f& v)
 {
     d_translation = v;
@@ -100,35 +94,6 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::appendGeometry(const Vertex* const vbuff,
-    uint vertex_count)
-{
-    performBatchManagement();
-
-    // update size of current batch
-    d_batches.back().vertexCount += vertex_count;
-
-    // buffer these vertices
-    GLVertex vd;
-    const Vertex* vs = vbuff;
-    for (uint i = 0; i < vertex_count; ++i, ++vs)
-    {
-        // copy vertex info the buffer, converting from CEGUI::Vertex to
-        // something directly usable by OpenGL as needed.
-        vd.tex[0]      = vs->tex_coords.d_x;
-        vd.tex[1]      = vs->tex_coords.d_y;
-        vd.colour[0]   = vs->colour_val.getRed();
-        vd.colour[1]   = vs->colour_val.getGreen();
-        vd.colour[2]   = vs->colour_val.getBlue();
-        vd.colour[3]   = vs->colour_val.getAlpha();
-        vd.position[0] = vs->position.d_x;
-        vd.position[1] = vs->position.d_y;
-        vd.position[2] = vs->position.d_z;
-        d_vertices.push_back(vd);
-    }
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setActiveTexture(Texture* texture)
 {
     d_activeTexture = static_cast<OpenGLTexture*>(texture);
@@ -138,7 +103,7 @@ void OpenGLGeometryBufferBase::setActiveTexture(Texture* texture)
 void OpenGLGeometryBufferBase::reset()
 {
     d_batches.clear();
-    d_vertices.clear();
+    d_vertexData.clear();
     d_activeTexture = 0;
 }
 
@@ -151,7 +116,7 @@ Texture* OpenGLGeometryBufferBase::getActiveTexture() const
 //----------------------------------------------------------------------------//
 uint OpenGLGeometryBufferBase::getVertexCount() const
 {
-    return d_vertices.size();
+    return d_vertexData.size();
 }
 
 //----------------------------------------------------------------------------//
@@ -230,6 +195,18 @@ bool OpenGLGeometryBufferBase::isClippingActive() const
 {
     return d_clippingActive;
 }
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBufferBase::appendGeometry(const std::vector<float>& vertex_data)
+{
+    performBatchManagement();
+
+    // Update size of current batch
+    d_batches.back().vertexCount += vertex_data.size() / getVertexAttributeElementCount();
+
+    d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
+}
+
 
 //----------------------------------------------------------------------------//
 

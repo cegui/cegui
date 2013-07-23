@@ -2,7 +2,7 @@
     filename:   GeometryBufferBase.h
     created:    Tue Apr 30 2013
     authors:    Paul D Turner <paul@cegui.org.uk>
-                Lukas E Meindl
+                Lukas Meindl
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
@@ -65,8 +65,7 @@ public:
     void setRotation(const Quaternion& r);
     void setPivot(const Vector3f& p);
     void setClippingRegion(const Rectf& region);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    void appendGeometry(const std::vector<float>& vertex_data);
     void setActiveTexture(Texture* texture);
     void reset();
     Texture* getActiveTexture() const;
@@ -87,14 +86,6 @@ protected:
     //! update cached matrix
     void updateMatrix() const;
 
-    //! internal Vertex structure used for GL based geometry.
-    struct GLVertex
-    {
-        float tex[2];
-        float colour[4];
-        float position[3];
-    };
-
     //! type to track info for per-texture sub batches of geometry
     struct BatchInfo
     {
@@ -112,9 +103,9 @@ protected:
     //! list of texture batches added to the geometry buffer
     BatchList d_batches;
     //! type of container used to queue the geometry
-    typedef std::vector<GLVertex> VertexList;
+    typedef std::vector<float> VertexData;
     //! container where added geometry is stored.
-    VertexList d_vertices;
+    VertexData d_vertexData;
     //! rectangular clip region
     Rectf d_clipRect;
     //! whether clipping will be active for the current batch

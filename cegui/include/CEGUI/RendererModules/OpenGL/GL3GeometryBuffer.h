@@ -52,8 +52,10 @@ public:
 
     // implementation/overrides of members from GeometryBuffer
     void draw() const;
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
+    void appendGeometry(const std::vector<float>& vertex_data);
     void reset();
+    void finaliseVertexAttributes();
+ 
 
 protected:
     //! OpenGL vao used for the vertices
