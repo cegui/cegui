@@ -26,6 +26,9 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/Vertex.h"
+
+#include <vector>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -53,6 +56,118 @@ BlendMode GeometryBuffer::getBlendMode() const
 {
     return d_blendMode;
 }
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendGeometry(const TexturedColouredVertex* const vbuff,
+    uint vertex_count)
+{
+    // Add the vertex data in their default order into an array
+    std::vector<float> vertexData;
+    const TexturedColouredVertex* vs = vbuff;
+    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    {
+        // Add all the elements in the default order for textured and coloured
+        // geometry into the vector
+        vertexData.push_back(vs->position.d_x);
+        vertexData.push_back(vs->position.d_y);
+        vertexData.push_back(vs->position.d_z);
+        vertexData.push_back(vs->colour_val.getRed());
+        vertexData.push_back(vs->colour_val.getGreen());
+        vertexData.push_back(vs->colour_val.getBlue());
+        vertexData.push_back(vs->colour_val.getAlpha());
+        vertexData.push_back(vs->tex_coords.d_x);
+        vertexData.push_back(vs->tex_coords.d_y);
+    }
+
+    // Append the prepared geometry data
+    appendGeometry(vertexData);
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendGeometry(const float* const vertex_data,
+    uint array_size)
+{
+    std::vector<float> vectorVertexData(vertex_data, vertex_data + array_size);
+    appendGeometry(vectorVertexData);
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendVertex(const TexturedColouredVertex& vertex)
+{
+    // Add the vertex data in their default order into an array
+    float vertexData[9];
+
+    // Copy the vertex attributes into the array
+    vertexData[0] = vertex.position.d_x;
+    vertexData[1] = vertex.position.d_y;
+    vertexData[2] = vertex.position.d_z;
+    vertexData[3] = vertex.colour_val.getRed();
+    vertexData[4] = vertex.colour_val.getGreen();
+    vertexData[5] = vertex.colour_val.getBlue();
+    vertexData[6] = vertex.colour_val.getAlpha();
+    vertexData[7] = vertex.tex_coords.d_x;
+    vertexData[8] = vertex.tex_coords.d_y;
+
+    appendGeometry(vertexData, 9);
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendVertex(const ColouredVertex& vertex)
+{
+    // Add the vertex data in their default order into an array
+    float vertexData[7];
+
+    // Copy the vertex attributes into the array
+    vertexData[0] = vertex.position.d_x;
+    vertexData[1] = vertex.position.d_y;
+    vertexData[2] = vertex.position.d_z;
+    vertexData[3] = vertex.colour_val.getRed();
+    vertexData[4] = vertex.colour_val.getGreen();
+    vertexData[5] = vertex.colour_val.getBlue();
+    vertexData[6] = vertex.colour_val.getAlpha();
+
+    appendGeometry(vertexData, 7);
+}
+
+//---------------------------------------------------------------------------//
+int GeometryBuffer::getVertexAttributeElementCount() const
+{
+    int count = 0;
+
+    const unsigned int attribute_count = d_vertexAttributes.size();
+    for (unsigned int i = 0; i < attribute_count; ++i)
+    {
+        switch(d_vertexAttributes.at(i))
+        {
+            case VAT_POSITION0:
+                count += 3;
+                break;
+            case VAT_COLOUR0:
+                count += 4;
+                break;
+            case VAT_TEXCOORD0:
+                count += 2;
+                break;
+            default:
+                break;
+        }
+    }
+
+    return count;
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::resetVertexAttributes()
+{
+    d_vertexAttributes.clear();
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendVertexAttribute(VertexAttributeType attribute)
+{
+    d_vertexAttributes.push_back(attribute);
+}
+
 
 //---------------------------------------------------------------------------//
 
