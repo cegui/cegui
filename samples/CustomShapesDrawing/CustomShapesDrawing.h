@@ -41,11 +41,13 @@ class CustomShapesDrawing : public Sample
 public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
-    void initialiseGeometryBuffer();
+    void updateFPSGraphGeometry();
 
     virtual void deinitialise();
 
     void positionGeometryBuffer();
+
+    void update(float timeSinceLastUpdate);
 
 protected:
 

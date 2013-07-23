@@ -100,9 +100,8 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
 
     // GeometryBuffer used for drawing in this demo
-    d_customCanvasGeometry = &renderer->createGeometryBuffer(renderer->createRenderMaterial(DS_TEXTURED));
+    d_customCanvasGeometry = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
     // Size and position have to be set
-    initialiseGeometryBuffer();
     positionGeometryBuffer();
 
 
@@ -130,7 +129,7 @@ void CustomShapesDrawing::positionGeometryBuffer()
 
     d_customCanvasGeometry->setClippingRegion(scrn);
     d_customCanvasGeometry->setTranslation(
-        CEGUI::Vector3f(50.0f, 50.f, 0.0f));
+        CEGUI::Vector3f(250.0f, 250.f, 0.0f));
 }
 
 /*************************************************************************
@@ -147,6 +146,13 @@ bool CustomShapesDrawing::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
     return true;
 }
 
+/*************************************************************************
+    Update the FPS graph geometry when necessary
+*************************************************************************/
+void CustomShapesDrawing::update(float timeSinceLastUpdate)
+{
+    updateFPSGraphGeometry();
+}
 
 
 /*************************************************************************
@@ -156,60 +162,50 @@ void CustomShapesDrawing::deinitialise()
 {
 }
 
-void CustomShapesDrawing::initialiseGeometryBuffer()
+/*************************************************************************
+    Update the geometry used for the FPS graph
+*************************************************************************/
+void CustomShapesDrawing::updateFPSGraphGeometry()
 {
     d_customCanvasGeometry->reset();
-    CEGUI::Texture& blankTex =  CEGUI::System::getSingleton().getRenderer()->createTexture("blank", "blank.png", "imagesets");
-    d_customCanvasGeometry->setActiveTexture(&blankTex);
 
-    CEGUI::Vertex currentVertex;
-
-
+    CEGUI::ColouredVertex currentVertex;
 
     currentVertex.position = CEGUI::Vector3f(20.f, 10.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(0.f, 0.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
 
     currentVertex.position = CEGUI::Vector3f(10.f, 10.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(1.f, 0.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
 
     currentVertex.position = CEGUI::Vector3f(10.f, 100.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(0.f, 1.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
 
     currentVertex.position = CEGUI::Vector3f(10.f, 100.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(1.f, 1.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
-
 
     currentVertex.position = CEGUI::Vector3f(20.f, 100.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(0.f, 0.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
 
-        currentVertex.position = CEGUI::Vector3f(20.f, 10.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(0.f, 1.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
-
-            currentVertex.position = CEGUI::Vector3f(0.f, 0.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        currentVertex.tex_coords = CEGUI::Vector2f(1.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
-
-            currentVertex.position = CEGUI::Vector3f(200.f, 100.f, 0.f);
+    currentVertex.position = CEGUI::Vector3f(20.f, 10.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
 
-            currentVertex.position = CEGUI::Vector3f(-200.f, 100.f, 0.f);
+    currentVertex.position = CEGUI::Vector3f(0.f, 0.f, 0.f);
     currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
     d_customCanvasGeometry->appendVertex(currentVertex);
 
+    currentVertex.position = CEGUI::Vector3f(200.f, 100.f, 0.f);
+    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
+    d_customCanvasGeometry->appendVertex(currentVertex);
+
+    currentVertex.position = CEGUI::Vector3f(-200.f, 100.f, 0.f);
+    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
+    d_customCanvasGeometry->appendVertex(currentVertex);
 }
 
 /*************************************************************************
