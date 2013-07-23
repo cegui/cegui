@@ -213,7 +213,7 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
     final_rect.d_max.d_x = CoordConverter::alignToPixels(final_rect.d_max.d_x);
     final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
 
-    Vertex vbuffer[6];
+    TexturedColouredVertex vbuffer[6];
 
     // vertex 0
     vbuffer[0].position   = Vector3f(final_rect.left(), final_rect.top(), 0.0f);
