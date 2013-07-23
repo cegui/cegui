@@ -43,7 +43,7 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_renderer(*System::getSingleton().getRenderer()),
     d_textarget(target),
     d_owner(&owner),
-    d_geometry(&d_renderer.createGeometryBuffer(
+    d_geometry(&d_renderer.createGeometryBufferTextured(
                d_renderer.createRenderMaterial(DS_TEXTURED))),
     d_geometryValid(false),
     d_position(0, 0),
@@ -265,7 +265,7 @@ void RenderingWindow::realiseGeometry_impl()
 
     const Rectf area(0, 0, d_size.d_width, d_size.d_height);
     const Colour c(1, 1, 1, 1);
-    Vertex vbuffer[6];
+    TexturedColouredVertex vbuffer[6];
 
     // vertex 0
     vbuffer[0].position   = Vector3f(area.d_min.d_x, area.d_min.d_y, 0.0f);

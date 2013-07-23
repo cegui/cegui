@@ -197,7 +197,7 @@ Window::Window(const String& type, const String& name):
 
     // rendering components and options
     d_windowRenderer(0),
-    d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer(
+    d_geometry(&System::getSingleton().getRenderer()->createGeometryBufferTextured(
                System::getSingleton().getRenderer()->createRenderMaterial(DS_TEXTURED))),
     d_surface(0),
     d_needsRedraw(true),
