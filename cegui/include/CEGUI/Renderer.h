@@ -116,14 +116,25 @@ public:
 
     /*!
     \brief
-        Create a new GeometryBuffer and return a reference to it.  You should
-        remove the GeometryBuffer from any RenderQueues and call
-        destroyGeometryBuffer when you want to destroy the GeometryBuffer.
+        Create a GeometryBuffer for textured geometry and return a reference to it.
+        You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
+        when you want to destroy the GeometryBuffer.
 
     \return
         GeometryBuffer object.
     */
-    virtual GeometryBuffer& createGeometryBuffer(RefCounted<RenderMaterial> renderMaterial) = 0;
+    virtual GeometryBuffer& createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial) = 0;
+
+    /*!
+    \brief
+        Create a GeometryBuffer for coloured geometry and return a reference to it.
+        You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
+        when you want to destroy the GeometryBuffer.
+
+    \return
+        GeometryBuffer object.
+    */
+    virtual GeometryBuffer& createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial) = 0;
 
     /*!
     \brief
