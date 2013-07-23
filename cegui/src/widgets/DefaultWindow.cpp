@@ -49,11 +49,11 @@ DefaultWindow::DefaultWindow(const String& type, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseMove(MouseEventArgs& e)
+void DefaultWindow::onPointerMove(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseMove(e);
-    updateMouseEventHandled(e);
+    Window::onPointerMove(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//

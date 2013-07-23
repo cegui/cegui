@@ -459,7 +459,7 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual void	onMouseDoubleClicked(MouseEventArgs& e);

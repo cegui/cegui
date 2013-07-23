@@ -176,12 +176,12 @@ void Thumb::onThumbTrackEnded(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse movement events
+	Handler for pointer movement events
 *************************************************************************/
-void Thumb::onMouseMove(MouseEventArgs& e)
+void Thumb::onPointerMove(PointerEventArgs& e)
 {
 	// default processing
-	PushButton::onMouseMove(e);
+	PushButton::onPointerMove(e);
 
 	// only react if we are being dragged
 	if (d_beingDragged)

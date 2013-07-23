@@ -607,7 +607,7 @@ protected:
     void onMouseButtonUp(MouseEventArgs& e);
     void onMouseDoubleClicked(MouseEventArgs& e);
     void onMouseTripleClicked(MouseEventArgs& e);
-    void onMouseMove(MouseEventArgs& e);
+    void onPointerMove(PointerEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);
     void onCharacter(TextEventArgs& e);
     void onKeyDown(KeyEventArgs& e);

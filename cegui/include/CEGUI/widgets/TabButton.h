@@ -134,7 +134,7 @@ protected:
     virtual void onMouseButtonUp(MouseEventArgs& e);
     virtual void onMouseButtonDown(MouseEventArgs& e);
     virtual void onScroll(PointerEventArgs& e);
-    virtual void onMouseMove(MouseEventArgs& e);
+    virtual void onPointerMove(PointerEventArgs& e);
 };
 
 

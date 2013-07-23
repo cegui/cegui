@@ -1123,6 +1123,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
 
     pa.scroll = 0;
     pa.source = PS_None;
+    pa.pointerState = d_pointersState;
 
     // move pointer cursor to new position
     d_mouseCursor.setPosition(new_position);

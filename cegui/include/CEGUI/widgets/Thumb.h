@@ -295,7 +295,7 @@ protected:
 	/*************************************************************************
 		Overridden event handling routines
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 

@@ -1271,12 +1271,12 @@ void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse moves in the window.
+	Handler for when pointer moves in the window.
 *************************************************************************/
-void MultiLineEditbox::onMouseMove(MouseEventArgs& e)
+void MultiLineEditbox::onPointerMove(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	if (d_dragging)
 	{

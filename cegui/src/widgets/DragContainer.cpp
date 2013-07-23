@@ -297,9 +297,9 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::onMouseMove(MouseEventArgs& e)
+    void DragContainer::onPointerMove(PointerEventArgs& e)
     {
-        Window::onMouseMove(e);
+        Window::onPointerMove(e);
 
         // get position of mouse as co-ordinates local to this window.
         Vector2f localMousePos = CoordConverter::screenToWindow(*this, e.position);

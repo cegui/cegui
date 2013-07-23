@@ -306,6 +306,7 @@ public:
     Vector2f        moveDelta;      //!< holds variation of pointer position from last pointer input
     PointerSource   source;         //!< one of the PointerSource enumerated values describing the source causing the event
     float           scroll;         //!< holds the amount of the scroll
+    PointersState   pointerState;   //!< current state (hold: true/false) of pointers sources. Addresable by members of \ref PointerSource
 };
 
 /*!

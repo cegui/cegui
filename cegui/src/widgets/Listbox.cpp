@@ -920,9 +920,9 @@ void Listbox::onScroll(PointerEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for mouse movement
+    Handler for pointer movement
 *************************************************************************/
-void Listbox::onMouseMove(MouseEventArgs& e)
+void Listbox::onPointerMove(PointerEventArgs& e)
 {
     if (d_itemTooltips)
     {
@@ -955,7 +955,7 @@ void Listbox::onMouseMove(MouseEventArgs& e)
         }
     }
 
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
 }
 
 

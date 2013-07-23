@@ -371,9 +371,9 @@ void MenuItem::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when the mouse moves
+    Handler for when the pointer moves
 *************************************************************************/
-void MenuItem::onMouseMove(MouseEventArgs& e)
+void MenuItem::onPointerMove(PointerEventArgs& e)
 {
     // this is needed to discover whether mouse is in the widget area or not.
     // The same thing used to be done each frame in the rendering method,
@@ -382,7 +382,7 @@ void MenuItem::onMouseMove(MouseEventArgs& e)
     // more efficient anyway.
 
     // base class processing
-    ItemEntry::onMouseMove(e);
+    ItemEntry::onPointerMove(e);
 
     updateInternalState(e.position);
     ++e.handled;

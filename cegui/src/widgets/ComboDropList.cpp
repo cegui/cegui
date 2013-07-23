@@ -134,11 +134,11 @@ void ComboDropList::onSelectionChanged(WindowEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for mouse movement events
+	Handler for pointer movement events
 *************************************************************************/
-void ComboDropList::onMouseMove(MouseEventArgs& e)
+void ComboDropList::onPointerMove(PointerEventArgs& e)
 {
-	Listbox::onMouseMove(e);
+	Listbox::onPointerMove(e);
 
 	// if mouse is within our area (but not our children)
 	if (isHit(e.position))
@@ -174,8 +174,8 @@ void ComboDropList::onMouseMove(MouseEventArgs& e)
 	// not within the list area
 	else
 	{
-		// if left mouse button is down, clear any selection
-		if (e.sysKeys & LeftMouse)
+		// if left pointer is held, clear any selection
+		if (e.pointerState.isHeld(PS_Left))
 		{
 			clearAllSelections();
 		}
