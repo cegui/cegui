@@ -83,8 +83,8 @@ protected:
     // overridden functions from Window base class
     bool moveToFront_impl(bool wasClicked);
 
-    // override the mouse event handlers
-    void onMouseMove(MouseEventArgs& e);
+    // override the pointer event handlers
+    void onPointerMove(PointerEventArgs& e);
     void onScroll(PointerEventArgs& e);
     void onMouseButtonDown(MouseEventArgs& e);
     void onMouseButtonUp(MouseEventArgs& e);

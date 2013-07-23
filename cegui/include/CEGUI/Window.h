@@ -3043,16 +3043,6 @@ protected:
 
     /*!
     \brief
-        Handler called when the mouse cursor has been moved within this window's
-        area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseMove(MouseEventArgs& e);
-
-    /*!
-    \brief
         Handler called when the pointer cursor has been moved within this window's
         area.
 

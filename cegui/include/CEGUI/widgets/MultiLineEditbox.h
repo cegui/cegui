@@ -739,7 +739,7 @@ protected:
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual	void	onMouseDoubleClicked(MouseEventArgs& e);
 	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
-	virtual void	onMouseMove(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void onCharacter(TextEventArgs& e);
 	virtual void	onKeyDown(KeyEventArgs& e);

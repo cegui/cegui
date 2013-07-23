@@ -102,12 +102,12 @@ const Vector2f& Titlebar::getDragPoint() const
 }
 
 /*************************************************************************
-	Handler for mouse movement events
+	Handler for pointer movement events
 *************************************************************************/
-void Titlebar::onMouseMove(MouseEventArgs& e)
+void Titlebar::onPointerMove(PointerEventArgs& e)
 {
 	// Base class processing.
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	if (d_dragging && (d_parent != 0))
 	{

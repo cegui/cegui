@@ -55,6 +55,39 @@ enum PointerSource
 
 /*!
 \brief
+    Holds the state of the pointers (hold or not)
+*/
+class PointersState
+{
+public:
+    PointersState() :
+        d_state(0)
+    {
+    }
+
+    uint get() const { return d_state; }
+
+    bool isHeld(PointerSource source)
+    {
+        return (d_state & (1 << source)) != 0;
+    }
+
+    void pointerHold(PointerSource source)
+    {
+        d_state |= (1 << source);
+    }
+
+    void pointerDeactivated(PointerSource source)
+    {
+        d_state &= ~(1 << source);
+    }
+
+private:
+    uint d_state;
+};
+
+/*!
+\brief
     Represents the value of a semantic input event, generated from a specific
     operation or sequence of operations.
 */

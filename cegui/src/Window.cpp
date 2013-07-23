@@ -2521,7 +2521,7 @@ void Window::onMouseLeaves(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseMove(MouseEventArgs& e)
+void Window::onPointerMove(PointerEventArgs& e)
 {
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2535,12 +2535,12 @@ void Window::onMouseMove(MouseEventArgs& e)
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onMouseMove(e);
+        getParent()->onPointerMove(e);
 
         return;
     }
 
-    // by default we now mark mouse events as handled
+    // by default we now mark pointer events as handled
     // (derived classes may override, of course!)
     ++e.handled;
 }
@@ -3817,31 +3817,6 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 bool Window::isMouseContainedInArea() const
 {
     return d_containsMouse;
-}
-
-//----------------------------------------------------------------------------//
-void Window::onPointerMove(PointerEventArgs& e)
-{
-    // perform tooltip control
-    Tooltip* const tip = getTooltip();
-    if (tip)
-        tip->resetTimer();
-
-    fireEvent(EventPointerMove, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onPointerMove(e);
-
-        return;
-    }
-
-    // by default we now mark pointer events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

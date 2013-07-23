@@ -1170,9 +1170,9 @@ void Tree::onScroll(PointerEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for mouse movement
+    Handler for pointer movement
 *************************************************************************/
-void Tree::onMouseMove(MouseEventArgs& e)
+void Tree::onPointerMove(PointerEventArgs& e)
 {
     if (d_itemTooltips)
     {
@@ -1207,7 +1207,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
         }
     }
     
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
 }
 
 // Recursive!

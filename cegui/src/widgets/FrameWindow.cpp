@@ -555,12 +555,12 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse move events
+	Handler for pointer move events
 *************************************************************************/
-void FrameWindow::onMouseMove(MouseEventArgs& e)
+void FrameWindow::onPointerMove(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	// if we are not the window containing the mouse, do NOT change the cursor
 	if (getGUIContext().getWindowContainingPointer() != this)

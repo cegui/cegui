@@ -414,7 +414,7 @@ namespace CEGUI
         *************************************************************************/
         virtual void onMouseButtonDown(MouseEventArgs& e);
         virtual void onMouseButtonUp(MouseEventArgs& e);
-        virtual void onMouseMove(MouseEventArgs& e);
+        virtual void onPointerMove(PointerEventArgs& e);
         virtual void onCaptureLost(WindowEventArgs& e);
         virtual void onAlphaChanged(WindowEventArgs& e);
         virtual void onClippingChanged(WindowEventArgs& e);/*Window::drawSelf(z);*/

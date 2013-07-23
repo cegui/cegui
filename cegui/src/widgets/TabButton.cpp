@@ -134,7 +134,7 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 	ButtonBase::onMouseButtonUp(e);
 }
 
-void TabButton::onMouseMove(MouseEventArgs& e)
+void TabButton::onPointerMove(PointerEventArgs& e)
 {
     if (d_dragging)
     {
@@ -143,7 +143,7 @@ void TabButton::onMouseMove(MouseEventArgs& e)
     }
 
 	// default handling
-	ButtonBase::onMouseMove(e);
+	ButtonBase::onPointerMove(e);
 }
 
 void TabButton::onScroll(PointerEventArgs& e)

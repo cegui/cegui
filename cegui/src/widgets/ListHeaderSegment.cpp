@@ -412,12 +412,12 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_mouse)
 
 
 /*************************************************************************
-	Handler for when mouse position changes in widget area (or captured)
+	Handler for when pointer position changes in widget area (or captured)
 *************************************************************************/
-void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
+void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	//
 	// convert mouse position to something local

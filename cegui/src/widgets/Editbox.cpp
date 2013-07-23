@@ -517,10 +517,10 @@ void Editbox::onMouseTripleClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseMove(MouseEventArgs& e)
+void Editbox::onPointerMove(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
 
     if (d_dragging)
     {

@@ -78,9 +78,9 @@ bool ButtonBase::calculateCurrentHoverState(const Vector2f& mouse_pos)
 }
 
 /*************************************************************************
-	Handler for when the mouse moves
+	Handler for when the pointer moves
 *************************************************************************/
-void ButtonBase::onMouseMove(MouseEventArgs& e)
+void ButtonBase::onPointerMove(PointerEventArgs& e)
 {
 	// this is needed to discover whether mouse is in the widget area or not.
 	// The same thing used to be done each frame in the rendering method,
@@ -89,7 +89,7 @@ void ButtonBase::onMouseMove(MouseEventArgs& e)
 	// more efficient anyway.
 
 	// base class processing
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	updateInternalState(e.position);
 	++e.handled;

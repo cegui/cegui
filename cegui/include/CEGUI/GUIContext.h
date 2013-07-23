@@ -360,6 +360,7 @@ protected:
     Window* d_modalWindow;
     Window* d_captureWindow;
 
+    PointersState d_pointersState;
     SystemKeys d_systemKeys;
     MouseClickTracker* d_mouseClickTrackers;
 
