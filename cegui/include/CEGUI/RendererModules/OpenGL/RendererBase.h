@@ -68,7 +68,8 @@ class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 public:
     // implement Renderer interface
     RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
