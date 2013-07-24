@@ -189,7 +189,7 @@ public:
     /*!
     \brief
         Clear all buffered data and reset the GeometryBuffer to the default
-        state.
+        state. This excludes resettings the vertex attributes.
     */
     virtual void reset() = 0;
 
@@ -217,12 +217,12 @@ public:
     
     /*!
     \brief
-        Return the number of floats used by the attributes contained in the
+        Returns the total number of floats used by the attributes of the
         current vertex layout.
 
     \return
-        The number of floats used by the attributes contained in the current
-        vertex layout.
+        The total number of floats used by the attributes of the current vertex
+        layout.
     */
     int getVertexAttributeElementCount() const;
 
