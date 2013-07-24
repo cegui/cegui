@@ -30,7 +30,10 @@
 
 #include "SampleBase.h"
 
+#include "CEGUI/ForwardRefs.h"
+
 #include <deque>
+#include <vector>
 
 namespace CEGUI
 {
@@ -46,6 +49,8 @@ public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     void updateFPSGraphGeometry();
+
+    void drawLineStrip(std::vector<CEGUI::Vector3<float>> &linePositions, const float lineWidth, const CEGUI::Colour lineColour);
 
     virtual void deinitialise();
 
@@ -76,8 +81,8 @@ protected:
     //! The FPS values we want to display.
     std::deque<unsigned int>    d_lastFPSValues;
 
-    //! The number of bars we want to display in our FPS graph.
-    unsigned int d_FPSGraphBarsCount;
+    //! The number of samples we want to display in our FPS graph.
+    unsigned int d_FPSGraphSamplesCount;
 
     //! Number of frames drawn so far.
     int d_FPSFrames;
@@ -85,7 +90,7 @@ protected:
     //! Fraction of second elapsed (used for counting frames per second).
     float d_FPSElapsed;
 
-    //! The maximum FPS value the graph bars will be normalised to.
+    //! The maximum FPS value the graph will be normalised to.
     int d_FPSMaxGraphValue;
 };
 
