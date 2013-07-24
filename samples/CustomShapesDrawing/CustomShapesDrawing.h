@@ -30,6 +30,8 @@
 
 #include "SampleBase.h"
 
+#include <deque>
+
 namespace CEGUI
 {
     class Window;
@@ -39,6 +41,8 @@ namespace CEGUI
 class CustomShapesDrawing : public Sample
 {
 public:
+    CustomShapesDrawing();
+
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     void updateFPSGraphGeometry();
@@ -50,16 +54,39 @@ public:
     void update(float timeSinceLastUpdate);
 
 protected:
-
+    
     /*!
     \brief
-    Triggers the drawing of our FPS graph after everything else was rendered
+        Updates the counted FPS and triggers the recreation of FPS Graph geometry
+        if needed.
+    */
+    void updateFPS(float timeSinceLastUpdate);
+    
+    /*!
+    \brief
+        Triggers the drawing of our FPS graph after everything else was rendered.
     */
     bool drawFPSGraphOverlay(const CEGUI::EventArgs& args);
 
     CEGUI::DefaultWindow*       d_root;
 
-    CEGUI::GeometryBuffer*      d_customCanvasGeometry;
+    //! The GeometryBuffer that will be used to draw the FPS graph.
+    CEGUI::GeometryBuffer*      d_FPSGraphGeometry;
+
+    //! The FPS values we want to display.
+    std::deque<unsigned int>    d_lastFPSValues;
+
+    //! The number of bars we want to display in our FPS graph.
+    unsigned int d_FPSGraphBarsCount;
+
+    //! Number of frames drawn so far.
+    int d_FPSFrames;
+
+    //! Fraction of second elapsed (used for counting frames per second).
+    float d_FPSElapsed;
+
+    //! The maximum FPS value the graph bars will be normalised to.
+    int d_FPSMaxGraphValue;
 };
 
 #endif  // end of guard _Sample_FirstWindow_h_

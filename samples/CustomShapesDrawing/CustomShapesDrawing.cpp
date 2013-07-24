@@ -44,6 +44,28 @@
 
 
 /*************************************************************************
+    Constructor.
+*************************************************************************/
+CustomShapesDrawing::CustomShapesDrawing()
+    : d_FPSMaxGraphValue(1)
+    , d_FPSGraphBarsCount(12)
+{
+    // Initialising the FPS values
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+    d_lastFPSValues.push_front(0);
+}
+
+/*************************************************************************
     Sample specific initialisation goes here.
 *************************************************************************/
 bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
@@ -100,9 +122,10 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
 
     // GeometryBuffer used for drawing in this demo
-    d_customCanvasGeometry = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
+    d_FPSGraphGeometry = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
     // Size and position have to be set
     positionGeometryBuffer();
+    updateFPSGraphGeometry();
 
 
     // clearing this queue actually makes sure it's created(!)
@@ -127,8 +150,8 @@ void CustomShapesDrawing::positionGeometryBuffer()
 
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), renderer->getDisplaySize());
 
-    d_customCanvasGeometry->setClippingRegion(scrn);
-    d_customCanvasGeometry->setTranslation(
+    d_FPSGraphGeometry->setClippingRegion(scrn);
+    d_FPSGraphGeometry->setTranslation(
         CEGUI::Vector3f(250.0f, 250.f, 0.0f));
 }
 
@@ -141,7 +164,7 @@ bool CustomShapesDrawing::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
         return false;
 
     // draw FPS value
-    d_customCanvasGeometry->draw();
+    d_FPSGraphGeometry->draw();
 
     return true;
 }
@@ -151,7 +174,29 @@ bool CustomShapesDrawing::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
 *************************************************************************/
 void CustomShapesDrawing::update(float timeSinceLastUpdate)
 {
-    updateFPSGraphGeometry();
+    updateFPS(timeSinceLastUpdate);
+}
+
+void CustomShapesDrawing::updateFPS(const float elapsed)
+{
+    // another frame
+    ++d_FPSFrames;
+
+    // Add FPS count if a second has passed
+    if ((d_FPSElapsed += elapsed) >= 1.0f)
+    {
+        d_FPSMaxGraphValue = std::max(d_FPSMaxGraphValue, d_FPSFrames);
+        d_FPSGraphGeometry->reset();
+
+        d_lastFPSValues.pop_front();
+        d_lastFPSValues.push_back(d_FPSFrames);
+        updateFPSGraphGeometry();
+
+        // reset counter state
+        d_FPSFrames = 0;
+        float modValue = 1.f;
+        d_FPSElapsed = std::modf(d_FPSElapsed, &modValue);
+    }
 }
 
 
@@ -167,45 +212,54 @@ void CustomShapesDrawing::deinitialise()
 *************************************************************************/
 void CustomShapesDrawing::updateFPSGraphGeometry()
 {
-    d_customCanvasGeometry->reset();
+    d_FPSGraphGeometry->reset();
+    
+    for(unsigned int i = 0; i < d_FPSGraphBarsCount; ++i)
+    {
+        float offset = i * 15.f;
 
-    CEGUI::ColouredVertex currentVertex;
+        const float barWidth = 10.f;
+        const float barMaxHeight = 100.f;
 
-    currentVertex.position = CEGUI::Vector3f(20.f, 10.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        float scale = static_cast<float>(d_lastFPSValues.at(i)) / d_FPSMaxGraphValue;
+        float barHeight = scale * barMaxHeight;
 
-    currentVertex.position = CEGUI::Vector3f(10.f, 10.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        CEGUI::ColouredVertex bottomVertex;
+        if(scale >= 0.73f)
+            bottomVertex.colour_val = CEGUI::Colour(0.f, 1.f, 0.f);
+        else if(scale >= 0.42f)
+            bottomVertex.colour_val = CEGUI::Colour(1.f, 1.f, 0.f);
+        else
+            bottomVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
+        
+        CEGUI::ColouredVertex topVertex;
+        topVertex.colour_val = bottomVertex.colour_val * 0.8f;
 
-    currentVertex.position = CEGUI::Vector3f(10.f, 100.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
 
-    currentVertex.position = CEGUI::Vector3f(10.f, 100.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        
+        float left = offset;
+        float right = offset + barWidth;
+        float top = barMaxHeight - barHeight;
+        float bottom = barMaxHeight;
 
-    currentVertex.position = CEGUI::Vector3f(20.f, 100.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        topVertex.position = CEGUI::Vector3f(left, top, 0.f);
+        d_FPSGraphGeometry->appendVertex(topVertex);
 
-    currentVertex.position = CEGUI::Vector3f(20.f, 10.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        bottomVertex.position = CEGUI::Vector3f(left, bottom, 0.f);
+        d_FPSGraphGeometry->appendVertex(bottomVertex);
 
-    currentVertex.position = CEGUI::Vector3f(0.f, 0.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        bottomVertex.position = CEGUI::Vector3f(right, bottom, 0.f);
+        d_FPSGraphGeometry->appendVertex(bottomVertex);
 
-    currentVertex.position = CEGUI::Vector3f(200.f, 100.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        bottomVertex.position = CEGUI::Vector3f(right, bottom, 0.f);
+        d_FPSGraphGeometry->appendVertex(bottomVertex);
 
-    currentVertex.position = CEGUI::Vector3f(-200.f, 100.f, 0.f);
-    currentVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-    d_customCanvasGeometry->appendVertex(currentVertex);
+        topVertex.position = CEGUI::Vector3f(left, top, 0.f);
+        d_FPSGraphGeometry->appendVertex(topVertex);
+
+        topVertex.position = CEGUI::Vector3f(right, top, 0.f);
+        d_FPSGraphGeometry->appendVertex(topVertex);
+    }
 }
 
 /*************************************************************************
