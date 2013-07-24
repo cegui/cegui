@@ -29,7 +29,7 @@
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/System.h"
 
-#include "Glm/glm.hpp"
+#include "glm/glm.hpp"
 
 namespace CEGUI
 {
