@@ -128,9 +128,13 @@ public:
 
     /*!
     \brief
-        Registers the overlay handler for rendering the FPS for a specified GUIContext
+        Registers the overlay handler for rendering the FPS for a specified GUIContext.
+        This will be used to render the overlay for the specific samples.
+
+    /param gui_context
+        The sample's GUIContext for which we will register the overlay rendering.
     */
-    void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
+    void registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
 
 
 protected:
