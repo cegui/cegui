@@ -41,14 +41,12 @@ ShaderParameterBindings::ShaderParameterBindings()
 //----------------------------------------------------------------------------//
 ShaderParameterBindings::~ShaderParameterBindings()
 {
-    ShaderParameterBindingsMap::iterator current = d_shaderParameterBindings.begin();
-    ShaderParameterBindingsMap::iterator end = d_shaderParameterBindings.end();
-
-    while (current != end)
+    while (!d_shaderParameterBindings.empty())
     {
-        delete current->second;
+        ShaderParameterBindingsMap::iterator current = d_shaderParameterBindings.begin();
 
-        current = d_shaderParameterBindings.erase(current);
+        delete current->second;
+        d_shaderParameterBindings.erase(current);
     }
 }
 
