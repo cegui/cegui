@@ -213,7 +213,7 @@ BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
     d_editbox->setText("WoW");
 
     // select all text
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonTripleClick(MouseButton::LeftButton), true);
+    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonTripleClick(LeftButton), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 3);
 
     BOOST_REQUIRE_EQUAL(getInputAggregator().injectCopyRequest(), true);
