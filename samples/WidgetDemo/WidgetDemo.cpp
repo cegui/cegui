@@ -457,7 +457,7 @@ CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, cons
 
 void WidgetDemo::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage)
 {
-    if(eventName == CEGUI::Window::EventMouseMove)
+    if(eventName == CEGUI::Window::EventPointerMove)
     {
         d_windowLightMouseMoveEvent->enable();
     }
