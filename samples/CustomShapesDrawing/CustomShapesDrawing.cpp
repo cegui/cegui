@@ -48,21 +48,11 @@
 *************************************************************************/
 CustomShapesDrawing::CustomShapesDrawing()
     : d_FPSMaxGraphValue(1)
-    , d_FPSGraphBarsCount(12)
+    , d_FPSGraphSamplesCount(30)
 {
     // Initialising the FPS values
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
-    d_lastFPSValues.push_front(0);
+    for(unsigned int i = 0; i < d_FPSGraphSamplesCount; ++i)
+        d_lastFPSValues.push_front(0);
 }
 
 /*************************************************************************
@@ -212,53 +202,69 @@ void CustomShapesDrawing::deinitialise()
 *************************************************************************/
 void CustomShapesDrawing::updateFPSGraphGeometry()
 {
-    d_FPSGraphGeometry->reset();
-    
-    for(unsigned int i = 0; i < d_FPSGraphBarsCount; ++i)
-    {
-        float offset = i * 15.f;
+    static const float maxHeight = 100.0f;
+    static const float sampleDisplaySpacing = 7.0f;
+    static const float lineWidth = 1.f;
+    static const CEGUI::Colour lineColour = CEGUI::Colour(0.0f, 1.0f, 0.0f);
 
-        const float barWidth = 10.f;
-        const float barMaxHeight = 100.f;
+    d_FPSGraphGeometry->reset();
+
+    std::vector<CEGUI::Vector3f> linePositions;
+    
+    for(unsigned int i = 0; i < d_FPSGraphSamplesCount; ++i)
+    {
+        float currentOffset = i * sampleDisplaySpacing;
 
         float scale = static_cast<float>(d_lastFPSValues.at(i)) / d_FPSMaxGraphValue;
-        float barHeight = scale * barMaxHeight;
+        float pointHeight = maxHeight - scale * maxHeight;
 
-        CEGUI::ColouredVertex bottomVertex;
-        if(scale >= 0.73f)
-            bottomVertex.colour_val = CEGUI::Colour(0.f, 1.f, 0.f);
-        else if(scale >= 0.42f)
-            bottomVertex.colour_val = CEGUI::Colour(1.f, 1.f, 0.f);
-        else
-            bottomVertex.colour_val = CEGUI::Colour(1.f, 0.f, 0.f);
-        
-        CEGUI::ColouredVertex topVertex;
-        topVertex.colour_val = bottomVertex.colour_val * 0.8f;
+        CEGUI::Vector3f currentPosition(currentOffset, pointHeight, 0.0f);
+        linePositions.push_back(currentPosition);
+    }
+
+    drawLineStrip(linePositions, lineWidth, lineColour);
 
 
-        
-        float left = offset;
-        float right = offset + barWidth;
-        float top = barMaxHeight - barHeight;
-        float bottom = barMaxHeight;
+}
 
-        topVertex.position = CEGUI::Vector3f(left, top, 0.f);
-        d_FPSGraphGeometry->appendVertex(topVertex);
+void CustomShapesDrawing::drawLineStrip(std::vector<CEGUI::Vector3<float>> &linePositions, const float lineWidth, const CEGUI::Colour lineColour)
+{
+    unsigned int size = linePositions.size();
+    for (unsigned int j = 1; j < size; ++j)
+    {
+        const CEGUI::Vector3f& previousPos = linePositions.at(j - 1);
+        const CEGUI::Vector3f& currentPos = linePositions.at(j);
 
-        bottomVertex.position = CEGUI::Vector3f(left, bottom, 0.f);
-        d_FPSGraphGeometry->appendVertex(bottomVertex);
+        const float& x1 = previousPos.d_x;
+        const float& y1 = previousPos.d_y;
+        const float& x2 = currentPos.d_x;
+        const float& y2 = currentPos.d_y;
 
-        bottomVertex.position = CEGUI::Vector3f(right, bottom, 0.f);
-        d_FPSGraphGeometry->appendVertex(bottomVertex);
+        //Todo: Scrap trigonometry and replace with 2D vector flipping
+        float angle = std::atan2(y2 - y1, x2 - x1);
+        float xLineOffset = lineWidth / 2.0f * sin(angle);
+        float yLineOffset = lineWidth / 2.0f * cos(angle);
 
-        bottomVertex.position = CEGUI::Vector3f(right, bottom, 0.f);
-        d_FPSGraphGeometry->appendVertex(bottomVertex);
+        CEGUI::ColouredVertex linePositionVertex;
+        linePositionVertex.colour_val = lineColour;
 
-        topVertex.position = CEGUI::Vector3f(left, top, 0.f);
-        d_FPSGraphGeometry->appendVertex(topVertex);
+        linePositionVertex.position = CEGUI::Vector3f(x1 + xLineOffset, y1 - yLineOffset, 0.0f);
+        d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        topVertex.position = CEGUI::Vector3f(right, top, 0.f);
-        d_FPSGraphGeometry->appendVertex(topVertex);
+        linePositionVertex.position = CEGUI::Vector3f(x2 + xLineOffset, y2 - yLineOffset, 0.0f);
+        d_FPSGraphGeometry->appendVertex(linePositionVertex);
+
+        linePositionVertex.position = CEGUI::Vector3f(x2 - xLineOffset, y2 + yLineOffset, 0.0f);
+        d_FPSGraphGeometry->appendVertex(linePositionVertex);
+
+        linePositionVertex.position = CEGUI::Vector3f(x2 - xLineOffset, y2 + yLineOffset, 0.0f);
+        d_FPSGraphGeometry->appendVertex(linePositionVertex);
+
+        linePositionVertex.position = CEGUI::Vector3f(x1 - xLineOffset, y1 + yLineOffset, 0.0f);
+        d_FPSGraphGeometry->appendVertex(linePositionVertex);
+
+        linePositionVertex.position = CEGUI::Vector3f(x1 + xLineOffset, y1 - yLineOffset, 0.0f);
+        d_FPSGraphGeometry->appendVertex(linePositionVertex);
     }
 }
 
