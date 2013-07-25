@@ -41,13 +41,15 @@ ShaderParameterBindings::ShaderParameterBindings()
 //----------------------------------------------------------------------------//
 ShaderParameterBindings::~ShaderParameterBindings()
 {
-    while (!d_shaderParameterBindings.empty())
-    {
-        ShaderParameterBindingsMap::iterator current = d_shaderParameterBindings.begin();
+    ShaderParameterBindings::ShaderParameterBindingsMap::iterator iter = d_shaderParameterBindings.begin();
+    ShaderParameterBindings::ShaderParameterBindingsMap::iterator end = d_shaderParameterBindings.end();
 
-        delete current->second;
-        d_shaderParameterBindings.erase(current);
+    while (iter != end)
+    {
+        delete iter->second;
     }
+
+    d_shaderParameterBindings.clear();
 }
 
 //----------------------------------------------------------------------------//
@@ -64,11 +66,11 @@ void ShaderParameterBindings::removeParameter(const std::string& parameterName)
 //----------------------------------------------------------------------------//
 void ShaderParameterBindings::setParameter(const std::string& parameterName, ShaderParameter* shaderParameter)
 {
-    std::map<std::string, ShaderParameter*>::iterator iter = d_shaderParameterBindings.find(parameterName);
-    if(iter != d_shaderParameterBindings.end())
+    std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterBindings.find(parameterName);
+    if(found_iterator != d_shaderParameterBindings.end())
     {
-        delete iter->second;
-        iter->second = shaderParameter;
+        delete found_iterator->second;
+        found_iterator->second = shaderParameter;
     }
     else
     {
