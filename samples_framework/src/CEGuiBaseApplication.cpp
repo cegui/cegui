@@ -124,23 +124,16 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
 
-    // setup for FPS value
-    d_FPSGeometry = &d_renderer->createGeometryBufferTextured(
-        d_renderer->createRenderMaterial(CEGUI::DS_TEXTURED));
-    d_FPSGeometry->setClippingRegion(scrn);
-    positionFPS();
-
     // setup for spinning logo
-    d_logoGeometry = &d_renderer->createGeometryBufferTextured(
-        d_renderer->createRenderMaterial(CEGUI::DS_TEXTURED));
+    d_logoGeometry = &d_renderer->createGeometryBufferTextured();
     d_logoGeometry->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
-    positionLogo();
+    positionLogo(d_logoGeometry);
 
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
                                                          "logo.png");
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
-        *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, CEGUI::ColourRect(0xFFFFFFFF));
+        *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, false, CEGUI::ColourRect(0xFFFFFFFF));
 
     // clearing this queue actually makes sure it's created(!)
     CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RQ_OVERLAY);
@@ -175,7 +168,11 @@ void CEGuiBaseApplication::cleanup()
 {
     CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
     d_renderer->destroyGeometryBuffer(*d_logoGeometry);
-    d_renderer->destroyGeometryBuffer(*d_FPSGeometry);
+
+    const size_t bufferCount = d_FPSGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+        d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
+    d_FPSGeometry.clear();
     CEGUI::System::destroy();
 }
 
@@ -268,7 +265,17 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
     // draw the logo
     d_logoGeometry->draw();
     // draw FPS value
-    d_FPSGeometry->draw();
+    const size_t bufferCount = d_FPSGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+    {
+        CEGUI::GeometryBuffer* currentBuffer = d_FPSGeometry.at(i);
+        const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+        positionFPS(currentBuffer);
+        currentBuffer->setClippingRegion(scrn);
+        currentBuffer->draw(); 
+    }
+
+    
 
     return true;
 }
@@ -280,7 +287,15 @@ bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
         return false;
 
     // draw FPS value
-    d_FPSGeometry->draw();
+    const size_t bufferCount = d_FPSGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+    {
+        CEGUI::GeometryBuffer* currentBuffer = d_FPSGeometry.at(i);
+        positionFPS(currentBuffer);
+        const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+        currentBuffer->setClippingRegion(scrn);
+        currentBuffer->draw(); 
+    }
 
     return true;
 }
@@ -305,9 +320,13 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
             char fps_textbuff[16];
             sprintf(fps_textbuff , "FPS: %d", d_FPSValue);
 
-            d_FPSGeometry->reset();
-            fnt->drawText(*d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0,
-                        CEGUI::Colour(0xFFFFFFFF));
+            const size_t bufferCount = d_FPSGeometry.size();
+            for (size_t i = 0; i < bufferCount; ++i)
+                d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
+            d_FPSGeometry.clear();
+
+            fnt->drawText(d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0, false,
+                          CEGUI::Colour(0xFFFFFFFF));
         }
 
         // reset counter state
@@ -331,22 +350,22 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::positionLogo()
+void CEGuiBaseApplication::positionLogo(CEGUI::GeometryBuffer* geom_buffer)
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
 
-    d_logoGeometry->setClippingRegion(scrn);
-    d_logoGeometry->setTranslation(
+    geom_buffer->setClippingRegion(scrn);
+    geom_buffer->setTranslation(
         CEGUI::Vector3f(10.0f, scrn.getSize().d_height - 89.0f, 0.0f));
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::positionFPS()
+void CEGuiBaseApplication::positionFPS(CEGUI::GeometryBuffer* geom_buffer)
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
 
-    d_FPSGeometry->setClippingRegion(scrn);
-    d_FPSGeometry->setTranslation(
+    geom_buffer->setClippingRegion(scrn);
+    geom_buffer->setTranslation(
         CEGUI::Vector3f(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f));
 }
 
@@ -355,14 +374,18 @@ void CEGuiBaseApplication::positionFPS()
 bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
 {
     // clear FPS geometry and see that it gets recreated in the next frame
-    d_FPSGeometry->reset();
+    const size_t bufferCount = d_FPSGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+        d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
+    d_FPSGeometry.clear();
+
     d_FPSValue = 0;
 
     const CEGUI::Rectf& area(CEGUI::System::getSingleton().getRenderer()->
                              getDefaultRenderTarget().getArea());
     d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
 
-    positionLogo();
+    positionLogo(d_logoGeometry);
     return true;
 }
 
