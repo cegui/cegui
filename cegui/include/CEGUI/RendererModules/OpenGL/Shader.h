@@ -93,7 +93,6 @@ private:
 
     OpenGL3StateChangeWrapper* d_glStateChanger;
 
-    std::string d_shaderName;
     bool d_createdSuccessfully;
 
     GLuint d_vertexShader;

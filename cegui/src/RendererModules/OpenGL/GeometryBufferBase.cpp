@@ -37,7 +37,7 @@
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
-#include "CEGUI/RefCounted.h"
+#include "CEGUI/ShaderParameterBindings.h"
 
 namespace CEGUI
 {
@@ -53,7 +53,8 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CE
     d_pivot(0, 0, 0),
     d_effect(0),
     d_matrix(new mat4Pimpl()),
-    d_matrixValid(false)
+    d_matrixValid(false),
+    d_vertexCount(0)
 {
 }
 
@@ -94,21 +95,26 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setActiveTexture(Texture* texture)
+void OpenGLGeometryBufferBase::setTexture(Texture* texture)
 {
-    d_activeTexture = static_cast<OpenGLTexture*>(texture);
+    if(d_activeTexture != texture)
+    {
+        d_activeTexture = texture;
+        CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
+        shaderParameterBindings->setParameter("texture0", d_activeTexture);
+    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::reset()
 {
-    d_batches.clear();
     d_vertexData.clear();
     d_activeTexture = 0;
+    d_clippingActive = true;
 }
 
 //----------------------------------------------------------------------------//
-Texture* OpenGLGeometryBufferBase::getActiveTexture() const
+Texture* OpenGLGeometryBufferBase::getTexture() const
 {
     return d_activeTexture;
 }
@@ -117,26 +123,6 @@ Texture* OpenGLGeometryBufferBase::getActiveTexture() const
 uint OpenGLGeometryBufferBase::getVertexCount() const
 {
     return d_vertexData.size();
-}
-
-//----------------------------------------------------------------------------//
-uint OpenGLGeometryBufferBase::getBatchCount() const
-{
-    return d_batches.size();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::performBatchManagement()
-{
-    // create a new batch if there are no batches yet, or if the active texture
-    // differs from that used by the current batch.
-    if (d_batches.empty() ||
-        d_activeTexture != d_batches.back().texture ||
-        d_clippingActive != d_batches.back().clip)
-    {
-        const BatchInfo batch = {d_activeTexture, 0, d_clippingActive};
-        d_batches.push_back(batch);
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -199,12 +185,9 @@ bool OpenGLGeometryBufferBase::isClippingActive() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::appendGeometry(const std::vector<float>& vertex_data)
 {
-    performBatchManagement();
-
-    // Update size of current batch
-    d_batches.back().vertexCount += vertex_data.size() / getVertexAttributeElementCount();
-
     d_vertexData.insert(d_vertexData.end(), vertex_data.begin(), vertex_data.end());
+    // Update size of geometry buffer
+    d_vertexCount = d_vertexData.size() / getVertexAttributeElementCount();
 }
 
 

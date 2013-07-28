@@ -177,14 +177,15 @@ public:
 
     /*!
     \brief
-        Set the active texture to be used with all subsequently added vertices.
+        Sets the default texture to be used by the RenderMaterial of this
+        Geometrybuffer.
 
     \param texture
         Pointer to a Texture object that shall be used for subsequently added
         vertices.  This may be 0, in which case texturing will be disabled for
         subsequently added vertices.
     */
-    virtual void setActiveTexture(Texture* texture) = 0;
+    virtual void setTexture(Texture* texture) = 0;
 
     /*!
     \brief
@@ -195,14 +196,14 @@ public:
 
     /*!
     \brief
-        Return a pointer to the currently active Texture object.  This may
-        return 0 if no texture is set.
+        Return a pointer to the default Texture object used by this GeometryBuffer.
+        This may return 0 if no texture is set.
 
     \return
         Pointer the Texture object that is currently active, or 0 if texturing
         is not being used.
     */
-    virtual Texture* getActiveTexture() const = 0;
+    virtual Texture* getTexture() const = 0;
 
     /*!
     \brief
@@ -226,20 +227,6 @@ public:
     */
     int getVertexAttributeElementCount() const;
 
-    /*!
-    \brief
-        Return the number of batches of geometry that this GeometryBuffer has
-        split the vertices into.
-
-    \note
-        How batching is done will be largely implementation specific, although
-        it would be reasonable to expect that you will have <em>at least</em>
-        one batch of geometry per texture switch.
-
-    \return
-        The number of batches of geometry held by the GeometryBuffer.
-    */
-    virtual uint getBatchCount() const = 0;
 
     /*!
     \brief
@@ -323,21 +310,43 @@ public:
 
     /*
     \brief
-        Resets the vertex attributes that were set for the vertices of this
-        GeometryBuffer.
+        Adds a vertex attributes to the list of vertex attributes. The vertex
+        attributes are used to describe the layout of the verrex data. The
+        order in which the attributes are added is the same order in which the
+        data has to be aligned for the vertex. This has be done before adding
+        actual vertex data to the GeometryBuffer.
 
     \param attribute
-        The attribute that should be appended to the list of vertex attributes
+        The attribute that should be added to the list of vertex attributes
         describing the vertices of this GeometryBuffer.
     */
-    void appendVertexAttribute(VertexAttributeType attribute);
+    void addVertexAttribute(VertexAttributeType attribute);
 
-        /*
+    /*
     \brief
         The update function that is to be called when all the vertex attributes
         are set.
     */
     virtual void finaliseVertexAttributes() = 0;
+
+    /*
+    \brief
+        Returns the RenderMaterial that is currently used by this GeometryBuffer.
+
+    \return
+        A reference to the RenderMaterial that is used by this GeometryBuffer.
+    */
+    RefCounted<RenderMaterial> getRenderMaterial() const;
+
+    /*
+    \brief
+        Set a new RenderMaterial to be used by this GeometryBuffer.
+
+    \param render_material
+        A reference to the RenderMaterial that will be set to be used by this
+        GeometryBuffer.
+    */
+    void setRenderMaterial(RefCounted<RenderMaterial> render_material);
 
 protected:
     //! Constructor.
@@ -349,9 +358,12 @@ protected:
     //! Reference to the RenderMaterial used for this GeometryBuffer
     RefCounted<RenderMaterial> d_renderMaterial;
     
-    //! A vector of the attributes of the vertices of this GeometryBuffer. The order
-    // in which they were added to the vector is used to define the alignment of the
-    // vertex data.
+    /*
+    \brief
+        A vector of the attributes of the vertices of this GeometryBuffer. The order
+        in which they were added to the vector is used to define the alignment of the
+        vertex data.
+    */
     std::vector<VertexAttributeType> d_vertexAttributes;
 };
 

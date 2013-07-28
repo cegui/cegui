@@ -66,11 +66,10 @@ public:
     void setPivot(const Vector3f& p);
     void setClippingRegion(const Rectf& region);
     void appendGeometry(const std::vector<float>& vertex_data);
-    void setActiveTexture(Texture* texture);
+    void setTexture(Texture* texture);
     void reset();
-    Texture* getActiveTexture() const;
+    Texture* getTexture() const;
     uint getVertexCount() const;
-    uint getBatchCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
     void setClippingActive(const bool active);
@@ -80,32 +79,19 @@ public:
     const mat4Pimpl* getMatrix() const;
 
 protected:
-    //! perform batch management operations prior to adding new geometry.
-    void performBatchManagement();
-
     //! update cached matrix
     void updateMatrix() const;
-
-    //! type to track info for per-texture sub batches of geometry
-    struct BatchInfo
-    {
-        CEGUI::Texture* texture;
-        uint vertexCount;
-        bool clip;
-    };
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase* d_owner;
     //! last texture that was set as active
-    OpenGLTexture* d_activeTexture;
-    //! type of container that tracks BatchInfos.
-    typedef std::vector<BatchInfo> BatchList;
-    //! list of texture batches added to the geometry buffer
-    BatchList d_batches;
+    CEGUI::Texture* d_activeTexture;
     //! type of container used to queue the geometry
     typedef std::vector<float> VertexData;
     //! container where added geometry is stored.
     VertexData d_vertexData;
+    //! vertex count in respect to the used vertex layout
+    unsigned int d_vertexCount;
     //! rectangular clip region
     Rectf d_clipRect;
     //! whether clipping will be active for the current batch
@@ -118,7 +104,7 @@ protected:
     Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
-    //! model matrix cache - we use double because gluUnproject takes double
+    //! cche of the model matrix
     mutable mat4Pimpl*              d_matrix;
     //! true when d_matrix is valid and up to date
     mutable bool                    d_matrixValid;
