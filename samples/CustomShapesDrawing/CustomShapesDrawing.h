@@ -54,7 +54,7 @@ public:
 
     virtual void deinitialise();
 
-    void positionGeometryBuffer();
+    void positionFPSGraphGeometry();
 
     void update(float timeSinceLastUpdate);
 
