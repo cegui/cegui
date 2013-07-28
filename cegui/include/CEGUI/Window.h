@@ -3305,6 +3305,13 @@ protected:
 
     /*!
     \brief
+        Update position and clip region on this Windows geometry / rendering
+        surface.
+    */
+    void updateGeometryBuffersTranslationAndClipping();
+
+    /*!
+    \brief
         Fires off a repeated mouse button down event for this window.
     */
     void generateAutoRepeatEvent(MouseButton button);

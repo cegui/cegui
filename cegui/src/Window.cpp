@@ -1110,17 +1110,11 @@ void Window::bufferGeometry(const RenderingContext&)
         else
             populateGeometryBuffer();
 
+        updateGeometryBuffersTranslationAndClipping();
+
         // signal rendering ended
         args.handled = 0;
         onRenderingEnded(args);
-
-        const size_t geom_buffer_count = d_geometryBuffers.size();
-        for (size_t i = 0; i < geom_buffer_count; ++i)
-        {
-            CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
-            currentBuffer->setTranslation(d_translation);
-            currentBuffer->setClippingRegion(d_clippingRegion);
-        }
 
         // mark ourselves as no longer needed a redraw.
         d_needsRedraw = false;
@@ -3017,6 +3011,8 @@ void Window::updateGeometryRenderSettings()
                                  0.0f);
     }
     initialiseClippers(ctx);
+
+    updateGeometryBuffersTranslationAndClipping();
 }
 
 //----------------------------------------------------------------------------//
@@ -3835,6 +3831,18 @@ void Window::destroyGeometryBuffers()
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometryBuffers.at(i));
     }
     d_geometryBuffers.clear();
+}
+
+//----------------------------------------------------------------------------//
+void Window::updateGeometryBuffersTranslationAndClipping()
+{
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+        currentBuffer->setTranslation(d_translation);
+        currentBuffer->setClippingRegion(d_clippingRegion);
+    }
 }
 
 //----------------------------------------------------------------------------//
