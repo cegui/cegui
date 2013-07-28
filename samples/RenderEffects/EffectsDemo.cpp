@@ -146,7 +146,7 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         }
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture(&tex);
     geometry.appendGeometry(d_vertices, ds_vertexCount);
 
     // false, because we do not want the default geometry added!
@@ -310,7 +310,7 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         }
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture(&tex);
     geometry.appendGeometry(vb, buffsize);
 
     // false, because we do not want the default geometry added!
@@ -484,7 +484,7 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         d_vertices[5].tex_coords = Vector2f(0.0f, uvTop);
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture(&tex);
     geometry.appendGeometry(d_vertices, ds_vertexCount);
 
     // false, because we do not want the default geometry added!
