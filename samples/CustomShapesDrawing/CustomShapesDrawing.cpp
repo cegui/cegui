@@ -225,7 +225,7 @@ void CustomShapesDrawing::updateFPSGraphGeometry()
     drawLineStrip(linePositions, lineWidth, lineColour);
 }
 
-void CustomShapesDrawing::drawLineStrip(std::vector<CEGUI::Vector3<float>> &linePositions, const float lineWidth, const CEGUI::Colour lineColour)
+void CustomShapesDrawing::drawLineStrip(std::vector<CEGUI::Vector3<float> > &linePositions, const float lineWidth, const CEGUI::Colour lineColour)
 {
     unsigned int size = linePositions.size();
     for (unsigned int j = 1; j < size; ++j)

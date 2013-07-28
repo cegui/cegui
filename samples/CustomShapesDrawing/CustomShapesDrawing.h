@@ -50,7 +50,7 @@ public:
 
     void updateFPSGraphGeometry();
 
-    void drawLineStrip(std::vector<CEGUI::Vector3<float>> &linePositions, const float lineWidth, const CEGUI::Colour lineColour);
+    void drawLineStrip(std::vector<CEGUI::Vector3<float> > &linePositions, const float lineWidth, const CEGUI::Colour lineColour);
 
     virtual void deinitialise();
 
