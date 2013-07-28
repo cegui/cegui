@@ -89,36 +89,21 @@ void OpenGL3GeometryBuffer::draw() const
     d_glStateChanger->bindVertexArray(d_verticesVAO);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
-     size_t pos = 0;
     for (int pass = 0; pass < pass_count; ++pass)
     {
         // set up RenderEffect
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
-        // draw the batches
-       
-        BatchList::const_iterator i = d_batches.begin();
-        for ( ; i != d_batches.end(); ++i)
-        {
-            const BatchInfo& currentBatch = *i;
+        if (d_clippingActive)
+            glEnable(GL_SCISSOR_TEST);
+        else
+            glDisable(GL_SCISSOR_TEST);
 
-            if (currentBatch.clip)
-                glEnable(GL_SCISSOR_TEST);
-            else
-                glDisable(GL_SCISSOR_TEST);
+        d_renderMaterial->prepareForRendering();
 
-            if(currentBatch.texture != 0)
-                shaderParameterBindings->setParameter("texture0", currentBatch.texture);
-
-            d_renderMaterial->prepareForRendering();
-
-            // draw the geometry
-            const unsigned int numVertices = currentBatch.vertexCount;
-            glDrawArrays(GL_TRIANGLES, pos, numVertices);
-
-            pos += numVertices;
-        }
+        // draw the geometry
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
 
     // clean up RenderEffect
@@ -143,7 +128,7 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
     glGenBuffers(1, &d_verticesVBO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 
     // Unbind Vertex Attribute Array (VAO)
     d_glStateChanger->bindVertexArray(0);
@@ -156,6 +141,7 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::finaliseVertexAttributes()
 {  
+    //We need to bind both of the following calls
     d_glStateChanger->bindVertexArray(d_verticesVAO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
@@ -232,7 +218,7 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     if(needNewBuffer)
     {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_DYNAMIC_DRAW);
     }
     else
     {

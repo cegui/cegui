@@ -49,8 +49,7 @@ class OPENGL_GUIRENDERER_API OpenGL3ShaderWrapper : public ShaderWrapper
 public:
     OpenGL3ShaderWrapper(OpenGL3Shader& shader);
 
-    ~OpenGL3ShaderWrapper()
-    {}
+    ~OpenGL3ShaderWrapper();
 
     //Implementation of ShaderWrapper interface
     void prepareForRendering(ShaderParameterBindings* shaderParameterBindings) const;
@@ -65,12 +64,10 @@ public:
 protected:
     //! The underlying GLSL shader that this class wraps the access to
     OpenGL3Shader& d_shader;
-    //! 
+    //! A map of parameter names and the related uniform variable locations
     std::map<std::string, GLint> d_uniformVariables;
-    //! 
+    //! A map of parameter names and the related attribute variable locations
     std::map<std::string, GLint> d_attributeVariables;
-
-
 };
 
 

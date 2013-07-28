@@ -43,7 +43,11 @@ namespace CEGUI
 OpenGL3ShaderWrapper::OpenGL3ShaderWrapper(OpenGL3Shader& shader)
     : d_shader(shader)
 {
+}
 
+//----------------------------------------------------------------------------//
+OpenGL3ShaderWrapper::~OpenGL3ShaderWrapper()
+{
 }
 
 //----------------------------------------------------------------------------//
