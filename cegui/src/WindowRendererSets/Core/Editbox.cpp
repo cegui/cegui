@@ -261,28 +261,39 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
             render(*w, hlarea, 0, &text_area);
     }
 
+    std::map<const CEGUI::Texture*, GeometryBuffer*> geomBuffersMap;
+
     // draw pre-highlight text
     String sect = text.substr(0, w->getSelectionStartIndex());
     colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffer(), sect,
-                       text_part_rect.getPosition(), &text_area, colours);
+        font->drawText(geomBuffersMap, sect, text_part_rect.getPosition(),
+                       &text_area, true, colours);
 
     // draw highlight text
     sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
     colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffer(), sect,
-                       text_part_rect.getPosition(), &text_area, colours);
+        font->drawText(geomBuffersMap, sect, text_part_rect.getPosition(),
+                       &text_area, true, colours);
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
     colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &text_area, colours);
+    font->drawText(geomBuffersMap, sect, text_part_rect.getPosition(),
+                   &text_area, true, colours);
+
+    std::vector<GeometryBuffer*>& geomBuffers = w->getGeometryBuffers();
+    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator iter = geomBuffersMap.begin();
+    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator end = geomBuffersMap.end();
+    while (iter != end)
+    {
+        geomBuffers.push_back(iter->second);
+        ++iter;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -316,7 +327,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
         colours = unselectedColour;
         colours.modulateAlpha(alpha_comp);
         text_part_rect.d_min.d_x =
-            font->drawText(w->getGeometryBuffer(), text,
+            font->drawText(w->getGeometryBuffers(), text,
                            text_part_rect.getPosition(), &text_area, colours);
     }
     else
@@ -369,7 +380,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                 colours = unselectedColour;
                 colours.modulateAlpha(alpha_comp);
             }
-            font->drawText(w->getGeometryBuffer(), currChar,
+            font->drawText(w->getGeometryBuffers(), currChar,
                            text_part_rect.getPosition(), &text_area, colours);
 
             // adjust rect for next section

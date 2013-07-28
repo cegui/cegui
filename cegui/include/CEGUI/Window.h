@@ -1230,12 +1230,12 @@ public:
 
     /*!
     \brief
-        Return the GeometryBuffer object for this Window.
+        Return the list of GeometryBuffer objects for this Window.
 
     \return
-        Reference to the GeometryBuffer object for this Window.
+        Reference to the list of GeometryBuffer objects for this Window.
     */
-    GeometryBuffer& getGeometryBuffer();
+    std::vector<GeometryBuffer*>& getGeometryBuffers();
 
     /*!
     \brief
@@ -3278,6 +3278,12 @@ protected:
 
     /*!
     \brief
+        Destroys all geometry buffers of this Window.
+    */
+    void destroyGeometryBuffers();
+
+    /*!
+    \brief
         Update the rendering cache.
 
         Populates the Window's GeometryBuffer ready for rendering.
@@ -3566,8 +3572,8 @@ protected:
     String d_lookName;
     //! The WindowRenderer module that implements the Look'N'Feel specification
     WindowRenderer* d_windowRenderer;
-    //! Object which acts as a cache of geometry drawn by this Window.
-    GeometryBuffer* d_geometry;
+    //! List of geometry buffers that cache the geometry drawn by this Window.
+    std::vector<GeometryBuffer*> d_geometryBuffers;
     //! RenderingSurface owned by this window (may be 0)
     RenderingSurface* d_surface;
     //! true if window geometry cache needs to be regenerated.
@@ -3684,6 +3690,10 @@ protected:
 
     //! true when mouse is contained within this Window's area.
     bool d_containsMouse;
+
+    //! TODO IDENT Check if this is the only and best way to do this
+    CEGUI::Vector3f d_translation;
+    CEGUI::Rectf d_clippingRegion;
 
 private:
     /*************************************************************************

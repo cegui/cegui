@@ -197,8 +197,6 @@ Window::Window(const String& type, const String& name):
 
     // rendering components and options
     d_windowRenderer(0),
-    d_geometry(&System::getSingleton().getRenderer()->createGeometryBufferTextured(
-               System::getSingleton().getRenderer()->createRenderMaterial(DS_TEXTURED))),
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
@@ -295,8 +293,9 @@ Window::Window(const String& type, const String& name):
 Window::~Window(void)
 {
     // most cleanup actually happened earlier in Window::destroy.
+    destroyGeometryBuffers();
 
-    System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometry);
+
     CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
@@ -1096,7 +1095,7 @@ void Window::bufferGeometry(const RenderingContext&)
     if (d_needsRedraw)
     {
         // dispose of already cached geometry.
-        d_geometry->reset();
+        destroyGeometryBuffers();
 
         // signal rendering started
         WindowEventArgs args(this);
@@ -1115,6 +1114,14 @@ void Window::bufferGeometry(const RenderingContext&)
         args.handled = 0;
         onRenderingEnded(args);
 
+        const size_t geom_buffer_count = d_geometryBuffers.size();
+        for (size_t i = 0; i < geom_buffer_count; ++i)
+        {
+            CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+            currentBuffer->setTranslation(d_translation);
+            currentBuffer->setClippingRegion(d_clippingRegion);
+        }
+
         // mark ourselves as no longer needed a redraw.
         d_needsRedraw = false;
     }
@@ -1124,7 +1131,7 @@ void Window::bufferGeometry(const RenderingContext&)
 void Window::queueGeometry(const RenderingContext& ctx)
 {
     // add geometry so that it gets drawn to the target surface.
-    ctx.surface->addGeometryBuffer(ctx.queue, *d_geometry);
+    ctx.surface->addGeometryBuffers(ctx.queue, d_geometryBuffers);
 }
 
 //----------------------------------------------------------------------------//
@@ -2996,15 +3003,18 @@ void Window::updateGeometryRenderSettings()
             Vector3f(d_pixelSize.d_width / 2.0f,
                     d_pixelSize.d_height / 2.0f,
                     0.0f));
-        d_geometry->setTranslation(Vector3f(0.0f, 0.0f, 0.0f));
+
+        d_translation = Vector3f::zero();
     }
     // if we're not texture backed, update geometry position.
     else
     {
         // position is the offset of the window on the dest surface.
         const Rectf ucrect(getUnclippedOuterRect().get());
-        d_geometry->setTranslation(Vector3f(ucrect.d_min.d_x - ctx.offset.d_x,
-                                            ucrect.d_min.d_y - ctx.offset.d_y, 0.0f));
+
+        d_translation = Vector3f(ucrect.d_min.d_x - ctx.offset.d_x,
+                                 ucrect.d_min.d_y - ctx.offset.d_y,
+                                 0.0f);
     }
     initialiseClippers(ctx);
 }
@@ -3093,9 +3103,9 @@ void Window::appendText(const String& text)
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& Window::getGeometryBuffer()
+std::vector<GeometryBuffer*>& Window::getGeometryBuffers()
 {
-    return *d_geometry;
+    return d_geometryBuffers;
 }
 
 //----------------------------------------------------------------------------//
@@ -3303,7 +3313,7 @@ void Window::initialiseClippers(const RenderingContext& ctx)
             rendering_window->setClippingRegion(
                 Rectf(Vector2f(0, 0), getRootContainerSize()));
 
-        d_geometry->setClippingRegion(Rectf(Vector2f(0, 0), d_pixelSize));
+        d_clippingRegion = Rectf(Vector2f(0, 0), d_pixelSize);
     }
     else
     {
@@ -3312,7 +3322,7 @@ void Window::initialiseClippers(const RenderingContext& ctx)
         if (geo_clip.getWidth() != 0.0f && geo_clip.getHeight() != 0.0f)
             geo_clip.offset(Vector2f(-ctx.offset.d_x, -ctx.offset.d_y));
 
-        d_geometry->setClippingRegion(geo_clip);
+        d_clippingRegion = Rectf(geo_clip);
     }
 }
 
@@ -3814,6 +3824,17 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 bool Window::isMouseContainedInArea() const
 {
     return d_containsMouse;
+}
+
+//----------------------------------------------------------------------------//
+void Window::destroyGeometryBuffers()
+{
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometryBuffers.at(i));
+    }
+    d_geometryBuffers.clear();
 }
 
 //----------------------------------------------------------------------------//

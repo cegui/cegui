@@ -184,7 +184,8 @@ const Vector2f& BasicImage::getRenderedOffset() const
 
 //----------------------------------------------------------------------------//
 void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
-                        const Rectf* clip_area, const ColourRect& colours) const
+                        const Rectf* clip_area, const bool clipping_enabled,
+                        const ColourRect& colours) const
 {
     const QuadSplitMode quad_split_mode(TopLeftToBottomRight);
 
@@ -273,7 +274,10 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
     vbuffer[5].colour_val= colours.d_bottom_right;
     vbuffer[5].tex_coords = Vector2f(tex_rect.right(), tex_rect.bottom());
 
-    buffer.setActiveTexture(d_texture);
+    buffer.setClippingActive(clipping_enabled);
+    if(clipping_enabled)
+        buffer.setClippingRegion(*clip_area);
+    buffer.setTexture(d_texture);
     buffer.appendGeometry(vbuffer, 6);
 }
 
@@ -318,6 +322,13 @@ void BasicImage::updateScaledOffset(const Sizef& renderer_display_size)
         scaleFactors.d_x, scaleFactors.d_y);
 
     d_scaledOffset = d_pixelOffset * scaleFactors;
+}
+
+
+//----------------------------------------------------------------------------//
+const Texture* BasicImage::getTexture() const
+{
+    return d_texture;
 }
 
 } // End of  CEGUI namespace section

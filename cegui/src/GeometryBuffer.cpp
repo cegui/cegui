@@ -163,9 +163,21 @@ void GeometryBuffer::resetVertexAttributes()
 }
 
 //---------------------------------------------------------------------------//
-void GeometryBuffer::appendVertexAttribute(VertexAttributeType attribute)
+void GeometryBuffer::addVertexAttribute(VertexAttributeType attribute)
 {
     d_vertexAttributes.push_back(attribute);
+}
+
+//---------------------------------------------------------------------------//
+RefCounted<RenderMaterial> GeometryBuffer::getRenderMaterial() const
+{
+    return d_renderMaterial;
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::setRenderMaterial(RefCounted<RenderMaterial> render_material)
+{
+    d_renderMaterial = render_material;
 }
 
 

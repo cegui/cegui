@@ -63,7 +63,17 @@ public:
     void render(GeometryBuffer& buffer,
                 const Rectf& dest_area,
                 const Rectf* clip_area,
+                const bool clipping_enabled,
                 const ColourRect& colours) const;
+
+    /*!
+    \brief
+        Returns the pointer to the Texture object used by this image.
+
+    \return
+        The pointer to the Texture object used by this image.
+    */
+    const Texture* getTexture() const;
 
     //! Notifies the class that the display size of the renderer has changed so that
     // the window can adapt to the new display size accordingly
