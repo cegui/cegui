@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/Image.h"
 #include "CEGUI/Logger.h"
+#include "CEGUI/System.h"
 
 #include <algorithm>
 

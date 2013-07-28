@@ -157,7 +157,7 @@ const Font* RenderedStringTextComponent::getEffectiveFont(
 
 //----------------------------------------------------------------------------//
 void RenderedStringTextComponent::draw(const Window* ref_wnd,
-                                       GeometryBuffer& buffer,
+                                       std::vector<GeometryBuffer*>& geometry_buffers,
                                        const Vector2f& position,
                                        const ColourRect* mod_colours,
                                        const Rectf* clip_rect,
@@ -219,12 +219,24 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
                        position.d_x + sel_end_extent,
                        position.d_y + vertical_space);
 
-        d_selectionImage->render(buffer, sel_rect, clip_rect, ColourRect(0xFF002FFF));
+        CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
+        geometry_buffers.push_back(&geometry_buffer);
+        d_selectionImage->render(geometry_buffer, sel_rect, clip_rect, true, ColourRect(0xFF002FFF)); // TODO Ident should this always be true?
     }
 
+    std::map<const CEGUI::Texture*, GeometryBuffer*> geomBuffersMap;
+
     // draw the text string.
-    fnt->drawText(buffer, d_text, final_pos, clip_rect, final_cols,
+    fnt->drawText(geomBuffersMap, d_text, final_pos, clip_rect, true, final_cols,
                   space_extra, 1.0f, y_scale);
+
+    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator iter = geomBuffersMap.begin();
+    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator end = geomBuffersMap.end();
+    while (iter != end)
+    {
+        geometry_buffers.push_back(iter->second);
+        ++iter;
+    }
 }
 
 //----------------------------------------------------------------------------//

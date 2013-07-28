@@ -91,7 +91,7 @@ void RenderedStringWidgetComponent::setSelection(const Window* /*ref_wnd*/,
 
 //----------------------------------------------------------------------------//
 void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
-                                         GeometryBuffer& buffer,
+                                         std::vector<GeometryBuffer*>& geometry_buffers,
                                          const Vector2f& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
                                          const Rectf* clip_rect,
@@ -149,7 +149,10 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-        d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
+
+        CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
+        geometry_buffers.push_back(&geometry_buffer);
+        d_selectionImage->render(geometry_buffer, select_area, clip_rect, true, ColourRect(0xFF002FFF));  // TODO Ident should this always be true?
     }
 
     // we do not actually draw the widget, we just move it into position.

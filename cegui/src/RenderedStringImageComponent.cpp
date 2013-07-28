@@ -29,6 +29,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -113,7 +114,7 @@ void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
 
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(const Window* ref_wnd,
-                                        GeometryBuffer& buffer,
+                                        std::vector<GeometryBuffer*>& geometry_buffers,
                                         const Vector2f& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect,
@@ -166,7 +167,9 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-        d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
+        CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
+        geometry_buffers.push_back(&geometry_buffer);
+        d_selectionImage->render(geometry_buffer, select_area, clip_rect, true, ColourRect(0xFF002FFF)); // TODO Ident should this always be true?
     }
 
     // apply modulative colours if needed.
@@ -175,7 +178,9 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
         final_cols *= *mod_colours;
 
     // draw the image.
-    d_image->render(buffer, dest, clip_rect, final_cols);
+    CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
+    geometry_buffers.push_back(&geometry_buffer);
+    d_image->render(geometry_buffer, dest, clip_rect, true, final_cols); // TODO Ident should this always be true?
 }
 
 //----------------------------------------------------------------------------//

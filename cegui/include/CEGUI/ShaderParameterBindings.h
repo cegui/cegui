@@ -181,27 +181,62 @@ public:
 
     /*!
     \brief
-        Adds a shader parameter to the parameter map
+        Adds a shader parameter to the parameter bindings
 
     \param parameterName
-        The name of the parameter
+        The name of the parameter as used by the shader
         
     \param shaderParameter
-        The parameter itself
+        The pointer to the ShaderParameter
     */
-
     void setParameter(const std::string& parameterName, ShaderParameter* shaderParameter);
-
-    void setParameter(const std::string& parameterName, const glm::mat4& matrix);
-
-    void setParameter(const std::string& parameterName, const CEGUI::Texture* texture);
 
     /*!
     \brief
-        Sets the ShaderParameter in the map to 0, which means that the shader parameter will remain unchanged during rendering
+        Adds a matrix shader parameter to the parameter bindings
 
     \param parameterName
-        The name of the parameter
+        The name of the parameter as used by the shader
+        
+    \param matrix
+        The pointer to the matrix
+    */
+    void setParameter(const std::string& parameterName, const glm::mat4& matrix);
+
+    /*!
+    \brief
+        Adds a texture shader parameter to the parameter bindings
+
+    \param parameterName
+        The name of the parameter as used by the shader
+        
+    \param texture
+        The pointer to the CEGUI::Texture
+    */
+    void setParameter(const std::string& parameterName, const CEGUI::Texture* texture);
+
+
+
+        /*!
+    \brief
+        Adds a texture shader parameter to the parameter bindings
+
+    \param parameterName
+        The name of the parameter as used by the shader
+        
+    \return
+        The pointer to the required ShaderParameter. Will return 0 if a parameter
+        with the specified name was not set.
+    */
+    ShaderParameter* getParameter(const std::string& parameterName) const;
+    
+    /*!
+    \brief
+        Sets the ShaderParameter in the map to 0, which means that the shader parameter
+        will remain unchanged during rendering
+
+    \param parameterName
+        The name of the parameter as used by the shader
     */
     void removeParameter(const std::string& parameterName);
 

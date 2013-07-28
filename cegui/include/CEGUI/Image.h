@@ -33,6 +33,8 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/Rect.h"
 
+#include <vector>
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -171,6 +173,7 @@ public:
     virtual void render(GeometryBuffer& buffer,
                         const Rectf& dest_area,
                         const Rectf* clip_area,
+                        const bool clipping_enabled,
                         const ColourRect& colours) const = 0;
 
     virtual void notifyDisplaySizeChanged(const Sizef& size) = 0;
@@ -178,36 +181,47 @@ public:
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
                 const Vector2f& position,
-                const Rectf* clip_area = 0) const
+                const Rectf* clip_area = 0,
+                const bool clipping_enabled = false) const
     {
         const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rectf(position, getRenderedSize()), clip_area, colours);
+        render(buffer, Rectf(position, getRenderedSize()), clip_area, clipping_enabled, colours);
     }
 
     void render(GeometryBuffer& buffer,
                 const Vector2f& position,
                 const Rectf* clip_area,
+                const bool clipping_enabled,
                 const ColourRect& colours) const
     {
-        render(buffer, Rectf(position, getRenderedSize()), clip_area, colours);
+        render(buffer, Rectf(position, getRenderedSize()), clip_area, clipping_enabled, colours);
     }
 
     void render(GeometryBuffer& buffer,
                 const Vector2f& position,
                 const Sizef& size,
-                const Rectf* clip_area = 0) const
+                const Rectf* clip_area = 0,
+                const bool clipping_enabled = false) const
     {
         const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rectf(position, size), clip_area, colours);
+        render(buffer, Rectf(position, size), clip_area, clipping_enabled, colours);
     }
+
+    void render(std::vector<GeometryBuffer*>& geometryBuffers,
+                GeometryBuffer& buffer,
+                const Vector2f& position,
+                const Sizef& size,
+                const Rectf* clip_area = 0,
+                const bool clipping_enabled = false) const;
 
     void render(GeometryBuffer& buffer,
                 const Vector2f& position,
                 const Sizef& size,
                 const Rectf* clip_area,
+                const bool clipping_enabled,
                 const ColourRect& colours) const
     {
-        render(buffer, Rectf(position, size), clip_area, colours);
+        render(buffer, Rectf(position, size), clip_area, clipping_enabled, colours);
     }
 
     /*!
@@ -229,6 +243,9 @@ protected:
     void elementStartLocal(const String& element,
                            const XMLAttributes& attributes);
     void elementEndLocal(const String& element);
+
+    // The geometry buffer that contains the geometry needed for rendering.
+    CEGUI::GeometryBuffer*  d_geometryBuffer;
 };
 
 } // End of  CEGUI namespace section
