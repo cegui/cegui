@@ -114,7 +114,7 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     // GeometryBuffer used for drawing in this demo
     d_FPSGraphGeometry = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
     // Size and position have to be set
-    positionGeometryBuffer();
+    positionFPSGraphGeometry();
     updateFPSGraphGeometry();
 
 
@@ -134,10 +134,9 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
 /*************************************************************************
     Cleans up resources allocated in the initialiseSample call.
 *************************************************************************/
-void CustomShapesDrawing::positionGeometryBuffer()
+void CustomShapesDrawing::positionFPSGraphGeometry()
 {
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
-
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), renderer->getDisplaySize());
 
     d_FPSGraphGeometry->setClippingRegion(scrn);
@@ -165,6 +164,7 @@ bool CustomShapesDrawing::drawFPSGraphOverlay(const CEGUI::EventArgs& args)
 void CustomShapesDrawing::update(float timeSinceLastUpdate)
 {
     updateFPS(timeSinceLastUpdate);
+    positionFPSGraphGeometry();
 }
 
 void CustomShapesDrawing::updateFPS(const float elapsed)
@@ -223,8 +223,6 @@ void CustomShapesDrawing::updateFPSGraphGeometry()
     }
 
     drawLineStrip(linePositions, lineWidth, lineColour);
-
-
 }
 
 void CustomShapesDrawing::drawLineStrip(std::vector<CEGUI::Vector3<float>> &linePositions, const float lineWidth, const CEGUI::Colour lineColour)
@@ -240,7 +238,7 @@ void CustomShapesDrawing::drawLineStrip(std::vector<CEGUI::Vector3<float>> &line
         const float& x2 = currentPos.d_x;
         const float& y2 = currentPos.d_y;
 
-        //Todo: Scrap trigonometry and replace with 2D vector flipping
+        //Todo: Replace trigonometry  with 2D vector flipping calculations to save speed
         float angle = std::atan2(y2 - y1, x2 - x1);
         float xLineOffset = lineWidth / 2.0f * sin(angle);
         float yLineOffset = lineWidth / 2.0f * cos(angle);
