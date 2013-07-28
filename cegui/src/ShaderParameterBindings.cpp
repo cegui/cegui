@@ -47,6 +47,7 @@ ShaderParameterBindings::~ShaderParameterBindings()
     while (iter != end)
     {
         delete iter->second;
+        ++iter;
     }
 
     d_shaderParameterBindings.clear();
