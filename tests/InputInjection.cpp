@@ -235,9 +235,9 @@ BOOST_AUTO_TEST_CASE(SelectWordAndDelete)
 
     // select all text
     BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonDoubleClick(LeftButton), true);
-    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 3);
+    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
 
     BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Delete), true);
-    BOOST_REQUIRE_EQUAL(d_editbox->getText(), " rocks");
+    BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
 }
 BOOST_AUTO_TEST_SUITE_END()

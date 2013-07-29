@@ -605,7 +605,6 @@ protected:
     // Overridden event handlers
     void onMouseButtonDown(MouseEventArgs& e);
     void onMouseButtonUp(MouseEventArgs& e);
-    void onMouseDoubleClicked(MouseEventArgs& e);
     void onMouseTripleClicked(MouseEventArgs& e);
     void onPointerMove(PointerEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);

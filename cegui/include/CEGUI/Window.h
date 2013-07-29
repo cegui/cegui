@@ -396,12 +396,6 @@ public:
      * valid.
      */
     static const String EventMouseClick;
-    /** Event fired when a mouse button is double-clicked while the mouse cursor
-     * is within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseDoubleClick;
     /** Event fired when a key on the keyboard was pressed down while the window
      * had input focus.
      * Handlers are passed a const KeyEventArgs reference with
@@ -3084,17 +3078,7 @@ protected:
         MouseEventArgs object.  All fields are valid.
     */
     virtual void onMouseClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been double-clicked within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseDoubleClicked(MouseEventArgs& e);
-    
+        
     /*!
     \brief
         Handler called when a key as been depressed while this window has input

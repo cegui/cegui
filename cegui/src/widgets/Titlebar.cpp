@@ -186,29 +186,24 @@ void Titlebar::onMouseButtonUp(MouseEventArgs& e)
 
 }
 
-
-/*************************************************************************
-	Handler for mouse button double-click events
-*************************************************************************/
-void Titlebar::onMouseDoubleClicked(MouseEventArgs& e)
+void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
 {
-	// Base class processing
-	Window::onMouseDoubleClicked(e);
+    // Base class processing
+    Window::onSemanticInputEvent(e);
 
-	if (e.button == LeftButton)
-	{
-		// if we do not have a parent window, then obviously nothing should happen.
-		if (d_parent)
-		{
-			// we should only ever be attached to a FrameWindow (or derived) class
-			((FrameWindow*)d_parent)->toggleRollup();
-		}
+    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left)
+    {
 
-		++e.handled;
-	}
+        // if we do not have a parent window, then obviously nothing should happen.
+        if (d_parent)
+        {
+            // we should only ever be attached to a FrameWindow (or derived) class
+            ((FrameWindow*)d_parent)->toggleRollup();
+        }
 
+        ++e.handled;
+    }
 }
-
 
 /*************************************************************************
 	Handler for if the window loses capture of the mouse.
@@ -253,6 +248,5 @@ void Titlebar::addTitlebarProperties(void)
         &Titlebar::setDraggingEnabled, &Titlebar::isDraggingEnabled, true
     );
 }
-
 
 } // End of  CEGUI namespace section
