@@ -108,7 +108,6 @@ const String Window::EventMouseButtonDown("MouseButtonDown");
 const String Window::EventMouseButtonUp("MouseButtonUp");
 const String Window::EventMouseClick("MouseClick");
 const String Window::EventMouseDoubleClick("MouseDoubleClick");
-const String Window::EventMouseTripleClick("MouseTripleClick");
 const String Window::EventKeyDown("KeyDown");
 const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
@@ -2676,24 +2675,6 @@ void Window::onMouseDoubleClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseTripleClicked(MouseEventArgs& e)
-{
-    fireEvent(EventMouseTripleClick, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onMouseTripleClicked(e);
-
-        return;
-    }
-
-    ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
 void Window::onKeyDown(KeyEventArgs& e)
 {
     fireEvent(EventKeyDown, e, EventNamespace);
@@ -2739,6 +2720,21 @@ void Window::onCharacter(TextEventArgs& e)
         e.window = getParent();
         getParent()->onCharacter(e);
     }
+}
+
+//----------------------------------------------------------------------------//
+void Window::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    // optionally propagate to parent
+    if (!e.handled && d_parent && this != getGUIContext().getModalWindow())
+    {
+        e.window = getParent();
+        getParent()->onSemanticInputEvent(e);
+
+        return;
+    }
+
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

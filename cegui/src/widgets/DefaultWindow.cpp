@@ -99,14 +99,6 @@ void DefaultWindow::onMouseDoubleClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseTripleClicked(MouseEventArgs& e)
-{
-    // always call the base class handler
-    Window::onMouseTripleClicked(e);
-    updateMouseEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
 void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
@@ -133,6 +125,13 @@ bool DefaultWindow::moveToFront_impl(bool wasClicked)
         return false;
     else
         return took_action;
+}
+
+//----------------------------------------------------------------------------//
+void DefaultWindow::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    // always call the base class handler
+    Window::onSemanticInputEvent(e);
 }
 
 //----------------------------------------------------------------------------//

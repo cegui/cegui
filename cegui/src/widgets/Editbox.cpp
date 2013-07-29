@@ -501,22 +501,6 @@ void Editbox::onMouseDoubleClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseTripleClicked(MouseEventArgs& e)
-{
-    // base class processing
-    Window::onMouseTripleClicked(e);
-
-    if (e.button == LeftButton)
-    {
-        d_dragAnchorIdx = 0;
-        setCaretIndex(getText().length());
-        setSelection(d_dragAnchorIdx, d_caretPos);
-        ++e.handled;
-    }
-
-}
-
-//----------------------------------------------------------------------------//
 void Editbox::onPointerMove(PointerEventArgs& e)
 {
     // base class processing
@@ -979,6 +963,19 @@ size_t Editbox::getCaretIndex(void) const
 #endif
 
     return d_caretPos;
+}
+
+//----------------------------------------------------------------------------//
+void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (e.d_semanticValue == SV_SelectAll &&
+        e.d_payload.source == PS_Left)
+    {
+        d_dragAnchorIdx = 0;
+        setCaretIndex(getText().length());
+        setSelection(d_dragAnchorIdx, d_caretPos);
+        ++e.handled;
+    }
 }
 
 //----------------------------------------------------------------------------//
