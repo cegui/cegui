@@ -557,27 +557,6 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 
 }
 
-
-/*************************************************************************
-	Handler for when a mouse button is double-clicked
-*************************************************************************/
-void ListHeaderSegment::onMouseDoubleClicked(MouseEventArgs& e)
-{
-	// base class processing
-	Window::onMouseDoubleClicked(e);
-
-	// if double-clicked on splitter / sizing area
-	if ((e.button == LeftButton) && d_splitterHover)
-	{
-		WindowEventArgs args(this);
-		onSplitterDoubleClicked(args);
-
-		++e.handled;
-	}
-
-}
-
-
 /*************************************************************************
 	Handler for when mouse leaves the widget area (uncaptured)
 *************************************************************************/
@@ -592,6 +571,20 @@ void ListHeaderSegment::onMouseLeaves(MouseEventArgs& e)
 	invalidate();
 }
 
+void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    // base class processing
+    Window::onSemanticInputEvent(e);
+
+    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left &&
+        d_splitterHover)
+    {
+        WindowEventArgs args(this);
+        onSplitterDoubleClicked(args);
+
+        ++e.handled;
+    }
+}
 
 /*************************************************************************
 	Handler for when mouse input capture is lost

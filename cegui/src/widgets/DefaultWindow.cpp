@@ -91,14 +91,6 @@ void DefaultWindow::onMouseClicked(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseDoubleClicked(MouseEventArgs& e)
-{
-    // always call the base class handler
-    Window::onMouseDoubleClicked(e);
-    updateMouseEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
 void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled

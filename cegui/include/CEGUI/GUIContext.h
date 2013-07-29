@@ -277,7 +277,6 @@ public:
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
     bool injectMouseButtonClick(const MouseButton button);
-    bool injectMouseButtonDoubleClick(const MouseButton button);
 
     // public overrides
     void draw();

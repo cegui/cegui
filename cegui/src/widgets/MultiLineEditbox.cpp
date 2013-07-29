@@ -1201,28 +1201,6 @@ void MultiLineEditbox::onMouseButtonUp(MouseEventArgs& e)
 
 }
 
-
-/*************************************************************************
-	Handler for when mouse button is double-clicked
-*************************************************************************/
-void MultiLineEditbox::onMouseDoubleClicked(MouseEventArgs& e)
-{
-	// base class processing
-	Window::onMouseDoubleClicked(e);
-
-	if (e.button == LeftButton)
-	{
-        d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(), (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
-        d_caretPos      = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
-
-		// perform actual selection operation.
-		setSelection(d_dragAnchorIdx, d_caretPos);
-
-		++e.handled;
-	}
-
-}
-
 /*************************************************************************
 	Handler for when pointer moves in the window.
 *************************************************************************/
@@ -1726,6 +1704,17 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
     if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == PS_Left)
     {
         handleSelectAllText(e);
+    }
+    else if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left)
+    {
+        d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(), 
+            (d_caretPos == getText().length()) ? d_caretPos : d_caretPos + 1);
+        d_caretPos      = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
+
+        // perform actual selection operation.
+        setSelection(d_dragAnchorIdx, d_caretPos);
+
+        ++e.handled;
     }
 }
 

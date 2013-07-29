@@ -470,37 +470,6 @@ void Editbox::onMouseButtonUp(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseDoubleClicked(MouseEventArgs& e)
-{
-    // base class processing
-    Window::onMouseDoubleClicked(e);
-
-    if (e.button == LeftButton)
-    {
-        // if masked, set up to select all
-        if (isTextMasked())
-        {
-            d_dragAnchorIdx = 0;
-            setCaretIndex(getText().length());
-        }
-        // not masked, so select the word that was double-clicked.
-        else
-        {
-            d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
-                (d_caretPos == getText().length()) ? d_caretPos :
-                                                     d_caretPos + 1);
-            d_caretPos = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
-        }
-
-        // perform actual selection operation.
-        setSelection(d_dragAnchorIdx, d_caretPos);
-
-        ++e.handled;
-    }
-
-}
-
-//----------------------------------------------------------------------------//
 void Editbox::onPointerMove(PointerEventArgs& e)
 {
     // base class processing
@@ -974,6 +943,29 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
         d_dragAnchorIdx = 0;
         setCaretIndex(getText().length());
         setSelection(d_dragAnchorIdx, d_caretPos);
+        ++e.handled;
+    }
+    else if (e.d_semanticValue == SV_SelectWord && 
+        e.d_payload.source == PS_Left)
+    {
+        // if masked, set up to select all
+        if (isTextMasked())
+        {
+            d_dragAnchorIdx = 0;
+            setCaretIndex(getText().length());
+        }
+        // not masked, so select the word that was double-clicked.
+        else
+        {
+            d_dragAnchorIdx = TextUtils::getWordStartIdx(getText(),
+                (d_caretPos == getText().length()) ? d_caretPos :
+                d_caretPos + 1);
+            d_caretPos = TextUtils::getNextWordStartIdx(getText(), d_caretPos);
+        }
+
+        // perform actual selection operation.
+        setSelection(d_dragAnchorIdx, d_caretPos);
+
         ++e.handled;
     }
 }

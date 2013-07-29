@@ -107,7 +107,6 @@ const String Window::EventScroll("Scroll");
 const String Window::EventMouseButtonDown("MouseButtonDown");
 const String Window::EventMouseButtonUp("MouseButtonUp");
 const String Window::EventMouseClick("MouseClick");
-const String Window::EventMouseDoubleClick("MouseDoubleClick");
 const String Window::EventKeyDown("KeyDown");
 const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
@@ -2654,24 +2653,6 @@ void Window::onMouseClicked(MouseEventArgs& e)
     // other mouse button injectors
     if (!getGUIContext().isMouseClickEventGenerationEnabled())
         ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
-void Window::onMouseDoubleClicked(MouseEventArgs& e)
-{
-    fireEvent(EventMouseDoubleClick, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onMouseDoubleClicked(e);
-
-        return;
-    }
-
-    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

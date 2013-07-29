@@ -462,9 +462,9 @@ protected:
 	virtual void	onPointerMove(PointerEventArgs& e);
 	virtual void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
 	virtual void	onMouseLeaves(MouseEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
 
 	/*************************************************************************

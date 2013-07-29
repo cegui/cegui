@@ -721,10 +721,6 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
             case 1:
                 ma.window->onMouseButtonDown(ma);
                 break;
-
-            case 2:
-                ma.window->onMouseDoubleClicked(ma);
-                break;
             }
         }
         // click generation disabled, or current target window does not want
@@ -860,29 +856,6 @@ bool GUIContext::injectMouseButtonClick(const MouseButton button)
         ma.position = ma.window->getUnprojectedPosition(ma.position);
         // tell the window about the event.
         ma.window->onMouseClicked(ma);
-    }
-
-    return ma.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::injectMouseButtonDoubleClick(const MouseButton button)
-{
-    MouseEventArgs ma(0);
-    ma.position = d_mouseCursor.getPosition();
-    ma.window = getTargetWindow(ma.position, false);
-
-    if (ma.window && ma.window->wantsMultiClickEvents())
-    {
-        // initialise remainder of args struct.
-        ma.moveDelta = Vector2f(0.0f, 0.0f);
-        ma.button = button;
-        ma.sysKeys = d_systemKeys.get();
-        ma.wheelChange = 0;
-        // make mouse position sane for this target window
-        ma.position = ma.window->getUnprojectedPosition(ma.position);
-        // tell the window about the event.
-        ma.window->onMouseDoubleClicked(ma);
     }
 
     return ma.handled != 0;
