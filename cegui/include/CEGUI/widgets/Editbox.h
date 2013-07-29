@@ -613,6 +613,8 @@ protected:
     void onKeyDown(KeyEventArgs& e);
     void onTextChanged(WindowEventArgs& e);
 
+    void onSemanticInputEvent(SemanticEventArgs& e);
+
     //! True if the editbox is in read-only mode
     bool d_readOnly;
     //! True if the editbox text should be rendered masked.

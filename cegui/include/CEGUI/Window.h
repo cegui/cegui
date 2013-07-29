@@ -402,12 +402,6 @@ public:
      * valid.
      */
     static const String EventMouseDoubleClick;
-    /** Event fired when a mouse button is triple-clicked while the mouse cursor
-     * is within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseTripleClick;
     /** Event fired when a key on the keyboard was pressed down while the window
      * had input focus.
      * Handlers are passed a const KeyEventArgs reference with
@@ -3100,17 +3094,7 @@ protected:
         MouseEventArgs object.  All fields are valid.
     */
     virtual void onMouseDoubleClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been triple-clicked within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseTripleClicked(MouseEventArgs& e);
-
+    
     /*!
     \brief
         Handler called when a key as been depressed while this window has input
@@ -3147,6 +3131,15 @@ protected:
         point (encoded as utf32) for the character inputted.
     */
     virtual void onCharacter(TextEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when a semantic input event occurred
+
+    \param e
+        The semantic input event
+    */
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*!
     \brief

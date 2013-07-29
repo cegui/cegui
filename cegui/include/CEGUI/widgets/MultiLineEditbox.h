@@ -738,7 +738,6 @@ protected:
 	virtual	void	onMouseButtonDown(MouseEventArgs& e);
 	virtual void	onMouseButtonUp(MouseEventArgs& e);
 	virtual	void	onMouseDoubleClicked(MouseEventArgs& e);
-	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
 	virtual void	onPointerMove(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void onCharacter(TextEventArgs& e);
@@ -748,6 +747,7 @@ protected:
     virtual void onScroll(PointerEventArgs& e);
     virtual void onFontChanged(WindowEventArgs& e);
 
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Implementation data
@@ -778,6 +778,8 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addMultiLineEditboxProperties(void);
+
+    void handleSelectAllText(SemanticEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

@@ -260,6 +260,19 @@ public:
 
 /*!
 \brief
+    Event arguments used by semantic input event handlers
+*/
+class CEGUIEXPORT SemanticEventArgs : public WindowEventArgs
+{
+public:
+    SemanticEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
+
+    SemanticValue d_semanticValue;  //!< The type of the semantic value
+    SemanticPayload d_payload;      //!< The payload of the event
+};
+
+/*!
+\brief
 	WindowEventArgs class that is primarily used by lua scripts
 */
 class CEGUIEXPORT UpdateEventArgs : public WindowEventArgs

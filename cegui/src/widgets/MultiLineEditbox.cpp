@@ -1223,53 +1223,6 @@ void MultiLineEditbox::onMouseDoubleClicked(MouseEventArgs& e)
 
 }
 
-
-/*************************************************************************
-	Handler for when mouse button is triple-clicked.
-*************************************************************************/
-void MultiLineEditbox::onMouseTripleClicked(MouseEventArgs& e)
-{
-	// base class processing
-	Window::onMouseTripleClicked(e);
-
-	if (e.button == LeftButton)
-	{
-		size_t caretLine = getLineNumberFromIndex(d_caretPos);
-		size_t lineStart = d_lines[caretLine].d_startIdx;
-
-		// find end of last paragraph
-        String::size_type paraStart = getText().find_last_of(d_lineBreakChars, lineStart);
-
-		// if no previous paragraph, selection will start at the beginning.
-		if (paraStart == String::npos)
-		{
-			paraStart = 0;
-		}
-
-		// find end of this paragraph
-        String::size_type paraEnd = getText().find_first_of(d_lineBreakChars, lineStart);
-
-		// if paragraph has no end, which actually should never happen, fix the
-		// erroneous situation and select up to end at end of text.
-		if (paraEnd == String::npos)
-		{
-            String newText = getText();
-            newText.append(1, '\n');
-            setText(newText);
-
-            paraEnd = getText().length() - 1;
-		}
-
-		// set up selection using new values.
-		d_dragAnchorIdx = paraStart;
-		setCaretIndex(paraEnd);
-		setSelection(d_dragAnchorIdx, d_caretPos);
-		++e.handled;
-	}
-
-}
-
-
 /*************************************************************************
 	Handler for when pointer moves in the window.
 *************************************************************************/
@@ -1764,5 +1717,54 @@ bool MultiLineEditbox::handle_vertScrollbarVisibilityChanged(const EventArgs&)
     return true;
 }
 
+//----------------------------------------------------------------------------//
+void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    // base class processing
+    Window::onSemanticInputEvent(e);
+
+    if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == PS_Left)
+    {
+        handleSelectAllText(e);
+    }
+}
+
+void MultiLineEditbox::handleSelectAllText(SemanticEventArgs& e)
+{
+    size_t caretLine = getLineNumberFromIndex(d_caretPos);
+    size_t lineStart = d_lines[caretLine].d_startIdx;
+
+    // find end of last paragraph
+    String::size_type paraStart = getText().find_last_of(d_lineBreakChars, lineStart);
+
+    // if no previous paragraph, selection will start at the beginning.
+    if (paraStart == String::npos)
+    {
+        paraStart = 0;
+    }
+
+    // find end of this paragraph
+    String::size_type paraEnd = getText().find_first_of(d_lineBreakChars, lineStart);
+
+    // if paragraph has no end, which actually should never happen, fix the
+    // erroneous situation and select up to end at end of text.
+    if (paraEnd == String::npos)
+    {
+        String newText = getText();
+        newText.append(1, '\n');
+        setText(newText);
+
+        paraEnd = getText().length() - 1;
+    }
+
+    // set up selection using new values.
+    d_dragAnchorIdx = paraStart;
+    setCaretIndex(paraEnd);
+    setSelection(d_dragAnchorIdx, d_caretPos);
+    ++e.handled;
+}
+
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

@@ -210,11 +210,11 @@ BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
     // focus the editbox
     doClick(91.0f, 91.0f);
 
-    d_editbox->setText("WoW");
+    d_editbox->setText("WoW rocks");
 
     // select all text
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonTripleClick(LeftButton), true);
-    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 3);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonTripleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 9);
 
     BOOST_REQUIRE_EQUAL(getInputAggregator().injectCopyRequest(), true);
 
@@ -223,7 +223,21 @@ BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
 
     BOOST_REQUIRE_EQUAL(getInputAggregator().injectPasteRequest(), true);
 
-    BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoWWoW");
+    BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW rocksWoW rocks");
 }
 
+BOOST_AUTO_TEST_CASE(SelectWordAndDelete)
+{
+    // focus the editbox
+    doClick(92.0f, 92.0f);
+
+    d_editbox->setText("WoW rocks");
+
+    // select all text
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonDoubleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 3);
+
+    BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Delete), true);
+    BOOST_REQUIRE_EQUAL(d_editbox->getText(), " rocks");
+}
 BOOST_AUTO_TEST_SUITE_END()

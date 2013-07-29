@@ -713,6 +713,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
 
     if (ma.window)
     {
+        //TODO: move this into InputAggregator
         if (d_generateMouseClickEvents && ma.window->wantsMultiClickEvents())
         {
             switch (tkr.d_click_count)
@@ -723,10 +724,6 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
 
             case 2:
                 ma.window->onMouseDoubleClicked(ma);
-                break;
-
-            case 3:
-                ma.window->onMouseTripleClicked(ma);
                 break;
             }
         }
@@ -892,29 +889,6 @@ bool GUIContext::injectMouseButtonDoubleClick(const MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectMouseButtonTripleClick(const MouseButton button)
-{
-    MouseEventArgs ma(0);
-    ma.position = d_mouseCursor.getPosition();
-    ma.window = getTargetWindow(ma.position, false);
-
-    if (ma.window && ma.window->wantsMultiClickEvents())
-    {
-        // initialise remainder of args struct.
-        ma.moveDelta = Vector2f(0.0f, 0.0f);
-        ma.button = button;
-        ma.sysKeys = d_systemKeys.get();
-        ma.wheelChange = 0;
-        // make mouse position sane for this target window
-        ma.position = ma.window->getUnprojectedPosition(ma.position);
-        // tell the window about the event.
-        ma.window->onMouseTripleClicked(ma);
-    }
-
-    return ma.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::handleCopyRequest(const SemanticInputEvent& event)
 {
     Window* source = getKeyboardTargetWindow();
@@ -1043,7 +1017,14 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
         return (*(*itor).second)(event);
     }
 
-    return false;
+    SemanticEventArgs args(getTargetWindow(d_mouseCursor.getPosition(), false));
+    
+    args.d_payload = event.d_payload;
+    args.d_semanticValue = event.d_value;
+
+    args.window->onSemanticInputEvent(args);
+
+    return args.handled != 0;
 }
 
 //----------------------------------------------------------------------------//

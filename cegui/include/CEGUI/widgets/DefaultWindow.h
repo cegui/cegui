@@ -90,7 +90,8 @@ protected:
     void onMouseButtonUp(MouseEventArgs& e);
     void onMouseClicked(MouseEventArgs& e);
     void onMouseDoubleClicked(MouseEventArgs& e);
-    void onMouseTripleClicked(MouseEventArgs& e);   
+
+    void onSemanticInputEvent(SemanticEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

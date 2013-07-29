@@ -127,6 +127,17 @@ enum SemanticValue
 
 /*!
 \brief
+    The type of the payload used in the semantic input events
+*/
+union SemanticPayload
+{
+    float array[2];
+    float single;
+    PointerSource source;
+};
+
+/*!
+\brief
     Represents a semantic input event (e.g.: delete a previous character, confirm)
 */
 class CEGUIEXPORT SemanticInputEvent : public InputEvent
@@ -140,11 +151,7 @@ public:
     }
 
     SemanticValue d_value;            //!< The semantic value of this event
-    union {
-        float array[2];
-        float single;
-        PointerSource source;
-    } d_payload;                      //!< Extra data associated to this event
+    SemanticPayload d_payload;                      //!< Extra data associated to this event
 };
 
 } // End of  CEGUI namespace section
