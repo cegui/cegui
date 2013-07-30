@@ -207,16 +207,16 @@ TextureTarget* OpenGL3Renderer::createTextureTarget_impl()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::beginRendering()
 {
-    // do required set-up.  yes, it really is this minimal ;)
-    glEnable(GL_SCISSOR_TEST);
-    glEnable(GL_BLEND);
-
-    // force set blending ops to get to a known state.
-    setupRenderingBlendMode(BM_NORMAL, true);
-
     // if enabled, restores a subset of the GL state back to default values.
     if (d_initExtraStates)
         setupExtraStates();
+
+    // Setup initial states
+    d_openGLStateChanger->enable(GL_SCISSOR_TEST);
+    d_openGLStateChanger->enable(GL_BLEND);
+
+    // force set blending ops to get to a known state.
+    setupRenderingBlendMode(BM_NORMAL, true);
 
     d_openGLStateChanger->reset();
 }

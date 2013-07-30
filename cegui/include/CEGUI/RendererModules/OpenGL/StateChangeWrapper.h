@@ -105,6 +105,8 @@ public:
     void viewport(GLint x, GLint y, GLsizei width, GLsizei height);
     void scissor(GLint x, GLint y, GLsizei width, GLsizei height);
     void bindBuffer(GLenum target, GLuint buffer);
+    void enable(GLenum capability);
+    void disable(GLenum capability);
     /*
     \brief
         This function takes the number representing the texture position as integer, not the actual OpenGL value
@@ -125,8 +127,10 @@ protected:
     PortParams                  d_viewPortParams;
     PortParams                  d_scissorParams;
     BindBufferParams            d_bindBufferParams;
+    //! List of enabled/disabled OpenGL states
+    std::map<GLenum, bool>      d_enabledOpenGLStates;
     //! The active texture saved as integer and not as OpenGL enum
-    unsigned int                 d_activeTexturePosition;
+    unsigned int                d_activeTexturePosition;
     //! List of bound textures, the position in the vector defines the active texture it is bound to
     std::vector<BoundTexture>   d_boundTextures;
 };
