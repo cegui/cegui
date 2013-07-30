@@ -96,9 +96,9 @@ void OpenGL3GeometryBuffer::draw() const
             d_effect->performPreRenderFunctions(pass);
 
         if (d_clippingActive)
-            glEnable(GL_SCISSOR_TEST);
+            d_glStateChanger->enable(GL_SCISSOR_TEST);
         else
-            glDisable(GL_SCISSOR_TEST);
+            d_glStateChanger->disable(GL_SCISSOR_TEST);
 
         d_renderMaterial->prepareForRendering();
 

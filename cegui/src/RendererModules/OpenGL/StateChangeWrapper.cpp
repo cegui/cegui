@@ -164,6 +164,7 @@ void OpenGL3StateChangeWrapper::reset()
     d_bindBufferParams.reset();
     d_activeTexturePosition = -1;
     d_boundTextures.clear();
+    d_enabledOpenGLStates.clear();
 }
 
 void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
@@ -244,6 +245,42 @@ void OpenGL3StateChangeWrapper::bindTexture(GLenum target, GLuint texture)
     {
         glBindTexture(target, texture);
         boundTexture.bindTexture(target, texture);
+    }
+}
+
+void OpenGL3StateChangeWrapper::enable(GLenum capability)
+{
+    std::map<GLenum, bool>::iterator found_iterator = d_enabledOpenGLStates.find(capability);
+    if(found_iterator != d_enabledOpenGLStates.end())
+    {
+        if(found_iterator->second != true)
+        {
+            glEnable(capability);
+            found_iterator->second = true;
+        }
+    }
+    else
+    {
+        d_enabledOpenGLStates[capability] = true;
+        glEnable(capability);
+    }
+}
+
+void OpenGL3StateChangeWrapper::disable(GLenum capability)
+{
+    std::map<GLenum, bool>::iterator found_iterator = d_enabledOpenGLStates.find(capability);
+    if(found_iterator != d_enabledOpenGLStates.end())
+    {
+        if(found_iterator->second != false)
+        {
+            glEnable(capability);
+            found_iterator->second = false;
+        }
+    }
+    else
+    {
+        d_enabledOpenGLStates[capability] = false;
+        glEnable(capability);
     }
 }
 }
