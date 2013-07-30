@@ -31,8 +31,9 @@
 
 #include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
-#include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
+#include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/Exceptions.h"
 
 // Start of CEGUI namespace section
@@ -40,8 +41,9 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-OpenGL3ShaderWrapper::OpenGL3ShaderWrapper(OpenGL3Shader& shader)
+OpenGL3ShaderWrapper::OpenGL3ShaderWrapper(OpenGL3Shader& shader, OpenGL3StateChangeWrapper* stateChangeWrapper)
     : d_shader(shader)
+    , d_glStateChangeWrapper(stateChangeWrapper)
 {
 }
 
@@ -81,7 +83,7 @@ void OpenGL3ShaderWrapper::addAttributeVariable(const std::string& attributeName
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3ShaderWrapper::prepareForRendering(ShaderParameterBindings* shaderParameterBindings) const
+void OpenGL3ShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
 {
     d_shader.bind();
 
@@ -91,38 +93,68 @@ void OpenGL3ShaderWrapper::prepareForRendering(ShaderParameterBindings* shaderPa
 
     while(iter != end)
     {
+        const CEGUI::ShaderParameter* parameter = iter->second;
+
+        if(parameter->getType() != SPT_TEXTURE)
+        {
+            std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterStates.find(iter->first);
+            if(found_iterator != d_shaderParameterStates.end())
+            {
+                ShaderParameter* last_shader_parameter = found_iterator->second;
+                if(parameter->equal(last_shader_parameter))
+                {
+                    ++iter;
+                    continue;
+                }
+                else
+                {
+                    if(parameter->getType() == last_shader_parameter->getType())
+                        last_shader_parameter->takeOverParameterValue(parameter);
+                    else 
+                    {
+                        delete found_iterator->second;
+                        found_iterator->second = parameter->clone();
+                    }
+                }
+            }
+            else
+            {
+                d_shaderParameterStates[iter->first] = parameter->clone();
+            }
+        }
+
         const GLint& location = d_uniformVariables.find(iter->first)->second;
 
-        CEGUI::ShaderParameter* parameter = iter->second;
-        CEGUI::ShaderParamType parameter_type = iter->second->getType();
+
+        CEGUI::ShaderParamType parameter_type = parameter->getType();
 
         switch(parameter_type)
         {
         case SPT_INT:
             {
-                CEGUI::ShaderParameterInt* parameterInt = static_cast<CEGUI::ShaderParameterInt*>(parameter);
+                const CEGUI::ShaderParameterInt* parameterInt = static_cast<const CEGUI::ShaderParameterInt*>(parameter);
                 glUniform1i(location, parameterInt->d_parameterValue);
             }
             break;
         case SPT_FLOAT:
             {
-                CEGUI::ShaderParameterFloat* parameterFloat = static_cast<CEGUI::ShaderParameterFloat*>(parameter);
+                const CEGUI::ShaderParameterFloat* parameterFloat = static_cast<const CEGUI::ShaderParameterFloat*>(parameter);
                 glUniform1f(location, parameterFloat->d_parameterValue);
             }
             break;
         case SPT_MATRIX:
             {
-                CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<CEGUI::ShaderParameterMatrix*>(parameter);
+                const CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<const CEGUI::ShaderParameterMatrix*>(parameter);
                 glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(parameterMatrix->d_parameterValue));
             }
             break;
         case SPT_TEXTURE:
             {
-                CEGUI::ShaderParameterTexture* parameterTexture = static_cast<CEGUI::ShaderParameterTexture*>(parameter);
+                const CEGUI::ShaderParameterTexture* parameterTexture = static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
                 const CEGUI::OpenGLTexture* openglTexture = static_cast<const CEGUI::OpenGLTexture*>(parameterTexture->d_parameterValue);
                 
-                glActiveTexture(GL_TEXTURE0 + location);
-                glBindTexture(GL_TEXTURE_2D, openglTexture->getOpenGLTexture());
+                d_glStateChangeWrapper->activeTexture(location);
+                d_glStateChangeWrapper->bindTexture(GL_TEXTURE_2D, openglTexture->getOpenGLTexture());
             }
             break;
         default:

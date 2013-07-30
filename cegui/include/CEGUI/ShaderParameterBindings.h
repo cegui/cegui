@@ -68,7 +68,8 @@ enum ShaderParamType
 
 /*!
 \brief
-    The class 
+    The class is the abstract interface used for all shader parameters that
+    are added to the RenderMaterials.
 */  
 class ShaderParameter
 {
@@ -79,19 +80,52 @@ public:
     virtual ~ShaderParameter()
     {}
 
+    ShaderParameter(const ShaderParameter& other)
+    {}
+
     /*!
     \brief
-        Returns the type of the shader parameter
+        Returns the type of the shader parameter.
 
-    \return ShaderParamType
-        The type of the shader parameter
+    \return
+        The type of the shader parameter.
     */
     virtual ShaderParamType getType() const = 0;
+
+    /*!
+    \brief
+        Returns a copy of this ShaderParameter on the heap and returns the
+        pointer to it. The caller has to take care of memory deallocation.
+
+    \return
+        A pointer to the copy of this ShaderParameter.
+    */
+    virtual ShaderParameter* clone() const = 0;
+
+    /*!
+    \brief
+        Checks if the ShaderParameters are equal, depending on their type
+        and parameter.
+
+    \return
+        True if the ShaderParameters are equal.
+    */
+    virtual bool equal(const ShaderParameter* other_parameter) const = 0;
+
+    /*!
+    \brief
+        Copies the parameter value from the passed ShaderParameter to this
+        one if the classes are of the same type.
+    \param other_parameter
+        The ShaderParameter from which the parameter value should be taken over.
+    */
+    virtual void takeOverParameterValue(const ShaderParameter* other_parameter) = 0;
 };
 
 /*!
 \brief
-    The class 
+    The class implements the functionality of the 
+    ShaderParameter interface for float parameters.
 */  
 class ShaderParameterFloat : public ShaderParameter
 {
@@ -100,9 +134,13 @@ public:
     : d_parameterValue(parameterValue)
     {}
 
-    // Implementation of the ShaderParameter interface
+    //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
     { return SPT_FLOAT; }
+    virtual ShaderParameterFloat* clone() const
+    { return new ShaderParameterFloat(*this); }
+    bool equal(const ShaderParameter* other_parameter) const;
+    void takeOverParameterValue(const ShaderParameter* other_parameter);
 
     //! The float parameter value
     float d_parameterValue;
@@ -110,7 +148,8 @@ public:
 
 /*!
 \brief
-    The class 
+    The class implements the functionality of the 
+    ShaderParameter interface for int parameters.
 */  
 class ShaderParameterInt : public ShaderParameter
 {
@@ -119,9 +158,13 @@ public:
     : d_parameterValue(parameterValue)
     {}
 
-    // Implementation of the ShaderParameter interface
+    //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
     { return SPT_INT; }
+    virtual ShaderParameterInt* clone() const
+    { return new ShaderParameterInt(*this); }
+    bool equal(const ShaderParameter* other_parameter) const;
+    void takeOverParameterValue(const ShaderParameter* other_parameter);
 
     //! The float parameter value
     int d_parameterValue;
@@ -129,7 +172,8 @@ public:
 
 /*!
 \brief
-    The class 
+    The class implements the functionality of the 
+    ShaderParameter interface for Texture parameters.
 */  
 class ShaderParameterTexture : public ShaderParameter
 {
@@ -138,9 +182,13 @@ public:
         : d_parameterValue(parameterValue)
     {}
 
-    // Implementation of the ShaderParameter interface
+    //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
     { return SPT_TEXTURE; }
+    virtual ShaderParameterTexture* clone() const
+    { return new ShaderParameterTexture(*this); }
+    bool equal(const ShaderParameter* other_parameter) const;
+    void takeOverParameterValue(const ShaderParameter* other_parameter);
 
     //! The float parameter value
     const CEGUI::Texture* d_parameterValue;
@@ -148,7 +196,8 @@ public:
 
 /*!
 \brief
-    The class 
+    The class implements the functionality of the 
+    ShaderParameter interface for 4x4 matrix parameters.
 */  
 class ShaderParameterMatrix : public ShaderParameter
 {
@@ -157,9 +206,13 @@ public:
         : d_parameterValue(parameterValue)
     {}
 
-    // Implementation of the ShaderParameter interface
+    //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
     { return SPT_MATRIX; }
+    virtual ShaderParameterMatrix* clone() const
+    { return new ShaderParameterMatrix(*this); }
+    bool equal(const ShaderParameter* other_parameter) const;
+    void takeOverParameterValue(const ShaderParameter* other_parameter);
 
     //! The float parameter value
     glm::mat4 d_parameterValue;
@@ -178,71 +231,71 @@ public:
     ~ShaderParameterBindings();
 
 
-
-    /*!
-    \brief
-        Adds a shader parameter to the parameter bindings
-
-    \param parameterName
-        The name of the parameter as used by the shader
-        
-    \param shaderParameter
-        The pointer to the ShaderParameter
-    */
-    void setParameter(const std::string& parameterName, ShaderParameter* shaderParameter);
-
     /*!
     \brief
         Adds a matrix shader parameter to the parameter bindings
 
-    \param parameterName
+    \param parameter_name
         The name of the parameter as used by the shader
         
     \param matrix
         The pointer to the matrix
     */
-    void setParameter(const std::string& parameterName, const glm::mat4& matrix);
+    void setParameter(const std::string& parameter_name, const glm::mat4& matrix);
 
     /*!
     \brief
         Adds a texture shader parameter to the parameter bindings
 
-    \param parameterName
+    \param parameter_name
         The name of the parameter as used by the shader
         
     \param texture
         The pointer to the CEGUI::Texture
     */
-    void setParameter(const std::string& parameterName, const CEGUI::Texture* texture);
+    void setParameter(const std::string& parameter_name, const CEGUI::Texture* texture);
 
 
 
-        /*!
+    /*!
     \brief
-        Adds a texture shader parameter to the parameter bindings
+        Returns a pointer to the shader_parameter with the specified parameter name
 
-    \param parameterName
+    \param parameter_name
         The name of the parameter as used by the shader
         
     \return
-        The pointer to the required ShaderParameter. Will return 0 if a parameter
+        The pointer to the required shader_parameter. Will return 0 if a parameter
         with the specified name was not set.
     */
-    ShaderParameter* getParameter(const std::string& parameterName) const;
+    ShaderParameter* getParameter(const std::string& parameter_name);
     
     /*!
     \brief
-        Sets the ShaderParameter in the map to 0, which means that the shader parameter
+        Sets the shader_parameter in the map to 0, which means that the shader parameter
         will remain unchanged during rendering
 
-    \param parameterName
+    \param parameter_name
         The name of the parameter as used by the shader
     */
-    void removeParameter(const std::string& parameterName);
+    void removeParameter(const std::string& parameter_name);
 
-    const ShaderParameterBindingsMap& getShaderParameterBindings();
+    const ShaderParameterBindingsMap& getShaderParameterBindings() const;
 
 protected:
+    /*!
+    \brief
+        Adds a new shader parameter to the parameter bindings. If an old one exists it will be
+        deleted and replaced by the new one.
+
+    \param parameter_name
+        The name of the parameter as used by the shader
+        
+    \param shader_parameter
+        The pointer to the shader_parameter
+    */
+    void setNewParameter(const std::string& parameter_name, ShaderParameter* shader_parameter);
+
     //! Map of the names of the shader parameter and the respective shader parameter value
     ShaderParameterBindingsMap d_shaderParameterBindings;
 };
