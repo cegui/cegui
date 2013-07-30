@@ -201,9 +201,9 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     rp->setResourceGroupDirectory("lua_scripts", resourcePath);
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-    rp->setResourceGroupDirectory("schemas", resourcePath);   
+    rp->setResourceGroupDirectory("schemas", resourcePath);
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    rp->setResourceGroupDirectory("animations", resourcePath); 
+    rp->setResourceGroupDirectory("animations", resourcePath);
 }
 
 //----------------------------------------------------------------------------//
@@ -272,10 +272,10 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
         const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
         positionFPS(currentBuffer);
         currentBuffer->setClippingRegion(scrn);
-        currentBuffer->draw(); 
+        currentBuffer->draw();
     }
 
-    
+
 
     return true;
 }
@@ -294,7 +294,7 @@ bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
         positionFPS(currentBuffer);
         const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
         currentBuffer->setClippingRegion(scrn);
-        currentBuffer->draw(); 
+        currentBuffer->draw();
     }
 
     return true;
@@ -332,7 +332,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         // reset counter state
         d_FPSFrames = 0;
 
-        float modValue = 1.f; 
+        float modValue = 1.0f;
         d_FPSElapsed = std::modf(d_FPSElapsed, &modValue);
     }
 }
