@@ -123,7 +123,7 @@ public:
         Append the geometry data to the existing data
 
     \param vertex_data
-        Pointer to an array of floats containing the geometry data that 
+        Pointer to an array of floats containing the geometry data that
         should be added to the GeometryBuffer.
 
     \param array_size
@@ -131,7 +131,7 @@ public:
     */
     virtual void appendGeometry(const float* const vertex_data, uint array_size);
 
-    
+
     /*!
     \brief
         Append the geometry data to the existing data
@@ -215,7 +215,7 @@ public:
     */
     virtual uint getVertexCount() const = 0;
 
-    
+
     /*!
     \brief
         Returns the total number of floats used by the attributes of the
@@ -357,7 +357,7 @@ protected:
 
     //! Reference to the RenderMaterial used for this GeometryBuffer
     RefCounted<RenderMaterial> d_renderMaterial;
-    
+
     /*
     \brief
         A vector of the attributes of the vertices of this GeometryBuffer. The order
