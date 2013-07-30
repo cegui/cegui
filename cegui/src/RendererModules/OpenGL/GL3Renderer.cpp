@@ -356,7 +356,7 @@ RefCounted<RenderMaterial> OpenGL3Renderer::createRenderMaterial(const DefaultSh
 void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 {
     OpenGL3Shader* shader_standard_textured =  d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
-    d_shaderWrapperTextured = new OpenGL3ShaderWrapper(*shader_standard_textured);
+    d_shaderWrapperTextured = new OpenGL3ShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
 
     d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
 
@@ -371,7 +371,7 @@ void OpenGL3Renderer::initialiseStandardTexturedShaderWrapper()
 void OpenGL3Renderer::initialiseStandardSolidShaderWrapper()
 {
     OpenGL3Shader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
-    d_shaderWrapperSolid = new OpenGL3ShaderWrapper(*shader_standard_solid);
+    d_shaderWrapperSolid = new OpenGL3ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
 
     d_shaderWrapperSolid->addTextureUniformVariable("texture0", 0);
 
