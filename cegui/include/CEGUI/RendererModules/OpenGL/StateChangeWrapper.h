@@ -41,51 +41,61 @@
 namespace CEGUI
 {
 
-    /*!
-    \brief
-    OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
-    */
-    class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper :
-        public AllocatedObject<OpenGL3StateChangeWrapper>
+/*!
+\brief
+OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand
+*/
+class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper :
+    public AllocatedObject<OpenGL3StateChangeWrapper>
+{
+protected:
+    struct BlendFuncParams
     {
-    protected:
-        struct BlendFuncParams
-        {
-            BlendFuncParams();
-            void reset();
-            bool equal(GLenum sFactor, GLenum dFactor);
-            GLenum d_sFactor, d_dFactor;
-        };
-        struct BlendFuncSeperateParams
-        {
-            BlendFuncSeperateParams();
-            void reset();
-            bool equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
-            GLenum d_sfactorRGB, d_dfactorRGB, d_sfactorAlpha, d_dfactorAlpha;
-        };
-        struct PortParams
-        {
-            PortParams();
-            void reset();
-            bool equal(GLint x, GLint y, GLsizei width, GLsizei height);
-            GLint d_x, d_y;
-            GLsizei d_width, d_height;
-        };
-        struct BindBufferParams
-        {
-            BindBufferParams();
-            void reset();
-            bool equal(GLenum target, GLuint buffer);
-            GLenum d_target;
-            GLuint d_buffer;
-        };
+        BlendFuncParams();
+        void reset();
+        bool equal(GLenum sFactor, GLenum dFactor);
+        GLenum d_sFactor, d_dFactor;
+    };
+    struct BlendFuncSeperateParams
+    {
+        BlendFuncSeperateParams();
+        void reset();
+        bool equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
+        GLenum d_sfactorRGB, d_dfactorRGB, d_sfactorAlpha, d_dfactorAlpha;
+    };
+    struct PortParams
+    {
+        PortParams();
+        void reset();
+        bool equal(GLint x, GLint y, GLsizei width, GLsizei height);
+        GLint d_x, d_y;
+        GLsizei d_width, d_height;
+    };
+    struct BindBufferParams
+    {
+        BindBufferParams();
+        void reset();
+        bool equal(GLenum target, GLuint buffer);
+        GLenum d_target;
+        GLuint d_buffer;
+    };
+    struct BoundTexture
+    {
+        BoundTexture();
+        void bindTexture(GLenum target, GLuint texture);
+        GLenum d_target;
+        GLuint d_texture;
+    };
 
-    public:
+public:
     //! constructor.
     OpenGL3StateChangeWrapper(OpenGL3Renderer& owner);
     //! destructor
     virtual ~OpenGL3StateChangeWrapper();
 
+    
+    //! Due to unknown changes of states between each time CEGUI gets rendered, we will invalidate
+    //! all states on CPU-side so that the following calls will definitely change the states on GPU
     void reset();
 
     void bindVertexArray(GLuint vertexArray);
@@ -95,6 +105,17 @@ namespace CEGUI
     void viewport(GLint x, GLint y, GLsizei width, GLsizei height);
     void scissor(GLint x, GLint y, GLsizei width, GLsizei height);
     void bindBuffer(GLenum target, GLuint buffer);
+    /*
+    \brief
+        This function takes the number representing the texture position as integer, not the actual OpenGL value
+        for the position, such as GL_TEXTURE0, GL_TEXTURE1 etc. 
+        
+    \param texture_position
+        Variable representing the texture position as integer, it will be used in the following way to get the
+        OpenGL Texture position: (GL_TEXTURE0 + texture_position)
+    */
+    void activeTexture(unsigned int texture_position);
+    void bindTexture(GLenum target, GLuint texture);
 
 protected:
     GLuint                      d_vertexArrayObject;
@@ -104,6 +125,10 @@ protected:
     PortParams                  d_viewPortParams;
     PortParams                  d_scissorParams;
     BindBufferParams            d_bindBufferParams;
+    //! The active texture saved as integer and not as OpenGL enum
+    unsigned int                 d_activeTexturePosition;
+    //! List of bound textures, the position in the vector defines the active texture it is bound to
+    std::vector<BoundTexture>   d_boundTextures;
 };
 
 } // End of  CEGUI namespace section
