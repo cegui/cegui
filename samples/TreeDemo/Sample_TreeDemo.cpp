@@ -118,7 +118,7 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
    // set default mouse image
-   guiContext->getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
+   guiContext->getPointerIndicator().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )

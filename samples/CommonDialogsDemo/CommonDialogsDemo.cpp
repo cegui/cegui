@@ -56,7 +56,7 @@ bool CommonDialogsDemo::initialise(CEGUI::GUIContext* guiContext)
     // load resources and set up system defaults
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaCommonDialogs.scheme");
-    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // set up the root window / gui sheet
     WindowManager& winMgr = WindowManager::getSingleton();

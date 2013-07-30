@@ -84,7 +84,7 @@ void ToggleButton::onMouseButtonUp(MouseEventArgs& e)
             // was mouse released over this widget
             // (use mouse position, as e.position is already unprojected)
             if (this == sheet->getTargetChildAtPosition(
-                    getGUIContext().getMouseCursor().getPosition()))
+                    getGUIContext().getPointerIndicator().getPosition()))
             {
                 setSelected(getPostClickSelectState());
             }

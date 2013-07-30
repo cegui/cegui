@@ -58,7 +58,7 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
     // the ideal thing to have as a defult mouse cursor image.
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI

@@ -30,7 +30,7 @@
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
@@ -500,30 +500,30 @@ void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 	case SizingTop:
 	case SizingBottom:
 		getGUIContext().
-            getMouseCursor().setImage(d_nsSizingCursor);
+            getPointerIndicator().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
 		getGUIContext().
-            getMouseCursor().setImage(d_ewSizingCursor);
+            getPointerIndicator().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
 		getGUIContext().
-            getMouseCursor().setImage(d_nwseSizingCursor);
+            getPointerIndicator().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
 		getGUIContext().
-            getMouseCursor().setImage(d_neswSizingCursor);
+            getPointerIndicator().setImage(d_neswSizingCursor);
 		break;
 
 	default:
 		getGUIContext().
-            getMouseCursor().setImage(getMouseCursor());
+            getPointerIndicator().setImage(getMouseCursor());
 		break;
 	}
 

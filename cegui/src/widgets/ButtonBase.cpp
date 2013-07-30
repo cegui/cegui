@@ -28,7 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ButtonBase.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -126,7 +126,7 @@ void ButtonBase::setPushedState(const bool pushed)
 
     if (!pushed)
 	    updateInternalState(getUnprojectedPosition(
-            getGUIContext().getMouseCursor().getPosition()));
+            getGUIContext().getPointerIndicator().getPosition()));
     else
         d_hovering = true;
 

@@ -100,7 +100,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    d_guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_guiContext->setDefaultTooltipType("WindowsLook/Tooltip");

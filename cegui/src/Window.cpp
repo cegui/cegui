@@ -33,7 +33,7 @@
 #include "CEGUI/System.h"
 #include "CEGUI/FontManager.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowRendererManager.h"
 #include "CEGUI/WindowFactoryManager.h"
@@ -1247,7 +1247,7 @@ const Image* Window::getMouseCursor(bool useDefault) const
     if (d_mouseCursor)
         return d_mouseCursor;
     else
-        return useDefault ? getGUIContext().getMouseCursor().getDefaultImage() : 0;
+        return useDefault ? getGUIContext().getPointerIndicator().getDefaultImage() : 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1263,7 +1263,7 @@ void Window::setMouseCursor(const Image* image)
     d_mouseCursor = image;
 
     if (getGUIContext().getWindowContainingPointer() == this)
-        getGUIContext().getMouseCursor().setImage(image);
+        getGUIContext().getPointerIndicator().setImage(image);
 }
 
 //----------------------------------------------------------------------------//
@@ -1295,7 +1295,7 @@ void Window::generateAutoRepeatEvent(MouseButton button)
 {
     MouseEventArgs ma(this);
     ma.position = getUnprojectedPosition(
-        getGUIContext().getMouseCursor().getPosition());
+        getGUIContext().getPointerIndicator().getPosition());
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = getGUIContext().getSystemKeys().get();
@@ -2372,7 +2372,7 @@ void Window::onCaptureLost(WindowEventArgs& e)
     // (this is a bit of a hack that uses the injection of a semantic event to handle
     // this for us).
     SemanticInputEvent moveEvent(SV_PointerMove);
-    Vector2f cursorPosition = getGUIContext().getMouseCursor().getPosition();
+    Vector2f cursorPosition = getGUIContext().getPointerIndicator().getPosition();
     moveEvent.d_payload.array[0] = cursorPosition.d_x;
     moveEvent.d_payload.array[1] = cursorPosition.d_y;
     getGUIContext().injectInputEvent(moveEvent);
@@ -2496,7 +2496,7 @@ void Window::onMouseEnters(MouseEventArgs& e)
 {
     // set the mouse cursor
     getGUIContext().
-        getMouseCursor().setImage(getMouseCursor());
+        getPointerIndicator().setImage(getMouseCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();

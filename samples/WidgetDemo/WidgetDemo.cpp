@@ -87,7 +87,7 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     {
         logMessage += "MouseEvent";
     }
-    else if(dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
+    else if(dynamic_cast<const CEGUI::PointerIndicatorEventArgs*>(&args))
     {
         logMessage += "MouseCursorEvent";
     }
@@ -140,7 +140,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
-    d_guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    d_guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");

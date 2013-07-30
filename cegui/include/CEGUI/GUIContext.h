@@ -31,7 +31,7 @@
 #include "CEGUI/RenderingSurface.h"
 #include "CEGUI/InputEventReceiver.h"
 #include "CEGUI/SemanticInputEvent.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/SystemKeys.h"
 
 #include <map>
@@ -140,8 +140,8 @@ public:
     void markAsDirty();
     bool isDirty() const;
 
-    MouseCursor& getMouseCursor();
-    const MouseCursor& getMouseCursor() const;
+    PointerIndicator& getPointerIndicator();
+    const PointerIndicator& getPointerIndicator() const;
 
     void setMouseMoveScalingFactor(float factor);
     float getMouseMoveScalingFactor() const;
@@ -332,7 +332,7 @@ protected:
 
     Window* d_rootWindow;
     bool d_isDirty;
-    MouseCursor d_mouseCursor;
+    PointerIndicator d_pointerIndicator;
     //! Scaling factor applied to injected pointer move deltas.
     float d_pointerMovementScalingFactor;
     //! should mouse click/multi-click events be automatically generated.

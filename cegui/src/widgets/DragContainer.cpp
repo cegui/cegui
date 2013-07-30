@@ -125,7 +125,7 @@ namespace CEGUI
     const Image* DragContainer::getDragCursorImage(void) const
     {
         return d_dragCursorImage ? d_dragCursorImage :
-            getGUIContext().getMouseCursor().getDefaultImage();
+            getGUIContext().getPointerIndicator().getDefaultImage();
     }
 
     void DragContainer::setDragCursorImage(const Image* image)
@@ -239,7 +239,7 @@ namespace CEGUI
 
     void DragContainer::updateActiveMouseCursor(void) const
     {
-        getGUIContext().getMouseCursor().
+        getGUIContext().getPointerIndicator().
             setImage(d_dragging ? getDragCursorImage() : getMouseCursor());
     }
 
@@ -421,7 +421,7 @@ namespace CEGUI
             d_enabled = false;
             // find out which child of root window has the mouse in it
             Window* eventWindow = root->getTargetChildAtPosition(
-                getGUIContext().getMouseCursor().getPosition());
+                getGUIContext().getPointerIndicator().getPosition());
             d_enabled = wasEnabled;
 
             // use root itself if no child was hit
@@ -556,7 +556,7 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
 
             // get position of mouse as co-ordinates local to this window.
             const Vector2f localMousePos(CoordConverter::screenToWindow(*this,
-                getGUIContext().getMouseCursor().getPosition()));
+                getGUIContext().getPointerIndicator().getPosition()));
             doDragging(localMousePos);
 
             d_pickedUp = true;

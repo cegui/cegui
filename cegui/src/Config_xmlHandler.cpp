@@ -349,7 +349,7 @@ void Config_xmlHandler::initialiseDefaultFont() const
 void Config_xmlHandler::initialiseDefaultMouseCursor() const
 {
     if (!d_defaultMouseImage.empty())
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().
+        System::getSingleton().getDefaultGUIContext().getPointerIndicator().
             setDefaultImage(d_defaultMouseImage);
 }
 

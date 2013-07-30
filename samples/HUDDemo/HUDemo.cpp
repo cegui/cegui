@@ -226,7 +226,7 @@ void HUDDemo::setupMouseCursor()
 
 void HUDDemo::updateMouseCursor()
 {
-    CEGUI::Vector2f position = d_guiContext->getMouseCursor().getPosition();
+    CEGUI::Vector2f position = d_guiContext->getPointerIndicator().getPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height

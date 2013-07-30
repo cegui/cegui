@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -145,7 +145,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
                 // store old constraint area
                 d_oldCursorArea = getGUIContext().
-                    getMouseCursor().getConstraintArea();
+                    getPointerIndicator().getConstraintArea();
 
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rectf constrainArea;
@@ -160,7 +160,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 					constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
 				}
 
-                getGUIContext().getMouseCursor().
+                getGUIContext().getPointerIndicator().
                     setConstraintArea(&constrainArea);
 			}
 		}
@@ -218,7 +218,7 @@ void Titlebar::onCaptureLost(WindowEventArgs& e)
 
 	// restore old constraint area
 	getGUIContext().
-        getMouseCursor().setConstraintArea(&d_oldCursorArea);
+        getPointerIndicator().setConstraintArea(&d_oldCursorArea);
 }
 
 
