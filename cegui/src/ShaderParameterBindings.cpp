@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   ShaderParameterBindings.cpp
+    filename:   shader_parameterBindings.cpp
     created:    18th July 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -34,6 +34,70 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
+bool ShaderParameterFloat::equal(const ShaderParameter* other_parameter) const
+{
+    if (this->getType() == other_parameter->getType()) 
+        return (d_parameterValue == static_cast<const ShaderParameterFloat*>(other_parameter)->d_parameterValue);
+    else
+        return false;
+}
+
+//----------------------------------------------------------------------------//
+void ShaderParameterFloat::takeOverParameterValue(const ShaderParameter* other_parameter)
+{
+    if (getType() == other_parameter->getType()) 
+        d_parameterValue = static_cast<const ShaderParameterFloat*>(other_parameter)->d_parameterValue;
+}
+
+//----------------------------------------------------------------------------//
+bool ShaderParameterInt::equal(const ShaderParameter* other_parameter) const
+{
+    if (this->getType() == other_parameter->getType()) 
+        return (d_parameterValue == static_cast<const ShaderParameterInt*>(other_parameter)->d_parameterValue);
+    else
+        return false;
+}
+
+//----------------------------------------------------------------------------//
+void ShaderParameterInt::takeOverParameterValue(const ShaderParameter* other_parameter)
+{
+    if (getType() == other_parameter->getType()) 
+        d_parameterValue = static_cast<const ShaderParameterInt*>(other_parameter)->d_parameterValue;
+}
+
+//----------------------------------------------------------------------------//
+bool ShaderParameterTexture::equal(const ShaderParameter* other_parameter) const
+{
+    if (this->getType() == other_parameter->getType()) 
+        return (d_parameterValue == static_cast<const ShaderParameterTexture*>(other_parameter)->d_parameterValue);
+    else
+        return false;
+}
+
+//----------------------------------------------------------------------------//
+void ShaderParameterTexture::takeOverParameterValue(const ShaderParameter* other_parameter)
+{
+    if (getType() == other_parameter->getType()) 
+        d_parameterValue = static_cast<const ShaderParameterTexture*>(other_parameter)->d_parameterValue;
+}
+
+//----------------------------------------------------------------------------//
+bool ShaderParameterMatrix::equal(const ShaderParameter* other_parameter) const
+{
+    if (this->getType() == other_parameter->getType()) 
+        return (d_parameterValue == static_cast<const ShaderParameterMatrix*>(other_parameter)->d_parameterValue);
+    else
+        return false;
+}
+
+//----------------------------------------------------------------------------//
+void ShaderParameterMatrix::takeOverParameterValue(const ShaderParameter* other_parameter)
+{
+    if (getType() == other_parameter->getType()) 
+        d_parameterValue = static_cast<const ShaderParameterMatrix*>(other_parameter)->d_parameterValue;
+}
+
+//----------------------------------------------------------------------------//
 ShaderParameterBindings::ShaderParameterBindings()
 {
 }
@@ -54,9 +118,9 @@ ShaderParameterBindings::~ShaderParameterBindings()
 }
 
 //----------------------------------------------------------------------------//
-void ShaderParameterBindings::removeParameter(const std::string& parameterName)
+void ShaderParameterBindings::removeParameter(const std::string& parameter_name)
 {
-    ShaderParameterBindingsMap::iterator found_iterator = d_shaderParameterBindings.find(parameterName);
+    ShaderParameterBindingsMap::iterator found_iterator = d_shaderParameterBindings.find(parameter_name);
     if (found_iterator != d_shaderParameterBindings.end())
     {
         delete found_iterator->second;
@@ -65,39 +129,54 @@ void ShaderParameterBindings::removeParameter(const std::string& parameterName)
 }
 
 //----------------------------------------------------------------------------//
-void ShaderParameterBindings::setParameter(const std::string& parameterName, ShaderParameter* shaderParameter)
+void ShaderParameterBindings::setNewParameter(const std::string& parameter_name, ShaderParameter* shader_parameter)
 {
-    std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterBindings.find(parameterName);
-    if(found_iterator != d_shaderParameterBindings.end())
+    std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterBindings.find(parameter_name);
+    if (found_iterator != d_shaderParameterBindings.end())
     {
         delete found_iterator->second;
-        found_iterator->second = shaderParameter;
+        found_iterator->second = shader_parameter;
     }
     else
     {
-        std::pair<std::string, ShaderParameter*> shader_params_pair(parameterName, shaderParameter);
+        std::pair<std::string, ShaderParameter*> shader_params_pair(parameter_name, shader_parameter);
         d_shaderParameterBindings.insert(shader_params_pair);
     }
 }
 
 //----------------------------------------------------------------------------//
-void ShaderParameterBindings::setParameter(const std::string& parameterName, const glm::mat4& matrix)
+void ShaderParameterBindings::setParameter(const std::string& parameter_name, const glm::mat4& matrix)
 {
-    ShaderParameterMatrix* shaderParameterMatrix = new ShaderParameterMatrix(matrix);
-
-    setParameter(parameterName, shaderParameterMatrix);
+    ShaderParameter* shader_param = getParameter(parameter_name);
+    if (shader_param && ( shader_param->getType() == SPT_MATRIX ) )
+        static_cast<ShaderParameterMatrix*>(shader_param)->d_parameterValue = matrix;
+    else
+        setNewParameter(parameter_name, new ShaderParameterMatrix(matrix));
 }
 
 //----------------------------------------------------------------------------//
-void ShaderParameterBindings::setParameter(const std::string& parameterName, const CEGUI::Texture* texture)
+void ShaderParameterBindings::setParameter(const std::string& parameter_name, const CEGUI::Texture* texture)
 {
-    ShaderParameterTexture* shaderParameterTexture = new ShaderParameterTexture(texture);
-
-    setParameter(parameterName, shaderParameterTexture);
+    ShaderParameter* shader_param = getParameter(parameter_name);
+    if (shader_param && ( shader_param->getType() == SPT_TEXTURE ) )
+        static_cast<ShaderParameterTexture*>(shader_param)->d_parameterValue = texture;
+    else
+        setNewParameter(parameter_name, new ShaderParameterTexture(texture));
 }
 
 //----------------------------------------------------------------------------//
-const ShaderParameterBindings::ShaderParameterBindingsMap& ShaderParameterBindings::getShaderParameterBindings()
+ShaderParameter* ShaderParameterBindings::getParameter(const std::string& parameter_name)
+{
+    std::map<std::string, ShaderParameter*>::iterator found_iterator = d_shaderParameterBindings.find(parameter_name);
+    if (found_iterator != d_shaderParameterBindings.end())
+        return found_iterator->second;
+    else
+        return 0;
+}
+
+
+//----------------------------------------------------------------------------//
+const ShaderParameterBindings::ShaderParameterBindingsMap& ShaderParameterBindings::getShaderParameterBindings() const
 {
     return d_shaderParameterBindings;
 }
