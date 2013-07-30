@@ -390,8 +390,8 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     sampleContext->setRenderTarget(defaultRenderTarget);
 
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
-    sampleContext->getMouseCursor().setPosition(
-        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().
+    sampleContext->getPointerIndicator().setPosition(
+        CEGUI::System::getSingleton().getDefaultGUIContext().getPointerIndicator().
             getPosition());
 
     d_selectedSampleData = correspondingSampleData;
@@ -413,8 +413,8 @@ void SamplesFramework::stopDisplaySample()
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().
-        setPosition(sampleGUIContext->getMouseCursor().getPosition());
+    CEGUI::System::getSingleton().getDefaultGUIContext().getPointerIndicator().
+        setPosition(sampleGUIContext->getPointerIndicator().getPosition());
 
     d_selectedSampleData = 0;
     d_quittingSampleView = false;
@@ -570,7 +570,7 @@ bool SamplesFramework::updateInitialisationStep()
 //----------------------------------------------------------------------------//
 void SamplesFramework::initialisationFinalisation()
 {
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().
+    System::getSingleton().getDefaultGUIContext().getPointerIndicator().
         setDefaultImage("SampleBrowserSkin/MouseArrow");
     d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
 

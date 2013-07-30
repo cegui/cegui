@@ -82,7 +82,7 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 			// if mouse was released over this widget
             // (use position from mouse, as e.position has been unprojected)
 			if (this == sheet->getTargetChildAtPosition(
-                getGUIContext().getMouseCursor().getPosition()))
+                getGUIContext().getPointerIndicator().getPosition()))
 			{
 				// fire event
 				WindowEventArgs args(this);

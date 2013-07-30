@@ -34,7 +34,7 @@
 #include "CEGUI/widgets/Slider.h"
 #include "CEGUI/widgets/Thumb.h"
 
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"

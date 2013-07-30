@@ -126,7 +126,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
     // set default mouse image
-    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )

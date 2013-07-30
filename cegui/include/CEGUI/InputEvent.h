@@ -324,16 +324,16 @@ public:
 
 /*!
 \brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning mouse cursor events.
+    EventArgs based class that is used for objects passed to input event handlers
+    concerning pointer indicator events.
 */
-class CEGUIEXPORT MouseCursorEventArgs : public EventArgs
+class CEGUIEXPORT PointerIndicatorEventArgs : public EventArgs
 {
 public:
-	MouseCursorEventArgs(MouseCursor* cursor) : mouseCursor(cursor) {}
+    PointerIndicatorEventArgs(PointerIndicator* cursor) : d_pointerIndicator(cursor) {}
 
-	MouseCursor* mouseCursor;	//!< pointer to a MouseCursor object of relevance to the event.
-	const Image* image;			//!< pointer to an Image object of relevance to the event.
+    PointerIndicator* d_pointerIndicator;  //!< pointer to a PointerIndicator object of relevance to the event.
+    const Image* d_image;             //!< pointer to an Image object of relevance to the event.
 };
 
 

@@ -295,7 +295,7 @@ void GUIContext::drawContent()
 {
     RenderingSurface::drawContent();
 
-    d_mouseCursor.draw();
+    d_pointerIndicator.draw();
 }
 
 //----------------------------------------------------------------------------//
@@ -322,16 +322,16 @@ void GUIContext::renderWindowHierarchyToSurfaces()
 }
 
 //----------------------------------------------------------------------------//
-MouseCursor& GUIContext::getMouseCursor()
+PointerIndicator& GUIContext::getPointerIndicator()
 {
-    return const_cast<MouseCursor&>(
-        static_cast<const GUIContext*>(this)->getMouseCursor());
+    return const_cast<PointerIndicator&>(
+        static_cast<const GUIContext*>(this)->getPointerIndicator());
 }
 
 //----------------------------------------------------------------------------//
-const MouseCursor& GUIContext::getMouseCursor() const
+const PointerIndicator& GUIContext::getPointerIndicator() const
 {
-    return d_mouseCursor;
+    return d_pointerIndicator;
 }
 
 //----------------------------------------------------------------------------//
@@ -410,7 +410,7 @@ bool GUIContext::isMouseClickEventGenerationEnabled() const
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
-    d_mouseCursor.notifyDisplaySizeChanged(d_surfaceSize);
+    d_pointerIndicator.notifyDisplaySizeChanged(d_surfaceSize);
 
     if (d_rootWindow)
         updateRootWindowAreaRects();
@@ -490,7 +490,7 @@ void GUIContext::updateWindowContainingPointer()
 bool GUIContext::updateWindowContainingMouse_impl() const
 {
     MouseEventArgs ma(0);
-    const Vector2f mouse_pos(d_mouseCursor.getPosition());
+    const Vector2f mouse_pos(d_pointerIndicator.getPosition());
 
     Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
@@ -652,7 +652,7 @@ bool GUIContext::injectMouseLeaves(void)
 
     MouseEventArgs ma(0);
     ma.position = getWindowContainingPointer()->getUnprojectedPosition(
-        d_mouseCursor.getPosition());
+        d_pointerIndicator.getPosition());
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_systemKeys.get();
@@ -672,7 +672,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
     d_systemKeys.mouseButtonPressed(button);
 
     MouseEventArgs ma(0);
-    ma.position = d_mouseCursor.getPosition();
+    ma.position = d_pointerIndicator.getPosition();
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_systemKeys.get();
@@ -757,7 +757,7 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
     d_systemKeys.mouseButtonReleased(button);
 
     MouseEventArgs ma(0);
-    ma.position = d_mouseCursor.getPosition();
+    ma.position = d_pointerIndicator.getPosition();
     ma.moveDelta = Vector2f(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_systemKeys.get();
@@ -798,7 +798,7 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
         PointerEventArgs pa(ma.window);
         pa.moveDelta = ma.moveDelta;
         pa.pointerState = d_pointersState;
-        pa.position = d_mouseCursor.getPosition();
+        pa.position = d_pointerIndicator.getPosition();
         pa.scroll = 0;
         //TODO: Temporary hack while we convert the button up event
         pa.source = convertToPointerSource(button);
@@ -990,7 +990,7 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
         return (*(*itor).second)(event);
     }
 
-    SemanticEventArgs args(getTargetWindow(d_mouseCursor.getPosition(), false));
+    SemanticEventArgs args(getTargetWindow(d_pointerIndicator.getPosition(), false));
 
     args.d_payload = event.d_payload;
     args.d_semanticValue = event.d_value;
@@ -1027,7 +1027,7 @@ void GUIContext::initializeSemanticEventHandlers()
 bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
-    pa.position = d_mouseCursor.getPosition();
+    pa.position = d_pointerIndicator.getPosition();
     pa.moveDelta = Vector2f(0.0f, 0.0f);
     pa.source = event.d_payload.source;
     pa.scroll = 0;
@@ -1048,7 +1048,7 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
 bool GUIContext::handleScrollEvent(const SemanticInputEvent& event)
 {
     PointerEventArgs pa(0);
-    pa.position = d_mouseCursor.getPosition();
+    pa.position = d_pointerIndicator.getPosition();
     pa.moveDelta = Vector2f(0.0f, 0.0f);
     pa.source = PS_None;
     pa.scroll = event.d_payload.single;
@@ -1093,7 +1093,7 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
 
     // setup pointer movement event args object.
     PointerEventArgs pa(0);
-    pa.moveDelta = new_position - d_mouseCursor.getPosition();
+    pa.moveDelta = new_position - d_pointerIndicator.getPosition();
 
     // no movement means no event
     if ((pa.moveDelta.d_x == 0) && (pa.moveDelta.d_y == 0))
@@ -1104,9 +1104,9 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
     pa.pointerState = d_pointersState;
 
     // move pointer cursor to new position
-    d_mouseCursor.setPosition(new_position);
+    d_pointerIndicator.setPosition(new_position);
     // update position in args (since actual position may be constrained)
-    pa.position = d_mouseCursor.getPosition();
+    pa.position = d_pointerIndicator.getPosition();
 
     return handlePointerMove_impl(pa);
 }

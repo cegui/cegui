@@ -76,7 +76,7 @@
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/LinkedEvent.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/NamedElement.h"
 #include "CEGUI/Property.h"
 #include "CEGUI/PropertyHelper.h"

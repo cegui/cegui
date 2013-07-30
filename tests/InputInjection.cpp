@@ -43,7 +43,7 @@ struct InputInjectionFixture
     {
         System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
         Rectf constraint_area(0, 0, 100, 100);
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().setConstraintArea(&constraint_area);
+        System::getSingleton().getDefaultGUIContext().getPointerIndicator().setConstraintArea(&constraint_area);
 
         d_window = WindowManager::getSingleton().createWindow("DefaultWindow");
         d_window->setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)));

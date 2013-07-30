@@ -53,7 +53,7 @@ bool GameMenuDemo::initialise(CEGUI::GUIContext* guiContext)
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("GameMenu.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    d_guiContext->getMouseCursor().setDefaultImage("GameMenuImages/MouseCursor");
+    d_guiContext->getPointerIndicator().setDefaultImage("GameMenuImages/MouseCursor");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("Jura-13.font");

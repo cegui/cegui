@@ -28,7 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ListHeaderSegment.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/ImageManager.h"
 
@@ -327,8 +327,8 @@ void ListHeaderSegment::initDragMoving(void)
 		d_dragPosition.d_x = 0.0f;
 		d_dragPosition.d_y = 0.0f;
 
-		// setup new cursor
-		getGUIContext().getMouseCursor().setImage(d_movingMouseCursor);
+        // setup new indicator
+        getGUIContext().getPointerIndicator().setImage(d_movingMouseCursor);
 
 		// Trigger the event
 		WindowEventArgs args(this);
@@ -348,8 +348,8 @@ void ListHeaderSegment::initSizingHoverState(void)
 	{
 		d_splitterHover = true;
 
-		// change the mouse cursor.
-		getGUIContext().getMouseCursor().setImage(d_sizingMouseCursor);
+        // change the pointer indicator.
+        getGUIContext().getPointerIndicator().setImage(d_sizingMouseCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
 		invalidate();
@@ -374,7 +374,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-		getGUIContext().getMouseCursor().setImage(getMouseCursor());
+        getGUIContext().getPointerIndicator().setImage(getMouseCursor());
 		invalidate();
 	}
 
@@ -467,7 +467,7 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-			getGUIContext().getMouseCursor().setImage(getMouseCursor());
+            getGUIContext().getPointerIndicator().setImage(getMouseCursor());
 			invalidate();
 		}
 
@@ -544,8 +544,8 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-			getGUIContext().getMouseCursor().setImage(getMouseCursor());
-			
+            getGUIContext().getPointerIndicator().setImage(getMouseCursor());
+
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);
 		}
