@@ -53,7 +53,7 @@ public:
         The ShaderParameterBindings that will be applied
 
     */
-    virtual void prepareForRendering(ShaderParameterBindings* shaderParameterBindings) const = 0;
+    virtual void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings) = 0;
 };
 
 }

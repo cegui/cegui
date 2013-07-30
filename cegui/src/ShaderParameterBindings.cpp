@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   shader_parameterBindings.cpp
+    filename:   ShaderParameterBindings.cpp
     created:    18th July 2013
     author:     Lukas Meindl
 *************************************************************************/
