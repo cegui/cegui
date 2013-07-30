@@ -70,7 +70,7 @@ enum ShaderParamType
 \brief
     The class is the abstract interface used for all shader parameters that
     are added to the RenderMaterials.
-*/  
+*/
 class ShaderParameter
 {
 public:
@@ -124,9 +124,9 @@ public:
 
 /*!
 \brief
-    The class implements the functionality of the 
+    The class implements the functionality of the
     ShaderParameter interface for float parameters.
-*/  
+*/
 class ShaderParameterFloat : public ShaderParameter
 {
 public:
@@ -148,9 +148,9 @@ public:
 
 /*!
 \brief
-    The class implements the functionality of the 
+    The class implements the functionality of the
     ShaderParameter interface for int parameters.
-*/  
+*/
 class ShaderParameterInt : public ShaderParameter
 {
 public:
@@ -172,9 +172,9 @@ public:
 
 /*!
 \brief
-    The class implements the functionality of the 
+    The class implements the functionality of the
     ShaderParameter interface for Texture parameters.
-*/  
+*/
 class ShaderParameterTexture : public ShaderParameter
 {
 public:
@@ -196,9 +196,9 @@ public:
 
 /*!
 \brief
-    The class implements the functionality of the 
+    The class implements the functionality of the
     ShaderParameter interface for 4x4 matrix parameters.
-*/  
+*/
 class ShaderParameterMatrix : public ShaderParameter
 {
 public:
@@ -237,7 +237,7 @@ public:
 
     \param parameter_name
         The name of the parameter as used by the shader
-        
+
     \param matrix
         The pointer to the matrix
     */
@@ -249,7 +249,7 @@ public:
 
     \param parameter_name
         The name of the parameter as used by the shader
-        
+
     \param texture
         The pointer to the CEGUI::Texture
     */
@@ -263,13 +263,13 @@ public:
 
     \param parameter_name
         The name of the parameter as used by the shader
-        
+
     \return
         The pointer to the required shader_parameter. Will return 0 if a parameter
         with the specified name was not set.
     */
     ShaderParameter* getParameter(const std::string& parameter_name);
-    
+
     /*!
     \brief
         Sets the shader_parameter in the map to 0, which means that the shader parameter
@@ -290,7 +290,7 @@ protected:
 
     \param parameter_name
         The name of the parameter as used by the shader
-        
+
     \param shader_parameter
         The pointer to the shader_parameter
     */

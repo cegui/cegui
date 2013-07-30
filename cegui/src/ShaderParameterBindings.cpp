@@ -36,7 +36,7 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 bool ShaderParameterFloat::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType()) 
+    if (this->getType() == other_parameter->getType())
         return (d_parameterValue == static_cast<const ShaderParameterFloat*>(other_parameter)->d_parameterValue);
     else
         return false;
@@ -45,14 +45,14 @@ bool ShaderParameterFloat::equal(const ShaderParameter* other_parameter) const
 //----------------------------------------------------------------------------//
 void ShaderParameterFloat::takeOverParameterValue(const ShaderParameter* other_parameter)
 {
-    if (getType() == other_parameter->getType()) 
+    if (getType() == other_parameter->getType())
         d_parameterValue = static_cast<const ShaderParameterFloat*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
 bool ShaderParameterInt::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType()) 
+    if (this->getType() == other_parameter->getType())
         return (d_parameterValue == static_cast<const ShaderParameterInt*>(other_parameter)->d_parameterValue);
     else
         return false;
@@ -61,14 +61,14 @@ bool ShaderParameterInt::equal(const ShaderParameter* other_parameter) const
 //----------------------------------------------------------------------------//
 void ShaderParameterInt::takeOverParameterValue(const ShaderParameter* other_parameter)
 {
-    if (getType() == other_parameter->getType()) 
+    if (getType() == other_parameter->getType())
         d_parameterValue = static_cast<const ShaderParameterInt*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
 bool ShaderParameterTexture::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType()) 
+    if (this->getType() == other_parameter->getType())
         return (d_parameterValue == static_cast<const ShaderParameterTexture*>(other_parameter)->d_parameterValue);
     else
         return false;
@@ -77,14 +77,14 @@ bool ShaderParameterTexture::equal(const ShaderParameter* other_parameter) const
 //----------------------------------------------------------------------------//
 void ShaderParameterTexture::takeOverParameterValue(const ShaderParameter* other_parameter)
 {
-    if (getType() == other_parameter->getType()) 
+    if (getType() == other_parameter->getType())
         d_parameterValue = static_cast<const ShaderParameterTexture*>(other_parameter)->d_parameterValue;
 }
 
 //----------------------------------------------------------------------------//
 bool ShaderParameterMatrix::equal(const ShaderParameter* other_parameter) const
 {
-    if (this->getType() == other_parameter->getType()) 
+    if (this->getType() == other_parameter->getType())
         return (d_parameterValue == static_cast<const ShaderParameterMatrix*>(other_parameter)->d_parameterValue);
     else
         return false;
@@ -93,7 +93,7 @@ bool ShaderParameterMatrix::equal(const ShaderParameter* other_parameter) const
 //----------------------------------------------------------------------------//
 void ShaderParameterMatrix::takeOverParameterValue(const ShaderParameter* other_parameter)
 {
-    if (getType() == other_parameter->getType()) 
+    if (getType() == other_parameter->getType())
         d_parameterValue = static_cast<const ShaderParameterMatrix*>(other_parameter)->d_parameterValue;
 }
 

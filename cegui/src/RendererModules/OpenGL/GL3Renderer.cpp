@@ -188,7 +188,7 @@ OpenGL3Renderer::~OpenGL3Renderer()
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::initialiseRendererIDString()
 {
-    d_rendererID = 
+    d_rendererID =
         "CEGUI::OpenGL3Renderer - Official OpenGL 3.2 core based "
         "renderer module.";
 }

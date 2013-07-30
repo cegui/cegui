@@ -140,7 +140,7 @@ void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::finaliseVertexAttributes()
-{  
+{
     //We need to bind both of the following calls
     d_glStateChanger->bindVertexArray(d_verticesVAO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
