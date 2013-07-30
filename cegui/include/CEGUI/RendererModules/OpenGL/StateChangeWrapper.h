@@ -93,7 +93,7 @@ public:
     //! destructor
     virtual ~OpenGL3StateChangeWrapper();
 
-    
+
     //! Due to unknown changes of states between each time CEGUI gets rendered, we will invalidate
     //! all states on CPU-side so that the following calls will definitely change the states on GPU
     void reset();
@@ -110,8 +110,8 @@ public:
     /*
     \brief
         This function takes the number representing the texture position as integer, not the actual OpenGL value
-        for the position, such as GL_TEXTURE0, GL_TEXTURE1 etc. 
-        
+        for the position, such as GL_TEXTURE0, GL_TEXTURE1 etc.
+
     \param texture_position
         Variable representing the texture position as integer, it will be used in the following way to get the
         OpenGL Texture position: (GL_TEXTURE0 + texture_position)

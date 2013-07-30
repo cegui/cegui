@@ -28,7 +28,7 @@
 
 #include <GL/glew.h>
 
-#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"  
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 
 namespace CEGUI
 {
@@ -38,7 +38,7 @@ OpenGL3StateChangeWrapper::BlendFuncParams::BlendFuncParams()
     reset();
 }
 
-void OpenGL3StateChangeWrapper::BlendFuncParams::reset()    
+void OpenGL3StateChangeWrapper::BlendFuncParams::reset()
 {
     d_dFactor = -1;
     d_sFactor = -1;
@@ -55,12 +55,12 @@ bool OpenGL3StateChangeWrapper::BlendFuncParams::equal(GLenum sFactor, GLenum dF
     return equal;
 }
 
-OpenGL3StateChangeWrapper::BlendFuncSeperateParams::BlendFuncSeperateParams()   
+OpenGL3StateChangeWrapper::BlendFuncSeperateParams::BlendFuncSeperateParams()
 {
     reset();
 }
 
-void OpenGL3StateChangeWrapper::BlendFuncSeperateParams::reset()    
+void OpenGL3StateChangeWrapper::BlendFuncSeperateParams::reset()
 {
     d_sfactorRGB = -1;
     d_dfactorRGB = -1;
@@ -81,11 +81,11 @@ bool OpenGL3StateChangeWrapper::BlendFuncSeperateParams::equal(GLenum sfactorRGB
     return equal;
 }
 
-OpenGL3StateChangeWrapper::PortParams::PortParams() 
+OpenGL3StateChangeWrapper::PortParams::PortParams()
 {
     reset();
 }
-void OpenGL3StateChangeWrapper::PortParams::reset() 
+void OpenGL3StateChangeWrapper::PortParams::reset()
 {
     d_x = -1;
     d_y = -1;
@@ -110,7 +110,7 @@ OpenGL3StateChangeWrapper::BindBufferParams::BindBufferParams()
 {
     reset();
 }
-void OpenGL3StateChangeWrapper::BindBufferParams::reset()           
+void OpenGL3StateChangeWrapper::BindBufferParams::reset()
 {
     d_target = -1;
     d_buffer = -1;
@@ -184,7 +184,7 @@ void OpenGL3StateChangeWrapper::useProgram(GLuint program)
         glUseProgram(program);
         d_shaderProgram = program;
     }
-}   
+}
 
 void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 {

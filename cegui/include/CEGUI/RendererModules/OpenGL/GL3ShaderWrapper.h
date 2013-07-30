@@ -60,7 +60,7 @@ public:
     void addUniformVariable(const std::string& uniformName);
     void addTextureUniformVariable(const std::string& uniformName, GLint textureUnitIndex);
 
-    
+
     GLint getAttributeLocation(const std::string& attributeName);
     GLint getUniformLocation(const std::string& uniformName);
 

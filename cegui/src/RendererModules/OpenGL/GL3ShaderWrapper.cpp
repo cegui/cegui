@@ -110,7 +110,7 @@ void OpenGL3ShaderWrapper::prepareForRendering(const ShaderParameterBindings* sh
                 {
                     if(parameter->getType() == last_shader_parameter->getType())
                         last_shader_parameter->takeOverParameterValue(parameter);
-                    else 
+                    else
                     {
                         delete found_iterator->second;
                         found_iterator->second = parameter->clone();
@@ -152,7 +152,7 @@ void OpenGL3ShaderWrapper::prepareForRendering(const ShaderParameterBindings* sh
             {
                 const CEGUI::ShaderParameterTexture* parameterTexture = static_cast<const CEGUI::ShaderParameterTexture*>(parameter);
                 const CEGUI::OpenGLTexture* openglTexture = static_cast<const CEGUI::OpenGLTexture*>(parameterTexture->d_parameterValue);
-                
+
                 d_glStateChangeWrapper->activeTexture(location);
                 d_glStateChangeWrapper->bindTexture(GL_TEXTURE_2D, openglTexture->getOpenGLTexture());
             }
