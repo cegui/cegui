@@ -276,7 +276,6 @@ public:
     bool injectMouseButtonUp(MouseButton button);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
-    bool injectMouseButtonClick(const MouseButton button);
 
     // public overrides
     void draw();
@@ -329,6 +328,7 @@ protected:
     bool handleScrollEvent(const SemanticInputEvent& event);
     bool handlePointerMoveEvent(const SemanticInputEvent& event);
     bool handlePointerMove_impl(PointerEventArgs& pa);
+    bool handlePointerActivateEvent(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;

@@ -333,7 +333,7 @@ const MouseCursor& GUIContext::getMouseCursor() const
 {
     return d_mouseCursor;
 }
-    
+
 //----------------------------------------------------------------------------//
 void GUIContext::setMouseMoveScalingFactor(float factor)
 {
@@ -536,7 +536,7 @@ bool GUIContext::updateWindowContainingMouse_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const 
+Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const
 {
     if (!w2)
         return w2;
@@ -566,7 +566,7 @@ void GUIContext::notifyMouseTransition(Window* top, Window* bottom,
 {
     if (top == bottom)
         return;
-    
+
     Window* const parent = bottom->getParent();
 
     if (parent && parent != top)
@@ -737,6 +737,20 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
     return ma.handled != 0;
 }
 
+static PointerSource convertToPointerSource(MouseButton button)
+{
+    if (button == LeftButton)
+        return PS_Left;
+
+    if (button == RightButton)
+        return PS_Right;
+
+    if (button == MiddleButton)
+        return PS_Middle;
+
+    return PS_None;
+}
+
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMouseButtonUp(MouseButton button)
 {
@@ -780,7 +794,16 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
         (tkr.d_target_window == ma.window))
     {
         ma.handled = 0;
-        ma.window->onMouseClicked(ma);
+
+        PointerEventArgs pa(ma.window);
+        pa.moveDelta = ma.moveDelta;
+        pa.pointerState = d_pointersState;
+        pa.position = d_mouseCursor.getPosition();
+        pa.scroll = 0;
+        //TODO: Temporary hack while we convert the button up event
+        pa.source = convertToPointerSource(button);
+
+        pa.window->onPointerActivate(pa);
     }
 
     return (ma.handled + upHandled) != 0;
@@ -836,29 +859,6 @@ bool GUIContext::injectTimePulse(float timeElapsed)
     d_rootWindow->update(timeElapsed);
     // this input is then /always/ considered handled.
     return true;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::injectMouseButtonClick(const MouseButton button)
-{
-    MouseEventArgs ma(0);
-    ma.position = d_mouseCursor.getPosition();
-    ma.window = getTargetWindow(ma.position, false);
-
-    if (ma.window)
-    {
-        // initialise remainder of args struct.
-        ma.moveDelta = Vector2f(0.0f, 0.0f);
-        ma.button = button;
-        ma.sysKeys = d_systemKeys.get();
-        ma.wheelChange = 0;
-        // make mouse position sane for this target window
-        ma.position = ma.window->getUnprojectedPosition(ma.position);
-        // tell the window about the event.
-        ma.window->onMouseClicked(ma);
-    }
-
-    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -991,7 +991,7 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
     }
 
     SemanticEventArgs args(getTargetWindow(d_mouseCursor.getPosition(), false));
-    
+
     args.d_payload = event.d_payload;
     args.d_semanticValue = event.d_value;
 
@@ -1015,9 +1015,33 @@ void GUIContext::initializeSemanticEventHandlers()
     d_semanticEventHandlers.insert(std::make_pair(SV_VerticalScroll,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handleScrollEvent, this)));
+
+    d_semanticEventHandlers.insert(std::make_pair(SV_PointerActivate,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+        &GUIContext::handlePointerActivateEvent, this)));
     d_semanticEventHandlers.insert(std::make_pair(SV_PointerMove,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handlePointerMoveEvent, this)));
+}
+
+bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
+{
+    PointerEventArgs pa(0);
+    pa.position = d_mouseCursor.getPosition();
+    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.source = event.d_payload.source;
+    pa.scroll = 0;
+    pa.window = getTargetWindow(pa.position, false);
+    // make pointer position sane for this target window
+    if (pa.window)
+        pa.position = pa.window->getUnprojectedPosition(pa.position);
+
+    // if there is no target window, input can not be handled.
+    if (!pa.window)
+        return false;
+
+    pa.window->onPointerActivate(pa);
+    return pa.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -1064,7 +1088,7 @@ bool GUIContext::handlePointerMove_impl(PointerEventArgs& pa)
 //----------------------------------------------------------------------------//
 bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
 {
-    const Vector2f new_position(event.d_payload.array[0], 
+    const Vector2f new_position(event.d_payload.array[0],
         event.d_payload.array[1]);
 
     // setup pointer movement event args object.

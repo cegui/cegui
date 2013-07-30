@@ -611,10 +611,10 @@ void GameMenuDemo::setupWindows()
     d_botNaviCenter = d_root->getChild("BotNavigationContainer/NaviCenterContainer");
 
     d_loginAcceptButton = d_loginContainer->getChild("AcceptButton");
-    d_loginAcceptButton->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleLoginAcceptButtonClicked, this));
+    d_loginAcceptButton->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleLoginAcceptButtonClicked, this));
 
     d_startButtonClickArea = d_root->getChild("InnerPartContainer/InsideStartClickArea");   
-    d_startButtonClickArea->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleInnerPartStartClickAreaClick, this));
+    d_startButtonClickArea->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleInnerPartStartClickAreaClick, this));
 
     d_navigationTravelIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NavigationIcon");
     d_navigationSelectionIcon = d_root->getChild("BotNavigationContainer/NaviCenterContainer/NaviBotSelectionIcon");
@@ -814,15 +814,15 @@ void GameMenuDemo::resetAnimations()
 void GameMenuDemo::setupButtonClickHandlers()
 {
     CEGUI::Window* buttonSave = d_root->getChild("InnerButtonsContainer/ButtonSave");
-    buttonSave->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesSaveDisplay, this));
+    buttonSave->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesSaveDisplay, this));
     CEGUI::Window* buttonLoad = d_root->getChild("InnerButtonsContainer/ButtonLoad");
-    buttonLoad->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesLoadDisplay, this));
+    buttonLoad->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesLoadDisplay, this));
     CEGUI::Window* buttonCharacters = d_root->getChild("InnerButtonsContainer/ButtonCharacters");
-    buttonCharacters->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesCharactersDisplay, this));
+    buttonCharacters->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesCharactersDisplay, this));
     CEGUI::Window* buttonOptions = d_root->getChild("InnerButtonsContainer/ButtonOptions");
-    buttonOptions->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesOptionsDisplay, this));
+    buttonOptions->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesOptionsDisplay, this));
     CEGUI::Window* buttonQuit = d_root->getChild("InnerButtonsContainer/ButtonQuit");
-    buttonQuit->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesQuitDisplay, this));
+    buttonQuit->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&GameMenuDemo::handleStartPopupLinesQuitDisplay, this));
 }
 
 void GameMenuDemo::setupNaviArrowWindows()
