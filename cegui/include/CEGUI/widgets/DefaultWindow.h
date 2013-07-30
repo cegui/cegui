@@ -89,7 +89,6 @@ protected:
     void onMouseButtonDown(MouseEventArgs& e);
     void onMouseButtonUp(MouseEventArgs& e);
     void onMouseClicked(MouseEventArgs& e);
-    void onMouseDoubleClicked(MouseEventArgs& e);
 
     void onSemanticInputEvent(SemanticEventArgs& e);
 };
