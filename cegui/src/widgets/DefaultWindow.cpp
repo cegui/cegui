@@ -81,16 +81,6 @@ void DefaultWindow::onMouseButtonUp(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseClicked(MouseEventArgs& e)
-{
-    // always call the base class handler
-    Window::onMouseClicked(e);
-    // only adjust the handled state if event was directly injected
-    if (!getGUIContext().isMouseClickEventGenerationEnabled())
-        updateMouseEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
 void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled

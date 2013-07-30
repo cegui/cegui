@@ -63,7 +63,7 @@ struct InputInjectionFixture
         System::getSingleton().getDefaultGUIContext().setRootWindow(d_window);
 
         d_windowConnections.push_back(
-            d_window->subscribeEvent(Window::EventMouseClick,
+            d_window->subscribeEvent(Window::EventPointerActivate,
                 Event::Subscriber(&InputInjectionFixture::handleWindowEvent, this))
             );
         d_buttonConnections.push_back(
@@ -139,7 +139,7 @@ BOOST_FIXTURE_TEST_SUITE(InputInjection, InputInjectionFixture)
 BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 {
     // we check for both: a) being handled, b) have the expected final result
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonClick(LeftButton), true);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 1);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 0);
@@ -147,8 +147,8 @@ BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 
 BOOST_AUTO_TEST_CASE(MultipleClicksOnWindow)
 {
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonClick(LeftButton), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonClick(LeftButton), true);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 2);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 0);

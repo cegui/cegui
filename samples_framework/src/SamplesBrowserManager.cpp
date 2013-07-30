@@ -242,7 +242,7 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     sampleWindow->setMouseInputPropagationEnabled(true);
 
     sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SamplesBrowserManager::handleMouseMoveSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
     sampleWindow->subscribeEvent(Window::EventMouseLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));

@@ -106,7 +106,7 @@ const String Window::EventPointerMove("PointerMove");
 const String Window::EventScroll("Scroll");
 const String Window::EventMouseButtonDown("MouseButtonDown");
 const String Window::EventMouseButtonUp("MouseButtonUp");
-const String Window::EventMouseClick("MouseClick");
+const String Window::EventPointerActivate("PointerActivate");
 const String Window::EventKeyDown("KeyDown");
 const String Window::EventKeyUp("KeyUp");
 const String Window::EventCharacterKey("CharacterKey");
@@ -2635,16 +2635,16 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseClicked(MouseEventArgs& e)
+void Window::onPointerActivate(PointerEventArgs& e)
 {
-    fireEvent(EventMouseClick, e, EventNamespace);
+    fireEvent(EventPointerActivate, e, EventNamespace);
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onMouseClicked(e);
+        getParent()->onPointerActivate(e);
 
         return;
     }

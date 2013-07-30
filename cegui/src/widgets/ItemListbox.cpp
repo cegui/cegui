@@ -214,7 +214,7 @@ void ItemListbox::setMultiSelectEnabled(bool state)
 /************************************************************************
     Notify item clicked
 ************************************************************************/
-void ItemListbox::notifyItemClicked(ItemEntry* li)
+void ItemListbox::notifyItemActivated(ItemEntry* li)
 {
     bool sel_state = !(li->isSelected() && d_multiSelect);
     bool skip = false;

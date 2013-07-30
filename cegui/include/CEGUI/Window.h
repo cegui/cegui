@@ -395,7 +395,7 @@ public:
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseClick;
+    static const String EventPointerActivate;
     /** Event fired when a key on the keyboard was pressed down while the window
      * had input focus.
      * Handlers are passed a const KeyEventArgs reference with
@@ -3071,13 +3071,12 @@ protected:
 
     /*!
     \brief
-        Handler called when a mouse button has been clicked (that is depressed
-        and then released, within a specified time) within this window's area.
+        Handler called when the pointer is activated within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseClicked(MouseEventArgs& e);
+    virtual void onPointerActivate(PointerEventArgs& e);
         
     /*!
     \brief

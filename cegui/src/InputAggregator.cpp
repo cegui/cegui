@@ -107,7 +107,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
 }
 bool InputAggregator::injectMouseButtonUp(MouseButton button)
 {
-    if (d_inputReceiver == 0)
+    if (d_inputReceiver == 0) 
         return false;
 
     SemanticInputEvent semantic_event(SV_PointerActivate);
