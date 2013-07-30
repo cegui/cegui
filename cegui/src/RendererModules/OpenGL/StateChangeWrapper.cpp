@@ -47,7 +47,7 @@ void OpenGL3StateChangeWrapper::BlendFuncParams::reset()
 bool OpenGL3StateChangeWrapper::BlendFuncParams::equal(GLenum sFactor, GLenum dFactor)
 {
     bool equal = (d_sFactor == sFactor) && (d_dFactor == dFactor);
-    if(!equal)
+    if (!equal)
     {
         d_sFactor = sFactor;
         d_dFactor = dFactor;
@@ -71,7 +71,7 @@ void OpenGL3StateChangeWrapper::BlendFuncSeperateParams::reset()
 bool OpenGL3StateChangeWrapper::BlendFuncSeperateParams::equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
 {
     bool equal = (d_sfactorRGB == sfactorRGB) && (d_dfactorRGB == dfactorRGB) && (d_sfactorAlpha == sfactorAlpha) && (d_dfactorAlpha == dfactorAlpha);
-    if(!equal)
+    if (!equal)
     {
         d_sfactorRGB = sfactorRGB;
         d_dfactorRGB = dfactorRGB;
@@ -96,7 +96,7 @@ void OpenGL3StateChangeWrapper::PortParams::reset()
 bool OpenGL3StateChangeWrapper::PortParams::equal(GLint x, GLint y, GLsizei width, GLsizei height)
 {
     bool equal = (d_x == x) && (d_y == y) && (d_width == width) && (d_height == height);
-    if(!equal)
+    if (!equal)
     {
         d_x = x;
         d_y = y;
@@ -119,12 +119,24 @@ void OpenGL3StateChangeWrapper::BindBufferParams::reset()
 bool OpenGL3StateChangeWrapper::BindBufferParams::equal(GLenum target, GLuint buffer)
 {
     bool equal = (d_target == target) && (d_buffer == buffer);
-    if(!equal)
+    if (!equal)
     {
         d_target = target;
         d_buffer = buffer;
     }
     return equal;
+}
+
+OpenGL3StateChangeWrapper::BoundTexture::BoundTexture()
+{
+    d_target = -1;
+    d_texture = -1;
+}
+
+void OpenGL3StateChangeWrapper::BoundTexture::bindTexture(GLenum target, GLuint texture)
+{
+    d_target = target;
+    d_texture = texture;
 }
 
 
@@ -150,11 +162,13 @@ void OpenGL3StateChangeWrapper::reset()
     d_viewPortParams.reset();
     d_scissorParams.reset();
     d_bindBufferParams.reset();
+    d_activeTexturePosition = -1;
+    d_boundTextures.clear();
 }
 
 void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
 {
-    if(vertexArray != d_vertexArrayObject)
+    if (vertexArray != d_vertexArrayObject)
     {
         glBindVertexArray(vertexArray);
         d_vertexArrayObject = vertexArray;
@@ -164,7 +178,7 @@ void OpenGL3StateChangeWrapper::bindVertexArray(GLuint vertexArray)
 
 void OpenGL3StateChangeWrapper::useProgram(GLuint program)
 {
-    if(program != d_shaderProgram)
+    if (program != d_shaderProgram)
     {
         glUseProgram(program);
         d_shaderProgram = program;
@@ -174,7 +188,7 @@ void OpenGL3StateChangeWrapper::useProgram(GLuint program)
 void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 {
     bool callIsRedundant = d_blendFuncParams.equal(sfactor, dfactor);
-    if(!callIsRedundant)
+    if (!callIsRedundant)
     {
         glBlendFunc(sfactor, dfactor);
     }
@@ -183,7 +197,7 @@ void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 void OpenGL3StateChangeWrapper::blendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
 {
     bool callIsRedundant = d_blendFuncSeperateParams.equal(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
-    if(!callIsRedundant)
+    if (!callIsRedundant)
         glBlendFuncSeparate(sfactorRGB, dfactorRGB, sfactorAlpha, dfactorAlpha);
 }
 
@@ -197,15 +211,39 @@ void OpenGL3StateChangeWrapper::viewport(GLint x, GLint y, GLsizei width, GLsize
 void OpenGL3StateChangeWrapper::scissor(GLint x, GLint y, GLsizei width, GLsizei height)
 {
     bool callIsRedundant = d_scissorParams.equal(x, y, width, height);
-    if(!callIsRedundant)
+    if (!callIsRedundant)
         glScissor(x, y, width, height);
 }
+
 void OpenGL3StateChangeWrapper::bindBuffer(GLenum target, GLuint buffer)
 {
     bool callIsRedundant = d_bindBufferParams.equal(target, buffer);
-    if(!callIsRedundant)
+    if (!callIsRedundant)
         glBindBuffer(target, buffer);
 }
 
+void OpenGL3StateChangeWrapper::activeTexture(unsigned int texture_position)
+{
+    if (d_activeTexturePosition != texture_position)
+    {
+        glActiveTexture(GL_TEXTURE0 + texture_position);
+        d_activeTexturePosition = texture_position;
+    }
+}
 
+void OpenGL3StateChangeWrapper::bindTexture(GLenum target, GLuint texture)
+{
+    if (d_activeTexturePosition == -1)
+        return;
+
+    while (d_activeTexturePosition >= d_boundTextures.size())
+        d_boundTextures.push_back(BoundTexture());
+
+    BoundTexture& boundTexture = d_boundTextures[d_activeTexturePosition];
+    if (boundTexture.d_target != target || boundTexture.d_texture != texture)
+    {
+        glBindTexture(target, texture);
+        boundTexture.bindTexture(target, texture);
+    }
+}
 }
