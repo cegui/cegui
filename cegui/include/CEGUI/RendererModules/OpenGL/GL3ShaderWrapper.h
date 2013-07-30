@@ -56,10 +56,10 @@ public:
     //Implementation of ShaderWrapper interface
     void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
+
     void addAttributeVariable(const std::string& attributeName);
     void addUniformVariable(const std::string& uniformName);
     void addTextureUniformVariable(const std::string& uniformName, GLint textureUnitIndex);
-
 
     GLint getAttributeLocation(const std::string& attributeName);
     GLint getUniformLocation(const std::string& uniformName);

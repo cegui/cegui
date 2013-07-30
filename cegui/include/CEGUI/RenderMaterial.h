@@ -38,7 +38,8 @@ class ShaderParameterBindings;
 
 /*!
 \brief
-RenderMaterials are used for rendering GeometryBuffers using a shade
+    A RenderMaterial is used for rendering GeometryBuffers. It contains
+    a pointer to the used shader (ShaderWrapper) and owns shader parameters.
 */
 class CEGUIEXPORT RenderMaterial : public AllocatedObject<RenderMaterial>
 {
@@ -48,18 +49,25 @@ public:
 
     /*!
 	\brief
-		Return the ShaderParameterBindings of this Renderer
+		Return the ShaderParameterBindings of this Renderer.
 
 	\return
-		The pointer to the ShaderParameterBindings
+		The pointer to the ShaderParameterBindings.
 	*/
     ShaderParameterBindings* getShaderParamBindings() const;
 
+    /*!
+	\brief
+		Returns a pointer to the ShaderWrapper used for this Renderer.
+
+	\return
+		The pointer to the ShaderWrapper used for this Renderer.
+	*/
     ShaderWrapper* getShaderWrapper();
 
     /*!
 	\brief
-		Applies the shader parameter bindings to the shader of this material
+		Applies the shader parameter bindings to the shader of this material.
 	*/
     void prepareForRendering() const;
 
