@@ -32,9 +32,14 @@
 
 namespace CEGUI
 {
-    class ShaderParameterBindings;
+class ShaderParameterBindings;
 
-//! RenderMaterials are used for rendering GeometryBuffers using a shader
+/*!
+\brief
+    The ShaderWrapper is an abstract interface that is used in RenderMaterials
+    and has to be implemented by the specific Renderer. It updates all the
+    ShaderParameters set for a RenderMaterial before rendering.
+*/
 class CEGUIEXPORT ShaderWrapper
 {
 public:
