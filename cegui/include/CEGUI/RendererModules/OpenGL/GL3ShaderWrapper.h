@@ -43,21 +43,24 @@ namespace CEGUI
 {
     class OpenGL3Shader;
     class ShaderParameterBindings;
+    class OpenGL3StateChangeWrapper;
+    class ShaderParameter;
 
 class OPENGL_GUIRENDERER_API OpenGL3ShaderWrapper : public ShaderWrapper
 {
 public:
-    OpenGL3ShaderWrapper(OpenGL3Shader& shader);
+    OpenGL3ShaderWrapper(OpenGL3Shader& shader, OpenGL3StateChangeWrapper* stateChangeWrapper);
 
     ~OpenGL3ShaderWrapper();
 
     //Implementation of ShaderWrapper interface
-    void prepareForRendering(ShaderParameterBindings* shaderParameterBindings) const;
+    void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 
     void addAttributeVariable(const std::string& attributeName);
     void addUniformVariable(const std::string& uniformName);
     void addTextureUniformVariable(const std::string& uniformName, GLint textureUnitIndex);
 
+    
     GLint getAttributeLocation(const std::string& attributeName);
     GLint getUniformLocation(const std::string& uniformName);
 
@@ -68,6 +71,10 @@ protected:
     std::map<std::string, GLint> d_uniformVariables;
     //! A map of parameter names and the related attribute variable locations
     std::map<std::string, GLint> d_attributeVariables;
+    //! OpenGL state change wrapper
+    OpenGL3StateChangeWrapper* d_glStateChangeWrapper;
+    //! Last states of the set shader parameters
+    std::map<std::string, ShaderParameter*> d_shaderParameterStates;
 };
 
 
