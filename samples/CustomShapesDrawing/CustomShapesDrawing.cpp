@@ -62,42 +62,15 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
 {
     using namespace CEGUI;
 
-     d_usedFiles = CEGUI::String(__FILE__);
+    d_usedFiles = CEGUI::String(__FILE__);
 
-    // CEGUI relies on various systems being set-up, so this is what we do
-    // here first.
-    //
-    // The first thing to do is load a CEGUI 'scheme' this is basically a file
-    // that groups all the required resources and definitions for a particular
-    // skin so they can be loaded / initialised easily
-    //
-    // So, we use the SchemeManager singleton to load in a scheme that loads the
-    // imagery and registers widgets for the TaharezLook skin.  This scheme also
-    // loads in a font that gets used as the system default.
+    //CEGUI setup
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-
-    // The next thing we do is to set a default mouse cursor image.  This is
-    // not strictly essential, although it is nice to always have a visible
-    // cursor if a window or widget does not explicitly set one of its own.
-    //
-    // The TaharezLook Imageset contains an Image named "MouseArrow" which is
-    // the ideal thing to have as a defult mouse cursor image.
+    SchemeManager::getSingleton().createFromFile("Generic.scheme");
     guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
-
-    // Now the system is initialised, we can actually create some UI elements, for
-    // this first example, a full-screen 'root' window is set as the active GUI
-    // sheet, and then a simple frame window will be created and attached to it.
-
-    // All windows and widgets are created via the WindowManager singleton.
     WindowManager& winMgr = WindowManager::getSingleton();
 
-    // Here we create a "DefaultWindow".  This is a native type, that is, it does
-    // not have to be loaded via a scheme, it is always available.  One common use
-    // for the DefaultWindow is as a generic container for other windows.  Its
-    // size defaults to 1.0f x 1.0f using the Relative metrics mode, which means
-    // when it is set as the root GUI sheet window, it will cover the entire display.
-    // The DefaultWindow does not perform any rendering of its own, so is invisible.
-    //
+
     // Create a DefaultWindow called 'Root'.
     d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
 
@@ -123,8 +96,8 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
 
     // subscribe handler to render overlay items
     guiContext->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-            CEGUI::Event::Subscriber(&CustomShapesDrawing::drawFPSGraphOverlay,
-                                     this));
+        CEGUI::Event::Subscriber(&CustomShapesDrawing::drawFPSGraphOverlay,
+        this));
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.
