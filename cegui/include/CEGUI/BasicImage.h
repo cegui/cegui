@@ -50,21 +50,22 @@ public:
                const Rectf& tex_area, const Vector2f& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
-    void setTexture(Texture* texture);
-    void setArea(const Rectf& pixel_area);
-    void setOffset(const Vector2f& pixel_offset);
-    void setAutoScaled(const AutoScaledMode autoscaled);
-    void setNativeResolution(const Sizef& native_res);
-
     // Implement CEGUI::Image interface
-    const String& getName() const;
-    const Sizef& getRenderedSize() const;
-    const Vector2f& getRenderedOffset() const;
     void render(GeometryBuffer& buffer,
                 const Rectf& dest_area,
                 const Rectf* clip_area,
                 const bool clipping_enabled,
                 const ColourRect& colours) const;
+    void setArea(const Rectf& pixel_area);
+
+    /*!
+    \brief
+        Sets the Texture object of this Image.
+
+    \param texture
+        The pointer to the Texture of this Image.
+    */
+    void setTexture(Texture* texture);
 
     /*!
     \brief
@@ -75,36 +76,11 @@ public:
     */
     const Texture* getTexture() const;
 
-    //! Notifies the class that the display size of the renderer has changed so that
-    // the window can adapt to the new display size accordingly
-    void notifyDisplaySizeChanged(const Sizef& renderer_display_size);
-
 protected:
-    //! Updates the scaled size and offset values according to the new display size of the renderer 
-    void updateScaledSizeAndOffset(const Sizef& renderer_display_size);
-    //! Updates only the scaled size values according to the new display size of the renderer 
-    void updateScaledSize(const Sizef& renderer_display_size);
-    //! Updates only the scaled offset values according to the new display size of the renderer 
-    void updateScaledOffset(const Sizef& renderer_display_size);
-
-    //! name used when the BasicImage was created.
-    String d_name;
     //! Texture used by this image.
     Texture* d_texture;
-    //! Actual pixel size.
-    Sizef d_pixelSize;
     //! Rect defining texture co-ords for this image.
     Rectf d_area;
-    //! Defined pixel offset
-    Vector2f d_pixelOffset;
-    //! Whether image is auto-scaled or not and how.
-    AutoScaledMode d_autoScaled;
-    //! Native resolution used for autoscaling.
-    Sizef d_nativeResolution;
-    //! Size after having autoscaling applied.
-    Sizef d_scaledSize;
-    //! Offset after having autoscaling applied.
-    Vector2f d_scaledOffset;
 };
 
 } // End of  CEGUI namespace section

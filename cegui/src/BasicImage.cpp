@@ -52,36 +52,29 @@ const String ImageNativeVertResAttribute( "nativeVertRes" );
 
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name) :
-    d_name(name),
+    Image(name),
     d_texture(0),
-    d_pixelSize(0, 0),
-    d_area(0.0f, 0.0f, 0.0f, 0.0f),
-    d_pixelOffset(0.0f, 0.0f),
-    d_autoScaled(ASM_Disabled),
-    d_nativeResolution(640, 480),
-    d_scaledSize(0, 0),
-    d_scaledOffset(0, 0)
+    d_area(0.0f, 0.0f, 0.0f, 0.0f)
 {
 }
 
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const XMLAttributes& attributes) :
-    d_name(attributes.getValueAsString(ImageNameAttribute)),
+    Image(attributes.getValueAsString(ImageNameAttribute),
+          Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
+                   static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
+          Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
+                static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0)) ),
+          PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute)),
+          Sizef(static_cast<float>(attributes.getValueAsInteger(ImageNativeHorzResAttribute, 640)),
+                static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480)))  ),
     d_texture(&System::getSingleton().getRenderer()->getTexture(
               attributes.getValueAsString(ImageTextureAttribute))),
-    d_pixelSize(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
-                static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0))),
     d_area(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
                     static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
-           d_pixelSize),
-    d_pixelOffset(Vector2f(
-        static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
-        static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0)))),
-    d_nativeResolution(Sizef(
-        static_cast<float>(attributes.getValueAsInteger(ImageNativeHorzResAttribute, 640)),
-        static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480))))
+           d_pixelSize)
 {
-    d_autoScaled = PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute));
+
 
     // force initialisation of the autoscaling fields.
     notifyDisplaySizeChanged(
@@ -92,24 +85,17 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
 BasicImage::BasicImage(const String& name, Texture* texture,
                        const Rectf& pixel_area, const Vector2f& pixel_offset,
                        const AutoScaledMode autoscaled, const Sizef& native_res) :
-    d_name(name),
+    Image(name,
+          pixel_offset,
+          pixel_area.getSize(),
+          autoscaled,
+          native_res),
     d_texture(texture),
-    d_pixelSize(pixel_area.getSize()),
-    d_area(pixel_area),
-    d_pixelOffset(pixel_offset),
-    d_autoScaled(autoscaled),
-    d_nativeResolution(native_res)
-
+    d_area(pixel_area)
 {
     // force initialisation of the autoscaling fields.
     updateScaledSizeAndOffset(
         System::getSingleton().getRenderer()->getDisplaySize());
-}
-
-//----------------------------------------------------------------------------//
-void BasicImage::setTexture(Texture* texture)
-{
-    d_texture = texture;
 }
 
 //----------------------------------------------------------------------------//
@@ -125,61 +111,11 @@ void BasicImage::setArea(const Rectf& pixel_area)
         d_scaledSize = d_pixelSize;
 }
 
-//----------------------------------------------------------------------------//
-void BasicImage::setOffset(const Vector2f& pixel_offset)
-{
-    d_pixelOffset = pixel_offset;
-
-    if (d_autoScaled != ASM_Disabled)
-        updateScaledOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
-    else
-        d_scaledOffset = d_pixelOffset;
-}
 
 //----------------------------------------------------------------------------//
-void BasicImage::setAutoScaled(const AutoScaledMode autoscaled)
+void BasicImage::setTexture(Texture* texture)
 {
-    d_autoScaled = autoscaled;
-
-    if (d_autoScaled != ASM_Disabled)
-    {
-        updateScaledSizeAndOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
-    }
-    else
-    {
-        d_scaledSize = d_pixelSize;
-        d_scaledOffset = d_pixelOffset;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void BasicImage::setNativeResolution(const Sizef& native_res)
-{
-    d_nativeResolution = native_res;
-
-    if (d_autoScaled != ASM_Disabled)
-        updateScaledSizeAndOffset(
-            System::getSingleton().getRenderer()->getDisplaySize());
-}
-
-//----------------------------------------------------------------------------//
-const String& BasicImage::getName() const
-{
-    return d_name;
-}
-
-//----------------------------------------------------------------------------//
-const Sizef& BasicImage::getRenderedSize() const
-{
-    return d_scaledSize;
-}
-
-//----------------------------------------------------------------------------//
-const Vector2f& BasicImage::getRenderedOffset() const
-{
-    return d_scaledOffset;
+    d_texture = texture;
 }
 
 //----------------------------------------------------------------------------//
@@ -281,48 +217,7 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
     buffer.appendGeometry(vbuffer, 6);
 }
 
-//----------------------------------------------------------------------------//
-void BasicImage::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
-{
-    //If we use autoscaling of any sort we must update the scaled size and offset
-    if (d_autoScaled != ASM_Disabled)
-        updateScaledSizeAndOffset(renderer_display_size);
-}
 
-//----------------------------------------------------------------------------//
-
-void BasicImage::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
-{
-    Vector2f scaleFactors;
-
-    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
-
-    d_scaledSize = d_pixelSize * scaleFactors;
-    d_scaledOffset = d_pixelOffset * scaleFactors;
-}
-
-//----------------------------------------------------------------------------//
-void BasicImage::updateScaledSize(const Sizef& renderer_display_size)
-{
-    Vector2f scaleFactors;
-
-    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
-
-    d_scaledSize = d_pixelSize * scaleFactors;
-}
-
-//----------------------------------------------------------------------------//
-void BasicImage::updateScaledOffset(const Sizef& renderer_display_size)
-{
-    Vector2f scaleFactors;
-
-    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
-
-    d_scaledOffset = d_pixelOffset * scaleFactors;
-}
 
 
 //----------------------------------------------------------------------------//

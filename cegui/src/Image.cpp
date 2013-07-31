@@ -34,6 +34,34 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+Image::Image(const String& name) :
+    d_name(name),
+    d_pixelOffset(0.0f, 0.0f),
+    d_autoScaled(ASM_Disabled),
+    d_nativeResolution(640, 480),
+    d_scaledSize(0, 0),
+    d_scaledOffset(0, 0),
+    d_pixelSize(0, 0)
+{
+}
+
+//----------------------------------------------------------------------------//
+Image::Image(const String& name,
+             const Vector2f& pixel_offset,
+             const Sizef& pixel_size,
+             AutoScaledMode auto_scaled,
+             const Sizef& native_resolution
+             ) :
+    d_name(name),
+    d_pixelOffset(pixel_offset),
+    d_pixelSize(pixel_size),
+    d_autoScaled(auto_scaled),
+    d_nativeResolution(native_resolution),
+    d_scaledSize(0, 0)     
+{
+}
+    
 
 //----------------------------------------------------------------------------//
 Image::~Image()
@@ -98,6 +126,120 @@ void Image::elementEndLocal(const String& element)
 {
     if (element == "Image")
         d_completed = true;
+}
+
+//----------------------------------------------------------------------------//
+const String& Image::getName() const
+{
+    return d_name;
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& Image::getRenderedSize() const
+{
+    return d_scaledSize;
+}
+
+//----------------------------------------------------------------------------//
+const Vector2f& Image::getRenderedOffset() const
+{
+    return d_scaledOffset;
+}
+
+
+//----------------------------------------------------------------------------//
+void Image::setArea(const Rectf& pixel_area)
+{
+    d_pixelSize = pixel_area.getSize();
+
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSize(
+            System::getSingleton().getRenderer()->getDisplaySize());
+    else
+        d_scaledSize = d_pixelSize;
+}
+
+//----------------------------------------------------------------------------//
+void Image::setOffset(const Vector2f& pixel_offset)
+{
+    d_pixelOffset = pixel_offset;
+
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+    else
+        d_scaledOffset = d_pixelOffset;
+}
+
+//----------------------------------------------------------------------------//
+void Image::setAutoScaled(const AutoScaledMode autoscaled)
+{
+    d_autoScaled = autoscaled;
+
+    if (d_autoScaled != ASM_Disabled)
+    {
+        updateScaledSizeAndOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+    }
+    else
+    {
+        d_scaledSize = d_pixelSize;
+        d_scaledOffset = d_pixelOffset;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Image::setNativeResolution(const Sizef& native_res)
+{
+    d_nativeResolution = native_res;
+
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSizeAndOffset(
+            System::getSingleton().getRenderer()->getDisplaySize());
+}
+
+
+//----------------------------------------------------------------------------//
+void Image::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
+{
+    //If we use autoscaling of any sort we must update the scaled size and offset
+    if (d_autoScaled != ASM_Disabled)
+        updateScaledSizeAndOffset(renderer_display_size);
+}
+
+//----------------------------------------------------------------------------//
+
+void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
+{
+    Vector2f scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.d_x, scaleFactors.d_y);
+
+    d_scaledSize = d_pixelSize * scaleFactors;
+    d_scaledOffset = d_pixelOffset * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+void Image::updateScaledSize(const Sizef& renderer_display_size)
+{
+    Vector2f scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.d_x, scaleFactors.d_y);
+
+    d_scaledSize = d_pixelSize * scaleFactors;
+}
+
+//----------------------------------------------------------------------------//
+void Image::updateScaledOffset(const Sizef& renderer_display_size)
+{
+    Vector2f scaleFactors;
+
+    computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
+        scaleFactors.d_x, scaleFactors.d_y);
+
+    d_scaledOffset = d_pixelOffset * scaleFactors;
 }
 
 //----------------------------------------------------------------------------//

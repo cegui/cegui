@@ -35,6 +35,11 @@
 
 #include <vector>
 
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -163,20 +168,88 @@ class CEGUIEXPORT Image :
     public ChainedXMLHandler
 {
 public:
+    Image(const String& name);
+    Image(const String& name, const Vector2f& pixel_offset,
+          const Sizef& pixel_size, AutoScaledMode auto_scaled,
+          const Sizef& native_resolution);
+
     virtual ~Image();
 
-    virtual const String& getName() const = 0;
+    virtual const String& getName() const;
 
-    virtual const Sizef& getRenderedSize() const = 0;
-    virtual const Vector2f& getRenderedOffset() const = 0;
+    virtual const Sizef& getRenderedSize() const;
+    virtual const Vector2f& getRenderedOffset() const;
 
+    /*!
+    \brief
+        Creates a GeometryBuffer from the Image, providing the data
+        needed for rendering.
+
+    \param buffer
+        The GeometryBuffer the geometry for this Image should be added to.
+    \param dest_area
+        The destination area for the Image.
+    \param clip_area
+        The clipping area of the Image.
+    \param clipping_enabled
+        True of clipping should be enabled for the geometry of this Image.
+    \param colours
+        The colour rectangle for this Image that can modulate the rendered
+        image.
+     */
     virtual void render(GeometryBuffer& buffer,
                         const Rectf& dest_area,
                         const Rectf* clip_area,
                         const bool clipping_enabled,
                         const ColourRect& colours) const = 0;
 
-    virtual void notifyDisplaySizeChanged(const Sizef& size) = 0;
+    /*!
+    \brief
+        Notifies the class that the display size of the renderer has changed so that
+        the window can adapt to the new display size accordingly.
+
+    \param size
+        The new display size.
+     */
+    virtual void notifyDisplaySizeChanged(const Sizef& renderer_display_size);
+
+    /*!
+    \brief
+        Sets the pixel area of the Image.
+
+    \param pixel_area
+        The new pixel area.
+     */
+    virtual void setArea(const Rectf& pixel_area);
+
+    /*!
+    \brief
+        Sets the pixel offset of this Image.
+
+    \param pixel_offset
+        The pixel offset of this Image.
+    */
+    virtual void setOffset(const Vector2f& pixel_offset);
+
+    
+    /*!
+    \brief
+        Sets the autoscale mode of this Image.
+
+    \param autoscaled
+        The  autoscale mode of this Image.
+    */
+    virtual void setAutoScaled(const AutoScaledMode autoscaled);
+
+    /*!
+    \brief
+        Sets the autoscale native resolution of this Image.
+
+    \param autoscaled
+        The  autoscale native resolution of this Image.
+    */
+    virtual void setNativeResolution(const Sizef& native_res);
+
 
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
@@ -244,11 +317,35 @@ protected:
                            const XMLAttributes& attributes);
     void elementEndLocal(const String& element);
 
-    // The geometry buffer that contains the geometry needed for rendering.
-    CEGUI::GeometryBuffer*  d_geometryBuffer;
+    //! Updates the scaled size and offset values according to the new display size of the renderer 
+    void updateScaledSizeAndOffset(const Sizef& renderer_display_size);
+    //! Updates only the scaled size values according to the new display size of the renderer 
+    void updateScaledSize(const Sizef& renderer_display_size);
+    //! Updates only the scaled offset values according to the new display size of the renderer 
+    void updateScaledOffset(const Sizef& renderer_display_size);
+
+    //! Name used for the Image as defined during creation.
+    String d_name;
+    //! The pixel offset of the Image.
+    Vector2f d_pixelOffset;
+    //! Whether image is auto-scaled or not and how.
+    AutoScaledMode d_autoScaled;
+    //! Native resolution used for autoscaling.
+    Sizef d_nativeResolution;
+    //! Size after having autoscaling applied.
+    Sizef d_scaledSize;
+    //! Offset after having autoscaling applied.
+    Vector2f d_scaledOffset;
+    //! Actual pixel size.
+    Sizef d_pixelSize;
 };
 
 } // End of  CEGUI namespace section
+
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIImage_h_
 
