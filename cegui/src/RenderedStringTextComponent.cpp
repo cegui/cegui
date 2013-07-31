@@ -221,7 +221,7 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
 
         CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
         geometry_buffers.push_back(&geometry_buffer);
-        d_selectionImage->render(geometry_buffer, sel_rect, clip_rect, true, ColourRect(0xFF002FFF)); // TODO Ident should this always be true?
+        d_selectionImage->render(geometry_buffer, sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
     }
 
     std::map<const CEGUI::Texture*, GeometryBuffer*> geomBuffersMap;
