@@ -169,7 +169,7 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
         const Rectf select_area(position, getPixelSize(ref_wnd));
         CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
         geometry_buffers.push_back(&geometry_buffer);
-        d_selectionImage->render(geometry_buffer, select_area, clip_rect, true, ColourRect(0xFF002FFF)); // TODO Ident should this always be true?
+        d_selectionImage->render(geometry_buffer, select_area, clip_rect, true, ColourRect(0xFF002FFF));
     }
 
     // apply modulative colours if needed.
@@ -180,7 +180,7 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     // draw the image.
     CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
     geometry_buffers.push_back(&geometry_buffer);
-    d_image->render(geometry_buffer, dest, clip_rect, true, final_cols); // TODO Ident should this always be true?
+    d_image->render(geometry_buffer, dest, clip_rect, true, final_cols);
 }
 
 //----------------------------------------------------------------------------//

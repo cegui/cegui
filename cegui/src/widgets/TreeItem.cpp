@@ -293,7 +293,7 @@ void TreeItem::draw(std::vector<GeometryBuffer*>& geometryBuffers, const Rectf& 
 
         CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
         geometryBuffers.push_back(&geometryBuffer);
-        d_iconImage->render(geometryBuffer, finalPos, clipper, true,  // TODO Ident should this always be true?
+        d_iconImage->render(geometryBuffer, finalPos, clipper, true,
                           ColourRect(Colour(1,1,1,alpha)));
         finalRect.d_min.d_x += targetRect.getHeight();
     }
@@ -302,7 +302,7 @@ void TreeItem::draw(std::vector<GeometryBuffer*>& geometryBuffers, const Rectf& 
     {
         CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
         geometryBuffers.push_back(&geometryBuffer);
-        d_selectBrush->render(geometryBuffer, finalRect, clipper, true,  // TODO Ident should this always be true?
+        d_selectBrush->render(geometryBuffer, finalRect, clipper, true,
                             getModulateAlphaColourRect(d_selectCols, alpha));
     }
 
