@@ -40,7 +40,7 @@ class ShaderParameterBindings;
     and has to be implemented by the specific Renderer. It updates all the
     ShaderParameters set for a RenderMaterial before rendering.
 */
-class CEGUIEXPORT ShaderWrapper
+class CEGUIEXPORT ShaderWrapper : public AllocatedObject<ShaderWrapper>
 {
 public:
     ShaderWrapper()
