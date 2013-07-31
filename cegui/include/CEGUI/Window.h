@@ -3698,8 +3698,10 @@ protected:
     //! true when mouse is contained within this Window's area.
     bool d_containsMouse;
 
-    //! TODO IDENT Check if this is the only and best way to do this
+    //! The translation which was set for this window.
     CEGUI::Vector3f d_translation;
+
+    //! The clipping region which was set for this window.
     CEGUI::Rectf d_clippingRegion;
 
 private:
