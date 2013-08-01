@@ -384,15 +384,8 @@ public:
      * valid.
      */
     static const String EventMouseButtonDown;
-    /** Event fired when a mouse button is released within the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseButtonUp;
-    /** Event fired when a mouse button is clicked - that is, pressed down and
-     * released within a specific time interval - while the mouse cursor is
-     * within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when the pointer is activated within the Window.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
     static const String EventPointerActivate;
@@ -3031,16 +3024,6 @@ protected:
         MouseEventArgs object.  All fields are valid.
     */
     virtual void onMouseButtonDown(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been released within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseButtonUp(MouseEventArgs& e);
 
     /*!
     \brief

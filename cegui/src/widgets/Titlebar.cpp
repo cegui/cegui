@@ -171,19 +171,18 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button release events
+    Handler for pointer activation events
 *************************************************************************/
-void Titlebar::onMouseButtonUp(MouseEventArgs& e)
+void Titlebar::onPointerActivate(PointerEventArgs& e)
 {
 	// Base class processing
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
 void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)

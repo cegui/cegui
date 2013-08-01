@@ -73,11 +73,11 @@ void DefaultWindow::onMouseButtonDown(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseButtonUp(MouseEventArgs& e)
+void DefaultWindow::onPointerActivate(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseButtonUp(e);
-    updateMouseEventHandled(e);
+    Window::onPointerActivate(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//

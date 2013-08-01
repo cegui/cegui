@@ -130,7 +130,7 @@ static void doClick(float position_x, float position_y)
 {
     getInputAggregator().injectMousePosition(position_x, position_y);
     getGUIContext().injectMouseButtonDown(LeftButton);
-    getGUIContext().injectMouseButtonUp(LeftButton);
+    getInputAggregator().injectMouseButtonUp(LeftButton);
 }
 //----------------------------------------------------------------------------//
 

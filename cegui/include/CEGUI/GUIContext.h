@@ -217,7 +217,6 @@ public:
     // Implementation of InjectedInputReceiver interface
     bool injectMouseLeaves(void);
     bool injectMouseButtonDown(MouseButton button);
-    bool injectMouseButtonUp(MouseButton button);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
 

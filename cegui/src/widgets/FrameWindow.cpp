@@ -658,20 +658,19 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button up events
+    Handler for pointer activation events
 *************************************************************************/
-void FrameWindow::onMouseButtonUp(MouseEventArgs& e)
+void FrameWindow::onPointerActivate(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton && isCapturedByThis())
+    if (e.scroll == PS_Left && isCapturedByThis())
 	{
 		// release our capture on the input data
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
 

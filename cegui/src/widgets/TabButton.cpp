@@ -102,9 +102,9 @@ void TabButton::onMouseButtonDown(MouseEventArgs& e)
 	ButtonBase::onMouseButtonDown(e);
 }
 
-void TabButton::onMouseButtonUp(MouseEventArgs& e)
+void TabButton::onPointerActivate(PointerEventArgs& e)
 {
-	if ((e.button == LeftButton) && isPushed())
+    if ((e.source == PS_Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 
@@ -123,7 +123,7 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
 
 		++e.handled;
     }
-    else if (e.button == MiddleButton)
+    else if (e.source == PS_Middle)
     {
         d_dragging = false;
         releaseInput ();
@@ -131,7 +131,7 @@ void TabButton::onMouseButtonUp(MouseEventArgs& e)
     }
 
 	// default handling
-	ButtonBase::onMouseButtonUp(e);
+    ButtonBase::onPointerActivate(e);
 }
 
 void TabButton::onPointerMove(PointerEventArgs& e)

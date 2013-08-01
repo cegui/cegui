@@ -270,15 +270,7 @@ bool SamplesFramework::injectMouseButtonDown(
 bool SamplesFramework::injectMouseButtonUp(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->
-            injectMouseButtonUp(ceguiMouseButton);
-
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().
-            injectMouseButtonUp(ceguiMouseButton);
-
-    return false;
+    return getCurrentInputAggregator()->injectMouseButtonUp(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
@@ -407,7 +399,7 @@ void SamplesFramework::stopDisplaySample()
 
     // Since we switch our contexts, the mouse release won't be injected if we
     // don't do it manually
-    sampleGUIContext->injectMouseButtonUp(CEGUI::LeftButton);
+    d_sampleInputAggregator->injectMouseButtonUp(CEGUI::LeftButton);
     sampleGUIContext->injectTimePulse(0.0f);
 
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);

@@ -1186,19 +1186,18 @@ void MultiLineEditbox::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is released
+    Handler for when pointer is activated
 *************************************************************************/
-void MultiLineEditbox::onMouseButtonUp(MouseEventArgs& e)
+void MultiLineEditbox::onPointerActivate(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
 /*************************************************************************
