@@ -413,7 +413,7 @@ namespace CEGUI
         	Overrides for Event handler methods
         *************************************************************************/
         virtual void onMouseButtonDown(MouseEventArgs& e);
-        virtual void onMouseButtonUp(MouseEventArgs& e);
+        virtual void onPointerActivate(PointerEventArgs& e);
         virtual void onPointerMove(PointerEventArgs& e);
         virtual void onCaptureLost(WindowEventArgs& e);
         virtual void onAlphaChanged(WindowEventArgs& e);

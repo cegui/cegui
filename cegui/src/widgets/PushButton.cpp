@@ -69,11 +69,11 @@ void PushButton::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button release events
+	Handler for pointer activation events
 *************************************************************************/
-void PushButton::onMouseButtonUp(MouseEventArgs& e)
+void PushButton::onPointerActivate(PointerEventArgs& e)
 {
-	if ((e.button == LeftButton) && isPushed())
+    if ((e.source == PS_Left) && isPushed())
 	{
 		Window* sheet = getGUIContext().getRootWindow();
 
@@ -95,7 +95,7 @@ void PushButton::onMouseButtonUp(MouseEventArgs& e)
 	}
 
 	// default handling
-	ButtonBase::onMouseButtonUp(e);
+    ButtonBase::onPointerActivate(e);
 }
 
 } // End of  CEGUI namespace section

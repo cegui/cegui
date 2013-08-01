@@ -527,16 +527,16 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse buttons area released
+    Handler for when the pointer is activated
 *************************************************************************/
-void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
+void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
-		// if we were pushed and mouse was released within our segment area
+		// if we were pushed and pointer was released (activated) within our segment area
 		if (d_segmentPushed && d_segmentHover)
 		{
 			WindowEventArgs args(this);
@@ -554,7 +554,6 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
 /*************************************************************************

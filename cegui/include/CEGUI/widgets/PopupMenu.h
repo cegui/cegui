@@ -196,7 +196,7 @@ protected:
 	virtual void onShown(WindowEventArgs& e);
 	virtual void onHidden(WindowEventArgs& e);
 	virtual void onMouseButtonDown(MouseEventArgs& e);
-	virtual void onMouseButtonUp(MouseEventArgs& e);
+    virtual void onPointerActivate(PointerEventArgs& e);
 
 
     /*************************************************************************

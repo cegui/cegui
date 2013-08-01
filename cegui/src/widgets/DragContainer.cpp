@@ -266,11 +266,11 @@ namespace CEGUI
 
     }
 
-    void DragContainer::onMouseButtonUp(MouseEventArgs& e)
+    void DragContainer::onPointerActivate(PointerEventArgs& e)
     {
-        Window::onMouseButtonUp(e);
+        Window::onPointerActivate(e);
 
-        if (e.button == LeftButton)
+        if (e.source == PS_Left)
         {
             if (d_dragging)
             {

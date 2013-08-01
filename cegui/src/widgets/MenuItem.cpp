@@ -415,14 +415,14 @@ void MenuItem::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-    Handler for mouse button release events
+    Handler for pointer activation events
 *************************************************************************/
-void MenuItem::onMouseButtonUp(MouseEventArgs& e)
+void MenuItem::onPointerActivate(PointerEventArgs& e)
 {
     // default processing
-    ItemEntry::onMouseButtonUp(e);
+    ItemEntry::onPointerActivate(e);
 
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         releaseInput();
 
@@ -439,7 +439,6 @@ void MenuItem::onMouseButtonUp(MouseEventArgs& e)
         // event was handled by us.
         ++e.handled;
     }
-
 }
 
 /*************************************************************************

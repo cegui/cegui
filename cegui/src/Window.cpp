@@ -105,7 +105,6 @@ const String Window::EventMouseLeavesSurface( "MouseLeavesSurface" );
 const String Window::EventPointerMove("PointerMove");
 const String Window::EventScroll("Scroll");
 const String Window::EventMouseButtonDown("MouseButtonDown");
-const String Window::EventMouseButtonUp("MouseButtonUp");
 const String Window::EventPointerActivate("PointerActivate");
 const String Window::EventKeyDown("KeyDown");
 const String Window::EventKeyUp("KeyUp");
@@ -2589,8 +2588,9 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseButtonUp(MouseEventArgs& e)
+void Window::onPointerActivate(PointerEventArgs& e)
 {
+    //TODO: replace with pointer source
     // reset auto-repeat state
     if (d_autoRepeat && d_repeatButton != NoButton)
     {
@@ -2598,26 +2598,6 @@ void Window::onMouseButtonUp(MouseEventArgs& e)
         d_repeatButton = NoButton;
     }
 
-    fireEvent(EventMouseButtonUp, e, EventNamespace);
-
-    // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
-        d_parent && this != getGUIContext().getModalWindow())
-    {
-        e.window = getParent();
-        getParent()->onMouseButtonUp(e);
-
-        return;
-    }
-
-    // by default we now mark mouse events as handled
-    // (derived classes may override, of course!)
-    ++e.handled;
-}
-
-//----------------------------------------------------------------------------//
-void Window::onPointerActivate(PointerEventArgs& e)
-{
     fireEvent(EventPointerActivate, e, EventNamespace);
 
     // optionally propagate to parent
@@ -2629,6 +2609,8 @@ void Window::onPointerActivate(PointerEventArgs& e)
 
         return;
     }
+
+    ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

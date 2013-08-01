@@ -586,40 +586,6 @@ static PointerSource convertToPointerSource(MouseButton button)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectMouseButtonUp(MouseButton button)
-{
-    d_systemKeys.mouseButtonReleased(button);
-
-    MouseEventArgs ma(0);
-    ma.position = d_pointerIndicator.getPosition();
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
-    ma.button = button;
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = 0;
-    ma.window = getTargetWindow(ma.position, false);
-    // make mouse position sane for this target window
-    if (ma.window)
-        ma.position = ma.window->getUnprojectedPosition(ma.position);
-
-    // if there is no window, inputs can not be handled.
-    if (!ma.window)
-        return false;
-
-    // store original window becase we re-use the event args.
-    Window* const tgt_wnd = ma.window;
-
-    // send 'up' input to the window
-    ma.window->onMouseButtonUp(ma);
-    // store whether the 'up' part was handled so we may reuse the EventArgs
-    const uint upHandled = ma.handled;
-
-    // restore target window (because Window::on* may have propagated input)
-    ma.window = tgt_wnd;
-
-    return (ma.handled + upHandled) != 0;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::injectKeyDown(Key::Scan scan_code)
 {
     d_systemKeys.keyPressed(scan_code);
@@ -850,8 +816,18 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
     if (!pa.window)
         return false;
 
+    // store original window because we re-use the event args.
+    Window* const tgt_wnd = pa.window;
+
+    // send 'up' input to the window
     pa.window->onPointerActivate(pa);
-    return pa.handled != 0;
+    // store whether the 'up' part was handled so we may reuse the EventArgs
+    const uint upHandled = pa.handled;
+
+    // restore target window (because Window::on* may have propagated input)
+    pa.window = tgt_wnd;
+
+    return (pa.handled + upHandled) != 0;
 }
 
 //----------------------------------------------------------------------------//

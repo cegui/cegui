@@ -87,7 +87,7 @@ protected:
     void onPointerMove(PointerEventArgs& e);
     void onScroll(PointerEventArgs& e);
     void onMouseButtonDown(MouseEventArgs& e);
-    void onMouseButtonUp(MouseEventArgs& e);
+    void onPointerActivate(PointerEventArgs& e);
 
     void onSemanticInputEvent(SemanticEventArgs& e);
 };

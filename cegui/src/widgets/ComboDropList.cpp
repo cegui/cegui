@@ -211,13 +211,13 @@ void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button release events
+	Handler for pointer activation events
 *************************************************************************/
-void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
+void ComboDropList::onPointerActivate(PointerEventArgs& e)
 {
-	Listbox::onMouseButtonUp(e);
+    Listbox::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (d_armed && (getChildAtPosition(e.position) == 0))
 		{
@@ -230,7 +230,7 @@ void ComboDropList::onMouseButtonUp(MouseEventArgs& e)
 
             releaseInput();
 		}
-		// if we are not already armed, in response to a left button up event, we auto-arm.
+        // if we are not already armed, in response to a left pointer activation event, we auto-arm.
 		else
 		{
 			d_armed = true;

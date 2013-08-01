@@ -456,17 +456,16 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseButtonUp(MouseEventArgs& e)
+void Editbox::onPointerActivate(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         releaseInput();
         ++e.handled;
     }
-
 }
 
 //----------------------------------------------------------------------------//

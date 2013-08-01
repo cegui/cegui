@@ -134,14 +134,14 @@ void ButtonBase::setPushedState(const bool pushed)
 }
 
 /*************************************************************************
-	Handler for mouse button release events
+	Handler for pointer activation events
 *************************************************************************/
-void ButtonBase::onMouseButtonUp(MouseEventArgs& e)
+void ButtonBase::onPointerActivate(PointerEventArgs& e)
 {
 	// default processing
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		releaseInput();
 
