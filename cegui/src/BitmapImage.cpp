@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIBasicImage.cpp
+    filename:   BitmapImage.cpp
     created:    Wed Feb 16 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/Vertex.h"
@@ -51,7 +51,7 @@ const String ImageNativeHorzResAttribute( "nativeHorzRes" );
 const String ImageNativeVertResAttribute( "nativeVertRes" );
 
 //----------------------------------------------------------------------------//
-BasicImage::BasicImage(const String& name) :
+BitmapImage::BitmapImage(const String& name) :
     Image(name),
     d_texture(0),
     d_area(0.0f, 0.0f, 0.0f, 0.0f)
@@ -59,7 +59,7 @@ BasicImage::BasicImage(const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-BasicImage::BasicImage(const XMLAttributes& attributes) :
+BitmapImage::BitmapImage(const XMLAttributes& attributes) :
     Image(attributes.getValueAsString(ImageNameAttribute),
           Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
                    static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
@@ -82,7 +82,7 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
 }
 
 //----------------------------------------------------------------------------//
-BasicImage::BasicImage(const String& name, Texture* texture,
+BitmapImage::BitmapImage(const String& name, Texture* texture,
                        const Rectf& pixel_area, const Vector2f& pixel_offset,
                        const AutoScaledMode autoscaled, const Sizef& native_res) :
     Image(name,
@@ -99,7 +99,7 @@ BasicImage::BasicImage(const String& name, Texture* texture,
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::setArea(const Rectf& pixel_area)
+void BitmapImage::setArea(const Rectf& pixel_area)
 {
     d_area = pixel_area;
     d_pixelSize = pixel_area.getSize();
@@ -113,13 +113,13 @@ void BasicImage::setArea(const Rectf& pixel_area)
 
 
 //----------------------------------------------------------------------------//
-void BasicImage::setTexture(Texture* texture)
+void BitmapImage::setTexture(Texture* texture)
 {
     d_texture = texture;
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
+void BitmapImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
                         const Rectf* clip_area, const bool clipping_enabled,
                         const ColourRect& colours) const
 {
@@ -221,7 +221,7 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
 
 
 //----------------------------------------------------------------------------//
-const Texture* BasicImage::getTexture() const
+const Texture* BitmapImage::getTexture() const
 {
     return d_texture;
 }
