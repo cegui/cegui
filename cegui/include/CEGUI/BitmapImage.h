@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIBasicImage.h
+    filename:   BitmapImage.h
     created:    Wed Feb 16 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIBasicImage_h_
-#define _CEGUIBasicImage_h_
+#ifndef _CEGUIBitmapImage_h_
+#define _CEGUIBitmapImage_h_
 
 #include "CEGUI/Image.h"
 #include "CEGUI/String.h"
@@ -40,13 +40,13 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIEXPORT BasicImage : public Image
+class CEGUIEXPORT BitmapImage : public Image
 {
 public:
-    BasicImage(const String& name);
-    BasicImage(const XMLAttributes& attributes);
+    BitmapImage(const String& name);
+    BitmapImage(const XMLAttributes& attributes);
 
-    BasicImage(const String& name, Texture* texture,
+    BitmapImage(const String& name, Texture* texture,
                const Rectf& tex_area, const Vector2f& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
@@ -89,5 +89,5 @@ protected:
 #	pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIBasicImage_h_
+#endif  // end of guard _CEGUIBitmapImage_h_
 

@@ -31,7 +31,7 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Image.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 
 namespace CEGUI
 {
@@ -260,7 +260,7 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
         if ((glyph = getGlyphData(text[c]))) // NB: assignment
         {
             const Image* const img = glyph->getImage();
-            const CEGUI::Texture* texture = static_cast<const BasicImage*>(img)->getTexture();
+            const CEGUI::Texture* texture = static_cast<const BitmapImage*>(img)->getTexture();
             GeometryBuffer* geomBuffer;
             
             std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator found_iterator = geom_buffers_map.find(texture);
@@ -310,7 +310,7 @@ float Font::drawText(std::map<const CEGUI::Texture*, GeometryBuffer*>& geom_buff
         if ((glyph = getGlyphData(text[c]))) // NB: assignment
         {
             const Image* const img = glyph->getImage();
-            const CEGUI::Texture* texture = static_cast<const BasicImage*>(img)->getTexture();
+            const CEGUI::Texture* texture = static_cast<const BitmapImage*>(img)->getTexture();
             GeometryBuffer* geomBuffer;
             
             std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator found_iterator = geom_buffers_map.find(texture);
