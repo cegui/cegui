@@ -192,7 +192,6 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="VerticalFormatting" name="VertImageFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="Stretched" type="HorizontalFormatting" name="HorzImageFormatting"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <Property name="Size" value="{{0, 96}, {0, 32}}" />
         <ImagerySection name="label">
             <TextComponent>

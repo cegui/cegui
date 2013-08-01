@@ -238,8 +238,6 @@ Window::Window(const String& type, const String& name):
     d_riseOnClick(true),
     d_zOrderingEnabled(true),
 
-    // mouse input options
-    d_wantsMultiClicks(true),
     d_mousePassThroughEnabled(false),
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
@@ -1374,11 +1372,6 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "WantsMultiClickEvents", "Property to get/set whether the window will receive double-click and triple-click events. Value is either \"True\" or \"False\".",
-        &Window::setWantsMultiClickEvents, &Window::wantsMultiClickEvents, true
-    );
-
-    CEGUI_DEFINE_PROPERTY(Window, bool,
         "MouseAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat mouse button down events. Value is either \"True\" or \"False\".",
         &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false
     );
@@ -1485,18 +1478,6 @@ bool Window::isZOrderingEnabled(void) const
 void Window::setZOrderingEnabled(bool setting)
 {
     d_zOrderingEnabled = setting;
-}
-
-//----------------------------------------------------------------------------//
-bool Window::wantsMultiClickEvents(void) const
-{
-    return d_wantsMultiClicks;
-}
-
-//----------------------------------------------------------------------------//
-void Window::setWantsMultiClickEvents(bool setting)
-{
-    d_wantsMultiClicks = setting;
 }
 
 //----------------------------------------------------------------------------//

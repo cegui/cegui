@@ -60,8 +60,6 @@ MenuItem::MenuItem(const String& type, const String& name)
       d_autoPopupTimeElapsed(0.0f),
       d_popup(0)
 {
-    // menuitems dont want multi-click events
-    setWantsMultiClickEvents(false);
     // add the new properties
     addMenuItemProperties();
     d_popupOffset.d_x = cegui_absdim(0);

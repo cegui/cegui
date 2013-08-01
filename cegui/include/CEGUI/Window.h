@@ -1084,18 +1084,6 @@ public:
 
     /*!
     \brief
-        Return whether this window will receive multi-click events or multiple
-        'down' events instead.
-
-    \return
-        - true if the Window will receive double-click and triple-click events.
-        - false if the Window will receive multiple mouse button down events
-          instead of double/triple click events.
-    */
-    bool wantsMultiClickEvents(void) const;
-
-    /*!
-    \brief
         Return whether mouse button down event autorepeat is enabled for this
         window.
 
@@ -1951,21 +1939,6 @@ public:
         Nothing.
     */
     void    setZOrderingEnabled(bool setting);
-    
-    /*!
-    \brief
-        Set whether this window will receive multi-click events or multiple
-        'down' events instead.
-
-    \param setting
-        - true if the Window will receive double-click and triple-click events.
-        - false if the Window will receive multiple mouse button down events
-          instead of double/triple click events.
-
-    \return
-        Nothing.
-    */
-    void setWantsMultiClickEvents(bool setting);
 
     /*!
     \brief
@@ -3601,8 +3574,6 @@ protected:
     //! true if the Window responds to z-order change requests.
     bool d_zOrderingEnabled;
 
-    //! true if the Window wishes to hear about multi-click mouse events.
-    bool d_wantsMultiClicks;
     //! whether (most) mouse events pass through this window
     bool d_mousePassThroughEnabled;
     //! whether pressed mouse button will auto-repeat the down event.
