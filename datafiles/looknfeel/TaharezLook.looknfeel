@@ -1239,7 +1239,6 @@
     <WidgetLook name="TaharezLook/Slider">
         <Property name="VerticalSlider" value="True" />
         <Property name="MouseAutoRepeatEnabled" value="True" />
-        <Property name="WantsMultiClickEvents" value="False" />
         <Property name="Size" value="{{0, 16}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea" />
         <Child  type="TaharezLook/SliderThumb" nameSuffix="__auto_thumb__">
@@ -3270,7 +3269,6 @@
         <PropertyDefinition name="HoverColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="PushedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
         <PropertyDefinition name="OpenedColour" initialValue="FFFFFFFF" redrawOnWrite="true" type="ColourRect"/>
-        <Property name="WantsMultiClickEvents" value="False" />
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>

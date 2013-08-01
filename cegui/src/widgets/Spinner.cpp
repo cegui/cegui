@@ -88,9 +88,7 @@ namespace CEGUI
         Editbox* editbox = getEditbox();
 
         // setup component controls
-        increaseButton->setWantsMultiClickEvents(false);
         increaseButton->setMouseAutoRepeatEnabled(true);
-        decreaseButton->setWantsMultiClickEvents(false);
         decreaseButton->setMouseAutoRepeatEnabled(true);
 
         // perform event subscriptions.

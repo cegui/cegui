@@ -407,14 +407,12 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     {
         scrollLeftBtn = getChild(ButtonScrollLeft);
         lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
-        scrollLeftBtn->setWantsMultiClickEvents(false);
     }
 
     if (isChild(ButtonScrollRight))
     {
         scrollRightBtn = getChild(ButtonScrollRight);
         rx = CoordConverter::asAbsolute(scrollRightBtn->getPosition().d_x, ww);
-        scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
     if (x < lx)
