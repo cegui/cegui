@@ -25,8 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/CoordConverter.h"
 #include "CEGUI/InputAggregator.h"
+#include "CEGUI/Rect.h"
 #include "CEGUI/SemanticInputEvent.h"
+#include "CEGUI/SimpleTimer.h"
+#include "CEGUI/System.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -36,7 +40,38 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+/*!
+\brief
+    Implementation structure used in tracking up & down mouse button inputs in
+    order to generate click, double-click, and triple-click events.
+*/
+struct MouseClickTracker :
+    public AllocatedObject<MouseClickTracker>
+{
+    MouseClickTracker() :
+        d_click_count(0),
+        d_click_area(0, 0, 0, 0)
+    {}
 
+    //! Timer used to track clicks for this button.
+    SimpleTimer d_timer;
+    //! count of clicks made so far.
+    int d_click_count;
+    //! area used to detect multi-clicks
+    Rectf d_click_area;
+};
+
+//----------------------------------------------------------------------------//
+const String InputAggregator::EventMouseButtonClickTimeoutChanged("MouseButtonClickTimeoutChanged" );
+const String InputAggregator::EventMouseButtonMultiClickTimeoutChanged("MouseButtonMultiClickTimeoutChanged" );
+const String InputAggregator::EventMouseButtonMultiClickToleranceChanged("MouseButtonMultiClickToleranceChanged" );
+
+//----------------------------------------------------------------------------//
+const float InputAggregator::DefaultMouseButtonClickTimeout = 0.0f;
+const float InputAggregator::DefaultMouseButtonMultiClickTimeout = 0.3333f;
+const Sizef InputAggregator::DefaultMouseButtonMultiClickTolerance(0.01f, 0.01f);
+
+//----------------------------------------------------------------------------//
 static PointerSource convertToPointerSource(MouseButton button)
 {
     if (button == LeftButton)
@@ -51,13 +86,107 @@ static PointerSource convertToPointerSource(MouseButton button)
     return PS_None;
 }
 
+//----------------------------------------------------------------------------//
 InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_inputReceiver(input_receiver),
+    d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
+    d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
+    d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
+    d_generateMouseClickEvents(true),
+    d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
     d_pointerPosition(0.0f, 0.0f),
+    d_displaySizeChangedConnection(
+        System::getSingletonPtr()->subscribeEvent(System::EventDisplaySizeChanged,
+            Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
     d_keysPressed()
 {
     initializeSimpleKeyMappings();
+    // initial absolute tolerance
+    recomputeMultiClickAbsoluteTolerance();
 }
+
+//----------------------------------------------------------------------------//
+InputAggregator::~InputAggregator()
+{
+    d_displaySizeChangedConnection->disconnect();
+    delete[] d_mouseClickTrackers;
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::setMouseClickEventGenerationEnabled(const bool enable)
+{
+    d_generateMouseClickEvents = enable;
+}
+
+//----------------------------------------------------------------------------//
+bool InputAggregator::isMouseClickEventGenerationEnabled() const
+{
+    return d_generateMouseClickEvents;
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::setMouseButtonClickTimeout(float seconds)
+{
+    d_mouseButtonClickTimeout = seconds;
+
+    InputAggregatorEventArgs args(this);
+    onMouseButtonClickTimeoutChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+float InputAggregator::getMouseButtonClickTimeout() const
+{
+    return d_mouseButtonClickTimeout;
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::setMouseButtonMultiClickTimeout(float seconds)
+{
+    d_mouseButtonMultiClickTimeout = seconds;
+
+    InputAggregatorEventArgs args(this);
+    onMouseButtonMultiClickTimeoutChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+float InputAggregator::getMouseButtonMultiClickTimeout() const
+{
+    return d_mouseButtonMultiClickTimeout;
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::setMouseButtonMultiClickTolerance(const Sizef& sz)
+{
+    d_mouseButtonMultiClickTolerance = sz;
+
+    InputAggregatorEventArgs args(this);
+    onMouseButtonMultiClickToleranceChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+const Sizef& InputAggregator::getMouseButtonMultiClickTolerance() const
+{
+    return d_mouseButtonMultiClickTolerance;
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args)
+{
+    fireEvent(EventMouseButtonClickTimeoutChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args)
+{
+    fireEvent(EventMouseButtonMultiClickTimeoutChanged, args);
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args)
+{
+    fireEvent(EventMouseButtonMultiClickToleranceChanged, args);
+}
+
 
 bool InputAggregator::injectTimePulse(float timeElapsed)
 {
@@ -93,6 +222,45 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
 {
     if (d_inputReceiver == 0)
         return false;
+
+    //
+    // Handling for multi-click generation
+    //
+    MouseClickTracker& tkr = d_mouseClickTrackers[button];
+
+    tkr.d_click_count++;
+
+    // TODO: re-add the check for different windows?
+    // if multi-click requirements are not met
+    if (((d_mouseButtonMultiClickTimeout > 0) && (tkr.d_timer.elapsed() > d_mouseButtonMultiClickTimeout)) ||
+        (!tkr.d_click_area.isPointInRect(d_pointerPosition)) ||
+        (tkr.d_click_count > 3))
+    {
+        // reset to single down event.
+        tkr.d_click_count = 1;
+
+        // build new allowable area for multi-clicks
+        tkr.d_click_area.setPosition(d_pointerPosition);
+        tkr.d_click_area.setSize(d_mouseButtonMultiClickAbsoluteTolerance);
+        tkr.d_click_area.offset(Vector2f(
+            -(d_mouseButtonMultiClickAbsoluteTolerance.d_width / 2),
+            -(d_mouseButtonMultiClickAbsoluteTolerance.d_height / 2)));
+    }
+
+    // reset timer for this tracker.
+    tkr.d_timer.restart();
+
+    if (d_generateMouseClickEvents)
+    {
+        switch (tkr.d_click_count)
+        {
+        case 2:
+            return injectMouseButtonDoubleClick(button);
+
+        case 3:
+            return injectMouseButtonTripleClick(button);
+        }
+    }
 
     SemanticValue value = SV_PointerPressHold;
     if (isControlPressed())
@@ -277,6 +445,21 @@ bool InputAggregator::isAltPressed()
 bool InputAggregator::isControlPressed()
 {
     return d_keysPressed[Key::LeftControl] || d_keysPressed[Key::RightControl];
+}
+
+//----------------------------------------------------------------------------//
+void InputAggregator::recomputeMultiClickAbsoluteTolerance()
+{
+    const Sizef& display_size = System::getSingleton().getRenderer()->getDisplaySize();
+    d_mouseButtonMultiClickAbsoluteTolerance = Sizef(
+        d_mouseButtonMultiClickTolerance.d_width * display_size.d_width,
+        d_mouseButtonMultiClickTolerance.d_height * display_size.d_height);
+}
+
+bool InputAggregator::onDisplaySizeChanged(const EventArgs& args)
+{
+    recomputeMultiClickAbsoluteTolerance();
+    return true;
 }
 
 #if defined (_MSC_VER)
