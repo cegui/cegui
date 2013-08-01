@@ -2648,11 +2648,6 @@ void Window::onPointerActivate(PointerEventArgs& e)
 
         return;
     }
-
-    // if event was directly injected, mark as handled to be consistent with
-    // other mouse button injectors
-    if (!getGUIContext().isMouseClickEventGenerationEnabled())
-        ++e.handled;
 }
 
 //----------------------------------------------------------------------------//

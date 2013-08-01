@@ -41,39 +41,9 @@
 
 namespace CEGUI
 {
-/*!
-\brief
-    Implementation structure used in tracking up & down mouse button inputs in
-    order to generate click, double-click, and triple-click events.
-*/
-struct MouseClickTracker :
-    public AllocatedObject<MouseClickTracker>
-{
-    MouseClickTracker() :
-        d_click_count(0),
-        d_click_area(0, 0, 0, 0)
-    {}
-
-    //! Timer used to track clicks for this button.
-    SimpleTimer d_timer;
-    //! count of clicks made so far.
-    int d_click_count;
-    //! area used to detect multi-clicks
-    Rectf d_click_area;
-    //! target window for any events generated.
-    Window* d_target_window;
-};
-
 //----------------------------------------------------------------------------//
-const float GUIContext::DefaultMouseButtonClickTimeout = 0.0f;
-const float GUIContext::DefaultMouseButtonMultiClickTimeout = 0.3333f;
-const Sizef GUIContext::DefaultMouseButtonMultiClickTolerance(12.0f, 12.0f);
-
 const String GUIContext::EventRootWindowChanged("RootWindowChanged");
 const String GUIContext::EventMouseMoveScalingFactorChanged("MouseMoveScalingFactorChanged");
-const String GUIContext::EventMouseButtonClickTimeoutChanged("MouseButtonClickTimeoutChanged" );
-const String GUIContext::EventMouseButtonMultiClickTimeoutChanged("MouseButtonMultiClickTimeoutChanged" );
-const String GUIContext::EventMouseButtonMultiClickToleranceChanged("MouseButtonMultiClickToleranceChanged" );
 const String GUIContext::EventRenderTargetChanged("RenderTargetChanged");
 const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 
@@ -83,17 +53,12 @@ GUIContext::GUIContext(RenderTarget& target) :
     d_rootWindow(0),
     d_isDirty(false),
     d_pointerMovementScalingFactor(1.0f),
-    d_generateMouseClickEvents(true),
-    d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
-    d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
-    d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
     d_defaultTooltipObject(0),
     d_weCreatedTooltipObject(false),
     d_defaultFont(0),
     d_surfaceSize(target.getArea().getSize()),
     d_modalWindow(0),
     d_captureWindow(0),
-    d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
     d_areaChangedEventConnection(
         target.subscribeEvent(
             RenderTarget::EventAreaChanged,
@@ -122,8 +87,6 @@ GUIContext::~GUIContext()
 
     if (d_rootWindow)
         d_rootWindow->setGUIContext(0);
-
-    delete[] d_mouseClickTrackers;
 }
 
 //----------------------------------------------------------------------------//
@@ -350,63 +313,6 @@ float GUIContext::getMouseMoveScalingFactor() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::setMouseButtonClickTimeout(float seconds)
-{
-    d_mouseButtonClickTimeout = seconds;
-
-    GUIContextEventArgs args(this);
-    onMouseButtonClickTimeoutChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-float GUIContext::getMouseButtonClickTimeout() const
-{
-    return d_mouseButtonClickTimeout;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::setMouseButtonMultiClickTimeout(float seconds)
-{
-    d_mouseButtonMultiClickTimeout = seconds;
-
-    GUIContextEventArgs args(this);
-    onMouseButtonMultiClickTimeoutChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-float GUIContext::getMouseButtonMultiClickTimeout() const
-{
-    return d_mouseButtonMultiClickTimeout;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::setMouseButtonMultiClickTolerance(const Sizef& sz)
-{
-    d_mouseButtonMultiClickTolerance = sz;
-
-    GUIContextEventArgs args(this);
-    onMouseButtonMultiClickToleranceChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-const Sizef& GUIContext::getMouseButtonMultiClickTolerance() const
-{
-    return d_mouseButtonMultiClickTolerance;
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::setMouseClickEventGenerationEnabled(const bool enable)
-{
-    d_generateMouseClickEvents = enable;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::isMouseClickEventGenerationEnabled() const
-{
-    return d_generateMouseClickEvents;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
@@ -463,24 +369,6 @@ void GUIContext::onMouseMoveScalingFactorChanged(GUIContextEventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::onMouseButtonClickTimeoutChanged(GUIContextEventArgs& args)
-{
-    fireEvent(EventMouseButtonClickTimeoutChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onMouseButtonMultiClickTimeoutChanged(GUIContextEventArgs& args)
-{
-    fireEvent(EventMouseButtonMultiClickTimeoutChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& args)
-{
-    fireEvent(EventMouseButtonMultiClickToleranceChanged, args);
-}
-
-//----------------------------------------------------------------------------//
 void GUIContext::updateWindowContainingPointer()
 {
     d_windowContainingMouseIsUpToDate = false;
@@ -500,7 +388,6 @@ bool GUIContext::updateWindowContainingMouse_impl() const
 
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = 0;
-    ma.clickCount = 0;
     ma.button = NoButton;
 
     Window* oldWindow = d_windowContainingMouse;
@@ -658,7 +545,6 @@ bool GUIContext::injectMouseLeaves(void)
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = 0;
     ma.window = getWindowContainingPointer();
-    ma.clickCount = 0;
 
     getWindowContainingPointer()->onMouseLeaves(ma);
     resetWindowContainingMouse();
@@ -681,58 +567,6 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
     // make mouse position sane for this target window
     if (ma.window)
         ma.position = ma.window->getUnprojectedPosition(ma.position);
-
-    //
-    // Handling for multi-click generation
-    //
-    MouseClickTracker& tkr = d_mouseClickTrackers[button];
-
-    tkr.d_click_count++;
-
-    // if multi-click requirements are not met
-    if (((d_mouseButtonMultiClickTimeout > 0) && (tkr.d_timer.elapsed() > d_mouseButtonMultiClickTimeout)) ||
-        (!tkr.d_click_area.isPointInRect(ma.position)) ||
-        (tkr.d_target_window != ma.window) ||
-        (tkr.d_click_count > 3))
-    {
-        // reset to single down event.
-        tkr.d_click_count = 1;
-
-        // build new allowable area for multi-clicks
-        tkr.d_click_area.setPosition(ma.position);
-        tkr.d_click_area.setSize(d_mouseButtonMultiClickTolerance);
-        tkr.d_click_area.offset(Vector2f(-(d_mouseButtonMultiClickTolerance.d_width / 2),
-                                         -(d_mouseButtonMultiClickTolerance.d_height / 2)));
-
-        // set target window for click events on this tracker
-        tkr.d_target_window = ma.window;
-    }
-
-    // set click count in the event args
-    ma.clickCount = tkr.d_click_count;
-
-    if (ma.window)
-    {
-        //TODO: move this into InputAggregator
-        if (d_generateMouseClickEvents && ma.window->wantsMultiClickEvents())
-        {
-            switch (tkr.d_click_count)
-            {
-            case 1:
-                ma.window->onMouseButtonDown(ma);
-                break;
-            }
-        }
-        // click generation disabled, or current target window does not want
-        // multi-clicks, so just send a mouse down event instead.
-        else
-        {
-            ma.window->onMouseButtonDown(ma);
-        }
-    }
-
-    // reset timer for this tracker.
-    tkr.d_timer.restart();
 
     return ma.handled != 0;
 }
@@ -767,11 +601,6 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
     if (ma.window)
         ma.position = ma.window->getUnprojectedPosition(ma.position);
 
-    // get the tracker that holds the number of down events seen so far for this button
-    MouseClickTracker& tkr = d_mouseClickTrackers[button];
-    // set click count in the event args
-    ma.clickCount = tkr.d_click_count;
-
     // if there is no window, inputs can not be handled.
     if (!ma.window)
         return false;
@@ -786,25 +615,6 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
 
     // restore target window (because Window::on* may have propagated input)
     ma.window = tgt_wnd;
-
-    // send MouseClicked event if the requirements for that were met
-    if (d_generateMouseClickEvents &&
-        ((d_mouseButtonClickTimeout == 0) || (tkr.d_timer.elapsed() <= d_mouseButtonClickTimeout)) &&
-        (tkr.d_click_area.isPointInRect(ma.position)) &&
-        (tkr.d_target_window == ma.window))
-    {
-        ma.handled = 0;
-
-        PointerEventArgs pa(ma.window);
-        pa.moveDelta = ma.moveDelta;
-        pa.pointerState = d_pointersState;
-        pa.position = d_pointerIndicator.getPosition();
-        pa.scroll = 0;
-        //TODO: Temporary hack while we convert the button up event
-        pa.source = convertToPointerSource(button);
-
-        pa.window->onPointerActivate(pa);
-    }
 
     return (ma.handled + upHandled) != 0;
 }
