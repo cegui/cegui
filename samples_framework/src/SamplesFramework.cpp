@@ -91,6 +91,12 @@ SamplesFramework::~SamplesFramework()
 {
     if(d_metaDataWinMgr)
         delete d_metaDataWinMgr;
+
+    if (d_systemInputAggregator != 0)
+    {
+        delete d_systemInputAggregator;
+        d_systemInputAggregator = 0;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -112,12 +118,6 @@ bool SamplesFramework::initialise()
 void SamplesFramework::deinitialise()
 {
     unloadSamples();
-
-    if (d_systemInputAggregator != 0)
-    {
-        delete d_systemInputAggregator;
-        d_systemInputAggregator = 0;
-    }
 
     if (d_sampleInputAggregator != 0)
     {
