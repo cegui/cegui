@@ -1238,7 +1238,7 @@
     -->
     <WidgetLook name="TaharezLook/Slider">
         <Property name="VerticalSlider" value="True" />
-        <Property name="MouseAutoRepeatEnabled" value="True" />
+        <Property name="PointerAutoRepeatEnabled" value="True" />
         <Property name="Size" value="{{0, 16}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea" />
         <Child  type="TaharezLook/SliderThumb" nameSuffix="__auto_thumb__">

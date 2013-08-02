@@ -55,7 +55,7 @@
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="BottomEndColours"/>
         <PropertyLinkDefinition widget="__auto_thumb__" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" name="ScrollThumbColours" redrawOnWrite="true" targetProperty="ScrollThumbColours" type="ColourRect"/>
         <Property name="VerticalSlider" value="True"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
+        <Property name="PointerAutoRepeatEnabled" value="True"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -275,7 +275,7 @@
         <PropertyDefinition initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" type="ColourRect" name="BottomEndColours"/>
         <PropertyLinkDefinition widget="__auto_thumb__" initialValue="tl:FF000000 tr:FF000000 bl:FF000000 br:FF000000" name="ScrollThumbColours" redrawOnWrite="true" targetProperty="ScrollThumbColours" type="ColourRect"/>
         <Property name="VerticalSlider" value="False"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
+        <Property name="PointerAutoRepeatEnabled" value="True"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">

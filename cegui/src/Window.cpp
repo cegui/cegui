@@ -104,7 +104,7 @@ const String Window::EventMouseEntersSurface( "MouseEntersSurface" );
 const String Window::EventMouseLeavesSurface( "MouseLeavesSurface" );
 const String Window::EventPointerMove("PointerMove");
 const String Window::EventScroll("Scroll");
-const String Window::EventMouseButtonDown("MouseButtonDown");
+const String Window::EventPointerPressHold("PointerPressHold");
 const String Window::EventPointerActivate("PointerActivate");
 const String Window::EventKeyDown("KeyDown");
 const String Window::EventKeyUp("KeyUp");
@@ -241,7 +241,7 @@ Window::Window(const String& type, const String& name):
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
     d_repeatRate(0.06f),
-    d_repeatButton(NoButton),
+    d_repeatPointerSource(PS_None),
     d_repeating(false),
     d_repeatElapsed(0.0f),
 
@@ -1288,16 +1288,15 @@ void Window::setDestroyedByParent(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-void Window::generateAutoRepeatEvent(MouseButton button)
+void Window::generateAutoRepeatEvent(PointerSource source)
 {
-    MouseEventArgs ma(this);
-    ma.position = getUnprojectedPosition(
+    PointerEventArgs pa(this);
+    pa.position = getUnprojectedPosition(
         getGUIContext().getPointerIndicator().getPosition());
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
-    ma.button = button;
-    ma.sysKeys = getGUIContext().getSystemKeys().get();
-    ma.wheelChange = 0;
-    onMouseButtonDown(ma);
+    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.source = source;
+    pa.scroll = 0;
+    onPointerPressHold(pa);
 }
 
 //----------------------------------------------------------------------------//
@@ -1371,8 +1370,8 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "MouseAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat mouse button down events. Value is either \"True\" or \"False\".",
-        &Window::setMouseAutoRepeatEnabled, &Window::isMouseAutoRepeatEnabled, false
+        "PointerAutoRepeatEnabled", "Property to get/set whether the window will receive autorepeat pointer press events. Value is either \"True\" or \"False\".",
+        &Window::setPointerAutoRepeatEnabled, &Window::isPointerAutoRepeatEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, float,
@@ -1480,7 +1479,7 @@ void Window::setZOrderingEnabled(bool setting)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isMouseAutoRepeatEnabled(void) const
+bool Window::isPointerAutoRepeatEnabled(void) const
 {
     return d_autoRepeat;
 }
@@ -1498,13 +1497,13 @@ float Window::getAutoRepeatRate(void) const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMouseAutoRepeatEnabled(bool setting)
+void Window::setPointerAutoRepeatEnabled(bool setting)
 {
     if (d_autoRepeat == setting)
         return;
 
     d_autoRepeat = setting;
-    d_repeatButton = NoButton;
+    d_repeatPointerSource = PS_None;
 
     // FIXME: There is a potential issue here if this setting is
     // FIXME: changed _while_ the mouse is auto-repeating, and
@@ -1559,7 +1558,7 @@ void Window::update(float elapsed)
 void Window::updateSelf(float elapsed)
 {
     // Mouse button autorepeat processing.
-    if (d_autoRepeat && d_repeatButton != NoButton)
+    if (d_autoRepeat && d_repeatPointerSource != PS_None)
     {
         d_repeatElapsed += elapsed;
 
@@ -1569,7 +1568,7 @@ void Window::updateSelf(float elapsed)
             {
                 d_repeatElapsed -= d_repeatRate;
                 // trigger the repeated event
-                generateAutoRepeatEvent(d_repeatButton);
+                generateAutoRepeatEvent(d_repeatPointerSource);
             }
         }
         else
@@ -1579,7 +1578,7 @@ void Window::updateSelf(float elapsed)
                 d_repeatElapsed = 0;
                 d_repeating = true;
                 // trigger the repeated event
-                generateAutoRepeatEvent(d_repeatButton);
+                generateAutoRepeatEvent(d_repeatPointerSource);
             }
         }
     }
@@ -2340,7 +2339,7 @@ void Window::onCaptureGained(WindowEventArgs& e)
 void Window::onCaptureLost(WindowEventArgs& e)
 {
     // reset auto-repeat state
-    d_repeatButton = NoButton;
+    d_repeatPointerSource = PS_None;
 
     // handle restore of previous capture window as required.
     if (d_restoreOldCapture && (d_oldCapture != 0)) {
@@ -2544,40 +2543,40 @@ void Window::onScroll(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseButtonDown(MouseEventArgs& e)
+void Window::onPointerPressHold(PointerEventArgs& e)
 {
     // perform tooltip control
     Tooltip* const tip = getTooltip();
     if (tip)
         tip->setTargetWindow(0);
 
-    if ((e.button == LeftButton) && moveToFront_impl(true))
+    if ((e.source == PS_Left) && moveToFront_impl(true))
         ++e.handled;
 
     // if auto repeat is enabled and we are not currently tracking
-    // the button that was just pushed (need this button check because
+    // the source that was just pushed (need this source check because
     // it could be us that generated this event via auto-repeat).
     if (d_autoRepeat)
     {
-        if (d_repeatButton == NoButton)
+        if (d_repeatPointerSource == PS_None)
             captureInput();
 
-        if ((d_repeatButton != e.button) && isCapturedByThis())
+        if ((d_repeatPointerSource != e.source) && isCapturedByThis())
         {
-            d_repeatButton = e.button;
+            d_repeatPointerSource = e.source;
             d_repeatElapsed = 0;
             d_repeating = false;
         }
     }
 
-    fireEvent(EventMouseButtonDown, e, EventNamespace);
+    fireEvent(EventPointerPressHold, e, EventNamespace);
 
     // optionally propagate to parent
     if (!e.handled && d_propagateMouseInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
-        getParent()->onMouseButtonDown(e);
+        getParent()->onPointerPressHold(e);
 
         return;
     }
@@ -2590,12 +2589,11 @@ void Window::onMouseButtonDown(MouseEventArgs& e)
 //----------------------------------------------------------------------------//
 void Window::onPointerActivate(PointerEventArgs& e)
 {
-    //TODO: replace with pointer source
     // reset auto-repeat state
-    if (d_autoRepeat && d_repeatButton != NoButton)
+    if (d_autoRepeat && d_repeatPointerSource != PS_None)
     {
         releaseInput();
-        d_repeatButton = NoButton;
+        d_repeatPointerSource = PS_None;
     }
 
     fireEvent(EventPointerActivate, e, EventNamespace);

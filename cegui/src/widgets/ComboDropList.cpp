@@ -186,13 +186,13 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button pressed events
+    Handler for pointer pressed events
 *************************************************************************/
-void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
+void ComboDropList::onPointerPressHold(PointerEventArgs& e)
 {
-	Listbox::onMouseButtonDown(e);
+    Listbox::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (!isHit(e.position))
 		{
@@ -206,7 +206,6 @@ void ComboDropList::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 

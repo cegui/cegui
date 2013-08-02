@@ -485,25 +485,25 @@ void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse buttons are pushed
+    Handler for when pointer is pressed
 *************************************************************************/
-void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
+void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		// ensure all inputs come to us for now
 		if (captureInput())
 		{
-			// get position of mouse as co-ordinates local to this window.
+            // get position of pointer as co-ordinates local to this window.
 			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;
 
-			// if the mouse is in the sizing area
+            // if the pointer is in the sizing area
 			if (d_splitterHover)
 			{
 				if (isSizingEnabled())
@@ -511,18 +511,14 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 					// setup the 'dragging' state variables
 					d_dragSizing = true;
 				}
-
 			}
 			else
 			{
 				d_segmentPushed = true;
 			}
-
 		}
-
 		++e.handled;
 	}
-
 }
 
 

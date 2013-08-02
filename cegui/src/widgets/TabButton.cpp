@@ -85,11 +85,11 @@ void TabButton::onClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button release events
+    Handler for pointer press events
 *************************************************************************/
-void TabButton::onMouseButtonDown(MouseEventArgs& e)
+void TabButton::onPointerPressHold(PointerEventArgs& e)
 {
-    if (e.button == MiddleButton)
+    if (e.source == PS_Middle)
     {
         captureInput ();
         ++e.handled;
@@ -99,7 +99,7 @@ void TabButton::onMouseButtonDown(MouseEventArgs& e)
     }
 
 	// default handling
-	ButtonBase::onMouseButtonDown(e);
+    ButtonBase::onPointerPressHold(e);
 }
 
 void TabButton::onPointerActivate(PointerEventArgs& e)

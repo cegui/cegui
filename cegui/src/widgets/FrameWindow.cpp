@@ -617,18 +617,18 @@ void FrameWindow::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button down events
+    Handler for pointer press events
 *************************************************************************/
-void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
+void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (isSizingEnabled())
 		{
-			// get position of mouse as co-ordinates local to this window.
+            // get position of pointer as co-ordinates local to this window.
 			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
@@ -647,13 +647,9 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 
 					++e.handled;
 				}
-
 			}
-
 		}
-
 	}
-
 }
 
 

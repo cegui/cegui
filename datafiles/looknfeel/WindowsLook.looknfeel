@@ -3900,7 +3900,7 @@
     -->
     <WidgetLook name="WindowsLook/Slider">
         <Property name="VerticalSlider" value="True"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
+        <Property name="PointerAutoRepeatEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>

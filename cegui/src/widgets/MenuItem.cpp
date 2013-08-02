@@ -388,14 +388,14 @@ void MenuItem::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-    Handler for mouse button pressed events
+    Handler for pointer pressed events
 *************************************************************************/
-void MenuItem::onMouseButtonDown(MouseEventArgs& e)
+void MenuItem::onPointerPressHold(PointerEventArgs& e)
 {
     // default processing
-    ItemEntry::onMouseButtonDown(e);
+    ItemEntry::onPointerPressHold(e);
 
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         d_popupWasClosed = false;
 
@@ -410,7 +410,6 @@ void MenuItem::onMouseButtonDown(MouseEventArgs& e)
         // event was handled by us.
         ++e.handled;
     }
-
 }
 
 

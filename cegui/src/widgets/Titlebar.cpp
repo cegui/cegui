@@ -125,18 +125,18 @@ void Titlebar::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button press events
+    Handler for pointer press events
 *************************************************************************/
-void Titlebar::onMouseButtonDown(MouseEventArgs& e)
+void Titlebar::onPointerPressHold(PointerEventArgs& e)
 {
 	// Base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if ((d_parent != 0) && d_dragEnabled)
 		{
-			// we want all mouse inputs from now on
+            // we want all pointer inputs from now on
 			if (captureInput())
 			{
 				// initialise the dragging state

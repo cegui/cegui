@@ -132,7 +132,7 @@ protected:
 		Overridden Event Handlers
 	*************************************************************************/
     virtual void onPointerActivate(PointerEventArgs& e);
-    virtual void onMouseButtonDown(MouseEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
     virtual void onScroll(PointerEventArgs& e);
     virtual void onPointerMove(PointerEventArgs& e);
 };

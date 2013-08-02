@@ -86,7 +86,7 @@ protected:
     // override the pointer event handlers
     void onPointerMove(PointerEventArgs& e);
     void onScroll(PointerEventArgs& e);
-    void onMouseButtonDown(MouseEventArgs& e);
+    void onPointerPressHold(PointerEventArgs& e);
     void onPointerActivate(PointerEventArgs& e);
 
     void onSemanticInputEvent(SemanticEventArgs& e);

@@ -428,17 +428,17 @@ bool Editbox::performPaste(Clipboard& clipboard)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onMouseButtonDown(MouseEventArgs& e)
+void Editbox::onPointerPressHold(PointerEventArgs& e)
 {
     // base class handling
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         // grab inputs
         if (captureInput())
         {
-            // handle mouse down
+            // handle pointer press
             clearSelection();
             d_dragging = true;
             d_dragAnchorIdx = getTextIndexFromPosition(e.position);
@@ -452,7 +452,6 @@ void Editbox::onMouseButtonDown(MouseEventArgs& e)
 
         ++e.handled;
     }
-
 }
 
 //----------------------------------------------------------------------------//

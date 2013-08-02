@@ -1068,15 +1068,15 @@ void Tree::onSized(ElementEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void Tree::onMouseButtonDown(MouseEventArgs& e)
+void Tree::onPointerPressHold(PointerEventArgs& e)
 {
     // base class processing
     // populateGeometryBuffer();
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
     
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         //bool modified = false;
         
@@ -1117,8 +1117,9 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
             else
             {
                 // clear old selections if no control key is pressed or if multi-select is off
-                if (!(e.sysKeys & Control) || !d_multiselect)
-                    clearAllSelections_impl();
+                //TODO: handle SelectCumulative semantic event
+                //if (!(e.sysKeys & Control) || !d_multiselect)
+                //    clearAllSelections_impl();
                 
                 // select range or item, depending upon keys and last selected item
 #if 0 // TODO: fix this
@@ -1136,18 +1137,18 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
         else
         {
             // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiselect)
-            {
-                if (clearAllSelections_impl())
-                {
-                    // Changes to the selections were actually made
-                    TreeEventArgs args(this);
-                    args.treeItem = item;
-                    onSelectionChanged(args);
-                }
-            }
+            //TODO: handle SelectCumulative semantic event
+            //if (!(e.sysKeys & Control) || !d_multiselect)
+            //{
+            //    if (clearAllSelections_impl())
+            //    {
+            //        // Changes to the selections were actually made
+            //        TreeEventArgs args(this);
+            //        args.treeItem = item;
+            //        onSelectionChanged(args);
+            //    }
+            //}
         }
-        
         
         ++e.handled;
     }

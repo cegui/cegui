@@ -383,7 +383,7 @@ public:
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseButtonDown;
+    static const String EventPointerPressHold;
     /** Event fired when the pointer is activated within the Window.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
@@ -1077,16 +1077,16 @@ public:
 
     /*!
     \brief
-        Return whether mouse button down event autorepeat is enabled for this
+        Return whether pointer press event autorepeat is enabled for this
         window.
 
     \return
-        - true if autorepeat of mouse button down events is enabled for this
+        - true if autorepeat of pointer press events is enabled for this
           window.
-        - false if autorepeat of mouse button down events is not enabled for
+        - false if autorepeat of pointer press events is not enabled for
           this window.
     */
-    bool isMouseAutoRepeatEnabled(void) const;
+    bool isPointerAutoRepeatEnabled(void) const;
 
     /*!
     \brief
@@ -1935,25 +1935,25 @@ public:
 
     /*!
     \brief
-        Set whether mouse button down event autorepeat is enabled for this
+        Set whether pointer press event autorepeat is enabled for this
         window.
 
     \param setting
-        - true to enable autorepeat of mouse button down events.
-        - false to disable autorepeat of mouse button down events.
+        - true to enable autorepeat of pointer press events.
+        - false to disable autorepeat of pointer press events.
 
     \return
         Nothing.
     */
-    void setMouseAutoRepeatEnabled(bool setting);
+    void setPointerAutoRepeatEnabled(bool setting);
 
     /*!
     \brief
         Set the current auto-repeat delay setting for this window.
 
     \param delay
-        float value indicating the delay, in seconds, defore the first repeat
-        mouse button down event should be triggered when autorepeat is enabled.
+        float value indicating the delay, in seconds, before the first repeat
+        pointer press event should be triggered when autorepeat is enabled.
 
     \return
         Nothing.
@@ -1965,9 +1965,8 @@ public:
         Set the current auto-repeat rate setting for this window.
 
     \param rate
-        float value indicating the rate, in seconds, at which repeat mouse
-        button down events should be generated after the initial delay has
-        expired.
+        float value indicating the rate, in seconds, at which repeat pointer press
+        events should be generated after the initial delay has expired.
 
     \return
         Nothing.
@@ -3017,17 +3016,16 @@ protected:
 
     /*!
     \brief
-        Handler called when a mouse button has been depressed within this
-        window's area.
+        Handler called when a pointer is held pressed within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseButtonDown(MouseEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the pointer is activated within this window's area.
+        Handler called when a pointer is activated within this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -3228,9 +3226,9 @@ protected:
 
     /*!
     \brief
-        Fires off a repeated mouse button down event for this window.
+        Fires off a repeated pointer press event for this window.
     */
-    void generateAutoRepeatEvent(MouseButton button);
+    void generateAutoRepeatEvent(PointerSource source);
 
     /*!
     \brief
@@ -3559,14 +3557,14 @@ protected:
 
     //! whether (most) mouse events pass through this window
     bool d_mousePassThroughEnabled;
-    //! whether pressed mouse button will auto-repeat the down event.
+    //! whether pressed pointer will auto-repeat the down event.
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
     float d_repeatDelay;
     //! seconds between further repeats after delay has expired.
     float d_repeatRate;
-    //! button we're tracking for auto-repeat purposes.
-    MouseButton d_repeatButton;
+    //! pointer source we're tracking for auto-repeat purposes.
+    PointerSource d_repeatPointerSource;
     //! implements repeating - is true after delay has elapsed,
     bool d_repeating;
     //! implements repeating - tracks time elapsed.

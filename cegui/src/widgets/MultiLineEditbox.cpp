@@ -1160,19 +1160,19 @@ void MultiLineEditbox::handlePageDown(uint sysKeys)
 
 
 /*************************************************************************
-	Handler for when a mouse button is pushed
+    Handler for when a pointer is pressed
 *************************************************************************/
-void MultiLineEditbox::onMouseButtonDown(MouseEventArgs& e)
+void MultiLineEditbox::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class handling
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		// grab inputs
 		if (captureInput())
 		{
-			// handle mouse down
+            // handle pointer press
 			clearSelection();
 			d_dragging = true;
 			d_dragAnchorIdx = getTextIndexFromPosition(e.position);
@@ -1181,7 +1181,6 @@ void MultiLineEditbox::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 

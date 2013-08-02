@@ -72,21 +72,6 @@ const float InputAggregator::DefaultMouseButtonMultiClickTimeout = 0.3333f;
 const Sizef InputAggregator::DefaultMouseButtonMultiClickTolerance(0.01f, 0.01f);
 
 //----------------------------------------------------------------------------//
-static PointerSource convertToPointerSource(MouseButton button)
-{
-    if (button == LeftButton)
-        return PS_Left;
-
-    if (button == RightButton)
-        return PS_Right;
-
-    if (button == MiddleButton)
-        return PS_Middle;
-
-    return PS_None;
-}
-
-//----------------------------------------------------------------------------//
 InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_inputReceiver(input_receiver),
     d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),

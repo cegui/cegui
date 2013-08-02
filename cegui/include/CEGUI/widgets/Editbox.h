@@ -603,7 +603,7 @@ protected:
     virtual void onTextAcceptedEvent(WindowEventArgs& e);
 
     // Overridden event handlers
-    void onMouseButtonDown(MouseEventArgs& e);
+    void onPointerPressHold(PointerEventArgs& e);
     void onPointerActivate(PointerEventArgs& e);
     void onMouseTripleClicked(MouseEventArgs& e);
     void onPointerMove(PointerEventArgs& e);

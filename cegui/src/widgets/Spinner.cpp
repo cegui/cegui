@@ -88,12 +88,12 @@ namespace CEGUI
         Editbox* editbox = getEditbox();
 
         // setup component controls
-        increaseButton->setMouseAutoRepeatEnabled(true);
-        decreaseButton->setMouseAutoRepeatEnabled(true);
+        increaseButton->setPointerAutoRepeatEnabled(true);
+        decreaseButton->setPointerAutoRepeatEnabled(true);
 
         // perform event subscriptions.
-        increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+        increaseButton->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+        decreaseButton->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
         editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation

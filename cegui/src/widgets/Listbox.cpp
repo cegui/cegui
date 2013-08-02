@@ -846,22 +846,23 @@ void Listbox::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void Listbox::onMouseButtonDown(MouseEventArgs& e)
+void Listbox::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		bool modified = false;
 
-		// clear old selections if no control key is pressed or if multi-select is off
-		if (!(e.sysKeys & Control) || !d_multiselect)
-		{
-			modified = clearAllSelections_impl();
-		}
+        //// clear old selections if no control key is pressed or if multi-select is off
+        //TODO: Handle SelectCumulative semantic event
+        //if (!(e.sysKeys & Control) || !d_multiselect)
+        //{
+        //  modified = clearAllSelections_impl();
+        //}
 
 		ListboxItem* item = getItemAtPoint(e.position);
 
@@ -869,15 +870,16 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 		{
 			modified = true;
 
-			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
-			{
-				selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
-			}
-			else
-			{
-				item->setSelected(item->isSelected() ^ true);
-			}
+            //// select range or item, depending upon keys and last selected item
+            //TODO: handle SelectMultipleItems semantic event
+            //if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
+            //{
+            //  selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
+            //}
+            //else
+            //{
+            //  item->setSelected(item->isSelected() ^ true);
+            //}
 
 			// update last selected item
 			d_lastSelected = item->isSelected() ? item : 0;
@@ -892,7 +894,6 @@ void Listbox::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 

@@ -203,7 +203,6 @@ struct CEGUIEXPORT Key
 
 };
 
-
 /*!
 \brief
     Enumeration of mouse buttons
@@ -226,6 +225,19 @@ enum MouseButton
     NoButton
 };
 
+static PointerSource convertToPointerSource(MouseButton button)
+{
+    if (button == LeftButton)
+        return PS_Left;
+
+    if (button == RightButton)
+        return PS_Right;
+
+    if (button == MiddleButton)
+        return PS_Middle;
+
+    return PS_None;
+}
 
 /*!
 \brief
