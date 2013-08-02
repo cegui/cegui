@@ -553,39 +553,6 @@ bool GUIContext::injectMouseLeaves(void)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectMouseButtonDown(MouseButton button)
-{
-    d_systemKeys.mouseButtonPressed(button);
-
-    MouseEventArgs ma(0);
-    ma.position = d_pointerIndicator.getPosition();
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
-    ma.button = button;
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = 0;
-    ma.window = getTargetWindow(ma.position, false);
-    // make mouse position sane for this target window
-    if (ma.window)
-        ma.position = ma.window->getUnprojectedPosition(ma.position);
-
-    return ma.handled != 0;
-}
-
-static PointerSource convertToPointerSource(MouseButton button)
-{
-    if (button == LeftButton)
-        return PS_Left;
-
-    if (button == RightButton)
-        return PS_Right;
-
-    if (button == MiddleButton)
-        return PS_Middle;
-
-    return PS_None;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::injectKeyDown(Key::Scan scan_code)
 {
     d_systemKeys.keyPressed(scan_code);
@@ -795,6 +762,9 @@ void GUIContext::initializeSemanticEventHandlers()
     d_semanticEventHandlers.insert(std::make_pair(SV_PointerActivate,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
         &GUIContext::handlePointerActivateEvent, this)));
+    d_semanticEventHandlers.insert(std::make_pair(SV_PointerPressHold,
+        new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
+        &GUIContext::handlePointerPressHoldEvent, this)));
     d_semanticEventHandlers.insert(std::make_pair(SV_PointerMove,
         new InputEventHandlerSlot<GUIContext, SemanticInputEvent>(
             &GUIContext::handlePointerMoveEvent, this)));
@@ -817,6 +787,23 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
         return false;
 
     pa.window->onPointerActivate(pa);
+    return pa.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
+{
+    PointerEventArgs pa(0);
+    pa.position = d_pointerIndicator.getPosition();
+    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.source = event.d_payload.source;
+    pa.scroll = 0;
+    pa.window = getTargetWindow(pa.position, false);
+    // make mouse position sane for this target window
+    if (pa.window)
+        pa.position = pa.window->getUnprojectedPosition(pa.position);
+
+    pa.window->onPointerPressHold(pa);
     return pa.handled != 0;
 }
 

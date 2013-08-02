@@ -97,14 +97,14 @@ void ButtonBase::onPointerMove(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button pressed events
+	Handler for pointer press hold events
 *************************************************************************/
-void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
+void ButtonBase::onPointerPressHold(PointerEventArgs& e)
 {
 	// default processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
         if (captureInput())
         {
@@ -116,7 +116,6 @@ void ButtonBase::onMouseButtonDown(MouseEventArgs& e)
 		// event was handled by us.
 		++e.handled;
 	}
-
 }
 
 //----------------------------------------------------------------------------//

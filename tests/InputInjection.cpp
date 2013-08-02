@@ -37,13 +37,15 @@ using namespace CEGUI;
 
 struct InputInjectionFixture
 {
-    InputInjectionFixture()
-        : d_buttonHandledCount(0)
-        , d_windowHandledCount(0)
+    InputInjectionFixture() :
+        d_buttonHandledCount(0),
+        d_windowHandledCount(0),
+        d_guiContext(&System::getSingleton().getDefaultGUIContext()),
+        d_inputAggregator(new InputAggregator(d_guiContext))
     {
         System::getSingleton().notifyDisplaySizeChanged(Sizef(100, 100));
         Rectf constraint_area(0, 0, 100, 100);
-        System::getSingleton().getDefaultGUIContext().getPointerIndicator().setConstraintArea(&constraint_area);
+        d_guiContext->getPointerIndicator().setConstraintArea(&constraint_area);
 
         d_window = WindowManager::getSingleton().createWindow("DefaultWindow");
         d_window->setPosition(UVector2(cegui_reldim(0.0f), cegui_reldim(0.0f)));
@@ -76,6 +78,8 @@ struct InputInjectionFixture
     {
         disconnectConnections(d_windowConnections);
         disconnectConnections(d_buttonConnections);
+
+        delete d_inputAggregator;
 
         System::getSingleton().getDefaultGUIContext().setRootWindow(0);
 
@@ -110,27 +114,19 @@ struct InputInjectionFixture
     Window* d_button;
     Editbox* d_editbox;
 
+    GUIContext* d_guiContext;
+    InputAggregator* d_inputAggregator;
+
     std::vector<Event::Connection> d_windowConnections;
     std::vector<Event::Connection> d_buttonConnections;
 };
 
 //----------------------------------------------------------------------------//
-static inline GUIContext& getGUIContext()
+static void doClick(InputAggregator* input_aggregator, float position_x, float position_y)
 {
-    return System::getSingleton().getDefaultGUIContext();
-}
-
-static inline InputAggregator& getInputAggregator()
-{
-    static InputAggregator inputAggregator(&System::getSingleton().getDefaultGUIContext());
-    return inputAggregator;
-}
-
-static void doClick(float position_x, float position_y)
-{
-    getInputAggregator().injectMousePosition(position_x, position_y);
-    getGUIContext().injectMouseButtonDown(LeftButton);
-    getInputAggregator().injectMouseButtonUp(LeftButton);
+    BOOST_REQUIRE_EQUAL(input_aggregator->injectMousePosition(position_x, position_y), true);
+    BOOST_REQUIRE_EQUAL(input_aggregator->injectMouseButtonDown(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(input_aggregator->injectMouseButtonUp(LeftButton), true);
 }
 //----------------------------------------------------------------------------//
 
@@ -139,7 +135,7 @@ BOOST_FIXTURE_TEST_SUITE(InputInjection, InputInjectionFixture)
 BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 {
     // we check for both: a) being handled, b) have the expected final result
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(LeftButton), true);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 1);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 0);
@@ -147,8 +143,8 @@ BOOST_AUTO_TEST_CASE(OneClickOnWindow)
 
 BOOST_AUTO_TEST_CASE(MultipleClicksOnWindow)
 {
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonClick(LeftButton), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonClick(LeftButton), true);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 2);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 0);
@@ -156,7 +152,7 @@ BOOST_AUTO_TEST_CASE(MultipleClicksOnWindow)
 
 BOOST_AUTO_TEST_CASE(OneClickOnButton)
 {
-    doClick(30.0f, 30.0f);
+    doClick(d_inputAggregator, 30.0f, 30.0f);
 
     BOOST_REQUIRE_EQUAL(d_windowHandledCount, 0);
     BOOST_REQUIRE_EQUAL(d_buttonHandledCount, 1);
@@ -165,11 +161,11 @@ BOOST_AUTO_TEST_CASE(OneClickOnButton)
 BOOST_AUTO_TEST_CASE(InsertSimpleText)
 {
     // focus the editbox
-    doClick(91.0f, 91.0f);
+    doClick(d_inputAggregator, 91.0f, 91.0f);
 
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('o'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('o'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -177,13 +173,13 @@ BOOST_AUTO_TEST_CASE(InsertSimpleText)
 BOOST_AUTO_TEST_CASE(DeleteTextWithBackspace)
 {
     // focus the editbox
-    doClick(91.0f, 91.0f);
+    doClick(d_inputAggregator, 91.0f, 91.0f);
 
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('o'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('k'), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Backspace), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('o'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('k'), true);
+    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::Backspace), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -191,16 +187,16 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithBackspace)
 BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
 {
     // focus the editbox
-    doClick(91.0f, 91.0f);
+    doClick(d_inputAggregator, 91.0f, 91.0f);
 
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('o'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('k'), true);
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('o'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('k'), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
 
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::ArrowLeft), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::ArrowLeft), true);
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Delete), true);
+    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::ArrowLeft), true);
+    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::ArrowLeft), true);
+    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::Delete), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -208,20 +204,20 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
 BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
 {
     // focus the editbox
-    doClick(91.0f, 91.0f);
+    doClick(d_inputAggregator, 91.0f, 91.0f);
 
     d_editbox->setText("WoW rocks");
 
     // select all text
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonTripleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonTripleClick(LeftButton), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 9);
 
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectCopyRequest(), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectCopyRequest(), true);
 
     // deselect the text
     d_editbox->setSelection(0, 0);
 
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectPasteRequest(), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectPasteRequest(), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW rocksWoW rocks");
 }
@@ -229,15 +225,15 @@ BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
 BOOST_AUTO_TEST_CASE(SelectWordAndDelete)
 {
     // focus the editbox
-    doClick(92.0f, 92.0f);
+    doClick(d_inputAggregator, 92.0f, 92.0f);
 
     d_editbox->setText("WoW rocks");
 
     // select all text
-    BOOST_REQUIRE_EQUAL(getInputAggregator().injectMouseButtonDoubleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonDoubleClick(LeftButton), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
 
-    BOOST_REQUIRE_EQUAL(getGUIContext().injectKeyDown(Key::Delete), true);
+    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::Delete), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
 }
 BOOST_AUTO_TEST_SUITE_END()

@@ -255,15 +255,7 @@ bool SamplesFramework::injectChar(int character)
 bool SamplesFramework::injectMouseButtonDown(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->
-            injectMouseButtonDown(ceguiMouseButton);
-
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().
-            injectMouseButtonDown(ceguiMouseButton);
-
-    return false;
+    return getCurrentInputAggregator()->injectMouseButtonDown(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//

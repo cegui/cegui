@@ -1919,14 +1919,14 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
+void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		bool modified = false;
 
@@ -1935,23 +1935,25 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 
 		if (item)
 		{
-            // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiSelect)
-            {
-                modified = clearAllSelections_impl();
-            }
+            //// clear old selections if no control key is pressed or if multi-select is off
+            //TODO: handle SelectCumulative semantic event
+            //if (!(e.sysKeys & Control) || !d_multiSelect)
+            //{
+            //    modified = clearAllSelections_impl();
+            //}
 
 			modified = true;
 
 			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
-			{
-				modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
-			}
-			else
-			{
-				modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
-			}
+            //TODO: handle SelectMultipleItems semantic event
+            //if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
+            //{
+            //  modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
+            //}
+            //else
+            //{
+            //  modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
+            //}
 
 			// update last selected item
 			d_lastSelected = item->isSelected() ? item : 0;
@@ -1966,7 +1968,6 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 

@@ -91,13 +91,13 @@ void Scrollbar::initialiseComponents(void)
 
     // set up Increase button
     getIncreaseButton()->
-    subscribeEvent(PushButton::EventMouseButtonDown,
+    subscribeEvent(PushButton::EventPointerPressHold,
                    Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked,
                                      this));
 
     // set up Decrease button
     getDecreaseButton()->
-    subscribeEvent(PushButton::EventMouseButtonDown,
+    subscribeEvent(PushButton::EventPointerPressHold,
                    Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked,
                                      this));
 
@@ -213,12 +213,12 @@ void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
+void Scrollbar::onPointerPressHold(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-    if (e.button != LeftButton)
+    if (e.source != PS_Left)
         return;
 
     const float adj = getAdjustDirectionFromPoint(e.position);

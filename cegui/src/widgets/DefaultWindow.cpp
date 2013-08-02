@@ -65,11 +65,11 @@ void DefaultWindow::onScroll(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseButtonDown(MouseEventArgs& e)
+void DefaultWindow::onPointerPressHold(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseButtonDown(e);
-    updateMouseEventHandled(e);
+    Window::onPointerPressHold(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//

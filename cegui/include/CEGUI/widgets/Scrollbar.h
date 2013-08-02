@@ -539,7 +539,7 @@ protected:
     virtual void onScrollConfigChanged(WindowEventArgs& e);
 
     // Overridden event handlers
-    virtual void onMouseButtonDown(MouseEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
     virtual void onScroll(PointerEventArgs& e);
 
     // base class overrides

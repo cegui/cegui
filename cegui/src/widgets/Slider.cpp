@@ -177,14 +177,14 @@ void Slider::onThumbTrackEnded(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when a mouse button is pressed
+    Handler for when a pointer is pressed
 *************************************************************************/
-void Slider::onMouseButtonDown(MouseEventArgs& e)
+void Slider::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		float adj = getAdjustDirectionFromPoint(e.position);
 
@@ -196,7 +196,6 @@ void Slider::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 

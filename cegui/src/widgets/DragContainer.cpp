@@ -243,16 +243,16 @@ namespace CEGUI
             setImage(d_dragging ? getDragCursorImage() : getMouseCursor());
     }
 
-    void DragContainer::onMouseButtonDown(MouseEventArgs& e)
+    void DragContainer::onPointerPressHold(PointerEventArgs& e)
     {
-        Window::onMouseButtonDown(e);
+        Window::onPointerPressHold(e);
 
-        if (e.button == LeftButton)
+        if (e.source == PS_Left)
         {
             // ensure all inputs come to us for now
             if (captureInput())
             {
-                // get position of mouse as co-ordinates local to this window.
+                // get position of pointer as co-ordinates local to this window.
                 Vector2f localPos = CoordConverter::screenToWindow(*this, e.position);
 
                 // store drag point for possible sizing or moving operation.
@@ -263,7 +263,6 @@ namespace CEGUI
 
             ++e.handled;
         }
-
     }
 
     void DragContainer::onPointerActivate(PointerEventArgs& e)

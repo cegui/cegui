@@ -216,7 +216,6 @@ public:
 
     // Implementation of InjectedInputReceiver interface
     bool injectMouseLeaves(void);
-    bool injectMouseButtonDown(MouseButton button);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
 
@@ -258,6 +257,7 @@ protected:
     // protected overrides
     void drawContent();
 
+    // Input event handlers
     void initializeSemanticEventHandlers();
 
     bool handleTextInputEvent(const TextInputEvent& event);
@@ -269,6 +269,7 @@ protected:
     bool handlePointerMoveEvent(const SemanticInputEvent& event);
     bool handlePointerMove_impl(PointerEventArgs& pa);
     bool handlePointerActivateEvent(const SemanticInputEvent& event);
+    bool handlePointerPressHoldEvent(const SemanticInputEvent& event);
 
     Window* d_rootWindow;
     bool d_isDirty;

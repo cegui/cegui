@@ -591,7 +591,7 @@ void ColourPickerControls::initialiseComponents()
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseButtonUp, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseButtonDown,
+        Window::EventPointerPressHold,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseButtonDown, this));
 
     getColourPickerStaticImage()->subscribeEvent(

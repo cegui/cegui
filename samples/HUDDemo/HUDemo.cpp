@@ -250,7 +250,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventMouseButtonDown, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventPointerPressHold, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
     d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");

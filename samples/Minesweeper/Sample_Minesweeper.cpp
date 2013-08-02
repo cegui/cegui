@@ -228,7 +228,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
             d_buttons[i][j]->setID(0);
             // Connect event handlers
             d_buttons[i][j]->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MinesweeperSample::handleMineButtonClicked, this));
-            d_buttons[i][j]->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&MinesweeperSample::handleMineButtonDown, this));
+            d_buttons[i][j]->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&MinesweeperSample::handleMineButtonDown, this));
         }
     }
     d_result = winMgr.createWindow("Vanilla/StaticText");
