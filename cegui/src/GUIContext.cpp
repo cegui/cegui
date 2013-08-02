@@ -816,18 +816,8 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
     if (!pa.window)
         return false;
 
-    // store original window because we re-use the event args.
-    Window* const tgt_wnd = pa.window;
-
-    // send 'up' input to the window
     pa.window->onPointerActivate(pa);
-    // store whether the 'up' part was handled so we may reuse the EventArgs
-    const uint upHandled = pa.handled;
-
-    // restore target window (because Window::on* may have propagated input)
-    pa.window = tgt_wnd;
-
-    return (pa.handled + upHandled) != 0;
+    return pa.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
