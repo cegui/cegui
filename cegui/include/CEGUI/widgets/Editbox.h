@@ -42,6 +42,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class UndoHandler;
+
 //! Base class for the EditboxWindowRenderer class
 class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
 {
@@ -455,15 +457,21 @@ public:
 
     //! \copydoc Window::performCut
     virtual bool performCut(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
-    
+
     //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
 
     //! Destructor for Editbox class.
     virtual ~Editbox(void);
+
+    //! \copydoc Window::performUndo
+    virtual bool performUndo();
+
+    //! \copydoc Window::performRedo
+    virtual bool performRedo();
 
 protected:
     /*!
@@ -641,6 +649,8 @@ protected:
     MatchState d_validatorMatchState;
     //! Previous match state change response
     bool d_previousValidityChangeResponse;
+    //! Undo handler
+    UndoHandler *d_undoHandler;
 
 private:
 
