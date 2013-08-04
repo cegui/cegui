@@ -1,0 +1,114 @@
+/**
+@page xml_imageset Imageset XML files.
+@author Paul D Turner
+
+An Imageset is a collection of named regions upon some source surface, such as
+an image file or texture.  In CEGUI terminology, each of these named regions is
+an Image and is the basic level of imagery used by CEGUI.
+
+<br>
+@section xml_imageset_overview Overview
+The reference for each element is arranged into sections, as described below:
+- Purpose:
+    - This section describes what the elements general purpose is within the
+      specifications.
+
+- Attributes:
+    - This section describes available attributes for the elements, and whether
+      they are required or optional.
+
+- Usage:
+    - Describes where the element may appear, whether the element may have
+      sub-elements, and other important usage information.
+
+- Examples:
+    - For many elements, this section will contain brief examples showing the
+      element used in context.
+
+
+<br>
+@section xml_imageset_imageset \<Imageset\> Element
+- Purpose:
+    - The \<Imageset\> element is the root element in XML imageset definition
+    files.
+
+- Attributes:
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI imageset version is: 2
+    - @c name: Specifies the name that will be assigned to the Imageset in the
+      CEGUI system.  Required Attribute.
+    - @c imagefile: Specifies the path to the image file containing the imagery 
+      for the imageset.  Required attribute.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file given in the @c Imagefile
+      attribute.  Optional attribute, default is the Imageset default group.
+    - @c autoScaled: Property that specifies how to scale imagery in relation to
+      the specified native resolution. The native resolution values are intended
+      to indicate the resolution that would result in a one-to-one
+      (i.e. unscaled) mapping from source to destination. At display resolutions
+      higher than the native, the imagery will be scaled @e up to
+      take up more space, and at display resolutions lower than the native,
+      imagery will be scaled @e down to take up less space.
+      Possible values for this attribute are as follows:
+        - vertical - images are auto scaled depending on the native resolution
+          height and the current resolution height. Horizontal scaling is
+          computed appropriately to maintain aspect ratio.
+        - horizontal - images are auto scaled depending on the native resolution
+          width and the current resolution width. Vertical scaling is
+          computed appropriately to maintain aspect ratio.
+        - min - Vertical and horizontal scaling factors are calculated as above
+          and images are auto scaled according to the smaller of the two scaling
+          factors. Aspect ratio is maintained.
+        - max - Vertical and horizontal scaling factors are calculated as above
+          and images are auto scaled according to the larger of the two scaling
+          factors. Aspect ratio is maintained.
+        - true - Vertical and horizontal scaling factors are calculated as above
+          and image height and width are scaled independently.
+          Aspect ratio is @em not maintained.
+        - false - no auto scaling of images will be performed.
+      Optional attribute, default is false.
+    - @c nativeHorzRes: When AutoScaled is enabled, specifies the horizontal
+      screen resolution that will result in an unscaled, one-to-one mapping of
+      pixels from the source image to the destination surface.
+      Optional attribute, default is 640.
+    - @c nativeVertRes: When AutoScaled is enabled, specifies the vertical
+      screen resolution that will result in an unscaled, one-to-one mapping of
+      pixels from the source image to the destination surface.
+      Optional attribute, default is 480.
+
+- Usage:
+    - The \<Imageset\> element is the root element for imageset files. 
+    - The \<Imageset\> element may contain any number of \<Image\> elements. 
+    - No element may contain \<Imageset\> elements as a sub-element.
+
+- Examples:
+
+<br>
+@section xml_imageset_image \<Image> Element
+- Purpose:
+    - Defines a single component image of an imageset.
+
+- Attributes:
+    - @c name: Specifies the name that will be used to identify the image within
+      the Imageset.  Required attribute.
+    - @c xPos: Specifies the X pixel co-ordinate of the top-left corner of the
+      image on the source surface.  Required attribute.
+    - @c yPos: Specifies the Y pixel co-ordinate of the top-left corner of the
+      image on the source surface.  Required attribute.
+    - @c width: Specifies the width of the image in pixels.
+      Required attribute.
+    - @c height: Specifies the height of the image in pixels.
+      Required attibute.
+    - @c xOffset: Specifies a horizontal offset to apply when rendering the
+      image.  Optional attribute, default is 0.
+    - @c yOffset: Specifies a vertical offset to apply when rendering the
+      image.  Optional attribute, default is 0.
+
+- Usage:
+    - The \<Image\> element may only appear as a sub-element of the \<Imageset\>
+    element.
+    - The \<Image\> element may not contain any sub-elements.
+
+- Examples:
+
+*/
