@@ -16,6 +16,10 @@ list (APPEND CORE_HEADER_FILES
     ${CMAKE_CURRENT_BINARY_DIR}/../include/CEGUI/Version.h
 )
 
+# We don't append all to CORE_HEADER_FILES since that would mess up installation
+# on systems where files are installed.
+set (ALL_HEADER_FILES ${CORE_HEADER_FILES} ${WIDGET_HEADER_FILES} ${FALAGARD_HEADER_FILES})
+
 # never compile this directly, it's included in another file
 list (REMOVE_ITEM CORE_SOURCE_FILES minibidi.cpp)
 
@@ -52,7 +56,13 @@ endif()
 
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.
-cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES CORE_HEADER_FILES TRUE FALSE)
+cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES ALL_HEADER_FILES TRUE FALSE)
+
+source_group("Source Files\\widget" FILES ${WIDGET_SOURCE_FILES})
+source_group("Source Files\\falagard" FILES ${FALAGARD_SOURCE_FILES})
+
+source_group("Header Files\\widget" FILES ${WIDGET_HEADER_FILES})
+source_group("Header Files\\falagard" FILES ${FALAGARD_HEADER_FILES})
 
 if (NOT WIN32)
     cegui_add_dependency(${CEGUI_TARGET_NAME} ICONV)
