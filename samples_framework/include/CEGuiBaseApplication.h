@@ -130,7 +130,7 @@ public:
     \brief
         Registers the overlay handler for rendering the FPS for a specified GUIContext
     */
-    void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
+    void registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
 
 
 protected:
