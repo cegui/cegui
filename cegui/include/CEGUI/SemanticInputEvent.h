@@ -98,6 +98,7 @@ enum SemanticValue
     SV_PointerDeactivate               = 0x0002,
     SV_PointerPressHold                = 0x0003,
     SV_PointerMove                     = 0x0004,
+    SV_PointerLeave                    = 0x0005,
     SV_SelectMultipleItems             = 0x0010,
     SV_SelectCumulative                = 0x0011,
     SV_SelectWord                      = 0x0012,

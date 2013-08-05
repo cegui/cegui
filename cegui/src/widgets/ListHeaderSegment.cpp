@@ -553,12 +553,12 @@ void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for when mouse leaves the widget area (uncaptured)
+    Handler for when pointer leaves the widget area (uncaptured)
 *************************************************************************/
-void ListHeaderSegment::onMouseLeaves(MouseEventArgs& e)
+void ListHeaderSegment::onPointerLeaves(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseLeaves(e);
+    Window::onPointerLeaves(e);
 
 	d_splitterHover = false;
 	d_dragSizing = false;

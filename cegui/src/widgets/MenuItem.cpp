@@ -459,12 +459,12 @@ void MenuItem::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-    Handler for when mouse leaves the widget
+    Handler for when pointer leaves the widget
 *************************************************************************/
-void MenuItem::onMouseLeaves(MouseEventArgs& e)
+void MenuItem::onPointerLeaves(PointerEventArgs& e)
 {
     // deafult processing
-    ItemEntry::onMouseLeaves(e);
+    ItemEntry::onPointerLeaves(e);
 
     d_hovering = false;
     invalidate();

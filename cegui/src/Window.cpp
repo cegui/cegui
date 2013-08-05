@@ -98,10 +98,10 @@ const String Window::EventWindowRendererAttached("WindowRendererAttached");
 const String Window::EventWindowRendererDetached("WindowRendererDetached");
 const String Window::EventTextParsingChanged("TextParsingChanged");
 const String Window::EventMarginChanged("MarginChanged");
-const String Window::EventMouseEntersArea("MouseEntersArea");
-const String Window::EventMouseLeavesArea("MouseLeavesArea");
-const String Window::EventMouseEntersSurface( "MouseEntersSurface" );
-const String Window::EventMouseLeavesSurface( "MouseLeavesSurface" );
+const String Window::EventPointerEntersArea("PointerEntersArea");
+const String Window::EventPointerLeavesArea("PointerLeavesArea");
+const String Window::EventPointerEntersSurface("PointerEntersSurface");
+const String Window::EventPointerLeavesSurface("PointerLeavesSurface");
 const String Window::EventPointerMove("PointerMove");
 const String Window::EventScroll("Scroll");
 const String Window::EventPointerPressHold("PointerPressHold");
@@ -274,7 +274,7 @@ Window::Window(const String& type, const String& name):
 
     d_guiContext(0),
 
-    d_containsMouse(false),
+    d_containsPointer(false),
 
     d_fontRenderSizeChangeConnection(
         GlobalEventSet::getSingleton().subscribeEvent(
@@ -2457,36 +2457,35 @@ void Window::onChildRemoved(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseEntersArea(MouseEventArgs& e)
+void Window::onPointerEntersArea(PointerEventArgs& e)
 {
-    d_containsMouse = true;
-    fireEvent(EventMouseEntersArea, e, EventNamespace);
+    d_containsPointer = true;
+    fireEvent(EventPointerEntersArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseLeavesArea(MouseEventArgs& e)
+void Window::onPointerLeavesArea(PointerEventArgs& e)
 {
-    d_containsMouse = false;
-    fireEvent(EventMouseLeavesArea, e, EventNamespace);
+    d_containsPointer = false;
+    fireEvent(EventPointerLeavesArea, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseEnters(MouseEventArgs& e)
+void Window::onPointerEnters(PointerEventArgs& e)
 {
-    // set the mouse cursor
-    getGUIContext().
-        getPointerIndicator().setImage(getMouseCursor());
+    // set the pointer indicator
+    getGUIContext().getPointerIndicator().setImage(getMouseCursor());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
     if (tip && !isAncestor(tip))
         tip->setTargetWindow(this);
 
-    fireEvent(EventMouseEntersSurface, e, EventNamespace);
+    fireEvent(EventPointerEntersSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void Window::onMouseLeaves(MouseEventArgs& e)
+void Window::onPointerLeaves(PointerEventArgs& e)
 {
     // perform tooltip control
     const Window* const mw = getGUIContext().getWindowContainingPointer();
@@ -2494,7 +2493,7 @@ void Window::onMouseLeaves(MouseEventArgs& e)
     if (tip && mw != tip && !(mw && mw->isAncestor(tip)))
         tip->setTargetWindow(0);
 
-    fireEvent(EventMouseLeavesSurface, e, EventNamespace);
+    fireEvent(EventPointerLeavesSurface, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
@@ -3749,7 +3748,7 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 //----------------------------------------------------------------------------//
 bool Window::isMouseContainedInArea() const
 {
-    return d_containsMouse;
+    return d_containsPointer;
 }
 
 //----------------------------------------------------------------------------//

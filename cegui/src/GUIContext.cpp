@@ -69,15 +69,15 @@ GUIContext::GUIContext(RenderTarget& target) :
             Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
     d_semanticEventHandlers()
 {
-    resetWindowContainingMouse();
+    resetWindowContainingPointer();
     initializeSemanticEventHandlers();
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::resetWindowContainingMouse()
+void GUIContext::resetWindowContainingPointer()
 {
-    d_windowContainingMouse = 0;
-    d_windowContainingMouseIsUpToDate = true;
+    d_windowContainingPointer = 0;
+    d_windowContainingPointerIsUpToDate = true;
 }
 
 //----------------------------------------------------------------------------//
@@ -211,13 +211,13 @@ Window* GUIContext::getModalWindow() const
 //----------------------------------------------------------------------------//
 Window* GUIContext::getWindowContainingPointer() const
 {
-    if (!d_windowContainingMouseIsUpToDate)
+    if (!d_windowContainingPointerIsUpToDate)
     {
-        updateWindowContainingMouse_impl();
-        d_windowContainingMouseIsUpToDate = true;
+        updateWindowContainingPointer_impl();
+        d_windowContainingPointerIsUpToDate = true;
     }
 
-    return d_windowContainingMouse;
+    return d_windowContainingPointer;
 }
 
 //----------------------------------------------------------------------------//
@@ -334,7 +334,7 @@ bool GUIContext::windowDestroyedHandler(const EventArgs& args)
         d_rootWindow = 0;
 
     if (window == getWindowContainingPointer())
-        resetWindowContainingMouse();
+        resetWindowContainingPointer();
 
     if (window == d_modalWindow)
         d_modalWindow = 0;
@@ -371,53 +371,52 @@ void GUIContext::onMouseMoveScalingFactorChanged(GUIContextEventArgs& args)
 //----------------------------------------------------------------------------//
 void GUIContext::updateWindowContainingPointer()
 {
-    d_windowContainingMouseIsUpToDate = false;
+    d_windowContainingPointerIsUpToDate = false;
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::updateWindowContainingMouse_impl() const
+bool GUIContext::updateWindowContainingPointer_impl() const
 {
-    MouseEventArgs ma(0);
+    PointerEventArgs pa(0);
     const Vector2f mouse_pos(d_pointerIndicator.getPosition());
 
-    Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
+    Window* const curr_wnd_with_pointer = getTargetWindow(mouse_pos, true);
 
-    // exit if window containing mouse has not changed.
-    if (curr_wnd_with_mouse == d_windowContainingMouse)
+    // exit if window containing pointer has not changed.
+    if (curr_wnd_with_pointer == d_windowContainingPointer)
         return false;
 
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = 0;
-    ma.button = NoButton;
+    pa.scroll = 0;
+    pa.source = PS_None;
 
-    Window* oldWindow = d_windowContainingMouse;
-    d_windowContainingMouse = curr_wnd_with_mouse;
+    Window* oldWindow = d_windowContainingPointer;
+    d_windowContainingPointer = curr_wnd_with_pointer;
 
-    // inform previous window the mouse has left it
+    // inform previous window the pointer has left it
     if (oldWindow)
     {
-        ma.window = oldWindow;
-        ma.position = oldWindow->getUnprojectedPosition(mouse_pos);
-        oldWindow->onMouseLeaves(ma);
+        pa.window = oldWindow;
+        pa.position = oldWindow->getUnprojectedPosition(mouse_pos);
+        oldWindow->onPointerLeaves(pa);
     }
 
-    // inform window containing mouse that mouse has entered it
-    if (d_windowContainingMouse)
+    // inform window containing pointer that pointer has entered it
+    if (d_windowContainingPointer)
     {
-        ma.handled = 0;
-        ma.window = d_windowContainingMouse;
-        ma.position = d_windowContainingMouse->getUnprojectedPosition(mouse_pos);
-        d_windowContainingMouse->onMouseEnters(ma);
+        pa.handled = 0;
+        pa.window = d_windowContainingPointer;
+        pa.position = d_windowContainingPointer->getUnprojectedPosition(mouse_pos);
+        d_windowContainingPointer->onPointerEnters(pa);
     }
 
     // do the 'area' version of the events
-    Window* root = getCommonAncestor(oldWindow, d_windowContainingMouse);
+    Window* root = getCommonAncestor(oldWindow, d_windowContainingPointer);
 
     if (oldWindow)
-        notifyMouseTransition(root, oldWindow, &Window::onMouseLeavesArea, ma);
+        notifyPointerTransition(root, oldWindow, &Window::onPointerLeavesArea, pa);
 
-    if (d_windowContainingMouse)
-        notifyMouseTransition(root, d_windowContainingMouse, &Window::onMouseEntersArea, ma);
+    if (d_windowContainingPointer)
+        notifyPointerTransition(root, d_windowContainingPointer, &Window::onPointerEntersArea, pa);
 
     return true;
 }
@@ -447,9 +446,9 @@ Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::notifyMouseTransition(Window* top, Window* bottom,
-                                    void (Window::*func)(MouseEventArgs&),
-                                    MouseEventArgs& args) const
+void GUIContext::notifyPointerTransition(Window* top, Window* bottom,
+                                    void (Window::*func)(PointerEventArgs&),
+                                    PointerEventArgs& args) const
 {
     if (top == bottom)
         return;
@@ -457,7 +456,7 @@ void GUIContext::notifyMouseTransition(Window* top, Window* bottom,
     Window* const parent = bottom->getParent();
 
     if (parent && parent != top)
-        notifyMouseTransition(top, parent, func, args);
+        notifyPointerTransition(top, parent, func, args);
 
     args.handled = 0;
     args.window = bottom;
@@ -529,27 +528,6 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
         return handleSemanticInputEvent(static_cast<const SemanticInputEvent&>(event));
 
     return false;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::injectMouseLeaves(void)
-{
-    if (!getWindowContainingPointer())
-        return false;
-
-    MouseEventArgs ma(0);
-    ma.position = getWindowContainingPointer()->getUnprojectedPosition(
-        d_pointerIndicator.getPosition());
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
-    ma.button = NoButton;
-    ma.sysKeys = d_systemKeys.get();
-    ma.wheelChange = 0;
-    ma.window = getWindowContainingPointer();
-
-    getWindowContainingPointer()->onMouseLeaves(ma);
-    resetWindowContainingMouse();
-
-    return ma.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -872,6 +850,26 @@ bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
     pa.position = d_pointerIndicator.getPosition();
 
     return handlePointerMove_impl(pa);
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
+{
+    if (!getWindowContainingPointer())
+        return false;
+
+    PointerEventArgs pa(0);
+    pa.position = getWindowContainingPointer()->getUnprojectedPosition(
+        d_pointerIndicator.getPosition());
+    pa.moveDelta = Vector2f(0.0f, 0.0f);
+    pa.source = PS_None;
+    pa.scroll = 0;
+    pa.window = getWindowContainingPointer();
+
+    getWindowContainingPointer()->onPointerLeaves(pa);
+    resetWindowContainingPointer();
+
+    return pa.handled != 0;
 }
 
 //----------------------------------------------------------------------------//
