@@ -337,38 +337,38 @@ public:
     static const String EventMarginChanged;
 
     // generated externally (inputs)
-    /** Event fired when the mouse cursor has entered the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when the pointer has entered the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseEntersArea;
-    /** Event fired when the mouse cursor has left the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerEntersArea;
+    /** Event fired when the pointer has left the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseLeavesArea;
-    /** Event fired when the mouse cursor enters the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerLeavesArea;
+    /** Event fired when the pointer enters the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
-     *\note This event is fired if - and only if - the mouse cursor is actually
+     *\note This event is fired if - and only if - the pointer is actually
      * over some part of this Window's surface area, and will not fire for
-     * example if the location of the mouse is over some child window (even
-     * though the mouse is technically also within the area of this Window).
+     * example if the location of the pointer is over some child window (even
+     * though the pointer is technically also within the area of this Window).
      * For an alternative version of this event see the
-     * Window::EventMouseEntersArea event.
+     * Window::EventPointerEntersArea event.
      */
-    static const String EventMouseEntersSurface;
-    /** Event fired when the mouse cursor is no longer over the Window's surface
+    static const String EventPointerEntersSurface;
+    /** Event fired when the pointer is no longer over the Window's surface
      * area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
-     *\note This event will fire whenever the mouse is no longer actually over
-     * some part of this Window's surface area, for example if the mouse is
-     * moved over some child window (even though technically the mouse has not
+     *\note This event will fire whenever the pointer is no longer actually over
+     * some part of this Window's surface area, for example if the pointer is
+     * moved over some child window (even though technically the pointer has not
      * actually 'left' this Window's area).  For an alternative version of this
-     * event see the Window::EventMouseLeavesArea event.
+     * event see the Window::EventPointerLeavesArea event.
      */
-    static const String EventMouseLeavesSurface;
+    static const String EventPointerLeavesSurface;
     /** Event fired when the pointer moves within the area of the Window.
      * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
@@ -2946,58 +2946,57 @@ protected:
 
     /*!
     \brief
-        Handler called when the mouse cursor has entered this window's area.
+        Handler called when the pointer has entered this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseEntersArea(MouseEventArgs& e);
+    virtual void onPointerEntersArea(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has left this window's area.
+        Handler called when the pointer has left this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseLeavesArea(MouseEventArgs& e);
+    virtual void onPointerLeavesArea(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has entered this window's area and
+        Handler called when the pointer has entered this window's area and
         is actually over some part of this windows surface and not, for
         instance over a child window - even though technically in those cases
-        the mouse is also within this Window's area, the handler will not be
+        the pointer is also within this Window's area, the handler will not be
         called.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
 
     \see
-        Window::onMouseEntersArea
+        Window::onPointerEntersArea
     */
-    virtual void onMouseEnters(MouseEventArgs& e);
+    virtual void onPointerEnters(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor is no longer over this window's
-        surface area.  This will be called when the mouse is not over a part
-        of this Window's actual surface - even though technically the mouse is
-        still within the Window's area, for example if the mouse moves over a
+        Handler called when the pointer is no longer over this window's
+        surface area.  This will be called when the pointer is not over a part
+        of this Window's actual surface - even though technically the pointer is
+        still within the Window's area, for example if the pointer moves over a
         child window.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
 
     \see
-        Window::onMouseLeavesArea
+        Window::onPointerLeavesArea
     */
-    virtual void onMouseLeaves(MouseEventArgs& e);
+    virtual void onPointerLeaves(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the pointer cursor has been moved within this window's
-        area.
+        Handler called when the pointer has been moved within this window's area.
 
     \param e
         PointerEventArgs object.  All fields are valid.
@@ -3608,7 +3607,7 @@ protected:
     GUIContext* d_guiContext;
 
     //! true when mouse is contained within this Window's area.
-    bool d_containsMouse;
+    bool d_containsPointer;
 
 private:
     /*************************************************************************

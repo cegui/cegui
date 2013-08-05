@@ -168,12 +168,12 @@ void ButtonBase::onCaptureLost(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse leaves the widget
+    Handler for when pointer leaves the widget
 *************************************************************************/
-void ButtonBase::onMouseLeaves(MouseEventArgs& e)
+void ButtonBase::onPointerLeaves(PointerEventArgs& e)
 {
-	// deafult processing
-	Window::onMouseLeaves(e);
+    // default processing
+    Window::onPointerLeaves(e);
 
 	d_hovering = false;
 	invalidate();

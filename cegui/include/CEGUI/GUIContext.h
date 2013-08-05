@@ -215,7 +215,6 @@ public:
     bool injectInputEvent(const InputEvent& event);
 
     // Implementation of InjectedInputReceiver interface
-    bool injectMouseLeaves(void);
     bool injectKeyDown(Key::Scan scan_code);
     bool injectKeyUp(Key::Scan scan_code);
 
@@ -237,16 +236,16 @@ protected:
     Window* getKeyboardTargetWindow() const;
     Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]
-    void notifyMouseTransition(Window* top, Window* bottom,
-                               void (Window::*func)(MouseEventArgs&),
-                               MouseEventArgs& args) const;
+    void notifyPointerTransition(Window* top, Window* bottom,
+                               void (Window::*func)(PointerEventArgs&),
+                               PointerEventArgs& args) const;
 
     bool areaChangedHandler(const EventArgs& args);
     bool windowDestroyedHandler(const EventArgs& args);
 
-    //! returns whether the window containing the mouse had changed.
-    bool updateWindowContainingMouse_impl() const;
-    void resetWindowContainingMouse();
+    //! returns whether the window containing the pointer had changed.
+    bool updateWindowContainingPointer_impl() const;
+    void resetWindowContainingPointer();
 
     // event trigger functions.
     virtual void onRootWindowChanged(WindowEventArgs& args);
@@ -268,6 +267,7 @@ protected:
     bool handleScrollEvent(const SemanticInputEvent& event);
     bool handlePointerMoveEvent(const SemanticInputEvent& event);
     bool handlePointerMove_impl(PointerEventArgs& pa);
+    bool handlePointerLeave(const SemanticInputEvent& event);
     bool handlePointerActivateEvent(const SemanticInputEvent& event);
     bool handlePointerPressHoldEvent(const SemanticInputEvent& event);
 
@@ -286,8 +286,8 @@ protected:
     //! a cache of the target surface size, allows returning by ref.
     Sizef d_surfaceSize;
 
-    mutable Window* d_windowContainingMouse;
-    mutable bool    d_windowContainingMouseIsUpToDate;
+    mutable Window* d_windowContainingPointer;
+    mutable bool    d_windowContainingPointerIsUpToDate;
     Window* d_modalWindow;
     Window* d_captureWindow;
 

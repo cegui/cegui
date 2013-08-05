@@ -200,7 +200,12 @@ bool InputAggregator::injectMousePosition(float x_pos, float y_pos)
 
 bool InputAggregator::injectMouseLeaves()
 {
-    return true;
+    if (d_inputReceiver == 0)
+        return false;
+
+    SemanticInputEvent semantic_event(SV_PointerLeave);
+
+    return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
 bool InputAggregator::injectMouseButtonDown(MouseButton button)
