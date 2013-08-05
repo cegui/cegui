@@ -35,7 +35,7 @@ author:     Lukas E Meindl
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/TextureTarget.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
@@ -133,7 +133,7 @@ void SampleData::initialise(int width, int height)
     d_textureTarget->declareRenderSize(size);
 
     CEGUI::String imageName(d_textureTarget->getTexture().getName());
-    d_textureTargetImage = static_cast<CEGUI::BasicImage*>(&CEGUI::ImageManager::getSingleton().create("BasicImage", "SampleBrowser/" + imageName));
+    d_textureTargetImage = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", "SampleBrowser/" + imageName));
     d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
 
     setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));

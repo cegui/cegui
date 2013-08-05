@@ -35,13 +35,16 @@
 #include "CEGUI/widgets/DefaultWindow.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Vertex.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/ImageManager.h"
-
-
+#include "CEGUI/svg/SVGDataManager.h"
+#include "CEGUI/svg/SVGImage.h"
+#include "CEGUI/svg/SVGData.h"
+#include "CEGUI/svg/SVGBasicShape.h"
 
 #include <iostream>
 
+using namespace CEGUI;
 
 /*************************************************************************
     Constructor.
@@ -60,14 +63,12 @@ CustomShapesDrawing::CustomShapesDrawing()
 *************************************************************************/
 bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
 {
-    using namespace CEGUI;
-
     d_usedFiles = CEGUI::String(__FILE__);
 
     //CEGUI setup
-    SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
+    SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
 
@@ -89,6 +90,29 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     // Size and position have to be set
     positionFPSGraphGeometry();
     updateFPSGraphGeometry();
+
+    // Create an SVGImage using the ImageManager
+    CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
+    SVGImage& fpsSVGImage = static_cast<SVGImage&>(imageManager.create(CEGUI::String("SVGImage"), "FPSGraphSVG"));
+    // Create an SVGData object
+    CEGUI::SVGDataManager& svgDataManager = CEGUI::SVGDataManager::getSingleton();
+    SVGData& fpsSVGData = svgDataManager.create(CEGUI::String("FPSGraphCustomShape"));
+    //Fill in line points
+    SVGPolyline* polyLine = new SVGPolyline(); //TODO maybe create a creation function for this
+    polyLine->d_points.push_back(CEGUI::Vector2<float>(20.0f, 20.0f));
+    polyLine->d_points.push_back(CEGUI::Vector2<float>(40.0f, 20.0f));
+    polyLine->d_points.push_back(CEGUI::Vector2<float>(20.0f, 40.0f));
+    polyLine->d_points.push_back(CEGUI::Vector2<float>(60.0f, 60.0f));
+    polyLine->d_points.push_back(CEGUI::Vector2<float>(110.0f, 60.0f));
+    fpsSVGData.addShape(polyLine);
+    // ...and set the pointer to the SVGData for the SVGImage
+    fpsSVGImage.setSVGData(&fpsSVGData);
+ 
+    Window* fpsSVGFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow");
+    d_root->addChild(fpsSVGFrameWindow);
+    Window* fpsSVGImageWindow = winMgr.createWindow("Generic/Image");
+    fpsSVGFrameWindow->addChild(fpsSVGImageWindow);
+    fpsSVGImageWindow->setProperty("Image", "FPSGraphSVG");
 
 
     // clearing this queue actually makes sure it's created(!)
