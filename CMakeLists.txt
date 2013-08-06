@@ -404,6 +404,12 @@ include_directories(
     ${CMAKE_CURRENT_SOURCE_DIR}/cegui/include
 )
 
+################################################################################
+# Add GLM header locations (global dependency, required)
+################################################################################
+include_directories(
+    ${GLM_H_PATH}
+)
 
 ################################################################################
 # Adjust configuration based on option settings
