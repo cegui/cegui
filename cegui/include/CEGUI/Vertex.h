@@ -28,8 +28,9 @@
 #ifndef _CEGUIVertex_h_
 #define _CEGUIVertex_h_
 
-#include "CEGUI/Vector.h"
 #include "CEGUI/Colour.h"
+
+#include "glm/glm.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -43,11 +44,11 @@ struct TexturedColouredVertex :
     public AllocatedObject<TexturedColouredVertex>
 {
     //! Position of the vertex in 3D space.
-    Vector3f position;
+    glm::vec3 position;
     //! Multiplicative-colour attribute of the vertex.
     Colour  colour_val;
     //! Texture coordinates of the vertex.
-    Vector2f tex_coords;
+    glm::vec2 tex_coords;
 };
 
 /*!
@@ -59,7 +60,7 @@ struct ColouredVertex :
     public AllocatedObject<ColouredVertex>
 {
     //! Position of the vertex in 3D space.
-    Vector3f position;
+    glm::vec3 position;
     //! Colour attribute of the vertex.
     Colour  colour_val;
 };
