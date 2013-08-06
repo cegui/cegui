@@ -1634,6 +1634,20 @@ bool Window::performPaste(Clipboard& /*clipboard*/)
 }
 
 //----------------------------------------------------------------------------//
+bool Window::performUndo()
+{
+    // deny undo by default
+    return false;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::performRedo()
+{
+    // deny redo by default
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 bool Window::distributesCapturedInputs(void) const
 {
     return d_distCapturedInputs;
