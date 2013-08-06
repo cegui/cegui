@@ -96,6 +96,8 @@ public:
     */
     bool execute(SamplesFrameworkBase* sampleApp);
 
+    void updateLogoGeometry();
+
     /*!
     \brief
         Performs any required cleanup of the base application system.
@@ -168,9 +170,9 @@ protected:
     //! function that updates the logo rotation as needed.
     void updateLogo(const float elapsed);
     //! function that positions the logo GeometryBuffer at the correct place.
-    void positionLogo(CEGUI::GeometryBuffer* geom_buffer);
+    void positionLogo();
     //! function that positions the FPS GeometryBuffer at the correct place.
-    void positionFPS(CEGUI::GeometryBuffer* geom_buffer);
+    void positionFPS();
     //! event handler function that draws the logo and FPS overlay elements.
     bool sampleBrowserOverlayHandler(const CEGUI::EventArgs& args);
     //! event handler function that draws the FPS overlay elements.
@@ -194,7 +196,7 @@ protected:
     //! ResourceProvider to use.  Set in subclass constructor, may be 0.
     CEGUI::ResourceProvider* d_resourceProvider;
     //! GeometryBuffer used for drawing the spinning CEGUI logo
-    CEGUI::GeometryBuffer* d_logoGeometry;
+    std::vector<CEGUI::GeometryBuffer*> d_logoGeometry;
     //! GeometryBuffers used for drawing the FPS value.
     std::vector<CEGUI::GeometryBuffer*> d_FPSGeometry;
     //! Fraction of second elapsed (used for counting frames per second).
