@@ -124,16 +124,15 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
 
-    // setup for spinning logo
-    d_logoGeometry = &d_renderer->createGeometryBufferTextured();
-    d_logoGeometry->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
-    positionLogo(d_logoGeometry);
-
     // create logo imageset and draw the image (we only ever draw this once)
     CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
                                                          "logo.png");
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
-        *d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, false, CEGUI::ColourRect(0xFFFFFFFF));
+        d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, false, CEGUI::ColourRect(0xFFFFFFFF));
+
+    // setup for spinning logo
+    updateLogoGeometry();
+
 
     // clearing this queue actually makes sure it's created(!)
     CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RQ_OVERLAY);
@@ -167,12 +166,17 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 void CEGuiBaseApplication::cleanup()
 {
     CEGUI::ImageManager::getSingleton().destroy("cegui_logo");
-    d_renderer->destroyGeometryBuffer(*d_logoGeometry);
 
-    const size_t bufferCount = d_FPSGeometry.size();
-    for (size_t i = 0; i < bufferCount; ++i)
+    const size_t logo_buffer_count = d_logoGeometry.size();
+    for (size_t i = 0; i < logo_buffer_count; ++i)
+        d_renderer->destroyGeometryBuffer(*d_logoGeometry.at(i));
+    d_logoGeometry.clear();
+
+    const size_t fps_buffer_count = d_FPSGeometry.size();
+    for (size_t i = 0; i < fps_buffer_count; ++i)
         d_renderer->destroyGeometryBuffer(*d_FPSGeometry.at(i));
     d_FPSGeometry.clear();
+
     CEGUI::System::destroy();
 }
 
@@ -263,19 +267,23 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
         return false;
 
     // draw the logo
-    d_logoGeometry->draw();
+    const size_t logo_buffer_count = d_logoGeometry.size();
+    for (size_t i = 0; i < logo_buffer_count; ++i)
+    {
+        d_logoGeometry[i]->draw();
+    }
+
+    positionFPS();
+
     // draw FPS value
-    const size_t bufferCount = d_FPSGeometry.size();
-    for (size_t i = 0; i < bufferCount; ++i)
+    const size_t fps_buffer_count = d_FPSGeometry.size();
+    for (size_t i = 0; i < fps_buffer_count; ++i)
     {
         CEGUI::GeometryBuffer* currentBuffer = d_FPSGeometry.at(i);
         const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
-        positionFPS(currentBuffer);
         currentBuffer->setClippingRegion(scrn);
         currentBuffer->draw();
     }
-
-
 
     return true;
 }
@@ -286,12 +294,13 @@ bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
     if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
         return false;
 
-    // draw FPS value
+    positionFPS();
+
+    // Draw FPS value
     const size_t bufferCount = d_FPSGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
     {
         CEGUI::GeometryBuffer* currentBuffer = d_FPSGeometry.at(i);
-        positionFPS(currentBuffer);
         const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
         currentBuffer->setClippingRegion(scrn);
         currentBuffer->draw();
@@ -344,29 +353,42 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
         return;
 
     static float rot = 0.0f;
-    d_logoGeometry->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
+
+    const size_t bufferCount = d_logoGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+    {
+        d_logoGeometry[i]->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
+    }
 
     rot = fmodf(rot + 180.0f * elapsed, 360.0f);
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::positionLogo(CEGUI::GeometryBuffer* geom_buffer)
+void CEGuiBaseApplication::positionLogo()
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+    CEGUI::Vector3f position(10.0f, scrn.getSize().d_height - 89.0f, 0.0f);
 
-    geom_buffer->setClippingRegion(scrn);
-    geom_buffer->setTranslation(
-        CEGUI::Vector3f(10.0f, scrn.getSize().d_height - 89.0f, 0.0f));
+    const size_t bufferCount = d_logoGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+    {
+        d_logoGeometry[i]->setClippingRegion(scrn);
+        d_logoGeometry[i]->setTranslation(position);
+    }
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::positionFPS(CEGUI::GeometryBuffer* geom_buffer)
+void CEGuiBaseApplication::positionFPS()
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
+     CEGUI::Vector3f position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
 
-    geom_buffer->setClippingRegion(scrn);
-    geom_buffer->setTranslation(
-        CEGUI::Vector3f(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f));
+    const size_t bufferCount = d_FPSGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+    {
+        d_FPSGeometry[i]->setClippingRegion(scrn);
+        d_FPSGeometry[i]->setTranslation(position);
+    }
 }
 
 
@@ -385,12 +407,13 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
                              getDefaultRenderTarget().getArea());
     d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
 
-    positionLogo(d_logoGeometry);
+    positionLogo();
+    positionFPS();
+
     return true;
 }
 
 //----------------------------------------------------------------------------//
-
 void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_context)
 {
     // clearing this queue actually makes sure it's created(!)
@@ -400,6 +423,16 @@ void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_c
     gui_context->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
         CEGUI::Event::Subscriber(&CEGuiBaseApplication::sampleOverlayHandler,
         this));
+}
+
+//----------------------------------------------------------------------------//
+void CEGuiBaseApplication::updateLogoGeometry()
+{
+    const size_t bufferCount = d_logoGeometry.size();
+    for (size_t i = 0; i < bufferCount; ++i)
+    {
+        d_logoGeometry[i]->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
+    }
 }
 
 
