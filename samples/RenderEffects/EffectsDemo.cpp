@@ -651,7 +651,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     aliasingFrameWnd->setSizingEnabled(true);
     aliasingFrameWnd->setCloseButtonEnabled(false);
     aliasingFrameWnd->setTitleBarEnabled(true);
-    aliasingFrameWnd->setText("Elastic Window - Aliasing Testimage");
+    aliasingFrameWnd->setText("Elastic Window Effect");
 
     // Image window setup
     aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));

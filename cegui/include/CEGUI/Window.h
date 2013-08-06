@@ -3278,7 +3278,7 @@ protected:
 
     /*!
     \brief
-        Destroys all geometry buffers of this Window.
+        Destroys the geometry buffers of this Window.
     */
     void destroyGeometryBuffers();
 
