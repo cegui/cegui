@@ -53,38 +53,34 @@ void SVGTesselator::tesselateAndRenderPolyline(std::vector<GeometryBuffer*>& geo
     size_t points_count = points.size();
     for (size_t j = 1; j < points_count; ++j)
     {
-        const CEGUI::Vector2f& previousPos = points.at(j - 1);
-        const CEGUI::Vector2f& currentPos = points.at(j);
+        const glm::vec2& prevPos = points.at(j - 1);
+        const glm::vec2& currentPos = points.at(j);
 
-        const float& x1 = previousPos.d_x;
-        const float& y1 = previousPos.d_y;
-        const float& x2 = currentPos.d_x;
-        const float& y2 = currentPos.d_y;
-
-        //Todo: Replace trigonometry  with 2D vector flipping calculations to save speed
-        float angle = std::atan2(y2 - y1, x2 - x1);
-        float xLineOffset = stroke_width_length_half / sin(angle);
-        float yLineOffset = stroke_width_length_half / cos(angle);
+        // Normalize and tilt the 2D direction vector by 90° to get the vector pointing in the offset direction
+        glm::vec2 offsetVector = currentPos - prevPos;
+        offsetVector = glm::normalize(offsetVector);
+        offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * 0.5f;
 
         CEGUI::ColouredVertex linePositionVertex;
+        glm::vec2 vertexPosition;
         linePositionVertex.colour_val = stroke_colour;
 
-        linePositionVertex.position = CEGUI::Vector3f(x1 + xLineOffset, y1 - yLineOffset, 0.0f);
+        linePositionVertex.position = glm::vec3(prevPos - offsetVector, 0.0f);
         geometry_buffer.appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x2 + xLineOffset, y2 - yLineOffset, 0.0f);
+        linePositionVertex.position = glm::vec3(currentPos - offsetVector, 0.0f);
         geometry_buffer.appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x2 - xLineOffset, y2 + yLineOffset, 0.0f);
+        linePositionVertex.position = glm::vec3(currentPos + offsetVector, 0.0f);
         geometry_buffer.appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x2 - xLineOffset, y2 + yLineOffset, 0.0f);
+        linePositionVertex.position = glm::vec3(currentPos + offsetVector, 0.0f);
         geometry_buffer.appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x1 - xLineOffset, y1 + yLineOffset, 0.0f);
+        linePositionVertex.position = glm::vec3(prevPos - offsetVector, 0.0f);
         geometry_buffer.appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x1 + xLineOffset, y1 - yLineOffset, 0.0f);
+        linePositionVertex.position = glm::vec3(prevPos + offsetVector, 0.0f);
         geometry_buffer.appendVertex(linePositionVertex);
     }
 }
