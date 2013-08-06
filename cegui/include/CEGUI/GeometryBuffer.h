@@ -31,10 +31,40 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/Rect.h"
+#include "CEGUI/RefCounted.h"
+#include "CEGUI/RenderMaterial.h"
+
+#include <vector>
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+    class RenderMaterial;
+
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
+    Enumerated type that contains the valid options to specify a vertex attribute
+    of a vertex used in CEGUI
+*/
+enum VertexAttributeType
+{
+    //! Position 0 attribute
+    VAT_POSITION0,
+    //! Colour 0 attribute
+    VAT_COLOUR0,
+    //! Texture coordinate 0 attribute
+    VAT_TEXCOORD0
+};
+
+
 /*!
 \brief
     Abstract class defining the interface for objects that buffer geometry for
@@ -44,7 +74,6 @@ class CEGUIEXPORT GeometryBuffer :
     public AllocatedObject<GeometryBuffer>
 {
 public:
-    //! Destructor
     virtual ~GeometryBuffer();
 
     /*!
@@ -91,16 +120,50 @@ public:
 
     /*!
     \brief
+        Append the geometry data to the existing data
+
+    \param vertex_data
+        Pointer to an array of floats containing the geometry data that
+        should be added to the GeometryBuffer.
+
+    \param array_size
+        The number of elements in the array.
+    */
+    virtual void appendGeometry(const float* const vertex_data, uint array_size);
+
+
+    /*!
+    \brief
+        Append the geometry data to the existing data
+
+    \param vertex_data
+        Vector of floats containing the geometry data that should be added to the
+        GeometryBuffer.
+    */
+    virtual void appendGeometry(const std::vector<float>& vertex_data) = 0;
+
+    /*!
+    \brief
         Append a single vertex to the buffer.
 
     \param vertex
         Vertex object describing the vertex to be added to the GeometryBuffer.
     */
-    virtual void appendVertex(const Vertex& vertex) = 0;
+    virtual void appendVertex(const TexturedColouredVertex& vertex);
+
+        /*!
+    \brief
+        Append a single vertex to the buffer.
+
+    \param vertex
+        Vertex object describing the vertex to be added to the GeometryBuffer.
+    */
+    virtual void appendVertex(const ColouredVertex& vertex);
 
     /*!
     \brief
-        Append a number of vertices from an array to the GeometryBuffer.
+        Append a number of vertices, with texture coordinate and colour attributes,
+        from an array to the GeometryBuffer.
 
     \param vbuff
         Pointer to an array of Vertex objects that describe the vertices that
@@ -110,36 +173,37 @@ public:
         The number of Vertex objects from the array \a vbuff that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const Vertex* const vbuff, uint vertex_count)=0;
+    virtual void appendGeometry(const TexturedColouredVertex* const vbuff, uint vertex_count);
 
     /*!
     \brief
-        Set the active texture to be used with all subsequently added vertices.
+        Sets the default texture to be used by the RenderMaterial of this
+        Geometrybuffer.
 
     \param texture
         Pointer to a Texture object that shall be used for subsequently added
         vertices.  This may be 0, in which case texturing will be disabled for
         subsequently added vertices.
     */
-    virtual void setActiveTexture(Texture* texture) = 0;
+    virtual void setTexture(Texture* texture) = 0;
 
     /*!
     \brief
         Clear all buffered data and reset the GeometryBuffer to the default
-        state.
+        state. This excludes resettings the vertex attributes.
     */
     virtual void reset() = 0;
 
     /*!
     \brief
-        Return a pointer to the currently active Texture object.  This may
-        return 0 if no texture is set.
+        Return a pointer to the default Texture object used by this GeometryBuffer.
+        This may return 0 if no texture is set.
 
     \return
         Pointer the Texture object that is currently active, or 0 if texturing
         is not being used.
     */
-    virtual Texture* getActiveTexture() const = 0;
+    virtual Texture* getTexture() const = 0;
 
     /*!
     \brief
@@ -151,20 +215,18 @@ public:
     */
     virtual uint getVertexCount() const = 0;
 
+
     /*!
     \brief
-        Return the number of batches of geometry that this GeometryBuffer has
-        split the vertices into.
-
-    \note
-        How batching is done will be largely implementation specific, although
-        it would be reasonable to expect that you will have <em>at least</em>
-        one batch of geometry per texture switch.
+        Returns the total number of floats used by the attributes of the
+        current vertex layout.
 
     \return
-        The number of batches of geometry held by the GeometryBuffer.
+        The total number of floats used by the attributes of the current vertex
+        layout.
     */
-    virtual uint getBatchCount() const = 0;
+    int getVertexAttributeElementCount() const;
+
 
     /*!
     \brief
@@ -234,19 +296,81 @@ public:
     \return
         - true if vertices subsequently added to the GeometryBuffer will
           be clipped to the clipping region defined for this GeometryBuffer.
-        - false if vertices subsequently added will not be clippled (other than
+        - false if vertices subsequently added will not be clipped (other than
           to the edges of the rendering target).
     */
     virtual bool isClippingActive() const = 0;
 
+    /*
+    \brief
+        Resets the vertex attributes that were set for the vertices of this
+        GeometryBuffer.
+    */
+    void resetVertexAttributes();
+
+    /*
+    \brief
+        Adds a vertex attributes to the list of vertex attributes. The vertex
+        attributes are used to describe the layout of the verrex data. The
+        order in which the attributes are added is the same order in which the
+        data has to be aligned for the vertex. This has be done before adding
+        actual vertex data to the GeometryBuffer.
+
+    \param attribute
+        The attribute that should be added to the list of vertex attributes
+        describing the vertices of this GeometryBuffer.
+    */
+    void addVertexAttribute(VertexAttributeType attribute);
+
+    /*
+    \brief
+        The update function that is to be called when all the vertex attributes
+        are set.
+    */
+    virtual void finaliseVertexAttributes() = 0;
+
+    /*
+    \brief
+        Returns the RenderMaterial that is currently used by this GeometryBuffer.
+
+    \return
+        A reference to the RenderMaterial that is used by this GeometryBuffer.
+    */
+    RefCounted<RenderMaterial> getRenderMaterial() const;
+
+    /*
+    \brief
+        Set a new RenderMaterial to be used by this GeometryBuffer.
+
+    \param render_material
+        A reference to the RenderMaterial that will be set to be used by this
+        GeometryBuffer.
+    */
+    void setRenderMaterial(RefCounted<RenderMaterial> render_material);
+
 protected:
     //! Constructor.
-    GeometryBuffer();
+    GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
     //! The BlendMode to use when rendering this GeometryBuffer.
     BlendMode d_blendMode;
+
+    //! Reference to the RenderMaterial used for this GeometryBuffer
+    RefCounted<RenderMaterial> d_renderMaterial;
+
+    /*
+    \brief
+        A vector of the attributes of the vertices of this GeometryBuffer. The order
+        in which they were added to the vector is used to define the alignment of the
+        vertex data.
+    */
+    std::vector<VertexAttributeType> d_vertexAttributes;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIGeometryBuffer_h_
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
+#endif

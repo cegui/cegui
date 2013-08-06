@@ -34,7 +34,8 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Texture.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
+#include "CEGUI/svg/SVGImage.h"
 
 #include <cstdio>
 #include <algorithm>
@@ -102,8 +103,10 @@ ImageManager::ImageManager()
     Logger::getSingleton().logEvent(
         "[CEGUI::ImageManager] Singleton created " + String(addr_buff));
 
-    // self-register the built in 'BasicImage' type.
-    addImageType<BasicImage>("BasicImage");
+    // self-register the built in 'BitmapImage' type.
+    addImageType<BitmapImage>("BitmapImage");
+    // self-register the built in 'SVGImage' type.
+    addImageType<SVGImage>("SVGImage");
 }
 
 //----------------------------------------------------------------------------//
@@ -171,7 +174,7 @@ Image& ImageManager::create(const String& type, const String& name)
 //----------------------------------------------------------------------------//
 Image& ImageManager::create(const XMLAttributes& attributes)
 {
-    static const String type_default("BasicImage");
+    static const String type_default("BitmapImage");
     
     const String& type(attributes.getValueAsString(ImageTypeAttribute, type_default));
     const String& name(attributes.getValueAsString(ImageNameAttribute));
@@ -318,7 +321,7 @@ void ImageManager::addFromImageFile(const String& name, const String& filename,
         createTexture(name, filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 
-    BasicImage& image = static_cast<BasicImage&>(create("BasicImage", name));
+    BitmapImage& image = static_cast<BitmapImage&>(create("BitmapImage", name));
     image.setTexture(tex);
     const Rectf rect(Vector2f(0.0f, 0.0f), tex->getOriginalDataSize());
     image.setArea(rect);

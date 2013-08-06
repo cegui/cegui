@@ -64,13 +64,23 @@ public:
 
     /*!
     \brief
-        Add a GeometryBuffer to the RenderQueue.  Ownership of the
+        Add a list of GeometryBuffers to the RenderQueue. Ownership of the
         GeometryBuffer does not pass to the RenderQueue.
 
-    \param buffer
-        GeometryBuffer that is to be added to the RenderQueue for later drawing.
+    \param geometry_buffers
+        List of GeometryBuffers that are to be added to the RenderQueue for later drawing.
     */
-    void addGeometryBuffer(const GeometryBuffer& buffer);
+    void addGeometryBuffers(const std::vector<GeometryBuffer*>& geometry_buffers);
+
+    /*!
+    \brief
+        Add a GeometryBuffer to the RenderQueue. Ownership of the GeometryBuffer does not
+        pass to the RenderQueue.
+
+    \param geometry_buffers
+        The GeometryBuffer that is to be added to the RenderQueue for later drawing.
+    */
+    void addGeometryBuffer(const GeometryBuffer& geometry_buffer);
 
     /*!
     \brief

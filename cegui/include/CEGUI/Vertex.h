@@ -28,26 +28,43 @@
 #ifndef _CEGUIVertex_h_
 #define _CEGUIVertex_h_
 
-#include "CEGUI/Vector.h"
 #include "CEGUI/Colour.h"
+
+#include "glm/glm.hpp"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 /*!
 \brief
-    structure that is used to hold details of a single vertex in 3D space.
+    Structure that is used to hold the attributes of a vertex for coloured and
+    textured geometry in 3D space.
 */
-struct Vertex :
-    public AllocatedObject<Vertex>
+struct TexturedColouredVertex :
+    public AllocatedObject<TexturedColouredVertex>
 {
     //! Position of the vertex in 3D space.
-    Vector3f position;
-    //! Texture co-ords to be applied to the vertex.
-    Vector2f tex_coords;
-    //! colour to be applied to the vertex.
+    glm::vec3 position;
+    //! Multiplicative-colour attribute of the vertex.
+    Colour  colour_val;
+    //! Texture coordinates of the vertex.
+    glm::vec2 tex_coords;
+};
+
+/*!
+\brief
+    Structure that is used to hold the attributes of coloured geometry
+    in 3D space.
+*/
+struct ColouredVertex :
+    public AllocatedObject<ColouredVertex>
+{
+    //! Position of the vertex in 3D space.
+    glm::vec3 position;
+    //! Colour attribute of the vertex.
     Colour  colour_val;
 };
+
 
 } // End of  CEGUI namespace section
 
