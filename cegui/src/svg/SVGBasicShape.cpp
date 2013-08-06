@@ -27,6 +27,8 @@
  ***************************************************************************/
 #include "CEGUI/svg/SVGBasicShape.h"
 
+#include "CEGUI/svg/SVGTesselator.h"
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -59,7 +61,14 @@ SVGRect::SVGRect
 {
 }
 
-
+//----------------------------------------------------------------------------//
+void SVGPolyline::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                         const Image::ImageRenderSettings& render_settings) const
+{
+    SVGTesselator::tesselateAndRenderPolyline(geometry_buffers,
+                                              render_settings,
+                                              this);
+}
 
 //----------------------------------------------------------------------------//
 }
