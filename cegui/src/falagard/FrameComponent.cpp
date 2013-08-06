@@ -302,9 +302,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        componentImage->render(geometryBuffer, finalRect, clipper, !clipToDisplay, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // top-right image
@@ -335,9 +333,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        componentImage->render(geometryBuffer, finalRect, clipper, !clipToDisplay, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // bottom-left image
@@ -368,9 +364,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        componentImage->render(geometryBuffer, finalRect, clipper, !clipToDisplay, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // bottom-right image
@@ -400,9 +394,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        componentImage->render(geometryBuffer, finalRect, clipper, !clipToDisplay, imageColours);
+        componentImage->render(srcWindow.getGeometryBuffers(), finalRect, clipper, !clipToDisplay, imageColours);
     }
 
     // top image
@@ -431,9 +423,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        renderImage(geometryBuffer, componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     VF_TOP_ALIGNED, d_topEdgeFormatting.get(srcWindow),
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -464,9 +454,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        renderImage(geometryBuffer, componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     VF_BOTTOM_ALIGNED, d_bottomEdgeFormatting.get(srcWindow),
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -497,9 +485,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        renderImage(geometryBuffer, componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     d_leftEdgeFormatting.get(srcWindow), HF_LEFT_ALIGNED,
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -530,9 +516,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         }
 
         // draw this element.
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        renderImage(geometryBuffer, componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     d_rightEdgeFormatting.get(srcWindow), HF_RIGHT_ALIGNED,
                     finalRect, imageColours, clipper, clipToDisplay);
     }
@@ -556,16 +540,14 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         const VerticalFormatting vertFormatting =
             d_backgroundVertFormatting.get(srcWindow);
 
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-        renderImage(geometryBuffer, componentImage,
+        renderImage(srcWindow.getGeometryBuffers(), componentImage,
                     vertFormatting, horzFormatting,
                     backgroundRect, imageColours, clipper, clipToDisplay);
     }
 }
 
 //----------------------------------------------------------------------------//
-void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
+void FrameComponent::renderImage(std::vector<GeometryBuffer*>& geometry_buffers, const Image* image,
                                  VerticalFormatting vertFmt,
                                  HorizontalFormatting horzFmt,
                                  Rectf& destRect, const ColourRect& colours,
@@ -671,7 +653,7 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
             else
                 clippingRect = clipper;
 
-            image->render(buffer, finalRect, clippingRect, !clip_to_display, colours);
+            image->render(geometry_buffers, finalRect, clippingRect, !clip_to_display, colours);
 
             finalRect.d_min.d_x += imgSz.d_width;
             finalRect.d_max.d_x += imgSz.d_width;

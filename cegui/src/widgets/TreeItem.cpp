@@ -280,7 +280,7 @@ TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 /*************************************************************************
     Draw the tree item in its current state.
 *************************************************************************/
-void TreeItem::draw(std::vector<GeometryBuffer*>& geometryBuffers, const Rectf& targetRect,
+void TreeItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                     float alpha, const Rectf* clipper) const
 {
     Rectf finalRect(targetRect);
@@ -291,18 +291,14 @@ void TreeItem::draw(std::vector<GeometryBuffer*>& geometryBuffers, const Rectf& 
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
 
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        geometryBuffers.push_back(&geometryBuffer);
-        d_iconImage->render(geometryBuffer, finalPos, clipper, true,
+        d_iconImage->render(geometry_buffers, finalPos, clipper, true,
                           ColourRect(Colour(1,1,1,alpha)));
         finalRect.d_min.d_x += targetRect.getHeight();
     }
 
     if (d_selected && d_selectBrush != 0)
     {
-        CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        geometryBuffers.push_back(&geometryBuffer);
-        d_selectBrush->render(geometryBuffer, finalRect, clipper, true,
+        d_selectBrush->render(geometry_buffers, finalRect, clipper, true,
                             getModulateAlphaColourRect(d_selectCols, alpha));
     }
 
@@ -322,7 +318,7 @@ void TreeItem::draw(std::vector<GeometryBuffer*>& geometryBuffers, const Rectf& 
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(d_owner, i, geometryBuffers, draw_pos, &final_colours, clipper, 0.0f);
+        d_renderedString.draw(d_owner, i, geometry_buffers, draw_pos, &final_colours, clipper, 0.0f);
         draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }

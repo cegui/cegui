@@ -219,24 +219,11 @@ void RenderedStringTextComponent::draw(const Window* ref_wnd,
                        position.d_x + sel_end_extent,
                        position.d_y + vertical_space);
 
-        CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        geometry_buffers.push_back(&geometry_buffer);
-        d_selectionImage->render(geometry_buffer, sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
+        d_selectionImage->render(geometry_buffers, sel_rect, clip_rect, true, ColourRect(0xFF002FFF));
     }
-
-    std::map<const CEGUI::Texture*, GeometryBuffer*> geomBuffersMap;
-
     // draw the text string.
-    fnt->drawText(geomBuffersMap, d_text, final_pos, clip_rect, true, final_cols,
+    fnt->drawText(geometry_buffers, d_text, final_pos, clip_rect, true, final_cols,
                   space_extra, 1.0f, y_scale);
-
-    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator iter = geomBuffersMap.begin();
-    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator end = geomBuffersMap.end();
-    while (iter != end)
-    {
-        geometry_buffers.push_back(iter->second);
-        ++iter;
-    }
 }
 
 //----------------------------------------------------------------------------//

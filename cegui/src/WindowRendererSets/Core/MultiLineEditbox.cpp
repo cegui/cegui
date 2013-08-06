@@ -278,9 +278,7 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                 // render the selection area brush for this line
                 colours = selectBrushCol;
-                CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-                w->getGeometryBuffers().push_back(&geometry_buffer);
-                w->getSelectionBrushImage()->render(geometry_buffer, lineRect, &dest_area, true, colours);
+                w->getSelectionBrushImage()->render(w->getGeometryBuffers(), lineRect, &dest_area, true, colours);
 
                 // draw the text for this section
                 colours = selectTextCol;

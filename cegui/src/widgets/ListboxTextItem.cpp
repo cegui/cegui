@@ -138,9 +138,7 @@ void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const
 {
     if (d_selected && d_selectBrush != 0)
     {
-        CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        geometry_buffers.push_back(&geometry_buffer);
-        d_selectBrush->render(geometry_buffer, targetRect, clipper, true,
+        d_selectBrush->render(geometry_buffers, targetRect, clipper, true,
                             getModulateAlphaColourRect(d_selectCols, alpha));
     }
 

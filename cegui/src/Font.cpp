@@ -249,8 +249,6 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale) const
 {
-    std::map<const CEGUI::Texture*, GeometryBuffer*> geom_buffers_map;
-
     const float base_y = position.d_y + getBaseline(y_scale);
     Vector2f glyph_pos(position);
 
@@ -260,71 +258,10 @@ float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
         if ((glyph = getGlyphData(text[c]))) // NB: assignment
         {
             const Image* const img = glyph->getImage();
-            const CEGUI::Texture* texture = static_cast<const BitmapImage*>(img)->getTexture();
-            GeometryBuffer* geomBuffer;
-            
-            std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator found_iterator = geom_buffers_map.find(texture);
-            if(found_iterator == geom_buffers_map.end())
-            {
-                geomBuffer = &System::getSingleton().getRenderer()->createGeometryBufferTextured();
-                geom_buffers_map[texture] = geomBuffer;
-            }
-            else
-                geomBuffer = found_iterator->second;
 
             glyph_pos.d_y =
                 base_y - (img->getRenderedOffset().d_y - img->getRenderedOffset().d_y * y_scale);
-            img->render(*geomBuffer, glyph_pos,
-                      glyph->getSize(x_scale, y_scale), clip_rect, clipping_enabled, colours);
-            glyph_pos.d_x += glyph->getAdvance(x_scale);
-            // apply extra spacing to space chars
-            if (text[c] == ' ')
-                glyph_pos.d_x += space_extra;
-        }
-    }
-
-    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator iter = geom_buffers_map.begin();
-    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator end = geom_buffers_map.end();
-    while (iter != end)
-    {
-        geom_buffers.push_back(iter->second);
-        ++iter;
-    }
-
-    return glyph_pos.d_x;
-}
-
-//----------------------------------------------------------------------------//
-float Font::drawText(std::map<const CEGUI::Texture*, GeometryBuffer*>& geom_buffers_map,
-                    const String& text, const Vector2f& position,
-                    const Rectf* clip_rect, const bool clipping_enabled,
-                    const ColourRect& colours, const float space_extra,
-                    const float x_scale, const float y_scale) const
-{
-    const float base_y = position.d_y + getBaseline(y_scale);
-    Vector2f glyph_pos(position);
-
-    for (size_t c = 0; c < text.length(); ++c)
-    {
-        const FontGlyph* glyph;
-        if ((glyph = getGlyphData(text[c]))) // NB: assignment
-        {
-            const Image* const img = glyph->getImage();
-            const CEGUI::Texture* texture = static_cast<const BitmapImage*>(img)->getTexture();
-            GeometryBuffer* geomBuffer;
-            
-            std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator found_iterator = geom_buffers_map.find(texture);
-            if(found_iterator == geom_buffers_map.end())
-            {
-                geomBuffer = &System::getSingleton().getRenderer()->createGeometryBufferTextured();
-                geom_buffers_map[texture] = geomBuffer;
-            }
-            else
-                geomBuffer = found_iterator->second;
-
-            glyph_pos.d_y =
-                base_y - (img->getRenderedOffset().d_y - img->getRenderedOffset().d_y * y_scale);
-            img->render(*geomBuffer, glyph_pos,
+            img->render(geom_buffers, glyph_pos,
                       glyph->getSize(x_scale, y_scale), clip_rect, clipping_enabled, colours);
             glyph_pos.d_x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
