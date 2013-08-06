@@ -295,7 +295,6 @@ Window::~Window(void)
     // most cleanup actually happened earlier in Window::destroy.
     destroyGeometryBuffers();
 
-
     CEGUI_DELETE_AO d_bidiVisualMapping;
 }
 
@@ -3827,9 +3826,8 @@ void Window::destroyGeometryBuffers()
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
-    {
         System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometryBuffers.at(i));
-    }
+
     d_geometryBuffers.clear();
 }
 
