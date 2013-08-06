@@ -51,11 +51,8 @@ public:
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
     // Implement CEGUI::Image interface
-    void render(GeometryBuffer& buffer,
-                const Rectf& dest_area,
-                const Rectf* clip_area,
-                const bool clipping_enabled,
-                const ColourRect& colours) const;
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const ImageRenderSettings& render_settings) const;
     void setArea(const Rectf& pixel_area);
 
     /*!

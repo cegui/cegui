@@ -102,13 +102,7 @@ BitmapImage::BitmapImage(const String& name, Texture* texture,
 void BitmapImage::setArea(const Rectf& pixel_area)
 {
     d_area = pixel_area;
-    d_pixelSize = pixel_area.getSize();
-
-    if (d_autoScaled != ASM_Disabled)
-        updateScaledSize(
-            System::getSingleton().getRenderer()->getDisplaySize());
-    else
-        d_scaledSize = d_pixelSize;
+    Image::setArea(pixel_area);
 }
 
 
@@ -119,16 +113,16 @@ void BitmapImage::setTexture(Texture* texture)
 }
 
 //----------------------------------------------------------------------------//
-void BitmapImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
-                        const Rectf* clip_area, const bool clipping_enabled,
-                        const ColourRect& colours) const
+void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                         const ImageRenderSettings& render_settings) const
 {
     const QuadSplitMode quad_split_mode(TopLeftToBottomRight);
 
-    Rectf dest(dest_area);
+    Rectf dest(render_settings.d_destArea);
     // apply rendering offset to the destination Rect
     dest.offset(d_scaledOffset);
 
+    const CEGUI::Rectf*const&  clip_area = render_settings.d_clipArea;
     // get the rect area that we will actually draw to (i.e. perform clipping)
     Rectf final_rect(clip_area ? dest.getIntersection(*clip_area) : dest );
 
@@ -151,6 +145,7 @@ void BitmapImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
     final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
 
     TexturedColouredVertex vbuffer[6];
+    const CEGUI::ColourRect&  colours = render_settings.d_multiplyColours;
 
     // vertex 0
     vbuffer[0].position   = Vector3f(final_rect.left(), final_rect.top(), 0.0f);
@@ -210,9 +205,12 @@ void BitmapImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
     vbuffer[5].colour_val= colours.d_bottom_right;
     vbuffer[5].tex_coords = Vector2f(tex_rect.right(), tex_rect.bottom());
 
-    buffer.setClippingActive(clipping_enabled);
-    if(clipping_enabled)
-        buffer.setClippingRegion(*clip_area);
+    CEGUI::GeometryBuffer& buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
+    geometry_buffers.push_back(&buffer);
+
+    buffer.setClippingActive(render_settings.d_clippingEnabled);
+    if(render_settings.d_clippingEnabled)
+        buffer.setClippingRegion(*render_settings.d_clipArea);
     buffer.setTexture(d_texture);
     buffer.appendGeometry(vbuffer, 6);
 }
