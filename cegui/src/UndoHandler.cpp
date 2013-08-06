@@ -53,7 +53,7 @@ bool UndoHandler::undo(size_t &cursor)
 
     if (canUndo())
     {
-        if (d_undoPosition < d_undoList.size())
+        if (static_cast<size_t>(d_undoPosition) < d_undoList.size())
         {
             UndoAction &action = d_undoList[d_undoPosition--];
 
