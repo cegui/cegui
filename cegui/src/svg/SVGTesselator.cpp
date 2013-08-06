@@ -29,20 +29,29 @@
 
 #include "CEGUI/svg/SVGBasicShape.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/System.h"
 #include "CEGUI/Vertex.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 
-void SVGTesselator::tesselateAndAddPolyline(GeometryBuffer& geometry_buffer, const SVGPolyline& polyline)
+void SVGTesselator::tesselateAndRenderPolyline(std::vector<GeometryBuffer*>& geometry_buffers,
+                                               const Image::ImageRenderSettings& render_settings,
+                                               const SVGPolyline* polyline)
 {
-    const CEGUI::Colour& stroke_colour = polyline.d_shapeStyle.d_stroke.d_colour;
-    const SVGPolyline::PolylinePointsList& points = polyline.d_points;
-    const float& stroke_width_length_half = polyline.d_shapeStyle.d_strokeWidthLength * 0.5f;
+    CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
+    geometry_buffers.push_back(&geometry_buffer);
 
-    unsigned int size = points.size();
-    for (unsigned int j = 1; j < size; ++j)
+    geometry_buffer.setClippingActive(false);
+    geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
+
+    const CEGUI::Colour& stroke_colour = polyline->d_shapeStyle.d_stroke.d_colour;
+    const SVGPolyline::PolylinePointsList& points = polyline->d_points;
+    const float& stroke_width_length_half = polyline->d_shapeStyle.d_strokeWidthLength * 0.5f;
+
+    size_t points_count = points.size();
+    for (size_t j = 1; j < points_count; ++j)
     {
         const CEGUI::Vector2f& previousPos = points.at(j - 1);
         const CEGUI::Vector2f& currentPos = points.at(j);
