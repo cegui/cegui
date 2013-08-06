@@ -29,6 +29,9 @@
 #define _SVGTesselator_h_
 
 #include "CEGUI/Base.h"
+#include "CEGUI/Image.h"
+
+#include <vector>
 
 namespace CEGUI
 {
@@ -37,13 +40,28 @@ class SVGPolyline;
 
 /*!
 \brief
-    
+    Defines a static class that provides helper functions for the tesselation of
+    SVGBasicShapes.
 */
 class CEGUIEXPORT SVGTesselator
 {
 public:
-
-    static void tesselateAndAddPolyline(GeometryBuffer& geometry_buffer, const SVGPolyline& polyline);
+    
+    /*!
+    \brief
+        Defines a static class that provides helper functions for the tesselation of
+        SVGBasicShapes.
+    
+        \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+        \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+        \param polyline
+            The SVG Polyline object that contains the data.
+    */
+    static void tesselateAndRenderPolyline(std::vector<GeometryBuffer*>& geometry_buffers,
+                                           const Image::ImageRenderSettings& render_settings,
+                                           const SVGPolyline* polyline);
 
 private:
     //! Constructor.
@@ -51,7 +69,6 @@ private:
 
     //! Destructor.
     ~SVGTesselator();
-
 };
 
 }
