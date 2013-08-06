@@ -210,9 +210,7 @@ void InventoryReceiver::populateGeometryBuffer()
             if (d_content.elementAtLocation(x, y))
                 colour = 0xFF0000FF;
 
-            CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-            d_geometryBuffers.push_back(&geometry_buffer);
-            img->render(geometry_buffer,
+            img->render(d_geometryBuffers,
                         Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
                         Sizef(square_size.d_width - 2, square_size.d_height - 2), 0, false,
                         ColourRect(colour));

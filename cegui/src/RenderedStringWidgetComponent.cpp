@@ -149,10 +149,7 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-
-        CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-        geometry_buffers.push_back(&geometry_buffer);
-        d_selectionImage->render(geometry_buffer, select_area, clip_rect, true, ColourRect(0xFF002FFF));
+        d_selectionImage->render(geometry_buffers, select_area, clip_rect, true, ColourRect(0xFF002FFF));
     }
 
     // we do not actually draw the widget, we just move it into position.

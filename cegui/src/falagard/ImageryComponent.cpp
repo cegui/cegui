@@ -221,9 +221,7 @@ namespace CEGUI
                 }
 
                 // add geometry for image to the target window.
-                CEGUI::GeometryBuffer& geometryBuffer = System::getSingleton().getRenderer()->createGeometryBufferTextured();
-                srcWindow.getGeometryBuffers().push_back(&geometryBuffer);
-                img->render(geometryBuffer, finalRect, clippingRect, !clip_to_display, finalColours);
+                img->render(srcWindow.getGeometryBuffers(), finalRect, clippingRect, !clip_to_display, finalColours);
 
                 finalRect.d_min.d_x += imgSz.d_width;
                 finalRect.d_max.d_x += imgSz.d_width;

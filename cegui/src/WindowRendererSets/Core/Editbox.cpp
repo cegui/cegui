@@ -261,14 +261,12 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
             render(*w, hlarea, 0, &text_area);
     }
 
-    std::map<const CEGUI::Texture*, GeometryBuffer*> geomBuffersMap;
-
     // draw pre-highlight text
     String sect = text.substr(0, w->getSelectionStartIndex());
     colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(geomBuffersMap, sect, text_part_rect.getPosition(),
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                        &text_area, true, colours);
 
     // draw highlight text
@@ -276,24 +274,15 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     setColourRectToSelectedTextColour(colours);
     colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(geomBuffersMap, sect, text_part_rect.getPosition(),
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                        &text_area, true, colours);
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
     colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
-    font->drawText(geomBuffersMap, sect, text_part_rect.getPosition(),
+    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
                    &text_area, true, colours);
-
-    std::vector<GeometryBuffer*>& geomBuffers = w->getGeometryBuffers();
-    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator iter = geomBuffersMap.begin();
-    std::map<const CEGUI::Texture*, GeometryBuffer*>::iterator end = geomBuffersMap.end();
-    while (iter != end)
-    {
-        geomBuffers.push_back(iter->second);
-        ++iter;
-    }
 }
 
 //----------------------------------------------------------------------------//
