@@ -34,6 +34,8 @@
 #include "CEGUI/svg/SVGShapeStyle.h"
 #include "CEGUI/Image.h"
 
+#include "glm/glm.hpp"
+
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -130,7 +132,7 @@ public:
     //! The BasicShape's style, which describes the filling and stroke of the graphical element.
     SVGShapeStyle d_shapeStyle;
 
-    typedef std::vector< CEGUI::Vector2<float> > PolylinePointsList;
+    typedef std::vector<glm::vec2> PolylinePointsList;
     PolylinePointsList d_points;
 };
 
