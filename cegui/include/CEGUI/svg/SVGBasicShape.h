@@ -32,6 +32,7 @@
 #include "CEGUI/Vector.h"
 
 #include "CEGUI/svg/SVGShapeStyle.h"
+#include "CEGUI/Image.h"
 
 #include <vector>
 
@@ -42,6 +43,8 @@
 
 namespace CEGUI
 {
+class GeometryBuffer;
+
 /*!
 \brief
     Defines a class that acts as interface for several classes that store the data of SVG BasicShapes.
@@ -55,11 +58,15 @@ public:
 
     /*!
     \brief
-        Adds a SVGBasicShape to the list of shapes of this class. This class takes ownership
-        of the object and will free the memory itself.
-    \param svg_shape
-        The SVGBasicShape that will be added.
-    */
+        Renders the shape into a new geometry buffer and adds it to the list.
+    \param geometry_buffers
+        The GeometryBuffer list to which the new geometry of this Image will be added to.
+    \param render_settings
+        The ImageRenderSettings that contain render settings for new GeometryBuffers.
+     */
+    virtual void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const Image::ImageRenderSettings& render_settings) const = 0;
+        
 
 
 protected:
@@ -115,6 +122,10 @@ public:
     SVGPolyline();
 
     ~SVGPolyline();*/
+
+    //! Implementation of SVGBasicShape interface
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const Image::ImageRenderSettings& render_settings) const;
 
     //! The BasicShape's style, which describes the filling and stroke of the graphical element.
     SVGShapeStyle d_shapeStyle;
