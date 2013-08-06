@@ -44,7 +44,7 @@ struct TexturedColouredVertex :
 {
     //! Position of the vertex in 3D space.
     Vector3f position;
-    //! Colour attribute of the vertex.
+    //! Multiplicative-colour attribute of the vertex.
     Colour  colour_val;
     //! Texture coordinates of the vertex.
     Vector2f tex_coords;
