@@ -29,6 +29,7 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/svg/SVGTesselator.h"
 #include "CEGUI/svg/SVGData.h"
+#include "CEGUI/svg/SVGBasicShape.h"
 
 
 // Start of CEGUI namespace section
@@ -68,16 +69,13 @@ SVGData* SVGImage::getSVGData()
 }
 
 //----------------------------------------------------------------------------//
-void SVGImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
-                        const Rectf* clip_area, const bool clipping_enabled,
-                        const ColourRect& colours) const
+void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                      const ImageRenderSettings& render_settings) const
 {
-    buffer.setClippingActive(clipping_enabled);
-    if(clipping_enabled)
-        buffer.setClippingRegion(*clip_area);
-
     const std::vector<SVGBasicShape*>& shapes = d_svgData->getShapes();
-    //SVGTesselator::tesselateAndAddPolyline(buffer, 
+    const unsigned int shape_count = shapes.size();
+    for (unsigned int i = 0; i < shape_count; ++i)
+        shapes[i]->render(geometry_buffers, render_settings);
 }
 
 //----------------------------------------------------------------------------//
