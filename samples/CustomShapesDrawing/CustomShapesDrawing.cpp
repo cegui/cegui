@@ -42,6 +42,8 @@
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGBasicShape.h"
 
+#include "glm/glm.hpp"
+
 #include <iostream>
 
 using namespace CEGUI;
@@ -227,38 +229,36 @@ void CustomShapesDrawing::drawLineStrip(std::vector<CEGUI::Vector3<float> > &lin
     unsigned int size = linePositions.size();
     for (unsigned int j = 1; j < size; ++j)
     {
-        const CEGUI::Vector3f& previousPos = linePositions.at(j - 1);
-        const CEGUI::Vector3f& currentPos = linePositions.at(j);
+        const CEGUI::Vector3f& previousPosition = linePositions.at(j - 1);
+        const CEGUI::Vector3f& currentPosition = linePositions.at(j);
 
-        const float& x1 = previousPos.d_x;
-        const float& y1 = previousPos.d_y;
-        const float& x2 = currentPos.d_x;
-        const float& y2 = currentPos.d_y;
+        glm::vec2 prevPos(previousPosition.d_x, previousPosition.d_y);
+        glm::vec2 currentPos(currentPosition.d_x, currentPosition.d_y);
 
-        //Todo: Replace trigonometry  with 2D vector flipping calculations to save speed
-        float angle = std::atan2(y2 - y1, x2 - x1);
-        float xLineOffset = lineWidth / 2.0f * sin(angle);
-        float yLineOffset = lineWidth / 2.0f * cos(angle);
+        // Normalize and tilt the 2D direction vector by 90° to get the vector pointing in the offset direction
+        glm::vec2 offsetVector = currentPos - prevPos;
+        glm::normalize(offsetVector);
+        offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * 5.f;
 
         CEGUI::ColouredVertex linePositionVertex;
         linePositionVertex.colour_val = lineColour;
 
-        linePositionVertex.position = CEGUI::Vector3f(x1 + xLineOffset, y1 - yLineOffset, 0.0f);
+        linePositionVertex.position = CEGUI::Vector3f(x1 + offsetVector.d_x, y1 - offsetVector.d_y, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x2 + xLineOffset, y2 - yLineOffset, 0.0f);
+        linePositionVertex.position = CEGUI::Vector3f(x2 + offsetVector.d_x, y2 - offsetVector.d_y, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x2 - xLineOffset, y2 + yLineOffset, 0.0f);
+        linePositionVertex.position = CEGUI::Vector3f(x2 - offsetVector.d_x, y2 + offsetVector.d_y, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x2 - xLineOffset, y2 + yLineOffset, 0.0f);
+        linePositionVertex.position = CEGUI::Vector3f(x2 - offsetVector.d_x, y2 + offsetVector.d_y, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x1 - xLineOffset, y1 + yLineOffset, 0.0f);
+        linePositionVertex.position = CEGUI::Vector3f(x1 - offsetVector.d_x, y1 + offsetVector.d_y, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = CEGUI::Vector3f(x1 + xLineOffset, y1 - yLineOffset, 0.0f);
+        linePositionVertex.position = CEGUI::Vector3f(x1 + offsetVector.d_x, y1 - offsetVector.d_y, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
     }
 }
