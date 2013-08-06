@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   CEGUIBasicImage.h
+    filename:   BitmapImage.h
     created:    Wed Feb 16 2011
     author:     Paul D Turner <paul@cegui.org.uk>
 *************************************************************************/
@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIBasicImage_h_
-#define _CEGUIBasicImage_h_
+#ifndef _CEGUIBitmapImage_h_
+#define _CEGUIBitmapImage_h_
 
 #include "CEGUI/Image.h"
 #include "CEGUI/String.h"
@@ -40,61 +40,44 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-class CEGUIEXPORT BasicImage : public Image
+class CEGUIEXPORT BitmapImage : public Image
 {
 public:
-    BasicImage(const String& name);
-    BasicImage(const XMLAttributes& attributes);
+    BitmapImage(const String& name);
+    BitmapImage(const XMLAttributes& attributes);
 
-    BasicImage(const String& name, Texture* texture,
+    BitmapImage(const String& name, Texture* texture,
                const Rectf& tex_area, const Vector2f& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
-    void setTexture(Texture* texture);
-    void setArea(const Rectf& pixel_area);
-    void setOffset(const Vector2f& pixel_offset);
-    void setAutoScaled(const AutoScaledMode autoscaled);
-    void setNativeResolution(const Sizef& native_res);
-
     // Implement CEGUI::Image interface
-    const String& getName() const;
-    const Sizef& getRenderedSize() const;
-    const Vector2f& getRenderedOffset() const;
-    void render(GeometryBuffer& buffer,
-                const Rectf& dest_area,
-                const Rectf* clip_area,
-                const ColourRect& colours) const;
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const ImageRenderSettings& render_settings) const;
+    void setArea(const Rectf& pixel_area);
 
-    //! Notifies the class that the display size of the renderer has changed so that
-    // the window can adapt to the new display size accordingly
-    void notifyDisplaySizeChanged(const Sizef& renderer_display_size);
+    /*!
+    \brief
+        Sets the Texture object of this Image.
+
+    \param texture
+        The pointer to the Texture of this Image.
+    */
+    void setTexture(Texture* texture);
+
+    /*!
+    \brief
+        Returns the pointer to the Texture object used by this image.
+
+    \return
+        The pointer to the Texture object used by this image.
+    */
+    const Texture* getTexture() const;
 
 protected:
-    //! Updates the scaled size and offset values according to the new display size of the renderer 
-    void updateScaledSizeAndOffset(const Sizef& renderer_display_size);
-    //! Updates only the scaled size values according to the new display size of the renderer 
-    void updateScaledSize(const Sizef& renderer_display_size);
-    //! Updates only the scaled offset values according to the new display size of the renderer 
-    void updateScaledOffset(const Sizef& renderer_display_size);
-
-    //! name used when the BasicImage was created.
-    String d_name;
     //! Texture used by this image.
     Texture* d_texture;
-    //! Actual pixel size.
-    Sizef d_pixelSize;
     //! Rect defining texture co-ords for this image.
     Rectf d_area;
-    //! Defined pixel offset
-    Vector2f d_pixelOffset;
-    //! Whether image is auto-scaled or not and how.
-    AutoScaledMode d_autoScaled;
-    //! Native resolution used for autoscaling.
-    Sizef d_nativeResolution;
-    //! Size after having autoscaling applied.
-    Sizef d_scaledSize;
-    //! Offset after having autoscaling applied.
-    Vector2f d_scaledOffset;
 };
 
 } // End of  CEGUI namespace section
@@ -103,5 +86,5 @@ protected:
 #	pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIBasicImage_h_
+#endif  // end of guard _CEGUIBitmapImage_h_
 
