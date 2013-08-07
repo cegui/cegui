@@ -65,6 +65,7 @@ struct MouseClickTracker :
 const String InputAggregator::EventMouseButtonClickTimeoutChanged("MouseButtonClickTimeoutChanged" );
 const String InputAggregator::EventMouseButtonMultiClickTimeoutChanged("MouseButtonMultiClickTimeoutChanged" );
 const String InputAggregator::EventMouseButtonMultiClickToleranceChanged("MouseButtonMultiClickToleranceChanged" );
+const String InputAggregator::EventMouseMoveScalingFactorChanged("MouseMoveScalingFactorChanged");
 
 //----------------------------------------------------------------------------//
 const float InputAggregator::DefaultMouseButtonClickTimeout = 0.0f;
@@ -77,6 +78,7 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
     d_mouseButtonClickTimeout(DefaultMouseButtonClickTimeout),
     d_mouseButtonMultiClickTimeout(DefaultMouseButtonMultiClickTimeout),
     d_mouseButtonMultiClickTolerance(DefaultMouseButtonMultiClickTolerance),
+    d_mouseMovementScalingFactor(1.0f),
     d_generateMouseClickEvents(true),
     d_mouseClickTrackers(new MouseClickTracker[MouseButtonCount]),
     d_pointerPosition(0.0f, 0.0f),
@@ -155,6 +157,21 @@ const Sizef& InputAggregator::getMouseButtonMultiClickTolerance() const
 }
 
 //----------------------------------------------------------------------------//
+void InputAggregator::setMouseMoveScalingFactor(float factor)
+{
+    d_mouseMovementScalingFactor = factor;
+
+    InputAggregatorEventArgs args(this);
+    onMouseMoveScalingFactorChanged(args);
+}
+
+//----------------------------------------------------------------------------//
+float InputAggregator::getMouseMoveScalingFactor() const
+{
+    return d_mouseMovementScalingFactor;
+}
+
+//----------------------------------------------------------------------------//
 void InputAggregator::onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args)
 {
     fireEvent(EventMouseButtonClickTimeoutChanged, args);
@@ -172,6 +189,11 @@ void InputAggregator::onMouseButtonMultiClickToleranceChanged(InputAggregatorEve
     fireEvent(EventMouseButtonMultiClickToleranceChanged, args);
 }
 
+//----------------------------------------------------------------------------//
+void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args)
+{
+    fireEvent(EventMouseMoveScalingFactorChanged, args);
+}
 
 bool InputAggregator::injectTimePulse(float timeElapsed)
 {
@@ -180,8 +202,9 @@ bool InputAggregator::injectTimePulse(float timeElapsed)
 
 bool InputAggregator::injectMouseMove(float delta_x, float delta_y)
 {
-    return injectMousePosition(delta_x + d_pointerPosition.d_x,
-        delta_y + d_pointerPosition.d_y);
+    return injectMousePosition(
+        delta_x + d_pointerPosition.d_x * d_mouseMovementScalingFactor,
+        delta_y + d_pointerPosition.d_y * d_mouseMovementScalingFactor);
 }
 
 bool InputAggregator::injectMousePosition(float x_pos, float y_pos)

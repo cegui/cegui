@@ -85,6 +85,10 @@ public:
      * Handlers are passed a const reference to a GUIContextEventArgs struct.
      */
     static const String EventMouseButtonMultiClickToleranceChanged;
+    /** Name of Event fired when the mouse movement scaling factor is changed.
+     * Handlers are passed a const reference to a GUIContextEventArgs struct.
+     */
+    static const String EventMouseMoveScalingFactorChanged;
 
     InputAggregator(InputEventReceiver* input_receiver);
     ~InputAggregator();
@@ -144,6 +148,9 @@ public:
     */
     const Sizef& getMouseButtonMultiClickTolerance() const;
 
+    void setMouseMoveScalingFactor(float factor);
+    float getMouseMoveScalingFactor() const;
+
     /************************************************************************/
     /* InjectedInputReceiver interface implementation                       */
     /************************************************************************/
@@ -174,6 +181,7 @@ private:
     virtual void onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args);
+    virtual void onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args);
 
     void initializeSimpleKeyMappings();
 
@@ -199,6 +207,9 @@ private:
     //! should mouse click/multi-click events be automatically generated.
     bool d_generateMouseClickEvents;
     MouseClickTracker* d_mouseClickTrackers;
+
+    //! Scaling factor applied to injected pointer move deltas.
+    float d_mouseMovementScalingFactor;
 
     Vector2f d_pointerPosition;
     SemanticValue d_keyValuesMappings[0xFF]; //!< Mapping from a key to its semantic

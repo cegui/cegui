@@ -43,7 +43,6 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 const String GUIContext::EventRootWindowChanged("RootWindowChanged");
-const String GUIContext::EventMouseMoveScalingFactorChanged("MouseMoveScalingFactorChanged");
 const String GUIContext::EventRenderTargetChanged("RenderTargetChanged");
 const String GUIContext::EventDefaultFontChanged("DefaultFontChanged");
 
@@ -52,7 +51,6 @@ GUIContext::GUIContext(RenderTarget& target) :
     RenderingSurface(target),
     d_rootWindow(0),
     d_isDirty(false),
-    d_pointerMovementScalingFactor(1.0f),
     d_defaultTooltipObject(0),
     d_weCreatedTooltipObject(false),
     d_defaultFont(0),
@@ -298,21 +296,6 @@ const PointerIndicator& GUIContext::getPointerIndicator() const
 }
 
 //----------------------------------------------------------------------------//
-void GUIContext::setMouseMoveScalingFactor(float factor)
-{
-    d_pointerMovementScalingFactor = factor;
-
-    GUIContextEventArgs args(this);
-    onMouseMoveScalingFactorChanged(args);
-}
-
-//----------------------------------------------------------------------------//
-float GUIContext::getMouseMoveScalingFactor() const
-{
-    return d_pointerMovementScalingFactor;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::areaChangedHandler(const EventArgs&)
 {
     d_surfaceSize = d_target->getArea().getSize();
@@ -360,12 +343,6 @@ void GUIContext::onRootWindowChanged(WindowEventArgs& args)
     markAsDirty();
 
     fireEvent(EventRootWindowChanged, args);
-}
-
-//----------------------------------------------------------------------------//
-void GUIContext::onMouseMoveScalingFactorChanged(GUIContextEventArgs& args)
-{
-    fireEvent(EventMouseMoveScalingFactorChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -793,7 +770,8 @@ bool GUIContext::handlePointerMove_impl(PointerEventArgs& pa)
 //----------------------------------------------------------------------------//
 bool GUIContext::handlePointerMoveEvent(const SemanticInputEvent& event)
 {
-    const Vector2f new_position(event.d_payload.array[0],
+    const Vector2f new_position(
+        event.d_payload.array[0],
         event.d_payload.array[1]);
 
     // setup pointer movement event args object.
