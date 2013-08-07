@@ -408,25 +408,6 @@ void ItemListbox::onMultiSelectModeChanged(WindowEventArgs& e)
     fireEvent(EventMultiSelectModeChanged, e);
 }
 
-/************************************************************************
-    Handle key down event
-************************************************************************/
-void ItemListbox::onKeyDown(KeyEventArgs& e)
-{
-    ScrolledItemListBase::onKeyDown(e);
-
-    // select all (if allowed) on Ctrl+A
-    if (d_multiSelect)
-    {
-        uint sysKeys = getGUIContext().getSystemKeys().get();
-        if (e.scancode == Key::A && (sysKeys&Control))
-        {
-            selectAllItems();
-            ++e.handled;
-        }
-    }
-}
-
 //----------------------------------------------------------------------------//
 bool ItemListbox::handle_PaneChildRemoved(const EventArgs& e)
 {
@@ -440,6 +421,23 @@ bool ItemListbox::handle_PaneChildRemoved(const EventArgs& e)
 
     return true;
 }
-//----------------------------------------------------------------------------//
 
+//----------------------------------------------------------------------------//
+void ItemListbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    Window::onSemanticInputEvent(e);
+
+    // select all (if allowed)
+    if (d_multiSelect)
+    {
+        uint sysKeys = getGUIContext().getSystemKeys().get();
+        if (e.d_semanticValue == SV_SelectAll)
+        {
+            selectAllItems();
+            ++e.handled;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
 } // end CEGUI namespace

@@ -213,7 +213,7 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
     if (d_selectedSampleData)
     {
         if (Key::Escape != ceguiKey)
-            return d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
+            return d_selectedSampleData->getInputAggregator()->injectKeyDown(ceguiKey);
         else
             stopDisplaySample();
     }
@@ -221,8 +221,8 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
     {
         if (Key::Escape != ceguiKey)
         {
-            if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-                return ceguiSystem->getDefaultGUIContext().injectKeyDown(ceguiKey);
+            if (d_systemInputAggregator)
+                return d_systemInputAggregator->injectKeyDown(ceguiKey);
             else
                 return false;
         }
@@ -236,13 +236,7 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->injectKeyUp(ceguiKey);
-
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectKeyUp(ceguiKey);
-
-    return false;
+    return getCurrentInputAggregator()->injectKeyUp(ceguiKey);
 }
 
 //----------------------------------------------------------------------------//

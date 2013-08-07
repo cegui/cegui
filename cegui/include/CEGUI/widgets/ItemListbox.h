@@ -259,7 +259,7 @@ protected:
     /************************************************************************
         Overridden event handlers
     ************************************************************************/
-    virtual void onKeyDown(KeyEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /************************************************************************
         Implementation data

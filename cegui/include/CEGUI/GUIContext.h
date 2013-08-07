@@ -214,10 +214,6 @@ public:
     // Implementation of InputEventReceiver interface
     bool injectInputEvent(const InputEvent& event);
 
-    // Implementation of InjectedInputReceiver interface
-    bool injectKeyDown(Key::Scan scan_code);
-    bool injectKeyUp(Key::Scan scan_code);
-
     // public overrides
     void draw();
 
