@@ -80,10 +80,6 @@ public:
      * obtained by calling GUIContext::getRootWindow).
      */
     static const String EventRootWindowChanged;
-    /** Name of Event fired when the mouse movement scaling factor is changed.
-     * Handlers are passed a const reference to a GUIContextEventArgs struct.
-     */
-    static const String EventMouseMoveScalingFactorChanged;
     /** Name of Event fired when the RenderTarget for the GUIContext is changed.
      * Handlers are passed a const GUIContextRenderTargetEventArgs struct, with
      * the renderTarget member set to the old RenderTarget.
@@ -125,9 +121,6 @@ public:
 
     PointerIndicator& getPointerIndicator();
     const PointerIndicator& getPointerIndicator() const;
-
-    void setMouseMoveScalingFactor(float factor);
-    float getMouseMoveScalingFactor() const;
 
     //! Tell the context to reconsider which window it thinks the pointer is in.
     void updateWindowContainingPointer();
@@ -245,7 +238,6 @@ protected:
 
     // event trigger functions.
     virtual void onRootWindowChanged(WindowEventArgs& args);
-    virtual void onMouseMoveScalingFactorChanged(GUIContextEventArgs& args);
     virtual void onRenderTargetChanged(GUIContextRenderTargetEventArgs& args);
     virtual void onDefaultFontChanged(EventArgs& args);
 
@@ -270,8 +262,6 @@ protected:
     Window* d_rootWindow;
     bool d_isDirty;
     PointerIndicator d_pointerIndicator;
-    //! Scaling factor applied to injected pointer move deltas.
-    float d_pointerMovementScalingFactor;
 
     mutable Tooltip* d_defaultTooltipObject;
     mutable bool d_weCreatedTooltipObject;
