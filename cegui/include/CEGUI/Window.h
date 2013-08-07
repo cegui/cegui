@@ -389,24 +389,6 @@ public:
      * valid.
      */
     static const String EventPointerActivate;
-    /** Event fired when a key on the keyboard was pressed down while the window
-     * had input focus.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the key press,
-     * KeyEventArgs::scancode set to the Key::Scan value of the key that was
-     * pressed, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the key was pressed.
-     */
-    static const String EventKeyDown;
-    /** Event fired when a key on the keyboard was released while the window
-     * had input focus.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the key release,
-     * KeyEventArgs::scancode set to the Key::Scan value of the key that was
-     * released, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the key was released.
-     */
-    static const String EventKeyUp;
     /** Event fired when the Window receives a character key input event.
      * Handlers are passed a const KeyEventArgs reference with
      * WindowEventArgs::window set to the Window receiving the character input,
@@ -3030,32 +3012,6 @@ protected:
         PointerEventArgs object.  All fields are valid.
     */
     virtual void onPointerActivate(PointerEventArgs& e);
-        
-    /*!
-    \brief
-        Handler called when a key as been depressed while this window has input
-        focus.
-
-    \param e
-        KeyEventArgs object whose 'scancode' field is set to the Key::Scan value
-        representing the key that was pressed, and whose 'sysKeys' field
-        represents the combination of SystemKey that were active when the event
-        was generated.
-    */
-    virtual void onKeyDown(KeyEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a key as been released while this window has input
-        focus.
-
-    \param e
-        KeyEventArgs object whose 'scancode' field is set to the Key::Scan value
-        representing the key that was released, and whose 'sysKeys' field
-        represents the combination of SystemKey that were active when the event
-        was generated.  All other fields should be considered as 'junk'.
-    */
-    virtual void onKeyUp(KeyEventArgs& e);
     
     /*!
     \brief

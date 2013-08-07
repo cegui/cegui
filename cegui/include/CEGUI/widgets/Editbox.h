@@ -516,23 +516,23 @@ protected:
     //! Processing for Delete key
     void handleDelete(void);
 
-    //! Processing to move caret one character left
-    void handleCharLeft(uint sysKeys);
+    //! Processing to move caret one character left (and optionally select it)
+    void handleCharLeft(bool select);
 
-    //! Processing to move caret one word left
-    void handleWordLeft(uint sysKeys);
+    //! Processing to move caret one word left (and optionally select it)
+    void handleWordLeft(bool select);
 
-    //! Processing to move caret one character right
-    void handleCharRight(uint sysKeys);
+    //! Processing to move caret one character right (and optionally select it)
+    void handleCharRight(bool select);
 
-    //! Processing to move caret one word right
-    void handleWordRight(uint sysKeys);
+    //! Processing to move caret one word right (and optionally select it)
+    void handleWordRight(bool select);
 
-    //! Processing to move caret to the start of the text.
-    void handleHome(uint sysKeys);
+    //! Processing to move caret to the start of the text. (and optionally select it)
+    void handleHome(bool select);
 
-    //! Processing to move caret to the end of the text
-    void handleEnd(uint sysKeys);
+    //! Processing to move caret to the end of the text (and optionally select it)
+    void handleEnd(bool select);
 
     //! validate window renderer
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
@@ -608,7 +608,6 @@ protected:
     void onPointerMove(PointerEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);
     void onCharacter(TextEventArgs& e);
-    void onKeyDown(KeyEventArgs& e);
     void onTextChanged(WindowEventArgs& e);
 
     void onSemanticInputEvent(SemanticEventArgs& e);

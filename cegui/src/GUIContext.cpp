@@ -531,42 +531,6 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
-bool GUIContext::injectKeyDown(Key::Scan scan_code)
-{
-    d_systemKeys.keyPressed(scan_code);
-
-    KeyEventArgs args(getKeyboardTargetWindow());
-
-    // if there's no destination window, input can't be handled.
-    if (!args.window)
-        return false;
-
-    args.scancode = scan_code;
-    args.sysKeys = d_systemKeys.get();
-
-    args.window->onKeyDown(args);
-    return args.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
-bool GUIContext::injectKeyUp(Key::Scan scan_code)
-{
-    d_systemKeys.keyReleased(scan_code);
-
-    KeyEventArgs args(getKeyboardTargetWindow());
-
-    // if there's no destination window, input can't be handled.
-    if (!args.window)
-        return false;
-
-    args.scancode = scan_code;
-    args.sysKeys = d_systemKeys.get();
-
-    args.window->onKeyUp(args);
-    return args.handled != 0;
-}
-
-//----------------------------------------------------------------------------//
 bool GUIContext::injectTimePulse(float timeElapsed)
 {
     // if no visible active sheet, input can't be handled

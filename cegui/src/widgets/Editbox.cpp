@@ -553,76 +553,6 @@ void Editbox::onCharacter(TextEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::onKeyDown(KeyEventArgs& e)
-{
-    // fire event.
-    fireEvent(EventKeyDown, e, Window::EventNamespace);
-
-    if (e.handled == 0 && hasInputFocus())
-    {
-        if (isReadOnly())
-        {
-            Window::onKeyDown(e);
-            return;
-        }
-
-        WindowEventArgs args(this);
-        switch (e.scancode)
-        {
-        case Key::LeftShift:
-        case Key::RightShift:
-            if (getSelectionLength() == 0)
-                d_dragAnchorIdx = d_caretPos;
-            break;
-
-        case Key::Backspace:
-            handleBackspace();
-            break;
-
-        case Key::Delete:
-            handleDelete();
-            break;
-
-        case Key::Tab:
-        case Key::Return:
-        case Key::NumpadEnter:
-            // Fire 'input accepted' event
-            onTextAcceptedEvent(args);
-            break;
-
-        case Key::ArrowLeft:
-            if (e.sysKeys & Control)
-                handleWordLeft(e.sysKeys);
-            else
-                handleCharLeft(e.sysKeys);
-            break;
-
-        case Key::ArrowRight:
-            if (e.sysKeys & Control)
-                handleWordRight(e.sysKeys);
-            else
-                handleCharRight(e.sysKeys);
-            break;
-
-        case Key::Home:
-            handleHome(e.sysKeys);
-            break;
-
-        case Key::End:
-            handleEnd(e.sysKeys);
-            break;
-
-        default:
-            Window::onKeyDown(e);
-            return;
-        }
-
-        ++e.handled;
-    }
-
-}
-
-//----------------------------------------------------------------------------//
 void Editbox::handleBackspace(void)
 {
     if (!isReadOnly())
@@ -697,72 +627,72 @@ void Editbox::handleDelete(void)
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleCharLeft(uint sysKeys)
+void Editbox::handleCharLeft(bool select)
 {
     if (d_caretPos > 0)
         setCaretIndex(d_caretPos - 1);
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleWordLeft(uint sysKeys)
+void Editbox::handleWordLeft(bool select)
 {
     if (d_caretPos > 0)
         setCaretIndex(TextUtils::getWordStartIdx(getText(), d_caretPos));
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleCharRight(uint sysKeys)
+void Editbox::handleCharRight(bool select)
 {
     if (d_caretPos < getText().length())
         setCaretIndex(d_caretPos + 1);
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleWordRight(uint sysKeys)
+void Editbox::handleWordRight(bool select)
 {
     if (d_caretPos < getText().length())
         setCaretIndex(TextUtils::getNextWordStartIdx(getText(), d_caretPos));
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleHome(uint sysKeys)
+void Editbox::handleHome(bool select)
 {
     if (d_caretPos > 0)
         setCaretIndex(0);
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
 }
 
 //----------------------------------------------------------------------------//
-void Editbox::handleEnd(uint sysKeys)
+void Editbox::handleEnd(bool select)
 {
     if (d_caretPos < getText().length())
         setCaretIndex(getText().length());
 
-    if (sysKeys & Shift)
+    if (select)
         setSelection(d_caretPos, d_dragAnchorIdx);
     else
         clearSelection();
@@ -963,6 +893,93 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 
         // perform actual selection operation.
         setSelection(d_dragAnchorIdx, d_caretPos);
+
+        ++e.handled;
+    }
+
+    // TODO: migrate common logic with MultiLineEditbox in a base class
+    if (e.handled == 0 && hasInputFocus())
+    {
+        if (isReadOnly())
+        {
+            Window::onSemanticInputEvent(e);
+            return;
+        }
+
+        WindowEventArgs args(this);
+        switch (e.d_semanticValue)
+        {
+        case Key::LeftShift:
+        case Key::RightShift:
+            if (getSelectionLength() == 0)
+                d_dragAnchorIdx = d_caretPos;
+            break;
+
+        case SV_DeletePreviousCharacter:
+            handleBackspace();
+            break;
+
+        case SV_DeleteNextCharacter:
+            handleDelete();
+            break;
+
+        case SV_Confirm:
+            // Fire 'input accepted' event
+            onTextAcceptedEvent(args);
+            break;
+
+        case SV_GoToPreviousCharacter:
+            handleCharLeft(false);
+            break;
+
+        case SV_GoToNextCharacter:
+            handleCharRight(false);
+            break;
+
+        case SV_SelectPreviousCharacter:
+            handleCharLeft(true);
+            break;
+
+        case SV_SelectNextCharacter:
+            handleCharRight(true);
+            break;
+
+        case SV_GoToPreviousWord:
+            handleWordLeft(false);
+            break;
+
+        case SV_GoToNextWord:
+            handleWordRight(false);
+            break;
+
+        case SV_SelectPreviousWord:
+            handleWordLeft(true);
+            break;
+
+        case SV_SelectNextWord:
+            handleWordRight(true);
+            break;
+
+        case SV_GoToStartOfLine:
+            handleHome(false);
+            break;
+
+        case SV_GoToEndOfLine:
+            handleEnd(false);
+            break;
+
+        case SV_SelectToStartOfLine:
+            handleHome(true);
+            break;
+
+        case SV_SelectToEndOfLine:
+            handleEnd(true);
+            break;
+
+        default:
+            Window::onSemanticInputEvent(e);
+            return;
+        }
 
         ++e.handled;
     }

@@ -288,12 +288,29 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     SemanticValue value = d_keyValuesMappings[scan_code];
 
     // handle combined keys
-    if (isControlPressed())
+    if (isControlPressed() && isShiftPressed())
+    {
+        if (scan_code == Key::ArrowLeft)
+            value = SV_SelectPreviousWord;
+        else if (scan_code == Key::ArrowRight)
+            value = SV_SelectNextWord;
+        else if (scan_code == Key::End)
+            value = SV_SelectToEndOfDocument;
+        else if (scan_code == Key::Home)
+            value = SV_SelectToStartOfDocument;
+    }
+    else if (isControlPressed())
     {
         if (scan_code == Key::ArrowLeft)
             value = SV_GoToPreviousWord;
         else if (scan_code == Key::ArrowRight)
             value = SV_GoToNextWord;
+        else if (scan_code == Key::End)
+            value = SV_GoToEndOfDocument;
+        else if (scan_code == Key::Home)
+            value = SV_GoToStartOfDocument;
+        else if (scan_code == Key::A)
+            value = SV_SelectAll;
     }
     else if (isShiftPressed())
     {
@@ -301,6 +318,18 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
             value = SV_SelectPreviousCharacter;
         else if (scan_code == Key::ArrowRight)
             value = SV_SelectNextCharacter;
+        else if (scan_code == Key::ArrowUp)
+            value = SV_SelectUp;
+        else if (scan_code == Key::ArrowDown)
+            value = SV_SelectDown;
+        else if (scan_code == Key::End)
+            value = SV_SelectToEndOfLine;
+        else if (scan_code == Key::Home)
+            value = SV_SelectToStartOfLine;
+        else if (scan_code == Key::PageUp)
+            value = SV_SelectPreviousPage;
+        else if (scan_code == Key::PageDown)
+            value = SV_SelectNextPage;
     }
 
     if (value != SV_NoValue)
@@ -418,8 +447,13 @@ void InputAggregator::initializeSimpleKeyMappings()
 
     d_keyValuesMappings[Key::ArrowLeft] = SV_GoToPreviousCharacter;
     d_keyValuesMappings[Key::ArrowRight] = SV_GoToNextCharacter;
+    d_keyValuesMappings[Key::ArrowDown] = SV_GoDown;
+    d_keyValuesMappings[Key::ArrowUp] = SV_GoUp;
+
     d_keyValuesMappings[Key::End] = SV_GoToEndOfLine;
     d_keyValuesMappings[Key::Home] = SV_GoToStartOfLine;
+    d_keyValuesMappings[Key::PageDown] = SV_GoToNextPage;
+    d_keyValuesMappings[Key::PageUp] = SV_GoToPreviousPage;
 }
 
 bool InputAggregator::isShiftPressed()

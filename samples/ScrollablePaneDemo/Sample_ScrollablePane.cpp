@@ -116,7 +116,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
 
     // root window will take care of hotkeys
-    d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
+    // TODO: fixme
+    // d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
     d_guiContext->setRootWindow(d_root);
 
     // create a menubar.

@@ -830,16 +830,16 @@ void MultiLineEditbox::handleDelete(void)
 
 
 /*************************************************************************
-	Processing to move caret one character left
+    Processing to move caret one character left (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleCharLeft(uint sysKeys)
+void MultiLineEditbox::handleCharLeft(bool select)
 {
 	if (d_caretPos > 0)
 	{
 		setCaretIndex(d_caretPos - 1);
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -847,21 +847,20 @@ void MultiLineEditbox::handleCharLeft(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret one word left
+    Processing to move caret one word left (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleWordLeft(uint sysKeys)
+void MultiLineEditbox::handleWordLeft(bool select)
 {
 	if (d_caretPos > 0)
 	{
         setCaretIndex(TextUtils::getWordStartIdx(getText(), getCaretIndex()));
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -869,21 +868,20 @@ void MultiLineEditbox::handleWordLeft(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret one character right
+    Processing to move caret one character right (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleCharRight(uint sysKeys)
+void MultiLineEditbox::handleCharRight(bool select)
 {
    if (d_caretPos < getText().length() - 1)
 	{
 		setCaretIndex(d_caretPos + 1);
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -891,21 +889,20 @@ void MultiLineEditbox::handleCharRight(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret one word right
+    Processing to move caret one word right (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleWordRight(uint sysKeys)
+void MultiLineEditbox::handleWordRight(bool select)
 {
    if (d_caretPos < getText().length() - 1)
 	{
         setCaretIndex(TextUtils::getNextWordStartIdx(getText(), getCaretIndex()));
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -913,21 +910,20 @@ void MultiLineEditbox::handleWordRight(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret to the start of the text.
+    Processing to move caret to the start of the text (and optionally select the text)
 *************************************************************************/
-void MultiLineEditbox::handleDocHome(uint sysKeys)
+void MultiLineEditbox::handleDocHome(bool select)
 {
 	if (d_caretPos > 0)
 	{
 		setCaretIndex(0);
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -935,21 +931,20 @@ void MultiLineEditbox::handleDocHome(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret to the end of the text
+    Processing to move caret to the end of the text (and optionally select the text)
 *************************************************************************/
-void MultiLineEditbox::handleDocEnd(uint sysKeys)
+void MultiLineEditbox::handleDocEnd(bool select)
 {
    if (d_caretPos < getText().length() - 1)
 	{
        setCaretIndex(getText().length() - 1);
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -957,14 +952,14 @@ void MultiLineEditbox::handleDocEnd(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret to the start of the current line.
+    Processing to move caret to the start of the current line 
+    (and optionally select the text)
 *************************************************************************/
-void MultiLineEditbox::handleLineHome(uint sysKeys)
+void MultiLineEditbox::handleLineHome(bool select)
 {
 	size_t line = getLineNumberFromIndex(d_caretPos);
 
@@ -977,7 +972,7 @@ void MultiLineEditbox::handleLineHome(uint sysKeys)
 			setCaretIndex(lineStartIdx);
 		}
 
-		if (sysKeys & Shift)
+        if (select)
 		{
 			setSelection(d_caretPos, d_dragAnchorIdx);
 		}
@@ -985,16 +980,14 @@ void MultiLineEditbox::handleLineHome(uint sysKeys)
 		{
 			clearSelection();
 		}
-
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret to the end of the current line
+    Processing to move caret to the end of the current line (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleLineEnd(uint sysKeys)
+void MultiLineEditbox::handleLineEnd(bool select)
 {
 	size_t line = getLineNumberFromIndex(d_caretPos);
 
@@ -1007,7 +1000,7 @@ void MultiLineEditbox::handleLineEnd(uint sysKeys)
 			setCaretIndex(lineEndIdx);
 		}
 
-		if (sysKeys & Shift)
+        if (select)
 		{
 			setSelection(d_caretPos, d_dragAnchorIdx);
 		}
@@ -1015,16 +1008,14 @@ void MultiLineEditbox::handleLineEnd(uint sysKeys)
 		{
 			clearSelection();
 		}
-
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret up a line.
+    Processing to move caret up a line (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleLineUp(uint sysKeys)
+void MultiLineEditbox::handleLineUp(bool select)
 {
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
@@ -1039,7 +1030,7 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -1047,14 +1038,13 @@ void MultiLineEditbox::handleLineUp(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
-	Processing to move caret down a line.
+    Processing to move caret down a line (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handleLineDown(uint sysKeys)
+void MultiLineEditbox::handleLineDown(bool select)
 {
 	size_t caretLine = getLineNumberFromIndex(d_caretPos);
 
@@ -1069,7 +1059,7 @@ void MultiLineEditbox::handleLineDown(uint sysKeys)
 		setCaretIndex(d_lines[caretLine].d_startIdx + newLineIndex);
 	}
 
-	if (sysKeys & Shift)
+    if (select)
 	{
 		setSelection(d_caretPos, d_dragAnchorIdx);
 	}
@@ -1077,14 +1067,13 @@ void MultiLineEditbox::handleLineDown(uint sysKeys)
 	{
 		clearSelection();
 	}
-
 }
 
 
 /*************************************************************************
 	Processing to insert a new line / paragraph.
 *************************************************************************/
-void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
+void MultiLineEditbox::handleNewLine()
 {
 	if (!isReadOnly())
 	{
@@ -1103,16 +1092,14 @@ void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
 			WindowEventArgs args(this);
 			onTextChanged(args);
 		}
-
 	}
-
 }
 
 
 /*************************************************************************
-    Processing to move caret one page up
+    Processing to move caret one page up (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handlePageUp(uint sysKeys)
+void MultiLineEditbox::handlePageUp(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine = static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
@@ -1121,8 +1108,10 @@ void MultiLineEditbox::handlePageUp(uint sysKeys)
     {
         newline = caretLine - nbLine;
     }
+
     setCaretIndex(d_lines[newline].d_startIdx);
-    if (sysKeys & Shift)
+
+    if (select)
     {
         setSelection(d_caretPos, d_selectionEnd);
     }
@@ -1130,14 +1119,15 @@ void MultiLineEditbox::handlePageUp(uint sysKeys)
     {
         clearSelection();
     }
+
     ensureCaretIsVisible();
 }
 
 
 /*************************************************************************
-    Processing to move caret one page down
+    Processing to move caret one page down (and optionally select it)
 *************************************************************************/
-void MultiLineEditbox::handlePageDown(uint sysKeys)
+void MultiLineEditbox::handlePageDown(bool select)
 {
     size_t caretLine = getLineNumberFromIndex(d_caretPos);
     size_t nbLine =  static_cast<size_t>(getTextRenderArea().getHeight() / getFont()->getLineSpacing());
@@ -1147,7 +1137,7 @@ void MultiLineEditbox::handlePageDown(uint sysKeys)
         newline = std::min(newline,d_lines.size() - 1);
     }
     setCaretIndex(d_lines[newline].d_startIdx + d_lines[newline].d_length - 1);
-    if (sysKeys & Shift)
+    if (select)
     {
         setSelection(d_selectionStart, d_caretPos);
     }
@@ -1275,118 +1265,6 @@ void MultiLineEditbox::onCharacter(TextEventArgs& e)
 	}
 
 }
-
-
-/*************************************************************************
-	Handler for when non-printable keys are typed.
-*************************************************************************/
-void MultiLineEditbox::onKeyDown(KeyEventArgs& e)
-{
-    // fire event.
-    fireEvent(EventKeyDown, e, Window::EventNamespace);
-
-	if (e.handled == 0 && hasInputFocus())
-	{
-        if (isReadOnly())
-        {
-            Window::onKeyDown(e);
-            return;
-        }
-
-		WindowEventArgs args(this);
-		switch (e.scancode)
-		{
-		case Key::LeftShift:
-		case Key::RightShift:
-			if (getSelectionLength() == 0)
-			{
-				d_dragAnchorIdx = getCaretIndex();
-			}
-			break;
-
-		case Key::Backspace:
-			handleBackspace();
-			break;
-
-		case Key::Delete:
-			handleDelete();
-			break;
-
-		case Key::Return:
-		case Key::NumpadEnter:
-			handleNewLine(e.sysKeys);
-			break;
-
-		case Key::ArrowLeft:
-			if (e.sysKeys & Control)
-			{
-				handleWordLeft(e.sysKeys);
-			}
-			else
-			{
-				handleCharLeft(e.sysKeys);
-			}
-			break;
-
-		case Key::ArrowRight:
-			if (e.sysKeys & Control)
-			{
-				handleWordRight(e.sysKeys);
-			}
-			else
-			{
-				handleCharRight(e.sysKeys);
-			}
-			break;
-
-		case Key::ArrowUp:
-			handleLineUp(e.sysKeys);
-			break;
-
-		case Key::ArrowDown:
-			handleLineDown(e.sysKeys);
-			break;
-
-		case Key::Home:
-			if (e.sysKeys & Control)
-			{
-				handleDocHome(e.sysKeys);
-			}
-			else
-			{
-				handleLineHome(e.sysKeys);
-			}
-			break;
-
-		case Key::End:
-			if (e.sysKeys & Control)
-			{
-				handleDocEnd(e.sysKeys);
-			}
-			else
-			{
-				handleLineEnd(e.sysKeys);
-			}
-			break;
-
-        case Key::PageUp:
-            handlePageUp(e.sysKeys);
-            break;
-
-        case Key::PageDown:
-            handlePageDown(e.sysKeys);
-            break;
-
-        default:
-            Window::onKeyDown(e);
-            return;
-		}
-
-		++e.handled;
-	}
-
-}
-
 
 /*************************************************************************
 	Handler for when text is programmatically changed.
@@ -1711,6 +1589,127 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
 
         // perform actual selection operation.
         setSelection(d_dragAnchorIdx, d_caretPos);
+
+        ++e.handled;
+    }
+
+    if (e.handled == 0 && hasInputFocus())
+    {
+        if (isReadOnly())
+        {
+            Window::onSemanticInputEvent(e);
+            return;
+        }
+
+        switch (e.d_semanticValue)
+        {
+        case Key::LeftShift:
+        case Key::RightShift:
+            if (getSelectionLength() == 0)
+            {
+                d_dragAnchorIdx = getCaretIndex();
+            }
+            break;
+
+        case SV_DeletePreviousCharacter:
+            handleBackspace();
+            break;
+
+        case SV_DeleteNextCharacter:
+            handleDelete();
+            break;
+
+        case SV_Confirm:
+            handleNewLine();
+            break;
+
+        case SV_GoToPreviousCharacter:
+            handleCharLeft(false);
+            break;
+
+        case SV_GoToNextCharacter:
+            handleCharRight(false);
+            break;
+
+        case SV_SelectPreviousCharacter:
+            handleCharLeft(true);
+            break;
+
+        case SV_SelectNextCharacter:
+            handleCharRight(true);
+            break;
+
+        case SV_GoToPreviousWord:
+            handleWordLeft(false);
+            break;
+
+        case SV_GoToNextWord:
+            handleWordRight(false);
+            break;
+
+        case SV_SelectPreviousWord:
+            handleWordLeft(true);
+            break;
+
+        case SV_SelectNextWord:
+            handleWordRight(true);
+            break;
+
+        case SV_GoUp:
+            handleLineUp(false);
+            break;
+
+        case SV_SelectUp:
+            handleLineUp(true);
+            break;
+
+        case SV_GoDown:
+            handleLineDown(false);
+            break;
+
+        case SV_SelectDown:
+            handleLineDown(true);
+            break;
+
+        case SV_GoToStartOfLine:
+            handleLineHome(false);
+            break;
+
+        case SV_GoToEndOfLine:
+            handleLineEnd(false);
+            break;
+
+        case SV_GoToStartOfDocument:
+            handleDocHome(false);
+            break;
+
+        case SV_SelectToStartOfLine:
+            handleLineHome(true);
+            break;
+
+        case SV_SelectToEndOfLine:
+            handleLineEnd(true);
+            break;
+
+        case SV_SelectToStartOfDocument:
+            handleDocHome(true);
+            break;
+
+        case SV_SelectToEndOfDocument:
+            handleDocHome(true);
+
+        case SV_GoToPreviousPage:
+            handlePageUp(false);
+            break;
+
+        case SV_GoToNextPage:
+            handlePageDown(false);
+            break;
+
+        default:
+            Window::onSemanticInputEvent(e);
+            return;
+        }
 
         ++e.handled;
     }

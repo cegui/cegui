@@ -178,7 +178,7 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithBackspace)
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('o'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('k'), true);
-    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::Backspace), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Backspace), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
@@ -194,9 +194,9 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('k'), true);
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectChar('W'), true);
 
-    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::ArrowLeft), true);
-    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::ArrowLeft), true);
-    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::Delete), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::ArrowLeft), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::ArrowLeft), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Delete), true);
 
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
@@ -233,7 +233,8 @@ BOOST_AUTO_TEST_CASE(SelectWordAndDelete)
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonDoubleClick(LeftButton), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
 
-    BOOST_REQUIRE_EQUAL(d_guiContext->injectKeyDown(Key::Delete), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::Delete), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyUp(Key::Delete), true);
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
 }
 BOOST_AUTO_TEST_SUITE_END()
