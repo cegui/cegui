@@ -605,7 +605,6 @@ protected:
     // Overridden event handlers
     void onPointerPressHold(PointerEventArgs& e);
     void onPointerActivate(PointerEventArgs& e);
-    void onMouseTripleClicked(MouseEventArgs& e);
     void onPointerMove(PointerEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);
     void onCharacter(TextEventArgs& e);
