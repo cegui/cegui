@@ -210,7 +210,7 @@ BOOST_AUTO_TEST_CASE(DeleteTextWithDelete)
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW");
 }
 
-BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
+BOOST_AUTO_TEST_CASE(MouseSelectAllTextCopyAndPaste)
 {
     // focus the editbox
     doClick(d_inputAggregator, 91.0f, 91.0f);
@@ -231,7 +231,7 @@ BOOST_AUTO_TEST_CASE(SelectAllTextCopyAndPaste)
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "WoW rocksWoW rocks");
 }
 
-BOOST_AUTO_TEST_CASE(SelectWordAndDelete)
+BOOST_AUTO_TEST_CASE(MouseSelectWordAndDelete)
 {
     // focus the editbox
     doClick(d_inputAggregator, 92.0f, 92.0f);
@@ -240,6 +240,42 @@ BOOST_AUTO_TEST_CASE(SelectWordAndDelete)
 
     // select all text
     BOOST_REQUIRE_EQUAL(d_inputAggregator->injectMouseButtonDoubleClick(LeftButton), true);
+    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
+    pressKey(d_inputAggregator, Key::Delete);
+    BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
+}
+
+BOOST_AUTO_TEST_CASE(KeyboardSelectCharactersAndDelete)
+{
+    // focus the editbox
+    doClick(d_inputAggregator, 91.0f, 91.0f);
+
+    d_editbox->setText("WoW rocks");
+
+    // select 'WoW'
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::LeftShift), true);
+    pressKey(d_inputAggregator, Key::ArrowRight);
+    pressKey(d_inputAggregator, Key::ArrowRight);
+    pressKey(d_inputAggregator, Key::ArrowRight);
+    pressKey(d_inputAggregator, Key::ArrowRight);
+
+    BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
+    pressKey(d_inputAggregator, Key::Delete);
+    BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");
+}
+
+BOOST_AUTO_TEST_CASE(KeyboardSelectWordAndDelete)
+{
+    // focus the editbox
+    doClick(d_inputAggregator, 91.0f, 91.0f);
+
+    d_editbox->setText("WoW rocks");
+
+    // select 'WoW'
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::LeftShift), true);
+    BOOST_REQUIRE_EQUAL(d_inputAggregator->injectKeyDown(Key::LeftControl), true);
+    pressKey(d_inputAggregator, Key::ArrowRight);
+
     BOOST_REQUIRE_EQUAL(d_editbox->getSelectionLength(), 4);
     pressKey(d_inputAggregator, Key::Delete);
     BOOST_REQUIRE_EQUAL(d_editbox->getText(), "rocks");

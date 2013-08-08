@@ -144,6 +144,12 @@ enum SemanticValue
     SV_UserDefinedSemanticValue        = 0x5000,   //!< This marks the beginning of user-defined semantic values.
 };
 
+static bool isSelectionSemanticValue(SemanticValue value)
+{
+    return (value >= SV_SelectMultipleItems && value <= SV_SelectToEndOfLine) ||
+        (value >= SV_SelectToStartOfDocument && value <= SV_SelectToPreviousPage);
+}
+
 /*!
 \brief
     The type of the payload used in the semantic input events

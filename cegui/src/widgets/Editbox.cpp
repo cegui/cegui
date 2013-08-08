@@ -906,15 +906,12 @@ void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
             return;
         }
 
+        if (getSelectionLength() == 0 && isSelectionSemanticValue(e.d_semanticValue))
+            d_dragAnchorIdx = d_caretPos;
+
         WindowEventArgs args(this);
         switch (e.d_semanticValue)
         {
-        case Key::LeftShift:
-        case Key::RightShift:
-            if (getSelectionLength() == 0)
-                d_dragAnchorIdx = d_caretPos;
-            break;
-
         case SV_DeletePreviousCharacter:
             handleBackspace();
             break;
