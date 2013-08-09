@@ -130,8 +130,11 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
         d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, false, CEGUI::ColourRect(0xFFFFFFFF));
 
-    // setup for spinning logo
+    // initial position update of the logo
     updateLogoGeometry();
+    // setup for spinning logo
+    updateLogoGeometryRotation();
+
 
 
     // clearing this queue actually makes sure it's created(!)
@@ -273,17 +276,10 @@ bool CEGuiBaseApplication::sampleBrowserOverlayHandler(const CEGUI::EventArgs& a
         d_logoGeometry[i]->draw();
     }
 
-    positionFPS();
-
     // draw FPS value
     const size_t fps_buffer_count = d_FPSGeometry.size();
     for (size_t i = 0; i < fps_buffer_count; ++i)
-    {
-        CEGUI::GeometryBuffer* currentBuffer = d_FPSGeometry.at(i);
-        const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
-        currentBuffer->setClippingRegion(scrn);
-        currentBuffer->draw();
-    }
+        d_FPSGeometry.at(i)->draw();
 
     return true;
 }
@@ -294,17 +290,10 @@ bool CEGuiBaseApplication::sampleOverlayHandler(const CEGUI::EventArgs& args)
     if (static_cast<const CEGUI::RenderQueueEventArgs&>(args).queueID != CEGUI::RQ_OVERLAY)
         return false;
 
-    positionFPS();
-
     // Draw FPS value
     const size_t bufferCount = d_FPSGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
-    {
-        CEGUI::GeometryBuffer* currentBuffer = d_FPSGeometry.at(i);
-        const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
-        currentBuffer->setClippingRegion(scrn);
-        currentBuffer->draw();
-    }
+        d_FPSGeometry.at(i)->draw();
 
     return true;
 }
@@ -336,6 +325,8 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
 
             fnt->drawText(d_FPSGeometry, fps_textbuff, CEGUI::Vector2f(0, 0), 0, false,
                           CEGUI::Colour(0xFFFFFFFF));
+
+            updateFPSGeometry();
         }
 
         // reset counter state
@@ -364,7 +355,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::positionLogo()
+void CEGuiBaseApplication::updateLogoGeometry()
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
     CEGUI::Vector3f position(10.0f, scrn.getSize().d_height - 89.0f, 0.0f);
@@ -378,10 +369,10 @@ void CEGuiBaseApplication::positionLogo()
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::positionFPS()
+void CEGuiBaseApplication::updateFPSGeometry()
 {
     const CEGUI::Rectf scrn(d_renderer->getDefaultRenderTarget().getArea());
-     CEGUI::Vector3f position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
+    CEGUI::Vector3f position(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f);
 
     const size_t bufferCount = d_FPSGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
@@ -407,8 +398,8 @@ bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)
                              getDefaultRenderTarget().getArea());
     d_sampleApp->handleNewWindowSize(area.getWidth(), area.getHeight());
 
-    positionLogo();
-    positionFPS();
+    updateLogoGeometry();
+    updateFPSGeometry();
 
     return true;
 }
@@ -426,7 +417,7 @@ void CEGuiBaseApplication::registerSampleOverlayHandler(CEGUI::GUIContext* gui_c
 }
 
 //----------------------------------------------------------------------------//
-void CEGuiBaseApplication::updateLogoGeometry()
+void CEGuiBaseApplication::updateLogoGeometryRotation()
 {
     const size_t bufferCount = d_logoGeometry.size();
     for (size_t i = 0; i < bufferCount; ++i)
