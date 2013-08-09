@@ -50,6 +50,7 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CE
     d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(Quaternion::IDENTITY),
+    d_scale(1.f, 1.f, 1.f),
     d_pivot(0, 0, 0),
     d_effect(0),
     d_matrix(new mat4Pimpl()),
@@ -75,6 +76,13 @@ void OpenGLGeometryBufferBase::setTranslation(const Vector3f& v)
 void OpenGLGeometryBufferBase::setRotation(const Quaternion& r)
 {
     d_rotation = r;
+    d_matrixValid = false;
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBufferBase::setScale(const Vector3f& v)
+{
+    d_scale = v;
     d_matrixValid = false;
 }
 
@@ -149,23 +157,25 @@ const mat4Pimpl* OpenGLGeometryBufferBase::getMatrix() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
-    glm::mat4& modelMatrix = d_matrix->d_matrix;
-    modelMatrix = glm::mat4(1.f);
+    glm::mat4& model_matrix = d_matrix->d_matrix;
+    model_matrix = glm::mat4(1.f);
 
     const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                 d_translation.d_y + d_pivot.d_y,
                                 d_translation.d_z + d_pivot.d_z);
 
-    modelMatrix = glm::translate(modelMatrix, final_trans);
+    model_matrix = glm::translate(model_matrix, final_trans);
 
     glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
     glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
 
-    modelMatrix = modelMatrix * rotation_matrix;
+    glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
+
+    model_matrix *= rotation_matrix * scale_matrix;
 
     glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
     glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
-    modelMatrix =  modelMatrix * translMatrix;
+    model_matrix =  model_matrix * translMatrix;
 
     d_matrixValid = true;
 }

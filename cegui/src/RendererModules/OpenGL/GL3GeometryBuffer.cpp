@@ -68,10 +68,17 @@ void OpenGL3GeometryBuffer::draw() const
 {
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 
-    d_glStateChanger->scissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
-              static_cast<GLint>(d_clipRect.getWidth()),
-              static_cast<GLint>(d_clipRect.getHeight()));
+    if (d_clippingActive)
+    {
+        d_glStateChanger->scissor(static_cast<GLint>(d_clipRect.left()),
+            static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
+            static_cast<GLint>(d_clipRect.getWidth()),
+            static_cast<GLint>(d_clipRect.getHeight()));
+
+        d_glStateChanger->enable(GL_SCISSOR_TEST);
+    }
+    else
+        d_glStateChanger->disable(GL_SCISSOR_TEST);
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -94,11 +101,6 @@ void OpenGL3GeometryBuffer::draw() const
         // set up RenderEffect
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
-
-        if (d_clippingActive)
-            d_glStateChanger->enable(GL_SCISSOR_TEST);
-        else
-            d_glStateChanger->disable(GL_SCISSOR_TEST);
 
         d_renderMaterial->prepareForRendering();
 
