@@ -29,7 +29,7 @@
 #define _SVGTesselator_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/Image.h"
+#include "CEGUI/svg/SVGImage.h"
 
 #include <vector>
 
@@ -37,6 +37,7 @@ namespace CEGUI
 {
 class GeometryBuffer;
 class SVGPolyline;
+class SVGRect;
 
 /*!
 \brief
@@ -49,19 +50,35 @@ public:
     
     /*!
     \brief
-        Defines a static class that provides helper functions for the tesselation of
-        SVGBasicShapes.
-    
+        Tesselates a SVG Polyline and adds the created geometry to the GeometryBuffer
+        list.
+
+\param polyline
+            The SVG Polyline object that contains the data.
         \param geometry_buffers
             The GeometryBuffer list to which the created geometry will be added.
         \param render_settings
             The ImageRenderSettings for the geometry that will be created.
-        \param polyline
-            The SVG Polyline object that contains the data.
     */
-    static void tesselateAndRenderPolyline(std::vector<GeometryBuffer*>& geometry_buffers,
-                                           const Image::ImageRenderSettings& render_settings,
-                                           const SVGPolyline* polyline);
+    static void tesselateAndRenderPolyline(const SVGPolyline* polyline,
+                                           std::vector<GeometryBuffer*>& geometry_buffers,
+                                           const SVGImage::SVGImageRenderSettings& render_settings);
+
+    /*!
+    \brief
+        Tesselates a SVG Rect and adds the created geometry to the GeometryBuffer
+        list.
+    
+        \param rect
+            The SVG Polyline object that contains the data.
+        \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+        \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselateAndRenderRect(const SVGRect* rect,
+                                       std::vector<GeometryBuffer*>& geometry_buffers,
+                                       const SVGImage::SVGImageRenderSettings& render_settings);
 
 private:
     //! Constructor.
