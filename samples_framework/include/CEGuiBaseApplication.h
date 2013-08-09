@@ -96,8 +96,6 @@ public:
     */
     bool execute(SamplesFrameworkBase* sampleApp);
 
-    void updateLogoGeometry();
-
     /*!
     \brief
         Performs any required cleanup of the base application system.
@@ -170,9 +168,11 @@ protected:
     //! function that updates the logo rotation as needed.
     void updateLogo(const float elapsed);
     //! function that positions the logo GeometryBuffer at the correct place.
-    void positionLogo();
+    void updateLogoGeometry();
     //! function that positions the FPS GeometryBuffer at the correct place.
-    void positionFPS();
+    void updateFPSGeometry();
+    //! function that updates the rotation of the logo.
+    void updateLogoGeometryRotation();
     //! event handler function that draws the logo and FPS overlay elements.
     bool sampleBrowserOverlayHandler(const CEGUI::EventArgs& args);
     //! event handler function that draws the FPS overlay elements.
