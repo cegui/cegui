@@ -32,7 +32,7 @@
 #include "CEGUI/Vector.h"
 
 #include "CEGUI/svg/SVGShapeStyle.h"
-#include "CEGUI/Image.h"
+#include "CEGUI/svg/SVGImage.h"
 
 #include "glm/glm.hpp"
 
@@ -67,7 +67,7 @@ public:
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
      */
     virtual void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Image::ImageRenderSettings& render_settings) const = 0;
+                const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
         
 
 
@@ -89,7 +89,11 @@ class CEGUIEXPORT SVGRect : public SVGBasicShape
 public:
     SVGRect(const float x, const float y,
             const float width, const float height,
-            const float rx, const float ry);
+            const float rx = 0.0f, const float ry = 0.0f);
+
+    //! Implementation of SVGBasicShape interface
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const SVGImage::SVGImageRenderSettings& render_settings) const;
 
     //! The BasicShape's style, which describes the filling and stroke of the graphical element.
     SVGShapeStyle d_shapeStyle;
@@ -127,7 +131,7 @@ public:
 
     //! Implementation of SVGBasicShape interface
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const Image::ImageRenderSettings& render_settings) const;
+                const SVGImage::SVGImageRenderSettings& render_settings) const;
 
     //! The BasicShape's style, which describes the filling and stroke of the graphical element.
     SVGShapeStyle d_shapeStyle;
