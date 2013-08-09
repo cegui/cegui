@@ -104,6 +104,29 @@ public:
 
     /*!
     \brief
+        Set the scaling to be applied to the geometry in the buffer when it is
+        subsequently rendered.
+
+    \param scale
+        Vector3 describing the scale to be used.
+    */
+    virtual void setScale(const Vector3f& v) = 0;
+
+    /*!
+    \brief
+        Set the scaling to be applied to the geometry in the buffer when it is
+        subsequently rendered.
+
+    \param scale
+        Vector2 describing the x and y scale to be used.
+    */
+    void setScale(const Vector2f& v)
+    {
+        setScale(Vector3f(v, 0.f));
+    }
+
+    /*!
+    \brief
         Set the pivot point to be used when applying the rotations.
 
     \param p
