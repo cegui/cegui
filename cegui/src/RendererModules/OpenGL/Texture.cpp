@@ -411,29 +411,9 @@ void OpenGLTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
-    //
-    // calculate what to use for x scale
-    //
-    const float orgW = d_dataSize.d_width;
-    const float texW = d_size.d_width;
-
-    // if texture and original data width are the same, scale is based
-    // on the original size.
-    // if texture is wider (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
-
-    //
-    // calculate what to use for y scale
-    //
-    const float orgH = d_dataSize.d_height;
-    const float texH = d_size.d_height;
-
-    // if texture and original data height are the same, scale is based
-    // on the original size.
-    // if texture is taller (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    //Update the scale of a texel based on the absolute size
+    d_texelScaling.d_x = 1.0f / d_size.d_width;
+    d_texelScaling.d_y = 1.0f / d_size.d_height;
 }
 
 //----------------------------------------------------------------------------//
