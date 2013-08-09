@@ -61,8 +61,9 @@ public:
     virtual ~OpenGLGeometryBufferBase();
 
     // implementation of abstract members from GeometryBuffer
-    void setTranslation(const Vector3f& t);
+    void setTranslation(const Vector3f& v);
     void setRotation(const Quaternion& r);
+    void setScale(const Vector3f& v);
     void setPivot(const Vector3f& p);
     void setClippingRegion(const Rectf& region);
     void appendGeometry(const std::vector<float>& vertex_data);
@@ -100,6 +101,8 @@ protected:
     Vector3f d_translation;
     //! rotation quaternion
     Quaternion d_rotation;
+    //! scaling vector
+    Vector3f d_scale;
     //! pivot point for rotation
     Vector3f d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer
