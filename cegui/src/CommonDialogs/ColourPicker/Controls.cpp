@@ -376,7 +376,7 @@ void ColourPickerControls::initColourPickerControlsImageSet()
             ColourPickerControlsPickingTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
+    image->setImageArea(
         Rectf(Vector2f(0.0f, 0.0f),
               Sizef(static_cast<float>(d_colourPickerPickingImageWidth),
                     static_cast<float>(d_colourPickerPickingImageHeight))));
@@ -386,7 +386,7 @@ void ColourPickerControls::initColourPickerControlsImageSet()
                         ColourPickerControlsColourSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
+    image->setImageArea(
         Rectf(Vector2f(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
               Sizef(static_cast<float>(d_colourPickerColourSliderImageWidth),
                     static_cast<float>(d_colourPickerColourSliderImageHeight))));
@@ -396,7 +396,7 @@ void ColourPickerControls::initColourPickerControlsImageSet()
                         ColourPickerControlsAlphaSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
+    image->setImageArea(
         Rectf(Vector2f(0.0f, static_cast<float>(d_colourPickerPickingImageHeight + d_colourPickerImageOffset)),
               Sizef(static_cast<float>(d_colourPickerAlphaSliderImageWidth),
                     static_cast<float>(d_colourPickerAlphaSliderImageHeight))));

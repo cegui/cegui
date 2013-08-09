@@ -208,7 +208,7 @@ void SampleData::setTextureTargetImageArea(float height, float width)
 
 
         if(d_textureTargetImage)
-            d_textureTargetImage->setArea(renderArea);
+            d_textureTargetImage->setImageArea(renderArea);
     }
 }
 
