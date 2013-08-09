@@ -38,38 +38,36 @@ namespace CEGUI
 template<> SVGDataManager* Singleton<SVGDataManager>::ms_Singleton = 0;
 
 
+//----------------------------------------------------------------------------//
 SVGDataManager::SVGDataManager()
 {
 
 }
 
-
+//----------------------------------------------------------------------------//
 SVGDataManager::~SVGDataManager()
 {
 
 }
 
-/*************************************************************************
-Return singleton object
-*************************************************************************/
+//----------------------------------------------------------------------------//
 SVGDataManager&	SVGDataManager::getSingleton(void)
 {
 	return Singleton<SVGDataManager>::getSingleton();
 }
 
-/*************************************************************************
-	Return singleton pointer
-*************************************************************************/
+//----------------------------------------------------------------------------//
 SVGDataManager*	SVGDataManager::getSingletonPtr(void)
 {
 	return Singleton<SVGDataManager>::getSingletonPtr();
 }
 
+//----------------------------------------------------------------------------//
 SVGData& SVGDataManager::create(const String& name)
 {
     if (d_svgDataMap.find(name) != d_svgDataMap.end())
         CEGUI_THROW(AlreadyExistsException(
-        "Image already exists: " + name));
+        "SVGData already exists: " + name));
 
     SVGData* svg_data = CEGUI_NEW_AO SVGData();
     d_svgDataMap[name] = svg_data;
@@ -78,10 +76,11 @@ SVGData& SVGDataManager::create(const String& name)
     sprintf(addr_buff, "%p", static_cast<void*>(&svg_data));
 
     Logger::getSingleton().logEvent(
-        "[ImageManager] Created image: '" + name + "' (" + addr_buff + 
+        "[SVGDataManager] Created SVGData: '" + name + "' (" + addr_buff + 
         ")");
 
     return *svg_data;
 }
 
+//----------------------------------------------------------------------------//
 }
