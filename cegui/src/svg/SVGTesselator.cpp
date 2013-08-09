@@ -36,20 +36,26 @@
 namespace CEGUI
 {
 
-void SVGTesselator::tesselateAndRenderPolyline(std::vector<GeometryBuffer*>& geometry_buffers,
-                                               const Image::ImageRenderSettings& render_settings,
-                                               const SVGPolyline* polyline)
+//----------------------------------------------------------------------------//
+void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
+                                               std::vector<GeometryBuffer*>& geometry_buffers,
+                                               const SVGImage::SVGImageRenderSettings& render_settings)
 {
     CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
     geometry_buffers.push_back(&geometry_buffer);
 
-    geometry_buffer.setClippingActive(false);
-    geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
+    if(render_settings.d_clipArea)
+    {
+        geometry_buffer.setClippingActive(true);
+        geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
+    }
+    geometry_buffer.setScale(render_settings.d_scaleFactor);
 
     const CEGUI::Colour& stroke_colour = polyline->d_shapeStyle.d_stroke.d_colour;
     const SVGPolyline::PolylinePointsList& points = polyline->d_points;
     const float& stroke_width_length_half = polyline->d_shapeStyle.d_strokeWidthLength * 0.5f;
 
+    //Draw the line segments TODO Ident: Draw them seamlessly connected with bevels and stuff provided optionally
     size_t points_count = points.size();
     for (size_t j = 1; j < points_count; ++j)
     {
@@ -85,6 +91,53 @@ void SVGTesselator::tesselateAndRenderPolyline(std::vector<GeometryBuffer*>& geo
     }
 }
 
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
+                                           std::vector<GeometryBuffer*>& geometry_buffers,
+                                           const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
+    geometry_buffers.push_back(&geometry_buffer);
+
+    if(render_settings.d_clipArea)
+    {
+        geometry_buffer.setClippingActive(true);
+        geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
+    }
+
+    geometry_buffer.setScale(render_settings.d_scaleFactor);
+
+    const CEGUI::Colour& fill_colour = rect->d_shapeStyle.d_fill.d_colour;
+
+    //Draw the rectangle
+    CEGUI::ColouredVertex rectFillVertex;
+    glm::vec2 vertexPosition;
+    rectFillVertex.colour_val = fill_colour;
+
+    const float& rectX1 = rect->d_x;
+    const float& rectY1 = rect->d_y;
+    const float rectX2 = rect->d_x + rect->d_width;
+    const float rectY2 = rect->d_y + rect->d_height;
+
+    rectFillVertex.position = glm::vec3(rectX1, rectY1, 0.0f);
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.position = glm::vec3(rectX1, rectY2, 0.0f);
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.position = glm::vec3(rectX2, rectY2, 0.0f);
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.position = glm::vec3(rectX2, rectY2, 0.0f);
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.position = glm::vec3(rectX1, rectY1, 0.0f);
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.position = glm::vec3(rectX2, rectY1, 0.0f);
+    geometry_buffer.appendVertex(rectFillVertex);
+}
 //----------------------------------------------------------------------------//
 }
 
