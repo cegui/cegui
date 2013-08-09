@@ -187,6 +187,14 @@ public:
         {
         }
 
+        ImageRenderSettings(const ImageRenderSettings& source) :
+            d_destArea(source.d_destArea),
+            d_clipArea(source.d_clipArea),
+            d_clippingEnabled(source.d_clippingEnabled),
+            d_multiplyColours(source.d_multiplyColours)
+        {
+        }
+
         //! The destination area for the Image.
         Rectf d_destArea;
         //! The clipping area of the Image.
@@ -195,6 +203,7 @@ public:
         bool d_clippingEnabled;
         //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
         //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
+        //! If this will be used depends on the underlying image.
         ColourRect d_multiplyColours;
     };
 
@@ -203,7 +212,7 @@ public:
     //! Constructor
     Image(const String& name);
     Image(const String& name, const Vector2f& pixel_offset,
-          const Sizef& pixel_size, AutoScaledMode auto_scaled,
+          const Rectf& image_area, AutoScaledMode auto_scaled,
           const Sizef& native_resolution);
 
     virtual ~Image();
@@ -263,12 +272,12 @@ public:
 
     /*!
     \brief
-        Sets the pixel area of the Image.
+        Sets the rectangular image area of this Image.
 
-    \param pixel_area
-        The new pixel area.
+    \param image_area
+        The rectangular image area of this Image.
      */
-    virtual void setArea(const Rectf& pixel_area);
+    void setImageArea(const Rectf& image_area);
 
     /*!
     \brief
@@ -277,7 +286,7 @@ public:
     \param pixel_offset
         The pixel offset of this Image.
     */
-    virtual void setOffset(const Vector2f& pixel_offset);
+    void setOffset(const Vector2f& pixel_offset);
 
     
     /*!
@@ -287,7 +296,7 @@ public:
     \param autoscaled
         The  autoscale mode of this Image.
     */
-    virtual void setAutoScaled(const AutoScaledMode autoscaled);
+    void setAutoScaled(const AutoScaledMode autoscaled);
 
     /*!
     \brief
@@ -296,7 +305,7 @@ public:
     \param autoscaled
         The  autoscale native resolution of this Image.
     */
-    virtual void setNativeResolution(const Sizef& native_res);
+    void setNativeResolution(const Sizef& native_res);
 
 
     // Standard Image::render overloads
@@ -380,18 +389,20 @@ protected:
 
     //! Name used for the Image as defined during creation.
     String d_name;
-    //! The pixel offset of the Image.
+    //! The rectangular area defined for this Image defining position and size of it in relation to
+    //! the underlying data of the Image.
+    Rectf d_imageArea;
+    //! The pixel offset of the Image. It defines ???
     Vector2f d_pixelOffset;
     //! Whether image is auto-scaled or not and how.
     AutoScaledMode d_autoScaled;
     //! Native resolution used for autoscaling.
     Sizef d_nativeResolution;
-    //! Size after having autoscaling applied.
+    //! The size in pixels after having autoscaling applied.
     Sizef d_scaledSize;
-    //! Offset after having autoscaling applied.
+    //! The offset in pixels after having autoscaling applied.
     Vector2f d_scaledOffset;
-    //! Actual pixel size.
-    Sizef d_pixelSize;
+
 };
 
 } // End of  CEGUI namespace section
