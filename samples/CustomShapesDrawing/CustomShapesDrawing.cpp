@@ -105,18 +105,29 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     polyLine->d_points.push_back(glm::vec2(20.0f, 20.0f));
     polyLine->d_points.push_back(glm::vec2(40.0f, 20.0f));
     polyLine->d_points.push_back(glm::vec2(20.0f, 40.0f));
-    polyLine->d_points.push_back(glm::vec2(60.0f, 60.0f));
-    polyLine->d_points.push_back(glm::vec2(110.0f, 60.0f));
-    fpsSVGData.addShape(polyLine);
-    // ...and set the pointer to the SVGData for the SVGImage
+    polyLine->d_points.push_back(glm::vec2(160.0f, 60.0f));
+    polyLine->d_points.push_back(glm::vec2(210.0f, 60.0f));
+    fpsSVGData.addShape(*polyLine);
+
+    SVGRect* svg_rect = new SVGRect(120.f, 10.f, 15.f, 20.f);
+    svg_rect->d_shapeStyle.d_fill.d_colour = CEGUI::Colour(0.f, 0.3f, 0.3f, 1.f);
+    fpsSVGData.addShape(*svg_rect);
+
+    //Set the desired size of the SVGData
+    fpsSVGData.setWidth(215.f);
+    fpsSVGData.setHeight(65.f);
+
+    // Set the pointer to the SVGData for the SVGImage
     fpsSVGImage.setSVGData(&fpsSVGData);
+    const Rectf rect(Vector2f(0.0f, 0.0f), CEGUI::Sizef(fpsSVGData.getWidth(), fpsSVGData.getHeight()));
+    fpsSVGImage.setImageArea(rect);
  
     Window* fpsSVGFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow");
     d_root->addChild(fpsSVGFrameWindow);
     Window* fpsSVGImageWindow = winMgr.createWindow("Generic/Image");
+    fpsSVGImageWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
     fpsSVGFrameWindow->addChild(fpsSVGImageWindow);
     fpsSVGImageWindow->setProperty("Image", "FPSGraphSVG");
-
 
     // clearing this queue actually makes sure it's created(!)
     guiContext->clearGeometry(CEGUI::RQ_OVERLAY);
