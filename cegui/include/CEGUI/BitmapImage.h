@@ -53,7 +53,6 @@ public:
     // Implement CEGUI::Image interface
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
                 const ImageRenderSettings& render_settings) const;
-    void setArea(const Rectf& pixel_area);
 
     /*!
     \brief
@@ -76,8 +75,6 @@ public:
 protected:
     //! Texture used by this image.
     Texture* d_texture;
-    //! Rect defining texture co-ords for this image.
-    Rectf d_area;
 };
 
 } // End of  CEGUI namespace section

@@ -55,8 +55,7 @@ const String ImageNativeVertResAttribute( "nativeVertRes" );
 //----------------------------------------------------------------------------//
 BitmapImage::BitmapImage(const String& name) :
     Image(name),
-    d_texture(0),
-    d_area(0.0f, 0.0f, 0.0f, 0.0f)
+    d_texture(0)
 {
 }
 
@@ -65,22 +64,16 @@ BitmapImage::BitmapImage(const XMLAttributes& attributes) :
     Image(attributes.getValueAsString(ImageNameAttribute),
           Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
                    static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
-          Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
-                static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0)) ),
+          Rectf(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
+                         static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
+                Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
+                         static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0))) ),
           PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute)),
           Sizef(static_cast<float>(attributes.getValueAsInteger(ImageNativeHorzResAttribute, 640)),
                 static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480)))  ),
     d_texture(&System::getSingleton().getRenderer()->getTexture(
-              attributes.getValueAsString(ImageTextureAttribute))),
-    d_area(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
-                    static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
-           d_pixelSize)
+              attributes.getValueAsString(ImageTextureAttribute)))
 {
-
-
-    // force initialisation of the autoscaling fields.
-    notifyDisplaySizeChanged(
-        System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 //----------------------------------------------------------------------------//
@@ -89,24 +82,12 @@ BitmapImage::BitmapImage(const String& name, Texture* texture,
                        const AutoScaledMode autoscaled, const Sizef& native_res) :
     Image(name,
           pixel_offset,
-          pixel_area.getSize(),
+          pixel_area,
           autoscaled,
           native_res),
-    d_texture(texture),
-    d_area(pixel_area)
+    d_texture(texture)
 {
-    // force initialisation of the autoscaling fields.
-    updateScaledSizeAndOffset(
-        System::getSingleton().getRenderer()->getDisplaySize());
 }
-
-//----------------------------------------------------------------------------//
-void BitmapImage::setArea(const Rectf& pixel_area)
-{
-    d_area = pixel_area;
-    Image::setArea(pixel_area);
-}
-
 
 //----------------------------------------------------------------------------//
 void BitmapImage::setTexture(Texture* texture)
@@ -133,12 +114,11 @@ void BitmapImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
         return;
 
     // Obtain correct scale values from the texture
-    const Vector2f& scale = d_texture->getTexelScaling();
-    const Vector2f tex_per_pix(d_area.getWidth() / dest.getWidth(), d_area.getHeight() / dest.getHeight());
+    const Vector2f& texel_scale = d_texture->getTexelScaling();
+    const Vector2f tex_per_pix(d_imageArea.getWidth() / dest.getWidth(), d_imageArea.getHeight() / dest.getHeight());
 
     // calculate final, clipped, texture co-ordinates
-    const Rectf tex_rect((d_area.d_min + ((final_rect.d_min - dest.d_min) * tex_per_pix)) * scale,
-                          (d_area.d_max + ((final_rect.d_max - dest.d_max) * tex_per_pix)) * scale);
+    const Rectf tex_rect((d_imageArea + ((final_rect - dest) * tex_per_pix)) * texel_scale);
 
     // URGENT FIXME: Shouldn't this be in the hands of the user?
     final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);

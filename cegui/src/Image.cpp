@@ -38,28 +38,35 @@ namespace CEGUI
 Image::Image(const String& name) :
     d_name(name),
     d_pixelOffset(0.0f, 0.0f),
+    d_imageArea(0.0f, 0.0f, 0.0f, 0.0f),
     d_autoScaled(ASM_Disabled),
     d_nativeResolution(640, 480),
     d_scaledSize(0, 0),
-    d_scaledOffset(0, 0),
-    d_pixelSize(0, 0)
+    d_scaledOffset(0, 0)
 {
+    // force initialisation of the autoscaling fields.
+    updateScaledSizeAndOffset(
+        System::getSingleton().getRenderer()->getDisplaySize());
 }
 
 //----------------------------------------------------------------------------//
 Image::Image(const String& name,
              const Vector2f& pixel_offset,
-             const Sizef& pixel_size,
+             const Rectf& image_area,
              AutoScaledMode auto_scaled,
              const Sizef& native_resolution
              ) :
     d_name(name),
     d_pixelOffset(pixel_offset),
-    d_pixelSize(pixel_size),
+    d_imageArea(image_area),
     d_autoScaled(auto_scaled),
     d_nativeResolution(native_resolution),
-    d_scaledSize(0, 0)     
+    d_scaledSize(0, 0),
+    d_scaledOffset(0, 0)
 {
+    // force initialisation of the autoscaling fields.
+    updateScaledSizeAndOffset(
+        System::getSingleton().getRenderer()->getDisplaySize());
 }
     
 
@@ -148,15 +155,17 @@ const Vector2f& Image::getRenderedOffset() const
 
 
 //----------------------------------------------------------------------------//
-void Image::setArea(const Rectf& pixel_area)
+void Image::setImageArea(const Rectf& image_area)
 {
-    d_pixelSize = pixel_area.getSize();
+    d_imageArea = image_area;
 
     if (d_autoScaled != ASM_Disabled)
-        updateScaledSize(
+        updateScaledSizeAndOffset(
             System::getSingleton().getRenderer()->getDisplaySize());
     else
-        d_scaledSize = d_pixelSize;
+    {
+        d_scaledSize = d_imageArea.getSize();
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -183,7 +192,7 @@ void Image::setAutoScaled(const AutoScaledMode autoscaled)
     }
     else
     {
-        d_scaledSize = d_pixelSize;
+        d_scaledSize = d_imageArea.getSize();
         d_scaledOffset = d_pixelOffset;
     }
 }
@@ -216,7 +225,7 @@ void Image::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
         scaleFactors.d_x, scaleFactors.d_y);
 
-    d_scaledSize = d_pixelSize * scaleFactors;
+    d_scaledSize = d_imageArea.getSize() * scaleFactors;
     d_scaledOffset = d_pixelOffset * scaleFactors;
 }
 
@@ -228,7 +237,7 @@ void Image::updateScaledSize(const Sizef& renderer_display_size)
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
         scaleFactors.d_x, scaleFactors.d_y);
 
-    d_scaledSize = d_pixelSize * scaleFactors;
+    d_scaledSize = d_imageArea.getSize() * scaleFactors;
 }
 
 //----------------------------------------------------------------------------//
