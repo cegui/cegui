@@ -273,14 +273,14 @@ void OpenGL3StateChangeWrapper::disable(GLenum capability)
     {
         if(found_iterator->second != false)
         {
-            glEnable(capability);
+            glDisable(capability);
             found_iterator->second = false;
         }
     }
     else
     {
         d_enabledOpenGLStates[capability] = false;
-        glEnable(capability);
+        glDisable(capability);
     }
 }
 }
