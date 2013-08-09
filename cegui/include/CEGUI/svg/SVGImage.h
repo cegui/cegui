@@ -30,7 +30,6 @@
 
 #include "CEGUI/Image.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 class SVGData;
@@ -45,8 +44,25 @@ class CEGUIEXPORT SVGImage :
     public Image
 {
 public:
+    /*!
+    \brief
+        A struct that contains the render settings for the SVGImage class.
+    */
+    struct SVGImageRenderSettings : public ImageRenderSettings
+    {
+        //! Constructor
+        SVGImageRenderSettings(const ImageRenderSettings& img_render_settings,
+                               Vector2f scale_factor) :
+            ImageRenderSettings(img_render_settings),
+            d_scaleFactor(scale_factor)
+        {
+        }
+        //! The scaling factor of the geometry
+        Vector2f d_scaleFactor;
+    };
+
     SVGImage(const String& name);
-    SVGImage(const String& name, SVGData* svg_data);
+    SVGImage(const String& name, SVGData& svg_data);
     SVGImage(const XMLAttributes& attributes);
 
     // Implement CEGUI::Image interface

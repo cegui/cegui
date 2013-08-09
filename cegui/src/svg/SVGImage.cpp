@@ -27,9 +27,11 @@
  ***************************************************************************/
 #include "CEGUI/svg/SVGImage.h"
 #include "CEGUI/GeometryBuffer.h"
+#include "CEGUI/CoordConverter.h"
 #include "CEGUI/svg/SVGTesselator.h"
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGBasicShape.h"
+
 
 
 // Start of CEGUI namespace section
@@ -44,9 +46,14 @@ SVGImage::SVGImage(const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-SVGImage::SVGImage(const String& name, SVGData* svg_data) :
-    Image(name),
-    d_svgData(svg_data)
+SVGImage::SVGImage(const String& name, SVGData& svg_data) :
+    Image(name,
+          Vector2f(0.0f, 0.0f),
+          Rectf(Vector2f(0.0f, 0.0f),
+                Vector2f(svg_data.getWidth(), svg_data.getHeight())),
+          ASM_Disabled,
+          Sizef(640, 480)),
+    d_svgData(&svg_data)
 {
 }
 
@@ -72,10 +79,35 @@ SVGData* SVGImage::getSVGData()
 void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
                       const ImageRenderSettings& render_settings) const
 {
+    Rectf dest(render_settings.d_destArea);
+    // apply rendering offset to the destination Rect
+    dest.offset(d_scaledOffset);
+
+    const CEGUI::Rectf*const&  clip_area = render_settings.d_clipArea;
+    // Calculate the actual (clipped) area to which we want to render to
+    Rectf final_rect(clip_area ? dest.getIntersection(*clip_area) : dest );
+
+    // check if our Image is totally clipped and return if it is
+    if ((final_rect.getWidth() == 0) || (final_rect.getHeight() == 0))
+        return;
+
+    // Calculate the scale factor for our Image which is the scaling of the Image
+    // area to the destination area of our render call
+    const Vector2f scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
+
+    // URGENT FIXME: Shouldn't this be in the hands of the user?
+    final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);
+    final_rect.d_min.d_y = CoordConverter::alignToPixels(final_rect.d_min.d_y);
+    final_rect.d_max.d_x = CoordConverter::alignToPixels(final_rect.d_max.d_x);
+    final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
+
+    SVGImageRenderSettings svg_render_settings(render_settings,
+                                               scale_factor);
+
     const std::vector<SVGBasicShape*>& shapes = d_svgData->getShapes();
     const unsigned int shape_count = shapes.size();
     for (unsigned int i = 0; i < shape_count; ++i)
-        shapes[i]->render(geometry_buffers, render_settings);
+        shapes[i]->render(geometry_buffers, svg_render_settings);
 }
 
 //----------------------------------------------------------------------------//
