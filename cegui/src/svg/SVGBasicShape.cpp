@@ -45,13 +45,12 @@ SVGBasicShape::~SVGBasicShape()
 }
 
 //----------------------------------------------------------------------------//
-SVGRect::SVGRect
-        (const float x,
-        const float y,
-        const float width,
-        const float height,
-        const float rx,
-        const float ry) :
+SVGRect::SVGRect(const float x,
+                 const float y,
+                 const float width,
+                 const float height,
+                 const float rx,
+                 const float ry) :
     d_x(x),
     d_y(y),
     d_width(width),
@@ -62,12 +61,21 @@ SVGRect::SVGRect
 }
 
 //----------------------------------------------------------------------------//
-void SVGPolyline::render(std::vector<GeometryBuffer*>& geometry_buffers,
-                         const Image::ImageRenderSettings& render_settings) const
+void SVGRect::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                     const SVGImage::SVGImageRenderSettings& render_settings) const
 {
-    SVGTesselator::tesselateAndRenderPolyline(geometry_buffers,
-                                              render_settings,
-                                              this);
+    SVGTesselator::tesselateAndRenderRect(this,
+                                          geometry_buffers,
+                                          render_settings);
+}
+
+//----------------------------------------------------------------------------//
+void SVGPolyline::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                         const SVGImage::SVGImageRenderSettings& render_settings) const
+{
+    SVGTesselator::tesselateAndRenderPolyline(this,
+                                              geometry_buffers,
+                                              render_settings);
 }
 
 //----------------------------------------------------------------------------//
