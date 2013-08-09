@@ -53,6 +53,20 @@ public:
     SVGDataManager();
     ~SVGDataManager();
 
+    /*!
+    \brief
+        Create an instance of SVGData class registered using the name \a name.
+
+    \param name
+        String object describing the name that the newly created instance will
+        be created with.  This name must be unique within the system. 
+
+    \exception UnknownObjectException
+        thrown if no Image subclass has been registered using identifier \a type.
+
+    \exception AlreadyExistsException
+        thrown if an Image instance named \a name already exists.
+    */
     SVGData& create(const String& name);
 
     //! container type used to hold the SVGData objects.
@@ -63,9 +77,8 @@ public:
     //! ConstBaseIterator type definition.
     typedef ConstMapIterator<SVGDataMap> SVGDataIterator;
 
-
-    static SVGDataManager&	getSingleton();
-    static SVGDataManager*	getSingletonPtr();
+    static SVGDataManager&      getSingleton();
+    static SVGDataManager*      getSingletonPtr();
 
 protected:
     //! container holding the SVGData objects.
