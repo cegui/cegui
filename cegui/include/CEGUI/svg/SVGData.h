@@ -66,7 +66,7 @@ public:
     \param svg_shape
         The SVGBasicShape that will be added.
     */
-    void addShape(SVGBasicShape* svg_shape);
+    void addShape(SVGBasicShape& svg_shape);
 
     /*!
     \brief
@@ -82,7 +82,58 @@ public:
     */
     const std::vector<SVGBasicShape*>& getShapes() const;
 
+    /*!
+    \brief
+        Returns the SVGData's width in pixels.
+    \return
+        The SVGData's width in pixels.
+    */
+    float getWidth() const;
+
+    /*!
+    \brief
+        Sets the SVGData's width in pixels.
+    \param width
+        The width in pixels.
+    */
+    void setWidth(float width);
+
+    /*!
+    \brief
+        Returns the SVGData's height in pixels.
+    \return
+        The SVGData's height in pixels.
+    */
+    float getHeight() const;
+
+    /*!
+    \brief
+        Sets the SVGData's height in pixels.
+    \param width
+        The height in pixels.
+    */
+    void setHeight(float height);
+
 protected:
+    /*!
+    \brief
+        The SVGData's width in pixels.
+        
+        This is the value representing the intrinsic width of the 'SVG document fragment'. It is used in CEGUI
+        to determine the clipping area of the SVG image and to scale the image elements in case the Image is
+        rendered with horizontal stretching.
+    */
+    float d_width;
+    /*!
+    \brief
+        The SVGData's height in pixels.
+        
+        This is the value representing the intrinsic height of the 'SVG document fragment'. It is used in CEGUI
+        to determine the clipping area of the SVG image and to scale the image elements in case the Image is
+        rendered with vertical stretching.
+    */
+    float d_height;
+
     //! The basic shapes that were added to the SVGData
     std::vector<SVGBasicShape*> d_svgBasicShapes;
 

@@ -29,7 +29,6 @@
 
 #include "CEGUI/svg/SVGBasicShape.h"
 
-
 namespace CEGUI
 {
 
@@ -45,9 +44,9 @@ SVGData::~SVGData()
 }
 
 //----------------------------------------------------------------------------//
-void SVGData::addShape(SVGBasicShape* svg_shape)
+void SVGData::addShape(SVGBasicShape& svg_shape)
 {
-    d_svgBasicShapes.push_back(svg_shape);
+    d_svgBasicShapes.push_back(&svg_shape);
 }
 
 //----------------------------------------------------------------------------//
@@ -64,6 +63,30 @@ void SVGData::destroyShapes()
 const std::vector<SVGBasicShape*>& SVGData::getShapes() const
 {
     return d_svgBasicShapes;
+}
+
+//----------------------------------------------------------------------------//
+float SVGData::getWidth() const
+{
+    return d_width;
+}
+
+//----------------------------------------------------------------------------//
+void  SVGData::setWidth(float width)
+{
+    d_width = width;
+}
+
+//----------------------------------------------------------------------------//
+float SVGData::getHeight() const
+{
+    return d_height;
+}
+
+//----------------------------------------------------------------------------//
+void SVGData::setHeight(float height)
+{
+    d_height = height;
 }
 
 
