@@ -132,7 +132,7 @@ public:
     \param rotation
         Anticlockwise rotation around given axis
     */
-    static Quaternion axisAngleRadians(const Vector3f& axis, float rotation);
+    static Quaternion axisAngleRadians(const glm::vec3& axis, float rotation);
 
     /*!
     \brief constructs a quaternion from axis and angle around it in degrees
@@ -142,7 +142,7 @@ public:
     \param rotation
         Anticlockwise rotation around given axis
     */
-    static Quaternion axisAngleDegrees(const Vector3f& axis, float rotation);
+    static Quaternion axisAngleDegrees(const glm::vec3& axis, float rotation);
 
     //! equality operator
     inline bool operator == (const Quaternion& v) const

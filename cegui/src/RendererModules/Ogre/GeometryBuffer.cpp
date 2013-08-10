@@ -172,7 +172,7 @@ void OgreGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setTranslation(const Vector3f& v)
+void OgreGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -186,7 +186,7 @@ void OgreGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setPivot(const Vector3f& p)
+void OgreGeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
     d_matrixValid = false;
@@ -233,9 +233,9 @@ void OgreGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     {
         const Vertex& vs = vbuff[i];
         // convert from CEGUI::Vertex to something directly usable by Ogre.
-        v.x       = vs.position.d_x + d_texelOffset.d_x;
-        v.y       = vs.position.d_y + d_texelOffset.d_y;
-        v.z       = vs.position.d_z;
+        v.x       = vs.position.x + d_texelOffset.d_x;
+        v.y       = vs.position.y + d_texelOffset.d_y;
+        v.z       = vs.position.z;
         v.diffuse = colourToOgre(vs.colour_val);
         v.u       = vs.tex_coords.d_x;
         v.v       = vs.tex_coords.d_y;
@@ -310,9 +310,9 @@ void OgreGeometryBuffer::updateMatrix() const
 {
     // translation to position geometry and offset to pivot point
     Ogre::Matrix4 trans;
-    trans.makeTrans(d_translation.d_x + d_pivot.d_x,
-                    d_translation.d_y + d_pivot.d_y,
-                    d_translation.d_z + d_pivot.d_z);
+    trans.makeTrans(d_translation.x + d_pivot.x,
+                    d_translation.y + d_pivot.y,
+                    d_translation.z + d_pivot.z);
 
     // rotation
     Ogre::Matrix4 rot(Ogre::Quaternion(
@@ -320,7 +320,7 @@ void OgreGeometryBuffer::updateMatrix() const
 
     // translation to remove rotation pivot offset
     Ogre::Matrix4 inv_pivot_trans;
-    inv_pivot_trans.makeTrans(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+    inv_pivot_trans.makeTrans(-d_pivot.x, -d_pivot.y, -d_pivot.z);
 
     // calculate final matrix
     d_matrix = trans * rot * inv_pivot_trans;

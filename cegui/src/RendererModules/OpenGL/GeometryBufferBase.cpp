@@ -68,7 +68,7 @@ void OpenGLGeometryBufferBase::appendVertex(const Vertex& vertex)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setTranslation(const Vector3f& v)
+void OpenGLGeometryBufferBase::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -82,9 +82,9 @@ void OpenGLGeometryBufferBase::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setPivot(const Vector3f& p)
+void OpenGLGeometryBufferBase::setPivot(const glm::vec3& p)
 {
-    d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+    d_pivot = p;
     d_matrixValid = false;
 }
 
@@ -119,9 +119,9 @@ void OpenGLGeometryBufferBase::appendGeometry(const Vertex* const vbuff,
         vd.colour[1]   = vs->colour_val.getGreen();
         vd.colour[2]   = vs->colour_val.getBlue();
         vd.colour[3]   = vs->colour_val.getAlpha();
-        vd.position[0] = vs->position.d_x;
-        vd.position[1] = vs->position.d_y;
-        vd.position[2] = vs->position.d_z;
+        vd.position[0] = vs->position.x;
+        vd.position[1] = vs->position.y;
+        vd.position[2] = vs->position.z;
         d_vertices.push_back(vd);
     }
 }
@@ -202,9 +202,9 @@ void OpenGLGeometryBufferBase::updateMatrix() const
     glm::mat4& modelMatrix = d_matrix->d_matrix;
     modelMatrix = glm::mat4(1.f);
 
-    const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
-                                d_translation.d_y + d_pivot.d_y,
-                                d_translation.d_z + d_pivot.d_z);
+    const glm::vec3 final_trans(d_translation.x + d_pivot.x,
+                                d_translation.y + d_pivot.y,
+                                d_translation.z + d_pivot.z);
 
     modelMatrix = glm::translate(modelMatrix, final_trans);
 
@@ -213,7 +213,7 @@ void OpenGLGeometryBufferBase::updateMatrix() const
 
     modelMatrix = modelMatrix * rotation_matrix;
 
-    glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
+    glm::vec3 transl = glm::vec3(-d_pivot.x, -d_pivot.y, -d_pivot.z);
     glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
     modelMatrix =  modelMatrix * translMatrix;
 

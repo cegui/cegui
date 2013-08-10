@@ -61,7 +61,7 @@ public:
     \param v
         Vector3 describing the three axis translation vector to be used.
     */
-    virtual void setTranslation(const Vector3f& v) = 0;
+    virtual void setTranslation(const glm::vec3& v) = 0;
 
     /*!
     \brief
@@ -81,7 +81,7 @@ public:
         Vector3 describing the location of the pivot point to be used when
         applying the rotation to the geometry.
     */
-    virtual void setPivot(const Vector3f& p) = 0;
+    virtual void setPivot(const glm::vec3& p) = 0;
 
     /*!
     \brief

@@ -76,17 +76,17 @@ Quaternion Quaternion::eulerAnglesDegrees(const float x, const float y, const fl
 }
 
 //----------------------------------------------------------------------------//
-Quaternion Quaternion::axisAngleRadians(const Vector3f& axis, const float rotation)
+Quaternion Quaternion::axisAngleRadians(const glm::vec3& axis, const float rotation)
 {
     const float halfRotation = 0.5f * rotation;
     const float halfSin = sinf(halfRotation);
 
     return Quaternion(cosf(halfRotation),
-        halfSin * axis.d_x, halfSin * axis.d_y, halfSin * axis.d_z);
+        halfSin * axis.x, halfSin * axis.y, halfSin * axis.z);
 }
 
 //----------------------------------------------------------------------------//
-Quaternion Quaternion::axisAngleDegrees(const Vector3f& axis, const float rotation)
+Quaternion Quaternion::axisAngleDegrees(const glm::vec3& axis, const float rotation)
 {
     static const float d2r = (4.0f * std::atan2(1.0f, 1.0f)) / 180.0f;
 

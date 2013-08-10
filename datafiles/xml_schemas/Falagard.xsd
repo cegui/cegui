@@ -410,7 +410,7 @@
             <xsd:enumeration value="UVector2" />
             <xsd:enumeration value="Sizef" />
             <xsd:enumeration value="Vector2f" />
-            <xsd:enumeration value="Vector3f" />
+            <xsd:enumeration value="vec3" />
             <xsd:enumeration value="Rectf" />
             <xsd:enumeration value="Font" />
             <xsd:enumeration value="Image" />

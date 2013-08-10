@@ -84,7 +84,7 @@
 @arg @c "UVector2"  specifies a property that accesses a CEGUI::UVector2 value.
 @arg @c "Sizef"  specifies a property that accesses a CEGUI::Sizef value.
 @arg @c "Vector2f"  specifies a property that accesses a CEGUI::Vector2f value.
-@arg @c "Vector3f"  specifies a property that accesses a CEGUI::Vector3f value.
+@arg @c "vec3"  specifies a property that accesses a glm::vec3 value.
 @arg @c "Rectf"  specifies a property that accesses a CEGUI::Rectf value.
 @arg @c "Font"  specifies a property that accesses a font via its name string.
 @arg @c "Image"  specifies a property that accesses an image via its name string.

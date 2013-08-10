@@ -1,10 +1,12 @@
 /***********************************************************************
-    filename:   CEGUIVertex.h
-    created:    Thu Jan 8 2009
-    author:     Paul D Turner
+	filename: 	GLM.h
+	created:	10/8/2013
+	author:		Martin Preisler
+
+	purpose:	This is the only way to include GLM in CEGUI
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2009 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,30 +27,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIVertex_h_
-#define _CEGUIVertex_h_
+#ifndef _CEGUIGLM_h_
+#define _CEGUIGLM_h_
 
-#include "CEGUI/Vector.h"
-#include "CEGUI/Colour.h"
+// The reason this file exists is that people might want to mix their
+// own custom GLM setup with CEGUI's, this allows them to do just that
+// without us having to pass tons of defines around.
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-/*!
-\brief
-    structure that is used to hold details of a single vertex in 3D space.
-*/
-struct Vertex :
-    public AllocatedObject<Vertex>
-{
-    //! Position of the vertex in 3D space.
-    glm::vec3 position;
-    //! Texture co-ords to be applied to the vertex.
-    Vector2f tex_coords;
-    //! colour to be applied to the vertex.
-    Colour  colour_val;
-};
+#include <glm/glm.hpp>
 
-} // End of  CEGUI namespace section
+#endif
 
-#endif  // end of guard _CEGUIVertex_h_

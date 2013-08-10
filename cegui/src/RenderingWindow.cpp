@@ -80,13 +80,13 @@ void RenderingWindow::setPosition(const Vector2f& position)
 {
     d_position = position;
 
-    Vector3f trans(d_position.d_x, d_position.d_y, 0.0f);
+    glm::vec3 trans(d_position.d_x, d_position.d_y, 0.0f);
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
     {
-        trans.d_x -= static_cast<RenderingWindow*>(d_owner)->d_position.d_x;
-        trans.d_y -= static_cast<RenderingWindow*>(d_owner)->d_position.d_y;
+        trans.x -= static_cast<RenderingWindow*>(d_owner)->d_position.d_x;
+        trans.y -= static_cast<RenderingWindow*>(d_owner)->d_position.d_y;
     }
 
     d_geometry->setTranslation(trans);
@@ -112,7 +112,7 @@ void RenderingWindow::setRotation(const Quaternion& rotation)
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPivot(const Vector3f& pivot)
+void RenderingWindow::setPivot(const glm::vec3& pivot)
 {
     d_pivot = pivot;
     d_geometry->setPivot(d_pivot);
@@ -137,7 +137,7 @@ const Quaternion& RenderingWindow::getRotation() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector3f& RenderingWindow::getPivot() const
+const glm::vec3& RenderingWindow::getPivot() const
 {
     return d_pivot;
 }
@@ -267,32 +267,32 @@ void RenderingWindow::realiseGeometry_impl()
     Vertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].position   = Vector3f(area.d_min.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[0].position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
     vbuffer[0].colour_val = c;
     vbuffer[0].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 1
-    vbuffer[1].position   = Vector3f(area.d_min.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[1].position   = glm::vec3(area.d_min.d_x, area.d_max.d_y, 0.0f);
     vbuffer[1].colour_val = c;
     vbuffer[1].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_max.d_y);
 
     // vertex 2
-    vbuffer[2].position   = Vector3f(area.d_max.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[2].position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
     vbuffer[2].colour_val = c;
     vbuffer[2].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
     // vertex 3
-    vbuffer[3].position   = Vector3f(area.d_max.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[3].position   = glm::vec3(area.d_max.d_x, area.d_min.d_y, 0.0f);
     vbuffer[3].colour_val = c;
     vbuffer[3].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_min.d_y);
 
     // vertex 4
-    vbuffer[4].position   = Vector3f(area.d_min.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[4].position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
     vbuffer[4].colour_val = c;
     vbuffer[4].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
 
     // vertex 5
-    vbuffer[5].position   = Vector3f(area.d_max.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[5].position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
     vbuffer[5].colour_val = c;
     vbuffer[5].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 

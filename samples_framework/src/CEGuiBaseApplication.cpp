@@ -131,7 +131,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
 
     // setup for spinning logo
     d_logoGeometry = &d_renderer->createGeometryBuffer();
-    d_logoGeometry->setPivot(CEGUI::Vector3f(91.5f, 44.5f, 0));
+    d_logoGeometry->setPivot(glm::vec3(91.5f, 44.5f, 0));
     positionLogo();
 
     // create logo imageset and draw the image (we only ever draw this once)
@@ -333,7 +333,7 @@ void CEGuiBaseApplication::positionLogo()
 
     d_logoGeometry->setClippingRegion(scrn);
     d_logoGeometry->setTranslation(
-        CEGUI::Vector3f(10.0f, scrn.getSize().d_height - 89.0f, 0.0f));
+        glm::vec3(10.0f, scrn.getSize().d_height - 89.0f, 0.0f));
 }
 
 //----------------------------------------------------------------------------//
@@ -343,9 +343,8 @@ void CEGuiBaseApplication::positionFPS()
 
     d_FPSGeometry->setClippingRegion(scrn);
     d_FPSGeometry->setTranslation(
-        CEGUI::Vector3f(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f));
+        glm::vec3(scrn.getSize().d_width - 120.0f, 0.0f, 0.0f));
 }
-
 
 //----------------------------------------------------------------------------//
 bool CEGuiBaseApplication::resizeHandler(const CEGUI::EventArgs& /*args*/)

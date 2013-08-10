@@ -103,7 +103,7 @@ void OpenGLESGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setTranslation(const Vector3f& v)
+void OpenGLESGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
@@ -117,9 +117,9 @@ void OpenGLESGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setPivot(const Vector3f& p)
+void OpenGLESGeometryBuffer::setPivot(const glm::vec3& p)
 {
-    d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+    d_pivot = glm::vec3(p.d_x, p.d_y, p.d_z);
     d_matrixValid = false;
 }
 
@@ -229,7 +229,7 @@ void OpenGLESGeometryBuffer::updateMatrix() const
     glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
-    const Vector3f final_trans(d_translation.d_x + d_pivot.d_x,
+    const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                d_translation.d_y + d_pivot.d_y,
                                d_translation.d_z + d_pivot.d_z);
 

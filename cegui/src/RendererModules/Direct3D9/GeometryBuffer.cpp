@@ -102,7 +102,7 @@ void Direct3D9GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::setTranslation(const Vector3f& t)
+void Direct3D9GeometryBuffer::setTranslation(const glm::vec3& t)
 {
     d_translation = t;
     d_matrixValid = false;
@@ -116,7 +116,7 @@ void Direct3D9GeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D9GeometryBuffer::setPivot(const Vector3f& p)
+void Direct3D9GeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
     d_matrixValid = false;

@@ -52,22 +52,6 @@ BOOST_AUTO_TEST_CASE(ConstructionAssignment2)
     BOOST_CHECK_EQUAL(b * 2, CEGUI::Vector2f(0, 2));
 }
 
-BOOST_AUTO_TEST_CASE(ConstructionAssignment3)
-{
-    CEGUI::Vector3f a(1, 0, 0);
-    CEGUI::Vector3f b(0, 1, 0);
-    CEGUI::Vector3f c(0, 0, 1);
-    
-    BOOST_CHECK_EQUAL(a + b, CEGUI::Vector3f(1, 1, 0));
-    BOOST_CHECK_EQUAL(a - b, CEGUI::Vector3f(1, -1, 0));
-    
-    BOOST_CHECK_EQUAL(a * 2, CEGUI::Vector3f(2, 0, 0));
-    BOOST_CHECK_EQUAL(b * 2, CEGUI::Vector3f(0, 2, 0));
-    BOOST_CHECK_EQUAL(c * 2, CEGUI::Vector3f(0, 0, 2));
-    
-    BOOST_CHECK_EQUAL(CEGUI::Vector3f::one(), CEGUI::Vector3f::one_x() + CEGUI::Vector3f::one_y() + CEGUI::Vector3f::one_z());
-}
-
 BOOST_AUTO_TEST_CASE(Constants2)
 {
     BOOST_CHECK_EQUAL(CEGUI::Vector2f::zero(), CEGUI::Vector2f(0, 0));
@@ -85,16 +69,6 @@ BOOST_AUTO_TEST_CASE(Constants2)
     BOOST_CHECK_EQUAL(CEGUI::UVector2::one(), CEGUI::UVector2(CEGUI::UDim::relative(), CEGUI::UDim::relative()));
     BOOST_CHECK_EQUAL(CEGUI::UVector2::one_x(), CEGUI::UVector2(CEGUI::UDim::relative(), CEGUI::UDim::zero()));
     BOOST_CHECK_EQUAL(CEGUI::UVector2::one_y(), CEGUI::UVector2(CEGUI::UDim::zero(), CEGUI::UDim::relative()));
-}
-
-BOOST_AUTO_TEST_CASE(Constants3)
-{
-    BOOST_CHECK_EQUAL(CEGUI::Vector3f::zero(), CEGUI::Vector3f(0, 0, 0));
-    BOOST_CHECK_EQUAL(CEGUI::Vector3f::one(), CEGUI::Vector3f(1, 1, 1));
-    
-    BOOST_CHECK_EQUAL(CEGUI::Vector3f::one_x(), CEGUI::Vector3f(1, 0, 0));
-    BOOST_CHECK_EQUAL(CEGUI::Vector3f::one_y(), CEGUI::Vector3f(0, 1, 0));
-    BOOST_CHECK_EQUAL(CEGUI::Vector3f::one_z(), CEGUI::Vector3f(0, 0, 1));
 }
 
 BOOST_AUTO_TEST_SUITE_END()
