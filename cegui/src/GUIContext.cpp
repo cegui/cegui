@@ -1029,6 +1029,20 @@ bool GUIContext::injectPasteRequest()
 }
 
 //----------------------------------------------------------------------------//
+bool GUIContext::injectUndoRequest()
+{
+    Window* target = getKeyboardTargetWindow();
+    return target ? target->performUndo() : false;
+}
+
+//----------------------------------------------------------------------------//
+bool GUIContext::injectRedoRequest()
+{
+    Window* target = getKeyboardTargetWindow();
+    return target ? target->performRedo() : false;
+}
+
+//----------------------------------------------------------------------------//
 void GUIContext::setRenderTarget(RenderTarget& target)
 {
     if (d_target == &target)
