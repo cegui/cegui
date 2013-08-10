@@ -31,6 +31,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/Rect.h"
+#include "CEGUI/Quaternion.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -71,7 +72,7 @@ public:
     \param r
         Quaternion describing the rotation to be used.
     */
-    virtual void setRotation(const Quaternion& r) = 0;
+    virtual void setRotation(const glm::quat& r) = 0;
 
     /*!
     \brief

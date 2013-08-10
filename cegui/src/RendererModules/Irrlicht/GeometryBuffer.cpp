@@ -159,7 +159,7 @@ void IrrlichtGeometryBuffer::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
+void IrrlichtGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation.W = -r.d_w;
     d_rotation.X = r.d_x;

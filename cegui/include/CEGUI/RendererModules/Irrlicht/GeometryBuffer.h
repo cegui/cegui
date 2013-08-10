@@ -64,7 +64,7 @@ public:
     // implement GeometryBuffer interface
     void draw() const;
     void setTranslation(const glm::vec3& v);
-    void setRotation(const Quaternion& r);
+    void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);
     void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);

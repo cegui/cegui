@@ -110,7 +110,7 @@ void OpenGLESGeometryBuffer::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLESGeometryBuffer::setRotation(const Quaternion& r)
+void OpenGLESGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;

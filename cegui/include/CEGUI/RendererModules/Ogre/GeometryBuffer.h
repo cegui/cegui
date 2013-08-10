@@ -65,7 +65,7 @@ public:
     // implement CEGUI::GeometryBuffer interface.
     virtual void draw() const;
     virtual void setTranslation(const glm::vec3& v);
-    virtual void setRotation(const Quaternion& r);
+    virtual void setRotation(const glm::quat& r);
     virtual void setPivot(const glm::vec3& p);
     virtual void setClippingRegion(const Rectf& region);
     virtual void appendVertex(const Vertex& vertex);
@@ -119,7 +119,7 @@ protected:
     //! translation vector
     glm::vec3 d_translation;
     //! rotation quaternion
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! pivot point for rotation
     glm::vec3 d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer

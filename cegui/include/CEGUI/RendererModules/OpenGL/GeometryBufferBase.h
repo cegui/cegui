@@ -59,7 +59,7 @@ public:
 
     // implementation of abstract members from GeometryBuffer
     void setTranslation(const glm::vec3& t);
-    void setRotation(const Quaternion& r);
+    void setRotation(const glm::quat& r);
     void setPivot(const glm::vec3& p);
     void setClippingRegion(const Rectf& region);
     void appendVertex(const Vertex& vertex);
@@ -119,7 +119,7 @@ protected:
     //! translation vector
     glm::vec3 d_translation;
     //! rotation quaternion
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! pivot point for rotation
     glm::vec3 d_pivot;
     //! RenderEffect that will be used by the GeometryBuffer

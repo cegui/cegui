@@ -76,7 +76,7 @@ Element::Element():
     d_aspectRatio(1.0 / 1.0),
     d_pixelAligned(true),
     d_pixelSize(0.0f, 0.0f),
-    d_rotation(Quaternion::IDENTITY),
+    d_rotation(),
 
     d_unclippedOuterRect(this, &Element::getUnclippedOuterRect_impl),
     d_unclippedInnerRect(this, &Element::getUnclippedInnerRect_impl)
@@ -337,7 +337,7 @@ const Sizef& Element::getRootContainerSize() const
 }
 
 //----------------------------------------------------------------------------//
-void Element::setRotation(const Quaternion& rotation)
+void Element::setRotation(const glm::quat& rotation)
 {
     d_rotation = rotation;
 
@@ -477,11 +477,11 @@ void Element::addElementProperties()
         &Element::setPixelAligned, &Element::isPixelAligned, true
     );
 
-    CEGUI_DEFINE_PROPERTY(Element, Quaternion,
+    CEGUI_DEFINE_PROPERTY(Element, glm::quat,
         "Rotation", "Property to get/set the Element's rotation. Value is a quaternion: "
         "\"w:[w_float] x:[x_float] y:[y_float] z:[z_float]\""
         "or \"x:[x_float] y:[y_float] z:[z_float]\" to convert from Euler angles (in degrees).",
-        &Element::setRotation, &Element::getRotation, Quaternion(1.0,0.0,0.0,0.0)
+        &Element::setRotation, &Element::getRotation, glm::quat(1.0,0.0,0.0,0.0)
     );
 
     CEGUI_DEFINE_PROPERTY(Element, bool,

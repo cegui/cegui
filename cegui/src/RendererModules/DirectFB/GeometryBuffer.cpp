@@ -111,7 +111,7 @@ void DirectFBGeometryBuffer::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setRotation(const Quaternion& r)
+void DirectFBGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;

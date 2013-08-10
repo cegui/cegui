@@ -35,6 +35,7 @@
 // without us having to pass tons of defines around.
 
 #include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
 #endif
 

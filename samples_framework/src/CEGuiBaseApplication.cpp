@@ -321,7 +321,7 @@ void CEGuiBaseApplication::updateLogo(const float elapsed)
         return;
 
     static float rot = 0.0f;
-    d_logoGeometry->setRotation(CEGUI::Quaternion::eulerAnglesDegrees(rot, 0, 0));
+    d_logoGeometry->setRotation(CEGUI::quatFromEulerAnglesDegrees(glm::vec3(rot, 0, 0)));
 
     rot = fmodf(rot + 180.0f * elapsed, 360.0f);
 }

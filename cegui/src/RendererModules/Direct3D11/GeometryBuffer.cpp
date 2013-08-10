@@ -117,7 +117,7 @@ void Direct3D11GeometryBuffer::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setRotation(const Quaternion& r)
+void Direct3D11GeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;

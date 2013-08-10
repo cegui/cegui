@@ -73,7 +73,7 @@ void NullGeometryBuffer::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setRotation(const Quaternion& r)
+void NullGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
 }

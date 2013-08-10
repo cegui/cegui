@@ -114,7 +114,7 @@ OgreGeometryBuffer::OgreGeometryBuffer(OgreRenderer& owner,
     d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
-    d_rotation(Quaternion::IDENTITY),
+    d_rotation(),
     d_pivot(0, 0, 0),
     d_effect(0),
     d_texelOffset(rs.getHorizontalTexelOffset(), rs.getVerticalTexelOffset()),
@@ -179,7 +179,7 @@ void OgreGeometryBuffer::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void OgreGeometryBuffer::setRotation(const Quaternion& r)
+void OgreGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;
@@ -316,7 +316,7 @@ void OgreGeometryBuffer::updateMatrix() const
 
     // rotation
     Ogre::Matrix4 rot(Ogre::Quaternion(
-        d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z));
+        d_rotation.w, d_rotation.x, d_rotation.y, d_rotation.z));
 
     // translation to remove rotation pivot offset
     Ogre::Matrix4 inv_pivot_trans;

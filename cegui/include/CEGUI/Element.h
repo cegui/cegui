@@ -852,7 +852,7 @@ public:
     \brief sets rotation of this widget
 
     \param rotation
-        A Quaternion describing the rotation
+        A glm::quat describing the rotation
 
     \par Euler angles
         CEGUI used Euler angles previously. While these are easy to use and seem
@@ -860,14 +860,14 @@ public:
         solution than using Quaternions. You can still use Euler angles, see
         the CEGUI::Quaternion class for more info about that.
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief retrieves rotation of this widget
 
     \see Element::setRotation
     */
-    inline const Quaternion& getRotation() const
+    inline const glm::quat& getRotation() const
     {
         return d_rotation;
     }
@@ -1322,7 +1322,7 @@ protected:
     //! Current constrained pixel size of the element.
     Sizef d_pixelSize;
     //! Rotation of this element (relative to the parent)
-    Quaternion d_rotation;
+    glm::quat d_rotation;
 
     //! outer area rect in screen pixels
     CachedRectf d_unclippedOuterRect;

@@ -47,7 +47,7 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner) :
     d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
-    d_rotation(Quaternion::IDENTITY),
+    d_rotation(),
     d_pivot(0, 0, 0),
     d_effect(0),
     d_matrix(new mat4Pimpl()),
@@ -75,7 +75,7 @@ void OpenGLGeometryBufferBase::setTranslation(const glm::vec3& v)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setRotation(const Quaternion& r)
+void OpenGLGeometryBufferBase::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;
@@ -208,8 +208,7 @@ void OpenGLGeometryBufferBase::updateMatrix() const
 
     modelMatrix = glm::translate(modelMatrix, final_trans);
 
-    glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
-    glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
+    glm::mat4 rotation_matrix = glm::mat4_cast(d_rotation);
 
     modelMatrix = modelMatrix * rotation_matrix;
 
