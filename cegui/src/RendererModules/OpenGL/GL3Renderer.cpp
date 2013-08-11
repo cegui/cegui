@@ -211,14 +211,13 @@ void OpenGL3Renderer::beginRendering()
     if (d_initExtraStates)
         setupExtraStates();
 
+    d_openGLStateChanger->reset();
+
     // Setup initial states
-    d_openGLStateChanger->enable(GL_SCISSOR_TEST);
     d_openGLStateChanger->enable(GL_BLEND);
 
     // force set blending ops to get to a known state.
     setupRenderingBlendMode(BM_NORMAL, true);
-
-    d_openGLStateChanger->reset();
 }
 
 //----------------------------------------------------------------------------//
@@ -247,7 +246,7 @@ void OpenGL3Renderer::initialiseTextureTargetFactory()
 
 //----------------------------------------------------------------------------//
 void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
-                                             const bool force)
+                                              const bool force)
 {
     // exit if mode is already set up (and update not forced)
     if ((d_activeBlendMode == mode) && !force)
@@ -257,11 +256,11 @@ void OpenGL3Renderer::setupRenderingBlendMode(const BlendMode mode,
 
     if (d_activeBlendMode == BM_RTT_PREMULTIPLIED)
     {
-        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
+        d_openGLStateChanger->blendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
     }
     else
     {
-        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
+        d_openGLStateChanger->blendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE_MINUS_DST_ALPHA, GL_ONE);
     }
 }
 
