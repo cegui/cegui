@@ -70,7 +70,7 @@ CEGuiBaseApplication::CEGuiBaseApplication() :
     d_resourceProvider(0),
     d_logoGeometry(0),
     d_FPSGeometry(0),
-    d_FPSElapsed(0.0f),
+    d_FPSElapsed(1.0f),
     d_FPSFrames(0),
     d_FPSValue(0),
     d_spinLogo(false)
@@ -134,8 +134,6 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     updateLogoGeometry();
     // setup for spinning logo
     updateLogoGeometryRotation();
-
-
 
     // clearing this queue actually makes sure it's created(!)
     CEGUI::System::getSingleton().getDefaultGUIContext().clearGeometry(CEGUI::RQ_OVERLAY);
