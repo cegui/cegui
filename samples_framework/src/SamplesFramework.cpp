@@ -81,7 +81,6 @@ SamplesFramework::SamplesFramework(const CEGUI::String& xml_filename) :
     d_selectedSampleData(0),
     d_loadingProgressBar(0),
     d_quittingSampleView(false),
-    d_sampleInputAggregator(0),
     d_samplesXMLFilename(xml_filename)
 {
 }
@@ -91,12 +90,6 @@ SamplesFramework::~SamplesFramework()
 {
     if(d_metaDataWinMgr)
         delete d_metaDataWinMgr;
-
-    if (d_systemInputAggregator != 0)
-    {
-        delete d_systemInputAggregator;
-        d_systemInputAggregator = 0;
-    }
 }
 
 //----------------------------------------------------------------------------//
@@ -119,10 +112,10 @@ void SamplesFramework::deinitialise()
 {
     unloadSamples();
 
-    if (d_sampleInputAggregator != 0)
+    if (d_systemInputAggregator != 0)
     {
-        delete d_sampleInputAggregator;
-        d_sampleInputAggregator = 0;
+        delete d_systemInputAggregator;
+        d_systemInputAggregator = 0;
     }
 }
 
@@ -210,22 +203,12 @@ void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName,
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
-    if (d_selectedSampleData)
-    {
-        if (Key::Escape != ceguiKey)
-            return d_selectedSampleData->getInputAggregator()->injectKeyDown(ceguiKey);
-        else
-            stopDisplaySample();
-    }
+    if (Key::Escape != ceguiKey)
+        return getCurrentInputAggregator()->injectKeyDown(ceguiKey);
     else
     {
-        if (Key::Escape != ceguiKey)
-        {
-            if (d_systemInputAggregator)
-                return d_systemInputAggregator->injectKeyDown(ceguiKey);
-            else
-                return false;
-        }
+        if (d_selectedSampleData)
+            stopDisplaySample();
         else
             setQuitting(true);
     }
@@ -236,12 +219,18 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 {
+    if (getCurrentInputAggregator() == 0)
+        return false;
+
     return getCurrentInputAggregator()->injectKeyUp(ceguiKey);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectChar(int character)
 {
+    if (getCurrentInputAggregator() == 0)
+        return false;
+
     return getCurrentInputAggregator()->injectChar(character);
 }
 
@@ -249,6 +238,9 @@ bool SamplesFramework::injectChar(int character)
 bool SamplesFramework::injectMouseButtonDown(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
+    if (getCurrentInputAggregator() == 0)
+        return false;
+
     return getCurrentInputAggregator()->injectMouseButtonDown(ceguiMouseButton);
 }
 
@@ -256,18 +248,27 @@ bool SamplesFramework::injectMouseButtonDown(
 bool SamplesFramework::injectMouseButtonUp(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
+    if (getCurrentInputAggregator() == 0)
+        return false;
+
     return getCurrentInputAggregator()->injectMouseButtonUp(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMouseWheelChange(float position)
 {
+    if (getCurrentInputAggregator() == 0)
+        return false;
+
     return getCurrentInputAggregator()->injectMouseWheelChange(position);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMousePosition(float x, float y)
 {
+    if (getCurrentInputAggregator() == 0)
+        return false;
+
     return getCurrentInputAggregator()->injectMousePosition(x, y);
 }
 
@@ -373,7 +374,6 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
             getPosition());
 
     d_selectedSampleData = correspondingSampleData;
-    d_sampleInputAggregator = new InputAggregator(sampleContext);
 
     d_selectedSampleData->onEnteringSample();
 }
@@ -385,7 +385,8 @@ void SamplesFramework::stopDisplaySample()
 
     // Since we switch our contexts, the mouse release won't be injected if we
     // don't do it manually
-    d_sampleInputAggregator->injectMouseButtonUp(CEGUI::LeftButton);
+    if (getCurrentInputAggregator() != 0)
+        getCurrentInputAggregator()->injectMouseButtonUp(CEGUI::LeftButton);
     sampleGUIContext->injectTimePulse(0.0f);
 
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
@@ -396,8 +397,6 @@ void SamplesFramework::stopDisplaySample()
 
     d_selectedSampleData = 0;
     d_quittingSampleView = false;
-    delete d_sampleInputAggregator;
-    d_sampleInputAggregator = 0;
 }
 
 //----------------------------------------------------------------------------//
@@ -654,8 +653,8 @@ bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1,
 //----------------------------------------------------------------------------//
 CEGUI::InputAggregator* SamplesFramework::getCurrentInputAggregator()
 {
-    if (d_sampleInputAggregator != 0)
-        return d_sampleInputAggregator;
+    if (d_selectedSampleData != 0)
+        return d_selectedSampleData->getInputAggregator();
 
     return d_systemInputAggregator;
 }
