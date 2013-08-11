@@ -49,17 +49,16 @@ class OPENGL_GUIRENDERER_API OpenGL3StateChangeWrapper :
     public AllocatedObject<OpenGL3StateChangeWrapper>
 {
 protected:
-    struct BlendFuncParams
-    {
-        BlendFuncParams();
-        void reset();
-        bool equal(GLenum sFactor, GLenum dFactor);
-        GLenum d_sFactor, d_dFactor;
-    };
+    /*!
+    \brief
+        This has to be used for both glBlendFunc and glBlendFuncSeperate, as the second call is
+        just a more specific version of the first.
+    */
     struct BlendFuncSeperateParams
     {
         BlendFuncSeperateParams();
         void reset();
+        bool equal(GLenum sFactor, GLenum dFactor);
         bool equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha);
         GLenum d_sfactorRGB, d_dfactorRGB, d_sfactorAlpha, d_dfactorAlpha;
     };
@@ -122,7 +121,6 @@ public:
 protected:
     GLuint                      d_vertexArrayObject;
     GLuint                      d_shaderProgram;
-    BlendFuncParams             d_blendFuncParams;
     BlendFuncSeperateParams     d_blendFuncSeperateParams;
     PortParams                  d_viewPortParams;
     PortParams                  d_scissorParams;

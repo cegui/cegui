@@ -33,28 +33,6 @@
 namespace CEGUI
 {
 
-OpenGL3StateChangeWrapper::BlendFuncParams::BlendFuncParams()
-{
-    reset();
-}
-
-void OpenGL3StateChangeWrapper::BlendFuncParams::reset()
-{
-    d_dFactor = -1;
-    d_sFactor = -1;
-}
-
-bool OpenGL3StateChangeWrapper::BlendFuncParams::equal(GLenum sFactor, GLenum dFactor)
-{
-    bool equal = (d_sFactor == sFactor) && (d_dFactor == dFactor);
-    if (!equal)
-    {
-        d_sFactor = sFactor;
-        d_dFactor = dFactor;
-    }
-    return equal;
-}
-
 OpenGL3StateChangeWrapper::BlendFuncSeperateParams::BlendFuncSeperateParams()
 {
     reset();
@@ -66,6 +44,11 @@ void OpenGL3StateChangeWrapper::BlendFuncSeperateParams::reset()
     d_dfactorRGB = -1;
     d_sfactorAlpha = -1;
     d_dfactorAlpha = -1;
+}
+
+bool OpenGL3StateChangeWrapper::BlendFuncSeperateParams::equal(GLenum sFactor, GLenum dFactor)
+{
+    return equal(sFactor, dFactor, sFactor, dFactor);
 }
 
 bool OpenGL3StateChangeWrapper::BlendFuncSeperateParams::equal(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
@@ -157,7 +140,6 @@ void OpenGL3StateChangeWrapper::reset()
 {
     d_vertexArrayObject = -1;
     d_shaderProgram = -1;
-    d_blendFuncParams.reset();
     d_blendFuncSeperateParams.reset();
     d_viewPortParams.reset();
     d_scissorParams.reset();
@@ -188,11 +170,9 @@ void OpenGL3StateChangeWrapper::useProgram(GLuint program)
 
 void OpenGL3StateChangeWrapper::blendFunc(GLenum sfactor, GLenum dfactor)
 {
-    bool callIsRedundant = d_blendFuncParams.equal(sfactor, dfactor);
+    bool callIsRedundant = d_blendFuncSeperateParams.equal(sfactor, dfactor);
     if (!callIsRedundant)
-    {
         glBlendFunc(sfactor, dfactor);
-    }
 }
 
 void OpenGL3StateChangeWrapper::blendFuncSeparate(GLenum sfactorRGB, GLenum dfactorRGB, GLenum sfactorAlpha, GLenum dfactorAlpha)
