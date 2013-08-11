@@ -127,7 +127,6 @@ protected:
 
     bool                        d_quittingSampleView;
     CEGUI::InputAggregator*     d_systemInputAggregator;
-    CEGUI::InputAggregator*     d_sampleInputAggregator;
 
     CEGUI::String d_samplesXMLFilename;
 };
