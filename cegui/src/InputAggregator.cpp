@@ -355,12 +355,11 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
             value = SV_SelectNextPage;
     }
 
+    d_keysPressed[scan_code] = false;
+
     if (value != SV_NoValue)
     {
         SemanticInputEvent semantic_event(value);
-
-        d_keysPressed[scan_code] = false;
-
         return d_inputReceiver->injectInputEvent(semantic_event);
     }
 
