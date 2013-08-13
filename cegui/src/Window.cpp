@@ -273,7 +273,7 @@ Window::Window(const String& type, const String& name):
     d_guiContext(0),
 
     d_containsPointer(false),
-
+    d_isFocused(false),
     d_fontRenderSizeChangeConnection(
         GlobalEventSet::getSingleton().subscribeEvent(
             "Font/RenderSizeChanged",
@@ -3715,6 +3715,30 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 bool Window::isMouseContainedInArea() const
 {
     return d_containsPointer;
+}
+
+//----------------------------------------------------------------------------//
+bool Window::isFocused() const
+{
+    return d_isFocused;
+}
+
+//----------------------------------------------------------------------------//
+void Window::focus()
+{
+    d_isFocused = true;
+
+    ActivationEventArgs event_args(this);
+    onActivated(event_args);
+}
+
+//----------------------------------------------------------------------------//
+void Window::unfocus()
+{
+    d_isFocused = false;
+
+    ActivationEventArgs event_args(this);
+    onDeactivated(event_args);
 }
 
 //----------------------------------------------------------------------------//

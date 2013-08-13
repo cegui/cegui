@@ -334,6 +334,8 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
             value = SV_GoToStartOfDocument;
         else if (scan_code == Key::A)
             value = SV_SelectAll;
+        else if (scan_code == Key::Tab)
+            value = SV_NavigateToPrevious;
     }
     else if (isShiftPressed())
     {
@@ -464,8 +466,9 @@ void InputAggregator::initializeSimpleKeyMappings()
     d_keyValuesMappings[Key::Delete] = SV_DeleteNextCharacter;
 
     d_keyValuesMappings[Key::NumpadEnter] = SV_Confirm;
-    d_keyValuesMappings[Key::Tab] = SV_Confirm;
     d_keyValuesMappings[Key::Return] = SV_Confirm;
+
+    d_keyValuesMappings[Key::Tab] = SV_NavigateToNext;
 
     d_keyValuesMappings[Key::ArrowLeft] = SV_GoToPreviousCharacter;
     d_keyValuesMappings[Key::ArrowRight] = SV_GoToNextCharacter;

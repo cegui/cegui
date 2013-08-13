@@ -31,6 +31,16 @@
 #include "SampleBase.h"
 #include <vector>
 
+#include "CEGUI/WindowNavigator.h"
+
+class LinearNavigationStrategy : public CEGUI::NavigationStrategy
+{
+public:
+    std::vector<CEGUI::Window*> d_windows;
+
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
+};
+
 class FormNavigationDemo : public Sample
 {
 public:
@@ -43,11 +53,14 @@ private:
     CEGUI::Window* createWidget(const CEGUI::String& type, float position_x, float position_y, const CEGUI::String& text = "");
     bool resetForm(const CEGUI::EventArgs& e);
     bool disableConfirmButton(const CEGUI::EventArgs& e);
+    std::vector<std::pair<CEGUI::SemanticValue, CEGUI::String>> getNavigationMappings();
 
     CEGUI::DefaultWindow*       d_root;
     CEGUI::ToggleButton*        d_isGameMasterCheckbox;
     CEGUI::Window*              d_confirmButton;
     std::vector<CEGUI::Window*> d_editboxes;
+    LinearNavigationStrategy*   d_navigationStrategy;
+    CEGUI::WindowNavigator*     d_windowNavigator;
 };
 
 #endif  // end of guard _Sample_Form_Navigation_h_

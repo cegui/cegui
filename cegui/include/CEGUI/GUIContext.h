@@ -33,6 +33,7 @@
 #include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/PointerIndicator.h"
 #include "CEGUI/SystemKeys.h"
+#include "CEGUI/WindowNavigator.h"
 
 #include <map>
 
@@ -210,6 +211,12 @@ public:
     // public overrides
     void draw();
 
+    /*!
+    \brief
+        Sets a window navigator to be used for navigating in this context
+    */
+    void setWindowNavigator(WindowNavigator* navigator);
+
 protected:
     void updateRootWindowAreaRects() const;
     void drawWindowContentToTarget();
@@ -283,6 +290,9 @@ protected:
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_windowDestroyedEventConnection;
     std::map<int, SlotFunctorBase<InputEvent>*> d_semanticEventHandlers;
+
+    //! the window navigator (if any) used to navigate the GUI
+    WindowNavigator* d_windowNavigator;
 };
 
 }

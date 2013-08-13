@@ -65,7 +65,8 @@ GUIContext::GUIContext(RenderTarget& target) :
         WindowManager::getSingleton().subscribeEvent(
             WindowManager::EventWindowDestroyed,
             Event::Subscriber(&GUIContext::windowDestroyedHandler, this))),
-    d_semanticEventHandlers()
+    d_semanticEventHandlers(),
+    d_windowNavigator(0)
 {
     resetWindowContainingPointer();
     initializeSemanticEventHandlers();
@@ -502,7 +503,15 @@ bool GUIContext::injectInputEvent(const InputEvent& event)
         return handleTextInputEvent(static_cast<const TextInputEvent&>(event));
 
     if (event.d_eventType == IET_SemanticInputEventType)
-        return handleSemanticInputEvent(static_cast<const SemanticInputEvent&>(event));
+    {
+        const SemanticInputEvent& semantic_event =
+            static_cast<const SemanticInputEvent&>(event);
+
+        if (d_windowNavigator != 0)
+            d_windowNavigator->handleSemanticEvent(semantic_event);
+
+        return handleSemanticInputEvent(semantic_event);
+    }
 
     return false;
 }
@@ -812,6 +821,12 @@ bool GUIContext::handlePointerLeave(const SemanticInputEvent& event)
     resetWindowContainingPointer();
 
     return pa.handled != 0;
+}
+
+//----------------------------------------------------------------------------//
+void GUIContext::setWindowNavigator(WindowNavigator* navigator)
+{
+    d_windowNavigator = navigator;
 }
 
 //----------------------------------------------------------------------------//
