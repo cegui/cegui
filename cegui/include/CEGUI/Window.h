@@ -2627,6 +2627,24 @@ public:
     // overridden from Element
     const Sizef& getRootContainerSize() const;
 
+    /*!
+    \brief
+        Return whether this Window is focused or not
+    */
+    bool isFocused() const;
+
+    /*!
+    \brief
+        Makes this Window be focused
+    */
+    void focus();
+
+    /*!
+    \brief
+        Unfocus this Window
+    */
+    void unfocus();
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3564,6 +3582,9 @@ protected:
 
     //! true when mouse is contained within this Window's area.
     bool d_containsPointer;
+
+    //! true when this window is focused.
+    bool d_isFocused;
 
 private:
     /*************************************************************************

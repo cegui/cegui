@@ -140,6 +140,8 @@ enum SemanticValue
     SV_GoDown                          = 0x0069,
     SV_SelectUp                        = 0x0070,
     SV_SelectDown                      = 0x0071,
+    SV_NavigateToNext                  = 0x0072,
+    SV_NavigateToPrevious              = 0x0073,
 
     SV_UserDefinedSemanticValue        = 0x5000,   //!< This marks the beginning of user-defined semantic values.
 };

@@ -32,6 +32,9 @@
 
 using namespace CEGUI;
 
+static const String NAVIGATE_PREVIOUS = "previous";
+static const String NAVIGATE_NEXT = "next";
+
 /** This sample uses most of the code from the 'HelloWorld' sample. 
     Thus, most of the clarifying comments have been removed for brevity. **/
 
@@ -52,6 +55,10 @@ bool FormNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     gui_context->setDefaultFont(&default_font);
 
     gui_context->setRootWindow(d_root);
+
+    d_navigationStrategy = new LinearNavigationStrategy;
+    d_windowNavigator = new WindowNavigator(getNavigationMappings(), d_navigationStrategy);
+    gui_context->setWindowNavigator(d_windowNavigator);
 
     FrameWindow* wnd = (FrameWindow*)win_mgr.createWindow("TaharezLook/FrameWindow", 
         "Demo Window");
@@ -85,29 +92,35 @@ void FormNavigationDemo::createForm(FrameWindow* wnd)
     Window* editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.0f);
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
+    d_navigationStrategy->d_windows.push_back(editbox);
 
     editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.1f);
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
+    d_navigationStrategy->d_windows.push_back(editbox);
 
     editbox = createWidget("TaharezLook/Editbox", 0.2f, 0.2f);
     wnd->addChild(editbox);
     d_editboxes.push_back(editbox);
+    d_navigationStrategy->d_windows.push_back(editbox);
 
     d_isGameMasterCheckbox = static_cast<ToggleButton*>(
         createWidget("TaharezLook/Checkbox", 0.01f, 0.3f, "Is Game Master"));
     d_isGameMasterCheckbox->setSize(USize(cegui_reldim(0.5f), cegui_reldim(0.1f)));
     wnd->addChild(d_isGameMasterCheckbox);
+    d_navigationStrategy->d_windows.push_back(d_isGameMasterCheckbox);
 
     d_confirmButton = createWidget("TaharezLook/Button", 0.1f, 0.4f, "Confirm");
     d_confirmButton->subscribeEvent(PushButton::EventClicked, 
         Event::Subscriber(&FormNavigationDemo::disableConfirmButton, this));
     wnd->addChild(d_confirmButton);
+    d_navigationStrategy->d_windows.push_back(d_confirmButton);
 
     Window* resetButton = createWidget("TaharezLook/Button", 0.3f, 0.4f, "Reset");
     resetButton->subscribeEvent(PushButton::EventClicked, 
         Event::Subscriber(&FormNavigationDemo::resetForm, this));
     wnd->addChild(resetButton);
+    d_navigationStrategy->d_windows.push_back(resetButton);
 }
 
 CEGUI::Window* FormNavigationDemo::createWidget(const String& type, 
@@ -149,4 +162,45 @@ extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
     static FormNavigationDemo sample;
     return sample;
+}
+
+std::vector<std::pair<SemanticValue, String>> FormNavigationDemo::getNavigationMappings()
+{
+    std::vector<std::pair<SemanticValue, String>> mappings;
+
+    mappings.push_back(std::pair<SemanticValue, String>(SV_NavigateToNext, NAVIGATE_NEXT));
+    mappings.push_back(std::pair<SemanticValue, String>(SV_NavigateToPrevious, NAVIGATE_PREVIOUS));
+
+    return mappings;
+}
+
+Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& payload)
+{
+    std::vector<Window*>::const_iterator itor;
+    // start at the beginning
+    if (neighbour == 0)
+        return *d_windows.begin();
+    else
+        itor = std::find(d_windows.begin(), d_windows.end(), neighbour);
+
+    // no such neighbour window in here
+    if (itor == d_windows.end())
+        return 0;
+
+    if (payload == NAVIGATE_PREVIOUS)
+    {
+        // first item. wrap to end
+        if (itor == d_windows.begin())
+            return *d_windows.end();
+
+        return *(itor - 1);
+    }
+    else if (payload == NAVIGATE_NEXT)
+    {
+        // last item. wrap to beginning
+        if (itor == d_windows.end() - 1)
+            return *d_windows.begin();
+
+        return *(itor + 1);
+    }
 }
