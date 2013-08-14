@@ -191,7 +191,7 @@ Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& pay
     {
         // first item. wrap to end
         if (itor == d_windows.begin())
-            return *d_windows.end();
+            return *(d_windows.end() - 1);
 
         return *(itor - 1);
     }
