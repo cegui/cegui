@@ -587,10 +587,10 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     if( !ImageManager::getSingleton().isDefined("AliasingTestImage") )
-        ImageManager::getSingleton().addFromImageFile("AliasingTestImage", "Aliasing.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("AliasingTestImage", "Aliasing.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
