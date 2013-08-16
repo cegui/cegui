@@ -67,9 +67,9 @@ SVGData& SVGDataManager::create(const String& name)
 {
     if (d_svgDataMap.find(name) != d_svgDataMap.end())
         CEGUI_THROW(AlreadyExistsException(
-        "SVGData already exists: " + name));
+            "An SVGData object named " + name + " already exists."));
 
-    SVGData* svg_data = CEGUI_NEW_AO SVGData();
+    SVGData* svg_data = CEGUI_NEW_AO SVGData(name);
     d_svgDataMap[name] = svg_data;
 
     char addr_buff[32];
@@ -80,6 +80,50 @@ SVGData& SVGDataManager::create(const String& name)
         ")");
 
     return *svg_data;
+}
+
+//----------------------------------------------------------------------------//
+SVGData& SVGDataManager::create(const String& name,
+                                const String& filename,
+                                const String& resourceGroup)
+{
+    if (d_svgDataMap.find(name) != d_svgDataMap.end())
+        CEGUI_THROW(AlreadyExistsException(
+            "An SVGData object named " + name + " already exists."));
+
+    SVGData* svg_data = CEGUI_NEW_AO SVGData(name, filename, resourceGroup);
+    d_svgDataMap[name] = svg_data;
+
+    logSVGDataCreation(name);
+
+    return *svg_data;
+}
+
+//----------------------------------------------------------------------------//
+SVGData& SVGDataManager::getSVGData(const String& name) const
+{
+    SVGDataMap::const_iterator i = d_svgDataMap.find(name);
+
+    if (i == d_svgDataMap.end())
+        CEGUI_THROW(UnknownObjectException(
+        "No SVGData named '" + name + "' is available."));
+
+    return *i->second;
+}
+
+//----------------------------------------------------------------------------//
+bool SVGDataManager::isSVGDataDefined(const String& name) const
+{
+    return d_svgDataMap.find(name) != d_svgDataMap.end();
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGDataManager::logSVGDataCreation(const String& name)
+{
+    Logger* logger = Logger::getSingletonPtr();
+    if (logger)
+        logger->logEvent("[SVGDataManager] Created SVGData object: " + name);
 }
 
 //----------------------------------------------------------------------------//

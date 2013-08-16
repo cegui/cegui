@@ -69,6 +69,57 @@ public:
     */
     SVGData& create(const String& name);
 
+    /*!
+    \brief
+        Create an instance of SVGData class registered using the name \a name.
+
+    \param name
+        String object describing the name that the newly created instance will
+        be created with.  This name must be unique within the system. 
+
+    \param filename
+        String object that specifies the path and filename of the image file to
+        use when creating the texture.
+
+    \param resourceGroup
+        String objet that specifies the resource group identifier to be passed
+        to the resource provider when loading the texture file \a filename.
+
+    \exception UnknownObjectException
+        thrown if no Image subclass has been registered using identifier \a type.
+
+    \exception AlreadyExistsException
+        thrown if an Image instance named \a name already exists.
+    */
+    SVGData& create(const String& name,
+                    const String& filename,
+                    const String& resourceGroup);
+
+    /*!
+    \brief
+        Returns a SVGData object that was previously created by calling a
+        create function of this class.
+
+    \param name
+        String holding the name of the SVGData object to be returned.
+
+    \exceptions
+        - UnknownObjectException - thrown if no SVGData object named \a name
+          exists within the system.
+    */
+    SVGData& getSVGData(const String& name) const;
+
+   
+    /*!
+    \brief
+        Return whether an SVGData object with the given name exists.
+
+    \param name
+        String holding the name of the SVGData object to be checked.
+    */
+    bool isSVGDataDefined(const String& name) const;
+
+
     //! container type used to hold the SVGData objects.
     typedef std::map<String, SVGData*,
                      StringFastLessCompare
@@ -81,6 +132,15 @@ public:
     static SVGDataManager*      getSingletonPtr();
 
 protected:
+    /*!
+    \brief
+        Logs the creation of the SVGData object.
+
+    \param name
+        String holding the name of the SVGData object that was created.
+    */
+    void logSVGDataCreation(const String& name);
+
     //! container holding the SVGData objects.
     SVGDataMap d_svgDataMap;
 };
