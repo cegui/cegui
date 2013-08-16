@@ -28,7 +28,10 @@
 #ifndef _SVGData_h_
 #define _SVGData_h_
 
+#include "CEGUI/ChainedXMLHandler.h"
 #include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+#include "CEGUI/svg/SVGPaintStyle.h"
 
 #include <vector>
 
@@ -52,17 +55,76 @@ class SVGBasicShape;
     The data for this class can be either be created by parsing it from an SVG file
     or be added manually by a user to draw custom geometry.
 */
-class CEGUIEXPORT SVGData : public AllocatedObject<SVGData>
+class CEGUIEXPORT SVGData :
+    public AllocatedObject<SVGData>,
+    public ChainedXMLHandler
 {
 public:
-    SVGData();
+    //! Enumerator describing the available unit types in the SVG standard for the length type
+    enum SVGUnit
+    {
+        SLU_UNDEFINED,
+        SLU_IN,
+        SLU_CM,
+        SLU_MM,
+        SLU_PT,
+        SLU_PC,
+        SLU_PX,
+        SLU_PERCENT,
+
+        SLU_COUNT
+    };
+
+    struct SVGLength
+    {
+        SVGLength() :
+            d_value(0.f),
+            d_unit(SLU_UNDEFINED)
+        {}
+
+        float           d_value;
+        SVGUnit         d_unit;
+    };
+
+    SVGData(const String& name);
+
+    SVGData(const String& name,
+            const String& filename,
+            const String& resourceGroup);
 
     ~SVGData();
+
+    
+    /*!
+    \brief
+        Returns the name given to the SVGData when it was created.
+
+    \return
+        Reference to a String object that holds the name of the SVGData.
+    */
+    const String& getName() const;
+
+    /*!
+    \brief
+        Loads and parses the specified SVG file into this SVGData object.
+
+    \param file_name
+        The filename of the SVG file that is to be loaded.
+
+    \param resource_group
+        Resource group identifier to be passed to the resource provider when
+        loading the image file.
+
+    \return
+        Nothing.
+    */
+    void loadFromFile(const String& file_name,
+                      const String& resource_group);
 
     /*!
     \brief
         Adds a SVGBasicShape to the list of shapes of this class. This class takes ownership
-        of the object and will free the memory itself.
+        of the passed object and will free the memory itself.
     \param svg_shape
         The SVGBasicShape that will be added.
     */
@@ -115,6 +177,58 @@ public:
     void setHeight(float height);
 
 protected:
+    // implement chained xml handler abstract interface
+    void elementStartLocal(const String& element,
+                           const XMLAttributes& attributes);
+    void elementEndLocal(const String& element);
+
+    /*!
+    \brief
+        Function that handles the opening SVG element.
+
+    \note
+        This function processes the SVG document fragment which contains
+        the SVG graphics elements, container elements, etc. ...
+
+    */
+    void elementSVGStart(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Function that handles opening SVG 'rect' elements.
+
+    \note
+        This function processes the SVG 'rect' element.
+    */
+    void elementSVGRect(const XMLAttributes& attributes);
+
+    /*!
+    \brief
+        Function that handles opening SVG 'polyline' elements.
+
+    \note
+        This function processes the SVG 'polyline' element.
+    */
+    void elementSVGPolyline(const XMLAttributes& attributes);
+    
+
+    /*!
+    \brief
+        Function that parses a String into an SVG length object and returns it.
+
+    \param length_string
+        The String containing the characters that should be parsed into an SVG length.
+
+    \return
+        The SVGLength object.
+
+    \exception SVGParsingException          thrown if there was some problem parsing the String.
+    */
+    static SVGData::SVGLength parseLengthDataType(const String& length_string);
+ 
+
+    //! Name of this SVGData objects
+    CEGUI::String d_name;
     /*!
     \brief
         The SVGData's width in pixels.
@@ -137,10 +251,63 @@ protected:
     //! The basic shapes that were added to the SVGData
     std::vector<SVGBasicShape*> d_svgBasicShapes;
 
+private:
+    /*!
+    \brief
+        Function that parses the paint style (fill and stroke parameters) from an SVG graphics element.
+    \param attributes
+        The XML attributes from which the values will be parsed.
+    */
+    static SVGPaintStyle parsePaintStyle(const XMLAttributes& attributes);
+
+    //! Parses the attribute String of a 'fill' property 
+    static void parsePaintStyleFillString(const String& fillString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'fill-opacity' property
+    static void parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke' property 
+    static void parsePaintStyleStroke(const String& strokeString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-width' property 
+    static void parsePaintStyleStrokeWidth(const String& strokeWidthString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-linecap' property 
+    static void parsePaintStyleStrokeLinecap(const String& strokeLinecapString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-linejoin' property 
+    static void parsePaintStyleStrokeLinejoin(const String& strokeLinejoinString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-miterlimit' property 
+    static void parsePaintStyleMiterlimitString(const String& strokeMiterLimitString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-dasharray' property 
+    static void parsePaintStyleStrokeDashArray(const String& strokeDashArrayString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-dashoffset' property 
+    static void parsePaintStyleStrokeDashOffset(const String& strokeDashOffsetString, SVGPaintStyle& paint_style);
+
+    //! Parses the attribute String of a 'stroke-opacity' property 
+    static void parsePaintStyleStrokeOpacity(const String& strokeOpacityString, SVGPaintStyle& paint_style);
+
+    /*!
+    \brief
+        Function that parses the an SVG list of lengths from a String.
+    \param list_of_lengths_string
+        The String containing the list of lengths.
+    */
+    static std::vector<float> parseListOfLengths(const String& list_of_lengths_string);
+
+    /*!
+    \brief
+        Function that parses an SVG paint colour and returns the CEGUI Colour created from it.
+    \param colour_string
+        The colour attribute string from which the colour values will be parsed;
+    */
+    static glm::vec3 parseColour(const CEGUI::String& colour_string);
 };
 
 }
-
 
 #if defined(_MSC_VER)
 #	pragma warning(pop)
