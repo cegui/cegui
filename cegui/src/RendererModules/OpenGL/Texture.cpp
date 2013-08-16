@@ -190,17 +190,12 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     // load file to memory via resource provider
     RawDataContainer texFile;
-    System::getSingleton().getResourceProvider()->
+    CEGUI::System& system = System::getSingleton();
+
+    system.getResourceProvider()->
         loadRawDataContainer(filename, texFile, resourceGroup);
 
-    // get and check existence of CEGUI::System (needed to access ImageCodec)
-    System* sys = System::getSingletonPtr();
-    if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created: "
-            "unable to access ImageCodec."));
-
-    Texture* res = sys->getImageCodec().load(texFile, this);
+    Texture* res = system.getImageCodec().load(texFile, this);
 
     // unload file data buffer
     System::getSingleton().getResourceProvider()->
@@ -209,7 +204,7 @@ void OpenGLTexture::loadFromFile(const String& filename,
     if (!res)
         // It's an error
         CEGUI_THROW(RendererException(
-            sys->getImageCodec().getIdentifierString() +
+            system.getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
 
