@@ -122,7 +122,7 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 
    // load an image to use as a background
    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-       ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+       ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
    // Load some icon images for our test tree
    ImageManager::getSingleton().loadImageset("DriveIcons.imageset");

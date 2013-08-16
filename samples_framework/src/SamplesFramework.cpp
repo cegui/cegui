@@ -489,7 +489,7 @@ void SamplesFramework::initialiseSampleBrowserLayout()
     CEGUI::SchemeManager::getSingleton().createFromFile("Generic.scheme");
 
     if (!ImageManager::getSingleton().isDefined("BackgroundSampleBrowser"))
-        ImageManager::getSingleton().addFromImageFile(
+        ImageManager::getSingleton().addBitmapImageFromFile(
             "BackgroundSampleBrowser", "BackgroundSampleBrowser.jpg");
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");

@@ -125,7 +125,7 @@ bool CEGuiBaseApplication::execute(SamplesFrameworkBase* sampleApp)
     const CEGUI::Rectf scrn(CEGUI::Vector2f(0, 0), d_renderer->getDisplaySize());
 
     // create logo imageset and draw the image (we only ever draw this once)
-    CEGUI::ImageManager::getSingleton().addFromImageFile("cegui_logo",
+    CEGUI::ImageManager::getSingleton().addBitmapImageFromFile("cegui_logo",
                                                          "logo.png");
     CEGUI::ImageManager::getSingleton().get("cegui_logo").render(
         d_logoGeometry, CEGUI::Rectf(0, 0, 183, 89), 0, false, CEGUI::ColourRect(0xFFFFFFFF));
