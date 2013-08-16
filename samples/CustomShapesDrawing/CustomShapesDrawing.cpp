@@ -101,16 +101,18 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     CEGUI::SVGDataManager& svgDataManager = CEGUI::SVGDataManager::getSingleton();
     SVGData& fpsSVGData = svgDataManager.create(CEGUI::String("FPSGraphCustomShape"));
     //Fill in line points
-    SVGPolyline* polyLine = new SVGPolyline(); //TODO maybe create a creation function for this
-    polyLine->d_points.push_back(glm::vec2(20.0f, 20.0f));
-    polyLine->d_points.push_back(glm::vec2(40.0f, 20.0f));
-    polyLine->d_points.push_back(glm::vec2(20.0f, 40.0f));
-    polyLine->d_points.push_back(glm::vec2(160.0f, 60.0f));
-    polyLine->d_points.push_back(glm::vec2(210.0f, 60.0f));
+    SVGPolyline::PolylinePointsList points;
+    points.push_back(glm::vec2(20.0f, 20.0f));
+    points.push_back(glm::vec2(40.0f, 20.0f));
+    points.push_back(glm::vec2(20.0f, 40.0f));
+    points.push_back(glm::vec2(160.0f, 60.0f));
+    points.push_back(glm::vec2(210.0f, 60.0f));
+    //Create Polyline object with the points
+    SVGPolyline* polyLine = new SVGPolyline(points);
     fpsSVGData.addShape(*polyLine);
 
-    SVGRect* svg_rect = new SVGRect(120.f, 10.f, 15.f, 20.f);
-    svg_rect->d_shapeStyle.d_fill.d_colour = CEGUI::Colour(0.f, 0.3f, 0.3f, 1.f);
+    SVGRect* svg_rect = new SVGRect(120.0f, 10.0f, 15.0f, 20.0f);
+    svg_rect->d_paintStyle.d_fill.d_colour = glm::vec3(0.0f, 0.3f, 0.3f);
     fpsSVGData.addShape(*svg_rect);
 
     //Set the desired size of the SVGData
