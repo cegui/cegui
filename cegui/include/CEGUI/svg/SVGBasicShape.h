@@ -31,7 +31,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Vector.h"
 
-#include "CEGUI/svg/SVGShapeStyle.h"
+#include "CEGUI/svg/SVGPaintStyle.h"
 #include "CEGUI/svg/SVGImage.h"
 
 #include "glm/glm.hpp"
@@ -54,7 +54,8 @@ class GeometryBuffer;
 class CEGUIEXPORT SVGBasicShape : public AllocatedObject<SVGBasicShape>
 {
 public:
-    SVGBasicShape();
+    SVGBasicShape() {}
+    SVGBasicShape(const SVGPaintStyle& paint_style);
 
     virtual ~SVGBasicShape();
 
@@ -70,6 +71,8 @@ public:
                 const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
         
 
+    //! The BasicShape's style, which describes the filling and stroke of the graphical element.
+    SVGPaintStyle d_paintStyle;
 
 protected:
 
@@ -87,16 +90,17 @@ protected:
 class CEGUIEXPORT SVGRect : public SVGBasicShape
 {
 public:
+    SVGRect()
+    {}
+
     SVGRect(const float x, const float y,
             const float width, const float height,
-            const float rx = 0.0f, const float ry = 0.0f);
+            const float rx = 0.0f, const float ry = 0.0f,
+            const SVGPaintStyle& paint_style = SVGPaintStyle() );
 
     //! Implementation of SVGBasicShape interface
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
                 const SVGImage::SVGImageRenderSettings& render_settings) const;
-
-    //! The BasicShape's style, which describes the filling and stroke of the graphical element.
-    SVGShapeStyle d_shapeStyle;
 
     //! The x-axis coordinate of the side of the rectangle which has the smaller x-axis coordinate value in the current user coordinate system
     float d_x;
@@ -124,19 +128,21 @@ public:
 class CEGUIEXPORT SVGPolyline : public SVGBasicShape
 {
 public:
-/*
-    SVGPolyline();
+    //! Polyline points list type
+    typedef std::vector<glm::vec2> PolylinePointsList;
 
-    ~SVGPolyline();*/
+    //! Constructor
+    SVGPolyline(PolylinePointsList points,
+                const SVGPaintStyle& paint_style = SVGPaintStyle() );
+
+    SVGPolyline()
+    {}
 
     //! Implementation of SVGBasicShape interface
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
                 const SVGImage::SVGImageRenderSettings& render_settings) const;
 
-    //! The BasicShape's style, which describes the filling and stroke of the graphical element.
-    SVGShapeStyle d_shapeStyle;
-
-    typedef std::vector<glm::vec2> PolylinePointsList;
+    //! The points defining the line
     PolylinePointsList d_points;
 };
 
