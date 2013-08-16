@@ -31,12 +31,26 @@
 #include "CEGUI/svg/SVGTesselator.h"
 #include "CEGUI/svg/SVGData.h"
 #include "CEGUI/svg/SVGBasicShape.h"
+#include "CEGUI/svg/SVGDataManager.h"
+#include "CEGUI/XMLAttributes.h"
 
 
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+const String ImageTypeAttribute( "type" );
+const String ImageNameAttribute( "name" );
+const String ImageSVGDataAttribute( "SVGData" );
+const String ImageXPosAttribute( "xPos" );
+const String ImageYPosAttribute( "yPos" );
+const String ImageWidthAttribute( "width" );
+const String ImageHeightAttribute( "height" );
+const String ImageXOffsetAttribute( "xOffset" );
+const String ImageYOffsetAttribute( "yOffset" );
+const String ImageAutoScaledAttribute( "autoScaled" );
+const String ImageNativeHorzResAttribute( "nativeHorzRes" );
+const String ImageNativeVertResAttribute( "nativeVertRes" );
 
 //----------------------------------------------------------------------------//
 SVGImage::SVGImage(const String& name) :
@@ -59,7 +73,18 @@ SVGImage::SVGImage(const String& name, SVGData& svg_data) :
 
 //----------------------------------------------------------------------------//
 SVGImage::SVGImage(const XMLAttributes& attributes) :
-    Image("") //TODO define and fill XML elements
+    Image(attributes.getValueAsString(ImageNameAttribute),
+          Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
+                   static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0))),
+          Rectf(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
+                         static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
+                Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
+                      static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0)))),
+          PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute)),
+          Sizef(static_cast<float>(attributes.getValueAsInteger(ImageNativeHorzResAttribute, 640)),
+                static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480)))),
+    d_svgData(&SVGDataManager::getSingleton().getSVGData(
+              attributes.getValueAsString(ImageSVGDataAttribute)))
 {
 }
 
