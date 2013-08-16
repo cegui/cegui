@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   SVGStrokeStyle.cpp
+    filename:   SVGPaintStyle.cpp
     created:    1st August 2013
     author:     Lukas Meindl
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/svg/SVGShapeStyle.h"
+#include "CEGUI/svg/SVGPaintStyle.h"
 
 
 // Start of CEGUI namespace section
@@ -33,11 +33,12 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-SVGShapeStyle::SVGShapeStyle() :
+SVGPaintStyle::SVGPaintStyle() :
     d_stroke(),
     d_fill(),
-    d_strokeWidthLength(1.f),
-    d_opacityValue(1.f)
+    d_fillOpacity(1.f),
+    d_strokeOpacity(1.f),
+    d_strokeWidth(1.f)
 {
 }
 
