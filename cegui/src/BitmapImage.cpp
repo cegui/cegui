@@ -67,10 +67,10 @@ BitmapImage::BitmapImage(const XMLAttributes& attributes) :
           Rectf(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
                          static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
                 Sizef(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
-                         static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0))) ),
+                      static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0)))),
           PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute)),
           Sizef(static_cast<float>(attributes.getValueAsInteger(ImageNativeHorzResAttribute, 640)),
-                static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480)))  ),
+                static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480)))),
     d_texture(&System::getSingleton().getRenderer()->getTexture(
               attributes.getValueAsString(ImageTextureAttribute)))
 {
