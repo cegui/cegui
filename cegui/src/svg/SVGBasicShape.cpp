@@ -35,7 +35,8 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-SVGBasicShape::SVGBasicShape()
+SVGBasicShape::SVGBasicShape(const SVGPaintStyle& paint_style) :
+    d_paintStyle(paint_style)
 {
 }
 
@@ -50,7 +51,9 @@ SVGRect::SVGRect(const float x,
                  const float width,
                  const float height,
                  const float rx,
-                 const float ry) :
+                 const float ry,
+                 const SVGPaintStyle& paint_style) :
+    SVGBasicShape(paint_style),
     d_x(x),
     d_y(y),
     d_width(width),
@@ -67,6 +70,14 @@ void SVGRect::render(std::vector<GeometryBuffer*>& geometry_buffers,
     SVGTesselator::tesselateAndRenderRect(this,
                                           geometry_buffers,
                                           render_settings);
+}
+
+//----------------------------------------------------------------------------//
+SVGPolyline::SVGPolyline(PolylinePointsList points,
+                         const SVGPaintStyle& paint_style) :
+    SVGBasicShape(paint_style),
+    d_points(points)
+{
 }
 
 //----------------------------------------------------------------------------//
