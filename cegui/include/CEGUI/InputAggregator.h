@@ -177,7 +177,7 @@ public:
     virtual bool injectCutRequest();
     virtual bool injectPasteRequest();
 
-private:
+protected:
     virtual void onMouseButtonClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args);
