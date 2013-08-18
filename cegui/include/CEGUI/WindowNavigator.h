@@ -106,6 +106,15 @@ public:
     */
     void setCurrentFocusedWindow(Window* window);
 
+    /*!
+    \brief
+        Gets the current focused window
+
+    \return
+        An instance of Window
+    */
+    Window* getCurrentFocusedWindow();
+
 private:
     std::vector<std::pair<SemanticValue, String>> d_mappings;
     NavigationStrategy* d_strategy;
