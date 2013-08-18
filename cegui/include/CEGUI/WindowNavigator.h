@@ -92,6 +92,15 @@ public:
     */
     void handleSemanticEvent(const SemanticInputEvent& event);
 
+    /*!
+    \brief
+        Sets a new current focused window
+
+    \param window
+        The window to be the new focused one
+    */
+    void setCurrentFocusedWindow(Window* window);
+
 private:
     std::vector<std::pair<SemanticValue, String>> d_mappings;
     NavigationStrategy* d_strategy;
