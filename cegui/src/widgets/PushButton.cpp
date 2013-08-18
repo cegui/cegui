@@ -98,4 +98,10 @@ void PushButton::onPointerActivate(PointerEventArgs& e)
     ButtonBase::onPointerActivate(e);
 }
 
+void PushButton::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (e.d_semanticValue == SV_Confirm)
+        onClicked(e);
+}
+
 } // End of  CEGUI namespace section

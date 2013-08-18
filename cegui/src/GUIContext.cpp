@@ -661,7 +661,12 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
         return (*(*itor).second)(event);
     }
 
-    SemanticEventArgs args(getTargetWindow(d_pointerIndicator.getPosition(), false));
+    Window* targetWindow = getTargetWindow(d_pointerIndicator.getPosition(), false);
+    // window navigator's window takes precedence
+    if (d_windowNavigator != 0)
+        targetWindow = d_windowNavigator->getCurrentFocusedWindow();
+
+    SemanticEventArgs args(targetWindow);
 
     args.d_payload = event.d_payload;
     args.d_semanticValue = event.d_value;

@@ -64,4 +64,10 @@ void WindowNavigator::setCurrentFocusedWindow(Window* window)
 }
 
 //----------------------------------------------------------------------------//
+Window* WindowNavigator::getCurrentFocusedWindow()
+{
+    return d_currentFocusedWindow;
+}
+
+//----------------------------------------------------------------------------//
 }
