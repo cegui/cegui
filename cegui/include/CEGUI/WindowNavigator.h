@@ -71,6 +71,7 @@ public:
 class CEGUIEXPORT WindowNavigator
 {
 public:
+    typedef std::vector< std::pair<SemanticValue, String> > SemanticMappingsVector;
     virtual ~WindowNavigator() {}
 
     /*!
@@ -84,8 +85,7 @@ public:
     \param strategy
         The navigation strategy to be used
     */
-    WindowNavigator(std::vector<std::pair<SemanticValue, String>> mappings,
-        NavigationStrategy* strategy);
+    WindowNavigator(SemanticMappingsVector mappings, NavigationStrategy* strategy);
 
     /*!
     \brief
@@ -116,7 +116,7 @@ public:
     Window* getCurrentFocusedWindow();
 
 private:
-    std::vector<std::pair<SemanticValue, String>> d_mappings;
+    SemanticMappingsVector d_mappings;
     NavigationStrategy* d_strategy;
 
     Window* d_currentFocusedWindow;

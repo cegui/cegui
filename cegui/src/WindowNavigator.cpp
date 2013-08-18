@@ -38,7 +38,7 @@ WindowNavigator::WindowNavigator(std::vector<std::pair<SemanticValue, String>> m
 //----------------------------------------------------------------------------//
 void WindowNavigator::handleSemanticEvent(const SemanticInputEvent& event)
 {
-    std::vector<std::pair<SemanticValue, String>>::const_iterator itor;
+    SemanticMappingsVector::const_iterator itor;
 
     for (itor = d_mappings.begin();itor != d_mappings.end(); ++ itor)
     {
