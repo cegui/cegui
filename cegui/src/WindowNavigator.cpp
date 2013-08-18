@@ -58,4 +58,10 @@ void WindowNavigator::handleSemanticEvent(const SemanticInputEvent& event)
 }
 
 //----------------------------------------------------------------------------//
+void WindowNavigator::setCurrentFocusedWindow(Window* window)
+{
+    d_currentFocusedWindow = window;
+}
+
+//----------------------------------------------------------------------------//
 }

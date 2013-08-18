@@ -714,6 +714,9 @@ bool GUIContext::handlePointerActivateEvent(const SemanticInputEvent& event)
     if (!pa.window)
         return false;
 
+    if (d_windowNavigator != 0)
+        d_windowNavigator->setCurrentFocusedWindow(pa.window);
+
     pa.window->onPointerActivate(pa);
     return pa.handled != 0;
 }
@@ -732,6 +735,10 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
         pa.position = pa.window->getUnprojectedPosition(pa.position);
 
     pa.window->onPointerPressHold(pa);
+
+    if (d_windowNavigator != 0)
+        d_windowNavigator->setCurrentFocusedWindow(pa.window);
+
     return pa.handled != 0;
 }
 
