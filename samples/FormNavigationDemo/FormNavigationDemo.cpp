@@ -203,4 +203,6 @@ Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& pay
 
         return *(itor + 1);
     }
+
+    return 0;
 }
