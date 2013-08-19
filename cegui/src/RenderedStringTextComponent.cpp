@@ -140,7 +140,7 @@ void RenderedStringTextComponent::setSelection(const Window* ref_wnd,
     const Font* fnt = getEffectiveFont(ref_wnd);
 
     d_selectionStart = fnt->getCharAtPixel(d_text, start);
-    d_selectionLength = fnt->getCharAtPixel(d_text, end) - d_selectionStart + 1;
+    d_selectionLength = fnt->getCharAtPixel(d_text, end) - d_selectionStart;
 }
 
 //----------------------------------------------------------------------------//
