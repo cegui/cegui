@@ -29,6 +29,7 @@ author:     Lukas E Meindl
 #define _CEGUIOpenGL3Shader_h_
 
 #include "CEGUI/Exceptions.h"
+#include "RendererBase.h"
 #include <string>
 
 #if defined(_MSC_VER)
@@ -41,7 +42,8 @@ namespace CEGUI
 {
 class OpenGL3StateChangeWrapper;
 
-class OpenGL3Shader :
+class OPENGL_GUIRENDERER_API OpenGL3Shader :
+
     public AllocatedObject<OpenGL3Shader>
 {
 public:
