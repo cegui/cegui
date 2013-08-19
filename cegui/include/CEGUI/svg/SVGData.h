@@ -128,7 +128,7 @@ public:
     \param svg_shape
         The SVGBasicShape that will be added.
     */
-    void addShape(SVGBasicShape& svg_shape);
+    void addShape(SVGBasicShape* svg_shape);
 
     /*!
     \brief

@@ -111,9 +111,9 @@ void SVGData::loadFromFile(const String& file_name,
 }
 
 //----------------------------------------------------------------------------//
-void SVGData::addShape(SVGBasicShape& svg_shape)
+void SVGData::addShape(SVGBasicShape* svg_shape)
 {
-    d_svgBasicShapes.push_back(&svg_shape);
+    d_svgBasicShapes.push_back(svg_shape);
 }
 
 //----------------------------------------------------------------------------//
@@ -245,7 +245,7 @@ void SVGData::elementSVGRect(const XMLAttributes& attributes)
     float ry = parseLengthDataType(ryString).d_value;
 
     SVGRect* rect = CEGUI_NEW_AO SVGRect(x, y, width, height, rx, ry, paint_style);
-    addShape(*rect);
+    addShape(rect);
 }
 
 //----------------------------------------------------------------------------//
@@ -273,7 +273,7 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
         points.clear();
 
     SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(points, paint_style);
-    addShape(*polyline);
+    addShape(polyline);
 }
 
 //----------------------------------------------------------------------------//

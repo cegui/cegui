@@ -54,7 +54,7 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
     const glm::vec3& strokeColourValues = polyline->d_paintStyle.d_stroke.d_colour;
     const CEGUI::Colour stroke_colour(strokeColourValues.x, strokeColourValues.y, strokeColourValues.z, polyline->d_paintStyle.d_strokeOpacity);
     const SVGPolyline::PolylinePointsList& points = polyline->d_points;
-    const float& stroke_width_length_half = polyline->d_paintStyle.d_strokeWidth * 0.5f;
+    const float stroke_half_width = polyline->d_paintStyle.d_strokeWidth * 0.5f;
 
     //Draw the line segments TODO Ident: Draw them seamlessly connected with bevels and stuff provided optionally
     size_t points_count = points.size();
@@ -66,7 +66,7 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
         // Normalize and tilt the 2D direction vector by 90° to get the vector pointing in the offset direction
         glm::vec2 offsetVector = currentPos - prevPos;
         offsetVector = glm::normalize(offsetVector);
-        offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * stroke_width_length_half;
+        offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * stroke_half_width;
 
         CEGUI::ColouredVertex linePositionVertex;
         glm::vec2 vertexPosition;
