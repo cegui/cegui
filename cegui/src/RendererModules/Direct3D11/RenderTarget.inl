@@ -112,10 +112,10 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
 	//ToDo
 	//ms didn't update their math for 11, so use 10
 	D3D10_VIEWPORT vp;
-	vp.Width=vp_.Width;
-	vp.Height=vp_.Height;
-	vp.TopLeftX=vp_.TopLeftX;
-	vp.TopLeftY=vp_.TopLeftY;
+	vp.Width=static_cast<unsigned int>(vp_.Width);
+	vp.Height=static_cast<unsigned int>(vp_.Height);
+	vp.TopLeftX=static_cast<int>(vp_.TopLeftX);
+	vp.TopLeftY=static_cast<int>(vp_.TopLeftY);
 	vp.MinDepth=vp_.MinDepth;
 	vp.MaxDepth=vp_.MaxDepth;
 
