@@ -6,5 +6,5 @@
 	178.52,64.996 232.887,64.996 214.327,105.389 155.594,93.38 170.659,131.809 246.642,124.385 "/>
 <polyline fill="none" stroke="#B55A3C" stroke-linecap="round" stroke-miterlimit="1" points="67.5,29.5 36.5,52.5 83.5,66.5 
 	34.5,106.5 77.5,134.5 93.5,85.5 "/>
-<rect x="98" y="20" fill="#FFE86B" stroke="#9FCF78" stroke-linecap="round" stroke-miterlimit="22" width="45.75" height="25"/>
+<rect x="98" y="20" fill="#FFE86B" stroke="#5BC4C0" stroke-width="2" stroke-miterlimit="22" stroke-opacity="0.3" width="45.75" height="25"/>
 </svg>
