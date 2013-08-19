@@ -581,9 +581,9 @@ System*	System::getSingletonPtr(void)
 void System::notifyDisplaySizeChanged(const Sizef& new_size)
 {
     // notify other components of the display size change
-    d_renderer->setDisplaySize(new_size);
     ImageManager::getSingleton().notifyDisplaySizeChanged(new_size);
     FontManager::getSingleton().notifyDisplaySizeChanged(new_size);
+    d_renderer->setDisplaySize(new_size);
 
     invalidateAllWindows();
 
