@@ -27,7 +27,7 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-WindowNavigator::WindowNavigator(std::vector<std::pair<SemanticValue, String>> mappings,
+WindowNavigator::WindowNavigator(SemanticMappingsMap mappings,
     NavigationStrategy* strategy) :
     d_mappings(mappings),
     d_strategy(strategy),
@@ -38,22 +38,18 @@ WindowNavigator::WindowNavigator(std::vector<std::pair<SemanticValue, String>> m
 //----------------------------------------------------------------------------//
 void WindowNavigator::handleSemanticEvent(const SemanticInputEvent& event)
 {
-    SemanticMappingsVector::const_iterator itor;
+    SemanticMappingsMap::const_iterator itor = d_mappings.find(event.d_value);
 
-    for (itor = d_mappings.begin();itor != d_mappings.end(); ++ itor)
+    if (itor != d_mappings.end())
     {
-        if (itor->first == event.d_value)
-        {
-            if (d_currentFocusedWindow != 0)
-                d_currentFocusedWindow->unfocus();
+        if (d_currentFocusedWindow != 0)
+            d_currentFocusedWindow->unfocus();
 
-            d_currentFocusedWindow = 
-                d_strategy->getWindow(d_currentFocusedWindow, itor->second);
+        d_currentFocusedWindow = 
+            d_strategy->getWindow(d_currentFocusedWindow, itor->second);
 
-            if (d_currentFocusedWindow != 0)
-                d_currentFocusedWindow->focus();
-            break;
-        }
+        if (d_currentFocusedWindow != 0)
+            d_currentFocusedWindow->focus();
     }
 }
 
