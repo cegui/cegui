@@ -108,8 +108,8 @@ void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer)
 
             // set a basic viewport.
             D3D11_VIEWPORT view_port;
-            view_port.Width    = width;
-            view_port.Height   = height;
+            view_port.Width    = static_cast<float>(width);
+            view_port.Height   = static_cast<float>(height);
             view_port.MinDepth = 0.0f;
             view_port.MaxDepth = 1.0f;
             view_port.TopLeftX = 0;
