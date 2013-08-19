@@ -109,11 +109,11 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     points.push_back(glm::vec2(210.0f, 60.0f));
     //Create Polyline object with the points
     SVGPolyline* polyLine = new SVGPolyline(points);
-    fpsSVGData.addShape(*polyLine);
+    fpsSVGData.addShape(polyLine);
 
     SVGRect* svg_rect = new SVGRect(120.0f, 10.0f, 15.0f, 20.0f);
     svg_rect->d_paintStyle.d_fill.d_colour = glm::vec3(0.0f, 0.3f, 0.3f);
-    fpsSVGData.addShape(*svg_rect);
+    fpsSVGData.addShape(svg_rect);
 
     //Set the desired size of the SVGData
     fpsSVGData.setWidth(215.f);
