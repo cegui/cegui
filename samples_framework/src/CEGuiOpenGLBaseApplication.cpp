@@ -25,6 +25,14 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+
+// We need to include windows.h here before glfw is included (via
+// CEGuiOpenGL3BaseApplication.h) or there will be a warning when GL.h includes
+// windows.h (via GL3Renderer.h)
+#if defined( __WIN32__ ) || defined( _WIN32 )
+#include "windows.h"
+#endif
+
 #include "CEGuiOpenGLBaseApplication.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 

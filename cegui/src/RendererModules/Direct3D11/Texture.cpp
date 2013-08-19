@@ -216,8 +216,8 @@ void Direct3D11Texture::loadFromMemory(const void* buffer,
     const void* img_src = buffer;
     if (pixel_format == PF_RGB)
     {
-        const char* src = static_cast<const char*>(buffer);
-        char* dest = new char[buffer_size.d_width * buffer_size.d_height * 4];
+        const unsigned char* src = static_cast<const unsigned char*>(buffer);
+        unsigned char* dest = new unsigned char[static_cast<unsigned int>( buffer_size.d_width * buffer_size.d_height * 4 )];
 
         for (int i = 0; i < buffer_size.d_width * buffer_size.d_height; ++i)
         {

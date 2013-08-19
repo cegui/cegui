@@ -421,7 +421,7 @@ void OpenGLRenderer::initialiseGLExtensions()
 //----------------------------------------------------------------------------//
 bool OpenGLRenderer::isS3TCSupported() const
 {
-    return GLEW_EXT_texture_compression_s3tc;
+    return GLEW_EXT_texture_compression_s3tc > 0;
 }
 
 //----------------------------------------------------------------------------//
