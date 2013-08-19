@@ -164,12 +164,12 @@ extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
     return sample;
 }
 
-std::vector<std::pair<SemanticValue, String>> FormNavigationDemo::getNavigationMappings()
+std::map<SemanticValue, String> FormNavigationDemo::getNavigationMappings()
 {
-    std::vector<std::pair<SemanticValue, String>> mappings;
+    std::map<SemanticValue, String> mappings;
 
-    mappings.push_back(std::pair<SemanticValue, String>(SV_NavigateToNext, NAVIGATE_NEXT));
-    mappings.push_back(std::pair<SemanticValue, String>(SV_NavigateToPrevious, NAVIGATE_PREVIOUS));
+    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
 
     return mappings;
 }

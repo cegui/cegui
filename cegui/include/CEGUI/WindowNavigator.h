@@ -30,7 +30,7 @@
 #ifndef _CEGUIWindowNavigator_h_
 #define _CEGUIWindowNavigator_h_
 
-#include <vector>
+#include <map>
 #include "CEGUI/String.h"
 #include "CEGUI/SemanticInputEvent.h"
 
@@ -71,8 +71,8 @@ public:
 class CEGUIEXPORT WindowNavigator
 {
 public:
-    typedef std::vector< std::pair<SemanticValue, String> > SemanticMappingsVector;
-    virtual ~WindowNavigator() {}
+    typedef std::map<SemanticValue, String> SemanticMappingsMap;
+    ~WindowNavigator() {}
 
     /*!
     \brief
@@ -80,12 +80,12 @@ public:
         the specified strategy
 
     \param mapping
-        A mapping from semantic input events to certain payloads
+        A mapping from semantic input events to certain strategy-specific payloads
 
     \param strategy
         The navigation strategy to be used
     */
-    WindowNavigator(SemanticMappingsVector mappings, NavigationStrategy* strategy);
+    WindowNavigator(SemanticMappingsMap mappings, NavigationStrategy* strategy);
 
     /*!
     \brief
@@ -116,7 +116,7 @@ public:
     Window* getCurrentFocusedWindow();
 
 private:
-    SemanticMappingsVector d_mappings;
+    SemanticMappingsMap d_mappings;
     NavigationStrategy* d_strategy;
 
     Window* d_currentFocusedWindow;
