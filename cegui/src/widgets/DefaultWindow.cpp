@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/DefaultWindow.h"
-
+#include <limits>
 
 // Start of CEGUI namespace section
 namespace CEGUI
