@@ -71,6 +71,10 @@ const String SVGRectAttributeWidth( "width" );
 const String SVGRectAttributeHeight( "height" );
 const String SVGRectAttributeRoundedX( "rx" );
 const String SVGRectAttributeRoundedY( "ry" );
+// SVG 'circle' element attributes
+const String SVGCircleAttributeCX( "cx" );
+const String SVGCircleAttributeCY( "cy" );
+const String SVGCircleAttributeRadius( "r" );
 // SVG 'polyline' element attributes
 const String SVGPolylineAttributePoints( "points" );
 
@@ -121,7 +125,7 @@ void SVGData::destroyShapes()
 {
     const unsigned int shape_count = d_svgBasicShapes.size();
     for (unsigned int i = 0; i < shape_count; ++i)
-        delete d_svgBasicShapes[i];
+        CEGUI_DELETE_AO d_svgBasicShapes[i];
 
     d_svgBasicShapes.clear();
 }
@@ -170,6 +174,11 @@ void SVGData::elementStartLocal(const String& element,
     {
         elementSVGRect(attributes);
     }
+    // handle SVG 'circle' fragment element
+    else if(element == SVGCircleElement)
+    {
+        elementSVGCircle(attributes);
+    }
     // handle SVG 'polyline' element
     else if(element == SVGPolylineElement)
     {
@@ -177,11 +186,6 @@ void SVGData::elementStartLocal(const String& element,
     }
     // handle SVG 'line' element
     else if(element == SVGLineElement)
-    {
-
-    }
-    // handle SVG 'circle' fragment element
-    else if(element == SVGCircleElement)
     {
 
     }
@@ -246,6 +250,27 @@ void SVGData::elementSVGRect(const XMLAttributes& attributes)
 
     SVGRect* rect = CEGUI_NEW_AO SVGRect(x, y, width, height, rx, ry, paint_style);
     addShape(rect);
+}
+
+//----------------------------------------------------------------------------//
+void SVGData::elementSVGCircle(const XMLAttributes& attributes)
+{
+    SVGPaintStyle paint_style = parsePaintStyle(attributes);
+
+    const String cxString(
+        attributes.getValueAsString(SVGCircleAttributeCX, "0"));
+    float cx = parseLengthDataType(cxString).d_value;
+
+    const String cyString(
+        attributes.getValueAsString(SVGCircleAttributeCY, "0"));
+    float cy = parseLengthDataType(cyString).d_value;
+
+    const String radiusString(
+        attributes.getValueAsString(SVGCircleAttributeRadius, "0"));
+    float radius = parseLengthDataType(radiusString).d_value;
+
+    SVGCircle* circle = CEGUI_NEW_AO SVGCircle(cx, cy, radius, paint_style);
+    addShape(circle);  
 }
 
 //----------------------------------------------------------------------------//

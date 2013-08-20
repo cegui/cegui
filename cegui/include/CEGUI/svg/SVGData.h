@@ -204,6 +204,15 @@ protected:
 
     /*!
     \brief
+        Function that handles opening SVG 'circle' elements.
+
+    \note
+        This function processes the SVG 'circle' element.
+    */
+    void elementSVGCircle(const XMLAttributes& attributes);
+
+    /*!
+    \brief
         Function that handles opening SVG 'polyline' elements.
 
     \note
