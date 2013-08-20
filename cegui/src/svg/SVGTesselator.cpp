@@ -41,15 +41,7 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
                                                std::vector<GeometryBuffer*>& geometry_buffers,
                                                const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
-    geometry_buffers.push_back(&geometry_buffer);
-
-    if(render_settings.d_clipArea)
-    {
-        geometry_buffer.setClippingActive(true);
-        geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
-    }
-    geometry_buffer.setScale(render_settings.d_scaleFactor);
+    CEGUI::GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings);
 
     const glm::vec3& strokeColourValues = polyline->d_paintStyle.d_stroke.d_colour;
     const CEGUI::Colour stroke_colour(strokeColourValues.x, strokeColourValues.y, strokeColourValues.z, polyline->d_paintStyle.d_strokeOpacity);
@@ -98,21 +90,13 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
                                            std::vector<GeometryBuffer*>& geometry_buffers,
                                            const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    CEGUI::GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
-    geometry_buffers.push_back(&geometry_buffer);
+    CEGUI::GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings);
 
-    if(render_settings.d_clipArea)
-    {
-        geometry_buffer.setClippingActive(true);
-        geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
-    }
+    const glm::vec3& fill_colour_values = rect->d_paintStyle.d_fill.d_colour;
+    const CEGUI::Colour fill_colour(fill_colour_values.x, fill_colour_values.y,
+                                    fill_colour_values.z, rect->d_paintStyle.d_fillOpacity);
 
-    geometry_buffer.setScale(render_settings.d_scaleFactor);
-
-    const glm::vec3& colourValues = rect->d_paintStyle.d_fill.d_colour;
-    const CEGUI::Colour fill_colour(colourValues.x, colourValues.y, colourValues.z, rect->d_paintStyle.d_fillOpacity);
-
-    //Draw the rectangle
+    //Draw the rectangle fill
     CEGUI::ColouredVertex rectFillVertex;
     glm::vec2 vertexPosition;
     rectFillVertex.colour_val = fill_colour;
@@ -140,6 +124,78 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
     rectFillVertex.position = glm::vec3(rectX2, rectY1, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 }
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
+                                             std::vector<GeometryBuffer*>& geometry_buffers,
+                                             const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    CEGUI::GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings);
+
+    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+
+    const glm::vec3& fill_colour_values = circle->d_paintStyle.d_fill.d_colour;
+    const CEGUI::Colour fill_colour(fill_colour_values.x, fill_colour_values.y,
+                                    fill_colour_values.z, circle->d_paintStyle.d_fillOpacity);
+
+    //Circle fill vertex
+    CEGUI::ColouredVertex circle_fill_vertex;
+    circle_fill_vertex.colour_val = fill_colour;
+
+    glm::vec2 circle_position(circle->d_cx, circle->d_cy);
+    const float& r = circle->d_r;
+
+    // The numeric value in this can be set freely. The lower, the more segments there will be, making the circle appear rounder.
+    static const float circle_render_roundness_value = 1.5f;
+    const float segment_length = circle_render_roundness_value / max_scale;
+    float theta = std::acos( 1 - ( segment_length / r ) );
+    float num_segments = (2.0f * 3.1415926f) / theta;
+
+    //precalculate the sine and cosine
+	float c = std::cosf(theta);
+	float s = std::sinf(theta);
+	float t;
+
+    // we start at angle = 0 
+    glm::vec2 current_pos(r, 0);
+    
+	for(int i = 0; i < num_segments; i++) 
+	{ 
+        circle_fill_vertex.position = glm::vec3(circle_position + glm::vec2(circle->d_r, 0.0f), 0.0f);
+        geometry_buffer.appendVertex(circle_fill_vertex);
+
+        circle_fill_vertex.position = glm::vec3(circle_position + current_pos, 0.0f);
+        geometry_buffer.appendVertex(circle_fill_vertex);
+
+		//apply the rotation matrix
+		t = current_pos.x;
+		current_pos.x = c * current_pos.x - s * current_pos.y;
+		current_pos.y = s * t + c * current_pos.y;
+
+        circle_fill_vertex.position = glm::vec3(circle_position + current_pos, 0.0f);
+        geometry_buffer.appendVertex(circle_fill_vertex);
+	} 
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers, const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
+    geometry_buffers.push_back(&geometry_buffer);
+
+    if(render_settings.d_clipArea)
+    {
+        geometry_buffer.setClippingActive(true);
+        geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
+    }
+    else
+        geometry_buffer.setClippingActive(false);
+
+    geometry_buffer.setScale(render_settings.d_scaleFactor);
+
+    return geometry_buffer;
+}
+
 //----------------------------------------------------------------------------//
 }
 
