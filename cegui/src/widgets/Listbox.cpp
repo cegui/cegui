@@ -854,46 +854,11 @@ void Listbox::onPointerPressHold(PointerEventArgs& e)
     Window::onPointerPressHold(e);
 
     if (e.source == PS_Left)
-	{
-		bool modified = false;
+    {
+        handleListSelection(e.position, false, false);
 
-        //// clear old selections if no control key is pressed or if multi-select is off
-        //TODO: Handle SelectCumulative semantic event
-        //if (!(e.sysKeys & Control) || !d_multiselect)
-        //{
-        //  modified = clearAllSelections_impl();
-        //}
-
-		ListboxItem* item = getItemAtPoint(e.position);
-
-		if (item)
-		{
-			modified = true;
-
-            //// select range or item, depending upon keys and last selected item
-            //TODO: handle SelectMultipleItems semantic event
-            //if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
-            //{
-            //  selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
-            //}
-            //else
-            //{
-            //  item->setSelected(item->isSelected() ^ true);
-            //}
-
-			// update last selected item
-			d_lastSelected = item->isSelected() ? item : 0;
-		}
-
-		// fire event if needed
-		if (modified)
-		{
-			WindowEventArgs args(this);
-			onSelectionChanged(args);
-		}
-
-		++e.handled;
-	}
+        ++e.handled;
+    }
 }
 
 
@@ -959,6 +924,17 @@ void Listbox::onPointerMove(PointerEventArgs& e)
     Window::onPointerMove(e);
 }
 
+void Listbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (e.d_semanticValue == SV_SelectCumulative)
+    {
+        handleListSelection(getGUIContext().getPointerIndicator().getPosition(), true, false);
+    }
+    else if (e.d_semanticValue == SV_SelectMultipleItems)
+    {
+        handleListSelection(getGUIContext().getPointerIndicator().getPosition(), false, true);
+    }
+}
 
 /*************************************************************************
 	Ensure the item at the specified index is visible within the list box.
@@ -1105,6 +1081,44 @@ bool Listbox::resetList_impl(void)
 		return true;
 	}
 
+}
+
+void Listbox::handleListSelection(CEGUI::Vector2f position, bool cumulative, bool multipleItems)
+{
+    bool modified = false;
+
+    //// clear old selections if not a cumulative selection or if multi-select is off
+    if (!cumulative || !d_multiselect)
+    {
+        modified = clearAllSelections_impl();
+    }
+
+    ListboxItem* item = getItemAtPoint(position);
+
+    if (item)
+    {
+        modified = true;
+
+        //// select range or item, depending upon multipleItems flag and last selected item
+        if ((multipleItems && (d_lastSelected != 0)) && d_multiselect)
+        {
+            selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
+        }
+        else
+        {
+            item->setSelected(item->isSelected() ^ true);
+        }
+
+        // update last selected item
+        d_lastSelected = item->isSelected() ? item : 0;
+    }
+
+    // fire event if needed
+    if (modified)
+    {
+        WindowEventArgs args(this);
+        onSelectionChanged(args);
+    }
 }
 
 /*************************************************************************
