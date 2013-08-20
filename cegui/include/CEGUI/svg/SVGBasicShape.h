@@ -119,6 +119,40 @@ public:
 
 /*!
 \brief
+    Defines a class for storing the data of the SVG 'circle' element based on how it is defined in the SVG standard.
+
+    The 'circle' element defines a circle based on a center point and a radius.
+    Within the current user coordinate system, stroking operations on a circle begin at the point (cx+r,cy)
+    and then proceed through the points (cx,cy+r), (cx-r,cy), (cx,cy-r) and finally back to (cx+r,cy). For
+    stroking operations, there is only one line segment which has its beginning joined to its end.
+    http://www.w3.org/TR/SVGTiny12/shapes.html#CircleElement
+*/
+class CEGUIEXPORT SVGCircle : public SVGBasicShape
+{
+public:
+    SVGCircle()
+    {}
+
+    SVGCircle(const float cx,
+              const float cy,
+              const float r,
+              const SVGPaintStyle& paint_style = SVGPaintStyle() );
+
+    //! Implementation of SVGBasicShape interface
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const SVGImage::SVGImageRenderSettings& render_settings) const;
+
+    //! The x-axis coordinate of the center of the circle. 
+    float d_cx;
+    //! The y-axis coordinate of the center of the circle. 
+    float d_cy;
+    //! The radius of the circle. A negative value is unsupported. A value of zero disables rendering of the element. 
+    float d_r;
+};
+
+
+/*!
+\brief
     Defines a class for storing the data of the SVG 'polyline' element based on how it is defined in the SVG standard.
 
     The 'polyline' element defines a set of connected straight line segments.
