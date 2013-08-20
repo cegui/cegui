@@ -735,15 +735,14 @@ bool GUIContext::handlePointerPressHoldEvent(const SemanticInputEvent& event)
     pa.source = event.d_payload.source;
     pa.scroll = 0;
     pa.window = getTargetWindow(pa.position, false);
-    // make mouse position sane for this target window
+    // make pointer position sane for this target window
     if (pa.window)
         pa.position = pa.window->getUnprojectedPosition(pa.position);
-
-    pa.window->onPointerPressHold(pa);
-
+    
     if (d_windowNavigator != 0)
         d_windowNavigator->setCurrentFocusedWindow(pa.window);
 
+    pa.window->onPointerPressHold(pa);
     return pa.handled != 0;
 }
 
