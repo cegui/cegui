@@ -69,5 +69,11 @@
             <Property name="Area" value="{{0,423},{0,214},{0,519},{0,246}}" />
             <Property name="Text" value="16" />
         </Window>
+        <Window type="WindowsLook/StaticText" name="StaticText" >
+            <Property name="Area" value="{{0,52},{0,251},{0,519},{0,378}}" />
+            <Property name="MaxSize" value="{{1,0},{1,0}}" />
+            <Property name="HorzScrollPageSize" value="462.2" />
+            <Property name="VertScrollPageSize" value="122.2" />
+        </Window>
     </Window>
 </GUILayout>

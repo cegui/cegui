@@ -29,6 +29,7 @@
 #include "CEGUI/CEGUI.h"
 
 #include <iostream>
+#include <sstream>
 
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
 // image.  This saves doing it manually every time in the code.
@@ -67,10 +68,25 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
 
-    tabControl->addTab(win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout"));
+    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout");    
+    d_logWidget1 = page1Window->getChild("StaticText");
+    d_logWidget1->setText("OK");
+
+    for (int i = 1; i <= 16; ++i)
+    {
+        std::ostringstream os;
+        os << "Button" << i;
+
+        PushButton* button = static_cast<PushButton*>(page1Window->getChild(os.str()));
+        button->subscribeEvent(PushButton::EventClicked,
+            Event::Subscriber(&MenuNavigationDemo::handleNumberButtonClicked, this));
+    }
+
+    tabControl->addTab(page1Window);
 
     Window* page2Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage2.layout");
-    d_logWidget = page2Window->getChild("StaticText");
+    d_logWidget2 = page2Window->getChild("StaticText");
+    d_logWidget2->setText("OK");
 
     Window* selectButton = page2Window->getChild("SelectButton");
     selectButton->subscribeEvent(PushButton::EventClicked, 
@@ -79,6 +95,7 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     tabControl->addTab(page2Window);
 
     d_classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
+    d_classesListBox->setMultiselectEnabled(true);
     initialiseClasses(d_classesListBox);
 
     return true;
@@ -116,12 +133,20 @@ bool MenuNavigationDemo::handleSelectButtonClicked(const CEGUI::EventArgs& e)
     ListboxItem* item = d_classesListBox->getFirstSelectedItem();
     if (item != 0)
     {
-        d_logWidget->setText("Selected " + item->getText() + "\n");
+        d_logWidget2->setText("Selected " + item->getText() + "\n");
     }
 
     return true;
 }
 
+bool MenuNavigationDemo::handleNumberButtonClicked(const CEGUI::EventArgs& e)
+{
+    d_logWidget1->setText("Button " + 
+        static_cast<const CEGUI::WindowEventArgs&>(e).window->getText() + 
+        " pressed\n");
+
+    return true;
+}
 
 /*************************************************************************
     Define the module function that returns an instance of the sample
