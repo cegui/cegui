@@ -7,4 +7,5 @@
 <polyline fill="none" stroke="#B55A3C" stroke-linecap="round" stroke-miterlimit="1" points="67.5,29.5 36.5,52.5 83.5,66.5 
 	34.5,106.5 77.5,134.5 93.5,85.5 "/>
 <rect x="98" y="20" fill="#FFE86B" stroke="#5BC4C0" stroke-width="2" stroke-miterlimit="22" stroke-opacity="0.3" width="45.75" height="25"/>
+<circle fill="#EB7A79" stroke="#A52D6A" stroke-width="2" stroke-miterlimit="22" stroke-dasharray="2,2,2,2,2,2" cx="129.334" cy="78.5" r="11"/>
 </svg>
