@@ -73,6 +73,28 @@ void SVGRect::render(std::vector<GeometryBuffer*>& geometry_buffers,
 }
 
 //----------------------------------------------------------------------------//
+SVGCircle::SVGCircle(const float cx,
+                     const float cy,
+                     const float r,
+                     const SVGPaintStyle& paint_style) :
+    SVGBasicShape(paint_style),
+    d_cx(cx),
+    d_cy(cy),
+    d_r(r)
+{
+}
+
+//----------------------------------------------------------------------------//
+void SVGCircle::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                       const SVGImage::SVGImageRenderSettings& render_settings) const
+{
+    SVGTesselator::tesselateAndRenderCircle(this,
+                                            geometry_buffers,
+                                            render_settings);
+}
+
+
+//----------------------------------------------------------------------------//
 SVGPolyline::SVGPolyline(PolylinePointsList points,
                          const SVGPaintStyle& paint_style) :
     SVGBasicShape(paint_style),
