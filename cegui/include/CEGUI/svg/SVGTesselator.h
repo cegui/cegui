@@ -36,8 +36,9 @@
 namespace CEGUI
 {
 class GeometryBuffer;
-class SVGPolyline;
 class SVGRect;
+class SVGCircle;
+class SVGPolyline;
 
 /*!
 \brief
@@ -50,14 +51,14 @@ public:
     
     /*!
     \brief
-        Tesselates a SVG Polyline and adds the created geometry to the GeometryBuffer
+        Tesselates a SVGPolyline and adds the created geometry to the GeometryBuffer
         list.
 
-\param polyline
-            The SVG Polyline object that contains the data.
-        \param geometry_buffers
+    \param polyline
+            The SVGPolyline object that contains the data.
+    \param geometry_buffers
             The GeometryBuffer list to which the created geometry will be added.
-        \param render_settings
+    \param render_settings
             The ImageRenderSettings for the geometry that will be created.
     */
     static void tesselateAndRenderPolyline(const SVGPolyline* polyline,
@@ -66,19 +67,37 @@ public:
 
     /*!
     \brief
-        Tesselates a SVG Rect and adds the created geometry to the GeometryBuffer
+        Tesselates a SVGRect and adds the created geometry to the GeometryBuffer
         list.
     
-        \param rect
-            The SVG Polyline object that contains the data.
-        \param geometry_buffers
+    \param rect
+            The SVGRect object that contains the data.
+    \param geometry_buffers
             The GeometryBuffer list to which the created geometry will be added.
-        \param render_settings
+    \param render_settings
             The ImageRenderSettings for the geometry that will be created.
     */
     static void tesselateAndRenderRect(const SVGRect* rect,
                                        std::vector<GeometryBuffer*>& geometry_buffers,
                                        const SVGImage::SVGImageRenderSettings& render_settings);
+
+    /*!
+    \brief
+        Tesselates a SVGCircle and adds the created geometry to the GeometryBuffer
+        list.
+    
+    \param rect
+            The SVGCircle object that contains the data.
+    \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+    \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselateAndRenderCircle(const SVGCircle* circle,
+                                         std::vector<GeometryBuffer*>& geometry_buffers,
+                                         const SVGImage::SVGImageRenderSettings& render_settings);
+
+
 
 private:
     //! Constructor.
@@ -86,6 +105,9 @@ private:
 
     //! Destructor.
     ~SVGTesselator();
+
+    //! Helper function that creates and sets the parameters for a coloured geometry buffer
+    static CEGUI::GeometryBuffer& setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers, const SVGImage::SVGImageRenderSettings& render_settings);
 };
 
 }
