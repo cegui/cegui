@@ -765,6 +765,7 @@ private:
 	*************************************************************************/
     void addListboxProperties(void);
     void handleListSelection(CEGUI::Vector2f position, bool cumulative, bool multipleItems);
+    void handleListSelection(ListboxItem* selectedItem, bool cumulative, bool multipleItems);
 };
 
 
