@@ -35,6 +35,7 @@
 #include "CEGUI/widgets/Tooltip.h"
 #include "CEGUI/CoordConverter.h"
 #include <algorithm>
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -928,11 +929,29 @@ void Listbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
     if (e.d_semanticValue == SV_SelectCumulative)
     {
-        handleListSelection(getGUIContext().getPointerIndicator().getPosition(), true, false);
+        handleListSelection(getGUIContext().getPointerIndicator().getPosition(), 
+            true, false);
     }
     else if (e.d_semanticValue == SV_SelectMultipleItems)
     {
-        handleListSelection(getGUIContext().getPointerIndicator().getPosition(), false, true);
+        handleListSelection(getGUIContext().getPointerIndicator().getPosition(),
+            false, true);
+    }
+
+    // operations that make sense only on a non-empty list
+    if (getItemCount() > 0)
+    {
+        int lastSelectedIndex = d_lastSelected != 0 ? getItemIndex(d_lastSelected) : -1;
+        int newSelectedIndex = -1;
+
+        if (e.d_semanticValue == SV_GoDown)
+            newSelectedIndex = std::min(static_cast<size_t>(lastSelectedIndex + 1), 
+                getItemCount() - 1);
+        else if (e.d_semanticValue == SV_GoUp)
+            newSelectedIndex = std::max(0, lastSelectedIndex - 1);
+
+        if (newSelectedIndex != -1)
+            handleListSelection(d_listItems[newSelectedIndex], false, false);
     }
 }
 
@@ -1083,23 +1102,31 @@ bool Listbox::resetList_impl(void)
 
 }
 
+/*************************************************************************
+    Handles the selection of the item at the specified position
+*************************************************************************/
 void Listbox::handleListSelection(CEGUI::Vector2f position, bool cumulative, bool multipleItems)
+{
+    handleListSelection(getItemAtPoint(position), cumulative, multipleItems);
+}
+
+/*************************************************************************
+    Handles the selection of the specified item
+*************************************************************************/
+void Listbox::handleListSelection(ListboxItem* item, bool cumulative, bool multipleItems)
 {
     bool modified = false;
 
-    //// clear old selections if not a cumulative selection or if multi-select is off
+    // clear old selections if not a cumulative selection or if multi-select is off
     if (!cumulative || !d_multiselect)
     {
         modified = clearAllSelections_impl();
     }
-
-    ListboxItem* item = getItemAtPoint(position);
-
     if (item)
     {
         modified = true;
 
-        //// select range or item, depending upon multipleItems flag and last selected item
+        // select range or item, depending upon multipleItems flag and last selected item
         if ((multipleItems && (d_lastSelected != 0)) && d_multiselect)
         {
             selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
