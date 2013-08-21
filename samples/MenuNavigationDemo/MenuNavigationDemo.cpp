@@ -31,6 +31,13 @@
 #include <iostream>
 #include <sstream>
 
+using namespace CEGUI;
+
+static const String NAVIGATE_LEFT = "left";
+static const String NAVIGATE_RIGHT = "right";
+static const String NAVIGATE_UP = "up";
+static const String NAVIGATE_DOWN = "down";
+
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
 // image.  This saves doing it manually every time in the code.
 class MyListItem : public CEGUI::ListboxTextItem
@@ -66,12 +73,19 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
+    d_matrixNavigationStrategy = new MatrixNavigationStrategy();
+    d_matrixWindowNavigator = new WindowNavigator(createMatrixNavigationMappings(),
+        d_matrixNavigationStrategy);
+    gui_context->setWindowNavigator(d_matrixWindowNavigator);
+
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
 
-    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout");    
+    Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout");
     d_logWidget1 = page1Window->getChild("StaticText");
     d_logWidget1->setText("OK");
 
+    // 4 rows
+    d_matrixNavigationStrategy->d_windows.resize(4);
     for (int i = 1; i <= 16; ++i)
     {
         std::ostringstream os;
@@ -80,6 +94,8 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
         PushButton* button = static_cast<PushButton*>(page1Window->getChild(os.str()));
         button->subscribeEvent(PushButton::EventClicked,
             Event::Subscriber(&MenuNavigationDemo::handleNumberButtonClicked, this));
+
+        d_matrixNavigationStrategy->d_windows.at((i - 1) % 4).push_back(button);
     }
 
     tabControl->addTab(page1Window);
@@ -148,6 +164,18 @@ bool MenuNavigationDemo::handleNumberButtonClicked(const CEGUI::EventArgs& e)
     return true;
 }
 
+std::map<SemanticValue, String> MenuNavigationDemo::createMatrixNavigationMappings()
+{
+    std::map<SemanticValue, String> mappings;
+
+    mappings[SV_GoToPreviousCharacter] = NAVIGATE_LEFT;
+    mappings[SV_GoToNextCharacter] = NAVIGATE_RIGHT;
+    mappings[SV_GoDown] = NAVIGATE_DOWN;
+    mappings[SV_GoUp] = NAVIGATE_UP;
+
+    return mappings;
+}
+
 /*************************************************************************
     Define the module function that returns an instance of the sample
 *************************************************************************/
@@ -155,4 +183,46 @@ extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
     static MenuNavigationDemo sample;
     return sample;
+}
+
+Window* MatrixNavigationStrategy::getWindow(Window* neighbour, const String& payload)
+{
+    size_t rows = d_windows.size();
+
+    for (size_t row = 0; row < rows; ++row)
+    {
+        std::vector<Window*> column = d_windows.at(row);
+        size_t cols = column.size();
+
+        for (size_t col = 0; col < cols; ++col)
+        {
+            if (neighbour == column.at(col))
+            {
+                // compute the new window (wrapping)
+                if (payload == NAVIGATE_RIGHT)
+                    col = (col + 1) % cols;
+                else if (payload == NAVIGATE_DOWN)
+                    row = (row + 1) % rows;
+                else if (payload == NAVIGATE_LEFT)
+                {
+                    if (col == 0)
+                        col = cols - 1;
+                    else
+                        col --;
+                }
+                else if (payload == NAVIGATE_UP)
+                {
+                    if (row == 0)
+                        row = rows - 1;
+                    else
+                        row --;
+                }
+
+                return d_windows.at(row).at(col);
+            }
+        }
+    }
+
+    // first button
+    return d_windows.at(0).at(0);
 }

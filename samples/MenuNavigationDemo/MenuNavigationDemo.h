@@ -29,6 +29,17 @@
 #define _Sample_Menu_Navigation_h_
 
 #include "SampleBase.h"
+#include "CEGUI/WindowNavigator.h"
+#include <vector>
+
+class MatrixNavigationStrategy : public CEGUI::NavigationStrategy
+{
+public:
+    // matrix
+    std::vector< std::vector<CEGUI::Window*> > d_windows;
+
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
+};
 
 class MenuNavigationDemo : public Sample
 {
@@ -41,10 +52,13 @@ private:
     CEGUI::Window*      d_logWidget1;
     CEGUI::Window*      d_logWidget2;
     CEGUI::Listbox*     d_classesListBox;
+    MatrixNavigationStrategy*   d_matrixNavigationStrategy;
+    CEGUI::WindowNavigator*     d_matrixWindowNavigator;
 
     void initialiseClasses(CEGUI::Listbox* classes_listbox);
     bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
     bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
+   std::map<CEGUI::SemanticValue, CEGUI::String> createMatrixNavigationMappings();
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_
