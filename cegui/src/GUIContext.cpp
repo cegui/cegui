@@ -666,14 +666,19 @@ bool GUIContext::handleSemanticInputEvent(const SemanticInputEvent& event)
     if (d_windowNavigator != 0)
         targetWindow = d_windowNavigator->getCurrentFocusedWindow();
 
-    SemanticEventArgs args(targetWindow);
+    if (targetWindow != 0)
+    {
+        SemanticEventArgs args(targetWindow);
 
-    args.d_payload = event.d_payload;
-    args.d_semanticValue = event.d_value;
+        args.d_payload = event.d_payload;
+        args.d_semanticValue = event.d_value;
 
-    args.window->onSemanticInputEvent(args);
+        args.window->onSemanticInputEvent(args);
 
-    return args.handled != 0;
+        return args.handled != 0;
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//
