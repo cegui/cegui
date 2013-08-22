@@ -108,10 +108,10 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     points.push_back(glm::vec2(160.0f, 60.0f));
     points.push_back(glm::vec2(210.0f, 60.0f));
     //Create Polyline object with the points
-    SVGPolyline* polyLine = new SVGPolyline(points);
+    SVGPolyline* polyLine = new SVGPolyline(SVGPaintStyle(), glm::mat3x3(1.0f), points);
     fpsSVGData.addShape(polyLine);
 
-    SVGRect* svg_rect = new SVGRect(120.0f, 10.0f, 15.0f, 20.0f);
+    SVGRect* svg_rect = new SVGRect(SVGPaintStyle(), glm::mat3x3(1.0f), 5.0f, 10.0f, 15.0f, 20.0f);
     svg_rect->d_paintStyle.d_fill.d_colour = glm::vec3(0.0f, 0.3f, 0.3f);
     fpsSVGData.addShape(svg_rect);
 
@@ -253,24 +253,24 @@ void CustomShapesDrawing::drawLineStrip(std::vector<glm::vec2> &linePositions, c
 
         CEGUI::ColouredVertex linePositionVertex;
         glm::vec2 vertexPosition;
-        linePositionVertex.colour_val = lineColour;
+        linePositionVertex.d_colour = lineColour;
 
-        linePositionVertex.position = glm::vec3(prevPos - offsetVector, 0.0f);
+        linePositionVertex.d_position = glm::vec3(prevPos - offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = glm::vec3(currentPos - offsetVector, 0.0f);
+        linePositionVertex.d_position = glm::vec3(currentPos - offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = glm::vec3(currentPos + offsetVector, 0.0f);
+        linePositionVertex.d_position = glm::vec3(currentPos + offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = glm::vec3(currentPos + offsetVector, 0.0f);
+        linePositionVertex.d_position = glm::vec3(currentPos + offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = glm::vec3(prevPos - offsetVector, 0.0f);
+        linePositionVertex.d_position = glm::vec3(prevPos - offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
 
-        linePositionVertex.position = glm::vec3(prevPos + offsetVector, 0.0f);
+        linePositionVertex.d_position = glm::vec3(prevPos + offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
     }
 }
