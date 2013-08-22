@@ -65,6 +65,7 @@ public:
     void setRotation(const Quaternion& r);
     void setScale(const Vector3f& v);
     void setPivot(const Vector3f& p);
+    void setCustomTransform(const glm::mat4x4& transformation);
     void setClippingRegion(const Rectf& region);
     void appendGeometry(const std::vector<float>& vertex_data);
     void setTexture(Texture* texture);
@@ -105,6 +106,8 @@ protected:
     Vector3f d_scale;
     //! pivot point for rotation
     Vector3f d_pivot;
+    //! custom transformation matrix
+    glm::mat4x4 d_customTransform;
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! cche of the model matrix
