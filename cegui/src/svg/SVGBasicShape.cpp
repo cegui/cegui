@@ -35,8 +35,10 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
-SVGBasicShape::SVGBasicShape(const SVGPaintStyle& paint_style) :
-    d_paintStyle(paint_style)
+SVGBasicShape::SVGBasicShape(const SVGPaintStyle& paint_style,
+                             const glm::mat3x3& transformation) :
+    d_paintStyle(paint_style),
+    d_transformation(transformation)
 {
 }
 
@@ -46,14 +48,15 @@ SVGBasicShape::~SVGBasicShape()
 }
 
 //----------------------------------------------------------------------------//
-SVGRect::SVGRect(const float x,
+SVGRect::SVGRect(const SVGPaintStyle& paint_style,
+                 const glm::mat3x3& transformation,
+                 const float x,
                  const float y,
                  const float width,
                  const float height,
                  const float rx,
-                 const float ry,
-                 const SVGPaintStyle& paint_style) :
-    SVGBasicShape(paint_style),
+                 const float ry) :
+    SVGBasicShape(paint_style, transformation),
     d_x(x),
     d_y(y),
     d_width(width),
@@ -73,11 +76,12 @@ void SVGRect::render(std::vector<GeometryBuffer*>& geometry_buffers,
 }
 
 //----------------------------------------------------------------------------//
-SVGCircle::SVGCircle(const float cx,
+SVGCircle::SVGCircle(const SVGPaintStyle& paint_style,
+                     const glm::mat3x3& transformation,
+                     const float cx,
                      const float cy,
-                     const float r,
-                     const SVGPaintStyle& paint_style) :
-    SVGBasicShape(paint_style),
+                     const float r) :
+    SVGBasicShape(paint_style, transformation),
     d_cx(cx),
     d_cy(cy),
     d_r(r)
@@ -95,9 +99,10 @@ void SVGCircle::render(std::vector<GeometryBuffer*>& geometry_buffers,
 
 
 //----------------------------------------------------------------------------//
-SVGPolyline::SVGPolyline(PolylinePointsList points,
-                         const SVGPaintStyle& paint_style) :
-    SVGBasicShape(paint_style),
+SVGPolyline::SVGPolyline(const SVGPaintStyle& paint_style,
+                         const glm::mat3x3& transformation,
+                         const PolylinePointsList& points) :
+    SVGBasicShape(paint_style, transformation),
     d_points(points)
 {
 }

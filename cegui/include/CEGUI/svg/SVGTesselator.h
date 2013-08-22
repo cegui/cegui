@@ -31,6 +31,8 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/svg/SVGImage.h"
 
+#include "glm/glm.hpp"
+
 #include <vector>
 
 namespace CEGUI
@@ -39,6 +41,7 @@ class GeometryBuffer;
 class SVGRect;
 class SVGCircle;
 class SVGPolyline;
+class SVGPaintStyle;
 
 /*!
 \brief
@@ -107,7 +110,18 @@ private:
     ~SVGTesselator();
 
     //! Helper function that creates and sets the parameters for a coloured geometry buffer
-    static CEGUI::GeometryBuffer& setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers, const SVGImage::SVGImageRenderSettings& render_settings);
+    static GeometryBuffer& setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
+                                                       const SVGImage::SVGImageRenderSettings& render_settings,
+                                                       const glm::mat3x3& svg_transformation);
+
+    //! Turns a matrix as defined by SVG into a matrix that can be used internally by the CEGUI Renderers
+    static glm::mat4 createRenderableMatrixFromSVGMatrix(glm::mat3 svg_matrix);
+
+    //! Helper function for getting the fill Colour from an SVGPaintStyle
+    static CEGUI::Colour getFillColour(const SVGPaintStyle& paint_style);
+
+    //! Helper function for getting the stroke Colour from an SVGPaintStyle
+    static CEGUI::Colour getStrokeColour(const SVGPaintStyle& paint_style);
 };
 
 }
