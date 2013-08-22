@@ -68,15 +68,15 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* const vbuff,
     {
         // Add all the elements in the default order for textured and coloured
         // geometry into the vector
-        vertexData.push_back(vs->position.x);
-        vertexData.push_back(vs->position.y);
-        vertexData.push_back(vs->position.z);
-        vertexData.push_back(vs->colour_val.getRed());
-        vertexData.push_back(vs->colour_val.getGreen());
-        vertexData.push_back(vs->colour_val.getBlue());
-        vertexData.push_back(vs->colour_val.getAlpha());
-        vertexData.push_back(vs->tex_coords.x);
-        vertexData.push_back(vs->tex_coords.y);
+        vertexData.push_back(vs->d_position.x);
+        vertexData.push_back(vs->d_position.y);
+        vertexData.push_back(vs->d_position.z);
+        vertexData.push_back(vs->d_colour.getRed());
+        vertexData.push_back(vs->d_colour.getGreen());
+        vertexData.push_back(vs->d_colour.getBlue());
+        vertexData.push_back(vs->d_colour.getAlpha());
+        vertexData.push_back(vs->d_texCoords.x);
+        vertexData.push_back(vs->d_texCoords.y);
     }
 
     // Append the prepared geometry data
@@ -98,15 +98,15 @@ void GeometryBuffer::appendVertex(const TexturedColouredVertex& vertex)
     float vertexData[9];
 
     // Copy the vertex attributes into the array
-    vertexData[0] = vertex.position.x;
-    vertexData[1] = vertex.position.y;
-    vertexData[2] = vertex.position.z;
-    vertexData[3] = vertex.colour_val.getRed();
-    vertexData[4] = vertex.colour_val.getGreen();
-    vertexData[5] = vertex.colour_val.getBlue();
-    vertexData[6] = vertex.colour_val.getAlpha();
-    vertexData[7] = vertex.tex_coords.x;
-    vertexData[8] = vertex.tex_coords.y;
+    vertexData[0] = vertex.d_position.x;
+    vertexData[1] = vertex.d_position.y;
+    vertexData[2] = vertex.d_position.z;
+    vertexData[3] = vertex.d_colour.getRed();
+    vertexData[4] = vertex.d_colour.getGreen();
+    vertexData[5] = vertex.d_colour.getBlue();
+    vertexData[6] = vertex.d_colour.getAlpha();
+    vertexData[7] = vertex.d_texCoords.x;
+    vertexData[8] = vertex.d_texCoords.y;
 
     appendGeometry(vertexData, 9);
 }
@@ -118,13 +118,13 @@ void GeometryBuffer::appendVertex(const ColouredVertex& vertex)
     float vertexData[7];
 
     // Copy the vertex attributes into the array
-    vertexData[0] = vertex.position.x;
-    vertexData[1] = vertex.position.y;
-    vertexData[2] = vertex.position.z;
-    vertexData[3] = vertex.colour_val.getRed();
-    vertexData[4] = vertex.colour_val.getGreen();
-    vertexData[5] = vertex.colour_val.getBlue();
-    vertexData[6] = vertex.colour_val.getAlpha();
+    vertexData[0] = vertex.d_position.x;
+    vertexData[1] = vertex.d_position.y;
+    vertexData[2] = vertex.d_position.z;
+    vertexData[3] = vertex.d_colour.getRed();
+    vertexData[4] = vertex.d_colour.getGreen();
+    vertexData[5] = vertex.d_colour.getBlue();
+    vertexData[6] = vertex.d_colour.getAlpha();
 
     appendGeometry(vertexData, 7);
 }

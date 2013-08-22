@@ -43,12 +43,21 @@ namespace CEGUI
 struct TexturedColouredVertex :
     public AllocatedObject<TexturedColouredVertex>
 {
+    //! Constructor
+    TexturedColouredVertex() {}
+
+    TexturedColouredVertex(glm::vec3 position, Colour colour, glm::vec2 texCoords) :
+        d_position(position),
+        d_colour(colour),
+        d_texCoords(texCoords)
+    {}
+
     //! Position of the vertex in 3D space.
-    glm::vec3 position;
+    glm::vec3 d_position;
     //! Multiplicative-colour attribute of the vertex.
-    Colour  colour_val;
+    Colour  d_colour;
     //! Texture coordinates of the vertex.
-    glm::vec2 tex_coords;
+    glm::vec2 d_texCoords;
 };
 
 /*!
@@ -59,10 +68,18 @@ struct TexturedColouredVertex :
 struct ColouredVertex :
     public AllocatedObject<ColouredVertex>
 {
+    //! Constructor
+    ColouredVertex() {}
+
+    ColouredVertex(glm::vec3 position, Colour colour) :
+        d_position(position),
+        d_colour(colour)
+    {}
+
     //! Position of the vertex in 3D space.
-    glm::vec3 position;
+    glm::vec3   d_position;
     //! Colour attribute of the vertex.
-    Colour  colour_val;
+    Colour      d_colour;
 };
 
 
