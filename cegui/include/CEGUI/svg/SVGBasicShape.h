@@ -55,7 +55,8 @@ class CEGUIEXPORT SVGBasicShape : public AllocatedObject<SVGBasicShape>
 {
 public:
     SVGBasicShape() {}
-    SVGBasicShape(const SVGPaintStyle& paint_style);
+    SVGBasicShape(const SVGPaintStyle& paint_style,
+                  const glm::mat3x3& transformation);
 
     virtual ~SVGBasicShape();
 
@@ -68,14 +69,13 @@ public:
         The ImageRenderSettings that contain render settings for new GeometryBuffers.
      */
     virtual void render(std::vector<GeometryBuffer*>& geometry_buffers,
-                const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
+                        const SVGImage::SVGImageRenderSettings& render_settings) const = 0;
         
 
     //! The BasicShape's style, which describes the filling and stroke of the graphical element.
     SVGPaintStyle d_paintStyle;
-
-protected:
-
+    //! The matrix transformation to apply to the element.
+    glm::mat3x3 d_transformation;
 };
 
 
@@ -93,10 +93,10 @@ public:
     SVGRect()
     {}
 
-    SVGRect(const float x, const float y,
+    SVGRect(const SVGPaintStyle& paint_style, const glm::mat3x3& transformation,
+            const float x, const float y,
             const float width, const float height,
-            const float rx = 0.0f, const float ry = 0.0f,
-            const SVGPaintStyle& paint_style = SVGPaintStyle() );
+            const float rx = 0.0f, const float ry = 0.0f);
 
     //! Implementation of SVGBasicShape interface
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
@@ -133,10 +133,11 @@ public:
     SVGCircle()
     {}
 
-    SVGCircle(const float cx,
+    SVGCircle(const SVGPaintStyle& paint_style,
+              const glm::mat3x3& transformation,
+              const float cx,
               const float cy,
-              const float r,
-              const SVGPaintStyle& paint_style = SVGPaintStyle() );
+              const float r);
 
     //! Implementation of SVGBasicShape interface
     void render(std::vector<GeometryBuffer*>& geometry_buffers,
@@ -166,8 +167,9 @@ public:
     typedef std::vector<glm::vec2> PolylinePointsList;
 
     //! Constructor
-    SVGPolyline(PolylinePointsList points,
-                const SVGPaintStyle& paint_style = SVGPaintStyle() );
+    SVGPolyline::SVGPolyline(const SVGPaintStyle& paint_style,
+                             const glm::mat3x3& transformation,
+                             const PolylinePointsList& points);
 
     SVGPolyline()
     {}

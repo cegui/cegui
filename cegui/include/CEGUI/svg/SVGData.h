@@ -301,6 +301,14 @@ private:
 
     /*!
     \brief
+        Function that parses a 'transform' attribute and creates a mat3x3 from it.
+    \param attributes
+        The XML attributes from which the values will be parsed.
+    */
+    static glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes);
+
+    /*!
+    \brief
         Function that parses the an SVG list of lengths from a String.
     \param list_of_lengths_string
         The String containing the list of lengths.
