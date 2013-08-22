@@ -64,6 +64,9 @@ const String SVGGraphicsElementAttributeStrokeDashArray( "stroke-dasharray" );
 const String SVGGraphicsElementAttributeStrokeDashOffset( "stroke-dashoffset" );
 const String SVGGraphicsElementAttributeStrokeOpacity( "stroke-opacity" );
 
+// SVG transform attribute
+const String SVGTransformAttribute( "transform" );
+
 // SVG 'rect' element attributes
 const String SVGRectAttributeXPos( "x" );
 const String SVGRectAttributeYPos( "y" );
@@ -223,6 +226,7 @@ void SVGData::elementSVGStart(const XMLAttributes& attributes)
 void SVGData::elementSVGRect(const XMLAttributes& attributes)
 {
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
+    glm::mat3x3 transform = parseTransform(attributes);
 
     const String xString(
         attributes.getValueAsString(SVGRectAttributeXPos, "0"));
@@ -248,7 +252,7 @@ void SVGData::elementSVGRect(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGRectAttributeRoundedY, "0"));
     float ry = parseLengthDataType(ryString).d_value;
 
-    SVGRect* rect = CEGUI_NEW_AO SVGRect(x, y, width, height, rx, ry, paint_style);
+    SVGRect* rect = CEGUI_NEW_AO SVGRect(paint_style, transform, x, y, width, height, rx, ry);
     addShape(rect);
 }
 
@@ -256,6 +260,7 @@ void SVGData::elementSVGRect(const XMLAttributes& attributes)
 void SVGData::elementSVGCircle(const XMLAttributes& attributes)
 {
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
+    glm::mat3x3 transform = parseTransform(attributes);
 
     const String cxString(
         attributes.getValueAsString(SVGCircleAttributeCX, "0"));
@@ -269,7 +274,7 @@ void SVGData::elementSVGCircle(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGCircleAttributeRadius, "0"));
     float radius = parseLengthDataType(radiusString).d_value;
 
-    SVGCircle* circle = CEGUI_NEW_AO SVGCircle(cx, cy, radius, paint_style);
+    SVGCircle* circle = CEGUI_NEW_AO SVGCircle(paint_style, transform, cx, cy, radius);
     addShape(circle);  
 }
 
@@ -277,6 +282,7 @@ void SVGData::elementSVGCircle(const XMLAttributes& attributes)
 void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
 {
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
+    glm::mat3x3 transform = parseTransform(attributes);
 
     const String pointsString(
         attributes.getValueAsString(SVGPolylineAttributePoints, ""));
@@ -297,7 +303,7 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
     if(points.size() % 2 == 1)
         points.clear();
 
-    SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(points, paint_style);
+    SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
     addShape(polyline);
 }
 
@@ -639,6 +645,41 @@ void SVGData::parsePaintStyleStrokeDashOffset(const String& strokeDashOffsetStri
         paint_style.d_strokeDashOffset = 0.0f;
     else
         sscanf(strokeDashOffsetString.c_str(), "%f", &paint_style.d_strokeDashOffset);
+}
+
+
+//----------------------------------------------------------------------------//
+glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes)
+{
+    const String transformString(
+        attributes.getValueAsString(SVGTransformAttribute));
+
+    const char* transformStringSegment = transformString.c_str();
+    int offset = 0;
+    // Unity matrix is our default/basis
+    glm::mat3x3 currentMatrix(1.0f);
+
+    if(sscanf(transformStringSegment, " matrix( %n", &offset) == 0 && offset != 0)
+    {
+        transformStringSegment += offset;
+        float matrixValues[6];
+
+        int i = 0;
+        while( (i < 6) && ( sscanf(transformStringSegment, " %f %n", &matrixValues[i],  &offset) == 1 || 
+                            sscanf(transformStringSegment, " , %f %n", &matrixValues[i],  &offset) == 1 ) )
+        {
+            transformStringSegment += offset;
+            ++i;
+        }
+        
+        //If we parsed the expected amount of matrix elements we will multiply the matrix to our transformation
+        if(i == 6)
+            currentMatrix *= glm::mat3x3(matrixValues[0], matrixValues[2], matrixValues[4],
+                                         matrixValues[1], matrixValues[3], matrixValues[5],
+                                         0.0f, 0.0f, 1.0f);
+    }
+
+    return currentMatrix;
 }
 
 //----------------------------------------------------------------------------//
