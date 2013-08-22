@@ -41,12 +41,23 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
                                                std::vector<GeometryBuffer*>& geometry_buffers,
                                                const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    CEGUI::GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings);
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
 
-    const glm::vec3& strokeColourValues = polyline->d_paintStyle.d_stroke.d_colour;
-    const CEGUI::Colour stroke_colour(strokeColourValues.x, strokeColourValues.y, strokeColourValues.z, polyline->d_paintStyle.d_strokeOpacity);
-    const SVGPolyline::PolylinePointsList& points = polyline->d_points;
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = polyline->d_paintStyle;
+
+    //Get colours
+    const Colour fill_colour = getFillColour(paint_style);
+    const Colour stroke_colour = getStrokeColour(paint_style);
+
+    //Get the half of the stroke width
     const float stroke_half_width = polyline->d_paintStyle.d_strokeWidth * 0.5f;
+
+    //Getting the points defining the polyline
+    const SVGPolyline::PolylinePointsList& points = polyline->d_points;
+
+    //Create the polyline stroke vertex
+    ColouredVertex line_stroke_vertex(glm::vec3(), stroke_colour);
 
     //Draw the line segments TODO Ident: Draw them seamlessly connected with bevels and stuff provided optionally
     size_t points_count = points.size();
@@ -60,27 +71,23 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
         offsetVector = glm::normalize(offsetVector);
         offsetVector = glm::vec2(offsetVector.y, -offsetVector.x) * stroke_half_width;
 
-        CEGUI::ColouredVertex linePositionVertex;
-        glm::vec2 vertexPosition;
-        linePositionVertex.colour_val = stroke_colour;
+        line_stroke_vertex.d_position = glm::vec3(prevPos - offsetVector, 0.0f);
+        geometry_buffer.appendVertex(line_stroke_vertex);
 
-        linePositionVertex.position = glm::vec3(prevPos - offsetVector, 0.0f);
-        geometry_buffer.appendVertex(linePositionVertex);
+        line_stroke_vertex.d_position = glm::vec3(currentPos - offsetVector, 0.0f);
+        geometry_buffer.appendVertex(line_stroke_vertex);
 
-        linePositionVertex.position = glm::vec3(currentPos - offsetVector, 0.0f);
-        geometry_buffer.appendVertex(linePositionVertex);
+        line_stroke_vertex.d_position = glm::vec3(currentPos + offsetVector, 0.0f);
+        geometry_buffer.appendVertex(line_stroke_vertex);
 
-        linePositionVertex.position = glm::vec3(currentPos + offsetVector, 0.0f);
-        geometry_buffer.appendVertex(linePositionVertex);
+        line_stroke_vertex.d_position = glm::vec3(currentPos + offsetVector, 0.0f);
+        geometry_buffer.appendVertex(line_stroke_vertex);
 
-        linePositionVertex.position = glm::vec3(currentPos + offsetVector, 0.0f);
-        geometry_buffer.appendVertex(linePositionVertex);
+        line_stroke_vertex.d_position = glm::vec3(prevPos - offsetVector, 0.0f);
+        geometry_buffer.appendVertex(line_stroke_vertex);
 
-        linePositionVertex.position = glm::vec3(prevPos - offsetVector, 0.0f);
-        geometry_buffer.appendVertex(linePositionVertex);
-
-        linePositionVertex.position = glm::vec3(prevPos + offsetVector, 0.0f);
-        geometry_buffer.appendVertex(linePositionVertex);
+        line_stroke_vertex.d_position = glm::vec3(prevPos + offsetVector, 0.0f);
+        geometry_buffer.appendVertex(line_stroke_vertex);
     }
 }
 
@@ -90,38 +97,42 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
                                            std::vector<GeometryBuffer*>& geometry_buffers,
                                            const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    CEGUI::GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings);
+    glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, rect->d_x,
+                                           0.0f, 1.0f, rect->d_y,
+                                           0.0f, 0.0f, 1.0f ) * rect->d_transformation;
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
 
-    const glm::vec3& fill_colour_values = rect->d_paintStyle.d_fill.d_colour;
-    const CEGUI::Colour fill_colour(fill_colour_values.x, fill_colour_values.y,
-                                    fill_colour_values.z, rect->d_paintStyle.d_fillOpacity);
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = rect->d_paintStyle;
 
-    //Draw the rectangle fill
-    CEGUI::ColouredVertex rectFillVertex;
-    glm::vec2 vertexPosition;
-    rectFillVertex.colour_val = fill_colour;
+    //Get colours
+    const Colour fill_colour = getFillColour(paint_style);
+    const Colour stroke_colour = getStrokeColour(paint_style);
 
-    const float& rectX1 = rect->d_x;
-    const float& rectY1 = rect->d_y;
-    const float rectX2 = rect->d_x + rect->d_width;
-    const float rectY2 = rect->d_y + rect->d_height;
+    //Create the rectangle fill vertex
+    ColouredVertex rectFillVertex(glm::vec3(), fill_colour);
 
-    rectFillVertex.position = glm::vec3(rectX1, rectY1, 0.0f);
+    const float rectX1 = 0.0f;
+    const float rectY1 = 0.0f;
+    const float& rectX2 = rect->d_width;
+    const float& rectY2 = rect->d_height;
+
+    rectFillVertex.d_position = glm::vec3(rectX1, rectY1, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 
-    rectFillVertex.position = glm::vec3(rectX1, rectY2, 0.0f);
+    rectFillVertex.d_position = glm::vec3(rectX1, rectY2, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 
-    rectFillVertex.position = glm::vec3(rectX2, rectY2, 0.0f);
+    rectFillVertex.d_position = glm::vec3(rectX2, rectY2, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 
-    rectFillVertex.position = glm::vec3(rectX2, rectY2, 0.0f);
+    rectFillVertex.d_position = glm::vec3(rectX2, rectY2, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 
-    rectFillVertex.position = glm::vec3(rectX1, rectY1, 0.0f);
+    rectFillVertex.d_position = glm::vec3(rectX1, rectY1, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 
-    rectFillVertex.position = glm::vec3(rectX2, rectY1, 0.0f);
+    rectFillVertex.d_position = glm::vec3(rectX2, rectY1, 0.0f);
     geometry_buffer.appendVertex(rectFillVertex);
 }
 
@@ -130,26 +141,31 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
                                              std::vector<GeometryBuffer*>& geometry_buffers,
                                              const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    CEGUI::GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings);
+    glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, circle->d_cx,
+                                           0.0f, 1.0f, circle->d_cy,
+                                           0.0f, 0.0f, 1.0f ) * circle->d_transformation;
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
 
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = circle->d_paintStyle;
+
+    //Get colours
+    const Colour fill_colour = getFillColour(paint_style);
+    const Colour stroke_colour = getStrokeColour(paint_style);
+
+    //We need this to determine the resolution in which we will render the circle segments
     float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
 
-    const glm::vec3& fill_colour_values = circle->d_paintStyle.d_fill.d_colour;
-    const CEGUI::Colour fill_colour(fill_colour_values.x, fill_colour_values.y,
-                                    fill_colour_values.z, circle->d_paintStyle.d_fillOpacity);
+    //Create the rectangle fill vertex
+    ColouredVertex circle_fill_vertex(glm::vec3(), fill_colour);
 
-    //Circle fill vertex
-    CEGUI::ColouredVertex circle_fill_vertex;
-    circle_fill_vertex.colour_val = fill_colour;
-
-    glm::vec2 circle_position(circle->d_cx, circle->d_cy);
     const float& r = circle->d_r;
 
     // The numeric value in this can be set freely. The lower, the more segments there will be, making the circle appear rounder.
-    static const float circle_render_roundness_value = 1.5f;
-    const float segment_length = circle_render_roundness_value / max_scale;
+    static const float circle_roundness_value = 1.5f;
+    const float segment_length = circle_roundness_value / max_scale;
     float theta = std::acos( 1 - ( segment_length / r ) );
-    float num_segments = (2.0f * 3.1415926f) / theta;
+    float num_segments = (2.0f * 3.1415926535897932384626433832795f) / theta;
 
     //precalculate the sine and cosine
 	float c = std::cosf(theta);
@@ -161,10 +177,10 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
     
 	for(int i = 0; i < num_segments; i++) 
 	{ 
-        circle_fill_vertex.position = glm::vec3(circle_position + glm::vec2(circle->d_r, 0.0f), 0.0f);
+        circle_fill_vertex.d_position = glm::vec3(circle->d_r, 0.0f, 0.0f);
         geometry_buffer.appendVertex(circle_fill_vertex);
 
-        circle_fill_vertex.position = glm::vec3(circle_position + current_pos, 0.0f);
+        circle_fill_vertex.d_position = glm::vec3(current_pos, 0.0f);
         geometry_buffer.appendVertex(circle_fill_vertex);
 
 		//apply the rotation matrix
@@ -172,13 +188,15 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
 		current_pos.x = c * current_pos.x - s * current_pos.y;
 		current_pos.y = s * t + c * current_pos.y;
 
-        circle_fill_vertex.position = glm::vec3(circle_position + current_pos, 0.0f);
+        circle_fill_vertex.d_position = glm::vec3(current_pos, 0.0f);
         geometry_buffer.appendVertex(circle_fill_vertex);
 	} 
 }
 
 //----------------------------------------------------------------------------//
-CEGUI::GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers, const SVGImage::SVGImageRenderSettings& render_settings)
+GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
+                                                           const SVGImage::SVGImageRenderSettings& render_settings,
+                                                           const glm::mat3x3& svg_transformation)
 {
     GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
     geometry_buffers.push_back(&geometry_buffer);
@@ -193,8 +211,35 @@ CEGUI::GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<Ge
 
     geometry_buffer.setScale(render_settings.d_scaleFactor);
 
+    glm::mat4 cegui_transform = createRenderableMatrixFromSVGMatrix(svg_transformation);
+    geometry_buffer.setCustomTransform(cegui_transform);
+
     return geometry_buffer;
 }
+
+//----------------------------------------------------------------------------//
+Colour SVGTesselator::getFillColour(const SVGPaintStyle &paint_style)
+{
+    const glm::vec3& fill_colour_values = paint_style.d_fill.d_colour;
+    return Colour(fill_colour_values.x, fill_colour_values.y, fill_colour_values.z, paint_style.d_fillOpacity);
+}
+
+//----------------------------------------------------------------------------//
+Colour SVGTesselator::getStrokeColour(const SVGPaintStyle &paint_style)
+{
+    const glm::vec3& stroke_colour_values = paint_style.d_stroke.d_colour;
+    return Colour(stroke_colour_values.x, stroke_colour_values.y, stroke_colour_values.z, paint_style.d_strokeOpacity);
+}
+
+//----------------------------------------------------------------------------//
+glm::mat4 SVGTesselator::createRenderableMatrixFromSVGMatrix(glm::mat3 svg_matrix)
+{
+    return glm::mat4(svg_matrix[0].x, svg_matrix[1].x, 0.0f, 0.0f,
+                     svg_matrix[0].y, svg_matrix[1].y, 0.0f, 0.0f,
+                     0.0f,            0.0f,            1.0f, 0.0f,
+                     svg_matrix[0].z, svg_matrix[1].z, 0.0f, 1.0f);
+}
+
 
 //----------------------------------------------------------------------------//
 }
