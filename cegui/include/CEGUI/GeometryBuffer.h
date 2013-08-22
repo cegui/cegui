@@ -34,6 +34,8 @@
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/RenderMaterial.h"
 
+#include "glm/glm.hpp"
+
 #include <vector>
 
 #if defined(_MSC_VER)
@@ -134,6 +136,16 @@ public:
         applying the rotation to the geometry.
     */
     virtual void setPivot(const Vector3f& p) = 0;
+
+    /*!
+    \brief
+        Set a custom transformation matrix that will be applied to the
+        geometry in the buffer after all the other transformations.
+
+    \param transformation
+        3x3 Matrix that describes the transformation.
+    */
+    virtual void setCustomTransform(const glm::mat4x4& transformation) = 0;
 
     /*!
     \brief

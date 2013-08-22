@@ -50,8 +50,9 @@ OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CE
     d_clippingActive(true),
     d_translation(0, 0, 0),
     d_rotation(Quaternion::IDENTITY),
-    d_scale(1.f, 1.f, 1.f),
+    d_scale(1.0f, 1.0f, 1.0f),
     d_pivot(0, 0, 0),
+    d_customTransform(1.0f),
     d_effect(0),
     d_matrix(new mat4Pimpl()),
     d_matrixValid(false),
@@ -68,29 +69,51 @@ OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setTranslation(const Vector3f& v)
 {
-    d_translation = v;
-    d_matrixValid = false;
+    if(d_translation != v)
+    {
+        d_translation = v;
+        d_matrixValid = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setRotation(const Quaternion& r)
 {
-    d_rotation = r;
-    d_matrixValid = false;
+    if(d_rotation != r)
+    {
+        d_rotation = r;
+        d_matrixValid = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setScale(const Vector3f& v)
 {
-    d_scale = v;
-    d_matrixValid = false;
+    if(d_scale != v)
+    {
+        d_scale = v;
+        d_matrixValid = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setPivot(const Vector3f& p)
 {
-    d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
-    d_matrixValid = false;
+    if(d_pivot != p)
+    {
+        d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+        d_matrixValid = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBufferBase::setCustomTransform(const glm::mat4x4& transformation)
+{
+    if(d_customTransform != transformation)
+    {
+        d_customTransform = transformation;
+        d_matrixValid = false;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -158,13 +181,12 @@ const mat4Pimpl* OpenGLGeometryBufferBase::getMatrix() const
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
     glm::mat4& model_matrix = d_matrix->d_matrix;
-    model_matrix = glm::mat4(1.f);
 
     const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                 d_translation.d_y + d_pivot.d_y,
                                 d_translation.d_z + d_pivot.d_z);
 
-    model_matrix = glm::translate(model_matrix, final_trans);
+    model_matrix = glm::translate(glm::mat4(1.0f), final_trans);
 
     glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
     glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
@@ -175,7 +197,7 @@ void OpenGLGeometryBufferBase::updateMatrix() const
 
     glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
     glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
-    model_matrix =  model_matrix * translMatrix;
+    model_matrix *=  translMatrix * d_customTransform;
 
     d_matrixValid = true;
 }
