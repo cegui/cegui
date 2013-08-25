@@ -305,7 +305,7 @@ private:
     \param attributes
         The XML attributes from which the values will be parsed.
     */
-    static glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes);
+    static glm::mat3x3 parseTransform(const XMLAttributes& attributes);
 
     /*!
     \brief
