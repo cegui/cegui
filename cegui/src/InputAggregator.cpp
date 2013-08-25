@@ -387,7 +387,7 @@ bool InputAggregator::injectMouseWheelChange(float delta)
     SemanticInputEvent semantic_event(SV_VerticalScroll);
     semantic_event.d_payload.single = delta;
 
-    return d_inputReceiver->injectInputEvent(semantic_event);;
+    return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
 bool InputAggregator::injectMouseButtonClick(const MouseButton button)
@@ -402,7 +402,7 @@ bool InputAggregator::injectMouseButtonClick(const MouseButton button)
 
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    return d_inputReceiver->injectInputEvent(semantic_event);;
+    return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
 bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
@@ -413,7 +413,7 @@ bool InputAggregator::injectMouseButtonDoubleClick(const MouseButton button)
     SemanticInputEvent semantic_event(SV_SelectWord);
     semantic_event.d_payload.source = convertToPointerSource(button);
 
-    return d_inputReceiver->injectInputEvent(semantic_event);;
+    return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
 bool InputAggregator::injectMouseButtonTripleClick(const MouseButton button)
