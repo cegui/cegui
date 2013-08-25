@@ -100,7 +100,7 @@ namespace CEGUI
         d_vertFormatting.setPropertySource(property_name);
     }
 
-    void ImageryComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool /*clipToDisplay*/) const
+    void ImageryComponent::render_impl(Window& srcWindow, Rectf& destRect, const CEGUI::ColourRect* modColours, const Rectf* clipper, bool clip_to_display) const
     {
         // get final image to use.
         const Image* img = isImageFetchedFromProperty() ?
@@ -221,7 +221,7 @@ namespace CEGUI
                 }
 
                 // add geometry for image to the target window.
-                img->render(srcWindow.getGeometryBuffer(), finalRect, clippingRect, finalColours);
+                img->render(srcWindow.getGeometryBuffers(), finalRect, clippingRect, !clip_to_display, finalColours);
 
                 finalRect.d_min.d_x += imgSz.d_width;
                 finalRect.d_max.d_x += imgSz.d_width;

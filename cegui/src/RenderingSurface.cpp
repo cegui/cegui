@@ -67,17 +67,24 @@ RenderingSurface::~RenderingSurface()
 }
 
 //----------------------------------------------------------------------------//
-void RenderingSurface::addGeometryBuffer(const RenderQueueID queue,
-    const GeometryBuffer& buffer)
+void RenderingSurface::addGeometryBuffers(const RenderQueueID queue,
+    const std::vector<GeometryBuffer*>& geometry_buffers)
 {
-    d_queues[queue].addGeometryBuffer(buffer);
+    d_queues[queue].addGeometryBuffers(geometry_buffers);
+}
+
+//----------------------------------------------------------------------------//
+void RenderingSurface::addGeometryBuffer(const RenderQueueID queue,
+     const GeometryBuffer& geometry_buffer)
+{
+    d_queues[queue].addGeometryBuffer(geometry_buffer);
 }
 
 //----------------------------------------------------------------------------//
 void RenderingSurface::removeGeometryBuffer(const RenderQueueID queue,
-    const GeometryBuffer& buffer)
+    const GeometryBuffer& geometry_buffer)
 {
-    d_queues[queue].removeGeometryBuffer(buffer);
+    d_queues[queue].removeGeometryBuffer(geometry_buffer);
 }
 
 //----------------------------------------------------------------------------//

@@ -757,7 +757,7 @@ protected:
     bool handleFontRenderSizeChange(const EventArgs& args);
  
      void drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
-                       Vector2f& itemPos, GeometryBuffer& geometry, float alpha);
+                       Vector2f& itemPos, std::vector<GeometryBuffer*>& geometryBuffers, float alpha);
     
     /*************************************************************************
         New event handlers
