@@ -31,8 +31,9 @@
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Vertex.h"
-
 #include "glm/gtx/constants.hpp"
+
+#include <cmath>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -173,8 +174,8 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
     float num_segments = (2.0f * glm::pi<float>()) / theta;
 
     //precalculate the sine and cosine
-	float c = std::cosf(theta);
-	float s = std::sinf(theta);
+	float c = std::cos(theta);
+	float s = std::sin(theta);
 	float t;
 
     // we start at angle = 0 
