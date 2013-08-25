@@ -30,6 +30,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/svg/SVGImage.h"
+#include "CEGUI/Vertex.h"
 
 #include "glm/glm.hpp"
 
@@ -51,6 +52,43 @@ class SVGPaintStyle;
 class CEGUIEXPORT SVGTesselator
 {
 public:
+    
+    //! Object containing the data needed for rendering segments
+    class StrokeSegmentData
+    {
+    public:
+        StrokeSegmentData(GeometryBuffer& geometry_buffer, const float stroke_half_width, const SVGPaintStyle& paint_style);
+
+        /*!
+        \brief
+            Sets the pointers to the line points of this segment
+        */
+        void setPoints(const glm::vec2& prev_point,
+                       const glm::vec2& cur_point,
+                       const glm::vec2& next_point);
+
+        //! Half of the width of the stroke
+        const float d_strokeHalfWidth;
+        //! The geometry buffer we will draw into
+        GeometryBuffer& d_geometryBuffer;
+        //! The paint style
+        const SVGPaintStyle& d_paintStyle;
+
+        //! Previous left stroke point lying in anti-clockwise direction away from the stroke direction.
+        glm::vec2 d_lastPointLeft;
+        //! Previous right stroke point lying in clockwise direction away from the stroke direction-.
+        glm::vec2 d_lastPointRight;
+
+        //! The vertex we will modify with positions and append to the GeometryBuffer
+        ColouredVertex d_strokeVertex;
+
+        //! Pointer to the previous line point of this segment
+        const glm::vec2* d_prevPoint;
+        //! Pointer to the current line point of this segment
+        const glm::vec2* d_curPoint;
+        //! Pointer to the subsequent line point of this segment
+        const glm::vec2* d_nextPoint;
+    };
     
     /*!
     \brief
@@ -108,6 +146,24 @@ private:
 
     //! Destructor.
     ~SVGTesselator();
+
+    /*!
+    \brief
+
+    
+    */
+    static void createStroke(const std::vector<glm::vec2>& points, const SVGPaintStyle& paint_style,
+                             GeometryBuffer& geometry_buffer, const bool is_shape_closed);
+
+    //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
+    static void createStrokeSegment(StrokeSegmentData& stroke_data,
+                                    const bool draw = true);
+
+    static void createLinecap(StrokeSegmentData& stroke_data,
+                              const bool is_start);
+
+    //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
+    static bool isPolygonClockwise(const glm::vec2& point1, const glm::vec2& point2, const glm::vec2& point3);
 
     //! Helper function that creates and sets the parameters for a coloured geometry buffer
     static GeometryBuffer& setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
