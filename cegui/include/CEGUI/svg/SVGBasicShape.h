@@ -167,7 +167,7 @@ public:
     typedef std::vector<glm::vec2> PolylinePointsList;
 
     //! Constructor
-    SVGPolyline::SVGPolyline(const SVGPaintStyle& paint_style,
+    SVGPolyline(const SVGPaintStyle& paint_style,
                              const glm::mat3x3& transformation,
                              const PolylinePointsList& points);
 
