@@ -647,7 +647,6 @@ void SVGData::parsePaintStyleStrokeDashOffset(const String& strokeDashOffsetStri
         sscanf(strokeDashOffsetString.c_str(), "%f", &paint_style.d_strokeDashOffset);
 }
 
-
 //----------------------------------------------------------------------------//
 glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes)
 {
