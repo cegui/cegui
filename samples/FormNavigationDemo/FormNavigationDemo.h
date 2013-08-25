@@ -29,17 +29,7 @@
 #define _Sample_Form_Navigation_h_
 
 #include "SampleBase.h"
-#include <vector>
-
-#include "CEGUI/WindowNavigator.h"
-
-class LinearNavigationStrategy : public CEGUI::NavigationStrategy
-{
-public:
-    std::vector<CEGUI::Window*> d_windows;
-
-    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
-};
+#include "NavigationStrategies.h"
 
 class FormNavigationDemo : public Sample
 {

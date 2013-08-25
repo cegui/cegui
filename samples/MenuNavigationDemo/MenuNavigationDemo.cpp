@@ -32,11 +32,7 @@
 #include <sstream>
 
 using namespace CEGUI;
-
-static const String NAVIGATE_LEFT = "left";
-static const String NAVIGATE_RIGHT = "right";
-static const String NAVIGATE_UP = "up";
-static const String NAVIGATE_DOWN = "down";
+using namespace NavigationStrategiesPayloads;
 
 // Sample sub-class for ListboxTextItem that auto-sets the selection brush
 // image.  This saves doing it manually every time in the code.
@@ -73,7 +69,7 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
-    d_matrixNavigationStrategy = new MatrixNavigationStrategy();
+    MatrixNavigationStrategy* d_matrixNavigationStrategy = new MatrixNavigationStrategy();
     d_matrixWindowNavigator = new WindowNavigator(createMatrixNavigationMappings(),
         d_matrixNavigationStrategy);
     gui_context->setWindowNavigator(d_matrixWindowNavigator);
@@ -168,6 +164,8 @@ std::map<SemanticValue, String> MenuNavigationDemo::createMatrixNavigationMappin
 {
     std::map<SemanticValue, String> mappings;
 
+    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
     mappings[SV_GoToPreviousCharacter] = NAVIGATE_LEFT;
     mappings[SV_GoToNextCharacter] = NAVIGATE_RIGHT;
     mappings[SV_GoDown] = NAVIGATE_DOWN;
@@ -183,46 +181,4 @@ extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
 {
     static MenuNavigationDemo sample;
     return sample;
-}
-
-Window* MatrixNavigationStrategy::getWindow(Window* neighbour, const String& payload)
-{
-    size_t rows = d_windows.size();
-
-    for (size_t row = 0; row < rows; ++row)
-    {
-        std::vector<Window*> column = d_windows.at(row);
-        size_t cols = column.size();
-
-        for (size_t col = 0; col < cols; ++col)
-        {
-            if (neighbour == column.at(col))
-            {
-                // compute the new window (wrapping)
-                if (payload == NAVIGATE_RIGHT)
-                    col = (col + 1) % cols;
-                else if (payload == NAVIGATE_DOWN)
-                    row = (row + 1) % rows;
-                else if (payload == NAVIGATE_LEFT)
-                {
-                    if (col == 0)
-                        col = cols - 1;
-                    else
-                        col --;
-                }
-                else if (payload == NAVIGATE_UP)
-                {
-                    if (row == 0)
-                        row = rows - 1;
-                    else
-                        row --;
-                }
-
-                return d_windows.at(row).at(col);
-            }
-        }
-    }
-
-    // first button
-    return d_windows.at(0).at(0);
 }
