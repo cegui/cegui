@@ -31,9 +31,7 @@
 #include <iostream>
 
 using namespace CEGUI;
-
-static const String NAVIGATE_PREVIOUS = "previous";
-static const String NAVIGATE_NEXT = "next";
+using namespace NavigationStrategiesPayloads;
 
 /** This sample uses most of the code from the 'HelloWorld' sample. 
     Thus, most of the clarifying comments have been removed for brevity. **/
@@ -172,37 +170,4 @@ std::map<SemanticValue, String> FormNavigationDemo::getNavigationMappings()
     mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
 
     return mappings;
-}
-
-Window* LinearNavigationStrategy::getWindow(Window* neighbour, const String& payload)
-{
-    std::vector<Window*>::const_iterator itor;
-    // start at the beginning
-    if (neighbour == 0)
-        return *d_windows.begin();
-    else
-        itor = std::find(d_windows.begin(), d_windows.end(), neighbour);
-
-    // no such neighbour window in here
-    if (itor == d_windows.end())
-        return 0;
-
-    if (payload == NAVIGATE_PREVIOUS)
-    {
-        // first item. wrap to end
-        if (itor == d_windows.begin())
-            return *(d_windows.end() - 1);
-
-        return *(itor - 1);
-    }
-    else if (payload == NAVIGATE_NEXT)
-    {
-        // last item. wrap to beginning
-        if (itor == d_windows.end() - 1)
-            return *d_windows.begin();
-
-        return *(itor + 1);
-    }
-
-    return 0;
 }

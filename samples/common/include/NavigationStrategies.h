@@ -1,6 +1,6 @@
 /***********************************************************************
-    filename:   MenuNavigationDemo.h
-    created:    30/5/2013
+    filename:   NavigationStrategies.h
+    created:    25/08/2013
     author:     Timotei Dolean
 *************************************************************************/
 /***************************************************************************
@@ -25,29 +25,38 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Menu_Navigation_h_
-#define _Sample_Menu_Navigation_h_
+#ifndef _CEGUINavigationStrategies_h_
+#define _CEGUINavigationStrategies_h_
 
-#include "SampleBase.h"
-#include "NavigationStrategies.h"
+#include "CEGUI/String.h"
+#include "CEGUI/WindowNavigator.h"
+#include <vector>
 
-class MenuNavigationDemo : public Sample
+namespace NavigationStrategiesPayloads
+{
+static const CEGUI::String NAVIGATE_LEFT = "left";
+static const CEGUI::String NAVIGATE_RIGHT = "right";
+static const CEGUI::String NAVIGATE_UP = "up";
+static const CEGUI::String NAVIGATE_DOWN = "down";
+static const CEGUI::String NAVIGATE_NEXT = "next";
+static const CEGUI::String NAVIGATE_PREVIOUS = "previous";
+}
+
+class LinearNavigationStrategy : public CEGUI::NavigationStrategy
 {
 public:
-    virtual bool initialise(CEGUI::GUIContext* gui_context);
-    virtual void deinitialise();
+    std::vector<CEGUI::Window*> d_windows;
 
-private:
-    CEGUI::Window*      d_root;
-    CEGUI::Window*      d_logWidget1;
-    CEGUI::Window*      d_logWidget2;
-    CEGUI::Listbox*     d_classesListBox;
-    CEGUI::WindowNavigator*     d_matrixWindowNavigator;
-
-    void initialiseClasses(CEGUI::Listbox* classes_listbox);
-    bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
-    bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
-   std::map<CEGUI::SemanticValue, CEGUI::String> createMatrixNavigationMappings();
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
 };
 
-#endif  // end of guard _Sample_Menu_Navigation_h_
+class MatrixNavigationStrategy : public CEGUI::NavigationStrategy
+{
+public:
+    // matrix
+    std::vector< std::vector<CEGUI::Window*> > d_windows;
+
+    virtual CEGUI::Window* getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload);
+};
+
+#endif
