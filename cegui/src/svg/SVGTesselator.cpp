@@ -150,53 +150,48 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, circle->d_cx,
                                            0.0f, 1.0f, circle->d_cy,
                                            0.0f, 0.0f, 1.0f ) * circle->d_transformation;
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
-
+    
     //The shape's paint styles
     const SVGPaintStyle& paint_style = circle->d_paintStyle;
 
-    //Get colours
-    const Colour fill_colour = getFillColour(paint_style);
-    const Colour stroke_colour = getStrokeColour(paint_style);
-
     //We need this to determine the resolution in which we will render the circle segments
     float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+    //Get the radius
+    const float& radius = circle->d_r;
 
-    //Create the rectangle fill vertex
-    ColouredVertex circle_fill_vertex(glm::vec3(), fill_colour);
-
-    const float& r = circle->d_r;
-
-    // The numeric value in this can be set freely. The lower, the more segments there will be, making the circle appear rounder.
+    //The numeric value of circle roundess can be set freely. The lower, the better tesselated the circle will be.
     static const float circle_roundness_value = 1.5f;
+    //Adapt amount of tesselation to the scale
     const float segment_length = circle_roundness_value / max_scale;
-    float theta = std::acos( 1 - ( segment_length / r ) );
+    float theta = std::acos( 1 - ( segment_length / radius ) );
     float num_segments = (2.0f * glm::pi<float>()) / theta;
 
-    //precalculate the sine and cosine
-	float c = std::cos(theta);
-	float s = std::sin(theta);
-	float t;
+    //Precalculate the sine and cosine
+	float cos_value = std::cos(theta);
+	float sin_value = std::sin(theta);
+	float temp_value;
 
-    // we start at angle = 0 
-    glm::vec2 current_pos(r, 0);
-    
+    //Creat the circle points
+    //We start at angle = 0 
+    std::vector<glm::vec2> circle_points;
+    glm::vec2 current_pos(radius, 0);
 	for(int i = 0; i < num_segments; i++) 
 	{ 
-        circle_fill_vertex.d_position = glm::vec3(circle->d_r, 0.0f, 0.0f);
-        geometry_buffer.appendVertex(circle_fill_vertex);
+		//Rotate
+		temp_value = current_pos.x;
+		current_pos.x = cos_value * current_pos.x - sin_value * current_pos.y;
+		current_pos.y = sin_value * temp_value + cos_value * current_pos.y;
 
-        circle_fill_vertex.d_position = glm::vec3(current_pos, 0.0f);
-        geometry_buffer.appendVertex(circle_fill_vertex);
-
-		//apply the rotation matrix
-		t = current_pos.x;
-		current_pos.x = c * current_pos.x - s * current_pos.y;
-		current_pos.y = s * t + c * current_pos.y;
-
-        circle_fill_vertex.d_position = glm::vec3(current_pos, 0.0f);
-        geometry_buffer.appendVertex(circle_fill_vertex);
+        circle_points.push_back(current_pos);
 	} 
+
+    bool is_shape_closed = true;
+
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
+
+    createCircleFill(circle_points, geometry_buffer, paint_style);
+
+    createStroke(circle_points, paint_style, geometry_buffer, is_shape_closed);
 }
 
 //----------------------------------------------------------------------------//
@@ -297,7 +292,7 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
                                  GeometryBuffer& geometry_buffer,
                                  const bool is_shape_closed)
 {
-    if(points.size() <= 1)
+    if(points.size() <= 1 || paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
         return;
 
     // Calculate half of the stroke width
@@ -361,26 +356,25 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
 void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
                                         const bool draw)
 {
-    const SVGPaintStyle::SVGLinejoin& linejoin = stroke_data.d_paintStyle.d_strokeLinejoin;
+    SVGPaintStyle::SVGLinejoin linejoin = stroke_data.d_paintStyle.d_strokeLinejoin;
     const glm::vec2& prev_point = *stroke_data.d_prevPoint;
     const glm::vec2& cur_point = *stroke_data.d_curPoint;
     const glm::vec2& next_point = *stroke_data.d_nextPoint;
 
+    // Check if our corner points form a clockwise or anticlockwise polygon
     bool polygon_is_clockwise = isPolygonClockwise(prev_point, cur_point, next_point);
-    float direction_sign = 1.0f;
-    if(!polygon_is_clockwise)
-        direction_sign = -1.0f;
+    float direction_sign = polygon_is_clockwise ? 1.0f : -1.0f;
 
-    glm::vec2 prevToCur( direction_sign * glm::normalize(cur_point - prev_point) );
-    glm::vec2 prevDirToInside = stroke_data.d_strokeHalfWidth * glm::vec2( prevToCur.y, -prevToCur.x );
+    glm::vec2 previous_to_current( direction_sign * glm::normalize(cur_point - prev_point) );
+    glm::vec2 prev_dir_to_inside = stroke_data.d_strokeHalfWidth * glm::vec2( previous_to_current.y, -previous_to_current.x );
 
-    glm::vec2 curToNext( direction_sign * glm::normalize(next_point - cur_point) );
-    glm::vec2 nextDirToInside = stroke_data.d_strokeHalfWidth * glm::vec2( curToNext.y, -curToNext.x );
+    glm::vec2 cur_to_next( direction_sign * glm::normalize(next_point - cur_point) );
+    glm::vec2 next_dir_to_inside = stroke_data.d_strokeHalfWidth * glm::vec2( cur_to_next.y, -cur_to_next.x );
 
     // We calculate the intersection of the inner lines along the stroke
     glm::vec2 inner_intersection;
-    int intersection_result = intersect(prev_point + prevDirToInside, cur_point + prevDirToInside,
-                                        next_point + nextDirToInside, cur_point + nextDirToInside,
+    int intersection_result = intersect(prev_point + prev_dir_to_inside, cur_point + prev_dir_to_inside,
+                                        next_point + next_dir_to_inside, cur_point + next_dir_to_inside,
                                         inner_intersection);
 
     // The outer connection point of the stroke
@@ -390,103 +384,46 @@ void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
 
     if(linejoin == SVGPaintStyle::SLJ_MITER)
     {
+        // In case the linejoin type is set to miter, check if we exceed the limit in which case
+        // we will use a regular bevel
+        const float& miterlimit = stroke_data.d_paintStyle.d_strokeMiterlimit;
+
+        float half_miter_extension = glm::length(cur_point - inner_intersection);
+        if(half_miter_extension > (miterlimit * stroke_data.d_strokeHalfWidth))
+            linejoin = SVGPaintStyle::SLJ_BEVEL;
+    }
+
+    if(linejoin == SVGPaintStyle::SLJ_MITER)
+    {
         //We calculate the connection point of the outer lines
         outer_point = cur_point + cur_point - inner_intersection;
 
         if(draw)
-        {
-            CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
-            GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndRight;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-        }
+            addStrokeSegmentConnectionGeometry(stroke_data, segmentEndLeft, segmentEndRight);
 
         stroke_data.d_lastPointLeft = segmentEndLeft;
         stroke_data.d_lastPointRight = segmentEndRight;
     }
     else if(linejoin == SVGPaintStyle::SLJ_BEVEL ||
-        linejoin == SVGPaintStyle::SLJ_ROUND)
+            linejoin == SVGPaintStyle::SLJ_ROUND)
     {
         //Is the first bevel corner point
-        outer_point = cur_point - prevDirToInside;
+        outer_point = cur_point - prev_dir_to_inside;
         //The second bevel corner point
-        glm::vec2 secondBevelPoint = cur_point - nextDirToInside;
+        glm::vec2 secondBevelPoint = cur_point - next_dir_to_inside;
 
         if(draw)    
-        {
-            //Draw part until the bevel
-            CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
-            GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-
-            stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndRight;
-            geometry_buffer.appendVertex(stroke_fill_vertex);
-        }
-
+            addStrokeSegmentConnectionGeometry(stroke_data, segmentEndLeft, segmentEndRight);
 
         if(linejoin == SVGPaintStyle::SLJ_BEVEL)
         {
             if(draw)
-            {
-                //Draw the bevel
-                CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
-                GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+                addStrokeSegmentTriangleGeometry(stroke_data, segmentEndLeft, segmentEndRight, secondBevelPoint);
 
-                stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-                geometry_buffer.appendVertex(stroke_fill_vertex);
-
-                stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndRight;
-                geometry_buffer.appendVertex(stroke_fill_vertex);
-
-                stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = secondBevelPoint;
-                geometry_buffer.appendVertex(stroke_fill_vertex);
-            }
-
-            if(polygon_is_clockwise)
-            {
-                stroke_data.d_lastPointLeft = secondBevelPoint;
-                stroke_data.d_lastPointRight = segmentEndRight;
-            }
-            else
-            {
-                stroke_data.d_lastPointLeft = segmentEndLeft;
-                stroke_data.d_lastPointRight = secondBevelPoint;
-            }
+            stroke_data.d_lastPointLeft = polygon_is_clockwise ? secondBevelPoint : segmentEndLeft;
+            stroke_data.d_lastPointRight = polygon_is_clockwise ? segmentEndRight : secondBevelPoint;
         }
     }
-
-
-
 }
 
 //----------------------------------------------------------------------------//
@@ -512,39 +449,98 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
     }
     else if(linecap == SVGPaintStyle::SLC_SQUARE)
     {
-        const glm::vec2 cur_point = *stroke_data.d_curPoint - stroke_data.d_strokeHalfWidth * linecapDir;
+        const glm::vec2 cur_point = *stroke_data.d_curPoint +
+                                    (is_start ?
+                                    -stroke_data.d_strokeHalfWidth * linecapDir :
+                                    +stroke_data.d_strokeHalfWidth * linecapDir);
 
         linecap_left = cur_point + vecToOutside;
         linecap_right = cur_point - vecToOutside;
     }
 
-
     if(!is_start)
-    {
-        CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
-        GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
-    
-        stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_fill_vertex);
-
-        stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_fill_vertex);
-
-        stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = linecap_left;
-        geometry_buffer.appendVertex(stroke_fill_vertex);
-
-        stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = linecap_left;
-        geometry_buffer.appendVertex(stroke_fill_vertex);
-
-        stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_fill_vertex);
-
-        stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = linecap_right;
-        geometry_buffer.appendVertex(stroke_fill_vertex);
-    }
+        addStrokeSegmentConnectionGeometry(stroke_data, linecap_left, linecap_right);
 
     stroke_data.d_lastPointLeft = linecap_left;
     stroke_data.d_lastPointRight = linecap_right;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::addStrokeSegmentConnectionGeometry(StrokeSegmentData& stroke_data,
+                                                       const glm::vec2& segmentEndLeft,
+                                                       const glm::vec2& segmentEndRight)
+{
+    CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
+    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndRight;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+}
+
+void SVGTesselator::addStrokeSegmentTriangleGeometry(StrokeSegmentData &stroke_data,
+                                                  const glm::vec2& segmentEndLeft,
+                                                  const glm::vec2& segmentEndRight,
+                                                  const glm::vec2& secondBevelPoint)
+{
+    CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
+    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndRight;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+
+    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = secondBevelPoint;
+    geometry_buffer.appendVertex(stroke_fill_vertex);
+}
+
+void SVGTesselator::addCircleFillGeometry(const glm::vec2& point1,
+                                          const glm::vec2& point2,
+                                          const glm::vec2& point3,
+                                          GeometryBuffer &geometry_buffer,
+                                          ColouredVertex &circle_fill_vertex)
+{
+    circle_fill_vertex.d_position.swizzle(glm::X, glm::Y) = point1;
+    geometry_buffer.appendVertex(circle_fill_vertex);
+
+    circle_fill_vertex.d_position.swizzle(glm::X, glm::Y) = point2;
+    geometry_buffer.appendVertex(circle_fill_vertex);
+
+    circle_fill_vertex.d_position.swizzle(glm::X, glm::Y) = point3;
+    geometry_buffer.appendVertex(circle_fill_vertex);
+}
+
+void SVGTesselator::createCircleFill(std::vector<glm::vec2>& points,
+                                     GeometryBuffer& geometry_buffer,
+                                     const SVGPaintStyle& paint_style)
+{
+    if(paint_style.d_fill.d_none)
+        return;
+
+    //Create the rectangle fill vertex
+    ColouredVertex fill_vertex(glm::vec3(), getFillColour(paint_style));
+
+    const glm::vec2& point1 = points[0];
+
+    const size_t maximum_index = points.size() - 1;
+    for(size_t i = 1; i < maximum_index - 1; ++i)
+        addCircleFillGeometry(point1, points[i], points[i + 1], geometry_buffer, fill_vertex);
 }
 
 //----------------------------------------------------------------------------//

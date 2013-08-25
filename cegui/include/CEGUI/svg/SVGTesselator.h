@@ -138,7 +138,15 @@ public:
                                          std::vector<GeometryBuffer*>& geometry_buffers,
                                          const SVGImage::SVGImageRenderSettings& render_settings);
 
+    static void createCircleFill(std::vector<glm::vec2>& points,
+                                 GeometryBuffer& geometry_buffer,
+                                 const SVGPaintStyle& paint_style);
 
+    static void addCircleFillGeometry(const glm::vec2& point1,
+                                      const glm::vec2& point2,
+                                      const glm::vec2& point3,
+                                      GeometryBuffer &geometry_buffer,
+                                      ColouredVertex &circle_fill_vertex);
 
 private:
     //! Constructor.
@@ -159,8 +167,19 @@ private:
     static void createStrokeSegment(StrokeSegmentData& stroke_data,
                                     const bool draw = true);
 
-    static void createLinecap(StrokeSegmentData& stroke_data,
-                              const bool is_start);
+    //! Stroke draw helper function that appends geometry for the connection between two new points and the last points
+    static void addStrokeSegmentConnectionGeometry(StrokeSegmentData &stroke_data,
+                                                   const glm::vec2& segmentEndLeft,
+                                                   const glm::vec2& segmentEndRight);
+
+    //! Stroke draw helper function that appends geometry for the bevel of a stroke
+    static void addStrokeSegmentTriangleGeometry(StrokeSegmentData &stroke_data,
+                                              const glm::vec2& segmentEndLeft,
+                                              const glm::vec2& segmentEndRight,
+                                              const glm::vec2& secondBevelPoint);
+
+    //! Stroke draw helper function that adds the linecap depending on linecap type and beginning/end
+    static void createLinecap(StrokeSegmentData& stroke_data, const bool is_start);
 
     //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
     static bool isPolygonClockwise(const glm::vec2& point1, const glm::vec2& point2, const glm::vec2& point3);
