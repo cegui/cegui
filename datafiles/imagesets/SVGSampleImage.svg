@@ -2,11 +2,16 @@
 <!-- Generator: Adobe Illustrator 16.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
 <!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 width="300px" height="200px" viewBox="0 0 300 200" enable-background="new 0 0 300 200" xml:space="preserve">
-<polyline fill="#F9ED32" stroke="#00AEEF" stroke-width="2" stroke-linecap="round" stroke-miterlimit="5" stroke-dasharray="12,14,12.3,0.4,1.2313,19.1919" points="
-	273.5,70.167 233,13.833 231.833,124.833 187.833,52 172.159,99.642 253,93.167 "/>
-<polyline fill="none" stroke="#FF5E3C" stroke-width="4" stroke-linecap="round" stroke-miterlimit="1" points="67.5,29.5 
-	36.5,52.5 83.5,66.5 34.5,106.5 77.5,134.5 93.5,85.5 "/>
-<rect x="109.39" y="21.575" transform="matrix(0.635 0.7725 -0.7725 0.635 74.6023 -89.7401)" fill="#9FDBED" stroke="#A9D156" stroke-width="2.5" stroke-linejoin="round" stroke-miterlimit="1" stroke-opacity="0.5" width="45.751" height="25.001"/>
-<circle fill="#EB7A79" stroke="#A52D6A" stroke-width="2" stroke-miterlimit="22" stroke-dasharray="2,2,2,2,2,2" cx="129.334" cy="78.5" r="11"/>
+	 width="1024px" height="720px" viewBox="0 0 1024 720" enable-background="new 0 0 1024 720" xml:space="preserve">
+<polyline fill="#F9ED32" stroke="#00AEEF" stroke-width="8" stroke-linecap="round" stroke-miterlimit="5" stroke-dasharray="44,22,5,123,12,44" points="
+	933.467,225.885 770.645,28.75 765.952,417.183 589.065,162.311 526.05,329.03 851.053,306.371 "/>
+<polyline fill="none" stroke="#FF5E3C" stroke-width="20" stroke-linecap="square" stroke-linejoin="bevel" stroke-miterlimit="12" points="
+	80.5,268.5 87.5,239 133,228 135,264 200.813,362.312 183,254 "/>
+<path fill="#C7B570" stroke="#2D2D87" stroke-width="8" stroke-linecap="round" stroke-miterlimit="5" d="M456.091,477.991
+	c0,0,40.203-95.653,115.249-30.33c75.047,65.323,190.289,187.805,206.371,104.981c16.082-82.82,301.516,2.334,107.203,55.991
+	c-194.311,53.655-399.345,93.313-388.624,15.162c10.719-78.152-29.48-87.483-57.624-48.992
+	C410.524,613.301,334.14,628.468,456.091,477.991z"/>
+<circle fill="#EB7A79" stroke="#A52D6A" stroke-width="16" stroke-miterlimit="22" stroke-dasharray="8,8,0,0,0,0" cx="396" cy="317.5" r="46"/>
+<rect x="263.612" y="76.751" transform="matrix(0.837 0.5473 -0.5473 0.837 131.8447 -180.8093)" fill="#9FDBED" stroke="#A9D156" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.523" height="108.236"/>
+<line fill="none" stroke="#D8D6EC" stroke-width="20" stroke-linecap="round" stroke-miterlimit="500" x1="89.5" y1="392" x2="241.5" y2="460"/>
 </svg>
