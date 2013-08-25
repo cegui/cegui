@@ -8,7 +8,6 @@ add_subdirectory(HelloWorld)
 add_subdirectory(Widgets)
 add_subdirectory(RenderEffects)
 add_subdirectory(Fonts)
-
 add_subdirectory(Demo6)
 add_subdirectory(DragDrop)
 add_subdirectory(EditboxValidation)
@@ -21,6 +20,9 @@ add_subdirectory(TabControl)
 add_subdirectory(Text)
 add_subdirectory(Tree)
 add_subdirectory(CommonDialogs)
+
+add_subdirectory(SVG)
+add_subdirectory(CustomShapesDrawing)
 
 if (CEGUI_BUILD_LUA_MODULE)
     # add_subdirectory(Demo8)
