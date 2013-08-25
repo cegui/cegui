@@ -74,7 +74,13 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
         d_matrixNavigationStrategy);
     gui_context->setWindowNavigator(d_matrixWindowNavigator);
 
+    LinearNavigationStrategy* d_linearNavigatorStrategy = new LinearNavigationStrategy();
+    d_linearWindowNavigator = new WindowNavigator(createLinearNavigationMappings(),
+        d_linearNavigatorStrategy);
+
     TabControl* tabControl = static_cast<TabControl*>(d_root->getChild("TabControl"));
+    tabControl->subscribeEvent(TabControl::EventSelectionChanged,
+        Event::Subscriber(&MenuNavigationDemo::handleTabSelectionChanged, this));
 
     Window* page1Window = win_mgr.loadLayoutFromFile("MenuNavigationDemoTabPage1.layout");
     d_logWidget1 = page1Window->getChild("StaticText");
@@ -109,6 +115,9 @@ bool MenuNavigationDemo::initialise(CEGUI::GUIContext* gui_context)
     d_classesListBox = static_cast<Listbox*>(page2Window->getChild("ClassesListBox"));
     d_classesListBox->setMultiselectEnabled(true);
     initialiseClasses(d_classesListBox);
+
+    d_linearNavigatorStrategy->d_windows.push_back(d_classesListBox);
+    d_linearNavigatorStrategy->d_windows.push_back(selectButton);
 
     return true;
 }
@@ -160,6 +169,18 @@ bool MenuNavigationDemo::handleNumberButtonClicked(const CEGUI::EventArgs& e)
     return true;
 }
 
+bool MenuNavigationDemo::handleTabSelectionChanged(const CEGUI::EventArgs& e)
+{
+    TabControl* tabControl = static_cast<TabControl*>(static_cast<const WindowEventArgs&>(e).window);
+
+    // only the first tab has a window navigator
+    if (tabControl->getSelectedTabIndex() == 0)
+        d_root->getGUIContext().setWindowNavigator(d_matrixWindowNavigator);
+    else
+        d_root->getGUIContext().setWindowNavigator(d_linearWindowNavigator);
+    return true;
+}
+
 std::map<SemanticValue, String> MenuNavigationDemo::createMatrixNavigationMappings()
 {
     std::map<SemanticValue, String> mappings;
@@ -170,6 +191,16 @@ std::map<SemanticValue, String> MenuNavigationDemo::createMatrixNavigationMappin
     mappings[SV_GoToNextCharacter] = NAVIGATE_RIGHT;
     mappings[SV_GoDown] = NAVIGATE_DOWN;
     mappings[SV_GoUp] = NAVIGATE_UP;
+
+    return mappings;
+}
+
+std::map<CEGUI::SemanticValue, CEGUI::String> MenuNavigationDemo::createLinearNavigationMappings()
+{
+    std::map<SemanticValue, String> mappings;
+
+    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
 
     return mappings;
 }
