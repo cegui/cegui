@@ -534,7 +534,7 @@ void SVGData::parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPai
     {
         sscanf(fillOpacityString.c_str(), "%f", &paint_style.d_fillOpacity);
         //! Clamp value in each case without throwing a warning if the values are below 0 or above 1
-        paint_style.d_fillOpacity = std::max( std::min(0.0f, paint_style.d_fillOpacity), 1.0f );
+        paint_style.d_fillOpacity = std::min( std::max(0.0f, paint_style.d_fillOpacity), 1.0f );
     }
 }
 
@@ -634,7 +634,7 @@ void SVGData::parsePaintStyleStrokeOpacity(const String& strokeOpacityString, SV
     {
         sscanf(strokeOpacityString.c_str(), "%f", &paint_style.d_strokeOpacity);
         //! Clamp value without ever throwing a warning
-        paint_style.d_strokeOpacity = std::max( std::min(0.0f, paint_style.d_strokeOpacity), 1.0f );
+        paint_style.d_strokeOpacity = std::min( std::max(0.0f, paint_style.d_strokeOpacity), 1.0f );
     }
 }
 
