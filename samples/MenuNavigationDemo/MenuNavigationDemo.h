@@ -42,12 +42,17 @@ private:
     CEGUI::Window*      d_logWidget1;
     CEGUI::Window*      d_logWidget2;
     CEGUI::Listbox*     d_classesListBox;
+
     CEGUI::WindowNavigator*     d_matrixWindowNavigator;
+    CEGUI::WindowNavigator*     d_linearWindowNavigator;
 
     void initialiseClasses(CEGUI::Listbox* classes_listbox);
     bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
     bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
+    bool handleTabSelectionChanged(const CEGUI::EventArgs& e);
+
    std::map<CEGUI::SemanticValue, CEGUI::String> createMatrixNavigationMappings();
+   std::map<CEGUI::SemanticValue, CEGUI::String> createLinearNavigationMappings();
 };
 
 #endif  // end of guard _Sample_Menu_Navigation_h_
