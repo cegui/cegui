@@ -43,7 +43,7 @@
     typedef HMODULE DYNLIB_HANDLE;
 #endif
 
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
 #   include "dlfcn.h"
 #   define DYNLIB_LOAD( a ) dlopen( (a).c_str(), RTLD_LAZY )
 #   define DYNLIB_GETSYM( a, b ) dlsym( a, (b).c_str() )
