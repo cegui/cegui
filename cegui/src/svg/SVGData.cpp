@@ -80,6 +80,11 @@ const String SVGCircleAttributeCY( "cy" );
 const String SVGCircleAttributeRadius( "r" );
 // SVG 'polyline' element attributes
 const String SVGPolylineAttributePoints( "points" );
+// SVG 'polyline' element attributes
+const String SVGLineAttributeX1( "x1" );
+const String SVGLineAttributeY1( "y1" );
+const String SVGLineAttributeX2( "x2" );
+const String SVGLineAttributeY2( "y2" );
 
 //----------------------------------------------------------------------------//
 SVGData::SVGData(const String& name) :
@@ -190,7 +195,7 @@ void SVGData::elementStartLocal(const String& element,
     // handle SVG 'line' element
     else if(element == SVGLineElement)
     {
-
+        elementSVGLine(attributes);
     }
     // handle SVG 'ellipse' element
     else if(element == SVGEllipseElement)
@@ -279,6 +284,34 @@ void SVGData::elementSVGCircle(const XMLAttributes& attributes)
 }
 
 //----------------------------------------------------------------------------//
+void SVGData::elementSVGLine(const XMLAttributes& attributes)
+{
+    SVGPaintStyle paint_style = parsePaintStyle(attributes);
+    glm::mat3x3 transform = parseTransform(attributes);
+
+
+    const String x1String(
+        attributes.getValueAsString(SVGLineAttributeX1, "0"));
+    float x1 = parseLengthDataType(x1String).d_value;
+
+    const String y1String(
+        attributes.getValueAsString(SVGLineAttributeY1, "0"));
+    float y1 = parseLengthDataType(y1String).d_value;
+
+    const String x2String(
+        attributes.getValueAsString(SVGLineAttributeX2, "0"));
+    float x2 = parseLengthDataType(x2String).d_value;
+
+    const String y2String(
+        attributes.getValueAsString(SVGLineAttributeY2, "0"));
+    float y2 = parseLengthDataType(y2String).d_value;
+
+    SVGLine* line = CEGUI_NEW_AO SVGLine(paint_style, transform,
+                                         x1, y1, x2, y2);
+    addShape(line);
+}
+
+//----------------------------------------------------------------------------//
 void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
 {
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
@@ -289,15 +322,8 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
 
     SVGPolyline::PolylinePointsList points;
 
-    const char* currentStringSegment = pointsString.c_str();
-    int offset;
-    glm::vec2 currentPoint;
+    parsePointsString(pointsString, points);
 
-    while (sscanf(currentStringSegment, " %f , %f%n", &currentPoint.x, &currentPoint.y, &offset) > 1)
-    {
-        points.push_back(currentPoint);
-        currentStringSegment += offset;
-    }
 
     //! If an odd number of coordinates is provided, then the element is treated as if the attribute had not been specified. 
     if(points.size() % 2 == 1)
@@ -679,6 +705,20 @@ glm::mat3x3 SVGData::parseTransform(const XMLAttributes& attributes)
     }
 
     return currentMatrix;
+}
+
+//----------------------------------------------------------------------------//
+void SVGData::parsePointsString(const String& pointsString, std::vector<glm::vec2>& points)
+{
+    const char* currentStringSegment = pointsString.c_str();
+    int offset;
+    glm::vec2 currentPoint;
+
+    while (sscanf(currentStringSegment, " %f , %f%n", &currentPoint.x, &currentPoint.y, &offset) > 1)
+    {
+        points.push_back(currentPoint);
+        currentStringSegment += offset;
+    }
 }
 
 //----------------------------------------------------------------------------//

@@ -41,8 +41,10 @@ namespace CEGUI
 class GeometryBuffer;
 class SVGRect;
 class SVGCircle;
+class SVGLine;
 class SVGPolyline;
 class SVGPaintStyle;
+
 
 /*!
 \brief
@@ -89,10 +91,26 @@ public:
         //! Pointer to the subsequent line point of this segment
         const glm::vec2* d_nextPoint;
     };
+
+    /*!
+    \brief
+        Tesselates an SVGLine and adds the created geometry to the GeometryBuffer
+        list.
+
+    \param line
+            The SVGLine object that contains the data.
+    \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+    \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselateAndRenderLine(const SVGLine* line,
+                                       std::vector<GeometryBuffer*>& geometry_buffers,
+                                       const SVGImage::SVGImageRenderSettings& render_settings);
     
     /*!
     \brief
-        Tesselates a SVGPolyline and adds the created geometry to the GeometryBuffer
+        Tesselates an SVGPolyline and adds the created geometry to the GeometryBuffer
         list.
 
     \param polyline
@@ -108,7 +126,7 @@ public:
 
     /*!
     \brief
-        Tesselates a SVGRect and adds the created geometry to the GeometryBuffer
+        Tesselates an SVGRect and adds the created geometry to the GeometryBuffer
         list.
     
     \param rect
@@ -124,7 +142,7 @@ public:
 
     /*!
     \brief
-        Tesselates a SVGCircle and adds the created geometry to the GeometryBuffer
+        Tesselates an SVGCircle and adds the created geometry to the GeometryBuffer
         list.
     
     \param rect
@@ -138,16 +156,6 @@ public:
                                          std::vector<GeometryBuffer*>& geometry_buffers,
                                          const SVGImage::SVGImageRenderSettings& render_settings);
 
-    static void createCircleFill(std::vector<glm::vec2>& points,
-                                 GeometryBuffer& geometry_buffer,
-                                 const SVGPaintStyle& paint_style);
-
-    static void addCircleFillGeometry(const glm::vec2& point1,
-                                      const glm::vec2& point2,
-                                      const glm::vec2& point3,
-                                      GeometryBuffer &geometry_buffer,
-                                      ColouredVertex &circle_fill_vertex);
-
 private:
     //! Constructor.
     SVGTesselator();
@@ -155,13 +163,11 @@ private:
     //! Destructor.
     ~SVGTesselator();
 
-    /*!
-    \brief
-
-    
-    */
-    static void createStroke(const std::vector<glm::vec2>& points, const SVGPaintStyle& paint_style,
-                             GeometryBuffer& geometry_buffer, const bool is_shape_closed);
+    //! Helper function for creating a stroke based on a list of points and the settings
+    static void createStroke(const std::vector<glm::vec2>& points,
+                             GeometryBuffer& geometry_buffer,
+                             const SVGPaintStyle& paint_style,
+                             const bool is_shape_closed);
 
     //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
     static void createStrokeSegment(StrokeSegmentData& stroke_data,
@@ -174,15 +180,17 @@ private:
 
     //! Stroke draw helper function that appends geometry for the bevel of a stroke
     static void addStrokeSegmentTriangleGeometry(StrokeSegmentData &stroke_data,
-                                              const glm::vec2& segmentEndLeft,
-                                              const glm::vec2& segmentEndRight,
-                                              const glm::vec2& secondBevelPoint);
+                                                 const glm::vec2& segmentEndLeft,
+                                                 const glm::vec2& segmentEndRight,
+                                                 const glm::vec2& secondBevelPoint);
 
     //! Stroke draw helper function that adds the linecap depending on linecap type and beginning/end
     static void createLinecap(StrokeSegmentData& stroke_data, const bool is_start);
 
     //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
-    static bool isPolygonClockwise(const glm::vec2& point1, const glm::vec2& point2, const glm::vec2& point3);
+    static bool isPolygonClockwise(const glm::vec2& point1,
+                                   const glm::vec2& point2,
+                                   const glm::vec2& point3);
 
     //! Helper function that creates and sets the parameters for a coloured geometry buffer
     static GeometryBuffer& setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
@@ -197,6 +205,44 @@ private:
 
     //! Helper function for getting the stroke Colour from an SVGPaintStyle
     static CEGUI::Colour getStrokeColour(const SVGPaintStyle& paint_style);
+
+    
+    static void createCircleFill(const float& radius,
+                                 float max_scale,
+                                 const SVGPaintStyle& paint_style,
+                                 GeometryBuffer& geometry_buffer);
+
+    static void calculateCircleTesselationParameters(const float radius,
+                                                     const float max_scale,
+                                                     float& num_segments,
+                                                     float& theta);
+
+    static void createCirclePoints(const float radius,
+                                   const float theta,
+                                   const float num_segments,
+                                   std::vector<glm::vec2>& circle_points);
+
+    static void createCircleStroke(const float& radius,
+                                   float max_scale,
+                                   const SVGPaintStyle& paint_style,
+                                   GeometryBuffer& geometry_buffer);
+
+    //! Helper function for creating a circle's fill
+    static void createCircleFillGeometry(std::vector<glm::vec2>& points,
+                                 GeometryBuffer& geometry_buffer,
+                                 const SVGPaintStyle& paint_style);
+
+     //! Helper function for appending a circle fill triangle to a GeometryBuffer
+    static void addCircleFillGeometry(const glm::vec2& point1,
+                                      const glm::vec2& point2,
+                                      const glm::vec2& point3,
+                                      GeometryBuffer &geometry_buffer,
+                                      ColouredVertex &circle_fill_vertex);
+
+    static void createCircleStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
+                                           const std::vector<glm::vec2>& inner_circle_points,
+                                           const SVGPaintStyle& paint_style,
+                                           GeometryBuffer& geometry_buffer);
 };
 
 }
