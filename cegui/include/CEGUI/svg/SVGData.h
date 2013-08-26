@@ -213,28 +213,22 @@ protected:
 
     /*!
     \brief
+        Function that handles opening SVG 'line' elements.
+
+    \note
+        This function processes the SVG 'line' element.
+    */
+    void elementSVGLine(const XMLAttributes& attributes);
+
+    /*!
+    \brief
         Function that handles opening SVG 'polyline' elements.
 
     \note
         This function processes the SVG 'polyline' element.
     */
     void elementSVGPolyline(const XMLAttributes& attributes);
-    
 
-    /*!
-    \brief
-        Function that parses a String into an SVG length object and returns it.
-
-    \param length_string
-        The String containing the characters that should be parsed into an SVG length.
-
-    \return
-        The SVGLength object.
-
-    \exception SVGParsingException          thrown if there was some problem parsing the String.
-    */
-    static SVGData::SVGLength parseLengthDataType(const String& length_string);
- 
 
     //! Name of this SVGData objects
     CEGUI::String d_name;
@@ -269,35 +263,52 @@ private:
     */
     static SVGPaintStyle parsePaintStyle(const XMLAttributes& attributes);
 
-    //! Parses the attribute String of a 'fill' property 
+    //! Parses the String value of a 'fill' property 
     static void parsePaintStyleFillString(const String& fillString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'fill-opacity' property
+    //! Parses the String value of a 'fill-opacity' property
     static void parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke' property 
+    //! Parses the String value of a 'stroke' property 
     static void parsePaintStyleStroke(const String& strokeString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-width' property 
+    //! Parses the String value of a 'stroke-width' property 
     static void parsePaintStyleStrokeWidth(const String& strokeWidthString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-linecap' property 
+    //! Parses the String value of a 'stroke-linecap' property 
     static void parsePaintStyleStrokeLinecap(const String& strokeLinecapString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-linejoin' property 
+    //! Parses the String value of a 'stroke-linejoin' property 
     static void parsePaintStyleStrokeLinejoin(const String& strokeLinejoinString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-miterlimit' property 
+    //! Parses the String value of a 'stroke-miterlimit' property 
     static void parsePaintStyleMiterlimitString(const String& strokeMiterLimitString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-dasharray' property 
+    //! Parses the String value of a 'stroke-dasharray' property 
     static void parsePaintStyleStrokeDashArray(const String& strokeDashArrayString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-dashoffset' property 
+    //! Parses the String value of a 'stroke-dashoffset' property 
     static void parsePaintStyleStrokeDashOffset(const String& strokeDashOffsetString, SVGPaintStyle& paint_style);
 
-    //! Parses the attribute String of a 'stroke-opacity' property 
+    //! Parses the String value of a 'stroke-opacity' property 
     static void parsePaintStyleStrokeOpacity(const String& strokeOpacityString, SVGPaintStyle& paint_style);
+
+    /*!
+    \brief
+        Function that parses a String into an SVG length object and returns it.
+
+    \param length_string
+        The String containing the characters that should be parsed into an SVG length.
+
+    \return
+        The SVGLength object.
+
+    \exception SVGParsingException          thrown if there was some problem parsing the String.
+    */
+    static SVGData::SVGLength parseLengthDataType(const String& length_string);
+
+    //! Parses the String value of a 'points' property 
+    static void parsePointsString(const String &pointsString, std::vector<glm::vec2>& points);
 
     /*!
     \brief
@@ -319,7 +330,7 @@ private:
     \brief
         Function that parses an SVG paint colour and returns the CEGUI Colour created from it.
     \param colour_string
-        The colour attribute string from which the colour values will be parsed;
+        The colour String value from which the colour values will be parsed;
     */
     static glm::vec3 parseColour(const CEGUI::String& colour_string);
 };

@@ -151,6 +151,37 @@ public:
     float d_r;
 };
 
+/*!
+\brief
+    Defines a class for storing the data of the SVG 'line' element based on how it is defined in the SVG standard.
+
+    The 'line' element defines a line segment that starts at one point and ends at another.
+    http://www.w3.org/TR/SVGTiny12/shapes.html#LineElement
+*/
+class CEGUIEXPORT SVGLine : public SVGBasicShape
+{
+public:
+    //! Constructor
+    SVGLine(const SVGPaintStyle& paint_style, const glm::mat3x3& transformation,
+            const float x1, const float y1,
+            const float x2, const float y2);
+
+    SVGLine()
+    {}
+
+    //! Implementation of SVGBasicShape interface
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const SVGImage::SVGImageRenderSettings& render_settings) const;
+
+    //! The x-axis coordinate of the start of the line
+    float d_x1;
+    //! The y-axis coordinate of the start of the line
+    float d_y1;
+    //! The x-axis coordinate of the end of the line
+    float d_x2;
+    //! The y-axis coordinate of the end of the line
+    float d_y2;
+};
 
 /*!
 \brief

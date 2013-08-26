@@ -35,9 +35,13 @@
 
 #include <cmath>
 
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//Internal numeric value for  circle roundness. The lower, the better tesselated the
+//circle will be. We will set it to an, for our needs, appropriate fixed value.
+const float CircleRoundnessValue = 1.5f;
 
 //----------------------------------------------------------------------------//
 SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buffer,
@@ -64,6 +68,34 @@ void SVGTesselator::StrokeSegmentData::setPoints(const glm::vec2& prev_point,
 }
 
 //----------------------------------------------------------------------------//
+void SVGTesselator::tesselateAndRenderLine(const SVGLine* line,
+                                           std::vector<GeometryBuffer*>& geometry_buffers,
+                                           const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, line->d_transformation);
+
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = line->d_paintStyle;
+
+    //Get stroke colour, 'line' elements can never have a fill
+    const Colour stroke_colour = getStrokeColour(paint_style);
+
+    //Get the half of the stroke width
+    const float stroke_half_width = paint_style.d_strokeWidth * 0.5f;
+
+    //Create the polyline stroke vertex
+    ColouredVertex line_stroke_vertex(glm::vec3(), stroke_colour);
+
+    //Create the line points and add them to the stroke points list
+    std::vector<glm::vec2> points;
+    points.push_back(glm::vec2(line->d_x1, line->d_y1));
+    points.push_back(glm::vec2(line->d_x2, line->d_y2));
+
+    //Create and append the polyline's stroke geometry
+    createStroke(points, geometry_buffer, paint_style, false);
+}
+
+//----------------------------------------------------------------------------//
 void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
                                                std::vector<GeometryBuffer*>& geometry_buffers,
                                                const SVGImage::SVGImageRenderSettings& render_settings)
@@ -87,7 +119,7 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
     ColouredVertex line_stroke_vertex(glm::vec3(), stroke_colour);
 
     //Create and append the polyline's stroke geometry
-    createStroke(points, paint_style, geometry_buffer, false);
+    createStroke(points, geometry_buffer, paint_style, false);
 }
 
 
@@ -139,7 +171,7 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
     geometry_buffer.appendVertex(rectFillVertex);
 
     //Create and append the rectangle's stroke geometry
-    createStroke(rectangle_points, paint_style, geometry_buffer, true);
+    createStroke(rectangle_points, geometry_buffer, paint_style, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -150,48 +182,21 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, circle->d_cx,
                                            0.0f, 1.0f, circle->d_cy,
                                            0.0f, 0.0f, 1.0f ) * circle->d_transformation;
-    
+
     //The shape's paint styles
     const SVGPaintStyle& paint_style = circle->d_paintStyle;
 
     //We need this to determine the resolution in which we will render the circle segments
     float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+
     //Get the radius
     const float& radius = circle->d_r;
 
-    //The numeric value of circle roundess can be set freely. The lower, the better tesselated the circle will be.
-    static const float circle_roundness_value = 1.5f;
-    //Adapt amount of tesselation to the scale
-    const float segment_length = circle_roundness_value / max_scale;
-    float theta = std::acos( 1 - ( segment_length / radius ) );
-    float num_segments = (2.0f * glm::pi<float>()) / theta;
-
-    //Precalculate the sine and cosine
-	float cos_value = std::cos(theta);
-	float sin_value = std::sin(theta);
-	float temp_value;
-
-    //Creat the circle points
-    //We start at angle = 0 
-    std::vector<glm::vec2> circle_points;
-    glm::vec2 current_pos(radius, 0);
-	for(int i = 0; i < num_segments; i++) 
-	{ 
-		//Rotate
-		temp_value = current_pos.x;
-		current_pos.x = cos_value * current_pos.x - sin_value * current_pos.y;
-		current_pos.y = sin_value * temp_value + cos_value * current_pos.y;
-
-        circle_points.push_back(current_pos);
-	} 
-
-    bool is_shape_closed = true;
-
     GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
 
-    createCircleFill(circle_points, geometry_buffer, paint_style);
+    createCircleFill(radius, max_scale, paint_style, geometry_buffer);
 
-    createStroke(circle_points, paint_style, geometry_buffer, is_shape_closed);
+    createCircleStroke(radius, max_scale, paint_style, geometry_buffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -288,8 +293,8 @@ bool SVGTesselator::isPolygonClockwise(const glm::vec2& point1, const glm::vec2&
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
-                                 const SVGPaintStyle& paint_style,
                                  GeometryBuffer& geometry_buffer,
+                                 const SVGPaintStyle& paint_style,
                                  const bool is_shape_closed)
 {
     if(points.size() <= 1 || paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
@@ -492,6 +497,7 @@ void SVGTesselator::addStrokeSegmentConnectionGeometry(StrokeSegmentData& stroke
     geometry_buffer.appendVertex(stroke_fill_vertex);
 }
 
+//----------------------------------------------------------------------------//
 void SVGTesselator::addStrokeSegmentTriangleGeometry(StrokeSegmentData &stroke_data,
                                                   const glm::vec2& segmentEndLeft,
                                                   const glm::vec2& segmentEndRight,
@@ -510,6 +516,7 @@ void SVGTesselator::addStrokeSegmentTriangleGeometry(StrokeSegmentData &stroke_d
     geometry_buffer.appendVertex(stroke_fill_vertex);
 }
 
+//----------------------------------------------------------------------------//
 void SVGTesselator::addCircleFillGeometry(const glm::vec2& point1,
                                           const glm::vec2& point2,
                                           const glm::vec2& point3,
@@ -526,7 +533,8 @@ void SVGTesselator::addCircleFillGeometry(const glm::vec2& point1,
     geometry_buffer.appendVertex(circle_fill_vertex);
 }
 
-void SVGTesselator::createCircleFill(std::vector<glm::vec2>& points,
+//----------------------------------------------------------------------------//
+void SVGTesselator::createCircleFillGeometry(std::vector<glm::vec2>& points,
                                      GeometryBuffer& geometry_buffer,
                                      const SVGPaintStyle& paint_style)
 {
@@ -536,11 +544,151 @@ void SVGTesselator::createCircleFill(std::vector<glm::vec2>& points,
     //Create the rectangle fill vertex
     ColouredVertex fill_vertex(glm::vec3(), getFillColour(paint_style));
 
+    //Fixed triangle fan point
     const glm::vec2& point1 = points[0];
 
     const size_t maximum_index = points.size() - 1;
     for(size_t i = 1; i < maximum_index - 1; ++i)
         addCircleFillGeometry(point1, points[i], points[i + 1], geometry_buffer, fill_vertex);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createCircleFill(const float& radius,
+                                     float max_scale,
+                                     const SVGPaintStyle& paint_style,
+                                     GeometryBuffer& geometry_buffer)
+{
+    if(paint_style.d_fill.d_none)
+        return;
+
+    //Calculate values needed for the circle tesselation
+    float num_segments;
+    float theta;
+    calculateCircleTesselationParameters(radius, max_scale, num_segments, theta);
+
+    //Create the circle points
+    std::vector<glm::vec2> circle_points;
+    createCirclePoints(radius, theta, num_segments, circle_points);
+
+    //Generate the geometry from the the circle points
+    createCircleFillGeometry(circle_points, geometry_buffer, paint_style);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createCircleStroke(const float& radius,
+                                       float max_scale,
+                                       const SVGPaintStyle& paint_style,
+                                       GeometryBuffer& geometry_buffer)
+{
+    if(paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
+        return;
+
+    const float& stroke_width =  paint_style.d_strokeWidth;
+
+    float outer_radius = stroke_width * 0.5f + radius;
+    float inner_radius = -stroke_width * 0.5f + radius;
+
+    //Calculate values needed for the circle tesselation
+    float num_segments;
+    float theta;
+    calculateCircleTesselationParameters(radius, max_scale, num_segments, theta);
+
+    //Precalculate the sine and cosine
+    float cos_value = std::cos(theta);
+    float sin_value = std::sin(theta);
+    float temp_value;
+
+    //Creat the circle points
+    //We start at angle = 0 
+    std::vector<glm::vec2> outer_circle_points;
+    std::vector<glm::vec2> inner_circle_points;
+    glm::vec2 current_pos_outer(outer_radius, 0.0f);
+    glm::vec2 current_pos_inner(inner_radius, 0.0f);
+    for(int i = 0; i < num_segments; i++) 
+    { 
+        //Rotate outer circle point
+        temp_value = current_pos_outer.x;
+        current_pos_outer.x = cos_value * current_pos_outer.x - sin_value * current_pos_outer.y;
+        current_pos_outer.y = sin_value * temp_value + cos_value * current_pos_outer.y;
+
+        outer_circle_points.push_back(current_pos_outer);
+
+        //Rotate inner circle point
+        temp_value = current_pos_inner.x;
+        current_pos_inner.x = cos_value * current_pos_inner.x - sin_value * current_pos_inner.y;
+        current_pos_inner.y = sin_value * temp_value + cos_value * current_pos_inner.y;
+
+        inner_circle_points.push_back(current_pos_inner);
+    } 
+
+    createCircleStrokeGeometry(outer_circle_points, inner_circle_points, paint_style, geometry_buffer);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createCircleStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
+                                               const std::vector<glm::vec2>& inner_circle_points,
+                                               const SVGPaintStyle& paint_style,
+                                               GeometryBuffer& geometry_buffer)
+{
+    //Create the rectangle fill vertex
+    ColouredVertex stroke_vertex(glm::vec3(), getStrokeColour(paint_style));
+
+    size_t circle_points_count = outer_circle_points.size();
+    for(size_t i = 0; i < circle_points_count; ++i)
+    {
+        int next_index = i + 1;
+        if(next_index == circle_points_count)
+            next_index = 0;
+
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = outer_circle_points[i];
+        geometry_buffer.appendVertex(stroke_vertex);
+
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = outer_circle_points[next_index];
+        geometry_buffer.appendVertex(stroke_vertex);
+
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = inner_circle_points[i];
+        geometry_buffer.appendVertex(stroke_vertex);
+
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = inner_circle_points[i];
+        geometry_buffer.appendVertex(stroke_vertex);
+
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = outer_circle_points[next_index];
+        geometry_buffer.appendVertex(stroke_vertex);
+
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = inner_circle_points[next_index];
+        geometry_buffer.appendVertex(stroke_vertex);
+    }
+}
+
+void SVGTesselator::createCirclePoints(const float radius, const float theta, const float num_segments, std::vector<glm::vec2>& circle_points)
+{
+    //Precalculate the sine and cosine
+    float cos_value = std::cos(theta);
+    float sin_value = std::sin(theta);
+    float temp_value;
+
+    //Create the circle points
+    //We start at angle = 0 
+    glm::vec2 current_pos(radius, 0.0f);
+    for(int i = 0; i < num_segments; i++) 
+    { 
+        //Rotate
+        temp_value = current_pos.x;
+        current_pos.x = cos_value * current_pos.x - sin_value * current_pos.y;
+        current_pos.y = sin_value * temp_value + cos_value * current_pos.y;
+
+        circle_points.push_back(current_pos);
+    }
+}
+
+void SVGTesselator::calculateCircleTesselationParameters(const float radius, const float max_scale, float& num_segments, float& theta)
+{
+    //Adapt the tesselation to the scale
+    float segment_length  = CircleRoundnessValue / max_scale;
+    theta = std::acos( 1.0f - ( segment_length / radius ) );
+
+    static const float two_pi = 2.0f * glm::pi<float>();
+    num_segments = two_pi / theta;
 }
 
 //----------------------------------------------------------------------------//
