@@ -27,6 +27,8 @@
  ***************************************************************************/
 #include "NavigationStrategies.h"
 
+#include <algorithm>
+
 using namespace CEGUI;
 using namespace NavigationStrategiesPayloads;
 
