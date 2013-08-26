@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUIWidgetDemo"
+    type      = "C++ Module"
+    summary         = "The widget demo allows to choose a widget from the stock CEGUI skins. The widget will then be displayed and can be interacted with. In addition all occuring events will be logged in the event logger below the widget display. By accessing the &quot;Properties&quot; tab, the user can see all properties the widget has and their respective current values."
+    description     = "The demos code is quite specific and probably not of use for most developers. It makes use of the list of mapped widgets and subscribes to all throwable events of it. The properties are retrieved from the widget using the PropertyIterator. The greatest use of this demo for users is to see the available properties of specific widgets and to interactively inspect how events are thrown and how widgets look. Additionally the special setup of certain widgets, for example in initItemListbox(), initListbox(), initMenubar() and initMultiColumnList(), can be useful interesting to look at in the code"
+    credits         = "Lukas &quot;Ident&quot; Meindl"
+/>

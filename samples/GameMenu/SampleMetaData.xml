@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUIGameMenuDemo"
+    type      = "C++ Module"
+    summary         = "Displays a science-fiction game menu using a lot of animations."
+    description     = "The demo uses a custom skin (look n' feel) and a great variety of animations defined. The animations are loaded from xml and utilized via C++ code. For the animated windows, which do not display text, the pixel alignment setting was switched off for smoother transitions, and event handlers are used to control the animations."
+    credits         = "Lukas &quot;Ident&quot; Meindl, graphics: Charles &quot;Syg&quot; Mattei"
+    />

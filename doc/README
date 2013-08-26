@@ -1,0 +1,8 @@
+Crazy Eddie's GUI System Mk-2
+http://www.cegui.org.uk
+
+Copyright ©2004 - 2008 CEGUI Team & Contributing Authors
+
+The majority of the auxiliary files for CEGUI, that used to be plain text, are
+now kept in a "doxygenised" format within the doc/doxygen directory - please
+see those files, or generate the documentation for a more friendly format.

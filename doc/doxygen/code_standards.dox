@@ -1,0 +1,323 @@
+/**
+@page code_standards Coding Standards in use for CEGUI
+@author Paul D Turner
+
+This page details the coding standards and general style that should be employed when working on code for the CEGUI project.  I am well aware that some of the existing code does not comply with these standards; though all new code should now be written to comply, and older code will be migrated over a period of time.
+
+@section code_standards_sec_1 Files
+Here we describe the requirements relating to files; their naming, layout and arrangement on disk.
+
+@subsection code_standards_sec_1_1 Naming and Directory Layout
+This section contains some general guidelines on naming and arranging files.
+- The source code in general exists in two groups; the library code itself, and code for the sample browser and sample application modules:
+    - The library code, beneath the @b cegui directory, is contained within dual directory trees - one beneath the @b src directory to contain all the implementation .cpp files, and one beneath the @b include/CEGUI directory to contain all the header .h files.  Within these directories, there is a seperate subdirectory for each group of modules or subcomponents within the system.  For example there are subdirectories for @b RendererModules and @b XMLParserModules to hold the renderer module code and XML parser module code respectively; these directories then have further subdirectories for each individual module.
+    - The sample code, beneath the @b samples directory, has individual directories for each sample application.  The implementation and header files for the sample should both appear together in this directory; there should be no separate @b src and @b include subdirectories for the samples.
+- File names should not contain spaces, although the use of the underscore is acceptable where neccessary.
+- File names should the initial letter of each word captialised.
+- Files should generally be named after the class or module to which they relate.  For example, the file @b MyClass.h would be the main header for the class named @b MyClass.
+- Source files within CEGUI should use the following convention:
+    - C++ header files should have the @b .h file extension.
+    - C++ source files should have the @b .cpp file extension.
+    - Lua source files should have the @b .lua file extension.
+    - Extra Doxygen documentation files should have the @b .dox file extentsion.
+
+@subsection code_standards_sec_1_2 General Structure and Layout
+- All source files are required to have the basic file header that can bee seen in existing files.  The information in the header is the filename, the date the file was created, the name and email address of the person who created the file, and the standard copyright/license notice as follows:
+@code
+/*******************************************************************************
+    Filename: <name of the file, including extension>
+    Created:  <date the file was created>
+    Author:   <name and email of the original file author>
+*******************************************************************************/
+/***************************************************************************
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
+ *
+ *   Permission is hereby granted, free of charge, to any person obtaining
+ *   a copy of this software and associated documentation files (the
+ *   "Software"), to deal in the Software without restriction, including
+ *   without limitation the rights to use, copy, modify, merge, publish,
+ *   distribute, sublicense, and/or sell copies of the Software, and to
+ *   permit persons to whom the Software is furnished to do so, subject to
+ *   the following conditions:
+ *
+ *   The above copyright notice and this permission notice shall be
+ *   included in all copies or substantial portions of the Software.
+ *
+ *   THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ *   EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+ *   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ *   IN NO EVENT SHALL THE AUTHORS BE LIABLE FOR ANY CLAIM, DAMAGES OR
+ *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
+ *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
+ *   OTHER DEALINGS IN THE SOFTWARE.
+ ***************************************************************************/
+@endcode
+
+- All header files should have include guards implemented via preprocessor @c \#ifdef/\#endif commands.  We do not want any pragma rubbish used for this as it's worse than useless as far as being portable goes.  The macro used to control the header should be based upon the filename.
+
+- Please ensure that all files have a newline at the end of them.  Depending upon the layout of included files and various other things, not having a newline has the potential to cause code not to compile correctly - especially in relation to headers.  Plus it gives loads of annoying warnings on some compilers :)
+
+- Wherever possible preprocessor macros should <em>not be used</em>.  Always prefer the use of an actual language construct (such as typedef or enum) over a preprocessor @c \#define.
+
+- Wherever possible header files should contain Doxygen documentation for all classes, data and functions.  There will be <em>very few</em>, if any, exceptions to this rule.
+
+- In source files, definitions of the various data groups and each member function should be separated by a line, thus:
+@code
+//----------------------------------------------------------------------------//
+@endcode
+
+- Implementation code belongs in the implementation .cpp files, not in the header files.  There are very few cases, such as for template implementation, where c++ code should appear in header files.
+
+- The general content of a header file should be in the following order:
+    - File header.
+    - Include guard.
+    - #include statements (grouped according to library where appropriate).
+    - Preprocessor macro defines (especially try to avoid these in headers).
+    - Class forward references.
+    - Global declarations.
+    - Class declarations.
+    - Code implementaions - for example, for templatised functions.
+
+- The general content of a source file should be in the following order:
+    - File header.
+    - #include statements (grouped according to library where appropriate).
+    - Preprocessor macro defines (avoid where possible).
+    - Global definitions.
+    - Class static data definitions.
+    - Class member function definitions.
+
+@section code_standards_sec_2 Code Style and Layout
+The following details the general code style and layout that should be used.
+
+@subsection code_standards_sec_2_1 Naming Conventions for Types, Variables, Members and Constants
+- Preprocessor macro names should be all upper case with words separated by the underscore character.  Wherever possible, do not use preprocessor macros.  A general exception to this particular rule is the name of include guards which may have case matching that of the header filename.
+
+- All types (namespaces, classes, structs, typedefs and enums) should have descriptive names and use PascalCase; where each word of the name is capitalised - such as in @b MyClass.
+
+- Constants should be all upper case with words separated by an underscore, such as in @b THIS_IS_CONSTANT.  Please note that this rule does also apply to class member constants and enumeration values.
+
+- Global variables should use camel case; where each word in the name is capitalised except the first word.  Globals should be prefixed with @b G_.  So if we had a global we want to call 'nastyVariable' it should be named @b G_nastyVariable - yes, it looks horrible, and hopefully it's horrible enough that you find another way!
+
+- Class member variables should be camel case; where each word in the name is capitalised except the first word, such as in @b thisVariable.  Normal members should have the prefix @b d_ (for data, don't ask!), such as in @b d_thisVariable, while static members should have the prefix @b s_, such as in @b s_anotherVariable.
+
+- Class member functions should be camel case; where each word in the name is capitalised except the first word, such as in @b theFunction.  Member functions do not use prefixes.
+
+- Local variables in functions should be all lower case with an underscore between words, such as in @b word_count.
+
+- Parameter names are treated the same as other local variables, so should be named all lower case with an underscore between words, such as in @b char_count.
+
+@subsection code_standards_sec_2_2 Code Formatting Style and Other Tips
+- Generally speaking no line in any file - whether code or just plain
+text - should be more than 80 characters long. Long lines are really hard to
+read and lead to general bad programming practice.
+
+- Tab spacing size should be 4. But...
+
+- Do not use actual tabs, have your editor insert spaces instead. This is very
+important.
+
+- Code within functions should be split into logical groups by the use of blank lines where appropriate.  Generally any control structure (if, while, case, do and so on) should be both preceded and followed by a blank line.
+
+- Regarding comments, we prefer well written, self documenting code that
+requires no comments. However, if it is deemed a comment is needed, write the
+comment first; always put it before the line or block it pertains to.  This
+helps to ensure the comment indicates the intent of the code that you then
+write, rather than parrotting what is obvious from the code, which tends to
+happen when adding comments afterwards - we can already see what the code
+\e does, what we're interested in is it's \e purpose; the why as opposed to the
+what.
+
+- Any and all braces opening a code block should be on their own line, and not attached to the control structure that came before.  That is, like this:
+@code
+if (something == 1)
+{
+    ...
+}
+@endcode
+but not like this:
+@code
+if (something == 1) {
+    ...
+}
+@endcode
+
+- Class declarations should not have the protection level specifiers indented.  It should be like this:
+@code
+class SomeClass
+{
+public:
+    SomeClass();
+};
+@endcode
+rather than like this:
+@code
+class SomeClass
+{
+    public:
+        SomeClass();
+};
+@endcode
+
+- Namespace content should not be indented; it wastes too much line space.  It should be like this:
+@code
+namespace SomeNamespace
+{
+class SomeClass
+{
+public:
+    SomeClass();
+@endcode
+as opposed to this:
+@code
+namespace SomeNamespace
+{
+    class SomeClass
+    {
+    public:
+        SomeClass();
+@endcode
+
+- Switch case statements should not be indented, though the case code should.  Any required braces should appear in line with the case to which they pertain, such as in:
+@code
+switch (somevar)
+{
+case 1:
+    x = x + 1;
+    break;
+
+case 2:
+{
+    int y = 2;
+    x = x + y;
+    break;
+}
+}
+@endcode
+It should not contain anything like you see here:
+@code
+switch (somevar)
+{
+    case 1:
+        x = x + 1;
+        break;
+
+    case 2:
+        {
+            int y = 2;
+            x = x + y;
+            break;
+        }
+}
+@endcode
+
+- The general layout of a function definition (in the .cpp source file) should have the return type on the same line, such as this:
+@code
+std::string SomeClass::getString(const char* c_str)
+{
+    ...
+}
+@endcode
+
+- Use of single line code blocks both with or without braces for loop and condition constructs is allowed.  Though generally you should prefer the form without braces.
+@code
+// This is preferred
+if (something == true)
+    doSomething();
+
+// Though this is fine, also
+if (something_else == true)
+{
+    doSomethingElse();
+}
+@endcode
+
+- Having multiple statements on a single line is not allowed, even for control structures.  Each statement should be on its own line.  Code should be like this:
+@code
+if (x == 0)
+    x = 1;
+
+x = 2;
+x += y;
+@endcode
+Code should not be like this:
+@code
+if (x == 0) x = 1;
+
+x = 2; x += y;
+@endcode
+
+- There should be a space between a control statement and its control expression.  Use this:
+@code
+if (something)
+    x = y;
+@endcode
+Not this:
+@code
+if(something)
+    x = y;
+@endcode
+
+- When calling a function, there should be no space between the function name and the parenthesis containing the arguments.  So, like this:
+@code
+an_object->callFunction(x, y, x);
+@endcode
+Not like this:
+@code
+an_object->callFunction (x, y, x);
+@endcode
+
+- There should generally not be spaces around parenthesis (unless otherwise excepted above).  Code should look like this:
+@code
+a = calculate((x + y) * z);
+@endcode
+Not like this:
+@code
+a = calculate( ( x + y ) * z );
+@endcode
+
+- There should be spaces both sides of virtually all operators, except the comma which just  has one following it.  An example of correct usage is:
+@code
+a = calculate((x + y) * z);
+b = doSomething(a, x, y);
+@endcode
+Not anything like these:
+@code
+a = calculate((x+y)*z);
+b=doSomething(a,x , y);
+@endcode
+
+- When creating a pointer or reference variable the asterisk or ampersand should be attached to the type name not the variable name.  These are correct:
+@code
+SomeClass* class_ptr;
+
+SomeClass& class_ref = an_object;
+@endcode
+While these are not:
+@code
+SomeClass *class_ptr;
+AnotherClass * another_ptr;
+
+SomeClass &class_ref = an_object;
+@endcode
+
+- When dereferencing a pointer or taking the address of some object, the asterisk or ampersand should be attached to the variable name, like this:
+@code
+SomeClass& class_ref = *class_ptr;
+
+a_ptr = &an_object;
+@endcode
+
+- String and/or character literals should not appear in production code; use constant definitions instead.
+
+- Magic numbers should not appear in production code; use constant definitions instead.  In general the only number that may appear in production code is \c 0.
+
+- Use of \c NULL is not allowed; use \c 0 instead.  \c NULL is just a macro definition and does not exist in any other form in the C++ language, so it should not be used.
+
+- When defining class constructors, use of member initialiser lists is to be strongly preferred over the use of assignments in the constructor body.
+
+- Only use C++ style casts.  C style casts should not be used.  Or better yet, find a way not to use the cast at all!
+
+- Do not use any language or STL constructs from C++11. We intend to support
+non-c++11 compilers for the forseeable future.
+
+*/

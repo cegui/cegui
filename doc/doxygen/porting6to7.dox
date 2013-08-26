@@ -1,0 +1,399 @@
+namespace CEGUI {
+/**
+@page porting6to7 Porting from CEGUI 0.6.x to CEGUI 0.7.x
+@author Paul D Turner
+
+This page lists the major breaking changes, and other related changes, made to
+the library for the 0.7.x series of releases.
+
+@note A small number of these changes are reversions of poorly considered and/or
+poorly implemented facilities added in the 0.6.x series.  In most cases this
+removed functionality is believed largely unused or similar results achievable
+via previously existing facilities.
+
+@note Also note that while attempts have been made to see that most of the major
+changes are listed on this page, it's entirely possible - even likely - that
+somewhere along the line some things have been missed out.  In those cases,
+please visit the <a href="http://forums.cegui.org.uk/">CEGUI forums</a>.
+
+<br>
+<b>Code organisation and structure</b>
+- The overall structure of the CEGUI code tree has been considerably
+modified:
+    - All actual code for the library and associated modules has been relocated
+      beneath a 'cegui' directory, within this directory there is are src and
+      include subdirectories that contain the source code and public headers
+      respectively.  Possibly one of the main advantages of this is that
+      non-linux based systems will now have an identical header layout to what
+      linux has always had.
+    - The datafiles directory has moved from Samples to the root directory.
+    - The XMLRefSchema directory has moved into the datafiles directory and is
+      renamed xml_schemas.
+    - Other changes will largely have minimal impact so we've not covered
+      everything in minute detail.
+
+- The file and directory naming for Renderer implementations has been modified,
+although is now unified for all implementations:
+    - Headers are now accessed:
+@code
+RendererModules/<name of API>/CEGUI<name of API><name of component>.h
+@endcode
+    - Examples:
+        - the OpenGL renderer header is at:
+@code
+RendererModules/OpenGL/CEGUIOpenGLRenderer.h
+@endcode
+        - the Ogre geometry buffer header is at:
+@code
+RendererModules/Ogre/CEGUIOgreGeometryBuffer.h
+@endcode
+        - the Direct3D10 render target header is at:
+@code
+RendererModules/Direct3D10/CEGUIDirect3D10RenderTarget.h
+@endcode
+
+<br>
+<b>Windows specific and/or MSVC++ specific changes</b>
+- The renderer module output has been unified with that of other systems, so
+for example, rather than @c OpenGLGUIRenderer.dll it's now
+@c CEGUIOpenGLRenderer.dll.
+
+<br>
+<b>Apple Mac specific and/or Xcode specific changes</b>
+- We are changing the default bundle locations regarding both embedded
+frameworks and loadable bundles:
+    - Previously all frameworks were incorrectly expected to be in the app
+      bundle's @c Resources directory, additionally the XMLParser and ImageCodec
+      based loadable bundles were packaged within the CEGUI framework itself,
+      this has changed as follows:
+        - All CEGUI related frameworks are to be placed in the correct location
+          of the app bundle's @c Frameworks directory.
+        - The XMLParser and ImageCodec based modules are to be placed within the
+          app bundle's @c PlugIns directory.  This decision was taken because
+          it's up to each app developer to decide which loadable bundles they
+          want to support and so it's more logical to have those placed at the
+          app level rather than embedded deeper within the CEGUI frameworks.
+          Having said this, CEGUI will still look in the @c PlugIns location of
+          the CEGUIBase framework for bundles; if you wish to reconfigure the
+          loadable bundle targets to be placed there instead, CEGUI will find
+          them (it's just that it's not the preferred default).
+- The main framework is renamed from @c CEGUI to @c CEGUIBase.  This is mostly
+to have parity across all platforms as far as module names go, although also
+reflects the fact that 'CEGUI' on the Mac is no longer a monolithic entity.
+
+<br>
+<b>CEGUI::System changes</b>
+- System object constructor made private.  Construction is now to be done via
+the System::create static function.
+- System object destructor  made private.  Destruction is now to be done via the
+System::destroy static function.
+- Renderer object passed when creating the System object is now passed by
+reference instead of by pointer (reinforces that it may not be 0).
+
+<br>
+<b>Window and WindowRenderer factory registration changes</b>
+- There have been changes and additions to the way that new factories for Window
+and WindowRenderer subclasses are registered with the system.  This removes the
+old preprocessor macro based system with a much cleaner template based
+arrangement.  This means you no longer need to directly create your factory
+classes and nor do you need to keep static instances hanging around.  The
+overall impact of this means that it's now incredibly simple to register new
+classes with the system:
+    - If you have a Window subclass named 'MyWidget, to add this to the system
+      you can now simply do:
+@code
+CEGUI::WindowFactoryManager::addFactory<TplWindowFactory<MyWidget> >();
+@endcode
+    - If you have a WindowRenderer subclass named 'MyWidgetRenderer', to add
+      this to the system you can now simply do:
+@code
+CEGUI::WindowRendererManager::addFactory<TplWindowRendererFactory<MyWidgetRenderer> >();
+@endcode
+    - Anybody creating a WindowRenderSet module will find that the macro system
+      previously employed for that purpose has been removed in favour of a class
+      based approach.  As well as making the code more transparent and generally
+      easier to set up, it also means your module just needs to export a single
+      function that returns a CEGUI::WindowRendererModule object; all subsequent
+      interactions are done via the returned object.
+
+<br>
+<b>WindowManager changes</b>
+- WindowManager::loadWindowLayout overload taking a boolean and using a random
+prefix is removed.
+
+<br>
+<b>Window interface and/or behavioural changes.</b>
+- @c Window::getRenderCache is removed.  You probably now want to be doing
+something with Window::getGeometryBuffer.
+- @c Window::requestRedraw function is replaced by Window::invalidate function
+(NB: function also changes from const to non-const)
+- Window::drawSelf function has had the float z argument removed, and a const reference to a RenderingContext object argument added.
+- Protected data member RenderCache @c d_renderCache is removed.
+- Window::EventRenderingStarted and Window::EventRenderingEnded are now fired
+only when a Window object's GeometryBuffer content gets regenerated.
+- Window 'inner rect' support is now functioning as it should; this means that
+many layouts - especially those using FrameWindow - will need to be updated.  Or
+put another way, child content is now positioned and sized based upon the window
+client area (inner rect) as opposed to the overall area - this resolves long
+standing issues such as content getting hidden by the titlebar when sizing /
+switching skins.
+- @c Window::d_text is now known as Window#d_textLogical.
+- Rather than manipulate Window#d_textLogical directly, you should always go via
+Window::setText in order for bi-directional text support to function properly
+(when enabled/compiled in).
+- Window::createWindow 3rd argument @c prefix is removed.
+- @c Window::getPrefix and @c Window::setPrefix are removed.
+- @c Window::recursiveChildSearch is removed.
+- Window::isHit has an added boolean argument @c allow_disabled, which when set
+to true will test for a hit if the Window is disabled.  Don't forget to update
+the signatures of any overrides!
+- @c Window::getUnclippedPixelRect is renamed Window::getUnclippedOuterRect.
+- @c Window::getPixelRect is renamed Window::getOuterRectClipper, and should
+only really be used for clipping rendered content.
+- @c Window::getInnerRect is renamed Window::getInnerRectClipper, and should
+only really be used for clipping rendered content.
+- Added Window::getHitTestRect which returns the actual visible area of the
+outer rect - this area may not match the actual clipping area rects, which
+sometimes do not clip all they appear to ;)
+- Added Window::getUnclippedRect function taking a bool that indicates the inner
+or outer rect to be returned.
+- Added Window::getClipRect function taking a bool that indicates whether the
+content is for the non-client area, and so returns inner or outer clipper
+accordingly.
+- @c Window::getPixelRect_impl virtual function is removed.
+
+<br>
+<b>WindowRenderer changes</b>
+- @c WindowRenderer::getPixelRect virtual function is removed.
+
+<br>
+<b>Renderer interface changes and related items.</b>
+@note For people wanting an overview of the new renderer arrangements, perhaps
+prior to porting an existing renderer module (or if you're looking to writing a
+new one), please see <a href="http://pdt.myby.co.uk/cegui/files/CEGUI-Renderer-Model-2.pdf">An Overview
+of Renderer Model 2 (pdf)</a>
+
+- Renderer objects are no longer directly created or destroyed.  Use the static
+create and destroy functions to create the renderer objects (or for Ogre and
+Irrlicht, look at the bootstrapSystem static helper functions).
+- Unused @c OrientationFlags enumeration is removed.
+- @c Renderer::addQuad function is removed.  Geometry is now added directly to
+the per-window GeometryBuffer object(s).
+- @c Renderer::clearRenderList function is removed.
+- @c Renderer::setQueueingEnabled function is removed.
+- @c Renderer::isQueueingEnabled function is removed.
+- @c Renderer::doRender function is removed.  Final rendering is now achieved by
+calling RenderingSurface::draw for the root RenderingSurface(s).
+- @c Renderer::getWidth and @c getHeight functions are removed.
+- @c Renderer::getSize function becomes Renderer::getDisplaySize returning a
+const Size reference.
+- @c Renderer::getRect function is removed.
+- @c Renderer::getHorzScrennDPI and @c Renderer::getVertScreenDPI are replaced
+with a single Renderer::getDisplayDPI function returning a const Vector2
+reference.
+- @c Renderer::resetZValue function is removed.
+- @c Renderer::advanceZValue function is removed.
+- @c Renderer::getCurrentZ function is removed.
+- @c Renderer::getZLayer function is removed.
+- Renderer::createTexture function taking a single float value is replaced by
+Renderer::createTexture taking a const reference to a Size object.
+- @c Renderer::createResourceProvider function is removed.  A
+DefaultResourceProvider is now used unless you explicitly provide an
+alternative.
+- The protected member String @c d_identifierString is removed.
+- The protected member ResourceProvider @c d_resourceProvider is removed.
+- The Renderer class is no longer derived from EventSet.  The
+@c Renderer::EventDisplaySizeChanged is moved to the System object.  Informing
+the system that the display has changed size is now achieved by calling
+System::notifyDisplaySizeChanged, which in turn will set the display size back
+on the Renderer object.  This gives a fully uniform interface for this
+procedure, and is better than the old ad-hoc approach.
+
+<br>
+<b>Texture interface changes.</b>
+- @c Texture::getWidth and @c Texture::getHeight are replaced with a single
+Texture::getSize function returning a const Size reference.
+- @c Texture::getOriginalWidth and @c Texture::getOriginalHeight are replaced
+with a single Texture::getOriginalDataSize function returning a const Size
+reference.
+- @c Texture::getYScale and @c Texture::getXScale are replaced with a single
+Texture::getTexelScaling function returning a const Vector2 reference.
+- Texture::loadFromMemory replaces the float @c buffWidth and @c buffHeight
+arguments with a single Size object reference @c buffer_size argument.
+- @c Texture::getRenderer function is removed.
+
+<br>
+<b>Font and FontManager changes</b>
+- FontManager is now derived from new NamedXMLResourceManager template class
+(part of resource system improvements to make things cleaner and easier to
+maintain).
+- @c FontManager::createFont functions are renamed to FontManager::create
+(inherited from base class), FontManager::createFreeTypeFont and
+FontManager::createPixmapFont.  All have totally new signatures.
+- @c FontManager::destroyFont function renamed to FontManager::destroy
+(inherited from new base class).
+- @c FontManager::destroyAllFonts function renamed to FontManager::destroyAll
+(inherited from new base class).
+- @c FontManager::isFontPresent function is renamed to FontManager::isDefined
+(inherited from new base class).
+- FontManager::create, FontManager::createFreeTypeFont and
+FontManager::createPixmapFont functions return a Font reference rather than a
+pointer (to reinforce that it will never return 0).
+- @c FontManager::getFont function is renamed to FontManager::get (inherited
+from new base class)
+- FontManager::get returns a reference instead of a pointer (to reinforce that
+it will never return 0).
+- FontManager::create, FontManager::createFreeTypeFont and
+FontManager::createPixmapFont functions have an optional #XMLResourceExistsAction
+argument to indicate what action to take when loading a font with a name that
+already exists.
+- @c FontManager::notifyScreenResolution function renamed to
+FontManager::notifyDisplaySizeChanged.
+- @c Font::notifyScreenResolution function renamed to
+Font::notifyDisplaySizeChanged.
+- @c Font::drawWrappedText (protected) function is removed.
+- @c Font::drawTextLine (protected) function is removed.
+- @c Font::drawTextLineJustified (protected) function is removed.
+- @c Font::getNextWord (protected) function is removed.
+- @c Font::getWrappedTextExtent (protected) function is removed.
+- all Font::drawText overloaded functions replaced with a single drawText
+function (beware if you use the scale values - there is a new float in the
+signature that you may overlook).
+- Font::drawText function no longer returns a value (since it only ever renders
+one line).
+- Font::drawText function has an added argument receiving a GeometryBuffer
+reference, and have had the float z argument removed.
+- @c Font::getFormattedTextExtent function is removed.
+- Font properties @c "FileName" and @c "ResourceGroup" are removed.
+- Font property @c "Name" will no longer incorrectly allow a Font name to be
+changed (a 'soft' error is logged).
+
+<br>
+<b>Image, Imageset and ImagesetManager changes</b>
+- ImagesetManager is now derived from new NamedXMLResourceManager template class
+(part of resource system improvements to make things cleaner and easier to
+maintain).
+- @c ImagesetManager::createImageset functions are renamed to
+ImagesetManager::create (main one inherited from base class, and others for
+overload consistency).
+- @c ImagesetManager::destroyImageset functions renamed to
+ImagesetManager::destroy (inherited from new base class).
+- @c ImagesetManager::destroyAllImagesets function renamed to
+ImagesetManager::destroyAll (inherited from new base class).
+- @c ImagesetManager::isImagesetPresent function is renamed to
+ImagesetManager::isDefined (inherited from new base class).
+- @c ImagesetManager::createImagesetFromImageFile is renamed to
+ImagesetManager::createFromImageFile (remove verbosity / for consistency).
+- ImagesetManager::create and ImagesetManager::createFromImageFile functions
+return an Imageset reference rather than a pointer (to reinforce that they will
+never return 0)
+- @c ImagesetManager::getImageset function is renamed to ImagesetManager::get
+(inherited from new base class)
+- ImagesetManager::get returns a reference instead of a pointer (to reinforce
+that it will never return 0).
+- ImagesetManager::create and ImagesetManager::createFromImageFile functions
+have an optional #XMLResourceExistsAction argument to indicate what action to
+take when loading an imageset with a name that already exists.
+- ImagesetManager::create overload taking a Texture pointer is replaced with a
+version taking a Texture reference.
+- @c ImagesetManager::notifyScreenResolution function renamed to
+ImagesetManager::notifyDisplaySizeChanged.
+- All Imageset and Image drawing functions have an added argument receiving a
+GeometryBuffer reference, and have had the float z argument removed.
+- Imageset constructor taking a Texture pointer is replaced with a version
+taking a Texture reference.
+- @c Imageset::notifyScreenResolution function renamed to
+Imageset::notifyDisplaySizeChanged.
+
+<br>
+<b>Scheme and SchemeManager changes</b>
+- SchemeManager is now derived from new NamedXMLResourceManager template class
+(part of resource system improvements to make things cleaner and easier to
+maintain).
+- @c SchemeManager::loadScheme function is renamed to SchemeManager::create
+(inherited from base class)
+- @c SchemeManager::unloadScheme function renamed to SchemeManager::destroy
+(inherited from new base class).
+- @c SchemeManager::unloadAllSchemes function renamed to
+SchemeManager::destroyAll (inherited from new base class).
+- @c SchemeManager::isSchemePresent function is renamed to
+SchemeManager::isDefined (inherited from new base class).
+- @c SchemeManager::getScheme function is renamed to SchemeManager::get
+(inherited from new base class)
+- SchemeManager::get returns a reference instead of a pointer (to reinforce that
+it will never return 0).
+- SchemeManager::create returns a reference instead of a pointer (to reinforce
+that it will never return 0).
+- SchemeManager::create function has an optional #XMLResourceExistsAction
+argument to indicate what action to take when loading a scheme with a name that
+already exists.
+
+<br>
+<b>Events and input handling changes</b>
+- We have changed the way that inputs are marked as handled by the System.
+Generally speaking all mouse inputs are now marked as handled by the system,
+with the exception of events that get through to a DefaultWindow set as the root
+and has mouse pass-through enabled, in these cases the inject* functions will
+return false so you know the event was not handled by an actual UI element, and
+can proceed to consider the event for other functions (playfield picking
+etc...).
+- EventHandler#handled field is changed from a bool to a CEGUI::uint.
+Anywhere you previously did:
+@code
+args.handled = true;
+@endcode
+should be updated to:
+@code
+ ++args.handled;
+@endcode
+The boolean return values from subscribed event handlers are
+unchanged; the EventArgs#handled counter is increased for each subscribed
+handler that returns true.
+
+<br>
+<b>Exception changes</b>
+- CEGUI::Exception is now derived from std::exception.  If you need to
+differentiate between the two, make sure you catch your CEGUI::Exceptions first!
+
+<br>
+<b>Scripting and script module changes</b>
+- @c ScriptWindowHelper is removed.
+- @c ScriptModule::getLanguage is removed.
+- LuaScriptModule object constructor made private.  Construction is now to be
+done via the LuaScriptModule::create static function.
+- LuaScriptModule object destructor  made private.  Destruction is now to be
+done via the LuaScriptModule::destroy static function.
+- Global 'this' value that was (sometimes) available within lua event handlers
+is removed.
+
+<br>
+<b>XML Config file changes</b>
+- Old config file system has been totally replaced (old configs will no longer
+work).  For details of the new config file support, see: @ref xml_config
+
+<br>
+<b>Falagard WindowRenderer set changes</b>
+- @c FalagardStaticText::HorzFormatting enumeration removed, use
+#HorizontalTextFormatting enumeration instead.
+- @c FalagardStaticText::VertFormatting enumeration removed, use
+#VerticalTextFormatting enumeration instead.
+- FalagardStaticText::getHorizontalFormatting modified to return a
+#HorzontalTextFormatting value.
+- FalagardStaticText::getVerticalFormatting modified to return a
+#VerticalTextFormatting value.
+- FalagardStaticText::setHorizontalFormatting modified to take a
+#HorzontalTextFormatting value.
+- FalagardStaticText::setVerticalFormatting modified to take a
+#VerticalTextFormatting value.
+
+<br>
+<b>Miscellany</b>
+- @c ListboxItem::d_itemText renamed to ListboxItem#d_textLogical.
+- @c TreeItem::d_itemText renamed to TreeItem#d_textLogical.
+- Unused(?) header CEGUITask.h removed.
+- InstancedWindows demo removed.
+- @c TextFormatting enumeration is removed, use #VerticalTextFormatting and
+#HorizontalTextFormatting enumerations instead.
+
+*/
+}
