@@ -112,6 +112,18 @@
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
         </ImagerySection>
+		<ImagerySection name="focused">
+            <FrameComponent>
+                <Image component="LeftEdge" name="TaharezLook/ButtonLeftFocused" />
+                <Image component="RightEdge" name="TaharezLook/ButtonRightFocused" />
+                <Image component="Background" name="TaharezLook/ButtonMiddleFocused" />
+            </FrameComponent>
+            <ImageryComponent>
+                <ImageProperty name="HoverImage" />
+                <VertFormatProperty name="VertImageFormatting" />
+                <HorzFormatProperty name="HorzImageFormatting" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -151,6 +163,14 @@
                 </Section>
                 <Section section="label">
                     <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+		<StateImagery name="Focused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
@@ -307,6 +327,13 @@
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
         </ImagerySection>
+		<ImagerySection name="focused">
+            <ImageryComponent>
+                <Image name="TaharezLook/CheckboxFocused" />
+                <VertFormat type="CentreAligned" />
+                <HorzFormat type="LeftAligned" />
+            </ImageryComponent>
+        </ImagerySection>
         <StateImagery name="Normal">
             <Layer>
                 <Section section="normal" />
@@ -361,6 +388,14 @@
                 </Section>
                 <Section section="label">
                     <ColourProperty name="DisabledTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+		<StateImagery name="Focused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
                 </Section>
             </Layer>
         </StateImagery>
