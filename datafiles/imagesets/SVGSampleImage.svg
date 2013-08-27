@@ -13,5 +13,5 @@
 	C410.524,613.302,334.14,628.469,456.091,477.991z"/>
 <circle fill="#EB7A79" fill-opacity="0.7" stroke="#A52D6A" stroke-width="16" stroke-miterlimit="22" stroke-dasharray="8,8,0,0,0,0" cx="396" cy="317.5" r="46"/>
 <rect x="263.618" y="76.765" transform="matrix(-0.837 -0.5473 0.5473 -0.837 606.9147 442.5856)" fill="#9FDBED" stroke="#A9D156" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.534" height="108.242"/>
-<line fill="none" stroke="#D8D6EC" stroke-width="20" stroke-linecap="round" stroke-miterlimit="500" x1="100.5" y1="426" x2="252.5" y2="494"/>
+<line fill="none" stroke="#518DD4" stroke-width="20" stroke-linecap="round" stroke-miterlimit="500" stroke-opacity="0.3" x1="100.5" y1="426" x2="252.5" y2="494"/>
 </svg>
