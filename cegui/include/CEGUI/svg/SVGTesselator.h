@@ -167,6 +167,7 @@ private:
     static void createStroke(const std::vector<glm::vec2>& points,
                              GeometryBuffer& geometry_buffer,
                              const SVGPaintStyle& paint_style,
+                             const float max_scale,
                              const bool is_shape_closed);
 
     //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
@@ -178,14 +179,10 @@ private:
                                                    const glm::vec2& segmentEndLeft,
                                                    const glm::vec2& segmentEndRight);
 
-    //! Stroke draw helper function that appends geometry for the bevel of a stroke
-    static void addStrokeSegmentTriangleGeometry(StrokeSegmentData &stroke_data,
-                                                 const glm::vec2& segmentEndLeft,
-                                                 const glm::vec2& segmentEndRight,
-                                                 const glm::vec2& secondBevelPoint);
-
     //! Stroke draw helper function that adds the linecap depending on linecap type and beginning/end
-    static void createLinecap(StrokeSegmentData& stroke_data, const bool is_start);
+    static void createLinecap(StrokeSegmentData& stroke_data,
+                              const float max_scale,
+                              const bool is_start);
 
     //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
     static bool isPolygonClockwise(const glm::vec2& point1,
@@ -215,11 +212,13 @@ private:
     static void calculateCircleTesselationParameters(const float radius,
                                                      const float max_scale,
                                                      float& num_segments,
-                                                     float& theta);
+                                                     float& cos_value,
+                                                     float& sin_value);
 
     static void createCirclePoints(const float radius,
-                                   const float theta,
                                    const float num_segments,
+                                   const float cos_value,
+                                   const float sin_value,
                                    std::vector<glm::vec2>& circle_points);
 
     static void createCircleStroke(const float& radius,
@@ -229,20 +228,41 @@ private:
 
     //! Helper function for creating a circle's fill
     static void createCircleFillGeometry(std::vector<glm::vec2>& points,
-                                 GeometryBuffer& geometry_buffer,
-                                 const SVGPaintStyle& paint_style);
+                                         GeometryBuffer& geometry_buffer,
+                                         const SVGPaintStyle& paint_style);
+
+    //! Helper function for creating a circle's fill
+    static void createArcStrokeGeometry(std::vector<glm::vec2>& points,
+                                        GeometryBuffer& geometry_buffer,
+                                        ColouredVertex& stroke_vertex);
+    
 
      //! Helper function for appending a circle fill triangle to a GeometryBuffer
-    static void addCircleFillGeometry(const glm::vec2& point1,
-                                      const glm::vec2& point2,
-                                      const glm::vec2& point3,
-                                      GeometryBuffer &geometry_buffer,
-                                      ColouredVertex &circle_fill_vertex);
+    static void addTriangleGeometry(const glm::vec2& point1,
+                                    const glm::vec2& point2,
+                                    const glm::vec2& point3,
+                                    GeometryBuffer &geometry_buffer,
+                                    ColouredVertex &vertex);
 
     static void createCircleStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
                                            const std::vector<glm::vec2>& inner_circle_points,
                                            const SVGPaintStyle& paint_style,
                                            GeometryBuffer& geometry_buffer);
+
+    static void calculateArcTesselationParameters(const float radius,
+                                                  const float arc_angle,
+                                                  const float max_scale,
+                                                  float& num_segments,
+                                                  float& tangential_factor,
+                                                  float& radial_factor);
+
+    static void createArcPoints(const glm::vec2& center_point,
+                                const glm::vec2& start_point,
+                                const glm::vec2& end_point,
+                                const float num_segments,
+                                const float tangential_factor,
+                                const float radial_factor,
+                                std::vector<glm::vec2>& arc_points);
 };
 
 }
