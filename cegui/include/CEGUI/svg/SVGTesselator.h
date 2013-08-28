@@ -29,8 +29,9 @@
 #define _SVGTesselator_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/svg/SVGImage.h"
 #include "CEGUI/Vertex.h"
+#include "CEGUI/svg/SVGImage.h"
+#include "CEGUI/svg/SVGPaintStyle.h"
 
 #include "glm/glm.hpp"
 
@@ -44,8 +45,6 @@ class SVGCircle;
 class SVGLine;
 class SVGPolyline;
 class SVGPaintStyle;
-
-
 /*!
 \brief
     Defines a static class that provides helper functions for the tesselation of
@@ -172,7 +171,13 @@ private:
 
     //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
     static void createStrokeSegment(StrokeSegmentData& stroke_data,
+                                    const float max_scale,
                                     const bool draw = true);
+
+    static void handleStrokeMiterExceedance(const StrokeSegmentData& stroke_data,
+                                            const glm::vec2& cur_point,
+                                            const glm::vec2& inner_intersection,
+                                            SVGPaintStyle::SVGLinejoin& linejoin);
 
     //! Stroke draw helper function that appends geometry for the connection between two new points and the last points
     static void addStrokeSegmentConnectionGeometry(StrokeSegmentData &stroke_data,
