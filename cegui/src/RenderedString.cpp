@@ -309,9 +309,17 @@ void RenderedString::setSelection(const Window* ref_wnd, float start, float end)
     const size_t last_component = d_lines[0].second;
     float partial_extent = 0;
     size_t idx = 0;
+
+    // clear last selection from all components
+    for (size_t i = 0; i < d_components.size(); i++)
+        d_components[i]->setSelection(ref_wnd, 0, 0);
+
     for (; idx < last_component; ++idx)
+    {
         if (start <= partial_extent + d_components[idx]->getPixelSize(ref_wnd).d_width)
             break;
+         partial_extent += d_components[idx]->getPixelSize(ref_wnd).d_width;
+    }
 
     start -= partial_extent;
     end -= partial_extent;
