@@ -43,7 +43,7 @@
     typedef HMODULE DYNLIB_HANDLE;
 #endif
 
-#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
+#if defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
 #   include "dlfcn.h"
 #   define DYNLIB_LOAD( a ) dlopen( (a).c_str(), RTLD_LAZY )
 #   define DYNLIB_GETSYM( a, b ) dlsym( a, (b).c_str() )
@@ -82,7 +82,7 @@ struct DynamicModule::Impl :
 static const char MODULE_DIR_VAR_NAME[] = "CEGUI_MODULE_DIR";
 
 //----------------------------------------------------------------------------//
-#if defined(__WIN32__) || defined(_WIN32)
+#if defined(__WIN32__) || defined(_WIN32) || defined(__CYGWIN__)
     static const String LibraryExtension(".dll");
 #elif defined(__APPLE__)
     static const String LibraryExtension(".dylib");
@@ -131,7 +131,7 @@ static String getModuleDirEnvVar()
 static String getFailureString()
 {
     String retMsg;
-#if defined(__linux__) || defined (__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
+#if defined(__linux__) || defined (__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__) || defined(__CYGWIN__)
     retMsg = dlerror();
 #elif defined(__WIN32__) || defined(_WIN32)
     LPVOID msgBuffer;
@@ -204,6 +204,15 @@ DynamicModule::DynamicModule(const String& name) :
     if (!d_pimpl->d_handle && d_pimpl->d_moduleName.compare(0, 3, "lib") != 0)
     {
         d_pimpl->d_moduleName.insert(0, "lib");
+        d_pimpl->d_handle = DynLibLoad(d_pimpl->d_moduleName);
+    }
+#endif
+
+#if defined(__CYGWIN__)
+    // see if adding a leading 'cyg' helps us to open the library
+    if (!d_pimpl->d_handle && d_pimpl->d_moduleName.compare(0, 3, "cyg") != 0)
+    {
+        d_pimpl->d_moduleName.insert(0, "cyg");
         d_pimpl->d_handle = DynLibLoad(d_pimpl->d_moduleName);
     }
 #endif
