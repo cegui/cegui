@@ -324,11 +324,6 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
 
     parsePointsString(pointsString, points);
 
-
-    //! If an odd number of coordinates is provided, then the element is treated as if the attribute had not been specified. 
-    if(points.size() % 2 == 1)
-        points.clear();
-
     SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
     addShape(polyline);
 }
@@ -714,10 +709,22 @@ void SVGData::parsePointsString(const String& pointsString, std::vector<glm::vec
     int offset;
     glm::vec2 currentPoint;
 
-    while (sscanf(currentStringSegment, " %f , %f%n", &currentPoint.x, &currentPoint.y, &offset) > 1)
+    while(true)
     {
-        points.push_back(currentPoint);
-        currentStringSegment += offset;
+        int successful_args = sscanf(currentStringSegment, " %f , %f%n", &currentPoint.x, &currentPoint.y, &offset);
+
+        if(successful_args == 2)
+        {
+            points.push_back(currentPoint);
+            currentStringSegment += offset;
+        }
+        else if(successful_args == 1)
+        {
+            points.clear();
+            currentStringSegment += offset;
+        }
+        else
+            break;
     }
 }
 

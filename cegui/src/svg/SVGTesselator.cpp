@@ -54,7 +54,6 @@ SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buf
     d_curPoint(0),
     d_nextPoint(0)
 {
-
 }
 
 //----------------------------------------------------------------------------//
@@ -336,11 +335,11 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     {
         //Get the first two stroke points without drawing anything
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[0]);
-        createStrokeSegment(stroke_data, false);
+        createStrokeSegment(stroke_data, max_scale, false);
 
         //Add the segment connected via the first point
         stroke_data.setPoints(points[points_count - 1], points[i], points[i + 1]);
-        createStrokeSegment(stroke_data);
+        createStrokeSegment(stroke_data, max_scale);
 
         ++i;
     }
@@ -349,7 +348,7 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     for(; i < points_count - 1; ++i)
     {       
         stroke_data.setPoints(points[i - 1], points[i], points[i + 1]);
-        createStrokeSegment(stroke_data);
+        createStrokeSegment(stroke_data, max_scale);
     }
 
     // Handle end of stroke
@@ -363,12 +362,13 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     {
         //Add the segment connected via the last point
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[0]);
-        createStrokeSegment(stroke_data);
+        createStrokeSegment(stroke_data, max_scale);
     }
 }
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
+                                        const float max_scale,
                                         const bool draw)
 {
     SVGPaintStyle::SVGLinejoin linejoin = stroke_data.d_paintStyle.d_strokeLinejoin;
@@ -394,20 +394,15 @@ void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
 
     // The outer connection point of the stroke
     glm::vec2 outer_point;
+    // Reference to the end-points of our stroke segment
     const glm::vec2& segmentEndLeft = polygon_is_clockwise ? outer_point : inner_intersection;
     const glm::vec2& segmentEndRight = polygon_is_clockwise ? inner_intersection : outer_point;
 
+    //If the stroke miter is exceeded we fall back to bevel
     if(linejoin == SVGPaintStyle::SLJ_MITER)
-    {
-        // In case the linejoin type is set to miter, check if we exceed the limit in which case
-        // we will use a regular bevel
-        const float& miterlimit = stroke_data.d_paintStyle.d_strokeMiterlimit;
+        handleStrokeMiterExceedance(stroke_data, cur_point, inner_intersection, linejoin);
 
-        float half_miter_extension = glm::length(cur_point - inner_intersection);
-        if(half_miter_extension > (miterlimit * stroke_data.d_strokeHalfWidth))
-            linejoin = SVGPaintStyle::SLJ_BEVEL;
-    }
-
+    //Switch through the types and render them if required 
     if(linejoin == SVGPaintStyle::SLJ_MITER)
     {
         //We calculate the connection point of the outer lines
@@ -427,22 +422,55 @@ void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
         //The second bevel corner point
         glm::vec2 secondBevelPoint = cur_point - next_dir_to_inside;
 
-        if(draw)    
+        if(draw)
+        {
             addStrokeSegmentConnectionGeometry(stroke_data, segmentEndLeft, segmentEndRight);
 
-        if(linejoin == SVGPaintStyle::SLJ_BEVEL)
-        {
-            if(draw)
+            if(linejoin == SVGPaintStyle::SLJ_BEVEL)
             {
                 CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
                 GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
                 addTriangleGeometry(segmentEndLeft, segmentEndRight, secondBevelPoint, geometry_buffer, stroke_fill_vertex);
             }
+            else if(linejoin == SVGPaintStyle::SLJ_ROUND)
+            {
+                float arc_angle;
+                if(polygon_is_clockwise)
+                    arc_angle = std::acos( glm::dot( glm::normalize(segmentEndLeft - cur_point), glm::normalize(secondBevelPoint - cur_point) ) );
+                else
+                    arc_angle = std::acos( glm::dot( glm::normalize(segmentEndRight - cur_point), glm::normalize(secondBevelPoint - cur_point)) );
 
-            stroke_data.d_lastPointLeft = polygon_is_clockwise ? secondBevelPoint : segmentEndLeft;
-            stroke_data.d_lastPointRight = polygon_is_clockwise ? segmentEndRight : secondBevelPoint;
+                //Get the parameters
+                float num_segments, tangential_factor, radial_factor;
+                calculateArcTesselationParameters(stroke_data.d_strokeHalfWidth, arc_angle, max_scale,
+                                                  num_segments, tangential_factor, radial_factor);
+
+
+                //Get the arc points
+                std::vector<glm::vec2> arc_points;
+                
+                if(polygon_is_clockwise)
+                {
+                    arc_points.push_back(segmentEndRight);
+                    createArcPoints(cur_point, secondBevelPoint, segmentEndLeft,
+                                    num_segments, tangential_factor, radial_factor,
+                                    arc_points);
+                }
+                else
+                {
+                    arc_points.push_back(segmentEndLeft);
+                    createArcPoints(cur_point, segmentEndRight, secondBevelPoint,
+                                    num_segments, tangential_factor, radial_factor,
+                                    arc_points);
+                }
+               
+                createArcStrokeGeometry(arc_points, stroke_data.d_geometryBuffer, stroke_data.d_strokeVertex);
+            }
         }
+
+        stroke_data.d_lastPointLeft = polygon_is_clockwise ? secondBevelPoint : segmentEndLeft;
+        stroke_data.d_lastPointRight = polygon_is_clockwise ? segmentEndRight : secondBevelPoint;
     }
 }
 
@@ -574,19 +602,6 @@ void SVGTesselator::createCircleFillGeometry(std::vector<glm::vec2>& points,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createArcStrokeGeometry(std::vector<glm::vec2>& points,
-                                           GeometryBuffer& geometry_buffer,
-                                           ColouredVertex& stroke_vertex)
-{
-    //Fixed triangle fan point
-    const glm::vec2& point1 = points[0];
-
-    const size_t maximum_index = points.size() - 1;
-    for(size_t i = 1; i < maximum_index; ++i)
-        addTriangleGeometry(point1, points[i], points[i + 1], geometry_buffer, stroke_vertex);
-}
-
-//----------------------------------------------------------------------------//
 void SVGTesselator::createCircleFill(const float& radius,
                                      float max_scale,
                                      const SVGPaintStyle& paint_style,
@@ -702,11 +717,26 @@ void SVGTesselator::calculateCircleTesselationParameters(const float radius,
     float segment_length  = CircleRoundnessValue / max_scale;
     float theta = std::acos( 1.0f - ( segment_length / radius ) );
 
-    static const float two_pi = 2.0f * glm::pi<float>();
+    static const float two_pi = 2.0f * glm::pi<float>(); 
+    //Calculate the number of segments using 360° as angle and using theta
     num_segments = two_pi / theta;
 
+    //Precalculate values we will need for our circle tesselation
     cos_value = std::cos(theta);
     sin_value = std::sin(theta);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createArcStrokeGeometry(std::vector<glm::vec2>& points,
+                                           GeometryBuffer& geometry_buffer,
+                                           ColouredVertex& stroke_vertex)
+{
+    //Fixed triangle fan point
+    const glm::vec2& point1 = points[0];
+
+    const size_t maximum_index = points.size() - 1;
+    for(size_t i = 1; i < maximum_index; ++i)
+        addTriangleGeometry(point1, points[i], points[i + 1], geometry_buffer, stroke_vertex);
 }
 
 //----------------------------------------------------------------------------//
@@ -721,9 +751,10 @@ void SVGTesselator::calculateArcTesselationParameters(const float radius,
     float segment_length  = CircleRoundnessValue / max_scale;
     float theta = std::acos( 1.0f - ( segment_length / radius ) );
 
-    //Calculate the number of sagments from the arc angle and theta, +1 is because the arc is open
+    //Calculate the number of segments from the arc angle and theta
 	num_segments = arc_angle / theta;
 
+    //Precalculate values we will need for our arc tesselation
 	tangential_factor = std::tan(theta);
 	radial_factor = std::cos(theta);
 }
@@ -737,7 +768,7 @@ void SVGTesselator::createArcPoints(const glm::vec2& center_point,
                                     const float radial_factor,
                                     std::vector<glm::vec2>& arc_points)
 {
-    //Add the start point of the arc to our list
+    //Add the start points of the arc to our list
     arc_points.push_back(start_point);
     //Set the current position to be the arc's start point in object coordinates
     glm::vec2 current_pos = start_point - center_point;
@@ -747,14 +778,27 @@ void SVGTesselator::createArcPoints(const glm::vec2& center_point,
     { 
 		glm::vec2 temp( -current_pos.y, current_pos.x );
 
-		current_pos += temp * tangential_factor; 
-		current_pos *= radial_factor; 
+		current_pos += temp * tangential_factor;
+		current_pos *= radial_factor;
 
         arc_points.push_back(center_point + current_pos);
     }
 
     //Add the end point of the arc to our list
     arc_points.push_back(end_point);
+}
+
+void SVGTesselator::handleStrokeMiterExceedance(const StrokeSegmentData& stroke_data,
+                                                const glm::vec2& cur_point,
+                                                const glm::vec2& inner_intersection,
+                                                SVGPaintStyle::SVGLinejoin& linejoin)
+{
+    //If the miter length we exceeds the limit we will use a regular bevel instead
+    const float& miterlimit = stroke_data.d_paintStyle.d_strokeMiterlimit;
+
+    float half_miter_extension = glm::length(cur_point - inner_intersection);
+    if(half_miter_extension > (miterlimit * stroke_data.d_strokeHalfWidth))
+        linejoin = SVGPaintStyle::SLJ_BEVEL;
 }
 
 //----------------------------------------------------------------------------//
