@@ -35,6 +35,7 @@
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Clipboard.h"
+#include "CEGUI/UndoHandler.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -69,7 +70,6 @@ void MultiLineEditboxWindowRenderer::onLookNFeelAssigned()
 	TODO:
 
 	Clipboard support
-	Undo support
 *************************************************************************/
 /*************************************************************************
 	Constants
@@ -109,9 +109,12 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 	d_widestExtent(0.0f),
 	d_forceVertScroll(false),
 	d_forceHorzScroll(false),
-	d_selectionBrush(0)
+	d_selectionBrush(0),
+	d_lastRenderWidth(0.0)
 {
 	addMultiLineEditboxProperties();
+    // create undo handler
+    d_undoHandler = new UndoHandler(this);
 
     // override default and disable text parsing
     d_textParsingEnabled = false;
@@ -125,6 +128,7 @@ MultiLineEditbox::MultiLineEditbox(const String& type, const String& name) :
 *************************************************************************/
 MultiLineEditbox::~MultiLineEditbox(void)
 {
+    delete d_undoHandler;
 }
 
 
@@ -300,6 +304,7 @@ void MultiLineEditbox::setMaxTextLength(size_t max_len)
             String newText = getText();
             newText.resize(d_maxTextLen);
             setText(newText);
+            d_undoHandler->clearUndoHistory();
 
 			onTextChanged(args);
 		}
@@ -445,9 +450,6 @@ void MultiLineEditbox::formatText(void)
 //----------------------------------------------------------------------------//
 void MultiLineEditbox::formatText(const bool update_scrollbars)
 {
-    // TODO: ASSAF - todo
-	// clear old formatting data
-	d_lines.clear();
 	d_widestExtent = 0.0f;
 
 	String paraText;
@@ -457,10 +459,30 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 	if (fnt)
 	{
 		float areaWidth = getTextRenderArea().getWidth();
+        String::size_type   currPos = 0;
+        String::size_type   paraLen;
+        LineInfo    line;
 
-		String::size_type	currPos = 0;
-		String::size_type	paraLen;
-		LineInfo	line;
+        // now we will check if our width changed, if not we'll just update text from last cursor
+        if (areaWidth != d_lastRenderWidth || !d_undoHandler->canUndo())
+        {
+            d_lines.clear();
+        }
+        else
+        {
+            // ok there's no need to update whole text
+            size_t lastuUndoPos = d_undoHandler->getLastAction().d_startIdx;
+            // ok now delete all formatting data before lastuUndoPos
+            int countToRemove = getLineNumberFromIndex(lastuUndoPos) - 1;
+            if (countToRemove >= 0)
+            {
+                d_lines.erase(d_lines.begin() + countToRemove, d_lines.end());
+                if (d_lines.size() > 0)
+                    currPos = d_lines.back().d_startIdx + d_lines.back().d_length;
+            }
+            else
+                d_lines.clear();
+        }
 
         while (currPos < getText().length())
 		{
@@ -550,7 +572,8 @@ void MultiLineEditbox::formatText(const bool update_scrollbars)
 			// skip to next 'paragraph' in text
 			currPos += paraLen;
 		}
-
+		
+		d_lastRenderWidth = areaWidth;
 	}
 
     if (update_scrollbars)
@@ -694,6 +717,11 @@ void MultiLineEditbox::eraseSelectedText(bool modify_text)
 		if (modify_text)
 		{
             String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = getSelectionStartIndex();
+            undo.d_text = newText.substr(getSelectionStartIndex(), getSelectionLength());
+            d_undoHandler->addUndoHistory(undo);
             newText.erase(getSelectionStartIndex(), getSelectionLength());
             setText(newText);
 
@@ -755,11 +783,16 @@ bool MultiLineEditbox::performPaste(Clipboard& clipboard)
     if (getText().length() - clipboardText.length() < d_maxTextLen)
     {
         String newText = getText();
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UAT_INSERT;
+        undo.d_startIdx = getCaretIndex();
+        undo.d_text = clipboardText;
+        d_undoHandler->addUndoHistory(undo);
         newText.insert(getCaretIndex(), clipboardText);
         setText(newText);
-        
+
         d_caretPos += clipboardText.length();
-        
+
         WindowEventArgs args(this);
         onTextChanged(args);
 
@@ -789,6 +822,11 @@ void MultiLineEditbox::handleBackspace(void)
 		else if (d_caretPos > 0)
 		{
             String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = d_caretPos - 1;
+            undo.d_text = newText.substr(d_caretPos - 1, 1);
+            d_undoHandler->addUndoHistory(undo);
             newText.erase(d_caretPos - 1, 1);
             setCaretIndex(d_caretPos - 1);
             setText(newText);
@@ -815,6 +853,11 @@ void MultiLineEditbox::handleDelete(void)
         else if (getCaretIndex() < getText().length() - 1)
 		{
             String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = d_caretPos;
+            undo.d_text = newText.substr(d_caretPos, 1);
+            d_undoHandler->addUndoHistory(undo);
             newText.erase(d_caretPos, 1);
             setText(newText);
 
@@ -1095,6 +1138,11 @@ void MultiLineEditbox::handleNewLine(uint /*sysKeys*/)
        if (getText().length() - 1 < d_maxTextLen)
 		{
             String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_startIdx = getCaretIndex();
+            undo.d_text = "\x0a";
+            d_undoHandler->addUndoHistory(undo);
             newText.insert(getCaretIndex(), 1, 0x0a);
             setText(newText);
 
@@ -1325,9 +1373,14 @@ void MultiLineEditbox::onCharacter(KeyEventArgs& e)
 		// if there is room
        if (getText().length() - 1 < d_maxTextLen)
 		{
-           String newText = getText();
-           newText.insert(getCaretIndex(), 1, e.codepoint);
-           setText(newText);
+            String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_startIdx = getCaretIndex();
+            undo.d_text = e.codepoint;
+            d_undoHandler->addUndoHistory(undo);
+            newText.insert(getCaretIndex(), 1, e.codepoint);
+            setText(newText);
 
 			d_caretPos++;
 
@@ -1764,5 +1817,36 @@ bool MultiLineEditbox::handle_vertScrollbarVisibilityChanged(const EventArgs&)
     return true;
 }
 
+/*************************************************************************
+    Undo/redo
+*************************************************************************/
+bool MultiLineEditbox::performUndo()
+{
+    bool result = false;
+    if (!isReadOnly())
+    {
+        clearSelection();
+        result = d_undoHandler->undo(d_caretPos);
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+
+    return result;
+}
+
+//----------------------------------------------------------------------------//
+bool MultiLineEditbox::performRedo()
+{
+    bool result = false;
+    if (!isReadOnly())
+    {
+        clearSelection();
+        result = d_undoHandler->redo(d_caretPos);
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+
+    return result;
+}
 
 } // End of  CEGUI namespace section
