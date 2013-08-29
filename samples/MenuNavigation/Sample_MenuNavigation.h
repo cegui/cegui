@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FormNavigationDemo.h
+    filename:   Sample_MenuNavigation.h
     created:    30/5/2013
     author:     Timotei Dolean
 *************************************************************************/
@@ -25,32 +25,34 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Form_Navigation_h_
-#define _Sample_Form_Navigation_h_
+#ifndef _Sample_Menu_Navigation_h_
+#define _Sample_Menu_Navigation_h_
 
 #include "SampleBase.h"
 #include "NavigationStrategies.h"
 
-class FormNavigationDemo : public Sample
+class MenuNavigationDemo : public Sample
 {
 public:
     virtual bool initialise(CEGUI::GUIContext* gui_context);
     virtual void deinitialise();
 
 private:
-    void createForm(CEGUI::FrameWindow* wnd);
+    CEGUI::Window*      d_root;
+    CEGUI::Window*      d_logWidget1;
+    CEGUI::Window*      d_logWidget2;
+    CEGUI::Listbox*     d_classesListBox;
 
-    CEGUI::Window* createWidget(const CEGUI::String& type, float position_x, float position_y, const CEGUI::String& text = "");
-    bool resetForm(const CEGUI::EventArgs& e);
-    bool disableConfirmButton(const CEGUI::EventArgs& e);
-    std::map<CEGUI::SemanticValue, CEGUI::String> getNavigationMappings();
+    CEGUI::WindowNavigator*     d_matrixWindowNavigator;
+    CEGUI::WindowNavigator*     d_linearWindowNavigator;
 
-    CEGUI::DefaultWindow*       d_root;
-    CEGUI::ToggleButton*        d_isGameMasterCheckbox;
-    CEGUI::Window*              d_confirmButton;
-    std::vector<CEGUI::Window*> d_editboxes;
-    LinearNavigationStrategy*   d_navigationStrategy;
-    CEGUI::WindowNavigator*     d_windowNavigator;
+    void initialiseClasses(CEGUI::Listbox* classes_listbox);
+    bool handleSelectButtonClicked(const CEGUI::EventArgs& e);
+    bool handleNumberButtonClicked(const CEGUI::EventArgs& e);
+    bool handleTabSelectionChanged(const CEGUI::EventArgs& e);
+
+   std::map<CEGUI::SemanticValue, CEGUI::String> createMatrixNavigationMappings();
+   std::map<CEGUI::SemanticValue, CEGUI::String> createLinearNavigationMappings();
 };
 
-#endif  // end of guard _Sample_Form_Navigation_h_
+#endif  // end of guard _Sample_Menu_Navigation_h_

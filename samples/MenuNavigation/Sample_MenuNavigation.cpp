@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   MenuNavigationDemo.cpp
+    filename:   Sample_MenuNavigation.cpp
     created:    30/5/2013
     author:     Timotei Dolean
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "MenuNavigationDemo.h"
+#include "Sample_MenuNavigation.h"
 #include "CEGUI/CEGUI.h"
 
 #include <iostream>
