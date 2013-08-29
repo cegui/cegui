@@ -34,7 +34,7 @@
 #include "CEGUI/widgets/Slider.h"
 #include "CEGUI/widgets/Thumb.h"
 
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
@@ -583,19 +583,19 @@ void ColourPickerControls::initialiseComponents()
         Event::Subscriber(&ColourPickerControls::handleAlphaSliderValueChanged, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseLeavesSurface,
+        Window::EventPointerLeavesSurface,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseLeaves, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseButtonUp,
+        Window::EventPointerActivate,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseButtonUp, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseButtonDown,
+        Window::EventPointerPressHold,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseButtonDown, this));
 
     getColourPickerStaticImage()->subscribeEvent(
-        Window::EventMouseMove,
+        Window::EventPointerMove,
         Event::Subscriber(&ColourPickerControls::handleColourPickerStaticImageMouseMove, this));
 
     initColourPicker();

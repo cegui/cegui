@@ -162,20 +162,8 @@ public:
 
     /*!
     \brief
-        Function to inject time pulses into the receiver.
-
-    \param timeElapsed
-        float value indicating the amount of time passed, in seconds, since the last time this method was called.
-
-    \return
-        Currently, this method always returns true.
-    */
-    virtual bool injectTimePulse(float timeElapsed) = 0;
-
-    /*!
-    \brief
         Function to directly inject a mouse button click event.
-        
+
         Here 'click' means a mouse button down event followed by a mouse
         button up event.
 
@@ -191,7 +179,7 @@ public:
 
     \param button
         One of the MouseButton enumerated values.
-    
+
     \return
         - true if some window or handler reported that it handled the event.
         - false if nobody handled the event.
@@ -201,7 +189,7 @@ public:
     /*!
     \brief
         Function to directly inject a mouse button double-click event.
-        
+
         Here 'double-click' means a single mouse button had the sequence down,
         up, down within a predefined period of time.
 
@@ -217,7 +205,7 @@ public:
 
     \param button
         One of the MouseButton enumerated values.
-    
+
     \return
         - true if some window or handler reported that it handled the event.
         - false if nobody handled the event.
@@ -227,7 +215,7 @@ public:
     /*!
     \brief
         Function to directly inject a mouse button triple-click event.
-        
+
         Here 'triple-click' means a single mouse button had the sequence down,
         up, down, up, down within a predefined period of time.
 
@@ -243,37 +231,37 @@ public:
 
     \param button
         One of the MouseButton enumerated values.
-    
+
     \return
         - true if some window or handler reported that it handled the event.
         - false if nobody handled the event.
     */
     virtual bool injectMouseButtonTripleClick(const MouseButton button) = 0;
-    
+
     /*!
     \brief
         Tells the receiver to perform a clipboard copy operation.
-        
+
     \return
         - true if the copy was successful
         - false if the copy was denied
     */
     virtual bool injectCopyRequest() = 0;
-    
+
     /*!
     \brief
         Tells the system to perform a clipboard cut operation.
-     
+
     \return
         - true if the cut was successful
         - false if the cut was denied
     */
     virtual bool injectCutRequest() = 0;
-    
+
     /*!
     \brief
         Tells the system to perform a clipboard paste operation.
-     
+
     \return
         - true if the paste was successful
         - false if the paste was denied

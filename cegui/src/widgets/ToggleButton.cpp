@@ -75,16 +75,16 @@ void ToggleButton::onSelectStateChange(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ToggleButton::onMouseButtonUp(MouseEventArgs& e)
+void ToggleButton::onPointerActivate(PointerEventArgs& e)
 {
-    if (e.button == LeftButton && isPushed())
+    if (e.source == PS_Left && isPushed())
     {
         if (const Window* const sheet = getGUIContext().getRootWindow())
         {
             // was mouse released over this widget
             // (use mouse position, as e.position is already unprojected)
             if (this == sheet->getTargetChildAtPosition(
-                    getGUIContext().getMouseCursor().getPosition()))
+                    getGUIContext().getPointerIndicator().getPosition()))
             {
                 setSelected(getPostClickSelectState());
             }
@@ -93,7 +93,7 @@ void ToggleButton::onMouseButtonUp(MouseEventArgs& e)
         ++e.handled;
     }
 
-    ButtonBase::onMouseButtonUp(e);
+    ButtonBase::onPointerActivate(e);
 }
 
 //----------------------------------------------------------------------------//

@@ -1069,15 +1069,15 @@ void Tree::onSized(ElementEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void Tree::onMouseButtonDown(MouseEventArgs& e)
+void Tree::onPointerPressHold(PointerEventArgs& e)
 {
     // base class processing
     // populateGeometryBuffer();
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
     
-    if (e.button == LeftButton)
+    if (e.source == PS_Left)
     {
         //bool modified = false;
         
@@ -1118,8 +1118,9 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
             else
             {
                 // clear old selections if no control key is pressed or if multi-select is off
-                if (!(e.sysKeys & Control) || !d_multiselect)
-                    clearAllSelections_impl();
+                //TODO: handle SelectCumulative semantic event
+                //if (!(e.sysKeys & Control) || !d_multiselect)
+                //    clearAllSelections_impl();
                 
                 // select range or item, depending upon keys and last selected item
 #if 0 // TODO: fix this
@@ -1137,18 +1138,18 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
         else
         {
             // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiselect)
-            {
-                if (clearAllSelections_impl())
-                {
-                    // Changes to the selections were actually made
-                    TreeEventArgs args(this);
-                    args.treeItem = item;
-                    onSelectionChanged(args);
-                }
-            }
+            //TODO: handle SelectCumulative semantic event
+            //if (!(e.sysKeys & Control) || !d_multiselect)
+            //{
+            //    if (clearAllSelections_impl())
+            //    {
+            //        // Changes to the selections were actually made
+            //        TreeEventArgs args(this);
+            //        args.treeItem = item;
+            //        onSelectionChanged(args);
+            //    }
+            //}
         }
-        
         
         ++e.handled;
     }
@@ -1157,23 +1158,23 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
 /*************************************************************************
     Handler for mouse wheel changes
 *************************************************************************/
-void Tree::onMouseWheel(MouseEventArgs& e)
+void Tree::onScroll(PointerEventArgs& e)
 {
     // base class processing.
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
     
     if (d_vertScrollbar->isEffectiveVisible() && (d_vertScrollbar->getDocumentSize() > d_vertScrollbar->getPageSize()))
-        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.wheelChange);
+        d_vertScrollbar->setScrollPosition(d_vertScrollbar->getScrollPosition() + d_vertScrollbar->getStepSize() * -e.scroll);
     else if (d_horzScrollbar->isEffectiveVisible() && (d_horzScrollbar->getDocumentSize() > d_horzScrollbar->getPageSize()))
-        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.wheelChange);
+        d_horzScrollbar->setScrollPosition(d_horzScrollbar->getScrollPosition() + d_horzScrollbar->getStepSize() * -e.scroll);
     
     ++e.handled;
 }
 
 /*************************************************************************
-    Handler for mouse movement
+    Handler for pointer movement
 *************************************************************************/
-void Tree::onMouseMove(MouseEventArgs& e)
+void Tree::onPointerMove(PointerEventArgs& e)
 {
     if (d_itemTooltips)
     {
@@ -1208,7 +1209,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
         }
     }
     
-    Window::onMouseMove(e);
+    Window::onPointerMove(e);
 }
 
 // Recursive!

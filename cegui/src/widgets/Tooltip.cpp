@@ -86,12 +86,12 @@ namespace CEGUI
 
         d_inPositionSelf = true;
 
-        MouseCursor& cursor = getGUIContext().getMouseCursor();
+        PointerIndicator& indicator = getGUIContext().getPointerIndicator();
         Rectf screen(Vector2f(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
-        const Image* mouseImage = cursor.getImage();
+        const Image* mouseImage = indicator.getImage();
 
-        Vector2f mousePos(cursor.getPosition());
+        Vector2f mousePos(indicator.getPosition());
         Sizef mouseSz(0,0);
 
         if (mouseImage)
@@ -339,11 +339,11 @@ namespace CEGUI
         }
     }
 
-    void Tooltip::onMouseEnters(MouseEventArgs& e)
+    void Tooltip::onPointerEnters(PointerEventArgs& e)
     {
         positionSelf();
 
-        Window::onMouseEnters(e);
+        Window::onPointerEnters(e);
     }
 
     void Tooltip::onTextChanged(WindowEventArgs& e)

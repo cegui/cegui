@@ -108,6 +108,8 @@ protected:
 
     bool areWindowsIntersecting(CEGUI::Window* window1, CEGUI::Window* window2);
 
+    CEGUI::InputAggregator* getCurrentInputAggregator();
+
     CEGUI::Window*              d_root;
 
     CEGUI::PushButton*          d_sampleExitButton;
@@ -124,6 +126,7 @@ protected:
     CEGUI::Window*              d_loadScreenChunkProgressText;
 
     bool                        d_quittingSampleView;
+    CEGUI::InputAggregator*     d_systemInputAggregator;
 
     CEGUI::String d_samplesXMLFilename;
 };

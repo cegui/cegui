@@ -49,65 +49,48 @@ DefaultWindow::DefaultWindow(const String& type, const String& name) :
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseMove(MouseEventArgs& e)
+void DefaultWindow::onPointerMove(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseMove(e);
-    updateMouseEventHandled(e);
+    Window::onPointerMove(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseWheel(MouseEventArgs& e)
+void DefaultWindow::onScroll(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseWheel(e);
-    updateMouseEventHandled(e);
+    Window::onScroll(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseButtonDown(MouseEventArgs& e)
+void DefaultWindow::onPointerPressHold(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseButtonDown(e);
-    updateMouseEventHandled(e);
+    Window::onPointerPressHold(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::onMouseButtonUp(MouseEventArgs& e)
+void DefaultWindow::onPointerActivate(PointerEventArgs& e)
 {
     // always call the base class handler
-    Window::onMouseButtonUp(e);
-    updateMouseEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onMouseClicked(MouseEventArgs& e)
-{
-    // always call the base class handler
-    Window::onMouseClicked(e);
-    // only adjust the handled state if event was directly injected
-    if (!getGUIContext().isMouseClickEventGenerationEnabled())
-        updateMouseEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onMouseDoubleClicked(MouseEventArgs& e)
-{
-    // always call the base class handler
-    Window::onMouseDoubleClicked(e);
-    updateMouseEventHandled(e);
-}
-
-//----------------------------------------------------------------------------//
-void DefaultWindow::onMouseTripleClicked(MouseEventArgs& e)
-{
-    // always call the base class handler
-    Window::onMouseTripleClicked(e);
-    updateMouseEventHandled(e);
+    Window::onPointerActivate(e);
+    updatePointerEventHandled(e);
 }
 
 //----------------------------------------------------------------------------//
 void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
+{
+    // by default, if we are a root window (no parent) with pass-though enabled
+    // we do /not/ mark mouse events as handled.
+    if (!d_parent && e.handled && d_mousePassThroughEnabled)
+        --e.handled;
+}
+
+//----------------------------------------------------------------------------//
+void DefaultWindow::updatePointerEventHandled(PointerEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
     // we do /not/ mark mouse events as handled.
@@ -124,6 +107,13 @@ bool DefaultWindow::moveToFront_impl(bool wasClicked)
         return false;
     else
         return took_action;
+}
+
+//----------------------------------------------------------------------------//
+void DefaultWindow::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    // always call the base class handler
+    Window::onSemanticInputEvent(e);
 }
 
 //----------------------------------------------------------------------------//

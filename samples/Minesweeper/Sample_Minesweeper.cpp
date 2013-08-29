@@ -126,7 +126,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
     // set default mouse image
-    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
@@ -228,7 +228,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
             d_buttons[i][j]->setID(0);
             // Connect event handlers
             d_buttons[i][j]->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MinesweeperSample::handleMineButtonClicked, this));
-            d_buttons[i][j]->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&MinesweeperSample::handleMineButtonDown, this));
+            d_buttons[i][j]->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&MinesweeperSample::handleMineButtonDown, this));
         }
     }
     d_result = winMgr.createWindow("Vanilla/StaticText");

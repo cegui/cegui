@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIMouseCursor.h
+    filename:   PointerIndicator.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
-	purpose:	Defines interface for the MouseCursor class
+
+    purpose:    Defines interface for the PointerIndicator class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIMouseCursor_h_
-#define _CEGUIMouseCursor_h_
+#ifndef _CEGUIPointerIndicator_h_
+#define _CEGUIPointerIndicator_h_
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
@@ -49,9 +49,9 @@
 namespace CEGUI
 {
 //!	Class that provides mouse cursor support.
-class CEGUIEXPORT MouseCursor :
+class CEGUIEXPORT PointerIndicator :
     public EventSet,
-    public AllocatedObject<MouseCursor>
+    public AllocatedObject<PointerIndicator>
 {
 public:
     //! Namespace for global events.
@@ -78,14 +78,14 @@ public:
 	\brief
 		Constructor for MouseCursor objects
 	*/
-	MouseCursor(void);
+	PointerIndicator(void);
 
 
 	/*!
 	\brief
 		Destructor for MouseCursor objects
 	*/
-	~MouseCursor(void);
+	~PointerIndicator(void);
 
 
 	/*!
@@ -341,7 +341,7 @@ public:
     \brief
         Static function to pre-initialise the mouse cursor position (prior to
         MouseCursor instantiation).
-        
+
         Calling this function prior to instantiating MouseCursor will prevent
         the mouse having it's position set to the middle of the initial view.
         Calling this function after the MouseCursor is instantiated will have
@@ -365,9 +365,9 @@ protected:
 		New event handlers
 	*************************************************************************/
     //! Event triggered internally when mouse cursor image is changed.
-    virtual void onImageChanged(MouseCursorEventArgs& e);
+    virtual void onImageChanged(PointerIndicatorEventArgs& e);
     //! Event triggered internally when mouse cursor default image is changed.
-    virtual void onDefaultImageChanged(MouseCursorEventArgs& e);
+    virtual void onDefaultImageChanged(PointerIndicatorEventArgs& e);
 
 
 private:
@@ -416,4 +416,4 @@ private:
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIMouseCursor_h_
+#endif	// end of guard _CEGUIPointerIndicator_h_

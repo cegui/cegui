@@ -37,7 +37,7 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ScriptModule.h"
