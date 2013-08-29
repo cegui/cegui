@@ -337,96 +337,58 @@ public:
     static const String EventMarginChanged;
 
     // generated externally (inputs)
-    /** Event fired when the mouse cursor has entered the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when the pointer has entered the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseEntersArea;
-    /** Event fired when the mouse cursor has left the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerEntersArea;
+    /** Event fired when the pointer has left the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseLeavesArea;
-    /** Event fired when the mouse cursor enters the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerLeavesArea;
+    /** Event fired when the pointer enters the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
-     *\note This event is fired if - and only if - the mouse cursor is actually
+     *\note This event is fired if - and only if - the pointer is actually
      * over some part of this Window's surface area, and will not fire for
-     * example if the location of the mouse is over some child window (even
-     * though the mouse is technically also within the area of this Window).
+     * example if the location of the pointer is over some child window (even
+     * though the pointer is technically also within the area of this Window).
      * For an alternative version of this event see the
-     * Window::EventMouseEntersArea event.
+     * Window::EventPointerEntersArea event.
      */
-    static const String EventMouseEntersSurface;
-    /** Event fired when the mouse cursor is no longer over the Window's surface
+    static const String EventPointerEntersSurface;
+    /** Event fired when the pointer is no longer over the Window's surface
      * area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
-     *\note This event will fire whenever the mouse is no longer actually over
-     * some part of this Window's surface area, for example if the mouse is
-     * moved over some child window (even though technically the mouse has not
+     *\note This event will fire whenever the pointer is no longer actually over
+     * some part of this Window's surface area, for example if the pointer is
+     * moved over some child window (even though technically the pointer has not
      * actually 'left' this Window's area).  For an alternative version of this
-     * event see the Window::EventMouseLeavesArea event.
+     * event see the Window::EventPointerLeavesArea event.
      */
-    static const String EventMouseLeavesSurface;
-    /** Event fired when the mouse cursor moves within the area of the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerLeavesSurface;
+    /** Event fired when the pointer moves within the area of the Window.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseMove;
-    /** Event fired when the mouse wheel is scrolled when the mouse cursor is
-     * within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerMove;
+    /** Event fired when there is a scroll event within the Window's area.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseWheel;
+    static const String EventScroll;
     /** Event fired when a mouse button is pressed down within the Window.
      * Handlers are passed a const MouseEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseButtonDown;
-    /** Event fired when a mouse button is released within the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    static const String EventPointerPressHold;
+    /** Event fired when the pointer is activated within the Window.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
-    static const String EventMouseButtonUp;
-    /** Event fired when a mouse button is clicked - that is, pressed down and
-     * released within a specific time interval - while the mouse cursor is
-     * within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseClick;
-    /** Event fired when a mouse button is double-clicked while the mouse cursor
-     * is within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseDoubleClick;
-    /** Event fired when a mouse button is triple-clicked while the mouse cursor
-     * is within the Window's area.
-     * Handlers are passed a const MouseEventArgs reference with all fields
-     * valid.
-     */
-    static const String EventMouseTripleClick;
-    /** Event fired when a key on the keyboard was pressed down while the window
-     * had input focus.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the key press,
-     * KeyEventArgs::scancode set to the Key::Scan value of the key that was
-     * pressed, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the key was pressed.
-     */
-    static const String EventKeyDown;
-    /** Event fired when a key on the keyboard was released while the window
-     * had input focus.
-     * Handlers are passed a const KeyEventArgs reference with
-     * WindowEventArgs::window set to the Window receiving the key release,
-     * KeyEventArgs::scancode set to the Key::Scan value of the key that was
-     * released, and KeyEventArgs::sysKeys set to the combination of ::SystemKey
-     * values active when the key was released.
-     */
-    static const String EventKeyUp;
+    static const String EventPointerActivate;
     /** Event fired when the Window receives a character key input event.
      * Handlers are passed a const KeyEventArgs reference with
      * WindowEventArgs::window set to the Window receiving the character input,
@@ -435,6 +397,11 @@ public:
      * values active when the character input was received.
      */
     static const String EventCharacterKey;
+    /** Event fired when the Window receives a semantic input event.
+     * Handler are passed a const SemanticEventArgs reference with the details
+     * of what semantic event was received
+     */
+    static const String EventSemanticEvent;
 
     /*************************************************************************
         Child Widget name suffix constants
@@ -1097,28 +1064,16 @@ public:
 
     /*!
     \brief
-        Return whether this window will receive multi-click events or multiple
-        'down' events instead.
-
-    \return
-        - true if the Window will receive double-click and triple-click events.
-        - false if the Window will receive multiple mouse button down events
-          instead of double/triple click events.
-    */
-    bool wantsMultiClickEvents(void) const;
-
-    /*!
-    \brief
-        Return whether mouse button down event autorepeat is enabled for this
+        Return whether pointer press event autorepeat is enabled for this
         window.
 
     \return
-        - true if autorepeat of mouse button down events is enabled for this
+        - true if autorepeat of pointer press events is enabled for this
           window.
-        - false if autorepeat of mouse button down events is not enabled for
+        - false if autorepeat of pointer press events is not enabled for
           this window.
     */
-    bool isMouseAutoRepeatEnabled(void) const;
+    bool isPointerAutoRepeatEnabled(void) const;
 
     /*!
     \brief
@@ -1964,43 +1919,28 @@ public:
         Nothing.
     */
     void    setZOrderingEnabled(bool setting);
-    
-    /*!
-    \brief
-        Set whether this window will receive multi-click events or multiple
-        'down' events instead.
-
-    \param setting
-        - true if the Window will receive double-click and triple-click events.
-        - false if the Window will receive multiple mouse button down events
-          instead of double/triple click events.
-
-    \return
-        Nothing.
-    */
-    void setWantsMultiClickEvents(bool setting);
 
     /*!
     \brief
-        Set whether mouse button down event autorepeat is enabled for this
+        Set whether pointer press event autorepeat is enabled for this
         window.
 
     \param setting
-        - true to enable autorepeat of mouse button down events.
-        - false to disable autorepeat of mouse button down events.
+        - true to enable autorepeat of pointer press events.
+        - false to disable autorepeat of pointer press events.
 
     \return
         Nothing.
     */
-    void setMouseAutoRepeatEnabled(bool setting);
+    void setPointerAutoRepeatEnabled(bool setting);
 
     /*!
     \brief
         Set the current auto-repeat delay setting for this window.
 
     \param delay
-        float value indicating the delay, in seconds, defore the first repeat
-        mouse button down event should be triggered when autorepeat is enabled.
+        float value indicating the delay, in seconds, before the first repeat
+        pointer press event should be triggered when autorepeat is enabled.
 
     \return
         Nothing.
@@ -2012,9 +1952,8 @@ public:
         Set the current auto-repeat rate setting for this window.
 
     \param rate
-        float value indicating the rate, in seconds, at which repeat mouse
-        button down events should be generated after the initial delay has
-        expired.
+        float value indicating the rate, in seconds, at which repeat pointer press
+        events should be generated after the initial delay has expired.
 
     \return
         Nothing.
@@ -2711,6 +2650,24 @@ public:
     // overridden from Element
     const Sizef& getRootContainerSize() const;
 
+    /*!
+    \brief
+        Return whether this Window is focused or not
+    */
+    bool isFocused() const;
+
+    /*!
+    \brief
+        Makes this Window be focused
+    */
+    void focus();
+
+    /*!
+    \brief
+        Unfocus this Window
+    */
+    void unfocus();
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
@@ -3012,162 +2969,110 @@ protected:
 
     /*!
     \brief
-        Handler called when the mouse cursor has entered this window's area.
+        Handler called when the pointer has entered this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseEntersArea(MouseEventArgs& e);
+    virtual void onPointerEntersArea(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has left this window's area.
+        Handler called when the pointer has left this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseLeavesArea(MouseEventArgs& e);
+    virtual void onPointerLeavesArea(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has entered this window's area and
+        Handler called when the pointer has entered this window's area and
         is actually over some part of this windows surface and not, for
         instance over a child window - even though technically in those cases
-        the mouse is also within this Window's area, the handler will not be
+        the pointer is also within this Window's area, the handler will not be
         called.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
 
     \see
-        Window::onMouseEntersArea
+        Window::onPointerEntersArea
     */
-    virtual void onMouseEnters(MouseEventArgs& e);
+    virtual void onPointerEnters(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor is no longer over this window's
-        surface area.  This will be called when the mouse is not over a part
-        of this Window's actual surface - even though technically the mouse is
-        still within the Window's area, for example if the mouse moves over a
+        Handler called when the pointer is no longer over this window's
+        surface area.  This will be called when the pointer is not over a part
+        of this Window's actual surface - even though technically the pointer is
+        still within the Window's area, for example if the pointer moves over a
         child window.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
 
     \see
-        Window::onMouseLeavesArea
+        Window::onPointerLeavesArea
     */
-    virtual void onMouseLeaves(MouseEventArgs& e);
+    virtual void onPointerLeaves(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse cursor has been moved within this window's
-        area.
+        Handler called when the pointer has been moved within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseMove(MouseEventArgs& e);
+    virtual void onPointerMove(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when the mouse wheel (z-axis) position changes within
+        Handler called when the pointer scroll value changes within
         this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseWheel(MouseEventArgs& e);
+    virtual void onScroll(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when a mouse button has been depressed within this
-        window's area.
+        Handler called when a pointer is held pressed within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseButtonDown(MouseEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
 
     /*!
     \brief
-        Handler called when a mouse button has been released within this
-        window's area.
+        Handler called when a pointer is activated within this window's area.
 
     \param e
-        MouseEventArgs object.  All fields are valid.
+        PointerEventArgs object.  All fields are valid.
     */
-    virtual void onMouseButtonUp(MouseEventArgs& e);
-
+    virtual void onPointerActivate(PointerEventArgs& e);
+    
     /*!
     \brief
-        Handler called when a mouse button has been clicked (that is depressed
-        and then released, within a specified time) within this window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been double-clicked within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseDoubleClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a mouse button has been triple-clicked within this
-        window's area.
-
-    \param e
-        MouseEventArgs object.  All fields are valid.
-    */
-    virtual void onMouseTripleClicked(MouseEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a key as been depressed while this window has input
-        focus.
-
-    \param e
-        KeyEventArgs object whose 'scancode' field is set to the Key::Scan value
-        representing the key that was pressed, and whose 'sysKeys' field
-        represents the combination of SystemKey that were active when the event
-        was generated.
-    */
-    virtual void onKeyDown(KeyEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a key as been released while this window has input
-        focus.
-
-    \param e
-        KeyEventArgs object whose 'scancode' field is set to the Key::Scan value
-        representing the key that was released, and whose 'sysKeys' field
-        represents the combination of SystemKey that were active when the event
-        was generated.  All other fields should be considered as 'junk'.
-    */
-    virtual void onKeyUp(KeyEventArgs& e);
-
-    /*!
-    \brief
-        Handler called when a character-key has been pressed while this window
+        Handler called when a character has been injected while this window
         has input focus.
 
     \param e
-        KeyEventArgs object whose 'codepoint' field is set to the Unicode code
-        point (encoded as utf32) for the character typed, and whose 'sysKeys'
-        field represents the combination of SystemKey that were active when the
-        event was generated.  All other fields should be considered as 'junk'.
+        TextEventArgs object whose 'character' field is set to the Unicode code
+        point (encoded as utf32) for the character inputted.
     */
-    virtual void onCharacter(KeyEventArgs& e);
+    virtual void onCharacter(TextEventArgs& e);
+
+    /*!
+    \brief
+        Handler called when a semantic input event occurred
+
+    \param e
+        The semantic input event
+    */
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*!
     \brief
@@ -3317,9 +3222,9 @@ protected:
 
     /*!
     \brief
-        Fires off a repeated mouse button down event for this window.
+        Fires off a repeated pointer press event for this window.
     */
-    void generateAutoRepeatEvent(MouseButton button);
+    void generateAutoRepeatEvent(PointerSource source);
 
     /*!
     \brief
@@ -3646,18 +3551,16 @@ protected:
     //! true if the Window responds to z-order change requests.
     bool d_zOrderingEnabled;
 
-    //! true if the Window wishes to hear about multi-click mouse events.
-    bool d_wantsMultiClicks;
     //! whether (most) mouse events pass through this window
     bool d_mousePassThroughEnabled;
-    //! whether pressed mouse button will auto-repeat the down event.
+    //! whether pressed pointer will auto-repeat the down event.
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
     float d_repeatDelay;
     //! seconds between further repeats after delay has expired.
     float d_repeatRate;
-    //! button we're tracking for auto-repeat purposes.
-    MouseButton d_repeatButton;
+    //! pointer source we're tracking for auto-repeat purposes.
+    PointerSource d_repeatPointerSource;
     //! implements repeating - is true after delay has elapsed,
     bool d_repeating;
     //! implements repeating - tracks time elapsed.
@@ -3701,7 +3604,10 @@ protected:
     GUIContext* d_guiContext;
 
     //! true when mouse is contained within this Window's area.
-    bool d_containsMouse;
+    bool d_containsPointer;
+
+    //! true when this window is focused.
+    bool d_isFocused;
 
 private:
     /*************************************************************************

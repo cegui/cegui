@@ -375,10 +375,10 @@ public:
 
     /*!
     \brief
-        Notify this ItemListBase that the given item was just clicked.
+        Notify this ItemListBase that the given item was just activated.
         Internal function - NOT to be used from client code.
     */
-    virtual void notifyItemClicked(ItemEntry*) {}
+    virtual void notifyItemActivated(ItemEntry*) {}
 
     /*!
     \brief

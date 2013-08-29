@@ -100,7 +100,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
 
     // set the mouse cursor
     d_system = System::getSingletonPtr();
-    d_guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    d_guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
 
     // set the default tooltip type
     d_guiContext->setDefaultTooltipType("WindowsLook/Tooltip");
@@ -116,7 +116,8 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_root->setProperty("BackgroundColours", "tl:FFBFBFBF tr:FFBFBFBF bl:FFBFBFBF br:FFBFBFBF");
 
     // root window will take care of hotkeys
-    d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
+    //TODO: fix this
+    //d_root->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&ScrollablePaneSample::hotkeysHandler, this));
     d_guiContext->setRootWindow(d_root);
 
     // create a menubar.

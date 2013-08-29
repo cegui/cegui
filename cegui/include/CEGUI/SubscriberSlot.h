@@ -138,7 +138,7 @@ public:
 
 private:
     //! Points to the internal functor object to which we are bound
-    SlotFunctorBase* d_functor_impl;
+    SlotFunctorBase<EventArgs>* d_functor_impl;
 };
 
 } // End of  CEGUI namespace section

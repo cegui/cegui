@@ -60,6 +60,7 @@ public:
     virtual void deinitialise();
 
     virtual CEGUI::GUIContext*  getGuiContext();
+    virtual CEGUI::InputAggregator* getInputAggregator();
     virtual void handleNewWindowSize(float width, float height);
 
     void setTextureTargetImageArea(float height, float width);
@@ -92,6 +93,7 @@ protected:
     CEGUI::Window*          d_sampleWindow;
 
     CEGUI::GUIContext*      d_guiContext;
+    CEGUI::InputAggregator* d_inputAggregator;
     CEGUI::TextureTarget*   d_textureTarget;
     CEGUI::BasicImage*      d_textureTargetImage;
 };

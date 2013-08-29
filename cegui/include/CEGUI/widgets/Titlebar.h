@@ -109,12 +109,12 @@ protected:
 	/*************************************************************************
 		Overridden event handler functions
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual void	onMouseDoubleClicked(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onPointerActivate(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onFontChanged(WindowEventArgs &e);
+    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 
 
 	/*************************************************************************

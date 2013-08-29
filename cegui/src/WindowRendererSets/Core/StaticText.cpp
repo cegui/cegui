@@ -472,7 +472,7 @@ namespace CEGUI
                 Event::Subscriber(&FalagardStaticText::onFontChanged, this)));
 
         d_connections.push_back(
-            d_window->subscribeEvent(Window::EventMouseWheel,
+            d_window->subscribeEvent(Window::EventScroll,
                 Event::Subscriber(&FalagardStaticText::onMouseWheel, this)));
     }
 

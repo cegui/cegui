@@ -468,7 +468,6 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="NormalImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="HoverImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="" type="Image" name="PushedImage"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <Property name="NonClient" value="True"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <ImagerySection name="normal">
@@ -1296,7 +1295,6 @@
     <WidgetLook name="WindowsLook/IconButton">
         <PropertyDefinition redrawOnWrite="true" type="Image" name="IconImage"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="tl:FFFFFFFF tr:FFFFFFFF bl:FFFFFFFF br:FFFFFFFF" type="ColourRect" name="IconColours"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <ImagerySection name="icon">
             <ImageryComponent>
                 <Area>
@@ -1850,7 +1848,6 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF87A7DF" type="ColourRect" name="PushedColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="7F87A7DF" type="ColourRect" name="PushedOffColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFEFEFEF" type="ColourRect" name="OpenedColour"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -3358,7 +3355,6 @@
     -->
     <WidgetLook name="WindowsLook/VerticalScrollbar">
         <Property name="VerticalScrollbar" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <Property name="Size" value="{{0, 32}, {1, 0}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>
@@ -3706,7 +3702,6 @@
     -->
     <WidgetLook name="WindowsLook/HorizontalScrollbar">
         <Property name="Size" value="{{1, 0}, {0, 32}}" />
-        <Property name="WantsMultiClickEvents" value="False"/>
         <NamedArea name="ThumbTrackArea">
             <Area>
                 <Dim type="LeftEdge">
@@ -3905,8 +3900,7 @@
     -->
     <WidgetLook name="WindowsLook/Slider">
         <Property name="VerticalSlider" value="True"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="PointerAutoRepeatEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea">
             <Area>

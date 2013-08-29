@@ -28,7 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/ListHeaderSegment.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/CoordConverter.h"
 #include "CEGUI/ImageManager.h"
 
@@ -327,8 +327,8 @@ void ListHeaderSegment::initDragMoving(void)
 		d_dragPosition.d_x = 0.0f;
 		d_dragPosition.d_y = 0.0f;
 
-		// setup new cursor
-		getGUIContext().getMouseCursor().setImage(d_movingMouseCursor);
+        // setup new indicator
+        getGUIContext().getPointerIndicator().setImage(d_movingMouseCursor);
 
 		// Trigger the event
 		WindowEventArgs args(this);
@@ -348,8 +348,8 @@ void ListHeaderSegment::initSizingHoverState(void)
 	{
 		d_splitterHover = true;
 
-		// change the mouse cursor.
-		getGUIContext().getMouseCursor().setImage(d_sizingMouseCursor);
+        // change the pointer indicator.
+        getGUIContext().getPointerIndicator().setImage(d_sizingMouseCursor);
 
 		// trigger redraw so 'sizing' area can be highlighted if needed.
 		invalidate();
@@ -374,7 +374,7 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	if (d_splitterHover)
 	{
 		d_splitterHover = false;
-		getGUIContext().getMouseCursor().setImage(getMouseCursor());
+        getGUIContext().getPointerIndicator().setImage(getMouseCursor());
 		invalidate();
 	}
 
@@ -412,12 +412,12 @@ bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_mouse)
 
 
 /*************************************************************************
-	Handler for when mouse position changes in widget area (or captured)
+	Handler for when pointer position changes in widget area (or captured)
 *************************************************************************/
-void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
+void ListHeaderSegment::onPointerMove(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	//
 	// convert mouse position to something local
@@ -467,7 +467,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 		if (d_splitterHover)
 		{
 			d_splitterHover = false;
-			getGUIContext().getMouseCursor().setImage(getMouseCursor());
+            getGUIContext().getPointerIndicator().setImage(getMouseCursor());
 			invalidate();
 		}
 
@@ -485,25 +485,25 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse buttons are pushed
+    Handler for when pointer is pressed
 *************************************************************************/
-void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
+void ListHeaderSegment::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		// ensure all inputs come to us for now
 		if (captureInput())
 		{
-			// get position of mouse as co-ordinates local to this window.
+            // get position of pointer as co-ordinates local to this window.
 			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;
 
-			// if the mouse is in the sizing area
+            // if the pointer is in the sizing area
 			if (d_splitterHover)
 			{
 				if (isSizingEnabled())
@@ -511,32 +511,28 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 					// setup the 'dragging' state variables
 					d_dragSizing = true;
 				}
-
 			}
 			else
 			{
 				d_segmentPushed = true;
 			}
-
 		}
-
 		++e.handled;
 	}
-
 }
 
 
 /*************************************************************************
-	Handler for when mouse buttons area released
+    Handler for when the pointer is activated
 *************************************************************************/
-void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
+void ListHeaderSegment::onPointerActivate(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
-		// if we were pushed and mouse was released within our segment area
+		// if we were pushed and pointer was released (activated) within our segment area
 		if (d_segmentPushed && d_segmentHover)
 		{
 			WindowEventArgs args(this);
@@ -544,8 +540,8 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		}
 		else if (d_dragMoving)
 		{
-			getGUIContext().getMouseCursor().setImage(getMouseCursor());
-			
+            getGUIContext().getPointerIndicator().setImage(getMouseCursor());
+
 			WindowEventArgs args(this);
 			onSegmentDragStop(args);
 		}
@@ -554,37 +550,15 @@ void ListHeaderSegment::onMouseButtonUp(MouseEventArgs& e)
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
-
 /*************************************************************************
-	Handler for when a mouse button is double-clicked
+    Handler for when pointer leaves the widget area (uncaptured)
 *************************************************************************/
-void ListHeaderSegment::onMouseDoubleClicked(MouseEventArgs& e)
+void ListHeaderSegment::onPointerLeaves(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseDoubleClicked(e);
-
-	// if double-clicked on splitter / sizing area
-	if ((e.button == LeftButton) && d_splitterHover)
-	{
-		WindowEventArgs args(this);
-		onSplitterDoubleClicked(args);
-
-		++e.handled;
-	}
-
-}
-
-
-/*************************************************************************
-	Handler for when mouse leaves the widget area (uncaptured)
-*************************************************************************/
-void ListHeaderSegment::onMouseLeaves(MouseEventArgs& e)
-{
-	// base class processing
-	Window::onMouseLeaves(e);
+    Window::onPointerLeaves(e);
 
 	d_splitterHover = false;
 	d_dragSizing = false;
@@ -592,6 +566,20 @@ void ListHeaderSegment::onMouseLeaves(MouseEventArgs& e)
 	invalidate();
 }
 
+void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    // base class processing
+    Window::onSemanticInputEvent(e);
+
+    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left &&
+        d_splitterHover)
+    {
+        WindowEventArgs args(this);
+        onSplitterDoubleClicked(args);
+
+        ++e.handled;
+    }
+}
 
 /*************************************************************************
 	Handler for when mouse input capture is lost
