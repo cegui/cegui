@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   FormNavigationDemo.cpp
+    filename:   Sample_FormNavigation.cpp
     created:    30/5/2013
     author:     Timotei Dolean
 *************************************************************************/
@@ -25,7 +25,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "FormNavigationDemo.h"
+#include "Sample_FormNavigation.h"
 #include "CEGUI/CEGUI.h"
 
 #include <iostream>
