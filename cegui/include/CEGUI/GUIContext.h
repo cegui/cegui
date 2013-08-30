@@ -268,6 +268,8 @@ public:
     bool injectCopyRequest();
     bool injectCutRequest();
     bool injectPasteRequest();
+    bool injectUndoRequest();
+    bool injectRedoRequest();
 
     // public overrides
     void draw();
