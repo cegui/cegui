@@ -220,7 +220,7 @@ public:
     }
 
 
-	Colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//<! ColourRect component colours
+	Colour	d_top_left, d_top_right, d_bottom_left, d_bottom_right;		//!< ColourRect component colours
 };
 
 } // End of  CEGUI namespace section
