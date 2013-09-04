@@ -3,6 +3,8 @@
 ***********************************************************************/
 class ImageManager
 {
+    static ImageManager& getSingleton();
+
 //    template <typename T> void addImageType(utf8string name);
     void removeImageType(utf8string name);
 
