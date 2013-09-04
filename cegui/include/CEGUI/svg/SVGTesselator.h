@@ -202,12 +202,12 @@ private:
                                             SVGPaintStyle::SVGLinejoin& linejoin);
 
     //! Stroke draw helper function that appends geometry for the connection between two new points and the last points
-    static void addStrokeSegmentConnectionGeometry(StrokeSegmentData &stroke_data,
+    static void createStrokeSegmentConnection(StrokeSegmentData &stroke_data,
                                                    const glm::vec2& segment_end_left,
                                                    const glm::vec2& segment_end_right,
                                                    const bool draw);
 
-    static void addStrokeSegmentAAConnectionGeometry(StrokeSegmentData& stroke_data,
+    static void calculateAndAddStrokeSegmentAAConnection(StrokeSegmentData& stroke_data,
                                                     const glm::vec2& segment_end_left_orig,
                                                     const glm::vec2& segment_end_right_orig,
                                                     const bool polygon_is_clockwise,
@@ -220,12 +220,17 @@ private:
 
     static float calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors);
 
-    static void addStrokeSegmentAAConnectionGeometryVertices(StrokeSegmentData &stroke_data,
-                                                             const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentLeftEnd,
-                                                             const glm::vec2& segmentRightEnd, const glm::vec2& segmentFadeRightEnd);
+    static void createStrokeSegmentAAConnectionGeometry(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd,
+                                                        const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentFadeRightEnd, const bool draw);
+
+    static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data,
+                                                   const glm::vec2& linecap_left, const glm::vec2& linecap_right,
+                                                   const glm::vec2& linecap_fade_left, const glm::vec2& linecap_fade_right);
 
     //! Stroke draw helper function that adds the linecap depending on linecap type and beginning/end
     static void createLinecap(StrokeSegmentData& stroke_data,
+                              const SVGImage::SVGImageRenderSettings& render_settings,
+                              const glm::vec2& scale_factors,
                               const bool is_start);
 
     //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
