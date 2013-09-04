@@ -4,14 +4,15 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="1024px" height="720px" viewBox="0 0 1024 720" enable-background="new 0 0 1024 720" xml:space="preserve">
 <polyline fill="#F9ED32" stroke="#00AEEF" stroke-width="9" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="5" stroke-opacity="0.5" stroke-dasharray="44,22,5,123,12,44" points="
-	933.467,225.885 770.645,28.75 765.951,417.183 589.065,162.311 526.05,329.03 851.053,306.371 "/>
-<polyline fill="none" stroke="#FF5E3C" stroke-width="20" stroke-linecap="square" stroke-miterlimit="4.4" points="94.5,160.666 
-	108,222.666 171.5,225.666 137,264.666 202.813,362.978 185,254.666 "/>
+	933.467,225.885 770.645,28.75 765.95,417.183 589.065,162.311 526.05,329.03 851.053,306.371 "/>
+<polyline fill="none" stroke="#FF5E3C" stroke-width="15" stroke-linecap="square" stroke-miterlimit="500" points="69.99,55.4 
+	60.142,82.924 79.315,138.574 181.167,93.167 152.5,152.5 118.5,189.833 106.836,220.39 168.273,236.723 126.32,267.564 
+	169.904,377.551 175.349,267.919 "/>
 <path fill="#C7B570" stroke="#2D2D87" stroke-width="8" stroke-linecap="round" stroke-miterlimit="5" d="M456.091,477.991
-	c0,0,40.203-95.653,115.249-30.33c75.047,65.323,190.289,187.806,206.371,104.981c16.082-82.82,301.516,2.334,107.203,55.991
-	c-194.312,53.655-399.346,93.313-388.624,15.162c10.719-78.152-29.48-87.483-57.624-48.992
+	c0,0,40.203-95.653,115.249-30.33c75.047,65.323,190.289,187.807,206.371,104.981c16.082-82.82,301.516,2.334,107.203,55.991
+	c-194.313,53.655-399.347,93.313-388.624,15.162c10.719-78.152-29.48-87.483-57.624-48.992
 	C410.524,613.302,334.14,628.469,456.091,477.991z"/>
 <circle fill="#EB7A79" fill-opacity="0.7" stroke="#A52D6A" stroke-width="16" stroke-miterlimit="22" stroke-dasharray="8,8,0,0,0,0" cx="396" cy="317.5" r="46"/>
-<rect x="263.618" y="76.765" transform="matrix(-0.837 -0.5473 0.5473 -0.837 606.9147 442.5856)" fill="#9FDBED" stroke="#A9D156" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.534" height="108.242"/>
+<rect x="263.6" y="76.746" transform="matrix(0.837 0.5473 -0.5473 0.837 131.8456 -180.8094)" fill="#9FDBED" stroke="#A9D156" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.545" height="108.247"/>
 <line fill="none" stroke="#518DD4" stroke-width="20" stroke-linecap="round" stroke-miterlimit="500" stroke-opacity="0.3" x1="100.5" y1="426" x2="252.5" y2="494"/>
 </svg>
