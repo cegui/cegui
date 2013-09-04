@@ -559,22 +559,13 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
         linecap_dir *= -1.0f;
 
     glm::vec2 linecap_left, linecap_right, linecap_fade_left, linecap_fade_right;
+    glm::vec2 linecap_center_point = *stroke_data.d_curPoint;
 
-    if(linecap == SVGPaintStyle::SLC_BUTT ||
-        linecap == SVGPaintStyle::SLC_ROUND )
-    {
-        const glm::vec2& cur_point = *stroke_data.d_curPoint;
+    if(linecap == SVGPaintStyle::SLC_SQUARE)
+        linecap_center_point += stroke_data.d_strokeHalfWidth * linecap_dir;
 
-        linecap_left = cur_point + vec_to_outside;
-        linecap_right = cur_point - vec_to_outside;
-    }
-    else if(linecap == SVGPaintStyle::SLC_SQUARE)
-    {
-        const glm::vec2 moved_cur_point = *stroke_data.d_curPoint + stroke_data.d_strokeHalfWidth * linecap_dir;
-
-        linecap_left = moved_cur_point + vec_to_outside;
-        linecap_right = moved_cur_point - vec_to_outside;
-    }
+    linecap_left = linecap_center_point + vec_to_outside;
+    linecap_right = linecap_center_point - vec_to_outside;
 
     if(render_settings.d_antiAliasing && 
         ( linecap == SVGPaintStyle::SLC_BUTT || SVGPaintStyle::SLC_SQUARE) )
