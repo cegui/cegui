@@ -52,13 +52,18 @@ public:
     {
         //! Constructor
         SVGImageRenderSettings(const ImageRenderSettings& img_render_settings,
-                               Vector2f scale_factor) :
+                               Vector2f scale_factor,
+                               bool anti_aliasing) :
             ImageRenderSettings(img_render_settings),
-            d_scaleFactor(scale_factor)
+            d_scaleFactor(scale_factor),
+            d_antiAliasing(anti_aliasing)
         {
         }
+
         //! The scaling factor of the geometry
         Vector2f d_scaleFactor;
+        //! Create anti-aliasing geometry using alpha-blending for all shapes
+        bool d_antiAliasing;
     };
 
     SVGImage(const String& name);
@@ -87,6 +92,22 @@ public:
     */
     SVGData* getSVGData();
 
+    /*!
+    \brief
+        Returns if the rendered geometry of this Image will be extended with geometry
+        that creates an alpha-blended transition to defeat aliasing artefacts.
+    */
+    bool getUsesGeometryAntialiasing() const;
+
+    /*!
+    \brief
+        Sets if the rendered geometry will be extended with geometry that creates
+        an alpha-blended transition to defeat aliasing artefacts.
+    \param use_geometry_antialiasing
+        The setting for geometry anti-aliasing that wille be applied to this Image.
+    */
+    void setGeometryAntialiasing(bool use_geometry_antialiasing);
+
 protected:
     /*!
         \brief
@@ -95,6 +116,14 @@ protected:
         SVGImages.
     */
     SVGData* d_svgData;
+
+
+    /*!
+        \brief
+        Determines if the rendered geometry will be extended with geometry that creates
+        an alpha-blended transition to defeat aliasing artefacts
+    */
+    bool d_usesGeometryAntialiasing;
 };
 
 }
