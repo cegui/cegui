@@ -58,7 +58,7 @@ public:
     class StrokeSegmentData
     {
     public:
-        StrokeSegmentData(GeometryBuffer& geometry_buffer, const float stroke_half_width, const SVGPaintStyle& paint_style);
+        StrokeSegmentData(GeometryBuffer& geometry_buffer, const float stroke_half_width, const SVGPaintStyle& paint_style, const float max_scale);
 
         /*!
         \brief
@@ -80,8 +80,19 @@ public:
         //! Previous right stroke point lying in clockwise direction away from the stroke direction-.
         glm::vec2 d_lastPointRight;
 
+        //! Previous left stroke fade point lying in anti-clockwise direction away from the stroke direction.
+        glm::vec2 d_lastFadePointLeft;
+        //! Previous right stroke fade point lying in clockwise direction away from the stroke direction-.
+        glm::vec2 d_lastFadePointRight;
+
         //! The vertex we will modify with positions and append to the GeometryBuffer
         ColouredVertex d_strokeVertex;
+        //! The vertex we will modify with positions and append to the GeometryBuffer
+        ColouredVertex d_strokeFadeVertex;
+
+        //! The maximum of the scalings (either vert or horz). We need this to determine the degree of tesselation
+        // of curved elements of the stroke
+        float d_maxScale;
 
         //! Pointer to the previous line point of this segment
         const glm::vec2* d_prevPoint;
@@ -122,7 +133,6 @@ public:
     static void tesselateAndRenderPolyline(const SVGPolyline* polyline,
                                            std::vector<GeometryBuffer*>& geometry_buffers,
                                            const SVGImage::SVGImageRenderSettings& render_settings);
-
     /*!
     \brief
         Tesselates an SVGRect and adds the created geometry to the GeometryBuffer
@@ -138,6 +148,8 @@ public:
     static void tesselateAndRenderRect(const SVGRect* rect,
                                        std::vector<GeometryBuffer*>& geometry_buffers,
                                        const SVGImage::SVGImageRenderSettings& render_settings);
+
+    static void createRectangleFill(const SVGPaintStyle& paint_style, std::vector<glm::vec2>& rectangle_points, GeometryBuffer& geometry_buffer);
 
     /*!
     \brief
@@ -166,13 +178,23 @@ private:
     static void createStroke(const std::vector<glm::vec2>& points,
                              GeometryBuffer& geometry_buffer,
                              const SVGPaintStyle& paint_style,
-                             const float max_scale,
+                             const SVGImage::SVGImageRenderSettings& render_settings,
+                             const glm::vec2& scale_factors,
                              const bool is_shape_closed);
 
     //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
     static void createStrokeSegment(StrokeSegmentData& stroke_data,
-                                    const float max_scale,
+                                    const SVGImage::SVGImageRenderSettings& render_settings,
+                                    const glm::vec2& scale_factors,
                                     const bool draw = true);
+
+    static void createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_data,
+                                                 const glm::vec2& cur_point,
+                                                 const glm::vec2& secondBevelPoint,
+                                                 const glm::vec2& segment_end_left,
+                                                 const glm::vec2& segment_end_right,
+                                                 const SVGPaintStyle::SVGLinejoin linejoin,
+                                                 const bool polygon_is_clockwise);
 
     static void handleStrokeMiterExceedance(const StrokeSegmentData& stroke_data,
                                             const glm::vec2& cur_point,
@@ -181,12 +203,29 @@ private:
 
     //! Stroke draw helper function that appends geometry for the connection between two new points and the last points
     static void addStrokeSegmentConnectionGeometry(StrokeSegmentData &stroke_data,
-                                                   const glm::vec2& segmentEndLeft,
-                                                   const glm::vec2& segmentEndRight);
+                                                   const glm::vec2& segment_end_left,
+                                                   const glm::vec2& segment_end_right,
+                                                   const bool draw);
+
+    static void addStrokeSegmentAAConnectionGeometry(StrokeSegmentData& stroke_data,
+                                                    const glm::vec2& segment_end_left_orig,
+                                                    const glm::vec2& segment_end_right_orig,
+                                                    const bool polygon_is_clockwise,
+                                                    const glm::vec2& prev_dir_to_inside,
+                                                    const glm::vec2& next_dir_to_inside,
+                                                    float core_offset,
+                                                    float fade_offset,
+                                                    const glm::vec2& scale_factors,
+                                                    const bool draw);
+
+    static float calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors);
+
+    static void addStrokeSegmentAAConnectionGeometryVertices(StrokeSegmentData &stroke_data,
+                                                             const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentLeftEnd,
+                                                             const glm::vec2& segmentRightEnd, const glm::vec2& segmentFadeRightEnd);
 
     //! Stroke draw helper function that adds the linecap depending on linecap type and beginning/end
     static void createLinecap(StrokeSegmentData& stroke_data,
-                              const float max_scale,
                               const bool is_start);
 
     //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
@@ -232,7 +271,7 @@ private:
                                    GeometryBuffer& geometry_buffer);
 
     //! Helper function for creating a circle's fill
-    static void createCircleFillGeometry(std::vector<glm::vec2>& points,
+    static void createTriangleStripFillGeometry(std::vector<glm::vec2>& points,
                                          GeometryBuffer& geometry_buffer,
                                          const SVGPaintStyle& paint_style);
 
@@ -268,6 +307,10 @@ private:
                                 const float tangential_factor,
                                 const float radial_factor,
                                 std::vector<glm::vec2>& arc_points);
+
+    static void determineAntiAliasingOffsets(float width, float& core_offset, float& fade_offset);
+
+    static glm::vec2 getScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings);
 };
 
 }

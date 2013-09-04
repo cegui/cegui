@@ -46,10 +46,12 @@ const float CircleRoundnessValue = 1.5f;
 //----------------------------------------------------------------------------//
 SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buffer,
                                                     const float stroke_half_width,
-                                                    const SVGPaintStyle& paint_style) :
+                                                    const SVGPaintStyle& paint_style,
+                                                    const float max_scale) :
     d_geometryBuffer(geometry_buffer),
     d_strokeHalfWidth(stroke_half_width),
     d_paintStyle(paint_style),
+    d_maxScale(max_scale),
     d_prevPoint(0),
     d_curPoint(0),
     d_nextPoint(0)
@@ -76,25 +78,16 @@ void SVGTesselator::tesselateAndRenderLine(const SVGLine* line,
     //The shape's paint styles
     const SVGPaintStyle& paint_style = line->d_paintStyle;
 
-    //We need this to determine the degree of tesselation required for the curved elements
-    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
-
-    //Get stroke colour, 'line' elements can never have a fill
-    const Colour stroke_colour = getStrokeColour(paint_style);
-
-    //Get the half of the stroke width
-    const float stroke_half_width = paint_style.d_strokeWidth * 0.5f;
-
-    //Create the polyline stroke vertex
-    ColouredVertex line_stroke_vertex(glm::vec3(), stroke_colour);
-
     //Create the line points and add them to the stroke points list
     std::vector<glm::vec2> points;
     points.push_back(glm::vec2(line->d_x1, line->d_y1));
     points.push_back(glm::vec2(line->d_x2, line->d_y2));
 
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = getScaleFactors(line->d_transformation, render_settings);
+
     //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer, paint_style, max_scale, false);
+    createStroke(points, geometry_buffer, paint_style, render_settings, scale_factors, false);
 }
 
 //----------------------------------------------------------------------------//
@@ -107,24 +100,14 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
     //The shape's paint styles
     const SVGPaintStyle& paint_style = polyline->d_paintStyle;
 
-    //We need this to determine the degree of tesselation required for the curved elements
-    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
-
-    //Get colours
-    const Colour fill_colour = getFillColour(paint_style);
-    const Colour stroke_colour = getStrokeColour(paint_style);
-
-    //Get the half of the stroke width
-    const float stroke_half_width = paint_style.d_strokeWidth * 0.5f;
-
     //Getting the points defining the polyline
     const SVGPolyline::PolylinePointsList& points = polyline->d_points;
 
-    //Create the polyline stroke vertex
-    ColouredVertex line_stroke_vertex(glm::vec3(), stroke_colour);
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = getScaleFactors(polyline->d_transformation, render_settings);
 
     //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer, paint_style, max_scale, false);
+    createStroke(points, geometry_buffer, paint_style, render_settings, scale_factors, false);
 }
 
 
@@ -141,16 +124,8 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
     //The shape's paint styles
     const SVGPaintStyle& paint_style = rect->d_paintStyle;
 
-    //We need this to determine the degree of tesselation required for the curved elements
-    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
-
-    //Get colours
-    const Colour fill_colour = getFillColour(paint_style);
-
-    //Create the rectangle fill vertex
-    ColouredVertex rectFillVertex(glm::vec3(), fill_colour);
-    //Apply z-depth
-    rectFillVertex.d_position.z = 0.0f;
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = getScaleFactors(rect->d_transformation, render_settings);
 
     //Make a list of rectangle (corner) points
     std::vector<glm::vec2> rectangle_points;
@@ -159,27 +134,11 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
     rectangle_points.push_back( glm::vec2(rect->d_width, rect->d_height) );
     rectangle_points.push_back( glm::vec2(rect->d_width, 0.0f          ) );
   
-    //Add the rectangle fill vertices
-    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[0];
-    geometry_buffer.appendVertex(rectFillVertex);
-
-    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[1];
-    geometry_buffer.appendVertex(rectFillVertex);
-
-    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[2];
-    geometry_buffer.appendVertex(rectFillVertex);
-
-    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[2];
-    geometry_buffer.appendVertex(rectFillVertex);
-
-    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[0];
-    geometry_buffer.appendVertex(rectFillVertex);
-
-    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[3];
-    geometry_buffer.appendVertex(rectFillVertex);
+    //Create and append the rectangle's fill geometry
+    createTriangleStripFillGeometry(rectangle_points, geometry_buffer, paint_style);
 
     //Create and append the rectangle's stroke geometry
-    createStroke(rectangle_points, geometry_buffer, paint_style, max_scale, true);
+    createStroke(rectangle_points, geometry_buffer, paint_style, render_settings, scale_factors, true);
 }
 
 //----------------------------------------------------------------------------//
@@ -201,9 +160,10 @@ void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
     const float& radius = circle->d_r;
 
     GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
-
+  
+    //Create and append the circle's fill geometry
     createCircleFill(radius, max_scale, paint_style, geometry_buffer);
-
+    //Create and append the circle's stroke geometry
     createCircleStroke(radius, max_scale, paint_style, geometry_buffer);
 }
 
@@ -303,7 +263,8 @@ bool SVGTesselator::isPolygonClockwise(const glm::vec2& point1, const glm::vec2&
 void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
                                  GeometryBuffer& geometry_buffer,
                                  const SVGPaintStyle& paint_style,
-                                 const float max_scale,
+                                 const SVGImage::SVGImageRenderSettings& render_settings,
+                                 const glm::vec2& scale_factors,
                                  const bool is_shape_closed)
 {
     if(points.size() <= 1 || paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
@@ -311,13 +272,21 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
 
     // Calculate half of the stroke width
     const float stroke_half_width = paint_style.d_strokeWidth * 0.5f;
+
+    //We need this to determine the degree of tesselation required for the curved elements
+    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+
     // Create an object containing all the data we need for our segment processing
-    StrokeSegmentData stroke_data(geometry_buffer, stroke_half_width, paint_style);
+    StrokeSegmentData stroke_data(geometry_buffer, stroke_half_width, paint_style, max_scale);
 
     // Get and add the stroke colour
     stroke_data.d_strokeVertex.d_colour = getStrokeColour(paint_style);
     // Set the z coordinate
     stroke_data.d_strokeVertex.d_position.z = 0.0f;
+    //Create the fade stroke colour from the normal colour
+    stroke_data.d_strokeFadeVertex = stroke_data.d_strokeVertex;
+    //and set the alpha to 0
+    stroke_data.d_strokeFadeVertex.d_colour.setAlpha(0.0f);
 
     const size_t points_count = points.size();
     size_t i = 0;
@@ -327,7 +296,7 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     {
         //Create linecap
         stroke_data.setPoints(points[0], points[0], points[1]);
-        createLinecap(stroke_data, max_scale, true);
+        createLinecap(stroke_data, true);
 
         ++i;
     }
@@ -335,11 +304,11 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     {
         //Get the first two stroke points without drawing anything
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[0]);
-        createStrokeSegment(stroke_data, max_scale, false);
+        createStrokeSegment(stroke_data, render_settings, scale_factors, false);
 
         //Add the segment connected via the first point
         stroke_data.setPoints(points[points_count - 1], points[i], points[i + 1]);
-        createStrokeSegment(stroke_data, max_scale);
+        createStrokeSegment(stroke_data, render_settings, scale_factors, true);
 
         ++i;
     }
@@ -348,7 +317,7 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     for(; i < points_count - 1; ++i)
     {       
         stroke_data.setPoints(points[i - 1], points[i], points[i + 1]);
-        createStrokeSegment(stroke_data, max_scale);
+        createStrokeSegment(stroke_data, render_settings, scale_factors, true);
     }
 
     // Handle end of stroke
@@ -356,19 +325,25 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     {
         //Create linecap
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[points_count - 1]);
-        createLinecap(stroke_data, max_scale, false);
+        createLinecap(stroke_data, false);
     }
     else
     {
         //Add the segment connected via the last point
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[0]);
-        createStrokeSegment(stroke_data, max_scale);
+        createStrokeSegment(stroke_data, render_settings, scale_factors, true);
     }
+}
+
+glm::vec2 getDirectionVectorTiltedRight(const glm::vec2& start, const glm::vec2& end)
+{
+    return glm::normalize( glm::vec2(end.y - start.y, start.x - end.x) );
 }
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
-                                        const float max_scale,
+                                        const SVGImage::SVGImageRenderSettings& render_settings,
+                                        const glm::vec2& scale_factors,
                                         const bool draw)
 {
     SVGPaintStyle::SVGLinejoin linejoin = stroke_data.d_paintStyle.d_strokeLinejoin;
@@ -380,23 +355,27 @@ void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
     bool polygon_is_clockwise = isPolygonClockwise(prev_point, cur_point, next_point);
     float direction_sign = polygon_is_clockwise ? 1.0f : -1.0f;
 
-    glm::vec2 previous_to_current( direction_sign * glm::normalize(cur_point - prev_point) );
-    glm::vec2 prev_dir_to_inside = stroke_data.d_strokeHalfWidth * glm::vec2( previous_to_current.y, -previous_to_current.x );
+    glm::vec2 prev_dir_to_inside( direction_sign * getDirectionVectorTiltedRight(prev_point, cur_point) );
+    glm::vec2 prev_vec_to_inside = stroke_data.d_strokeHalfWidth * prev_dir_to_inside;
 
-    glm::vec2 cur_to_next( direction_sign * glm::normalize(next_point - cur_point) );
-    glm::vec2 next_dir_to_inside = stroke_data.d_strokeHalfWidth * glm::vec2( cur_to_next.y, -cur_to_next.x );
+    glm::vec2 next_dir_to_inside( direction_sign * getDirectionVectorTiltedRight(cur_point, next_point) );
+    glm::vec2 next_vec_to_inside = stroke_data.d_strokeHalfWidth * next_dir_to_inside;
 
     // We calculate the intersection of the inner lines along the stroke
     glm::vec2 inner_intersection;
-    int intersection_result = intersect(prev_point + prev_dir_to_inside, cur_point + prev_dir_to_inside,
-                                        next_point + next_dir_to_inside, cur_point + next_dir_to_inside,
+    int intersection_result = intersect(prev_point + prev_vec_to_inside, cur_point + prev_vec_to_inside,
+                                        next_point + next_vec_to_inside, cur_point + next_vec_to_inside,
                                         inner_intersection);
 
     // The outer connection point of the stroke
     glm::vec2 outer_point;
     // Reference to the end-points of our stroke segment
-    const glm::vec2& segmentEndLeft = polygon_is_clockwise ? outer_point : inner_intersection;
-    const glm::vec2& segmentEndRight = polygon_is_clockwise ? inner_intersection : outer_point;
+    const glm::vec2& segment_end_left = polygon_is_clockwise ? outer_point : inner_intersection;
+    const glm::vec2& segment_end_right = polygon_is_clockwise ? inner_intersection : outer_point;
+
+    //Get the anti-aliasing offsets
+    float core_offset, fade_offset;
+    determineAntiAliasingOffsets(stroke_data.d_paintStyle.d_strokeWidth, core_offset, fade_offset);
 
     //If the stroke miter is exceeded we fall back to bevel
     if(linejoin == SVGPaintStyle::SLJ_MITER)
@@ -408,75 +387,160 @@ void SVGTesselator::createStrokeSegment(StrokeSegmentData& stroke_data,
         //We calculate the connection point of the outer lines
         outer_point = cur_point + cur_point - inner_intersection;
 
-        if(draw)
-            addStrokeSegmentConnectionGeometry(stroke_data, segmentEndLeft, segmentEndRight);
-
-        stroke_data.d_lastPointLeft = segmentEndLeft;
-        stroke_data.d_lastPointRight = segmentEndRight;
+        if(!render_settings.d_antiAliasing)
+            addStrokeSegmentConnectionGeometry(stroke_data, segment_end_left, segment_end_right, draw);
+        else
+            addStrokeSegmentAAConnectionGeometry(stroke_data, segment_end_left, segment_end_right,
+                                               polygon_is_clockwise, prev_dir_to_inside, next_dir_to_inside, core_offset,
+                                               fade_offset, scale_factors, draw);
     }
     else if(linejoin == SVGPaintStyle::SLJ_BEVEL ||
             linejoin == SVGPaintStyle::SLJ_ROUND)
     {
         //Is the first bevel corner point
-        outer_point = cur_point - prev_dir_to_inside;
+        outer_point = cur_point - prev_vec_to_inside;
         //The second bevel corner point
-        glm::vec2 secondBevelPoint = cur_point - next_dir_to_inside;
+        const glm::vec2 secondBevelPoint = cur_point - next_vec_to_inside;
+
+        addStrokeSegmentConnectionGeometry(stroke_data, segment_end_left, segment_end_right, draw);
 
         if(draw)
         {
-            addStrokeSegmentConnectionGeometry(stroke_data, segmentEndLeft, segmentEndRight);
-
-            if(linejoin == SVGPaintStyle::SLJ_BEVEL)
-            {
-                CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
-                GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
-
-                addTriangleGeometry(segmentEndLeft, segmentEndRight, secondBevelPoint, geometry_buffer, stroke_fill_vertex);
-            }
-            else if(linejoin == SVGPaintStyle::SLJ_ROUND)
-            {
-                float arc_angle;
-                if(polygon_is_clockwise)
-                    arc_angle = std::acos( glm::dot( glm::normalize(segmentEndLeft - cur_point), glm::normalize(secondBevelPoint - cur_point) ) );
-                else
-                    arc_angle = std::acos( glm::dot( glm::normalize(segmentEndRight - cur_point), glm::normalize(secondBevelPoint - cur_point)) );
-
-                //Get the parameters
-                float num_segments, tangential_factor, radial_factor;
-                calculateArcTesselationParameters(stroke_data.d_strokeHalfWidth, arc_angle, max_scale,
-                                                  num_segments, tangential_factor, radial_factor);
-
-
-                //Get the arc points
-                std::vector<glm::vec2> arc_points;
-                
-                if(polygon_is_clockwise)
-                {
-                    arc_points.push_back(segmentEndRight);
-                    createArcPoints(cur_point, secondBevelPoint, segmentEndLeft,
-                                    num_segments, tangential_factor, radial_factor,
-                                    arc_points);
-                }
-                else
-                {
-                    arc_points.push_back(segmentEndLeft);
-                    createArcPoints(cur_point, segmentEndRight, secondBevelPoint,
-                                    num_segments, tangential_factor, radial_factor,
-                                    arc_points);
-                }
-               
-                createArcStrokeGeometry(arc_points, stroke_data.d_geometryBuffer, stroke_data.d_strokeVertex);
-            }
+            createStrokeLinejoinBevelOrRound(stroke_data, cur_point, secondBevelPoint,
+                                             segment_end_left, segment_end_right, linejoin,
+                                             polygon_is_clockwise);
         }
 
-        stroke_data.d_lastPointLeft = polygon_is_clockwise ? secondBevelPoint : segmentEndLeft;
-        stroke_data.d_lastPointRight = polygon_is_clockwise ? segmentEndRight : secondBevelPoint;
+        stroke_data.d_lastPointLeft = polygon_is_clockwise ? secondBevelPoint : segment_end_left;
+        stroke_data.d_lastPointRight = polygon_is_clockwise ? segment_end_right : secondBevelPoint;
     }
 }
 
 //----------------------------------------------------------------------------//
+void SVGTesselator::determineAntiAliasingOffsets(float width, float& core_offset, float& fade_offset)
+{
+	float remainder = width - static_cast<int>(width);
+	
+    if ( width >= 6.0f)
+    {
+		float ff = width - 6.0f;
+		core_offset = 2.5f + ff * 0.50f;
+        fade_offset = 1.08f;
+	}
+    else if ( width >= 5.0f)
+    {
+		core_offset = 1.9f + remainder * 0.6f;
+        fade_offset=1.08f;
+	} 
+    else if ( width >= 4.0f)
+    {
+		core_offset = 1.44f + remainder * 0.46f;
+        fade_offset=1.08f;
+	}
+    else if ( width >= 3.0f)
+    {
+		core_offset = 0.96f + remainder * 0.48f;
+        fade_offset=1.08f;
+	}
+     else if ( width >= 2.0f)
+    {
+		core_offset = 0.38f + remainder * 0.58f;
+        fade_offset=1.08f;
+	} 
+     else if ( width >= 1.0f)
+    {
+		core_offset = 0.05f + remainder * 0.33f;
+        fade_offset = 0.768f + 0.312f * remainder;
+	}
+	else if ( width >= 0.0f)
+    {
+		core_offset = 0.05f;
+        fade_offset=0.768f;
+	}
+
+    core_offset -= width * 0.5f;
+}
+
+void line(glm::vec2 start, glm::vec2 end, //coordinates of the line
+          float width, CEGUI::Colour& colour)
+{
+	float		t, R;
+	//determineAntiAliasingOffsets(width, t, R);
+	float		f = width - static_cast<int>(width);
+	float		A = colour.getAlpha();
+
+    CEGUI::Colour fade_colour = colour;
+    fade_colour.setAlpha(0.0f);
+
+	//determine angle of the line to horizontal
+	glm::vec2	coreThick; //core thickness of a line
+	glm::vec2	fadingEdge; //fading edge of a line
+	glm::vec2	cap; //cap of a line
+	double		ALW = 0.01;
+	glm::vec2	direction = end - start;
+
+    if (std::abs(direction.x) < ALW)
+    {
+        //vertical
+        coreThick = glm::vec2(t, 0.0f);
+        fadingEdge = glm::vec2(R, 0.0f);
+        if (width <= 1.0f)
+        {
+            coreThick.x = 0.5f;
+            fadingEdge.x = 0.0f;
+        }
+    }
+    else if (std::abs(direction.y) < ALW)
+    {
+        //horizontal
+        coreThick = glm::vec2(0.0f, t);
+        fadingEdge = glm::vec2(0.0f, R);
+        if ( width <= 1.0f)
+        {
+            coreThick.y = 0.5f;
+            fadingEdge.y = 0.0f;
+        }
+    }
+    else
+    {
+        direction = glm::normalize( glm::vec2( -direction.y, direction.x ) );
+        cap = glm::vec2( -direction.y, direction.x );
+        coreThick = t * direction;
+        fadingEdge = R * direction;
+    }
+
+	start += cap * 0.5f;
+	end -= cap * 0.5f;
+
+/*
+	//draw the line by triangle strip
+	glm::vec2 line_vertex[] =
+		{
+			start-coreThick-fadingEdge-cap, //fading edge1
+			end-coreThick-fadingEdge+cap,
+			start-coreThick-cap,	  //core
+			end-coreThick+cap,
+			start+coreThick-cap,
+			end+coreThick+cap,
+			start+coreThick+fadingEdge-cap, //fading edge2
+			end+coreThick+fadingEdge+cap
+		};
+    CEGUI::Colour line_color[]=
+    {
+        fade_colour
+        fade_colour
+        colour
+        colour
+        colour
+        colour
+        fade_colour
+        fade_colour
+    };*/
+
+}
+
+//----------------------------------------------------------------------------//
 void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
-                                  const float max_scale,
                                   const bool is_start)
 {
     const SVGPaintStyle::SVGLinecap& linecap = stroke_data.d_paintStyle.d_strokeLinecap;
@@ -514,7 +578,7 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
 
         //Get the parameters
         float num_segments, tangential_factor, radial_factor;
-        calculateArcTesselationParameters(stroke_data.d_strokeHalfWidth, half_circle_angle, max_scale,
+        calculateArcTesselationParameters(stroke_data.d_strokeHalfWidth, half_circle_angle, stroke_data.d_maxScale,
                                           num_segments, tangential_factor, radial_factor);
 
         //Get the arc points
@@ -532,7 +596,7 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
     }
 
     if(!is_start)
-        addStrokeSegmentConnectionGeometry(stroke_data, linecap_left, linecap_right);
+        addStrokeSegmentConnectionGeometry(stroke_data, linecap_left, linecap_right, true);
 
     stroke_data.d_lastPointLeft = linecap_left;
     stroke_data.d_lastPointRight = linecap_right;
@@ -540,29 +604,96 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::addStrokeSegmentConnectionGeometry(StrokeSegmentData& stroke_data,
-                                                       const glm::vec2& segmentEndLeft,
-                                                       const glm::vec2& segmentEndRight)
+                                                       const glm::vec2& segment_end_left,
+                                                       const glm::vec2& segment_end_right,
+                                                       const bool draw)
 {
-    CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
-    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+    if(draw)
+    {
+        // Add the geometry
+        CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+        GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
-    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-    geometry_buffer.appendVertex(stroke_fill_vertex);
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+        geometry_buffer.appendVertex(stroke_vertex);
 
-    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-    geometry_buffer.appendVertex(stroke_fill_vertex);
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+        geometry_buffer.appendVertex(stroke_vertex);
 
-    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-    geometry_buffer.appendVertex(stroke_fill_vertex);
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segment_end_left;
+        geometry_buffer.appendVertex(stroke_vertex);
 
-    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndLeft;
-    geometry_buffer.appendVertex(stroke_fill_vertex);
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segment_end_left;
+        geometry_buffer.appendVertex(stroke_vertex);
 
-    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-    geometry_buffer.appendVertex(stroke_fill_vertex);
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+        geometry_buffer.appendVertex(stroke_vertex);
 
-    stroke_fill_vertex.d_position.swizzle(glm::X, glm::Y) = segmentEndRight;
-    geometry_buffer.appendVertex(stroke_fill_vertex);
+        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segment_end_right;
+        geometry_buffer.appendVertex(stroke_vertex);
+    }
+
+    //! We set our last point values
+    stroke_data.d_lastPointLeft = segment_end_left;
+    stroke_data.d_lastPointRight = segment_end_right;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::addStrokeSegmentAAConnectionGeometry(StrokeSegmentData& stroke_data,
+                                                         const glm::vec2& segment_end_left_orig,
+                                                         const glm::vec2& segment_end_right_orig,
+                                                         const bool polygon_is_clockwise,
+                                                         const glm::vec2& prev_dir_to_inside,
+                                                         const glm::vec2& next_dir_to_inside,
+                                                         float core_offset,
+                                                         float fade_offset,
+                                                         const glm::vec2& scale_factors,
+                                                         const bool draw)
+{ 
+    //Calculate direction
+    glm::vec2 prev_to_cur(-prev_dir_to_inside.y, prev_dir_to_inside.x);
+    glm::vec2 next_to_cur(next_dir_to_inside.y, -next_dir_to_inside.x) ;
+
+    float length_scale1 = calculateLengthScale(prev_dir_to_inside, scale_factors);
+    float length_scale2 = calculateLengthScale(next_dir_to_inside, scale_factors);
+
+    glm::vec2 direction = glm::normalize(prev_to_cur * length_scale2 + next_to_cur * length_scale1);
+
+    //Calculate how much we need to offset along the direction depending on the angle
+    float length_to_corner;
+
+    /* We get the distance to our new corner using a factor. The factor would, in case we didn't prepare for non-uniform scaling, just consist
+    of a simple vector projection. However, here we also need to multiply the local stroke width's scale factor (in the direction of the stroke)
+    to get currect results. As an alternative calculation we could use saled_length_2 and next_dir_to_inside instead the respective variables, which
+    has to lead to the same result.
+    */
+    if(polygon_is_clockwise) 
+        length_to_corner = length_scale1 / glm::dot( -prev_dir_to_inside, direction );
+    else
+        length_to_corner = length_scale1 / glm::dot( prev_dir_to_inside, direction );
+    
+    direction *= length_to_corner;
+
+    //Calculate the offset vectors from the original area
+    glm::vec2 core_offset_vec = core_offset * direction;
+    glm::vec2 fade_offset_vec = fade_offset * direction;
+    //Calculate the segment positions
+    const glm::vec2 segmentFadeLeftEnd = segment_end_left_orig + fade_offset_vec;
+    const glm::vec2 segmentLeftEnd = segment_end_left_orig + core_offset_vec;
+    const glm::vec2 segmentRightEnd = segment_end_right_orig - core_offset_vec;
+    const glm::vec2 segmentFadeRightEnd = segment_end_right_orig - fade_offset_vec;
+
+    //If we want to draw we have to combine the vertices
+    if(draw)
+        addStrokeSegmentAAConnectionGeometryVertices(stroke_data,
+                                                     segmentFadeLeftEnd, segmentLeftEnd,
+                                                     segmentRightEnd, segmentFadeRightEnd);
+
+    //! We set our lastPoint values to the current values
+    stroke_data.d_lastPointLeft = segmentLeftEnd;
+    stroke_data.d_lastPointRight = segmentRightEnd;
+    stroke_data.d_lastFadePointLeft = segmentFadeLeftEnd;
+    stroke_data.d_lastFadePointRight = segmentFadeRightEnd;
 }
 
 //----------------------------------------------------------------------------//
@@ -583,9 +714,9 @@ void SVGTesselator::addTriangleGeometry(const glm::vec2& point1,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createCircleFillGeometry(std::vector<glm::vec2>& points,
-                                          GeometryBuffer& geometry_buffer,
-                                          const SVGPaintStyle& paint_style)
+void SVGTesselator::createTriangleStripFillGeometry(std::vector<glm::vec2>& points,
+                                                    GeometryBuffer& geometry_buffer,
+                                                    const SVGPaintStyle& paint_style)
 {
     if(paint_style.d_fill.d_none)
         return;
@@ -597,7 +728,7 @@ void SVGTesselator::createCircleFillGeometry(std::vector<glm::vec2>& points,
     const glm::vec2& point1 = points[0];
 
     const size_t maximum_index = points.size() - 1;
-    for(size_t i = 1; i < maximum_index - 1; ++i)
+    for(size_t i = 1; i < maximum_index; ++i)
         addTriangleGeometry(point1, points[i], points[i + 1], geometry_buffer, fill_vertex);
 }
 
@@ -619,7 +750,7 @@ void SVGTesselator::createCircleFill(const float& radius,
     createCirclePoints(radius, num_segments, cos_value, sin_value, circle_points);
 
     //Generate the geometry from the the circle points
-    createCircleFillGeometry(circle_points, geometry_buffer, paint_style);
+    createTriangleStripFillGeometry(circle_points, geometry_buffer, paint_style);
 }
 
 //----------------------------------------------------------------------------//
@@ -788,6 +919,7 @@ void SVGTesselator::createArcPoints(const glm::vec2& center_point,
     arc_points.push_back(end_point);
 }
 
+//----------------------------------------------------------------------------//
 void SVGTesselator::handleStrokeMiterExceedance(const StrokeSegmentData& stroke_data,
                                                 const glm::vec2& cur_point,
                                                 const glm::vec2& inner_intersection,
@@ -799,6 +931,162 @@ void SVGTesselator::handleStrokeMiterExceedance(const StrokeSegmentData& stroke_
     float half_miter_extension = glm::length(cur_point - inner_intersection);
     if(half_miter_extension > (miterlimit * stroke_data.d_strokeHalfWidth))
         linejoin = SVGPaintStyle::SLJ_BEVEL;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_data,
+                                                     const glm::vec2& cur_point,
+                                                     const glm::vec2& secondBevelPoint,
+                                                     const glm::vec2& segment_end_left,
+                                                     const glm::vec2& segment_end_right,
+                                                     const SVGPaintStyle::SVGLinejoin linejoin,
+                                                     const bool polygon_is_clockwise)
+{
+    if(linejoin == SVGPaintStyle::SLJ_BEVEL)
+    {
+        CEGUI::ColouredVertex& stroke_fill_vertex = stroke_data.d_strokeVertex;
+        GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+
+        addTriangleGeometry(segment_end_left, segment_end_right, secondBevelPoint, geometry_buffer, stroke_fill_vertex);
+    }
+    else if(linejoin == SVGPaintStyle::SLJ_ROUND)
+    {
+        float arc_angle;
+        if(polygon_is_clockwise)
+            arc_angle = std::acos( glm::dot( glm::normalize(segment_end_left - cur_point), glm::normalize(secondBevelPoint - cur_point) ) );
+        else
+            arc_angle = std::acos( glm::dot( glm::normalize(segment_end_right - cur_point), glm::normalize(secondBevelPoint - cur_point)) );
+
+        //Get the parameters
+        float num_segments, tangential_factor, radial_factor;
+        calculateArcTesselationParameters(stroke_data.d_strokeHalfWidth, arc_angle, stroke_data.d_maxScale,
+                                          num_segments, tangential_factor, radial_factor);
+
+
+        //Get the arc points
+        std::vector<glm::vec2> arc_points;
+
+        if(polygon_is_clockwise)
+        {
+            arc_points.push_back(segment_end_right);
+            createArcPoints(cur_point, secondBevelPoint, segment_end_left,
+                            num_segments, tangential_factor, radial_factor,
+                            arc_points);
+        }
+        else
+        {
+            arc_points.push_back(segment_end_left);
+            createArcPoints(cur_point, segment_end_right, secondBevelPoint,
+                            num_segments, tangential_factor, radial_factor,
+                            arc_points);
+        }
+
+        createArcStrokeGeometry(arc_points, stroke_data.d_geometryBuffer, stroke_data.d_strokeVertex);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createRectangleFill(const SVGPaintStyle& paint_style, std::vector<glm::vec2>& rectangle_points, GeometryBuffer& geometry_buffer)
+{
+    if(paint_style.d_fill.d_none)
+        return;
+
+    //Get colours
+    const Colour fill_colour = getFillColour(paint_style);
+
+    //Create the rectangle fill vertex
+    ColouredVertex rectFillVertex(glm::vec3(), fill_colour);
+    //Apply z-depth
+    rectFillVertex.d_position.z = 0.0f;
+
+    //Add the rectangle fill vertices
+    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[0];
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[1];
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[2];
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[2];
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[0];
+    geometry_buffer.appendVertex(rectFillVertex);
+
+    rectFillVertex.d_position.swizzle(glm::X, glm::Y) = rectangle_points[3];
+    geometry_buffer.appendVertex(rectFillVertex);
+}
+
+//----------------------------------------------------------------------------//
+glm::vec2 SVGTesselator::getScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    glm::vec2 scale ( glm::length(transformation[0]), glm::length(transformation[1]) );
+    scale *= glm::vec2( render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y );
+    scale = 1.f / scale;
+
+    return scale;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::addStrokeSegmentAAConnectionGeometryVertices(StrokeSegmentData &stroke_data,
+                                                                 const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentLeftEnd,
+                                                                 const glm::vec2& segmentRightEnd, const glm::vec2& segmentFadeRightEnd)
+{ 
+    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+
+    //Fade1
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeLeftEnd;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeLeftEnd;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Core
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Fade1
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeRightEnd;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+}
+
+float SVGTesselator::calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors)
+{
+    static const float half_pi = glm::half_pi<float>();
+    static const float one_over_pi_half = 1.0f / half_pi;
+
+    float angle_to_y_axis = std::acos( std::abs(direction.y) );
+    float angle_to_x_axis = half_pi - angle_to_y_axis;
+    return one_over_pi_half * (scale_factors.x * angle_to_y_axis + scale_factors.y * angle_to_x_axis);
 }
 
 //----------------------------------------------------------------------------//
