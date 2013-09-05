@@ -391,6 +391,15 @@
                 </Section>
             </Layer>
         </StateImagery>
+        <StateImagery name="SelectedFocused">
+            <Layer>
+                <Section section="focused" />
+                <Section section="select_mark" />
+                <Section section="label">
+                    <ColourProperty name="HoverTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
 		<StateImagery name="Focused">
             <Layer>
                 <Section section="focused" />
