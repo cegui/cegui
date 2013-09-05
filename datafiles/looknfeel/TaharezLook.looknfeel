@@ -1316,6 +1316,11 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
