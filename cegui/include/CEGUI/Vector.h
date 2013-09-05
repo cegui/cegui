@@ -31,6 +31,7 @@
 #define _CEGUIVector_h_
 
 #include "CEGUI/UDim.h"
+#include "CEGUI/GLM.h"
 #include <typeinfo>
 #include <ostream>
 
@@ -197,118 +198,6 @@ inline Vector2<UDim> operator * (const Vector2<UDim>& v, const float c)
 }
 
 typedef Vector2<UDim> UVector2;
-
-/*!
-\brief
-    Class used as a three dimensional vector
-
-\par
-    This class is templated now, this allows us to use it as a Vector3 of floats,
-    ints or even UDims without replicating the code all over the place.
-
-\par
-    For a simple Vector3 of floats (what was called Vector3 before), use Vector3f
-    as the T template parameter defaults to float to save fingertips.
-*/
-template<typename T>
-class Vector3:
-    public AllocatedObject<Vector3<T> >
-{
-public:
-    typedef T value_type;
-
-    inline Vector3()
-    {}
-
-    inline Vector3(const T x, const T y, const T z):
-        d_x(x),
-        d_y(y),
-        d_z(z)
-    {}
-
-    inline explicit Vector3(const Vector2<T>& v, const T z):
-        d_x(v.d_x),
-        d_y(v.d_y),
-        d_z(z)
-    {}
-
-    inline Vector3(const Vector3& v):
-        d_x(v.d_x),
-        d_y(v.d_y),
-        d_z(v.d_z)
-    {}
-
-    inline bool operator==(const Vector3& vec) const
-    {
-        return ((d_x == vec.d_x) && (d_y == vec.d_y) && (d_z == vec.d_z));
-    }
-
-    inline bool operator!=(const Vector3& vec) const
-    {
-        return !(operator==(vec));
-    }
-
-    inline Vector3 operator*(const T c) const
-    {
-        return Vector3(d_x * c, d_y * c, d_z * c);
-    }
-
-    inline Vector3 operator+(const Vector3& v) const
-    {
-        return Vector3(d_x + v.d_x, d_y + v.d_y, d_z + v.d_z);
-    }
-
-    inline Vector3 operator-(const Vector3& v) const
-    {
-        return Vector3(d_x - v.d_x, d_y - v.d_y, d_z - v.d_z);
-    }
-    
-    /*!
-    \brief allows writing the vector3 to std ostream
-    */
-    inline friend std::ostream& operator << (std::ostream& s, const Vector3& v)
-    {
-        s << "CEGUI::Vector3<" << typeid(T).name() << ">(" << v.d_x << ", " << v.d_y << ", " << v.d_z << ")";
-        return s;
-    }
-
-    //! \brief finger saving alias for Vector3(0, 0, 0)
-    inline static Vector3 zero()
-    {
-        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
-    }
-
-    //! \brief finger saving alias for Vector3(1, 1, 1)
-    inline static Vector3 one()
-    {
-        return Vector3(TypeSensitiveOne<T>(), TypeSensitiveOne<T>(), TypeSensitiveOne<T>());
-    }
-    
-    //! \brief finger saving alias for Vector3(1, 0, 0)
-    inline static Vector3 one_x()
-    {
-        return Vector3(TypeSensitiveOne<T>(), TypeSensitiveZero<T>(), TypeSensitiveZero<T>());
-    }
-    
-    //! \brief finger saving alias for Vector3(0, 1, 0)
-    inline static Vector3 one_y()
-    {
-        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveOne<T>(), TypeSensitiveZero<T>());
-    }
-
-    //! \brief finger saving alias for Vector3(0, 0, 1)
-    inline static Vector3 one_z()
-    {
-        return Vector3(TypeSensitiveZero<T>(), TypeSensitiveZero<T>(), TypeSensitiveOne<T>());
-    }
-    
-    T d_x;
-    T d_y;
-    T d_z;
-};
-
-// the main reason for this is to keep C++ API in sync with other languages
-typedef Vector3<float> Vector3f;
 
 } // End of  CEGUI namespace section
 

@@ -1,10 +1,12 @@
 /***********************************************************************
- *    filename:   Quaternion.cpp
- *    created:    5/9/2012
- *    author:     Martin Preisler
- *************************************************************************/
+	filename: 	GLM.h
+	created:	10/8/2013
+	author:		Martin Preisler
+
+	purpose:	This is the only way to include GLM in CEGUI
+*************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,17 +27,15 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#ifndef _CEGUIGLM_h_
+#define _CEGUIGLM_h_
 
-#include "CEGUI/Quaternion.h"
+// The reason this file exists is that people might want to mix their
+// own custom GLM setup with CEGUI's, this allows them to do just that
+// without us having to pass tons of defines around.
 
-#include <boost/test/unit_test.hpp>
+#include <glm/glm.hpp>
+#include <glm/gtc/quaternion.hpp>
 
-BOOST_AUTO_TEST_SUITE(Quaternion)
+#endif
 
-BOOST_AUTO_TEST_CASE(Constants)
-{
-    BOOST_CHECK_EQUAL(CEGUI::Quaternion::ZERO, CEGUI::Quaternion(0, 0, 0, 0));
-    BOOST_CHECK_EQUAL(CEGUI::Quaternion::IDENTITY, CEGUI::Quaternion(1, 0, 0, 0));
-}
-
-BOOST_AUTO_TEST_SUITE_END()

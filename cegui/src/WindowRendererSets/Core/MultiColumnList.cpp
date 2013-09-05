@@ -91,7 +91,7 @@ namespace CEGUI
         //
         // Render list items
         //
-        Vector3f itemPos;
+        glm::vec3 itemPos;
         Sizef itemSize;
         Rectf itemClipper, itemRect;
 
@@ -99,8 +99,8 @@ namespace CEGUI
         Rectf itemsArea(getListRenderArea());
 
         // set up initial positional details for items
-        itemPos.d_y = itemsArea.top() - vertScrollbar->getScrollPosition();
-        itemPos.d_z = 0.0f;
+        itemPos.y = itemsArea.top() - vertScrollbar->getScrollPosition();
+        itemPos.z = 0.0f;
 
         const float alpha = w->getEffectiveAlpha();
 
@@ -108,7 +108,7 @@ namespace CEGUI
         for (uint i = 0; i < w->getRowCount(); ++i)
         {
             // set initial x position for this row.
-            itemPos.d_x = itemsArea.left() - horzScrollbar->getScrollPosition();
+            itemPos.x = itemsArea.left() - horzScrollbar->getScrollPosition();
 
             // calculate height for this row.
             itemSize.d_height = w->getHighestRowItemHeight(i);
@@ -125,15 +125,15 @@ namespace CEGUI
                 if (item)
                 {
                     // calculate destination area for this item.
-                    itemRect.left(itemPos.d_x);
-                    itemRect.top(itemPos.d_y);
+                    itemRect.left(itemPos.x);
+                    itemRect.top(itemPos.y);
                     itemRect.setSize(itemSize);
                     itemClipper = itemRect.getIntersection(itemsArea);
 
                     // skip this item if totally clipped
                     if (itemClipper.getWidth() == 0)
                     {
-                        itemPos.d_x += itemSize.d_width;
+                        itemPos.x += itemSize.d_width;
                         continue;
                     }
 
@@ -142,11 +142,11 @@ namespace CEGUI
                 }
 
                 // update position for next column.
-                itemPos.d_x += itemSize.d_width;
+                itemPos.x += itemSize.d_width;
             }
 
             // update position ready for next row
-            itemPos.d_y += itemSize.d_height;
+            itemPos.y += itemSize.d_height;
         }
     }
 

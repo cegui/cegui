@@ -382,9 +382,9 @@ bool GameMenuDemo::handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventA
 }
 
 
-float getAngle(const CEGUI::Quaternion& quat)
+float getAngle(const glm::quat& quat)
 {
-    return 2.0f * std::acos(quat.d_w);
+    return 2.0f * std::acos(quat.w);
 }
 
 
@@ -396,7 +396,7 @@ bool GameMenuDemo::handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args
 
     if(animInst->getDefinition() == CEGUI::AnimationManager::getSingleton().getAnimation("LoopRotateRight"))
     {
-        CEGUI::Quaternion curRotation = animInst->getTarget()->getProperty<CEGUI::Quaternion>("Rotation");
+        const glm::quat curRotation = animInst->getTarget()->getProperty<glm::quat>("Rotation");
 
         float curAngle = getAngle(curRotation);
         float progress = curAngle / (2.0f * static_cast<float>(M_PI));

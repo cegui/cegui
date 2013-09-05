@@ -42,7 +42,7 @@ struct Vertex :
     public AllocatedObject<Vertex>
 {
     //! Position of the vertex in 3D space.
-    Vector3f position;
+    glm::vec3 position;
     //! Texture co-ords to be applied to the vertex.
     Vector2f tex_coords;
     //! colour to be applied to the vertex.

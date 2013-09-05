@@ -865,16 +865,16 @@ namespace CEGUI
             prop = CEGUI_NEW_AO PropertyDefinition<Sizef>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "Vector2f")
             prop = CEGUI_NEW_AO PropertyDefinition<Vector2f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "Vector3f")
-            prop = CEGUI_NEW_AO PropertyDefinition<Vector3f>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == "vec3")
+            prop = CEGUI_NEW_AO PropertyDefinition<glm::vec3>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "Rectf")
             prop = CEGUI_NEW_AO PropertyDefinition<Rectf>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "Font")
             prop = CEGUI_NEW_AO PropertyDefinition<Font*>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "Image")
             prop = CEGUI_NEW_AO PropertyDefinition<Image*>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if(type == "Quaternion")
-            prop = CEGUI_NEW_AO PropertyDefinition<Quaternion>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
+        else if(type == "quat")
+            prop = CEGUI_NEW_AO PropertyDefinition<glm::quat>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "AspectMode")
             prop = CEGUI_NEW_AO PropertyDefinition<AspectMode>(name, init, help, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if(type == "HorizontalAlignment")
@@ -976,8 +976,8 @@ namespace CEGUI
         else if (type == "Vector2f")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector2f>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "Vector3f")
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Vector3f>(name,
+        else if (type == "vec3")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<glm::vec3>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == "Rectf")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Rectf>(name,
@@ -988,8 +988,8 @@ namespace CEGUI
         else if (type == "Image")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Image*>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
-        else if (type == "Quaternion")
-            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<Quaternion>(name,
+        else if (type == "quat")
+            d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<glm::quat>(name,
                     widget, target, init, d_widgetlook->getName(), redraw, layout, eventName, d_widgetlook->getName());
         else if (type == "AspectMode")
             d_propertyLink = CEGUI_NEW_AO PropertyLinkDefinition<AspectMode>(name,
@@ -1504,16 +1504,16 @@ namespace CEGUI
                 dynamic_cast<PropertyLinkDefinition<Sizef>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "Vector2f")
                 dynamic_cast<PropertyLinkDefinition<Vector2f>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == "Vector3f")
-                dynamic_cast<PropertyLinkDefinition<Vector3f>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "vec3")
+                dynamic_cast<PropertyLinkDefinition<glm::vec3>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "Rectf")
                 dynamic_cast<PropertyLinkDefinition<Rectf>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "Font")
                 dynamic_cast<PropertyLinkDefinition<Font*>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "Image")
                 dynamic_cast<PropertyLinkDefinition<Image*>* >(d_propertyLink)->addLinkTarget(w, p);
-            else if(type == "Quaternion")
-                dynamic_cast<PropertyLinkDefinition<Quaternion>* >(d_propertyLink)->addLinkTarget(w, p);
+            else if(type == "quat")
+                dynamic_cast<PropertyLinkDefinition<glm::quat>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "AspectMode")
                 dynamic_cast<PropertyLinkDefinition<AspectMode>* >(d_propertyLink)->addLinkTarget(w, p);
             else if(type == "HorizontalAlignment")

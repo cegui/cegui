@@ -67,19 +67,19 @@ void NullGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setTranslation(const Vector3f& v)
+void NullGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setRotation(const Quaternion& r)
+void NullGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
 }
 
 //----------------------------------------------------------------------------//
-void NullGeometryBuffer::setPivot(const Vector3f& p)
+void NullGeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
 }

@@ -166,7 +166,7 @@ void MouseCursor::setPosition(const Vector2f& position)
     d_position = position;
 	constrainPosition();
 
-    d_geometry->setTranslation(Vector3f(d_position.d_x, d_position.d_y, 0));
+    d_geometry->setTranslation(glm::vec3(d_position.d_x, d_position.d_y, 0));
 }
 
 
@@ -179,7 +179,7 @@ void MouseCursor::offsetPosition(const Vector2f& offset)
 	d_position.d_y += offset.d_y;
 	constrainPosition();
 
-    d_geometry->setTranslation(Vector3f(d_position.d_x, d_position.d_y, 0));
+    d_geometry->setTranslation(glm::vec3(d_position.d_x, d_position.d_y, 0));
 }
 
 

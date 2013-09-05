@@ -111,21 +111,21 @@ void Direct3D10GeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10GeometryBuffer::setTranslation(const Vector3f& v)
+void Direct3D10GeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10GeometryBuffer::setRotation(const Quaternion& r)
+void Direct3D10GeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D10GeometryBuffer::setPivot(const Vector3f& p)
+void Direct3D10GeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
     d_matrixValid = false;

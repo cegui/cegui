@@ -126,9 +126,9 @@ public:
         back onto it's owning RenderingSurface.
 
     \param rotation
-        Quaternion object describing the rotation.
+        glm::quat object describing the rotation.
     */
-    void setRotation(const Quaternion& rotation);
+    void setRotation(const glm::quat& rotation);
 
     /*!
     \brief
@@ -139,7 +139,7 @@ public:
         Vector3 describing the three dimensional point around which the
         RenderingWindow will be rotated.
     */
-    void setPivot(const Vector3f& pivot);
+    void setPivot(const glm::vec3& pivot);
 
     /*!
     \brief
@@ -170,9 +170,9 @@ public:
         Return the current rotation being applied to the RenderingWindow
 
     \return
-        Quaternion object describing the rotation for the RenderingWindow.
+        glm::quat object describing the rotation for the RenderingWindow.
     */
-    const Quaternion& getRotation()const;
+    const glm::quat& getRotation()const;
 
     /*!
     \brief
@@ -182,7 +182,7 @@ public:
         Vector3 object describing the current location of the pivot point used
         when rotating the RenderingWindow.
     */
-    const Vector3f& getPivot() const;
+    const glm::vec3& getPivot() const;
 
     /*!
     \brief
@@ -308,9 +308,9 @@ protected:
     //! Size of this RenderingWindow
     Sizef d_size;
     //! Rotation for this RenderingWindow
-    Quaternion d_rotation;
+    glm::quat d_rotation;
     //! Pivot point used for the rotation.
-    Vector3f d_pivot;
+    glm::vec3 d_pivot;
 };
 
 } // End of  CEGUI namespace section

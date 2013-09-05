@@ -150,7 +150,7 @@ void IrrlichtGeometryBuffer::cleanupClipping() const
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setTranslation(const Vector3f& v)
+void IrrlichtGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation.X = v.d_x;
     d_translation.Y = v.d_y;
@@ -159,7 +159,7 @@ void IrrlichtGeometryBuffer::setTranslation(const Vector3f& v)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
+void IrrlichtGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation.W = -r.d_w;
     d_rotation.X = r.d_x;
@@ -169,7 +169,7 @@ void IrrlichtGeometryBuffer::setRotation(const Quaternion& r)
 }
 
 //----------------------------------------------------------------------------//
-void IrrlichtGeometryBuffer::setPivot(const Vector3f& p)
+void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot.X = p.d_x;
     d_pivot.Y = p.d_y;

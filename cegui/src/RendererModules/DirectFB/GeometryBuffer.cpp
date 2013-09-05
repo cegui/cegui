@@ -104,21 +104,21 @@ void DirectFBGeometryBuffer::draw() const
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setTranslation(const Vector3f& v)
+void DirectFBGeometryBuffer::setTranslation(const glm::vec3& v)
 {
     d_translation = v;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setRotation(const Quaternion& r)
+void DirectFBGeometryBuffer::setRotation(const glm::quat& r)
 {
     d_rotation = r;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void DirectFBGeometryBuffer::setPivot(const Vector3f& p)
+void DirectFBGeometryBuffer::setPivot(const glm::vec3& p)
 {
     d_pivot = p;
     d_matrixValid = false;
