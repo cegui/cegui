@@ -327,7 +327,7 @@
                 <HorzFormat type="LeftAligned" />
             </ImageryComponent>
         </ImagerySection>
-		<ImagerySection name="focused">
+        <ImagerySection name="focused">
             <ImageryComponent>
                 <Image name="TaharezLook/CheckboxFocused" />
                 <VertFormat type="CentreAligned" />
@@ -2978,6 +2978,22 @@
             </Layer>
         </StateImagery>
         <StateImagery name="BottomNormal">
+            <Layer>
+                <Section section="bot_normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+		<StateImagery name="TopFocused">
+            <Layer>
+                <Section section="top_normal" />
+                <Section section="label">
+                    <ColourProperty name="NormalTextColour" />
+                </Section>
+            </Layer>
+        </StateImagery>
+        <StateImagery name="BottomFocused">
             <Layer>
                 <Section section="bot_normal" />
                 <Section section="label">
