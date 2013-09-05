@@ -400,7 +400,7 @@
                 </Section>
             </Layer>
         </StateImagery>
-		<StateImagery name="Focused">
+        <StateImagery name="Focused">
             <Layer>
                 <Section section="focused" />
                 <Section section="label">
@@ -468,7 +468,17 @@
                 <Section section="container_normal" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
         <StateImagery name="ReadOnly">
+            <Layer>
+                <Section section="container_normal" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="ReadOnlyFocused">
             <Layer>
                 <Section section="container_normal" />
             </Layer>
