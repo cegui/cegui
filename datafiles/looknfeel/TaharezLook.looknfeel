@@ -112,7 +112,7 @@
                 <HorzFormatProperty name="HorzImageFormatting" />
             </ImageryComponent>
         </ImagerySection>
-		<ImagerySection name="focused">
+        <ImagerySection name="focused">
             <FrameComponent>
                 <Image component="LeftEdge" name="TaharezLook/ButtonLeftFocused" />
                 <Image component="RightEdge" name="TaharezLook/ButtonRightFocused" />
@@ -166,7 +166,7 @@
                 </Section>
             </Layer>
         </StateImagery>
-		<StateImagery name="Focused">
+        <StateImagery name="Focused">
             <Layer>
                 <Section section="focused" />
                 <Section section="label">
@@ -3004,7 +3004,7 @@
                 </Section>
             </Layer>
         </StateImagery>
-		<StateImagery name="TopFocused">
+        <StateImagery name="TopFocused">
             <Layer>
                 <Section section="top_normal" />
                 <Section section="label">
