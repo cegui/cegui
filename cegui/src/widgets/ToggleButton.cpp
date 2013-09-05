@@ -81,8 +81,8 @@ void ToggleButton::onPointerActivate(PointerEventArgs& e)
     {
         if (const Window* const sheet = getGUIContext().getRootWindow())
         {
-            // was mouse released over this widget
-            // (use mouse position, as e.position is already unprojected)
+            // was pointer released over this widget
+            // (use pointer position, as e.position is already unprojected)
             if (this == sheet->getTargetChildAtPosition(
                     getGUIContext().getPointerIndicator().getPosition()))
             {
@@ -100,6 +100,13 @@ void ToggleButton::onPointerActivate(PointerEventArgs& e)
 bool ToggleButton::getPostClickSelectState() const
 {
     return d_selected ^ true;
+}
+
+//----------------------------------------------------------------------------//
+void ToggleButton::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    if (e.d_semanticValue == SV_Confirm)
+        setSelected(getPostClickSelectState());
 }
 
 //----------------------------------------------------------------------------//

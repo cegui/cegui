@@ -67,6 +67,7 @@ protected:
 
     // base class overriddes
     void onPointerActivate(PointerEventArgs& e);
+    void onSemanticInputEvent(SemanticEventArgs& e);
 
     bool d_selected;
 };
