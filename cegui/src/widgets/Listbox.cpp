@@ -927,6 +927,9 @@ void Listbox::onPointerMove(PointerEventArgs& e)
 
 void Listbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
+    if (isDisabled())
+        return;
+
     if (e.d_semanticValue == SV_SelectCumulative)
     {
         handleListSelection(getGUIContext().getPointerIndicator().getPosition(), 

@@ -1662,6 +1662,9 @@ void MultiLineEditbox::onSemanticInputEvent(SemanticEventArgs& e)
     // base class processing
     Window::onSemanticInputEvent(e);
 
+    if (isDisabled())
+        return;
+
     if (e.d_semanticValue == SV_SelectAll && e.d_payload.source == PS_Left)
     {
         handleSelectAllText(e);

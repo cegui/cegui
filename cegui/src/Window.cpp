@@ -3743,6 +3743,9 @@ bool Window::isFocused() const
 //----------------------------------------------------------------------------//
 void Window::focus()
 {
+    if (isDisabled())
+        return;
+
     d_isFocused = true;
 
     ActivationEventArgs event_args(this);
@@ -3754,8 +3757,11 @@ void Window::unfocus()
 {
     d_isFocused = false;
 
-    ActivationEventArgs event_args(this);
-    onDeactivated(event_args);
+    if (d_active)
+    {
+        ActivationEventArgs event_args(this);
+        onDeactivated(event_args);
+    }
 }
 
 //----------------------------------------------------------------------------//

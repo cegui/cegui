@@ -105,6 +105,9 @@ bool ToggleButton::getPostClickSelectState() const
 //----------------------------------------------------------------------------//
 void ToggleButton::onSemanticInputEvent(SemanticEventArgs& e)
 {
+    if (isDisabled())
+        return;
+
     if (e.d_semanticValue == SV_Confirm)
         setSelected(getPostClickSelectState());
 }
