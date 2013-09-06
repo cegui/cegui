@@ -929,6 +929,9 @@ size_t Editbox::getCaretIndex(void) const
 //----------------------------------------------------------------------------//
 void Editbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
+    if (isDisabled())
+        return;
+
     if (e.d_semanticValue == SV_SelectAll &&
         e.d_payload.source == PS_Left)
     {

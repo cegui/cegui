@@ -100,6 +100,9 @@ void PushButton::onPointerActivate(PointerEventArgs& e)
 
 void PushButton::onSemanticInputEvent(SemanticEventArgs& e)
 {
+    if (isDisabled())
+        return;
+
     if (e.d_semanticValue == SV_Confirm)
         onClicked(e);
 }

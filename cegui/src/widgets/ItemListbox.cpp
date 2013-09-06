@@ -427,6 +427,9 @@ void ItemListbox::onSemanticInputEvent(SemanticEventArgs& e)
 {
     Window::onSemanticInputEvent(e);
 
+    if (isDisabled())
+        return;
+
     // select all (if allowed)
     if (d_multiSelect)
     {

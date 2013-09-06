@@ -571,6 +571,9 @@ void ListHeaderSegment::onSemanticInputEvent(SemanticEventArgs& e)
     // base class processing
     Window::onSemanticInputEvent(e);
 
+    if (isDisabled())
+        return;
+
     if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left &&
         d_splitterHover)
     {
