@@ -2672,7 +2672,7 @@ public:
     \brief
         Return whether Window can be focused or not.
     */
-    bool canFocus();
+    virtual bool canFocus();
 
 protected:
     // friend classes for construction / initialisation purposes (for now)
