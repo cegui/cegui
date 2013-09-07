@@ -74,6 +74,7 @@ public:
     */
     virtual ~DefaultWindow(void) {}
 
+    bool canFocus();
 
 protected:
     //! helper to update pointer input handled state

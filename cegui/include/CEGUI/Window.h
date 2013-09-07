@@ -2668,6 +2668,12 @@ public:
     */
     void unfocus();
 
+    /*!
+    \brief
+        Return whether Window can be focused or not.
+    */
+    bool canFocus();
+
 protected:
     // friend classes for construction / initialisation purposes (for now)
     friend class System;
