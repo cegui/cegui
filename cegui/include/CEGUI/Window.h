@@ -2652,25 +2652,37 @@ public:
 
     /*!
     \brief
-        Return whether this Window is focused or not
+        Return whether this Window is focused or not. 
+        
+        A window is focused when it is the active Window inside the current 
+        GUIContext.
     */
     bool isFocused() const;
 
     /*!
     \brief
-        Makes this Window be focused
+        Makes this Window be focused.
+
+        Focusing a Window means activating it and setting the focused flag.
+        This will also trigger the activated event. Focusing works only on
+        non-disabled widgets.
     */
     void focus();
 
     /*!
     \brief
-        Unfocus this Window
+        Unfocus this Window.
+        
+        This will trigger the deactivated event if this was an active window.
     */
     void unfocus();
 
     /*!
     \brief
         Return whether Window can be focused or not.
+
+        A Window cannot be usually focused when it's disabled. Other widgets
+        can override this method based on their own behaviour.
     */
     virtual bool canFocus();
 
