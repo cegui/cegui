@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "NavigationStrategies.h"
+#include "CEGUI/Window.h"
 
 #include <algorithm>
 
@@ -106,4 +107,49 @@ Window* MatrixNavigationStrategy::getWindow(Window* neighbour, const String& pay
 
     // first button
     return d_windows.at(0).at(0);
+}
+
+CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighbour, const CEGUI::String& payload)
+{
+    if (d_targetWindow == 0)
+        return 0;
+
+    size_t child_count = d_targetWindow->getChildCount();
+    if (child_count == 0)
+        return 0;
+
+    bool found = false;
+    size_t index = 0;
+
+    for (size_t i = 0; i < child_count; ++i)
+    {
+        if (d_targetWindow->getChildAtIdx(i) == neighbour)
+        {
+            found = true;
+            index = i;
+            break;
+        }
+    }
+
+    if (found)
+    {
+        if (payload == NAVIGATE_NEXT)
+        {
+            if (index >= child_count - 1)
+                index = 0;
+            else
+                index ++;
+        }
+
+        if (payload == NAVIGATE_PREVIOUS)
+        {
+            if (index == 0)
+                index = child_count - 1;
+            else
+                index --;
+        }
+    }
+
+    // default case
+    return d_targetWindow->getChildAtIdx(index);
 }
