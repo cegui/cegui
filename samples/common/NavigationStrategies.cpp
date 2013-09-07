@@ -150,6 +150,17 @@ CEGUI::Window* WindowChildrenNavigationStrategy::getWindow(CEGUI::Window* neighb
         }
     }
 
-    // default case
-    return d_targetWindow->getChildAtIdx(index);
+    Window* child = d_targetWindow->getChildAtIdx(index);
+
+    // start a new search
+    if (!child->canFocus())
+    {
+        // prevent overflow
+        if (child != neighbour)
+            return getWindow(child, payload);
+        else
+            return 0;
+    }
+
+    return child;
 }
