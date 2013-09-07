@@ -1439,6 +1439,13 @@
                 <Section section="main" />
             </Layer>
         </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF0FD538" topRight="FF0FD538" bottomLeft="FF0FD538" bottomRight="FF0FD538" />
+                </Section>
+            </Layer>
+        </StateImagery>
         <StateImagery name="Disabled">
             <Layer>
                 <Section section="main">
@@ -1556,6 +1563,13 @@
         <StateImagery name="Enabled">
             <Layer>
                 <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF0FD538" topRight="FF0FD538" bottomLeft="FF0FD538" bottomRight="FF0FD538" />
+                </Section>
             </Layer>
         </StateImagery>
         <StateImagery name="Disabled">
