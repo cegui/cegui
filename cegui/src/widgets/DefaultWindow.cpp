@@ -117,5 +117,12 @@ void DefaultWindow::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
+bool DefaultWindow::canFocus()
+{
+    // cannot focus something that doesn't have an explicit visual appearance
+    return false;
+}
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section

@@ -3765,6 +3765,13 @@ void Window::unfocus()
 }
 
 //----------------------------------------------------------------------------//
+bool Window::canFocus()
+{
+    // by default all widgets can be focused if they are not disabled
+    return !isDisabled();
+}
+
+//----------------------------------------------------------------------------//
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
