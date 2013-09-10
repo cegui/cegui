@@ -91,13 +91,13 @@ void Scrollbar::initialiseComponents(void)
 
     // set up Increase button
     getIncreaseButton()->
-    subscribeEvent(PushButton::EventMouseButtonDown,
+    subscribeEvent(PushButton::EventPointerPressHold,
                    Event::Subscriber(&CEGUI::Scrollbar::handleIncreaseClicked,
                                      this));
 
     // set up Decrease button
     getDecreaseButton()->
-    subscribeEvent(PushButton::EventMouseButtonDown,
+    subscribeEvent(PushButton::EventPointerPressHold,
                    Event::Subscriber(&CEGUI::Scrollbar::handleDecreaseClicked,
                                      this));
 
@@ -213,12 +213,12 @@ void Scrollbar::onScrollConfigChanged(WindowEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
+void Scrollbar::onPointerPressHold(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-    if (e.button != LeftButton)
+    if (e.source != PS_Left)
         return;
 
     const float adj = getAdjustDirectionFromPoint(e.position);
@@ -232,13 +232,13 @@ void Scrollbar::onMouseButtonDown(MouseEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void Scrollbar::onMouseWheel(MouseEventArgs& e)
+void Scrollbar::onScroll(PointerEventArgs& e)
 {
     // base class processing
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
 
-    // scroll by e.wheelChange * stepSize
-    setScrollPosition(d_position + d_stepSize * -e.wheelChange);
+    // scroll by vertical scroll * stepSize
+    setScrollPosition(d_position + d_stepSize * -e.scroll);
 
     // ensure the message does not go to our parent.
     ++e.handled;

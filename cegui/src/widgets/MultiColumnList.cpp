@@ -1919,14 +1919,14 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for when mouse button is pressed
+    Handler for when pointer is pressed
 *************************************************************************/
-void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
+void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
 {
 	// base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		bool modified = false;
 
@@ -1935,23 +1935,25 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 
 		if (item)
 		{
-            // clear old selections if no control key is pressed or if multi-select is off
-            if (!(e.sysKeys & Control) || !d_multiSelect)
-            {
-                modified = clearAllSelections_impl();
-            }
+            //// clear old selections if no control key is pressed or if multi-select is off
+            //TODO: handle SelectCumulative semantic event
+            //if (!(e.sysKeys & Control) || !d_multiSelect)
+            //{
+            //    modified = clearAllSelections_impl();
+            //}
 
 			modified = true;
 
 			// select range or item, depending upon keys and last selected item
-			if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
-			{
-				modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
-			}
-			else
-			{
-				modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
-			}
+            //TODO: handle SelectMultipleItems semantic event
+            //if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
+            //{
+            //  modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
+            //}
+            //else
+            //{
+            //  modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
+            //}
 
 			// update last selected item
 			d_lastSelected = item->isSelected() ? item : 0;
@@ -1966,28 +1968,27 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 
 		++e.handled;
 	}
-
 }
 
 
 /*************************************************************************
 	Handler for mouse wheel changes
 *************************************************************************/
-void MultiColumnList::onMouseWheel(MouseEventArgs& e)
+void MultiColumnList::onScroll(PointerEventArgs& e)
 {
 	// base class processing.
-	Window::onMouseWheel(e);
+	Window::onScroll(e);
 
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
 
 	if (vertScrollbar->isEffectiveVisible() && (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
 	{
-		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.wheelChange);
+		vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() + vertScrollbar->getStepSize() * -e.scroll);
 	}
 	else if (horzScrollbar->isEffectiveVisible() && (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
 	{
-		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.wheelChange);
+		horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() + horzScrollbar->getStepSize() * -e.scroll);
 	}
 
 	++e.handled;

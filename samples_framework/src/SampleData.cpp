@@ -39,6 +39,7 @@ author:     Lukas E Meindl
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/InputAggregator.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Vector.h"
 
@@ -60,6 +61,7 @@ SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
     d_credits(credits),
     d_sampleWindow(0),
     d_guiContext(0),
+    d_inputAggregator(0),
     d_textureTarget(0),
     d_textureTargetImage(0)
 {
@@ -130,6 +132,7 @@ void SampleData::initialise(int width, int height)
 
     d_textureTarget = system.getRenderer()->createTextureTarget();
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+    d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
     d_textureTarget->declareRenderSize(size);
 
     CEGUI::String imageName(d_textureTarget->getTexture().getName());
@@ -149,6 +152,12 @@ void SampleData::deinitialise()
         d_guiContext = 0;
     }
 
+    if (d_inputAggregator)
+    {
+        delete d_inputAggregator;
+        d_inputAggregator = 0;
+    }
+
     if(d_textureTarget)
     {
         system.getRenderer()->destroyTextureTarget(d_textureTarget);
@@ -165,6 +174,11 @@ void SampleData::deinitialise()
 GUIContext* SampleData::getGuiContext()
 {
     return d_guiContext;
+}
+
+InputAggregator* SampleData::getInputAggregator()
+{
+    return d_inputAggregator;
 }
 
 void SampleData::handleNewWindowSize(float width, float height)

@@ -63,8 +63,9 @@ namespace CEGUI
         // get WidgetLookFeel for the assigned look.
         const WidgetLookFeel& wlf = getLookNFeel();
         // try and get imagery for our current state
-        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
-        // peform the rendering operation.
+        imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" 
+            : (d_window->isFocused() ? "EnabledFocused" : "Enabled"));
+        // perform the rendering operation.
         imagery->render(*d_window);
     }
 

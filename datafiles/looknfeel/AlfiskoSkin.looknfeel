@@ -2171,8 +2171,7 @@
         </StateImagery>
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/HorizontalSlider">
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="PointerAutoRepeatEnabled" value="True"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="ThumbTrackArea"/>
         <Child nameSuffix="__auto_thumb__" type="AlfiskoSkin/HorizontalSliderThumb">
@@ -2299,8 +2298,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/VerticalSlider">
         <Property name="VerticalSlider" value="True"/>
-        <Property name="MouseAutoRepeatEnabled" value="True"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
+        <Property name="PointerAutoRepeatEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 256}}" />
         <NamedArea name="ThumbTrackArea"/>
         <Child nameSuffix="__auto_thumb__" type="AlfiskoSkin/VerticalSliderThumb">
@@ -2379,7 +2377,6 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/MenuItem">
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="LabelTextColour"/>
-        <Property name="WantsMultiClickEvents" value="False"/>
         <Property name="Size" value="{{0, 128}, {0, 32}}" />
         <NamedArea name="ContentSize">
             <Area>

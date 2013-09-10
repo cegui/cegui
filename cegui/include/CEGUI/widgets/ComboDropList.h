@@ -170,9 +170,9 @@ protected:
 	/*************************************************************************
 		Overridden Event handling
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onPointerActivate(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
     virtual void    onListContentsChanged(WindowEventArgs& e);

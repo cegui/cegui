@@ -192,9 +192,9 @@ void ScrolledItemListBase::configureScrollbars(const Sizef& doc_size)
 /************************************************************************
     Handle mouse wheel event
 ************************************************************************/
-void ScrolledItemListBase::onMouseWheel(MouseEventArgs& e)
+void ScrolledItemListBase::onScroll(PointerEventArgs& e)
 {
-    ItemListBase::onMouseWheel(e);
+    ItemListBase::onScroll(e);
 
     size_t count = getItemCount();
     Scrollbar* v = getVertScrollbar();
@@ -207,7 +207,7 @@ void ScrolledItemListBase::onMouseWheel(MouseEventArgs& e)
     }
 
     const float pixH = d_pane->getUnclippedOuterRect().get().getHeight();
-    const float delta = (pixH/float(count)) * -e.wheelChange;
+    const float delta = (pixH/float(count)) * -e.scroll;
     v->setScrollPosition(v->getScrollPosition() + delta);
     ++e.handled;
 }
