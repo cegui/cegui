@@ -118,10 +118,10 @@ void Combobox::initialiseComponents(void)
     editbox->banPropertyFromXML("MaxTextLength");
 
 	// internal event wiring
-	button->subscribeEvent(PushButton::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
+	button->subscribeEvent(PushButton::EventPointerPressHold, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
 	droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
 	droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
-	editbox->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&CEGUI::Combobox::editbox_MouseDownHandler, this));
+	editbox->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&CEGUI::Combobox::editbox_MouseDownHandler, this));
 
 	// event forwarding setup
 	editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
@@ -626,7 +626,7 @@ void Combobox::onHorzScrollbarModeChanged(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onDropListDisplayed(WindowEventArgs& e)
 {
-    getGUIContext().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingPointer();
     getPushButton()->setPushedState(true);
 	fireEvent(EventDropListDisplayed, e, EventNamespace);
 }
@@ -637,7 +637,7 @@ void Combobox::onDropListDisplayed(WindowEventArgs& e)
 *************************************************************************/
 void Combobox::onDroplistRemoved(WindowEventArgs& e)
 {
-    getGUIContext().updateWindowContainingMouse();
+    getGUIContext().updateWindowContainingPointer();
     getPushButton()->setPushedState(false);
 	fireEvent(EventDropListRemoved, e, EventNamespace);
 }

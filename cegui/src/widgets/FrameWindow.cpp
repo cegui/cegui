@@ -30,7 +30,7 @@
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
@@ -207,7 +207,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        getGUIContext().updateWindowContainingMouse();
+        getGUIContext().updateWindowContainingPointer();
     }
 
 }
@@ -500,30 +500,30 @@ void FrameWindow::setCursorForPoint(const Vector2f& pt) const
 	case SizingTop:
 	case SizingBottom:
 		getGUIContext().
-            getMouseCursor().setImage(d_nsSizingCursor);
+            getPointerIndicator().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
 		getGUIContext().
-            getMouseCursor().setImage(d_ewSizingCursor);
+            getPointerIndicator().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
 		getGUIContext().
-            getMouseCursor().setImage(d_nwseSizingCursor);
+            getPointerIndicator().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
 		getGUIContext().
-            getMouseCursor().setImage(d_neswSizingCursor);
+            getPointerIndicator().setImage(d_neswSizingCursor);
 		break;
 
 	default:
 		getGUIContext().
-            getMouseCursor().setImage(getMouseCursor());
+            getPointerIndicator().setImage(getMouseCursor());
 		break;
 	}
 
@@ -555,15 +555,15 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse move events
+	Handler for pointer move events
 *************************************************************************/
-void FrameWindow::onMouseMove(MouseEventArgs& e)
+void FrameWindow::onPointerMove(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	// if we are not the window containing the mouse, do NOT change the cursor
-	if (getGUIContext().getWindowContainingMouse() != this)
+	if (getGUIContext().getWindowContainingPointer() != this)
 	{
 		return;
 	}
@@ -617,18 +617,18 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button down events
+    Handler for pointer press events
 *************************************************************************/
-void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
+void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (isSizingEnabled())
 		{
-			// get position of mouse as co-ordinates local to this window.
+            // get position of pointer as co-ordinates local to this window.
 			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
@@ -647,31 +647,26 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 
 					++e.handled;
 				}
-
 			}
-
 		}
-
 	}
-
 }
 
 
 /*************************************************************************
-	Handler for mouse button up events
+    Handler for pointer activation events
 *************************************************************************/
-void FrameWindow::onMouseButtonUp(MouseEventArgs& e)
+void FrameWindow::onPointerActivate(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton && isCapturedByThis())
+    if (e.scroll == PS_Left && isCapturedByThis())
 	{
 		// release our capture on the input data
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
 

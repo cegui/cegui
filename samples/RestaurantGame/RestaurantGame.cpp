@@ -159,8 +159,8 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
 
     initGame();
 
-    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
-    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
    
     d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&HUDDemo::handleRestartButtonClicked, this));
   
@@ -226,7 +226,7 @@ void HUDDemo::setupMouseCursor()
 
 void HUDDemo::updateMouseCursor()
 {
-    CEGUI::Vector2f position = d_guiContext->getMouseCursor().getPosition();
+    CEGUI::Vector2f position = d_guiContext->getPointerIndicator().getPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height
@@ -250,7 +250,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventMouseButtonDown, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
     d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");
