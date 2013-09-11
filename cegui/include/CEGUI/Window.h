@@ -242,17 +242,17 @@ public:
      * was changed.
      */
     static const String EventAlwaysOnTopChanged;
-    /** Event fired when the Window gains capture of mouse inputs.
+    /** Event fired when the Window gains capture of pointer inputs.
      * Handlers are passed a const WindowEventArgs reference with
-     * WindowEventArgs::window set to the Window that has captured mouse inputs.
+     * WindowEventArgs::window set to the Window that has captured pointer inputs.
      */
     static const String EventInputCaptureGained;
-    /** Event fired when the Window loses capture of mouse inputs.
+    /** Event fired when the Window loses capture of pointer inputs.
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to either:
-     * - the Window that has lost capture of mouse inputs if that event was
+     * - the Window that has lost capture of pointer inputs if that event was
      *   caused by the window itself releasing the capture.
-     * - the Window that is @gaining capture of mouse inputs if that is the
+     * - the Window that is @gaining capture of pointer inputs if that is the
      *   cause of the previous window with capture losing that capture.
      */
     static const String EventInputCaptureLost;
@@ -379,8 +379,8 @@ public:
      * valid.
      */
     static const String EventScroll;
-    /** Event fired when a mouse button is pressed down within the Window.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when a pointer is pressed and held down within the Window.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
     static const String EventPointerPressHold;
@@ -537,10 +537,10 @@ public:
         return true if this is the active Window.  An active window is a window
         that may receive user inputs.
 
-        Mouse events are always sent to the window containing the mouse cursor
-        regardless of what this function reports (unless a window has captured
-        inputs).  The active state mainly determines where send other, for
-        example keyboard, inputs.
+        Pointer events are always sent to the window containing the pointer
+        indicator regardless of what this function reports (unless a window has
+        captured inputs). The active state mainly determines where send other,
+        for example keyboard, inputs.
 
     \return
         - true if the window is active and may be sent inputs by the system.
@@ -966,7 +966,7 @@ public:
     /*!
     \brief
         return the child Window that is 'hit' by the given position, and is
-        allowed to handle mouse events.
+        allowed to handle pointer events.
 
     \param position
         Vector2 object describing the position to check.  The position
@@ -998,19 +998,19 @@ public:
 
     /*!
     \brief
-        Return a pointer to the mouse cursor image to use when the mouse cursor
-        is within this window's area.
+        Return a pointer to the pointer indicator image to use when the pointer
+        indicator is within this window's area.
 
     \param useDefault
-        Sepcifies whether to return the default mouse cursor image if this
-        window specifies no preferred mouse cursor image.
+        Specifies whether to return the default pointer indicator image if this
+        window specifies no preferred pointer indicator image.
 
     \return
-        Pointer to the mouse cursor image that will be used when the mouse
-        enters this window's area.  May return NULL indicating no cursor will
+        Pointer to the pointer indicator image that will be used when the pointer
+        enters this window's area.  May return NULL indicating no indicator will
         be drawn for this window.
     */
-    const Image* getMouseCursor(bool useDefault = true) const;
+    const Image* getPointerIndicator(bool useDefault = true) const;
 
     /*!
     \brief
@@ -1048,8 +1048,8 @@ public:
     \note
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        the z order of the Window by clicking the pointer; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
@@ -1080,8 +1080,8 @@ public:
         Return the current auto-repeat delay setting for this window.
 
     \return
-        float value indicating the delay, in seconds, defore the first repeat
-        mouse button down event will be triggered when autorepeat is enabled.
+        float value indicating the delay, in seconds, before the first repeat
+        pointer press event will be triggered when autorepeat is enabled.
     */
     float getAutoRepeatDelay(void) const;
 
@@ -1090,9 +1090,8 @@ public:
         Return the current auto-repeat rate setting for this window.
 
     \return
-        float value indicating the rate, in seconds, at which repeat mouse
-        button down events will be generated after the initial delay has
-        expired.
+        float value indicating the rate, in seconds, at which repeat pointer press
+        events will be generated after the initial delay has expired.
     */
     float getAutoRepeatRate(void) const;
 
@@ -1164,24 +1163,24 @@ public:
     /*!
     \brief
         Return whether this window will rise to the top of the z-order when
-        clicked with the left mouse button.
+        activated with the left pointer source.
 
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        the z order of the Window by activating the pointer; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \return
         - true if the window will come to the top of other windows when the left
-          mouse button is pushed within its area.
+          pointer source is activated within its area.
         - false if the window does not change z-order position when the left
-          mouse button is pushed within its area.
+          pointer source is activated within its area.
      */
-    bool isRiseOnClickEnabled(void) const   { return d_riseOnClick; }
+    bool isRiseOnPointerActivationEnabled(void) const   { return d_riseOnPointerActivation; }
 
     /*!
     \brief
@@ -1259,15 +1258,15 @@ public:
 
     /*!
     \brief
-        Returns whether this window should ignore mouse event and pass them
+        Returns whether this window should ignore pointer event and pass them
         through to and other windows behind it. In effect making the window
-        transparent to the mouse.
+        transparent to the pointer.
 
     \return
-        true if mouse pass through is enabled.
-        false if mouse pass through is not enabled.
+        true if pointer pass through is enabled.
+        false if pointer pass through is not enabled.
     */
-    bool isMousePassThroughEnabled(void) const  {return d_mousePassThroughEnabled;}
+    bool isPointerPassThroughEnabled(void) const  {return d_pointerPassThroughEnabled;}
 
     /*!
     \brief
@@ -1850,20 +1849,20 @@ public:
 
     /*!
     \brief
-        Set the mouse cursor image to be used when the mouse enters this window.
+        Set the pointer indicator image to be used when the pointer enters this window.
 
     \param image
-        Pointer to the Image object to use as the mouse cursor image when the
-        mouse enters the area for this Window.
+        Pointer to the Image object to use as the pointer indicator image when the
+        pointer enters the area for this Window.
 
     \return
         Nothing.
     */
-    void setMouseCursor(const Image* image);
+    void setPointerIndicator(const Image* image);
 
     /*!
     \brief
-        Set the mouse cursor image to be used when the mouse enters this window.
+        Set the pointer indicator image to be used when the pointer enters this window.
 
     \param imageset
         String object that contains the name of the Imageset that contains the
@@ -1878,7 +1877,7 @@ public:
     \exception UnknownObjectException
         thrown if no Image named \a name exists.
     */
-    void setMouseCursor(const String& name);
+    void setPointerIndicator(const String& name);
 
     /*!
     \brief
@@ -1903,8 +1902,8 @@ public:
     \note
         This is distinguished from the is/setRiseOnClickEnabled setting in that
         if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        the z order of the Window by activating the pointer; is still possible to
+        programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
@@ -2076,27 +2075,27 @@ public:
     /*!
     \brief
         Set whether this window will rise to the top of the z-order when clicked
-        with the left mouse button.
+        with the left pointer source.
 
     \note
         This is distinguished from the is/setZOrderingEnabled setting in that
-        if rise on click is disabled it only affects the users ability to affect
-        the z order of the Window by clicking the mouse; is still possible to
-        programatically alter the Window z-order by calling the moveToFront,
+        if rise on pointer activation is disabled it only affects the users ability to affect
+        the z order of the Window by activating the left pointer source; is still 
+        possible to programmatic alter the Window z-order by calling the moveToFront,
         moveToBack, moveInFront and moveBehind member functions.  Whereas if z
         ordering is disabled those functions are also precluded from affecting
         the Window z position.
 
     \param setting
         - true if the window should come to the top of other windows when the
-          left mouse button is pushed within its area.
+          left pointer source is activated within its area.
         - false if the window should not change z-order position when the left
-          mouse button is pushed within its area.
+          pointer source is activated within its area.
 
     \return
         Nothing.
      */
-    void setRiseOnClickEnabled(bool setting)    { d_riseOnClick = setting; }
+    void setRiseOnClickEnabled(bool setting)    { d_riseOnPointerActivation = setting; }
 
     /*!
     \brief
@@ -2310,15 +2309,15 @@ public:
 
     /*!
     \brief
-        Sets whether this window should ignore mouse events and pass them
+        Sets whether this window should ignore pointer events and pass them
         through to any windows behind it. In effect making the window
-        transparent to the mouse.
+        transparent to the pointer.
 
     \param setting
-        true if mouse pass through is enabled.
-        false if mouse pass through is not enabled.
+        true if pointer pass through is enabled.
+        false if pointer pass through is not enabled.
     */
-    void setMousePassThroughEnabled(bool setting)   {d_mousePassThroughEnabled = setting;}
+    void setPointerPassThroughEnabled(bool setting)   {d_pointerPassThroughEnabled = setting;}
 
     /*!
     \brief
@@ -2579,27 +2578,27 @@ public:
 
     /*!
     \brief
-        Set whether mouse input that is not directly handled by this Window
+        Set whether pointer input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
 
     \param enabled
-        - true if unhandled mouse input should be propagated to the parent.
-        - false if unhandled mouse input should not be propagated.
+        - true if unhandled pointer input should be propagated to the parent.
+        - false if unhandled pointer input should not be propagated.
     */
-    void setMouseInputPropagationEnabled(const bool enabled);
+    void setPointerInputPropagationEnabled(const bool enabled);
 
     /*!
     \brief
-        Return whether mouse input that is not directly handled by this Window
+        Return whether pointer input that is not directly handled by this Window
         (including it's event subscribers) should be propagated back to the
         Window's parent.
 
     \return
-        - true if unhandled mouse input will be propagated to the parent.
-        - false if unhandled mouse input will not be propagated.
+        - true if unhandled pointer input will be propagated to the parent.
+        - false if unhandled pointer input will not be propagated.
     */
-    bool isMouseInputPropagationEnabled() const;
+    bool isPointerInputPropagationEnabled() const;
 
     /*!
     \brief
@@ -2637,15 +2636,15 @@ public:
 
     /*!
     \brief
-        Return whether Window thinks mouse is currently within its area.
+        Return whether Window thinks pointer is currently within its area.
 
     \note
-        If the mouse cursor has moved or Window's area has changed since the
+        If the pointer indicator has moved or Window's area has changed since the
         last time the GUIContext updated the window hit information, the value
         returned here may be inaccurate - this is not a bug, but is required
         to ensure correct handling of certain events.
     */
-    bool isMouseContainedInArea() const;
+    bool isPointerContainedInArea() const;
 
     // overridden from Element
     const Sizef& getRootContainerSize() const;
@@ -2856,7 +2855,7 @@ protected:
 
     /*!
     \brief
-        Handler called when this window gains capture of mouse inputs.
+        Handler called when this window gains capture of pointer inputs.
 
     \param e
         WindowEventArgs object whose 'window' pointer field is set to the window
@@ -2867,7 +2866,7 @@ protected:
 
     /*!
     \brief
-        Handler called when this window loses capture of mouse inputs.
+        Handler called when this window loses capture of pointer inputs.
 
     \param e
         WindowEventArgs object whose 'window' pointer field is set to the window
@@ -3516,8 +3515,8 @@ protected:
     //! holds setting for automatic creation of of surface (RenderingWindow)
     bool d_autoRenderingWindow;
 
-    //! Holds pointer to the Window objects current mouse cursor image.
-    const Image* d_mouseCursor;
+    //! Holds pointer to the Window objects current pointer indicator image.
+    const Image* d_pointerIndicator;
 
     //! Alpha transparency setting for the Window
     float d_alpha;
@@ -3564,13 +3563,13 @@ protected:
 
     //! true if Window will be drawn on top of all other Windows
     bool d_alwaysOnTop;
-    //! whether window should rise in the z order when left clicked.
-    bool d_riseOnClick;
+    //! whether window should rise in the z order when left pointer source is activated.
+    bool d_riseOnPointerActivation;
     //! true if the Window responds to z-order change requests.
     bool d_zOrderingEnabled;
 
-    //! whether (most) mouse events pass through this window
-    bool d_mousePassThroughEnabled;
+    //! whether (most) pointer events pass through this window
+    bool d_pointerPassThroughEnabled;
     //! whether pressed pointer will auto-repeat the down event.
     bool d_autoRepeat;
     //! seconds before first repeat event is fired
@@ -3615,13 +3614,13 @@ protected:
     //! The mode to use for calling Window::update
     WindowUpdateMode d_updateMode;
 
-    //! specifies whether mouse inputs should be propagated to parent(s)
-    bool d_propagateMouseInputs;
+    //! specifies whether pointer inputs should be propagated to parent(s)
+    bool d_propagatePointerInputs;
 
     //! GUIContext.  Set when this window is used as a root window.
     GUIContext* d_guiContext;
 
-    //! true when mouse is contained within this Window's area.
+    //! true when pointer is contained within this Window's area.
     bool d_containsPointer;
 
     //! true when this window is focused.
@@ -3636,8 +3635,8 @@ private:
 
     //! Not intended for public use, only used as a "Font" property getter
     const Font* property_getFont() const;
-    //! Not intended for public use, only used as a "MouseCursor" property getter
-    const Image* property_getMouseCursor() const;
+    //! Not intended for public use, only used as a "PointerIndicator" property getter
+    const Image* property_getPointerIndicator() const;
 
     //! connection for event listener for font render size changes.
     Event::ScopedConnection d_fontRenderSizeChangeConnection;

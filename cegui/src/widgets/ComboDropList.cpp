@@ -140,7 +140,7 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 {
 	Listbox::onPointerMove(e);
 
-	// if mouse is within our area (but not our children)
+    // if pointer is within our area (but not our children)
 	if (isHit(e.position))
 	{
 		if (!getChildAtPosition(e.position))
@@ -153,10 +153,10 @@ void ComboDropList::onPointerMove(PointerEventArgs& e)
 
 			if (d_armed)
 			{
-				// check for an item under the mouse
+                // check for an item under the pointer
 				ListboxItem* selItem = getItemAtPoint(e.position);
 
-				// if an item is under mouse, select it
+                // if an item is under pointer, select it
 				if (selItem)
 				{
 					setItemSelectState(selItem, true);

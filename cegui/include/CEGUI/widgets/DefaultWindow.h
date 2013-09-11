@@ -78,8 +78,7 @@ public:
 
 protected:
     //! helper to update pointer input handled state
-    void updatePointerEventHandled(PointerEventArgs& e) const; 
-    void updateMouseEventHandled(MouseEventArgs& e) const;
+    void updatePointerEventHandled(PointerEventArgs& e) const;
 
     // overridden functions from Window base class
     bool moveToFront_impl(bool wasClicked);

@@ -197,13 +197,13 @@ Window::Window(const String& type, const String& name):
     d_surface(0),
     d_needsRedraw(true),
     d_autoRenderingWindow(false),
-    d_mouseCursor(0),
+    d_pointerIndicator(0),
 
     // alpha transparency set up
     d_alpha(1.0f),
     d_inheritsAlpha(true),
 
-    // mouse input capture set up
+    // pointer input capture set up
     d_oldCapture(0),
     d_restoreOldCapture(false),
     d_distCapturedInputs(false),
@@ -233,10 +233,10 @@ Window::Window(const String& type, const String& name):
 
     // z-order related options
     d_alwaysOnTop(false),
-    d_riseOnClick(true),
+    d_riseOnPointerActivation(true),
     d_zOrderingEnabled(true),
 
-    d_mousePassThroughEnabled(false),
+    d_pointerPassThroughEnabled(false),
     d_autoRepeat(false),
     d_repeatDelay(0.3f),
     d_repeatRate(0.06f),
@@ -268,8 +268,8 @@ Window::Window(const String& type, const String& name):
     // Initial update mode
     d_updateMode(WUM_VISIBLE),
 
-    // Don't propagate mouse inputs by default.
-    d_propagateMouseInputs(false),
+    // Don't propagate pointer inputs by default.
+    d_propagatePointerInputs(false),
 
     d_guiContext(0),
 
@@ -631,7 +631,7 @@ Window* Window::getTargetChildAtPosition(const Vector2f& position,
 //----------------------------------------------------------------------------//
 bool Window::isHitTargetWindow(const Vector2f& position, bool allow_disabled) const
 {
-    return !isMousePassThroughEnabled() && isHit(position, allow_disabled);
+    return !isPointerPassThroughEnabled() && isHit(position, allow_disabled);
 }
 
 //----------------------------------------------------------------------------//
@@ -868,7 +868,7 @@ bool Window::moveToFront_impl(bool wasClicked)
 
     // bring us to the front of our siblings
     if (d_zOrderingEnabled &&
-        (!wasClicked || d_riseOnClick) &&
+        (!wasClicked || d_riseOnPointerActivation) &&
         !isTopOfZOrder())
     {
         took_action = true;
@@ -1238,25 +1238,25 @@ void Window::onZChange_impl(void)
 }
 
 //----------------------------------------------------------------------------//
-const Image* Window::getMouseCursor(bool useDefault) const
+const Image* Window::getPointerIndicator(bool useDefault) const
 {
-    if (d_mouseCursor)
-        return d_mouseCursor;
+    if (d_pointerIndicator)
+        return d_pointerIndicator;
     else
         return useDefault ? getGUIContext().getPointerIndicator().getDefaultImage() : 0;
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMouseCursor(const String& name)
+void Window::setPointerIndicator(const String& name)
 {
-    setMouseCursor(
+    setPointerIndicator(
         &ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMouseCursor(const Image* image)
+void Window::setPointerIndicator(const Image* image)
 {
-    d_mouseCursor = image;
+    d_pointerIndicator = image;
 
     if (getGUIContext().getWindowContainingPointer() == this)
         getGUIContext().getPointerIndicator().setImage(image);
@@ -1344,8 +1344,8 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, Image*,
-        "MouseCursorImage","Property to get/set the mouse cursor image for the Window.  Value should be \"<image name>\".",
-        &Window::setMouseCursor, &Window::property_getMouseCursor, 0
+        "PointerIndicatorImage","Property to get/set the pointer indicator image for the Window.  Value should be \"<image name>\".",
+        &Window::setPointerIndicator, &Window::property_getPointerIndicator, 0
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1405,12 +1405,12 @@ void Window::addWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "RiseOnClickEnabled", "Property to get/set whether the window will come to the top of the Z-order when clicked. Value is either \"True\" or \"False\".",
-        &Window::setRiseOnClickEnabled, &Window::isRiseOnClickEnabled, true
+        &Window::setRiseOnClickEnabled, &Window::isRiseOnPointerActivationEnabled, true
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "MousePassThroughEnabled", "Property to get/set whether the window ignores mouse events and pass them through to any windows behind it. Value is either \"True\" or \"False\".",
-        &Window::setMousePassThroughEnabled, &Window::isMousePassThroughEnabled, false
+        "PointerPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"True\" or \"False\".",
+        &Window::setPointerPassThroughEnabled, &Window::isPointerPassThroughEnabled, false
     );
     
     addProperty(&d_windowRendererProperty);
@@ -1450,10 +1450,10 @@ void Window::addWindowProperties(void)
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
-        "MouseInputPropagationEnabled", "Property to get/set whether unhandled mouse inputs should be "
+        "PointerInputPropagationEnabled", "Property to get/set whether unhandled pointer inputs should be "
         "propagated back to the Window's parent.  "
         "Value is either \"True\" or \"False\".",
-        &Window::setMouseInputPropagationEnabled, &Window::isMouseInputPropagationEnabled, false
+        &Window::setPointerInputPropagationEnabled, &Window::isPointerInputPropagationEnabled, false
     );
 
     CEGUI_DEFINE_PROPERTY(Window, bool,
@@ -1505,7 +1505,7 @@ void Window::setPointerAutoRepeatEnabled(bool setting)
     d_repeatPointerSource = PS_None;
 
     // FIXME: There is a potential issue here if this setting is
-    // FIXME: changed _while_ the mouse is auto-repeating, and
+    // FIXME: changed _while_ the pointer is auto-repeating, and
     // FIXME: the 'captured' state of input could get messed up.
     // FIXME: The alternative is to always release here, but that
     // FIXME: has a load of side effects too - so for now nothing
@@ -1556,7 +1556,7 @@ void Window::update(float elapsed)
 //----------------------------------------------------------------------------//
 void Window::updateSelf(float elapsed)
 {
-    // Mouse button autorepeat processing.
+    // pointer autorepeat processing.
     if (d_autoRepeat && d_repeatPointerSource != PS_None)
     {
         d_repeatElapsed += elapsed;
@@ -2487,7 +2487,7 @@ void Window::onPointerLeavesArea(PointerEventArgs& e)
 void Window::onPointerEnters(PointerEventArgs& e)
 {
     // set the pointer indicator
-    getGUIContext().getPointerIndicator().setImage(getMouseCursor());
+    getGUIContext().getPointerIndicator().setImage(getPointerIndicator());
 
     // perform tooltip control
     Tooltip* const tip = getTooltip();
@@ -2520,7 +2520,7 @@ void Window::onPointerMove(PointerEventArgs& e)
     fireEvent(EventPointerMove, e, EventNamespace);
 
     // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
+    if (!e.handled && d_propagatePointerInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
@@ -2540,7 +2540,7 @@ void Window::onScroll(PointerEventArgs& e)
     fireEvent(EventScroll, e, EventNamespace);
 
     // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
+    if (!e.handled && d_propagatePointerInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
@@ -2549,7 +2549,7 @@ void Window::onScroll(PointerEventArgs& e)
         return;
     }
 
-    // by default we now mark mouse events as handled
+    // by default we now mark pointer events as handled
     // (derived classes may override, of course!)
     ++e.handled;
 }
@@ -2584,7 +2584,7 @@ void Window::onPointerPressHold(PointerEventArgs& e)
     fireEvent(EventPointerPressHold, e, EventNamespace);
 
     // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
+    if (!e.handled && d_propagatePointerInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
@@ -2593,7 +2593,7 @@ void Window::onPointerPressHold(PointerEventArgs& e)
         return;
     }
 
-    // by default we now mark mouse events as handled
+    // by default we now mark pointer events as handled
     // (derived classes may override, of course!)
     ++e.handled;
 }
@@ -2611,7 +2611,7 @@ void Window::onPointerActivate(PointerEventArgs& e)
     fireEvent(EventPointerActivate, e, EventNamespace);
 
     // optionally propagate to parent
-    if (!e.handled && d_propagateMouseInputs &&
+    if (!e.handled && d_propagatePointerInputs &&
         d_parent && this != getGUIContext().getModalWindow())
     {
         e.window = getParent();
@@ -3492,15 +3492,15 @@ WindowUpdateMode Window::getUpdateMode() const
 }
 
 //----------------------------------------------------------------------------//
-void Window::setMouseInputPropagationEnabled(const bool enabled)
+void Window::setPointerInputPropagationEnabled(const bool enabled)
 {
-    d_propagateMouseInputs = enabled;
+    d_propagatePointerInputs = enabled;
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isMouseInputPropagationEnabled() const
+bool Window::isPointerInputPropagationEnabled() const
 {
-    return d_propagateMouseInputs;
+    return d_propagatePointerInputs;
 }
 
 //----------------------------------------------------------------------------//
@@ -3658,9 +3658,9 @@ const Font* Window::property_getFont() const
 }
 
 //----------------------------------------------------------------------------//
-const Image* Window::property_getMouseCursor() const
+const Image* Window::property_getPointerIndicator() const
 {
-    return getMouseCursor();
+    return getPointerIndicator();
 }
 
 //----------------------------------------------------------------------------//
@@ -3729,7 +3729,7 @@ bool Window::handleFontRenderSizeChange(const EventArgs& args)
 }
 
 //----------------------------------------------------------------------------//
-bool Window::isMouseContainedInArea() const
+bool Window::isPointerContainedInArea() const
 {
     return d_containsPointer;
 }

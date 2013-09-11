@@ -44,8 +44,6 @@
 
 namespace CEGUI
 {
-struct MouseClickTracker;
-
 //! EventArgs class passed to subscribers for (most) GUIContext events.
 class CEGUIEXPORT GUIContextEventArgs : public EventArgs
 {

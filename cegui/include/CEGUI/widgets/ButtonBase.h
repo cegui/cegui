@@ -58,9 +58,10 @@ public:
 	\brief
 		return true if user is hovering over this widget (or it's pushed and user is not over it for highlight)
 
-	\return
-		true if the user is hovering or if the button is pushed and the mouse is not over the button.  Otherwise return false.
-	*/
+    \return
+        true if the user is hovering or if the button is pushed and the pointer is
+        not over the button. Otherwise return false.
+    */
 	bool	isHovering(void) const			{return d_hovering;}
 
 
@@ -109,19 +110,20 @@ protected:
 	/*************************************************************************
 		Implementation Functions
 	*************************************************************************/
-	/*!
-	\brief
-		Update the internal state of the widget with the mouse at the given position.
+    /*!
+    \brief
+    Update the internal state of the widget with the pointer at the given position.
 
-	\param mouse_pos
-		Point object describing, in screen pixel co-ordinates, the location of the mouse cursor.
+    \param pointer_pos
+        Point object describing, in screen pixel co-ordinates, the location of
+        the pointer indicator.
 
-	\return
-		Nothing
-	*/
-	void	updateInternalState(const Vector2f& mouse_pos);
+    \return
+        Nothing
+    */
+    void    updateInternalState(const Vector2f& pointer_pos);
 
-    bool calculateCurrentHoverState(const Vector2f& mouse_pos);
+    bool calculateCurrentHoverState(const Vector2f& pointer_pos);
 
 	/*************************************************************************
 		Implementation Data

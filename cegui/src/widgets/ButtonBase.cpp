@@ -56,23 +56,23 @@ ButtonBase::~ButtonBase(void)
 /*************************************************************************
 	Update the internal state of the Widget
 *************************************************************************/
-void ButtonBase::updateInternalState(const Vector2f& mouse_pos)
+void ButtonBase::updateInternalState(const Vector2f& pointer_pos)
 {
 	const bool oldstate = d_hovering;
 
-    d_hovering = calculateCurrentHoverState(mouse_pos);
+    d_hovering = calculateCurrentHoverState(pointer_pos);
 
 	if (oldstate != d_hovering)
 		invalidate();
 }
 
 //----------------------------------------------------------------------------//
-bool ButtonBase::calculateCurrentHoverState(const Vector2f& mouse_pos)
+bool ButtonBase::calculateCurrentHoverState(const Vector2f& pointer_pos)
 {
 	if (const Window* capture_wnd = getCaptureWindow())
         return
             (capture_wnd == this ||
-            (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(mouse_pos);
+            (capture_wnd->distributesCapturedInputs() && isAncestor(capture_wnd))) && isHit(pointer_pos);
     else
 	    return getGUIContext().getWindowContainingPointer() == this;
 }
@@ -82,7 +82,7 @@ bool ButtonBase::calculateCurrentHoverState(const Vector2f& mouse_pos)
 *************************************************************************/
 void ButtonBase::onPointerMove(PointerEventArgs& e)
 {
-	// this is needed to discover whether mouse is in the widget area or not.
+    // this is needed to discover whether pointer is in the widget area or not.
 	// The same thing used to be done each frame in the rendering method,
 	// but in this version the rendering method may not be called every frame
 	// so we must discover the internal widget state here - which is actually
@@ -151,7 +151,7 @@ void ButtonBase::onPointerActivate(PointerEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for when mouse capture is lost
+    Handler for when pointer capture is lost
 *************************************************************************/
 void ButtonBase::onCaptureLost(WindowEventArgs& e)
 {

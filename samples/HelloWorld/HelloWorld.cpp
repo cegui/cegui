@@ -52,12 +52,12 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // loads in a font that gets used as the system default.
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 
-    // The next thing we do is to set a default mouse cursor image.  This is
+    // The next thing we do is to set a default pointer indicator image.  This is
     // not strictly essential, although it is nice to always have a visible
-    // cursor if a window or widget does not explicitly set one of its own.
+    // indicator if a window or widget does not explicitly set one of its own.
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
-    // the ideal thing to have as a defult mouse cursor image.
+    // the ideal thing to have as a defult pointer indicator image.
     guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for

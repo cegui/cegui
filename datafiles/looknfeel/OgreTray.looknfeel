@@ -2330,7 +2330,7 @@
         <PropertyLinkDefinition targetProperty="NormalTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="NormalEditTextColour"/>
         <PropertyLinkDefinition targetProperty="SelectedTextColour" widget="__auto_editbox__" initialValue="FF000000" type="ColourRect" name="SelectedEditTextColour"/>
         <Property name="ReadOnly" value="True"/>
-        <Property name="SingleClickMode" value="True"/>
+        <Property name="SinglePointerActivationMode" value="True"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <Child nameSuffix="__auto_editbox__" type="OgreTray/Editbox">
             <Area>

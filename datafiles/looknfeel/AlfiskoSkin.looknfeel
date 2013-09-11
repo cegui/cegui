@@ -904,7 +904,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
+        <Property name="PointerIndicatorImage" value="AlfiskoSkin/MouseTextBar"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -994,7 +994,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -1440,7 +1440,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/VerticalScrollbarThumb">
         <Property name="VertFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -1890,7 +1890,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FF000000" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FFB6D142" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="AlfiskoSkin/MouseTextBar"/>
+        <Property name="PointerIndicatorImage" value="AlfiskoSkin/MouseTextBar"/>
         <Property name="SelectionBrushImage" value="AlfiskoSkin/GenericBrush"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
@@ -2124,7 +2124,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/HorizontalSliderThumb">
         <Property name="HorzFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>
@@ -2250,7 +2250,7 @@
     </WidgetLook>
     <WidgetLook name="AlfiskoSkin/VerticalSliderThumb">
         <Property name="VertFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <ImageryComponent>

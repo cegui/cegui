@@ -356,9 +356,9 @@ void GUIContext::updateWindowContainingPointer()
 bool GUIContext::updateWindowContainingPointer_impl() const
 {
     PointerEventArgs pa(0);
-    const Vector2f mouse_pos(d_pointerIndicator.getPosition());
+    const Vector2f pointer_pos(d_pointerIndicator.getPosition());
 
-    Window* const curr_wnd_with_pointer = getTargetWindow(mouse_pos, true);
+    Window* const curr_wnd_with_pointer = getTargetWindow(pointer_pos, true);
 
     // exit if window containing pointer has not changed.
     if (curr_wnd_with_pointer == d_windowContainingPointer)
@@ -374,7 +374,7 @@ bool GUIContext::updateWindowContainingPointer_impl() const
     if (oldWindow)
     {
         pa.window = oldWindow;
-        pa.position = oldWindow->getUnprojectedPosition(mouse_pos);
+        pa.position = oldWindow->getUnprojectedPosition(pointer_pos);
         oldWindow->onPointerLeaves(pa);
     }
 
@@ -383,7 +383,7 @@ bool GUIContext::updateWindowContainingPointer_impl() const
     {
         pa.handled = 0;
         pa.window = d_windowContainingPointer;
-        pa.position = d_windowContainingPointer->getUnprojectedPosition(mouse_pos);
+        pa.position = d_windowContainingPointer->getUnprojectedPosition(pointer_pos);
         d_windowContainingPointer->onPointerEnters(pa);
     }
 
@@ -523,7 +523,7 @@ bool GUIContext::injectTimePulse(float timeElapsed)
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
         return false;
 
-    // ensure window containing mouse is now valid
+    // ensure window containing pointer is now valid
     getWindowContainingPointer();
 
     // else pass to sheet for distribution.

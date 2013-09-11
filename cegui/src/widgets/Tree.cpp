@@ -1156,7 +1156,7 @@ void Tree::onPointerPressHold(PointerEventArgs& e)
 }
 
 /*************************************************************************
-    Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
 void Tree::onScroll(PointerEventArgs& e)
 {

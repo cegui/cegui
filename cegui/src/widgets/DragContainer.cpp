@@ -240,7 +240,7 @@ namespace CEGUI
     void DragContainer::updateActiveMouseCursor(void) const
     {
         getGUIContext().getPointerIndicator().
-            setImage(d_dragging ? getDragCursorImage() : getMouseCursor());
+            setImage(d_dragging ? getDragCursorImage() : getPointerIndicator());
     }
 
     void DragContainer::onPointerPressHold(PointerEventArgs& e)

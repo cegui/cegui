@@ -470,23 +470,23 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	const Image*	d_sizingMouseCursor;	//!< Image to use for mouse when sizing (typically set by derived class).
-	const Image*	d_movingMouseCursor;	//!< Image to use for mouse when moving (typically set by derived class).
+    const Image*    d_sizingPointerIndicator;   //!< Image to use for pointer when sizing (typically set by derived class).
+    const Image*    d_movingPointerIndicator;   //!< Image to use for pointer when moving (typically set by derived class).
 
-	float	d_splitterSize;		//!< pixel width of the sizing area.
-	bool	d_splitterHover;	//!< True if the mouse is over the splitter
+    float   d_splitterSize;     //!< pixel width of the sizing area.
+    bool    d_splitterHover;    //!< True if the pointer is over the splitter
 
 	bool	d_dragSizing;		//!< true when we are being sized.
 	Vector2f d_dragPoint;		//!< point we are being dragged at when sizing or moving.
 
 	SortDirection	d_sortDir;	//!< Direction for sorting (used for deciding what icon to display).
 
-	bool	d_segmentHover;		//!< true when the mouse is within the segment area (and not in sizing area).
-	bool	d_segmentPushed;	//!< true when the left mouse button has been pressed within the confines of the segment.
+    bool    d_segmentHover;     //!< true when the pointer is within the segment area (and not in sizing area).
+    bool    d_segmentPushed;    //!< true when the left pointer source has been activated within the confines of the segment.
 	bool	d_sizingEnabled;	//!< true when sizing is enabled for this segment.
 	bool	d_movingEnabled;	//!< True when drag-moving is enabled for this segment;
 	bool	d_dragMoving;		//!< true when segment is being drag moved.
-	Vector2f d_dragPosition;		//!< position of dragged segment.
+    Vector2f d_dragPosition;    //!< position of dragged segment.
 	bool	d_allowClicks;		//!< true if the segment can be clicked.
 
 private:

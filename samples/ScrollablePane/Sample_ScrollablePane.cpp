@@ -98,7 +98,7 @@ bool ScrollablePaneSample::initialise(CEGUI::GUIContext* guiContext)
     d_font = &FontManager::getSingleton().createFromFile("DejaVuSans-12-NoScale.font");
     d_guiContext->setDefaultFont(d_font);
 
-    // set the mouse cursor
+    // set the pointer indicator
     d_system = System::getSingletonPtr();
     d_guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
 

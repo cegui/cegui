@@ -83,9 +83,9 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF']";
     logMessage += CEGUI::String(" (");
 
-    if(dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
+    if(dynamic_cast<const CEGUI::PointerEventArgs*>(&args))
     {
-        logMessage += "MouseEvent";
+        logMessage += "PointerEvent";
     }
     else if(dynamic_cast<const CEGUI::PointerIndicatorEventArgs*>(&args))
     {
@@ -213,7 +213,7 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 
 bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
 {
-    d_windowLightMouseMoveEvent->disable();
+    d_windowLightPointerMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();
 
     return true;
@@ -459,7 +459,7 @@ void WidgetDemo::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::S
 {
     if(eventName == CEGUI::Window::EventPointerMove)
     {
-        d_windowLightMouseMoveEvent->enable();
+        d_windowLightPointerMoveEvent->enable();
     }
     else if(eventName == CEGUI::Window::EventUpdated)
     {
@@ -530,18 +530,18 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
     updateEventLabel->setFont("DejaVuSans-12-NoScale");
     updateEventLabel->setProperty("HorzFormatting", "LeftAligned");
 
-    d_windowLightMouseMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
-    horizontalLayout->addChild(d_windowLightMouseMoveEvent);
-    d_windowLightMouseMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
-    d_windowLightMouseMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
-    d_windowLightMouseMoveEvent->setProperty("LightColour", "FF77BBFF");
+    d_windowLightPointerMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
+    horizontalLayout->addChild(d_windowLightPointerMoveEvent);
+    d_windowLightPointerMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
+    d_windowLightPointerMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
+    d_windowLightPointerMoveEvent->setProperty("LightColour", "FF77BBFF");
 
-    CEGUI::Window* mouseMoveEventLabel = winMgr.createWindow("Vanilla/Label");
-    horizontalLayout->addChild(mouseMoveEventLabel);
-    mouseMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
-    mouseMoveEventLabel->setText("EventMouseMove");
-    mouseMoveEventLabel->setFont("DejaVuSans-12-NoScale");
-    mouseMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
+    CEGUI::Window* pointerMoveEventLabel = winMgr.createWindow("Vanilla/Label");
+    horizontalLayout->addChild(pointerMoveEventLabel);
+    pointerMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
+    pointerMoveEventLabel->setText("EventPointerMove");
+    pointerMoveEventLabel->setFont("DejaVuSans-12-NoScale");
+    pointerMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
 }
 
 void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)

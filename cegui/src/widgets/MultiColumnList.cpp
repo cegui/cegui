@@ -1972,7 +1972,7 @@ void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
 void MultiColumnList::onScroll(PointerEventArgs& e)
 {

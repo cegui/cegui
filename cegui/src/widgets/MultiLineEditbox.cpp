@@ -1368,7 +1368,7 @@ void MultiLineEditbox::onSized(ElementEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
 void MultiLineEditbox::onScroll(PointerEventArgs& e)
 {

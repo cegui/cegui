@@ -91,10 +91,11 @@ public:
     static const String CloseButtonName;   //!< Widget name for the close button component.
 
 
-	/*!
-	\brief
-		Enumeration that defines the set of possible locations for the mouse on a frame windows sizing border.
-	*/
+    /*!
+    \brief
+        Enumeration that defines the set of possible locations for the pointer
+        on a frame windows sizing border.
+    */
 	enum SizingLocation {
 		SizingNone,			//!< Position is not a sizing location.
 		SizingTopLeft,		//!< Position will size from the top-left.
@@ -326,46 +327,46 @@ public:
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the north-south
-        sizing mouse cursor.
+        sizing pointer indicator.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNSSizingCursorImage() const;
+    const Image* getNSSizingIndicatorImage() const;
 
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the east-west
-        sizing mouse cursor.
+        sizing pointer indicator.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getEWSizingCursorImage() const;
+    const Image* getEWSizingIndicatorImage() const;
 
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the northwest-southeast
-        sizing mouse cursor.
+        sizing pointer indicator.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNWSESizingCursorImage() const;
+    const Image* getNWSESizingIndicatorImage() const;
 
     /*!
     \brief
         Return a pointer to the currently set Image to be used for the northeast-southwest
-        sizing mouse cursor.
+        sizing pointer indicator.
 
     \return
         Pointer to an Image object, or 0 for none.
     */
-    const Image* getNESWSizingCursorImage() const;
+    const Image* getNESWSizingIndicatorImage() const;
 
     /*!
     \brief
-        Set the Image to be used for the north-south sizing mouse cursor.
+        Set the Image to be used for the north-south sizing pointer indicator.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -373,11 +374,11 @@ public:
     \return
         Nothing.
     */
-    void setNSSizingCursorImage(const Image* image);
+    void setNSSizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the Image to be used for the east-west sizing mouse cursor.
+        Set the Image to be used for the east-west sizing pointer indicator.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -385,11 +386,11 @@ public:
     \return
         Nothing.
     */
-    void setEWSizingCursorImage(const Image* image);
+    void setEWSizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the Image to be used for the northwest-southeast sizing mouse cursor.
+        Set the Image to be used for the northwest-southeast sizing pointer indicator.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -397,11 +398,11 @@ public:
     \return
         Nothing.
     */
-    void setNWSESizingCursorImage(const Image* image);
+    void setNWSESizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the Image to be used for the northeast-southwest sizing mouse cursor.
+        Set the Image to be used for the northeast-southwest sizing pointer indicator.
 
     \param image
         Pointer to an Image object, or 0 for none.
@@ -409,11 +410,11 @@ public:
     \return
         Nothing.
     */
-    void setNESWSizingCursorImage(const Image* image);
+    void setNESWSizingIndicatorImage(const Image* image);
 
     /*!
     \brief
-        Set the image to be used for the north-south sizing mouse cursor.
+        Set the image to be used for the north-south sizing pointer indicator.
 
     \param name
         String holding the name of the Image to be used.
@@ -421,13 +422,13 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setNSSizingCursorImage(const String& name);
+    void setNSSizingIndicatorImage(const String& name);
 
     /*!
     \brief
-        Set the image to be used for the east-west sizing mouse cursor.
+        Set the image to be used for the east-west sizing pointer indicator.
 
     \param name
         String holding the name of the Image to be used.
@@ -435,13 +436,13 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setEWSizingCursorImage(const String& name);
+    void setEWSizingIndicatorImage(const String& name);
 
     /*!
     \brief
-        Set the image to be used for the northwest-southeast sizing mouse cursor.
+        Set the image to be used for the northwest-southeast sizing pointer indicator.
 
     \param name
         String holding the name of the Image to be used.
@@ -449,13 +450,13 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setNWSESizingCursorImage(const String& name);
+    void setNWSESizingIndicatorImage(const String& name);
 
     /*!
     \brief
-        Set the image to be used for the northeast-southwest sizing mouse cursor.
+        Set the image to be used for the northeast-southwest sizing pointer indicator.
 
     \param name
         String holding the name of the Image to be used.
@@ -463,9 +464,9 @@ public:
     \return
         Nothing.
 
-    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existant entities.
+    \exception UnknownObjectException thrown if either \a imageset or \a image refer to non-existent entities.
     */
-    void setNESWSizingCursorImage(const String& name);
+    void setNESWSizingIndicatorImage(const String& name);
 
     // overridden from Window class
     bool isHit(const Vector2f& position, const bool /*allow_disabled*/) const
@@ -631,11 +632,11 @@ protected:
 	bool	closeClickHandler(const EventArgs& e);
 
 
-	/*!
-	\brief
-		Set the appropriate mouse cursor for the given window-relative pixel point.
-	*/
-	void	setCursorForPoint(const Vector2f& pt) const;
+    /*!
+    \brief
+        Set the appropriate pointer indicator for the given window-relative pixel point.
+    */
+	void	setIndicatorForPoint(const Vector2f& pt) const;
 
 
 	/*!

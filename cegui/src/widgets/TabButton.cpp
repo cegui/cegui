@@ -110,8 +110,8 @@ void TabButton::onPointerActivate(PointerEventArgs& e)
 
 		if (sheet)
 		{
-			// if mouse was released over this widget
-            // (use mouse position, as e.position has been unprojected)
+            // if pointer was released over this widget
+            // (use pointer position, as e.position has been unprojected)
 			if (this == sheet->getTargetChildAtPosition(
                                     getGUIContext().getPointerIndicator().getPosition()))
 			{

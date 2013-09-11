@@ -41,17 +41,17 @@ namespace CEGUI
         This class requires LookNFeel to be assigned.  The LookNFeel should provide the following:
 
         States (missing states will default to 'Normal' or 'SelectedNormal' if selected)
-            - Normal            - Rendering for when the togglebutton is neither pushed or has the mouse hovering over it.
-            - Hover             - Rendering for when the togglebutton has the mouse hovering over it.
+            - Normal            - Rendering for when the togglebutton is neither pushed or has the pointer hovering over it.
+            - Hover             - Rendering for when the togglebutton has the pointer hovering over it.
             - Focused           - Rendering for when the togglebutton is focused.
-            - Pushed            - Rendering for when the togglebutton is not selected, is pushed and has the mouse over it.
-            - PushedOff         - Rendering for when the togglebutton is not selected, is pushed and the mouse is not over it.
+            - Pushed            - Rendering for when the togglebutton is not selected, is pushed and has the pointer over it.
+            - PushedOff         - Rendering for when the togglebutton is not selected, is pushed and the pointer is not over it.
             - Disabled          - Rendering for when the togglebutton is not selected and is disabled.
-            - SelectedNormal    - Rendering for when the togglebutton is selected and is neither pushed or has the mouse hovering over it.
-            - SelectedHover     - Rendering for then the togglebutton is selected and has the mouse hovering over it.
+            - SelectedNormal    - Rendering for when the togglebutton is selected and is neither pushed or has the pointer hovering over it.
+            - SelectedHover     - Rendering for then the togglebutton is selected and has the pointer hovering over it.
             - SelectedFocused   - Rendering for then the togglebutton is selected and it is focused.
-            - SelectedPushed    - Rendering for when the togglebutton is selected, is pushed and has the mouse over it.
-            - SelectedPushedOff - Rendering for when the togglebutton is selected, is pushed and the mouse is not over it.
+            - SelectedPushed    - Rendering for when the togglebutton is selected, is pushed and has the pointer over it.
+            - SelectedPushedOff - Rendering for when the togglebutton is selected, is pushed and the pointer is not over it.
             - SelectedDisabled  - Rendering for when the togglebutton is selected and is disabled.
     */
     class COREWRSET_API FalagardToggleButton : public FalagardButton
