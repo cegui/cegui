@@ -56,7 +56,7 @@ ButtonBase::~ButtonBase(void)
 /*************************************************************************
 	Update the internal state of the Widget
 *************************************************************************/
-void ButtonBase::updateInternalState(const Vector2f& mouse_pos)
+void ButtonBase::updateInternalState(const glm::vec2& mouse_pos)
 {
 	const bool oldstate = d_hovering;
 
@@ -67,7 +67,7 @@ void ButtonBase::updateInternalState(const Vector2f& mouse_pos)
 }
 
 //----------------------------------------------------------------------------//
-bool ButtonBase::calculateCurrentHoverState(const Vector2f& mouse_pos)
+bool ButtonBase::calculateCurrentHoverState(const glm::vec2& mouse_pos)
 {
 	if (const Window* capture_wnd = getCaptureWindow())
         return

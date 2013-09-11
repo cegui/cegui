@@ -114,7 +114,7 @@ const Sizef& OpenGLESTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLESTexture::getTexelScaling() const
+const glm::vec2& OpenGLESTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -170,7 +170,7 @@ void OpenGLESTexture::loadFromMemory(const void* buffer,
     d_dataSize = buffer_size;
     updateCachedScaleValues();
 
-    blitFromMemory(buffer, Rectf(Vector2f(0, 0), buffer_size));
+    blitFromMemory(buffer, Rectf(glm::vec2(0, 0), buffer_size));
 }
 
 //----------------------------------------------------------------------------//

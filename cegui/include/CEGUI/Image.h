@@ -166,7 +166,7 @@ public:
     virtual const String& getName() const = 0;
 
     virtual const Sizef& getRenderedSize() const = 0;
-    virtual const Vector2f& getRenderedOffset() const = 0;
+    virtual const glm::vec2& getRenderedOffset() const = 0;
 
     virtual void render(GeometryBuffer& buffer,
                         const Rectf& dest_area,
@@ -177,7 +177,7 @@ public:
 
     // Standard Image::render overloads
     void render(GeometryBuffer& buffer,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Rectf* clip_area = 0) const
     {
         const ColourRect colours(0XFFFFFFFF);
@@ -185,7 +185,7 @@ public:
     }
 
     void render(GeometryBuffer& buffer,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Rectf* clip_area,
                 const ColourRect& colours) const
     {
@@ -193,7 +193,7 @@ public:
     }
 
     void render(GeometryBuffer& buffer,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Sizef& size,
                 const Rectf* clip_area = 0) const
     {
@@ -202,7 +202,7 @@ public:
     }
 
     void render(GeometryBuffer& buffer,
-                const Vector2f& position,
+                const glm::vec2& position,
                 const Sizef& size,
                 const Rectf* clip_area,
                 const ColourRect& colours) const

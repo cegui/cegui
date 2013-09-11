@@ -738,24 +738,24 @@ bool Listbox::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given screen pixel co-ordinate.
 *************************************************************************/
-ListboxItem* Listbox::getItemAtPoint(const Vector2f& pt) const
+ListboxItem* Listbox::getItemAtPoint(const glm::vec2& pt) const
 {
-    const Vector2f local_pos(CoordConverter::screenToWindow(*this, pt));
+    const glm::vec2 local_pos(CoordConverter::screenToWindow(*this, pt));
 	const Rectf renderArea(getListRenderArea());
 
 	// point must be within the rendering area of the Listbox.
 	if (renderArea.isPointInRect(local_pos))
 	{
-		float y = renderArea.d_min.d_x - getVertScrollbar()->getScrollPosition();
+		float y = renderArea.d_min.x - getVertScrollbar()->getScrollPosition();
 
 		// test if point is above first item
-		if (local_pos.d_y >= y)
+		if (local_pos.y >= y)
 		{
 			for (size_t i = 0; i < getItemCount(); ++i)
 			{
 				y += d_listItems[i]->getPixelSize().d_height;
 
-				if (local_pos.d_y < y)
+				if (local_pos.y < y)
 				{
 					return d_listItems[i];
 				}

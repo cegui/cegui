@@ -32,7 +32,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/InputEvent.h"
@@ -169,7 +168,7 @@ public:
 	\param position
 		Point object describing the new location for the mouse.  This will be clipped to within the renderer screen area.
 	*/
-	void	setPosition(const Vector2f& position);
+	void	setPosition(const glm::vec2& position);
 
 
 	/*!
@@ -182,7 +181,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	offsetPosition(const Vector2f& offset);
+	void	offsetPosition(const glm::vec2& offset);
 
 
 	/*!
@@ -265,7 +264,7 @@ public:
 	\return
 		Point object describing the mouse cursor position in screen pixels.
 	*/
-	Vector2f getPosition(void) const
+	glm::vec2 getPosition(void) const
     { return d_position; }
 
 
@@ -298,7 +297,7 @@ public:
 		range from 0.0f to 1.0f, where 0.0f represents the left-most and top-most positions, and 1.0f
 		represents the right-most and bottom-most positions.
 	*/
-	Vector2f getDisplayIndependantPosition(void) const;
+	glm::vec2 getDisplayIndependantPosition(void) const;
 
     /*!
     \brief
@@ -351,7 +350,7 @@ public:
         Reference to a point object describing the initial pixel position to
         be used for the mouse cursor.
     */
-    static void setInitialMousePosition(const Vector2f& position);
+    static void setInitialMousePosition(const glm::vec2& position);
 
     /*!
     \brief
@@ -393,7 +392,7 @@ private:
 	const Image* d_cursorImage;
     //! Image that will be used as the default image for this mouse cursor.
 	const Image* d_defaultCursorImage;
-	Vector2f d_position;					//!< Current location of the cursor
+	glm::vec2 d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
     //! buffer to hold geometry for mouse cursor imagery.
@@ -401,11 +400,11 @@ private:
     //! custom explicit size to render the cursor image at
     Sizef d_customSize;
     //! correctly scaled offset used when using custom image size.
-    mutable Vector2f d_customOffset;
+    mutable glm::vec2 d_customOffset;
     //! true if the mouse initial position has been pre-set
     static bool s_initialPositionSet;
     //! value set as initial position (if any)
-    static Vector2f s_initialPosition;
+    static glm::vec2 s_initialPosition;
     //! boolean indicating whether cached pointer geometry is valid.
     mutable bool d_cachedGeometryValid;
 };

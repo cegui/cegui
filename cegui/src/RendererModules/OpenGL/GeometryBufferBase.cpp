@@ -113,8 +113,8 @@ void OpenGLGeometryBufferBase::appendGeometry(const Vertex* const vbuff,
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by OpenGL as needed.
-        vd.tex[0]      = vs->tex_coords.d_x;
-        vd.tex[1]      = vs->tex_coords.d_y;
+        vd.tex[0]      = vs->tex_coords.x;
+        vd.tex[1]      = vs->tex_coords.y;
         vd.colour[0]   = vs->colour_val.getRed();
         vd.colour[1]   = vs->colour_val.getGreen();
         vd.colour[2]   = vs->colour_val.getBlue();

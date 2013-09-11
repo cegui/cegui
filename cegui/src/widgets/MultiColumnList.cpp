@@ -1596,20 +1596,20 @@ bool MultiColumnList::clearAllSelections_impl(void)
 /*************************************************************************
 	Return the ListboxItem under the given window local pixel co-ordinate.
 *************************************************************************/
-ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
+ListboxItem* MultiColumnList::getItemAtPoint(const glm::vec2& pt) const
 {
     const ListHeader* header = getListHeader();
     Rectf listArea(getListRenderArea());
 
-    float y = listArea.d_min.d_y - getVertScrollbar()->getScrollPosition();
-    float x = listArea.d_min.d_x - getHorzScrollbar()->getScrollPosition();
+    float y = listArea.d_min.y - getVertScrollbar()->getScrollPosition();
+    float x = listArea.d_min.x - getHorzScrollbar()->getScrollPosition();
 
     for (uint i = 0; i < getRowCount(); ++i)
     {
         y += getHighestRowItemHeight(i);
 
         // have we located the row?
-        if (pt.d_y < y)
+        if (pt.y < y)
         {
             // scan across to find column that was clicked
             for (uint j = 0; j < getColumnCount(); ++j)
@@ -1618,7 +1618,7 @@ ListboxItem* MultiColumnList::getItemAtPoint(const Vector2f& pt) const
                 x += CoordConverter::asAbsolute(seg.getWidth(), header->getPixelSize().d_width);
 
                 // was this the column?
-                if (pt.d_x < x)
+                if (pt.x < x)
                 {
                     // return contents of grid element that was clicked.
                     return d_grid[i][j];
@@ -1930,7 +1930,7 @@ void MultiColumnList::onMouseButtonDown(MouseEventArgs& e)
 	{
 		bool modified = false;
 
-		Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
+		const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 		ListboxItem* item = getItemAtPoint(localPos);
 
 		if (item)

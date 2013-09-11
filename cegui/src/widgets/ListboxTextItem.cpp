@@ -144,9 +144,9 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
     if (!font)
         return;
 
-    Vector2f draw_pos(targetRect.getPosition());
+    glm::vec2 draw_pos(targetRect.getPosition());
 
-    draw_pos.d_y += CoordConverter::alignToPixels(
+    draw_pos.y += CoordConverter::alignToPixels(
         (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
 
     if (!d_renderedStringValid)
@@ -158,7 +158,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
         d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
-        draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
+        draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }
 

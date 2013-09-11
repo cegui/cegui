@@ -282,11 +282,11 @@ namespace CEGUI
         switch(vertFormatting)
         {
         case VTF_CENTRE_ALIGNED:
-            destRect.d_min.d_y += (destRect.getHeight() - textHeight) * 0.5f;
+            destRect.d_min.y += (destRect.getHeight() - textHeight) * 0.5f;
             break;
 
         case VTF_BOTTOM_ALIGNED:
-            destRect.d_min.d_y = destRect.d_max.d_y - textHeight;
+            destRect.d_min.y = destRect.d_max.y - textHeight;
             break;
 
         default:

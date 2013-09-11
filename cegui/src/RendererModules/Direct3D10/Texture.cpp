@@ -169,7 +169,7 @@ const Sizef& Direct3D10Texture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& Direct3D10Texture::getTexelScaling() const
+const glm::vec2& Direct3D10Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }

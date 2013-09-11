@@ -137,20 +137,20 @@ bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& 
     const CEGUI::String& lookNFeel(wnd->getLookNFeel());
     CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
 
-    const CEGUI::Vector2f& mousePos(mouseArgs.position);
+    const glm::vec2& mousePos(mouseArgs.position);
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 
-    float relPosX = (mousePos.d_x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
-    float relPosY = (mousePos.d_y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
+    const float relPosX = (mousePos.x - windowDimensions.left() - innerRectangle.getPosition().x) / innerRectangle.getWidth();
+    const float relPosY = (mousePos.y - windowDimensions.top()  - innerRectangle.getPosition().y) / innerRectangle.getHeight();
 
     if(relPosX >= 0.0f && relPosX <= 1.0f && relPosY >= 0.0f && relPosY <= 1.0f)
     {
         SampleData* sampleData = d_owner->findSampleData(wnd);
         const CEGUI::Sizef& contextSize(sampleData->getGuiContext()->getSurfaceSize());
 
-        float absPosX = relPosX * contextSize.d_width;
-        float absPosY = relPosY * contextSize.d_height;
+        const float absPosX = relPosX * contextSize.d_width;
+        const float absPosY = relPosY * contextSize.d_height;
 
 
         sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);

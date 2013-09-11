@@ -96,7 +96,7 @@ bool Titlebar::isDragged() const
     return d_dragging;
 }
 
-const Vector2f& Titlebar::getDragPoint() const
+const glm::vec2& Titlebar::getDragPoint() const
 {
     return d_dragPoint;
 }
@@ -111,7 +111,7 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 
 	if (d_dragging && (d_parent != 0))
 	{
-		Vector2f delta(CoordConverter::screenToWindow(*this, e.position));
+		glm::vec2 delta(CoordConverter::screenToWindow(*this, e.position));
 
 		// calculate amount that window has been moved
 		delta -= d_dragPoint;
@@ -152,7 +152,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 				if ((d_parent == 0) || (getParent()->getParent() == 0))
 				{
-                    Rectf screen(Vector2f(0, 0), getRootContainerSize());
+                    Rectf screen(glm::vec2(0, 0), getRootContainerSize());
 					constrainArea = screen.getIntersection(d_oldCursorArea);
 				}
 				else 

@@ -305,10 +305,10 @@ void ScrolledItemListBase::ensureItemIsVisibleVert(const ItemEntry& item)
     const float bottom = top + item.getItemPixelSize().d_height;
 
     // if top is above the view area, or if item is too big, scroll item to top
-    if ((top < render_area.d_min.d_y) || ((bottom - top) > render_area.getHeight()))
+    if ((top < render_area.d_min.y) || ((bottom - top) > render_area.getHeight()))
         v->setScrollPosition(currPos + top);
     // if bottom is below the view area, scroll item to bottom of list
-    else if (bottom >= render_area.d_max.d_y)
+    else if (bottom >= render_area.d_max.y)
         v->setScrollPosition(currPos + bottom - render_area.getHeight());
 }
 
@@ -324,10 +324,10 @@ void ScrolledItemListBase::ensureItemIsVisibleHorz(const ItemEntry& item)
     const float right = left + item.getItemPixelSize().d_width;
 
     // if left is left of the view area, or if item too big, scroll item to left
-    if ((left < render_area.d_min.d_x) || ((right - left) > render_area.getWidth()))
+    if ((left < render_area.d_min.x) || ((right - left) > render_area.getWidth()))
         h->setScrollPosition(currPos + left);
     // if right is right of the view area, scroll item to right of list
-    else if (right >= render_area.d_max.d_x)
+    else if (right >= render_area.d_max.x)
         h->setScrollPosition(currPos + right - render_area.getWidth());
 }
 

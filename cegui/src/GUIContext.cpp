@@ -482,11 +482,11 @@ void GUIContext::onMouseButtonMultiClickToleranceChanged(GUIContextEventArgs& ar
 bool GUIContext::injectMouseMove(float delta_x, float delta_y)
 {
     MouseEventArgs ma(0);
-    ma.moveDelta.d_x = delta_x * d_mouseMovementScalingFactor;
-    ma.moveDelta.d_y = delta_y * d_mouseMovementScalingFactor;
+    ma.moveDelta.x = delta_x * d_mouseMovementScalingFactor;
+    ma.moveDelta.y = delta_y * d_mouseMovementScalingFactor;
 
     // no movement means no event
-    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
+    if ((ma.moveDelta.x == 0) && (ma.moveDelta.y == 0))
         return false;
 
     d_mouseCursor.offsetPosition(ma.moveDelta);
@@ -530,7 +530,7 @@ void GUIContext::updateWindowContainingMouse()
 bool GUIContext::updateWindowContainingMouse_impl() const
 {
     MouseEventArgs ma(0);
-    const Vector2f mouse_pos(d_mouseCursor.getPosition());
+    const glm::vec2 mouse_pos(d_mouseCursor.getPosition());
 
     Window* const curr_wnd_with_mouse = getTargetWindow(mouse_pos, true);
 
@@ -619,7 +619,7 @@ void GUIContext::notifyMouseTransition(Window* top, Window* bottom,
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getTargetWindow(const Vector2f& pt,
+Window* GUIContext::getTargetWindow(const glm::vec2& pt,
                                  const bool allow_disabled) const
 {
     // if there is no GUI sheet visible, then there is nowhere to send input
@@ -681,7 +681,7 @@ bool GUIContext::injectMouseLeaves(void)
     MouseEventArgs ma(0);
     ma.position = getWindowContainingMouse()->getUnprojectedPosition(
         d_mouseCursor.getPosition());
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.moveDelta = glm::vec2(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = 0;
@@ -701,7 +701,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.moveDelta = glm::vec2(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = 0;
@@ -729,7 +729,7 @@ bool GUIContext::injectMouseButtonDown(MouseButton button)
         // build new allowable area for multi-clicks
         tkr.d_click_area.setPosition(ma.position);
         tkr.d_click_area.setSize(d_mouseButtonMultiClickTolerance);
-        tkr.d_click_area.offset(Vector2f(-(d_mouseButtonMultiClickTolerance.d_width / 2),
+        tkr.d_click_area.offset(glm::vec2(-(d_mouseButtonMultiClickTolerance.d_width / 2),
                                          -(d_mouseButtonMultiClickTolerance.d_height / 2)));
 
         // set target window for click events on this tracker
@@ -779,7 +779,7 @@ bool GUIContext::injectMouseButtonUp(MouseButton button)
 
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.moveDelta = glm::vec2(0.0f, 0.0f);
     ma.button = button;
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = 0;
@@ -878,7 +878,7 @@ bool GUIContext::injectMouseWheelChange(float delta)
 {
     MouseEventArgs ma(0);
     ma.position = d_mouseCursor.getPosition();
-    ma.moveDelta = Vector2f(0.0f, 0.0f);
+    ma.moveDelta = glm::vec2(0.0f, 0.0f);
     ma.button = NoButton;
     ma.sysKeys = d_systemKeys.get();
     ma.wheelChange = delta;
@@ -899,14 +899,14 @@ bool GUIContext::injectMouseWheelChange(float delta)
 //----------------------------------------------------------------------------//
 bool GUIContext::injectMousePosition(float x_pos, float y_pos)
 {
-    const Vector2f new_position(x_pos, y_pos);
+    const glm::vec2 new_position(x_pos, y_pos);
 
     // setup mouse movement event args object.
     MouseEventArgs ma(0);
     ma.moveDelta = new_position - d_mouseCursor.getPosition();
 
     // no movement means no event
-    if ((ma.moveDelta.d_x == 0) && (ma.moveDelta.d_y == 0))
+    if ((ma.moveDelta.x == 0) && (ma.moveDelta.y == 0))
         return false;
 
     ma.sysKeys = d_systemKeys.get();
@@ -948,7 +948,7 @@ bool GUIContext::injectMouseButtonClick(const MouseButton button)
     if (ma.window)
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2f(0.0f, 0.0f);
+        ma.moveDelta = glm::vec2(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_systemKeys.get();
         ma.wheelChange = 0;
@@ -971,7 +971,7 @@ bool GUIContext::injectMouseButtonDoubleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2f(0.0f, 0.0f);
+        ma.moveDelta = glm::vec2(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_systemKeys.get();
         ma.wheelChange = 0;
@@ -994,7 +994,7 @@ bool GUIContext::injectMouseButtonTripleClick(const MouseButton button)
     if (ma.window && ma.window->wantsMultiClickEvents())
     {
         // initialise remainder of args struct.
-        ma.moveDelta = Vector2f(0.0f, 0.0f);
+        ma.moveDelta = glm::vec2(0.0f, 0.0f);
         ma.button = button;
         ma.sysKeys = d_systemKeys.get();
         ma.wheelChange = 0;

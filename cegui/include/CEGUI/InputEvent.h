@@ -33,7 +33,7 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventArgs.h"
 #include "CEGUI/String.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/GLM.h"
 #include "CEGUI/Size.h"
 
 #if defined(_MSC_VER)
@@ -283,8 +283,8 @@ class CEGUIEXPORT MouseEventArgs : public WindowEventArgs
 public:
 	MouseEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
 
-	Vector2f	position;		//!< holds current mouse position.
-	Vector2f	moveDelta;		//!< holds variation of mouse position from last mouse input
+    glm::vec2	position;		//!< holds current mouse position.
+    glm::vec2	moveDelta;		//!< holds variation of mouse position from last mouse input
 	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
 	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
 	float		wheelChange;	//!< Holds the amount the scroll wheel has changed.

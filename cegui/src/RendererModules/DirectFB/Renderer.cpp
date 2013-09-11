@@ -287,7 +287,7 @@ const Sizef& DirectFBRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& DirectFBRenderer::getDisplayDPI() const
+const glm::vec2& DirectFBRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }

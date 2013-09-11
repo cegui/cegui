@@ -114,7 +114,7 @@ void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(const Window* ref_wnd,
                                         GeometryBuffer& buffer,
-                                        const Vector2f& position,
+                                        const glm::vec2& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect,
                                         const float vertical_space,
@@ -123,18 +123,18 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (!d_image)
         return;
 
-    CEGUI::Rectf dest(position.d_x, position.d_y, 0, 0);
+    CEGUI::Rectf dest(position.x, position.y, 0, 0);
     float y_scale = 1.0f;
 
     // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        dest.d_min.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
+        dest.d_min.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_CENTRE_ALIGNED:
-        dest.d_min.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+        dest.d_min.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
     case VF_STRETCHED:
@@ -190,8 +190,8 @@ Sizef RenderedStringImageComponent::getPixelSize(const Window* /*ref_wnd*/) cons
             sz.d_width = d_size.d_width;
         if (d_size.d_height != 0.0)
             sz.d_height = d_size.d_height;
-        sz.d_width += (d_padding.d_min.d_x + d_padding.d_max.d_x);
-        sz.d_height += (d_padding.d_min.d_y + d_padding.d_max.d_y);
+        sz.d_width += (d_padding.d_min.x + d_padding.d_max.x);
+        sz.d_height += (d_padding.d_min.y + d_padding.d_max.y);
     }
 
     return sz;

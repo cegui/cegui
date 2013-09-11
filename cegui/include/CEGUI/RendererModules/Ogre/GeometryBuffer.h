@@ -125,7 +125,7 @@ protected:
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect* d_effect;
     //! offset to be applied to all geometry
-    Vector2f d_texelOffset;
+    glm::vec2 d_texelOffset;
     //! model matrix cache
     mutable Ogre::Matrix4 d_matrix;
     //! true when d_matrix is valid and up to date

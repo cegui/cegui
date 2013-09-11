@@ -47,7 +47,7 @@ public:
 
     virtual void format(const Window* ref_wnd, const Sizef& area_size) = 0;
     virtual void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-                      const Vector2f& position, const ColourRect* mod_colours,
+                      const glm::vec2& position, const ColourRect* mod_colours,
                       const Rectf* clip_rect) const = 0;
     virtual size_t getFormattedLineCount() const = 0;
     virtual float getHorizontalExtent(const Window* ref_wnd) const = 0;

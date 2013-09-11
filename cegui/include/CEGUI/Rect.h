@@ -30,7 +30,7 @@
 #ifndef _CEGUIRect_h_
 #define _CEGUIRect_h_
 
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector2.h"
 #include "CEGUI/Size.h"
 
 // Start of CEGUI namespace section
@@ -40,37 +40,36 @@ namespace CEGUI
 \brief
 	Class encapsulating operations on a Rectangle
 */
-template<typename T>
-class Rect:
-    public AllocatedObject<Rect<T> >
+class Rectf:
+    public AllocatedObject<Rectf>
 {
 public:
-    typedef T value_type;
+    typedef float value_type;
 
-	inline Rect()
+    inline Rectf()
     {}
 
-	inline Rect(const T& left, const T& top, const T& right, const T& bottom):
+    inline Rectf(const float left, const float top, const float right, const float bottom):
         d_min(left, top),
         d_max(right, bottom)
     {}
 
-    inline Rect(const Vector2<T>& min, const Vector2<T>& max):
+    inline Rectf(const glm::vec2& min, const glm::vec2& max):
         d_min(min),
         d_max(max)
     {}
 
-    inline Rect(const Vector2<T>& pos, const Size<T>& size):
+    inline Rectf(const glm::vec2& pos, const Sizef& size):
         d_min(pos),
-        d_max(pos + Vector2<T>(size.d_width, size.d_height))
+        d_max(pos + glm::vec2(size.d_width, size.d_height))
     {}
 
-    inline Rect(const Rect& r):
+    inline Rectf(const Rectf& r):
         d_min(r.d_min),
         d_max(r.d_max)
     {}
 
-    inline Rect& operator=(const Rect& rhs)
+    inline Rectf& operator=(const Rectf& rhs)
     {
         d_min = rhs.d_min;
         d_max = rhs.d_max;
@@ -78,150 +77,150 @@ public:
         return *this;
     }
 
-    inline void left(const T& v)
+    inline void left(float v)
     {
-        d_min.d_x = v;
+        d_min.x = v;
     }
 
-    inline const T& left() const
+    inline float left() const
     {
-        return d_min.d_x;
+        return d_min.x;
     }
 
-    inline void top(const T& v)
+    inline void top(float v)
     {
-        d_min.d_y = v;
+        d_min.y = v;
     }
 
-    inline const T& top() const
+    inline float top() const
     {
-        return d_min.d_y;
+        return d_min.y;
     }
 
-    inline void right(const T& v)
+    inline void right(float v)
     {
-        d_max.d_x = v;
+        d_max.x = v;
     }
 
-    inline const T& right() const
+    inline float right() const
     {
-        return d_max.d_x;
+        return d_max.x;
     }
 
-    inline void bottom(const T& v)
+    inline void bottom(float v)
     {
-        d_max.d_y = v;
+        d_max.y = v;
     }
 
-    inline const T& bottom() const
+    inline float bottom() const
     {
-        return d_max.d_y;
+        return d_max.y;
     }
 
 	/*!
 	\brief
-		set the position of the Rect (leaves size in tact)
+		set the position of the Rectf (leaves size in tact)
 	*/
-	void setPosition(const Vector2<T>& min)
+	void setPosition(const glm::vec2& min)
     {
-        const Size<T> size = getSize();
+        const Sizef size = getSize();
         d_min = min;
         setSize(size);
     }
 
     /*!
 	\brief
-		Return top-left position of Rect as a Vector2<T>
+		Return top-left position of Rectf as a glm::vec2
 	*/
-	const Vector2<T>& getPosition() const
+	const glm::vec2& getPosition() const
     {
         return d_min;
     }
 
-    void setSize(const Size<T>& size)
+    void setSize(const Sizef& size)
     {
-        d_max = d_min + Vector2<T>(size.d_width, size.d_height);
+        d_max = d_min + glm::vec2(size.d_width, size.d_height);
     }
 
     /*!
 	\brief
-		return the size of the Rect area
+		return the size of the Rectf area
 	*/
-	inline Size<T> getSize() const
+	inline Sizef getSize() const
     {
-        return Size<T>(getWidth(), getHeight());
+        return Sizef(getWidth(), getHeight());
     }
 
-    void setWidth(const T& w)
+    void setWidth(const float w)
     {
-        d_max.d_x = d_min.d_x + w;
+        d_max.x = d_min.x + w;
     }
 
 	/*!
 	\brief
-		return width of Rect area
+		return width of Rectf area
 	*/
-	inline T getWidth() const
+	inline float getWidth() const
     {
-        return d_max.d_x - d_min.d_x;
+        return d_max.x - d_min.x;
     }
 
-    void setHeight(const T& h)
+    void setHeight(const float h)
     {
-        d_max.d_y = d_min.d_y + h;
+        d_max.y = d_min.y + h;
     }
 
 	/*!
 	\brief
-		return height of Rect area
+		return height of Rectf area
 	*/
-	inline T getHeight() const
+	inline float getHeight() const
     {
-        return d_max.d_y - d_min.d_y;
+        return d_max.y - d_min.y;
     }
 
 	/*!
 	\brief
-		return a Rect that is the intersection of 'this' Rect with the Rect 'rect'
+		return a Rectf that is the intersection of 'this' Rectf with the Rectf 'rect'
 
 	\note
 		It can be assumed that if d_left == d_right, or d_top == d_bottom, or getWidth() == 0, or getHeight() == 0, then
 		'this' rect was totally outside 'rect'.
 	*/
-	inline Rect getIntersection(const Rect& rect) const
+	inline Rectf getIntersection(const Rectf& rect) const
     {
-        if ((d_max.d_x > rect.d_min.d_x) &&
-		    (d_min.d_x < rect.d_max.d_x) &&
-		    (d_max.d_y > rect.d_min.d_y) &&
-		    (d_min.d_y < rect.d_max.d_y))
+        if ((d_max.x > rect.d_min.x) &&
+		    (d_min.x < rect.d_max.x) &&
+		    (d_max.y > rect.d_min.y) &&
+		    (d_min.y < rect.d_max.y))
 	    {
-		    Rect ret;
+		    Rectf ret;
 
 		    // fill in ret with the intersection
-		    ret.d_min.d_x = (d_min.d_x > rect.d_min.d_x) ? d_min.d_x : rect.d_min.d_x;
-		    ret.d_max.d_x = (d_max.d_x < rect.d_max.d_x) ? d_max.d_x : rect.d_max.d_x;
-		    ret.d_min.d_y = (d_min.d_y > rect.d_min.d_y) ? d_min.d_y : rect.d_min.d_y;
-		    ret.d_max.d_y = (d_max.d_y < rect.d_max.d_y) ? d_max.d_y : rect.d_max.d_y;
+		    ret.d_min.x = (d_min.x > rect.d_min.x) ? d_min.x : rect.d_min.x;
+		    ret.d_max.x = (d_max.x < rect.d_max.x) ? d_max.x : rect.d_max.x;
+		    ret.d_min.y = (d_min.y > rect.d_min.y) ? d_min.y : rect.d_min.y;
+		    ret.d_max.y = (d_max.y < rect.d_max.y) ? d_max.y : rect.d_max.y;
 
 		    return ret;
 	    }
 	    else
 	    {
-		    return Rect(0.0f, 0.0f, 0.0f, 0.0f);
+		    return Rectf(0.0f, 0.0f, 0.0f, 0.0f);
 	    }
     }
 
 	/*!
 	\brief
-		Applies an offset the Rect object
+		Applies an offset the Rectf object
 
 	\param pt
-		Vector2 object containing the offsets to be applied to the Rect.
+		Vector2 object containing the offsets to be applied to the Rectf.
 
 	\return
-		this Rect after the offset is performed
+		this Rectf after the offset is performed
 	*/
-	inline void offset(const Vector2<T>& v)
+	inline void offset(const glm::vec2& v)
     {
         d_min += v;
         d_max += v;
@@ -229,20 +228,20 @@ public:
 
 	/*!
 	\brief
-		Return true if the given Vector2 falls within this Rect
+		Return true if the given Vector2 falls within this Rectf
 
 	\param pt
 		Vector2 object describing the position to test.
 
 	\return
-		true if position \a pt is within this Rect's area, else false
+		true if position \a pt is within this Rectf's area, else false
 	*/
-	inline bool isPointInRect(const Vector2<T>& v) const
+	inline bool isPointInRect(const glm::vec2& v) const
     {
-		if ((d_min.d_x >  v.d_x) ||
-		    (d_max.d_x <= v.d_x) ||
-		    (d_min.d_y >  v.d_y) ||
-		    (d_max.d_y <= v.d_y))
+		if ((d_min.x >  v.x) ||
+		    (d_max.x <= v.x) ||
+		    (d_min.y >  v.y) ||
+		    (d_max.y <= v.y))
 	    {
 		    return false;
 	    }
@@ -250,18 +249,17 @@ public:
 	    return true;
     }
 
-
 	/*!
 	\brief
-		check the size of the Rect object and if it is bigger than \a sz, resize it so it isn't.
+		check the size of the Rectf object and if it is bigger than \a sz, resize it so it isn't.
 
 	\param sz
-		Size object that describes the maximum dimensions that this Rect should be limited to.
+		Size object that describes the maximum dimensions that this Rectf should be limited to.
 
 	\return
-		'this' Rect object after the constrain operation
+		'this' Rectf object after the constrain operation
 	*/
-	void constrainSizeMax(const Size<T>& size)
+	void constrainSizeMax(const Sizef& size)
     {
         if (getWidth() > size.d_width)
 	    {
@@ -274,18 +272,17 @@ public:
 	    }
     }
 
-
 	/*!
 	\brief
-		check the size of the Rect object and if it is smaller than \a sz, resize it so it isn't.
+		check the size of the Rectf object and if it is smaller than \a sz, resize it so it isn't.
 
 	\param sz
-		Size object that describes the minimum dimensions that this Rect should be limited to.
+		Size object that describes the minimum dimensions that this Rectf should be limited to.
 
 	\return
-		'this' Rect object after the constrain operation
+		'this' Rectf object after the constrain operation
 	*/
-	void constrainSizeMin(const Size<T>& size)
+	void constrainSizeMin(const Sizef& size)
     {
         if (getWidth() < size.d_width)
 	    {
@@ -298,23 +295,22 @@ public:
 	    }
     }
 
-
 	/*!
 	\brief
-		check the size of the Rect object and if it is bigger than \a max_sz or smaller than \a min_sz, resize it so it isn't.
+		check the size of the Rectf object and if it is bigger than \a max_sz or smaller than \a min_sz, resize it so it isn't.
 
 	\param max_sz
-		Size object that describes the maximum dimensions that this Rect should be limited to.
+		Size object that describes the maximum dimensions that this Rectf should be limited to.
 
 	\param min_sz
-		Size object that describes the minimum dimensions that this Rect should be limited to.
+		Size object that describes the minimum dimensions that this Rectf should be limited to.
 
 	\return
-		'this' Rect object after the constrain operation
+		'this' Rectf object after the constrain operation
 	*/
-	void constrainSize(const Size<T>& max_sz, const Size<T>& min_sz)
+	void constrainSize(const Sizef& max_sz, const Sizef& min_sz)
     {
-        Size<T> curr_sz(getSize());
+        Sizef curr_sz(getSize());
 
 	    if (curr_sz.d_width > max_sz.d_width)
 	    {
@@ -335,54 +331,53 @@ public:
 	    }
     }
 
-
 	/*************************************************************************
 		Operators
 	*************************************************************************/
-	inline bool operator==(const Rect& rhs) const
+	inline bool operator==(const Rectf& rhs) const
 	{
 		return ((d_min == rhs.d_min) && (d_max == rhs.d_max));
 	}
 
-	inline bool operator!=(const Rect& rhs) const
+	inline bool operator!=(const Rectf& rhs) const
     {
         return !operator==(rhs);
     }
 
-    inline Rect operator*(T scalar) const
+    inline Rectf operator*(float scalar) const
     {
-        return Rect(d_min * scalar, d_max * scalar);
+        return Rectf(d_min * scalar, d_max * scalar);
     }
 
-    const Rect& operator*=(T scalar)
+    const Rectf& operator*=(float scalar)
     {
         d_min *= scalar;
         d_max *= scalar;
         return *this;
     }
 
-	Rect operator+(const Rect& r) const
+	Rectf operator+(const Rectf& r) const
     {
-        return Rect(d_min + r.d_min, d_max + r.d_max);
+        return Rectf(d_min + r.d_min, d_max + r.d_max);
     }
     
-    inline friend std::ostream& operator << (std::ostream& s, const Rect& v)
+    inline friend std::ostream& operator << (std::ostream& s, const Rectf& v)
     {
-        s << "CEGUI::Rect<" << typeid(T).name() << ">(" << v.d_min.d_x << ", " << v.d_min.d_y << ", " << v.d_max.d_x << ", " << v.d_max.d_y << ")";
+        s << "CEGUI::Rectf(" << v.d_min.x << ", " << v.d_min.y << ", " << v.d_max.x << ", " << v.d_max.y << ")";
         return s;
     }
     
     //! \brief finger saving alias for zero sized, zero positioned rect
-    inline static Rect zero()
+    inline static Rectf zero()
     {
-        return Rect(Vector2<T>::zero(), Size<T>::zero());
+        return Rectf(glm::vec2(0, 0), Sizef::zero());
     }
     
     /*************************************************************************
         Data Fields
     *************************************************************************/
-    Vector2<T> d_min;
-    Vector2<T> d_max;
+    glm::vec2 d_min;
+    glm::vec2 d_max;
 
     // d_min.d_x is former d_left
     // d_min.d_y is former d_top
@@ -390,16 +385,224 @@ public:
     // d_max.d_y is former d_bottom
 };
 
-// the main reason for this is to keep C++ API in sync with other languages
-typedef Rect<float> Rectf;
+/*!
+\brief
+	Class encapsulating operations on a unified dim rectangle
+*/
+class URect:
+    public AllocatedObject<URect>
+{
+public:
+    typedef UDim value_type;
+
+    inline URect()
+    {}
+
+    inline URect(const UDim& left, const UDim& top, const UDim& right, const UDim& bottom):
+        d_min(left, top),
+        d_max(right, bottom)
+    {}
+
+    inline URect(const UVector2& min, const UVector2& max):
+        d_min(min),
+        d_max(max)
+    {}
+
+    inline URect(const UVector2& pos, const USize& size):
+        d_min(pos),
+        d_max(pos + UVector2(size.d_width, size.d_height))
+    {}
+
+    inline URect(const URect& r):
+        d_min(r.d_min),
+        d_max(r.d_max)
+    {}
+
+    inline URect& operator=(const URect& rhs)
+    {
+        d_min = rhs.d_min;
+        d_max = rhs.d_max;
+
+        return *this;
+    }
+
+    inline void left(const UDim& v)
+    {
+        d_min.d_x = v;
+    }
+
+    inline const UDim& left() const
+    {
+        return d_min.d_x;
+    }
+
+    inline void top(const UDim& v)
+    {
+        d_min.d_y = v;
+    }
+
+    inline const UDim& top() const
+    {
+        return d_min.d_y;
+    }
+
+    inline void right(const UDim& v)
+    {
+        d_max.d_x = v;
+    }
+
+    inline const UDim& right() const
+    {
+        return d_max.d_x;
+    }
+
+    inline void bottom(const UDim& v)
+    {
+        d_max.d_y = v;
+    }
+
+    inline const UDim& bottom() const
+    {
+        return d_max.d_y;
+    }
+
+	/*!
+	\brief
+		set the position of the URect (leaves size in tact)
+	*/
+	void setPosition(const UVector2& min)
+    {
+        const USize size = getSize();
+        d_min = min;
+        setSize(size);
+    }
+
+    /*!
+	\brief
+		Return top-left position of URect as a Vector2<T>
+	*/
+	const UVector2& getPosition() const
+    {
+        return d_min;
+    }
+
+    void setSize(const USize& size)
+    {
+        d_max = d_min + UVector2(size.d_width, size.d_height);
+    }
+
+    /*!
+	\brief
+		return the size of the URect area
+	*/
+	inline USize getSize() const
+    {
+        return USize(getWidth(), getHeight());
+    }
+
+    void setWidth(const UDim& w)
+    {
+        d_max.d_x = d_min.d_x + w;
+    }
+
+	/*!
+	\brief
+		return width of URect area
+	*/
+	inline UDim getWidth() const
+    {
+        return d_max.d_x - d_min.d_x;
+    }
+
+    void setHeight(const UDim& h)
+    {
+        d_max.d_y = d_min.d_y + h;
+    }
+
+	/*!
+	\brief
+		return height of URect area
+	*/
+	inline UDim getHeight() const
+    {
+        return d_max.d_y - d_min.d_y;
+    }
+
+	/*!
+	\brief
+		Applies an offset the URect object
+
+	\param pt
+		Vector2 object containing the offsets to be applied to the URect.
+
+	\return
+		this URect after the offset is performed
+	*/
+	inline void offset(const UVector2& v)
+    {
+        d_min += v;
+        d_max += v;
+    }
+
+	/*************************************************************************
+		Operators
+	*************************************************************************/
+	inline bool operator==(const URect& rhs) const
+	{
+		return ((d_min == rhs.d_min) && (d_max == rhs.d_max));
+	}
+
+	inline bool operator!=(const URect& rhs) const
+    {
+        return !operator==(rhs);
+    }
+
+    inline URect operator*(UDim scalar) const
+    {
+        return URect(d_min * scalar, d_max * scalar);
+    }
+
+    const URect& operator*=(UDim scalar)
+    {
+        d_min *= scalar;
+        d_max *= scalar;
+        return *this;
+    }
+
+	URect operator+(const URect& r) const
+    {
+        return URect(d_min + r.d_min, d_max + r.d_max);
+    }
+    
+    inline friend std::ostream& operator << (std::ostream& s, const URect& v)
+    {
+        s << "CEGUI::URect(" << v.d_min.d_x << ", " << v.d_min.d_y << ", " << v.d_max.d_x << ", " << v.d_max.d_y << ")";
+        return s;
+    }
+    
+    //! \brief finger saving alias for zero sized, zero positioned rect
+    inline static URect zero()
+    {
+        return URect(UVector2::zero(), USize::zero());
+    }
+
+    /*************************************************************************
+        Data Fields
+    *************************************************************************/
+    UVector2 d_min;
+    UVector2 d_max;
+
+    // d_min.d_x is former d_left
+    // d_min.d_y is former d_top
+    // d_max.d_x is former d_right
+    // d_max.d_y is former d_bottom
+};
 
 // we need to allow URect to be multiplied by floats, this is the most elegant way to do that
-inline Rect<UDim> operator * (const Rect<UDim>& v, const float c)
+inline URect operator * (const URect& v, const float c)
 {
-    return Rect<UDim>(v.d_min * c, v.d_max * c);
+    return URect(v.d_min * c, v.d_max * c);
 }
-
-typedef Rect<UDim> URect;
 
 } // End of  CEGUI namespace section
 

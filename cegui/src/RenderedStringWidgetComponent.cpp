@@ -92,7 +92,7 @@ void RenderedStringWidgetComponent::setSelection(const Window* /*ref_wnd*/,
 //----------------------------------------------------------------------------//
 void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
                                          GeometryBuffer& buffer,
-                                         const Vector2f& position,
+                                         const glm::vec2& position,
                                          const CEGUI::ColourRect* /*mod_colours*/,
                                          const Rectf* clip_rect,
                                          const float vertical_space,
@@ -111,17 +111,17 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
     {
         const Rectf& outer(parent->getUnclippedOuterRect().get());
         const Rectf& inner(parent->getUnclippedInnerRect().get());
-        x_adj = inner.d_min.d_x - outer.d_min.d_x;
-        y_adj = inner.d_min.d_y - outer.d_min.d_y;
+        x_adj = inner.d_min.x - outer.d_min.x;
+        y_adj = inner.d_min.y - outer.d_min.y;
     }
     // HACK: re-adjust for inner-rect of parent (Ends)
 
-    Vector2f final_pos(position);
+    glm::vec2 final_pos(position);
     // handle formatting options
     switch (d_verticalFormatting)
     {
     case VF_BOTTOM_ALIGNED:
-        final_pos.d_y += vertical_space - getPixelSize(ref_wnd).d_height;
+        final_pos.y += vertical_space - getPixelSize(ref_wnd).d_height;
         break;
 
     case VF_STRETCHED:
@@ -132,7 +132,7 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
         // intentional fall-through.
         
     case VF_CENTRE_ALIGNED:
-        final_pos.d_y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
+        final_pos.y += (vertical_space - getPixelSize(ref_wnd).d_height) / 2 ;
         break;
 
 
@@ -153,8 +153,8 @@ void RenderedStringWidgetComponent::draw(const Window* ref_wnd,
     }
 
     // we do not actually draw the widget, we just move it into position.
-    const UVector2 wpos(UDim(0, final_pos.d_x + d_padding.d_min.d_x - x_adj),
-                        UDim(0, final_pos.d_y + d_padding.d_min.d_y - y_adj));
+    const UVector2 wpos(UDim(0, final_pos.x + d_padding.d_min.x - x_adj),
+                        UDim(0, final_pos.y + d_padding.d_min.y - y_adj));
 
     window->setPosition(wpos);
 }
@@ -183,8 +183,8 @@ Sizef RenderedStringWidgetComponent::getPixelSize(const Window* ref_wnd) const
     if (Window* const window = getEffectiveWindow(ref_wnd))
     {
         sz = window->getPixelSize();
-        sz.d_width += (d_padding.d_min.d_x + d_padding.d_max.d_x);
-        sz.d_height += (d_padding.d_min.d_y + d_padding.d_max.d_y);
+        sz.d_width += (d_padding.d_min.x + d_padding.d_max.x);
+        sz.d_height += (d_padding.d_min.y + d_padding.d_max.y);
     }
 
     return sz;

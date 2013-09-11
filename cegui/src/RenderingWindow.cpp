@@ -68,25 +68,25 @@ void RenderingWindow::setClippingRegion(const Rectf& region)
     if (d_owner->isRenderingWindow())
     {
         final_region.offset(
-            Vector2f(-static_cast<RenderingWindow*>(d_owner)->d_position.d_x,
-                      -static_cast<RenderingWindow*>(d_owner)->d_position.d_y));
+            glm::vec2(-static_cast<RenderingWindow*>(d_owner)->d_position.x,
+                      -static_cast<RenderingWindow*>(d_owner)->d_position.y));
     }
 
     d_geometry->setClippingRegion(final_region);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::setPosition(const Vector2f& position)
+void RenderingWindow::setPosition(const glm::vec2& position)
 {
     d_position = position;
 
-    glm::vec3 trans(d_position.d_x, d_position.d_y, 0.0f);
+    glm::vec3 trans(d_position.x, d_position.y, 0.0f);
     // geometry position must be offset according to our owner position, if
     // that is a RenderingWindow.
     if (d_owner->isRenderingWindow())
     {
-        trans.x -= static_cast<RenderingWindow*>(d_owner)->d_position.d_x;
-        trans.y -= static_cast<RenderingWindow*>(d_owner)->d_position.d_y;
+        trans.x -= static_cast<RenderingWindow*>(d_owner)->d_position.x;
+        trans.y -= static_cast<RenderingWindow*>(d_owner)->d_position.y;
     }
 
     d_geometry->setTranslation(trans);
@@ -119,7 +119,7 @@ void RenderingWindow::setPivot(const glm::vec3& pivot)
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& RenderingWindow::getPosition() const
+const glm::vec2& RenderingWindow::getPosition() const
 {
     return d_position;
 }
@@ -256,8 +256,8 @@ void RenderingWindow::realiseGeometry_impl()
 {
    Texture& tex = d_textarget.getTexture();
 
-    const float tu = d_size.d_width * tex.getTexelScaling().d_x;
-    const float tv = d_size.d_height * tex.getTexelScaling().d_y;
+    const float tu = d_size.d_width * tex.getTexelScaling().x;
+    const float tv = d_size.d_height * tex.getTexelScaling().y;
     const Rectf tex_rect(d_textarget.isRenderingInverted() ?
                           Rectf(0, 1, tu, 1 - tv) :
                           Rectf(0, 0, tu, tv));
@@ -267,41 +267,41 @@ void RenderingWindow::realiseGeometry_impl()
     Vertex vbuffer[6];
 
     // vertex 0
-    vbuffer[0].position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[0].position   = glm::vec3(area.d_min.x, area.d_min.y, 0.0f);
     vbuffer[0].colour_val = c;
-    vbuffer[0].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
+    vbuffer[0].tex_coords = glm::vec2(tex_rect.d_min.x, tex_rect.d_min.y);
 
     // vertex 1
-    vbuffer[1].position   = glm::vec3(area.d_min.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[1].position   = glm::vec3(area.d_min.x, area.d_max.y, 0.0f);
     vbuffer[1].colour_val = c;
-    vbuffer[1].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_max.d_y);
+    vbuffer[1].tex_coords = glm::vec2(tex_rect.d_min.x, tex_rect.d_max.y);
 
     // vertex 2
-    vbuffer[2].position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[2].position   = glm::vec3(area.d_max.x, area.d_max.y, 0.0f);
     vbuffer[2].colour_val = c;
-    vbuffer[2].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
+    vbuffer[2].tex_coords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
     // vertex 3
-    vbuffer[3].position   = glm::vec3(area.d_max.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[3].position   = glm::vec3(area.d_max.x, area.d_min.y, 0.0f);
     vbuffer[3].colour_val = c;
-    vbuffer[3].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_min.d_y);
+    vbuffer[3].tex_coords = glm::vec2(tex_rect.d_max.x, tex_rect.d_min.y);
 
     // vertex 4
-    vbuffer[4].position   = glm::vec3(area.d_min.d_x, area.d_min.d_y, 0.0f);
+    vbuffer[4].position   = glm::vec3(area.d_min.x, area.d_min.y, 0.0f);
     vbuffer[4].colour_val = c;
-    vbuffer[4].tex_coords = Vector2f(tex_rect.d_min.d_x, tex_rect.d_min.d_y);
+    vbuffer[4].tex_coords = glm::vec2(tex_rect.d_min.x, tex_rect.d_min.y);
 
     // vertex 5
-    vbuffer[5].position   = glm::vec3(area.d_max.d_x, area.d_max.d_y, 0.0f);
+    vbuffer[5].position   = glm::vec3(area.d_max.x, area.d_max.y, 0.0f);
     vbuffer[5].colour_val = c;
-    vbuffer[5].tex_coords = Vector2f(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
+    vbuffer[5].tex_coords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
     d_geometry->setActiveTexture(&tex);
     d_geometry->appendGeometry(vbuffer, 6);
 }
 
 //----------------------------------------------------------------------------//
-void RenderingWindow::unprojectPoint(const Vector2f& p_in, Vector2f& p_out)
+void RenderingWindow::unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out)
 {
     // quick test for rotations to save us a lot of work in the unrotated case
     if ((d_rotation == glm::quat()))
@@ -310,15 +310,14 @@ void RenderingWindow::unprojectPoint(const Vector2f& p_in, Vector2f& p_out)
         return;
     }
 
-    Vector2f in(p_in);
+    glm::vec2 in(p_in);
 
     // localise point for cases where owner is also a RenderingWindow
     if (d_owner->isRenderingWindow())
         in -= static_cast<RenderingWindow*>(d_owner)->getPosition();
 
     d_owner->getRenderTarget().unprojectPoint(*d_geometry, in, p_out);
-    p_out.d_x += d_position.d_x;
-    p_out.d_y += d_position.d_y;
+    p_out += d_position;
 }
 
 //----------------------------------------------------------------------------//

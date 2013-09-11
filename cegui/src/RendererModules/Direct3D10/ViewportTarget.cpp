@@ -45,7 +45,7 @@ Direct3D10ViewportTarget::Direct3D10ViewportTarget(Direct3D10Renderer& owner) :
             "ID3D10Device."));
 
     Rectf area(
-        Vector2f(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
+        glm::vec2(static_cast<float>(vp.TopLeftX), static_cast<float>(vp.TopLeftY)),
         Sizef(static_cast<float>(vp.Width), static_cast<float>(vp.Height))
     );
 

@@ -30,7 +30,6 @@
 
 #include "CEGUI/FormattedRenderedString.h"
 #include "CEGUI/JustifiedRenderedString.h"
-#include "CEGUI/Vector.h"
 #include <vector>
 
 // Start of CEGUI namespace section
@@ -53,7 +52,7 @@ public:
     // implementation of base interface
     void format(const Window* ref_wnd, const Sizef& area_size);
     void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-              const Vector2f& position, const ColourRect* mod_colours,
+              const glm::vec2& position, const ColourRect* mod_colours,
               const Rectf* clip_rect) const;
     size_t getFormattedLineCount() const;
     float getHorizontalExtent(const Window* ref_wnd) const;
@@ -129,16 +128,16 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
 template <typename T>
 void RenderedStringWordWrapper<T>::draw(const Window* ref_wnd,
                                         GeometryBuffer& buffer,
-                                        const Vector2f& position,
+                                        const glm::vec2& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect) const
 {
-    Vector2f line_pos(position);
+    glm::vec2 line_pos(position);
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
     {
         (*i)->draw(ref_wnd, buffer, line_pos, mod_colours, clip_rect);
-        line_pos.d_y += (*i)->getVerticalExtent(ref_wnd);
+        line_pos.y += (*i)->getVerticalExtent(ref_wnd);
     }
 }
 

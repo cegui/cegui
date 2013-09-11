@@ -249,7 +249,7 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
     Rectf backgroundRect(destRect);
     Rectf finalRect;
     Sizef imageSize;
-    Vector2f imageOffsets;
+    glm::vec2 imageOffsets;
     ColourRect imageColours;
     float leftfactor, rightfactor, topfactor, bottomfactor;
     bool calcColoursPerImage;
@@ -285,17 +285,17 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        topOffset  += imageSize.d_width + imageOffsets.d_x;
-        leftOffset += imageSize.d_height + imageOffsets.d_y;
+        topOffset  += imageSize.d_width + imageOffsets.x;
+        leftOffset += imageSize.d_height + imageOffsets.y;
         topWidth   -= topOffset;
         leftHeight -= leftOffset;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + imageOffsets.d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + imageOffsets.x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + imageOffsets.d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + imageOffsets.y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -317,16 +317,16 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        rightOffset += imageSize.d_height + imageOffsets.d_y;
-        topWidth    -= imageSize.d_width - imageOffsets.d_x;
+        rightOffset += imageSize.d_height + imageOffsets.y;
+        topWidth    -= imageSize.d_width - imageOffsets.x;
         rightHeight -= rightOffset;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + imageOffsets.d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + imageOffsets.x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + imageOffsets.d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + imageOffsets.y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
@@ -348,16 +348,16 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        bottomOffset += imageSize.d_width + imageOffsets.d_x;
+        bottomOffset += imageSize.d_width + imageOffsets.x;
         bottomWidth  -= bottomOffset;
-        leftHeight   -= imageSize.d_height - imageOffsets.d_y;
+        leftHeight   -= imageSize.d_height - imageOffsets.y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + imageOffsets.d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + imageOffsets.x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + imageOffsets.d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + imageOffsets.y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
@@ -379,15 +379,15 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // update adjustments required to edges do to presence of this element.
-        bottomWidth -= imageSize.d_width - imageOffsets.d_x;
-        rightHeight -= imageSize.d_height - imageOffsets.d_y;
+        bottomWidth -= imageSize.d_width - imageOffsets.x;
+        rightHeight -= imageSize.d_height - imageOffsets.y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -409,14 +409,14 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_min.d_y += imageSize.d_height + componentImage->getRenderedOffset().d_y;
+        backgroundRect.d_min.y += imageSize.d_height + componentImage->getRenderedOffset().y;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -440,14 +440,14 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_y -= imageSize.d_height - componentImage->getRenderedOffset().d_y;;
+        backgroundRect.d_max.y -= imageSize.d_height - componentImage->getRenderedOffset().y;;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle(leftfactor, rightfactor, topfactor, bottomfactor);
@@ -471,14 +471,14 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection(finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_min.d_x += imageSize.d_width + componentImage->getRenderedOffset().d_x;
+        backgroundRect.d_min.x += imageSize.d_width + componentImage->getRenderedOffset().x;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -502,14 +502,14 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         finalRect = destRect.getIntersection (finalRect);
 
         // adjust background area to miss this edge
-        backgroundRect.d_max.d_x -= imageSize.d_width - componentImage->getRenderedOffset().d_x;
+        backgroundRect.d_max.x -= imageSize.d_width - componentImage->getRenderedOffset().x;
 
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (finalRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + finalRect.getWidth() / destRect.getWidth();
-            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (finalRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + finalRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -526,9 +526,9 @@ void FrameComponent::render_impl(Window& srcWindow, Rectf& destRect,
         // calculate colours that are to be used to this component image
         if (calcColoursPerImage)
         {
-            leftfactor   = (backgroundRect.left() + componentImage->getRenderedOffset().d_x) / destRect.getWidth();
+            leftfactor   = (backgroundRect.left() + componentImage->getRenderedOffset().x) / destRect.getWidth();
             rightfactor  = leftfactor + backgroundRect.getWidth() / destRect.getWidth();
-            topfactor    = (backgroundRect.top() + componentImage->getRenderedOffset().d_y) / destRect.getHeight();
+            topfactor    = (backgroundRect.top() + componentImage->getRenderedOffset().y) / destRect.getHeight();
             bottomfactor = topfactor + backgroundRect.getHeight() / destRect.getHeight();
 
             imageColours = finalColours.getSubRectangle( leftfactor, rightfactor, topfactor, bottomfactor);
@@ -632,13 +632,13 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
     Rectf finalRect;
     Rectf finalClipper;
     const Rectf* clippingRect;
-    finalRect.d_min.d_y = ypos;
-    finalRect.d_max.d_y = ypos + imgSz.d_height;
+    finalRect.d_min.y = ypos;
+    finalRect.d_max.y = ypos + imgSz.d_height;
 
     for (uint row = 0; row < vertTiles; ++row)
     {
-        finalRect.d_min.d_x = xpos;
-        finalRect.d_max.d_x = xpos + imgSz.d_width;
+        finalRect.d_min.x = xpos;
+        finalRect.d_max.x = xpos + imgSz.d_width;
 
         for (uint col = 0; col < horzTiles; ++col)
         {
@@ -655,12 +655,12 @@ void FrameComponent::renderImage(GeometryBuffer& buffer, const Image* image,
 
             image->render(buffer, finalRect, clippingRect, colours);
 
-            finalRect.d_min.d_x += imgSz.d_width;
-            finalRect.d_max.d_x += imgSz.d_width;
+            finalRect.d_min.x += imgSz.d_width;
+            finalRect.d_max.x += imgSz.d_width;
         }
 
-        finalRect.d_min.d_y += imgSz.d_height;
-        finalRect.d_max.d_y += imgSz.d_height;
+        finalRect.d_min.y += imgSz.d_height;
+        finalRect.d_max.y += imgSz.d_height;
     }
 }
 

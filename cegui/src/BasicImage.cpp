@@ -71,10 +71,10 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
               attributes.getValueAsString(ImageTextureAttribute))),
     d_pixelSize(static_cast<float>(attributes.getValueAsInteger(ImageWidthAttribute, 0)),
                 static_cast<float>(attributes.getValueAsInteger(ImageHeightAttribute, 0))),
-    d_area(Vector2f(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
+    d_area(glm::vec2(static_cast<float>(attributes.getValueAsInteger(ImageXPosAttribute, 0)),
                     static_cast<float>(attributes.getValueAsInteger(ImageYPosAttribute, 0))),
            d_pixelSize),
-    d_pixelOffset(Vector2f(
+    d_pixelOffset(glm::vec2(
         static_cast<float>(attributes.getValueAsInteger(ImageXOffsetAttribute, 0)),
         static_cast<float>(attributes.getValueAsInteger(ImageYOffsetAttribute, 0)))),
     d_nativeResolution(Sizef(
@@ -90,7 +90,7 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
 
 //----------------------------------------------------------------------------//
 BasicImage::BasicImage(const String& name, Texture* texture,
-                       const Rectf& pixel_area, const Vector2f& pixel_offset,
+                       const Rectf& pixel_area, const glm::vec2& pixel_offset,
                        const AutoScaledMode autoscaled, const Sizef& native_res) :
     d_name(name),
     d_texture(texture),
@@ -126,7 +126,7 @@ void BasicImage::setArea(const Rectf& pixel_area)
 }
 
 //----------------------------------------------------------------------------//
-void BasicImage::setOffset(const Vector2f& pixel_offset)
+void BasicImage::setOffset(const glm::vec2& pixel_offset)
 {
     d_pixelOffset = pixel_offset;
 
@@ -177,7 +177,7 @@ const Sizef& BasicImage::getRenderedSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& BasicImage::getRenderedOffset() const
+const glm::vec2& BasicImage::getRenderedOffset() const
 {
     return d_scaledOffset;
 }
@@ -200,78 +200,78 @@ void BasicImage::render(GeometryBuffer& buffer, const Rectf& dest_area,
         return;
 
     // Obtain correct scale values from the texture
-    const Vector2f& scale = d_texture->getTexelScaling();
-    const Vector2f tex_per_pix(d_area.getWidth() / dest.getWidth(), d_area.getHeight() / dest.getHeight());
+    const glm::vec2& scale = d_texture->getTexelScaling();
+    const glm::vec2 tex_per_pix(d_area.getWidth() / dest.getWidth(), d_area.getHeight() / dest.getHeight());
 
     // calculate final, clipped, texture co-ordinates
     const Rectf tex_rect((d_area.d_min + ((final_rect.d_min - dest.d_min) * tex_per_pix)) * scale,
                           (d_area.d_max + ((final_rect.d_max - dest.d_max) * tex_per_pix)) * scale);
 
     // URGENT FIXME: Shouldn't this be in the hands of the user?
-    final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);
-    final_rect.d_min.d_y = CoordConverter::alignToPixels(final_rect.d_min.d_y);
-    final_rect.d_max.d_x = CoordConverter::alignToPixels(final_rect.d_max.d_x);
-    final_rect.d_max.d_y = CoordConverter::alignToPixels(final_rect.d_max.d_y);
+    final_rect.d_min.x = CoordConverter::alignToPixels(final_rect.d_min.x);
+    final_rect.d_min.y = CoordConverter::alignToPixels(final_rect.d_min.y);
+    final_rect.d_max.x = CoordConverter::alignToPixels(final_rect.d_max.x);
+    final_rect.d_max.y = CoordConverter::alignToPixels(final_rect.d_max.y);
 
     Vertex vbuffer[6];
 
     // vertex 0
     vbuffer[0].position   = glm::vec3(final_rect.left(), final_rect.top(), 0.0f);
     vbuffer[0].colour_val = colours.d_top_left;
-    vbuffer[0].tex_coords = Vector2f(tex_rect.left(), tex_rect.top());
+    vbuffer[0].tex_coords = glm::vec2(tex_rect.left(), tex_rect.top());
 
     // vertex 1
     vbuffer[1].position   = glm::vec3(final_rect.left(), final_rect.bottom(), 0.0f);
     vbuffer[1].colour_val = colours.d_bottom_left;
-    vbuffer[1].tex_coords = Vector2f(tex_rect.left(), tex_rect.bottom());
+    vbuffer[1].tex_coords = glm::vec2(tex_rect.left(), tex_rect.bottom());
 
     // vertex 2
     vbuffer[2].position.x   = final_rect.right();
     vbuffer[2].position.z   = 0.0f;
-    vbuffer[2].colour_val     = colours.d_bottom_right;
-    vbuffer[2].tex_coords.d_x = tex_rect.right();
+    vbuffer[2].colour_val   = colours.d_bottom_right;
+    vbuffer[2].tex_coords.x = tex_rect.right();
 
     // top-left to bottom-right diagonal
     if (quad_split_mode == TopLeftToBottomRight)
     {
         vbuffer[2].position.y   = final_rect.bottom();
-        vbuffer[2].tex_coords.d_y = tex_rect.bottom();
+        vbuffer[2].tex_coords.y = tex_rect.bottom();
     }
     // bottom-left to top-right diagonal
     else
     {
         vbuffer[2].position.y   = final_rect.top();
-        vbuffer[2].tex_coords.d_y = tex_rect.top();
+        vbuffer[2].tex_coords.y = tex_rect.top();
     }
 
     // vertex 3
     vbuffer[3].position   = glm::vec3(final_rect.right(), final_rect.top(), 0.0f);
     vbuffer[3].colour_val = colours.d_top_right;
-    vbuffer[3].tex_coords = Vector2f(tex_rect.right(), tex_rect.top());
+    vbuffer[3].tex_coords = glm::vec2(tex_rect.right(), tex_rect.top());
 
     // vertex 4
     vbuffer[4].position.x   = final_rect.left();
     vbuffer[4].position.z   = 0.0f;
-    vbuffer[4].colour_val     = colours.d_top_left;
-    vbuffer[4].tex_coords.d_x = tex_rect.left();
+    vbuffer[4].colour_val   = colours.d_top_left;
+    vbuffer[4].tex_coords.x = tex_rect.left();
 
     // top-left to bottom-right diagonal
     if (quad_split_mode == TopLeftToBottomRight)
     {
         vbuffer[4].position.y   = final_rect.top();
-        vbuffer[4].tex_coords.d_y = tex_rect.top();
+        vbuffer[4].tex_coords.y = tex_rect.top();
     }
     // bottom-left to top-right diagonal
     else
     {
         vbuffer[4].position.y   = final_rect.bottom();
-        vbuffer[4].tex_coords.d_y = tex_rect.bottom();
+        vbuffer[4].tex_coords.y = tex_rect.bottom();
     }
 
     // vertex 5
     vbuffer[5].position = glm::vec3(final_rect.right(), final_rect.bottom(), 0.0f);
     vbuffer[5].colour_val= colours.d_bottom_right;
-    vbuffer[5].tex_coords = Vector2f(tex_rect.right(), tex_rect.bottom());
+    vbuffer[5].tex_coords = glm::vec2(tex_rect.right(), tex_rect.bottom());
 
     buffer.setActiveTexture(d_texture);
     buffer.appendGeometry(vbuffer, 6);
@@ -289,10 +289,10 @@ void BasicImage::notifyDisplaySizeChanged(const Sizef& renderer_display_size)
 
 void BasicImage::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
 {
-    Vector2f scaleFactors;
+    glm::vec2 scaleFactors;
 
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
+        scaleFactors.x, scaleFactors.y);
 
     d_scaledSize = d_pixelSize * scaleFactors;
     d_scaledOffset = d_pixelOffset * scaleFactors;
@@ -301,10 +301,10 @@ void BasicImage::updateScaledSizeAndOffset(const Sizef& renderer_display_size)
 //----------------------------------------------------------------------------//
 void BasicImage::updateScaledSize(const Sizef& renderer_display_size)
 {
-    Vector2f scaleFactors;
+    glm::vec2 scaleFactors;
 
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
+        scaleFactors.x, scaleFactors.y);
 
     d_scaledSize = d_pixelSize * scaleFactors;
 }
@@ -312,10 +312,10 @@ void BasicImage::updateScaledSize(const Sizef& renderer_display_size)
 //----------------------------------------------------------------------------//
 void BasicImage::updateScaledOffset(const Sizef& renderer_display_size)
 {
-    Vector2f scaleFactors;
+    glm::vec2 scaleFactors;
 
     computeScalingFactors(d_autoScaled, renderer_display_size, d_nativeResolution,
-        scaleFactors.d_x, scaleFactors.d_y);
+        scaleFactors.x, scaleFactors.y);
 
     d_scaledOffset = d_pixelOffset * scaleFactors;
 }

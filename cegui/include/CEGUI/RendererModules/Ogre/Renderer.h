@@ -30,7 +30,6 @@
 
 #include "../../Renderer.h"
 #include "../../Size.h"
-#include "../../Vector.h"
 #include "CEGUI/Config.h"
 
 #include <vector>
@@ -373,7 +372,7 @@ public:
     void endRendering();
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
+    const glm::vec2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 

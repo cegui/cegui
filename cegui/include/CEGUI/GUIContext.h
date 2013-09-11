@@ -286,7 +286,7 @@ protected:
     void notifyDefaultFontChanged(Window* hierarchy_root) const;
 
     bool mouseMoveInjection_impl(MouseEventArgs& ma);
-    Window* getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
+    Window* getTargetWindow(const glm::vec2& pt, const bool allow_disabled) const;
     Window* getKeyboardTargetWindow() const;
     Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]

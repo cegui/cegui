@@ -320,7 +320,7 @@ void ImageManager::addFromImageFile(const String& name, const String& filename,
 
     BasicImage& image = static_cast<BasicImage&>(create("BasicImage", name));
     image.setTexture(tex);
-    const Rectf rect(Vector2f(0.0f, 0.0f), tex->getOriginalDataSize());
+    const Rectf rect(glm::vec2(0.0f, 0.0f), tex->getOriginalDataSize());
     image.setArea(rect);
 }
 

@@ -47,19 +47,19 @@ public:
     BasicImage(const XMLAttributes& attributes);
 
     BasicImage(const String& name, Texture* texture,
-               const Rectf& tex_area, const Vector2f& offset,
+               const Rectf& tex_area, const glm::vec2& offset,
                const AutoScaledMode autoscaled, const Sizef& native_res);
 
     void setTexture(Texture* texture);
     void setArea(const Rectf& pixel_area);
-    void setOffset(const Vector2f& pixel_offset);
+    void setOffset(const glm::vec2& pixel_offset);
     void setAutoScaled(const AutoScaledMode autoscaled);
     void setNativeResolution(const Sizef& native_res);
 
     // Implement CEGUI::Image interface
     const String& getName() const;
     const Sizef& getRenderedSize() const;
-    const Vector2f& getRenderedOffset() const;
+    const glm::vec2& getRenderedOffset() const;
     void render(GeometryBuffer& buffer,
                 const Rectf& dest_area,
                 const Rectf* clip_area,
@@ -86,7 +86,7 @@ protected:
     //! Rect defining texture co-ords for this image.
     Rectf d_area;
     //! Defined pixel offset
-    Vector2f d_pixelOffset;
+    glm::vec2 d_pixelOffset;
     //! Whether image is auto-scaled or not and how.
     AutoScaledMode d_autoScaled;
     //! Native resolution used for autoscaling.
@@ -94,7 +94,7 @@ protected:
     //! Size after having autoscaling applied.
     Sizef d_scaledSize;
     //! Offset after having autoscaling applied.
-    Vector2f d_scaledOffset;
+    glm::vec2 d_scaledOffset;
 };
 
 } // End of  CEGUI namespace section

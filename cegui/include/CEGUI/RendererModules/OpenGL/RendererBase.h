@@ -32,7 +32,6 @@
 #include "../../Base.h"
 #include "../../Renderer.h"
 #include "../../Size.h"
-#include "../../Vector.h"
 #include "../../Rect.h"
 #include "../../TextureTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
@@ -84,7 +83,7 @@ public:
     bool isTextureDefined(const String& name) const;
     void setDisplaySize(const Sizef& sz);
     const Sizef& getDisplaySize() const;
-    const Vector2f& getDisplayDPI() const;
+    const glm::vec2& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
 
@@ -250,7 +249,7 @@ protected:
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2f d_displayDPI;
+    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     RenderTarget* d_defaultTarget;
     //! container type used to hold TextureTargets we create.

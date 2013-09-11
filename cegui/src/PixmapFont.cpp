@@ -132,10 +132,10 @@ void PixmapFont::updateFont()
             bi->setNativeResolution(d_nativeResolution);
         }
 
-        if (img->getRenderedOffset().d_y < d_ascender)
-            d_ascender = img->getRenderedOffset().d_y;
-        if (img->getRenderedSize().d_height + img->getRenderedOffset().d_y > d_descender)
-            d_descender = img->getRenderedSize().d_height + img->getRenderedOffset().d_y;
+        if (img->getRenderedOffset().y < d_ascender)
+            d_ascender = img->getRenderedOffset().y;
+        if (img->getRenderedSize().d_height + img->getRenderedOffset().y > d_descender)
+            d_descender = img->getRenderedSize().d_height + img->getRenderedOffset().y;
     }
 
     d_ascender = -d_ascender;
@@ -171,7 +171,7 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
         ImageManager::getSingleton().get(d_imageNamePrefix + '/' + image_name));
 
     float adv = (horz_advance == -1.0f) ?
-        (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().d_x) :
+        (float)(int)(image.getRenderedSize().d_width + image.getRenderedOffset().x) :
         horz_advance;
 
     if (d_autoScaled != ASM_Disabled)
@@ -183,10 +183,10 @@ void PixmapFont::defineMapping(const utf32 codepoint, const String& image_name,
     // create a new FontGlyph with given character code
     const FontGlyph glyph(adv, &image, true);
 
-    if (image.getRenderedOffset().d_y < -d_ascender)
-        d_ascender = -image.getRenderedOffset().d_y;
-    if (image.getRenderedSize().d_height + image.getRenderedOffset().d_y > -d_descender)
-        d_descender = -(image.getRenderedSize().d_height + image.getRenderedOffset().d_y);
+    if (image.getRenderedOffset().y < -d_ascender)
+        d_ascender = -image.getRenderedOffset().y;
+    if (image.getRenderedSize().d_height + image.getRenderedOffset().y > -d_descender)
+        d_descender = -(image.getRenderedSize().d_height + image.getRenderedOffset().y);
 
     d_height = d_ascender - d_descender;
 

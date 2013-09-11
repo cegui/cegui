@@ -233,12 +233,12 @@ void OgreGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     {
         const Vertex& vs = vbuff[i];
         // convert from CEGUI::Vertex to something directly usable by Ogre.
-        v.x       = vs.position.x + d_texelOffset.d_x;
-        v.y       = vs.position.y + d_texelOffset.d_y;
+        v.x       = vs.position.x + d_texelOffset.x;
+        v.y       = vs.position.y + d_texelOffset.y;
         v.z       = vs.position.z;
         v.diffuse = colourToOgre(vs.colour_val);
-        v.u       = vs.tex_coords.d_x;
-        v.v       = vs.tex_coords.d_y;
+        v.u       = vs.tex_coords.x;
+        v.v       = vs.tex_coords.y;
 
         d_vertices.push_back(v);
     }

@@ -33,7 +33,6 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/NamedElement.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/Rect.h"
 #include "CEGUI/Size.h"
@@ -979,7 +978,7 @@ public:
         - true if \a position hits this Window.
         - false if \a position does not hit this window.
     */
-    virtual bool isHit(const Vector2f& position,
+    virtual bool isHit(const glm::vec2& position,
                        const bool allow_disabled = false) const;
 
     /*!
@@ -994,7 +993,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getChildAtPosition(const Vector2f& position) const;
+    Window* getChildAtPosition(const glm::vec2& position) const;
 
     /*!
     \brief
@@ -1013,7 +1012,7 @@ public:
         Pointer to the child Window that was hit according to the location
         \a position, or 0 if no child of this window was hit.
     */
-    Window* getTargetChildAtPosition(const Vector2f& position, 
+    Window* getTargetChildAtPosition(const glm::vec2& position, 
                                      const bool allow_disabled = false) const;
 
     /*!
@@ -2552,7 +2551,7 @@ public:
     const UBox& getMargin() const;
 
     //! return Vector2 \a pos after being fully unprojected for this Window.
-    Vector2f getUnprojectedPosition(const Vector2f& pos) const;
+    glm::vec2 getUnprojectedPosition(const glm::vec2& pos) const;
 
     //! return the pointer to the BidiVisualMapping for this window, if any.
     const BidiVisualMapping* getBidiVisualMapping() const
@@ -3491,11 +3490,11 @@ protected:
     void markCachedWindowRectsInvalid();
     void layoutLookNFeelChildWidgets();
 
-    Window* getChildAtPosition(const Vector2f& position,
-                               bool (Window::*hittestfunc)(const Vector2f&, bool) const,
+    Window* getChildAtPosition(const glm::vec2& position,
+                               bool (Window::*hittestfunc)(const glm::vec2&, bool) const,
                                bool allow_disabled = false) const;
 
-    bool isHitTargetWindow(const Vector2f& position, bool allow_disabled) const;
+    bool isHitTargetWindow(const glm::vec2& position, bool allow_disabled) const;
 
     /*************************************************************************
         Properties for Window base class

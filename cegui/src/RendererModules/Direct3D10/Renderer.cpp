@@ -304,7 +304,7 @@ const Sizef& Direct3D10Renderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& Direct3D10Renderer::getDisplayDPI() const
+const glm::vec2& Direct3D10Renderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }

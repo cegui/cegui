@@ -40,7 +40,6 @@ author:     Lukas E Meindl
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Window.h"
-#include "CEGUI/Vector.h"
 
 using namespace CEGUI;
 

@@ -285,7 +285,7 @@ const Sizef& OpenGLRendererBase::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OpenGLRendererBase::getDisplayDPI() const
+const glm::vec2& OpenGLRendererBase::getDisplayDPI() const
 {
     return d_displayDPI;
 }

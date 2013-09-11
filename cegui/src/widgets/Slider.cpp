@@ -326,7 +326,7 @@ float Slider::getValueFromThumb(void) const
     Given window location 'pt', return a value indicating what change
     should be made to the scroll bar.
 *************************************************************************/
-float Slider::getAdjustDirectionFromPoint(const Vector2f& pt) const
+float Slider::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 {
     if (d_windowRenderer != 0)
     {

@@ -119,7 +119,7 @@ void OpenGLRenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-    const Vector2f& p_in, Vector2f& p_out) const
+    const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -147,8 +147,8 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     in_y = vp[3] * 0.5;
     in_z = -d_viewDistance;
     unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
-    in_x = p_in.d_x;
-    in_y = vp[3] - p_in.d_y;
+    in_x = p_in.x;
+    in_y = vp[3] - p_in.y;
     in_z = 0.0;
     unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
@@ -183,8 +183,8 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     const double is_x = unprojected1.x - rv.x * tmp1;
     const double is_y = unprojected1.y - rv.y * tmp1;
 
-    p_out.d_x = static_cast<float>(is_x);
-    p_out.d_y = static_cast<float>(is_y);
+    p_out.x = static_cast<float>(is_x);
+    p_out.y = static_cast<float>(is_y);
 
     p_out = p_in; // CrazyEddie wanted this
 }

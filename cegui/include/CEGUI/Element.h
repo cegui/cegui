@@ -806,9 +806,9 @@ public:
         Return the element's absolute (or screen, depending on the type of the element) position in pixels.
 
     \return
-        Vector2f object describing this element's absolute position in pixels.
+        glm::vec2 object describing this element's absolute position in pixels.
     */
-    inline const Vector2f& getPixelPosition() const
+    inline const glm::vec2& getPixelPosition() const
     {
         return getUnclippedOuterRect().get().d_min;
     }

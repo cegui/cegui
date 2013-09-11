@@ -76,7 +76,7 @@ public:
     */
     float getRenderedAdvance(float x_scale) const
     { return (d_image->getRenderedSize().d_width +
-              d_image->getRenderedOffset().d_x) * x_scale; }
+              d_image->getRenderedOffset().x) * x_scale; }
 
     /*!
     \brief

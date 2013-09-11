@@ -292,7 +292,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
         finalPos.setHeight(targetRect.getHeight());
         d_iconImage->render(buffer, finalPos, clipper,
                           ColourRect(Colour(1,1,1,alpha)));
-        finalRect.d_min.d_x += targetRect.getHeight();
+        finalRect.d_min.x += targetRect.getHeight();
     }
 
     if (d_selected && d_selectBrush != 0)
@@ -304,8 +304,8 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
     if (!font)
         return;
 
-    Vector2f draw_pos(finalRect.getPosition());
-    draw_pos.d_y -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
+    glm::vec2 draw_pos(finalRect.getPosition());
+    draw_pos.y -= (font->getLineSpacing() - font->getBaseline()) * 0.5f;
 
     if (!d_renderedStringValid)
         parseTextString();
@@ -316,7 +316,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
         d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
-        draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
+        draw_pos.y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }
 

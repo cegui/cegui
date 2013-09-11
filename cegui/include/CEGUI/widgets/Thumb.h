@@ -314,7 +314,7 @@ protected:
 
 	// internal state
 	bool	d_beingDragged;				//!< true if thumb is being dragged
-	Vector2f d_dragPoint;				//!< point where we are being dragged at.
+	glm::vec2 d_dragPoint;				//!< point where we are being dragged at.
 
 
 private:

@@ -96,7 +96,7 @@ public:
     */
     void draw(const Window* ref_wnd,
               const size_t line, GeometryBuffer& buffer,
-              const Vector2f& position, const ColourRect* mod_colours,
+              const glm::vec2& position, const ColourRect* mod_colours,
               const Rectf* clip_rect, const float space_extra) const;
 
     /*!

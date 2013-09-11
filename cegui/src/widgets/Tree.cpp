@@ -605,7 +605,7 @@ void Tree::populateGeometryBuffer()
     cacheTreeBaseImagery();
     
     // Render list items
-    Vector2f itemPos;
+    glm::vec2 itemPos;
     float    widest = getWidestItemWidth();
     
     // calculate position of area we have to render into
@@ -613,8 +613,8 @@ void Tree::populateGeometryBuffer()
     //Rect itemsArea(0,0,500,500);
     
     // set up some initial positional details for items
-    itemPos.d_x = d_itemArea.left() - d_horzScrollbar->getScrollPosition();
-    itemPos.d_y = d_itemArea.top() - d_vertScrollbar->getScrollPosition();
+    itemPos.x = d_itemArea.left() - d_horzScrollbar->getScrollPosition();
+    itemPos.y = d_itemArea.top() - d_vertScrollbar->getScrollPosition();
     
     drawItemList(d_listItems, d_itemArea, widest, itemPos, *d_geometry,
                  getEffectiveAlpha());
@@ -622,7 +622,7 @@ void Tree::populateGeometryBuffer()
 
 // Recursive!
 void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
-                        Vector2f& itemPos, GeometryBuffer& geometry, float alpha)
+                        glm::vec2& itemPos, GeometryBuffer& geometry, float alpha)
 {
     if (itemList.empty())
         return;
@@ -640,11 +640,11 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
         itemSize.d_width = ceguimax(itemsArea.getWidth(), widest);
         
         // calculate destination area for this item.
-        itemRect.left(itemPos.d_x);
-        itemRect.top(itemPos.d_y);
+        itemRect.left(itemPos.x);
+        itemRect.top(itemPos.y);
         itemRect.setSize(itemSize);
         itemClipper = itemRect.getIntersection(itemsArea);
-        itemRect.d_min.d_x += 20; // start text past open/close buttons
+        itemRect.d_min.x += 20; // start text past open/close buttons
         
         if (itemClipper.getHeight() > 0)
         {
@@ -660,9 +660,9 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
         if (itemList[i]->getItemCount() > 0)
         {
             Rectf buttonRenderRect;
-            buttonRenderRect.left(itemPos.d_x);
+            buttonRenderRect.left(itemPos.x);
             buttonRenderRect.right(buttonRenderRect.left() + 10);
-            buttonRenderRect.top(itemPos.d_y);
+            buttonRenderRect.top(itemPos.y);
             buttonRenderRect.bottom(buttonRenderRect.top() + 10);
             itemList[i]->setButtonLocation(buttonRenderRect);
             
@@ -673,12 +673,12 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
                     d_closeButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
-                itemPos.d_y += itemSize.d_height;
+                itemPos.y += itemSize.d_height;
                 
-                itemPos.d_x += 20;
+                itemPos.x += 20;
                 drawItemList(itemList[i]->getItemList(), itemsArea, widest,
                              itemPos, geometry, alpha);
-                itemPos.d_x -= 20;
+                itemPos.x -= 20;
             }
             else
             {
@@ -687,13 +687,13 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
                     d_openButtonImagery->render(*this, buttonRenderRect, 0, &itemClipper);
                 
                 // update position ready for next item
-                itemPos.d_y += itemSize.d_height;
+                itemPos.y += itemSize.d_height;
             }
         }
         else
         {
             // update position ready for next item
-            itemPos.d_y += itemSize.d_height;
+            itemPos.y += itemSize.d_height;
         }
     }
     
@@ -727,12 +727,12 @@ void Tree::configureScrollbars(void)
     if ((totalHeight > renderArea.getHeight()) || d_forceVertScroll)
     {
         d_vertScrollbar->show();
-        renderArea.d_max.d_x -= d_vertScrollbar->getWidth().d_offset + d_vertScrollbar->getXPosition().d_offset;
+        renderArea.d_max.x -= d_vertScrollbar->getWidth().d_offset + d_vertScrollbar->getXPosition().d_offset;
         // show or hide horizontal scroll bar as required (or as specified by option)
         if ((widestItem > renderArea.getWidth()) || d_forceHorzScroll)
         {
             d_horzScrollbar->show();
-            renderArea.d_max.d_y -= d_horzScrollbar->getHeight().d_offset;
+            renderArea.d_max.y -= d_horzScrollbar->getHeight().d_offset;
         }
         else
         {
@@ -746,14 +746,14 @@ void Tree::configureScrollbars(void)
         if ((widestItem > renderArea.getWidth()) || d_forceHorzScroll)
         {
             d_horzScrollbar->show();
-            renderArea.d_max.d_y -= d_vertScrollbar->getHeight().d_offset;
+            renderArea.d_max.y -= d_vertScrollbar->getHeight().d_offset;
             
             // show or hide vertical scroll bar as required (or as specified by option)
             if ((totalHeight > renderArea.getHeight()) || d_forceVertScroll)
             {
                 d_vertScrollbar->show();
                 //            renderArea.d_right -= d_vertScrollbar->getAbsoluteWidth();
-                renderArea.d_max.d_x -= d_vertScrollbar->getWidth().d_offset;
+                renderArea.d_max.x -= d_vertScrollbar->getWidth().d_offset;
             }
             else
             {
@@ -920,32 +920,32 @@ bool Tree::clearAllSelectionsFromList(const LBItemList &itemList)
 /*************************************************************************
     Return the TreeItem under the given window local pixel co-ordinate.
 *************************************************************************/
-TreeItem* Tree::getItemAtPoint(const Vector2f& pt) const
+TreeItem* Tree::getItemAtPoint(const glm::vec2& pt) const
 {
     Rectf renderArea(getTreeRenderArea());
-    
+
     // point must be within the rendering area of the Tree.
     if (renderArea.isPointInRect(pt))
     {
         float y = renderArea.top() - d_vertScrollbar->getScrollPosition();
-        
+
         // test if point is above first item
-        if (pt.d_y >= y)
+        if (pt.y >= y)
             return getItemFromListAtPoint(d_listItems, &y, pt);
     }
-    
+
     return 0;
 }
 
 // Recursive!
-TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const Vector2f& pt) const
+TreeItem* Tree::getItemFromListAtPoint(const LBItemList &itemList, float *bottomY, const glm::vec2& pt) const
 {
     size_t itemCount = itemList.size();
     
     for (size_t i = 0; i < itemCount; ++i)
     {
         *bottomY += itemList[i]->getPixelSize().d_height;
-        if (pt.d_y < *bottomY)
+        if (pt.y < *bottomY)
             return itemList[i];
         
         if (itemList[i]->getItemCount() > 0)
@@ -1081,7 +1081,7 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
     {
         //bool modified = false;
         
-        Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
         //      Point localPos(screenToWindow(e.position));
         
         TreeItem* item = getItemAtPoint(localPos);
@@ -1093,8 +1093,8 @@ void Tree::onMouseButtonDown(MouseEventArgs& e)
             args.treeItem = item;
             populateGeometryBuffer();
             Rectf buttonLocation = item->getButtonLocation();
-            if ((localPos.d_x >= buttonLocation.left()) && (localPos.d_x <= buttonLocation.right()) &&
-                (localPos.d_y >= buttonLocation.top()) && (localPos.d_y <= buttonLocation.bottom()))
+            if ((localPos.x >= buttonLocation.left()) && (localPos.x <= buttonLocation.right()) &&
+                (localPos.y >= buttonLocation.top())  && (localPos.y <= buttonLocation.bottom()))
             {
                 item->toggleIsOpen();
                 if (item->getIsOpen())
@@ -1179,7 +1179,7 @@ void Tree::onMouseMove(MouseEventArgs& e)
     {
         static TreeItem* lastItem = 0;
         
-        Vector2f posi(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 posi(CoordConverter::screenToWindow(*this, e.position));
         //      Point posi = relativeToAbsolute(CoordConverter::screenToWindow(*this, e.position));
         TreeItem* item = getItemAtPoint(posi);
         if (item != lastItem)

@@ -58,7 +58,7 @@ const Sizef& DirectFBTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& DirectFBTexture::getTexelScaling() const
+const glm::vec2& DirectFBTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }

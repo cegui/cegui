@@ -85,7 +85,7 @@ public:
         -  0 to indicate slider should not be moved.
         - +1 to indicate slider should be moved to a higher setting.
     */
-    virtual float   getAdjustDirectionFromPoint(const Vector2f& pt) const  = 0;
+    virtual float   getAdjustDirectionFromPoint(const glm::vec2& pt) const  = 0;
 };
 
 
@@ -285,7 +285,7 @@ protected:
 		-  0 to indicate slider should not be moved.
 		- +1 to indicate slider should be moved to a higher setting.
 	*/
-	virtual float	getAdjustDirectionFromPoint(const Vector2f& pt) const;
+	virtual float	getAdjustDirectionFromPoint(const glm::vec2& pt) const;
 
 
     /*!

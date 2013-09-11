@@ -83,7 +83,7 @@ public:
 
     //! draw the component.
     virtual void draw(const Window* ref_wnd, GeometryBuffer& buffer,
-                      const Vector2f& position, const ColourRect* mod_colours,
+                      const glm::vec2& position, const ColourRect* mod_colours,
                       const Rectf* clip_rect, const float vertical_space,
                       const float space_extra) const = 0;
 

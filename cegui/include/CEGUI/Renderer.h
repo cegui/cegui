@@ -33,7 +33,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -325,7 +324,7 @@ public:
         Vector2 object that describes the resolution of the display or host
         window in DPI.
     */
-    virtual const Vector2f& getDisplayDPI() const = 0;
+    virtual const glm::vec2& getDisplayDPI() const = 0;
 
     /*!
     \brief

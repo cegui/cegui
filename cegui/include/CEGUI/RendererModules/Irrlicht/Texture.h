@@ -72,7 +72,7 @@ public:
     const String& getName() const;
     const Sizef& getSize() const;
     const Sizef& getOriginalDataSize() const;
-    const Vector2f& getTexelScaling() const;
+    const glm::vec2& getTexelScaling() const;
     void loadFromFile(const String& filename, const String& resourceGroup);
     void loadFromMemory(const void* buffer, const Sizef& buffer_size,
                         PixelFormat pixel_format);
@@ -122,7 +122,7 @@ protected:
     //! original pixel of size data loaded into texture
     Sizef d_dataSize;
     //! cached pixel to texel mapping scale values.
-    Vector2f d_texelScaling;
+    glm::vec2 d_texelScaling;
     //! reference to the IrrlichtRenderer that created this texture
     IrrlichtRenderer& d_owner;
     //! name given when texture was created.

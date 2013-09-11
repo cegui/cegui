@@ -178,7 +178,7 @@ protected:
 
     RGB_Colour getAlphaSliderPositionColour(int x, int y);
 
-    Vector2f getColourPickingColourPosition();
+    glm::vec2 getColourPickingColourPosition();
     void getColourPickingColourPositionHSV(float& x, float& y);
 
     // Handlers to relay child widget events so they appear to come from us

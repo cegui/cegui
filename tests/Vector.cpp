@@ -26,39 +26,14 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector2.h"
 
 #include <boost/test/unit_test.hpp>
 
 BOOST_AUTO_TEST_SUITE(Vector)
 
-BOOST_AUTO_TEST_CASE(ConstructionAssignment2)
-{
-    CEGUI::Vector2f a(1, 0);
-    CEGUI::Vector2f b(0, 1);
-    CEGUI::Vector2f c(2, 2);
-    CEGUI::Vector2f d(2, 1);
-    CEGUI::Vector2f e(1, 2);
-
-    BOOST_CHECK_EQUAL(a + b, CEGUI::Vector2f(1, 1));
-    BOOST_CHECK_EQUAL(a - b, CEGUI::Vector2f(1, -1));
-    
-    BOOST_CHECK_EQUAL(a * c, CEGUI::Vector2f(2, 0));
-    BOOST_CHECK_EQUAL(b * c, CEGUI::Vector2f(0, 2));
-    BOOST_CHECK_EQUAL(c * d, CEGUI::Vector2f(4, 2));
-    BOOST_CHECK_EQUAL(c * e, CEGUI::Vector2f(2, 4));
-    
-    BOOST_CHECK_EQUAL(a * 2, CEGUI::Vector2f(2, 0));
-    BOOST_CHECK_EQUAL(b * 2, CEGUI::Vector2f(0, 2));
-}
-
 BOOST_AUTO_TEST_CASE(Constants2)
 {
-    BOOST_CHECK_EQUAL(CEGUI::Vector2f::zero(), CEGUI::Vector2f(0, 0));
-    BOOST_CHECK_EQUAL(CEGUI::Vector2f::one(), CEGUI::Vector2f(1, 1));
-    BOOST_CHECK_EQUAL(CEGUI::Vector2f::one_x(), CEGUI::Vector2f(1, 0));
-    BOOST_CHECK_EQUAL(CEGUI::Vector2f::one_y(), CEGUI::Vector2f(0, 1));
-    
     BOOST_CHECK_EQUAL(CEGUI::UVector2::zero(), CEGUI::UVector2(CEGUI::UDim(0, 0), CEGUI::UDim(0, 0)));
     BOOST_CHECK_EQUAL(CEGUI::UVector2::one(), CEGUI::UVector2(CEGUI::UDim(1, 0), CEGUI::UDim(1, 0)));
     BOOST_CHECK_EQUAL(CEGUI::UVector2::one_x(), CEGUI::UVector2(CEGUI::UDim(1, 0), CEGUI::UDim(0, 0)));

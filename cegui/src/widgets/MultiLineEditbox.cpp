@@ -613,23 +613,23 @@ size_t MultiLineEditbox::getNextTokenLength(const String& text, size_t start_idx
 	Return the text code point index that is rendered closest to screen
 	position 'pt'.
 *************************************************************************/
-size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2f& pt) const
+size_t MultiLineEditbox::getTextIndexFromPosition(const glm::vec2& pt) const
 {
 	//
 	// calculate final window position to be checked
 	//
-	Vector2f wndPt = CoordConverter::screenToWindow(*this, pt);
+	glm::vec2 wndPt = CoordConverter::screenToWindow(*this, pt);
 
 	Rectf textArea(getTextRenderArea());
 
     wndPt -= textArea.d_min;
 
 	// factor in scroll bar values
-	wndPt.d_x += getHorzScrollbar()->getScrollPosition();
-	wndPt.d_y += getVertScrollbar()->getScrollPosition();
+	wndPt.x += getHorzScrollbar()->getScrollPosition();
+	wndPt.y += getVertScrollbar()->getScrollPosition();
 
 	size_t lineNumber = static_cast<size_t>(
-        ceguimax(0.0f, wndPt.d_y) / getFont()->getLineSpacing());
+        ceguimax(0.0f, wndPt.y) / getFont()->getLineSpacing());
 
 	if (lineNumber >= d_lines.size())
 	{
@@ -638,7 +638,7 @@ size_t MultiLineEditbox::getTextIndexFromPosition(const Vector2f& pt) const
 
     String lineText(getText().substr(d_lines[lineNumber].d_startIdx, d_lines[lineNumber].d_length));
 
-	size_t lineIdx = getFont()->getCharAtPixel(lineText, wndPt.d_x);
+	size_t lineIdx = getFont()->getCharAtPixel(lineText, wndPt.x);
 
 	if (lineIdx >= lineText.length() - 1)
 	{

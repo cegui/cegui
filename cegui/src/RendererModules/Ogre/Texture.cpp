@@ -91,7 +91,7 @@ const Sizef& OgreTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OgreTexture::getTexelScaling() const
+const glm::vec2& OgreTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }
@@ -294,7 +294,7 @@ void OgreTexture::updateCachedScaleValues()
     // on the original size.
     // if texture is wider (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
+    d_texelScaling.x = 1.0f / ((orgW == texW) ? orgW : texW);
 
     //
     // calculate what to use for y scale
@@ -306,7 +306,7 @@ void OgreTexture::updateCachedScaleValues()
     // on the original size.
     // if texture is taller (and source data was not stretched), scale
     // is based on the size of the resulting texture.
-    d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    d_texelScaling.y = 1.0f / ((orgH == texH) ? orgH : texH);
 }
 
 //----------------------------------------------------------------------------//

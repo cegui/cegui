@@ -55,7 +55,7 @@ const Sizef& NullTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& NullTexture::getTexelScaling() const
+const glm::vec2& NullTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }

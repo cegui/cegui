@@ -289,7 +289,7 @@ const Sizef& NullRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& NullRenderer::getDisplayDPI() const
+const glm::vec2& NullRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }

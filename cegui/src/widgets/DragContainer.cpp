@@ -193,14 +193,14 @@ namespace CEGUI
         );
     }
 
-    bool DragContainer::isDraggingThresholdExceeded(const Vector2f& local_mouse)
+    bool DragContainer::isDraggingThresholdExceeded(const glm::vec2& local_mouse)
     {
         // calculate amount mouse has moved.
-        float	deltaX = fabsf(local_mouse.d_x - CoordConverter::asAbsolute(d_dragPoint.d_x, d_pixelSize.d_width));
-        float	deltaY = fabsf(local_mouse.d_y - CoordConverter::asAbsolute(d_dragPoint.d_y, d_pixelSize.d_height));
+        const float deltaX = fabsf(local_mouse.x - CoordConverter::asAbsolute(d_dragPoint.d_x, d_pixelSize.d_width));
+        const float deltaY = fabsf(local_mouse.y - CoordConverter::asAbsolute(d_dragPoint.d_y, d_pixelSize.d_height));
 
         // see if mouse has moved far enough to start dragging operation
-        return (deltaX > d_dragThreshold || deltaY > d_dragThreshold) ? true : false;
+        return (deltaX > d_dragThreshold) || (deltaY > d_dragThreshold);
     }
 
     void DragContainer::initialiseDragging(void)
@@ -224,10 +224,10 @@ namespace CEGUI
         }
     }
 
-    void DragContainer::doDragging(const Vector2f& local_mouse)
+    void DragContainer::doDragging(const glm::vec2& local_mouse)
     {
         // calculate amount to move
-        UVector2 offset(cegui_absdim(local_mouse.d_x), cegui_absdim(local_mouse.d_y));
+        UVector2 offset(cegui_absdim(local_mouse.x), cegui_absdim(local_mouse.y));
         offset -= (d_usingFixedDragOffset) ? d_fixedDragOffset : d_dragPoint;
         // set new position
         setPosition(getPosition() + offset);
@@ -253,11 +253,11 @@ namespace CEGUI
             if (captureInput())
             {
                 // get position of mouse as co-ordinates local to this window.
-                Vector2f localPos = CoordConverter::screenToWindow(*this, e.position);
+                const glm::vec2 localPos = CoordConverter::screenToWindow(*this, e.position);
 
                 // store drag point for possible sizing or moving operation.
-                d_dragPoint.d_x = cegui_absdim(localPos.d_x);
-                d_dragPoint.d_y = cegui_absdim(localPos.d_y);
+                d_dragPoint.d_x = cegui_absdim(localPos.x);
+                d_dragPoint.d_y = cegui_absdim(localPos.y);
                 d_leftMouseDown = true;
             }
 
@@ -302,13 +302,13 @@ namespace CEGUI
         Window::onMouseMove(e);
 
         // get position of mouse as co-ordinates local to this window.
-        Vector2f localMousePos = CoordConverter::screenToWindow(*this, e.position);
+        const glm::vec2 localMousePos = CoordConverter::screenToWindow(*this, e.position);
 
         // handle dragging
         if (d_dragging)
         {
             doDragging(localMousePos);
-       }
+        }
         // not dragging
         else
         {
@@ -509,7 +509,7 @@ void DragContainer::getRenderingContext_impl(RenderingContext& ctx) const
     ctx.owner = root->getRenderingSurface() == ctx.surface ? root : 0;
     // ensure use of correct offset for the surface we're targetting
     ctx.offset = ctx.owner ? ctx.owner->getOuterRectClipper().getPosition() :
-                             Vector2f(0, 0);
+                             glm::vec2(0, 0);
     // draw to overlay queue
     ctx.queue = RQ_OVERLAY;
 }
@@ -555,7 +555,7 @@ bool DragContainer::pickUp(const bool force_sticky /*= false*/)
             initialiseDragging();
 
             // get position of mouse as co-ordinates local to this window.
-            const Vector2f localMousePos(CoordConverter::screenToWindow(*this,
+            const glm::vec2 localMousePos(CoordConverter::screenToWindow(*this,
                 getGUIContext().getMouseCursor().getPosition()));
             doDragging(localMousePos);
 

@@ -186,7 +186,7 @@ public:
     static const String ButtonName;     //!< Widget suffix for the button component.
 
     // override from Window class
-    bool isHit(const Vector2f& position,
+    bool isHit(const glm::vec2& position,
                const bool allow_disabled = false) const;
 
 	/*!

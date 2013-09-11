@@ -147,7 +147,7 @@ public:
     void render();
 
     // overridden from EditboxWindowRenderer base class.
-    size_t getTextIndexFromPosition(const Vector2f& pt) const;
+    size_t getTextIndexFromPosition(const glm::vec2& pt) const;
     // overridden from WindowRenderer class
     void update(float elapsed);
     bool handleFontRenderSizeChange(const Font* const font);

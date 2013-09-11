@@ -223,10 +223,10 @@ void FrameWindow::setRolledup(bool val)
 /*************************************************************************
 	Move the window by the pixel offsets specified in 'offset'.	
 *************************************************************************/
-void FrameWindow::offsetPixelPosition(const Vector2f& offset)
+void FrameWindow::offsetPixelPosition(const glm::vec2& offset)
 {
-    UVector2 uOffset(cegui_absdim(/*PixelAligned(*/offset.d_x/*)*/),
-                     cegui_absdim(/*PixelAligned(*/offset.d_y/*)*/));
+    UVector2 uOffset(cegui_absdim(/*PixelAligned(*/offset.x/*)*/),
+                     cegui_absdim(/*PixelAligned(*/offset.y/*)*/));
 
     setPosition(d_area.getPosition() + uOffset);
 }
@@ -237,7 +237,7 @@ void FrameWindow::offsetPixelPosition(const Vector2f& offset)
 	SizingLocation enumerated values depending where the point falls on
 	the sizing border.
 *************************************************************************/
-FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& pt) const
+FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const glm::vec2& pt) const
 {
 	Rectf frame(getSizingRect());
 
@@ -248,16 +248,16 @@ FrameWindow::SizingLocation FrameWindow::getSizingBorderAtPoint(const Vector2f& 
 		if (frame.isPointInRect(pt))
 		{
 			// adjust rect to get inner edge
-			frame.d_min.d_x += d_borderSize;
-			frame.d_min.d_y += d_borderSize;
-			frame.d_max.d_x -= d_borderSize;
-			frame.d_max.d_y -= d_borderSize;
+			frame.d_min.x += d_borderSize;
+			frame.d_min.y += d_borderSize;
+			frame.d_max.x -= d_borderSize;
+			frame.d_max.y -= d_borderSize;
 
 			// detect which edges we are on
-			bool top = (pt.d_y < frame.d_min.d_y);
-			bool bottom = (pt.d_y >= frame.d_max.d_y);
-			bool left = (pt.d_x < frame.d_min.d_x);
-			bool right = (pt.d_x >= frame.d_max.d_x);
+			bool top = (pt.y < frame.d_min.y);
+			bool bottom = (pt.y >= frame.d_max.y);
+			bool left = (pt.x < frame.d_min.x);
+			bool right = (pt.x >= frame.d_max.x);
 
 			// return appropriate 'SizingLocation' value
 			if (top && left)
@@ -383,7 +383,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
     }
 
     // move the dragging point so mouse remains 'attached' to edge of window
-    d_dragPoint.d_x += adjustment;
+    d_dragPoint.x += adjustment;
 
     return d_horizontalAlignment == HA_RIGHT;
 }
@@ -471,7 +471,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
     }
 
     // move the dragging point so mouse remains 'attached' to edge of window
-    d_dragPoint.d_y += adjustment;
+    d_dragPoint.y += adjustment;
 
     return d_verticalAlignment == VA_BOTTOM;
 }
@@ -493,7 +493,7 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
 	Set the appropriate mouse cursor for the given window-relative pixel
 	point.
 *************************************************************************/
-void FrameWindow::setCursorForPoint(const Vector2f& pt) const
+void FrameWindow::setCursorForPoint(const glm::vec2& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
@@ -570,15 +570,15 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 	if (isSizingEnabled())
 	{
-		Vector2f localMousePos(CoordConverter::screenToWindow(*this, e.position));
+		const glm::vec2 localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
 			SizingLocation dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
 			// calculate sizing deltas...
-			float	deltaX = localMousePos.d_x - d_dragPoint.d_x;
-			float	deltaY = localMousePos.d_y - d_dragPoint.d_y;
+			const float deltaX = localMousePos.x - d_dragPoint.x;
+			const float deltaY = localMousePos.y - d_dragPoint.y;
 
             URect new_area(d_area);
             bool top_left_sizing = false;
@@ -629,7 +629,7 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 		if (isSizingEnabled())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
+			const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// if the mouse is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)

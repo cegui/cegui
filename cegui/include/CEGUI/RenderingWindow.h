@@ -29,7 +29,6 @@
 #define _CEGUIRenderingWindow_h_
 
 #include "CEGUI/RenderingSurface.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Quaternion.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Rect.h"
@@ -108,7 +107,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    void setPosition(const Vector2f& position);
+    void setPosition(const glm::vec2& position);
 
     /*!
     \brief
@@ -154,7 +153,7 @@ public:
         other root surface.  It is \e not relative to the owner of the
         RenderingWindow.
     */
-    const Vector2f& getPosition() const;
+    const glm::vec2& getPosition() const;
 
     /*!
     \brief
@@ -277,7 +276,7 @@ public:
         Fill in Vector2 object \a p_out with an unprojected version of the
         point described by Vector2 \a p_in.
     */
-    void unprojectPoint(const Vector2f& p_in, Vector2f& p_out);
+    void unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out);
 
     // overrides from base
     void draw();
@@ -304,7 +303,7 @@ protected:
     //! indicates whether data in GeometryBuffer is up-to-date
     bool d_geometryValid;
     //! Position of this RenderingWindow
-    Vector2f d_position;
+    glm::vec2 d_position;
     //! Size of this RenderingWindow
     Sizef d_size;
     //! Rotation for this RenderingWindow

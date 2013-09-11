@@ -241,7 +241,7 @@ HSV_Colour ColourPickerControls::getColourPickingPositionColourHSV(float xAbs,
 }
 
 //----------------------------------------------------------------------------//
-Vector2f ColourPickerControls::getColourPickingColourPosition()
+glm::vec2 ColourPickerControls::getColourPickingColourPosition()
 {
     float x;
     float y;
@@ -280,7 +280,7 @@ Vector2f ColourPickerControls::getColourPickingColourPosition()
         break;
     }
 
-    return Vector2f(x, y);
+    return glm::vec2(x, y);
 }
 
 //----------------------------------------------------------------------------//
@@ -377,7 +377,7 @@ void ColourPickerControls::initColourPickerControlsImageSet()
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
     image->setArea(
-        Rectf(Vector2f(0.0f, 0.0f),
+        Rectf(glm::vec2(0.0f, 0.0f),
               Sizef(static_cast<float>(d_colourPickerPickingImageWidth),
                     static_cast<float>(d_colourPickerPickingImageHeight))));
 
@@ -387,7 +387,7 @@ void ColourPickerControls::initColourPickerControlsImageSet()
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
     image->setArea(
-        Rectf(Vector2f(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
+        Rectf(glm::vec2(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
               Sizef(static_cast<float>(d_colourPickerColourSliderImageWidth),
                     static_cast<float>(d_colourPickerColourSliderImageHeight))));
 
@@ -397,7 +397,7 @@ void ColourPickerControls::initColourPickerControlsImageSet()
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
     image->setArea(
-        Rectf(Vector2f(0.0f, static_cast<float>(d_colourPickerPickingImageHeight + d_colourPickerImageOffset)),
+        Rectf(glm::vec2(0.0f, static_cast<float>(d_colourPickerPickingImageHeight + d_colourPickerImageOffset)),
               Sizef(static_cast<float>(d_colourPickerAlphaSliderImageWidth),
                     static_cast<float>(d_colourPickerAlphaSliderImageHeight))));
 
@@ -1397,21 +1397,21 @@ RGB_Colour ColourPickerControls::getSelectedColourRGB()
 //----------------------------------------------------------------------------//
 void ColourPickerControls::refreshColourPickerCursorPosition()
 {
-    Vector2f pos = getColourPickingColourPosition();
+    glm::vec2 pos = getColourPickingColourPosition();
 
-    positionColourPickerCursorRelative(pos.d_x, pos.d_y);
+    positionColourPickerCursorRelative(pos.x, pos.y);
 }
 
 //----------------------------------------------------------------------------//
 void ColourPickerControls::refreshColourPickerCursorPosition(
     const MouseEventArgs& mouseEventArgs)
 {
-    Vector2f position = mouseEventArgs.position;
+    const glm::vec2& position = mouseEventArgs.position;
 
     float x = CoordConverter::screenToWindowX(
-                  *mouseEventArgs.window, position.d_x);
+                  *mouseEventArgs.window, position.x);
     float y = CoordConverter::screenToWindowY(
-                  *mouseEventArgs.window, position.d_y);
+                  *mouseEventArgs.window, position.y);
     positionColourPickerCursorAbsolute(x, y);
 
     if (d_sliderMode &

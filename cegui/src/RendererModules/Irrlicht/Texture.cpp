@@ -81,7 +81,7 @@ const Sizef& IrrlichtTexture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& IrrlichtTexture::getTexelScaling() const
+const glm::vec2& IrrlichtTexture::getTexelScaling() const
 {
     return d_texelScaling;
 }

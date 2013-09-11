@@ -280,7 +280,7 @@ protected:
     \return
         Nothing
     */
-    void    updateInternalState(const Vector2f& mouse_pos);
+    void    updateInternalState(const glm::vec2& mouse_pos);
 
 
     /*!

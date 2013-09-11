@@ -44,7 +44,7 @@ namespace CEGUI
 	Static Data Definitions
 *************************************************************************/
 bool MouseCursor::s_initialPositionSet = false;
-Vector2f MouseCursor::s_initialPosition(0.0f, 0.0f);
+glm::vec2 MouseCursor::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
@@ -67,7 +67,7 @@ MouseCursor::MouseCursor(void) :
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
 {
-    const Rectf screenArea(Vector2f(0, 0),
+    const Rectf screenArea(glm::vec2(0, 0),
                             System::getSingleton().getRenderer()->getDisplaySize());
     d_geometry->setClippingRegion(screenArea);
 
@@ -78,7 +78,7 @@ MouseCursor::MouseCursor(void) :
         setPosition(s_initialPosition);
     else
     	// mouse defaults to middle of the constrained area
-        setPosition(Vector2f(screenArea.getWidth() / 2,
+        setPosition(glm::vec2(screenArea.getWidth() / 2,
                               screenArea.getHeight() / 2));
 }
 
@@ -161,25 +161,25 @@ void MouseCursor::draw(void) const
 /*************************************************************************
 	Set the current mouse cursor position
 *************************************************************************/
-void MouseCursor::setPosition(const Vector2f& position)
+void MouseCursor::setPosition(const glm::vec2& position)
 {
     d_position = position;
 	constrainPosition();
 
-    d_geometry->setTranslation(glm::vec3(d_position.d_x, d_position.d_y, 0));
+    d_geometry->setTranslation(glm::vec3(d_position.x, d_position.y, 0));
 }
 
 
 /*************************************************************************
 	Offset the mouse cursor position by the deltas specified in 'offset'.
 *************************************************************************/
-void MouseCursor::offsetPosition(const Vector2f& offset)
+void MouseCursor::offsetPosition(const glm::vec2& offset)
 {
-	d_position.d_x += offset.d_x;
-	d_position.d_y += offset.d_y;
+	d_position.x += offset.x;
+	d_position.y += offset.y;
 	constrainPosition();
 
-    d_geometry->setTranslation(glm::vec3(d_position.d_x, d_position.d_y, 0));
+    d_geometry->setTranslation(glm::vec3(d_position.x, d_position.y, 0));
 }
 
 
@@ -191,17 +191,17 @@ void MouseCursor::constrainPosition(void)
 {
     Rectf absarea(getConstraintArea());
 
-	if (d_position.d_x >= absarea.d_max.d_x)
-		d_position.d_x = absarea.d_max.d_x -1;
+	if (d_position.x >= absarea.d_max.x)
+		d_position.x = absarea.d_max.x -1;
 
-	if (d_position.d_y >= absarea.d_max.d_y)
-		d_position.d_y = absarea.d_max.d_y -1;
+	if (d_position.y >= absarea.d_max.y)
+		d_position.y = absarea.d_max.y -1;
 
-	if (d_position.d_y < absarea.d_min.d_y)
-		d_position.d_y = absarea.d_min.d_y;
+	if (d_position.y < absarea.d_min.y)
+		d_position.y = absarea.d_min.y;
 
-	if (d_position.d_x < absarea.d_min.d_x)
-		d_position.d_x = absarea.d_min.d_x;
+	if (d_position.x < absarea.d_min.x)
+		d_position.x = absarea.d_min.x;
 }
 
 
@@ -210,23 +210,23 @@ void MouseCursor::constrainPosition(void)
 *************************************************************************/
 void MouseCursor::setConstraintArea(const Rectf* area)
 {
-    const Rectf renderer_area(Vector2f(0, 0),
+    const Rectf renderer_area(glm::vec2(0, 0),
                                System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (!area)
 	{
-		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.d_x / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.d_y / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.d_x / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.d_y / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.y / renderer_area.getHeight());
 	}
 	else
 	{
         Rectf finalArea(area->getIntersection(renderer_area));
-		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_min.d_x / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_min.d_y / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_max.d_x / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_max.d_y / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(finalArea.d_min.x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(finalArea.d_min.y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(finalArea.d_max.x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(finalArea.d_max.y / renderer_area.getHeight());
 	}
 
 	constrainPosition();
@@ -238,7 +238,7 @@ void MouseCursor::setConstraintArea(const Rectf* area)
 *************************************************************************/
 void MouseCursor::setUnifiedConstraintArea(const URect* area)
 {
-    const Rectf renderer_area(Vector2f(0, 0),
+    const Rectf renderer_area(glm::vec2(0, 0),
                                System::getSingleton().getRenderer()->getDisplaySize());
 
 	if (area)
@@ -247,10 +247,10 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 	}
 	else
 	{
-		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.d_x / renderer_area.getWidth());
-		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.d_y / renderer_area.getHeight());
-		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.d_x / renderer_area.getWidth());
-		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.d_y / renderer_area.getHeight());
+		d_constraints.d_min.d_x = cegui_reldim(renderer_area.d_min.x / renderer_area.getWidth());
+		d_constraints.d_min.d_y = cegui_reldim(renderer_area.d_min.y / renderer_area.getHeight());
+		d_constraints.d_max.d_x = cegui_reldim(renderer_area.d_max.x / renderer_area.getWidth());
+		d_constraints.d_max.d_y = cegui_reldim(renderer_area.d_max.y / renderer_area.getHeight());
 	}
 
 	constrainPosition();
@@ -276,18 +276,18 @@ const URect& MouseCursor::getUnifiedConstraintArea(void) const
 	Return the current mouse cursor position in display resolution
 	independant values.
 *************************************************************************/
-Vector2f MouseCursor::getDisplayIndependantPosition(void) const
+glm::vec2 MouseCursor::getDisplayIndependantPosition(void) const
 {
     Sizef dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
-    return Vector2f(d_position.d_x / (dsz.d_width - 1.0f),
-                 d_position.d_y / (dsz.d_height - 1.0f));
+    return glm::vec2(d_position.x / (dsz.d_width - 1.0f),
+                     d_position.y / (dsz.d_height - 1.0f));
 }
 
 //----------------------------------------------------------------------------//
 void MouseCursor::notifyDisplaySizeChanged(const Sizef& new_size)
 {
-    const Rectf screenArea(Vector2f(0, 0), new_size);
+    const Rectf screenArea(glm::vec2(0, 0), new_size);
     d_geometry->setClippingRegion(screenArea);
 
     // invalidate to regenerate geometry at (maybe) new size
@@ -324,7 +324,7 @@ void MouseCursor::cacheGeometry() const
     }
     else
     {
-        d_cursorImage->render(*d_geometry, Vector2f(0, 0));
+        d_cursorImage->render(*d_geometry, glm::vec2(0, 0));
     }
 }
 
@@ -332,16 +332,16 @@ void MouseCursor::cacheGeometry() const
 void MouseCursor::calculateCustomOffset() const
 {
     const Sizef sz(d_cursorImage->getRenderedSize());
-    const Vector2f offset(d_cursorImage->getRenderedOffset());
+    const glm::vec2 offset(d_cursorImage->getRenderedOffset());
 
-    d_customOffset.d_x =
-        d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;
-    d_customOffset.d_y =
-        d_customSize.d_height / sz.d_height * offset.d_y - offset.d_y;
+    d_customOffset.x =
+        d_customSize.d_width / sz.d_width * offset.x - offset.x;
+    d_customOffset.y =
+        d_customSize.d_height / sz.d_height * offset.y - offset.y;
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setInitialMousePosition(const Vector2f& position)
+void MouseCursor::setInitialMousePosition(const glm::vec2& position)
 {
     s_initialPosition = position; 
     s_initialPositionSet = true;

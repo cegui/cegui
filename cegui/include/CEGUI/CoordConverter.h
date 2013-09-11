@@ -29,7 +29,6 @@
 #define _CEGUICoordConverter_h_
 
 #include "CEGUI/UDim.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Rect.h"
 
@@ -85,20 +84,20 @@ public:
 
     /*!
     \brief
-        converts given Vector2<UDim> to absolute Vector2f
+        converts given Vector2<UDim> to absolute glm::vec2
     */
-    inline static Vector2f asAbsolute(const Vector2<UDim>& v, const Sizef& base, bool pixelAlign = true)
+    inline static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
     {
-        return Vector2f(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
+        return glm::vec2(asAbsolute(v.d_x, base.d_width, pixelAlign), asAbsolute(v.d_y, base.d_height, pixelAlign));
     }
 
     /*!
     \brief
-        converts given Vector2<UDim> to relative Vector2f
+        converts given Vector2<UDim> to relative glm::vec2
     */
-    inline static Vector2f asRelative(const Vector2<UDim>& v, const Sizef& base)
+    inline static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
     {
-        return Vector2f(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
+        return glm::vec2(asRelative(v.d_x, base.d_width), asRelative(v.d_y, base.d_height));
     }
 
 	/*!
@@ -222,7 +221,7 @@ public:
         Vector2 object describing a window co-ordinate point that is equivalent
         to screen based UVector2 point \a vec.
     */
-    static Vector2f screenToWindow(const Window& window, const UVector2& vec);
+    static glm::vec2 screenToWindow(const Window& window, const UVector2& vec);
 
     /*!
     \brief
@@ -239,7 +238,7 @@ public:
         Vector2 object describing a window co-ordinate point that is equivalent
         to screen based Vector2 point \a vec.
     */
-    static Vector2f screenToWindow(const Window& window, const Vector2f& vec);
+    static glm::vec2 screenToWindow(const Window& window, const glm::vec2& vec);
 
     /*!
     \brief
@@ -314,7 +313,7 @@ private:
         Vector2 value indicating the base on-screen pixel location of the window
         object. (i.e. The screen co-ord of the window's top-left corner).
     */
-    static Vector2f getBaseValue(const Window& window);
+    static glm::vec2 getBaseValue(const Window& window);
 };
 
 } // End of  CEGUI namespace section

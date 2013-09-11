@@ -113,7 +113,7 @@
 #include "CEGUI/TplWindowRendererFactory.h"
 #include "CEGUI/TplWindowFactoryRegisterer.h"
 #include "CEGUI/TplWRFactoryRegisterer.h"
-#include "CEGUI/Vector.h"
+#include "CEGUI/UVector2.h"
 #include "CEGUI/Version.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/WindowFactory.h"

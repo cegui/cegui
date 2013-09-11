@@ -135,17 +135,17 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
             CoordConverter::asAbsolute(wnd->getPosition(), d_pixelSize),
             wnd->getPixelSize());
 
-        if (area.d_min.d_x < extents.d_min.d_x)
-            extents.d_min.d_x = area.d_min.d_x;
+        if (area.d_min.x < extents.d_min.x)
+            extents.d_min.x = area.d_min.x;
 
-        if (area.d_min.d_y < extents.d_min.d_y)
-            extents.d_min.d_y = area.d_min.d_y;
+        if (area.d_min.y < extents.d_min.y)
+            extents.d_min.y = area.d_min.y;
 
-        if (area.d_max.d_x > extents.d_max.d_x)
-            extents.d_max.d_x = area.d_max.d_x;
+        if (area.d_max.x > extents.d_max.x)
+            extents.d_max.x = area.d_max.x;
 
-        if (area.d_max.d_y > extents.d_max.d_y)
-            extents.d_max.d_y = area.d_max.d_y;
+        if (area.d_max.y > extents.d_max.y)
+            extents.d_max.y = area.d_max.y;
     }
 
     return extents;

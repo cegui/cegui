@@ -155,18 +155,18 @@ namespace CEGUI
             case HTF_WORDWRAP_LEFT_ALIGNED:
             case HTF_JUSTIFIED:
             case HTF_WORDWRAP_JUSTIFIED:
-                absarea.offset(Vector2f(-horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(-horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_CENTRE_ALIGNED:
             case HTF_WORDWRAP_CENTRE_ALIGNED:
                 absarea.setWidth(horzScrollbar->getDocumentSize());
-                absarea.offset(Vector2f(range / 2 - horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(range / 2 - horzScrollbar->getScrollPosition(), 0));
                 break;
 
             case HTF_RIGHT_ALIGNED:
             case HTF_WORDWRAP_RIGHT_ALIGNED:
-                absarea.offset(Vector2f(range - horzScrollbar->getScrollPosition(), 0));
+                absarea.offset(glm::vec2(range - horzScrollbar->getScrollPosition(), 0));
                 break;
             }
         }
@@ -177,17 +177,17 @@ namespace CEGUI
         const float vertScrollPosition = vertScrollbar->getScrollPosition();
         // if scroll bar is in use, position according to that.
         if (vertScrollbar->isEffectiveVisible())
-            absarea.d_min.d_y -= vertScrollPosition;
+            absarea.d_min.y -= vertScrollPosition;
         // no scrollbar, so adjust position according to formatting set.
         else
             switch(d_vertFormatting)
             {
             case VTF_CENTRE_ALIGNED:
-                absarea.d_min.d_y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
+                absarea.d_min.y += CoordConverter::alignToPixels((absarea.getHeight() - textHeight) * 0.5f);
                 break;
 
             case VTF_BOTTOM_ALIGNED:
-                absarea.d_min.d_y = absarea.d_max.d_y - textHeight;
+                absarea.d_min.y = absarea.d_max.y - textHeight;
                 break;
             }
 

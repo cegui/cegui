@@ -499,7 +499,7 @@ const Sizef& Direct3D9Texture::getOriginalDataSize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& Direct3D9Texture::getTexelScaling() const
+const glm::vec2& Direct3D9Texture::getTexelScaling() const
 {
     return d_texelScaling;
 }

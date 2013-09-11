@@ -343,7 +343,7 @@ const Sizef& IrrlichtRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& IrrlichtRenderer::getDisplayDPI() const
+const glm::vec2& IrrlichtRenderer::getDisplayDPI() const
 {
     return d_displayDPI;
 }

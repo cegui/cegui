@@ -547,7 +547,7 @@ protected:
 	\return
 		Code point index into the text that is rendered closest to screen position \a pt.
 	*/
-	size_t	getTextIndexFromPosition(const Vector2f& pt) const;
+	size_t	getTextIndexFromPosition(const glm::vec2& pt) const;
 
 
 	/*!

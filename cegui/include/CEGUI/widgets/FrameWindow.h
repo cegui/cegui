@@ -297,7 +297,7 @@ public:
 	\return
 		Nothing.
 	*/
-	void	offsetPixelPosition(const Vector2f& offset);
+	void	offsetPixelPosition(const glm::vec2& offset);
 
 
 	/*!
@@ -468,7 +468,7 @@ public:
     void setNESWSizingCursorImage(const String& name);
 
     // overridden from Window class
-    bool isHit(const Vector2f& position, const bool /*allow_disabled*/) const
+    bool isHit(const glm::vec2& position, const bool /*allow_disabled*/) const
         { return Window::isHit(position) && !d_rolledup; }
 
     /*!
@@ -569,7 +569,7 @@ protected:
 		One of the SizingLocation enumerated values that describe which part of
 		the sizing border that \a pt corresponded to, if any.
 	*/
-	SizingLocation	getSizingBorderAtPoint(const Vector2f& pt) const;
+	SizingLocation	getSizingBorderAtPoint(const glm::vec2& pt) const;
 
  
 	/*!
@@ -635,7 +635,7 @@ protected:
 	\brief
 		Set the appropriate mouse cursor for the given window-relative pixel point.
 	*/
-	void	setCursorForPoint(const Vector2f& pt) const;
+	void	setCursorForPoint(const glm::vec2& pt) const;
 
 
 	/*!
@@ -693,7 +693,7 @@ protected:
 	bool	d_sizingEnabled;	//!< true if sizing is enabled for this window.
 	bool	d_beingSized;		//!< true if window is being sized.
 	float	d_borderSize;		//!< thickness of the sizing border around this window
-	Vector2f d_dragPoint;		//!< point window is being dragged at.
+	glm::vec2 d_dragPoint;		//!< point window is being dragged at.
 
 	// images for cursor when on sizing border
 	const Image*	d_nsSizingCursor;		//!< North/South sizing cursor image.

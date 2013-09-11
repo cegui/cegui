@@ -28,7 +28,7 @@
 #ifndef _CEGUIVertex_h_
 #define _CEGUIVertex_h_
 
-#include "CEGUI/Vector.h"
+#include "CEGUI/GLM.h"
 #include "CEGUI/Colour.h"
 
 // Start of CEGUI namespace section
@@ -44,7 +44,7 @@ struct Vertex :
     //! Position of the vertex in 3D space.
     glm::vec3 position;
     //! Texture co-ords to be applied to the vertex.
-    Vector2f tex_coords;
+    glm::vec2 tex_coords;
     //! colour to be applied to the vertex.
     Colour  colour_val;
 };

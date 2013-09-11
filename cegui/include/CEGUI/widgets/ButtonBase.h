@@ -119,9 +119,9 @@ protected:
 	\return
 		Nothing
 	*/
-	void	updateInternalState(const Vector2f& mouse_pos);
+	void	updateInternalState(const glm::vec2& mouse_pos);
 
-    bool calculateCurrentHoverState(const Vector2f& mouse_pos);
+    bool calculateCurrentHoverState(const glm::vec2& mouse_pos);
 
 	/*************************************************************************
 		Implementation Data

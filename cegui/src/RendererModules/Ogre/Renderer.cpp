@@ -148,7 +148,7 @@ struct OgreRenderer_impl :
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
     //! What the renderer considers to be the current display DPI resolution.
-    Vector2f d_displayDPI;
+    glm::vec2 d_displayDPI;
     //! The default RenderTarget
     OgreWindowTarget* d_defaultTarget;
     //! Container used to track texture targets.
@@ -543,7 +543,7 @@ const Sizef& OgreRenderer::getDisplaySize() const
 }
 
 //----------------------------------------------------------------------------//
-const Vector2f& OgreRenderer::getDisplayDPI() const
+const glm::vec2& OgreRenderer::getDisplayDPI() const
 {
     return d_pimpl->d_displayDPI;
 }

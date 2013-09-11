@@ -34,7 +34,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
 #include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
@@ -127,7 +126,7 @@ public:
         Reference to a Vector2 object that describes the scaling values required
         to accurately map pixel positions to texture co-ordinates.
     */
-    virtual const Vector2f& getTexelScaling() const = 0;
+    virtual const glm::vec2& getTexelScaling() const = 0;
 
     /*!
     \brief

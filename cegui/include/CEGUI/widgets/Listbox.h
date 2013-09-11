@@ -597,7 +597,7 @@ public:
         position \a pt, or 0 if no ListboxItem attached to this Listbox is at
         that position.
 	*/
-    ListboxItem* getItemAtPoint(const Vector2f& pt) const;
+    ListboxItem* getItemAtPoint(const glm::vec2& pt) const;
 
 
 	/*************************************************************************

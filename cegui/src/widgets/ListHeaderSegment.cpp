@@ -257,9 +257,9 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 /*************************************************************************
 	Processing for drag-sizing the segment
 *************************************************************************/
-void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
+void ListHeaderSegment::doDragSizing(const glm::vec2& local_mouse)
 {
-    float delta = local_mouse.d_x - d_dragPoint.d_x;
+    float delta = local_mouse.x - d_dragPoint.x;
 
     // store this so we can work out how much size actually changed
     float orgWidth = d_pixelSize.d_width;
@@ -284,7 +284,7 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     setArea_impl(area.d_min, area.getSize());
 
     // move the dragging point so mouse remains 'attached' to edge of segment
-    d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
+    d_dragPoint.x += d_pixelSize.d_width - orgWidth;
 
     WindowEventArgs args(this);
     onSegmentSized(args);
@@ -294,19 +294,19 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
 /*************************************************************************
 	Processing for drag-moving the segment
 *************************************************************************/
-void ListHeaderSegment::doDragMoving(const Vector2f& local_mouse)
+void ListHeaderSegment::doDragMoving(const glm::vec2& local_mouse)
 {
 	// calculate movement deltas.
-	float deltaX = local_mouse.d_x - d_dragPoint.d_x;
-	float deltaY = local_mouse.d_y - d_dragPoint.d_y;
+	const float deltaX = local_mouse.x - d_dragPoint.x;
+	const float deltaY = local_mouse.y - d_dragPoint.y;
 
 	// update 'ghost' position
-	d_dragPosition.d_x += deltaX;
-	d_dragPosition.d_y += deltaY;
+	d_dragPosition.x += deltaX;
+	d_dragPosition.y += deltaY;
 
 	// update drag point.
-	d_dragPoint.d_x += deltaX;
-	d_dragPoint.d_y += deltaY;
+	d_dragPoint.x += deltaX;
+	d_dragPoint.y += deltaY;
 
 	WindowEventArgs args(this);
 	onSegmentDragPositionChanged(args);
@@ -324,8 +324,8 @@ void ListHeaderSegment::initDragMoving(void)
 		d_dragMoving = true;
 		d_segmentPushed = false;
 		d_segmentHover = false;
-		d_dragPosition.d_x = 0.0f;
-		d_dragPosition.d_y = 0.0f;
+		d_dragPosition.x = 0.0f;
+		d_dragPosition.y = 0.0f;
 
 		// setup new cursor
 		getGUIContext().getMouseCursor().setImage(d_movingMouseCursor);
@@ -391,23 +391,16 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	Return true if move threshold for initiating drag-moving has been
 	exceeded.
 *************************************************************************/
-bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_mouse)
+bool ListHeaderSegment::isDragMoveThresholdExceeded(const glm::vec2& local_mouse)
 {
 	// see if mouse has moved far enough to start move operation
 	// calculate movement deltas.
-	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
-	float	deltaY = local_mouse.d_y - d_dragPoint.d_y;
+	const float deltaX = local_mouse.x - d_dragPoint.x;
+	const float deltaY = local_mouse.y - d_dragPoint.y;
 
-	if ((deltaX > SegmentMoveThreshold) || (deltaX < -SegmentMoveThreshold) ||
-		(deltaY > SegmentMoveThreshold) || (deltaY < -SegmentMoveThreshold))
-	{
-		return true;
-	}
-	else
-	{
-		return false;
-	}
-
+    return
+        (deltaX > SegmentMoveThreshold) || (deltaX < -SegmentMoveThreshold) ||
+        (deltaY > SegmentMoveThreshold) || (deltaY < -SegmentMoveThreshold);
 }
 
 
@@ -422,7 +415,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 	//
 	// convert mouse position to something local
 	//
-	Vector2f localMousePos(CoordConverter::screenToWindow(*this, e.position));
+	const glm::vec2 localMousePos(CoordConverter::screenToWindow(*this, e.position));
 
 	// handle drag sizing
 	if (d_dragSizing)
@@ -438,7 +431,7 @@ void ListHeaderSegment::onMouseMove(MouseEventArgs& e)
 	else if (isHit(e.position))
 	{
 		// mouse in sizing area & sizing is enabled
-		if ((localMousePos.d_x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
+		if ((localMousePos.x > (d_pixelSize.d_width - d_splitterSize)) && d_sizingEnabled)
 		{
 			initSizingHoverState();
 		}
@@ -498,7 +491,7 @@ void ListHeaderSegment::onMouseButtonDown(MouseEventArgs& e)
 		if (captureInput())
 		{
 			// get position of mouse as co-ordinates local to this window.
-			Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
+			const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
 			// store drag point for possible sizing or moving operation.
 			d_dragPoint = localPos;

@@ -138,7 +138,7 @@ public:
     static unsigned int stringToUint(const String& str);
     static bool stringToBool(const String& str);
     static Sizef stringToSize(const String& str);
-    static Vector2f stringToVector2(const String& str);
+    static glm::vec2 stringToVector2(const String& str);
     static Rectf stringToRect(const String& str);
     static const Image* stringToImage(const String& str);
     static Colour stringToColour(const String& str);
@@ -153,7 +153,7 @@ public:
     static String uintToString(unsigned int val);
     static String boolToString(bool val);
     static String sizeToString(const Sizef& val);
-    static String vector2ToString(const Vector2f& val);
+    static String vector2ToString(const glm::vec2& val);
     static String rectToString(const Rectf& val);
     static String imageToString(const Image* val);
     static String colourToString(const Colour& val);

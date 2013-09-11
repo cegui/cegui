@@ -133,9 +133,9 @@ Sizef ceguiLua_PropertyHelper::stringToSize(const String& str)
 }
 
 //----------------------------------------------------------------------------//
-Vector2f ceguiLua_PropertyHelper::stringToVector2(const String& str)
+glm::vec2 ceguiLua_PropertyHelper::stringToVector2(const String& str)
 {
-    return PropertyHelper<Vector2f >::fromString(str);
+    return PropertyHelper<glm::vec2 >::fromString(str);
 }
 
 //----------------------------------------------------------------------------//
@@ -217,9 +217,9 @@ String ceguiLua_PropertyHelper::sizeToString(const Sizef& val)
 }
 
 //----------------------------------------------------------------------------//
-String ceguiLua_PropertyHelper::vector2ToString(const Vector2f& val)
+String ceguiLua_PropertyHelper::vector2ToString(const glm::vec2& val)
 {
-    return PropertyHelper<Vector2f >::toString(val);
+    return PropertyHelper<glm::vec2 >::toString(val);
 }
 
 //----------------------------------------------------------------------------//

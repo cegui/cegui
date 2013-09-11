@@ -31,7 +31,6 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/EventArgs.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"
 
 // Start of CEGUI namespace section
@@ -164,7 +163,7 @@ public:
         Resulting point is local to GeometryBuffer \a buff.
     */
     virtual void unprojectPoint(const GeometryBuffer& buff,
-                                const Vector2f& p_in, Vector2f& p_out) const = 0;
+                                const glm::vec2& p_in, glm::vec2& p_out) const = 0;
 };
 
 } // End of  CEGUI namespace section

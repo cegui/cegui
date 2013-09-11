@@ -181,7 +181,7 @@ void InventoryReceiver::onDragDropItemDropped(DragDropEventArgs &e)
     const Sizef square_size(squarePixelSize());
 
     Rectf item_area(item->getUnclippedOuterRect().get());
-    item_area.offset(Vector2f(square_size.d_width / 2, square_size.d_height / 2));
+    item_area.offset(glm::vec2(square_size.d_width / 2, square_size.d_height / 2));
 
     const int drop_x = gridXLocationFromPixelPosition(item_area.left());
     const int drop_y = gridYLocationFromPixelPosition(item_area.top());
@@ -211,7 +211,7 @@ void InventoryReceiver::populateGeometryBuffer()
                 colour = 0xFF0000FF;
 
             img->render(*d_geometry,
-                        Vector2f(x * square_size.d_width + 1, y * square_size.d_height + 1),
+                        glm::vec2(x * square_size.d_width + 1, y * square_size.d_height + 1),
                         Sizef(square_size.d_width - 2, square_size.d_height - 2), 0,
                         ColourRect(colour));
         }

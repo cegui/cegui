@@ -146,8 +146,8 @@ void OgreRenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-                                      const Vector2f& p_in,
-                                      Vector2f& p_out) const
+                                         const glm::vec2& p_in,
+                                         glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -176,8 +176,8 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     in.y = midy;
     in.z = -d_viewDistance;
     const Ogre::Vector3 r1(unproj * in);
-    in.x = p_in.d_x;
-    in.y = p_in.d_y;
+    in.x = p_in.x;
+    in.y = p_in.y;
     in.z = 0;
     // calculate vector of picking ray
     const Ogre::Vector3 rv(r1 - unproj * in);
@@ -207,8 +207,8 @@ void OgreRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
                             (pn.dotProduct(r1) + dist) / pn_dot_rv :
                             0.0;
 
-    p_out.d_x = static_cast<float>(r1.x - rv.x * tmp);
-    p_out.d_y = static_cast<float>(r1.y - rv.y * tmp);
+    p_out.x = static_cast<float>(r1.x - rv.x * tmp);
+    p_out.y = static_cast<float>(r1.y - rv.y * tmp);
 }
 
 //----------------------------------------------------------------------------//

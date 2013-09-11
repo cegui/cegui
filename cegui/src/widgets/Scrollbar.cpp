@@ -393,7 +393,7 @@ float Scrollbar::getValueFromThumb(void) const
 }
 
 //----------------------------------------------------------------------------//
-float Scrollbar::getAdjustDirectionFromPoint(const Vector2f& pt) const
+float Scrollbar::getAdjustDirectionFromPoint(const glm::vec2& pt) const
 {
     if (!d_windowRenderer)
         CEGUI_THROW(InvalidRequestException(

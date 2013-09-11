@@ -50,7 +50,7 @@ float CoordConverter::screenToWindowY(const Window& window, const UDim& y)
 
 //----------------------------------------------------------------------------//
 
-Vector2f CoordConverter::screenToWindow(const Window& window, const UVector2& vec)
+glm::vec2 CoordConverter::screenToWindow(const Window& window, const UVector2& vec)
 {
     return asAbsolute(vec, window.getRootContainerSize()) - getBaseValue(window);
 }
@@ -58,12 +58,11 @@ Vector2f CoordConverter::screenToWindow(const Window& window, const UVector2& ve
 //----------------------------------------------------------------------------//
 Rectf CoordConverter::screenToWindow(const Window& window, const URect& rect)
 {
-    Vector2f base(getBaseValue(window));
+    glm::vec2 base(getBaseValue(window));
     Rectf pixel(asAbsolute(rect, window.getRootContainerSize()));
 
     // negate base position
-    base.d_x = -base.d_x;
-    base.d_y = -base.d_y;
+    base = -base;
 
     pixel.offset(base);
     return pixel;
@@ -85,7 +84,7 @@ float CoordConverter::screenToWindowY(const Window& window, const float y)
 
 //----------------------------------------------------------------------------//
 
-Vector2f CoordConverter::screenToWindow(const Window& window, const Vector2f& vec)
+glm::vec2 CoordConverter::screenToWindow(const Window& window, const glm::vec2& vec)
 {
     return vec - getBaseValue(window);
 }
@@ -94,11 +93,10 @@ Vector2f CoordConverter::screenToWindow(const Window& window, const Vector2f& ve
 
 Rectf CoordConverter::screenToWindow(const Window& window, const Rectf& rect)
 {
-    Vector2f base(getBaseValue(window));
+    glm::vec2 base(getBaseValue(window));
 
     // negate base position
-    base.d_x = -base.d_x;
-    base.d_y = -base.d_y;
+    base = -base;
 
     Rectf tmp(rect);
     tmp.offset(base);
@@ -119,11 +117,11 @@ float CoordConverter::getBaseXValue(const Window& window)
 
     const Rectf parent_rect(parent ?
         parent->getChildContentArea(window.isNonClient()).get() :
-        Rectf(Vector2f(0, 0), window.getRootContainerSize())
+        Rectf(glm::vec2(0, 0), window.getRootContainerSize())
     );
 
     const float parent_width = parent_rect.getWidth();
-    float baseX = parent_rect.d_min.d_x;
+    float baseX = parent_rect.d_min.x;
 
     baseX += asAbsolute(window.getArea().d_min.d_x, parent_width);
 
@@ -150,11 +148,11 @@ float CoordConverter::getBaseYValue(const Window& window)
 
     const Rectf parent_rect(parent ?
         parent->getChildContentArea(window.isNonClient()).get() :
-        Rectf(Vector2f(0, 0), window.getRootContainerSize())
+        Rectf(glm::vec2(0, 0), window.getRootContainerSize())
     );
 
     const float parent_height = parent_rect.getHeight();
-    float baseY = parent_rect.d_min.d_y;
+    float baseY = parent_rect.d_min.y;
 
     baseY += asAbsolute(window.getArea().d_min.d_y, parent_height);
 
@@ -175,9 +173,9 @@ float CoordConverter::getBaseYValue(const Window& window)
 
 //----------------------------------------------------------------------------//
 
-Vector2f CoordConverter::getBaseValue(const Window& window)
+glm::vec2 CoordConverter::getBaseValue(const Window& window)
 {
-    return Vector2f(getBaseXValue(window), getBaseYValue(window));
+    return glm::vec2(getBaseXValue(window), getBaseYValue(window));
 }
 
 } // End of  CEGUI namespace section
