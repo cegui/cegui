@@ -38,6 +38,7 @@
 #include "CEGUI/InputEvent.h"
 #include "CEGUI/UDim.h"
 
+#include <vector>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -86,7 +87,6 @@ public:
 		Destructor for MouseCursor objects
 	*/
 	~MouseCursor(void);
-
 
 	/*!
 	\brief
@@ -156,10 +156,8 @@ public:
 	\brief
 		Makes the cursor draw itself
 
-	\return
-		Nothing
 	*/
-	void	draw(void) const;
+	void draw(void);
 
 
 	/*!
@@ -169,7 +167,7 @@ public:
 	\param position
 		Point object describing the new location for the mouse.  This will be clipped to within the renderer screen area.
 	*/
-	void	setPosition(const Vector2f& position);
+	void setPosition(const Vector2f& position);
 
 
 	/*!
@@ -369,7 +367,6 @@ protected:
     //! Event triggered internally when mouse cursor default image is changed.
     virtual void onDefaultImageChanged(MouseCursorEventArgs& e);
 
-
 private:
 	/*************************************************************************
 		Implementation Methods
@@ -378,13 +375,35 @@ private:
 	\brief
 		Checks the mouse cursor position is within the current 'constrain' Rect and adjusts as required.
 	*/
-	void	constrainPosition(void);
+	void constrainPosition(void);
 
     //! updates the cached geometry.
-    void cacheGeometry() const;
+    void cacheGeometry();
 
     //! calculate offset for custom image size so 'hot spot' is maintained.
     void calculateCustomOffset() const;
+
+    /*!
+    \brief
+        Destroys the geometry buffers of this MouseCursor.
+    */
+    void destroyGeometryBuffers();
+
+    /*!
+    \brief
+        Updates the translation of the geometry buffers of this MouseCursor.
+    */
+    void updateGeometryBuffersTranslation();
+
+    /*!
+    \brief
+        Updates the clipping area of the geometry buffers of this MouseCursor.
+        
+    \param clipping_area
+        The clipping area that will be applied to the geometry buffers of this MouseCursor.
+    */
+    void updateGeometryBuffersClipping(const Rectf& clipping_area);
+
 
 	/*************************************************************************
 		Implementation Data
@@ -396,8 +415,8 @@ private:
 	Vector2f d_position;					//!< Current location of the cursor
 	bool	d_visible;					//!< true if the cursor will be drawn, else false.
 	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
-    //! buffer to hold geometry for mouse cursor imagery.
-    GeometryBuffer* d_geometry;
+    //! buffers to hold geometry for mouse cursor imagery.
+    std::vector<GeometryBuffer*> d_geometryBuffers;
     //! custom explicit size to render the cursor image at
     Sizef d_customSize;
     //! correctly scaled offset used when using custom image size.

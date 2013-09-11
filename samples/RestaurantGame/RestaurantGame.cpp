@@ -148,7 +148,7 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setRootWindow(d_root);
 
     if(!ImageManager::getSingleton().isDefined("HUDDemoGameOver"))
-        ImageManager::getSingleton().addFromImageFile("HUDDemoGameOver", "HUDDemoGameOver.png");
+        ImageManager::getSingleton().addBitmapImageFromFile("HUDDemoGameOver", "HUDDemoGameOver.png");
     d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "HUDDemoGameOver");
 
     setupMouseCursor();

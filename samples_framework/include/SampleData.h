@@ -35,7 +35,7 @@ author:     Lukas E Meindl
 
 namespace CEGUI
 {
-    class BasicImage;
+    class BitmapImage;
 }
 
 enum SampleType
@@ -93,7 +93,7 @@ protected:
 
     CEGUI::GUIContext*      d_guiContext;
     CEGUI::TextureTarget*   d_textureTarget;
-    CEGUI::BasicImage*      d_textureTargetImage;
+    CEGUI::BitmapImage*      d_textureTargetImage;
 };
 
 class SampleDataModule : public SampleData

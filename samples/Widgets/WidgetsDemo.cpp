@@ -150,7 +150,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     // Retrieve the available widget types and save them inside a map
     initialiseAvailableWidgetsMap();

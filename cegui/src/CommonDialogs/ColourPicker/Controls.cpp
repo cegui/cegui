@@ -38,7 +38,7 @@
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/CoordConverter.h"
 
 #include "CEGUI/CommonDialogs/ColourPicker/ColourPicker.h"
@@ -371,32 +371,32 @@ void ColourPickerControls::initColourPickerControlsImageSet()
     const String baseName(
         d_colourPickerControlsTextureTarget->getTexture().getName());
 
-    BasicImage* image = static_cast<BasicImage*>(
-        &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+    BitmapImage* image = static_cast<BitmapImage*>(
+        &ImageManager::getSingleton().create("BitmapImage", baseName + '/' +
             ColourPickerControlsPickingTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
+    image->setImageArea(
         Rectf(Vector2f(0.0f, 0.0f),
               Sizef(static_cast<float>(d_colourPickerPickingImageWidth),
                     static_cast<float>(d_colourPickerPickingImageHeight))));
 
-    image = static_cast<BasicImage*>(
-                &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+    image = static_cast<BitmapImage*>(
+                &ImageManager::getSingleton().create("BitmapImage", baseName + '/' +
                         ColourPickerControlsColourSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
+    image->setImageArea(
         Rectf(Vector2f(static_cast<float>(d_colourPickerPickingImageWidth + d_colourPickerImageOffset), 0.0f),
               Sizef(static_cast<float>(d_colourPickerColourSliderImageWidth),
                     static_cast<float>(d_colourPickerColourSliderImageHeight))));
 
-    image = static_cast<BasicImage*>(
-                &ImageManager::getSingleton().create("BasicImage", baseName + '/' +
+    image = static_cast<BitmapImage*>(
+                &ImageManager::getSingleton().create("BitmapImage", baseName + '/' +
                         ColourPickerControlsAlphaSliderTextureImageName));
 
     image->setTexture(&d_colourPickerControlsTextureTarget->getTexture());
-    image->setArea(
+    image->setImageArea(
         Rectf(Vector2f(0.0f, static_cast<float>(d_colourPickerPickingImageHeight + d_colourPickerImageOffset)),
               Sizef(static_cast<float>(d_colourPickerAlphaSliderImageWidth),
                     static_cast<float>(d_colourPickerAlphaSliderImageHeight))));
