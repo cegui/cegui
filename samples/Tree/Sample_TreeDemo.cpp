@@ -146,10 +146,6 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
 
    background->addChild(TreeDemoWindow);
 
-   // listen for key presses on the root window.
-   //TODO: Fix this
-   //background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&TreeDemoSample::handleRootKeyDown, this));
-
    theTree = (Tree *)TreeDemoWindow->getChild(TreeID);
    theTree->initialise();
    theTree->subscribeEvent(Tree::EventSelectionChanged, Event::Subscriber(&TreeDemoSample::handleEventSelectionChanged, this));
@@ -334,27 +330,6 @@ bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
 
    return true;
    }
-
-
-
-bool TreeDemoSample::handleRootKeyDown(const CEGUI::EventArgs& args)
-   {
-   using namespace CEGUI;
-
-   const KeyEventArgs& keyArgs = static_cast<const KeyEventArgs&>(args);
-
-   switch (keyArgs.scancode)
-      {
-      case Key::F12:
-         break;
-
-      default:
-         return false;
-      }
-
-   return true;
-   }
-
 
 bool TreeDemoSample::handleEventBranchOpened(const CEGUI::EventArgs& args)
    {
