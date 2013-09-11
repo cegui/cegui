@@ -864,7 +864,7 @@ void Listbox::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse wheel changes
+    Handler for scroll actions
 *************************************************************************/
 void Listbox::onScroll(PointerEventArgs& e)
 {

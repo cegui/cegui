@@ -208,14 +208,14 @@ void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
 }
 
 /*************************************************************************
-	Handler for if the window loses capture of the mouse.
+    Handler for if the window loses capture of the pointer.
 *************************************************************************/
 void Titlebar::onCaptureLost(WindowEventArgs& e)
 {
 	// Base class processing
 	Window::onCaptureLost(e);
 
-	// when we lose out hold on the mouse inputs, we are no longer dragging.
+    // when we lose out hold on the pointer inputs, we are no longer dragging.
 	d_dragging = false;
 
 	// restore old constraint area

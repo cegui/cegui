@@ -80,7 +80,7 @@ namespace CEGUI
 
     void Tooltip::positionSelf(void)
     {
-        // no recusion allowed for this function!
+        // no recursion allowed for this function!
         if (d_inPositionSelf)
             return;
 
@@ -89,31 +89,31 @@ namespace CEGUI
         PointerIndicator& indicator = getGUIContext().getPointerIndicator();
         Rectf screen(Vector2f(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
-        const Image* mouseImage = indicator.getImage();
+        const Image* pointerImage = indicator.getImage();
 
-        Vector2f mousePos(indicator.getPosition());
-        Sizef mouseSz(0,0);
+        Vector2f pointerPos(indicator.getPosition());
+        Sizef pointerSz(0,0);
 
-        if (mouseImage)
+        if (pointerImage)
         {
-            mouseSz = mouseImage->getRenderedSize();
+            pointerSz = pointerImage->getRenderedSize();
         }
 
-        Vector2f tmpPos(mousePos.d_x + mouseSz.d_width, mousePos.d_y + mouseSz.d_height);
+        Vector2f tmpPos(pointerPos.d_x + pointerSz.d_width, pointerPos.d_y + pointerSz.d_height);
         tipRect.setPosition(tmpPos);
 
         // if tooltip would be off the right of the screen,
-        // reposition to the other side of the mouse cursor.
+        // reposition to the other side of the pointer indicator.
         if (screen.right() < tipRect.right())
         {
-            tmpPos.d_x = mousePos.d_x - tipRect.getWidth() - 5;
+            tmpPos.d_x = pointerPos.d_x - tipRect.getWidth() - 5;
         }
 
         // if tooltip would be off the bottom of the screen,
-        // reposition to the other side of the mouse cursor.
+        // reposition to the other side of the pointer indicator.
         if (screen.bottom() < tipRect.bottom())
         {
-            tmpPos.d_y = mousePos.d_y - tipRect.getHeight() - 5;
+            tmpPos.d_y = pointerPos.d_y - tipRect.getHeight() - 5;
         }
 
         // set final position of tooltip window.

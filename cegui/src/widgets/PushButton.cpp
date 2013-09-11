@@ -79,18 +79,16 @@ void PushButton::onPointerActivate(PointerEventArgs& e)
 
 		if (sheet)
 		{
-			// if mouse was released over this widget
-            // (use position from mouse, as e.position has been unprojected)
-			if (this == sheet->getTargetChildAtPosition(
+            // if pointer was released over this widget
+            // (use position from pointer, as e.position has been unprojected)
+            if (this == sheet->getTargetChildAtPosition(
                 getGUIContext().getPointerIndicator().getPosition()))
 			{
 				// fire event
 				WindowEventArgs args(this);
 				onClicked(args);
 			}
-
 		}
-
 		++e.handled;
 	}
 

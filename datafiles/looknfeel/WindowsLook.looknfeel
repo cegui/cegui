@@ -789,7 +789,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar"/>
+        <Property name="PointerIndicatorImage" value="WindowsLook/MouseTextBar"/>
         <Property name="Size" value="{{0, 256}, {0, 32}}" />
         <NamedArea name="TextArea">
             <Area>
@@ -1666,7 +1666,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="WindowsLook/Background" type="Image" name="SelectionBrush"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF3030FF" type="ColourRect" name="SelectionColour"/>
         <Property name="Selectable" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <NamedArea name="ContentSize">
             <Area>
                 <Dim type="LeftEdge">
@@ -2118,7 +2118,7 @@
     <WidgetLook name="WindowsLook/ListHeaderSegment">
         <Property name="SizingCursorImage" value="WindowsLook/MouseEsWeCursor"/>
         <Property name="MovingCursorImage" value="WindowsLook/MouseMoveCursor"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <ImagerySection name="segment">
             <ImageryComponent>
                 <Area>
@@ -2309,7 +2309,7 @@
     -->
     <WidgetLook name="WindowsLook/ListHeader">
         <Property name="SegmentWidgetType" value="WindowsLook/ListHeaderSegment"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <StateImagery name="Enabled"/>
         <StateImagery name="Disabled"/>
     </WidgetLook>
@@ -2500,7 +2500,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="FFFFFFFF" type="ColourRect" name="SelectedTextColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF607FFF" type="ColourRect" name="ActiveSelectionColour"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="FF808080" type="ColourRect" name="InactiveSelectionColour"/>
-        <Property name="MouseCursorImage" value="WindowsLook/MouseTextBar"/>
+        <Property name="PointerIndicatorImage" value="WindowsLook/MouseTextBar"/>
         <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
         <Property name="Size" value="{{0, 256}, {0, 256}}" />
         <NamedArea name="TextArea">
@@ -3138,7 +3138,7 @@
     <WidgetLook name="WindowsLook/VerticalScrollbarThumb">
         <Property name="VertFree" value="True"/>
         <Property name="MinSize" value="{{0,0},{0,16}}"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3485,7 +3485,7 @@
     <WidgetLook name="WindowsLook/HorizontalScrollbarThumb">
         <Property name="HorzFree" value="True"/>
         <Property name="MinSize" value="{{0,16},{0,0}}"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <Property name="Size" value="{{0, 32}, {0, 32}}" />
         <ImagerySection name="normal">
             <FrameComponent>
@@ -3827,7 +3827,7 @@
     -->
     <WidgetLook name="WindowsLook/SliderThumb">
         <Property name="HorzFree" value="True"/>
-        <Property name="MouseInputPropagationEnabled" value="True"/>
+        <Property name="PointerInputPropagationEnabled" value="True"/>
         <ImagerySection name="normal">
             <ImageryComponent>
                 <Area>

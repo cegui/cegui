@@ -117,7 +117,7 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    // Load the scheme to initialise the skin which we use in this sample
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
-   // set default mouse image
+   // set default pointer image
    guiContext->getPointerIndicator().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background

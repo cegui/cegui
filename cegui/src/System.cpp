@@ -225,7 +225,7 @@ System::System(Renderer& renderer,
 
     // set up defaults
     config.initialiseDefaultFont();
-    config.initialiseDefaultMouseCursor();
+    config.initialiseDefaultPointerIndicator();
     config.initialiseDefaulTooltip();
 
     // scripting available?
@@ -930,7 +930,7 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
 void System::invalidateAllCachedRendering()
 {
     invalidateAllWindows();
-    //MouseCursor::getSingleton().invalidate();
+    //PointerIndicator::getSingleton().invalidate();
 }
 
 //----------------------------------------------------------------------------//

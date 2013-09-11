@@ -121,7 +121,7 @@ void Combobox::initialiseComponents(void)
 	button->subscribeEvent(PushButton::EventPointerPressHold, Event::Subscriber(&CEGUI::Combobox::button_PressHandler, this));
 	droplist->subscribeEvent(ComboDropList::EventListSelectionAccepted, Event::Subscriber(&CEGUI::Combobox::droplist_SelectionAcceptedHandler, this));
 	droplist->subscribeEvent(Window::EventHidden, Event::Subscriber(&CEGUI::Combobox::droplist_HiddenHandler, this));
-	editbox->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&CEGUI::Combobox::editbox_MouseDownHandler, this));
+	editbox->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&CEGUI::Combobox::editbox_PointerPressHoldHandler, this));
 
 	// event forwarding setup
 	editbox->subscribeEvent(Editbox::EventReadOnlyModeChanged, Event::Subscriber(&CEGUI::Combobox::editbox_ReadOnlyChangedHandler, this));
@@ -796,13 +796,13 @@ bool Combobox::droplist_HiddenHandler(const EventArgs&)
 
 
 /*************************************************************************
-	Handler for mouse button down events in editbox
+    Handler for pointer press & hold events in editbox
 *************************************************************************/
-bool Combobox::editbox_MouseDownHandler(const EventArgs& e)
+bool Combobox::editbox_PointerPressHoldHandler(const EventArgs& e)
 {
-	// only interested in left button
-	if (((const MouseEventArgs&)e).button == LeftButton)
-	{
+    // only interested in left source
+    if (((const PointerEventArgs&)e).source == PS_Left)
+    {
         Editbox* editbox = getEditbox();
 
 		// if edit box is read-only, show list
@@ -896,8 +896,8 @@ void Combobox::addComboboxProperties(void)
           &Combobox::setShowHorzScrollbar, &Combobox::isHorzScrollbarAlwaysShown, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
-          "SingleClickMode","Property to get/set the 'single click mode' setting for the combo box.  Value is either \"True\" or \"False\".",
-          &Combobox::setSingleClickEnabled, &Combobox::getSingleClickEnabled, false /* TODO: Inconsistency between setter, getter and property name */
+          "SinglePointerActivationMode","Property to get/set the 'single activation mode' setting for the combo box.  Value is either \"True\" or \"False\".",
+          &Combobox::setSinglePointerActivationEnabled, &Combobox::getSinglePointerActivationEnabled, false /* TODO: Inconsistency between setter, getter and property name */
     );
     CEGUI_DEFINE_PROPERTY(Combobox, bool,
           "AutoSizeListHeight",
@@ -959,7 +959,7 @@ void Combobox::onSized(ElementEventArgs& e)
 /*************************************************************************
 	Return operation mode for the combo box
 *************************************************************************/
-bool Combobox::getSingleClickEnabled(void) const
+bool Combobox::getSinglePointerActivationEnabled(void) const
 {
 	return d_singleClickOperation;
 }
@@ -977,7 +977,7 @@ bool Combobox::isDropDownListVisible(void) const
 /*************************************************************************
 	Set the operation mode for the combo box.
 *************************************************************************/
-void Combobox::setSingleClickEnabled(bool setting)
+void Combobox::setSinglePointerActivationEnabled(bool setting)
 {
 	d_singleClickOperation = setting;
 	getDropList()->setAutoArmEnabled(setting);

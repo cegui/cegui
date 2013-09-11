@@ -782,12 +782,12 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 
 bool TabControl::handleWheeledPane(const EventArgs& e)
 {
-    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+    const PointerEventArgs& me = static_cast<const PointerEventArgs&>(e);
 
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
-    d_firstTabOffset += me.wheelChange * delta;
+    d_firstTabOffset += me.scroll * delta;
     performChildWindowLayout();
 
     return true;

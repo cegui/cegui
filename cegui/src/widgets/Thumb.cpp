@@ -268,7 +268,7 @@ void Thumb::onPointerPressHold(PointerEventArgs& e)
 
 
 /*************************************************************************
-	Handler for event triggered when we lose capture of mouse input
+    Handler for event triggered when we lose capture of pointer input
 *************************************************************************/
 void Thumb::onCaptureLost(WindowEventArgs& e)
 {

@@ -66,9 +66,9 @@ namespace CEGUI
     \brief
         Base class for Tooltip widgets.
         
-        The Tooltip class shows a simple pop-up window around the mouse position
+        The Tooltip class shows a simple pop-up window around the pointer position
         with some text information.  The tool-tip fades in when the user hovers
-        with the mouse over a window which has tool-tip text set, and then fades
+        with the pointer over a window which has tool-tip text set, and then fades
         out after some pre-set time.
 
     \note
@@ -172,8 +172,8 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the number of seconds the mouse should hover stationary over the target window before
-            the tooltip gets activated.
+            Return the number of seconds the pointer should hover stationary
+            over the target window before the tooltip gets activated.
 
         \return
             float value representing a number of seconds.
@@ -183,7 +183,7 @@ namespace CEGUI
         /*!
         \brief
             Set the number of seconds the tooltip should be displayed for before it automatically
-            de-activates itself.  0 indicates that the tooltip should never timesout and auto-deactivate.
+            de-activates itself. 0 indicates that the tooltip should never timeout and auto-deactivate.
 
         \param seconds
             float value representing a number of seconds.
@@ -195,8 +195,8 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the number of seconds the mouse should hover stationary over the target window before
-            the tooltip gets activated.
+            Set the number of seconds the pointer should hover stationary over
+            the target window before the tooltip gets activated.
 
         \param seconds
             float value representing a number of seconds.
@@ -209,7 +209,7 @@ namespace CEGUI
         /*!
         \brief
             Return the number of seconds the tooltip should be displayed for before it automatically
-            de-activates itself.  0 indicates that the tooltip never timesout and auto-deactivates.
+            de-activates itself.  0 indicates that the tooltip never timeout and auto-deactivates.
 
         \return
             float value representing a number of seconds.
@@ -332,7 +332,7 @@ namespace CEGUI
         bool        d_active;       //!< true if the tooltip is active
         float       d_elapsed;      //!< Used to track state change timings
         const Window* d_target;     //!< Current target Window for this Tooltip.
-        float       d_hoverTime;    //!< tool-tip hover time (seconds mouse must stay stationary before tip shows).
+        float       d_hoverTime;    //!< tool-tip hover time (seconds pointer must stay stationary before tip shows).
         float       d_displayTime;  //!< tool-tip display time (seconds that tip is showsn for).
         float       d_fadeTime;     //!< tool-tip fade time (seconds it takes for tip to fade in and/or out).
         //! are in positionSelf function? (to avoid infinite recursion issues)

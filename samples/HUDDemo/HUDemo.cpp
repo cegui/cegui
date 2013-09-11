@@ -220,7 +220,7 @@ void HUDDemo::setupMouseCursor()
     d_mouseCursorWnd->setAspectRatio(1.f);
     d_mouseCursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_mouseCursorWnd->setAlwaysOnTop(true);
-    d_mouseCursorWnd->setMousePassThroughEnabled(true);
+    d_mouseCursorWnd->setPointerPassThroughEnabled(true);
     d_rootIngame->addChild(d_mouseCursorWnd);
 }
 
@@ -259,7 +259,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateImgWnd->setAspectRatio(3.308f);
     plateImgWnd->setAspectMode(CEGUI::AM_EXPAND);
     plateImgWnd->setVerticalAlignment(CEGUI::VA_BOTTOM);
-    plateImgWnd->setMousePassThroughEnabled(true);
+    plateImgWnd->setPointerPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
     plateRoot->addChild(plateImgWnd);
 
@@ -271,7 +271,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateTopping->setAspectRatio(1.0f);
     plateTopping->setAspectMode(CEGUI::AM_EXPAND);
     plateTopping->setHorizontalAlignment(CEGUI::HA_CENTRE);
-    plateTopping->setMousePassThroughEnabled(true);
+    plateTopping->setPointerPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);
     plateRoot->addChild(plateTopping);
 

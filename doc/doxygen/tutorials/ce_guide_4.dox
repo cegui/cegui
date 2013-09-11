@@ -63,7 +63,7 @@ actually consumed the input.  If this returns false, it means that CEGUI did
 nothing useful with the input, and that your application may like to perform
 some action based on it instead.  Generally for this to work as described, you
 should have a fullscreen DefaultWindow as your layout root with the
-MousePassThroughEnabled property set to true.
+PointerPassThroughEnabled property set to true.
 
 Finally, you must know that InjectedInputReceiver is implemented by GUIContext
 and that input injection is <em>per GUIContext</em>, this is a very important

@@ -82,20 +82,11 @@ void DefaultWindow::onPointerActivate(PointerEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void DefaultWindow::updateMouseEventHandled(MouseEventArgs& e) const
-{
-    // by default, if we are a root window (no parent) with pass-though enabled
-    // we do /not/ mark mouse events as handled.
-    if (!d_parent && e.handled && d_mousePassThroughEnabled)
-        --e.handled;
-}
-
-//----------------------------------------------------------------------------//
 void DefaultWindow::updatePointerEventHandled(PointerEventArgs& e) const
 {
     // by default, if we are a root window (no parent) with pass-though enabled
-    // we do /not/ mark mouse events as handled.
-    if (!d_parent && e.handled && d_mousePassThroughEnabled)
+    // we do /not/ mark pointer events as handled.
+    if (!d_parent && e.handled && d_pointerPassThroughEnabled)
         --e.handled;
 }
 
@@ -104,7 +95,7 @@ bool DefaultWindow::moveToFront_impl(bool wasClicked)
 {
     const bool took_action = Window::moveToFront_impl(wasClicked);
 
-    if (!d_parent && d_mousePassThroughEnabled)
+    if (!d_parent && d_pointerPassThroughEnabled)
         return false;
     else
         return took_action;

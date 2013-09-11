@@ -63,8 +63,8 @@ public:
      * valid.
      */
 	static const String EventDragged;
-    /** Event fired when the scroll wheel is used on top of the button.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when a scroll action is executed on top of the button.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
 	static const String EventScrolled;
