@@ -298,24 +298,6 @@ public:
 	float d_timeSinceLastFrame; //!< Time since the last frame update
 };
 
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning mouse input.
-*/
-class CEGUIEXPORT MouseEventArgs : public WindowEventArgs
-{
-public:
-	MouseEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
-
-	Vector2f	position;		//!< holds current mouse position.
-	Vector2f	moveDelta;		//!< holds variation of mouse position from last mouse input
-	MouseButton	button;			//!< one of the MouseButton enumerated values describing the mouse button causing the event (for button inputs only)
-	uint		sysKeys;		//!< current state of the system keys and mouse buttons.
-	float		wheelChange;	//!< Holds the amount the scroll wheel has changed.
-};
-
 /*!
 \brief
     EventArgs based class that is used for objects passed to input event handlers
