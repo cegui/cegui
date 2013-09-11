@@ -105,11 +105,11 @@ void SimpleGameMenu::deinitialise()
     delete d_windowNavigator;
 }
 
-std::map<CEGUI::SemanticValue, CEGUI::String> SimpleGameMenu::createNavigationMappings()
+std::map<int, CEGUI::String> SimpleGameMenu::createNavigationMappings()
 {
     using namespace CEGUI;
 
-    std::map<SemanticValue, String> mappings;
+    std::map<int, String> mappings;
 
     mappings[SV_GoDown] = NavigationStrategiesPayloads::NAVIGATE_NEXT;
     mappings[SV_GoUp] = NavigationStrategiesPayloads::NAVIGATE_PREVIOUS;

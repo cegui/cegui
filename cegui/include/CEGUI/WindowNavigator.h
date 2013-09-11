@@ -71,7 +71,7 @@ public:
 class CEGUIEXPORT WindowNavigator
 {
 public:
-    typedef std::map<SemanticValue, String> SemanticMappingsMap;
+    typedef std::map<int, String> SemanticMappingsMap;
     ~WindowNavigator() {}
 
     /*!
