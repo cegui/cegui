@@ -752,21 +752,21 @@ bool TabControl::handleScrollPane(const EventArgs& e)
 
 bool TabControl::handleDraggedPane(const EventArgs& e)
 {
-    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+    const PointerEventArgs& pe = static_cast<const PointerEventArgs&>(e);
 
-    if (me.button == MiddleButton)
+    if (pe.source == PS_Middle)
     {
-        // This is the middle-mouse-click event, remember initial drag position
+        // This is the middle pointer source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
-        d_btGrabPos = (me.position.d_x -
+        d_btGrabPos = (pe.position.d_x -
             but_pane->getOuterRectClipper().d_min.d_x) -
             d_firstTabOffset;
     }
-    else if (me.button == NoButton)
+    else if (pe.source == PS_None)
     {
-        // Regular mouse move event
+        // Regular pointer move event
         Window *but_pane = getTabButtonPane();
-        float new_to = (me.position.d_x -
+        float new_to = (pe.position.d_x -
             but_pane->getOuterRectClipper().d_min.d_x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||

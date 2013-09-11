@@ -93,12 +93,12 @@ public:
      * be dragged.
      */
 	static const String EventSegmentDragStart;
-    /** Event fired when segment dragging has stopped (via mouse release).
-     * Hanlders are passed a const WindowEventArgs reference with
+    /** Event fired when segment dragging has stopped (via pointer release).
+     * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ListHeaderSegment that is no longer
      * being dragged.
      */
-	static const String EventSegmentDragStop;
+    static const String EventSegmentDragStop;
     /** Event fired when the segment drag position has changed.
      * Hanlders are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ListHeaderSegment whose position has
@@ -119,8 +119,8 @@ public:
 	static const String EventClickableSettingChanged;
 
 	// Defaults
-	static const float	DefaultSizingArea;		//!< Default size of the sizing area.
-	static const float	SegmentMoveThreshold;	//!< Amount the mouse must be dragged before drag-moving is initiated.
+    static const float DefaultSizingArea;       //!< Default size of the sizing area.
+    static const float SegmentMoveThreshold;    //!< Amount the pointer must be dragged before drag-moving is initiated.
 
 
 	/*************************************************************************
@@ -326,26 +326,26 @@ protected:
 	\brief
 		Update state for drag sizing.
 
-	\param local_mouse
-		Mouse position as a pixel offset from the top-left corner of this window.
+    \param local_pointer
+        Pointer position as a pixel offset from the top-left corner of this window.
 
 	\return
 		Nothing.
 	*/
-	void	doDragSizing(const Vector2f& local_mouse);
+    void    doDragSizing(const Vector2f& local_pointer);
 
 
 	/*!
 	\brief
 		Update state for drag moving.
 
-	\param local_mouse
-		Mouse position as a pixel offset from the top-left corner of this window.
+    \param local_pointer
+        Pointer position as a pixel offset from the top-left corner of this window.
 
 	\return
 		Nothing.
 	*/
-	void	doDragMoving(const Vector2f& local_mouse);
+    void    doDragMoving(const Vector2f& local_pointer);
 
 
 	/*!
@@ -374,14 +374,14 @@ protected:
 		Return whether the required minimum movement threshold before initiating drag-moving
 		has been exceeded.
 
-	\param local_mouse
-		Mouse position as a pixel offset from the top-left corner of this window.
+    \param local_pointer
+        Pointer position as a pixel offset from the top-left corner of this window.
 
 	\return
 		true if the threshold has been exceeded and drag-moving should be initiated, or false
 		if the threshold has not been exceeded.
 	*/		
-	bool	isDragMoveThresholdExceeded(const Vector2f& local_mouse);
+    bool    isDragMoveThresholdExceeded(const Vector2f& local_pointer);
 
 	/*************************************************************************
 		New Event Handlers
@@ -430,7 +430,7 @@ protected:
 
 	/*!
 	\brief
-		Handler called when the user stops dragging the segment (releases mouse button)
+        Handler called when the user stops dragging the segment (releases pointer source)
 	*/
 	virtual void	onSegmentDragStop(WindowEventArgs& e);
 
