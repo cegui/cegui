@@ -94,6 +94,10 @@ public:
         // of curved elements of the stroke
         float d_maxScale;
 
+        //! Anti-aliasing offsets, the first element represents the offset of the solid stroke, the second is for the
+        // offset of the alpha-fade
+        glm::vec2 d_antiAliasingOffsets;
+
         //! Pointer to the previous line point of this segment
         const glm::vec2* d_prevPoint;
         //! Pointer to the current line point of this segment
@@ -183,18 +187,41 @@ private:
                              const bool is_shape_closed);
 
     //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
-    static void createStrokeSegment(StrokeSegmentData& stroke_data,
+    static void createLineSegment(StrokeSegmentData& stroke_data,
                                     const SVGImage::SVGImageRenderSettings& render_settings,
                                     const glm::vec2& scale_factors,
                                     const bool draw = true);
 
+    //! Stroke helper function that determines and adds the anti-aliased geometry of a bevel- or rounded-linejoin
+    static void createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke_data,
+                                                   const SVGImage::SVGImageRenderSettings& render_settings,
+                                                   const glm::vec2& scale_factors,
+                                                   const glm::vec2& cur_point,
+                                                   const glm::vec2& second_bevel_point,
+                                                   const glm::vec2& segment_end_left,
+                                                   const glm::vec2& segment_end_right,
+                                                   const glm::vec2& prev_to_cur,
+                                                   const glm::vec2& cur_to_next,
+                                                   const glm::vec2& prev_dir_to_inside,
+                                                   const glm::vec2& next_dir_to_inside,
+                                                   const SVGPaintStyle::SVGLinejoin linejoin,
+                                                   const bool polygon_is_clockwise,
+                                                   const bool draw);
+
+    //! Stroke helper function that determines and adds the geometry of a bevel- or rounded-linejoin
     static void createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_data,
                                                  const glm::vec2& cur_point,
-                                                 const glm::vec2& secondBevelPoint,
+                                                 const glm::vec2& prev_dir_to_inside,
+                                                 const glm::vec2& next_dir_to_inside,
                                                  const glm::vec2& segment_end_left,
                                                  const glm::vec2& segment_end_right,
+                                                 const glm::vec2& second_bevel_point,
                                                  const SVGPaintStyle::SVGLinejoin linejoin,
-                                                 const bool polygon_is_clockwise);
+                                                 const bool polygon_is_clockwise,
+                                                 const bool draw);
+
+    static bool isVectorLeftOfOtherVector(const glm::vec2& vector_left,
+                                          const glm::vec2& vector_right);
 
     static void handleStrokeMiterExceedance(const StrokeSegmentData& stroke_data,
                                             const glm::vec2& cur_point,
@@ -203,24 +230,32 @@ private:
 
     //! Stroke draw helper function that appends geometry for the connection between two new points and the last points
     static void createStrokeSegmentConnection(StrokeSegmentData &stroke_data,
-                                                   const glm::vec2& segment_end_left,
-                                                   const glm::vec2& segment_end_right,
-                                                   const bool draw);
+                                              const glm::vec2& segment_end_left,
+                                              const glm::vec2& segment_end_right,
+                                              const bool draw);
 
     static void calculateAndAddStrokeSegmentAAConnection(StrokeSegmentData& stroke_data,
                                                     const glm::vec2& segment_end_left_orig,
                                                     const glm::vec2& segment_end_right_orig,
                                                     const bool polygon_is_clockwise,
+                                                    const glm::vec2& prev_to_cur,
+                                                    const glm::vec2& cur_to_next,
                                                     const glm::vec2& prev_dir_to_inside,
                                                     const glm::vec2& next_dir_to_inside,
-                                                    float core_offset,
-                                                    float fade_offset,
                                                     const glm::vec2& scale_factors,
                                                     const bool draw);
 
+    static glm::vec2 calculateScaledCombinedVector(const glm::vec2& scale_factors,
+                                                   const glm::vec2& prev_dir_to_inside,
+                                                   const glm::vec2& next_dir_to_inside,
+                                                   const glm::vec2& prev_to_cur,
+                                                   const glm::vec2& cur_to_next,
+                                                   const bool polygon_is_clockwise);
+
+    //! Returns the factor by which the length of the given unit factor would be increased in case it was scaled by the given factors in x and y directions.
     static float calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors);
 
-    static void createStrokeSegmentAAConnectionGeometry(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd,
+    static void createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd,
                                                         const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentFadeRightEnd, const bool draw);
 
     static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data,
@@ -275,16 +310,32 @@ private:
                                    const SVGPaintStyle& paint_style,
                                    GeometryBuffer& geometry_buffer);
 
-    //! Helper function for creating a circle's fill
+    //! Helper function for creating a triangle strip with filling
     static void createTriangleStripFillGeometry(std::vector<glm::vec2>& points,
                                          GeometryBuffer& geometry_buffer,
                                          const SVGPaintStyle& paint_style);
 
-    //! Helper function for creating a circle's fill
+    //! Helper function for creating an arc's stroke
     static void createArcStrokeGeometry(std::vector<glm::vec2>& points,
                                         GeometryBuffer& geometry_buffer,
                                         ColouredVertex& stroke_vertex);
-    
+
+    //! Helper function for calculating and creating an anti-aliased stroke for an arc
+    static void createArcStrokeAAGeometry(const std::vector<glm::vec2>& points,
+                                                 const glm::vec2& center_point,
+                                                 StrokeSegmentData& stroke_data,
+                                                 const glm::vec2& scale_factors,
+                                                 glm::vec2& linecap_fade_left,
+                                                 glm::vec2& linecap_fade_right);
+
+    //! Helper function for adding an anti-aliasing quad of a stroke to the GeometryBuffer
+    static void addStrokeAAQuad(StrokeSegmentData &stroke_data,
+                                const glm::vec2& point1,
+                                const glm::vec2& point2,
+                                const glm::vec2& fade_point1,
+                                const glm::vec2& fade_point2);
+
+
 
      //! Helper function for appending a circle fill triangle to a GeometryBuffer
     static void addTriangleGeometry(const glm::vec2& point1,
@@ -304,7 +355,6 @@ private:
                                                   float& num_segments,
                                                   float& tangential_factor,
                                                   float& radial_factor);
-
     static void createArcPoints(const glm::vec2& center_point,
                                 const glm::vec2& start_point,
                                 const glm::vec2& end_point,
@@ -313,7 +363,8 @@ private:
                                 const float radial_factor,
                                 std::vector<glm::vec2>& arc_points);
 
-    static void determineAntiAliasingOffsets(float width, float& core_offset, float& fade_offset);
+    //! Function to determine the geometry offsets needed in anti-aliasing, depending on the width
+    static void determineAntiAliasingOffsets(float width, glm::vec2& antialiasing_offsets);
 
     static glm::vec2 getScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings);
 };
