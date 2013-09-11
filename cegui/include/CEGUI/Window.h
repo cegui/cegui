@@ -540,7 +540,7 @@ public:
         Pointer events are always sent to the window containing the pointer
         indicator regardless of what this function reports (unless a window has
         captured inputs). The active state mainly determines where send other,
-        for example keyboard, inputs.
+        for example keyboard inputs.
 
     \return
         - true if the window is active and may be sent inputs by the system.

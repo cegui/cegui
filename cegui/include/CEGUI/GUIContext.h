@@ -230,7 +230,8 @@ protected:
     void notifyDefaultFontChanged(Window* hierarchy_root) const;
 
     Window* getTargetWindow(const Vector2f& pt, const bool allow_disabled) const;
-    Window* getKeyboardTargetWindow() const;
+    //! returns the window used as input target
+    Window* getInputTargetWindow() const;
     Window* getCommonAncestor(Window* w1, Window* w2) const;
     //! call some function for a chain of windows: (top, bottom]
     void notifyPointerTransition(Window* top, Window* bottom,

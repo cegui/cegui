@@ -481,7 +481,7 @@ Window* GUIContext::getTargetWindow(const Vector2f& pt,
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getKeyboardTargetWindow() const
+Window* GUIContext::getInputTargetWindow() const
 {
     // if no active sheet, there is no target widow.
     if (!d_rootWindow || !d_rootWindow->isEffectiveVisible())
@@ -535,35 +535,35 @@ bool GUIContext::injectTimePulse(float timeElapsed)
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCopyRequest(const SemanticInputEvent& event)
 {
-    Window* source = getKeyboardTargetWindow();
+    Window* source = getInputTargetWindow();
     return source ? source->performCopy(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handleCutRequest(const SemanticInputEvent& event)
 {
-    Window* source = getKeyboardTargetWindow();
+    Window* source = getInputTargetWindow();
     return source ? source->performCut(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::handlePasteRequest(const SemanticInputEvent& event)
 {
-    Window* target = getKeyboardTargetWindow();
+    Window* target = getInputTargetWindow();
     return target ? target->performPaste(*System::getSingleton().getClipboard()) : false;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::injectUndoRequest()
 {
-    Window* target = getKeyboardTargetWindow();
+    Window* target = getInputTargetWindow();
     return target ? target->performUndo() : false;
 }
 
 //----------------------------------------------------------------------------//
 bool GUIContext::injectRedoRequest()
 {
-    Window* target = getKeyboardTargetWindow();
+    Window* target = getInputTargetWindow();
     return target ? target->performRedo() : false;
 }
 
@@ -652,7 +652,7 @@ void GUIContext::notifyDefaultFontChanged(Window* hierarchy_root) const
 //----------------------------------------------------------------------------//
 bool GUIContext::handleTextInputEvent(const TextInputEvent& event)
 {
-    TextEventArgs args(getKeyboardTargetWindow());
+    TextEventArgs args(getInputTargetWindow());
 
     // if there's no destination window, input can't be handled.
     if (!args.window)

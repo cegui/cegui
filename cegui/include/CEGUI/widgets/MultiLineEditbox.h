@@ -175,8 +175,8 @@ public:
 		return true if the edit box has input focus.
 
 	\return
-		- true if the edit box has keyboard input focus.
-		- false if the edit box does not have keyboard input focus.
+        - true if the edit box has input focus.
+        - false if the edit box does not have input focus.
 	*/
 	bool	hasInputFocus(void) const;
 
