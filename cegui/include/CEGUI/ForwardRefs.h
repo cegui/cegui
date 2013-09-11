@@ -197,7 +197,6 @@ class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
 class KeyEventArgs;
 class PointerIndicatorEventArgs;
-class MouseEventArgs;
 class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;
