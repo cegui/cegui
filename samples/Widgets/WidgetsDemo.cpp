@@ -91,9 +91,9 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     {
         logMessage += "PointerIndicatorEvent";
     }
-    else if(const CEGUI::KeyEventArgs* keyArgs = dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+    else if(const CEGUI::TextEventArgs* textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
     {
-        logMessage += "KeyEvent: '" + CEGUI::String(1, keyArgs->codepoint) + "'";
+        logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->character) + "'";
     }
     else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
     {
@@ -107,7 +107,6 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     {
         logMessage += "DragDropEvent";
     }
-
 
     logMessage += CEGUI::String(")");
 

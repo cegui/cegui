@@ -329,22 +329,6 @@ public:
     const Image* d_image;             //!< pointer to an Image object of relevance to the event.
 };
 
-
-/*!
-\brief
-	EventArgs based class that is used for objects passed to input event handlers
-	concerning keyboard input.
-*/
-class CEGUIEXPORT KeyEventArgs : public WindowEventArgs
-{
-public:
-	KeyEventArgs(Window* wnd) : WindowEventArgs(wnd) {}
-
-	String::value_type codepoint; //!< utf32 or char (depends on used String class) codepoint for the key (only used for Character inputs).
-	Key::Scan          scancode;  //!< Scan code of key that caused event (only used for key up & down inputs.
-	uint               sysKeys;   //!< current state of the system keys and mouse buttons.
-};
-
 /*!
 \brief
 	EventArgs based class that is used for objects passed to input event handlers
