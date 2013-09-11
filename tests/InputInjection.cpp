@@ -43,6 +43,7 @@ struct InputInjectionFixture
         d_guiContext(&System::getSingleton().getDefaultGUIContext()),
         d_inputAggregator(new InputAggregator(d_guiContext))
     {
+        d_inputAggregator->initialise();
         // reset the pointer to (0,0)
         d_guiContext->getPointerIndicator().setPosition(Vector2f());
 

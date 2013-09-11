@@ -101,6 +101,7 @@ bool SamplesFramework::initialise()
 
     d_systemInputAggregator = new InputAggregator(
         &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+    d_systemInputAggregator->initialise();
 
     // return true to signalize the initialisation was sucessful and run the
     // SamplesFramework
