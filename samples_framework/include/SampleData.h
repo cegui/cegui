@@ -94,6 +94,7 @@ protected:
 
     CEGUI::GUIContext*      d_guiContext;
     CEGUI::InputAggregator* d_inputAggregator;
+    bool                    d_nonDefaultInputAggregator;
     CEGUI::TextureTarget*   d_textureTarget;
     CEGUI::BasicImage*      d_textureTargetImage;
 };
