@@ -59,7 +59,7 @@ private:
 
     void showMenu(CEGUI::String MainMenu);
     void createEventHandlers();
-    std::map<CEGUI::SemanticValue, CEGUI::String> createNavigationMappings();
+    std::map<int, CEGUI::String> createNavigationMappings();
 };
 
 #endif  // end of guard _Sample_SimpleGameMenu_h_

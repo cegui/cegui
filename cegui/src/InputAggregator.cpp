@@ -307,7 +307,7 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
     if (d_inputReceiver == 0)
         return false;
 
-    SemanticValue value = d_keyValuesMappings[scan_code];
+    int value = d_keyValuesMappings[scan_code];
 
     // handle combined keys
     if (isControlPressed() && isShiftPressed())

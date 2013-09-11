@@ -162,9 +162,9 @@ extern "C" SAMPLE_EXPORT Sample& getSampleInstance()
     return sample;
 }
 
-std::map<SemanticValue, String> FormNavigationDemo::getNavigationMappings()
+std::map<int, String> FormNavigationDemo::getNavigationMappings()
 {
-    std::map<SemanticValue, String> mappings;
+    std::map<int, String> mappings;
 
     mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
     mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;

@@ -146,7 +146,7 @@ enum SemanticValue
     SV_UserDefinedSemanticValue = 0x5000,   //!< This marks the beginning of user-defined semantic values.
 };
 
-static bool isSelectionSemanticValue(SemanticValue value)
+static bool isSelectionSemanticValue(int value)
 {
     return (value >= SV_SelectMultipleItems && value <= SV_SelectToEndOfLine) ||
         (value >= SV_SelectToStartOfDocument && value <= SV_SelectToPreviousPage);
@@ -170,15 +170,15 @@ union SemanticPayload
 class CEGUIEXPORT SemanticInputEvent : public InputEvent
 {
 public:
-    SemanticInputEvent(SemanticValue value) :
+    SemanticInputEvent(int value) :
         InputEvent(IET_SemanticInputEventType),
         d_value(value),
         d_payload()
     {
     }
 
-    SemanticValue d_value;            //!< The semantic value of this event
-    SemanticPayload d_payload;                      //!< Extra data associated to this event
+    int d_value;                //!< The semantic value of this event
+    SemanticPayload d_payload;  //!< Extra data associated to this event
 };
 
 } // End of  CEGUI namespace section

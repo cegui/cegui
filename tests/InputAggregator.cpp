@@ -42,7 +42,7 @@ public:
     std::string d_text;
     float d_totalScroll;
     Vector2f d_pointerPosition;
-    std::vector<SemanticValue> d_semanticValues;
+    std::vector<int> d_semanticValues;
 
     MockInputEventReceiver() :
         d_text(""),

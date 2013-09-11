@@ -216,7 +216,7 @@ protected:
     float d_mouseMovementScalingFactor;
 
     Vector2f d_pointerPosition;
-    SemanticValue d_keyValuesMappings[0xFF]; //!< Mapping from a key to its semantic
+    int d_keyValuesMappings[0xFF]; //!< Mapping from a key to its semantic
     bool d_keysPressed[0xFF];
 };
 
