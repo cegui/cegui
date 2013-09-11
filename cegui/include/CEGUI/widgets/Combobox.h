@@ -263,7 +263,7 @@ public:
 		return true if the Editbox has input focus.
 
 	\return
-		true if the Editbox has keyboard input focus, false if the Editbox does not have keyboard input focus.
+		true if the Editbox has input focus, false if the Editbox does not have input focus.
 	*/
 	bool	hasInputFocus(void) const;
 
