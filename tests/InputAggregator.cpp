@@ -146,6 +146,7 @@ struct InputAggregatorFixture
         d_inputEventReceiver->initializeEventHandlers();
         d_inputEventReceiver->initializeSemanticEventHandlers();
         d_inputAggregator = new InputAggregator(d_inputEventReceiver);
+        d_inputAggregator->initialise();
     }
 
     ~InputAggregatorFixture()

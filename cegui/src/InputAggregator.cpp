@@ -87,6 +87,9 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
             Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
     d_keysPressed()
 {
+    // Initialize the array
+    memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
+
     // initial absolute tolerance
     recomputeMultiClickAbsoluteTolerance();
 }
@@ -458,9 +461,6 @@ bool InputAggregator::injectPasteRequest()
 
 void InputAggregator::initialise()
 {
-    // Initialize the array
-    memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
-
     d_keyValuesMappings[Key::Backspace] = SV_DeletePreviousCharacter;
     d_keyValuesMappings[Key::Delete] = SV_DeleteNextCharacter;
 
