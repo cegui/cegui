@@ -57,9 +57,9 @@ public:
      * WindowEventArgs::window set to the TabButton that was clicked.
      */
 	static const String EventClicked;
-    /** Event fired when use user attempts to drag the button with middle mouse
-     * button.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when use user attempts to drag the button with middle pointer
+     * source.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
 	static const String EventDragged;

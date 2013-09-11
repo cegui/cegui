@@ -81,12 +81,12 @@ namespace CEGUI
          * value has been changed.
          */
         static const String EventDragAlphaChanged;
-        /** Event fired when the mouse cursor to used when dragging is changed.
+        /** Event fired when the pointer indicator used when dragging is changed.
          * Handlers are passed a const WindowEventArgs reference with
          * WindowEventArgs::window set to the DragContainer whose dragging
-         * mouse cursor image has been changed.
+         * pointer indicator image has been changed.
          */
-        static const String EventDragMouseCursorChanged;
+        static const String EventDragPointerIndicatorChanged;
         /** Event fired when the drag pixel threshold is changed.
          * Handlers are passed a const WindowEventArgs reference with
          * WindowEventArgs::window set to the DragContainer whose dragging pixel
@@ -148,7 +148,7 @@ namespace CEGUI
 
         \return
             - true if the DragContainer is being dragged.
-            - false if te DragContainer is not being dragged.
+            - false if the DragContainer is not being dragged.
         */
         bool isBeingDragged(void) const;
 
@@ -156,8 +156,8 @@ namespace CEGUI
         \brief
             Return the current drag threshold in pixels.
 
-            The drag threshold is the number of pixels that the mouse must be
-            moved with the left button held down in order to commence a drag
+            The drag threshold is the number of pixels that the pointer must be
+            moved with the left source held pressed in order to commence a drag
             operation.
         
         \return
@@ -169,8 +169,8 @@ namespace CEGUI
         \brief
             Set the current drag threshold in pixels.
 
-            The drag threshold is the number of pixels that the mouse must be
-            moved with the left button held down in order to commence a drag
+            The drag threshold is the number of pixels that the pointer must be
+            moved with the left source held pressed in order to commence a drag
             operation.
 
         \param pixels
@@ -210,47 +210,47 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the Image currently set to be used for the mouse cursor when a
-            drag operation is in progress.
+            Return the Image currently set to be used for the pointer indicator 
+            when a drag operation is in progress.
 
         \return
-            Image object currently set to be used as the mouse cursor when dragging.
+            Image object currently set to be used as the pointer indicator when dragging.
         */
-        const Image* getDragCursorImage(void) const;
+        const Image* getDragIndicatorImage(void) const;
 
         /*!
         \brief
-            Set the Image to be used for the mouse cursor when a drag operation is
-            in progress.
+            Set the Image to be used for the pointer indicator when a drag 
+            operation is in progress.
 
-            This method may be used during a drag operation to update the current mouse
-            cursor image.
+            This method may be used during a drag operation to update the current 
+            pointer indicator image.
 
         \param image
-            Image object to be used as the mouse cursor while dragging.
+            Image object to be used as the pointer indicator while dragging.
 
         \return
             Nothing.
         */
-        void setDragCursorImage(const Image* image);
+        void setDragIndicatorImage(const Image* image);
 
         /*!
         \brief
-            Set the Image to be used for the mouse cursor when a drag operation is
-            in progress.
+            Set the Image to be used for the pointer indicator when a drag 
+            operation is in progress.
 
-            This method may be used during a drag operation to update the current mouse
-            cursor image.
+            This method may be used during a drag operation to update the current 
+            pointer indicator image.
 
         \param name
-            Image to be used as the mouse cursor when dragging.
+            Image to be used as the pointer indicator when dragging.
 
         \return
             Nothing.
 
         \exception UnknownObjectException   thrown if Image \name is unknown.
         */
-        void setDragCursorImage(const String& name);
+        void setDragIndicatorImage(const String& name);
 
         /*!
         \brief
@@ -288,14 +288,14 @@ namespace CEGUI
         /*!
         \brief
             Immediately pick up the DragContainer and optionally set the sticky
-            mode in order to allow this to happen.  Any current interaction
-            (i.e. mouse capture) will be interrupted.
+            mode in order to allow this to happen. Any current interaction
+            (i.e. pointer capture) will be interrupted.
 
         \param force_sticky
             - true to automatically enable the sticky mode in order to
             facilitate picking up the DragContainer.
             - false to ignore the pick up request if the sticky mode is not
-            alraedy enabled (default).
+            already enabled (default).
 
         \return
             - true if the DragContainer was successfully picked up.
@@ -305,7 +305,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Set the fixed mouse cursor dragging offset to be used for this
+            Set the fixed pointer indicator dragging offset to be used for this
             DragContainer.
 
         \param offset
@@ -320,7 +320,7 @@ namespace CEGUI
 
         /*!
         \brief
-            Return the fixed mouse cursor dragging offset to be used for this
+            Return the fixed pointer indicator dragging offset to be used for this
             DragContainer.
 
         \return
@@ -362,21 +362,21 @@ namespace CEGUI
 
     protected:
         /*************************************************************************
-        	Protected Implementation Methods
+            Protected Implementation Methods
         *************************************************************************/
         /*!
         \brief
             Return whether the required minimum movement threshold before initiating dragging
             has been exceeded.
 
-        \param local_mouse
-            Mouse position as a pixel offset from the top-left corner of this window.
+        \param local_pointer
+            Pointer position as a pixel offset from the top-left corner of this window.
 
         \return
             - true if the threshold has been exceeded and dragging should be initiated.
             - false if the threshold has not been exceeded.
-        */		
-        bool isDraggingThresholdExceeded(const Vector2f& local_mouse);
+        */
+        bool isDraggingThresholdExceeded(const Vector2f& local_pointer);
 
 	    /*!
 	    \brief
@@ -388,22 +388,22 @@ namespace CEGUI
         void initialiseDragging(void);
 
         /*!
-	    \brief
-		    Update state for window dragging.
+        \brief
+            Update state for window dragging.
 
-	    \param local_mouse
-		    Mouse position as a pixel offset from the top-left corner of this window.
+        \param local_pointer
+            Pointer position as a pixel offset from the top-left corner of this window.
 
 	    \return
 		    Nothing.
 	    */
-        void doDragging(const Vector2f& local_mouse);
+        void doDragging(const Vector2f& local_pointer);
 
         /*!
         \brief
-            Method to update mouse cursor image
+            Method to update pointer indicator image
         */
-        void updateActiveMouseCursor(void) const;
+        void updateActivePointerIndicator(void) const;
 
         /*************************************************************************
         	Overrides of methods in Window
@@ -481,13 +481,13 @@ namespace CEGUI
 
         /*!
         \brief
-            Method called when the mouse cursor to use when dragging is changed.
+            Method called when the pointer indicator to use when dragging is changed.
         \param e
             WindowEventArgs object.
         \return
             Nothing.
         */
-        virtual void onDragMouseCursorChanged(WindowEventArgs& e);
+        virtual void onDragPointerIndicatorChanged(WindowEventArgs& e);
 
         /*!
         \brief
@@ -520,24 +520,24 @@ namespace CEGUI
         	Data
         *************************************************************************/
         bool    d_draggingEnabled;  //!< True when dragging is enabled.
-        bool    d_leftMouseDown;    //!< True when left mouse button is down.
+        bool    d_leftPointerHeld;    //!< True when left pointer indicator source is held.
         bool    d_dragging;         //!< true when being dragged.
         UVector2 d_dragPoint;       //!< point we are being dragged at.
         UVector2 d_startPosition;   //!< position prior to dragging.
-        float   d_dragThreshold;    //!< Pixels mouse must move before dragging commences.
+        float   d_dragThreshold;    //!< Pixels pointer must move before dragging commences.
         float   d_dragAlpha;        //!< Alpha value to set when dragging.
         float   d_storedAlpha;      //!< Alpha value to re-set when dragging ends.
         bool    d_storedClipState;  //!< Parent clip state to re-set.
         Window* d_dropTarget;       //!< Target window for possible drop operation.
-        const Image* d_dragCursorImage; //!< Image to use for mouse cursor when dragging.
+        const Image* d_dragIndicatorImage; //!< Image to use for pointer indicator when dragging.
         bool d_dropflag;            //!< True when we're being dropped
         //! true when we're in 'sticky' mode.
         bool d_stickyMode;
         //! true after been picked-up / dragged via sticky mode
         bool d_pickedUp;
-        //! true if fixed mouse offset is used for dragging position.
+        //! true if fixed pointer offset is used for dragging position.
         bool d_usingFixedDragOffset;
-        //! current fixed mouse offset value.
+        //! current fixed pointer offset value.
         UVector2 d_fixedDragOffset;
 
     private:

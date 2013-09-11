@@ -382,7 +382,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
-    // move the dragging point so mouse remains 'attached' to edge of window
+    // move the dragging point so pointer remains 'attached' to edge of window
     d_dragPoint.d_x += adjustment;
 
     return d_horizontalAlignment == HA_RIGHT;
@@ -470,7 +470,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
-    // move the dragging point so mouse remains 'attached' to edge of window
+    // move the dragging point so pointer remains 'attached' to edge of window
     d_dragPoint.d_y += adjustment;
 
     return d_verticalAlignment == VA_BOTTOM;

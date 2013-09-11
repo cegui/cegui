@@ -257,9 +257,9 @@ void ListHeaderSegment::onClickableSettingChanged(WindowEventArgs& e)
 /*************************************************************************
 	Processing for drag-sizing the segment
 *************************************************************************/
-void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
+void ListHeaderSegment::doDragSizing(const Vector2f& local_pointer)
 {
-    float delta = local_mouse.d_x - d_dragPoint.d_x;
+    float delta = local_pointer.d_x - d_dragPoint.d_x;
 
     // store this so we can work out how much size actually changed
     float orgWidth = d_pixelSize.d_width;
@@ -283,7 +283,7 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
     URect area(d_area.d_min.d_x, d_area.d_min.d_y, d_area.d_max.d_x + UDim(0,/*PixelAligned(*/delta/*)*/), d_area.d_max.d_y);
     setArea_impl(area.d_min, area.getSize());
 
-    // move the dragging point so mouse remains 'attached' to edge of segment
+    // move the dragging point so pointer remains 'attached' to edge of segment
     d_dragPoint.d_x += d_pixelSize.d_width - orgWidth;
 
     WindowEventArgs args(this);
@@ -292,13 +292,13 @@ void ListHeaderSegment::doDragSizing(const Vector2f& local_mouse)
 
 
 /*************************************************************************
-	Processing for drag-moving the segment
+    Processing for drag-moving the segment
 *************************************************************************/
-void ListHeaderSegment::doDragMoving(const Vector2f& local_mouse)
+void ListHeaderSegment::doDragMoving(const Vector2f& local_pointer)
 {
-	// calculate movement deltas.
-	float deltaX = local_mouse.d_x - d_dragPoint.d_x;
-	float deltaY = local_mouse.d_y - d_dragPoint.d_y;
+    // calculate movement deltas.
+    float deltaX = local_pointer.d_x - d_dragPoint.d_x;
+    float deltaY = local_pointer.d_y - d_dragPoint.d_y;
 
 	// update 'ghost' position
 	d_dragPosition.d_x += deltaX;
@@ -391,12 +391,12 @@ void ListHeaderSegment::initSegmentHoverState(void)
 	Return true if move threshold for initiating drag-moving has been
 	exceeded.
 *************************************************************************/
-bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_mouse)
+bool ListHeaderSegment::isDragMoveThresholdExceeded(const Vector2f& local_pointer)
 {
-	// see if mouse has moved far enough to start move operation
-	// calculate movement deltas.
-	float	deltaX = local_mouse.d_x - d_dragPoint.d_x;
-	float	deltaY = local_mouse.d_y - d_dragPoint.d_y;
+    // see if pointer has moved far enough to start move operation
+    // calculate movement deltas.
+    float deltaX = local_pointer.d_x - d_dragPoint.d_x;
+    float deltaY = local_pointer.d_y - d_dragPoint.d_y;
 
 	if ((deltaX > SegmentMoveThreshold) || (deltaX < -SegmentMoveThreshold) ||
 		(deltaY > SegmentMoveThreshold) || (deltaY < -SegmentMoveThreshold))
