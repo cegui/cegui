@@ -134,6 +134,7 @@ void SampleData::initialise(int width, int height)
     d_textureTarget = system.getRenderer()->createTextureTarget();
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
     d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
+    d_inputAggregator->initialise();
     d_textureTarget->declareRenderSize(size);
 
     CEGUI::String imageName(d_textureTarget->getTexture().getName());

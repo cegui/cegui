@@ -91,7 +91,13 @@ public:
     static const String EventMouseMoveScalingFactorChanged;
 
     InputAggregator(InputEventReceiver* input_receiver);
-    ~InputAggregator();
+    virtual ~InputAggregator();
+
+    /*!
+    \brief
+        Initialises this InputAggregator with some default simple-key mappings
+    */
+    virtual void initialise();
 
     /*!
     \brief
@@ -182,15 +188,13 @@ protected:
     virtual void onMouseButtonMultiClickTimeoutChanged(InputAggregatorEventArgs& args);
     virtual void onMouseButtonMultiClickToleranceChanged(InputAggregatorEventArgs& args);
     virtual void onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& args);
-
-    void initializeSimpleKeyMappings();
-
-    bool isControlPressed();
-    bool isAltPressed();
-    bool isShiftPressed();
+    
+    virtual bool isControlPressed();
+    virtual bool isAltPressed();
+    virtual bool isShiftPressed();
 
     void recomputeMultiClickAbsoluteTolerance();
-    bool onDisplaySizeChanged(const EventArgs& args);
+    virtual bool onDisplaySizeChanged(const EventArgs& args);
 
     Event::Connection d_displaySizeChangedConnection;
 

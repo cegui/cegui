@@ -87,7 +87,6 @@ InputAggregator::InputAggregator(InputEventReceiver* input_receiver) :
             Event::Subscriber(&InputAggregator::onDisplaySizeChanged, this))),
     d_keysPressed()
 {
-    initializeSimpleKeyMappings();
     // initial absolute tolerance
     recomputeMultiClickAbsoluteTolerance();
 }
@@ -457,7 +456,7 @@ bool InputAggregator::injectPasteRequest()
     return d_inputReceiver->injectInputEvent(semantic_event);
 }
 
-void InputAggregator::initializeSimpleKeyMappings()
+void InputAggregator::initialise()
 {
     // Initialize the array
     memset(d_keyValuesMappings, SV_NoValue, sizeof(SemanticValue) * 0xFF);
