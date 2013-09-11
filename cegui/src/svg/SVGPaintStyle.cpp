@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   StandardShaderFrag.h
-    created:    Wed, 8th Feb 2012
-    author:     Lukas E Meindl
+    filename:   SVGPaintStyle.cpp
+    created:    1st August 2013
+    author:     Lukas Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,26 +25,24 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
+#include "CEGUI/svg/SVGPaintStyle.h"
 
-#ifndef _CEGUIOpenGL3StandardShaderFrag_h_
-#define _CEGUIOpenGL3StandardShaderFrag_h_
 
+// Start of CEGUI namespace section
 namespace CEGUI
 {
-const char StandardShaderFrag[] = 
-    "#version 150 core\n"
 
-    "uniform sampler2D texture0;\n"
-
-    "in vec2 exTexCoord;\n"
-    "in vec4 exColour;\n"
-
-    "out vec4 out0;\n"
-
-    "void main(void)\n"
-    "{\n"
-        "out0 = texture(texture0, exTexCoord) * exColour;\n"
-    "}"
-    ;
+//----------------------------------------------------------------------------//
+SVGPaintStyle::SVGPaintStyle() :
+    d_stroke(),
+    d_fill(),
+    d_fillOpacity(1.f),
+    d_strokeOpacity(1.f),
+    d_strokeWidth(1.f)
+{
 }
-#endif
+
+
+//----------------------------------------------------------------------------//
+}
+

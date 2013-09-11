@@ -29,6 +29,7 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/Exceptions.h"
+#include "CEGUI/System.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -113,7 +114,7 @@ void RenderedStringImageComponent::setSelection(const Window* /*ref_wnd*/,
 
 //----------------------------------------------------------------------------//
 void RenderedStringImageComponent::draw(const Window* ref_wnd,
-                                        GeometryBuffer& buffer,
+                                        std::vector<GeometryBuffer*>& geometry_buffers,
                                         const Vector2f& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect,
@@ -166,7 +167,7 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (d_selectionImage && d_selected)
     {
         const Rectf select_area(position, getPixelSize(ref_wnd));
-        d_selectionImage->render(buffer, select_area, clip_rect, ColourRect(0xFF002FFF));
+        d_selectionImage->render(geometry_buffers, select_area, clip_rect, true, ColourRect(0xFF002FFF));
     }
 
     // apply modulative colours if needed.
@@ -174,8 +175,8 @@ void RenderedStringImageComponent::draw(const Window* ref_wnd,
     if (mod_colours)
         final_cols *= *mod_colours;
 
-    // draw the image.
-    d_image->render(buffer, dest, clip_rect, final_cols);
+    // draw the image. 
+    d_image->render(geometry_buffers, dest, clip_rect, true, final_cols);
 }
 
 //----------------------------------------------------------------------------//

@@ -616,13 +616,13 @@ void Tree::populateGeometryBuffer()
     itemPos.d_x = d_itemArea.left() - d_horzScrollbar->getScrollPosition();
     itemPos.d_y = d_itemArea.top() - d_vertScrollbar->getScrollPosition();
     
-    drawItemList(d_listItems, d_itemArea, widest, itemPos, *d_geometry,
+    drawItemList(d_listItems, d_itemArea, widest, itemPos, d_geometryBuffers,
                  getEffectiveAlpha());
 }
 
 // Recursive!
 void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
-                        Vector2f& itemPos, GeometryBuffer& geometry, float alpha)
+                        Vector2f& itemPos, std::vector<GeometryBuffer*>& geometryBuffers, float alpha)
 {
     if (itemList.empty())
         return;
@@ -649,7 +649,7 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
         if (itemClipper.getHeight() > 0)
         {
             itemIsVisible = true;
-            itemList[i]->draw(geometry, itemRect, alpha, &itemClipper);
+            itemList[i]->draw(geometryBuffers, itemRect, alpha, &itemClipper);
         }
         else
         {
@@ -677,7 +677,7 @@ void Tree::drawItemList(LBItemList& itemList, Rectf& itemsArea, float widest,
                 
                 itemPos.d_x += 20;
                 drawItemList(itemList[i]->getItemList(), itemsArea, widest,
-                             itemPos, geometry, alpha);
+                             itemPos, geometryBuffers, alpha);
                 itemPos.d_x -= 20;
             }
             else

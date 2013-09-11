@@ -36,10 +36,12 @@
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
+#include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
+#include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -47,13 +49,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner) :
-    OpenGLGeometryBufferBase(owner),
-    d_shader(owner.getShaderStandard()),
-    d_shaderPosLoc(owner.getShaderStandardPositionLoc()),
-    d_shaderTexCoordLoc(owner.getShaderStandardTexCoordLoc()),
-    d_shaderColourLoc(owner.getShaderStandardColourLoc()),
-    d_shaderStandardMatrixLoc(owner.getShaderStandardMatrixUniformLoc()),
+OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
+    OpenGLGeometryBufferBase(owner, renderMaterial),
     d_glStateChanger(owner.getOpenGLStateChanger()),
     d_bufferSize(0)
 {
@@ -71,18 +68,26 @@ void OpenGL3GeometryBuffer::draw() const
 {
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 
-    d_glStateChanger->scissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
-              static_cast<GLint>(d_clipRect.getWidth()),
-              static_cast<GLint>(d_clipRect.getHeight()));
+    if (d_clippingActive)
+    {
+        d_glStateChanger->scissor(static_cast<GLint>(d_clipRect.left()),
+            static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
+            static_cast<GLint>(d_clipRect.getWidth()),
+            static_cast<GLint>(d_clipRect.getHeight()));
+
+        d_glStateChanger->enable(GL_SCISSOR_TEST);
+    }
+    else
+        d_glStateChanger->disable(GL_SCISSOR_TEST);
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
         updateMatrix();
 
-    // Send ModelViewProjection matrix to shader
+    CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
+    // Set the ModelViewProjection matrix in the bindings
     glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix()->d_matrix * d_matrix->d_matrix;
-    glUniformMatrix4fv(d_shaderStandardMatrixLoc, 1, GL_FALSE, glm::value_ptr(modelViewProjectionMatrix));
+    shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
@@ -91,46 +96,21 @@ void OpenGL3GeometryBuffer::draw() const
     d_glStateChanger->bindVertexArray(d_verticesVAO);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
-     size_t pos = 0;
     for (int pass = 0; pass < pass_count; ++pass)
     {
         // set up RenderEffect
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
-        // draw the batches
-       
-        BatchList::const_iterator i = d_batches.begin();
-        for ( ; i != d_batches.end(); ++i)
-        {
-            const BatchInfo& currentBatch = *i;
+        d_renderMaterial->prepareForRendering();
 
-            if (currentBatch.clip)
-                glEnable(GL_SCISSOR_TEST);
-            else
-                glDisable(GL_SCISSOR_TEST);
-
-            glBindTexture(GL_TEXTURE_2D, currentBatch.texture);
-
-            // draw the geometry
-            const unsigned int numVertices = currentBatch.vertexCount;
-            glDrawArrays(GL_TRIANGLES, pos, numVertices);
-
-            pos += numVertices;
-        }
+        // draw the geometry
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
 
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
-}
-
-//----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::appendGeometry(const Vertex* const vbuff,
-    uint vertex_count)
-{
-    OpenGLGeometryBufferBase::appendGeometry(vbuff, vertex_count);
-    updateOpenGLBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -144,35 +124,70 @@ void OpenGL3GeometryBuffer::reset()
 void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
 {
     glGenVertexArrays(1, &d_verticesVAO);
-    glBindVertexArray(d_verticesVAO);
+    d_glStateChanger->bindVertexArray(d_verticesVAO);
 
     // Generate and bind position vbo
     glGenBuffers(1, &d_verticesVBO);
-    glBindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
     glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
 
-    d_shader->bind();
-    
-    GLsizei stride = 9 * sizeof(GL_FLOAT);
-
-    glVertexAttribPointer(d_shaderTexCoordLoc, 2, GL_FLOAT, GL_FALSE, stride, 0);
-    glEnableVertexAttribArray(d_shaderTexCoordLoc);
-
-    glVertexAttribPointer(d_shaderColourLoc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(2 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(d_shaderColourLoc);
-
-    glVertexAttribPointer(d_shaderPosLoc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(6 * sizeof(GL_FLOAT)));
-    glEnableVertexAttribArray(d_shaderPosLoc);
-
-    d_shader->unbind();
-
     // Unbind Vertex Attribute Array (VAO)
-    glBindVertexArray(0);
+    d_glStateChanger->bindVertexArray(0);
 
     // Unbind array and element array buffers
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, 0);
 }
+
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::finaliseVertexAttributes()
+{
+    //We need to bind both of the following calls
+    d_glStateChanger->bindVertexArray(d_verticesVAO);
+    d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
+
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
+
+    CEGUI::OpenGL3ShaderWrapper* gl3_shader_wrapper = static_cast<CEGUI::OpenGL3ShaderWrapper*>(d_renderMaterial->getShaderWrapper());
+
+    //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
+    int dataOffset = 0;
+    const unsigned int attribute_count = d_vertexAttributes.size();
+    for (unsigned int i = 0; i < attribute_count; ++i)
+    {
+        switch(d_vertexAttributes.at(i))
+        {
+        case VAT_POSITION0:
+            {
+                GLint shader_pos_loc = gl3_shader_wrapper->getAttributeLocation("inPosition");
+                glVertexAttribPointer(shader_pos_loc, 3, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(shader_pos_loc);
+                dataOffset += 3;
+            }
+            break;
+        case VAT_COLOUR0:
+            {
+                GLint shader_colour_loc = gl3_shader_wrapper->getAttributeLocation("inColour");
+                glVertexAttribPointer(shader_colour_loc, 4, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(shader_colour_loc);
+                dataOffset += 4;
+            }
+            break;
+        case VAT_TEXCOORD0:
+            {
+                GLint texture_coord_loc = gl3_shader_wrapper->getAttributeLocation("inTexCoord");
+                glVertexAttribPointer(texture_coord_loc, 2, GL_FLOAT, GL_FALSE, stride, BUFFER_OFFSET(dataOffset * sizeof(GL_FLOAT)));
+                glEnableVertexAttribArray(texture_coord_loc);
+                dataOffset += 2;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+}
+
 
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
@@ -185,7 +200,7 @@ void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 {
     bool needNewBuffer = false;
-    unsigned int vertexCount = d_vertices.size();
+    unsigned int vertexCount = d_vertexData.size();
 
     if(d_bufferSize < vertexCount)
     {
@@ -195,23 +210,31 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    GLsizei dataSize = d_bufferSize * sizeof(GLVertex);
-
-    GLVertex* data;
-    if(d_vertices.empty())
-        data = 0;
+    float* vertexData;
+    if(d_vertexData.empty())
+        vertexData = 0;
     else
-        data = &d_vertices[0];
+        vertexData = &d_vertexData[0];
+
+    GLsizei dataSize = d_bufferSize * sizeof(float);
 
     if(needNewBuffer)
     {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, data, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_DYNAMIC_DRAW);
     }
     else
     {
-        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, data);
+        glBufferSubData(GL_ARRAY_BUFFER, 0, dataSize, vertexData);
     }
 }
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
+{
+    OpenGLGeometryBufferBase::appendGeometry(vertex_data);
+    updateOpenGLBuffers();
+}
+
 
 //----------------------------------------------------------------------------//
 

@@ -35,7 +35,7 @@
 #include "CEGUI/Animation.h"
 #include "CEGUI/AnimationInstance.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/BoundSlot.h"
