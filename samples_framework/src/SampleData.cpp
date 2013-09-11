@@ -62,6 +62,7 @@ SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
     d_sampleWindow(0),
     d_guiContext(0),
     d_inputAggregator(0),
+    d_nonDefaultInputAggregator(true),
     d_textureTarget(0),
     d_textureTargetImage(0)
 {
@@ -152,7 +153,7 @@ void SampleData::deinitialise()
         d_guiContext = 0;
     }
 
-    if (d_inputAggregator)
+    if (d_inputAggregator && !d_nonDefaultInputAggregator)
     {
         delete d_inputAggregator;
         d_inputAggregator = 0;
@@ -245,6 +246,15 @@ void SampleDataModule::initialise(int width, int height)
 
     d_sample->initialise(d_guiContext);
     d_usedFilesString = d_sample->getUsedFilesString();
+
+    // we need to override the default sample input aggregator
+    if (d_sample->getInputAggregator() != 0)
+    {
+        delete d_inputAggregator;
+
+        d_inputAggregator = d_sample->getInputAggregator();
+        d_nonDefaultInputAggregator = true;
+    }
 }
 
 void SampleDataModule::deinitialise()
