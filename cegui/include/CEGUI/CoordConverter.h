@@ -84,7 +84,7 @@ public:
 
     /*!
     \brief
-        converts given Vector2<UDim> to absolute glm::vec2
+        converts given UVector2 to absolute glm::vec2
     */
     inline static glm::vec2 asAbsolute(const UVector2& v, const Sizef& base, bool pixelAlign = true)
     {
@@ -93,7 +93,7 @@ public:
 
     /*!
     \brief
-        converts given Vector2<UDim> to relative glm::vec2
+        converts given UVector2 to relative glm::vec2
     */
     inline static glm::vec2 asRelative(const UVector2& v, const Sizef& base)
     {

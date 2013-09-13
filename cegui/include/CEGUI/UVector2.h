@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIVector_h_
-#define _CEGUIVector_h_
+#ifndef _CEGUIUVector2_h_
+#define _CEGUIUVector2_h_
 
 #include "CEGUI/UDim.h"
 #include "CEGUI/GLM.h"

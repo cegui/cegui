@@ -479,7 +479,7 @@ public:
 
     /*!
 	\brief
-		Return top-left position of URect as a Vector2<T>
+		Return top-left position of URect as an UVector2
 	*/
 	const UVector2& getPosition() const
     {
