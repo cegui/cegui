@@ -114,8 +114,8 @@ void IrrlichtRenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void IrrlichtRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-                                          const Vector2f& p_in,
-                                          Vector2f& p_out) const
+                                          const glm::vec2& p_in,
+                                          glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -150,8 +150,8 @@ void IrrlichtRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     in.Z = -d_viewDistance;
     irr::core::vector3df r1;
     unproj.transformVect(r1, in);
-    in.X = p_in.d_x;
-    in.Y = p_in.d_y;
+    in.X = p_in.x;
+    in.Y = p_in.y;
     in.Z = 0;
     irr::core::vector3df r2;
     unproj.transformVect(r2, in);
@@ -186,8 +186,8 @@ void IrrlichtRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
                             (pn.dotProduct(r1) + dist) / pn_dot_rv :
                              0.0f;
 
-    p_out.d_x = static_cast<float>(r1.X - rv.X * tmp) * d_viewDistance;
-    p_out.d_y = static_cast<float>(r1.Y - rv.Y * tmp) * d_viewDistance;
+    p_out.x = static_cast<float>(r1.X - rv.X * tmp) * d_viewDistance;
+    p_out.y = static_cast<float>(r1.Y - rv.Y * tmp) * d_viewDistance;
 }
 
 //----------------------------------------------------------------------------//

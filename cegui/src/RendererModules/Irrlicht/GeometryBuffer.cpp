@@ -152,28 +152,28 @@ void IrrlichtGeometryBuffer::cleanupClipping() const
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::setTranslation(const glm::vec3& v)
 {
-    d_translation.X = v.d_x;
-    d_translation.Y = v.d_y;
-    d_translation.Z = v.d_z;
+    d_translation.X = v.x;
+    d_translation.Y = v.y;
+    d_translation.Z = v.z;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::setRotation(const glm::quat& r)
 {
-    d_rotation.W = -r.d_w;
-    d_rotation.X = r.d_x;
-    d_rotation.Y = r.d_y;
-    d_rotation.Z = r.d_z;
+    d_rotation.W = -r.w;
+    d_rotation.X = r.x;
+    d_rotation.Y = r.y;
+    d_rotation.Z = r.z;
     d_matrixValid = false;
 }
 
 //----------------------------------------------------------------------------//
 void IrrlichtGeometryBuffer::setPivot(const glm::vec3& p)
 {
-    d_pivot.X = p.d_x;
-    d_pivot.Y = p.d_y;
-    d_pivot.Z = p.d_z;
+    d_pivot.X = p.x;
+    d_pivot.Y = p.y;
+    d_pivot.Z = p.z;
     d_matrixValid = false;
 }
 
@@ -214,11 +214,11 @@ void IrrlichtGeometryBuffer::appendGeometry(const Vertex* const vbuff,
     for (uint i = 0; i < vertex_count; ++i)
     {
         const Vertex& vs = vbuff[i];
-        v.Pos.X     = vs.position.d_x + d_texelOffset;
-        v.Pos.Y     = vs.position.d_y + d_texelOffset;
-        v.Pos.Z     = vs.position.d_z;
-        v.TCoords.X = vs.tex_coords.d_x;
-        v.TCoords.Y = vs.tex_coords.d_y;
+        v.Pos.X     = vs.position.x + d_texelOffset;
+        v.Pos.Y     = vs.position.y + d_texelOffset;
+        v.Pos.Z     = vs.position.z;
+        v.TCoords.X = vs.tex_coords.x;
+        v.TCoords.Y = vs.tex_coords.y;
         v.Color.set(vs.colour_val.getARGB());
         d_vertices.push_back(v);
         d_indices.push_back(idx_start + i);

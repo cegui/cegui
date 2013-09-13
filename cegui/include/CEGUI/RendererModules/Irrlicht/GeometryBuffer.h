@@ -31,7 +31,6 @@
 #include "CEGUI/RendererModules/Irrlicht/RendererDef.h"
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Rect.h"
-#include "CEGUI/Vector.h"
 #include <irrlicht.h>
 #include <vector>
 
