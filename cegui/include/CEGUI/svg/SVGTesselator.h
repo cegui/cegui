@@ -82,8 +82,12 @@ public:
 
         //! Previous left stroke fade point lying in anti-clockwise direction away from the stroke direction.
         glm::vec2 d_lastFadePointLeft;
-        //! Previous right stroke fade point lying in clockwise direction away from the stroke direction-.
+        //! Previous right stroke fade point lying in clockwise direction away from the stroke direction.
         glm::vec2 d_lastFadePointRight;
+
+        //! Previous stroke center point which is necessary to close seams in anti-aliased linejoins and linecaps.
+        glm::vec2 d_lastCenterPoint;
+
 
         //! The vertex we will modify with positions and append to the GeometryBuffer
         ColouredVertex d_strokeVertex;
@@ -256,7 +260,10 @@ private:
     static float calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors);
 
     static void createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd,
-                                                        const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentFadeRightEnd, const bool draw);
+                                                const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentFadeRightEnd, const bool draw);
+
+    static void createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd, const glm::vec2& segmentFadeLeftEnd,
+                                                const glm::vec2& segmentFadeRightEnd, const glm::vec2& center_point, const bool draw);
 
     static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data,
                                                    const glm::vec2& linecap_left, const glm::vec2& linecap_right,
@@ -322,11 +329,15 @@ private:
 
     //! Helper function for calculating and creating an anti-aliased stroke for an arc
     static void createArcStrokeAAGeometry(const std::vector<glm::vec2>& points,
-                                                 const glm::vec2& center_point,
-                                                 StrokeSegmentData& stroke_data,
-                                                 const glm::vec2& scale_factors,
-                                                 glm::vec2& linecap_fade_left,
-                                                 glm::vec2& linecap_fade_right);
+                                          const glm::vec2& arc_center_point,
+                                          const glm::vec2& arc_draw_origin_point,
+                                          StrokeSegmentData& stroke_data,
+                                          const glm::vec2& scale_factors,
+                                          const bool polygon_is_clockwise,
+                                          glm::vec2& linecap_left_AA,
+                                          glm::vec2& linecap_right_AA,
+                                          glm::vec2& linecap_left_fade,
+                                          glm::vec2& linecap_right_fade);
 
     //! Helper function for adding an anti-aliasing quad of a stroke to the GeometryBuffer
     static void addStrokeAAQuad(StrokeSegmentData &stroke_data,
@@ -366,7 +377,8 @@ private:
     //! Function to determine the geometry offsets needed in anti-aliasing, depending on the width
     static void determineAntiAliasingOffsets(float width, glm::vec2& antialiasing_offsets);
 
-    static glm::vec2 getScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings);
+    //! Helper function to determine the scale factors in x and y-direction based on the transformation matrix and the image scale
+    static glm::vec2 determineScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings);
 };
 
 }
