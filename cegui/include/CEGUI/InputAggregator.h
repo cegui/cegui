@@ -160,8 +160,6 @@ public:
     /************************************************************************/
     /* InjectedInputReceiver interface implementation                       */
     /************************************************************************/
-    virtual bool injectTimePulse(float timeElapsed);
-
     virtual bool injectMouseMove(float delta_x, float delta_y);
     virtual bool injectMouseLeaves();
 

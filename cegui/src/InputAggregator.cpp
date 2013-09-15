@@ -197,11 +197,6 @@ void InputAggregator::onMouseMoveScalingFactorChanged(InputAggregatorEventArgs& 
     fireEvent(EventMouseMoveScalingFactorChanged, args);
 }
 
-bool InputAggregator::injectTimePulse(float timeElapsed)
-{
-    return true;
-}
-
 bool InputAggregator::injectMouseMove(float delta_x, float delta_y)
 {
     return injectMousePosition(
