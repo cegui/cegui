@@ -97,8 +97,7 @@ void Direct3D11RenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-                                            const Vector2f& p_in,
-                                            Vector2f& p_out) const
+    const glm::vec2& p_in, glm::vec2& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -149,8 +148,8 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     D3DXVECTOR3 t1;
     D3DXVec3Unproject(&t1, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
 
-    in_vec.x = p_in.d_x;
-    in_vec.y = p_in.d_y;
+    in_vec.x = p_in.x;
+    in_vec.y = p_in.y;
     in_vec.z = 0.0f;
     D3DXVECTOR3 t2;
     D3DXVec3Unproject(&t2, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
@@ -159,8 +158,8 @@ void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
     D3DXVECTOR3 intersect;
     D3DXPlaneIntersectLine(&intersect, &surface_plane, &t1, &t2);
 
-    p_out.d_x = intersect.x;
-    p_out.d_y = intersect.y;
+    p_out.x = intersect.x;
+    p_out.y = intersect.y;
 }
 
 //----------------------------------------------------------------------------//

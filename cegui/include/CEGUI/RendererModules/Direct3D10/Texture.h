@@ -31,7 +31,6 @@
 #include "../../Texture.h"
 #include "CEGUI/RendererModules/Direct3D10/Renderer.h"
 #include "../../Size.h"
-#include "../../Vector.h"
 
 #if defined(_MSC_VER)
 #   pragma warning(push)

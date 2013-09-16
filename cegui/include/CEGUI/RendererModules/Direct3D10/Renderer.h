@@ -30,7 +30,7 @@
 
 #include "../../Renderer.h"
 #include "../../Size.h"
-#include "../../Vector.h"
+
 #include <vector>
 #include <map>
 

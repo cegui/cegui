@@ -45,7 +45,7 @@ Direct3D10GeometryBuffer::Direct3D10GeometryBuffer(Direct3D10Renderer& owner) :
     d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
-    d_rotation(0, 0, 0),
+    d_rotation(),
     d_pivot(0, 0, 0),
     d_effect(0),
     d_matrixValid(false)
@@ -173,12 +173,12 @@ void Direct3D10GeometryBuffer::appendGeometry(const Vertex* const vbuff,
     {
         // copy vertex info the buffer, converting from CEGUI::Vertex to
         // something directly usable by D3D as needed.
-        vd.x       = vs->position.d_x;
-        vd.y       = vs->position.d_y;
-        vd.z       = vs->position.d_z;
+        vd.x       = vs->position.x;
+        vd.y       = vs->position.y;
+        vd.z       = vs->position.z;
         vd.diffuse = vs->colour_val.getARGB();
-        vd.tu      = vs->tex_coords.d_x;
-        vd.tv      = vs->tex_coords.d_y;
+        vd.tu      = vs->tex_coords.x;
+        vd.tv      = vs->tex_coords.y;
         d_vertices.push_back(vd);
     }
 
@@ -232,16 +232,16 @@ RenderEffect* Direct3D10GeometryBuffer::getRenderEffect()
 //----------------------------------------------------------------------------//
 void Direct3D10GeometryBuffer::updateMatrix() const
 {
-    const D3DXVECTOR3 p(d_pivot.d_x, d_pivot.d_y, d_pivot.d_z);
-    const D3DXVECTOR3 t(d_translation.d_x,
-                        d_translation.d_y,
-                        d_translation.d_z);
+    const D3DXVECTOR3 p(d_pivot.x, d_pivot.y, d_pivot.z);
+    const D3DXVECTOR3 t(d_translation.x,
+                        d_translation.y,
+                        d_translation.z);
 
     D3DXQUATERNION r;
-    r.x = d_rotation.d_x;
-    r.y = d_rotation.d_y;
-    r.z = d_rotation.d_z;
-    r.w = d_rotation.d_w;
+    r.x = d_rotation.x;
+    r.y = d_rotation.y;
+    r.z = d_rotation.z;
+    r.w = d_rotation.w;
 
     D3DXMatrixTransformation(&d_matrix, 0, 0, 0, &p, &r, &t);
 

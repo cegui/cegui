@@ -28,10 +28,8 @@
 #ifndef _CEGUIDirect3D9Renderer_h_
 #define _CEGUIDirect3D9Renderer_h_
 
-#include "../../Base.h"
 #include "../../Renderer.h"
 #include "../../Size.h"
-#include "../../Vector.h"
 
 #include <d3d9.h>
 #include <vector>
