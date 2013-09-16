@@ -41,7 +41,7 @@ namespace CEGUI
 {
 //Internal numeric value for  circle roundness. The lower, the better tesselated the
 //circle will be. We will set it to an, for our needs, appropriate fixed value.
-const float CircleRoundnessValue = 1.5f;
+const float CircleRoundnessValue = 0.8f;
 
 //----------------------------------------------------------------------------//
 SVGTesselator::StrokeSegmentData::StrokeSegmentData(GeometryBuffer& geometry_buffer,
@@ -495,9 +495,6 @@ void SVGTesselator::determineAntiAliasingOffsets(float width, glm::vec2& antiali
 	}
 
     core_offset -= width * 0.5f;
-
-    core_offset *= 5.f;
-    fade_offset *= 5.f;
 }
 
 //----------------------------------------------------------------------------//
