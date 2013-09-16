@@ -266,7 +266,7 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
                                  const glm::vec2& scale_factors,
                                  const bool is_shape_closed)
 {
-    if(points.size() <= 1 || paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
+    if(points.size() < 2 || paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
         return;
 
     //We need this to determine the degree of tesselation required for the curved elements
@@ -289,46 +289,41 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     const size_t points_count = points.size();
     size_t i = 0;
    
-    // Handle start of stroke
+    // Handle the beginning of the stroke considering that the shape might be open and therefore needs linecaps
     if(!is_shape_closed)
     {
-        //Check if we have more than 2 points forming a line
-        bool has_more_than_two_points = (points_count > 2);
-        //Calculate and set our linesegment connection points without adding geometry
-        if(has_more_than_two_points)
-        {
-            stroke_data.setPoints(points[0], points[1], points[2]);
-            createLineSegment(stroke_data, render_settings, scale_factors, false);
-        }
-
-        //We store our last points for later usage
-        glm::vec2 last_left = stroke_data.d_lastPointLeft;
-        glm::vec2 last_right = stroke_data.d_lastPointRight;
-        glm::vec2 last_fade_left = stroke_data.d_lastFadePointLeft;
-        glm::vec2 last_fade_right = stroke_data.d_lastFadePointRight;
-
         //Create the starting linecap
         stroke_data.setPoints(points[0], points[0], points[1]);
-        createLinecap(stroke_data, render_settings, scale_factors, true);
+        createStrokeLinecap(stroke_data, render_settings, scale_factors, true);
 
-        //We use the points we calculated earlier so we don't need to recalculate them after they were
-        //overwritten in the linecap function
-        stroke_data.d_lastPointLeft = last_left;
-        stroke_data.d_lastPointRight = last_right;
-        stroke_data.d_lastFadePointLeft  = last_fade_left;
-        stroke_data.d_lastFadePointRight  =  last_fade_right;
-
-        i = 2;
+        ++i;
     }
     else
     {
         //Get the first two stroke points without drawing anything
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[0]);
-        createLineSegment(stroke_data, render_settings, scale_factors, false);
+        createStrokeLinejoin(stroke_data, render_settings, scale_factors, false);
+
+        if(!render_settings.d_antiAliasing)
+            setStrokeDataSubsequentPointsAsLastPoints(stroke_data);
+        else
+            setStrokeDataSubsequentPointsAsLastPointsAA(stroke_data);
+
 
         //Add the segment connected via the first point
         stroke_data.setPoints(points[points_count - 1], points[i], points[i + 1]);
-        createLineSegment(stroke_data, render_settings, scale_factors, true);
+        createStrokeLinejoin(stroke_data, render_settings, scale_factors, true);
+
+        if(!render_settings.d_antiAliasing)
+        {
+            createStrokeSegmentConnection(stroke_data);
+            setStrokeDataSubsequentPointsAsLastPoints(stroke_data);
+        }
+        else
+        {
+            createStrokeSegmentConnectionAA(stroke_data);
+            setStrokeDataSubsequentPointsAsLastPointsAA(stroke_data);
+        }
 
         ++i;
     }
@@ -337,29 +332,57 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
     for(; i < points_count - 1; ++i)
     {       
         stroke_data.setPoints(points[i - 1], points[i], points[i + 1]);
-        createLineSegment(stroke_data, render_settings, scale_factors, true);
+        createStrokeLinejoin(stroke_data, render_settings, scale_factors, true);
+
+        if(!render_settings.d_antiAliasing)
+        {
+            createStrokeSegmentConnection(stroke_data);
+            setStrokeDataSubsequentPointsAsLastPoints(stroke_data);
+        }
+        else
+        {
+            createStrokeSegmentConnectionAA(stroke_data);
+            setStrokeDataSubsequentPointsAsLastPointsAA(stroke_data);
+        }
     }
 
-    // Handle end of stroke
+    // Handle the end of the stroke considering that the shape might be open and therefore needs linecaps
     if(!is_shape_closed)
     {
+        //Set out last points as current points so we do not override them with he linecap creation
+        if(!render_settings.d_antiAliasing)
+            setStrokeDataLastPointsAsCurrentPoints(stroke_data);
+        else
+            setStrokeDataLastPointsAsCurrentPointsAA(stroke_data);
+
         //Create linecap
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[points_count - 1]);
-        createLinecap(stroke_data, render_settings, scale_factors, false);
+        createStrokeLinecap(stroke_data, render_settings, scale_factors, false);
+
+        //Connect to the linecap
+        if(!render_settings.d_antiAliasing)
+            createStrokeSegmentConnection(stroke_data);
+        else
+            createStrokeSegmentConnectionAA(stroke_data);
     }
     else
     {
         //Add the segment connected via the last point
         stroke_data.setPoints(points[points_count - 2], points[points_count - 1], points[0]);
-        createLineSegment(stroke_data, render_settings, scale_factors, true);
+        createStrokeLinejoin(stroke_data, render_settings, scale_factors, true);
+
+        if(!render_settings.d_antiAliasing)
+            createStrokeSegmentConnection(stroke_data);
+        else
+            createStrokeSegmentConnectionAA(stroke_data);
     }
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createLineSegment(StrokeSegmentData& stroke_data,
-                                        const SVGImage::SVGImageRenderSettings& render_settings,
-                                        const glm::vec2& scale_factors,
-                                        const bool draw)
+void SVGTesselator::createStrokeLinejoin(StrokeSegmentData& stroke_data,
+                                         const SVGImage::SVGImageRenderSettings& render_settings,
+                                         const glm::vec2& scale_factors,
+                                         const bool draw)
 {
     SVGPaintStyle::SVGLinejoin linejoin = stroke_data.d_paintStyle.d_strokeLinejoin;
     const glm::vec2& prev_point = *stroke_data.d_prevPoint;
@@ -401,13 +424,15 @@ void SVGTesselator::createLineSegment(StrokeSegmentData& stroke_data,
         outer_point = cur_point + cur_point - inner_intersection;
 
         if(!render_settings.d_antiAliasing)
-            createStrokeSegmentConnection(stroke_data, segment_end_left, segment_end_right, draw);
+        {
+            setStrokeDataCurrentPoints(stroke_data, segment_end_left, segment_end_right);
+            setStrokeDataSubsequentPoints(stroke_data, segment_end_left, segment_end_right);
+        }
         else
-            calculateAndAddStrokeSegmentAAConnection(stroke_data, segment_end_left, segment_end_right, polygon_is_clockwise,
-                                                     prev_to_cur, cur_to_next, prev_dir_to_inside, next_dir_to_inside, scale_factors, draw);
+            calculateAAMiterAndSetConnectionPoints(stroke_data, segment_end_left, segment_end_right, polygon_is_clockwise,
+                                                   prev_to_cur, cur_to_next, prev_dir_to_inside, next_dir_to_inside, scale_factors);
     }
-    else if(linejoin == SVGPaintStyle::SLJ_BEVEL ||
-            linejoin == SVGPaintStyle::SLJ_ROUND)
+    else if(linejoin == SVGPaintStyle::SLJ_BEVEL || linejoin == SVGPaintStyle::SLJ_ROUND)
     {
         //Is the first bevel corner point
         outer_point = cur_point - prev_vec_to_inside;
@@ -476,10 +501,10 @@ void SVGTesselator::determineAntiAliasingOffsets(float width, glm::vec2& antiali
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
-                                  const SVGImage::SVGImageRenderSettings& render_settings,
-                                  const glm::vec2& scale_factors,
-                                  const bool is_start)
+void SVGTesselator::createStrokeLinecap(StrokeSegmentData& stroke_data,
+                                        const SVGImage::SVGImageRenderSettings& render_settings,
+                                        const glm::vec2& scale_factors,
+                                        const bool is_start)
 {
     const SVGPaintStyle::SVGLinecap& linecap = stroke_data.d_paintStyle.d_strokeLinecap;
     const glm::vec2& point1 = is_start ? *stroke_data.d_curPoint : *stroke_data.d_prevPoint;
@@ -513,31 +538,32 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
         float length_side_scale = calculateLengthScale(dir_to_outside, scale_factors);
         glm::vec2 lineside_offset_vec = length_side_scale * dir_to_outside;
 
-        if( linecap == SVGPaintStyle::SLC_BUTT || linecap == SVGPaintStyle::SLC_SQUARE )
+        linecap_left_fade = linecap_left + stroke_data.d_antiAliasingOffsets.y * lineside_offset_vec;
+        linecap_right_fade = linecap_right + stroke_data.d_antiAliasingOffsets.y * -lineside_offset_vec;
+        linecap_left_AA = linecap_left + stroke_data.d_antiAliasingOffsets.x * lineside_offset_vec;
+        linecap_right_AA = linecap_right + stroke_data.d_antiAliasingOffsets.x * -lineside_offset_vec;
+    }
+
+    if( linecap == SVGPaintStyle::SLC_BUTT || linecap == SVGPaintStyle::SLC_SQUARE )
+    {
+        if(render_settings.d_antiAliasing)
         {
             float length_cap_scale = calculateLengthScale(linecap_dir, scale_factors);
             glm::vec2 linecap_offset_vec = length_cap_scale * linecap_dir;
-            linecap_left_fade = linecap_left + stroke_data.d_antiAliasingOffsets.y * (linecap_offset_vec + lineside_offset_vec);
-            linecap_right_fade = linecap_right + stroke_data.d_antiAliasingOffsets.y * (linecap_offset_vec - lineside_offset_vec);
-            linecap_left_AA = linecap_left + stroke_data.d_antiAliasingOffsets.x * (linecap_offset_vec + lineside_offset_vec);
-            linecap_right_AA = linecap_right + stroke_data.d_antiAliasingOffsets.x * (linecap_offset_vec - lineside_offset_vec);
+            linecap_left_fade += stroke_data.d_antiAliasingOffsets.y * linecap_offset_vec;
+            linecap_right_fade += stroke_data.d_antiAliasingOffsets.y * linecap_offset_vec;
+            linecap_left_AA += stroke_data.d_antiAliasingOffsets.x * linecap_offset_vec;
+            linecap_right_AA += stroke_data.d_antiAliasingOffsets.x * linecap_offset_vec;
 
+            //Create the outer AA quad of the butt or square linecap
             addStrokeLinecapAAGeometryVertices(stroke_data, linecap_left_AA, linecap_right_AA, linecap_left_fade, linecap_right_fade);
-
-            createStrokeSegmentAAConnection(stroke_data, linecap_left_AA, linecap_right_AA,
-                                           linecap_left_fade, linecap_right_fade, true);
+            //Add the anti-aliased connection points to the stroke data
+            setStrokeDataLastPointsAA(stroke_data, linecap_left_AA, linecap_right_AA, linecap_left_fade, linecap_right_fade);
         }
-        else if( linecap == SVGPaintStyle::SLC_ROUND)
-        {
-            linecap_left_fade = linecap_left + stroke_data.d_antiAliasingOffsets.y * lineside_offset_vec;
-            linecap_right_fade = linecap_right + stroke_data.d_antiAliasingOffsets.y * -lineside_offset_vec;
-            linecap_left_AA = linecap_left + stroke_data.d_antiAliasingOffsets.x * lineside_offset_vec;
-            linecap_right_AA = linecap_right + stroke_data.d_antiAliasingOffsets.x * -lineside_offset_vec;
-        }
+        else
+            //Add the connection points to the stroke data
+            setStrokeDataLastPoints(stroke_data, linecap_left, linecap_right);
     }
-    else if( linecap == SVGPaintStyle::SLC_BUTT || linecap == SVGPaintStyle::SLC_SQUARE )
-        createStrokeSegmentConnection(stroke_data, linecap_left, linecap_right, true);
-
 
     //In case we got rounded linecaps we want to determine our points first and draw then
     if(linecap == SVGPaintStyle::SLC_ROUND)
@@ -557,60 +583,25 @@ void SVGTesselator::createLinecap(StrokeSegmentData& stroke_data,
         
         if(!render_settings.d_antiAliasing)
         {
+            //Calculate the arc points
             createArcStrokeGeometry(arc_points, stroke_data.d_geometryBuffer, stroke_data.d_strokeVertex);
             
-            createStrokeSegmentConnection(stroke_data, linecap_left, linecap_right, !is_start);
+            setStrokeDataLastPoints(stroke_data, linecap_left, linecap_right);
         }
         else
         {
+            //Calculate the anti-aliased arc points
             createArcStrokeAAGeometry(arc_points, linecap_center_point, linecap_center_point, stroke_data, scale_factors,
                                       is_start, linecap_left_AA, linecap_right_AA, linecap_left_fade, linecap_right_fade);
 
-            stroke_data.d_lastCenterPoint = 0.5f * (stroke_data.d_lastPointLeft + stroke_data.d_lastPointRight);
-            createStrokeSegmentAAConnection(stroke_data, linecap_left_AA, linecap_right_AA, linecap_left_fade,
-                                            linecap_right_fade, linecap_center_point, true);
+            setStrokeDataLastPointsAAWithCenter(stroke_data, linecap_left_AA, linecap_right_AA, linecap_left_fade,
+                                                linecap_right_fade, linecap_center_point);
         }
     }
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createStrokeSegmentConnection(StrokeSegmentData& stroke_data,
-                                                  const glm::vec2& segment_end_left,
-                                                  const glm::vec2& segment_end_right,
-                                                  const bool draw)
-{
-    if(draw)
-    {
-        // Add the geometry
-        CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-        GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
-
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segment_end_left;
-        geometry_buffer.appendVertex(stroke_vertex);
-
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segment_end_left;
-        geometry_buffer.appendVertex(stroke_vertex);
-
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segment_end_right;
-        geometry_buffer.appendVertex(stroke_vertex);
-    }
-
-    //! We set our last point values
-    stroke_data.d_lastPointLeft = segment_end_left;
-    stroke_data.d_lastPointRight = segment_end_right;
-}
-
-//----------------------------------------------------------------------------//
-void SVGTesselator::calculateAndAddStrokeSegmentAAConnection(StrokeSegmentData& stroke_data,
+void SVGTesselator::calculateAAMiterAndSetConnectionPoints(StrokeSegmentData& stroke_data,
                                                              const glm::vec2& segment_end_left_orig,
                                                              const glm::vec2& segment_end_right_orig,
                                                              const bool polygon_is_clockwise,
@@ -618,8 +609,7 @@ void SVGTesselator::calculateAndAddStrokeSegmentAAConnection(StrokeSegmentData& 
                                                              const glm::vec2& cur_to_next,
                                                              const glm::vec2& prev_dir_to_inside,
                                                              const glm::vec2& next_dir_to_inside,
-                                                             const glm::vec2& scale_factors,
-                                                             const bool draw)
+                                                             const glm::vec2& scale_factors)
 {
     glm::vec2 vec_to_corner = calculateScaledCombinedVector(scale_factors, prev_dir_to_inside, next_dir_to_inside,
                                                             prev_to_cur, cur_to_next, polygon_is_clockwise);
@@ -634,8 +624,8 @@ void SVGTesselator::calculateAndAddStrokeSegmentAAConnection(StrokeSegmentData& 
     const glm::vec2 segmentFadeRightEnd = segment_end_right_orig - fade_offset_vec;
 
     // If we want to draw we have to combine the vertices
-    createStrokeSegmentAAConnection(stroke_data, segmentLeftEnd, segmentRightEnd,
-                                    segmentFadeLeftEnd, segmentFadeRightEnd, draw);
+    setStrokeDataCurrentPointsAA(stroke_data, segmentLeftEnd, segmentRightEnd, segmentFadeLeftEnd, segmentFadeRightEnd);
+    setStrokeDataSubsequentPointsAA(stroke_data, segmentLeftEnd, segmentRightEnd, segmentFadeLeftEnd, segmentFadeRightEnd);
 }
 
 //----------------------------------------------------------------------------//
@@ -827,7 +817,6 @@ void SVGTesselator::createArcStrokeAAGeometry(const std::vector<glm::vec2>& poin
     if(points.empty())
         return;
 
-
     glm::vec2 previous_normal_point, previous_fade_point;
 
     //Draw all arc parts
@@ -950,8 +939,8 @@ void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_d
 {
     if(draw)
     {
-        //Add the segment
-        createStrokeSegmentConnection(stroke_data, segment_end_left, segment_end_right, draw);
+        setStrokeDataCurrentPoints(stroke_data, segment_end_left, segment_end_right);
+
 
         if(linejoin == SVGPaintStyle::SLJ_BEVEL)
         {
@@ -980,8 +969,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_d
         }
     }
 
-    stroke_data.d_lastPointLeft = polygon_is_clockwise ? second_bevel_point : segment_end_left;
-    stroke_data.d_lastPointRight = polygon_is_clockwise ? segment_end_right : second_bevel_point;
+    setStrokeDataSubsequentPoints(stroke_data, polygon_is_clockwise ? second_bevel_point : segment_end_left, polygon_is_clockwise ? segment_end_right : second_bevel_point);
 }
 
 //----------------------------------------------------------------------------//
@@ -1053,27 +1041,37 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
     if(could_vectors_overlap)
         are_lines_overlapping = ( intersect(outer_point, outer_fade_AA, second_bevel_point, outer2_fade_AA, glm::vec2()) == INTERESECTING );
 
+   
     if(are_lines_overlapping)
     {
-        //In case of an overlap we fall back to using just single vertex similar to the miter linejoin
+        //In case of an overlap we fall back to just using single vertex, similar to the miter linejoin
         glm::vec2 outer_point_miter = cur_point + cur_point - inner_point;
 
         // Calculate the corrected outer positions
         const glm::vec2 outer_AA_corrected = outer_point_miter - core_offset_vec_inner;
         const glm::vec2 outer_AA_fade_corrected = outer_point_miter - fade_offset_vec_inner;
 
-        // Combine the vertices
+        // Set the connection
         if(polygon_is_clockwise)
-            createStrokeSegmentAAConnection(stroke_data, outer_AA_corrected, inner_AA,
-                                            outer_AA_fade_corrected, inner_fade_AA, draw);
+        {
+            setStrokeDataCurrentPointsAA(stroke_data, outer_AA_corrected, inner_AA,
+                                         outer_AA_fade_corrected, inner_fade_AA);
+            setStrokeDataSubsequentPointsAA(stroke_data, outer_AA_corrected, inner_AA,
+                                            outer_AA_fade_corrected, inner_fade_AA);
+        }
         else
-            createStrokeSegmentAAConnection(stroke_data, inner_AA, outer_AA_corrected,
-                                            inner_fade_AA, outer_AA_fade_corrected, draw);
+        {
+            setStrokeDataCurrentPointsAA(stroke_data, inner_AA, outer_AA_corrected,
+                                         inner_fade_AA, outer_AA_fade_corrected);
+            setStrokeDataSubsequentPointsAA(stroke_data, inner_AA, outer_AA_corrected,
+                                inner_fade_AA, outer_AA_fade_corrected);
+        }
     }
     else 
-    {
+    { 
         if(draw && linejoin == SVGPaintStyle::SLJ_BEVEL)
         {
+            //Add the geometry for bevel
             addTriangleGeometry(outer2_AA, inner_AA, outer_AA,
                                 geometry_buffer, stroke_vertex);
 
@@ -1081,6 +1079,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
         }
         else if(draw && linejoin == SVGPaintStyle::SLJ_ROUND)
         {
+            //Add the geometry for rounded linejoin
             float arc_angle = std::acos( glm::dot(-prev_dir_to_inside, -next_dir_to_inside) );
 
             //Get the parameters
@@ -1095,25 +1094,22 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
 
             createArcStrokeAAGeometry(arc_points, cur_point, inner_AA, stroke_data, scale_factors,
                                       !polygon_is_clockwise, outer_AA, outer2_AA, outer_fade_AA, outer2_fade_AA);
-
         }
 
 
         // We add the geometry of the segment that connects to the last linecap/linejoin
         if(polygon_is_clockwise)
-            createStrokeSegmentAAConnection(stroke_data, outer_AA, inner_AA,
-                                            outer_fade_AA, inner_fade_AA, draw);
+        {
+            setStrokeDataCurrentPointsAA(stroke_data, outer_AA, inner_AA, outer_fade_AA, inner_fade_AA);
+            setStrokeDataSubsequentPointsAA(stroke_data, outer2_AA, inner_AA, outer2_fade_AA, inner_fade_AA);
+        }
         else
-            createStrokeSegmentAAConnection(stroke_data, inner_AA, outer_AA,
-                                            inner_fade_AA, outer_fade_AA, draw);
-
-        stroke_data.d_lastPointLeft = polygon_is_clockwise ? outer2_AA : inner_AA;
-        stroke_data.d_lastPointRight = polygon_is_clockwise ? inner_AA : outer2_AA;
-        stroke_data.d_lastFadePointLeft = polygon_is_clockwise ? outer2_fade_AA : inner_fade_AA;
-        stroke_data.d_lastFadePointRight = polygon_is_clockwise ? inner_fade_AA : outer2_fade_AA;
+        {
+            setStrokeDataCurrentPointsAA(stroke_data, inner_AA, outer_AA, inner_fade_AA, outer_fade_AA);
+            setStrokeDataSubsequentPointsAA(stroke_data, inner_AA, outer2_AA, inner_fade_AA, outer2_fade_AA);
+        }
     }
 }
-
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createRectangleFill(const SVGPaintStyle& paint_style, std::vector<glm::vec2>& rectangle_points, GeometryBuffer& geometry_buffer)
@@ -1152,141 +1148,149 @@ void SVGTesselator::createRectangleFill(const SVGPaintStyle& paint_style, std::v
 //----------------------------------------------------------------------------//
 glm::vec2 SVGTesselator::determineScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    glm::vec2 scale ( glm::length(transformation[0]), glm::length(transformation[1]) );
+    glm::vec2 scale ( glm::length(glm::vec3(transformation[0].x, transformation[1].x, transformation[2].x)), 
+                      glm::length(glm::vec3(transformation[0].y, transformation[1].y, transformation[2].y)) );
     scale *= glm::vec2( render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y );
     scale = 1.f / scale;
 
     return scale;
 }
 
+
 //----------------------------------------------------------------------------//
-void SVGTesselator::createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd,
-                                                    const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentFadeRightEnd, const bool draw)
+void SVGTesselator::createStrokeSegmentConnection(StrokeSegmentData& stroke_data)
+{
+    // Add the geometry
+    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createStrokeSegmentConnectionAA(StrokeSegmentData &stroke_data)
 { 
-    if(draw)
-    {
-        CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-        CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
-        GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
-        //Fade1
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeLeftEnd;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeLeftEnd;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        //Core
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        //Fade1
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeRightEnd;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-    }
-
-    // We set our lastPoint values to the current values
-    stroke_data.d_lastPointLeft = segmentLeftEnd;
-    stroke_data.d_lastPointRight = segmentRightEnd;
-    stroke_data.d_lastFadePointLeft = segmentFadeLeftEnd;
-    stroke_data.d_lastFadePointRight = segmentFadeRightEnd;
+    //Fade1
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Core
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Fade1
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd, const glm::vec2& segmentFadeLeftEnd,
-                                                    const glm::vec2& segmentFadeRightEnd, const glm::vec2& center_point, const bool draw)
+void SVGTesselator::createStrokeSegmentAAConnectionWithCenter(StrokeSegmentData &stroke_data)
 { 
-    if(draw)
-    {
-        CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
-        CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
-        GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
+    CEGUI::ColouredVertex& stroke_vertex = stroke_data.d_strokeVertex;
+    CEGUI::ColouredVertex& stroke_fade_vertex = stroke_data.d_strokeFadeVertex;
+    GeometryBuffer& geometry_buffer = stroke_data.d_geometryBuffer;
 
-        //Fade1
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeLeftEnd;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeLeftEnd;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        //Core to center points #1
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastCenterPoint;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastCenterPoint;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentLeftEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = center_point;
-        geometry_buffer.appendVertex(stroke_vertex);
-        //Core to center points #2
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastCenterPoint;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = center_point;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = center_point;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        //Fade1
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-        stroke_vertex.d_position.swizzle(glm::X, glm::Y) = segmentRightEnd;
-        geometry_buffer.appendVertex(stroke_vertex);
-        stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = segmentFadeRightEnd;
-        geometry_buffer.appendVertex(stroke_fade_vertex);
-    }
-
-    // We set our lastPoint values to the current values
-    stroke_data.d_lastPointLeft = segmentLeftEnd;
-    stroke_data.d_lastPointRight = segmentRightEnd;
-    stroke_data.d_lastFadePointLeft = segmentFadeLeftEnd;
-    stroke_data.d_lastFadePointRight = segmentFadeRightEnd;
-    stroke_data.d_lastCenterPoint = center_point;
+    //Fade1
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointLeft;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Core to center points #1
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentCenterPoint;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentCenterPoint;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointLeft;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastCenterPoint;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Core to center points #2
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentCenterPoint;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastCenterPoint;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastCenterPoint;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    //Fade1
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_currentFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
+    stroke_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastPointRight;
+    geometry_buffer.appendVertex(stroke_vertex);
+    stroke_fade_vertex.d_position.swizzle(glm::X, glm::Y) = stroke_data.d_lastFadePointRight;
+    geometry_buffer.appendVertex(stroke_fade_vertex);
 }
 
 //----------------------------------------------------------------------------//
@@ -1388,6 +1392,163 @@ bool SVGTesselator::isVectorLeftOfOtherVector(const glm::vec2& vector_left,
     float dot_result = (vector_left.x * -vector_right.y) + (vector_left.y * vector_right.x);
     return dot_result > 0.0f;
 }
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataLastPoints(StrokeSegmentData &stroke_data,
+                                            const glm::vec2& last_point_left,
+                                            const glm::vec2& last_point_right)
+{
+    //We set our lastPoint values
+    stroke_data.d_lastPointLeft = last_point_left;
+    stroke_data.d_lastPointRight = last_point_right;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataLastPointsAA(StrokeSegmentData &stroke_data,
+                                                 const glm::vec2& last_point_left,
+                                                 const glm::vec2& last_point_right,
+                                                 const glm::vec2& last_point_left_fade,
+                                                 const glm::vec2& last_point_right_fade)
+{
+    // We set our lastPoint values
+    stroke_data.d_lastPointLeft = last_point_left;
+    stroke_data.d_lastPointRight = last_point_right;
+    stroke_data.d_lastFadePointLeft = last_point_left_fade;
+    stroke_data.d_lastFadePointRight = last_point_right_fade;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataLastPointsAAWithCenter(StrokeSegmentData &stroke_data,
+                                                           const glm::vec2& last_point_left,
+                                                           const glm::vec2& last_point_right,
+                                                           const glm::vec2& last_point_left_fade,
+                                                           const glm::vec2& last_point_right_fade,
+                                                           const glm::vec2& last_center_point)
+{
+    // We set our lastPoint values
+    stroke_data.d_lastPointLeft = last_point_left;
+    stroke_data.d_lastPointRight = last_point_right;
+    stroke_data.d_lastFadePointLeft = last_point_left_fade;
+    stroke_data.d_lastFadePointRight = last_point_right_fade;
+    stroke_data.d_lastCenterPoint = last_center_point;
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataCurrentPoints(StrokeSegmentData &stroke_data,
+                                               const glm::vec2& current_point_left,
+                                               const glm::vec2& current_point_right)
+{
+    //We set our currentPoint values
+    stroke_data.d_currentPointLeft = current_point_left;
+    stroke_data.d_currentPointRight = current_point_right;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataCurrentPointsAA(StrokeSegmentData &stroke_data,
+                                                 const glm::vec2& current_point_left,
+                                                 const glm::vec2& current_point_right,
+                                                 const glm::vec2& current_point_left_fade,
+                                                 const glm::vec2& current_point_right_fade)
+{
+    // We set our currentPoint values
+    stroke_data.d_currentPointLeft = current_point_left;
+    stroke_data.d_currentPointRight = current_point_right;
+    stroke_data.d_currentFadePointLeft = current_point_left_fade;
+    stroke_data.d_currentFadePointRight = current_point_right_fade;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataCurrentPointsAAWithCenter(StrokeSegmentData &stroke_data,
+                                                           const glm::vec2& current_point_left,
+                                                           const glm::vec2& current_point_right,
+                                                           const glm::vec2& current_point_left_fade,
+                                                           const glm::vec2& current_point_right_fade,
+                                                           const glm::vec2& current_center_point)
+{
+    // We set our currentPoint values
+    stroke_data.d_currentPointLeft = current_point_left;
+    stroke_data.d_currentPointRight = current_point_right;
+    stroke_data.d_currentFadePointLeft = current_point_left_fade;
+    stroke_data.d_currentFadePointRight = current_point_right_fade;
+    stroke_data.d_currentCenterPoint = current_center_point;
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataSubsequentPoints(StrokeSegmentData &stroke_data,
+                                                  const glm::vec2& subsequent_point_left,
+                                                  const glm::vec2& subsequent_point_right)
+{
+    //We set our subsequentPoint values
+    stroke_data.d_subsequentPointLeft = subsequent_point_left;
+    stroke_data.d_subsequentPointRight = subsequent_point_right;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataSubsequentPointsAA(StrokeSegmentData &stroke_data,
+                                                 const glm::vec2& subsequent_point_left,
+                                                 const glm::vec2& subsequent_point_right,
+                                                 const glm::vec2& subsequent_point_left_fade,
+                                                 const glm::vec2& subsequent_point_right_fade)
+{
+    // We set our subsequentPoint values
+    stroke_data.d_subsequentPointLeft = subsequent_point_left;
+    stroke_data.d_subsequentPointRight = subsequent_point_right;
+    stroke_data.d_subsequentFadePointLeft = subsequent_point_left_fade;
+    stroke_data.d_subsequentFadePointRight = subsequent_point_right_fade;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataSubsequentPointsAAWithCenter(StrokeSegmentData &stroke_data,
+                                                           const glm::vec2& subsequent_point_left,
+                                                           const glm::vec2& subsequent_point_right,
+                                                           const glm::vec2& subsequent_point_left_fade,
+                                                           const glm::vec2& subsequent_point_right_fade,
+                                                           const glm::vec2& subsequent_center_point)
+{
+    // We set our subsequentPoint values
+    stroke_data.d_subsequentPointLeft = subsequent_point_left;
+    stroke_data.d_subsequentPointRight = subsequent_point_right;
+    stroke_data.d_subsequentFadePointLeft = subsequent_point_left_fade;
+    stroke_data.d_subsequentFadePointRight = subsequent_point_right_fade;
+    stroke_data.d_subsequentCenterPoint = subsequent_center_point;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataSubsequentPointsAsLastPoints(StrokeSegmentData &stroke_data)
+{
+    stroke_data.d_lastPointLeft = stroke_data.d_subsequentPointLeft;
+    stroke_data.d_lastPointRight = stroke_data.d_subsequentPointRight;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataSubsequentPointsAsLastPointsAA(StrokeSegmentData &stroke_data)
+{
+    stroke_data.d_lastPointLeft = stroke_data.d_subsequentPointLeft;
+    stroke_data.d_lastPointRight = stroke_data.d_subsequentPointRight;
+    stroke_data.d_lastFadePointLeft = stroke_data.d_subsequentFadePointLeft;
+    stroke_data.d_lastFadePointRight = stroke_data.d_subsequentFadePointRight;
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataLastPointsAsCurrentPoints(StrokeSegmentData &stroke_data)
+{
+    stroke_data.d_currentPointLeft = stroke_data.d_lastPointLeft;
+    stroke_data.d_currentPointRight = stroke_data.d_lastPointRight;
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setStrokeDataLastPointsAsCurrentPointsAA(StrokeSegmentData &stroke_data)
+{
+    stroke_data.d_currentPointLeft = stroke_data.d_lastPointLeft;
+    stroke_data.d_currentPointRight = stroke_data.d_lastPointRight;
+    stroke_data.d_currentFadePointLeft = stroke_data.d_lastFadePointLeft;
+    stroke_data.d_currentFadePointRight = stroke_data.d_lastFadePointRight;
+}
+
+
 
 //----------------------------------------------------------------------------//
 }

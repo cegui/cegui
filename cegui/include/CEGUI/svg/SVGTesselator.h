@@ -75,18 +75,38 @@ public:
         //! The paint style
         const SVGPaintStyle& d_paintStyle;
 
-        //! Previous left stroke point lying in anti-clockwise direction away from the stroke direction.
+        //! Last left stroke point, lying in anti-clockwise direction away from the stroke direction.
         glm::vec2 d_lastPointLeft;
-        //! Previous right stroke point lying in clockwise direction away from the stroke direction-.
+        //! Last right stroke point, lying in clockwise direction away from the stroke direction.
         glm::vec2 d_lastPointRight;
-
-        //! Previous left stroke fade point lying in anti-clockwise direction away from the stroke direction.
+        //! Last left stroke fade point, lying in anti-clockwise direction away from the stroke direction.
         glm::vec2 d_lastFadePointLeft;
-        //! Previous right stroke fade point lying in clockwise direction away from the stroke direction.
+        //! Last right stroke fade point, lying in clockwise direction away from the stroke direction.
         glm::vec2 d_lastFadePointRight;
-
-        //! Previous stroke center point which is necessary to close seams in anti-aliased linejoins and linecaps.
+        //! Last stroke center point, which is necessary to close seams in anti-aliased linejoins and linecaps.
         glm::vec2 d_lastCenterPoint;
+
+        //! Current left stroke point, lying in anti-clockwise direction away from the stroke direction.
+        glm::vec2 d_currentPointLeft;
+        //! Current right stroke point, lying in clockwise direction away from the stroke direction.
+        glm::vec2 d_currentPointRight;
+        //! Current left stroke fade point, lying in anti-clockwise direction away from the stroke direction.
+        glm::vec2 d_currentFadePointLeft;
+        //! Current right stroke fade point, lying in clockwise direction away from the stroke direction.
+        glm::vec2 d_currentFadePointRight;
+        //! Current stroke center point, which is necessary to close seams in anti-aliased linejoins and linecaps.
+        glm::vec2 d_currentCenterPoint;
+
+        //! Last left stroke point, lying in anti-clockwise direction away from the stroke direction.
+        glm::vec2 d_subsequentPointLeft;
+        //! Last right stroke point, lying in clockwise direction away from the stroke direction.
+        glm::vec2 d_subsequentPointRight;
+        //! Last left stroke fade point, lying in anti-clockwise direction away from the stroke direction.
+        glm::vec2 d_subsequentFadePointLeft;
+        //! Last right stroke fade point, lying in clockwise direction away from the stroke direction.
+        glm::vec2 d_subsequentFadePointRight;
+        //! Last stroke center point, which is necessary to close seams in anti-aliased linejoins and linecaps.
+        glm::vec2 d_subsequentCenterPoint;
 
 
         //! The vertex we will modify with positions and append to the GeometryBuffer
@@ -191,7 +211,7 @@ private:
                              const bool is_shape_closed);
 
     //! Stroke helper function that determines vertices of a stroke segment and adds them to the geometry buffer
-    static void createLineSegment(StrokeSegmentData& stroke_data,
+    static void createStrokeLinejoin(StrokeSegmentData& stroke_data,
                                     const SVGImage::SVGImageRenderSettings& render_settings,
                                     const glm::vec2& scale_factors,
                                     const bool draw = true);
@@ -232,22 +252,15 @@ private:
                                             const glm::vec2& inner_intersection,
                                             SVGPaintStyle::SVGLinejoin& linejoin);
 
-    //! Stroke draw helper function that appends geometry for the connection between two new points and the last points
-    static void createStrokeSegmentConnection(StrokeSegmentData &stroke_data,
-                                              const glm::vec2& segment_end_left,
-                                              const glm::vec2& segment_end_right,
-                                              const bool draw);
-
-    static void calculateAndAddStrokeSegmentAAConnection(StrokeSegmentData& stroke_data,
-                                                    const glm::vec2& segment_end_left_orig,
-                                                    const glm::vec2& segment_end_right_orig,
-                                                    const bool polygon_is_clockwise,
-                                                    const glm::vec2& prev_to_cur,
-                                                    const glm::vec2& cur_to_next,
-                                                    const glm::vec2& prev_dir_to_inside,
-                                                    const glm::vec2& next_dir_to_inside,
-                                                    const glm::vec2& scale_factors,
-                                                    const bool draw);
+    static void calculateAAMiterAndSetConnectionPoints(StrokeSegmentData& stroke_data,
+                                                        const glm::vec2& segment_end_left_orig,
+                                                        const glm::vec2& segment_end_right_orig,
+                                                        const bool polygon_is_clockwise,
+                                                        const glm::vec2& prev_to_cur,
+                                                        const glm::vec2& cur_to_next,
+                                                        const glm::vec2& prev_dir_to_inside,
+                                                        const glm::vec2& next_dir_to_inside,
+                                                        const glm::vec2& scale_factors);
 
     static glm::vec2 calculateScaledCombinedVector(const glm::vec2& scale_factors,
                                                    const glm::vec2& prev_dir_to_inside,
@@ -259,21 +272,74 @@ private:
     //! Returns the factor by which the length of the given unit factor would be increased in case it was scaled by the given factors in x and y directions.
     static float calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors);
 
-    static void createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd,
-                                                const glm::vec2& segmentFadeLeftEnd, const glm::vec2& segmentFadeRightEnd, const bool draw);
+    //! Stroke draw helper function that adds geometry to connect linejoins and linecaps with each other. Creates a connection consisting of 1 quad.
+    static void createStrokeSegmentConnection(StrokeSegmentData &stroke_data);
 
-    static void createStrokeSegmentAAConnection(StrokeSegmentData &stroke_data, const glm::vec2& segmentLeftEnd, const glm::vec2& segmentRightEnd, const glm::vec2& segmentFadeLeftEnd,
-                                                const glm::vec2& segmentFadeRightEnd, const glm::vec2& center_point, const bool draw);
+    //! Stroke draw helper function that adds geometry to connect anti-aliased linejoins and linecaps with each other. Creates a connection consisting of 3 quads.
+    static void createStrokeSegmentConnectionAA(StrokeSegmentData &stroke_data);
 
-    static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data,
-                                                   const glm::vec2& linecap_left, const glm::vec2& linecap_right,
+    //! Stroke draw helper function that adds geometry to connects anti-aliased rounded linecaps to linejoins or another linecaps. Creates a connection consisting of 4 quads.
+    static void createStrokeSegmentAAConnectionWithCenter(StrokeSegmentData &stroke_data);
+
+    static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data, const glm::vec2& linecap_left, const glm::vec2& linecap_right,
                                                    const glm::vec2& linecap_fade_left, const glm::vec2& linecap_fade_right);
 
     //! Stroke draw helper function that adds the linecap depending on linecap type and beginning/end
-    static void createLinecap(StrokeSegmentData& stroke_data,
-                              const SVGImage::SVGImageRenderSettings& render_settings,
-                              const glm::vec2& scale_factors,
-                              const bool is_start);
+    static void createStrokeLinecap(StrokeSegmentData& stroke_data,
+                                    const SVGImage::SVGImageRenderSettings& render_settings,
+                                    const glm::vec2& scale_factors,
+                                    const bool is_start);
+
+    //! Helper function to set the stroke-data's last point values
+    static void setStrokeDataLastPoints(StrokeSegmentData &stroke_data, const glm::vec2& last_point_left, const glm::vec2& last_point_right);
+
+    //! Helper function to set the stroke-data's last anti-aliased point values
+    static void setStrokeDataLastPointsAA(StrokeSegmentData &stroke_data, const glm::vec2& last_point_left,
+                                             const glm::vec2& last_point_right, const glm::vec2& last_point_left_fade,
+                                             const glm::vec2& last_point_right_fade);
+
+    //! Helper function to set the stroke-data's last anti-aliased point values including the center (needed for AA linecaps)
+    static void setStrokeDataLastPointsAAWithCenter(StrokeSegmentData &stroke_data, const glm::vec2& last_point_left,
+                                                       const glm::vec2& last_point_right, const glm::vec2& last_point_left_fade,
+                                                       const glm::vec2& last_point_right_fade, const glm::vec2& last_center_point);
+
+    //! Helper function to set the stroke-data's current point values
+    static void setStrokeDataCurrentPoints(StrokeSegmentData &stroke_data, const glm::vec2& current_point_left, const glm::vec2& current_point_right);
+
+    //! Helper function to set the stroke-data's current anti-aliased point values
+    static void setStrokeDataCurrentPointsAA(StrokeSegmentData &stroke_data, const glm::vec2& current_point_left,
+                                             const glm::vec2& current_point_right, const glm::vec2& current_point_left_fade,
+                                             const glm::vec2& current_point_right_fade);
+
+    //! Helper function to set the stroke-data's current anti-aliased point values including the center (needed for AA linecaps)
+    static void setStrokeDataCurrentPointsAAWithCenter(StrokeSegmentData &stroke_data, const glm::vec2& current_point_left,
+                                                       const glm::vec2& current_point_right, const glm::vec2& current_point_left_fade,
+                                                       const glm::vec2& current_point_right_fade, const glm::vec2& current_center_point);
+
+    //! Helper function to set the stroke-data's subsequent point values
+    static void setStrokeDataSubsequentPoints(StrokeSegmentData &stroke_data, const glm::vec2& subsequent_point_left, const glm::vec2& subsequent_point_right);
+
+    //! Helper function to set the stroke-data's subsequent anti-aliased point values
+    static void setStrokeDataSubsequentPointsAA(StrokeSegmentData &stroke_data, const glm::vec2& subsequent_point_left,
+                                             const glm::vec2& subsequent_point_right, const glm::vec2& subsequent_point_left_fade,
+                                             const glm::vec2& subsequent_point_right_fade);
+
+    //! Helper function to set the stroke-data's subsequent anti-aliased point values including the center (needed for AA linecaps)
+    static void setStrokeDataSubsequentPointsAAWithCenter(StrokeSegmentData &stroke_data, const glm::vec2& subsequent_point_left,
+                                                       const glm::vec2& subsequent_point_right, const glm::vec2& subsequent_point_left_fade,
+                                                       const glm::vec2& subsequent_point_right_fade, const glm::vec2& subsequent_center_point);
+
+    //! Helper function that sets the subsequentPoints as the new lastPoints
+    static void setStrokeDataSubsequentPointsAsLastPoints(StrokeSegmentData &stroke_data);
+
+    //! Helper function that sets the anti-aliased subsequentPoints as the new lastPoints
+    static void setStrokeDataSubsequentPointsAsLastPointsAA(StrokeSegmentData &stroke_data);
+
+    //! Helper function that sets the lastPoints as the new currentPoints
+    static void setStrokeDataLastPointsAsCurrentPoints(StrokeSegmentData &stroke_data);
+
+    //! Helper function that sets the lastPoints as the new currentPoints
+    static void setStrokeDataLastPointsAsCurrentPointsAA(StrokeSegmentData &stroke_data);
 
     //! Stroke helper function that determines if the polygon encompassed by the points is clockwise
     static bool isPolygonClockwise(const glm::vec2& point1,
