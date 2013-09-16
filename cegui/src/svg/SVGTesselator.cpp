@@ -950,7 +950,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_d
         else if(linejoin == SVGPaintStyle::SLJ_ROUND)
         {
             //Determine the linejoin angle
-            float arc_angle = std::acos( glm::dot(-prev_dir_to_inside, -next_dir_to_inside) );
+            float arc_angle = std::acos( glm::dot(prev_dir_to_inside, next_dir_to_inside) );
 
             //Get the parameters
             float num_segments, tangential_factor, radial_factor;
@@ -993,7 +993,6 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
 
     const glm::vec2& inner_point = polygon_is_clockwise ? segment_end_right : segment_end_left;
     const glm::vec2& outer_point = polygon_is_clockwise ? segment_end_left : segment_end_right;
-
 
     // Get the scaled vector for the inner AA points
     glm::vec2 inner_scaled_vec = calculateScaledCombinedVector(scale_factors, prev_dir_to_inside, next_dir_to_inside,
@@ -1080,7 +1079,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
         else if(draw && linejoin == SVGPaintStyle::SLJ_ROUND)
         {
             //Add the geometry for rounded linejoin
-            float arc_angle = std::acos( glm::dot(-prev_dir_to_inside, -next_dir_to_inside) );
+            float arc_angle = std::acos( glm::dot(prev_dir_to_inside, next_dir_to_inside) );
 
             //Get the parameters
             float num_segments, tangential_factor, radial_factor;
