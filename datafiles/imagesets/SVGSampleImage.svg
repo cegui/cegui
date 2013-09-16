@@ -4,7 +4,7 @@
 <svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
 	 width="1024px" height="720px" viewBox="0 0 1024 720" enable-background="new 0 0 1024 720" xml:space="preserve">
 <polyline fill="#F9ED32" stroke="#00AEEF" stroke-width="9" stroke-linecap="round" stroke-miterlimit="5" stroke-opacity="0.5" stroke-dasharray="44,22,5,123,12,44" points="
-	964.57,155.601 897.073,169.1 897.948,333.688 778.577,101.603 783.077,254.595 983.05,222.875 "/>
+	985.57,134.601 918.073,148.1 918.948,312.688 799.577,80.603 804.077,233.595 1004.05,201.875 "/>
 <polyline fill="none" stroke="#000000" stroke-width="15" stroke-linecap="square" stroke-linejoin="bevel" stroke-miterlimit="500" stroke-opacity="0.5" points="
 	30.5,65.5 60.142,82.924 79.315,138.574 181.167,93.167 152.5,152.5 85.834,175.833 61.834,219.833 168.273,236.723 69.834,264.5 
 	169.904,377.551 175.349,267.919 "/>
@@ -13,7 +13,7 @@
 	c-194.313,53.655-399.348,93.313-388.624,15.162c10.719-78.152-29.48-87.483-57.624-48.992
 	C410.524,613.302,334.14,628.469,456.091,477.991z"/>
 <circle fill="#EB7A79" fill-opacity="0.7" stroke="#A52D6A" stroke-width="16" stroke-miterlimit="22" stroke-dasharray="8,8,0,0,0,0" cx="657.991" cy="348.999" r="46"/>
-<rect x="525.611" y="108.268" transform="matrix(-0.837 -0.5473 0.5473 -0.837 1070.9606 643.8511)" fill="#9FDBED" stroke="#A9D156" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.556" height="108.252"/>
+<rect x="525.61" y="108.269" transform="matrix(0.0896 0.996 -0.996 0.0896 736.5569 -481.004)" fill="#9FDBED" stroke="#000000" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.557" height="108.254"/>
 <line fill="none" stroke="#518DD4" stroke-width="20" stroke-linecap="round" stroke-miterlimit="500" stroke-opacity="0.3" x1="122.5" y1="454" x2="274.5" y2="522"/>
 <line fill="none" stroke="#518DD4" stroke-width="20" stroke-linecap="square" stroke-miterlimit="500" stroke-opacity="0.3" x1="107.5" y1="482.5" x2="259.5" y2="550.5"/>
 <line fill="none" stroke="#518DD4" stroke-width="20" stroke-miterlimit="500" stroke-opacity="0.3" x1="90.5" y1="511" x2="242.5" y2="579"/>
@@ -23,4 +23,6 @@
 <polyline fill="none" stroke="#000000" stroke-width="15" stroke-miterlimit="500" stroke-opacity="0.5" points="362.477,60.01 
 	392.117,77.433 411.29,133.084 513.144,87.677 484.477,147.01 417.81,170.344 393.81,214.344 500.248,231.233 401.81,259.01 
 	501.88,372.06 507.324,262.428 "/>
+<path fill="none" stroke="#000000" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="500" d="
+	M144.5,42.5"/>
 </svg>
