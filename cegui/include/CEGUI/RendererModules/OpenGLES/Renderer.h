@@ -28,10 +28,8 @@
 #ifndef _CEGUIOpenGLESRenderer_h_
 #define _CEGUIOpenGLESRenderer_h_
 
-#include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/Size.h"
-#include "CEGUI/Vector.h"
 #include "CEGUI/RendererModules/OpenGLES/GLES.h"
 #include <vector>
 #include <map>
