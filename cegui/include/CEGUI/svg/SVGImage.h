@@ -106,7 +106,7 @@ public:
     \param use_geometry_antialiasing
         The setting for geometry anti-aliasing that wille be applied to this Image.
     */
-    void setGeometryAntialiasing(bool use_geometry_antialiasing);
+    void setUseGeometryAntialiasing(bool use_geometry_antialiasing);
 
 protected:
     /*!
@@ -123,7 +123,7 @@ protected:
         Determines if the rendered geometry will be extended with geometry that creates
         an alpha-blended transition to defeat aliasing artefacts
     */
-    bool d_usesGeometryAntialiasing;
+    bool d_useGeometryAntialiasing;
 };
 
 }
