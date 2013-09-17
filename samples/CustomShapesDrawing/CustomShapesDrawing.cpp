@@ -68,12 +68,11 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
 {
     d_usedFiles = CEGUI::String(__FILE__);
 
-    //CEGUI setup
+    // CEGUI setup
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
     guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
-
 
     // Create a DefaultWindow called 'Root'.
     d_root = (DefaultWindow*)winMgr.createWindow("DefaultWindow", "Root");
@@ -86,58 +85,34 @@ bool CustomShapesDrawing::initialise(CEGUI::GUIContext* guiContext)
     // Set the root window as root of our GUI Context
     guiContext->setRootWindow(d_root);
 
-    CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
+    // Get the Renderer
 
-    // GeometryBuffer used for drawing in this demo
-    d_FPSGraphGeometry = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
-    // Size and position have to be set
-    positionFPSGraphGeometry();
-    updateFPSGraphGeometry();
 
-    // Create an SVGImage using the ImageManager
-    CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
-    SVGImage& fpsSVGImage = static_cast<SVGImage&>(imageManager.create(CEGUI::String("SVGImage"), "FPSGraphSVG"));
-    // Create an SVGData object
-    CEGUI::SVGDataManager& svgDataManager = CEGUI::SVGDataManager::getSingleton();
-    SVGData& fpsSVGData = svgDataManager.create(CEGUI::String("FPSGraphCustomShape"));
-    //Fill in line points
-    SVGPolyline::PolylinePointsList points;
-    points.push_back(glm::vec2(20.0f, 20.0f));
-    points.push_back(glm::vec2(40.0f, 20.0f));
-    points.push_back(glm::vec2(20.0f, 40.0f));
-    points.push_back(glm::vec2(160.0f, 60.0f));
-    points.push_back(glm::vec2(210.0f, 60.0f));
-    //Create Polyline object with the points
-    SVGPolyline* polyLine = new SVGPolyline(SVGPaintStyle(), glm::mat3x3(1.0f), points);
-    fpsSVGData.addShape(polyLine);
 
-    SVGRect* svg_rect = new SVGRect(SVGPaintStyle(), glm::mat3x3(1.0f), 5.0f, 10.0f, 15.0f, 20.0f);
-    svg_rect->d_paintStyle.d_fill.d_colour = glm::vec3(0.0f, 0.3f, 0.3f);
-    fpsSVGData.addShape(svg_rect);
+    /* We will render custom geometry in two different ways. The first uses an SVGImage with attached customly defined
+    SVGData. The SVGImage will be part of a window inside a Framewindow which can be moved around. The second directly
+    modifies a Geometrybuffer to render user-defined vertices directly on the screen. */
 
-    //Set the desired size of the SVGData
-    fpsSVGData.setWidth(215.f);
-    fpsSVGData.setHeight(65.f);
+    /* Our first method uses the SVGImage class of CEGUI. The SVGImage references an SVGData object that we will create.
+    This SVGData object commonly contains what is parsed from an SVG file. In our case we will manually create SVG BasicShape
+    objects, such as a polyline, which connects several points with lines, and add them to the SVGData. The SVGImage can be used
+    in the same way as a regular raster graphics Image (BitmapImage) in CEGUI and can therefore be set as a property of a window
+    that will then render the Image automatically, with appropriate scaling etc.
+    */
+    setupCustomSVGImage();
 
-    // Set the pointer to the SVGData for the SVGImage
-    fpsSVGImage.setSVGData(&fpsSVGData);
-    const Rectf rect(Vector2f(0.0f, 0.0f), CEGUI::Sizef(fpsSVGData.getWidth(), fpsSVGData.getHeight()));
-    fpsSVGImage.setImageArea(rect);
- 
-    Window* fpsSVGFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow");
-    d_root->addChild(fpsSVGFrameWindow);
-    Window* fpsSVGImageWindow = winMgr.createWindow("Generic/Image");
-    fpsSVGImageWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    fpsSVGFrameWindow->addChild(fpsSVGImageWindow);
-    fpsSVGImageWindow->setProperty("Image", "FPSGraphSVG");
+    /* Our second method directly modifies a GeometryBuffer of CEGUI. This has the disadvantage that we will have to calculate all
+    vertex positions of all triangles forming the geometry ourselves before filling them in. Compared to using SVGData and creating
+    and modifying SVG BasicShapes this can be inconvenient. Additionally, we cannot make our geometry be used in connection with a window, so that it could be moved around etc. wever this can be of great
+    use for overlays or backgrounds that use custom geometry that is calculated by the user. */
 
-    // clearing this queue actually makes sure it's created(!)
-    guiContext->clearGeometry(CEGUI::RQ_OVERLAY);
+    setupCustomGeometryDrawing(guiContext);
 
-    // subscribe handler to render overlay items
-    guiContext->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
-        CEGUI::Event::Subscriber(&CustomShapesDrawing::drawFPSGraphOverlay,
-        this));
+
+
+
+
+
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.
@@ -273,6 +248,67 @@ void CustomShapesDrawing::drawLineStrip(std::vector<glm::vec2> &linePositions, c
         linePositionVertex.d_position = glm::vec3(prevPos + offsetVector, 0.0f);
         d_FPSGraphGeometry->appendVertex(linePositionVertex);
     }
+}
+
+void CustomShapesDrawing::setupCustomGeometryDrawing(CEGUI::GUIContext* guiContext)
+{
+    CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
+
+    // GeometryBuffer used for drawing in this demo
+    d_FPSGraphGeometry = &renderer->createGeometryBufferColoured(renderer->createRenderMaterial(DS_SOLID));
+    // Size and position have to be set
+    positionFPSGraphGeometry();
+    updateFPSGraphGeometry();
+
+    // clearing this queue actually makes sure it's created(!)
+    guiContext->clearGeometry(CEGUI::RQ_OVERLAY);
+
+    // subscribe handler to render overlay items
+    guiContext->subscribeEvent(CEGUI::RenderingSurface::EventRenderQueueStarted,
+        CEGUI::Event::Subscriber(&CustomShapesDrawing::drawFPSGraphOverlay,
+        this));
+}
+
+void CustomShapesDrawing::setupCustomSVGImage()
+{
+    WindowManager& winMgr = WindowManager::getSingleton();
+
+    // Create an SVGImage using the ImageManager
+    CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
+    SVGImage& fpsSVGImage = static_cast<SVGImage&>(imageManager.create(CEGUI::String("SVGImage"), "FPSGraphSVG"));
+    // Create an SVGData object
+    CEGUI::SVGDataManager& svgDataManager = CEGUI::SVGDataManager::getSingleton();
+    SVGData& fpsSVGData = svgDataManager.create(CEGUI::String("FPSGraphCustomShape"));
+    //Fill in line points
+    SVGPolyline::PolylinePointsList points;
+    points.push_back(glm::vec2(20.0f, 20.0f));
+    points.push_back(glm::vec2(40.0f, 20.0f));
+    points.push_back(glm::vec2(20.0f, 40.0f));
+    points.push_back(glm::vec2(160.0f, 60.0f));
+    points.push_back(glm::vec2(210.0f, 60.0f));
+    //Create Polyline object with the points
+    SVGPolyline* polyLine = new SVGPolyline(SVGPaintStyle(), glm::mat3x3(1.0f), points);
+    fpsSVGData.addShape(polyLine);
+
+    SVGRect* svg_rect = new SVGRect(SVGPaintStyle(), glm::mat3x3(1.0f), 5.0f, 10.0f, 15.0f, 20.0f);
+    svg_rect->d_paintStyle.d_fill.d_colour = glm::vec3(0.0f, 0.3f, 0.3f);
+    fpsSVGData.addShape(svg_rect);
+
+    //Set the desired size of the SVGData
+    fpsSVGData.setWidth(215.f);
+    fpsSVGData.setHeight(65.f);
+
+    // Set the pointer to the SVGData for the SVGImage
+    fpsSVGImage.setSVGData(&fpsSVGData);
+    const Rectf rect(Vector2f(0.0f, 0.0f), CEGUI::Sizef(fpsSVGData.getWidth(), fpsSVGData.getHeight()));
+    fpsSVGImage.setImageArea(rect);
+
+    Window* fpsSVGFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow");
+    d_root->addChild(fpsSVGFrameWindow);
+    Window* fpsSVGImageWindow = winMgr.createWindow("Generic/Image");
+    fpsSVGImageWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    fpsSVGFrameWindow->addChild(fpsSVGImageWindow);
+    fpsSVGImageWindow->setProperty("Image", "FPSGraphSVG");
 }
 
 /*************************************************************************
