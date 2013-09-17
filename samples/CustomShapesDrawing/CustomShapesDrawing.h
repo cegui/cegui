@@ -49,15 +49,7 @@ public:
 
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
-    void updateFPSGraphGeometry();
-
-    void drawLineStrip(std::vector<glm::vec2> &linePositions, const float lineWidth, const CEGUI::Colour lineColour);
-
     virtual void deinitialise();
-
-    void positionFPSGraphGeometry();
-
-    void update(float timeSinceLastUpdate);
 
 protected:
     
@@ -73,6 +65,30 @@ protected:
         Triggers the drawing of our FPS graph after everything else was rendered.
     */
     bool drawFPSGraphOverlay(const CEGUI::EventArgs& args);
+
+    /*!
+    \brief
+        Sets up everything necessary to use and render our custom SVGImage.
+    */
+    void setupCustomSVGImage();
+
+    /*!
+    \brief
+        Sets up everything necessary to use and render our custom GeometryBuffer.
+    */
+    void setupCustomGeometryDrawing(CEGUI::GUIContext* guiContext);
+
+    void updateFPSGraphGeometry();
+
+    void drawLineStrip(std::vector<glm::vec2> &linePositions, const float lineWidth, const CEGUI::Colour lineColour);
+
+
+
+    void positionFPSGraphGeometry();
+
+    void update(float timeSinceLastUpdate);
+
+
 
     CEGUI::DefaultWindow*       d_root;
 
