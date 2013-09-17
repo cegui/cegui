@@ -51,7 +51,11 @@ namespace CEGUI
 class CEGUIEXPORT SVGPaint : public AllocatedObject<SVGPaint>
 {
 public:
+    SVGPaint();
+
+    //! Defines if the paint is to be drawn at all.
     bool d_none;
+    //! Defines the colour of the paint.
     glm::vec3 d_colour;
 };
 
@@ -62,29 +66,58 @@ public:
 class CEGUIEXPORT SVGPaintStyle : public AllocatedObject<SVGPaintStyle>
 {
 public:
+    /*!
+    \brief
+        Indicates the algorithm which must be used to determine what parts of the canvas are
+        included inside the shape.
+    */
+    enum SVGFillRule
+    {
+        //! http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
+        SFR_NONZERO,
+        //! http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
+        SFR_EVENODD,
+
+        SFR_COUNT
+    };
+
+    /*!
+    \brief
+        Specifies the shape which shall be used at the end of open subpaths when they are stroked.
+    */
     enum SVGLinecap
     {
-        //! The shape drawn at the end of open subpaths shall be as per the drawing below.
+        //! A simple linear cap through the endpoint.
         SLC_BUTT,
-        //! The shape drawn at the end of open subpaths shall be as per the drawing below.
+        //! A rounded cap with the endpoint as center.
         SLC_ROUND,
-        //! The shape drawn at the end of open subpaths shall be as per the drawing below.
+        //! A simple linear cap that is offset from the endpoint by the stroke width.
         SLC_SQUARE,
 
         SLC_COUNT
     };
 
+    /*!
+    \brief
+        Specifies the shape which shall be used at the corners of shapes when they are stroked. 
+    */
     enum SVGLinejoin
     {
-        //! The shape drawn at the corner of shapes shall be as per the drawing below.
+        /*!
+        \brief
+            Makes two lines join at the intersection points of their outlines. This can be influenced
+            by the value set for stroke-miterlimit. In the case the miter is exceedingly long a bevel
+            linejoin will then be used for that corner.
+        */
         SLJ_MITER,
-        //! The shape drawn at the corner of shapes shall be as per the drawing below.
+        //! A rounded linejoin.
         SLJ_ROUND,
-        //! The shape drawn at the corner of shapes shall be as per the drawing below.
+        //! A linejoin with two corners.
         SLJ_BEVEL,
 
         SLJ_COUNT
     };
+
 
     SVGPaintStyle();
 
@@ -93,8 +126,15 @@ public:
 
     /*!
     \brief
+        The 'fill-rule' property indicates the algorithm which must be used to determine what parts
+        of the canvas are included inside the shape.
+    */
+    SVGFillRule d_fillRule;
+
+    /*!
+    \brief
         The opacity setting that will be applied to the fill. Values must be inside range 0.0 
-        (fully transparent) to 1.0 (fully opaque). (default = 1.0)
+        (fully transparent) to 1.0 (fully opaque). Default is 1.0.
     */
     float d_fillOpacity;
 
@@ -105,7 +145,7 @@ public:
     \brief
         The width of the stroke which shall be used on the current object.
         No stroke shall be painted for a zero value. A negative value is unsupported and must be
-        treated as if the stroke had not been specified. (default = 1.0)
+        treated as if the stroke had not been specified. Default is 1.0.
     */
     float d_strokeWidth;
 
@@ -154,7 +194,7 @@ public:
     /*!
     \brief
         The opacity setting that will be applied to the stroke. Values must be inside range 0.0 
-        (fully transparent) to 1.0 (fully opaque). (default = 1.0)
+        (fully transparent) to 1.0 (fully opaque). Default is 1.0.
     */
     float d_strokeOpacity;
 };
