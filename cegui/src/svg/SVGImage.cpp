@@ -68,7 +68,7 @@ SVGImage::SVGImage(const String& name, SVGData& svg_data) :
           ASM_Disabled,
           Sizef(640, 480)),
     d_svgData(&svg_data),
-    d_usesGeometryAntialiasing(true)
+    d_useGeometryAntialiasing(true)
 {
 }
 
@@ -86,7 +86,7 @@ SVGImage::SVGImage(const XMLAttributes& attributes) :
                 static_cast<float>(attributes.getValueAsInteger(ImageNativeVertResAttribute, 480)))),
     d_svgData(&SVGDataManager::getSingleton().getSVGData(
               attributes.getValueAsString(ImageSVGDataAttribute))),
-    d_usesGeometryAntialiasing(true)
+    d_useGeometryAntialiasing(true)
 {
 }
 
@@ -130,7 +130,7 @@ void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
 
     SVGImageRenderSettings svg_render_settings(render_settings,
                                                scale_factor,
-                                               d_usesGeometryAntialiasing);
+                                               d_useGeometryAntialiasing);
 
     const std::vector<SVGBasicShape*>& shapes = d_svgData->getShapes();
     const unsigned int shape_count = shapes.size();
@@ -141,13 +141,13 @@ void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
 //----------------------------------------------------------------------------//
 bool SVGImage::getUsesGeometryAntialiasing() const
 {
-    return d_usesGeometryAntialiasing;
+    return d_useGeometryAntialiasing;
 }
 
 //----------------------------------------------------------------------------//
-void SVGImage::setGeometryAntialiasing(bool use_geometry_antialiasing)
+void SVGImage::setUseGeometryAntialiasing(bool use_geometry_antialiasing)
 {
-    d_usesGeometryAntialiasing = use_geometry_antialiasing;
+    d_useGeometryAntialiasing = use_geometry_antialiasing;
 }
 
 //----------------------------------------------------------------------------//
