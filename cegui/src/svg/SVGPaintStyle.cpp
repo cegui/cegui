@@ -33,12 +33,25 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+SVGPaint::SVGPaint() :
+    d_none(false),
+    d_colour(0.0f, 0.0f, 0.0f)
+{
+}
+
+//----------------------------------------------------------------------------//
 SVGPaintStyle::SVGPaintStyle() :
-    d_stroke(),
     d_fill(),
-    d_fillOpacity(1.f),
-    d_strokeOpacity(1.f),
-    d_strokeWidth(1.f)
+    d_fillRule(SFR_NONZERO),
+    d_fillOpacity(1.0f),
+    d_stroke(),
+    d_strokeWidth(1.0f),
+    d_strokeLinecap(SLC_BUTT),
+    d_strokeLinejoin(SLJ_MITER),
+    d_strokeMiterlimit(4.0f),
+    d_strokeDashArray(),
+    d_strokeDashOffset(0.0f),
+    d_strokeOpacity(1.0f)
 {
 }
 
