@@ -176,9 +176,6 @@ public:
     static void tesselateAndRenderRect(const SVGRect* rect,
                                        std::vector<GeometryBuffer*>& geometry_buffers,
                                        const SVGImage::SVGImageRenderSettings& render_settings);
-
-    static void createRectangleFill(const SVGPaintStyle& paint_style, std::vector<glm::vec2>& rectangle_points, GeometryBuffer& geometry_buffer);
-
     /*!
     \brief
         Tesselates an SVGCircle and adds the created geometry to the GeometryBuffer
@@ -196,6 +193,20 @@ public:
                                          const SVGImage::SVGImageRenderSettings& render_settings);
 
 private:
+    /*!
+	\brief
+		Enumeration that defines how two lines are or are not intersecting with each other.
+	*/
+    enum LineIntersectResult
+    {
+        LIR_PARALLEL,
+        LIR_COINCIDENT,
+        LIR_NOT_INTERSECTING,
+        LIR_INTERESECTING,
+
+        LIR_COUNT
+    };
+
     //! Constructor.
     SVGTesselator();
 
@@ -244,14 +255,17 @@ private:
                                                  const bool polygon_is_clockwise,
                                                  const bool draw);
 
-    static bool isVectorLeftOfOtherVector(const glm::vec2& vector_left,
-                                          const glm::vec2& vector_right);
+    //! Checks if the vector is left (meaning that the angle is smaller in clockwise direction) of the other vector
+    static bool isVectorLeftOfOtherVector(const glm::vec2& vector,
+                                          const glm::vec2& vector_other);
 
+    //! Checks if the stroke miter is exceeding the maximum set for it, and if this is the case switches the linejoin to bevel
     static void handleStrokeMiterExceedance(const StrokeSegmentData& stroke_data,
                                             const glm::vec2& cur_point,
                                             const glm::vec2& inner_intersection,
                                             SVGPaintStyle::SVGLinejoin& linejoin);
 
+    //! Calculates the anti-aliased miter-linejoin points and sets the points necessary to form the connection
     static void calculateAAMiterAndSetConnectionPoints(StrokeSegmentData& stroke_data,
                                                         const glm::vec2& segment_end_left_orig,
                                                         const glm::vec2& segment_end_right_orig,
@@ -262,11 +276,12 @@ private:
                                                         const glm::vec2& next_dir_to_inside,
                                                         const glm::vec2& scale_factors);
 
+    //! Calculates the scaled vector based on two direction vectors and their perpendicular vectors
     static glm::vec2 calculateScaledCombinedVector(const glm::vec2& scale_factors,
-                                                   const glm::vec2& prev_dir_to_inside,
-                                                   const glm::vec2& next_dir_to_inside,
                                                    const glm::vec2& prev_to_cur,
                                                    const glm::vec2& cur_to_next,
+                                                   const glm::vec2& prev_dir_to_inside,
+                                                   const glm::vec2& next_dir_to_inside,
                                                    const bool polygon_is_clockwise);
 
     //! Returns the factor by which the length of the given unit factor would be increased in case it was scaled by the given factors in x and y directions.
@@ -281,6 +296,7 @@ private:
     //! Stroke draw helper function that adds geometry to connects anti-aliased rounded linecaps to linejoins or another linecaps. Creates a connection consisting of 4 quads.
     static void createStrokeSegmentAAConnectionWithCenter(StrokeSegmentData &stroke_data);
 
+    //! Add the stroke linecap AA geometry
     static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data, const glm::vec2& linecap_left, const glm::vec2& linecap_right,
                                                    const glm::vec2& linecap_fade_left, const glm::vec2& linecap_fade_right);
 
@@ -360,24 +376,27 @@ private:
     //! Helper function for getting the stroke Colour from an SVGPaintStyle
     static CEGUI::Colour getStrokeColour(const SVGPaintStyle& paint_style);
 
-    
+    //! Create the circle's fill
     static void createCircleFill(const float& radius,
                                  float max_scale,
                                  const SVGPaintStyle& paint_style,
                                  GeometryBuffer& geometry_buffer);
 
+    //! Calculate the tesselation parameters necessary to calculate the circle points
     static void calculateCircleTesselationParameters(const float radius,
                                                      const float max_scale,
                                                      float& num_segments,
                                                      float& cos_value,
                                                      float& sin_value);
 
+    //! Calculate the circle points
     static void createCirclePoints(const float radius,
                                    const float num_segments,
                                    const float cos_value,
                                    const float sin_value,
                                    std::vector<glm::vec2>& circle_points);
 
+    //! Create the circle's stroke
     static void createCircleStroke(const float& radius,
                                    float max_scale,
                                    const SVGPaintStyle& paint_style,
@@ -421,17 +440,21 @@ private:
                                     GeometryBuffer &geometry_buffer,
                                     ColouredVertex &vertex);
 
+    //! Creates the circle stroke geometry
     static void createCircleStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
                                            const std::vector<glm::vec2>& inner_circle_points,
                                            const SVGPaintStyle& paint_style,
                                            GeometryBuffer& geometry_buffer);
 
+    //! Calculates the parameters necessary to calculate the arc points
     static void calculateArcTesselationParameters(const float radius,
                                                   const float arc_angle,
                                                   const float max_scale,
                                                   float& num_segments,
                                                   float& tangential_factor,
                                                   float& radial_factor);
+
+    //! Calculates the points of an arc.
     static void createArcPoints(const glm::vec2& center_point,
                                 const glm::vec2& start_point,
                                 const glm::vec2& end_point,
@@ -445,6 +468,15 @@ private:
 
     //! Helper function to determine the scale factors in x and y-direction based on the transformation matrix and the image scale
     static glm::vec2 determineScaleFactors(const glm::mat3& transformation, const SVGImage::SVGImageRenderSettings& render_settings);
+
+    //! Intersects two lines and returns the result. Also the intersection point will be given if there is an intersection..
+    static LineIntersectResult intersectLines(const glm::vec2& line1_start, const glm::vec2& line1_end,
+                                              const glm::vec2& line2_start, const glm::vec2& line2_end,
+                                              glm::vec2& intersection);
+
+    //! Create the rectangles fill
+    static void createRectangleFill(const SVGPaintStyle& paint_style, std::vector<glm::vec2>& rectangle_points, GeometryBuffer& geometry_buffer);
+
 };
 
 }

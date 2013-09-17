@@ -214,11 +214,11 @@ glm::mat4 SVGTesselator::createRenderableMatrixFromSVGMatrix(glm::mat3 svg_matri
                      svg_matrix[0].z, svg_matrix[1].z, 0.0f, 1.0f);
 }
 
-enum LineIntersectResult { PARALLEL, COINCIDENT, NOT_INTERSECTING, INTERESECTING };
+
 //----------------------------------------------------------------------------//
-LineIntersectResult intersect(const glm::vec2& line1_start, const glm::vec2& line1_end,
-                              const glm::vec2& line2_start, const glm::vec2& line2_end,
-                              glm::vec2& intersection)
+SVGTesselator::LineIntersectResult SVGTesselator::intersectLines(const glm::vec2& line1_start, const glm::vec2& line1_end,
+                                                                 const glm::vec2& line2_start, const glm::vec2& line2_end,
+                                                                 glm::vec2& intersection)
 {
     float denom = ((line2_end.y - line2_start.y)*(line1_end.x - line1_start.x)) -
                   ((line2_end.x - line2_start.x)*(line1_end.y - line1_start.y));
@@ -232,9 +232,9 @@ LineIntersectResult intersect(const glm::vec2& line1_start, const glm::vec2& lin
     if(denom == 0.0f)
     {
         if(nume_a == 0.0f && nume_b == 0.0f)
-            return COINCIDENT;
+            return LIR_COINCIDENT;
         else
-            return PARALLEL;
+            return LIR_PARALLEL;
     }
 
     float ua = nume_a / denom;
@@ -246,10 +246,10 @@ LineIntersectResult intersect(const glm::vec2& line1_start, const glm::vec2& lin
         intersection.x = line1_start.x + ua*(line1_end.x - line1_start.x);
         intersection.y = line1_start.y + ua*(line1_end.y - line1_start.y);
 
-        return INTERESECTING;
+        return LIR_INTERESECTING;
     }
 
-    return NOT_INTERSECTING;
+    return LIR_NOT_INTERSECTING;
 }
 
 //----------------------------------------------------------------------------//
@@ -403,9 +403,9 @@ void SVGTesselator::createStrokeLinejoin(StrokeSegmentData& stroke_data,
 
     // We calculate the intersection of the inner lines along the stroke
     glm::vec2 inner_intersection;
-    int intersection_result = intersect(prev_point + prev_vec_to_inside, cur_point + prev_vec_to_inside,
-                                        next_point + next_vec_to_inside, cur_point + next_vec_to_inside,
-                                        inner_intersection);
+    int intersection_result = intersectLines(prev_point + prev_vec_to_inside, cur_point + prev_vec_to_inside,
+                                             next_point + next_vec_to_inside, cur_point + next_vec_to_inside,
+                                             inner_intersection);
 
     // The outer connection point of the stroke
     glm::vec2 outer_point;
@@ -608,8 +608,8 @@ void SVGTesselator::calculateAAMiterAndSetConnectionPoints(StrokeSegmentData& st
                                                              const glm::vec2& next_dir_to_inside,
                                                              const glm::vec2& scale_factors)
 {
-    glm::vec2 vec_to_corner = calculateScaledCombinedVector(scale_factors, prev_dir_to_inside, next_dir_to_inside,
-                                                            prev_to_cur, cur_to_next, polygon_is_clockwise);
+    glm::vec2 vec_to_corner = calculateScaledCombinedVector(scale_factors, prev_to_cur, cur_to_next,
+                                                            prev_dir_to_inside, next_dir_to_inside, polygon_is_clockwise);
 
     // Calculate the offset vectors from the original area
     glm::vec2 core_offset_vec = stroke_data.d_antiAliasingOffsets.x * vec_to_corner;
@@ -992,8 +992,8 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
     const glm::vec2& outer_point = polygon_is_clockwise ? segment_end_left : segment_end_right;
 
     // Get the scaled vector for the inner AA points
-    glm::vec2 inner_scaled_vec = calculateScaledCombinedVector(scale_factors, prev_dir_to_inside, next_dir_to_inside,
-                                                               prev_to_cur, cur_to_next, false);
+    glm::vec2 inner_scaled_vec = calculateScaledCombinedVector(scale_factors, prev_to_cur, cur_to_next,
+                                                               prev_dir_to_inside, next_dir_to_inside, false);
     // Calculate the offset vectors for the inner points from the original point
     glm::vec2 core_offset_vec_inner = stroke_data.d_antiAliasingOffsets.x * inner_scaled_vec;
     glm::vec2 fade_offset_vec_inner = stroke_data.d_antiAliasingOffsets.y * inner_scaled_vec;
@@ -1034,8 +1034,9 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
     bool could_vectors_overlap = !isVectorLeftOfOtherVector(polygon_is_clockwise ? fadecorner_vec1 : fadecorner_vec2,
                                                             polygon_is_clockwise ? fadecorner_vec2 : fadecorner_vec1);
     bool are_lines_overlapping = false;
+    glm::vec2 intersection_point;
     if(could_vectors_overlap)
-        are_lines_overlapping = ( intersect(outer_point, outer_fade_AA, second_bevel_point, outer2_fade_AA, glm::vec2()) == INTERESECTING );
+        are_lines_overlapping = ( intersectLines(outer_point, outer_fade_AA, second_bevel_point, outer2_fade_AA, intersection_point) == LIR_INTERESECTING );
 
    
     if(are_lines_overlapping)
@@ -1060,7 +1061,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
             setStrokeDataCurrentPointsAA(stroke_data, inner_AA, outer_AA_corrected,
                                          inner_fade_AA, outer_AA_fade_corrected);
             setStrokeDataSubsequentPointsAA(stroke_data, inner_AA, outer_AA_corrected,
-                                inner_fade_AA, outer_AA_fade_corrected);
+                                         inner_fade_AA, outer_AA_fade_corrected);
         }
     }
     else 
@@ -1355,10 +1356,10 @@ void SVGTesselator::addStrokeAAQuad(StrokeSegmentData &stroke_data,
 
 //----------------------------------------------------------------------------//
 glm::vec2 SVGTesselator::calculateScaledCombinedVector(const glm::vec2& scale_factors,
-                                                       const glm::vec2& prev_dir_to_inside,
-                                                       const glm::vec2& next_dir_to_inside,
                                                        const glm::vec2& prev_to_cur,
                                                        const glm::vec2& cur_to_next,
+                                                       const glm::vec2& prev_dir_to_inside,
+                                                       const glm::vec2& next_dir_to_inside,
                                                        const bool polygon_is_clockwise)
 {
     // Get the scaled-widths of the incoming and outgoing line segments
@@ -1382,10 +1383,10 @@ glm::vec2 SVGTesselator::calculateScaledCombinedVector(const glm::vec2& scale_fa
 }
 
 //----------------------------------------------------------------------------//
-bool SVGTesselator::isVectorLeftOfOtherVector(const glm::vec2& vector_left,
-                                              const glm::vec2& vector_right)
+bool SVGTesselator::isVectorLeftOfOtherVector(const glm::vec2& vector,
+                                              const glm::vec2& vector_other)
 {
-    float dot_result = (vector_left.x * -vector_right.y) + (vector_left.y * vector_right.x);
+    float dot_result = (vector.x * -vector_other.y) + (vector.y * vector_other.x);
     return dot_result > 0.0f;
 }
 
