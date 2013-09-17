@@ -33,7 +33,9 @@
 #include "CEGUI/FontManager.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/widgets/DefaultWindow.h"
+#include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/svg/SVGImage.h"
 
 #include <iostream>
 
@@ -75,19 +77,41 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
     CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
     ImageManager::getSingleton().loadImageset("SVGSampleImageset.imageset");
 
+    // We get our loaded sample SVGImage and save it to a variable
+    d_svgSampleImage = static_cast<CEGUI::SVGImage*>( &ImageManager::getSingleton().get("SVGSampleImageset/SVGTestImage1") );
+
+    // We create a sizeable and movable FrameWindow that will contain our Image window
     Window* svgSampleFrameWindow = winMgr.createWindow("WindowsLook/FrameWindow", "SvgSampleFrameWindow");
+    svgSampleFrameWindow->setPosition(CEGUI::UVector2(cegui_absdim(50.0f), cegui_absdim(50.0f)));
     svgSampleFrameWindow->setSize(CEGUI::USize(cegui_absdim(300.0f), cegui_absdim(300.0f)));
     d_root->addChild(svgSampleFrameWindow);
 
-    Window* svgImageWindow1 = winMgr.createWindow("Generic/Image");
-    svgImageWindow1->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
-    svgSampleFrameWindow->addChild(svgImageWindow1);
-    svgImageWindow1->setProperty("Image", "SVGSampleImageset/SVGTestImage1");
+    // We create a window that displays images and apply our SVGImage pointer to its "Image" property. Our sample SVGImage will be displayed by the window.
+    d_svgImageWindow = winMgr.createWindow("Generic/Image");
+    d_svgImageWindow->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
+    svgSampleFrameWindow->addChild(d_svgImageWindow);
+    d_svgImageWindow->setProperty<CEGUI::Image*>("Image", d_svgSampleImage);
 
-    CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
+    // We create a button and subscribe to its click events
+    Window* svgAntialiasingButton = winMgr.createWindow("WindowsLook/Button");
+    svgAntialiasingButton->setSize(CEGUI::USize(cegui_reldim(0.2f), cegui_reldim(0.035f)));
+    svgAntialiasingButton->setHorizontalAlignment(HA_CENTRE);
+    svgAntialiasingButton->setPosition(CEGUI::UVector2(cegui_absdim(0.0f), cegui_reldim(0.03f)));
+    svgAntialiasingButton->setText("Switch anti-aliasing mode");
+    svgAntialiasingButton->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&SVGSample::handleAntialiasingButtonClicked, this));
+    d_root->addChild(svgAntialiasingButton);
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.
+    return true;
+}
+
+
+bool SVGSample::handleAntialiasingButtonClicked(const CEGUI::EventArgs& event_args)
+{
+    d_svgSampleImage->setUseGeometryAntialiasing(!d_svgSampleImage->getUsesGeometryAntialiasing());
+    d_svgImageWindow->invalidate();
+
     return true;
 }
 
