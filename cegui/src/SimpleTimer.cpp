@@ -27,19 +27,16 @@
  ***************************************************************************/
 #include "CEGUI/SimpleTimer.h"
 
-namespace CEGUI
-{
-
 #if defined(__WIN32__) || defined(_WIN32)
 #include <windows.h>
-double SimpleTimer::currentTime()
+double CEGUI::SimpleTimer::currentTime()
 {
     return timeGetTime() / 1000.0;
 }
 
 #elif defined(__linux__) || defined(__APPLE__) || defined(__FreeBSD__) || defined(__NetBSD__)  || defined(__HAIKU__) || defined(__CYGWIN__)
 #include <sys/time.h>
-double SimpleTimer::currentTime()
+double CEGUI::SimpleTimer::currentTime()
 {
     timeval timeStructure;
     gettimeofday(&timeStructure, 0);
@@ -48,6 +45,3 @@ double SimpleTimer::currentTime()
 #else
 #error "SimpleTimer not available for this platform, please implement it"
 #endif
-
-}
-
