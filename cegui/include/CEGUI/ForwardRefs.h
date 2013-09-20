@@ -206,6 +206,23 @@ class TreeEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
 
+/*************************************************************************
+    Forward declare SVG based classes.
+*************************************************************************/
+class SVGData;
+class SVGDataManager;
+class SVGTesselator;
+
+class SVGBasicShape;
+class SVGCircle;
+class SVGLine;
+class SVGPolyline;
+class SVGRect;
+
+class SVGPaint;
+class SVGPaintStyle;
+
+
 } // End of  CEGUI namespace section
 
 #endif	// end of guard _CEGUIForwardRefs_h_
