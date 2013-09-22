@@ -186,7 +186,7 @@ public:
     */
     virtual void appendVertex(const TexturedColouredVertex& vertex);
 
-        /*!
+    /*!
     \brief
         Append a single vertex to the buffer.
 
@@ -197,18 +197,49 @@ public:
 
     /*!
     \brief
-        Append a number of vertices, with texture coordinate and colour attributes,
-        from an array to the GeometryBuffer.
+        Appends vertices with colour attributes from an std::vector to the GeometryBuffer.
+    \param coloured_vertices
+        The vector of ColouredVertices.
+    */
+    void appendGeometry(const std::vector<ColouredVertex>& coloured_vertices);
 
-    \param vbuff
+    /*!
+    \brief
+        Append a number of vertices with colour attributes from an array to the GeometryBuffer.
+
+    \param vertex_array
         Pointer to an array of Vertex objects that describe the vertices that
         are to be added to the GeometryBuffer.
 
     \param vertex_count
-        The number of Vertex objects from the array \a vbuff that are to be
+        The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const TexturedColouredVertex* const vbuff, uint vertex_count);
+    virtual void appendGeometry(const ColouredVertex* vertex_array, uint vertex_count);
+
+    /*!
+    \brief
+        Appends vertices with texture coordinate and colour attributes from an std::vector to 
+        the GeometryBuffer.
+    \param textured_vertices
+        The vector of TexturedColouredVertices.
+    */
+    void appendGeometry(const std::vector<TexturedColouredVertex>& textured_vertices);
+
+    /*!
+    \brief
+        Append a number of vertices, with texture coordinate and colour attributes,
+        from an array to the GeometryBuffer.
+
+    \param vertex_array
+        Pointer to an array of Vertex objects that describe the vertices that
+        are to be added to the GeometryBuffer.
+
+    \param vertex_count
+        The number of Vertex objects from the array \a vertex_array that are to be
+        added to the GeometryBuffer.
+    */
+    virtual void appendGeometry(const TexturedColouredVertex* vertex_array, uint vertex_count);
 
     /*!
     \brief
