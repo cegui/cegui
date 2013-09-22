@@ -47,10 +47,10 @@ namespace CEGUI
 */
 enum PointerSource
 {
+    PS_None,        //!< No specific pointer source
     PS_Left,        //!< Left pointer source
     PS_Right,       //!< Right pointer source
     PS_Middle,      //!< Middle pointer source
-    PS_None,        //!< No specific pointer source
 };
 
 /*!
