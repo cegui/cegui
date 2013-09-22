@@ -1923,53 +1923,30 @@ void MultiColumnList::onSized(ElementEventArgs& e)
 *************************************************************************/
 void MultiColumnList::onPointerPressHold(PointerEventArgs& e)
 {
-	// base class processing
+    // base class processing
     Window::onPointerPressHold(e);
 
     if (e.source == PS_Left)
-	{
-		bool modified = false;
+    {
+        Vector2f local_point = CoordConverter::screenToWindow(*this, e.position);
+        handleSelection(local_point, false, false);
 
-		Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
-		ListboxItem* item = getItemAtPoint(localPos);
-
-		if (item)
-		{
-            //// clear old selections if no control key is pressed or if multi-select is off
-            //TODO: handle SelectCumulative semantic event
-            //if (!(e.sysKeys & Control) || !d_multiSelect)
-            //{
-            //    modified = clearAllSelections_impl();
-            //}
-
-			modified = true;
-
-			// select range or item, depending upon keys and last selected item
-            //TODO: handle SelectMultipleItems semantic event
-            //if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiSelect)
-            //{
-            //  modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
-            //}
-            //else
-            //{
-            //  modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
-            //}
-
-			// update last selected item
-			d_lastSelected = item->isSelected() ? item : 0;
-		}
-
-		// fire event if needed
-		if (modified)
-		{
-			WindowEventArgs args(this);
-			onSelectionChanged(args);
-		}
-
-		++e.handled;
-	}
+        ++e.handled;
+    }
 }
 
+void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool cumulative = e.d_semanticValue == SV_SelectCumulative;
+    bool range = e.d_semanticValue == SV_SelectRange;
+
+    if (cumulative || range)
+    {
+        Vector2f local_point = CoordConverter::screenToWindow(*this,
+            getGUIContext().getPointerIndicator().getPosition());
+        handleSelection(local_point, cumulative, range);
+    }
+}
 
 /*************************************************************************
     Handler for scroll actions
@@ -1994,6 +1971,43 @@ void MultiColumnList::onScroll(PointerEventArgs& e)
 	++e.handled;
 }
 
+void MultiColumnList::handleSelection(const Vector2f& position, bool cumulative, bool range)
+{
+    bool modified = false;
+
+    ListboxItem* item = getItemAtPoint(position);
+
+    if (item)
+    {
+        // clear old selections if not a cumulative selection or if multi-select is off
+        if (!cumulative || !d_multiSelect)
+        {
+            modified = clearAllSelections_impl();
+        }
+
+        modified = true;
+
+        // select range or item, depending upon state and last selected item
+        if (range && (d_lastSelected != 0) && d_multiSelect)
+        {
+            modified |= selectRange(getItemGridReference(item), getItemGridReference(d_lastSelected));
+        }
+        else
+        {
+            modified |= setItemSelectState_impl(getItemGridReference(item), item->isSelected() ^ true);
+        }
+
+        // update last selected item
+        d_lastSelected = item->isSelected() ? item : 0;
+    }
+
+    // fire event if needed
+    if (modified)
+    {
+        WindowEventArgs args(this);
+        onSelectionChanged(args);
+    }
+}
 
 /*************************************************************************
 	Event handler for header offset changes (scrolling)
@@ -2693,7 +2707,6 @@ void MultiColumnList::resortList()
     }
     // else no (or invalid) direction, so do not sort.
 }
-
 
 //////////////////////////////////////////////////////////////////////////
 /*************************************************************************
