@@ -1945,6 +1945,8 @@ void MultiColumnList::onSemanticInputEvent(SemanticEventArgs& e)
         Vector2f local_point = CoordConverter::screenToWindow(*this,
             getGUIContext().getPointerIndicator().getPosition());
         handleSelection(local_point, cumulative, range);
+
+        ++ e.handled;
     }
 }
 
