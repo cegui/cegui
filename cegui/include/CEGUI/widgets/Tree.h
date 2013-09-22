@@ -820,6 +820,7 @@ protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
     virtual void onScroll(PointerEventArgs& e);
     virtual void onPointerMove(PointerEventArgs& e);
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
     /*************************************************************************
         Implementation Data
@@ -850,6 +851,8 @@ private:
         Private methods
      *************************************************************************/
     void addTreeProperties(void);
+    void handleSelection(Vector2f local_pos, bool cumulative, bool range);
+
     Rectf d_itemArea;
 };
 
