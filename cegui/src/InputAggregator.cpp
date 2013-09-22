@@ -331,6 +331,12 @@ bool InputAggregator::injectKeyUp(Key::Scan scan_code)
             value = SV_GoToStartOfDocument;
         else if (scan_code == Key::A)
             value = SV_SelectAll;
+        else if (scan_code == Key::C)
+            value = SV_Copy;
+        else if (scan_code == Key::V)
+            value = SV_Paste;
+        else if (scan_code == Key::X)
+            value = SV_Cut;
         else if (scan_code == Key::Tab)
             value = SV_NavigateToPrevious;
     }
