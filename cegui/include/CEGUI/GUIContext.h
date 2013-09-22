@@ -32,7 +32,6 @@
 #include "CEGUI/InputEventReceiver.h"
 #include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/PointerIndicator.h"
-#include "CEGUI/SystemKeys.h"
 #include "CEGUI/WindowNavigator.h"
 
 #include <map>
@@ -111,8 +110,6 @@ public:
     Window* getWindowContainingPointer() const;
 
     const Sizef& getSurfaceSize() const;
-
-    const SystemKeys& getSystemKeys() const;
 
     //! call to indicate that some redrawing is required.
     void markAsDirty();
@@ -287,7 +284,6 @@ protected:
     Window* d_captureWindow;
 
     PointersState d_pointersState;
-    SystemKeys d_systemKeys;
 
     Event::ScopedConnection d_areaChangedEventConnection;
     Event::ScopedConnection d_windowDestroyedEventConnection;

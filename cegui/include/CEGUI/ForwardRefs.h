@@ -116,7 +116,6 @@ template<typename T> class Size;
 class SimpleTimer;
 class StringTranscoder;
 class System;
-class SystemKeys;
 class Texture;
 class TextureTarget;
 class TextUtils;
