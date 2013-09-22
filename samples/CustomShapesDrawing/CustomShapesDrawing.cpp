@@ -244,12 +244,16 @@ void CustomShapesDrawing::updateFPSGraphs()
     // a re-draw of the Image.
     updateCustomSVGImagePolyline(linePositions);
 
+    // Update the FPS labels for the SVGImage
+    updateCustomSVGImageFPSLabels();
+
     // We will update the GeometryBuffer which contains our line vertices. We will need to calculate
     // the vertices of a line with a width of 1.0 and which will be rendered in green colour.
     updateCustomGeometryGraph(linePositions);
 
+    // Update the FPS Labels for the GeometryBuffer
     updateCustomGeometryFPSLabels();
-    updateCustomSVGImageFPSLabels();
+
 }
 
 /*************************************************************************
