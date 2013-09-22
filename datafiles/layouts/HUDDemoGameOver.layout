@@ -28,7 +28,7 @@
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="NormalTextColour" value="FFFFFFFF" />
                 <Property name="DisabledTextColour" value="FFFFFFFF" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
             </Window>
         </Window>
     </Window>

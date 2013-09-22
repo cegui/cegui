@@ -52,8 +52,8 @@ protected:
     bool handleGameStartClicked(const CEGUI::EventArgs& event);
     // Handle click on a button of the board
     bool handleMineButtonClicked(const CEGUI::EventArgs& event);
-    // Handle mouse button down on a button of the board
-    bool handleMineButtonDown(const CEGUI::EventArgs& event);
+    // Handle pointer press & hold on a button of the board
+    bool handleMinePointerPressHold(const CEGUI::EventArgs& event);
     // Update the timer if needed
     bool handleUpdateTimer(const CEGUI::EventArgs& event);
     // reset the board
@@ -125,8 +125,8 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     guiContext->setDefaultTooltipType("TaharezLook/Tooltip");
 
-    // set default mouse image
-    guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    // set default pointer image
+    guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
@@ -228,7 +228,7 @@ bool MinesweeperSample::initialise(CEGUI::GUIContext* guiContext)
             d_buttons[i][j]->setID(0);
             // Connect event handlers
             d_buttons[i][j]->subscribeEvent(PushButton::EventClicked, Event::Subscriber(&MinesweeperSample::handleMineButtonClicked, this));
-            d_buttons[i][j]->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&MinesweeperSample::handleMineButtonDown, this));
+            d_buttons[i][j]->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&MinesweeperSample::handleMinePointerPressHold, this));
         }
     }
     d_result = winMgr.createWindow("Vanilla/StaticText");
@@ -327,12 +327,12 @@ bool MinesweeperSample::handleMineButtonClicked(const CEGUI::EventArgs& event)
     return true;
 }
 /************************************************************************
-Handle click on a mine button (any mouse button)
+Handle click on a mine button (any pointer source)
 ************************************************************************/
-bool MinesweeperSample::handleMineButtonDown(const CEGUI::EventArgs& event)
+bool MinesweeperSample::handleMinePointerPressHold(const CEGUI::EventArgs& event)
 {
-    const CEGUI::MouseEventArgs& me = static_cast<const CEGUI::MouseEventArgs&>(event);
-    if (me.button == CEGUI::RightButton)
+    const CEGUI::PointerEventArgs& me = static_cast<const CEGUI::PointerEventArgs&>(event);
+    if (me.source == CEGUI::PS_Left)
     {
         CEGUI::Window* button = me.window;
         if (!button->isDisabled())

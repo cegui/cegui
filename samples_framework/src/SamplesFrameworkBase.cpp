@@ -81,6 +81,7 @@
 #include "CEGuiBaseApplication.h"
 
 #include "CEGUI/CEGUI.h"
+#include "CEGuiRendererSelector.h"
 
 // Include iostream if not on windows.
 #if defined( __WIN32__ ) || defined( _WIN32 )

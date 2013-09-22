@@ -177,6 +177,7 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
     case GLFW_KEY_HOME      : return CEGUI::Key::Home;
     case GLFW_KEY_END       : return CEGUI::Key::End;
     case GLFW_KEY_KP_ENTER  : return CEGUI::Key::NumpadEnter;
+    case GLFW_KEY_SPACE     : return CEGUI::Key::Space;
     default                 : return CEGUI::Key::Unknown;
     }
 }

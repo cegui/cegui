@@ -5,14 +5,14 @@
         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
         <Property name="Image" value="GameMenuImages/Background" />
         <Property name="MaxSize" value="{{1,0},{1,0}}" />
-        <Property name="MousePassThroughEnabled" value="True" />
+        <Property name="PointerPassThroughEnabled" value="True" />
         <Window type="Generic/Image" name="TopBar" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0,0}}" />
             <Property name="Image" value="GameMenuImages/TopBar" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="AspectMode" value="Expand" />
             <Property name="AspectRatio" value="13.714" />
-            <Property name="MousePassThroughEnabled" value="True" />
+            <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Label" name="TopBarLabel" >
                 <Property name="Area" value="{{0,0},{0.2,0},{0.4,0},{0.5,0}}" />
                 <Property name="Font" value="Jura-13" />
@@ -28,7 +28,7 @@
             <Property name="AspectMode" value="Expand" />
             <Property name="AspectRatio" value="13.714" />
             <Property name="VerticalAlignment" value="Bottom" />
-            <Property name="MousePassThroughEnabled" value="True" />
+            <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Label" name="BotBarLabel" >
                 <Property name="Area" value="{{0,0},{0.32,0},{0.4,0},{0.87,0}}" />
                 <Property name="Font" value="Jura-13" />
@@ -42,7 +42,7 @@
             <Property name="Area" value="{{0,0},{0,0},{1,0},{0.8,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
             <Property name="VerticalAlignment" value="Centre" />
-            <Property name="MousePassThroughEnabled" value="True" />
+            <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Image" name="InsideImage1" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{0.347222,0}}" />
                 <Property name="Image" value="GameMenuImages/CenterImageInside" />
@@ -50,7 +50,7 @@
                 <Property name="AspectMode" value="Expand" />
                 <Property name="VerticalAlignment" value="Centre" />
                 <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
             </Window>
             <Window type="DefaultWindow" name="InsideStartClickArea" >
                 <Property name="Area" value="{{0,0},{0,0},{0,0},{0.3125,0}}" />
@@ -66,7 +66,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="NormalTextColour" value="FF0094FF" />
                     <Property name="HorizontalAlignment" value="Centre" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="StartButtonImage" >
                     <Property name="Area" value="{{0,0},{-0.35,0},{0,0},{-0.15,0}}" />
@@ -77,7 +77,7 @@
                     <Property name="VerticalAlignment" value="Bottom" />
                     <Property name="HorizontalAlignment" value="Centre" />
                     <Property name="AutoRenderingSurface" value="True" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="DefaultWindow" name="OuterRingsContainer" >
@@ -85,7 +85,7 @@
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
                 <Property name="VerticalAlignment" value="Centre" />
                 <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="InsideImage3" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{0.54,0}}" />
                     <Property name="Image" value="GameMenuImages/CenterImageOutside1" />
@@ -95,7 +95,7 @@
                     <Property name="VerticalAlignment" value="Centre" />
                     <Property name="HorizontalAlignment" value="Centre" />
                     <Property name="AutoRenderingSurface" value="True" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="InsideImage4" >
                     <Property name="Area" value="{{0,0},{0,0},{0,0},{0.495,0}}" />
@@ -106,7 +106,7 @@
                     <Property name="VerticalAlignment" value="Centre" />
                     <Property name="HorizontalAlignment" value="Centre" />
                     <Property name="AutoRenderingSurface" value="True" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="InsideImage2" >
@@ -116,22 +116,22 @@
                 <Property name="AspectMode" value="Expand" />
                 <Property name="VerticalAlignment" value="Centre" />
                 <Property name="HorizontalAlignment" value="Centre" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
             </Window>
         </Window>
         <Window type="DefaultWindow" name="LoginContainer" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Property name="MousePassThroughEnabled" value="True" />
+            <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="GameMenu/Editbox" name="LoginEditbox" >
                 <Property name="Area" value="{{0.828906,0},{0.154167,0},{0.928906,0},{0.179167,0}}" />
                 <Property name="Font" value="Jura-10" />
-                <Property name="MouseCursorImage" value="" />
+                <Property name="PointerIndicatorImage" value="" />
             </Window>
             <Window type="GameMenu/Editbox" name="PasswordEditbox" >
                 <Property name="Area" value="{{0.849219,0},{0.202778,0},{0.949219,0},{0.227778,0}}" />
                 <Property name="Font" value="Jura-10" />
-                <Property name="MouseCursorImage" value="" />
+                <Property name="PointerIndicatorImage" value="" />
             </Window>
             <Window type="Generic/Label" name="PasswordLabel" >
                 <Property name="Area" value="{{0.746094,0},{0.202778,0},{0.846094,0},{0.227778,0}}" />
@@ -161,14 +161,14 @@
                     <Property name="Text" value="››" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="NormalTextColour" value="FFC9FAFF" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
         </Window>
         <Window type="DefaultWindow" name="InnerButtonsContainer" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Property name="MousePassThroughEnabled" value="True" />
+            <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Image" name="ButtonOptions" >
                 <Property name="Area" value="{{0.125781,0},{-0.136806,0},{0.160937,0},{-0.0743055,0}}" />
                 <Property name="Image" value="GameMenuImages/ButtonOptionsIcon" />
@@ -233,7 +233,7 @@
                 <Property name="VertFormatting" value="BottomAligned" />
                 <Property name="HorizontalAlignment" value="Right" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Label" name="LabelLoad" >
                     <Property name="Area" value="{{-0.00260417,0},{0.522388,0},{0.257682,0},{0.776119,0}}" />
                     <Property name="Font" value="Jura-10" />
@@ -253,7 +253,7 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Right" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Label" name="LabelCharacters" >
                     <Property name="Area" value="{{-0.09375,0},{0.0277778,0},{0.210156,0},{0.178241,0}}" />
                     <Property name="Font" value="Jura-10" />
@@ -317,7 +317,7 @@
                 <Property name="HorzFormatting" value="LeftAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Label" name="LabelOptions" >
                     <Property name="Area" value="{{-0.661458,0},{0.354545,0},{-0.357552,0},{0.518181,0}}" />
                     <Property name="Font" value="Jura-10" />
@@ -363,7 +363,7 @@
                 <Property name="HorzFormatting" value="LeftAligned" />
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Label" name="LabelNo" >
                     <Property name="Area" value="{{-0.348958,0},{0.52381,0},{-0.0442705,0},{0.761905,0}}" />
                     <Property name="Font" value="Jura-10" />
@@ -409,14 +409,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -424,7 +424,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -432,7 +432,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="LoadSelectionIcon" >
@@ -443,14 +443,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -458,7 +458,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -466,7 +466,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="Name2SelectionIcon" >
@@ -477,14 +477,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -492,7 +492,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -500,7 +500,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="NewSelectionIcon" >
@@ -511,14 +511,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -526,7 +526,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -534,7 +534,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="DeleteSelectionIcon" >
@@ -545,14 +545,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -560,7 +560,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -568,7 +568,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="SelectSelectionIcon" >
@@ -579,14 +579,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -594,7 +594,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -602,7 +602,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="ControlsSelectionIcon" >
@@ -613,14 +613,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -628,7 +628,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -636,7 +636,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="VideoSelectionIcon" >
@@ -647,14 +647,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -662,7 +662,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -670,7 +670,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="AudioSelectionIcon" >
@@ -681,14 +681,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -696,7 +696,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -704,7 +704,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="YesSelectionIcon" >
@@ -715,14 +715,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -730,7 +730,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -738,7 +738,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
             <Window type="Generic/Image" name="NoSelectionIcon" >
@@ -749,14 +749,14 @@
                 <Property name="VertFormatting" value="TopAligned" />
                 <Property name="HorizontalAlignment" value="Centre" />
                 <Property name="AutoRenderingSurface" value="True" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="Image3" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                     <Property name="Image" value="GameMenuImages/DotDot" />
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image1" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -764,7 +764,7 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
                 <Window type="Generic/Image" name="Image2" >
                     <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -772,14 +772,14 @@
                     <Property name="MaxSize" value="{{1,0},{1,0}}" />
                     <Property name="HorzFormatting" value="RightAligned" />
                     <Property name="VertFormatting" value="BottomAligned" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                 </Window>
             </Window>
         </Window>
         <Window type="DefaultWindow" name="BotNavigationContainer" >
             <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
             <Property name="MaxSize" value="{{1,0},{1,0}}" />
-            <Property name="MousePassThroughEnabled" value="True" />
+            <Property name="PointerPassThroughEnabled" value="True" />
             <Window type="Generic/Image" name="LeftArrow" >
                 <Property name="Area" value="{{-0.12,0},{0.82,0},{-0.1,0},{0.856,0}}" />
                 <Property name="Image" value="GameMenuImages/BotBarLeftArrow" />
@@ -797,7 +797,7 @@
             <Window type="DefaultWindow" name="NaviCenterContainer" >
                 <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                 <Property name="MaxSize" value="{{1,0},{1,0}}" />
-                <Property name="MousePassThroughEnabled" value="True" />
+                <Property name="PointerPassThroughEnabled" value="True" />
                 <Window type="Generic/Image" name="NavigationIcon" >
                     <Property name="Area" value="{{0,0},{0.783,0},{0.0382812,0},{0.878833,0}}" />
                     <Property name="Image" value="GameMenuImages/IconChangeDestination" />
@@ -821,14 +821,14 @@
                     <Property name="VertFormatting" value="TopAligned" />
                     <Property name="HorizontalAlignment" value="Centre" />
                     <Property name="AutoRenderingSurface" value="True" />
-                    <Property name="MousePassThroughEnabled" value="True" />
+                    <Property name="PointerPassThroughEnabled" value="True" />
                     <Window type="Generic/Image" name="Image1" >
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
                         <Property name="Image" value="GameMenuImages/DotInner" />
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="HorzFormatting" value="RightAligned" />
                         <Property name="VertFormatting" value="BottomAligned" />
-                        <Property name="MousePassThroughEnabled" value="True" />
+                        <Property name="PointerPassThroughEnabled" value="True" />
                     </Window>
                     <Window type="Generic/Image" name="Image2" >
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -836,7 +836,7 @@
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="HorzFormatting" value="RightAligned" />
                         <Property name="VertFormatting" value="BottomAligned" />
-                        <Property name="MousePassThroughEnabled" value="True" />
+                        <Property name="PointerPassThroughEnabled" value="True" />
                     </Window>
                     <Window type="Generic/Image" name="Image3" >
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}}" />
@@ -844,7 +844,7 @@
                         <Property name="MaxSize" value="{{1,0},{1,0}}" />
                         <Property name="HorzFormatting" value="RightAligned" />
                         <Property name="VertFormatting" value="BottomAligned" />
-                        <Property name="MousePassThroughEnabled" value="True" />
+                        <Property name="PointerPassThroughEnabled" value="True" />
                     </Window>
                 </Window>
             </Window>

@@ -117,8 +117,8 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    // Load the scheme to initialise the skin which we use in this sample
    SchemeManager::getSingleton().createFromFile(SCHEME_FILE_NAME);
 
-   // set default mouse image
-   guiContext->getMouseCursor().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
+   // set default pointer image
+   guiContext->getPointerIndicator().setDefaultImage(IMAGES_FILE_NAME "/MouseArrow");
 
    // load an image to use as a background
    if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
@@ -145,9 +145,6 @@ bool TreeDemoSample::initialise(CEGUI::GUIContext* guiContext)
    TreeDemoWindow = winMgr.loadLayoutFromFile(LAYOUT_FILE_NAME);
 
    background->addChild(TreeDemoWindow);
-
-   // listen for key presses on the root window.
-   background->subscribeEvent(Window::EventKeyDown, Event::Subscriber(&TreeDemoSample::handleRootKeyDown, this));
 
    theTree = (Tree *)TreeDemoWindow->getChild(TreeID);
    theTree->initialise();
@@ -333,27 +330,6 @@ bool TreeDemoSample::handleEventSelectionChanged(const CEGUI::EventArgs& args)
 
    return true;
    }
-
-
-
-bool TreeDemoSample::handleRootKeyDown(const CEGUI::EventArgs& args)
-   {
-   using namespace CEGUI;
-
-   const KeyEventArgs& keyArgs = static_cast<const KeyEventArgs&>(args);
-
-   switch (keyArgs.scancode)
-      {
-      case Key::F12:
-         break;
-
-      default:
-         return false;
-      }
-
-   return true;
-   }
-
 
 bool TreeDemoSample::handleEventBranchOpened(const CEGUI::EventArgs& args)
    {
