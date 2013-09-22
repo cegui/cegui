@@ -325,7 +325,7 @@ BOOST_AUTO_TEST_CASE(MouseButtonDownAndControlToSelectCumulative)
 BOOST_AUTO_TEST_CASE(MouseButtonDownAndShiftToSelectMultiple)
 {
     std::vector<SemanticValue> expected_values;
-    expected_values.push_back(SV_SelectMultipleItems);
+    expected_values.push_back(SV_SelectRange);
 
     d_inputAggregator->injectKeyDown(Key::LeftShift);
     d_inputAggregator->injectMouseButtonDown(LeftButton);

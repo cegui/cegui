@@ -935,7 +935,7 @@ void Listbox::onSemanticInputEvent(SemanticEventArgs& e)
         handleListSelection(getGUIContext().getPointerIndicator().getPosition(), 
             true, false);
     }
-    else if (e.d_semanticValue == SV_SelectMultipleItems)
+    else if (e.d_semanticValue == SV_SelectRange)
     {
         handleListSelection(getGUIContext().getPointerIndicator().getPosition(),
             false, true);
