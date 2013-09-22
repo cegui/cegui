@@ -377,8 +377,14 @@ public:
     \brief
         Notify this ItemListBase that the given item was just activated.
         Internal function - NOT to be used from client code.
+
+    \param cumulativeSelection
+        True if this entry should cumulate to the previous selection
+
+    \param rangeSelection
+        True if this entry should do a range selection
     */
-    virtual void notifyItemActivated(ItemEntry*) {}
+    virtual void notifyItemActivated(ItemEntry*, bool cumulativeSelection, bool rangeSelection) {}
 
     /*!
     \brief
