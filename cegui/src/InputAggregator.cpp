@@ -276,7 +276,7 @@ bool InputAggregator::injectMouseButtonDown(MouseButton button)
     if (isControlPressed())
         value = SV_SelectCumulative;
     else if (isShiftPressed())
-        value = SV_SelectMultipleItems;
+        value = SV_SelectRange;
 
     SemanticInputEvent semantic_event(value);
     semantic_event.d_payload.source = convertToPointerSource(button);

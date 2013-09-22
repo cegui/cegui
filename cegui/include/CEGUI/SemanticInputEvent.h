@@ -99,7 +99,7 @@ enum SemanticValue
     SV_PointerPressHold,
     SV_PointerMove,
     SV_PointerLeave,
-    SV_SelectMultipleItems,
+    SV_SelectRange,
     SV_SelectCumulative,
     SV_SelectWord,
     SV_SelectAll,
@@ -148,7 +148,7 @@ enum SemanticValue
 
 static bool isSelectionSemanticValue(int value)
 {
-    return (value >= SV_SelectMultipleItems && value <= SV_SelectToEndOfLine) ||
+    return (value >= SV_SelectRange && value <= SV_SelectToEndOfLine) ||
         (value >= SV_SelectToStartOfDocument && value <= SV_SelectToPreviousPage);
 }
 
