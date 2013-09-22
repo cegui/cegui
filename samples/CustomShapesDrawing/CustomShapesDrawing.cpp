@@ -435,13 +435,17 @@ void CustomShapesDrawing::createDescriptionLabel()
 
     // We create a button and subscribe to its click events
     CEGUI::Window* descriptionLabel = winMgr.createWindow("Generic/Label");
-    descriptionLabel->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(0.08f)));
+    descriptionLabel->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(0.25f)));
     descriptionLabel->setHorizontalAlignment(HA_CENTRE);
+    descriptionLabel->setProperty("HorzFormatting", "WordWrapCentreAligned");
     descriptionLabel->setPosition(CEGUI::UVector2(cegui_reldim(0.0f), cegui_absdim(400.0f)));
     d_root->addChild(descriptionLabel);
     descriptionLabel->setText("The left graph is rendered directly into a GeometryBuffer and rendered as overlay."
-        "\nThe right graph is created using an SVGImage with modified SVGData and is then used in the \nsame way as a regular CEGUI image"
-        "- it is set as a property for a window that renders the image.");
+        "The right graph is created using an SVGImage with modified SVGData and is then used in the same way as a regular CEGUI image"
+        " - it is set as a property for a window that renders the image. \n\n"
+        "The benefit of creating custom geometry by using an SVGImage and its SVGData is that it can be conveniently added to a CEGUI Window "
+        "and that defining primitive objects, such as lines, rectangles etc., is easier. Additionally, the internal CEGUI SVG classes which "
+        "create the geometry offer an anti-aliasing option that delivers anti-aliasing at almost no extra performance cost for the GPU.");
 }
 
 /*************************************************************************
