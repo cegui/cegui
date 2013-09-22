@@ -215,7 +215,7 @@ public:
         Notify this ItemListbox that the given ListItem was just activated.
         Internal function - not to be used from client code.
     */
-    virtual void notifyItemActivated(ItemEntry* li);
+    virtual void notifyItemActivated(ItemEntry* li, bool cumulativeSelection, bool rangeSelection);
 
     /*!
     \brief

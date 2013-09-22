@@ -145,11 +145,15 @@ void ItemEntry::addItemEntryProperties(void)
 
 void ItemEntry::onSemanticInputEvent(SemanticEventArgs& e)
 {
+    bool range_selection = e.d_semanticValue == SV_SelectRange;
+    bool cumulative_selection = e.d_semanticValue == SV_SelectCumulative;
+
     if (d_selectable &&
-        e.d_semanticValue == SV_PointerActivate && e.d_payload.source == PS_Left)
+        (e.d_semanticValue == SV_PointerActivate || range_selection || cumulative_selection) &&
+         e.d_payload.source == PS_Left)
     {
         if (d_ownerList)
-            d_ownerList->notifyItemActivated(this);
+            d_ownerList->notifyItemActivated(this, cumulative_selection, range_selection);
         else
             setSelected(!isSelected());
         ++e.handled;
