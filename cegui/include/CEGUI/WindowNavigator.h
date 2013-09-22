@@ -44,7 +44,10 @@ namespace CEGUI
 
 /*!
 \brief
-    Provides a strategy for navigating the GUI based on a specified mapping
+    Provides a strategy for navigating the GUI based on a specified mapping.
+
+    For a brief tutorial on how to use the GUI navigation please refer
+    to the @ref gui_navigation_tutorial
 */
 class CEGUIEXPORT NavigationStrategy
 {
@@ -67,6 +70,9 @@ public:
 /*!
 \brief
     Provides a way of navigating the GUI by means of focusing windows
+
+    For a brief tutorial on how to use the GUI navigation please refer
+    to the @ref gui_navigation_tutorial
 */
 class CEGUIEXPORT WindowNavigator
 {
