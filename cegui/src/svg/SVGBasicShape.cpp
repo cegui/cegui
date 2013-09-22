@@ -114,6 +114,19 @@ SVGLine::SVGLine(const SVGPaintStyle& paint_style,
 }
 
 //----------------------------------------------------------------------------//
+SVGLine::SVGLine(const SVGPaintStyle& paint_style,
+                 const glm::mat3x3& transformation,
+                 const glm::vec2& line_start,
+                 const glm::vec2& line_end) :
+    SVGBasicShape(paint_style, transformation),
+    d_x1(line_start.x),
+    d_y1(line_start.y),
+    d_x2(line_end.x),
+    d_y2(line_end.y)
+{
+}
+
+//----------------------------------------------------------------------------//
 void SVGLine::render(std::vector<GeometryBuffer*>& geometry_buffers,
                      const SVGImage::SVGImageRenderSettings& render_settings) const
 {

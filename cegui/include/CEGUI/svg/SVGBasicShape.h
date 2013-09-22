@@ -161,10 +161,13 @@ public:
 class CEGUIEXPORT SVGLine : public SVGBasicShape
 {
 public:
-    //! Constructor
+    //! Constructors
     SVGLine(const SVGPaintStyle& paint_style, const glm::mat3x3& transformation,
             const float x1, const float y1,
             const float x2, const float y2);
+
+    SVGLine(const SVGPaintStyle& paint_style, const glm::mat3x3& transformation,
+            const glm::vec2& line_start, const glm::vec2& line_end);
 
     SVGLine()
     {}
