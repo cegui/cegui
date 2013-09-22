@@ -1653,7 +1653,6 @@ protected:
 	*/
 	virtual	void	onListColumnMoved(WindowEventArgs& e);
 
-
 	/*************************************************************************
 		Overridden Event handlers
 	*************************************************************************/
@@ -1661,7 +1660,7 @@ protected:
 	virtual void	onSized(ElementEventArgs& e);
     virtual void    onPointerPressHold(PointerEventArgs& e);
     virtual void    onScroll(PointerEventArgs& e);
-
+    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Handlers for subscribed events
@@ -1739,6 +1738,7 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addMultiColumnListProperties(void);
+    void    handleSelection(const Vector2f& position, bool cumulative, bool range);
 };
 
 
