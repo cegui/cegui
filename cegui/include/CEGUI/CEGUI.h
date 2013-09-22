@@ -108,7 +108,6 @@
 #include "CEGUI/String.h"
 #include "CEGUI/StringTranscoder.h"
 #include "CEGUI/System.h"
-#include "CEGUI/SystemKeys.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/TextureTarget.h"
 #include "CEGUI/TextUtils.h"

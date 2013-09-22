@@ -226,12 +226,6 @@ const Sizef& GUIContext::getSurfaceSize() const
 }
 
 //----------------------------------------------------------------------------//
-const SystemKeys& GUIContext::getSystemKeys() const
-{
-    return d_systemKeys;
-}
-
-//----------------------------------------------------------------------------//
 void GUIContext::markAsDirty()
 {
     d_isDirty = true;
