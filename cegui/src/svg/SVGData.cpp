@@ -151,7 +151,7 @@ float SVGData::getWidth() const
 }
 
 //----------------------------------------------------------------------------//
-void  SVGData::setWidth(float width)
+void SVGData::setWidth(float width)
 {
     d_width = width;
 }
