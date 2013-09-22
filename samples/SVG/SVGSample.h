@@ -53,7 +53,7 @@ protected:
 
 private:
     //! An event handler that handles clicks on the anti-aliasing on/off button
-    bool handleAntialiasingButtonClicked(const CEGUI::EventArgs& event_args);
+    bool handleAntialiasingButtonClicked(const CEGUI::EventArgs& args);
 
     //! A pointer to the window that will display the sample SVGImage
     CEGUI::Window* d_svgImageWindow;

@@ -107,7 +107,7 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
 }
 
 
-bool SVGSample::handleAntialiasingButtonClicked(const CEGUI::EventArgs& event_args)
+bool SVGSample::handleAntialiasingButtonClicked(const CEGUI::EventArgs& args)
 {
     d_svgSampleImage->setUseGeometryAntialiasing(!d_svgSampleImage->getUsesGeometryAntialiasing());
     d_svgImageWindow->invalidate();
