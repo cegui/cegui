@@ -738,10 +738,10 @@ protected:
 		Overridden Event handlers
 	*************************************************************************/
 	virtual void	onSized(ElementEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
-	virtual void	onMouseMove(MouseEventArgs& e);
-
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onScroll(PointerEventArgs& e);
+    virtual void    onPointerMove(PointerEventArgs& e);
+    virtual void    onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Implementation Data
@@ -763,7 +763,9 @@ private:
 	/*************************************************************************
 		Private methods
 	*************************************************************************/
-	void	addListboxProperties(void);
+    void addListboxProperties(void);
+    void handleListSelection(CEGUI::Vector2f position, bool cumulative, bool multipleItems);
+    void handleListSelection(ListboxItem* selectedItem, bool cumulative, bool multipleItems);
 };
 
 

@@ -29,7 +29,7 @@
 #define _CEGuiGLFWSharedBase_h_
 
 #include "CEGuiBaseApplication.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include <GL/glfw.h>
 
 class SamplesFrameworkBase;
