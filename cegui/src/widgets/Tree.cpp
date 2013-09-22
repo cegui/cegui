@@ -1079,78 +1079,9 @@ void Tree::onPointerPressHold(PointerEventArgs& e)
     
     if (e.source == PS_Left)
     {
-        //bool modified = false;
-        
-        Vector2f localPos(CoordConverter::screenToWindow(*this, e.position));
-        //      Point localPos(screenToWindow(e.position));
-        
-        TreeItem* item = getItemAtPoint(localPos);
-        
-        if (item != 0)
-        {
-            //modified = true;
-            TreeEventArgs args(this);
-            args.treeItem = item;
-            populateGeometryBuffer();
-            Rectf buttonLocation = item->getButtonLocation();
-            if ((localPos.d_x >= buttonLocation.left()) && (localPos.d_x <= buttonLocation.right()) &&
-                (localPos.d_y >= buttonLocation.top()) && (localPos.d_y <= buttonLocation.bottom()))
-            {
-                item->toggleIsOpen();
-                if (item->getIsOpen())
-                {
-                    TreeItem *lastItemInList = item->getTreeItemFromIndex(item->getItemCount() - 1);
-                    ensureItemIsVisible(lastItemInList);
-                    ensureItemIsVisible(item);
-                    onBranchOpened(args);
-                }
-                else
-                {
-                    onBranchClosed(args);
-                }
-                
-                // Update the item screen locations, needed to update the scrollbars.
-                //	populateGeometryBuffer();
-                
-                // Opened or closed a tree branch, so must update scrollbars.
-                configureScrollbars();
-            }
-            else
-            {
-                // clear old selections if no control key is pressed or if multi-select is off
-                //TODO: handle SelectCumulative semantic event
-                //if (!(e.sysKeys & Control) || !d_multiselect)
-                //    clearAllSelections_impl();
-                
-                // select range or item, depending upon keys and last selected item
-#if 0 // TODO: fix this
-                if (((e.sysKeys & Shift) && (d_lastSelected != 0)) && d_multiselect)
-                    selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
-                else
-#endif
-                    item->setSelected(item->isSelected() ^ true);
-                
-                // update last selected item
-                d_lastSelected = item->isSelected() ? item : 0;
-                onSelectionChanged(args);
-            }
-        }
-        else
-        {
-            // clear old selections if no control key is pressed or if multi-select is off
-            //TODO: handle SelectCumulative semantic event
-            //if (!(e.sysKeys & Control) || !d_multiselect)
-            //{
-            //    if (clearAllSelections_impl())
-            //    {
-            //        // Changes to the selections were actually made
-            //        TreeEventArgs args(this);
-            //        args.treeItem = item;
-            //        onSelectionChanged(args);
-            //    }
-            //}
-        }
-        
+        Vector2f local_pos(CoordConverter::screenToWindow(*this, e.position));
+        handleSelection(local_pos, false, false);
+
         ++e.handled;
     }
 }
@@ -1210,6 +1141,21 @@ void Tree::onPointerMove(PointerEventArgs& e)
     }
     
     Window::onPointerMove(e);
+}
+
+void Tree::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    bool cumulative = e.d_semanticValue == SV_SelectCumulative;
+    bool range = e.d_semanticValue == SV_SelectRange;
+
+    if (cumulative || range)
+    {
+        Vector2f local_point = CoordConverter::screenToWindow(*this,
+            getGUIContext().getPointerIndicator().getPosition());
+        handleSelection(local_point, cumulative, range);
+
+        ++ e.handled;
+    }
 }
 
 // Recursive!
@@ -1380,6 +1326,73 @@ bool Tree::handleFontRenderSizeChange(const EventArgs& args)
     }
 
     return res;
+}
+
+void Tree::handleSelection(Vector2f local_pos, bool cumulative, bool range)
+{
+    TreeItem* item = getItemAtPoint(local_pos);
+
+    if (item != 0)
+    {
+        TreeEventArgs args(this);
+        args.treeItem = item;
+        populateGeometryBuffer();
+        Rectf buttonLocation = item->getButtonLocation();
+        if ((local_pos.d_x >= buttonLocation.left()) && (local_pos.d_x <= buttonLocation.right()) &&
+            (local_pos.d_y >= buttonLocation.top()) && (local_pos.d_y <= buttonLocation.bottom()))
+        {
+            item->toggleIsOpen();
+            if (item->getIsOpen())
+            {
+                TreeItem *lastItemInList = item->getTreeItemFromIndex(item->getItemCount() - 1);
+                ensureItemIsVisible(lastItemInList);
+                ensureItemIsVisible(item);
+                onBranchOpened(args);
+            }
+            else
+            {
+                onBranchClosed(args);
+            }
+
+            // Update the item screen locations, needed to update the scrollbars.
+            //	populateGeometryBuffer();
+
+            // Opened or closed a tree branch, so must update scrollbars.
+            configureScrollbars();
+        }
+        else
+        {
+            // clear old selections if no cumulative selection or if multi-select is off
+            if (!cumulative || !d_multiselect)
+                clearAllSelections_impl();
+
+            // select range or item, depending upon keys and last selected item
+#if 0 // TODO: fix this
+            if (range && d_lastSelected != 0 && d_multiselect)
+                selectRange(getItemIndex(item), getItemIndex(d_lastSelected));
+            else
+#endif
+                item->setSelected(item->isSelected() ^ true);
+
+            // update last selected item
+            d_lastSelected = item->isSelected() ? item : 0;
+            onSelectionChanged(args);
+        }
+    }
+    else
+    {
+        // clear old selections if no cumulative selection or if multi-select is off
+        if (!cumulative || !d_multiselect)
+        {
+            if (clearAllSelections_impl())
+            {
+                // Changes to the selections were actually made
+                TreeEventArgs args(this);
+                args.treeItem = item;
+                onSelectionChanged(args);
+            }
+        }
+    }
 }
 
 //////////////////////////////////////////////////////////////////////////
