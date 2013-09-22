@@ -58,12 +58,21 @@ BlendMode GeometryBuffer::getBlendMode() const
 }
 
 //---------------------------------------------------------------------------//
-void GeometryBuffer::appendGeometry(const TexturedColouredVertex* const vbuff,
-    uint vertex_count)
+void GeometryBuffer::appendGeometry(const std::vector<ColouredVertex>& coloured_vertices)
+{
+    if(coloured_vertices.empty())
+        return;
+
+    appendGeometry(&coloured_vertices[0], coloured_vertices.size());
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendGeometry(const ColouredVertex* vertex_array,
+                                    uint vertex_count)
 {
     // Add the vertex data in their default order into an array
     std::vector<float> vertexData;
-    const TexturedColouredVertex* vs = vbuff;
+    const ColouredVertex* vs = vertex_array;
     for (uint i = 0; i < vertex_count; ++i, ++vs)
     {
         // Add all the elements in the default order for textured and coloured
@@ -75,7 +84,40 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* const vbuff,
         vertexData.push_back(vs->d_colour.getGreen());
         vertexData.push_back(vs->d_colour.getBlue());
         vertexData.push_back(vs->d_colour.getAlpha());
-        vertexData.push_back(vs->d_texCoords.x);
+    }
+
+    // Append the prepared geometry data
+    appendGeometry(vertexData);
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendGeometry(const std::vector<TexturedColouredVertex>& textured_vertices)
+{
+    if(textured_vertices.empty())
+        return;
+
+    appendGeometry(&textured_vertices[0], textured_vertices.size());
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
+                                    uint vertex_count)
+{
+    // Add the vertex data in their default order into an array
+    std::vector<float> vertexData;
+    const TexturedColouredVertex* vs = vertex_array;
+    for (uint i = 0; i < vertex_count; ++i, ++vs)
+    {
+        // Add all the elements in the default order for textured and coloured
+        // geometry into the vector
+        vertexData.push_back(vs->d_position.x);
+        vertexData.push_back(vs->d_position.y);
+        vertexData.push_back(vs->d_position.z);
+        vertexData.push_back(vs->d_colour.getRed());
+        vertexData.push_back(vs->d_colour.getGreen());
+        vertexData.push_back(vs->d_colour.getBlue());
+        vertexData.push_back(vs->d_colour.getAlpha());
+    vertexData.push_back(vs->d_texCoords.x);
         vertexData.push_back(vs->d_texCoords.y);
     }
 
@@ -85,7 +127,7 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* const vbuff,
 
 //---------------------------------------------------------------------------//
 void GeometryBuffer::appendGeometry(const float* const vertex_data,
-    uint array_size)
+                                    uint array_size)
 {
     std::vector<float> vectorVertexData(vertex_data, vertex_data + array_size);
     appendGeometry(vectorVertexData);
