@@ -173,10 +173,6 @@ private:
     /*!
     \brief
         Constructor for OpenGL Renderer objects
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
     OpenGL3Renderer();
 
@@ -186,10 +182,6 @@ private:
 
     \param display_size
         Size object describing the initial display resolution.
-
-    \param tt_type
-        Specifies one of the TextureTargetType enumerated values indicating the
-        desired TextureTarget type to be used.
     */
     OpenGL3Renderer(const Sizef& display_size);
 
