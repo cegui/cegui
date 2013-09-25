@@ -27,14 +27,14 @@
  ***************************************************************************/
 #include <GL/glew.h>
 
-#include "glm/gtc/type_ptr.hpp"
-
 #include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/Exceptions.h"
+
+#include <glm/gtc/type_ptr.hpp>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -65,7 +65,7 @@ void OpenGL3ShaderWrapper::addTextureUniformVariable(const std::string& uniformN
 {
     GLuint variable_location = d_shader.getUniformLocation(uniformName);
 
-    d_uniformVariables.insert(std::pair<std::string, GLuint>(uniformName, textureUnitIndex));
+    d_uniformVariables.insert(std::pair<std::string, GLint>(uniformName, textureUnitIndex));
 
     d_shader.bind();
     glUniform1i(variable_location, textureUnitIndex);
