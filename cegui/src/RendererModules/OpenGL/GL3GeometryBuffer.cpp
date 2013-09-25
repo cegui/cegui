@@ -28,13 +28,11 @@
 #include <GL/glew.h>
 
 #include "glm/glm.hpp"
-#include "glm/gtc/quaternion.hpp"
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 #include "CEGUI/RendererModules/OpenGL/GL3GeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GL3Renderer.h"
 #include "CEGUI/RenderEffect.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/ShaderParameterBindings.h"
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
@@ -54,7 +52,7 @@ OpenGL3GeometryBuffer::OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefC
     d_glStateChanger(owner.getOpenGLStateChanger()),
     d_bufferSize(0)
 {
-    initialiseOpenGLBuffers();
+    initialiseVertexBuffers();
 }
 
 //----------------------------------------------------------------------------//
@@ -66,6 +64,9 @@ OpenGL3GeometryBuffer::~OpenGL3GeometryBuffer()
 //----------------------------------------------------------------------------//
 void OpenGL3GeometryBuffer::draw() const
 {
+    if(d_vertexData.empty())
+        return;
+
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 
     if (d_clippingActive)
@@ -121,7 +122,7 @@ void OpenGL3GeometryBuffer::reset()
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3GeometryBuffer::initialiseOpenGLBuffers()
+void OpenGL3GeometryBuffer::initialiseVertexBuffers()
 {
     glGenVertexArrays(1, &d_verticesVAO);
     d_glStateChanger->bindVertexArray(d_verticesVAO);
@@ -153,8 +154,8 @@ void OpenGL3GeometryBuffer::finaliseVertexAttributes()
 
     //Update the vertex attrib pointers of the vertex array object depending on the saved attributes
     int dataOffset = 0;
-    const unsigned int attribute_count = d_vertexAttributes.size();
-    for (unsigned int i = 0; i < attribute_count; ++i)
+    const size_t attribute_count = d_vertexAttributes.size();
+    for (size_t i = 0; i < attribute_count; ++i)
     {
         switch(d_vertexAttributes.at(i))
         {
@@ -200,7 +201,7 @@ void OpenGL3GeometryBuffer::deinitialiseOpenGLBuffers()
 void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 {
     bool needNewBuffer = false;
-    unsigned int vertexCount = d_vertexData.size();
+    size_t vertexCount = d_vertexData.size();
 
     if(d_bufferSize < vertexCount)
     {
