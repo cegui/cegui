@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _Sample_Custom_Shapes_Drawing_h_
-#define _Sample_Custom_Shapes_Drawing_h_
+#ifndef _SampleCustomShapesDrawing_h_
+#define _SampleCustomShapesDrawing_h_
 
 #include "SampleBase.h"
 
@@ -52,7 +52,7 @@ public:
 
     virtual void deinitialise();
 
-protected:
+private:
     //! The general update function of our sample
     void update(float timeSinceLastUpdate);
 
@@ -125,6 +125,8 @@ protected:
     //! Handler for size changes of the custom-SVGImage FrameWindow
     bool handleSVGImageFrameWindowSizeChanged(const CEGUI::EventArgs& args);
 
+
+
     //! Our sample's root window.
     CEGUI::DefaultWindow*           d_root;
 
@@ -184,6 +186,11 @@ protected:
     CEGUI::Window*                  d_customSVGImageFPSLabel1;
     CEGUI::Window*                  d_customSVGImageFPSLabel2;
     CEGUI::Window*                  d_customSVGImageFPSLabel3;
+
+    //! The custom SVGImage we will create to render one of the graphs
+    CEGUI::SVGImage*                d_customSVGImage;
+    //! The custom SVGData we will use for our custom SVGImage
+    CEGUI::SVGData*                 d_customSVGData;
 };
 
 #endif  // end of guard _Sample_FirstWindow_h_
