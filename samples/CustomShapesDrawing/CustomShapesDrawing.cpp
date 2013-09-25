@@ -211,12 +211,17 @@ void CustomShapesDrawing::updateFPS(const float elapsed)
 *************************************************************************/
 void CustomShapesDrawing::deinitialise()
 {
+    // Destroy the GeometryBuffer created for this sample
     CEGUI::Renderer* renderer = CEGUI::System::getSingleton().getRenderer();
     renderer->destroyGeometryBuffer(*d_FPSGraphGeometryBuffer);
-
+    // Destroy the SVGImage created for this sample
     CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
     imageManager.destroy("FPSGraphSVG");
+    // Destroy the created custom SVGData
+    CEGUI::SVGDataManager& svgDataManager = CEGUI::SVGDataManager::getSingleton();
+    svgDataManager.destroy(*d_customSVGData);
 
+    // This destroys the window and its child windows
     WindowManager& winMgr = WindowManager::getSingleton();
     winMgr.destroyWindow(d_root);
 }
@@ -359,22 +364,23 @@ void CustomShapesDrawing::setupCustomSVGImage()
 {
     // Create an SVGImage using the ImageManager
     CEGUI::ImageManager& imageManager = CEGUI::ImageManager::getSingleton();
-    SVGImage& fpsSVGImage = static_cast<SVGImage&>(imageManager.create("SVGImage", "FPSGraphSVG"));
+    d_customSVGImage = static_cast<SVGImage*>(&imageManager.create("SVGImage", "FPSGraphSVG"));
     // Create an SVGData object
     CEGUI::SVGDataManager& svgDataManager = CEGUI::SVGDataManager::getSingleton();
-    SVGData& fpsSVGData = svgDataManager.create(CEGUI::String("FPSGraphCustomShape"));
+    d_customSVGData = &svgDataManager.create(CEGUI::String("FPSGraphCustomShape"));
 
     // Set the desired size of the SVGData
-    fpsSVGData.setWidth(d_customSVGImageWidth);
-    fpsSVGData.setHeight(d_customSVGImageHeight);
+    d_customSVGData->setWidth(d_customSVGImageWidth);
+    d_customSVGData->setHeight(d_customSVGImageHeight);
 
     // Set the pointer to the SVGData for the SVGImage
-    fpsSVGImage.setSVGData(&fpsSVGData);
-    const Rectf imageArea(Vector2f(0.0f, 0.0f), CEGUI::Sizef(fpsSVGData.getWidth(), fpsSVGData.getHeight()));
-    fpsSVGImage.setImageArea(imageArea);
+    d_customSVGImage->setSVGData(d_customSVGData);
+    // We make our SVGImage the same size as the SVGData
+    const Rectf imageArea(Vector2f(0.0f, 0.0f), CEGUI::Sizef(d_customSVGData->getWidth(), d_customSVGData->getHeight()));
+    d_customSVGImage->setImageArea(imageArea);
 
     // We create a graph background consisting of a grey background and some lines for better readability
-    setupCustomSVGImageGraphBackground(fpsSVGData);
+    setupCustomSVGImageGraphBackground(*d_customSVGData);
 
     // We create polyline object for the visualisation of the last FPS values. It contains no points yet.
     SVGPolyline::PolylinePointsList pointsList;
@@ -382,7 +388,7 @@ void CustomShapesDrawing::setupCustomSVGImage()
     d_customPolyline->d_paintStyle.d_stroke.d_colour = glm::vec3(0.0f, 1.0f, 0.0f);
     d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SLJ_ROUND;
     d_customPolyline->d_paintStyle.d_strokeWidth = 2.0f;
-    fpsSVGData.addShape(d_customPolyline);
+    d_customSVGData->addShape(d_customPolyline);
 }
 
 /*************************************************************************
