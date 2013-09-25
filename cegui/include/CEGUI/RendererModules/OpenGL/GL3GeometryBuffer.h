@@ -46,7 +46,7 @@ public:
     OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGL3GeometryBuffer();
 
-    void initialiseOpenGLBuffers();
+    void initialiseVertexBuffers();
     void deinitialiseOpenGLBuffers();
     void updateOpenGLBuffers();
 
