@@ -70,7 +70,6 @@ public:
     void appendGeometry(const std::vector<float>& vertex_data);
     void setTexture(Texture* texture);
     void reset();
-    Texture* getTexture() const;
     uint getVertexCount() const;
     void setRenderEffect(RenderEffect* effect);
     RenderEffect* getRenderEffect();
@@ -86,8 +85,6 @@ protected:
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase* d_owner;
-    //! last texture that was set as active
-    CEGUI::Texture* d_activeTexture;
     //! type of container used to queue the geometry
     typedef std::vector<float> VertexData;
     //! container where added geometry is stored.
