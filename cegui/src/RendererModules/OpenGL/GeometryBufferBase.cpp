@@ -45,7 +45,6 @@ namespace CEGUI
 OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
     GeometryBuffer(renderMaterial),
     d_owner(&owner),
-    d_activeTexture(0),
     d_clipRect(0, 0, 0, 0),
     d_clippingActive(true),
     d_translation(0, 0, 0),
@@ -128,26 +127,15 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setTexture(Texture* texture)
 {
-    if(d_activeTexture != texture)
-    {
-        d_activeTexture = texture;
-        CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-        shaderParameterBindings->setParameter("texture0", d_activeTexture);
-    }
+    CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
+    shaderParameterBindings->setParameter("texture0", texture);
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::reset()
 {
     d_vertexData.clear();
-    d_activeTexture = 0;
     d_clippingActive = true;
-}
-
-//----------------------------------------------------------------------------//
-Texture* OpenGLGeometryBufferBase::getTexture() const
-{
-    return d_activeTexture;
 }
 
 //----------------------------------------------------------------------------//

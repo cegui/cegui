@@ -262,17 +262,6 @@ public:
 
     /*!
     \brief
-        Return a pointer to the default Texture object used by this GeometryBuffer.
-        This may return 0 if no texture is set.
-
-    \return
-        Pointer the Texture object that is currently active, or 0 if texturing
-        is not being used.
-    */
-    virtual Texture* getTexture() const = 0;
-
-    /*!
-    \brief
         Return the total number of vertices currently held by this
         GeometryBuffer object.
 
@@ -280,7 +269,6 @@ public:
         The number of vertices that have been appended to this GeometryBuffer.
     */
     virtual uint getVertexCount() const = 0;
-
 
     /*!
     \brief
