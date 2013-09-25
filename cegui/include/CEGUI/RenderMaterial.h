@@ -44,7 +44,7 @@ class ShaderParameterBindings;
 class CEGUIEXPORT RenderMaterial : public AllocatedObject<RenderMaterial>
 {
 public:
-    RenderMaterial(ShaderWrapper* shaderProgram);
+    RenderMaterial(ShaderWrapper* shaderWrapper);
     ~RenderMaterial();
 
     /*!

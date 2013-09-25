@@ -32,8 +32,8 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-RenderMaterial::RenderMaterial(ShaderWrapper* shaderProgram)
-    : d_shaderWrapper(shaderProgram)
+RenderMaterial::RenderMaterial(ShaderWrapper* shaderWrapper)
+    : d_shaderWrapper(shaderWrapper)
 {
     d_shaderParamBindings = new ShaderParameterBindings();
 }
