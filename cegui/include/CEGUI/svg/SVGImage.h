@@ -40,8 +40,7 @@ class SVGData;
     rendered by CEGUI.
 
 */
-class CEGUIEXPORT SVGImage :
-    public Image
+class CEGUIEXPORT SVGImage : public Image
 {
 public:
     /*!
