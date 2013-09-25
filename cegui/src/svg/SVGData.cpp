@@ -340,7 +340,7 @@ SVGData::SVGLength SVGData::parseLengthDataType(const String& length_string)
     char lengthEnding[3] = "";
     String unitString;
 
-    sscanf(length_string.c_str(), "%f%s", &length.d_value, lengthEnding);
+    sscanf(length_string.c_str(), "%f%2s", &length.d_value, lengthEnding);
     unitString = lengthEnding;
 
     if(unitString.empty())

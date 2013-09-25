@@ -403,9 +403,9 @@ void SVGTesselator::createStrokeLinejoin(StrokeSegmentData& stroke_data,
 
     // We calculate the intersection of the inner lines along the stroke
     glm::vec2 inner_intersection;
-    int intersection_result = intersectLines(prev_point + prev_vec_to_inside, cur_point + prev_vec_to_inside,
-                                             next_point + next_vec_to_inside, cur_point + next_vec_to_inside,
-                                             inner_intersection);
+    intersectLines(prev_point + prev_vec_to_inside, cur_point + prev_vec_to_inside,
+                   next_point + next_vec_to_inside, cur_point + next_vec_to_inside,
+                   inner_intersection);
 
     // The outer connection point of the stroke
     glm::vec2 outer_point;
@@ -565,7 +565,6 @@ void SVGTesselator::createStrokeLinecap(StrokeSegmentData& stroke_data,
     //In case we got rounded linecaps we want to determine our points first and draw then
     if(linecap == SVGPaintStyle::SLC_ROUND)
     {
-        const glm::vec2& cur_point = *stroke_data.d_curPoint;
         static const float half_circle_angle = glm::pi<float>();
 
         //Get the parameters
