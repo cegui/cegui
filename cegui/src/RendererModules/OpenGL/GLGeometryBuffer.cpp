@@ -30,7 +30,6 @@
 #include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RenderEffect.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
 #include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 #include "glm/gtc/type_ptr.hpp"
@@ -39,21 +38,30 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner) :
-    OpenGLGeometryBufferBase(owner)
+OpenGLGeometryBuffer::OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
+    OpenGLGeometryBufferBase(owner, renderMaterial)
 {
 }
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::draw() const
 {
+    if(d_vertexData.empty())
+        return;
+
     CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
 
-    // setup clip region
-    glScissor(static_cast<GLint>(d_clipRect.left()),
-              static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
-              static_cast<GLint>(d_clipRect.getWidth()),
-              static_cast<GLint>(d_clipRect.getHeight()));
+    if (d_clippingActive)
+    {
+        glScissor(static_cast<GLint>(d_clipRect.left()),
+            static_cast<GLint>(viewPort.getHeight() - d_clipRect.bottom()),
+            static_cast<GLint>(d_clipRect.getWidth()),
+            static_cast<GLint>(d_clipRect.getHeight()));
+
+        glEnable(GL_SCISSOR_TEST);
+    }
+    else
+        glDisable(GL_SCISSOR_TEST);
 
     // apply the transformations we need to use.
     if (!d_matrixValid)
@@ -72,33 +80,66 @@ void OpenGLGeometryBuffer::draw() const
         if (d_effect)
             d_effect->performPreRenderFunctions(pass);
 
-        // draw the batches
-        size_t pos = 0;
-        BatchList::const_iterator i = d_batches.begin();
-        for ( ; i != d_batches.end(); ++i)
-        {
-            if (i->clip)
-                glEnable(GL_SCISSOR_TEST);
-            else
-                glDisable(GL_SCISSOR_TEST);
+        d_renderMaterial->prepareForRendering();
 
-            glBindTexture(GL_TEXTURE_2D, i->texture);
-            // set up pointers to the vertex element arrays
-            glTexCoordPointer(2, GL_FLOAT, sizeof(GLVertex),
-                              &d_vertices[pos]);
-            glColorPointer(4, GL_FLOAT, sizeof(GLVertex),
-                           &d_vertices[pos].colour[0]);
-            glVertexPointer(3, GL_FLOAT, sizeof(GLVertex),
-                            &d_vertices[pos].position[0]);
-            // draw the geometry
-            glDrawArrays(GL_TRIANGLES, 0, i->vertexCount);
-            pos += i->vertexCount;
-        }
+        setupVertexDataPointers();
+
+        // draw the geometry
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
 
     // clean up RenderEffect
     if (d_effect)
         d_effect->performPostRenderFunctions();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBuffer::finaliseVertexAttributes()
+{
+}
+
+//----------------------------------------------------------------------------//
+void OpenGLGeometryBuffer::setupVertexDataPointers() const
+{
+    //Update the fixed function vertex pointers to our vertex data depending on the defined attributes
+    int dataOffset = 0;
+    GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
+
+    const size_t attribute_count = d_vertexAttributes.size();
+    for (size_t i = 0; i < attribute_count; ++i)
+    {
+        switch(d_vertexAttributes.at(i))
+        {
+        case VAT_POSITION0:
+            {
+                glVertexPointer(3, GL_FLOAT, stride,
+                    &d_vertexData[dataOffset]);
+                dataOffset += 3;
+            }
+            break;
+        case VAT_COLOUR0:
+            {
+                glColorPointer(4, GL_FLOAT, stride,
+                    &d_vertexData[dataOffset]);
+                dataOffset += 4;
+            }
+            break;
+        case VAT_TEXCOORD0:
+            {
+                glTexCoordPointer(2, GL_FLOAT, stride,
+                    &d_vertexData[dataOffset]);
+                dataOffset += 2;
+            }
+            break;
+        default:
+            break;
+        }
+    }
+
+    if(attribute_count == 2)
+        glDisable(GL_TEXTURE);
+    else
+        glEnable(GL_TEXTURE);
 }
 
 //----------------------------------------------------------------------------//
