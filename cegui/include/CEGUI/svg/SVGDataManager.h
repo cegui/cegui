@@ -55,7 +55,7 @@ public:
 
     /*!
     \brief
-        Create an instance of SVGData class registered using the name \a name.
+        Creates an instance of SVGData class registered using the name \a name.
 
     \param name
         String object describing the name that the newly created instance will
@@ -71,7 +71,7 @@ public:
 
     /*!
     \brief
-        Create an instance of SVGData class registered using the name \a name.
+        Creates an instance of SVGData class registered using the name \a name.
 
     \param name
         String object describing the name that the newly created instance will
@@ -82,7 +82,7 @@ public:
         use when creating the texture.
 
     \param resourceGroup
-        String objet that specifies the resource group identifier to be passed
+        String object that specifies the resource group identifier to be passed
         to the resource provider when loading the texture file \a filename.
 
     \exception UnknownObjectException
@@ -94,6 +94,30 @@ public:
     SVGData& create(const String& name,
                     const String& filename,
                     const String& resourceGroup);
+
+    /*!
+    \brief
+        Destroys the SVGData object.
+
+    \param svgData
+        The object to destroy
+    */
+    void destroy(SVGData& svgData);
+
+    /*!
+    \brief
+        Destroys the SVGData object registered using the name \a name.
+
+    \param name
+        The String holding the name of the SVGData object to be destroyed.
+    */
+    void destroy(const String& name);
+
+    /*!
+    \brief
+        Destroys all of the SVGData objects created with this manager.
+    */
+    void destroyAll();
 
     /*!
     \brief
@@ -121,12 +145,10 @@ public:
 
 
     //! container type used to hold the SVGData objects.
-    typedef std::map<String, SVGData*,
-                     StringFastLessCompare
-                     CEGUI_MAP_ALLOC(String, SVGData*)> SVGDataMap;
+    typedef std::map<String, SVGData*> SVGDataMap;
 
     //! ConstBaseIterator type definition.
-    typedef ConstMapIterator<SVGDataMap> SVGDataIterator;
+    typedef SVGDataMap::iterator SVGDataIterator;
 
     static SVGDataManager&      getSingleton();
     static SVGDataManager*      getSingletonPtr();
@@ -136,10 +158,10 @@ protected:
     \brief
         Logs the creation of the SVGData object.
 
-    \param name
-        String holding the name of the SVGData object that was created.
+    \param svgData
+        The SVGData object that was created.
     */
-    void logSVGDataCreation(const String& name);
+    void logSVGDataCreation(SVGData* svgData);
 
     //! container holding the SVGData objects.
     SVGDataMap d_svgDataMap;
