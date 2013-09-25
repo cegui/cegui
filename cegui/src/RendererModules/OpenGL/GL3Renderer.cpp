@@ -372,8 +372,6 @@ void OpenGL3Renderer::initialiseStandardSolidShaderWrapper()
     OpenGL3Shader* shader_standard_solid =  d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
     d_shaderWrapperSolid = new OpenGL3ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
 
-    d_shaderWrapperSolid->addTextureUniformVariable("texture0", 0);
-
     d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix");
 
     d_shaderWrapperSolid->addAttributeVariable("inPosition");
