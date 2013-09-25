@@ -47,7 +47,7 @@ SVGDataManager::SVGDataManager()
 //----------------------------------------------------------------------------//
 SVGDataManager::~SVGDataManager()
 {
-
+    destroyAll();
 }
 
 //----------------------------------------------------------------------------//
@@ -72,12 +72,7 @@ SVGData& SVGDataManager::create(const String& name)
     SVGData* svg_data = CEGUI_NEW_AO SVGData(name);
     d_svgDataMap[name] = svg_data;
 
-    char addr_buff[32];
-    sprintf(addr_buff, "%p", static_cast<void*>(&svg_data));
-
-    Logger::getSingleton().logEvent(
-        "[SVGDataManager] Created SVGData: '" + name + "' (" + addr_buff + 
-        ")");
+    logSVGDataCreation(svg_data);
 
     return *svg_data;
 }
@@ -94,7 +89,7 @@ SVGData& SVGDataManager::create(const String& name,
     SVGData* svg_data = CEGUI_NEW_AO SVGData(name, filename, resourceGroup);
     d_svgDataMap[name] = svg_data;
 
-    logSVGDataCreation(name);
+    logSVGDataCreation(svg_data);
 
     return *svg_data;
 }
@@ -119,11 +114,43 @@ bool SVGDataManager::isSVGDataDefined(const String& name) const
 
 
 //----------------------------------------------------------------------------//
-void SVGDataManager::logSVGDataCreation(const String& name)
+void SVGDataManager::logSVGDataCreation(SVGData* svgData)
 {
-    Logger* logger = Logger::getSingletonPtr();
-    if (logger)
-        logger->logEvent("[SVGDataManager] Created SVGData object: " + name);
+    char addr_buff[32];
+    sprintf(addr_buff, "%p", static_cast<void*>(svgData));
+
+    Logger::getSingleton().logEvent(
+        "[SVGDataManager] Created SVGData object: '" + svgData->getName() + "' (" + addr_buff + 
+        ")");
+}
+
+//----------------------------------------------------------------------------//
+void SVGDataManager::destroy(SVGData& svgData)
+{
+    destroy(svgData.getName());
+}
+
+//----------------------------------------------------------------------------//
+void SVGDataManager::destroy(const String& name)
+{
+    SVGDataIterator iter = d_svgDataMap.find(name);
+
+    if (iter != d_svgDataMap.end())
+    {
+        CEGUI_DELETE_AO iter->second;
+
+        Logger::getSingleton().logEvent(
+            "[SVGDataManager] Deleted SVGData object: " + iter->first);
+
+        d_svgDataMap.erase(iter);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void SVGDataManager::destroyAll()
+{
+    while (!d_svgDataMap.empty())
+        destroy(d_svgDataMap.begin()->first);
 }
 
 //----------------------------------------------------------------------------//
