@@ -34,8 +34,6 @@ namespace CEGUI
 const char StandardShaderSolidFrag[] = 
     "#version 150 core\n"
 
-    "uniform sampler2D texture0;\n"
-
     "in vec4 exColour;\n"
 
     "out vec4 out0;\n"
