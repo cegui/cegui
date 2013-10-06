@@ -47,7 +47,7 @@ author:     Lukas E Meindl
 using namespace CEGUI;
 
 //platform-dependant DLL delay-loading includes
-#if (defined( __WIN32__ ) || defined( _WIN32 )) 
+#if (defined( __WIN32__ ) || defined( _WIN32 ))
 #include "windows.h"
 #endif
 
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         ++argidx;
     }
 #endif
-    
+
     SamplesFramework sampleFramework(argc > 1 ? argv[argidx] : "");
     return sampleFramework.run();
 }
@@ -489,7 +489,7 @@ void SamplesFramework::initialiseSampleBrowserLayout()
     CEGUI::SchemeManager::getSingleton().createFromFile("Generic.scheme");
 
     if (!ImageManager::getSingleton().isDefined("BackgroundSampleBrowser"))
-        ImageManager::getSingleton().addFromImageFile(
+        ImageManager::getSingleton().addBitmapImageFromFile(
             "BackgroundSampleBrowser", "BackgroundSampleBrowser.jpg");
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");

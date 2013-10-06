@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   StandardShaderVert.h
+    filename:   StandardShaderTexturedVert.h
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -26,12 +26,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#ifndef _CEGUIOpenGL3StandardShaderVert_h_
-#define _CEGUIOpenGL3StandardShaderVert_h_
+#ifndef _CEGUIOpenGL3StandardShaderTexturedVert_h_
+#define _CEGUIOpenGL3StandardShaderTexturedVert_h_
 
 namespace CEGUI
 {
- const char StandardShaderVert[] = 
+ const char StandardShaderTexturedVert[] = 
     "#version 150 core\n"
 
     "uniform mat4 modelViewPerspMatrix;\n"
@@ -45,8 +45,8 @@ namespace CEGUI
 
     "void main(void)\n"
     "{\n"
-        "   exTexCoord = inTexCoord;\n"
-        "   exColour = inColour;\n"
+        "exTexCoord = inTexCoord;\n"
+        "exColour = inColour;\n"
 
         "gl_Position = modelViewPerspMatrix * vec4(inPosition, 1.0);\n"
     "}"
