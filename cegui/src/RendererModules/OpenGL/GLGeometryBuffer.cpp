@@ -135,11 +135,6 @@ void OpenGLGeometryBuffer::setupVertexDataPointers() const
             break;
         }
     }
-
-    if(attribute_count == 2)
-        glDisable(GL_TEXTURE);
-    else
-        glEnable(GL_TEXTURE);
 }
 
 //----------------------------------------------------------------------------//
