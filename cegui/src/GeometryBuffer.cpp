@@ -30,13 +30,13 @@
 
 #include <vector>
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //---------------------------------------------------------------------------//
-GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial) :
-    d_blendMode(BM_NORMAL)
+GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
+    : d_blendMode(BM_NORMAL)
     , d_renderMaterial(renderMaterial)
+    , d_polygonFillRule(PFR_NONE)
 {
 }
 
@@ -222,8 +222,12 @@ void GeometryBuffer::setRenderMaterial(RefCounted<RenderMaterial> render_materia
     d_renderMaterial = render_material;
 }
 
+//---------------------------------------------------------------------------//
+void GeometryBuffer::setStencilRenderingActive(PolygonFillRule fill_rule)
+{
+    d_polygonFillRule = fill_rule;
+}
 
 //---------------------------------------------------------------------------//
-
-} // End of  CEGUI namespace section
+}
 
