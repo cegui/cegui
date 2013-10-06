@@ -65,6 +65,8 @@ OpenGL3FBOTextureTarget::OpenGL3FBOTextureTarget(OpenGL3Renderer& owner) :
 OpenGL3FBOTextureTarget::~OpenGL3FBOTextureTarget()
 {
     glDeleteFramebuffers(1, &d_frameBuffer);
+
+    glDeleteRenderbuffers(1, &d_stencilBufferRBO);
 }
 
 //----------------------------------------------------------------------------//
@@ -157,6 +159,16 @@ void OpenGL3FBOTextureTarget::initialiseRenderTexture()
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0,
                               GL_TEXTURE_2D, d_texture, 0);
 
+    // Set up the stencil buffer for the FBO
+    glGenRenderbuffers(1, &d_stencilBufferRBO);
+    glBindRenderbuffer(GL_RENDERBUFFER, d_stencilBufferRBO);
+    glRenderbufferStorage(GL_RENDERBUFFER,
+                          GL_STENCIL_INDEX8,
+                          static_cast<GLsizei>(DEFAULT_SIZE),
+                          static_cast<GLsizei>(DEFAULT_SIZE));
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT,
+                              GL_RENDERBUFFER, d_stencilBufferRBO);
+
     //Check for framebuffer completeness
     checkFramebufferStatus();
 
@@ -195,6 +207,12 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
     clear();
+
+    glBindRenderbuffer(GL_RENDERBUFFER, d_stencilBufferRBO);
+    glRenderbufferStorage(GL_RENDERBUFFER,
+                          GL_STENCIL_INDEX8,
+                          static_cast<GLsizei>(sz.d_width),
+                          static_cast<GLsizei>(sz.d_height));
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
