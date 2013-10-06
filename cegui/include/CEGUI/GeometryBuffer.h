@@ -66,6 +66,26 @@ enum VertexAttributeType
     VAT_TEXCOORD0
 };
 
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
+    Enumerated type that contains the valid options for the fill rule mode. The
+    fill rule defines how overlaps of the polygon defined by this GeometryBuffer
+    should be rendered. For further information see "fill-rule" in the SVG
+    standard: http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
+*/
+enum PolygonFillRule
+{
+    //! Draw the polygon normally - without a fill-rule.
+    PFR_NONE,
+    //! Uses the nonzero rule to determine how the polygon is to be filled.
+    PFR_NON_ZERO,
+    //! Uses the  evenodd rule to determine how the polygon is to be filled.
+    PFR_EVEN_ODD
+};
+
+//----------------------------------------------------------------------------//
 
 /*!
 \brief
@@ -152,6 +172,15 @@ public:
         Set the clipping region to be used when rendering this buffer.
     */
     virtual void setClippingRegion(const Rectf& region) = 0;
+
+    /*!
+    \brief
+        Sets the fill rule that should be used when rendering the geometry.
+
+    \param fill_rule
+        The fill rule that should be used when rendering the geometry.
+    */
+    virtual void setStencilRenderingActive(PolygonFillRule fill_rule);
 
     /*!
     \brief
@@ -419,6 +448,9 @@ protected:
         vertex data.
     */
     std::vector<VertexAttributeType> d_vertexAttributes;
+
+    //! The fill rule that should be used when rendering the geometry.
+    PolygonFillRule d_polygonFillRule;
 };
 
 }
