@@ -112,6 +112,7 @@ class ScriptFunctor;
 class ScriptModule;
 template<typename T> class Size;
 class SimpleTimer;
+class SVGImage;
 class StringTranscoder;
 class System;
 class SystemKeys;
@@ -122,7 +123,8 @@ class UBox;
 class UDim;
 template<typename T> class Vector2;
 template<typename T> class Vector3;
-struct Vertex;
+struct TexturedColouredVertex;
+struct ColouredVertex;
 class WidgetLookFeel;
 class Window;
 class WindowFactory;
@@ -203,6 +205,23 @@ class ResourceEventArgs;
 class TreeEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
+
+/*************************************************************************
+    Forward declare SVG based classes.
+*************************************************************************/
+class SVGData;
+class SVGDataManager;
+class SVGTesselator;
+
+class SVGBasicShape;
+class SVGCircle;
+class SVGLine;
+class SVGPolyline;
+class SVGRect;
+
+class SVGPaint;
+class SVGPaintStyle;
+
 
 } // End of  CEGUI namespace section
 
