@@ -42,7 +42,7 @@ SVGPaint::SVGPaint() :
 //----------------------------------------------------------------------------//
 SVGPaintStyle::SVGPaintStyle() :
     d_fill(),
-    d_fillRule(SFR_NONZERO),
+    d_fillRule(PFR_NON_ZERO),
     d_fillOpacity(1.0f),
     d_stroke(),
     d_strokeWidth(1.0f),
