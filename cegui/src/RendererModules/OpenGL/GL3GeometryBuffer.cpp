@@ -106,7 +106,7 @@ void OpenGL3GeometryBuffer::draw() const
         d_renderMaterial->prepareForRendering();
 
         // draw the geometry
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
+        drawDependingOnFillRule();
     }
 
     // clean up RenderEffect
@@ -131,7 +131,7 @@ void OpenGL3GeometryBuffer::initialiseVertexBuffers()
     glGenBuffers(1, &d_verticesVBO);
     d_glStateChanger->bindBuffer(GL_ARRAY_BUFFER, d_verticesVBO);
 
-    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, 0, GL_STATIC_DRAW);
 
     // Unbind Vertex Attribute Array (VAO)
     d_glStateChanger->bindVertexArray(0);
@@ -221,7 +221,7 @@ void OpenGL3GeometryBuffer::updateOpenGLBuffers()
 
     if(needNewBuffer)
     {
-        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_DYNAMIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, dataSize, vertexData, GL_STATIC_DRAW);
     }
     else
     {
@@ -234,6 +234,64 @@ void OpenGL3GeometryBuffer::appendGeometry(const std::vector<float>& vertex_data
 {
     OpenGLGeometryBufferBase::appendGeometry(vertex_data);
     updateOpenGLBuffers();
+}
+
+//----------------------------------------------------------------------------//
+void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
+{
+    if(d_polygonFillRule == PFR_NONE)
+    {
+        d_glStateChanger->disable(GL_STENCIL_TEST);
+        d_glStateChanger->disable(GL_CULL_FACE);
+
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
+    }
+    else if(d_polygonFillRule == PFR_EVEN_ODD)
+    {
+        //We use a stencil buffer to determine the insideness
+        //of a fragment. Every draw inverts the precious value
+        //according to the even-odd rule.
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+        d_glStateChanger->enable(GL_STENCIL_TEST);
+        glStencilMask(0xFF);
+        glClear(GL_STENCIL_BUFFER_BIT);
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        glStencilOp(GL_INVERT, GL_KEEP, GL_INVERT);
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
+
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glStencilMask(0x00);
+        glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
+        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, d_vertexCount);
+    }
+    else if(d_polygonFillRule == PFR_NON_ZERO)
+    {
+        //We use a stencil buffer to determine the insideness
+        //of a fragment. We draw the front sides while increasing
+        //stencil values and then draw backside while decreasing them.
+        //A resulting 0 value means we are outside.
+        glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
+
+        d_glStateChanger->enable(GL_CULL_FACE);
+        d_glStateChanger->enable(GL_STENCIL_TEST);
+        glStencilMask(0xFF);
+        glClear(GL_STENCIL_BUFFER_BIT);
+        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+
+        glCullFace(GL_FRONT);
+        glStencilOp(GL_INCR_WRAP, GL_KEEP, GL_INCR_WRAP);
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
+
+        glCullFace(GL_BACK);
+        glStencilOp(GL_DECR_WRAP, GL_KEEP, GL_DECR_WRAP);
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
+
+        glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
+        glStencilMask(0x00);
+        glStencilFunc(GL_NOTEQUAL, 0x00, 0xFF);
+        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, d_vertexCount);
+    }
 }
 
 
