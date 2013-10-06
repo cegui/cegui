@@ -69,9 +69,9 @@ void SVGTesselator::StrokeSegmentData::setPoints(const glm::vec2& prev_point,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::tesselateAndRenderLine(const SVGLine* line,
-                                           std::vector<GeometryBuffer*>& geometry_buffers,
-                                           const SVGImage::SVGImageRenderSettings& render_settings)
+void SVGTesselator::tesselateLine(const SVGLine* line,
+                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  const SVGImage::SVGImageRenderSettings& render_settings)
 {
     GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, line->d_transformation);
 
@@ -91,11 +91,11 @@ void SVGTesselator::tesselateAndRenderLine(const SVGLine* line,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
-                                               std::vector<GeometryBuffer*>& geometry_buffers,
-                                               const SVGImage::SVGImageRenderSettings& render_settings)
+void SVGTesselator::tesselatePolyline(const SVGPolyline* polyline,
+                                      std::vector<GeometryBuffer*>& geometry_buffers,
+                                      const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
+
 
     //The shape's paint styles
     const SVGPaintStyle& paint_style = polyline->d_paintStyle;
@@ -106,15 +106,20 @@ void SVGTesselator::tesselateAndRenderPolyline(const SVGPolyline* polyline,
     //Get the final scale by extracting the scale from the matrix and combining it with the image scale
     glm::vec2 scale_factors = determineScaleFactors(polyline->d_transformation, render_settings);
 
+    GeometryBuffer& geometry_buffer_fill = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
+    //Create and append the polyline's fill geometry
+    createFill(points, geometry_buffer_fill, paint_style, render_settings, scale_factors);
+
+    GeometryBuffer& geometry_buffer_stroke = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
     //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer, paint_style, render_settings, scale_factors, false);
+    createStroke(points, geometry_buffer_stroke, paint_style, render_settings, scale_factors, false);
 }
 
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
-                                           std::vector<GeometryBuffer*>& geometry_buffers,
-                                           const SVGImage::SVGImageRenderSettings& render_settings)
+void SVGTesselator::tesselateRect(const SVGRect* rect,
+                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  const SVGImage::SVGImageRenderSettings& render_settings)
 {
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, rect->d_x,
                                            0.0f, 1.0f, rect->d_y,
@@ -142,9 +147,9 @@ void SVGTesselator::tesselateAndRenderRect(const SVGRect* rect,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::tesselateAndRenderCircle(const SVGCircle* circle,
-                                             std::vector<GeometryBuffer*>& geometry_buffers,
-                                             const SVGImage::SVGImageRenderSettings& render_settings)
+void SVGTesselator::tesselateCircle(const SVGCircle* circle,
+                                    std::vector<GeometryBuffer*>& geometry_buffers,
+                                    const SVGImage::SVGImageRenderSettings& render_settings)
 {
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, circle->d_cx,
                                            0.0f, 1.0f, circle->d_cy,
@@ -646,7 +651,7 @@ void SVGTesselator::createTriangleStripFillGeometry(std::vector<glm::vec2>& poin
                                                     GeometryBuffer& geometry_buffer,
                                                     const SVGPaintStyle& paint_style)
 {
-    if(paint_style.d_fill.d_none)
+    if(points.size() < 3 || paint_style.d_fill.d_none)
         return;
 
     //Create the rectangle fill vertex
@@ -1544,7 +1549,78 @@ void SVGTesselator::setStrokeDataLastPointsAsCurrentPointsAA(StrokeSegmentData &
     stroke_data.d_currentFadePointRight = stroke_data.d_lastFadePointRight;
 }
 
+//----------------------------------------------------------------------------//
+void SVGTesselator::createFill(const std::vector<glm::vec2>& points,
+                               GeometryBuffer& geometry_buffer,
+                               const SVGPaintStyle& paint_style,
+                               const SVGImage::SVGImageRenderSettings& render_settings,
+                               const glm::vec2& scale_factors)
+{
+    if(points.size() < 3 || paint_style.d_fill.d_none)
+        return;
 
+    //Create the rectangle fill vertex
+    ColouredVertex fill_vertex(glm::vec3(), getFillColour(paint_style));
+
+    //Fixed triangle fan point
+    const glm::vec2& point1 = points[0];
+
+    //Switches the stencil mode on
+    geometry_buffer.setStencilRenderingActive(paint_style.d_fillRule);
+
+    const size_t maximum_index = points.size() - 1;
+    for(size_t i = 1; i < maximum_index; ++i)
+        addTriangleGeometry(point1, points[i], points[i + 1], geometry_buffer, fill_vertex);
+
+    glm::vec2 min, max;
+    calculateMinMax(points, min, max);
+
+    addFillQuad(min, max, geometry_buffer, fill_vertex);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::calculateMinMax(const std::vector<glm::vec2>& points,
+                                    glm::vec2& min,
+                                    glm::vec2& max)
+{
+    if(points.empty())
+        return;
+
+    min = points[0];
+    max = points[0];
+
+    const size_t points_count = points.size();
+    for(size_t i = 1; i < points_count; ++i)
+    {
+        min = glm::min(points[i], min);
+        max = glm::max(points[i], max);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::addFillQuad(const glm::vec2& min,
+                                const glm::vec2& max,
+                                GeometryBuffer& geometry_buffer,
+                                ColouredVertex& fill_vertex)
+{
+    fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(min.x, min.y);
+    geometry_buffer.appendVertex(fill_vertex);
+
+    fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(min.x, max.y);
+    geometry_buffer.appendVertex(fill_vertex);
+
+    fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(max.x, min.y);
+    geometry_buffer.appendVertex(fill_vertex);
+
+    fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(max.x, min.y);
+    geometry_buffer.appendVertex(fill_vertex);
+
+    fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(min.x, max.y);
+    geometry_buffer.appendVertex(fill_vertex);
+
+    fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(max.x, max.y);
+    geometry_buffer.appendVertex(fill_vertex);
+}
 
 //----------------------------------------------------------------------------//
 }
