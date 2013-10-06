@@ -142,9 +142,9 @@ public:
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
     */
-    static void tesselateAndRenderLine(const SVGLine* line,
-                                       std::vector<GeometryBuffer*>& geometry_buffers,
-                                       const SVGImage::SVGImageRenderSettings& render_settings);
+    static void tesselateLine(const SVGLine* line,
+                              std::vector<GeometryBuffer*>& geometry_buffers,
+                              const SVGImage::SVGImageRenderSettings& render_settings);
     
     /*!
     \brief
@@ -158,9 +158,9 @@ public:
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
     */
-    static void tesselateAndRenderPolyline(const SVGPolyline* polyline,
-                                           std::vector<GeometryBuffer*>& geometry_buffers,
-                                           const SVGImage::SVGImageRenderSettings& render_settings);
+    static void tesselatePolyline(const SVGPolyline* polyline,
+                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  const SVGImage::SVGImageRenderSettings& render_settings);
     /*!
     \brief
         Tesselates an SVGRect and adds the created geometry to the GeometryBuffer
@@ -173,9 +173,9 @@ public:
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
     */
-    static void tesselateAndRenderRect(const SVGRect* rect,
-                                       std::vector<GeometryBuffer*>& geometry_buffers,
-                                       const SVGImage::SVGImageRenderSettings& render_settings);
+    static void tesselateRect(const SVGRect* rect,
+                              std::vector<GeometryBuffer*>& geometry_buffers,
+                              const SVGImage::SVGImageRenderSettings& render_settings);
     /*!
     \brief
         Tesselates an SVGCircle and adds the created geometry to the GeometryBuffer
@@ -188,9 +188,9 @@ public:
     \param render_settings
             The ImageRenderSettings for the geometry that will be created.
     */
-    static void tesselateAndRenderCircle(const SVGCircle* circle,
-                                         std::vector<GeometryBuffer*>& geometry_buffers,
-                                         const SVGImage::SVGImageRenderSettings& render_settings);
+    static void tesselateCircle(const SVGCircle* circle,
+                                std::vector<GeometryBuffer*>& geometry_buffers,
+                                const SVGImage::SVGImageRenderSettings& render_settings);
 
 private:
     /*!
@@ -213,7 +213,14 @@ private:
     //! Destructor.
     ~SVGTesselator();
 
-    //! Helper function for creating a stroke based on a list of points and the settings
+    //! Helper function for creating a fill based on a list of polygon points
+    static void createFill(const std::vector<glm::vec2>& points,
+                           GeometryBuffer& geometry_buffer,
+                           const SVGPaintStyle& paint_style,
+                           const SVGImage::SVGImageRenderSettings& render_settings,
+                           const glm::vec2& scale_factors);
+
+    //! Helper function for creating a stroke based on a list of subsequent points forming the stroke
     static void createStroke(const std::vector<glm::vec2>& points,
                              GeometryBuffer& geometry_buffer,
                              const SVGPaintStyle& paint_style,
@@ -477,6 +484,15 @@ private:
     //! Create the rectangles fill
     static void createRectangleFill(const SVGPaintStyle& paint_style, std::vector<glm::vec2>& rectangle_points, GeometryBuffer& geometry_buffer);
 
+
+    //! Helper function to get the min and max x and y coordinates of a list of points
+    static void calculateMinMax(const std::vector<glm::vec2>& points, glm::vec2& min, glm::vec2& max);
+
+    //! Helper function to create a quad based on min and max values (used for AABB quads)
+    static void SVGTesselator::addFillQuad(const glm::vec2& min,
+                                           const glm::vec2& max,
+                                           GeometryBuffer& geometry_buffer,
+                                           ColouredVertex& fill_vertex);
 };
 
 }
