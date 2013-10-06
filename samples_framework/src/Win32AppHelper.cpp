@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#if defined(CEGUI_SAMPLES_USE_DIRECT3D8) || defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10) || defined(CEGUI_SAMPLES_USE_DIRECT3D11)
+#if defined(CEGUI_SAMPLES_USE_DIRECT3D9) || defined(CEGUI_SAMPLES_USE_DIRECT3D10) || defined(CEGUI_SAMPLES_USE_DIRECT3D11)
 
 #include "Win32AppHelper.h"
 #include "CEGUI/CEGUI.h"
@@ -62,7 +62,6 @@ SamplesFrameworkBase* Win32AppHelper::s_samplesFramework(0);
     which is obviously a big no-no.
 *************************************************************************/
 void DeviceReset_Direct3D9(HWND window, CEGUI::Renderer* renderer);
-void DeviceReset_Direct3D81(HWND window, CEGUI::Renderer* renderer);
 void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer);
 void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer);
 
@@ -194,10 +193,6 @@ LRESULT CALLBACK Win32AppHelper::wndProc(HWND hWnd, UINT message, WPARAM wParam,
 #ifdef CEGUI_SAMPLES_USE_DIRECT3D11
                 if (id.find("Official Direct3D 11") != id.npos)
                     DeviceReset_Direct3D11(hWnd, renderer);
-#endif
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D8
-                if (id.find("Official Direct3D 8.1") != id.npos)
-                    DeviceReset_Direct3D81(hWnd, renderer);
 #endif
             }
         }
