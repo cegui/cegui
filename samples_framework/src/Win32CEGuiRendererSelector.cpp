@@ -387,13 +387,12 @@ INT_PTR CALLBACK Win32CEGuiRendererSelector::dialogProcedure(HWND hDlg, UINT mes
                 SendMessage(combo, CB_RESETCONTENT, 0, 0);
 
                 // add new stings according to if item is enabled or not
+                obj->addComboboxOption(combo, "OpenGL 3.2 Core Renderer", OpenGL3GuiRendererType);
+                obj->addComboboxOption(combo, "OpenGL Renderer", OpenGLGuiRendererType);
                 obj->addComboboxOption(combo, "Ogre Engine Renderer", OgreGuiRendererType);
-                obj->addComboboxOption(combo, "Microsoft Direct3D 8.1 Renderer", Direct3D81GuiRendererType);
                 obj->addComboboxOption(combo, "Microsoft Direct3D 9 Renderer", Direct3D9GuiRendererType);
                 obj->addComboboxOption(combo, "Microsoft Direct3D 10 Renderer", Direct3D10GuiRendererType);
-				obj->addComboboxOption(combo, "Microsoft Direct3D 11 Renderer", Direct3D11GuiRendererType);
-                obj->addComboboxOption(combo, "OpenGL Renderer", OpenGLGuiRendererType);
-				obj->addComboboxOption(combo, "OpenGL 3.2 Core Renderer", OpenGL3GuiRendererType);
+                obj->addComboboxOption(combo, "Microsoft Direct3D 11 Renderer", Direct3D11GuiRendererType);
                 obj->addComboboxOption(combo, "Irrlicht Engine Renderer", IrrlichtGuiRendererType);
             }
 
