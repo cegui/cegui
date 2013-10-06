@@ -7,7 +7,7 @@
 	 viewBox="0 0 1024 720" enable-background="new 0 0 1024 720" xml:space="preserve">
 <sodipodi:namedview  inkscape:cy="412.71005" inkscape:cx="537.46671" inkscape:zoom="0.84459974" showgrid="false" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" pagecolor="#ffffff" bordercolor="#666666" id="namedview3091" inkscape:current-layer="Layer_1" inkscape:window-maximized="0" inkscape:window-y="31" inkscape:window-x="110" inkscape:window-height="1041" inkscape:window-width="1916" inkscape:pageshadow="2" inkscape:pageopacity="0">
 	</sodipodi:namedview>
-<polyline id="polyline3069" fill="#F9ED32" stroke="#00AEEF" stroke-width="9" stroke-linecap="round" stroke-miterlimit="5" stroke-opacity="0.5" stroke-dasharray="44,22,5,123,12,44" points="
+<polyline id="polyline3069" fill="#F9ED32" fill-opacity="0.5" stroke="#00AEEF" stroke-width="9" stroke-linecap="round" stroke-miterlimit="5" stroke-opacity="0.5" stroke-dasharray="44,22,5,123,12,44" points="
 	985.57,134.601 918.073,148.1 918.948,312.688 799.576,80.603 804.076,233.595 1004.05,201.875 "/>
 <polyline id="polyline3071" fill="none" stroke="#000000" stroke-width="15" stroke-linecap="square" stroke-linejoin="bevel" stroke-miterlimit="500" stroke-opacity="0.5" points="
 	41.145,231.028 70.398,238.107 89.32,260.717 189.838,242.268 161.546,266.374 95.753,275.853 72.068,293.729 177.113,300.592 
