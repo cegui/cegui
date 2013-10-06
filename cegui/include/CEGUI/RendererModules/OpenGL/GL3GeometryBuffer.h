@@ -46,10 +46,6 @@ public:
     OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGL3GeometryBuffer();
 
-    void initialiseVertexBuffers();
-    void deinitialiseOpenGLBuffers();
-    void updateOpenGLBuffers();
-
     // implementation/overrides of members from GeometryBuffer
     void draw() const;
     void appendGeometry(const std::vector<float>& vertex_data);
@@ -58,6 +54,13 @@ public:
  
 
 protected:
+    void initialiseVertexBuffers();
+    void deinitialiseOpenGLBuffers();
+    //! Update the OpenGL buffer objects containing the vertex data.
+    void updateOpenGLBuffers();
+    //! Draws the vertex data depending on the fill rule that was set for this object.
+    void drawDependingOnFillRule() const;
+
     //! OpenGL vao used for the vertices
     GLuint d_verticesVAO;
     //! OpenGL vbo containing all vertex data
