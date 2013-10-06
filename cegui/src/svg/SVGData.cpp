@@ -54,6 +54,7 @@ const String SVGPolygonElement( "polygon" );
 
 // SVG graphics elements paint attributes
 const String SVGGraphicsElementAttributeFill( "fill" );
+const String SVGGraphicsElementAttributeFillRule( "fill-rule" );
 const String SVGGraphicsElementAttributeFillOpacity( "fill-opacity" );
 const String SVGGraphicsElementAttributeStroke( "stroke" );
 const String SVGGraphicsElementAttributeStrokeWidth( "stroke-width" );
@@ -289,7 +290,6 @@ void SVGData::elementSVGLine(const XMLAttributes& attributes)
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
     glm::mat3x3 transform = parseTransform(attributes);
 
-
     const String x1String(
         attributes.getValueAsString(SVGLineAttributeX1, "0"));
     float x1 = parseLengthDataType(x1String).d_value;
@@ -321,7 +321,6 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
         attributes.getValueAsString(SVGPolylineAttributePoints, ""));
 
     SVGPolyline::PolylinePointsList points;
-
     parsePointsString(pointsString, points);
 
     SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
@@ -384,6 +383,10 @@ SVGPaintStyle SVGData::parsePaintStyle(const XMLAttributes& attributes)
     const String fillString(
         attributes.getValueAsString(SVGGraphicsElementAttributeFill));
     parsePaintStyleFillString(fillString, paint_style);
+
+    const String fillRuleString(
+        attributes.getValueAsString(SVGGraphicsElementAttributeFillRule));
+    parsePaintStyleFillRuleString(fillRuleString, paint_style);
 
     const String fillOpacityString(
         attributes.getValueAsString(SVGGraphicsElementAttributeFillOpacity));
@@ -470,6 +473,7 @@ glm::vec3 SVGData::parseColour(const CEGUI::String& colour_string)
 
         return glm::vec3(r / 255.0f, g / 255.0f, b / 255.0f);
     }
+    // SVG's default colours
     else if(colour_string.compare("black") == 0)
         return glm::vec3(0.0f, 0.0f, 0.0f);
     else if(colour_string.compare("green") == 0)
@@ -544,6 +548,19 @@ void SVGData::parsePaintStyleFillString(const String& fillString, SVGPaintStyle&
         paint_style.d_fill.d_colour = parseColour(fillString);
     }
 }
+
+//----------------------------------------------------------------------------//
+void SVGData::parsePaintStyleFillRuleString(const String& fillRuleString, SVGPaintStyle& paint_style)
+{
+    if(fillRuleString.empty())
+        // Inherit value or use default
+        paint_style.d_fillRule = PFR_NON_ZERO;
+    else if(fillRuleString.compare("nonzero"))
+        paint_style.d_fillRule = PFR_NON_ZERO;
+    else if(fillRuleString.compare("evenodd"))
+        paint_style.d_fillRule = PFR_EVEN_ODD;
+}
+
 
 //----------------------------------------------------------------------------//
 void SVGData::parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPaintStyle& paint_style)

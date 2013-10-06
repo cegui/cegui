@@ -30,6 +30,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/Colour.h"
+#include "CEGUI/GeometryBuffer.h"
 #include "glm/glm.hpp"
 
 #include <vector>
@@ -66,21 +67,6 @@ public:
 class CEGUIEXPORT SVGPaintStyle : public AllocatedObject<SVGPaintStyle>
 {
 public:
-    /*!
-    \brief
-        Indicates the algorithm which must be used to determine what parts of the canvas are
-        included inside the shape.
-    */
-    enum SVGFillRule
-    {
-        //! http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
-        SFR_NONZERO,
-        //! http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
-        SFR_EVENODD,
-
-        SFR_COUNT
-    };
-
     /*!
     \brief
         Specifies the shape which shall be used at the end of open subpaths when they are stroked.
@@ -129,7 +115,7 @@ public:
         The 'fill-rule' property indicates the algorithm which must be used to determine what parts
         of the canvas are included inside the shape.
     */
-    SVGFillRule d_fillRule;
+    PolygonFillRule d_fillRule;
 
     /*!
     \brief
