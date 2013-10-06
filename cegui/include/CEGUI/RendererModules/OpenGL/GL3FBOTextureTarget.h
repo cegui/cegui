@@ -75,6 +75,8 @@ protected:
 
     //! Frame buffer object.
     GLuint d_frameBuffer;
+    //! Stencil buffer renderbuffer object
+    GLuint d_stencilBufferRBO;
     //! Frame buffer object that was bound before we bound this one
     GLuint d_previousFrameBuffer;
     //! OpenGL state changer
