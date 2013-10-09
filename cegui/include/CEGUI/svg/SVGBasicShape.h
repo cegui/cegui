@@ -122,9 +122,6 @@ public:
     Defines a class for storing the data of the SVG 'circle' element based on how it is defined in the SVG standard.
 
     The 'circle' element defines a circle based on a center point and a radius.
-    Within the current user coordinate system, stroking operations on a circle begin at the point (cx+r,cy)
-    and then proceed through the points (cx,cy+r), (cx-r,cy), (cx,cy-r) and finally back to (cx+r,cy). For
-    stroking operations, there is only one line segment which has its beginning joined to its end.
     http://www.w3.org/TR/SVGTiny12/shapes.html#CircleElement
 */
 class CEGUIEXPORT SVGCircle : public SVGBasicShape
@@ -147,9 +144,45 @@ public:
     float d_cx;
     //! The y-axis coordinate of the center of the circle. 
     float d_cy;
-    //! The radius of the circle. A negative value is unsupported. A value of zero disables rendering of the element. 
+    //! The radius of the circle. A negative value is unsupported. Default = 0.
     float d_r;
 };
+
+
+/*!
+\brief
+    Defines a class for storing the data of the SVG 'ellipse' element based on how it is defined in the SVG standard.
+
+    The 'ellipse' element defines an ellipse which is axis-aligned with the current user coordinate system based on a center point and two radii.
+    http://www.w3.org/TR/SVGTiny12/shapes.html#EllipseElement
+*/
+class CEGUIEXPORT SVGEllipse : public SVGBasicShape
+{
+public:
+    SVGEllipse()
+    {}
+
+    SVGEllipse(const SVGPaintStyle& paint_style,
+               const glm::mat3x3& transformation,
+               const float cx,
+               const float cy,
+               const float rx,
+               const float ry);
+
+    //! Implementation of SVGBasicShape interface
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const SVGImage::SVGImageRenderSettings& render_settings) const;
+
+    //! The x-axis coordinate of the center of the ellipse. 
+    float d_cx;
+    //! The y-axis coordinate of the center of the ellipse. 
+    float d_cy;
+    //! The x-axis radius of the ellipse. A negative value is unsupported. Default = 0.
+    float d_rx;
+    //! The y-axis radius of the ellipse. A negative value is unsupported. Default = 0.
+    float d_ry;
+};
+
 
 /*!
 \brief

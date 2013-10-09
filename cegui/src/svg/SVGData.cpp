@@ -45,11 +45,13 @@ const String SVGElement( "svg" );
 const String SVGElementAttributeVersion( "version" );
 const String SVGElementAttributeWidth( "width" );
 const String SVGElementAttributeHeight( "height" );
+
+//SVG Basic Shapes
 const String SVGRectElement( "rect" );
-const String SVGPolylineElement( "polyline" );
 const String SVGCircleElement( "circle" );
 const String SVGEllipseElement( "ellipse" );
 const String SVGLineElement( "line" );
+const String SVGPolylineElement( "polyline" );
 const String SVGPolygonElement( "polygon" );
 
 // SVG graphics elements paint attributes
@@ -79,6 +81,11 @@ const String SVGRectAttributeRoundedY( "ry" );
 const String SVGCircleAttributeCX( "cx" );
 const String SVGCircleAttributeCY( "cy" );
 const String SVGCircleAttributeRadius( "r" );
+// SVG 'ellipse' element attributes
+const String SVGEllipseAttributeCX( "cx" );
+const String SVGEllipseAttributeCY( "cy" );
+const String SVGEllipseAttributeRX( "rx" );
+const String SVGEllipseAttributeRY( "ry" );
 // SVG 'polyline' element attributes
 const String SVGPolylineAttributePoints( "points" );
 // SVG 'polyline' element attributes
@@ -178,6 +185,7 @@ void SVGData::elementStartLocal(const String& element,
     {
         elementSVGStart(attributes);
     }
+
     // handle SVG 'rect' element
     else if(element == SVGRectElement)
     {
@@ -188,20 +196,20 @@ void SVGData::elementStartLocal(const String& element,
     {
         elementSVGCircle(attributes);
     }
-    // handle SVG 'polyline' element
-    else if(element == SVGPolylineElement)
+    // handle SVG 'ellipse' element
+    else if(element == SVGEllipseElement)
     {
-        elementSVGPolyline(attributes);
+        elementSVGEllipse(attributes);
     }
     // handle SVG 'line' element
     else if(element == SVGLineElement)
     {
         elementSVGLine(attributes);
     }
-    // handle SVG 'ellipse' element
-    else if(element == SVGEllipseElement)
+    // handle SVG 'polyline' element
+    else if(element == SVGPolylineElement)
     {
-
+        elementSVGPolyline(attributes);
     }
     // handle SVG document fragment element
     else if(element == SVGPolygonElement)
@@ -285,6 +293,32 @@ void SVGData::elementSVGCircle(const XMLAttributes& attributes)
 }
 
 //----------------------------------------------------------------------------//
+void SVGData::elementSVGEllipse(const XMLAttributes& attributes)
+{
+    SVGPaintStyle paint_style = parsePaintStyle(attributes);
+    glm::mat3x3 transform = parseTransform(attributes);
+
+    const String cxString(
+        attributes.getValueAsString(SVGEllipseAttributeCX, "0"));
+    float cx = parseLengthDataType(cxString).d_value;
+
+    const String cyString(
+        attributes.getValueAsString(SVGEllipseAttributeCY, "0"));
+    float cy = parseLengthDataType(cyString).d_value;
+
+    const String rxString(
+        attributes.getValueAsString(SVGEllipseAttributeRX, "0"));
+    float rx = parseLengthDataType(rxString).d_value;
+
+    const String ryString(
+        attributes.getValueAsString(SVGEllipseAttributeRY, "0"));
+    float ry = parseLengthDataType(ryString).d_value;
+
+    SVGEllipse* ellipse = CEGUI_NEW_AO SVGEllipse(paint_style, transform, cx, cy, rx, ry);
+    addShape(ellipse);  
+}
+
+//----------------------------------------------------------------------------//
 void SVGData::elementSVGLine(const XMLAttributes& attributes)
 {
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
@@ -313,6 +347,22 @@ void SVGData::elementSVGLine(const XMLAttributes& attributes)
 
 //----------------------------------------------------------------------------//
 void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
+{
+    SVGPaintStyle paint_style = parsePaintStyle(attributes);
+    glm::mat3x3 transform = parseTransform(attributes);
+
+    const String pointsString(
+        attributes.getValueAsString(SVGPolylineAttributePoints, ""));
+
+    SVGPolyline::PolylinePointsList points;
+    parsePointsString(pointsString, points);
+
+    SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
+    addShape(polyline);
+}
+
+//----------------------------------------------------------------------------//
+void SVGData::elementSVGPolygon(const XMLAttributes& attributes)
 {
     SVGPaintStyle paint_style = parsePaintStyle(attributes);
     glm::mat3x3 transform = parseTransform(attributes);

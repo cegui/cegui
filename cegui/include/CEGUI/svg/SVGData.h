@@ -213,6 +213,15 @@ protected:
 
     /*!
     \brief
+        Function that handles opening SVG 'ellipse' elements.
+
+    \note
+        This function processes the SVG 'ellipse' element.
+    */
+    void elementSVGEllipse(const XMLAttributes& attributes);
+    
+    /*!
+    \brief
         Function that handles opening SVG 'line' elements.
 
     \note
@@ -229,6 +238,14 @@ protected:
     */
     void elementSVGPolyline(const XMLAttributes& attributes);
 
+    /*!
+    \brief
+        Function that handles opening SVG 'polygon' elements.
+
+    \note
+        This function processes the SVG 'polygon' element.
+    */
+    void elementSVGPolygon(const XMLAttributes& attributes);
 
     //! Name of this SVGData objects
     CEGUI::String d_name;
