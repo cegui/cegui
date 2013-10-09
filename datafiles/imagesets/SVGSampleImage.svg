@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- Generator: Adobe Illustrator 16.0.2, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
-<svg version="1.1"
-	 id="Layer_1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" sodipodi:docname="SVGSampleImage.svg" inkscape:version="0.48.4 r9939"
+<svg version="1.2" baseProfile="tiny"
+	 id="Layer_1" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:cc="http://creativecommons.org/ns#" xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:svg="http://www.w3.org/2000/svg" xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd" xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape" inkscape:version="0.48.4 r9939" sodipodi:docname="SVGSampleImage.svg"
 	 xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="1024px" height="720px"
-	 viewBox="0 0 1024 720" enable-background="new 0 0 1024 720" xml:space="preserve">
-<sodipodi:namedview  inkscape:cy="412.71005" inkscape:cx="537.46671" inkscape:zoom="0.84459974" showgrid="false" guidetolerance="10" gridtolerance="10" objecttolerance="10" borderopacity="1" pagecolor="#ffffff" bordercolor="#666666" id="namedview3091" inkscape:current-layer="Layer_1" inkscape:window-maximized="0" inkscape:window-y="31" inkscape:window-x="110" inkscape:window-height="1041" inkscape:window-width="1916" inkscape:pageshadow="2" inkscape:pageopacity="0">
+	 viewBox="0 0 1024 720" xml:space="preserve">
+<sodipodi:namedview  id="namedview3091" bordercolor="#666666" pagecolor="#ffffff" borderopacity="1" objecttolerance="10" gridtolerance="10" guidetolerance="10" showgrid="false" inkscape:zoom="0.84459974" inkscape:cx="537.46671" inkscape:cy="412.71005" inkscape:pageopacity="0" inkscape:pageshadow="2" inkscape:window-maximized="0" inkscape:window-width="1916" inkscape:current-layer="Layer_1" inkscape:window-height="1041" inkscape:window-x="110" inkscape:window-y="31">
 	</sodipodi:namedview>
 <polyline id="polyline3069" fill="#F9ED32" fill-opacity="0.5" stroke="#00AEEF" stroke-width="9" stroke-linecap="round" stroke-miterlimit="5" stroke-opacity="0.5" stroke-dasharray="44,22,5,123,12,44" points="
-	985.57,134.601 918.073,148.1 918.948,312.688 799.576,80.603 804.076,233.595 1004.05,201.875 "/>
+	985.57,134.601 918.073,148.1 918.948,312.688 799.575,80.603 804.075,233.595 1004.05,201.875 "/>
 <polyline id="polyline3071" fill="none" stroke="#000000" stroke-width="15" stroke-linecap="square" stroke-linejoin="bevel" stroke-miterlimit="500" stroke-opacity="0.5" points="
-	41.145,231.028 70.398,238.107 89.32,260.717 189.838,242.268 161.546,266.374 95.753,275.853 72.068,293.729 177.113,300.592 
+	41.145,231.028 70.398,238.107 89.32,260.718 189.838,242.268 161.546,266.374 95.753,275.853 72.068,293.729 177.113,300.593 
 	79.963,311.877 178.723,357.806 184.096,313.265 "/>
 <path id="path3073" fill="#C7B570" stroke="#2D2D87" stroke-width="8" stroke-linecap="round" stroke-miterlimit="5" d="
-	M456.091,477.991c0,0,40.203-95.653,115.249-30.33c75.047,65.323,190.289,187.809,206.371,104.981
-	c16.082-82.82,301.516,2.334,107.203,55.991c-194.313,53.655-399.349,93.313-388.624,15.162
+	M456.091,477.991c0,0,40.203-95.653,115.249-30.33c75.047,65.323,190.289,187.81,206.371,104.981
+	c16.082-82.82,301.516,2.334,107.203,55.991c-194.313,53.655-399.35,93.313-388.624,15.162
 	c10.719-78.152-29.48-87.483-57.624-48.992C410.524,613.302,334.14,628.469,456.091,477.991z"/>
 <circle id="circle3075" fill="#EB7A79" fill-opacity="0.7" stroke="#A52D6A" stroke-width="16" stroke-miterlimit="22" stroke-dasharray="8,8,0,0,0,0" cx="657.99" cy="348.999" r="46"/>
-<rect id="rect3077" x="525.602" y="108.282" transform="matrix(-0.0896 -0.996 0.996 -0.0896 526.1954 805.8045)" fill="#9FDBED" stroke="#000000" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.561" height="108.257"/>
+<rect id="rect3077" x="525.602" y="108.266" transform="matrix(0.0896 0.996 -0.996 0.0896 736.5558 -480.9998)" fill="#9FDBED" stroke="#000000" stroke-width="12" stroke-miterlimit="500" stroke-opacity="0.5" width="211.566" height="108.26"/>
 <line id="line3079" fill="none" stroke="#518DD4" stroke-width="20" stroke-linecap="round" stroke-miterlimit="500" stroke-opacity="0.3" x1="122.5" y1="454" x2="274.5" y2="522"/>
 <line id="line3081" fill="none" stroke="#518DD4" stroke-width="20" stroke-linecap="square" stroke-miterlimit="500" stroke-opacity="0.3" x1="107.5" y1="482.5" x2="259.5" y2="550.5"/>
 <line id="line3083" fill="none" stroke="#518DD4" stroke-width="20" stroke-miterlimit="500" stroke-opacity="0.3" x1="90.5" y1="511" x2="242.5" y2="579"/>
 <polyline id="polyline3085" fill="none" stroke="#000000" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="500" stroke-opacity="0.5" points="
-	201.5,66.5 231.142,83.924 250.315,139.574 352.165,94.167 323.5,153.5 256.834,176.833 232.834,220.833 339.273,237.723 
+	201.5,66.5 231.142,83.924 250.315,139.574 352.164,94.167 323.5,153.5 256.834,176.833 232.834,220.833 339.273,237.723 
 	240.834,265.5 340.904,378.551 346.349,268.919 "/>
 <polyline id="polyline3087" fill="none" stroke="#000000" stroke-width="15" stroke-miterlimit="500" stroke-opacity="0.5" points="
-	362.477,60.01 392.116,77.433 411.289,133.084 513.144,87.677 484.477,147.01 417.81,170.344 393.81,214.344 500.247,231.233 
+	362.477,60.01 392.115,77.433 411.288,133.084 513.144,87.677 484.477,147.01 417.81,170.344 393.81,214.344 500.246,231.233 
 	401.81,259.01 501.88,372.06 507.323,262.428 "/>
 <path id="path3089" fill="none" stroke="#000000" stroke-width="15" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="500" d="
 	M144.5,42.5"/>
-<line fill="#FFFFFF" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="35.5" y1="109.5" x2="143.5" y2="154.5"/>
+<line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="35.5" y1="109.5" x2="143.5" y2="154.5"/>
+<ellipse fill="#CCFFD9" stroke="#408A3E" stroke-width="4" stroke-miterlimit="10" cx="305" cy="448" rx="63.5" ry="20.5"/>
 </svg>
