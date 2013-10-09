@@ -97,6 +97,30 @@ void SVGCircle::render(std::vector<GeometryBuffer*>& geometry_buffers,
                                    render_settings);
 }
 
+//----------------------------------------------------------------------------//
+SVGEllipse::SVGEllipse(const SVGPaintStyle& paint_style,
+                       const glm::mat3x3& transformation,
+                       const float cx,
+                       const float cy,
+                       const float rx,
+                       const float ry) :
+    SVGBasicShape(paint_style, transformation),
+    d_cx(cx),
+    d_cy(cy),
+    d_rx(rx),
+    d_ry(ry)
+{
+}
+
+//----------------------------------------------------------------------------//
+void SVGEllipse::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                       const SVGImage::SVGImageRenderSettings& render_settings) const
+{
+    SVGTesselator::tesselateEllipse(this,
+                                    geometry_buffers,
+                                    render_settings);
+}
+
 
 //----------------------------------------------------------------------------//
 SVGLine::SVGLine(const SVGPaintStyle& paint_style,
