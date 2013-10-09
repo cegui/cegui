@@ -42,6 +42,7 @@ namespace CEGUI
 class GeometryBuffer;
 class SVGRect;
 class SVGCircle;
+class SVGEllipse;
 class SVGLine;
 class SVGPolyline;
 class SVGPaintStyle;
@@ -191,6 +192,22 @@ public:
     static void tesselateCircle(const SVGCircle* circle,
                                 std::vector<GeometryBuffer*>& geometry_buffers,
                                 const SVGImage::SVGImageRenderSettings& render_settings);
+
+    /*!
+    \brief
+        Tesselates an SVGEllipse and adds the created geometry to the GeometryBuffer
+        list.
+    
+    \param rect
+            The SVGEllipse object that contains the data.
+    \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+    \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselateEllipse(const SVGEllipse* ellipse,
+                                 std::vector<GeometryBuffer*>& geometry_buffers,
+                                 const SVGImage::SVGImageRenderSettings& render_settings);
 
 private:
     /*!
@@ -410,9 +427,9 @@ private:
                                    GeometryBuffer& geometry_buffer);
 
     //! Helper function for creating a triangle strip with filling
-    static void createTriangleStripFillGeometry(std::vector<glm::vec2>& points,
-                                         GeometryBuffer& geometry_buffer,
-                                         const SVGPaintStyle& paint_style);
+    static void createTriangleStripFillGeometry(const std::vector<glm::vec2>& points,
+                                                GeometryBuffer& geometry_buffer,
+                                                const SVGPaintStyle& paint_style);
 
     //! Helper function for creating an arc's stroke
     static void createArcStrokeGeometry(std::vector<glm::vec2>& points,
@@ -431,14 +448,50 @@ private:
                                           glm::vec2& linecap_left_fade,
                                           glm::vec2& linecap_right_fade);
 
+    //! Creates the basic ellipse points
+    static void calculateEllipsePoints(const float radiusX,
+                                       const float radiusY,
+                                       const float max_scale,
+                                       std::vector<glm::vec2>& ellipse_points);
+
+    //! Create the ellipse's fill
+    static void createEllipseFill(const std::vector<glm::vec2>& ellipse_points,
+                                  const float max_scale,
+                                  const SVGPaintStyle& paint_style,
+                                  GeometryBuffer& geometry_buffer);
+
+    //! Create the ellipse's stroke
+    static void createEllipseStroke(const std::vector<glm::vec2>& ellipse_points,
+                                    const float max_scale,
+                                    const SVGPaintStyle& paint_style,
+                                    GeometryBuffer& geometry_buffer,
+                                    const SVGImage::SVGImageRenderSettings& render_settings);
+
+    //! Create circle or ellipse stroke points
+    static void createCircleOrEllipseStrokePoints(const std::vector<glm::vec2>& ellipse_points,
+                                                  const float stroke_width,
+                                                  std::vector<glm::vec2>& outer_circle_points,
+                                                  std::vector<glm::vec2>& inner_circle_points);
+
+    //! Create anti-aliased circle or ellipse stroke points
+    static void createCircleOrEllipseStrokePointsAA(const std::vector<glm::vec2>& ellipse_points,
+                                                    const float stroke_width,
+                                                    std::vector<glm::vec2>& outer_circle_points,
+                                                    std::vector<glm::vec2>& outer_circle_points_fade,
+                                                    std::vector<glm::vec2>& inner_circle_points,
+                                                    std::vector<glm::vec2>& inner_circle_points_fade);
+
+    //! Scales the points of an ellipse (originally circle points) so that they match the scaling
+    static void scaleEllipsePoints(std::vector<glm::vec2>& circle_points,
+                                   const bool isRadiusXBigger,
+                                   const float radiusRatio);
+    
     //! Helper function for adding an anti-aliasing quad of a stroke to the GeometryBuffer
     static void addStrokeAAQuad(StrokeSegmentData &stroke_data,
                                 const glm::vec2& point1,
                                 const glm::vec2& point2,
                                 const glm::vec2& fade_point1,
                                 const glm::vec2& fade_point2);
-
-
 
      //! Helper function for appending a circle fill triangle to a GeometryBuffer
     static void addTriangleGeometry(const glm::vec2& point1,
@@ -448,10 +501,10 @@ private:
                                     ColouredVertex &vertex);
 
     //! Creates the circle stroke geometry
-    static void createCircleStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
-                                           const std::vector<glm::vec2>& inner_circle_points,
-                                           const SVGPaintStyle& paint_style,
-                                           GeometryBuffer& geometry_buffer);
+    static void createCircleOrEllipseStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
+                                                    const std::vector<glm::vec2>& inner_circle_points,
+                                                    const SVGPaintStyle& paint_style,
+                                                    GeometryBuffer& geometry_buffer);
 
     //! Calculates the parameters necessary to calculate the arc points
     static void calculateArcTesselationParameters(const float radius,
@@ -489,10 +542,10 @@ private:
     static void calculateMinMax(const std::vector<glm::vec2>& points, glm::vec2& min, glm::vec2& max);
 
     //! Helper function to create a quad based on min and max values (used for AABB quads)
-    static void SVGTesselator::addFillQuad(const glm::vec2& min,
-                                           const glm::vec2& max,
-                                           GeometryBuffer& geometry_buffer,
-                                           ColouredVertex& fill_vertex);
+    static void addFillQuad(const glm::vec2& min,
+                            const glm::vec2& max,
+                            GeometryBuffer& geometry_buffer,
+                            ColouredVertex& fill_vertex);
 };
 
 }

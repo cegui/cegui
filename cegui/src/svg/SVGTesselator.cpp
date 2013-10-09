@@ -173,6 +173,40 @@ void SVGTesselator::tesselateCircle(const SVGCircle* circle,
 }
 
 //----------------------------------------------------------------------------//
+void SVGTesselator::tesselateEllipse(const SVGEllipse* ellipse,
+                                     std::vector<GeometryBuffer*>& geometry_buffers,
+                                     const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, ellipse->d_cx,
+                                           0.0f, 1.0f, ellipse->d_cy,
+                                           0.0f, 0.0f, 1.0f ) * ellipse->d_transformation;
+
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = ellipse->d_paintStyle;
+
+    //We need this to determine the degree of tesselation required for the curved elements
+    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+
+    //Get the radii
+    const float& radiusX = ellipse->d_rx;
+    const float& radiusY = ellipse->d_ry;
+
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
+  
+    std::vector<glm::vec2> ellipse_points;
+    calculateEllipsePoints(radiusX, radiusY, max_scale, ellipse_points);
+
+    if(ellipse_points.size() < 3)
+        return;
+
+    //Create and append the ellipse's fill geometry
+    createEllipseFill(ellipse_points, max_scale, paint_style, geometry_buffer);
+    //Create and append the ellipse's stroke geometry
+    createEllipseStroke(ellipse_points, max_scale, paint_style, geometry_buffer, render_settings);
+}
+
+
+//----------------------------------------------------------------------------//
 GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
                                                            const SVGImage::SVGImageRenderSettings& render_settings,
                                                            const glm::mat3x3& svg_transformation)
@@ -647,7 +681,7 @@ void SVGTesselator::addTriangleGeometry(const glm::vec2& point1,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createTriangleStripFillGeometry(std::vector<glm::vec2>& points,
+void SVGTesselator::createTriangleStripFillGeometry(const std::vector<glm::vec2>& points,
                                                     GeometryBuffer& geometry_buffer,
                                                     const SVGPaintStyle& paint_style)
 {
@@ -710,14 +744,14 @@ void SVGTesselator::createCircleStroke(const float& radius,
     std::vector<glm::vec2> inner_circle_points;
     createCirclePoints(inner_radius, num_segments, cos_value, sin_value, inner_circle_points);
 
-    createCircleStrokeGeometry(outer_circle_points, inner_circle_points, paint_style, geometry_buffer);
+    createCircleOrEllipseStrokeGeometry(outer_circle_points, inner_circle_points, paint_style, geometry_buffer);
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::createCircleStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
-                                               const std::vector<glm::vec2>& inner_circle_points,
-                                               const SVGPaintStyle& paint_style,
-                                               GeometryBuffer& geometry_buffer)
+void SVGTesselator::createCircleOrEllipseStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
+                                                        const std::vector<glm::vec2>& inner_circle_points,
+                                                        const SVGPaintStyle& paint_style,
+                                                        GeometryBuffer& geometry_buffer)
 {
     //Create the rectangle fill vertex
     ColouredVertex stroke_vertex(glm::vec3(), getStrokeColour(paint_style));
@@ -898,7 +932,7 @@ void SVGTesselator::createArcPoints(const glm::vec2& center_point,
     glm::vec2 current_pos( start_point - center_point );
 
     //Calculate the arc points, skip last segment because that will be our endpoint
-    for(int i = 0; i < num_segments - 1.0f; i++) 
+    for(int i = 0; i < num_segments - 1.0f; ++i) 
     { 
 		glm::vec2 temp( -current_pos.y, current_pos.x );
 
@@ -910,6 +944,75 @@ void SVGTesselator::createArcPoints(const glm::vec2& center_point,
 
     //Add the end point of the arc to our list
     arc_points.push_back(end_point);
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createEllipseFill(const std::vector<glm::vec2>& ellipse_points,
+                                      const float max_scale,
+                                      const SVGPaintStyle& paint_style,
+                                      GeometryBuffer& geometry_buffer)
+{
+    if(paint_style.d_fill.d_none)
+        return;
+
+    //Generate the geometry from the the circle points
+    createTriangleStripFillGeometry(ellipse_points, geometry_buffer, paint_style);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createEllipseStroke(const std::vector<glm::vec2>& ellipse_points,
+                                        const float max_scale,
+                                        const SVGPaintStyle& paint_style,
+                                        GeometryBuffer& geometry_buffer,
+                                        const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    if(paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
+        return;
+
+    const float& stroke_width = paint_style.d_strokeWidth;
+
+    if(!render_settings.d_antiAliasing)
+    {
+        //Calculate stroke points
+        std::vector<glm::vec2> outer_circle_points;
+        std::vector<glm::vec2> inner_circle_points;
+        createCircleOrEllipseStrokePoints(ellipse_points, stroke_width, outer_circle_points, inner_circle_points);
+
+        //Create the geometry from the points
+        createCircleOrEllipseStrokeGeometry(outer_circle_points, inner_circle_points, paint_style, geometry_buffer);
+    }
+    else
+    {
+        //Calculate stroke points
+        std::vector<glm::vec2> outer_circle_points;
+        std::vector<glm::vec2> outer_circle_points_fade;
+        std::vector<glm::vec2> inner_circle_points;
+        std::vector<glm::vec2> inner_circle_points_fade;
+        createCircleOrEllipseStrokePointsAA(ellipse_points, stroke_width, outer_circle_points,
+                                            outer_circle_points_fade, inner_circle_points, inner_circle_points_fade);
+
+        //Create the geometry from the points
+        createCircleOrEllipseStrokeGeometry(outer_circle_points, inner_circle_points, paint_style, geometry_buffer);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::scaleEllipsePoints(std::vector<glm::vec2>& circle_points,
+                                       const bool isRadiusXBigger,
+                                       const float radiusRatio)
+{
+    const size_t circlePointsCount = circle_points.size();
+    if(isRadiusXBigger)
+    {
+        for(size_t i = 0; i < circlePointsCount; ++i)
+            circle_points[i].y *= radiusRatio;
+    }
+    else
+    {
+        for(size_t i = 0; i < circlePointsCount; ++i)
+            circle_points[i].x *= radiusRatio;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -1151,6 +1254,7 @@ glm::vec2 SVGTesselator::determineScaleFactors(const glm::mat3& transformation, 
 {
     glm::vec2 scale ( glm::length(glm::vec3(transformation[0].x, transformation[1].x, transformation[2].x)), 
                       glm::length(glm::vec3(transformation[0].y, transformation[1].y, transformation[2].y)) );
+
     scale *= glm::vec2( render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y );
     scale = 1.f / scale;
 
@@ -1379,10 +1483,10 @@ glm::vec2 SVGTesselator::calculateScaledCombinedVector(const glm::vec2& scale_fa
     /* We get the distance to our new corner using a factor. The factor would, in case we didn't prepare for non-uniform scaling, just consist
     of a simple vector projection. However, here we also need to multiply the local stroke width's scale factor (in the direction of the stroke)
     to get currect results. We have two alternative calculations available for this with the same results.
+    Alternative version:  length_scale2 / glm::dot( (polygon_is_clockwise ? -next_dir_to_inside : next_dir_to_inside) , vec_to_corner );
     */
     float length_to_corner = length_scale1 / glm::dot( (polygon_is_clockwise ? -prev_dir_to_inside : prev_dir_to_inside) , vec_to_corner );
-    // Alternative version:  length_scale2 / glm::dot( (polygon_is_clockwise ? -next_dir_to_inside : next_dir_to_inside) , vec_to_corner );
-
+ 
     return vec_to_corner * length_to_corner;
 }
 
@@ -1620,6 +1724,74 @@ void SVGTesselator::addFillQuad(const glm::vec2& min,
 
     fill_vertex.d_position.swizzle(glm::X, glm::Y) = glm::vec2(max.x, max.y);
     geometry_buffer.appendVertex(fill_vertex);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::calculateEllipsePoints(const float radiusX, 
+                                           const float radiusY,
+                                           const float max_scale,
+                                           std::vector<glm::vec2>& ellipse_points)
+{
+    bool isRadiusXBigger;
+    float biggerRadius, radiusRatio;
+    if(radiusX >= radiusY)
+    {
+        biggerRadius = radiusX;
+        isRadiusXBigger = true;
+        radiusRatio = radiusY / radiusX;
+    }
+    else
+    {
+        biggerRadius = radiusY;
+        isRadiusXBigger = false;
+        radiusRatio = radiusX / radiusY;
+    }
+
+    //Precalculate values needed for the circle tesselation
+    float num_segments, cos_value, sin_value;
+    calculateCircleTesselationParameters(biggerRadius, max_scale, num_segments, cos_value, sin_value);
+
+    //Create the circle points
+    createCirclePoints(biggerRadius, num_segments, cos_value, sin_value, ellipse_points);
+
+    //Scale the circle so we get an ellipse
+    scaleEllipsePoints(ellipse_points, isRadiusXBigger, radiusRatio);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createCircleOrEllipseStrokePoints(const std::vector<glm::vec2>& ellipse_points,
+                                                      const float stroke_width,
+                                                      std::vector<glm::vec2>& outer_circle_points,
+                                                      std::vector<glm::vec2>& inner_circle_points)
+{
+    const size_t max_index = ellipse_points.size() - 1;
+    for(size_t i = 0; i <= max_index; ++i) 
+    {
+        glm::vec2 direction = glm::normalize(ellipse_points[(i + 1) % max_index] - ellipse_points[(i - 1) % max_index]);
+        direction = glm::vec2(direction.y, -direction.x);
+
+        outer_circle_points.push_back( ellipse_points[i] + direction * stroke_width );
+        inner_circle_points.push_back( ellipse_points[i] - direction * stroke_width );
+    }
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::createCircleOrEllipseStrokePointsAA(const std::vector<glm::vec2>& ellipse_points,
+                                                        const float stroke_width,
+                                                        std::vector<glm::vec2>& outer_circle_points,
+                                                        std::vector<glm::vec2>& outer_circle_points_fade,
+                                                        std::vector<glm::vec2>& inner_circle_points,
+                                                        std::vector<glm::vec2>& inner_circle_points_fade)
+{
+    const size_t max_index = ellipse_points.size() - 1;
+    for(size_t i = 0; i <= max_index; ++i) 
+    {
+        glm::vec2 direction = glm::normalize(ellipse_points[(i + 1) % max_index] - ellipse_points[(i - 1) % max_index]);
+        direction = glm::vec2(direction.y, -direction.x);
+
+        outer_circle_points.push_back( ellipse_points[i] + direction * stroke_width );
+        inner_circle_points.push_back( ellipse_points[i] - direction * stroke_width );
+    }
 }
 
 //----------------------------------------------------------------------------//
