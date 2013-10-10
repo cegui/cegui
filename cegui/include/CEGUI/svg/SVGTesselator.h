@@ -84,8 +84,6 @@ public:
         glm::vec2 d_lastFadePointLeft;
         //! Last right stroke fade point, lying in clockwise direction away from the stroke direction.
         glm::vec2 d_lastFadePointRight;
-        //! Last stroke center point, which is necessary to close seams in anti-aliased linejoins and linecaps.
-        glm::vec2 d_lastCenterPoint;
 
         //! Current left stroke point, lying in anti-clockwise direction away from the stroke direction.
         glm::vec2 d_currentPointLeft;
@@ -95,8 +93,6 @@ public:
         glm::vec2 d_currentFadePointLeft;
         //! Current right stroke fade point, lying in clockwise direction away from the stroke direction.
         glm::vec2 d_currentFadePointRight;
-        //! Current stroke center point, which is necessary to close seams in anti-aliased linejoins and linecaps.
-        glm::vec2 d_currentCenterPoint;
 
         //! Last left stroke point, lying in anti-clockwise direction away from the stroke direction.
         glm::vec2 d_subsequentPointLeft;
@@ -106,9 +102,6 @@ public:
         glm::vec2 d_subsequentFadePointLeft;
         //! Last right stroke fade point, lying in clockwise direction away from the stroke direction.
         glm::vec2 d_subsequentFadePointRight;
-        //! Last stroke center point, which is necessary to close seams in anti-aliased linejoins and linecaps.
-        glm::vec2 d_subsequentCenterPoint;
-
 
         //! The vertex we will modify with positions and append to the GeometryBuffer
         ColouredVertex d_strokeVertex;
@@ -317,9 +310,6 @@ private:
     //! Stroke draw helper function that adds geometry to connect anti-aliased linejoins and linecaps with each other. Creates a connection consisting of 3 quads.
     static void createStrokeSegmentConnectionAA(StrokeSegmentData &stroke_data);
 
-    //! Stroke draw helper function that adds geometry to connects anti-aliased rounded linecaps to linejoins or another linecaps. Creates a connection consisting of 4 quads.
-    static void createStrokeSegmentAAConnectionWithCenter(StrokeSegmentData &stroke_data);
-
     //! Add the stroke linecap AA geometry
     static void addStrokeLinecapAAGeometryVertices(StrokeSegmentData &stroke_data, const glm::vec2& linecap_left, const glm::vec2& linecap_right,
                                                    const glm::vec2& linecap_fade_left, const glm::vec2& linecap_fade_right);
@@ -338,11 +328,6 @@ private:
                                              const glm::vec2& last_point_right, const glm::vec2& last_point_left_fade,
                                              const glm::vec2& last_point_right_fade);
 
-    //! Helper function to set the stroke-data's last anti-aliased point values including the center (needed for AA linecaps)
-    static void setStrokeDataLastPointsAAWithCenter(StrokeSegmentData &stroke_data, const glm::vec2& last_point_left,
-                                                       const glm::vec2& last_point_right, const glm::vec2& last_point_left_fade,
-                                                       const glm::vec2& last_point_right_fade, const glm::vec2& last_center_point);
-
     //! Helper function to set the stroke-data's current point values
     static void setStrokeDataCurrentPoints(StrokeSegmentData &stroke_data, const glm::vec2& current_point_left, const glm::vec2& current_point_right);
 
@@ -351,11 +336,6 @@ private:
                                              const glm::vec2& current_point_right, const glm::vec2& current_point_left_fade,
                                              const glm::vec2& current_point_right_fade);
 
-    //! Helper function to set the stroke-data's current anti-aliased point values including the center (needed for AA linecaps)
-    static void setStrokeDataCurrentPointsAAWithCenter(StrokeSegmentData &stroke_data, const glm::vec2& current_point_left,
-                                                       const glm::vec2& current_point_right, const glm::vec2& current_point_left_fade,
-                                                       const glm::vec2& current_point_right_fade, const glm::vec2& current_center_point);
-
     //! Helper function to set the stroke-data's subsequent point values
     static void setStrokeDataSubsequentPoints(StrokeSegmentData &stroke_data, const glm::vec2& subsequent_point_left, const glm::vec2& subsequent_point_right);
 
@@ -363,11 +343,6 @@ private:
     static void setStrokeDataSubsequentPointsAA(StrokeSegmentData &stroke_data, const glm::vec2& subsequent_point_left,
                                              const glm::vec2& subsequent_point_right, const glm::vec2& subsequent_point_left_fade,
                                              const glm::vec2& subsequent_point_right_fade);
-
-    //! Helper function to set the stroke-data's subsequent anti-aliased point values including the center (needed for AA linecaps)
-    static void setStrokeDataSubsequentPointsAAWithCenter(StrokeSegmentData &stroke_data, const glm::vec2& subsequent_point_left,
-                                                       const glm::vec2& subsequent_point_right, const glm::vec2& subsequent_point_left_fade,
-                                                       const glm::vec2& subsequent_point_right_fade, const glm::vec2& subsequent_center_point);
 
     //! Helper function that sets the subsequentPoints as the new lastPoints
     static void setStrokeDataSubsequentPointsAsLastPoints(StrokeSegmentData &stroke_data);
@@ -401,10 +376,11 @@ private:
     static CEGUI::Colour getStrokeColour(const SVGPaintStyle& paint_style);
 
     //! Create the circle's fill
-    static void createCircleFill(const float& radius,
+    static void createCircleFill(const std::vector<glm::vec2>& circle_points,
                                  float max_scale,
                                  const SVGPaintStyle& paint_style,
-                                 GeometryBuffer& geometry_buffer);
+                                 GeometryBuffer& geometry_buffer,
+                                 const SVGImage::SVGImageRenderSettings& render_settings);
 
     //! Calculate the tesselation parameters necessary to calculate the circle points
     static void calculateCircleTesselationParameters(const float radius,
@@ -421,10 +397,11 @@ private:
                                    std::vector<glm::vec2>& circle_points);
 
     //! Create the circle's stroke
-    static void createCircleStroke(const float& radius,
+    static void createCircleStroke(const std::vector<glm::vec2>& circle_points,
                                    float max_scale,
                                    const SVGPaintStyle& paint_style,
-                                   GeometryBuffer& geometry_buffer);
+                                   GeometryBuffer& geometry_buffer,
+                                   const SVGImage::SVGImageRenderSettings& render_settings);
 
     //! Helper function for creating a triangle strip with filling
     static void createTriangleStripFillGeometry(const std::vector<glm::vec2>& points,
@@ -449,17 +426,23 @@ private:
                                           glm::vec2& linecap_right_fade);
 
     //! Creates the basic ellipse points
-    static void calculateEllipsePoints(const float radiusX,
-                                       const float radiusY,
-                                       const float max_scale,
-                                       std::vector<glm::vec2>& ellipse_points);
+    static void createEllipsePoints(const float radiusX,
+                                    const float radiusY,
+                                    const float max_scale,
+                                    std::vector<glm::vec2>& ellipse_points);
 
     //! Create the ellipse's fill
     static void createEllipseFill(const std::vector<glm::vec2>& ellipse_points,
                                   const float max_scale,
                                   const SVGPaintStyle& paint_style,
-                                  GeometryBuffer& geometry_buffer);
+                                  GeometryBuffer& geometry_buffer,
+                                  const SVGImage::SVGImageRenderSettings& render_settings);
 
+    //! Create the circle or ellipse's anti-aliased fill points
+    static void createCircleOrEllipseFillPointsAA(const std::vector<glm::vec2> &points,
+                                                  std::vector<glm::vec2> &modified_points,
+                                                  std::vector<glm::vec2> &fade_points,
+                                                  glm::vec2 &antiAliasingOffsets);
     //! Create the ellipse's stroke
     static void createEllipseStroke(const std::vector<glm::vec2>& ellipse_points,
                                     const float max_scale,
@@ -468,18 +451,18 @@ private:
                                     const SVGImage::SVGImageRenderSettings& render_settings);
 
     //! Create circle or ellipse stroke points
-    static void createCircleOrEllipseStrokePoints(const std::vector<glm::vec2>& ellipse_points,
-                                                  const float stroke_width,
-                                                  std::vector<glm::vec2>& outer_circle_points,
-                                                  std::vector<glm::vec2>& inner_circle_points);
+    static void createCircleOrEllipseStrokePoints(const std::vector<glm::vec2>& points,
+                                                  StrokeSegmentData& stroke_data,
+                                                  std::vector<glm::vec2>& outer_points,
+                                                  std::vector<glm::vec2>& inner_points);
 
     //! Create anti-aliased circle or ellipse stroke points
-    static void createCircleOrEllipseStrokePointsAA(const std::vector<glm::vec2>& ellipse_points,
-                                                    const float stroke_width,
-                                                    std::vector<glm::vec2>& outer_circle_points,
-                                                    std::vector<glm::vec2>& outer_circle_points_fade,
-                                                    std::vector<glm::vec2>& inner_circle_points,
-                                                    std::vector<glm::vec2>& inner_circle_points_fade);
+    static void createCircleOrEllipseStrokePointsAA(const std::vector<glm::vec2>& points,
+                                                    StrokeSegmentData& stroke_data,
+                                                    std::vector<glm::vec2>& outer_points,
+                                                    std::vector<glm::vec2>& outer_points_fade,
+                                                    std::vector<glm::vec2>& inner_points,
+                                                    std::vector<glm::vec2>& inner_points_fade);
 
     //! Scales the points of an ellipse (originally circle points) so that they match the scaling
     static void scaleEllipsePoints(std::vector<glm::vec2>& circle_points,
@@ -487,11 +470,13 @@ private:
                                    const float radiusRatio);
     
     //! Helper function for adding an anti-aliasing quad of a stroke to the GeometryBuffer
-    static void addStrokeAAQuad(StrokeSegmentData &stroke_data,
-                                const glm::vec2& point1,
+    static void addStrokeQuadAA(const glm::vec2& point1,
                                 const glm::vec2& point2,
                                 const glm::vec2& fade_point1,
-                                const glm::vec2& fade_point2);
+                                const glm::vec2& fade_point2,
+                                GeometryBuffer& geometry_buffer,
+                                ColouredVertex& stroke_vertex,
+                                ColouredVertex& stroke_fade_vertex);
 
      //! Helper function for appending a circle fill triangle to a GeometryBuffer
     static void addTriangleGeometry(const glm::vec2& point1,
@@ -500,11 +485,26 @@ private:
                                     GeometryBuffer &geometry_buffer,
                                     ColouredVertex &vertex);
 
-    //! Creates the circle stroke geometry
-    static void createCircleOrEllipseStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
-                                                    const std::vector<glm::vec2>& inner_circle_points,
-                                                    const SVGPaintStyle& paint_style,
-                                                    GeometryBuffer& geometry_buffer);
+    //! Creates the stroke geometry of an arbitrary stroke based on the outer and inner points
+    static void createStrokeGeometry(const std::vector<glm::vec2>& outer_circle_points,
+                                     const std::vector<glm::vec2>& inner_circle_points,
+                                     StrokeSegmentData &stroke_data,
+                                     const bool is_surface_closed);
+
+    //! Creates the stroke geometry of an arbitrary anti-aliased stroke, based on the outer and inner points of it
+    static void createStrokeGeometryAA(const std::vector<glm::vec2>& outer_points,
+                                       const std::vector<glm::vec2>& outer_points_fade,
+                                       const std::vector<glm::vec2>& inner_points,
+                                       const std::vector<glm::vec2>& inner_points_fade,
+                                       StrokeSegmentData &stroke_data,
+                                       const bool is_surface_closed);
+
+    //! Creates the anti-aliasing fade fill geometry for an arbitrary anti-aliased fill, based on normal points and fade points
+    static void createFillGeometryAAFadeOnly(const std::vector<glm::vec2>& points,
+                                             const std::vector<glm::vec2>& points_fade,
+                                             const SVGPaintStyle& paint_style,
+                                             GeometryBuffer& geometry_buffer,
+                                             const bool is_surface_closed);
 
     //! Calculates the parameters necessary to calculate the arc points
     static void calculateArcTesselationParameters(const float radius,
@@ -541,11 +541,21 @@ private:
     //! Helper function to get the min and max x and y coordinates of a list of points
     static void calculateMinMax(const std::vector<glm::vec2>& points, glm::vec2& min, glm::vec2& max);
 
-    //! Helper function to create a quad based on min and max values (used for AABB quads)
-    static void addFillQuad(const glm::vec2& min,
-                            const glm::vec2& max,
+    //! Helper function to append a fill-quad based on its 4 corner points to the Geometrybuffer
+    static void addFillQuad(const glm::vec2& point1,
+                            const glm::vec2& point2,
+                            const glm::vec2& point3,
+                            const glm::vec2& point4,
                             GeometryBuffer& geometry_buffer,
                             ColouredVertex& fill_vertex);
+
+    //! Helper function to append a stroke-quad based on its 4 corner points to the Geometrybuffer
+    static void addStrokeQuad(const glm::vec2& point1,
+                              const glm::vec2& point2,
+                              const glm::vec2& point3,
+                              const glm::vec2& point4,
+                              GeometryBuffer& geometry_buffer,
+                              ColouredVertex& stroke_vertex);
 };
 
 }
