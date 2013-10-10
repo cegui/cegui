@@ -432,11 +432,11 @@ SVGPaintStyle SVGData::parsePaintStyle(const XMLAttributes& attributes)
     // it is to be inherited or not
     const String fillString(
         attributes.getValueAsString(SVGGraphicsElementAttributeFill));
-    parsePaintStyleFillString(fillString, paint_style);
+    parsePaintStyleFill(fillString, paint_style);
 
     const String fillRuleString(
         attributes.getValueAsString(SVGGraphicsElementAttributeFillRule));
-    parsePaintStyleFillRuleString(fillRuleString, paint_style);
+    parsePaintStyleFillRule(fillRuleString, paint_style);
 
     const String fillOpacityString(
         attributes.getValueAsString(SVGGraphicsElementAttributeFillOpacity));
@@ -582,11 +582,11 @@ std::vector<float> SVGData::parseListOfLengths(const String& list_of_lengths_str
 }
 
 //----------------------------------------------------------------------------//
-void SVGData::parsePaintStyleFillString(const String& fillString, SVGPaintStyle& paint_style)
+void SVGData::parsePaintStyleFill(const String& fillString, SVGPaintStyle& paint_style)
 {
     if (fillString.compare("none") == 0)
         paint_style.d_fill.d_none = true;
-    else if(fillString.compare("") == 0)
+    else if(fillString.empty())
     {
         // Inherit value or use default
         paint_style.d_fill.d_none = false;
@@ -600,7 +600,7 @@ void SVGData::parsePaintStyleFillString(const String& fillString, SVGPaintStyle&
 }
 
 //----------------------------------------------------------------------------//
-void SVGData::parsePaintStyleFillRuleString(const String& fillRuleString, SVGPaintStyle& paint_style)
+void SVGData::parsePaintStyleFillRule(const String& fillRuleString, SVGPaintStyle& paint_style)
 {
     if(fillRuleString.empty())
         // Inherit value or use default
@@ -629,13 +629,8 @@ void SVGData::parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPai
 //----------------------------------------------------------------------------//
 void SVGData::parsePaintStyleStroke(const String& strokeString, SVGPaintStyle& paint_style)
 {
-    if (strokeString.compare("none") == 0)
+    if (strokeString.compare("none") == 0 || strokeString.empty())
         paint_style.d_stroke.d_none = true;
-    else if(strokeString.empty())
-    {
-        paint_style.d_stroke.d_none = false;
-        paint_style.d_stroke.d_colour = parseColour("black");
-    }
     else
     {
         paint_style.d_stroke.d_none = false;

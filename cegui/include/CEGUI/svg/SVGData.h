@@ -281,10 +281,10 @@ private:
     static SVGPaintStyle parsePaintStyle(const XMLAttributes& attributes);
 
     //! Parses the String value of a 'fill' property 
-    static void parsePaintStyleFillString(const String& fillString, SVGPaintStyle& paint_style);
+    static void parsePaintStyleFill(const String& fillString, SVGPaintStyle& paint_style);
 
     //! Parses the String value of a 'fill-rule' property 
-    static void parsePaintStyleFillRuleString(const String& fillRuleString, SVGPaintStyle& paint_style);
+    static void parsePaintStyleFillRule(const String& fillRuleString, SVGPaintStyle& paint_style);
 
     //! Parses the String value of a 'fill-opacity' property
     static void parsePaintStyleFillOpacity(const String& fillOpacityString, SVGPaintStyle& paint_style);
