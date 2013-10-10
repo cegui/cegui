@@ -30,4 +30,6 @@
 	M144.5,42.5"/>
 <line fill="none" stroke="#000000" stroke-width="4" stroke-miterlimit="10" x1="35.5" y1="109.5" x2="143.5" y2="154.5"/>
 <ellipse fill="#CCFFD9" stroke="#408A3E" stroke-width="4" stroke-miterlimit="10" cx="305" cy="448" rx="63.5" ry="20.5"/>
+<ellipse fill="#325870" fill-opacity="0.9" cx="97.5" cy="639.5" rx="24" ry="47"/>
+<circle fill="#32898E" fill-opacity="0.9" cx="175.5" cy="643.5" r="36"/>
 </svg>
