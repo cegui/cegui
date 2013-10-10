@@ -241,8 +241,8 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
 {
     if(d_polygonFillRule == PFR_NONE)
     {
-        d_glStateChanger->disable(GL_STENCIL_TEST);
         d_glStateChanger->disable(GL_CULL_FACE);
+        d_glStateChanger->disable(GL_STENCIL_TEST);
 
         glDrawArrays(GL_TRIANGLES, 0, d_vertexCount);
     }
@@ -253,17 +253,18 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         //according to the even-odd rule.
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
+        d_glStateChanger->disable(GL_CULL_FACE);
         d_glStateChanger->enable(GL_STENCIL_TEST);
         glStencilMask(0xFF);
         glClear(GL_STENCIL_BUFFER_BIT);
-        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        glStencilFunc(GL_ALWAYS, 0x00, 0xFF);
         glStencilOp(GL_INVERT, GL_KEEP, GL_INVERT);
         glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
 
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glStencilMask(0x00);
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
-        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, d_vertexCount);
+        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, 6);
     }
     else if(d_polygonFillRule == PFR_NON_ZERO)
     {
@@ -277,7 +278,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         d_glStateChanger->enable(GL_STENCIL_TEST);
         glStencilMask(0xFF);
         glClear(GL_STENCIL_BUFFER_BIT);
-        glStencilFunc(GL_ALWAYS, 0, 0xFF);
+        glStencilFunc(GL_ALWAYS, 0x00, 0xFF);
 
         glCullFace(GL_FRONT);
         glStencilOp(GL_INCR_WRAP, GL_KEEP, GL_INCR_WRAP);
@@ -290,7 +291,7 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glStencilMask(0x00);
         glStencilFunc(GL_NOTEQUAL, 0x00, 0xFF);
-        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, d_vertexCount);
+        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, 6);
     }
 }
 
