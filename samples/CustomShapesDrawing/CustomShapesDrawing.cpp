@@ -388,6 +388,10 @@ void CustomShapesDrawing::setupCustomSVGImage()
     d_customPolyline->d_paintStyle.d_stroke.d_colour = glm::vec3(0.0f, 1.0f, 0.0f);
     d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SLJ_ROUND;
     d_customPolyline->d_paintStyle.d_strokeWidth = 2.0f;
+    //By default the SVG standard has the default fill set to black. We do not want any fill so we switch it to "none". 
+    d_customPolyline->d_paintStyle.d_fill.d_none = true;
+
+    //We add the created shape to the SVGData object
     d_customSVGData->addShape(d_customPolyline);
 }
 
