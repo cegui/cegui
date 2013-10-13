@@ -29,7 +29,7 @@
 #define _CEGUIFalWidgetLookManager_h_
 
 #include "../Singleton.h"
-#include "../String.h"
+#include "../CString.h"
 #include "../Exceptions.h"
 #include "./WidgetLookFeel.h"
 #include <map>

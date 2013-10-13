@@ -31,7 +31,7 @@
 #define _CEGUISystem_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include "CEGUI/Singleton.h"
 #include "CEGUI/EventSet.h"
 #include "CEGUI/Renderer.h"

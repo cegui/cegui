@@ -30,7 +30,7 @@
 #ifndef _CEGUIKeyFrame_h_
 #define _CEGUIKeyFrame_h_
 
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

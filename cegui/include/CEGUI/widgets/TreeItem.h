@@ -29,7 +29,7 @@
 #define _CEGUITreeItem_h_
 
 #include "../Base.h"
-#include "../String.h"
+#include "../CString.h"
 #include "../ColourRect.h"
 #include "../BasicRenderedStringParser.h"
 

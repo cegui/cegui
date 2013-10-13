@@ -32,7 +32,7 @@
 #define _CEGUITexture_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Vector.h"
 #include "CEGUI/Rect.h"

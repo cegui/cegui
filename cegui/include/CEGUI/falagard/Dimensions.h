@@ -29,7 +29,7 @@
 #define _CEGUIFalDimensions_h_
 
 #include "./Enums.h"
-#include "../String.h"
+#include "../CString.h"
 #include "../UDim.h"
 #include "../Rect.h"
 #include "../XMLSerializer.h"

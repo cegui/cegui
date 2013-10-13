@@ -32,7 +32,7 @@
 #define _CEGUIProperty_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include "CEGUI/XMLSerializer.h" 
 
 // Start of CEGUI namespace section

@@ -29,7 +29,7 @@
 #define _CEGUIDynamicModule_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 namespace CEGUI
 {

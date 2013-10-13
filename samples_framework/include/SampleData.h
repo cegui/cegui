@@ -28,7 +28,7 @@ author:     Lukas E Meindl
 #ifndef _Sample_Data_h_
 #define _Sample_Data_h_
 
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 // forward declarations
 #include "CEGUI/ForwardRefs.h"

@@ -29,7 +29,7 @@
 #define _CEGUIConfig_xmlHandler_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/XMLHandler.h"
 #include <vector>

@@ -28,7 +28,7 @@ author:     Lukas E Meindl
 #ifndef _Sample_h_
 #define _Sample_h_
 
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 // This header serves as a base for all samples and is needed inside the
 // SamplesFramework as interface for Samples that will be loaded.
