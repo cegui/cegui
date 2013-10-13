@@ -84,7 +84,7 @@ BasicImage::BasicImage(const XMLAttributes& attributes) :
     d_autoScaled = PropertyHelper<AutoScaledMode>::fromString(attributes.getValueAsString(ImageAutoScaledAttribute));
 
     // force initialisation of the autoscaling fields.
-    notifyDisplaySizeChanged(
+    updateScaledSizeAndOffset(
         System::getSingleton().getRenderer()->getDisplaySize());
 }
 
