@@ -33,6 +33,8 @@
 #include "CEGUI/Font.h"
 #include "CEGUI/Clipboard.h"
 #include "CEGUI/BidiVisualMapping.h"
+#include "CEGUI/UndoHandler.h"
+
 #include <string.h>
 
 // Start of CEGUI namespace section
@@ -87,6 +89,8 @@ Editbox::Editbox(const String& type, const String& name) :
     // set copy of validation string to ".*" so getter returns something valid.
     else
         d_validationString = ".*";
+
+    d_undoHandler = new UndoHandler(this);
 }
 
 //----------------------------------------------------------------------------//
@@ -94,6 +98,8 @@ Editbox::~Editbox(void)
 {
     if (d_weOwnValidator && d_validator)
         System::getSingleton().destroyRegexMatcher(d_validator);
+
+    delete d_undoHandler;
 }
 
 //----------------------------------------------------------------------------//
@@ -304,6 +310,12 @@ void Editbox::eraseSelectedText(bool modify_text)
         if (modify_text)
         {
             String newText = getText();
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = getSelectionStartIndex();
+            undo.d_text = newText.substr(getSelectionStartIndex(), getSelectionLength());
+            d_undoHandler->addUndoHistory(undo);
+
             newText.erase(getSelectionStartIndex(), getSelectionLength());
             setText(newText);
 
@@ -358,10 +370,10 @@ bool Editbox::performCut(Clipboard& clipboard)
 {
     if (isReadOnly())
         return false;
-    
+
     if (!performCopy(clipboard))
         return false;
-    
+
     handleDelete();
     return true;
 }
@@ -400,13 +412,24 @@ bool Editbox::performPaste(Clipboard& clipboard)
     
     // backup current text
     String tmp(getText());
+
+    UndoHandler::UndoAction undoSelection;
+    undoSelection.d_type = UndoHandler::UAT_DELETE;
+    undoSelection.d_startIdx = getSelectionStartIndex();
+    undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
     tmp.erase(getSelectionStartIndex(), getSelectionLength());
     
     // if there is room
     if (tmp.length() < d_maxTextLen)
     {
+        UndoHandler::UndoAction undo;
+        undo.d_type = UndoHandler::UAT_INSERT;
+        undo.d_startIdx = getCaretIndex();
+        undo.d_text = clipboardText;
+
         tmp.insert(getSelectionStartIndex(), clipboardText);
-        
+
         if (handleValidityChangeForString(tmp))
         {
             // erase selection using mode that does not modify getText()
@@ -419,7 +442,10 @@ bool Editbox::performPaste(Clipboard& clipboard)
             
             // set text to the newly modified string
             setText(tmp);
-            
+            d_undoHandler->addUndoHistory(undo);
+            if (getSelectionLength() > 0)
+                d_undoHandler->addUndoHistory(undoSelection);
+
             return true;
         }
     }
@@ -565,11 +591,22 @@ void Editbox::onCharacter(KeyEventArgs& e)
     {
         // backup current text
         String tmp(getText());
+
+        UndoHandler::UndoAction undoSelection;
+        undoSelection.d_type = UndoHandler::UAT_DELETE;
+        undoSelection.d_startIdx = getSelectionStartIndex();
+        undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
         tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
         // if there is room
         if (tmp.length() < d_maxTextLen)
         {
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_INSERT;
+            undo.d_startIdx = getSelectionStartIndex();
+            undo.d_text = e.codepoint;
+
             tmp.insert(getSelectionStartIndex(), 1, e.codepoint);
 
             if (handleValidityChangeForString(tmp))
@@ -587,6 +624,9 @@ void Editbox::onCharacter(KeyEventArgs& e)
 
                 // char was accepted into the Editbox - mark event as handled.
                 ++e.handled;
+                d_undoHandler->addUndoHistory(undo);
+                if (getSelectionLength() > 0)
+                    d_undoHandler->addUndoHistory(undoSelection);
             }
         }
         else
@@ -680,6 +720,11 @@ void Editbox::handleBackspace(void)
 
         if (getSelectionLength() != 0)
         {
+            UndoHandler::UndoAction undoSelection;
+            undoSelection.d_type = UndoHandler::UAT_DELETE;
+            undoSelection.d_startIdx = getSelectionStartIndex();
+            undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
             if (handleValidityChangeForString(tmp))
@@ -690,10 +735,16 @@ void Editbox::handleBackspace(void)
 
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undoSelection);
             }
         }
         else if (getCaretIndex() > 0)
         {
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = d_caretPos - 1;
+            undo.d_text = tmp.substr(d_caretPos - 1, 1);
+
             tmp.erase(d_caretPos - 1, 1);
 
             if (handleValidityChangeForString(tmp))
@@ -702,6 +753,7 @@ void Editbox::handleBackspace(void)
 
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undo);
             }
         }
 
@@ -718,6 +770,11 @@ void Editbox::handleDelete(void)
 
         if (getSelectionLength() != 0)
         {
+            UndoHandler::UndoAction undoSelection;
+            undoSelection.d_type = UndoHandler::UAT_DELETE;
+            undoSelection.d_startIdx = getSelectionStartIndex();
+            undoSelection.d_text = tmp.substr(getSelectionStartIndex(), getSelectionLength());
+
             tmp.erase(getSelectionStartIndex(), getSelectionLength());
 
             if (handleValidityChangeForString(tmp))
@@ -728,16 +785,23 @@ void Editbox::handleDelete(void)
 
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undoSelection);
             }
         }
         else if (getCaretIndex() < tmp.length())
         {
+            UndoHandler::UndoAction undo;
+            undo.d_type = UndoHandler::UAT_DELETE;
+            undo.d_startIdx = d_caretPos;
+            undo.d_text = tmp.substr(d_caretPos, 1);
+
             tmp.erase(d_caretPos, 1);
 
             if (handleValidityChangeForString(tmp))
             {
                 // set text to the newly modified string
                 setText(tmp);
+                d_undoHandler->addUndoHistory(undo);
             }
         }
 
@@ -982,5 +1046,37 @@ size_t Editbox::getCaretIndex(void) const
 }
 
 //----------------------------------------------------------------------------//
+
+/*************************************************************************
+    Undo/redo
+*************************************************************************/
+bool Editbox::performUndo()
+{
+    bool result = false;
+    if (!isReadOnly())
+    {
+        clearSelection();
+        result = d_undoHandler->undo(d_caretPos);
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+
+    return result;
+}
+
+//----------------------------------------------------------------------------//
+bool Editbox::performRedo()
+{
+    bool result = false;
+    if (!isReadOnly())
+    {
+        clearSelection();
+        result = d_undoHandler->redo(d_caretPos);
+        WindowEventArgs args(this);
+        onTextChanged(args);
+    }
+
+    return result;
+}
 
 } // End of  CEGUI namespace section

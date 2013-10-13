@@ -35,6 +35,7 @@
 #include "../Font.h"
 
 #include <vector>
+#include <deque>
 
 #if defined(_MSC_VER)
 #	pragma warning(push)
@@ -45,6 +46,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+// forward declaration
+class UndoHandler;
+
 /*!
 \brief
     Base class for multi-line edit box window renderer objects.
@@ -464,6 +468,12 @@ public:
     */
     void formatText(const bool update_scrollbars);
 
+    //! \copydoc Window::performUndo
+    virtual bool performUndo();
+
+    //! \copydoc Window::performRedo
+    virtual bool performRedo();
+
 	/*************************************************************************
 		Construction and Destruction
 	*************************************************************************/
@@ -761,9 +771,11 @@ protected:
 	size_t	d_dragAnchorIdx;	//!< Selection index for drag selection anchor point.
 
 	static String d_lineBreakChars;	//!< Holds what we consider to be line break characters.
-	bool		d_wordWrap;			//!< true when formatting uses word-wrapping.
-	LineList	d_lines;			//!< Holds the lines for the current formatting.
-	float		d_widestExtent;		//!< Holds the extent of the widest line as calculated in the last formatting pass.
+    bool		  d_wordWrap;		//!< true when formatting uses word-wrapping.
+	LineList	  d_lines;			//!< Holds the lines for the current formatting.
+	float         d_lastRenderWidth;  //!< Holds last render area width
+	float		  d_widestExtent;	//!< Holds the extent of the widest line as calculated in the last formatting pass.
+	UndoHandler*  d_undoHandler;    //!< Undo handler class
 
 	// component widget settings
 	bool	d_forceVertScroll;		//!< true if vertical scrollbar should always be displayed
