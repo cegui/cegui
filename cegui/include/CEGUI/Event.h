@@ -28,7 +28,7 @@
 #ifndef _CEGUIEvent_h_
 #define _CEGUIEvent_h_
 
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include "CEGUI/BoundSlot.h"
 #include "CEGUI/SubscriberSlot.h"
 #include "CEGUI/RefCounted.h"

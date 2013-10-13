@@ -32,7 +32,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/DataContainer.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include <vector>
 
 

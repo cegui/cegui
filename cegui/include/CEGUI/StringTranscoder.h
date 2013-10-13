@@ -28,7 +28,7 @@
 #ifndef _CEGUIStringTranscoder_h_
 #define _CEGUIStringTranscoder_h_
 
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 
 namespace CEGUI
 {

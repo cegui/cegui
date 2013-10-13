@@ -30,7 +30,7 @@
 
 #include "SampleBase.h"
 
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 
 namespace CEGUI
 {

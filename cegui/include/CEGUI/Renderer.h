@@ -31,7 +31,7 @@
 #define _CEGUIRenderer_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Vector.h"
 

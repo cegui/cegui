@@ -30,7 +30,7 @@
 
 #include "CEGUI/RenderedStringComponent.h"
 #include "CEGUI/ColourRect.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 
 #if defined(_MSC_VER)
 #	pragma warning(push)

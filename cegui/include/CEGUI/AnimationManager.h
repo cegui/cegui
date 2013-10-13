@@ -31,7 +31,7 @@
 #define _CEGUIAnimationManager_h_
 
 #include "CEGUI/Singleton.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include <map>
 #include <vector>
 
