@@ -1,5 +1,5 @@
 /***********************************************************************
-	filename: 	CEGUIString.h
+	filename: 	String.h
 	created:	26/2/2004
 	author:		Paul D Turner
 
@@ -27,11 +27,11 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIString_h_
-#define _CEGUIString_h_
+#ifndef _String_h_
+#define _String_h_
 
 #include "CEGUI/Base.h"
-#include <string.h>
+#include <cstring>
 #include <stdexcept>
 #include <cstddef>
 
