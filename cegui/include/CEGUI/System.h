@@ -616,6 +616,7 @@ protected:
 	bool d_ourResourceProvider;
 
     Clipboard* d_clipboard;         //!< Internal clipboard with optional sync with native clipboard
+    NativeClipboardProvider* d_nativeClipboardProvider; //!< the default native clipboard provider (only on Win32 for now)
 
 	// scripting
 	ScriptModule*	d_scriptModule;			//!< Points to the scripting support module.

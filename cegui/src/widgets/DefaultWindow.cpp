@@ -26,7 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "CEGUI/widgets/DefaultWindow.h"
-
+#include <limits>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -43,9 +43,10 @@ const String DefaultWindow::WidgetTypeName("DefaultWindow");
 DefaultWindow::DefaultWindow(const String& type, const String& name) :
     Window(type, name)
 {
-    USize sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
-    setMaxSize(sz);
-    setSize(sz);
+    const float maximum_float = std::numeric_limits<float>::max();
+    setMaxSize(USize(cegui_absdim(maximum_float), cegui_absdim(maximum_float)));
+
+    setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 }
 
 //----------------------------------------------------------------------------//
