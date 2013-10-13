@@ -31,7 +31,7 @@
 #define _CEGUIPropertySet_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include "CEGUI/IteratorBase.h"
 #include "CEGUI/Property.h"
 #include "CEGUI/PropertyHelper.h"

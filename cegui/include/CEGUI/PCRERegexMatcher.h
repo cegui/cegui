@@ -29,7 +29,7 @@
 #define _CEGUIPCRERegexMatcher_h_
 
 #include "CEGUI/RegexMatcher.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include <pcre.h>
 
 // Start of CEGUI namespace section

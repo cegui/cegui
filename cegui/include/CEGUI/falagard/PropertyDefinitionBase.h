@@ -28,7 +28,7 @@
 #ifndef _CEGUIPropertyDefinitionBase_h_
 #define _CEGUIPropertyDefinitionBase_h_
 
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 
 namespace CEGUI
 {

@@ -31,7 +31,7 @@
 #define _CString_h_
 
 #include "CEGUI/Base.h"
-#include <string.h>
+#include <cstring.h>
 #include <stdexcept>
 #include <cstddef>
 

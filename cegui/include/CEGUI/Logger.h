@@ -31,7 +31,7 @@
 #define _CEGUILogger_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include <fstream>
 #include <sstream>
 #include <vector>

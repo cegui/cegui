@@ -29,7 +29,7 @@
 #define _CEGUIFont_xmlHandler_h_
 
 #include "CEGUI/XMLHandler.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

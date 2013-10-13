@@ -30,7 +30,7 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 
 
 // Start of CEGUI namespace section

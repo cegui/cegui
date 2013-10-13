@@ -31,7 +31,7 @@
 #define _CEGUIListboxItem_h_
 
 #include "../Base.h"
-#include "../CString.h"
+#include "../String.h"
 #include "../ColourRect.h"
 #include "../TextUtils.h"
 #include "../Size.h"

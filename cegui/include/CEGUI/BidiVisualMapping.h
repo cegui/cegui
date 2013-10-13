@@ -28,7 +28,7 @@
 #ifndef _CEGUIBidiVisualMapping_h_
 #define _CEGUIBidiVisualMapping_h_
 
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include <vector>
 
 #if defined (_MSC_VER)

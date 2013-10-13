@@ -29,7 +29,7 @@
 #define _CEGUIXMLParser_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/CString.h"
+#include "CEGUI/String.h"
 #include "CEGUI/PropertySet.h"
 
 // Start of CEGUI namespace section
