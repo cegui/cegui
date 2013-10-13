@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalEventLinkDefinition_h_
 #define _CEGUIFalEventLinkDefinition_h_
 
-#include "../String.h"
+#include "../CString.h"
 #include "../IteratorBase.h"
 
 #include <vector>

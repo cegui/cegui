@@ -29,7 +29,7 @@
 #define _Samples_xmlHandler_h_
 
 #include "CEGUI/ChainedXMLHandler.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 class SamplesFramework;
 

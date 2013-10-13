@@ -28,7 +28,7 @@
 #ifndef _CEGUIFalXMLEnumHelper_h_
 #define _CEGUIFalXMLEnumHelper_h_
 
-#include "../String.h"
+#include "../CString.h"
 #include "../Window.h"
 #include "CEGUI/falagard/Enums.h"
 

@@ -1,5 +1,5 @@
 /***********************************************************************
-	filename: 	CEGUIString.cpp
+	filename: 	CString.cpp
 	created:	26/2/2004
 	author:		Paul D Turner
 	
@@ -27,7 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 #if CEGUI_STRING_CLASS == CEGUI_STRING_CLASS_UNICODE
 

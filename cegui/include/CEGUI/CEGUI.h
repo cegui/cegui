@@ -101,7 +101,7 @@
 #include "CEGUI/ScriptModule.h"
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/Size.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include "CEGUI/StringTranscoder.h"
 #include "CEGUI/System.h"
 #include "CEGUI/SystemKeys.h"

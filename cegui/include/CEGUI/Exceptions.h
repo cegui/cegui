@@ -31,7 +31,7 @@
 #define _CEGUIExceptions_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include <exception>
 
 // Start of CEGUI namespace section

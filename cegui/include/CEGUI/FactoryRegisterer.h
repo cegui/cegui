@@ -28,7 +28,7 @@
 #ifndef _CEGUIFactoryRegisterer_h_
 #define _CEGUIFactoryRegisterer_h_
 
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

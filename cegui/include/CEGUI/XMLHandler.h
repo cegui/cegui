@@ -29,7 +29,7 @@
 #define _CEGUIXMLHandler_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI

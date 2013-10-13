@@ -31,7 +31,7 @@
 #define _CEGUIWindowFactoryManager_h_
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include "CEGUI/Singleton.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/IteratorBase.h"

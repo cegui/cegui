@@ -30,7 +30,7 @@
 #ifndef _CEGUIAnimation_h_
 #define _CEGUIAnimation_h_
 
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 #include <vector>
 #include <map>
 

@@ -32,7 +32,7 @@ author:     Lukas E Meindl
 #include <map>
 
 #include "CEGUI/Base.h"
-#include "CEGUI/String.h"
+#include "CEGUI/CString.h"
 
 #include "CEGUI/ForwardRefs.h"
 
