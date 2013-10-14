@@ -53,6 +53,9 @@ else()
     list (REMOVE_ITEM CORE_SOURCE_FILES Win32StringTranscoder.cpp)
 endif()
 
+if (NOT WIN32)
+    list (REMOVE_ITEM CORE_SOURCE_FILES Win32ClipboardProvider.cpp)
+endif()
 
 # we do not use the common header install function since we need to install to
 # multiple sub-dirs.

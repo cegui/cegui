@@ -60,6 +60,9 @@
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
 #endif
+#if defined(__WIN32__) || defined(_WIN32)
+#	include "CEGUI/Win32ClipboardProvider.h"
+#endif
 #include <ctime>
 #include <clocale>
 
@@ -122,6 +125,7 @@ System::System(Renderer& renderer,
   d_resourceProvider(resourceProvider),
   d_ourResourceProvider(false),
   d_clipboard(CEGUI_NEW_AO Clipboard()),
+  d_nativeClipboardProvider(0),
   d_scriptModule(scriptModule),
   d_xmlParser(xmlParser),
   d_ourXmlParser(false),
@@ -146,6 +150,12 @@ System::System(Renderer& renderer,
 #ifdef CEGUI_HAS_DEFAULT_LOGGER
     if (d_ourLogger)
         CEGUI_NEW_AO DefaultLogger();
+#endif
+
+#if defined(__WIN32__) || defined(_WIN32)
+    d_nativeClipboardProvider = new Win32ClipboardProvider;
+    // set the default win 32 clipboard provider
+    d_clipboard->setNativeProvider(d_nativeClipboardProvider);
 #endif
 
     Logger& logger(Logger::getSingleton());
@@ -255,6 +265,9 @@ System::~System(void)
 		CEGUI_CATCH (...) {}  // catch all exceptions and continue system shutdown
 
 	}
+
+    if (d_nativeClipboardProvider != 0)
+        delete d_nativeClipboardProvider;
 
     cleanupImageCodec();
 
