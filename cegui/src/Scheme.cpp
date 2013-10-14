@@ -122,7 +122,7 @@ void Scheme::unloadResources(void)
     Logger::getSingleton().logEvent("---- Begining resource cleanup for GUI scheme '" + d_name + "' ----", Informative);
 
     // unload all resources specified for this scheme.
-    unloadFonts();
+    //unloadFonts(); FIXME: Prevent unloading of cross-used fonts
     //unloadXMLImagesets(); FIXME: ????
     unloadImageFileImagesets();
     unloadWindowFactories();
@@ -466,14 +466,14 @@ void Scheme::unloadImageFileImagesets()
 *************************************************************************/
 void Scheme::unloadFonts()
 {
-    FontManager& fntmgr         = FontManager::getSingleton();
+    FontManager& fontManager = FontManager::getSingleton();
 
     // unload all loaded fonts
-    for (LoadableUIElementList::const_iterator pos = d_fonts.begin();
-        pos != d_fonts.end(); ++pos)
+    for (LoadableUIElementList::iterator iter = d_fonts.begin();
+        iter != d_fonts.end(); ++iter)
     {
-        if (!(*pos).name.empty())
-            fntmgr.destroy((*pos).name);
+        if (!(*iter).name.empty())
+            fontManager.destroy((*iter).name);
     }
 }
 
