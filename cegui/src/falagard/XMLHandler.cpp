@@ -1580,7 +1580,7 @@ namespace CEGUI
         if (AnimationManager::getSingleton().isAnimationPresent(anim_name))
         {
             Logger::getSingleton().logEvent(
-                "[ImageManager] WARNING: Using existing animation :" + anim_name);
+                "[XMLHandler] WARNING: Using existing Animation :" + anim_name);
         }
         else
         {
