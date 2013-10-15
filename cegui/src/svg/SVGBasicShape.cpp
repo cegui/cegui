@@ -162,7 +162,7 @@ void SVGLine::render(std::vector<GeometryBuffer*>& geometry_buffers,
 //----------------------------------------------------------------------------//
 SVGPolyline::SVGPolyline(const SVGPaintStyle& paint_style,
                          const glm::mat3x3& transformation,
-                         const PolylinePointsList& points) :
+                         const std::vector<glm::vec2>& points) :
     SVGBasicShape(paint_style, transformation),
     d_points(points)
 {
@@ -175,6 +175,24 @@ void SVGPolyline::render(std::vector<GeometryBuffer*>& geometry_buffers,
     SVGTesselator::tesselatePolyline(this,
                                      geometry_buffers,
                                      render_settings);
+}
+
+//----------------------------------------------------------------------------//
+SVGPolygon::SVGPolygon(const SVGPaintStyle& paint_style,
+                       const glm::mat3x3& transformation,
+                       const std::vector<glm::vec2>& points) :
+    SVGBasicShape(paint_style, transformation),
+    d_points(points)
+{
+}
+
+//----------------------------------------------------------------------------//
+void SVGPolygon::render(std::vector<GeometryBuffer*>& geometry_buffers,
+                        const SVGImage::SVGImageRenderSettings& render_settings) const
+{
+    SVGTesselator::tesselatePolygon(this,
+                                    geometry_buffers,
+                                    render_settings);
 }
 
 //----------------------------------------------------------------------------//
