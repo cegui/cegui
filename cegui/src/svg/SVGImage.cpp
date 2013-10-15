@@ -121,7 +121,7 @@ void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
 
     // Calculate the scale factor for our Image which is the scaling of the Image
     // area to the destination area of our render call
-    const Vector2f scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
+    const glm::vec2 scale_factor(dest.getWidth() / d_imageArea.getWidth(), dest.getHeight() / d_imageArea.getHeight());
 
     // URGENT FIXME: Shouldn't this be in the hands of the user?
     final_rect.d_min.d_x = CoordConverter::alignToPixels(final_rect.d_min.d_x);

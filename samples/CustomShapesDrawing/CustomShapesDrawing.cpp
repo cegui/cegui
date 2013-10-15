@@ -383,7 +383,7 @@ void CustomShapesDrawing::setupCustomSVGImage()
     setupCustomSVGImageGraphBackground(*d_customSVGData);
 
     // We create polyline object for the visualisation of the last FPS values. It contains no points yet.
-    SVGPolyline::PolylinePointsList pointsList;
+    std::vector<glm::vec2> pointsList;
     d_customPolyline = new SVGPolyline(SVGPaintStyle(), glm::mat3x3(1.0f), pointsList);
     d_customPolyline->d_paintStyle.d_stroke.d_colour = glm::vec3(0.0f, 1.0f, 0.0f);
     d_customPolyline->d_paintStyle.d_strokeLinejoin = SVGPaintStyle::SLJ_ROUND;

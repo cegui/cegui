@@ -230,13 +230,10 @@ public:
 class CEGUIEXPORT SVGPolyline : public SVGBasicShape
 {
 public:
-    //! Polyline points list type
-    typedef std::vector<glm::vec2> PolylinePointsList;
-
     //! Constructor
     SVGPolyline(const SVGPaintStyle& paint_style,
-                             const glm::mat3x3& transformation,
-                             const PolylinePointsList& points);
+                const glm::mat3x3& transformation,
+                const std::vector<glm::vec2>& points);
 
     SVGPolyline()
     {}
@@ -246,7 +243,34 @@ public:
                 const SVGImage::SVGImageRenderSettings& render_settings) const;
 
     //! The points defining the line
-    PolylinePointsList d_points;
+    std::vector<glm::vec2> d_points;
+};
+
+
+/*!
+\brief
+    Defines a class for storing the data of the SVG 'polygon' element based on how it is defined in the SVG standard.
+
+    The 'polygon' element defines a closed shape consisting of a set of connected straight line segments.
+    http://www.w3.org/TR/SVGTiny12/shapes.html#PolygonElement
+*/
+class CEGUIEXPORT SVGPolygon : public SVGBasicShape
+{
+public:
+    //! Constructor
+    SVGPolygon(const SVGPaintStyle& paint_style,
+              const glm::mat3x3& transformation,
+              const std::vector<glm::vec2>& points);
+
+    SVGPolygon()
+    {}
+
+    //! Implementation of SVGBasicShape interface
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const SVGImage::SVGImageRenderSettings& render_settings) const;
+
+    //! The points defining the line
+    std::vector<glm::vec2> d_points;
 };
 
 }

@@ -45,6 +45,7 @@ class SVGCircle;
 class SVGEllipse;
 class SVGLine;
 class SVGPolyline;
+class SVGPolygon;
 class SVGPaintStyle;
 /*!
 \brief
@@ -123,38 +124,7 @@ public:
         //! Pointer to the subsequent line point of this segment
         const glm::vec2* d_nextPoint;
     };
-
-    /*!
-    \brief
-        Tesselates an SVGLine and adds the created geometry to the GeometryBuffer
-        list.
-
-    \param line
-            The SVGLine object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
-    \param render_settings
-            The ImageRenderSettings for the geometry that will be created.
-    */
-    static void tesselateLine(const SVGLine* line,
-                              std::vector<GeometryBuffer*>& geometry_buffers,
-                              const SVGImage::SVGImageRenderSettings& render_settings);
     
-    /*!
-    \brief
-        Tesselates an SVGPolyline and adds the created geometry to the GeometryBuffer
-        list.
-
-    \param polyline
-            The SVGPolyline object that contains the data.
-    \param geometry_buffers
-            The GeometryBuffer list to which the created geometry will be added.
-    \param render_settings
-            The ImageRenderSettings for the geometry that will be created.
-    */
-    static void tesselatePolyline(const SVGPolyline* polyline,
-                                  std::vector<GeometryBuffer*>& geometry_buffers,
-                                  const SVGImage::SVGImageRenderSettings& render_settings);
     /*!
     \brief
         Tesselates an SVGRect and adds the created geometry to the GeometryBuffer
@@ -199,6 +169,54 @@ public:
             The ImageRenderSettings for the geometry that will be created.
     */
     static void tesselateEllipse(const SVGEllipse* ellipse,
+                                 std::vector<GeometryBuffer*>& geometry_buffers,
+                                 const SVGImage::SVGImageRenderSettings& render_settings);
+
+    /*!
+    \brief
+        Tesselates an SVGLine and adds the created geometry to the GeometryBuffer
+        list.
+
+    \param line
+            The SVGLine object that contains the data.
+    \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+    \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselateLine(const SVGLine* line,
+                              std::vector<GeometryBuffer*>& geometry_buffers,
+                              const SVGImage::SVGImageRenderSettings& render_settings);
+
+    /*!
+    \brief
+        Tesselates an SVGPolyline and adds the created geometry to the GeometryBuffer
+        list.
+
+    \param polyline
+            The SVGPolyline object that contains the data.
+    \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+    \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselatePolyline(const SVGPolyline* polyline,
+                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  const SVGImage::SVGImageRenderSettings& render_settings);
+
+    /*!
+    \brief
+        Tesselates an SVGPolygon and adds the created geometry to the GeometryBuffer
+        list.
+
+    \param polyline
+            The SVGPolygon object that contains the data.
+    \param geometry_buffers
+            The GeometryBuffer list to which the created geometry will be added.
+    \param render_settings
+            The ImageRenderSettings for the geometry that will be created.
+    */
+    static void tesselatePolygon(const SVGPolygon* polyline,
                                  std::vector<GeometryBuffer*>& geometry_buffers,
                                  const SVGImage::SVGImageRenderSettings& render_settings);
 
@@ -440,9 +458,10 @@ private:
 
     //! Create the circle or ellipse's anti-aliased fill points
     static void createCircleOrEllipseFillPointsAA(const std::vector<glm::vec2> &points,
+                                                  const glm::vec2 &anti_aliasing_offsets,
+                                                  const glm::vec2 &scale_factors,
                                                   std::vector<glm::vec2> &modified_points,
-                                                  std::vector<glm::vec2> &fade_points,
-                                                  glm::vec2 &antiAliasingOffsets);
+                                                  std::vector<glm::vec2> &fade_points);
     //! Create the ellipse's stroke
     static void createEllipseStroke(const std::vector<glm::vec2>& ellipse_points,
                                     const float max_scale,
@@ -459,6 +478,7 @@ private:
     //! Create anti-aliased circle or ellipse stroke points
     static void createCircleOrEllipseStrokePointsAA(const std::vector<glm::vec2>& points,
                                                     StrokeSegmentData& stroke_data,
+                                                    const glm::vec2& scale_factors,
                                                     std::vector<glm::vec2>& outer_points,
                                                     std::vector<glm::vec2>& outer_points_fade,
                                                     std::vector<glm::vec2>& inner_points,

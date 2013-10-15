@@ -214,7 +214,7 @@ void SVGData::elementStartLocal(const String& element,
     // handle SVG document fragment element
     else if(element == SVGPolygonElement)
     {
-
+        elementSVGPolygon(attributes);
     }
 }
 
@@ -354,7 +354,7 @@ void SVGData::elementSVGPolyline(const XMLAttributes& attributes)
     const String pointsString(
         attributes.getValueAsString(SVGPolylineAttributePoints, ""));
 
-    SVGPolyline::PolylinePointsList points;
+    std::vector<glm::vec2> points;
     parsePointsString(pointsString, points);
 
     SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
@@ -370,11 +370,11 @@ void SVGData::elementSVGPolygon(const XMLAttributes& attributes)
     const String pointsString(
         attributes.getValueAsString(SVGPolylineAttributePoints, ""));
 
-    SVGPolyline::PolylinePointsList points;
+    std::vector<glm::vec2> points;
     parsePointsString(pointsString, points);
 
-    SVGPolyline* polyline = CEGUI_NEW_AO SVGPolyline(paint_style, transform, points);
-    addShape(polyline);
+    SVGPolygon* polygon = CEGUI_NEW_AO SVGPolygon(paint_style, transform, points);
+    addShape(polygon);
 }
 
 //----------------------------------------------------------------------------//

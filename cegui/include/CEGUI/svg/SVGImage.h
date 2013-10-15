@@ -30,6 +30,8 @@
 
 #include "CEGUI/Image.h"
 
+#include "glm/glm.hpp"
+
 namespace CEGUI
 {
 class SVGData;
@@ -51,7 +53,7 @@ public:
     {
         //! Constructor
         SVGImageRenderSettings(const ImageRenderSettings& img_render_settings,
-                               Vector2f scale_factor,
+                               const glm::vec2& scale_factor,
                                bool anti_aliasing) :
             ImageRenderSettings(img_render_settings),
             d_scaleFactor(scale_factor),
@@ -60,7 +62,7 @@ public:
         }
 
         //! The scaling factor of the geometry
-        Vector2f d_scaleFactor;
+        glm::vec2 d_scaleFactor;
         //! Create anti-aliasing geometry using alpha-blending for all shapes
         bool d_antiAliasing;
     };
