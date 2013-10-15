@@ -76,52 +76,6 @@ void SVGTesselator::StrokeSegmentData::setPoints(const glm::vec2& prev_point,
 }
 
 //----------------------------------------------------------------------------//
-void SVGTesselator::tesselateLine(const SVGLine* line,
-                                  std::vector<GeometryBuffer*>& geometry_buffers,
-                                  const SVGImage::SVGImageRenderSettings& render_settings)
-{
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, line->d_transformation);
-
-    //The shape's paint styles
-    const SVGPaintStyle& paint_style = line->d_paintStyle;
-
-    //Create the line points and add them to the stroke points list
-    std::vector<glm::vec2> points;
-    points.push_back(glm::vec2(line->d_x1, line->d_y1));
-    points.push_back(glm::vec2(line->d_x2, line->d_y2));
-
-    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
-    glm::vec2 scale_factors = determineScaleFactors(line->d_transformation, render_settings);
-
-    //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer, paint_style, render_settings, scale_factors, false);
-}
-
-//----------------------------------------------------------------------------//
-void SVGTesselator::tesselatePolyline(const SVGPolyline* polyline,
-                                      std::vector<GeometryBuffer*>& geometry_buffers,
-                                      const SVGImage::SVGImageRenderSettings& render_settings)
-{
-    //The shape's paint styles
-    const SVGPaintStyle& paint_style = polyline->d_paintStyle;
-
-    //Getting the points defining the polyline
-    const SVGPolyline::PolylinePointsList& points = polyline->d_points;
-
-    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
-    glm::vec2 scale_factors = determineScaleFactors(polyline->d_transformation, render_settings);
-
-    GeometryBuffer& geometry_buffer_fill = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
-    //Create and append the polyline's fill geometry
-    createFill(points, geometry_buffer_fill, paint_style, render_settings, scale_factors);
-
-    GeometryBuffer& geometry_buffer_stroke = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
-    //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer_stroke, paint_style, render_settings, scale_factors, false);
-}
-
-
-//----------------------------------------------------------------------------//
 void SVGTesselator::tesselateRect(const SVGRect* rect,
                                   std::vector<GeometryBuffer*>& geometry_buffers,
                                   const SVGImage::SVGImageRenderSettings& render_settings)
@@ -164,7 +118,7 @@ void SVGTesselator::tesselateCircle(const SVGCircle* circle,
     const SVGPaintStyle& paint_style = circle->d_paintStyle;
 
     //We need this to determine the degree of tesselation required for the curved elements
-    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+    float max_scale = std::max(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y);
 
     //Get the radius
     const float& radius = circle->d_r;
@@ -202,7 +156,7 @@ void SVGTesselator::tesselateEllipse(const SVGEllipse* ellipse,
     const SVGPaintStyle& paint_style = ellipse->d_paintStyle;
 
     //We need this to determine the degree of tesselation required for the curved elements
-    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+    float max_scale = std::max(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y);
 
     //Get the radii
     const float& radiusX = ellipse->d_rx;
@@ -223,6 +177,74 @@ void SVGTesselator::tesselateEllipse(const SVGEllipse* ellipse,
     createEllipseStroke(ellipse_points, max_scale, paint_style, geometry_buffer, render_settings);
 }
 
+//----------------------------------------------------------------------------//
+void SVGTesselator::tesselateLine(const SVGLine* line,
+                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, line->d_transformation);
+
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = line->d_paintStyle;
+
+    //Create the line points and add them to the stroke points list
+    std::vector<glm::vec2> points;
+    points.push_back(glm::vec2(line->d_x1, line->d_y1));
+    points.push_back(glm::vec2(line->d_x2, line->d_y2));
+
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = determineScaleFactors(line->d_transformation, render_settings);
+
+    //Create and append the polyline's stroke geometry
+    createStroke(points, geometry_buffer, paint_style, render_settings, scale_factors, false);
+}
+
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::tesselatePolyline(const SVGPolyline* polyline,
+                                      std::vector<GeometryBuffer*>& geometry_buffers,
+                                      const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = polyline->d_paintStyle;
+
+    //Getting the points defining the polyline
+    const std::vector<glm::vec2>& points = polyline->d_points;
+
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = determineScaleFactors(polyline->d_transformation, render_settings);
+
+    GeometryBuffer& geometry_buffer_fill = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
+    //Create and append the polyline's fill geometry
+    createFill(points, geometry_buffer_fill, paint_style, render_settings, scale_factors);
+
+    GeometryBuffer& geometry_buffer_stroke = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
+    //Create and append the polyline's stroke geometry
+    createStroke(points, geometry_buffer_stroke, paint_style, render_settings, scale_factors, false);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::tesselatePolygon(const SVGPolygon* polygon,
+                                     std::vector<GeometryBuffer*>& geometry_buffers,
+                                     const SVGImage::SVGImageRenderSettings& render_settings)
+{
+    //The shape's paint styles
+    const SVGPaintStyle& paint_style = polygon->d_paintStyle;
+
+    //Getting the points defining the polyline
+    const std::vector<glm::vec2>& points = polygon->d_points;
+
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = determineScaleFactors(polygon->d_transformation, render_settings);
+
+    GeometryBuffer& geometry_buffer_fill = setupGeometryBufferColoured(geometry_buffers, render_settings, polygon->d_transformation);
+    //Create and append the polyline's fill geometry
+    createFill(points, geometry_buffer_fill, paint_style, render_settings, scale_factors);
+
+    GeometryBuffer& geometry_buffer_stroke = setupGeometryBufferColoured(geometry_buffers, render_settings, polygon->d_transformation);
+    //Create and append the polyline's stroke geometry
+    createStroke(points, geometry_buffer_stroke, paint_style, render_settings, scale_factors, true);
+}
 
 //----------------------------------------------------------------------------//
 GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
@@ -240,7 +262,7 @@ GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryB
     else
         geometry_buffer.setClippingActive(false);
 
-    geometry_buffer.setScale(render_settings.d_scaleFactor);
+    geometry_buffer.setScale(CEGUI::Vector2f(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y));
 
     glm::mat4 cegui_transform = createRenderableMatrixFromSVGMatrix(svg_transformation);
     geometry_buffer.setCustomTransform(cegui_transform);
@@ -327,7 +349,7 @@ void SVGTesselator::createStroke(const std::vector<glm::vec2>& points,
         return;
 
     //We need this to determine the degree of tesselation required for the curved elements
-    float max_scale = std::max(render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y);
+    float max_scale = std::max(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y);
 
     // Create an object containing all the data we need for our segment processing
     StrokeSegmentData stroke_data(geometry_buffer, paint_style.d_strokeWidth * 0.5f, paint_style, max_scale);
@@ -506,45 +528,9 @@ void SVGTesselator::determineAntiAliasingOffsets(float width, glm::vec2& antiali
 
     float& core_offset = antialiasing_offsets.x;
     float& fade_offset = antialiasing_offsets.y;
-	
-    if ( width >= 6.0f)
-    {
-		float ff = width - 6.0f;
-		core_offset = 2.5f + ff * 0.50f;
-        fade_offset = 1.08f;
-	}
-    else if ( width >= 5.0f)
-    {
-		core_offset = 1.9f + remainder * 0.6f;
-        fade_offset = 1.08f;
-	} 
-    else if ( width >= 4.0f)
-    {
-		core_offset = 1.44f + remainder * 0.46f;
-        fade_offset=1.08f;
-	}
-    else if ( width >= 3.0f)
-    {
-		core_offset = 0.96f + remainder * 0.48f;
-        fade_offset=1.08f;
-	}
-     else if ( width >= 2.0f)
-    {
-		core_offset = 0.38f + remainder * 0.58f;
-        fade_offset = 1.08f;
-	} 
-     else if ( width >= 1.0f)
-    {
-		core_offset = 0.05f + remainder * 0.33f;
-        fade_offset = 0.768f + 0.312f * remainder;
-	}
-	else if ( width >= 0.0f)
-    {
-		core_offset = 0.05f;
-        fade_offset = 0.768f;
-	}
 
-    core_offset -= width * 0.5f;
+    core_offset = -0.5f;
+    fade_offset = 0.5f;
 }
 
 //----------------------------------------------------------------------------//
@@ -597,10 +583,10 @@ void SVGTesselator::createStrokeLinecap(StrokeSegmentData& stroke_data,
         {
             float length_cap_scale = calculateLengthScale(linecap_dir, scale_factors);
             glm::vec2 linecap_offset_vec = length_cap_scale * linecap_dir;
-            linecap_left_fade += stroke_data.d_antiAliasingOffsets.y * linecap_offset_vec;
-            linecap_right_fade += stroke_data.d_antiAliasingOffsets.y * linecap_offset_vec;
             linecap_left_AA += stroke_data.d_antiAliasingOffsets.x * linecap_offset_vec;
             linecap_right_AA += stroke_data.d_antiAliasingOffsets.x * linecap_offset_vec;
+            linecap_left_fade += stroke_data.d_antiAliasingOffsets.y * linecap_offset_vec;
+            linecap_right_fade += stroke_data.d_antiAliasingOffsets.y * linecap_offset_vec;
 
             //Create the outer AA quad of the butt or square linecap
             addStrokeLinecapAAGeometryVertices(stroke_data, linecap_left_AA, linecap_right_AA, linecap_left_fade, linecap_right_fade);
@@ -714,7 +700,8 @@ void SVGTesselator::createCircleFill(const std::vector<glm::vec2>& circle_points
 
         std::vector<glm::vec2> circle_modified_points;
         std::vector<glm::vec2> circle_fade_points;
-        createCircleOrEllipseFillPointsAA(circle_points, circle_modified_points, circle_fade_points, antiAliasingOffsets);
+        createCircleOrEllipseFillPointsAA(circle_points, antiAliasingOffsets, render_settings.d_scaleFactor,
+                                          circle_modified_points, circle_fade_points);
 
         createTriangleStripFillGeometry(circle_modified_points, geometry_buffer, paint_style);
         createFillGeometryAAFadeOnly(circle_modified_points, circle_fade_points, paint_style, geometry_buffer, true);
@@ -752,7 +739,7 @@ void SVGTesselator::createCircleStroke(const std::vector<glm::vec2>& circle_poin
         std::vector<glm::vec2> outer_circle_points_fade;
         std::vector<glm::vec2> inner_circle_points;
         std::vector<glm::vec2> inner_circle_points_fade;
-        createCircleOrEllipseStrokePointsAA(circle_points, stroke_data, outer_circle_points,
+        createCircleOrEllipseStrokePointsAA(circle_points, stroke_data, render_settings.d_scaleFactor, outer_circle_points,
                                             outer_circle_points_fade, inner_circle_points, inner_circle_points_fade);
 
         //Create the geometry from the points
@@ -946,7 +933,8 @@ void SVGTesselator::createEllipseFill(const std::vector<glm::vec2>& ellipse_poin
 
         std::vector<glm::vec2> ellipse_modified_points;
         std::vector<glm::vec2> ellipse_fade_points;
-        createCircleOrEllipseFillPointsAA(ellipse_points, ellipse_modified_points, ellipse_fade_points, antiAliasingOffsets);
+        createCircleOrEllipseFillPointsAA(ellipse_points, antiAliasingOffsets, render_settings.d_scaleFactor,
+                                          ellipse_modified_points, ellipse_fade_points);
 
         createTriangleStripFillGeometry(ellipse_modified_points, geometry_buffer, paint_style);
         createFillGeometryAAFadeOnly(ellipse_modified_points, ellipse_fade_points, paint_style, geometry_buffer, true);
@@ -984,7 +972,7 @@ void SVGTesselator::createEllipseStroke(const std::vector<glm::vec2>& ellipse_po
         std::vector<glm::vec2> outer_ellipse_points_fade;
         std::vector<glm::vec2> inner_ellipse_points;
         std::vector<glm::vec2> inner_ellipse_points_fade;
-        createCircleOrEllipseStrokePointsAA(ellipse_points, stroke_data, outer_ellipse_points,
+        createCircleOrEllipseStrokePointsAA(ellipse_points, stroke_data, render_settings.d_scaleFactor, outer_ellipse_points,
                                             outer_ellipse_points_fade, inner_ellipse_points, inner_ellipse_points_fade);
 
         //Create the geometry from the points
@@ -1040,7 +1028,6 @@ void SVGTesselator::createStrokeLinejoinBevelOrRound(StrokeSegmentData &stroke_d
     if(draw)
     {
         setStrokeDataCurrentPoints(stroke_data, segment_end_left, segment_end_right);
-
 
         if(linejoin == SVGPaintStyle::SLJ_BEVEL)
         {
@@ -1191,7 +1178,7 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
 
             //Get the arc points
             std::vector<glm::vec2> arc_points;
-            createArcPoints(cur_point, outer_AA, outer2_AA, num_segments,
+            createArcPoints(cur_point, outer_point, second_bevel_point, num_segments,
                             polygon_is_clockwise ? -tangential_factor : tangential_factor, radial_factor, arc_points);
 
             createArcStrokeAAGeometry(arc_points, cur_point, inner_AA, stroke_data, scale_factors,
@@ -1219,7 +1206,7 @@ glm::vec2 SVGTesselator::determineScaleFactors(const glm::mat3& transformation, 
     glm::vec2 scale ( glm::length(glm::vec3(transformation[0].x, transformation[1].x, transformation[2].x)), 
                       glm::length(glm::vec3(transformation[0].y, transformation[1].y, transformation[2].y)) );
 
-    scale *= glm::vec2( render_settings.d_scaleFactor.d_x, render_settings.d_scaleFactor.d_y );
+    scale *= glm::vec2( render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y );
     scale = 1.f / scale;
 
     return scale;
@@ -1481,6 +1468,7 @@ void SVGTesselator::createCircleOrEllipseStrokePoints(const std::vector<glm::vec
 //----------------------------------------------------------------------------//
 void SVGTesselator::createCircleOrEllipseStrokePointsAA(const std::vector<glm::vec2>& points,
                                                         StrokeSegmentData& stroke_data,
+                                                        const glm::vec2& scale_factors,
                                                         std::vector<glm::vec2>& outer_points,
                                                         std::vector<glm::vec2>& outer_points_fade,
                                                         std::vector<glm::vec2>& inner_points,
@@ -1494,6 +1482,9 @@ void SVGTesselator::createCircleOrEllipseStrokePointsAA(const std::vector<glm::v
 
         glm::vec2 direction = glm::normalize(points[index1] - points[index2]);
         direction = glm::vec2(direction.y, -direction.x);
+
+        float length_scale = calculateLengthScale(glm::vec2(direction.y, -direction.y), scale_factors);
+        direction *= length_scale;
 
         outer_points.push_back( points[i] + direction * (stroke_data.d_strokeHalfWidth + stroke_data.d_antiAliasingOffsets.x));
         outer_points_fade.push_back( points[i] + direction * (stroke_data.d_strokeHalfWidth + stroke_data.d_antiAliasingOffsets.y));
@@ -1816,12 +1807,13 @@ void SVGTesselator::addStrokeQuadAA(const glm::vec2& point1,
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::createCircleOrEllipseFillPointsAA(const std::vector<glm::vec2> &points,
+                                                      const glm::vec2 &anti_aliasing_offsets,
+                                                      const glm::vec2 &scale_factors,
                                                       std::vector<glm::vec2> &modified_points,
-                                                      std::vector<glm::vec2> &fade_points,
-                                                      glm::vec2 &antiAliasingOffsets)
+                                                      std::vector<glm::vec2> &fade_points)
 {
     const size_t points_count = points.size();
-    for(size_t i = 0; i < points_count; ++i) 
+    for(size_t i = 0; i < points_count; ++i)
     {
         size_t index1 = (i == points_count - 1) ? 0 : (i + 1);
         size_t index2 = (i == 0) ? (points_count - 1) : (i - 1);
@@ -1829,11 +1821,13 @@ void SVGTesselator::createCircleOrEllipseFillPointsAA(const std::vector<glm::vec
         glm::vec2 direction = glm::normalize(points[index1] - points[index2]);
         direction = glm::vec2(direction.y, -direction.x);
 
-        modified_points.push_back( points[i] + direction * antiAliasingOffsets.x );
-        fade_points.push_back( points[i] + direction * antiAliasingOffsets.y );
+        float length_scale = calculateLengthScale(glm::vec2(direction.y, -direction.y), scale_factors);
+        direction *= length_scale;
+
+        modified_points.push_back( points[i] + direction * anti_aliasing_offsets.x );
+        fade_points.push_back( points[i] + direction * anti_aliasing_offsets.y );
     }
 }
-
 
 //----------------------------------------------------------------------------//
 }
