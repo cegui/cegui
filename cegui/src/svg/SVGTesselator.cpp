@@ -77,13 +77,17 @@ void SVGTesselator::StrokeSegmentData::setPoints(const glm::vec2& prev_point,
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::tesselateRect(const SVGRect* rect,
-                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  std::vector<GeometryBuffer*>& image_geometry_buffers,
                                   const SVGImage::SVGImageRenderSettings& render_settings)
 {
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, rect->d_x,
                                            0.0f, 1.0f, rect->d_y,
                                            0.0f, 0.0f, 1.0f ) * rect->d_transformation;
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
+
+    //Setup the required Geometrybuffers
+    GeometryBuffer* fill_geometry_buffer;
+    GeometryBuffer* stroke_geometry_buffer;
+    setupGeometryBuffers(fill_geometry_buffer, stroke_geometry_buffer, image_geometry_buffers, render_settings, transformation, false);
 
     //The shape's paint styles
     const SVGPaintStyle& paint_style = rect->d_paintStyle;
@@ -99,32 +103,37 @@ void SVGTesselator::tesselateRect(const SVGRect* rect,
     rectangle_points.push_back( glm::vec2(rect->d_width, 0.0f          ) );
   
     //Create and append the rectangle's fill geometry
-    createTriangleStripFillGeometry(rectangle_points, geometry_buffer, paint_style);
+    createTriangleStripFillGeometry(rectangle_points, *fill_geometry_buffer, paint_style);
 
     //Create and append the rectangle's stroke geometry
-    createStroke(rectangle_points, geometry_buffer, paint_style, render_settings, scale_factors, true);
+    createStroke(rectangle_points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, true);
 }
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::tesselateCircle(const SVGCircle* circle,
-                                    std::vector<GeometryBuffer*>& geometry_buffers,
+                                    std::vector<GeometryBuffer*>& image_geometry_buffers,
                                     const SVGImage::SVGImageRenderSettings& render_settings)
 {
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, circle->d_cx,
                                            0.0f, 1.0f, circle->d_cy,
                                            0.0f, 0.0f, 1.0f ) * circle->d_transformation;
 
+    //Setup the required Geometrybuffers
+    GeometryBuffer* fill_geometry_buffer;
+    GeometryBuffer* stroke_geometry_buffer;
+    setupGeometryBuffers(fill_geometry_buffer, stroke_geometry_buffer, image_geometry_buffers, render_settings, transformation, false);
+
     //The shape's paint styles
     const SVGPaintStyle& paint_style = circle->d_paintStyle;
+
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = determineScaleFactors(circle->d_transformation, render_settings);
 
     //We need this to determine the degree of tesselation required for the curved elements
     float max_scale = std::max(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y);
 
     //Get the radius
     const float& radius = circle->d_r;
-
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
-
 
     //Precalculate values needed for the circle tesselation
     float num_segments, cos_value, sin_value;
@@ -138,22 +147,30 @@ void SVGTesselator::tesselateCircle(const SVGCircle* circle,
         return;
   
     //Create and append the circle's fill geometry
-    createCircleFill(circle_points, max_scale, paint_style, geometry_buffer, render_settings);
+    createCircleFill(circle_points, max_scale, paint_style, *fill_geometry_buffer, render_settings, scale_factors);
     //Create and append the circle's stroke geometry
-    createCircleStroke(circle_points, max_scale, paint_style, geometry_buffer, render_settings);
+    createCircleStroke(circle_points, max_scale, paint_style, *stroke_geometry_buffer, render_settings, scale_factors);
 }
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::tesselateEllipse(const SVGEllipse* ellipse,
-                                     std::vector<GeometryBuffer*>& geometry_buffers,
+                                     std::vector<GeometryBuffer*>& image_geometry_buffers,
                                      const SVGImage::SVGImageRenderSettings& render_settings)
 {
     glm::mat3x3 transformation = glm::mat3(1.0f, 0.0f, ellipse->d_cx,
                                            0.0f, 1.0f, ellipse->d_cy,
                                            0.0f, 0.0f, 1.0f ) * ellipse->d_transformation;
+    
+    //Setup the required Geometrybuffers
+    GeometryBuffer* fill_geometry_buffer;
+    GeometryBuffer* stroke_geometry_buffer;
+    setupGeometryBuffers(fill_geometry_buffer, stroke_geometry_buffer, image_geometry_buffers, render_settings, transformation, false);
 
     //The shape's paint styles
     const SVGPaintStyle& paint_style = ellipse->d_paintStyle;
+
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = determineScaleFactors(ellipse->d_transformation, render_settings);
 
     //We need this to determine the degree of tesselation required for the curved elements
     float max_scale = std::max(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y);
@@ -162,8 +179,6 @@ void SVGTesselator::tesselateEllipse(const SVGEllipse* ellipse,
     const float& radiusX = ellipse->d_rx;
     const float& radiusY = ellipse->d_ry;
 
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, transformation);
-  
     //Create ellipse points
     std::vector<glm::vec2> ellipse_points;
     createEllipsePoints(radiusX, radiusY, max_scale, ellipse_points);
@@ -172,39 +187,49 @@ void SVGTesselator::tesselateEllipse(const SVGEllipse* ellipse,
         return;
 
     //Create and append the ellipse's fill geometry
-    createEllipseFill(ellipse_points, max_scale, paint_style, geometry_buffer, render_settings);
+    createEllipseFill(ellipse_points, max_scale, paint_style, *fill_geometry_buffer, render_settings, scale_factors);
     //Create and append the ellipse's stroke geometry
-    createEllipseStroke(ellipse_points, max_scale, paint_style, geometry_buffer, render_settings);
+    createEllipseStroke(ellipse_points, max_scale, paint_style, *stroke_geometry_buffer, render_settings, scale_factors);
 }
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::tesselateLine(const SVGLine* line,
-                                  std::vector<GeometryBuffer*>& geometry_buffers,
+                                  std::vector<GeometryBuffer*>& image_geometry_buffers,
                                   const SVGImage::SVGImageRenderSettings& render_settings)
 {
-    GeometryBuffer& geometry_buffer = setupGeometryBufferColoured(geometry_buffers, render_settings, line->d_transformation);
+    //Setup the required Geometrybuffers
+    GeometryBuffer* fill_geometry_buffer;
+    GeometryBuffer* stroke_geometry_buffer;
+    setupGeometryBuffers(fill_geometry_buffer, stroke_geometry_buffer, image_geometry_buffers, render_settings, line->d_transformation, false);
 
     //The shape's paint styles
     const SVGPaintStyle& paint_style = line->d_paintStyle;
+
+    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
+    glm::vec2 scale_factors = determineScaleFactors(line->d_transformation, render_settings);
 
     //Create the line points and add them to the stroke points list
     std::vector<glm::vec2> points;
     points.push_back(glm::vec2(line->d_x1, line->d_y1));
     points.push_back(glm::vec2(line->d_x2, line->d_y2));
 
-    //Get the final scale by extracting the scale from the matrix and combining it with the image scale
-    glm::vec2 scale_factors = determineScaleFactors(line->d_transformation, render_settings);
+
 
     //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer, paint_style, render_settings, scale_factors, false);
+    createStroke(points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, false);
 }
 
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::tesselatePolyline(const SVGPolyline* polyline,
-                                      std::vector<GeometryBuffer*>& geometry_buffers,
+                                      std::vector<GeometryBuffer*>& image_geometry_buffers,
                                       const SVGImage::SVGImageRenderSettings& render_settings)
 {
+    //Setup the required Geometrybuffers
+    GeometryBuffer* fill_geometry_buffer;
+    GeometryBuffer* stroke_geometry_buffer;
+    setupGeometryBuffers(fill_geometry_buffer, stroke_geometry_buffer, image_geometry_buffers, render_settings, polyline->d_transformation, true);
+
     //The shape's paint styles
     const SVGPaintStyle& paint_style = polyline->d_paintStyle;
 
@@ -214,20 +239,23 @@ void SVGTesselator::tesselatePolyline(const SVGPolyline* polyline,
     //Get the final scale by extracting the scale from the matrix and combining it with the image scale
     glm::vec2 scale_factors = determineScaleFactors(polyline->d_transformation, render_settings);
 
-    GeometryBuffer& geometry_buffer_fill = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
     //Create and append the polyline's fill geometry
-    createFill(points, geometry_buffer_fill, paint_style, render_settings, scale_factors);
+    createFill(points, *fill_geometry_buffer, paint_style, render_settings, scale_factors);
 
-    GeometryBuffer& geometry_buffer_stroke = setupGeometryBufferColoured(geometry_buffers, render_settings, polyline->d_transformation);
     //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer_stroke, paint_style, render_settings, scale_factors, false);
+    createStroke(points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, false);
 }
 
 //----------------------------------------------------------------------------//
 void SVGTesselator::tesselatePolygon(const SVGPolygon* polygon,
-                                     std::vector<GeometryBuffer*>& geometry_buffers,
+                                     std::vector<GeometryBuffer*>& image_geometry_buffers,
                                      const SVGImage::SVGImageRenderSettings& render_settings)
 {
+    //Setup the required Geometrybuffers
+    GeometryBuffer* fill_geometry_buffer;
+    GeometryBuffer* stroke_geometry_buffer;
+    setupGeometryBuffers(fill_geometry_buffer, stroke_geometry_buffer, image_geometry_buffers, render_settings, polygon->d_transformation, true);
+
     //The shape's paint styles
     const SVGPaintStyle& paint_style = polygon->d_paintStyle;
 
@@ -237,37 +265,42 @@ void SVGTesselator::tesselatePolygon(const SVGPolygon* polygon,
     //Get the final scale by extracting the scale from the matrix and combining it with the image scale
     glm::vec2 scale_factors = determineScaleFactors(polygon->d_transformation, render_settings);
 
-    GeometryBuffer& geometry_buffer_fill = setupGeometryBufferColoured(geometry_buffers, render_settings, polygon->d_transformation);
     //Create and append the polyline's fill geometry
-    createFill(points, geometry_buffer_fill, paint_style, render_settings, scale_factors);
+    createFill(points, *fill_geometry_buffer, paint_style, render_settings, scale_factors);
 
-    GeometryBuffer& geometry_buffer_stroke = setupGeometryBufferColoured(geometry_buffers, render_settings, polygon->d_transformation);
     //Create and append the polyline's stroke geometry
-    createStroke(points, geometry_buffer_stroke, paint_style, render_settings, scale_factors, true);
+    createStroke(points, *stroke_geometry_buffer, paint_style, render_settings, scale_factors, true);
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& SVGTesselator::setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
-                                                           const SVGImage::SVGImageRenderSettings& render_settings,
-                                                           const glm::mat3x3& svg_transformation)
+void SVGTesselator::setupGeometryBuffers(GeometryBuffer*& fill_geometry_buffer,
+                                         GeometryBuffer*& stroke_geometry_buffer,
+                                         std::vector<GeometryBuffer*>& image_geometry_buffers,
+                                         const SVGImage::SVGImageRenderSettings& render_settings,
+                                         const glm::mat3x3& svg_transformation,
+                                         const bool is_fill_needing_stencil)
 {
-    GeometryBuffer& geometry_buffer = System::getSingleton().getRenderer()->createGeometryBufferColoured();
-    geometry_buffers.push_back(&geometry_buffer);
+    //Calculate the transformation matrix for the CEGUI rendering system based on the SVG transformation matrix
+    glm::mat4 cegui_transformation_matrix = createRenderableMatrixFromSVGMatrix(svg_transformation);
 
-    if(render_settings.d_clipArea)
+    fill_geometry_buffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
+
+    setupGeometryBufferSettings(fill_geometry_buffer, render_settings, cegui_transformation_matrix);
+    image_geometry_buffers.push_back(fill_geometry_buffer);
+
+    //TODO Ident: For gradients ability we will also need to perform a check for the DS_type here to see if we need a seperate buffer or not
+    if(!is_fill_needing_stencil)
     {
-        geometry_buffer.setClippingActive(true);
-        geometry_buffer.setClippingRegion(*render_settings.d_clipArea);
+        //We can use the GeometryBuffer of the fill also for the stroke
+        stroke_geometry_buffer = fill_geometry_buffer;
     }
     else
-        geometry_buffer.setClippingActive(false);
+    {
+        stroke_geometry_buffer = &System::getSingleton().getRenderer()->createGeometryBufferColoured();
 
-    geometry_buffer.setScale(CEGUI::Vector2f(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y));
-
-    glm::mat4 cegui_transform = createRenderableMatrixFromSVGMatrix(svg_transformation);
-    geometry_buffer.setCustomTransform(cegui_transform);
-
-    return geometry_buffer;
+        setupGeometryBufferSettings(stroke_geometry_buffer, render_settings, cegui_transformation_matrix);
+        image_geometry_buffers.push_back(stroke_geometry_buffer);
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -684,7 +717,8 @@ void SVGTesselator::createCircleFill(const std::vector<glm::vec2>& circle_points
                                      float max_scale,
                                      const SVGPaintStyle& paint_style,
                                      GeometryBuffer& geometry_buffer,
-                                     const SVGImage::SVGImageRenderSettings& render_settings)
+                                     const SVGImage::SVGImageRenderSettings& render_settings,
+                                     const glm::vec2& scale_factors)
 {
     if(paint_style.d_fill.d_none)
         return;
@@ -700,7 +734,7 @@ void SVGTesselator::createCircleFill(const std::vector<glm::vec2>& circle_points
 
         std::vector<glm::vec2> circle_modified_points;
         std::vector<glm::vec2> circle_fade_points;
-        createCircleOrEllipseFillPointsAA(circle_points, antiAliasingOffsets, render_settings.d_scaleFactor,
+        createCircleOrEllipseFillPointsAA(circle_points, antiAliasingOffsets, scale_factors,
                                           circle_modified_points, circle_fade_points);
 
         createTriangleStripFillGeometry(circle_modified_points, geometry_buffer, paint_style);
@@ -713,7 +747,8 @@ void SVGTesselator::createCircleStroke(const std::vector<glm::vec2>& circle_poin
                                        float max_scale,
                                        const SVGPaintStyle& paint_style,
                                        GeometryBuffer& geometry_buffer,
-                                       const SVGImage::SVGImageRenderSettings& render_settings)
+                                       const SVGImage::SVGImageRenderSettings& render_settings,
+                                       const glm::vec2& scale_factors)
 {
     if(paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
     return;
@@ -739,7 +774,7 @@ void SVGTesselator::createCircleStroke(const std::vector<glm::vec2>& circle_poin
         std::vector<glm::vec2> outer_circle_points_fade;
         std::vector<glm::vec2> inner_circle_points;
         std::vector<glm::vec2> inner_circle_points_fade;
-        createCircleOrEllipseStrokePointsAA(circle_points, stroke_data, render_settings.d_scaleFactor, outer_circle_points,
+        createCircleOrEllipseStrokePointsAA(circle_points, stroke_data, scale_factors, outer_circle_points,
                                             outer_circle_points_fade, inner_circle_points, inner_circle_points_fade);
 
         //Create the geometry from the points
@@ -917,7 +952,8 @@ void SVGTesselator::createEllipseFill(const std::vector<glm::vec2>& ellipse_poin
                                       const float max_scale,
                                       const SVGPaintStyle& paint_style,
                                       GeometryBuffer& geometry_buffer,
-                                      const SVGImage::SVGImageRenderSettings& render_settings)
+                                      const SVGImage::SVGImageRenderSettings& render_settings,
+                                      const glm::vec2& scale_factors)
 {
     if(paint_style.d_fill.d_none)
         return;
@@ -933,7 +969,7 @@ void SVGTesselator::createEllipseFill(const std::vector<glm::vec2>& ellipse_poin
 
         std::vector<glm::vec2> ellipse_modified_points;
         std::vector<glm::vec2> ellipse_fade_points;
-        createCircleOrEllipseFillPointsAA(ellipse_points, antiAliasingOffsets, render_settings.d_scaleFactor,
+        createCircleOrEllipseFillPointsAA(ellipse_points, antiAliasingOffsets, scale_factors,
                                           ellipse_modified_points, ellipse_fade_points);
 
         createTriangleStripFillGeometry(ellipse_modified_points, geometry_buffer, paint_style);
@@ -946,7 +982,8 @@ void SVGTesselator::createEllipseStroke(const std::vector<glm::vec2>& ellipse_po
                                         const float max_scale,
                                         const SVGPaintStyle& paint_style,
                                         GeometryBuffer& geometry_buffer,
-                                        const SVGImage::SVGImageRenderSettings& render_settings)
+                                        const SVGImage::SVGImageRenderSettings& render_settings,
+                                        const glm::vec2& scale_factors)
 {
     if(paint_style.d_stroke.d_none || paint_style.d_strokeWidth == 0.0f)
         return;
@@ -972,7 +1009,7 @@ void SVGTesselator::createEllipseStroke(const std::vector<glm::vec2>& ellipse_po
         std::vector<glm::vec2> outer_ellipse_points_fade;
         std::vector<glm::vec2> inner_ellipse_points;
         std::vector<glm::vec2> inner_ellipse_points_fade;
-        createCircleOrEllipseStrokePointsAA(ellipse_points, stroke_data, render_settings.d_scaleFactor, outer_ellipse_points,
+        createCircleOrEllipseStrokePointsAA(ellipse_points, stroke_data, scale_factors, outer_ellipse_points,
                                             outer_ellipse_points_fade, inner_ellipse_points, inner_ellipse_points_fade);
 
         //Create the geometry from the points
@@ -1377,19 +1414,18 @@ void SVGTesselator::createFill(const std::vector<glm::vec2>& points,
     //Create the rectangle fill vertex
     ColouredVertex fill_vertex(glm::vec3(), getFillColour(paint_style));
 
-    //Fixed triangle fan point
-    const glm::vec2& point1 = points[0];
-
     //Switches the stencil mode on
     geometry_buffer.setStencilRenderingActive(paint_style.d_fillRule);
 
-    const size_t maximum_index = points.size() - 1;
-    for(size_t i = 1; i < maximum_index; ++i)
-        addTriangleGeometry(point1, points[i], points[i + 1], geometry_buffer, fill_vertex);
+    addTriangleFanGeometry(points, geometry_buffer, fill_vertex);
+    //Set the vertex count to the quad's vertex count
+    geometry_buffer.setStencilPostRenderingVertexCount(6);
 
+    //Calculate the axis-aligned bounding box for the vertices that we will use to create a minimally sized quad
     glm::vec2 min, max;
     calculateMinMax(points, min, max);
 
+    //Add the quad
     addFillQuad(min, glm::vec2(min.x, max.y), glm::vec2(max.x, min.y), max,
                 geometry_buffer, fill_vertex);
 }
@@ -1483,13 +1519,14 @@ void SVGTesselator::createCircleOrEllipseStrokePointsAA(const std::vector<glm::v
         glm::vec2 direction = glm::normalize(points[index1] - points[index2]);
         direction = glm::vec2(direction.y, -direction.x);
 
-        float length_scale = calculateLengthScale(glm::vec2(direction.y, -direction.y), scale_factors);
-        direction *= length_scale;
+        float length_scale = calculateLengthScale(direction, scale_factors);
+        glm::vec2 scaled_dir_vec = direction * length_scale;
+        glm::vec2 stroke_offset_vec = direction * stroke_data.d_strokeHalfWidth;
 
-        outer_points.push_back( points[i] + direction * (stroke_data.d_strokeHalfWidth + stroke_data.d_antiAliasingOffsets.x));
-        outer_points_fade.push_back( points[i] + direction * (stroke_data.d_strokeHalfWidth + stroke_data.d_antiAliasingOffsets.y));
-        inner_points.push_back( points[i] - direction *(stroke_data.d_strokeHalfWidth + stroke_data.d_antiAliasingOffsets.x));
-        inner_points_fade.push_back( points[i] - direction *(stroke_data.d_strokeHalfWidth + stroke_data.d_antiAliasingOffsets.y));
+        outer_points.push_back( points[i] + stroke_offset_vec + scaled_dir_vec * stroke_data.d_antiAliasingOffsets.x);
+        outer_points_fade.push_back( points[i] + stroke_offset_vec + scaled_dir_vec * stroke_data.d_antiAliasingOffsets.y);
+        inner_points.push_back( points[i] - stroke_offset_vec - scaled_dir_vec * stroke_data.d_antiAliasingOffsets.x);
+        inner_points_fade.push_back( points[i] - stroke_offset_vec - scaled_dir_vec * stroke_data.d_antiAliasingOffsets.y);
     }
 }
 
@@ -1821,12 +1858,42 @@ void SVGTesselator::createCircleOrEllipseFillPointsAA(const std::vector<glm::vec
         glm::vec2 direction = glm::normalize(points[index1] - points[index2]);
         direction = glm::vec2(direction.y, -direction.x);
 
-        float length_scale = calculateLengthScale(glm::vec2(direction.y, -direction.y), scale_factors);
+        float length_scale = calculateLengthScale(direction, scale_factors);
         direction *= length_scale;
 
         modified_points.push_back( points[i] + direction * anti_aliasing_offsets.x );
         fade_points.push_back( points[i] + direction * anti_aliasing_offsets.y );
     }
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::addTriangleFanGeometry(const std::vector<glm::vec2> &points,
+                                           GeometryBuffer& geometry_buffer,
+                                           ColouredVertex& coloured_vertex)
+{
+    //Fixed triangle fan point
+    const glm::vec2& point1 = points[0];
+
+    const size_t maximum_index = points.size() - 1;
+    for(size_t i = 1; i < maximum_index; ++i)
+        addTriangleGeometry(point1, points[i], points[i + 1], geometry_buffer, coloured_vertex);
+}
+
+//----------------------------------------------------------------------------//
+void SVGTesselator::setupGeometryBufferSettings(CEGUI::GeometryBuffer* geometry_buffer,
+                                                const SVGImage::SVGImageRenderSettings &render_settings,
+                                                const glm::mat4& cegui_transformation_matrix)
+{
+    if(render_settings.d_clipArea)
+    {
+        geometry_buffer->setClippingActive(true);
+        geometry_buffer->setClippingRegion(*render_settings.d_clipArea);
+    }
+    else
+        geometry_buffer->setClippingActive(false);
+
+    geometry_buffer->setScale(CEGUI::Vector2f(render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y));
+    geometry_buffer->setCustomTransform(cegui_transformation_matrix);
 }
 
 //----------------------------------------------------------------------------//
