@@ -319,7 +319,7 @@ private:
                                                    const glm::vec2& next_dir_to_inside,
                                                    const bool polygon_is_clockwise);
 
-    //! Returns the factor by which the length of the given unit factor would be increased in case it was scaled by the given factors in x and y directions.
+    //! Returns the inverse of the factor by which the length of the given unit factor would be increased, when it gets scaled by the given scale factors along the x- and y-axis.
     static float calculateLengthScale(const glm::vec2 &direction, const glm::vec2& scale_factors);
 
     //! Stroke draw helper function that adds geometry to connect linejoins and linecaps with each other. Creates a connection consisting of 1 quad.
@@ -380,9 +380,17 @@ private:
                                    const glm::vec2& point3);
 
     //! Helper function that creates and sets the parameters for a coloured geometry buffer
-    static GeometryBuffer& setupGeometryBufferColoured(std::vector<GeometryBuffer*>& geometry_buffers,
-                                                       const SVGImage::SVGImageRenderSettings& render_settings,
-                                                       const glm::mat3x3& svg_transformation);
+    static void setupGeometryBuffers(GeometryBuffer*& fill_geometry_buffer,
+                                     GeometryBuffer*& stroke_geometry_buffer,
+                                     std::vector<GeometryBuffer*>& geometry_buffers,
+                                     const SVGImage::SVGImageRenderSettings& render_settings,
+                                     const glm::mat3x3& svg_transformation,
+                                     const bool is_fill_needing_stencil);
+
+    //! Helper function for setting an SVG GeometryBuffer's render settings and transformation matrix
+    static void setupGeometryBufferSettings(CEGUI::GeometryBuffer* geometry_buffer,
+                                            const SVGImage::SVGImageRenderSettings &render_settings,
+                                            const glm::mat4& cegui_transformation_matrix);
 
     //! Turns a matrix as defined by SVG into a matrix that can be used internally by the CEGUI Renderers
     static glm::mat4 createRenderableMatrixFromSVGMatrix(glm::mat3 svg_matrix);
@@ -398,7 +406,8 @@ private:
                                  float max_scale,
                                  const SVGPaintStyle& paint_style,
                                  GeometryBuffer& geometry_buffer,
-                                 const SVGImage::SVGImageRenderSettings& render_settings);
+                                 const SVGImage::SVGImageRenderSettings& render_settings,
+                                 const glm::vec2& scale_factors);
 
     //! Calculate the tesselation parameters necessary to calculate the circle points
     static void calculateCircleTesselationParameters(const float radius,
@@ -419,7 +428,8 @@ private:
                                    float max_scale,
                                    const SVGPaintStyle& paint_style,
                                    GeometryBuffer& geometry_buffer,
-                                   const SVGImage::SVGImageRenderSettings& render_settings);
+                                   const SVGImage::SVGImageRenderSettings& render_settings,
+                                   const glm::vec2& scale_factors);
 
     //! Helper function for creating a triangle strip with filling
     static void createTriangleStripFillGeometry(const std::vector<glm::vec2>& points,
@@ -454,7 +464,8 @@ private:
                                   const float max_scale,
                                   const SVGPaintStyle& paint_style,
                                   GeometryBuffer& geometry_buffer,
-                                  const SVGImage::SVGImageRenderSettings& render_settings);
+                                  const SVGImage::SVGImageRenderSettings& render_settings,
+                                  const glm::vec2& scale_factors);
 
     //! Create the circle or ellipse's anti-aliased fill points
     static void createCircleOrEllipseFillPointsAA(const std::vector<glm::vec2> &points,
@@ -467,7 +478,8 @@ private:
                                     const float max_scale,
                                     const SVGPaintStyle& paint_style,
                                     GeometryBuffer& geometry_buffer,
-                                    const SVGImage::SVGImageRenderSettings& render_settings);
+                                    const SVGImage::SVGImageRenderSettings& render_settings,
+                                    const glm::vec2& scale_factors);
 
     //! Create circle or ellipse stroke points
     static void createCircleOrEllipseStrokePoints(const std::vector<glm::vec2>& points,
@@ -576,6 +588,11 @@ private:
                               const glm::vec2& point4,
                               GeometryBuffer& geometry_buffer,
                               ColouredVertex& stroke_vertex);
+
+    //! Helper function to append a triangle fan, which is based on a list of points, to the Geometrybuffer
+    static void addTriangleFanGeometry(const std::vector<glm::vec2> &points, 
+                                       GeometryBuffer& geometry_buffer,
+                                       ColouredVertex& coloured_vertex);
 };
 
 }
