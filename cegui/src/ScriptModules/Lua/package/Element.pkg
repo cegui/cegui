@@ -98,8 +98,8 @@ class Element
 
     tolua_throws|CEGUI::InvalidRequestException,error| void addChild(Element* element);
     void removeChild(Element* element);
-    Element* getChildElementAtIdx(size_t idx) const;
-    size_t getChildCount() const;
+    Element* getChildElementAtIdx(unsigned int idx) const;
+    unsigned int getChildCount() const;
     bool isChild(const Element* element) const;
     bool isAncestor(const Element* element) const;
     
