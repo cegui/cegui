@@ -141,7 +141,7 @@ void OpenGLGeometryBufferBase::reset()
 //----------------------------------------------------------------------------//
 uint OpenGLGeometryBufferBase::getVertexCount() const
 {
-    return d_vertexData.size();
+    return d_vertexCount;
 }
 
 //----------------------------------------------------------------------------//
