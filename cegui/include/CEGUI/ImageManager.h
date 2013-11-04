@@ -187,8 +187,11 @@ public:
     const String& getSchemaName() const;
     const String& getDefaultResourceGroup() const;
 
+    //! One entry in the image container.
+    typedef std::pair<Image*, ImageFactory*> ImagePair;
+
     //! container type used to hold the images.
-    typedef std::map<String, std::pair<Image*, ImageFactory*>,
+    typedef std::map<String, ImagePair,
                      StringFastLessCompare
                      CEGUI_MAP_ALLOC(String, Image*)> ImageMap;
 

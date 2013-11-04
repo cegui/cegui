@@ -232,3 +232,32 @@ $[
 CEGUI.FontIterator.iterator = CEGUI.iterator_impl;
 
 $]
+
+/************************************************************************
+    ImageIterator
+*************************************************************************/
+
+class ImageIterator
+{
+    string getCurrentKey @ key() const;
+    ImagePair getCurrentValue @ value() const;
+
+    bool isAtEnd() const;
+    bool isAtStart() const;
+
+    ImageIterator& __operator_increment @ next();
+    ImageIterator& __operator_decrement @ previous();
+    bool operator== (const ImageIterator& rhs) const;
+
+    void toStart();
+    void toEnd();
+
+    ImageIterator(const ImageIterator& org);
+};
+
+// lua iterator
+$[
+
+CEGUI.ImageIterator.iterator = CEGUI.iterator_impl;
+
+$]
