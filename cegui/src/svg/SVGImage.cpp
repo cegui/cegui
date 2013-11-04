@@ -104,7 +104,7 @@ SVGData* SVGImage::getSVGData()
 }
 
 //----------------------------------------------------------------------------//
-void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
+void SVGImage::render(std::vector<GeometryBuffer*>& image_geometry_buffers,
                       const ImageRenderSettings& render_settings) const
 {
     Rectf dest(render_settings.d_destArea);
@@ -136,7 +136,7 @@ void SVGImage::render(std::vector<GeometryBuffer*>& geometry_buffers,
     const std::vector<SVGBasicShape*>& shapes = d_svgData->getShapes();
     const unsigned int shape_count = shapes.size();
     for (unsigned int i = 0; i < shape_count; ++i)
-        shapes[i]->render(geometry_buffers, svg_render_settings);
+        shapes[i]->render(image_geometry_buffers, svg_render_settings);
 }
 
 //----------------------------------------------------------------------------//
