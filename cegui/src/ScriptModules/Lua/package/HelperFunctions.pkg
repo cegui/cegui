@@ -68,9 +68,12 @@ function CEGUI.toButtonBase(w)
     return tolua.cast(w,"CEGUI::ButtonBase")
 end
 
-function CEGUI.toCheckbox(w)
-    return tolua.cast(w,"CEGUI::Checkbox")
+function CEGUI.toToggleButton(w)
+    return tolua.cast(w,"CEGUI::ToggleButton")
 end
+
+--Deprecated, but kept for backwards compatibility; remove at suitable place in time 
+CEGUI.toCheckbox = CEGUI.toToggleButton
 
 function CEGUI.toCombobox(w)
     return tolua.cast(w,"CEGUI::Combobox")
@@ -225,7 +228,8 @@ function CEGUI.toVerticalLayoutContainer(w)
 end
 
 CEGUI.Window.toButtonBase = CEGUI.toButtonBase
-CEGUI.Window.toCheckbox = CEGUI.toCheckbox
+--Deprecated, but kept for backwards compatibility; remove at suitable place in time
+CEGUI.Window.toCheckbox = CEGUI.toToggleButton
 CEGUI.Window.toCombobox = CEGUI.toCombobox
 CEGUI.Window.toComboDropList = CEGUI.toComboDropList
 CEGUI.Window.toDragContainer = CEGUI.toDragContainer
@@ -261,6 +265,7 @@ CEGUI.Window.toTabButton = CEGUI.toTabButton
 CEGUI.Window.toTabControl = CEGUI.toTabControl
 CEGUI.Window.toTabPane = CEGUI.toTabPane
 CEGUI.Window.toThumb = CEGUI.toThumb
+CEGUI.Window.toToggleButton = CEGUI.toToggleButton
 CEGUI.Window.toTooltip = CEGUI.toTooltip
 CEGUI.Window.toTree = CEGUI.toTree
 CEGUI.Window.toVerticalLayoutContainer = CEGUI.toVerticalLayoutContainer
