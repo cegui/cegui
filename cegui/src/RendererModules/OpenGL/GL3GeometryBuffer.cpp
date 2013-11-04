@@ -259,12 +259,13 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glClear(GL_STENCIL_BUFFER_BIT);
         glStencilFunc(GL_ALWAYS, 0x00, 0xFF);
         glStencilOp(GL_INVERT, GL_KEEP, GL_INVERT);
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
+        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - d_postStencilVertexCount);
 
+        unsigned int postStencilStart = d_vertexCount - d_postStencilVertexCount;
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glStencilMask(0x00);
         glStencilFunc(GL_EQUAL, 0xFF, 0xFF);
-        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, 6);
+        glDrawArrays(GL_TRIANGLES, postStencilStart, d_postStencilVertexCount);
     }
     else if(d_polygonFillRule == PFR_NON_ZERO)
     {
@@ -274,6 +275,10 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         //A resulting 0 value means we are outside.
         glColorMask(GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE);
 
+        unsigned int solid_fill_count = d_vertexCount - d_postStencilVertexCount;
+        unsigned int vertex_pos = 0;
+
+        //Performing the back/front faces stencil incr and decr stencil op
         d_glStateChanger->enable(GL_CULL_FACE);
         d_glStateChanger->enable(GL_STENCIL_TEST);
         glStencilMask(0xFF);
@@ -281,17 +286,26 @@ void OpenGL3GeometryBuffer::drawDependingOnFillRule() const
         glStencilFunc(GL_ALWAYS, 0x00, 0xFF);
 
         glCullFace(GL_FRONT);
-        glStencilOp(GL_INCR_WRAP, GL_KEEP, GL_INCR_WRAP);
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_INCR_WRAP);
+        glDrawArrays(GL_TRIANGLES, vertex_pos, solid_fill_count);
 
         glCullFace(GL_BACK);
-        glStencilOp(GL_DECR_WRAP, GL_KEEP, GL_DECR_WRAP);
-        glDrawArrays(GL_TRIANGLES, 0, d_vertexCount - 6);
+        glStencilOp(GL_KEEP, GL_KEEP, GL_DECR_WRAP);
+        glDrawArrays(GL_TRIANGLES, vertex_pos, solid_fill_count);
+
+        vertex_pos += solid_fill_count;
+
+        //Only needing culling for the back/front face stencil calculations
+        d_glStateChanger->disable(GL_CULL_FACE);
 
         glColorMask(GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE);
         glStencilMask(0x00);
-        glStencilFunc(GL_NOTEQUAL, 0x00, 0xFF);
-        glDrawArrays(GL_TRIANGLES, d_vertexCount - 6, 6);
+
+        if(d_postStencilVertexCount != 0)
+        {
+            glStencilFunc(GL_NOTEQUAL, 0x00, 0xFF);
+            glDrawArrays(GL_TRIANGLES, d_vertexCount - d_postStencilVertexCount, d_postStencilVertexCount);
+        }
     }
 }
 
