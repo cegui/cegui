@@ -37,6 +37,7 @@ GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
     : d_blendMode(BM_NORMAL)
     , d_renderMaterial(renderMaterial)
     , d_polygonFillRule(PFR_NONE)
+    , d_postStencilVertexCount(0)
 {
 }
 
@@ -226,6 +227,12 @@ void GeometryBuffer::setRenderMaterial(RefCounted<RenderMaterial> render_materia
 void GeometryBuffer::setStencilRenderingActive(PolygonFillRule fill_rule)
 {
     d_polygonFillRule = fill_rule;
+}
+
+//---------------------------------------------------------------------------//
+void GeometryBuffer::setStencilPostRenderingVertexCount(unsigned int vertex_count)
+{
+    d_postStencilVertexCount = vertex_count;
 }
 
 //---------------------------------------------------------------------------//

@@ -184,6 +184,15 @@ public:
 
     /*!
     \brief
+        Sets the number of vertices that should be rendered after the stencil buffer was filled.
+
+    \param vertex_count
+        The number of vertices that should be rendered after the stencil buffer was filled.
+    */
+    void setStencilPostRenderingVertexCount(unsigned int vertex_count);
+
+    /*!
+    \brief
         Append the geometry data to the existing data
 
     \param vertex_data
@@ -451,6 +460,9 @@ protected:
 
     //! The fill rule that should be used when rendering the geometry.
     PolygonFillRule d_polygonFillRule;
+
+    //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
+    unsigned int d_postStencilVertexCount;
 };
 
 }
