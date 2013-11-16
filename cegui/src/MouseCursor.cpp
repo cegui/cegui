@@ -62,15 +62,12 @@ MouseCursor::MouseCursor(void) :
     d_defaultCursorImage(0),
     d_position(0.0f, 0.0f),
     d_visible(true),
-    d_geometry(&System::getSingleton().getRenderer()->createGeometryBuffer()),
     d_customSize(0.0f, 0.0f),
     d_customOffset(0.0f, 0.0f),
     d_cachedGeometryValid(false)
 {
     const Rectf screenArea(Vector2f(0, 0),
-                            System::getSingleton().getRenderer()->getDisplaySize());
-    d_geometry->setClippingRegion(screenArea);
-
+                           System::getSingleton().getRenderer()->getDisplaySize());
 	// default constraint is to whole screen
 	setConstraintArea(&screenArea);
 
@@ -88,7 +85,7 @@ MouseCursor::MouseCursor(void) :
 *************************************************************************/
 MouseCursor::~MouseCursor(void)
 {
-    System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometry);
+    destroyGeometryBuffers();
 }
 
 
@@ -146,7 +143,7 @@ const Image* MouseCursor::getDefaultImage() const
 /*************************************************************************
 	Draw the mouse cursor
 *************************************************************************/
-void MouseCursor::draw(void) const
+void MouseCursor::draw()
 {
     if (!d_visible || !d_cursorImage)
         return;
@@ -154,7 +151,9 @@ void MouseCursor::draw(void) const
     if (!d_cachedGeometryValid)
         cacheGeometry();
 
-    d_geometry->draw();
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+        d_geometryBuffers[i]->draw();
 }
 
 
@@ -166,7 +165,7 @@ void MouseCursor::setPosition(const Vector2f& position)
     d_position = position;
 	constrainPosition();
 
-    d_geometry->setTranslation(Vector3f(d_position.d_x, d_position.d_y, 0));
+    updateGeometryBuffersTranslation();
 }
 
 
@@ -179,7 +178,7 @@ void MouseCursor::offsetPosition(const Vector2f& offset)
 	d_position.d_y += offset.d_y;
 	constrainPosition();
 
-    d_geometry->setTranslation(Vector3f(d_position.d_x, d_position.d_y, 0));
+    updateGeometryBuffersTranslation();
 }
 
 
@@ -287,8 +286,7 @@ Vector2f MouseCursor::getDisplayIndependantPosition(void) const
 //----------------------------------------------------------------------------//
 void MouseCursor::notifyDisplaySizeChanged(const Sizef& new_size)
 {
-    const Rectf screenArea(Vector2f(0, 0), new_size);
-    d_geometry->setClippingRegion(screenArea);
+    updateGeometryBuffersClipping(Rectf(Vector2f(0.0f, 0.0f), new_size));
 
     // invalidate to regenerate geometry at (maybe) new size
     d_cachedGeometryValid = false;
@@ -308,10 +306,10 @@ const Sizef& MouseCursor::getExplicitRenderSize() const
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::cacheGeometry() const
+void MouseCursor::cacheGeometry()
 {
     d_cachedGeometryValid = true;
-    d_geometry->reset();
+    destroyGeometryBuffers();
 
     // if no image, nothing more to do.
     if (!d_cursorImage)
@@ -320,12 +318,17 @@ void MouseCursor::cacheGeometry() const
     if (d_customSize.d_width != 0.0f || d_customSize.d_height != 0.0f)
     {
         calculateCustomOffset();
-        d_cursorImage->render(*d_geometry, d_customOffset, d_customSize);
+        d_cursorImage->render(d_geometryBuffers, d_customOffset, d_customSize);
     }
     else
     {
-        d_cursorImage->render(*d_geometry, Vector2f(0, 0));
+        d_cursorImage->render(d_geometryBuffers, Vector2f(0, 0));
     }
+
+    const Rectf clipping_area(Vector2f(0, 0),
+        System::getSingleton().getRenderer()->getDisplaySize());
+    updateGeometryBuffersClipping(clipping_area);
+    updateGeometryBuffersTranslation();
 }
 
 //----------------------------------------------------------------------------//
@@ -363,6 +366,38 @@ void MouseCursor::onImageChanged(MouseCursorEventArgs& e)
 void MouseCursor::onDefaultImageChanged(MouseCursorEventArgs& e)
 {
     fireEvent(EventDefaultImageChanged, e, EventNamespace);
+}
+
+//----------------------------------------------------------------------------//
+void MouseCursor::destroyGeometryBuffers()
+{
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+        System::getSingleton().getRenderer()->destroyGeometryBuffer(*d_geometryBuffers.at(i));
+
+    d_geometryBuffers.clear();
+}
+
+//----------------------------------------------------------------------------//
+void MouseCursor::updateGeometryBuffersTranslation()
+{
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+        currentBuffer->setTranslation(Vector3f(d_position.d_x, d_position.d_y, 0));
+    }
+}
+
+//----------------------------------------------------------------------------//
+void MouseCursor::updateGeometryBuffersClipping(const Rectf& clipping_area)
+{
+    const size_t geom_buffer_count = d_geometryBuffers.size();
+    for (size_t i = 0; i < geom_buffer_count; ++i)
+    {
+        CEGUI::GeometryBuffer*& currentBuffer = d_geometryBuffers[i];
+        currentBuffer->setClippingRegion(clipping_area);
+    }
 }
 
 //----------------------------------------------------------------------------//

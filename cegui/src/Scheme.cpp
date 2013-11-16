@@ -187,7 +187,7 @@ void Scheme::loadImageFileImagesets()
 
         // see if image is present, and create it if not.
         if (!imgr.isDefined((*pos).name))
-            imgr.addFromImageFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
+            imgr.addBitmapImageFromFile((*pos).name, (*pos).filename, (*pos).resourceGroup);
     }
 }
 

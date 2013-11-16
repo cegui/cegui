@@ -34,10 +34,13 @@
 #include "CEGUI/String.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/Vector.h"
+#include "CEGUI/RefCounted.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
+    class RenderMaterial;
+
+
 //----------------------------------------------------------------------------//
 /*!
 \brief
@@ -69,6 +72,23 @@ enum BlendMode
     BM_RTT_PREMULTIPLIED
 };
 
+
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
+    Enum for the default shader types that the Renderers have to offer
+*/
+enum DefaultShaderType
+{
+    //! A shader for solid, coloured geometry
+    DS_SOLID,
+    //! A shader for textured geometry, used in most CEGUI widgets
+    DS_TEXTURED,
+    //! Count of types
+    DS_COUNT
+};
+
 //----------------------------------------------------------------------------//
 
 /*!
@@ -96,14 +116,49 @@ public:
 
     /*!
     \brief
-        Create a new GeometryBuffer and return a reference to it.  You should
-        remove the GeometryBuffer from any RenderQueues and call
-        destroyGeometryBuffer when you want to destroy the GeometryBuffer.
+        Create a GeometryBuffer for textured geometry and return a reference to it.
+        You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
+        when you want to destroy the GeometryBuffer.
 
     \return
         GeometryBuffer object.
     */
-    virtual GeometryBuffer& createGeometryBuffer() = 0;
+    virtual GeometryBuffer& createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial) = 0;
+
+    /*!
+    \brief
+        Create a GeometryBuffer for textured geometry with its default RenderMaterial and return a
+        reference to it.
+        You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
+        when you want to destroy the GeometryBuffer.
+
+    \return
+        GeometryBuffer object.
+    */
+    GeometryBuffer& createGeometryBufferTextured();
+
+    /*!
+    \brief
+        Create a GeometryBuffer for coloured geometry and return a reference to it.
+        You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
+        when you want to destroy the GeometryBuffer.
+
+    \return
+        GeometryBuffer object.
+    */
+    virtual GeometryBuffer& createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial) = 0;
+
+    /*!
+    \brief
+        Create a GeometryBuffer for coloured geometry with its default RenderMaterial and return a
+        reference to it.
+        You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
+        when you want to destroy the GeometryBuffer.
+
+    \return
+        GeometryBuffer object.
+    */
+    GeometryBuffer& createGeometryBufferColoured();
 
     /*!
     \brief
@@ -345,11 +400,23 @@ public:
     */
     virtual const String& getIdentifierString() const = 0;
 
+    /*!
+    \brief
+        Creates a copy of the specified default shader type.
+
+    \param shaderType
+        Specifies the type of CEGUI shader that the RenderMaterial should be based on
+
+    \return
+        A copy of the specified default shader type.
+    */
+    virtual RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const = 0;
+
     //! Destructor.
     virtual ~Renderer() {}
 };
 
-} // End of  CEGUI namespace section
+}
 
 
-#endif // end of guard _CEGUIRenderer_h_
+#endif

@@ -266,23 +266,23 @@ void FalagardEditbox::renderTextNoBidi(const WidgetLookFeel& wlf,
     colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffer(), sect,
-                       text_part_rect.getPosition(), &text_area, colours);
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
+                       &text_area, true, colours);
 
     // draw highlight text
     sect = text.substr(w->getSelectionStartIndex(), w->getSelectionLength());
     setColourRectToSelectedTextColour(colours);
     colours.modulateAlpha(alpha_comp);
     text_part_rect.d_min.d_x =
-        font->drawText(w->getGeometryBuffer(), sect,
-                       text_part_rect.getPosition(), &text_area, colours);
+        font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
+                       &text_area, true, colours);
 
     // draw post-highlight text
     sect = text.substr(w->getSelectionEndIndex());
     colours = unselectedColours;
     colours.modulateAlpha(alpha_comp);
-    font->drawText(w->getGeometryBuffer(), sect, text_part_rect.getPosition(),
-                   &text_area, colours);
+    font->drawText(w->getGeometryBuffers(), sect, text_part_rect.getPosition(),
+                   &text_area, true, colours);
 }
 
 //----------------------------------------------------------------------------//
@@ -316,7 +316,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
         colours = unselectedColour;
         colours.modulateAlpha(alpha_comp);
         text_part_rect.d_min.d_x =
-            font->drawText(w->getGeometryBuffer(), text,
+            font->drawText(w->getGeometryBuffers(), text,
                            text_part_rect.getPosition(), &text_area, colours);
     }
     else
@@ -369,7 +369,7 @@ void FalagardEditbox::renderTextBidi(const WidgetLookFeel& wlf,
                 colours = unselectedColour;
                 colours.modulateAlpha(alpha_comp);
             }
-            font->drawText(w->getGeometryBuffer(), currChar,
+            font->drawText(w->getGeometryBuffers(), currChar,
                            text_part_rect.getPosition(), &text_area, colours);
 
             // adjust rect for next section

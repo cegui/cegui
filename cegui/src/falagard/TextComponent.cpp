@@ -299,7 +299,7 @@ namespace CEGUI
         initColoursRect(srcWindow, modColours, finalColours);
 
         // add geometry for text to the target window.
-        d_formattedRenderedString->draw(&srcWindow, srcWindow.getGeometryBuffer(),
+        d_formattedRenderedString->draw(&srcWindow, srcWindow.getGeometryBuffers(),
                                         destRect.getPosition(),
                                         &finalColours, clipper);
     }
