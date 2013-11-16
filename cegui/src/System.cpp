@@ -57,6 +57,7 @@
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
+#include "CEGUI/svg/SVGDataManager.h"
 #ifdef CEGUI_HAS_PCRE_REGEX
 #   include "CEGUI/PCRERegexMatcher.h"
 #endif
@@ -691,6 +692,7 @@ void System::createSingletons()
     CEGUI_NEW_AO WidgetLookManager();
     CEGUI_NEW_AO WindowRendererManager();
     CEGUI_NEW_AO RenderEffectManager();
+    CEGUI_NEW_AO SVGDataManager();
 }
 
 void System::destroySingletons()
@@ -705,6 +707,7 @@ void System::destroySingletons()
     CEGUI_DELETE_AO FontManager::getSingletonPtr();
     CEGUI_DELETE_AO ImageManager::getSingletonPtr();
     CEGUI_DELETE_AO GlobalEventSet::getSingletonPtr();
+    CEGUI_DELETE_AO SVGDataManager::getSingletonPtr();
 }
 
 //----------------------------------------------------------------------------//

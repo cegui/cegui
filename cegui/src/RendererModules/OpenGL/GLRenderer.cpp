@@ -28,15 +28,15 @@
  ***************************************************************************/
 #include <GL/glew.h>
 
-#include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
-#include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/DynamicModule.h"
 #include "CEGUI/RendererModules/OpenGL/ViewportTarget.h"
 #include "CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h"
-
 #include "CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h"
+#include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
+#include "CEGUI/RendererModules/OpenGL/Texture.h"
+#include "CEGUI/RendererModules/OpenGL/GLShaderWrapper.h"
 
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -169,6 +169,7 @@ OpenGLRenderer::OpenGLRenderer(const TextureTargetType tt_type)
     initialiseRendererIDString();
     initialiseGLExtensions();
     initialiseTextureTargetFactory(tt_type);
+    initialiseShaderWrappers();
 
     // we _really_ need separate rgb/alpha blend modes, if this support is not
     // available, add a note to the renderer ID string so that this fact is
@@ -208,9 +209,9 @@ void OpenGLRenderer::initialiseRendererIDString()
 }
 
 //----------------------------------------------------------------------------//
-OpenGLGeometryBufferBase* OpenGLRenderer::createGeometryBuffer_impl()
+OpenGLGeometryBufferBase* OpenGLRenderer::createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    return CEGUI_NEW_AO OpenGLGeometryBuffer(*this);
+    return CEGUI_NEW_AO OpenGLGeometryBuffer(*this, renderMaterial);
 }
 
 //----------------------------------------------------------------------------//
@@ -432,6 +433,39 @@ void OpenGLRenderer::setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatr
     glMatrixMode(GL_PROJECTION);
     glLoadMatrixf(glm::value_ptr(d_viewProjectionMatrix->d_matrix));
 }
+
+
+//----------------------------------------------------------------------------//
+RefCounted<RenderMaterial> OpenGLRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
+{
+    if(shaderType == DS_TEXTURED)
+    {
+        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperTextured));
+
+        return render_material;
+    }
+    else if(shaderType == DS_SOLID)
+    {
+        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperSolid));
+
+        return render_material;
+    }
+    else
+    {
+        CEGUI_THROW(RendererException(
+            "A default shader of this type does not exist."));
+
+        return RefCounted<RenderMaterial>();
+    }
+}
+
+void OpenGLRenderer::initialiseShaderWrappers()
+{
+    d_shaderWrapperTextured = new OpenGLShaderWrapper();
+
+    d_shaderWrapperSolid = new OpenGLShaderWrapper();
+}
+
 
 //----------------------------------------------------------------------------//
 

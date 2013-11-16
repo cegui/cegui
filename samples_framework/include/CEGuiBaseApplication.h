@@ -28,6 +28,8 @@
 #ifndef _CEGuiBaseApplication_h_
 #define _CEGuiBaseApplication_h_
 
+#include <vector>
+
 // If this looks wanky, it's becase it is!  Behold that this is not as fullblown
 // as it could be though.
 #ifndef PATH_MAX
@@ -128,7 +130,11 @@ public:
 
     /*!
     \brief
-        Registers the overlay handler for rendering the FPS for a specified GUIContext
+        Registers the overlay handler for rendering the FPS for a specified GUIContext.
+        This will be used to render the overlay for the specific samples.
+
+    /param gui_context
+        The sample's GUIContext for which we will register the overlay rendering.
     */
     void registerSampleOverlayHandler(CEGUI::GUIContext* gui_context);
 
@@ -161,10 +167,12 @@ protected:
     void updateFPS(const float elapsed);
     //! function that updates the logo rotation as needed.
     void updateLogo(const float elapsed);
-    //! function that positions the logo in the correct place.
-    void positionLogo();
-    //! positions the FPS counter at the correct place.
-    void positionFPS();
+    //! function that positions the logo GeometryBuffer at the correct place.
+    void updateLogoGeometry();
+    //! function that positions the FPS GeometryBuffer at the correct place.
+    void updateFPSGeometry();
+    //! function that updates the rotation of the logo.
+    void updateLogoGeometryRotation();
     //! event handler function that draws the logo and FPS overlay elements.
     bool sampleBrowserOverlayHandler(const CEGUI::EventArgs& args);
     //! event handler function that draws the FPS overlay elements.
@@ -188,9 +196,9 @@ protected:
     //! ResourceProvider to use.  Set in subclass constructor, may be 0.
     CEGUI::ResourceProvider* d_resourceProvider;
     //! GeometryBuffer used for drawing the spinning CEGUI logo
-    CEGUI::GeometryBuffer* d_logoGeometry;
-    //! GeometryBuffer used for drawing the FPS value.
-    CEGUI::GeometryBuffer* d_FPSGeometry;
+    std::vector<CEGUI::GeometryBuffer*> d_logoGeometry;
+    //! GeometryBuffers used for drawing the FPS value.
+    std::vector<CEGUI::GeometryBuffer*> d_FPSGeometry;
     //! Fraction of second elapsed (used for counting frames per second).
     float d_FPSElapsed;
     //! Number of frames drawn so far.

@@ -138,7 +138,7 @@ namespace CEGUI
                     }
 
                     // draw this item
-                    item->draw(w->getGeometryBuffer(), itemRect, alpha, &itemClipper);
+                    item->draw(w->getGeometryBuffers(), itemRect, alpha, &itemClipper);
                 }
 
                 // update position for next column.
