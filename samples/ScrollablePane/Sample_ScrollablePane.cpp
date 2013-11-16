@@ -86,7 +86,7 @@ Custom implementation of InputAggregator
 enum SampleSemanticValue
 {
     // we start from the user-defined value
-    SpawnNewDialog = CEGUI::SemanticValue::SV_UserDefinedSemanticValue
+    SpawnNewDialog = CEGUI::SV_UserDefinedSemanticValue
 };
 
 class SampleInputAggregator : public CEGUI::InputAggregator
