@@ -332,7 +332,7 @@ Handle click on a mine button (any pointer source)
 bool MinesweeperSample::handleMinePointerPressHold(const CEGUI::EventArgs& event)
 {
     const CEGUI::PointerEventArgs& me = static_cast<const CEGUI::PointerEventArgs&>(event);
-    if (me.source == CEGUI::PS_Left)
+    if (me.source == CEGUI::PS_Right)
     {
         CEGUI::Window* button = me.window;
         if (!button->isDisabled())
