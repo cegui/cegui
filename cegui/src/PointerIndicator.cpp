@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIMouseCursor.cpp
+    filename:   PointerIndicator.cpp
 	created:	21/2/2004
 	author:		Paul D Turner
 
-	purpose:	Implements MouseCursor class
+    purpose:    Implements the PointerIndicator class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -27,7 +27,7 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/System.h"
@@ -43,23 +43,23 @@ namespace CEGUI
 /*************************************************************************
 	Static Data Definitions
 *************************************************************************/
-bool MouseCursor::s_initialPositionSet = false;
-Vector2f MouseCursor::s_initialPosition(0.0f, 0.0f);
+bool PointerIndicator::s_initialPositionSet = false;
+Vector2f PointerIndicator::s_initialPosition(0.0f, 0.0f);
 
 /*************************************************************************
 	Event name constants
 *************************************************************************/
-const String MouseCursor::EventNamespace("MouseCursor");
-const String MouseCursor::EventImageChanged("ImageChanged");
-const String MouseCursor::EventDefaultImageChanged("DefaultImageChanged");
+const String PointerIndicator::EventNamespace("PointerIndicator");
+const String PointerIndicator::EventImageChanged("ImageChanged");
+const String PointerIndicator::EventDefaultImageChanged("DefaultImageChanged");
 
 
 /*************************************************************************
 	constructor
 *************************************************************************/
-MouseCursor::MouseCursor(void) :
-    d_cursorImage(0),
-    d_defaultCursorImage(0),
+PointerIndicator::PointerIndicator(void) :
+    d_indicatorImage(0),
+    d_defaultIndicatorImage(0),
     d_position(0.0f, 0.0f),
     d_visible(true),
     d_customSize(0.0f, 0.0f),
@@ -74,7 +74,7 @@ MouseCursor::MouseCursor(void) :
     if (s_initialPositionSet)
         setPosition(s_initialPosition);
     else
-    	// mouse defaults to middle of the constrained area
+        // pointer defaults to middle of the constrained area
         setPosition(Vector2f(screenArea.getWidth() / 2,
                               screenArea.getHeight() / 2));
 }
@@ -83,69 +83,69 @@ MouseCursor::MouseCursor(void) :
 /*************************************************************************
 	Destructor
 *************************************************************************/
-MouseCursor::~MouseCursor(void)
+PointerIndicator::~PointerIndicator(void)
 {
     destroyGeometryBuffers();
 }
 
 
 /*************************************************************************
-	Set the current mouse cursor image
+    Set the current pointer indicator image
 *************************************************************************/
-void MouseCursor::setImage(const Image* image)
+void PointerIndicator::setImage(const Image* image)
 {
-    if (image == d_cursorImage)
+    if (image == d_indicatorImage)
         return;
 
-	d_cursorImage = image;
+	d_indicatorImage = image;
     d_cachedGeometryValid = false;
 
-	MouseCursorEventArgs args(this);
-	args.image = image;
+	PointerIndicatorEventArgs args(this);
+	args.d_image = image;
 	onImageChanged(args);
 }
 
 
 /*************************************************************************
-	Set the current mouse cursor image
+	Set the current pointer indicator image
 *************************************************************************/
-void MouseCursor::setImage(const String& name)
+void PointerIndicator::setImage(const String& name)
 {
 	setImage(&ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setDefaultImage(const Image* image)
+void PointerIndicator::setDefaultImage(const Image* image)
 {
-    if (image == d_defaultCursorImage)
+    if (image == d_defaultIndicatorImage)
         return;
 
-	d_defaultCursorImage = image;
-    d_cachedGeometryValid = d_cursorImage != 0;
+	d_defaultIndicatorImage = image;
+    d_cachedGeometryValid = d_indicatorImage != 0;
 
-	MouseCursorEventArgs args(this);
-	args.image = image;
+	PointerIndicatorEventArgs args(this);
+	args.d_image = image;
 	onDefaultImageChanged(args);
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setDefaultImage(const String& name)
+void PointerIndicator::setDefaultImage(const String& name)
 {
 	setDefaultImage(&ImageManager::getSingleton().get(name));
 }
 
 //----------------------------------------------------------------------------//
-const Image* MouseCursor::getDefaultImage() const
+const Image* PointerIndicator::getDefaultImage() const
 {
-    return d_defaultCursorImage;
+    return d_defaultIndicatorImage;
 }
 
 /*************************************************************************
-	Draw the mouse cursor
+	Draw the pointer indicator
 *************************************************************************/
-void MouseCursor::draw()
+void PointerIndicator::draw()
 {
-    if (!d_visible || !d_cursorImage)
+    if (!d_visible || !d_indicatorImage)
         return;
 
     if (!d_cachedGeometryValid)
@@ -158,9 +158,9 @@ void MouseCursor::draw()
 
 
 /*************************************************************************
-	Set the current mouse cursor position
+	Set the current pointer indicator position
 *************************************************************************/
-void MouseCursor::setPosition(const Vector2f& position)
+void PointerIndicator::setPosition(const Vector2f& position)
 {
     d_position = position;
 	constrainPosition();
@@ -170,9 +170,9 @@ void MouseCursor::setPosition(const Vector2f& position)
 
 
 /*************************************************************************
-	Offset the mouse cursor position by the deltas specified in 'offset'.
+	Offset the pointer indicator position by the deltas specified in 'offset'.
 *************************************************************************/
-void MouseCursor::offsetPosition(const Vector2f& offset)
+void PointerIndicator::offsetPosition(const Vector2f& offset)
 {
 	d_position.d_x += offset.d_x;
 	d_position.d_y += offset.d_y;
@@ -183,10 +183,10 @@ void MouseCursor::offsetPosition(const Vector2f& offset)
 
 
 /*************************************************************************
-	Checks the mouse cursor position is within the current 'constrain'
+	Checks the pointer indicator position is within the current 'constrain'
 	Rect and adjusts as required.
 *************************************************************************/
-void MouseCursor::constrainPosition(void)
+void PointerIndicator::constrainPosition(void)
 {
     Rectf absarea(getConstraintArea());
 
@@ -205,9 +205,9 @@ void MouseCursor::constrainPosition(void)
 
 
 /*************************************************************************
-	Set the area that the mouse cursor is constrained to.
+	Set the area that the pointer indicator is constrained to.
 *************************************************************************/
-void MouseCursor::setConstraintArea(const Rectf* area)
+void PointerIndicator::setConstraintArea(const Rectf* area)
 {
     const Rectf renderer_area(Vector2f(0, 0),
                                System::getSingleton().getRenderer()->getDisplaySize());
@@ -233,9 +233,9 @@ void MouseCursor::setConstraintArea(const Rectf* area)
 
 
 /*************************************************************************
-	Set the area that the mouse cursor is constrained to.
+	Set the area that the pointer indicator is constrained to.
 *************************************************************************/
-void MouseCursor::setUnifiedConstraintArea(const URect* area)
+void PointerIndicator::setUnifiedConstraintArea(const URect* area)
 {
     const Rectf renderer_area(Vector2f(0, 0),
                                System::getSingleton().getRenderer()->getDisplaySize());
@@ -256,26 +256,26 @@ void MouseCursor::setUnifiedConstraintArea(const URect* area)
 }
 
 /*************************************************************************
-	Set the area that the mouse cursor is constrained to.
+	Set the area that the pointer indicator is constrained to.
 *************************************************************************/
-Rectf MouseCursor::getConstraintArea(void) const
+Rectf PointerIndicator::getConstraintArea(void) const
 {
     return Rectf(CoordConverter::asAbsolute(d_constraints, System::getSingleton().getRenderer()->getDisplaySize()));
 }
 
 /*************************************************************************
-	Set the area that the mouse cursor is constrained to.
+	Set the area that the pointer indicator is constrained to.
 *************************************************************************/
-const URect& MouseCursor::getUnifiedConstraintArea(void) const
+const URect& PointerIndicator::getUnifiedConstraintArea(void) const
 {
     return d_constraints;
 }
 
 /*************************************************************************
-	Return the current mouse cursor position in display resolution
+	Return the current pointer indicator position in display resolution
 	independant values.
 *************************************************************************/
-Vector2f MouseCursor::getDisplayIndependantPosition(void) const
+Vector2f PointerIndicator::getDisplayIndependantPosition(void) const
 {
     Sizef dsz(System::getSingleton().getRenderer()->getDisplaySize());
 
@@ -284,7 +284,7 @@ Vector2f MouseCursor::getDisplayIndependantPosition(void) const
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::notifyDisplaySizeChanged(const Sizef& new_size)
+void PointerIndicator::notifyDisplaySizeChanged(const Sizef& new_size)
 {
     updateGeometryBuffersClipping(Rectf(Vector2f(0.0f, 0.0f), new_size));
 
@@ -293,36 +293,36 @@ void MouseCursor::notifyDisplaySizeChanged(const Sizef& new_size)
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setExplicitRenderSize(const Sizef& size)
+void PointerIndicator::setExplicitRenderSize(const Sizef& size)
 {
     d_customSize = size;
     d_cachedGeometryValid = false;
 }
 
 //----------------------------------------------------------------------------//
-const Sizef& MouseCursor::getExplicitRenderSize() const
+const Sizef& PointerIndicator::getExplicitRenderSize() const
 {
     return d_customSize;
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::cacheGeometry()
+void PointerIndicator::cacheGeometry()
 {
     d_cachedGeometryValid = true;
     destroyGeometryBuffers();
 
     // if no image, nothing more to do.
-    if (!d_cursorImage)
+    if (!d_indicatorImage)
         return;
 
     if (d_customSize.d_width != 0.0f || d_customSize.d_height != 0.0f)
     {
         calculateCustomOffset();
-        d_cursorImage->render(d_geometryBuffers, d_customOffset, d_customSize);
+        d_indicatorImage->render(d_geometryBuffers, d_customOffset, d_customSize);
     }
     else
     {
-        d_cursorImage->render(d_geometryBuffers, Vector2f(0, 0));
+        d_indicatorImage->render(d_geometryBuffers, Vector2f(0, 0));
     }
 
     const Rectf clipping_area(Vector2f(0, 0),
@@ -332,10 +332,10 @@ void MouseCursor::cacheGeometry()
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::calculateCustomOffset() const
+void PointerIndicator::calculateCustomOffset() const
 {
-    const Sizef sz(d_cursorImage->getRenderedSize());
-    const Vector2f offset(d_cursorImage->getRenderedOffset());
+    const Sizef sz(d_indicatorImage->getRenderedSize());
+    const Vector2f offset(d_indicatorImage->getRenderedOffset());
 
     d_customOffset.d_x =
         d_customSize.d_width / sz.d_width * offset.d_x - offset.d_x;
@@ -344,32 +344,32 @@ void MouseCursor::calculateCustomOffset() const
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::setInitialMousePosition(const Vector2f& position)
+void PointerIndicator::setInitialPointerPosition(const Vector2f& position)
 {
-    s_initialPosition = position; 
+    s_initialPosition = position;
     s_initialPositionSet = true;
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::invalidate()
+void PointerIndicator::invalidate()
 {
     d_cachedGeometryValid = false;
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::onImageChanged(MouseCursorEventArgs& e)
+void PointerIndicator::onImageChanged(PointerIndicatorEventArgs& e)
 {
     fireEvent(EventImageChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::onDefaultImageChanged(MouseCursorEventArgs& e)
+void PointerIndicator::onDefaultImageChanged(PointerIndicatorEventArgs& e)
 {
     fireEvent(EventDefaultImageChanged, e, EventNamespace);
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::destroyGeometryBuffers()
+void PointerIndicator::destroyGeometryBuffers()
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
@@ -379,7 +379,7 @@ void MouseCursor::destroyGeometryBuffers()
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::updateGeometryBuffersTranslation()
+void PointerIndicator::updateGeometryBuffersTranslation()
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)
@@ -390,7 +390,7 @@ void MouseCursor::updateGeometryBuffersTranslation()
 }
 
 //----------------------------------------------------------------------------//
-void MouseCursor::updateGeometryBuffersClipping(const Rectf& clipping_area)
+void PointerIndicator::updateGeometryBuffersClipping(const Rectf& clipping_area)
 {
     const size_t geom_buffer_count = d_geometryBuffers.size();
     for (size_t i = 0; i < geom_buffer_count; ++i)

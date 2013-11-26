@@ -214,7 +214,7 @@ void ItemListbox::setMultiSelectEnabled(bool state)
 /************************************************************************
     Notify item clicked
 ************************************************************************/
-void ItemListbox::notifyItemClicked(ItemEntry* li)
+void ItemListbox::notifyItemActivated(ItemEntry* li, bool cumulativeSelection, bool rangeSelection)
 {
     bool sel_state = !(li->isSelected() && d_multiSelect);
     bool skip = false;
@@ -222,21 +222,20 @@ void ItemListbox::notifyItemClicked(ItemEntry* li)
     // multiselect enabled
     if (d_multiSelect)
     {
-        uint syskeys = getGUIContext().getSystemKeys().get();
         ItemEntry* last = d_lastSelected;
 
-        // no Control? clear others
-        if (!(syskeys & Control))
+        // no cumulative selection? clear others
+        if (!cumulativeSelection)
         {
             clearAllSelections();
             if (!sel_state)
             {
-                sel_state=true;
+                sel_state = true;
             }
         }
 
-        // select range if Shift if held, and we have a 'last selection'
-        if (last && (syskeys & Shift))
+        // select range if is range selection, and we have a 'last selection'
+        if (last && rangeSelection)
         {
             selectRange(getItemIndex(last),getItemIndex(li));
             skip = true;
@@ -249,7 +248,7 @@ void ItemListbox::notifyItemClicked(ItemEntry* li)
 
     if (!skip)
     {
-        li->setSelected_impl(sel_state,false);
+        li->setSelected_impl(sel_state, false);
         if (sel_state)
         {
             d_lastSelected = li;
@@ -408,25 +407,6 @@ void ItemListbox::onMultiSelectModeChanged(WindowEventArgs& e)
     fireEvent(EventMultiSelectModeChanged, e);
 }
 
-/************************************************************************
-    Handle key down event
-************************************************************************/
-void ItemListbox::onKeyDown(KeyEventArgs& e)
-{
-    ScrolledItemListBase::onKeyDown(e);
-
-    // select all (if allowed) on Ctrl+A
-    if (d_multiSelect)
-    {
-        uint sysKeys = getGUIContext().getSystemKeys().get();
-        if (e.scancode == Key::A && (sysKeys&Control))
-        {
-            selectAllItems();
-            ++e.handled;
-        }
-    }
-}
-
 //----------------------------------------------------------------------------//
 bool ItemListbox::handle_PaneChildRemoved(const EventArgs& e)
 {
@@ -440,6 +420,25 @@ bool ItemListbox::handle_PaneChildRemoved(const EventArgs& e)
 
     return true;
 }
-//----------------------------------------------------------------------------//
 
+//----------------------------------------------------------------------------//
+void ItemListbox::onSemanticInputEvent(SemanticEventArgs& e)
+{
+    Window::onSemanticInputEvent(e);
+
+    if (isDisabled())
+        return;
+
+    // select all (if allowed)
+    if (d_multiSelect)
+    {
+        if (e.d_semanticValue == SV_SelectAll)
+        {
+            selectAllItems();
+            ++e.handled;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
 } // end CEGUI namespace

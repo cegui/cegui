@@ -194,10 +194,12 @@ public:
 		returns the mode of operation for the combo box.
 
 	\return
-		- true if the user can show the list and select an item with a single mouse click.
-		- false if the user must click to show the list and then click again to select an item.
+        - true if the user can show the list and select an item with a single 
+        pointer activation.
+        - false if the user must activate the pointer to show the list and then 
+        activate the pointer again to select an item.
 	*/
-	bool	getSingleClickEnabled(void) const;
+	bool	getSinglePointerActivationEnabled(void) const;
 
 
 	/*!
@@ -261,7 +263,7 @@ public:
 		return true if the Editbox has input focus.
 
 	\return
-		true if the Editbox has keyboard input focus, false if the Editbox does not have keyboard input focus.
+		true if the Editbox has input focus, false if the Editbox does not have input focus.
 	*/
 	bool	hasInputFocus(void) const;
 
@@ -536,13 +538,15 @@ public:
 		Set the mode of operation for the combo box.
 
 	\param setting
-		- true if the user should be able to show the list and select an item with a single mouse click.
-		- false if the user must click to show the list and then click again to select an item.
+        - true if the user should be able to show the list and select an item 
+        with a single pointer activation.
+        - false if the user must activate the pointer to show the list and then 
+        activate the pointer again to select an item.
 
 	\return
 		Nothing.
 	*/
-	void	setSingleClickEnabled(bool setting);
+    void    setSinglePointerActivationEnabled(bool setting);
 
     //! Select item in list matching editbox text, clear selection if none match
     void selectListItemWithEditboxText();
@@ -892,11 +896,11 @@ protected:
 	bool	droplist_HiddenHandler(const EventArgs& e);
 
 
-	/*!
-	\brief
-		Mouse button down handler attached to edit box
-	*/
-	bool	editbox_MouseDownHandler(const EventArgs& e);
+    /*!
+    \brief
+        Pointer press & hold handler attached to edit box
+    */
+    bool    editbox_PointerPressHoldHandler(const EventArgs& e);
 
     /*!
     \brief

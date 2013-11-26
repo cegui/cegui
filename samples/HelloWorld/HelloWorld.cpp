@@ -52,13 +52,13 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // loads in a font that gets used as the system default.
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
 
-    // The next thing we do is to set a default mouse cursor image.  This is
+    // The next thing we do is to set a default pointer indicator image.  This is
     // not strictly essential, although it is nice to always have a visible
-    // cursor if a window or widget does not explicitly set one of its own.
+    // indicator if a window or widget does not explicitly set one of its own.
     //
     // The TaharezLook Imageset contains an Image named "MouseArrow" which is
-    // the ideal thing to have as a defult mouse cursor image.
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    // the ideal thing to have as a defult pointer indicator image.
+    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     // Now the system is initialised, we can actually create some UI elements, for
     // this first example, a full-screen 'root' window is set as the active GUI
@@ -122,7 +122,7 @@ bool HelloWorldDemo::initialise(CEGUI::GUIContext* guiContext)
     // FrameWindow's titlebar.
     wnd->setText("Hello World!");
 
-    wnd->subscribeEvent(CEGUI::Window::EventMouseClick,  Event::Subscriber(&HelloWorldDemo::handleHelloWorldClicked, this));
+    wnd->subscribeEvent(CEGUI::Window::EventPointerActivate,  Event::Subscriber(&HelloWorldDemo::handleHelloWorldClicked, this));
 
     // return true so that the samples framework knows that initialisation was a
     // success, and that it should now run the sample.

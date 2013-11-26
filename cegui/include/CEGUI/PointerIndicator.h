@@ -1,9 +1,9 @@
 /***********************************************************************
-	filename: 	CEGUIMouseCursor.h
+    filename:   PointerIndicator.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
-	purpose:	Defines interface for the MouseCursor class
+
+    purpose:    Defines interface for the PointerIndicator class
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -27,8 +27,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIMouseCursor_h_
-#define _CEGUIMouseCursor_h_
+#ifndef _CEGUIPointerIndicator_h_
+#define _CEGUIPointerIndicator_h_
 
 #include "CEGUI/Base.h"
 #include "CEGUI/String.h"
@@ -49,48 +49,48 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//!	Class that provides mouse cursor support.
-class CEGUIEXPORT MouseCursor :
+//!	Class that provides pointer indicator support.
+class CEGUIEXPORT PointerIndicator :
     public EventSet,
-    public AllocatedObject<MouseCursor>
+    public AllocatedObject<PointerIndicator>
 {
 public:
     //! Namespace for global events.
 	static const String EventNamespace;
 
-    /** Name of Event fired when the mouse cursor image is changed.
-     * Handlers are passed a const MouseCursorEventArgs reference with
-     * MouseCursorEventArgs::mouseCursor set to the MouseCursor that has
-     * had it's image changed, and MouseCursorEventArgs::image set to the
-     * Image that is now set for the MouseCursor (may be 0).
+    /** Name of Event fired when the pointer indicator image is changed.
+     * Handlers are passed a const PointerIndicatorEventArgs reference with
+     * PointerIndicatorEventArgs::d_pointerIndicator set to the PointerIndicator that has
+     * had it's image changed, and PointerIndicatorEventArgs::image set to the
+     * Image that is now set for the PointerIndicator (may be 0).
      */
 	static const String EventImageChanged;
 
-    /** Name of Event fired when the Image to be used as a default mouse cursor
+    /** Name of Event fired when the Image to be used as a default pointer indicator
      * image is changed.
-     * Handlers are passed a const MouseCursorEventArgs reference with
-     * MouseCursorEventArgs::mouseCursor set to the MouseCursor that has
-     * had it's default image changed, and MouseCursorEventArgs::image set to
+     * Handlers are passed a const PointerIndicatorEventArgs reference with
+     * PointerIndicatorEventArgs::PointerIndicator set to the PointerIndicator that has
+     * had it's default image changed, and PointerIndicatorEventArgs::image set to
      * the Image that is now set as the default (may be 0).
      */
 	static const String EventDefaultImageChanged;
 
 	/*!
 	\brief
-		Constructor for MouseCursor objects
+        Constructor for PointerIndicator objects
 	*/
-	MouseCursor(void);
+	PointerIndicator(void);
 
 
 	/*!
 	\brief
-		Destructor for MouseCursor objects
+        Destructor for PointerIndicator objects
 	*/
-	~MouseCursor(void);
+	~PointerIndicator(void);
 
 	/*!
 	\brief
-		Set the current mouse cursor image
+        Set the current pointer indicator image
 
 	\param name
 		String object holding the name of the desired Image.
@@ -105,32 +105,32 @@ public:
 
 	/*!
 	\brief
-		Set the current mouse cursor image
+        Set the current pointer indicator image
 	*/
 	void	setImage(const Image* image);
 
 
 	/*!
 	\brief
-		Get the current mouse cursor image
+        Get the current pointer indicator image
 	\return
-		The current image used to draw mouse cursor.
+        The current image used to draw pointer indicator.
 	*/
-	const Image*	getImage(void) const	{return d_cursorImage;}
+	const Image*	getImage(void) const	{return d_indicatorImage;}
 
     /*!
     \brief
-        Set the image to be used as the default mouse cursor.
+        Set the image to be used as the default pointer indicator.
 
     \param image
-        Pointer to an image object that is to be used as the default mouse
-        cursor.  To have no cursor rendered by default, you can specify 0 here.
+        Pointer to an image object that is to be used as the default pointer
+        indicator. To have no indicator rendered by default, you can specify 0 here.
     */
     void setDefaultImage(const Image* image);
 
     /*!
     \brief
-        Set the image to be used as the default mouse cursor.
+        Set the image to be used as the default pointer indicator.
 
     \param name
         String object that contains the name of the Image that is to be used.
@@ -142,10 +142,10 @@ public:
 
     /*!
     \brief
-        Return the currently set default mouse cursor image
+        Return the currently set default pointer indicator image
 
     \return
-        Pointer to the current default image used for the mouse cursor.  May
+        Pointer to the current default image used for the pointer indicator.  May
         return 0 if default cursor has not been set, or has intentionally
         been set to 0 - which results in a blank default cursor.
     */
@@ -154,7 +154,7 @@ public:
 
 	/*!
 	\brief
-		Makes the cursor draw itself
+        Makes the indicator draw itself
 
 	*/
 	void draw(void);
@@ -162,20 +162,21 @@ public:
 
 	/*!
 	\brief
-		Set the current mouse cursor position
+        Set the current pointer indicator position
 
 	\param position
-		Point object describing the new location for the mouse.  This will be clipped to within the renderer screen area.
+        Point object describing the new location for the pointer. This will
+        be clipped to within the renderer screen area.
 	*/
 	void setPosition(const Vector2f& position);
 
 
 	/*!
 	\brief
-		Offset the mouse cursor position by the deltas specified in \a offset.
+        Offset the pointer indicator position by the deltas specified in \a offset.
 
 	\param offset
-		Point object which describes the amount to move the cursor in each axis.
+        Point object which describes the amount to move the indicator in each axis.
 
 	\return
 		Nothing.
@@ -185,12 +186,14 @@ public:
 
 	/*!
 	\brief
-		Set the area that the mouse cursor is constrained to.
+        Set the area that the pointer indicator is constrained to.
 
 	\param area
-		Pointer to a Rect object that describes the area of the display that the mouse is allowed to occupy.  The given area will be clipped to
-		the current Renderer screen area - it is never possible for the mouse to leave this area.  If this parameter is NULL, the
-		constraint is set to the size of the current Renderer screen area.
+        Pointer to a Rect object that describes the area of the display that
+        the pointer is allowed to occupy. The given area will be clipped to
+        the current Renderer screen area - it is never possible for the pointer
+        to leave this area. If this parameter is NULL, the constraint is set
+        to the size of the current Renderer screen area.
 
 	\return
 		Nothing.
@@ -200,12 +203,14 @@ public:
 
 	/*!
 	\brief
-		Set the area that the mouse cursor is constrained to.
+        Set the area that the pointer indicator is constrained to.
 
 	\param area
-		Pointer to a URect object that describes the area of the display that the mouse is allowed to occupy.  The given area will be clipped to
-		the current Renderer screen area - it is never possible for the mouse to leave this area.  If this parameter is NULL, the
-		constraint is set to the size of the current Renderer screen area.
+        Pointer to a URect object that describes the area of the display that
+        the pointer is allowed to occupy. The given area will be clipped to the
+        current Renderer screen area - it is never possible for the pointer to
+        leave this area. If this parameter is NULL, the constraint is set to
+        the size of the current Renderer screen area.
 
 	\return
 		Nothing.
@@ -215,7 +220,7 @@ public:
 
 	/*!
 	\brief
-		Hides the mouse cursor.
+        Hides the pointer indicator.
 
 	\return
 		Nothing.
@@ -225,7 +230,7 @@ public:
 
 	/*!
 	\brief
-		Shows the mouse cursor.
+        Shows the pointer indicator.
 
 	\return
 		Nothing.
@@ -235,10 +240,10 @@ public:
 
     /*!
     \brief
-        Set the visibility of the mouse cursor.
+        Set the visibility of the pointer indicator.
 
     \param visible
-        'true' to show the mouse cursor, 'false' to hide it.
+        'true' to show the pointer indicator, 'false' to hide it.
 
     \return
         Nothing.
@@ -248,20 +253,21 @@ public:
 
 	/*!
 	\brief
-		return whether the mouse cursor is visible.
+        return whether the pointer indicator is visible.
 
 	\return
-		true if the mouse cursor is visible, false if the mouse cursor is hidden.
+		true if the pointer indicator is visible, false if the pointer indicator is hidden.
 	*/
 	bool	isVisible(void) const	{return d_visible;}
 
 
 	/*!
 	\brief
-		Return the current mouse cursor position as a pixel offset from the top-left corner of the display.
+        Return the current pointer indicator position as a pixel offset from 
+        the top-left corner of the display.
 
 	\return
-		Point object describing the mouse cursor position in screen pixels.
+		Point object describing the pointer indicator position in screen pixels.
 	*/
 	Vector2f getPosition(void) const
     { return d_position; }
@@ -269,38 +275,40 @@ public:
 
 	/*!
 	\brief
-		return the current constraint area of the mouse cursor.
+        Return the current constraint area of the pointer indicator.
 
 	\return
-		Rect object describing the active area that the mouse cursor is constrained to.
+        Rect object describing the active area that the pointer indicator is constrained to.
 	*/
 	Rectf getConstraintArea(void) const;
 
 
 	/*!
 	\brief
-		return the current constraint area of the mouse cursor.
+        Return the current constraint area of the pointer indicator.
 
 	\return
-		URect object describing the active area that the mouse cursor is constrained to.
+        URect object describing the active area that the pointer indicator is constrained to.
 	*/
 	const URect& getUnifiedConstraintArea(void) const;
 
 
 	/*!
 	\brief
-		Return the current mouse cursor position as display resolution independant values.
+        Return the current pointer indicator position as display resolution
+        independent values.
 
 	\return
-		Point object describing the current mouse cursor position as resolution independant values that
-		range from 0.0f to 1.0f, where 0.0f represents the left-most and top-most positions, and 1.0f
-		represents the right-most and bottom-most positions.
+        Point object describing the current pointer indicator position as
+        resolution independent values that anges from 0.0f to 1.0f, where 0.0f
+        represents the left-most and top-most positions, and 1.0f represents
+        the right-most and bottom-most positions.
 	*/
 	Vector2f getDisplayIndependantPosition(void) const;
 
     /*!
     \brief
-        Function used to notify the MouseCursor of changes in the display size.
+        Function used to notify the PointerIndicator of changes in the display size.
 
         You normally would not call this directly; rather you would call the
         function System::notifyDisplaySizeChanged and that will then call this
@@ -313,17 +321,17 @@ public:
 
     /*!
     \brief
-        Set an explicit size for the mouse cursor image to be drawn at.
+        Set an explicit size for the pointer indicator image to be drawn at.
 
         This will override the size that is usually obtained directly from the
-        mouse cursor image and will stay in effect across changes to the mouse
-        cursor image.
+        pointer indicator image and will stay in effect across changes to the
+        pointer indicator image.
 
         Setting this size to (0, 0) will revert back to using the size as
         obtained from the Image itself.
 
     \param size
-        Reference to a Size object that describes the size at which the cursor
+        Reference to a Size object that describes the size at which the indicator
         image should be drawn in pixels.
     */
     void setExplicitRenderSize(const Sizef& size);
@@ -337,24 +345,24 @@ public:
 
     /*!
     \brief
-        Static function to pre-initialise the mouse cursor position (prior to
-        MouseCursor instantiation).
-        
-        Calling this function prior to instantiating MouseCursor will prevent
-        the mouse having it's position set to the middle of the initial view.
-        Calling this function after the MouseCursor is instantiated will have
+        Static function to pre-initialise the pointer indicator position (prior to
+        PointerIndicator instantiation).
+
+        Calling this function prior to instantiating PointerIndicator will prevent
+        the pointer having it's position set to the middle of the initial view.
+        Calling this function after the PointerIndicator is instantiated will have
         no effect.
 
     \param position
         Reference to a point object describing the initial pixel position to
-        be used for the mouse cursor.
+        be used for the pointer indicator.
     */
-    static void setInitialMousePosition(const Vector2f& position);
+    static void setInitialPointerPosition(const Vector2f& position);
 
     /*!
     \brief
         Mark the cached geometry as invalid so it will be recached next time the
-        mouse cursor is drawn.
+        pointer indicator is drawn.
     */
     void invalidate();
 
@@ -362,10 +370,10 @@ protected:
 	/*************************************************************************
 		New event handlers
 	*************************************************************************/
-    //! Event triggered internally when mouse cursor image is changed.
-    virtual void onImageChanged(MouseCursorEventArgs& e);
-    //! Event triggered internally when mouse cursor default image is changed.
-    virtual void onDefaultImageChanged(MouseCursorEventArgs& e);
+    //! Event triggered internally when pointer indicator image is changed.
+    virtual void onImageChanged(PointerIndicatorEventArgs& e);
+    //! Event triggered internally when pointer indicator default image is changed.
+    virtual void onDefaultImageChanged(PointerIndicatorEventArgs& e);
 
 private:
 	/*************************************************************************
@@ -373,7 +381,8 @@ private:
 	*************************************************************************/
 	/*!
 	\brief
-		Checks the mouse cursor position is within the current 'constrain' Rect and adjusts as required.
+        Checks the pointer indicator position is within the current 'constrain'
+        Rect and adjusts as required.
 	*/
 	void constrainPosition(void);
 
@@ -408,20 +417,23 @@ private:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-    //! Image that is currently set as the mouse cursor.
-	const Image* d_cursorImage;
-    //! Image that will be used as the default image for this mouse cursor.
-	const Image* d_defaultCursorImage;
-	Vector2f d_position;					//!< Current location of the cursor
-	bool	d_visible;					//!< true if the cursor will be drawn, else false.
-	URect	d_constraints;				//!< Specifies the area (in screen pixels) that the mouse can move around in.
-    //! buffers to hold geometry for mouse cursor imagery.
+    //! Image that is currently set as the pointer indicator.
+	const Image* d_indicatorImage;
+    //! Image that will be used as the default image for this pointer indicator.
+	const Image* d_defaultIndicatorImage;
+    //! Current location of the indicator
+    Vector2f d_position;
+    //! true if the indicator will be drawn, else false.
+    bool    d_visible;
+    //! Specifies the area (in screen pixels) that the indicator can move around in.
+    URect   d_constraints;
+    //! buffer to hold geometry for pointer indicator imagery.
     std::vector<GeometryBuffer*> d_geometryBuffers;
-    //! custom explicit size to render the cursor image at
+    //! custom explicit size to render the indicator image at
     Sizef d_customSize;
     //! correctly scaled offset used when using custom image size.
     mutable Vector2f d_customOffset;
-    //! true if the mouse initial position has been pre-set
+    //! true if the pointer initial position has been pre-set
     static bool s_initialPositionSet;
     //! value set as initial position (if any)
     static Vector2f s_initialPosition;
@@ -435,4 +447,4 @@ private:
 #	pragma warning(pop)
 #endif
 
-#endif	// end of guard _CEGUIMouseCursor_h_
+#endif	// end of guard _CEGUIPointerIndicator_h_
