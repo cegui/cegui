@@ -46,7 +46,6 @@ protected:
    static const unsigned int TreeID;
    static const unsigned int EditBoxID;
 
-   bool handleRootKeyDown(const CEGUI::EventArgs& args);
    bool handleEventSelectionChanged(const CEGUI::EventArgs& args);
    bool handleEventBranchOpened(const CEGUI::EventArgs& args);
    bool handleEventBranchClosed(const CEGUI::EventArgs& args);

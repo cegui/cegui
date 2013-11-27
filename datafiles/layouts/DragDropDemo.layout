@@ -18,7 +18,7 @@
                     <Window name="Image" type="WindowsLook/StaticImage">
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}" />
                         <Property name="Image" value="DriveIcons/Lime" />
-                        <Property name="MousePassThroughEnabled" value="True" />
+                        <Property name="PointerPassThroughEnabled" value="True" />
                     </Window>
 
                 </Window>
@@ -55,7 +55,7 @@
                     <Window name="Image" type="WindowsLook/StaticImage">
                         <Property name="Area" value="{{0,0},{0,0},{1,0},{1,0}" />
                         <Property name="Image" value="DriveIcons/GlobalDrive" />
-                        <Property name="MousePassThroughEnabled" value="True" />
+                        <Property name="PointerPassThroughEnabled" value="True" />
                     </Window>
 
                 </Window>
