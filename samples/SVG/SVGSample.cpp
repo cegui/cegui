@@ -58,7 +58,7 @@ bool SVGSample::initialise(CEGUI::GUIContext* guiContext)
     //CEGUI setup
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("Generic.scheme");
-    guiContext->getMouseCursor().setDefaultImage("WindowsLook/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("WindowsLook/MouseArrow");
     WindowManager& winMgr = WindowManager::getSingleton();
 
     // load font and setup default if not loaded via scheme

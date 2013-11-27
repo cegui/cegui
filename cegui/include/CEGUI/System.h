@@ -440,7 +440,7 @@ public:
 
         Calling this function ensures that any other parts of the system that
         need to know about display size changes are notified.  This affects
-        things such as the MouseCursor default constraint area, and also the
+        things such as the PointerIndicator default constraint area, and also the
         auto-scale functioning of Imagesets and Fonts.
 
     \note
@@ -488,9 +488,9 @@ public:
 
         This function will invalidate the caches used for both imagery and
         geometry for all content that is managed by the core CEGUI manager
-        objects, causing a full and total redraw of that content.  This
+        objects, causing a full and total redraw of that content. This
         includes Window object's cached geometry, rendering surfaces and
-        rendering windows and the mouse pointer geometry.
+        rendering windows and the pointer geometry.
     */
     void invalidateAllCachedRendering();
 

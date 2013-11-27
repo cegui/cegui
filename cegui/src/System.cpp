@@ -37,7 +37,7 @@
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/RenderEffectManager.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ScriptModule.h"
@@ -236,7 +236,7 @@ System::System(Renderer& renderer,
 
     // set up defaults
     config.initialiseDefaultFont();
-    config.initialiseDefaultMouseCursor();
+    config.initialiseDefaultPointerIndicator();
     config.initialiseDefaulTooltip();
 
     // scripting available?
@@ -946,7 +946,7 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
 void System::invalidateAllCachedRendering()
 {
     invalidateAllWindows();
-    //MouseCursor::getSingleton().invalidate();
+    //PointerIndicator::getSingleton().invalidate();
 }
 
 //----------------------------------------------------------------------------//

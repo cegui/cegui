@@ -49,7 +49,7 @@ bool TextDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
