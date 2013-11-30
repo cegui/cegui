@@ -1,6 +1,18 @@
 /***********************************************************************
     ImageManager
 ***********************************************************************/
+
+class ImageFactory
+{
+};
+
+class ImagePair
+{
+	~ImagePair();
+    Image* first;
+    ImageFactory* second;
+};
+
 class ImageManager
 {
     static ImageManager& getSingleton();
@@ -33,5 +45,8 @@ class ImageManager
 
     static void setImagesetDefaultResourceGroup(utf8string resourceGroup);
     static string getImagesetDefaultResourceGroup();
+    
+    ImageIterator getIterator() const;
+    
 };
 

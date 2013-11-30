@@ -59,12 +59,14 @@ class Window : public NamedElement
     Window* getChildAtIdx(unsigned long idx) const;   
     tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(utf8string name_path) const;
     tolua_throws|CEGUI::UnknownObjectException,nil| Window* getChild(unsigned int ID) const;
+    Window* getChildRecursive(utf8string name_path) const;
     Window* getChildRecursive(unsigned int ID) const;
 
     Window* createChild(utf8string type, utf8string name = "");
     void destroyChild(Window* wnd);
     void destroyChild(utf8string name_path);
     void removeChild(unsigned int ID);
+    void removeChild(Window* wnd);
 
     const Font* getFont(bool useDefault = true) const;
     void setFont(const Font* font);
