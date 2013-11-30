@@ -1,6 +1,6 @@
 /*
 ** Lua binding: CEGUI
-** Generated automatically by tolua++-1.0.93 on Fri May 24 09:30:13 2013.
+** Generated automatically by tolua++-1.0.93 on Sat Nov 16 12:37:57 2013.
 */
 
 #ifndef __cplusplus
@@ -26,9 +26,9 @@ static int tolua_collect_CEGUI__SchemeIterator (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__WidgetDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
 {
- CEGUI::WidgetDim* self = (CEGUI::WidgetDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -47,6 +47,13 @@ static int tolua_collect_CEGUI__PropertyInitialiser (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_CEGUI__ImagePair (lua_State* tolua_S)
+{
+ CEGUI::ImagePair* self = (CEGUI::ImagePair*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_CEGUI__Dimension (lua_State* tolua_S)
 {
  CEGUI::Dimension* self = (CEGUI::Dimension*) tolua_tousertype(tolua_S,1,0);
@@ -54,9 +61,9 @@ static int tolua_collect_CEGUI__Dimension (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__DragDropEventArgs (lua_State* tolua_S)
+static int tolua_collect_CEGUI__PropertyDim (lua_State* tolua_S)
 {
- CEGUI::DragDropEventArgs* self = (CEGUI::DragDropEventArgs*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::PropertyDim* self = (CEGUI::PropertyDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -68,16 +75,9 @@ static int tolua_collect_CEGUI__WidgetLookManager (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_size_t (lua_State* tolua_S)
+static int tolua_collect_CEGUI__EventConnection (lua_State* tolua_S)
 {
- size_t* self = (size_t*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__FontDim (lua_State* tolua_S)
-{
- CEGUI::FontDim* self = (CEGUI::FontDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::EventConnection* self = (CEGUI::EventConnection*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -201,9 +201,9 @@ static int tolua_collect_CEGUI__Size_float_ (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__SimpleTimer (lua_State* tolua_S)
+static int tolua_collect_CEGUI__FalagardWindowMapping (lua_State* tolua_S)
 {
- CEGUI::SimpleTimer* self = (CEGUI::SimpleTimer*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::FalagardWindowMapping* self = (CEGUI::FalagardWindowMapping*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -278,9 +278,16 @@ static int tolua_collect_CEGUI__NamedArea (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__WindowEventArgs (lua_State* tolua_S)
+static int tolua_collect_CEGUI__WidgetComponent (lua_State* tolua_S)
 {
- CEGUI::WindowEventArgs* self = (CEGUI::WindowEventArgs*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::WidgetComponent* self = (CEGUI::WidgetComponent*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__NamedElementEventArgs (lua_State* tolua_S)
+{
+ CEGUI::NamedElementEventArgs* self = (CEGUI::NamedElementEventArgs*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -320,16 +327,16 @@ static int tolua_collect_CEGUI__ActivationEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__TextComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__FontDim (lua_State* tolua_S)
 {
- CEGUI::TextComponent* self = (CEGUI::TextComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::FontDim* self = (CEGUI::FontDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
+static int tolua_collect_CEGUI__LayerSpecification (lua_State* tolua_S)
 {
- CEGUI::SectionSpecification* self = (CEGUI::SectionSpecification*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::LayerSpecification* self = (CEGUI::LayerSpecification*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -348,16 +355,16 @@ static int tolua_collect_CEGUI__EventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__WidgetComponent (lua_State* tolua_S)
+static int tolua_collect_CEGUI__SectionSpecification (lua_State* tolua_S)
 {
- CEGUI::WidgetComponent* self = (CEGUI::WidgetComponent*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::SectionSpecification* self = (CEGUI::SectionSpecification*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
 
-static int tolua_collect_CEGUI__PropertyDim (lua_State* tolua_S)
+static int tolua_collect_CEGUI__WidgetDim (lua_State* tolua_S)
 {
- CEGUI::PropertyDim* self = (CEGUI::PropertyDim*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::WidgetDim* self = (CEGUI::WidgetDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -390,23 +397,9 @@ static int tolua_collect_CEGUI__HeaderSequenceEventArgs (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__LayerSpecification (lua_State* tolua_S)
+static int tolua_collect_CEGUI__SimpleTimer (lua_State* tolua_S)
 {
- CEGUI::LayerSpecification* self = (CEGUI::LayerSpecification*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__FalagardWindowMapping (lua_State* tolua_S)
-{
- CEGUI::FalagardWindowMapping* self = (CEGUI::FalagardWindowMapping*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__URect (lua_State* tolua_S)
-{
- CEGUI::URect* self = (CEGUI::URect*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::SimpleTimer* self = (CEGUI::SimpleTimer*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -418,23 +411,37 @@ static int tolua_collect_CEGUI__MouseCursorEventArgs (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_CEGUI__URect (lua_State* tolua_S)
+{
+ CEGUI::URect* self = (CEGUI::URect*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__ImageIterator (lua_State* tolua_S)
+{
+ CEGUI::ImageIterator* self = (CEGUI::ImageIterator*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__DragDropEventArgs (lua_State* tolua_S)
+{
+ CEGUI::DragDropEventArgs* self = (CEGUI::DragDropEventArgs*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
+static int tolua_collect_CEGUI__TreeEventArgs (lua_State* tolua_S)
+{
+ CEGUI::TreeEventArgs* self = (CEGUI::TreeEventArgs*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_CEGUI__FrameComponent (lua_State* tolua_S)
 {
  CEGUI::FrameComponent* self = (CEGUI::FrameComponent*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__EventConnection (lua_State* tolua_S)
-{
- CEGUI::EventConnection* self = (CEGUI::EventConnection*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__UnifiedDim (lua_State* tolua_S)
-{
- CEGUI::UnifiedDim* self = (CEGUI::UnifiedDim*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -453,6 +460,13 @@ static int tolua_collect_CEGUI__ImageDim (lua_State* tolua_S)
  return 0;
 }
 
+static int tolua_collect_CEGUI__UnifiedDim (lua_State* tolua_S)
+{
+ CEGUI::UnifiedDim* self = (CEGUI::UnifiedDim*) tolua_tousertype(tolua_S,1,0);
+ delete self;
+ return 0;
+}
+
 static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
 {
  CEGUI::EventIterator* self = (CEGUI::EventIterator*) tolua_tousertype(tolua_S,1,0);
@@ -460,16 +474,9 @@ static int tolua_collect_CEGUI__EventIterator (lua_State* tolua_S)
  return 0;
 }
 
-static int tolua_collect_CEGUI__TreeEventArgs (lua_State* tolua_S)
+static int tolua_collect_CEGUI__WindowEventArgs (lua_State* tolua_S)
 {
- CEGUI::TreeEventArgs* self = (CEGUI::TreeEventArgs*) tolua_tousertype(tolua_S,1,0);
- delete self;
- return 0;
-}
-
-static int tolua_collect_CEGUI__NamedElementEventArgs (lua_State* tolua_S)
-{
- CEGUI::NamedElementEventArgs* self = (CEGUI::NamedElementEventArgs*) tolua_tousertype(tolua_S,1,0);
+ CEGUI::WindowEventArgs* self = (CEGUI::WindowEventArgs*) tolua_tousertype(tolua_S,1,0);
  delete self;
  return 0;
 }
@@ -483,14 +490,15 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::Renderer");
  tolua_usertype(tolua_S,"CEGUI::FalagardComponentBase");
  tolua_usertype(tolua_S,"CEGUI::WidgetDim");
- tolua_usertype(tolua_S,"CEGUI::MouseCursorEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::BasicImage");
  tolua_usertype(tolua_S,"CEGUI::TreeItem");
+ tolua_usertype(tolua_S,"CEGUI::ImagePair");
  tolua_usertype(tolua_S,"CEGUI::WindowFactory");
  tolua_usertype(tolua_S,"CEGUI::MouseCursor");
  tolua_usertype(tolua_S,"CEGUI::WidgetLookManager");
- tolua_usertype(tolua_S,"CEGUI::MultiColumnList");
+ tolua_usertype(tolua_S,"CEGUI::FrameWindow");
  tolua_usertype(tolua_S,"CEGUI::EventConnection");
- tolua_usertype(tolua_S,"CEGUI::Property");
+ tolua_usertype(tolua_S,"CEGUI::ElementEventArgs");
  tolua_usertype(tolua_S,"CEGUI::EventIterator");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryIterator");
  tolua_usertype(tolua_S,"CEGUI::ToggleButton");
@@ -510,7 +518,7 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::LayoutContainer");
  tolua_usertype(tolua_S,"CEGUI::RenderingWindow");
  tolua_usertype(tolua_S,"CEGUI::SimpleTimer");
- tolua_usertype(tolua_S,"CEGUI::USize");
+ tolua_usertype(tolua_S,"CEGUI::WindowManager");
  tolua_usertype(tolua_S,"CEGUI::Vector2<float>");
  tolua_usertype(tolua_S,"CEGUI::WidgetLookFeel");
  tolua_usertype(tolua_S,"CEGUI::RenderTargetEventArgs");
@@ -541,14 +549,13 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::SchemeIterator");
  tolua_usertype(tolua_S,"CEGUI::Scrollbar");
  tolua_usertype(tolua_S,"CEGUI::MouseEventArgs");
- tolua_usertype(tolua_S,"CEGUI::PropertyInitialiser");
- tolua_usertype(tolua_S,"CEGUI::ItemListBase");
+ tolua_usertype(tolua_S,"CEGUI::ImageIterator");
+ tolua_usertype(tolua_S,"CEGUI::AnimationEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Dimension");
  tolua_usertype(tolua_S,"CEGUI::DragDropEventArgs");
  tolua_usertype(tolua_S,"CEGUI::ItemListbox");
  tolua_usertype(tolua_S,"CEGUI::ComboDropList");
  tolua_usertype(tolua_S,"CEGUI::Element::CachedRectf");
- tolua_usertype(tolua_S,"size_t");
  tolua_usertype(tolua_S,"CEGUI::RenderEffect");
  tolua_usertype(tolua_S,"CEGUI::ButtonBase");
  tolua_usertype(tolua_S,"CEGUI::FontDim");
@@ -563,77 +570,79 @@ static void tolua_reg_types (lua_State* tolua_S)
  tolua_usertype(tolua_S,"CEGUI::TextureTarget");
  tolua_usertype(tolua_S,"CEGUI::Tree");
  tolua_usertype(tolua_S,"CEGUI::OutStream");
+ tolua_usertype(tolua_S,"CEGUI::LayerSpecification");
+ tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
  tolua_usertype(tolua_S,"CEGUI::HorizontalLayoutContainer");
  tolua_usertype(tolua_S,"CEGUI::RegexMatchStateEventArgs");
  tolua_usertype(tolua_S,"CEGUI::KeyEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Element");
- tolua_usertype(tolua_S,"CEGUI::LayerSpecification");
- tolua_usertype(tolua_S,"CEGUI::TabControl");
- tolua_usertype(tolua_S,"CEGUI::SectionSpecification");
- tolua_usertype(tolua_S,"CEGUI::GlobalEventSet");
  tolua_usertype(tolua_S,"CEGUI::TextComponent");
+ tolua_usertype(tolua_S,"CEGUI::TabControl");
  tolua_usertype(tolua_S,"CEGUI::FrameComponent");
- tolua_usertype(tolua_S,"CEGUI::ElementEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::GlobalEventSet");
+ tolua_usertype(tolua_S,"CEGUI::PropertyInitialiser");
+ tolua_usertype(tolua_S,"CEGUI::MCLGridRef");
  tolua_usertype(tolua_S,"CEGUI::MultiLineEditbox");
  tolua_usertype(tolua_S,"CEGUI::PropertyDim");
+ tolua_usertype(tolua_S,"CEGUI::MultiColumnList");
  tolua_usertype(tolua_S,"CEGUI::ImagePropertyDim");
  tolua_usertype(tolua_S,"CEGUI::Size<float>");
- tolua_usertype(tolua_S,"CEGUI::Menubar");
- tolua_usertype(tolua_S,"CEGUI::DragContainer");
- tolua_usertype(tolua_S,"CEGUI::Affector");
+ tolua_usertype(tolua_S,"CEGUI::Colour");
  tolua_usertype(tolua_S,"CEGUI::ImageDimBase");
- tolua_usertype(tolua_S,"CEGUI::RegexMatcher");
+ tolua_usertype(tolua_S,"CEGUI::Affector");
+ tolua_usertype(tolua_S,"CEGUI::FontManager");
  tolua_usertype(tolua_S,"CEGUI::BaseDim");
+ tolua_usertype(tolua_S,"CEGUI::GridLayoutContainer");
  tolua_usertype(tolua_S,"CEGUI::Vector3<float>");
  tolua_usertype(tolua_S,"CEGUI::Animation");
  tolua_usertype(tolua_S,"CEGUI::PushButton");
  tolua_usertype(tolua_S,"CEGUI::RenderQueue");
- tolua_usertype(tolua_S,"CEGUI::GridLayoutContainer");
- tolua_usertype(tolua_S,"CEGUI::FrameWindow");
- tolua_usertype(tolua_S,"CEGUI::GUIContext");
  tolua_usertype(tolua_S,"CEGUI::SequentialLayoutContainer");
- tolua_usertype(tolua_S,"CEGUI::BasicImage");
+ tolua_usertype(tolua_S,"CEGUI::Combobox");
+ tolua_usertype(tolua_S,"CEGUI::GUIContext");
+ tolua_usertype(tolua_S,"CEGUI::PopupMenu");
+ tolua_usertype(tolua_S,"CEGUI::MouseCursorEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Quaternion");
- tolua_usertype(tolua_S,"CEGUI::ListHeaderSegment");
+ tolua_usertype(tolua_S,"CEGUI::ImageFactory");
  tolua_usertype(tolua_S,"CEGUI::Listbox");
- tolua_usertype(tolua_S,"CEGUI::AnimationEventArgs");
+ tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
  tolua_usertype(tolua_S,"CEGUI::System");
  tolua_usertype(tolua_S,"CEGUI::MenuItem");
  tolua_usertype(tolua_S,"CEGUI::ListboxTextItem");
- tolua_usertype(tolua_S,"CEGUI::ScrolledItemListBase");
- tolua_usertype(tolua_S,"CEGUI::PopupMenu");
+ tolua_usertype(tolua_S,"CEGUI::Menubar");
+ tolua_usertype(tolua_S,"CEGUI::ItemListBase");
  tolua_usertype(tolua_S,"CEGUI::TabButton");
  tolua_usertype(tolua_S,"CEGUI::UnifiedDim");
  tolua_usertype(tolua_S,"CEGUI::NamedArea");
- tolua_usertype(tolua_S,"CEGUI::MCLGridRef");
  tolua_usertype(tolua_S,"CEGUI::ListHeader");
+ tolua_usertype(tolua_S,"CEGUI::Property");
  tolua_usertype(tolua_S,"CEGUI::WindowEventArgs");
- tolua_usertype(tolua_S,"CEGUI::Combobox");
+ tolua_usertype(tolua_S,"CEGUI::ListHeaderSegment");
  tolua_usertype(tolua_S,"CEGUI::ComponentArea");
  tolua_usertype(tolua_S,"CEGUI::WindowFactoryManager");
  tolua_usertype(tolua_S,"CEGUI::Editbox");
- tolua_usertype(tolua_S,"CEGUI::SystemKeys");
- tolua_usertype(tolua_S,"CEGUI::Colour");
+ tolua_usertype(tolua_S,"CEGUI::Thumb");
  tolua_usertype(tolua_S,"CEGUI::ScrolledContainer");
+ tolua_usertype(tolua_S,"CEGUI::USize");
  tolua_usertype(tolua_S,"CEGUI::ImageDim");
  tolua_usertype(tolua_S,"CEGUI::SchemeManager");
- tolua_usertype(tolua_S,"CEGUI::FontManager");
+ tolua_usertype(tolua_S,"CEGUI::DragContainer");
  tolua_usertype(tolua_S,"CEGUI::EventSet");
  tolua_usertype(tolua_S,"CEGUI::Titlebar");
  tolua_usertype(tolua_S,"CEGUI::PropertyIterator");
  tolua_usertype(tolua_S,"CEGUI::AbsoluteDim");
  tolua_usertype(tolua_S,"CEGUI::HeaderSequenceEventArgs");
  tolua_usertype(tolua_S,"CEGUI::Event");
- tolua_usertype(tolua_S,"CEGUI::Thumb");
+ tolua_usertype(tolua_S,"CEGUI::RegexMatcher");
  tolua_usertype(tolua_S,"CEGUI::TreeEventArgs");
  tolua_usertype(tolua_S,"CEGUI::CoordConverter");
- tolua_usertype(tolua_S,"CEGUI::FalagardWindowMapping");
- tolua_usertype(tolua_S,"CEGUI::WindowManager");
+ tolua_usertype(tolua_S,"CEGUI::AnimationInstance");
  tolua_usertype(tolua_S,"CEGUI::GUISheet");
+ tolua_usertype(tolua_S,"CEGUI::FalagardWindowMapping");
  tolua_usertype(tolua_S,"CEGUI::UDim");
  tolua_usertype(tolua_S,"CEGUI::Interpolator");
- tolua_usertype(tolua_S,"CEGUI::AnimationInstance");
  tolua_usertype(tolua_S,"CEGUI::Texture");
+ tolua_usertype(tolua_S,"CEGUI::SystemKeys");
  tolua_usertype(tolua_S,"CEGUI::RenderingContext");
 }
 
@@ -9457,6 +9466,123 @@ static int tolua_CEGUI_CEGUI_BasicImage_setNativeResolution00(lua_State* tolua_S
 }
 #endif //#ifndef TOLUA_DISABLE
 
+/* method: delete of class  CEGUI::ImagePair */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImagePair_delete00
+static int tolua_CEGUI_CEGUI_ImagePair_delete00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImagePair",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImagePair* self = (CEGUI::ImagePair*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'delete'",NULL);
+#endif
+ delete self;
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'delete'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: first of class  CEGUI::ImagePair */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__ImagePair_first_ptr
+static int tolua_get_CEGUI__ImagePair_first_ptr(lua_State* tolua_S)
+{
+  CEGUI::ImagePair* self = (CEGUI::ImagePair*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'first'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)self->first,"CEGUI::Image");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: first of class  CEGUI::ImagePair */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__ImagePair_first_ptr
+static int tolua_set_CEGUI__ImagePair_first_ptr(lua_State* tolua_S)
+{
+  CEGUI::ImagePair* self = (CEGUI::ImagePair*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'first'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::Image",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->first = ((CEGUI::Image*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* get function: second of class  CEGUI::ImagePair */
+#ifndef TOLUA_DISABLE_tolua_get_CEGUI__ImagePair_second_ptr
+static int tolua_get_CEGUI__ImagePair_second_ptr(lua_State* tolua_S)
+{
+  CEGUI::ImagePair* self = (CEGUI::ImagePair*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'second'",NULL);
+#endif
+ tolua_pushusertype(tolua_S,(void*)self->second,"CEGUI::ImageFactory");
+ return 1;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* set function: second of class  CEGUI::ImagePair */
+#ifndef TOLUA_DISABLE_tolua_set_CEGUI__ImagePair_second_ptr
+static int tolua_set_CEGUI__ImagePair_second_ptr(lua_State* tolua_S)
+{
+  CEGUI::ImagePair* self = (CEGUI::ImagePair*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (!self) tolua_error(tolua_S,"invalid 'self' in accessing variable 'second'",NULL);
+ if (!tolua_isusertype(tolua_S,2,"CEGUI::ImageFactory",0,&tolua_err))
+ tolua_error(tolua_S,"#vinvalid type in variable assignment.",&tolua_err);
+#endif
+  self->second = ((CEGUI::ImageFactory*)  tolua_tousertype(tolua_S,2,0))
+;
+ return 0;
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getSingleton of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_getSingleton00
+static int tolua_CEGUI_CEGUI_ImageManager_getSingleton00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::ImageManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+ {
+  CEGUI::ImageManager& tolua_ret = (CEGUI::ImageManager&)  CEGUI::ImageManager::getSingleton();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::ImageManager");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getSingleton'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
 /* method: removeImageType of class  CEGUI::ImageManager */
 #ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_removeImageType00
 static int tolua_CEGUI_CEGUI_ImageManager_removeImageType00(lua_State* tolua_S)
@@ -9944,6 +10070,46 @@ static int tolua_CEGUI_CEGUI_ImageManager_getImagesetDefaultResourceGroup00(lua_
 #ifndef TOLUA_RELEASE
  tolua_lerror:
  tolua_error(tolua_S,"#ferror in function 'getImagesetDefaultResourceGroup'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getIterator of class  CEGUI::ImageManager */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageManager_getIterator00
+static int tolua_CEGUI_CEGUI_ImageManager_getIterator00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageManager",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageManager* self = (const CEGUI::ImageManager*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getIterator'",NULL);
+#endif
+ {
+  CEGUI::ImageIterator tolua_ret = (CEGUI::ImageIterator)  self->getIterator();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::ImageIterator(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::ImageIterator");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::ImageIterator));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::ImageIterator");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getIterator'.",&tolua_err);
  return 0;
 #endif
 }
@@ -12414,6 +12580,362 @@ static int tolua_CEGUI_CEGUI_FontIterator_new00_local(lua_State* tolua_S)
  {
   CEGUI::FontIterator* tolua_ret = (CEGUI::FontIterator*)  new CEGUI::FontIterator(*org);
  tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::FontIterator");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getCurrentKey of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_key00
+static int tolua_CEGUI_CEGUI_ImageIterator_key00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* self = (const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCurrentKey'",NULL);
+#endif
+ {
+  string tolua_ret = (string)  self->getCurrentKey();
+ tolua_pushcppstring(tolua_S,(const char*)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'key'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getCurrentValue of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_value00
+static int tolua_CEGUI_CEGUI_ImageIterator_value00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* self = (const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getCurrentValue'",NULL);
+#endif
+ {
+  CEGUI::ImagePair tolua_ret = (CEGUI::ImagePair)  self->getCurrentValue();
+ {
+#ifdef __cplusplus
+ void* tolua_obj = new CEGUI::ImagePair(tolua_ret);
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::ImagePair");
+#else
+ void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(CEGUI::ImagePair));
+ tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"CEGUI::ImagePair");
+#endif
+ }
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'value'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isAtEnd of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_isAtEnd00
+static int tolua_CEGUI_CEGUI_ImageIterator_isAtEnd00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* self = (const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isAtEnd'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isAtEnd();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isAtEnd'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: isAtStart of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_isAtStart00
+static int tolua_CEGUI_CEGUI_ImageIterator_isAtStart00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* self = (const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'isAtStart'",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->isAtStart();
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'isAtStart'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: __operator_increment of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_next00
+static int tolua_CEGUI_CEGUI_ImageIterator_next00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageIterator* self = (CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function '__operator_increment'",NULL);
+#endif
+ {
+  CEGUI::ImageIterator& tolua_ret = (CEGUI::ImageIterator&)  self->__operator_increment();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::ImageIterator");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'next'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: __operator_decrement of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_previous00
+static int tolua_CEGUI_CEGUI_ImageIterator_previous00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageIterator* self = (CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function '__operator_decrement'",NULL);
+#endif
+ {
+  CEGUI::ImageIterator& tolua_ret = (CEGUI::ImageIterator&)  self->__operator_decrement();
+ tolua_pushusertype(tolua_S,(void*)&tolua_ret,"CEGUI::ImageIterator");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'previous'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: operator== of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator__eq00
+static int tolua_CEGUI_CEGUI_ImageIterator__eq00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* self = (const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+  const CEGUI::ImageIterator* rhs = ((const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'operator=='",NULL);
+#endif
+ {
+  bool tolua_ret = (bool)  self->operator==(*rhs);
+ tolua_pushboolean(tolua_S,(bool)tolua_ret);
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function '.eq'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: toStart of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_toStart00
+static int tolua_CEGUI_CEGUI_ImageIterator_toStart00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageIterator* self = (CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'toStart'",NULL);
+#endif
+ {
+  self->toStart();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'toStart'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: toEnd of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_toEnd00
+static int tolua_CEGUI_CEGUI_ImageIterator_toEnd00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,2,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  CEGUI::ImageIterator* self = (CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,1,0);
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'toEnd'",NULL);
+#endif
+ {
+  self->toEnd();
+ }
+ }
+ return 0;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'toEnd'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_new00
+static int tolua_CEGUI_CEGUI_ImageIterator_new00(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* org = ((const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,2,0));
+ {
+  CEGUI::ImageIterator* tolua_ret = (CEGUI::ImageIterator*)  new CEGUI::ImageIterator(*org);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::ImageIterator");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'new'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: new_local of class  CEGUI::ImageIterator */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_ImageIterator_new00_local
+static int tolua_CEGUI_CEGUI_ImageIterator_new00_local(lua_State* tolua_S)
+{
+#ifndef TOLUA_RELEASE
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertable(tolua_S,1,"CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"const CEGUI::ImageIterator",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+#endif
+ {
+  const CEGUI::ImageIterator* org = ((const CEGUI::ImageIterator*)  tolua_tousertype(tolua_S,2,0));
+ {
+  CEGUI::ImageIterator* tolua_ret = (CEGUI::ImageIterator*)  new CEGUI::ImageIterator(*org);
+ tolua_pushusertype_and_takeownership(tolua_S,(void *)tolua_ret,"CEGUI::ImageIterator");
  }
  }
  return 1;
@@ -16831,7 +17353,7 @@ static int tolua_CEGUI_CEGUI_Element_getChildElementAtIdx00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::Element",0,&tolua_err) ||
- !tolua_isusertype(tolua_S,2,"size_t",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
@@ -16839,7 +17361,7 @@ static int tolua_CEGUI_CEGUI_Element_getChildElementAtIdx00(lua_State* tolua_S)
 #endif
  {
   const CEGUI::Element* self = (const CEGUI::Element*)  tolua_tousertype(tolua_S,1,0);
-  size_t idx = *((size_t*)  tolua_tousertype(tolua_S,2,0));
+  unsigned int idx = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
 #ifndef TOLUA_RELEASE
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildElementAtIdx'",NULL);
 #endif
@@ -16876,16 +17398,8 @@ static int tolua_CEGUI_CEGUI_Element_getChildCount00(lua_State* tolua_S)
  if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildCount'",NULL);
 #endif
  {
-  size_t tolua_ret = (size_t)  self->getChildCount();
- {
-#ifdef __cplusplus
- void* tolua_obj = new size_t(tolua_ret);
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#else
- void* tolua_obj = tolua_copy(tolua_S,(void*)&tolua_ret,sizeof(size_t));
- tolua_pushusertype_and_takeownership(tolua_S,tolua_obj,"size_t");
-#endif
- }
+  unsigned int tolua_ret = (unsigned int)  self->getChildCount();
+ tolua_pushnumber(tolua_S,(lua_Number)tolua_ret);
  }
  }
  return 1;
@@ -19544,12 +20058,44 @@ static int tolua_CEGUI_CEGUI_Window_getChildRecursive00(lua_State* tolua_S)
  tolua_Error tolua_err;
  if (
  !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
- !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isutf8string(tolua_S,2,0,&tolua_err) ||
  !tolua_isnoobj(tolua_S,3,&tolua_err)
  )
  goto tolua_lerror;
  else
 #endif
+ {
+  const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  utf8string name_path = ((utf8string)  tolua_toutf8string(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'getChildRecursive'",NULL);
+#endif
+ {
+  CEGUI::Window* tolua_ret = (CEGUI::Window*)  self->getChildRecursive(name_path);
+ tolua_pushusertype(tolua_S,(void*)tolua_ret,"CEGUI::Window");
+ }
+ }
+ return 1;
+#ifndef TOLUA_RELEASE
+ tolua_lerror:
+ tolua_error(tolua_S,"#ferror in function 'getChildRecursive'.",&tolua_err);
+ return 0;
+#endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: getChildRecursive of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_getChildRecursive01
+static int tolua_CEGUI_CEGUI_Window_getChildRecursive01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"const CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnumber(tolua_S,2,0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
  {
   const CEGUI::Window* self = (const CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
   unsigned int ID = ((unsigned int)  tolua_tonumber(tolua_S,2,0));
@@ -19562,11 +20108,8 @@ static int tolua_CEGUI_CEGUI_Window_getChildRecursive00(lua_State* tolua_S)
  }
  }
  return 1;
-#ifndef TOLUA_RELEASE
- tolua_lerror:
- tolua_error(tolua_S,"#ferror in function 'getChildRecursive'.",&tolua_err);
- return 0;
-#endif
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Window_getChildRecursive00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -19697,6 +20240,34 @@ static int tolua_CEGUI_CEGUI_Window_removeChild00(lua_State* tolua_S)
  tolua_error(tolua_S,"#ferror in function 'removeChild'.",&tolua_err);
  return 0;
 #endif
+}
+#endif //#ifndef TOLUA_DISABLE
+
+/* method: removeChild of class  CEGUI::Window */
+#ifndef TOLUA_DISABLE_tolua_CEGUI_CEGUI_Window_removeChild01
+static int tolua_CEGUI_CEGUI_Window_removeChild01(lua_State* tolua_S)
+{
+ tolua_Error tolua_err;
+ if (
+ !tolua_isusertype(tolua_S,1,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isusertype(tolua_S,2,"CEGUI::Window",0,&tolua_err) ||
+ !tolua_isnoobj(tolua_S,3,&tolua_err)
+ )
+ goto tolua_lerror;
+ else
+ {
+  CEGUI::Window* self = (CEGUI::Window*)  tolua_tousertype(tolua_S,1,0);
+  CEGUI::Window* wnd = ((CEGUI::Window*)  tolua_tousertype(tolua_S,2,0));
+#ifndef TOLUA_RELEASE
+ if (!self) tolua_error(tolua_S,"invalid 'self' in function 'removeChild'",NULL);
+#endif
+ {
+  self->removeChild(wnd);
+ }
+ }
+ return 0;
+tolua_lerror:
+ return tolua_CEGUI_CEGUI_Window_removeChild00(tolua_S);
 }
 #endif //#ifndef TOLUA_DISABLE
 
@@ -64756,8 +65327,22 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"setAutoScaled",tolua_CEGUI_CEGUI_BasicImage_setAutoScaled00);
    tolua_function(tolua_S,"setNativeResolution",tolua_CEGUI_CEGUI_BasicImage_setNativeResolution00);
   tolua_endmodule(tolua_S);
+  tolua_cclass(tolua_S,"ImageFactory","CEGUI::ImageFactory","",NULL);
+  tolua_beginmodule(tolua_S,"ImageFactory");
+  tolua_endmodule(tolua_S);
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"ImagePair","CEGUI::ImagePair","",tolua_collect_CEGUI__ImagePair);
+  #else
+  tolua_cclass(tolua_S,"ImagePair","CEGUI::ImagePair","",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"ImagePair");
+   tolua_function(tolua_S,"delete",tolua_CEGUI_CEGUI_ImagePair_delete00);
+   tolua_variable(tolua_S,"first",tolua_get_CEGUI__ImagePair_first_ptr,tolua_set_CEGUI__ImagePair_first_ptr);
+   tolua_variable(tolua_S,"second",tolua_get_CEGUI__ImagePair_second_ptr,tolua_set_CEGUI__ImagePair_second_ptr);
+  tolua_endmodule(tolua_S);
   tolua_cclass(tolua_S,"ImageManager","CEGUI::ImageManager","",NULL);
   tolua_beginmodule(tolua_S,"ImageManager");
+   tolua_function(tolua_S,"getSingleton",tolua_CEGUI_CEGUI_ImageManager_getSingleton00);
    tolua_function(tolua_S,"removeImageType",tolua_CEGUI_CEGUI_ImageManager_removeImageType00);
    tolua_function(tolua_S,"isImageTypeAvailable",tolua_CEGUI_CEGUI_ImageManager_isImageTypeAvailable00);
    tolua_function(tolua_S,"create",tolua_CEGUI_CEGUI_ImageManager_create00);
@@ -64773,6 +65358,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"notifyDisplaySizeChanged",tolua_CEGUI_CEGUI_ImageManager_notifyDisplaySizeChanged00);
    tolua_function(tolua_S,"setImagesetDefaultResourceGroup",tolua_CEGUI_CEGUI_ImageManager_setImagesetDefaultResourceGroup00);
    tolua_function(tolua_S,"getImagesetDefaultResourceGroup",tolua_CEGUI_CEGUI_ImageManager_getImagesetDefaultResourceGroup00);
+   tolua_function(tolua_S,"getIterator",tolua_CEGUI_CEGUI_ImageManager_getIterator00);
   tolua_endmodule(tolua_S);
 
   { /* begin embedded lua code */
@@ -65024,6 +65610,38 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     95,105,109,112,108, 59,32
    };
    tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 8");
+   lua_settop(tolua_S, top);
+  } /* end of embedded lua code */
+
+  #ifdef __cplusplus
+  tolua_cclass(tolua_S,"ImageIterator","CEGUI::ImageIterator","",tolua_collect_CEGUI__ImageIterator);
+  #else
+  tolua_cclass(tolua_S,"ImageIterator","CEGUI::ImageIterator","",NULL);
+  #endif
+  tolua_beginmodule(tolua_S,"ImageIterator");
+   tolua_function(tolua_S,"key",tolua_CEGUI_CEGUI_ImageIterator_key00);
+   tolua_function(tolua_S,"value",tolua_CEGUI_CEGUI_ImageIterator_value00);
+   tolua_function(tolua_S,"isAtEnd",tolua_CEGUI_CEGUI_ImageIterator_isAtEnd00);
+   tolua_function(tolua_S,"isAtStart",tolua_CEGUI_CEGUI_ImageIterator_isAtStart00);
+   tolua_function(tolua_S,"next",tolua_CEGUI_CEGUI_ImageIterator_next00);
+   tolua_function(tolua_S,"previous",tolua_CEGUI_CEGUI_ImageIterator_previous00);
+   tolua_function(tolua_S,".eq",tolua_CEGUI_CEGUI_ImageIterator__eq00);
+   tolua_function(tolua_S,"toStart",tolua_CEGUI_CEGUI_ImageIterator_toStart00);
+   tolua_function(tolua_S,"toEnd",tolua_CEGUI_CEGUI_ImageIterator_toEnd00);
+   tolua_function(tolua_S,"new",tolua_CEGUI_CEGUI_ImageIterator_new00);
+   tolua_function(tolua_S,"new_local",tolua_CEGUI_CEGUI_ImageIterator_new00_local);
+   tolua_function(tolua_S,".call",tolua_CEGUI_CEGUI_ImageIterator_new00_local);
+  tolua_endmodule(tolua_S);
+
+  { /* begin embedded lua code */
+   int top = lua_gettop(tolua_S);
+   static unsigned char B[] = {
+  10, 67, 69, 71, 85, 73, 46, 73,109, 97,103,101, 73,116,101,
+   114, 97,116,111,114, 46,105,116,101,114, 97,116,111,114, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,105,116,101,114, 97,116,111,
+   114, 95,105,109,112,108, 59,32
+   };
+   tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 9");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
 
@@ -65565,10 +66183,12 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    tolua_function(tolua_S,"getChild",tolua_CEGUI_CEGUI_Window_getChild00);
    tolua_function(tolua_S,"getChild",tolua_CEGUI_CEGUI_Window_getChild01);
    tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive00);
+   tolua_function(tolua_S,"getChildRecursive",tolua_CEGUI_CEGUI_Window_getChildRecursive01);
    tolua_function(tolua_S,"createChild",tolua_CEGUI_CEGUI_Window_createChild00);
    tolua_function(tolua_S,"destroyChild",tolua_CEGUI_CEGUI_Window_destroyChild00);
    tolua_function(tolua_S,"destroyChild",tolua_CEGUI_CEGUI_Window_destroyChild01);
    tolua_function(tolua_S,"removeChild",tolua_CEGUI_CEGUI_Window_removeChild00);
+   tolua_function(tolua_S,"removeChild",tolua_CEGUI_CEGUI_Window_removeChild01);
    tolua_function(tolua_S,"getFont",tolua_CEGUI_CEGUI_Window_getFont00);
    tolua_function(tolua_S,"setFont",tolua_CEGUI_CEGUI_Window_setFont00);
    tolua_function(tolua_S,"setFont",tolua_CEGUI_CEGUI_Window_setFont01);
@@ -67579,7 +68199,7 @@ int tolua_CEGUI_open (lua_State* tolua_S)
    114, 81,117,101,117,101, 69,118,101,110,116, 65,114,103,115,
    32
    };
-   tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 9");
+   tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 10");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
 
@@ -67593,347 +68213,354 @@ int tolua_CEGUI_open (lua_State* tolua_S)
     99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58,
     66,117,116,116,111,110, 66, 97,115,101, 34, 41, 10,101,110,
    100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85,
-    73, 46,116,111, 67,104,101, 99,107, 98,111,120, 40,119, 41,
+    73, 46,116,111, 84,111,103,103,108,101, 66,117,116,116,111,
+   110, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,
+   117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85,
+    73, 58, 58, 84,111,103,103,108,101, 66,117,116,116,111,110,
+    34, 41, 10,101,110,100, 10, 67, 69, 71, 85, 73, 46,116,111,
+    67,104,101, 99,107, 98,111,120, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 84,111,103,103,108,101, 66,117,116,116,111,
+   110, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85,
+    73, 46,116,111, 67,111,109, 98,111, 98,111,120, 40,119, 41,
     10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99,
     97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 67,
-   104,101, 99,107, 98,111,120, 34, 41, 10,101,110,100, 10,102,
+   111,109, 98,111, 98,111,120, 34, 41, 10,101,110,100, 10,102,
    117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 67,111,109, 98,111, 98,111,120, 40,119, 41, 10,114,101,
+   111, 67,111,109, 98,111, 68,114,111,112, 76,105,115,116, 40,
+   119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97,
+    46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58,
+    58, 67,111,109, 98,111, 68,114,111,112, 76,105,115,116, 34,
+    41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32,
+    67, 69, 71, 85, 73, 46,116,111, 68,114, 97,103, 67,111,110,
+   116, 97,105,110,101,114, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 68,114, 97,103, 67,111,110,
+   116, 97,105,110,101,114, 34, 41, 10,101,110,100, 10,102,117,
+   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
+    69,100,105,116, 98,111,120, 40,119, 41, 10,114,101,116,117,
+   114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119,
+    44, 34, 67, 69, 71, 85, 73, 58, 58, 69,100,105,116, 98,111,
+   120, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,
+   110, 32, 67, 69, 71, 85, 73, 46,116,111, 70,114, 97,109,101,
+    87,105,110,100,111,119, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 70,114, 97,109,101, 87,105,
+   110,100,111,119, 34, 41, 10,101,110,100, 10,102,117,110, 99,
+   116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 71,114,
+   105,100, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,
+   101,114, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,
+   108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71,
+    85, 73, 58, 58, 71,114,105,100, 76, 97,121,111,117,116, 67,
+   111,110,116, 97,105,110,101,114, 34, 41, 10,101,110,100, 10,
+   102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 71, 85, 73, 83,104,101,101,116, 40,119, 41, 10,114,
+   101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,
+   116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 71, 85, 73,
+    83,104,101,101,116, 34, 41, 10,101,110,100, 10,102,117,110,
+    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 72,
+   111,114,105,122,111,110,116, 97,108, 76, 97,121,111,117,116,
+    67,111,110,116, 97,105,110,101,114, 40,119, 41, 10,114,101,
    116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116,
-    40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 67,111,109, 98,
-   111, 98,111,120, 34, 41, 10,101,110,100, 10,102,117,110, 99,
-   116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 67,111,
-   109, 98,111, 68,114,111,112, 76,105,115,116, 40,119, 41, 10,
+    40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 72,111,114,105,
+   122,111,110,116, 97,108, 76, 97,121,111,117,116, 67,111,110,
+   116, 97,105,110,101,114, 34, 41, 10,101,110,100, 10,102,117,
+   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
+    73,116,101,109, 69,110,116,114,121, 40,119, 41, 10,114,101,
+   116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116,
+    40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 73,116,101,109,
+    69,110,116,114,121, 34, 41, 10,101,110,100, 10,102,117,110,
+    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 73,
+   116,101,109, 76,105,115,116, 66, 97,115,101, 40,119, 41, 10,
    114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,
-   115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 67,111,
-   109, 98,111, 68,114,111,112, 76,105,115,116, 34, 41, 10,101,
-   110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71,
-    85, 73, 46,116,111, 68,114, 97,103, 67,111,110,116, 97,105,
+   115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 73,116,
+   101,109, 76,105,115,116, 66, 97,115,101, 34, 41, 10,101,110,
+   100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85,
+    73, 46,116,111, 73,116,101,109, 76,105,115,116, 98,111,120,
+    40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
+    97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73,
+    58, 58, 73,116,101,109, 76,105,115,116, 98,111,120, 34, 41,
+    10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67,
+    69, 71, 85, 73, 46,116,111, 76, 97,121,111,117,116, 67,111,
+   110,116, 97,105,110,101,114, 40,119, 41, 10,114,101,116,117,
+   114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119,
+    44, 34, 67, 69, 71, 85, 73, 58, 58, 76, 97,121,111,117,116,
+    67,111,110,116, 97,105,110,101,114, 34, 41, 10,101,110,100,
+    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
+    46,116,111, 76,105,115,116, 98,111,120, 40,119, 41, 10,114,
+   101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,
+   116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 76,105,115,
+   116, 98,111,120, 34, 41, 10,101,110,100, 10,102,117,110, 99,
+   116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,
+   115,116, 72,101, 97,100,101,114, 40,119, 41, 10,114,101,116,
+   117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,
+   119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 76,105,115,116, 72,
+   101, 97,100,101,114, 34, 41, 10,101,110,100, 10,102,117,110,
+    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 76,
+   105,115,116, 72,101, 97,100,101,114, 83,101,103,109,101,110,
+   116, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,
+   117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85,
+    73, 58, 58, 76,105,115,116, 72,101, 97,100,101,114, 83,101,
+   103,109,101,110,116, 34, 41, 10,101,110,100, 10,102,117,110,
+    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 77,
+   101,110,117, 98, 97,114, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 77,101,110,117, 98, 97,114,
+    34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110,
+    32, 67, 69, 71, 85, 73, 46,116,111, 77,101,110,117, 66, 97,
+   115,101, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,
+   108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71,
+    85, 73, 58, 58, 77,101,110,117, 66, 97,115,101, 34, 41, 10,
+   101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69,
+    71, 85, 73, 46,116,111, 77,101,110,117, 73,116,101,109, 40,
+   119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97,
+    46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58,
+    58, 77,101,110,117, 73,116,101,109, 34, 41, 10,101,110,100,
+    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
+    46,116,111, 77,117,108,116,105, 67,111,108,117,109,110, 76,
+   105,115,116, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
+   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
+    71, 85, 73, 58, 58, 77,117,108,116,105, 67,111,108,117,109,
+   110, 76,105,115,116, 34, 41, 10,101,110,100, 10,102,117,110,
+    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 77,
+   117,108,116,105, 76,105,110,101, 69,100,105,116, 98,111,120,
+    40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
+    97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73,
+    58, 58, 77,117,108,116,105, 76,105,110,101, 69,100,105,116,
+    98,111,120, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,
+   105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 80,111,112,
+   117,112, 77,101,110,117, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 80,111,112,117,112, 77,101,
+   110,117, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
+   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 80,114,111,103,
+   114,101,115,115, 66, 97,114, 40,119, 41, 10,114,101,116,117,
+   114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119,
+    44, 34, 67, 69, 71, 85, 73, 58, 58, 80,114,111,103,114,101,
+   115,115, 66, 97,114, 34, 41, 10,101,110,100, 10,102,117,110,
+    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 80,
+   117,115,104, 66,117,116,116,111,110, 40,119, 41, 10,114,101,
+   116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116,
+    40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 80,117,115,104,
+    66,117,116,116,111,110, 34, 41, 10,101,110,100, 10,102,117,
+   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
+    82, 97,100,105,111, 66,117,116,116,111,110, 40,119, 41, 10,
+   114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,
+   115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 82, 97,
+   100,105,111, 66,117,116,116,111,110, 34, 41, 10,101,110,100,
+    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
+    46,116,111, 83, 99,114,111,108,108, 97, 98,108,101, 80, 97,
+   110,101, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,
+   108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71,
+    85, 73, 58, 58, 83, 99,114,111,108,108, 97, 98,108,101, 80,
+    97,110,101, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,
+   105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,
+   111,108,108, 98, 97,114, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 83, 99,114,111,108,108, 98,
+    97,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
+   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,
+   108,108,101,100, 67,111,110,116, 97,105,110,101,114, 40,119,
+    41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46,
+    99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58,
+    83, 99,114,111,108,108,101,100, 67,111,110,116, 97,105,110,
+   101,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
+   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,
+   108,108,101,100, 73,116,101,109, 76,105,115,116, 66, 97,115,
+   101, 40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,
+   117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85,
+    73, 58, 58, 83, 99,114,111,108,108,101,100, 73,116,101,109,
+    76,105,115,116, 66, 97,115,101, 34, 41, 10,101,110,100, 10,
+   102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 83,101,113,117,101,110,116,105, 97,108, 76, 97,121,
+   111,117,116, 67,111,110,116, 97,105,110,101,114, 40,119, 41,
+    10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99,
+    97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 83,
+   101,113,117,101,110,116,105, 97,108, 76, 97,121,111,117,116,
+    67,111,110,116, 97,105,110,101,114, 34, 41, 10,101,110,100,
+    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
+    46,116,111, 83,108,105,100,101,114, 40,119, 41, 10,114,101,
+   116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116,
+    40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 83,108,105,100,
+   101,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
+   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 83,112,105,110,
    110,101,114, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
    111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 68,114, 97,103, 67,111,110,116, 97,105,
-   110,101,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,
-   105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 69,100,105,
-   116, 98,111,120, 40,119, 41, 10,114,101,116,117,114,110, 32,
-   116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67,
-    69, 71, 85, 73, 58, 58, 69,100,105,116, 98,111,120, 34, 41,
+    71, 85, 73, 58, 58, 83,112,105,110,110,101,114, 34, 41, 10,
+   101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69,
+    71, 85, 73, 46,116,111, 84, 97, 98, 66,117,116,116,111,110,
+    40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
+    97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73,
+    58, 58, 84, 97, 98, 66,117,116,116,111,110, 34, 41, 10,101,
+   110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71,
+    85, 73, 46,116,111, 84, 97, 98, 67,111,110,116,114,111,108,
+    40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
+    97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73,
+    58, 58, 84, 97, 98, 67,111,110,116,114,111,108, 34, 41, 10,
+   101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69,
+    71, 85, 73, 46,116,111, 84, 97, 98, 80, 97,110,101, 40,119,
+    41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46,
+    99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58,
+    84, 97, 98, 80, 97,110,101, 34, 41, 10,101,110,100, 10,102,
+   117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 84,104,117,109, 98, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 84,104,117,109, 98, 34, 41,
     10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67,
-    69, 71, 85, 73, 46,116,111, 70,114, 97,109,101, 87,105,110,
-   100,111,119, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
-   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 70,114, 97,109,101, 87,105,110,100,111,
-   119, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,
-   110, 32, 67, 69, 71, 85, 73, 46,116,111, 71,114,105,100, 76,
+    69, 71, 85, 73, 46,116,111, 84,111,111,108,116,105,112, 40,
+   119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97,
+    46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58,
+    58, 84,111,111,108,116,105,112, 34, 41, 10,101,110,100, 10,
+   102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 84,114,101,101, 40,119, 41, 10,114,101,116,117,114,
+   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
+    34, 67, 69, 71, 85, 73, 58, 58, 84,114,101,101, 34, 41, 10,
+   101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69,
+    71, 85, 73, 46,116,111, 86,101,114,116,105, 99, 97,108, 76,
     97,121,111,117,116, 67,111,110,116, 97,105,110,101,114, 40,
    119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97,
     46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58,
-    58, 71,114,105,100, 76, 97,121,111,117,116, 67,111,110,116,
-    97,105,110,101,114, 34, 41, 10,101,110,100, 10,102,117,110,
-    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 71,
-    85, 73, 83,104,101,101,116, 40,119, 41, 10,114,101,116,117,
-   114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119,
-    44, 34, 67, 69, 71, 85, 73, 58, 58, 71, 85, 73, 83,104,101,
-   101,116, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
-   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 72,111,114,105,
-   122,111,110,116, 97,108, 76, 97,121,111,117,116, 67,111,110,
-   116, 97,105,110,101,114, 40,119, 41, 10,114,101,116,117,114,
-   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
-    34, 67, 69, 71, 85, 73, 58, 58, 72,111,114,105,122,111,110,
-   116, 97,108, 76, 97,121,111,117,116, 67,111,110,116, 97,105,
-   110,101,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,
-   105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 73,116,101,
-   109, 69,110,116,114,121, 40,119, 41, 10,114,101,116,117,114,
-   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
-    34, 67, 69, 71, 85, 73, 58, 58, 73,116,101,109, 69,110,116,
-   114,121, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
-   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 73,116,101,109,
-    76,105,115,116, 66, 97,115,101, 40,119, 41, 10,114,101,116,
-   117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,
-   119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 73,116,101,109, 76,
-   105,115,116, 66, 97,115,101, 34, 41, 10,101,110,100, 10,102,
-   117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 73,116,101,109, 76,105,115,116, 98,111,120, 40,119, 41,
-    10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99,
-    97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 73,
-   116,101,109, 76,105,115,116, 98,111,120, 34, 41, 10,101,110,
-   100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85,
-    73, 46,116,111, 76, 97,121,111,117,116, 67,111,110,116, 97,
-   105,110,101,114, 40,119, 41, 10,114,101,116,117,114,110, 32,
-   116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67,
-    69, 71, 85, 73, 58, 58, 76, 97,121,111,117,116, 67,111,110,
-   116, 97,105,110,101,114, 34, 41, 10,101,110,100, 10,102,117,
-   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
-    76,105,115,116, 98,111,120, 40,119, 41, 10,114,101,116,117,
-   114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119,
-    44, 34, 67, 69, 71, 85, 73, 58, 58, 76,105,115,116, 98,111,
-   120, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,
-   110, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,116, 72,
-   101, 97,100,101,114, 40,119, 41, 10,114,101,116,117,114,110,
-    32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34,
-    67, 69, 71, 85, 73, 58, 58, 76,105,115,116, 72,101, 97,100,
-   101,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
-   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,116,
-    72,101, 97,100,101,114, 83,101,103,109,101,110,116, 40,119,
-    41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46,
-    99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58,
-    76,105,115,116, 72,101, 97,100,101,114, 83,101,103,109,101,
-   110,116, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
-   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 77,101,110,117,
-    98, 97,114, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
-   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 77,101,110,117, 98, 97,114, 34, 41, 10,
-   101,110,100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69,
-    71, 85, 73, 46,116,111, 77,101,110,117, 66, 97,115,101, 40,
-   119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97,
-    46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58,
-    58, 77,101,110,117, 66, 97,115,101, 34, 41, 10,101,110,100,
-    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
-    46,116,111, 77,101,110,117, 73,116,101,109, 40,119, 41, 10,
-   114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,
-   115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 77,101,
-   110,117, 73,116,101,109, 34, 41, 10,101,110,100, 10,102,117,
-   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
-    77,117,108,116,105, 67,111,108,117,109,110, 76,105,115,116,
-    40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
-    97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73,
-    58, 58, 77,117,108,116,105, 67,111,108,117,109,110, 76,105,
-   115,116, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
-   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 77,117,108,116,
-   105, 76,105,110,101, 69,100,105,116, 98,111,120, 40,119, 41,
-    10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99,
-    97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 77,
-   117,108,116,105, 76,105,110,101, 69,100,105,116, 98,111,120,
-    34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110,
-    32, 67, 69, 71, 85, 73, 46,116,111, 80,111,112,117,112, 77,
-   101,110,117, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
-   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 80,111,112,117,112, 77,101,110,117, 34,
-    41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32,
-    67, 69, 71, 85, 73, 46,116,111, 80,114,111,103,114,101,115,
-   115, 66, 97,114, 40,119, 41, 10,114,101,116,117,114,110, 32,
-   116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67,
-    69, 71, 85, 73, 58, 58, 80,114,111,103,114,101,115,115, 66,
-    97,114, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,
-   111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 80,117,115,104,
-    66,117,116,116,111,110, 40,119, 41, 10,114,101,116,117,114,
-   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
-    34, 67, 69, 71, 85, 73, 58, 58, 80,117,115,104, 66,117,116,
-   116,111,110, 34, 41, 10,101,110,100, 10,102,117,110, 99,116,
-   105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 82, 97,100,
-   105,111, 66,117,116,116,111,110, 40,119, 41, 10,114,101,116,
-   117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,
-   119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 82, 97,100,105,111,
-    66,117,116,116,111,110, 34, 41, 10,101,110,100, 10,102,117,
-   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
-    83, 99,114,111,108,108, 97, 98,108,101, 80, 97,110,101, 40,
-   119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97,
-    46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58,
-    58, 83, 99,114,111,108,108, 97, 98,108,101, 80, 97,110,101,
-    34, 41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110,
-    32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,108,
-    98, 97,114, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
-   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 83, 99,114,111,108,108, 98, 97,114, 34,
-    41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32,
-    67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,108,101,
-   100, 67,111,110,116, 97,105,110,101,114, 40,119, 41, 10,114,
-   101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,
-   116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 83, 99,114,
-   111,108,108,101,100, 67,111,110,116, 97,105,110,101,114, 34,
-    41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32,
-    67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,108,101,
-   100, 73,116,101,109, 76,105,115,116, 66, 97,115,101, 40,119,
-    41, 10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46,
-    99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58,
-    83, 99,114,111,108,108,101,100, 73,116,101,109, 76,105,115,
-   116, 66, 97,115,101, 34, 41, 10,101,110,100, 10,102,117,110,
-    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 83,
-   101,113,117,101,110,116,105, 97,108, 76, 97,121,111,117,116,
-    67,111,110,116, 97,105,110,101,114, 40,119, 41, 10,114,101,
-   116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,116,
-    40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 83,101,113,117,
-   101,110,116,105, 97,108, 76, 97,121,111,117,116, 67,111,110,
-   116, 97,105,110,101,114, 34, 41, 10,101,110,100, 10,102,117,
-   110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111,
-    83,108,105,100,101,114, 40,119, 41, 10,114,101,116,117,114,
-   110, 32,116,111,108,117, 97, 46, 99, 97,115,116, 40,119, 44,
-    34, 67, 69, 71, 85, 73, 58, 58, 83,108,105,100,101,114, 34,
-    41, 10,101,110,100, 10,102,117,110, 99,116,105,111,110, 32,
-    67, 69, 71, 85, 73, 46,116,111, 83,112,105,110,110,101,114,
-    40,119, 41, 10,114,101,116,117,114,110, 32,116,111,108,117,
-    97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73,
-    58, 58, 83,112,105,110,110,101,114, 34, 41, 10,101,110,100,
-    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
-    46,116,111, 84, 97, 98, 66,117,116,116,111,110, 40,119, 41,
-    10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99,
-    97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 84,
-    97, 98, 66,117,116,116,111,110, 34, 41, 10,101,110,100, 10,
-   102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 84, 97, 98, 67,111,110,116,114,111,108, 40,119, 41,
-    10,114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99,
-    97,115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 84,
-    97, 98, 67,111,110,116,114,111,108, 34, 41, 10,101,110,100,
-    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
-    46,116,111, 84, 97, 98, 80, 97,110,101, 40,119, 41, 10,114,
-   101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,115,
-   116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 84, 97, 98,
-    80, 97,110,101, 34, 41, 10,101,110,100, 10,102,117,110, 99,
-   116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 84,104,
-   117,109, 98, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
-   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 84,104,117,109, 98, 34, 41, 10,101,110,
-   100, 10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85,
-    73, 46,116,111, 84,111,111,108,116,105,112, 40,119, 41, 10,
-   114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,
-   115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 84,111,
-   111,108,116,105,112, 34, 41, 10,101,110,100, 10,102,117,110,
-    99,116,105,111,110, 32, 67, 69, 71, 85, 73, 46,116,111, 84,
-   114,101,101, 40,119, 41, 10,114,101,116,117,114,110, 32,116,
-   111,108,117, 97, 46, 99, 97,115,116, 40,119, 44, 34, 67, 69,
-    71, 85, 73, 58, 58, 84,114,101,101, 34, 41, 10,101,110,100,
-    10,102,117,110, 99,116,105,111,110, 32, 67, 69, 71, 85, 73,
-    46,116,111, 86,101,114,116,105, 99, 97,108, 76, 97,121,111,
-   117,116, 67,111,110,116, 97,105,110,101,114, 40,119, 41, 10,
-   114,101,116,117,114,110, 32,116,111,108,117, 97, 46, 99, 97,
-   115,116, 40,119, 44, 34, 67, 69, 71, 85, 73, 58, 58, 86,101,
-   114,116,105, 99, 97,108, 76, 97,121,111,117,116, 67,111,110,
-   116, 97,105,110,101,114, 34, 41, 10,101,110,100, 10, 67, 69,
-    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 66,117,
-   116,116,111,110, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85,
-    73, 46,116,111, 66,117,116,116,111,110, 66, 97,115,101, 10,
+    58, 86,101,114,116,105, 99, 97,108, 76, 97,121,111,117,116,
+    67,111,110,116, 97,105,110,101,114, 34, 41, 10,101,110,100,
+    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
+   111, 66,117,116,116,111,110, 66, 97,115,101, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 66,117,116,116,111,110, 66, 97,
+   115,101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
+    46,116,111, 67,104,101, 99,107, 98,111,120, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 84,111,103,103,108,101, 66,117,
+   116,116,111,110, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
+   111,119, 46,116,111, 67,111,109, 98,111, 98,111,120, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 67,111,109, 98,111, 98,
+   111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
+    46,116,111, 67,111,109, 98,111, 68,114,111,112, 76,105,115,
+   116, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 67,111,109,
+    98,111, 68,114,111,112, 76,105,115,116, 10, 67, 69, 71, 85,
+    73, 46, 87,105,110,100,111,119, 46,116,111, 68,114, 97,103,
+    67,111,110,116, 97,105,110,101,114, 32, 61, 32, 67, 69, 71,
+    85, 73, 46,116,111, 68,114, 97,103, 67,111,110,116, 97,105,
+   110,101,114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
+   119, 46,116,111, 69,100,105,116, 98,111,120, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 69,100,105,116, 98,111,120, 10,
     67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
-    67,104,101, 99,107, 98,111,120, 32, 61, 32, 67, 69, 71, 85,
-    73, 46,116,111, 67,104,101, 99,107, 98,111,120, 10, 67, 69,
-    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 67,111,
-   109, 98,111, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 67,111,109, 98,111, 98,111,120, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 67,111,109, 98,
-   111, 68,114,111,112, 76,105,115,116, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 67,111,109, 98,111, 68,114,111,112, 76,
-   105,115,116, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
-   119, 46,116,111, 68,114, 97,103, 67,111,110,116, 97,105,110,
-   101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 68,114,
-    97,103, 67,111,110,116, 97,105,110,101,114, 10, 67, 69, 71,
-    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 69,100,105,
-   116, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    69,100,105,116, 98,111,120, 10, 67, 69, 71, 85, 73, 46, 87,
-   105,110,100,111,119, 46,116,111, 70,114, 97,109,101, 87,105,
-   110,100,111,119, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    70,114, 97,109,101, 87,105,110,100,111,119, 10, 67, 69, 71,
-    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 71,114,105,
-   100, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,101,
-   114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 71,114,105,
-   100, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,101,
-   114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 71, 85, 73, 83,104,101,101,116, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 71, 85, 73, 83,104,101,101,116, 10,
-    67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
-    72,111,114,105,122,111,110,116, 97,108, 76, 97,121,111,117,
-   116, 67,111,110,116, 97,105,110,101,114, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 72,111,114,105,122,111,110,116, 97,
-   108, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,101,
-   114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 73,116,101,109, 69,110,116,114,121, 32, 61, 32, 67,
-    69, 71, 85, 73, 46,116,111, 73,116,101,109, 69,110,116,114,
-   121, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 73,116,101,109, 76,105,115,116, 66, 97,115,101, 32,
-    61, 32, 67, 69, 71, 85, 73, 46,116,111, 73,116,101,109, 76,
-   105,115,116, 66, 97,115,101, 10, 67, 69, 71, 85, 73, 46, 87,
-   105,110,100,111,119, 46,116,111, 73,116,101,109, 76,105,115,
-   116, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    73,116,101,109, 76,105,115,116, 98,111,120, 10, 67, 69, 71,
-    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 76, 97,121,
-   111,117,116, 67,111,110,116, 97,105,110,101,114, 32, 61, 32,
-    67, 69, 71, 85, 73, 46,116,111, 76, 97,121,111,117,116, 67,
+    70,114, 97,109,101, 87,105,110,100,111,119, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 70,114, 97,109,101, 87,105,110,
+   100,111,119, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
+   119, 46,116,111, 71,114,105,100, 76, 97,121,111,117,116, 67,
+   111,110,116, 97,105,110,101,114, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 71,114,105,100, 76, 97,121,111,117,116, 67,
    111,110,116, 97,105,110,101,114, 10, 67, 69, 71, 85, 73, 46,
-    87,105,110,100,111,119, 46,116,111, 76,105,115,116, 98,111,
-   120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,
-   116, 98,111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
-   111,119, 46,116,111, 76,105,115,116, 72,101, 97,100,101,114,
-    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,116,
-    72,101, 97,100,101,114, 10, 67, 69, 71, 85, 73, 46, 87,105,
-   110,100,111,119, 46,116,111, 76,105,115,116, 72,101, 97,100,
-   101,114, 83,101,103,109,101,110,116, 32, 61, 32, 67, 69, 71,
-    85, 73, 46,116,111, 76,105,115,116, 72,101, 97,100,101,114,
-    83,101,103,109,101,110,116, 10, 67, 69, 71, 85, 73, 46, 87,
-   105,110,100,111,119, 46,116,111, 77,101,110,117, 98, 97,114,
-    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 77,101,110,117,
-    98, 97,114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
-   119, 46,116,111, 77,101,110,117, 66, 97,115,101, 32, 61, 32,
-    67, 69, 71, 85, 73, 46,116,111, 77,101,110,117, 66, 97,115,
-   101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 77,101,110,117, 73,116,101,109, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 77,101,110,117, 73,116,101,109, 10,
+    87,105,110,100,111,119, 46,116,111, 71, 85, 73, 83,104,101,
+   101,116, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 71, 85,
+    73, 83,104,101,101,116, 10, 67, 69, 71, 85, 73, 46, 87,105,
+   110,100,111,119, 46,116,111, 72,111,114,105,122,111,110,116,
+    97,108, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,
+   101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 72,111,
+   114,105,122,111,110,116, 97,108, 76, 97,121,111,117,116, 67,
+   111,110,116, 97,105,110,101,114, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 73,116,101,109, 69,110,
+   116,114,121, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 73,
+   116,101,109, 69,110,116,114,121, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 73,116,101,109, 76,105,
+   115,116, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,
+   116,111, 73,116,101,109, 76,105,115,116, 66, 97,115,101, 10,
     67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
-    77,117,108,116,105, 67,111,108,117,109,110, 76,105,115,116,
-    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 77,117,108,116,
-   105, 67,111,108,117,109,110, 76,105,115,116, 10, 67, 69, 71,
-    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 77,117,108,
-   116,105, 76,105,110,101, 69,100,105,116, 98,111,120, 32, 61,
-    32, 67, 69, 71, 85, 73, 46,116,111, 77,117,108,116,105, 76,
-   105,110,101, 69,100,105,116, 98,111,120, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 80,111,112,117,
-   112, 77,101,110,117, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 80,111,112,117,112, 77,101,110,117, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 80,114,111,103,
-   114,101,115,115, 66, 97,114, 32, 61, 32, 67, 69, 71, 85, 73,
-    46,116,111, 80,114,111,103,114,101,115,115, 66, 97,114, 10,
-    67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
-    80,117,115,104, 66,117,116,116,111,110, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 80,117,115,104, 66,117,116,116,111,
-   110, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 82, 97,100,105,111, 66,117,116,116,111,110, 32, 61,
-    32, 67, 69, 71, 85, 73, 46,116,111, 82, 97,100,105,111, 66,
-   117,116,116,111,110, 10, 67, 69, 71, 85, 73, 46, 87,105,110,
-   100,111,119, 46,116,111, 83, 99,114,111,108,108, 97, 98,108,
-   101, 80, 97,110,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
-   111, 83, 99,114,111,108,108, 97, 98,108,101, 80, 97,110,101,
-    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
-   111, 83, 99,114,111,108,108, 98, 97,114, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 83, 99,114,111,108,108, 98, 97,114,
-    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
-   111, 83, 99,114,111,108,108,101,100, 67,111,110,116, 97,105,
-   110,101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 83,
-    99,114,111,108,108,101,100, 67,111,110,116, 97,105,110,101,
-   114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 83, 99,114,111,108,108,101,100, 73,116,101,109, 76,
-   105,115,116, 66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73,
-    46,116,111, 83, 99,114,111,108,108,101,100, 73,116,101,109,
-    76,105,115,116, 66, 97,115,101, 10, 67, 69, 71, 85, 73, 46,
-    87,105,110,100,111,119, 46,116,111, 83,101,113,117,101,110,
-   116,105, 97,108, 76, 97,121,111,117,116, 67,111,110,116, 97,
+    73,116,101,109, 76,105,115,116, 98,111,120, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 73,116,101,109, 76,105,115,116,
+    98,111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
+   119, 46,116,111, 76, 97,121,111,117,116, 67,111,110,116, 97,
    105,110,101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    83,101,113,117,101,110,116,105, 97,108, 76, 97,121,111,117,
-   116, 67,111,110,116, 97,105,110,101,114, 10, 67, 69, 71, 85,
-    73, 46, 87,105,110,100,111,119, 46,116,111, 83,108,105,100,
-   101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 83,108,
-   105,100,101,114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
-   111,119, 46,116,111, 83,112,105,110,110,101,114, 32, 61, 32,
-    67, 69, 71, 85, 73, 46,116,111, 83,112,105,110,110,101,114,
-    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
-   111, 84, 97, 98, 66,117,116,116,111,110, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 84, 97, 98, 66,117,116,116,111,110,
-    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
-   111, 84, 97, 98, 67,111,110,116,114,111,108, 32, 61, 32, 67,
-    69, 71, 85, 73, 46,116,111, 84, 97, 98, 67,111,110,116,114,
-   111,108, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
-    46,116,111, 84, 97, 98, 80, 97,110,101, 32, 61, 32, 67, 69,
-    71, 85, 73, 46,116,111, 84, 97, 98, 80, 97,110,101, 10, 67,
-    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84,
-   104,117,109, 98, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
-    84,104,117,109, 98, 10, 67, 69, 71, 85, 73, 46, 87,105,110,
-   100,111,119, 46,116,111, 84,111,111,108,116,105,112, 32, 61,
-    32, 67, 69, 71, 85, 73, 46,116,111, 84,111,111,108,116,105,
-   112, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,
-   116,111, 84,114,101,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,
-   116,111, 84,114,101,101, 10, 67, 69, 71, 85, 73, 46, 87,105,
-   110,100,111,119, 46,116,111, 86,101,114,116,105, 99, 97,108,
     76, 97,121,111,117,116, 67,111,110,116, 97,105,110,101,114,
-    32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 86,101,114,116,
-   105, 99, 97,108, 76, 97,121,111,117,116, 67,111,110,116, 97,
-   105,110,101,114,32
+    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
+   111, 76,105,115,116, 98,111,120, 32, 61, 32, 67, 69, 71, 85,
+    73, 46,116,111, 76,105,115,116, 98,111,120, 10, 67, 69, 71,
+    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 76,105,115,
+   116, 72,101, 97,100,101,114, 32, 61, 32, 67, 69, 71, 85, 73,
+    46,116,111, 76,105,115,116, 72,101, 97,100,101,114, 10, 67,
+    69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 76,
+   105,115,116, 72,101, 97,100,101,114, 83,101,103,109,101,110,
+   116, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 76,105,115,
+   116, 72,101, 97,100,101,114, 83,101,103,109,101,110,116, 10,
+    67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
+    77,101,110,117, 98, 97,114, 32, 61, 32, 67, 69, 71, 85, 73,
+    46,116,111, 77,101,110,117, 98, 97,114, 10, 67, 69, 71, 85,
+    73, 46, 87,105,110,100,111,119, 46,116,111, 77,101,110,117,
+    66, 97,115,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
+    77,101,110,117, 66, 97,115,101, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 77,101,110,117, 73,116,
+   101,109, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 77,101,
+   110,117, 73,116,101,109, 10, 67, 69, 71, 85, 73, 46, 87,105,
+   110,100,111,119, 46,116,111, 77,117,108,116,105, 67,111,108,
+   117,109,110, 76,105,115,116, 32, 61, 32, 67, 69, 71, 85, 73,
+    46,116,111, 77,117,108,116,105, 67,111,108,117,109,110, 76,
+   105,115,116, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
+   119, 46,116,111, 77,117,108,116,105, 76,105,110,101, 69,100,
+   105,116, 98,111,120, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 77,117,108,116,105, 76,105,110,101, 69,100,105,116, 98,
+   111,120, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
+    46,116,111, 80,111,112,117,112, 77,101,110,117, 32, 61, 32,
+    67, 69, 71, 85, 73, 46,116,111, 80,111,112,117,112, 77,101,
+   110,117, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
+    46,116,111, 80,114,111,103,114,101,115,115, 66, 97,114, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,116,111, 80,114,111,103,114,
+   101,115,115, 66, 97,114, 10, 67, 69, 71, 85, 73, 46, 87,105,
+   110,100,111,119, 46,116,111, 80,117,115,104, 66,117,116,116,
+   111,110, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 80,117,
+   115,104, 66,117,116,116,111,110, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 82, 97,100,105,111, 66,
+   117,116,116,111,110, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,
+   111, 82, 97,100,105,111, 66,117,116,116,111,110, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 83, 99,
+   114,111,108,108, 97, 98,108,101, 80, 97,110,101, 32, 61, 32,
+    67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,108, 97,
+    98,108,101, 80, 97,110,101, 10, 67, 69, 71, 85, 73, 46, 87,
+   105,110,100,111,119, 46,116,111, 83, 99,114,111,108,108, 98,
+    97,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,
+   114,111,108,108, 98, 97,114, 10, 67, 69, 71, 85, 73, 46, 87,
+   105,110,100,111,119, 46,116,111, 83, 99,114,111,108,108,101,
+   100, 67,111,110,116, 97,105,110,101,114, 32, 61, 32, 67, 69,
+    71, 85, 73, 46,116,111, 83, 99,114,111,108,108,101,100, 67,
+   111,110,116, 97,105,110,101,114, 10, 67, 69, 71, 85, 73, 46,
+    87,105,110,100,111,119, 46,116,111, 83, 99,114,111,108,108,
+   101,100, 73,116,101,109, 76,105,115,116, 66, 97,115,101, 32,
+    61, 32, 67, 69, 71, 85, 73, 46,116,111, 83, 99,114,111,108,
+   108,101,100, 73,116,101,109, 76,105,115,116, 66, 97,115,101,
+    10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,
+   111, 83,101,113,117,101,110,116,105, 97,108, 76, 97,121,111,
+   117,116, 67,111,110,116, 97,105,110,101,114, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 83,101,113,117,101,110,116,105,
+    97,108, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,
+   101,114, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,119,
+    46,116,111, 83,108,105,100,101,114, 32, 61, 32, 67, 69, 71,
+    85, 73, 46,116,111, 83,108,105,100,101,114, 10, 67, 69, 71,
+    85, 73, 46, 87,105,110,100,111,119, 46,116,111, 83,112,105,
+   110,110,101,114, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
+    83,112,105,110,110,101,114, 10, 67, 69, 71, 85, 73, 46, 87,
+   105,110,100,111,119, 46,116,111, 84, 97, 98, 66,117,116,116,
+   111,110, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84, 97,
+    98, 66,117,116,116,111,110, 10, 67, 69, 71, 85, 73, 46, 87,
+   105,110,100,111,119, 46,116,111, 84, 97, 98, 67,111,110,116,
+   114,111,108, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84,
+    97, 98, 67,111,110,116,114,111,108, 10, 67, 69, 71, 85, 73,
+    46, 87,105,110,100,111,119, 46,116,111, 84, 97, 98, 80, 97,
+   110,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111, 84, 97,
+    98, 80, 97,110,101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,
+   100,111,119, 46,116,111, 84,104,117,109, 98, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 84,104,117,109, 98, 10, 67, 69,
+    71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111, 84,111,
+   103,103,108,101, 66,117,116,116,111,110, 32, 61, 32, 67, 69,
+    71, 85, 73, 46,116,111, 84,111,103,103,108,101, 66,117,116,
+   116,111,110, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,111,
+   119, 46,116,111, 84,111,111,108,116,105,112, 32, 61, 32, 67,
+    69, 71, 85, 73, 46,116,111, 84,111,111,108,116,105,112, 10,
+    67, 69, 71, 85, 73, 46, 87,105,110,100,111,119, 46,116,111,
+    84,114,101,101, 32, 61, 32, 67, 69, 71, 85, 73, 46,116,111,
+    84,114,101,101, 10, 67, 69, 71, 85, 73, 46, 87,105,110,100,
+   111,119, 46,116,111, 86,101,114,116,105, 99, 97,108, 76, 97,
+   121,111,117,116, 67,111,110,116, 97,105,110,101,114, 32, 61,
+    32, 67, 69, 71, 85, 73, 46,116,111, 86,101,114,116,105, 99,
+    97,108, 76, 97,121,111,117,116, 67,111,110,116, 97,105,110,
+   101,114,32
    };
-   tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 10");
+   tolua_dobuffer(tolua_S,(char*)B,sizeof(B),"tolua: embedded Lua code 11");
    lua_settop(tolua_S, top);
   } /* end of embedded lua code */
 

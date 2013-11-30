@@ -107,6 +107,8 @@ typedef WindowFactoryManager::FalagardMappingIterator FalagardMappingIterator;
 typedef WindowFactoryManager::FalagardWindowMapping FalagardWindowMapping;
 typedef SchemeManager::SchemeIterator SchemeIterator;
 typedef FontManager::FontIterator FontIterator;
+typedef ImageManager::ImageIterator ImageIterator;
+typedef ImageManager::ImagePair ImagePair;
 
 template <typename T>
 inline PropertyIterator ceguiLua_getPropertyIterator(const T* self)
