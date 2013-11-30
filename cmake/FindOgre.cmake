@@ -58,20 +58,20 @@ set(OGRE_PREFIX_PATH
 )
 
 set(OGRE_PATH_SUFFIXES
-    ${OGRE_PATH_SUFFIXES} include OgreMain/include
+    ${OGRE_PATH_SUFFIXES} include include/OGRE OGRE OgreMain/include OgreMain/include/OGRE
 )
 
 # Find the Ogre include headers.
 find_path(OGRE_H_PATH
           NAMES Ogre.h
           PATHS ${OGRE_PREFIX_PATH}
-          PATH_SUFFIXES ${OGRE_PATH_SUFFIXES} OGRE)
+          PATH_SUFFIXES ${OGRE_PATH_SUFFIXES})
 
 # Also find the build settings Ogre header.
 find_path(OGRE_H_BUILD_SETTINGS_PATH
           NAMES OgreBuildSettings.h
           PATHS ${OGRE_PREFIX_PATH}
-          PATH_SUFFIXES ${OGRE_PATH_SUFFIXES} OGRE)
+          PATH_SUFFIXES ${OGRE_PATH_SUFFIXES})
 
 # Find the release and debug libraries.
 find_library(OGRE_LIB NAMES OgreMain
