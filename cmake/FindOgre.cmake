@@ -2,7 +2,46 @@
 # Custom cmake module for CEGUI to find OGRE
 ################################################################################
 include(FindPackageHandleStandardArgs)
-include(DetermineOgreThreadProvider)
+
+# ----------------------------------------------------------------------------------------------------------------------
+# Determine the OGRE Thread provider configured in the header file.
+# Parameters:
+#   - _tp_var: Output parameter. The variable in which to store the OGRE_THREAD_PROVIDER read from the OGRE config.
+#   - _file: The name and path of the file to search into. This should typically be the "OgreBuildSettings.h" file.
+#
+# At the time of the writing of this function, the following possible values are defined in OGRE and can be stored in 
+#_tp_var:
+#   1 = boost
+#   2 = poco
+#   3 = tbb
+#
+# Function Author: Augustin Preda.
+#     Based on the "DetermineVersion.cmake" file by  Reto Grieder.
+#
+# NB: Originally taken from Sumwars (http://sumwars.org), the function's code is public domain.
+# ----------------------------------------------------------------------------------------------------------------------
+function(determine_ogre_thread_provider _tp_var _file)
+  if(EXISTS ${_file})
+    file(READ ${_file} _file_content)
+    set(_parts ${ARGN})
+    list(LENGTH _parts _parts_length)
+    if(NOT ${_parts_length} EQUAL 3)
+      set(_parts MAJOR MINOR PATCH)
+    endif()
+
+    foreach(_part ${_parts})
+      string(REGEX MATCH "#define OGRE_THREAD_PROVIDER +([0-9]+)" _match ${_file_content})
+      if(_match)
+        set(${_tp_var} ${CMAKE_MATCH_1})
+        set(${_tp_var} ${CMAKE_MATCH_1} PARENT_SCOPE)
+      else()
+        set(${_tp_var} "0")
+        set(${_tp_var} "0" PARENT_SCOPE)
+      endif()
+    endforeach(_part)
+    set(${_tp_var}_VERSION "${${_tp_var}_VERSION}" PARENT_SCOPE)
+  endif()
+endfunction()
 
 set(ENV_OGRE_HOME $ENV{OGRE_HOME})
 if (ENV_OGRE_HOME)
