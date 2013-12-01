@@ -170,7 +170,7 @@ So, first of all we need a layout file.  The following XML saved as a text file,
 is a layout file equivalent to the code we discussed above:
 @code
 <?xml version="1.0" ?>
-<GUILayout>
+<GUILayout version="4">
     <Window type="DefaultWindow" name="root">
         <Window type="TaharezLook/FrameWindow" name="testWindow">
             <Property name="UnifiedPosition" value="{ {0.25, 0}, {0.25, 0} }" />
