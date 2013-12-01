@@ -29,7 +29,7 @@ include_directories(${CMAKE_SOURCE_DIR}/samples_framework/include
                     ${CMAKE_SOURCE_DIR}/samples/common/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
 
-                    
+
 if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiGLFWSharedBase.cpp
@@ -49,6 +49,9 @@ if (CEGUI_SAMPLES_USE_OPENGL3)
 endif()
 
 if (CEGUI_SAMPLES_USE_OGRE)
+    # this prevents the boost auto-link dis-feature
+    add_definitions(-DBOOST_ALL_NO_LIB)
+
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiOgreBaseApplication.cpp
     )
