@@ -149,7 +149,7 @@ public:
     void destroyImageCollection(const String& prefix,
                                 const bool delete_texture = true);
 
-    void addFromImageFile(const String& name,
+    void addBitmapImageFromFile(const String& name,
                           const String& filename,
                           const String& resource_group = "");
 
@@ -216,6 +216,13 @@ private:
 
     // XML parsing helper functions.
     void elementImagesetStart(const XMLAttributes& attributes);
+
+    // Get or create the Imageset's texture
+    void retrieveImagesetTexture(const String& name, const String& filename, const String &resource_group);
+
+    // Get or create the Imageset's SVGData
+    void retrieveImagesetSVGData(const String& name, const String& filename, const String &resource_group);
+
     void elementImageStart(const XMLAttributes& attributes);
     //! throw exception if file version is not supported.
     void validateImagesetFileVersion(const XMLAttributes& attrs);

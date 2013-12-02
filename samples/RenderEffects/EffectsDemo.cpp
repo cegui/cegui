@@ -146,7 +146,7 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         }
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture(&tex);
     geometry.appendGeometry(d_vertices, ds_vertexCount);
 
     // false, because we do not want the default geometry added!
@@ -168,7 +168,7 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
 
-    const CEGUI::MouseCursor& cursor = d_window->getGUIContext().getMouseCursor();
+    const CEGUI::PointerIndicator& cursor = d_window->getGUIContext().getPointerIndicator();
 
     bool changed = false;
 
@@ -310,7 +310,7 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         }
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture(&tex);
     geometry.appendGeometry(vb, buffsize);
 
     // false, because we do not want the default geometry added!
@@ -484,7 +484,7 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         d_vertices[5].tex_coords = glm::vec2(0.0f, uvTop);
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture(&tex);
     geometry.appendGeometry(d_vertices, ds_vertexCount);
 
     // false, because we do not want the default geometry added!
@@ -578,7 +578,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -587,10 +587,10 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     if( !ImageManager::getSingleton().isDefined("AliasingTestImage") )
-        ImageManager::getSingleton().addFromImageFile("AliasingTestImage", "Aliasing.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("AliasingTestImage", "Aliasing.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -651,7 +651,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     aliasingFrameWnd->setSizingEnabled(true);
     aliasingFrameWnd->setCloseButtonEnabled(false);
     aliasingFrameWnd->setTitleBarEnabled(true);
-    aliasingFrameWnd->setText("Elastic Window - Aliasing Testimage");
+    aliasingFrameWnd->setText("Elastic Window Effect");
 
     // Image window setup
     aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));

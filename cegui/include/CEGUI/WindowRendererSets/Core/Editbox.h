@@ -49,7 +49,11 @@ namespace CEGUI
     States:
         - Enabled: Rendering for when the editbox is in enabled and is in
                    read-write mode.
+        - EnabledFocused: Rendering for when the editbox is focused and is in
+                   read-write mode.
         - ReadOnly: Rendering for when the editbox is in enabled and is in
+                    read-only mode.
+        - ReadOnlyFocused: Rendering for when the editbox is focused and is in
                     read-only mode.
         - Disabled: Rendering for when the editbox is disabled.
         - ActiveSelection: additional state rendered for text selection

@@ -407,14 +407,12 @@ void TabControl::makeTabVisible_impl(Window* wnd)
     {
         scrollLeftBtn = getChild(ButtonScrollLeft);
         lx = CoordConverter::asAbsolute(scrollLeftBtn->getArea().d_max.d_x, ww);
-        scrollLeftBtn->setWantsMultiClickEvents(false);
     }
 
     if (isChild(ButtonScrollRight))
     {
         scrollRightBtn = getChild(ButtonScrollRight);
         rx = CoordConverter::asAbsolute(scrollRightBtn->getPosition().d_x, ww);
-        scrollRightBtn->setWantsMultiClickEvents(false);
     }
 
     if (x < lx)
@@ -754,21 +752,21 @@ bool TabControl::handleScrollPane(const EventArgs& e)
 
 bool TabControl::handleDraggedPane(const EventArgs& e)
 {
-    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+    const PointerEventArgs& pe = static_cast<const PointerEventArgs&>(e);
 
-    if (me.button == MiddleButton)
+    if (pe.source == PS_Middle)
     {
-        // This is the middle-mouse-click event, remember initial drag position
+        // This is the middle pointer source activate event, remember initial drag position
         Window *but_pane = getTabButtonPane();
-        d_btGrabPos = (me.position.x -
+        d_btGrabPos = (pe.position.x -
             but_pane->getOuterRectClipper().d_min.x) -
             d_firstTabOffset;
     }
-    else if (me.button == NoButton)
+    else if (pe.source == PS_None)
     {
-        // Regular mouse move event
+        // Regular pointer move event
         Window *but_pane = getTabButtonPane();
-        float new_to = (me.position.x -
+        float new_to = (pe.position.x -
             but_pane->getOuterRectClipper().d_min.x) -
             d_btGrabPos;
         if ((new_to < d_firstTabOffset - 0.9) ||
@@ -784,12 +782,12 @@ bool TabControl::handleDraggedPane(const EventArgs& e)
 
 bool TabControl::handleWheeledPane(const EventArgs& e)
 {
-    const MouseEventArgs& me = static_cast<const MouseEventArgs&>(e);
+    const PointerEventArgs& me = static_cast<const PointerEventArgs&>(e);
 
     Window *but_pane = getTabButtonPane();
     float delta = but_pane->getOuterRectClipper().getWidth () / 20;
 
-    d_firstTabOffset += me.wheelChange * delta;
+    d_firstTabOffset += me.scroll * delta;
     performChildWindowLayout();
 
     return true;

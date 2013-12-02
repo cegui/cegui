@@ -175,8 +175,8 @@ public:
 		return true if the edit box has input focus.
 
 	\return
-		- true if the edit box has keyboard input focus.
-		- false if the edit box does not have keyboard input focus.
+        - true if the edit box has input focus.
+        - false if the edit box does not have input focus.
 	*/
 	bool	hasInputFocus(void) const;
 
@@ -581,95 +581,131 @@ protected:
 	void	handleDelete(void);
 
 
-	/*!
-	\brief
-		Processing to move caret one character left
-	*/
-	void	handleCharLeft(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one character left
+
+    \param select
+        when true, the left character will be also selected
+    */
+    void    handleCharLeft(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret one word left
-	*/
-	void	handleWordLeft(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one word left
+
+    \param select
+        when true, the left word will be also selected
+    */
+    void    handleWordLeft(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret one character right
-	*/
-	void	handleCharRight(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one character right
+
+    \param select
+        when true, the right character will be also selected
+    */
+    void    handleCharRight(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret one word right
-	*/
-	void	handleWordRight(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret one word right
+
+    \param select
+        when true, the right word will be also selected
+    */
+    void    handleWordRight(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the start of the text.
-	*/
-	void	handleDocHome(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the start of the text.
+
+    \param select
+        when true, the text until the beginning of the document will be also selected
+    */
+    void    handleDocHome(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the end of the text
-	*/
-	void	handleDocEnd(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the end of the text
+
+    \param select
+        when true, the text until the end of the document will be also selected
+    */
+    void    handleDocEnd(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the start of the current line.
-	*/
-	void	handleLineHome(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the start of the current line.
+
+    \param select
+        when true, the text until the start of the line be also selected
+    */
+    void    handleLineHome(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret to the end of the current line
-	*/
-	void	handleLineEnd(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret to the end of the current line
+
+    \param select
+        when true, the text until the end of the line will be also selected
+    */
+    void    handleLineEnd(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret up a line.
-	*/
-	void	handleLineUp(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret up a line.
+
+    \param select
+        when true, a line up will be also selected
+    */
+    void    handleLineUp(bool select);
 
 
-	/*!
-	\brief
-		Processing to move caret down a line.
-	*/
-	void	handleLineDown(uint sysKeys);
+    /*!
+    \brief
+        Processing to move caret down a line.
+
+    \param select
+        when true, a line down will be also selected
+    */
+    void    handleLineDown(bool select);
 
 
 	/*!
 	\brief
 		Processing to insert a new line / paragraph.
 	*/
-	void	handleNewLine(uint sysKeys);
+    void    handleNewLine();
 
 
     /*!
     \brief
         Processing to move caret one page up
+
+    \param select
+        when true, a page up will be also selected
     */
-    void    handlePageUp(uint sysKeys);
+    void    handlePageUp(bool select);
 
 
     /*!
     \brief
         Processing to move caret one page down
+
+    \param select
+        when true, a page down will be also selected
     */
-    void    handlePageDown(uint sysKeys);
+    void    handlePageDown(bool select);
 
 	/*!
 	\brief
@@ -745,19 +781,17 @@ protected:
 	/*************************************************************************
 		Overridden event handlers
 	*************************************************************************/
-	virtual	void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
-	virtual	void	onMouseDoubleClicked(MouseEventArgs& e);
-	virtual	void	onMouseTripleClicked(MouseEventArgs& e);
-	virtual void	onMouseMove(MouseEventArgs& e);
+    virtual	void onPointerPressHold(PointerEventArgs& e);
+    virtual void onPointerActivate(PointerEventArgs& e);
+    virtual void onPointerMove(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
-	virtual void	onCharacter(KeyEventArgs& e);
-	virtual void	onKeyDown(KeyEventArgs& e);
+	virtual void onCharacter(TextEventArgs& e);
 	virtual void	onTextChanged(WindowEventArgs& e);
 	virtual void	onSized(ElementEventArgs& e);
-	virtual	void	onMouseWheel(MouseEventArgs& e);
+    virtual void onScroll(PointerEventArgs& e);
     virtual void onFontChanged(WindowEventArgs& e);
 
+    virtual void onSemanticInputEvent(SemanticEventArgs& e);
 
 	/*************************************************************************
 		Implementation data
@@ -790,6 +824,8 @@ private:
 		Private methods
 	*************************************************************************/
 	void	addMultiLineEditboxProperties(void);
+
+    void handleSelectAllText(SemanticEventArgs& e);
 };
 
 } // End of  CEGUI namespace section

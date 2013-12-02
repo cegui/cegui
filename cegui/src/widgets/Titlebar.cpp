@@ -29,7 +29,7 @@
  ***************************************************************************/
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/FrameWindow.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/CoordConverter.h"
 
 // Start of CEGUI namespace section
@@ -102,12 +102,12 @@ const glm::vec2& Titlebar::getDragPoint() const
 }
 
 /*************************************************************************
-	Handler for mouse movement events
+	Handler for pointer movement events
 *************************************************************************/
-void Titlebar::onMouseMove(MouseEventArgs& e)
+void Titlebar::onPointerMove(PointerEventArgs& e)
 {
 	// Base class processing.
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
 	if (d_dragging && (d_parent != 0))
 	{
@@ -125,18 +125,18 @@ void Titlebar::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button press events
+    Handler for pointer press events
 *************************************************************************/
-void Titlebar::onMouseButtonDown(MouseEventArgs& e)
+void Titlebar::onPointerPressHold(PointerEventArgs& e)
 {
 	// Base class processing
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if ((d_parent != 0) && d_dragEnabled)
 		{
-			// we want all mouse inputs from now on
+            // we want all pointer inputs from now on
 			if (captureInput())
 			{
 				// initialise the dragging state
@@ -145,7 +145,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
                 // store old constraint area
                 d_oldCursorArea = getGUIContext().
-                    getMouseCursor().getConstraintArea();
+                    getPointerIndicator().getConstraintArea();
 
 				// setup new constraint area to be the intersection of the old area and our grand-parent's clipped inner-area
 				Rectf constrainArea;
@@ -160,7 +160,7 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 					constrainArea = getParent()->getParent()->getInnerRectClipper().getIntersection(d_oldCursorArea);
 				}
 
-                getGUIContext().getMouseCursor().
+                getGUIContext().getPointerIndicator().
                     setConstraintArea(&constrainArea);
 			}
 		}
@@ -171,59 +171,56 @@ void Titlebar::onMouseButtonDown(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button release events
+    Handler for pointer activation events
 *************************************************************************/
-void Titlebar::onMouseButtonUp(MouseEventArgs& e)
+void Titlebar::onPointerActivate(PointerEventArgs& e)
 {
 	// Base class processing
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
-
-/*************************************************************************
-	Handler for mouse button double-click events
-*************************************************************************/
-void Titlebar::onMouseDoubleClicked(MouseEventArgs& e)
+void Titlebar::onSemanticInputEvent(SemanticEventArgs& e)
 {
-	// Base class processing
-	Window::onMouseDoubleClicked(e);
+    // Base class processing
+    Window::onSemanticInputEvent(e);
 
-	if (e.button == LeftButton)
-	{
-		// if we do not have a parent window, then obviously nothing should happen.
-		if (d_parent)
-		{
-			// we should only ever be attached to a FrameWindow (or derived) class
-			((FrameWindow*)d_parent)->toggleRollup();
-		}
+    if (isDisabled())
+        return;
 
-		++e.handled;
-	}
+    if (e.d_semanticValue == SV_SelectWord && e.d_payload.source == PS_Left)
+    {
 
+        // if we do not have a parent window, then obviously nothing should happen.
+        if (d_parent)
+        {
+            // we should only ever be attached to a FrameWindow (or derived) class
+            ((FrameWindow*)d_parent)->toggleRollup();
+        }
+
+        ++e.handled;
+    }
 }
 
-
 /*************************************************************************
-	Handler for if the window loses capture of the mouse.
+    Handler for if the window loses capture of the pointer.
 *************************************************************************/
 void Titlebar::onCaptureLost(WindowEventArgs& e)
 {
 	// Base class processing
 	Window::onCaptureLost(e);
 
-	// when we lose out hold on the mouse inputs, we are no longer dragging.
+    // when we lose out hold on the pointer inputs, we are no longer dragging.
 	d_dragging = false;
 
 	// restore old constraint area
 	getGUIContext().
-        getMouseCursor().setConstraintArea(&d_oldCursorArea);
+        getPointerIndicator().setConstraintArea(&d_oldCursorArea);
 }
 
 
@@ -253,6 +250,5 @@ void Titlebar::addTitlebarProperties(void)
         &Titlebar::setDraggingEnabled, &Titlebar::isDraggingEnabled, true
     );
 }
-
 
 } // End of  CEGUI namespace section

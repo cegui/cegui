@@ -69,10 +69,12 @@ public:
     *************************************************************************/
     /*!
     \brief
-        return true if user is hovering over this widget (or it's pushed and user is not over it for highlight)
+        return true if user is hovering over this widget (or it's pushed and
+        user is not over it for highlight)
 
     \return
-        true if the user is hovering or if the button is pushed and the mouse is not over the button.  Otherwise return false.
+        true if the user is hovering or if the button is pushed and the pointer
+        is not over the button. Otherwise return false.
     */
     bool    isHovering(void) const
     {
@@ -113,7 +115,8 @@ public:
 
     /*!
     \brief
-        Returns true if the menu item popup is closed or opened automatically if hovering with the mouse.
+        Returns true if the menu item popup is closed or opened automatically
+        if hovering with the pointer.
     */
     bool    hasAutoPopup(void) const
     {
@@ -258,11 +261,11 @@ protected:
     /*************************************************************************
         Overridden event handlers
     *************************************************************************/
-    virtual void    onMouseMove(MouseEventArgs& e);
-    virtual void    onMouseButtonDown(MouseEventArgs& e);
-    virtual void    onMouseButtonUp(MouseEventArgs& e);
+    virtual void    onPointerMove(PointerEventArgs& e);
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onPointerActivate(PointerEventArgs& e);
     virtual void    onCaptureLost(WindowEventArgs& e);
-    virtual void    onMouseLeaves(MouseEventArgs& e);
+    virtual void    onPointerLeaves(PointerEventArgs& e);
     virtual void    onTextChanged(WindowEventArgs& e);
     virtual void    updateSelf(float elapsed);
 
@@ -272,20 +275,20 @@ protected:
     *************************************************************************/
     /*!
     \brief
-        Update the internal state of the widget with the mouse at the given position.
+        Update the internal state of the widget with the pointer at the given position.
 
-    \param mouse_pos
-        Point object describing, in screen pixel co-ordinates, the location of the mouse cursor.
+    \param pointer_pos
+        Point object describing, in screen pixel co-ordinates, the location of the pointer indicator.
 
     \return
         Nothing
     */
-    void    updateInternalState(const glm::vec2& mouse_pos);
+    void    updateInternalState(const glm::vec2& pointer_pos);
 
 
     /*!
     \brief
-        Recursive function that closes all popups down the hierarcy starting with this one.
+        Recursive function that closes all popups down the hierarchy starting with this one.
 
     \return
         Nothing.
@@ -313,7 +316,7 @@ protected:
     bool d_opened;          //!< true when the menu item's popup menu is in its opened state.
     bool d_popupClosing;    //!< true when the d_popupTimerTimeElapsed timer is running to close the popup (another menu item of our container is hovered)
     bool d_popupOpening;    //!< true when the d_popupTimerTimeElapsed timer is running to open the popup (the menu item is hovered)
-    float d_autoPopupTimeout; //!< the time in seconds, to wait before opening / closing the popup if the mouse is over the item / over another item in our container
+    float d_autoPopupTimeout; //!< the time in seconds, to wait before opening / closing the popup if the pointer is over the item / over another item in our container
     float d_autoPopupTimeElapsed;  //!< the current time, which is already elapsed if the timer is running (d_popupClosing or d_popupOpening is true)
 
     PopupMenu*  d_popup;    //!< PopupMenu that this item displays when activated.

@@ -59,6 +59,10 @@ namespace CEGUI
 		{
 		    state = "Hover";
 		}
+        else if (w->isFocused())
+        {
+            state = "Focused";
+        }
 		else
 		{
 		    state = "Normal";

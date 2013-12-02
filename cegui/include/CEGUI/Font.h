@@ -35,8 +35,6 @@
 #include "CEGUI/XMLSerializer.h"
 #include "CEGUI/FontGlyph.h"
 
-#include <map>
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -104,8 +102,9 @@ public:
     \brief
         Draw text into a specified area of the display.
 
-    \param buffer
-        GeometryBuffer object where the geometry for the text be queued.
+    \param geom_buffers
+        List of GeometryBuffer objects that will be used to add Font geometry in
+        a batch-saving way.
 
     \param text
         String object containing the text to be drawn.
@@ -139,10 +138,18 @@ public:
         positioning (which is not possible to determine accurately by using the
         extent measurement functions).
     */
+<<<<<<< local
     float drawText(GeometryBuffer& buffer, const String& text,
                    const glm::vec2& position, const Rectf* clip_rect,
                    const ColourRect& colours, const float space_extra = 0.0f,
                    const float x_scale = 1.0f, const float y_scale = 1.0f) const;
+=======
+    float drawText(std::vector<GeometryBuffer*>& geom_buffers, const String& text,
+                   const Vector2f& position, const Rectf* clip_rect,
+                   const bool clipping_enabled, const ColourRect& colours,
+                   const float space_extra = 0.0f, const float x_scale = 1.0f,
+                   const float y_scale = 1.0f) const;
+>>>>>>> other
 
     /*!
     \brief

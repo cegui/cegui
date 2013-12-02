@@ -69,7 +69,7 @@ protected:
     // as we can see, we have 2x2 quads for 3x3 subdivision (because of reused
     // neighbouring vertices)
     static const unsigned int ds_vertexCount = (ds_xPivotCount - 1) * (ds_yPivotCount - 1) * 6;
-    CEGUI::Vertex d_vertices[ds_vertexCount];
+    CEGUI::TexturedColouredVertex d_vertices[ds_vertexCount];
 
     CEGUI::FrameWindow* d_window;
 };
@@ -100,7 +100,7 @@ protected:
     float dragX, dragY;
     float elasX, elasY;
 
-    CEGUI::Vertex vb[buffsize];
+    CEGUI::TexturedColouredVertex vb[buffsize];
 
     CEGUI::Window* d_window;
 };
@@ -124,7 +124,7 @@ protected:
     bool d_initialised;
 
     static const unsigned int ds_vertexCount = 6;
-    CEGUI::Vertex d_vertices[ds_vertexCount];
+    CEGUI::TexturedColouredVertex d_vertices[ds_vertexCount];
 
     CEGUI::Window* d_window;
 };

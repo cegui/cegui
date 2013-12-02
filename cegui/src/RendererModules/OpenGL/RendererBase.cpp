@@ -111,12 +111,32 @@ RenderTarget& OpenGLRendererBase::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& OpenGLRendererBase::createGeometryBuffer()
+GeometryBuffer& OpenGLRendererBase::createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
 {
-    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl();
+    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl(renderMaterial);
+
+    b->addVertexAttribute(VAT_POSITION0);
+    b->addVertexAttribute(VAT_COLOUR0);
+    b->addVertexAttribute(VAT_TEXCOORD0);
+    b->finaliseVertexAttributes();
+
     d_geometryBuffers.push_back(b);
     return *b;
 }
+
+//----------------------------------------------------------------------------//
+GeometryBuffer& OpenGLRendererBase::createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
+{
+    OpenGLGeometryBufferBase* b = createGeometryBuffer_impl(renderMaterial);
+
+    b->addVertexAttribute(VAT_POSITION0);
+    b->addVertexAttribute(VAT_COLOUR0);
+    b->finaliseVertexAttributes();
+
+    d_geometryBuffers.push_back(b);
+    return *b;
+}
+
 
 //----------------------------------------------------------------------------//
 void OpenGLRendererBase::destroyGeometryBuffer(const GeometryBuffer& buffer)

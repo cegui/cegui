@@ -58,7 +58,7 @@ void JustifiedRenderedString::format(const Window* ref_wnd,
 }
 
 //----------------------------------------------------------------------------//
-void JustifiedRenderedString::draw(const Window* ref_wnd, GeometryBuffer& buffer,
+void JustifiedRenderedString::draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
                                    const glm::vec2& position,
                                    const ColourRect* mod_colours,
                                    const Rectf* clip_rect) const
@@ -67,7 +67,7 @@ void JustifiedRenderedString::draw(const Window* ref_wnd, GeometryBuffer& buffer
 
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
-        d_renderedString->draw(ref_wnd, i, buffer, draw_pos, mod_colours,
+        d_renderedString->draw(ref_wnd, i, geometry_buffers, draw_pos, mod_colours,
                                clip_rect, d_spaceExtras[i]);
         draw_pos.y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }

@@ -30,7 +30,7 @@
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/Titlebar.h"
 #include "CEGUI/widgets/PushButton.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/ImageManager.h"
@@ -207,7 +207,7 @@ void FrameWindow::toggleRollup(void)
         WindowEventArgs args(this);
         onRollupToggled(args);
 
-        getGUIContext().updateWindowContainingMouse();
+        getGUIContext().updateWindowContainingPointer();
     }
 
 }
@@ -382,7 +382,7 @@ bool FrameWindow::moveRightEdge(float delta, URect& out_area)
         out_area.d_min.d_x.d_offset += adjustment * 0.5f;
     }
 
-    // move the dragging point so mouse remains 'attached' to edge of window
+    // move the dragging point so pointer remains 'attached' to edge of window
     d_dragPoint.x += adjustment;
 
     return d_horizontalAlignment == HA_RIGHT;
@@ -470,7 +470,7 @@ bool FrameWindow::moveBottomEdge(float delta, URect& out_area)
         out_area.d_min.d_y.d_offset += adjustment * 0.5f;
     }
 
-    // move the dragging point so mouse remains 'attached' to edge of window
+    // move the dragging point so pointer remains 'attached' to edge of window
     d_dragPoint.y += adjustment;
 
     return d_verticalAlignment == VA_BOTTOM;
@@ -490,40 +490,40 @@ bool FrameWindow::closeClickHandler(const EventArgs&)
 
 
 /*************************************************************************
-	Set the appropriate mouse cursor for the given window-relative pixel
-	point.
+    Set the appropriate pointer indicator for the given window-relative pixel
+    point.
 *************************************************************************/
-void FrameWindow::setCursorForPoint(const glm::vec2& pt) const
+void FrameWindow::setIndicatorForPoint(const glm::vec2& pt) const
 {
 	switch(getSizingBorderAtPoint(pt))
 	{
 	case SizingTop:
 	case SizingBottom:
 		getGUIContext().
-            getMouseCursor().setImage(d_nsSizingCursor);
+            getPointerIndicator().setImage(d_nsSizingCursor);
 		break;
 
 	case SizingLeft:
 	case SizingRight:
 		getGUIContext().
-            getMouseCursor().setImage(d_ewSizingCursor);
+            getPointerIndicator().setImage(d_ewSizingCursor);
 		break;
 
 	case SizingTopLeft:
 	case SizingBottomRight:
 		getGUIContext().
-            getMouseCursor().setImage(d_nwseSizingCursor);
+            getPointerIndicator().setImage(d_nwseSizingCursor);
 		break;
 
 	case SizingTopRight:
 	case SizingBottomLeft:
 		getGUIContext().
-            getMouseCursor().setImage(d_neswSizingCursor);
+            getPointerIndicator().setImage(d_neswSizingCursor);
 		break;
 
 	default:
 		getGUIContext().
-            getMouseCursor().setImage(getMouseCursor());
+            getPointerIndicator().setImage(getPointerIndicator());
 		break;
 	}
 
@@ -555,30 +555,30 @@ void FrameWindow::onCloseClicked(WindowEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse move events
+	Handler for pointer move events
 *************************************************************************/
-void FrameWindow::onMouseMove(MouseEventArgs& e)
+void FrameWindow::onPointerMove(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseMove(e);
+	Window::onPointerMove(e);
 
-	// if we are not the window containing the mouse, do NOT change the cursor
-	if (getGUIContext().getWindowContainingMouse() != this)
+    // if we are not the window containing the pointer, do NOT change the indicator
+	if (getGUIContext().getWindowContainingPointer() != this)
 	{
 		return;
 	}
 
 	if (isSizingEnabled())
 	{
-		const glm::vec2 localMousePos(CoordConverter::screenToWindow(*this, e.position));
+        const glm::vec2 localPointerPos(CoordConverter::screenToWindow(*this, e.position));
 
 		if (d_beingSized)
 		{
 			SizingLocation dragEdge = getSizingBorderAtPoint(d_dragPoint);
 
 			// calculate sizing deltas...
-			const float deltaX = localMousePos.x - d_dragPoint.x;
-			const float deltaY = localMousePos.y - d_dragPoint.y;
+            const float deltaX = localPointerPos.x - d_dragPoint.x;
+            const float deltaY = localPointerPos.y - d_dragPoint.y;
 
             URect new_area(d_area);
             bool top_left_sizing = false;
@@ -606,9 +606,8 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 		}
 		else
 		{
-			setCursorForPoint(localMousePos);
+            setIndicatorForPoint(localPointerPos);
 		}
-
 	}
 
 	// mark event as handled
@@ -617,21 +616,21 @@ void FrameWindow::onMouseMove(MouseEventArgs& e)
 
 
 /*************************************************************************
-	Handler for mouse button down events
+    Handler for pointer press events
 *************************************************************************/
-void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
+void FrameWindow::onPointerPressHold(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseButtonDown(e);
+    Window::onPointerPressHold(e);
 
-	if (e.button == LeftButton)
+    if (e.source == PS_Left)
 	{
 		if (isSizingEnabled())
 		{
-			// get position of mouse as co-ordinates local to this window.
+            // get position of pointer as co-ordinates local to this window.
 			const glm::vec2 localPos(CoordConverter::screenToWindow(*this, e.position));
 
-			// if the mouse is on the sizing border
+            // if the pointer is on the sizing border
 			if (getSizingBorderAtPoint(localPos) != SizingNone)
 			{
 				// ensure all inputs come to us for now
@@ -647,36 +646,31 @@ void FrameWindow::onMouseButtonDown(MouseEventArgs& e)
 
 					++e.handled;
 				}
-
 			}
-
 		}
-
 	}
-
 }
 
 
 /*************************************************************************
-	Handler for mouse button up events
+    Handler for pointer activation events
 *************************************************************************/
-void FrameWindow::onMouseButtonUp(MouseEventArgs& e)
+void FrameWindow::onPointerActivate(PointerEventArgs& e)
 {
 	// default processing (this is now essential as it controls event firing).
-	Window::onMouseButtonUp(e);
+    Window::onPointerActivate(e);
 
-	if (e.button == LeftButton && isCapturedByThis())
+    if (e.scroll == PS_Left && isCapturedByThis())
 	{
 		// release our capture on the input data
 		releaseInput();
 		++e.handled;
 	}
-
 }
 
 
 /*************************************************************************
-	Handler for when mouse capture is lost
+    Handler for when pointer capture is lost
 *************************************************************************/
 void FrameWindow::onCaptureLost(WindowEventArgs& e)
 {
@@ -791,29 +785,29 @@ void FrameWindow::addFrameWindowProperties(void)
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
         "NSSizingCursorImage", "Property to get/set the N-S (up-down) sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
-        &FrameWindow::setNSSizingCursorImage, &FrameWindow::getNSSizingCursorImage, 0
+        &FrameWindow::setNSSizingIndicatorImage, &FrameWindow::getNSSizingIndicatorImage, 0
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
         "EWSizingCursorImage", "Property to get/set the E-W (left-right) sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
-        &FrameWindow::setEWSizingCursorImage, &FrameWindow::getEWSizingCursorImage, 0
+        &FrameWindow::setEWSizingIndicatorImage, &FrameWindow::getEWSizingIndicatorImage, 0
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
         "NWSESizingCursorImage", "Property to get/set the NW-SE diagonal sizing cursor image for the FrameWindow. Value should be \"set:[imageset name] image:[image name]\".",
-        &FrameWindow::setNWSESizingCursorImage, &FrameWindow::getNWSESizingCursorImage, 0
+        &FrameWindow::setNWSESizingIndicatorImage, &FrameWindow::getNWSESizingIndicatorImage, 0
     );
 
     CEGUI_DEFINE_PROPERTY(FrameWindow, Image*,
         "NESWSizingCursorImage", "Property to get/set the NE-SW diagonal sizing cursor image for the FramwWindow. Value should be \"set:[imageset name] image:[image name]\".",
-        &FrameWindow::setNESWSizingCursorImage, &FrameWindow::getNESWSizingCursorImage, 0
+        &FrameWindow::setNESWSizingIndicatorImage, &FrameWindow::getNESWSizingIndicatorImage, 0
     );
 }
 
 /*************************************************************************
     return the image used for the north-south sizing cursor.
 *************************************************************************/
-const Image* FrameWindow::getNSSizingCursorImage() const
+const Image* FrameWindow::getNSSizingIndicatorImage() const
 {
     return d_nsSizingCursor;
 }
@@ -821,7 +815,7 @@ const Image* FrameWindow::getNSSizingCursorImage() const
 /*************************************************************************
     return the image used for the east-west sizing cursor.
 *************************************************************************/
-const Image* FrameWindow::getEWSizingCursorImage() const
+const Image* FrameWindow::getEWSizingIndicatorImage() const
 {
     return d_ewSizingCursor;
 }
@@ -829,7 +823,7 @@ const Image* FrameWindow::getEWSizingCursorImage() const
 /*************************************************************************
     return the image used for the northwest-southeast sizing cursor.
 *************************************************************************/
-const Image* FrameWindow::getNWSESizingCursorImage() const
+const Image* FrameWindow::getNWSESizingIndicatorImage() const
 {
     return d_nwseSizingCursor;
 }
@@ -837,7 +831,7 @@ const Image* FrameWindow::getNWSESizingCursorImage() const
 /*************************************************************************
     return the image used for the northeast-southwest sizing cursor.
 *************************************************************************/
-const Image* FrameWindow::getNESWSizingCursorImage() const
+const Image* FrameWindow::getNESWSizingIndicatorImage() const
 {
     return d_neswSizingCursor;
 }
@@ -845,7 +839,7 @@ const Image* FrameWindow::getNESWSizingCursorImage() const
 /*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
-void FrameWindow::setNSSizingCursorImage(const Image* image)
+void FrameWindow::setNSSizingIndicatorImage(const Image* image)
 {
     d_nsSizingCursor = image;
 }
@@ -853,7 +847,7 @@ void FrameWindow::setNSSizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the east-west sizing cursor.
 *************************************************************************/
-void FrameWindow::setEWSizingCursorImage(const Image* image)
+void FrameWindow::setEWSizingIndicatorImage(const Image* image)
 {
     d_ewSizingCursor = image;
 }
@@ -861,7 +855,7 @@ void FrameWindow::setEWSizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the northwest-southeast sizing cursor.
 *************************************************************************/
-void FrameWindow::setNWSESizingCursorImage(const Image* image)
+void FrameWindow::setNWSESizingIndicatorImage(const Image* image)
 {
     d_nwseSizingCursor = image;
 }
@@ -869,7 +863,7 @@ void FrameWindow::setNWSESizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the northeast-southwest sizing cursor.
 *************************************************************************/
-void FrameWindow::setNESWSizingCursorImage(const Image* image)
+void FrameWindow::setNESWSizingIndicatorImage(const Image* image)
 {
     d_neswSizingCursor = image;
 }
@@ -877,7 +871,7 @@ void FrameWindow::setNESWSizingCursorImage(const Image* image)
 /*************************************************************************
     set the image used for the north-south sizing cursor.
 *************************************************************************/
-void FrameWindow::setNSSizingCursorImage(const String& name)
+void FrameWindow::setNSSizingIndicatorImage(const String& name)
 {
     d_nsSizingCursor = &ImageManager::getSingleton().get(name);
 }
@@ -885,7 +879,7 @@ void FrameWindow::setNSSizingCursorImage(const String& name)
 /*************************************************************************
     set the image used for the east-west sizing cursor.
 *************************************************************************/
-void FrameWindow::setEWSizingCursorImage(const String& name)
+void FrameWindow::setEWSizingIndicatorImage(const String& name)
 {
     d_ewSizingCursor = &ImageManager::getSingleton().get(name);
 }
@@ -893,7 +887,7 @@ void FrameWindow::setEWSizingCursorImage(const String& name)
 /*************************************************************************
     set the image used for the northwest-southeast sizing cursor.
 *************************************************************************/
-void FrameWindow::setNWSESizingCursorImage(const String& name)
+void FrameWindow::setNWSESizingIndicatorImage(const String& name)
 {
     d_nwseSizingCursor = &ImageManager::getSingleton().get(name);
 }
@@ -901,7 +895,7 @@ void FrameWindow::setNWSESizingCursorImage(const String& name)
 /*************************************************************************
     set the image used for the northeast-southwest sizing cursor.
 *************************************************************************/
-void FrameWindow::setNESWSizingCursorImage(const String& name)
+void FrameWindow::setNESWSizingIndicatorImage(const String& name)
 {
     d_neswSizingCursor = &ImageManager::getSingleton().get(name);
 }

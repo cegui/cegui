@@ -125,10 +125,10 @@ has two parts.  For a slightly extended introduction of this concept see
 Back to the example:
 @code
 // position a quarter of the way in from the top-left of parent.
-fWnd->setPosition( UVector2( UDim( 0.25f, 0 ), UDim( 0.25f, 0 ) ) );
+fWnd->setPosition( UVector2( UDim( 0.25f, 0.0f ), UDim( 0.25f, 0.0f ) ) );
 
 // set size to be half the size of the parent
-fWnd->setSize( UVector2( UDim( 0.5f, 0 ), UDim( 0.5f, 0 ) ) );
+fWnd->setSize( USize( UDim( 0.5f, 0.0f ), UDim( 0.5f, 0.0f ) ) );
 @endcode
 
 Finally, we set a caption for the frame window's title bar:

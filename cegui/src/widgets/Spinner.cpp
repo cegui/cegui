@@ -88,14 +88,12 @@ namespace CEGUI
         Editbox* editbox = getEditbox();
 
         // setup component controls
-        increaseButton->setWantsMultiClickEvents(false);
-        increaseButton->setMouseAutoRepeatEnabled(true);
-        decreaseButton->setWantsMultiClickEvents(false);
-        decreaseButton->setMouseAutoRepeatEnabled(true);
+        increaseButton->setPointerAutoRepeatEnabled(true);
+        decreaseButton->setPointerAutoRepeatEnabled(true);
 
         // perform event subscriptions.
-        increaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleIncreaseButton, this));
-        decreaseButton->subscribeEvent(Window::EventMouseButtonDown, Event::Subscriber(&Spinner::handleDecreaseButton, this));
+        increaseButton->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&Spinner::handleIncreaseButton, this));
+        decreaseButton->subscribeEvent(Window::EventPointerPressHold, Event::Subscriber(&Spinner::handleDecreaseButton, this));
         editbox->subscribeEvent(Window::EventTextChanged, Event::Subscriber(&Spinner::handleEditTextChange, this));
 
         // final initialisation
@@ -410,7 +408,7 @@ namespace CEGUI
 
     bool Spinner::handleIncreaseButton(const EventArgs& e)
     {
-        if (((const MouseEventArgs&)e).button == LeftButton)
+        if (((const PointerEventArgs&)e).source == PS_Left)
         {
             setCurrentValue(d_currentValue + d_stepSize);
             return true;
@@ -421,7 +419,7 @@ namespace CEGUI
 
     bool Spinner::handleDecreaseButton(const EventArgs& e)
     {
-        if (((const MouseEventArgs&)e).button == LeftButton)
+        if (((const PointerEventArgs&)e).source == PS_Left)
         {
             setCurrentValue(d_currentValue - d_stepSize);
             return true;

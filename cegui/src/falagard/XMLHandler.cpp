@@ -40,6 +40,7 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Animation_xmlHandler.h"
+#include "CEGUI/AnimationManager.h"
 
 #include "CEGUI/widgets/Thumb.h"
 #include "CEGUI/widgets/TabControl.h"
@@ -1572,8 +1573,20 @@ namespace CEGUI
         String anim_name_prefix(d_widgetlook->getName());
         anim_name_prefix.append("/");
 
-        d_chainedHandler = CEGUI_NEW_AO AnimationDefinitionHandler(
-            attributes, anim_name_prefix);
+        const String anim_name(anim_name_prefix +
+                        attributes.getValueAsString(NameAttribute));
+
+
+        if (AnimationManager::getSingleton().isAnimationPresent(anim_name))
+        {
+            Logger::getSingleton().logEvent(
+                "[XMLHandler] WARNING: Using existing Animation :" + anim_name);
+        }
+        else
+        {
+            d_chainedHandler = CEGUI_NEW_AO AnimationDefinitionHandler(
+                attributes, anim_name_prefix);
+        }
 
         // This is a little bit of abuse here, ideally we would get the name
         // somewhere else.

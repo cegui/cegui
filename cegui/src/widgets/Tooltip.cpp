@@ -80,40 +80,40 @@ namespace CEGUI
 
     void Tooltip::positionSelf(void)
     {
-        // no recusion allowed for this function!
+        // no recursion allowed for this function!
         if (d_inPositionSelf)
             return;
 
         d_inPositionSelf = true;
 
-        MouseCursor& cursor = getGUIContext().getMouseCursor();
+        PointerIndicator& indicator = getGUIContext().getPointerIndicator();
         Rectf screen(glm::vec2(0, 0), getRootContainerSize());
         Rectf tipRect(getUnclippedOuterRect().get());
-        const Image* mouseImage = cursor.getImage();
+        const Image* pointerImage = indicator.getImage();
 
-        const glm::vec2& mousePos(cursor.getPosition());
-        Sizef mouseSz(0,0);
+        const glm::vec2& pointerPos(indicator.getPosition());
+        Sizef pointerSz(0,0);
 
-        if (mouseImage)
+        if (pointerImage)
         {
-            mouseSz = mouseImage->getRenderedSize();
+            pointerSz = pointerImage->getRenderedSize();
         }
 
-        glm::vec2 tmpPos(mousePos.x + mouseSz.d_width, mousePos.y + mouseSz.d_height);
+        glm::vec2 tmpPos(pointerPos.d_x + pointerSz.d_width, pointerPos.d_y + pointerSz.d_height);
         tipRect.setPosition(tmpPos);
 
         // if tooltip would be off the right of the screen,
-        // reposition to the other side of the mouse cursor.
+        // reposition to the other side of the pointer indicator.
         if (screen.right() < tipRect.right())
         {
-            tmpPos.x = mousePos.x - tipRect.getWidth() - 5;
+            tmpPos.x = pointerPos.x - tipRect.getWidth() - 5;
         }
 
         // if tooltip would be off the bottom of the screen,
-        // reposition to the other side of the mouse cursor.
+        // reposition to the other side of the pointer indicator.
         if (screen.bottom() < tipRect.bottom())
         {
-            tmpPos.y = mousePos.y - tipRect.getHeight() - 5;
+            tmpPos.y = pointerPos.y - tipRect.getHeight() - 5;
         }
 
         // set final position of tooltip window.
@@ -339,11 +339,11 @@ namespace CEGUI
         }
     }
 
-    void Tooltip::onMouseEnters(MouseEventArgs& e)
+    void Tooltip::onPointerEnters(PointerEventArgs& e)
     {
         positionSelf();
 
-        Window::onMouseEnters(e);
+        Window::onPointerEnters(e);
     }
 
     void Tooltip::onTextChanged(WindowEventArgs& e)

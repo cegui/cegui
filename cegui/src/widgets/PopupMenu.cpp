@@ -355,22 +355,22 @@ void PopupMenu::onHidden(WindowEventArgs& e)
 
 
 /************************************************************************
-	Handler for mouse button down events
+    Handler for pointer press events
 ************************************************************************/
-void PopupMenu::onMouseButtonDown(MouseEventArgs& e)
+void PopupMenu::onPointerPressHold(PointerEventArgs& e)
 {
-        MenuBase::onMouseButtonDown(e);
+    MenuBase::onPointerPressHold(e);
         // dont reach our parent
         ++e.handled;
 }
 
 
 /************************************************************************
-	Handler for mouse button up events
+    Handler for pointer activation events
 ************************************************************************/
-void PopupMenu::onMouseButtonUp(MouseEventArgs& e)
+void PopupMenu::onPointerActivate(PointerEventArgs& e)
 {
-        MenuBase::onMouseButtonUp(e);
+    MenuBase::onPointerActivate(e);
         // dont reach our parent
         ++e.handled;
 }

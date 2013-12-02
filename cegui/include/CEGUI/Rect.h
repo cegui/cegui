@@ -349,7 +349,12 @@ public:
         return Rectf(d_min * scalar, d_max * scalar);
     }
 
-    const Rectf& operator*=(float scalar)
+    inline Rect operator*(const glm::vec2& vector) const
+    {
+        return Rect(d_min * vector, d_max * vector);
+    }
+
+    const Rect& operator*=(T scalar)
     {
         d_min *= scalar;
         d_max *= scalar;
@@ -359,6 +364,11 @@ public:
 	Rectf operator+(const Rectf& r) const
     {
         return Rectf(d_min + r.d_min, d_max + r.d_max);
+    }
+
+    Rect operator-(const Rect& r) const
+    {
+        return Rect(d_min - r.d_min, d_max - r.d_max);
     }
     
     inline friend std::ostream& operator << (std::ostream& s, const Rectf& v)

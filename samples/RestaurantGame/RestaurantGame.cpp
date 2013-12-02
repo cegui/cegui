@@ -148,10 +148,10 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
     d_guiContext->setRootWindow(d_root);
 
     if(!ImageManager::getSingleton().isDefined("HUDDemoGameOver"))
-        ImageManager::getSingleton().addFromImageFile("HUDDemoGameOver", "HUDDemoGameOver.png");
+        ImageManager::getSingleton().addBitmapImageFromFile("HUDDemoGameOver", "HUDDemoGameOver.png");
     d_rootGameOver->getChild("GameOverImage")->setProperty("Image", "HUDDemoGameOver");
 
-    setupMouseCursor();
+    setupPointerIndicator();
 
     srand(static_cast<unsigned int >(time(0)));
 
@@ -159,8 +159,8 @@ bool HUDDemo::initialise(CEGUI::GUIContext* guiContext)
 
     initGame();
 
-    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
-    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventMouseClick, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/LeftArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&HUDDemo::handleWeaponLeftArrowClicked, this));
+    d_rootIngame->getChild("BotBar/WeaponBGImage/RightArrowArea")->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&HUDDemo::handleWeaponRightArrowClicked, this));
    
     d_rootGameOver->getChild("ButtonRestart")->subscribeEvent(CEGUI::PushButton::EventClicked, Event::Subscriber(&HUDDemo::handleRestartButtonClicked, this));
   
@@ -194,7 +194,7 @@ void HUDDemo::update(float timeSinceLastUpdate)
 
     timeSinceLastSpawn += timeSinceLastUpdate;
 
-    updateMouseCursor();
+    updatePointerIndicator();
 
 
     if(timeSinceLastSpawn> 1.2f)
@@ -210,30 +210,30 @@ void HUDDemo::update(float timeSinceLastUpdate)
     d_guiContext->markAsDirty();
 }
 
-void HUDDemo::setupMouseCursor()
+void HUDDemo::setupPointerIndicator()
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
-    d_mouseCursorWnd = winMgr.createWindow("Generic/Image");
-    d_mouseCursorWnd->setProperty("Image", "HUDDemo/Spoon");
-    d_mouseCursorWnd->setAspectMode(CEGUI::AM_EXPAND);
-    d_mouseCursorWnd->setAspectRatio(1.f);
-    d_mouseCursorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
-    d_mouseCursorWnd->setAlwaysOnTop(true);
-    d_mouseCursorWnd->setMousePassThroughEnabled(true);
-    d_rootIngame->addChild(d_mouseCursorWnd);
+    d_pointerIndicatorWnd = winMgr.createWindow("Generic/Image");
+    d_pointerIndicatorWnd->setProperty("Image", "HUDDemo/Spoon");
+    d_pointerIndicatorWnd->setAspectMode(CEGUI::AM_EXPAND);
+    d_pointerIndicatorWnd->setAspectRatio(1.f);
+    d_pointerIndicatorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
+    d_pointerIndicatorWnd->setAlwaysOnTop(true);
+    d_pointerIndicatorWnd->setPointerPassThroughEnabled(true);
+    d_rootIngame->addChild(d_pointerIndicatorWnd);
 }
 
-void HUDDemo::updateMouseCursor()
+void HUDDemo::updatePointerIndicator()
 {
-    glm::vec2 position = d_guiContext->getMouseCursor().getPosition();
+    glm::vec2 position = d_guiContext->getPointerIndicator().getPosition();
 
     // We want to position the image-window right top of the actual
     // cursor point so we add its height
-    float absHeight = d_mouseCursorWnd->getPixelSize().d_height;
-    position.y -= absHeight;
+    float absHeight = d_pointerIndicatorWnd->getPixelSize().d_height;
+    position.d_y -= absHeight;
 
-    d_mouseCursorWnd->setPosition(
+    d_pointerIndicatorWnd->setPosition(
         CEGUI::UVector2(
         cegui_absdim(position.x - 5.0f), cegui_absdim(position.y + 5.0f))
         );
@@ -250,7 +250,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateRoot->setAspectRatio(1.0f);
     plateRoot->setRiseOnClickEnabled(false);
     plateRoot->setPixelAligned(false);
-    plateRoot->subscribeEvent(CEGUI::Window::EventMouseButtonDown, Event::Subscriber(&HUDDemo::handlePlateWindowClicked, this));
+    plateRoot->subscribeEvent(CEGUI::Window::EventPointerActivate, Event::Subscriber(&HUDDemo::handlePlateWindowActivated, this));
     d_rootIngame->addChild(plateRoot);
 
     CEGUI::Window* plateImgWnd = winMgr.createWindow("Generic/Image", "ImageWindowPlate");
@@ -259,7 +259,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateImgWnd->setAspectRatio(3.308f);
     plateImgWnd->setAspectMode(CEGUI::AM_EXPAND);
     plateImgWnd->setVerticalAlignment(CEGUI::VA_BOTTOM);
-    plateImgWnd->setMousePassThroughEnabled(true);
+    plateImgWnd->setPointerPassThroughEnabled(true);
     plateImgWnd->setPixelAligned(false);
     plateRoot->addChild(plateImgWnd);
 
@@ -271,7 +271,7 @@ CEGUI::Window* HUDDemo::spawnPlate()
     plateTopping->setAspectRatio(1.0f);
     plateTopping->setAspectMode(CEGUI::AM_EXPAND);
     plateTopping->setHorizontalAlignment(CEGUI::HA_CENTRE);
-    plateTopping->setMousePassThroughEnabled(true);
+    plateTopping->setPointerPassThroughEnabled(true);
     plateTopping->setPixelAligned(false);
     plateRoot->addChild(plateTopping);
 
@@ -332,16 +332,15 @@ void HUDDemo::updateScoreWindow()
     scoreWnd->setText(CEGUI::PropertyHelper<int>::toString(d_score));
 }
 
-bool HUDDemo::handlePlateWindowClicked(const CEGUI::EventArgs& args)
+bool HUDDemo::handlePlateWindowActivated(const CEGUI::EventArgs& args)
 {
-    const CEGUI::MouseEventArgs& mouseArgs = static_cast<const CEGUI::MouseEventArgs&>(args);
-
+    const CEGUI::PointerEventArgs& pointerArgs = static_cast<const CEGUI::PointerEventArgs&>(args);
 
     for(unsigned int i = 0; i < d_gamePlates.size(); ++i)
     {
         GamePlate* gamePlate = d_gamePlates[i];
 
-        if(gamePlate->d_window == mouseArgs.window)
+        if(gamePlate->d_window == pointerArgs.window)
         {
             int points = gamePlate->getPoints();
             d_score += points;
@@ -363,20 +362,20 @@ bool HUDDemo::handlePlateWindowClicked(const CEGUI::EventArgs& args)
             }
 
             gamePlate->d_isDestroyed = true;
-            createScorePopup(mouseArgs.position, points);
+            createScorePopup(pointerArgs.position, points);
         }
     }
 
     return false;
 }
 
-void HUDDemo::createScorePopup(const glm::vec2& mousePos, int points)
+void HUDDemo::createScorePopup(const glm::vec2& pointerPos, int points)
 {
     CEGUI::WindowManager& winMgr = CEGUI::WindowManager::getSingleton();
 
     CEGUI::Window* popupWindow = winMgr.createWindow("HUDDemo/PopupLabel");
     d_rootIngame->addChild(popupWindow);
-    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(mousePos.x), cegui_absdim(mousePos.y)));
+    popupWindow->setPosition(CEGUI::UVector2(cegui_absdim(pointerPos.d_x), cegui_absdim(pointerPos.d_y)));
     popupWindow->setText(CEGUI::PropertyHelper<int>::toString(points));
     popupWindow->setRiseOnClickEnabled(false);
     popupWindow->subscribeEvent(AnimationInstance::EventAnimationEnded, Event::Subscriber(&HUDDemo::handleScorePopupAnimationEnded, this));
@@ -435,7 +434,7 @@ void HUDDemo::handleLivesChanged()
     if(d_lives <= 0)
     {
         d_root->addChild(d_rootGameOver);
-        d_rootGameOver->addChild(d_mouseCursorWnd);
+        d_rootGameOver->addChild(d_pointerIndicatorWnd);
     }
 }
 
@@ -496,7 +495,7 @@ bool HUDDemo::handleWeaponRightArrowClicked(const CEGUI::EventArgs& args)
 bool HUDDemo::handleRestartButtonClicked(const CEGUI::EventArgs& args)
 {
     d_root->removeChild(d_rootGameOver);
-    d_rootIngame->addChild(d_mouseCursorWnd);
+    d_rootIngame->addChild(d_pointerIndicatorWnd);
 
     initGame();
 

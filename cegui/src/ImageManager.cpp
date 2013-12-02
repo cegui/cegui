@@ -34,7 +34,10 @@
 #include "CEGUI/XMLAttributes.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Texture.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
+#include "CEGUI/svg/SVGImage.h"
+#include "CEGUI/svg/SVGData.h"
+#include "CEGUI/svg/SVGDataManager.h"
 
 #include <cstdio>
 #include <algorithm>
@@ -70,13 +73,16 @@ const String ImageElement( "Image" );
 const String ImagesetImageFileAttribute( "imagefile" );
 const String ImagesetResourceGroupAttribute( "resourceGroup" );
 const String ImagesetNameAttribute( "name" );
+const String ImagesetTypeAttribute( "type" );
 const String ImagesetNativeHorzResAttribute( "nativeHorzRes" );
 const String ImagesetNativeVertResAttribute( "nativeVertRes" );
 const String ImagesetAutoScaledAttribute( "autoScaled" );
 const String ImageTextureAttribute( "texture" );
-const String ImageTypeAttribute( "type" );
+const String ImageSVGDataAttribute( "SVGData" );
 const String ImageNameAttribute( "name" );
 const String ImagesetVersionAttribute( "version" );
+// Internal Strings holding XML element and attribute defaults
+const String ImageTypeAttributeDefault( "BitmapImage" );
 
 //----------------------------------------------------------------------------//
 // note: The assets' versions aren't usually the same as CEGUI version, they
@@ -91,6 +97,8 @@ const String NativeVersion( "2" );
 //----------------------------------------------------------------------------//
 // Internal variables used when parsing XML
 static Texture* s_texture = 0;
+static SVGData* s_SVGData = 0;
+static CEGUI::String s_imagesetType = "";
 static AutoScaledMode s_autoScaled = ASM_Disabled;
 static Sizef s_nativeResolution(640.0f, 480.0f);
 
@@ -102,8 +110,10 @@ ImageManager::ImageManager()
     Logger::getSingleton().logEvent(
         "[CEGUI::ImageManager] Singleton created " + String(addr_buff));
 
-    // self-register the built in 'BasicImage' type.
-    addImageType<BasicImage>("BasicImage");
+    // self-register the built in 'BitmapImage' type.
+    addImageType<BitmapImage>("BitmapImage");
+    // self-register the built in 'SVGImage' type.
+    addImageType<SVGImage>("SVGImage");
 }
 
 //----------------------------------------------------------------------------//
@@ -171,9 +181,6 @@ Image& ImageManager::create(const String& type, const String& name)
 //----------------------------------------------------------------------------//
 Image& ImageManager::create(const XMLAttributes& attributes)
 {
-    static const String type_default("BasicImage");
-    
-    const String& type(attributes.getValueAsString(ImageTypeAttribute, type_default));
     const String& name(attributes.getValueAsString(ImageNameAttribute));
 
     if (name.empty())
@@ -184,11 +191,11 @@ Image& ImageManager::create(const XMLAttributes& attributes)
         CEGUI_THROW(AlreadyExistsException(
             "Image already exists: " + name));
 
-    ImageFactoryRegistry::iterator i(d_factories.find(type));
+    ImageFactoryRegistry::iterator i(d_factories.find(s_imagesetType));
 
     if (i == d_factories.end())
         CEGUI_THROW(UnknownObjectException(
-            "Unknown Image type: " + type));
+            "Unknown Image type: " + s_imagesetType));
 
     ImageFactory* factory = i->second;
     Image& image = factory->create(attributes);
@@ -198,7 +205,7 @@ Image& ImageManager::create(const XMLAttributes& attributes)
     if (image.getName() != name)
     {
         const String message(
-            "Factory for type: " + type + " created Image named: " +
+            "Factory for type: " + s_imagesetType + " created Image named: " +
             image.getName() + ".  Was expecting name: " + name);
             
         factory->destroy(image);
@@ -213,7 +220,7 @@ Image& ImageManager::create(const XMLAttributes& attributes)
 
     Logger::getSingleton().logEvent(
         "[ImageManager] Created image: '" + name + "' (" + addr_buff + 
-        ") of type: " + type);
+        ") of type: " + s_imagesetType);
 
     return image;
 }
@@ -310,7 +317,7 @@ void ImageManager::destroyImageCollection(const String& prefix,
 }
 
 //----------------------------------------------------------------------------//
-void ImageManager::addFromImageFile(const String& name, const String& filename,
+void ImageManager::addBitmapImageFromFile(const String& name, const String& filename,
                                     const String& resource_group)
 {
     // create texture from image
@@ -318,10 +325,10 @@ void ImageManager::addFromImageFile(const String& name, const String& filename,
         createTexture(name, filename,
             resource_group.empty() ? d_imagesetDefaultResourceGroup : resource_group);
 
-    BasicImage& image = static_cast<BasicImage&>(create("BasicImage", name));
+    BitmapImage& image = static_cast<BitmapImage&>(create("BitmapImage", name));
     image.setTexture(tex);
     const Rectf rect(glm::vec2(0.0f, 0.0f), tex->getOriginalDataSize());
-    image.setArea(rect);
+    image.setImageArea(rect);
 }
 
 //----------------------------------------------------------------------------//
@@ -364,8 +371,15 @@ void ImageManager::elementStartLocal(const String& element,
 }
 
 //----------------------------------------------------------------------------//
-void ImageManager::elementEndLocal(const String&)
+void ImageManager::elementEndLocal(const String& element)
 {
+    // ensure that everything is reset to default values when the Imageset ends
+    if (element == ImagesetElement)
+    {
+        s_texture = 0;
+        s_SVGData = 0;
+        s_imagesetType = "";
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -373,6 +387,10 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
 {
     // get name of the imageset.
     const String name(attributes.getValueAsString(ImagesetNameAttribute));
+    // get name of the imageset.
+    s_imagesetType = attributes.getValueAsString(ImagesetTypeAttribute,
+                                                 "BitmapImage");
+    
     // get texture image filename
     const String filename(
         attributes.getValueAsString(ImagesetImageFileAttribute));
@@ -383,28 +401,22 @@ void ImageManager::elementImagesetStart(const XMLAttributes& attributes)
     Logger& logger(Logger::getSingleton());
     logger.logEvent("[ImageManager] Started creation of Imageset from XML specification:");
     logger.logEvent("[ImageManager] ---- CEGUI Imageset name: " + name);
-    logger.logEvent("[ImageManager] ---- Source texture file: " + filename);
-    logger.logEvent("[ImageManager] ---- Source texture resource group: " +
+    logger.logEvent("[ImageManager] ---- Source image file: " + filename);
+    logger.logEvent("[ImageManager] ---- Source resource group: " +
                     (resource_group.empty() ? "(Default)" : resource_group));
 
     validateImagesetFileVersion(attributes);
 
-    Renderer* const renderer = System::getSingleton().getRenderer();
-
-    // if the texture already exists, 
-    if (renderer->isTextureDefined(name))
-    {
-        Logger::getSingleton().logEvent(
-            "[ImageManager] WARNING: Using existing texture: " + name);
-        s_texture = &renderer->getTexture(name);
-    }
+    if(s_imagesetType == "BitmapImage")
+        retrieveImagesetTexture(name, filename, resource_group);
+    else if(s_imagesetType == "SVGImage")
+        retrieveImagesetSVGData(name, filename, resource_group);
     else
     {
-        // create texture from image
-        s_texture = &renderer->createTexture(name, filename,
-            resource_group.empty() ? d_imagesetDefaultResourceGroup :
-                                     resource_group);
+        CEGUI::String message = "Imageset type: \"" + s_imagesetType + "\" is unknown.";
+        CEGUI_THROW(UnknownObjectException(message));
     }
+            
 
     // set native resolution for imageset
     s_nativeResolution = Sizef(
@@ -435,7 +447,14 @@ void ImageManager::validateImagesetFileVersion(const XMLAttributes& attrs)
 //----------------------------------------------------------------------------//
 void ImageManager::elementImageStart(const XMLAttributes& attributes)
 {
-    const String image_name(s_texture->getName() + '/' +
+    String image_data_name = "";
+
+    if (s_imagesetType == "BitmapImage")
+        image_data_name = s_texture->getName();
+    else if (s_imagesetType == "SVGImage")
+        image_data_name = s_SVGData->getName();
+
+    const String image_name(image_data_name + '/' +
         attributes.getValueAsString(ImageNameAttribute));
 
     if (isDefined(image_name))
@@ -447,11 +466,20 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 
     XMLAttributes rw_attrs(attributes);
 
-    // rewrite the name attribute to include the texture name
+    // rewrite the name attribute to include the underlying image data's (Texture's or
+    // SVGData's) name
     rw_attrs.add(ImageNameAttribute, image_name);
 
-    if (!rw_attrs.exists(ImageTextureAttribute))
-        rw_attrs.add(ImageTextureAttribute, s_texture->getName());
+    if (s_imagesetType == "BitmapImage")
+    {
+        if (!rw_attrs.exists(ImageTextureAttribute))
+            rw_attrs.add(ImageTextureAttribute, image_data_name);
+    }
+    else if (s_imagesetType == "SVGImage")
+    {
+        if (!rw_attrs.exists(ImageSVGDataAttribute))
+            rw_attrs.add(ImageSVGDataAttribute, image_data_name);
+    }
 
     if (!rw_attrs.exists(ImagesetAutoScaledAttribute))
         rw_attrs.add(ImagesetAutoScaledAttribute,
@@ -467,6 +495,47 @@ void ImageManager::elementImageStart(const XMLAttributes& attributes)
 
     d_deleteChaniedHandler = false;
     d_chainedHandler = &create(rw_attrs);
+}
+
+//----------------------------------------------------------------------------//
+void ImageManager::retrieveImagesetTexture(const String& name, const String& filename, const String &resource_group)
+{
+    Renderer* const renderer = System::getSingleton().getRenderer();
+
+    // if the texture already exists
+    if (renderer->isTextureDefined(name))
+    {
+        Logger::getSingleton().logEvent(
+            "[ImageManager] WARNING: Using existing texture: " + name);
+        s_texture = &renderer->getTexture(name);
+    }
+    else
+    {
+        // create texture from image
+        s_texture = &renderer->createTexture(name, filename,
+            resource_group.empty() ? d_imagesetDefaultResourceGroup :
+            resource_group);
+    }
+}
+
+//----------------------------------------------------------------------------//
+void ImageManager::retrieveImagesetSVGData(const String& name, const String& filename, const String &resource_group)
+{
+    SVGDataManager& svgDataManager = SVGDataManager::getSingleton();
+
+    if (svgDataManager.isSVGDataDefined(name))
+    {
+        Logger::getSingleton().logEvent(
+            "[ImageManager] WARNING: Using existing SVGData: " + name);
+        s_SVGData = &svgDataManager.getSVGData(name);
+    }
+    else
+    {
+        // Create SVGData from the specified file
+        s_SVGData = &svgDataManager.create(name, filename,
+            resource_group.empty() ? d_imagesetDefaultResourceGroup :
+            resource_group);
+    }
 }
 
 //----------------------------------------------------------------------------//

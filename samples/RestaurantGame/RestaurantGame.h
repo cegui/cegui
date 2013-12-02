@@ -57,7 +57,7 @@ public:
     virtual bool initialise(CEGUI::GUIContext* guiContext);
 
     void initGame();
-    void setupMouseCursor();
+    void setupPointerIndicator();
     // method to perform any required cleanup operations.
     virtual void deinitialise();
 
@@ -79,17 +79,17 @@ public:
 protected:
     static const CEGUI::String& getRandomGameImage();
 
-    void updateMouseCursor();
+    void updatePointerIndicator();
     void updatePlates(float timeSinceLastUpdate);
 
-    bool handlePlateWindowClicked(const CEGUI::EventArgs& args);
+    bool handlePlateWindowActivated(const CEGUI::EventArgs& args);
     bool handleScorePopupAnimationEnded(const CEGUI::EventArgs& args);
     bool handleWeaponLeftArrowClicked(const CEGUI::EventArgs& args);
     bool handleWeaponRightArrowClicked(const CEGUI::EventArgs& args);
     bool handleRestartButtonClicked(const CEGUI::EventArgs& args);
 
     void updateScoreWindow();
-    void createScorePopup(const glm::vec2& mousePos, int points);
+    void createScorePopup(const glm::vec2& pointerPos, int points);
 
     void handleLivesChanged();
 
@@ -101,7 +101,7 @@ protected:
     CEGUI::Window* d_rootIngame;
     CEGUI::Window* d_rootGameOver;
 
-    CEGUI::Window* d_mouseCursorWnd;
+    CEGUI::Window* d_pointerIndicatorWnd;
 
     int d_score;
 

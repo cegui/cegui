@@ -43,19 +43,19 @@ RenderingWindow::RenderingWindow(TextureTarget& target, RenderingSurface& owner)
     d_renderer(*System::getSingleton().getRenderer()),
     d_textarget(target),
     d_owner(&owner),
-    d_geometry(&d_renderer.createGeometryBuffer()),
     d_geometryValid(false),
     d_position(0, 0),
     d_size(0, 0),
-    d_rotation()
+    d_rotation(),
+    d_geometryBuffer(d_renderer.createGeometryBufferTextured())
 {
-    d_geometry->setBlendMode(BM_RTT_PREMULTIPLIED);
+    d_geometryBuffer.setBlendMode(BM_RTT_PREMULTIPLIED);
 }
 
 //----------------------------------------------------------------------------//
 RenderingWindow::~RenderingWindow()
 {
-    d_renderer.destroyGeometryBuffer(*d_geometry);
+    d_renderer.destroyGeometryBuffer(d_geometryBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -72,7 +72,7 @@ void RenderingWindow::setClippingRegion(const Rectf& region)
                       -static_cast<RenderingWindow*>(d_owner)->d_position.y));
     }
 
-    d_geometry->setClippingRegion(final_region);
+    d_geometryBuffer.setClippingRegion(final_region);
 }
 
 //----------------------------------------------------------------------------//
@@ -89,7 +89,7 @@ void RenderingWindow::setPosition(const glm::vec2& position)
         trans.y -= static_cast<RenderingWindow*>(d_owner)->d_position.y;
     }
 
-    d_geometry->setTranslation(trans);
+    d_geometryBuffer.setTranslation(trans);
 }
 
 //----------------------------------------------------------------------------//
@@ -108,14 +108,14 @@ void RenderingWindow::setSize(const Sizef& size)
 void RenderingWindow::setRotation(const glm::quat& rotation)
 {
     d_rotation = rotation;
-    d_geometry->setRotation(d_rotation);
+    d_geometryBuffer.setRotation(d_rotation);
 }
 
 //----------------------------------------------------------------------------//
 void RenderingWindow::setPivot(const glm::vec3& pivot)
 {
     d_pivot = pivot;
-    d_geometry->setPivot(d_pivot);
+    d_geometryBuffer.setPivot(d_pivot);
 }
 
 //----------------------------------------------------------------------------//
@@ -158,7 +158,7 @@ TextureTarget& RenderingWindow::getTextureTarget()
 //----------------------------------------------------------------------------//
 void RenderingWindow::update(const float elapsed)
 {
-    RenderEffect* effect = d_geometry->getRenderEffect();
+    RenderEffect* effect = d_geometryBuffer.getRenderEffect();
 
     if (effect)
         d_geometryValid &= effect->update(elapsed, *this);
@@ -167,13 +167,13 @@ void RenderingWindow::update(const float elapsed)
 //----------------------------------------------------------------------------//
 void RenderingWindow::setRenderEffect(RenderEffect* effect)
 {
-    d_geometry->setRenderEffect(effect);
+    d_geometryBuffer.setRenderEffect(effect);
 }
 
 //----------------------------------------------------------------------------//
 RenderEffect* RenderingWindow::getRenderEffect()
 {
-    return d_geometry->getRenderEffect();
+    return d_geometryBuffer.getRenderEffect();
 }
 
 //----------------------------------------------------------------------------//
@@ -211,7 +211,7 @@ void RenderingWindow::draw()
     }
 
     // add our geometry to our owner for rendering
-    d_owner->addGeometryBuffer(RQ_BASE, *d_geometry);
+    d_owner->addGeometryBuffer(RQ_BASE, d_geometryBuffer);
 }
 
 //----------------------------------------------------------------------------//
@@ -241,11 +241,11 @@ void RenderingWindow::realiseGeometry()
     if (d_geometryValid)
         return;
 
-    d_geometry->reset();
+    d_geometryBuffer.reset();
 
-    RenderEffect* effect = d_geometry->getRenderEffect();
+    RenderEffect* effect = d_geometryBuffer.getRenderEffect();
 
-    if (!effect || effect->realiseGeometry(*this, *d_geometry))
+    if (!effect || effect->realiseGeometry(*this, d_geometryBuffer))
         realiseGeometry_impl();
 
     d_geometryValid = true;
@@ -254,7 +254,7 @@ void RenderingWindow::realiseGeometry()
 //----------------------------------------------------------------------------//
 void RenderingWindow::realiseGeometry_impl()
 {
-   Texture& tex = d_textarget.getTexture();
+    Texture& tex = d_textarget.getTexture();
 
     const float tu = d_size.d_width * tex.getTexelScaling().x;
     const float tv = d_size.d_height * tex.getTexelScaling().y;
@@ -264,7 +264,7 @@ void RenderingWindow::realiseGeometry_impl()
 
     const Rectf area(0, 0, d_size.d_width, d_size.d_height);
     const Colour c(1, 1, 1, 1);
-    Vertex vbuffer[6];
+    TexturedColouredVertex vbuffer[6];
 
     // vertex 0
     vbuffer[0].position   = glm::vec3(area.d_min.x, area.d_min.y, 0.0f);
@@ -296,8 +296,8 @@ void RenderingWindow::realiseGeometry_impl()
     vbuffer[5].colour_val = c;
     vbuffer[5].tex_coords = glm::vec2(tex_rect.d_max.x, tex_rect.d_max.y);
 
-    d_geometry->setActiveTexture(&tex);
-    d_geometry->appendGeometry(vbuffer, 6);
+    d_geometryBuffer.setTexture(&tex);
+    d_geometryBuffer.appendGeometry(vbuffer, 6);
 }
 
 //----------------------------------------------------------------------------//
@@ -316,7 +316,7 @@ void RenderingWindow::unprojectPoint(const glm::vec2& p_in, glm::vec2& p_out)
     if (d_owner->isRenderingWindow())
         in -= static_cast<RenderingWindow*>(d_owner)->getPosition();
 
-    d_owner->getRenderTarget().unprojectPoint(*d_geometry, in, p_out);
+    d_owner->getRenderTarget().unprojectPoint(d_geometryBuffer, in, p_out);
     p_out += d_position;
 }
 

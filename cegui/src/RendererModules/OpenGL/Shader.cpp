@@ -28,6 +28,7 @@
 #include <GL/glew.h>
 
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
+#include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
 #include "CEGUI/Logger.h"
 #include "CEGUI/Exceptions.h"
 
@@ -42,8 +43,10 @@ static const size_t LOG_BUFFER_SIZE = 8096;
 
 //----------------------------------------------------------------------------//
 OpenGL3Shader::OpenGL3Shader(const std::string& vertex_shader_source,
-                             const std::string& fragment_shader_source) :
-    d_createdSucessfully(false),
+                             const std::string& fragment_shader_source,
+                             OpenGL3StateChangeWrapper* glStateChanger) :
+    d_glStateChanger(glStateChanger),
+    d_createdSuccessfully(false),
     d_vertexShader(0),
     d_fragmentShader(0),
     d_geometryShader(0),
@@ -86,23 +89,17 @@ OpenGL3Shader::~OpenGL3Shader()
 //----------------------------------------------------------------------------//
 void OpenGL3Shader::bind() const
 {
-    glUseProgram(d_program);
+    d_glStateChanger->useProgram(d_program);
 }
 
 //----------------------------------------------------------------------------//
-void OpenGL3Shader::unbind() const
-{
-    glUseProgram(0);
-}
-
-//----------------------------------------------------------------------------//
-GLuint OpenGL3Shader::getAttribLocation(const std::string &name) const
+GLint OpenGL3Shader::getAttribLocation(const std::string &name) const
 {
     return glGetAttribLocation(d_program, name.c_str());
 }
 
 //----------------------------------------------------------------------------//
-GLuint OpenGL3Shader::getUniformLocation(const std::string &name) const
+GLint OpenGL3Shader::getUniformLocation(const std::string &name) const
 {
     return glGetUniformLocation(d_program, name.c_str());
 }
@@ -120,7 +117,7 @@ void OpenGL3Shader::bindFragDataLocation(const std::string &name)
 //----------------------------------------------------------------------------//
 bool OpenGL3Shader::isCreatedSuccessfully()
 {
-    return d_createdSucessfully;
+    return d_createdSuccessfully;
 }
 
 //----------------------------------------------------------------------------//
@@ -197,7 +194,7 @@ void OpenGL3Shader::link()
     if (d_program == 0)
         return;
 
-    d_createdSucessfully = true;
+    d_createdSuccessfully = true;
     checkGLErrors();
 
 

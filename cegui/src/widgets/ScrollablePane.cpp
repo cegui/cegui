@@ -486,10 +486,10 @@ void ScrollablePane::onSized(ElementEventArgs& e)
 }
 
 //----------------------------------------------------------------------------//
-void ScrollablePane::onMouseWheel(MouseEventArgs& e)
+void ScrollablePane::onScroll(PointerEventArgs& e)
 {
     // base class processing.
-    Window::onMouseWheel(e);
+    Window::onScroll(e);
     
     Scrollbar* vertScrollbar = getVertScrollbar();
     Scrollbar* horzScrollbar = getHorzScrollbar();
@@ -498,13 +498,13 @@ void ScrollablePane::onMouseWheel(MouseEventArgs& e)
         (vertScrollbar->getDocumentSize() > vertScrollbar->getPageSize()))
     {
         vertScrollbar->setScrollPosition(vertScrollbar->getScrollPosition() +
-                            vertScrollbar->getStepSize() * -e.wheelChange);
+                            vertScrollbar->getStepSize() * -e.scroll);
     }
     else if (horzScrollbar->isEffectiveVisible() &&
              (horzScrollbar->getDocumentSize() > horzScrollbar->getPageSize()))
     {
         horzScrollbar->setScrollPosition(horzScrollbar->getScrollPosition() +
-                            horzScrollbar->getStepSize() * -e.wheelChange);
+                            horzScrollbar->getStepSize() * -e.scroll);
     }
     
     ++e.handled;

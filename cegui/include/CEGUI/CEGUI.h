@@ -2,7 +2,7 @@
 	filename: 	CEGUI.h
 	created:	21/2/2004
 	author:		Paul D Turner
-	
+
 	purpose:	Main system include for client code
 *************************************************************************/
 /***************************************************************************
@@ -35,7 +35,7 @@
 #include "CEGUI/Animation.h"
 #include "CEGUI/AnimationInstance.h"
 #include "CEGUI/AnimationManager.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/BasicRenderedStringParser.h"
 #include "CEGUI/BidiVisualMapping.h"
 #include "CEGUI/BoundSlot.h"
@@ -67,13 +67,16 @@
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/InputEvent.h"
+#include "CEGUI/InputEvents.h"
+#include "CEGUI/InputEventReceiver.h"
+#include "CEGUI/InputAggregator.h"
 #include "CEGUI/Interpolator.h"
 #include "CEGUI/JustifiedRenderedString.h"
 #include "CEGUI/KeyFrame.h"
 #include "CEGUI/LeftAlignedRenderedString.h"
 #include "CEGUI/LinkedEvent.h"
 #include "CEGUI/Logger.h"
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/NamedElement.h"
 #include "CEGUI/Property.h"
 #include "CEGUI/PropertyHelper.h"
@@ -99,12 +102,12 @@
 #include "CEGUI/Scheme.h"
 #include "CEGUI/SchemeManager.h"
 #include "CEGUI/ScriptModule.h"
+#include "CEGUI/SemanticInputEvent.h"
 #include "CEGUI/SimpleTimer.h"
 #include "CEGUI/Size.h"
 #include "CEGUI/String.h"
 #include "CEGUI/StringTranscoder.h"
 #include "CEGUI/System.h"
-#include "CEGUI/SystemKeys.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/TextureTarget.h"
 #include "CEGUI/TextUtils.h"

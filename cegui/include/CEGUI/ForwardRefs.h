@@ -71,13 +71,15 @@ class ImageCodec;
 class ImageManager;
 class ImagerySection;
 class Interpolator;
+class InputAggregator;
+class InputEvent;
 class JustifiedRenderedString;
 class KeyFrame;
 class LeftAlignedRenderedString;
 class LinkedEvent;
 class LinkedEventArgs;
 class Logger;
-class MouseCursor;
+class PointerIndicator;
 class NamedElement;
 class NamedElementEventArgs;
 class NativeClipboardProvider;
@@ -111,9 +113,9 @@ class ScriptFunctor;
 class ScriptModule;
 template<typename T> class Size;
 class SimpleTimer;
+class SVGImage;
 class StringTranscoder;
 class System;
-class SystemKeys;
 class Texture;
 class TextureTarget;
 class TextUtils;
@@ -121,7 +123,8 @@ class UBox;
 class UDim;
 class URect;
 class UVector2;
-struct Vertex;
+struct TexturedColouredVertex;
+struct ColouredVertex;
 class WidgetLookFeel;
 class Window;
 class WindowFactory;
@@ -193,8 +196,7 @@ class FontEventArgs;
 class GUIContextEventArgs;
 class HeaderSequenceEventArgs;
 class KeyEventArgs;
-class MouseCursorEventArgs;
-class MouseEventArgs;
+class PointerIndicatorEventArgs;
 class RegexMatchStateArgs;
 class RenderQueueEventArgs;
 class RenderTargetEventArgs;
@@ -202,6 +204,23 @@ class ResourceEventArgs;
 class TreeEventArgs;
 class UpdateEventArgs;
 class WindowEventArgs;
+
+/*************************************************************************
+    Forward declare SVG based classes.
+*************************************************************************/
+class SVGData;
+class SVGDataManager;
+class SVGTesselator;
+
+class SVGBasicShape;
+class SVGCircle;
+class SVGLine;
+class SVGPolyline;
+class SVGRect;
+
+class SVGPaint;
+class SVGPaintStyle;
+
 
 } // End of  CEGUI namespace section
 

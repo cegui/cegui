@@ -34,6 +34,7 @@
 #include "../../Size.h"
 #include "../../Rect.h"
 #include "../../TextureTarget.h"
+#include "../../RefCounted.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
 #include <vector>
 #include <map>
@@ -57,6 +58,7 @@ namespace CEGUI
 {
 class OpenGLTexture;
 class OpenGLGeometryBufferBase;
+class RenderMaterial;
 struct mat4Pimpl;
 
 //! Common base class used for other OpenGL based renderer modules.
@@ -65,7 +67,8 @@ class OPENGL_GUIRENDERER_API OpenGLRendererBase : public Renderer
 public:
     // implement Renderer interface
     RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
+    GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
@@ -239,7 +242,7 @@ protected:
     void initialiseDisplaySizeWithViewportSize();
 
     //! return some appropriate OpenGLGeometryBufferBase subclass instance.
-    virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl() = 0;
+    virtual OpenGLGeometryBufferBase* createGeometryBuffer_impl(RefCounted<RenderMaterial> renderMaterial) = 0;
 
     //! return some appropriate TextureTarget subclass instance.
     virtual TextureTarget* createTextureTarget_impl() = 0;
