@@ -10,6 +10,42 @@ this change log. If you're looking for a 100% complete record of all changes
 please consult the commit logs!
 
 
+<b>Release 0.8.3 (taken from commit logs, since there were no mantis entries)</b>
+- Fix for "Checkbox" to "ToggleButton" transition in Lua.
+- Fixed official tutorial to have version attribute in <GUILayout> root element
+- FIX: Fixed initialisation of autoscale if its off
+- Fix CEGUI compilation with Cygwin
+- Fixed problem with wrong text selection
+- FIX: CEGUI_NEW used without including the headers for that - changed to new
+- FIX: The OperatorDim got wrong values for Font height because of delayed updates
+- FIX: Build issue with sample fwk. Don't you guys test your shit?! :-p
+- FIX: OGL3GeometryBuffer could occur to access non-existing element in case of
+- MOD: Fixing more outdated docs
+- MOD: Fixed the official docs of the tutorial (were outdated)
+- MOD: Fixed warning message
+- MOD: Fixing XML scheme load issues after a previous unload
+- MOD: Changed CEGUI's String's include from to <cstring> for mingw compatibility
+- MOD: Removed ancient D3D8 Renderer stuff that is of no use anymore
+- MOD: Changed the image's size to accomodate some GPU's max size (4096x4096)
+- MOD: Changing malformed documentation tags so that they work with doxygen ;)
+- MOD: Adding casts and changing types to remove MSVC warnings
+- MOD: FPS counter fix
+- ADD: Added FPS counters to the demos using overlay rendering queue
+- Prevent boost autolinking when including Ogre headers (sample framework + Ogre renderer)
+- MERGE: desGusty's ogredetectplus
+- Expose ImageManager::getIterator in lua.
+- Expose inherent methods in lua bindings.
+- Use "unsigned int" rather than "size_t" in lua bindings.
+- Do not include system timer related headers into CEGUI namespace
+- Deal with utf8 clipboard strings correctly, do not truncate to ASCII
+- Exposed 'getSingleton' of ImageManager in Lua bindings
+- Changed setSelection to clear previous selection
+- Dllexport OpenGL3Shader corrently, this prevents MSVC linker issues
+- Added OGRE 1.9 support by using the newly-added version information.
+- Add defines for found Ogre version to our config file.
+- Have all headers added to project and use file groups, suggested by Mr. Meindl
+- Merge: Back-merging Ident's mods from v0. These are ABI safe.
+
 <b>Release 0.8.2</b>
 - 0000986: [Build system] ABI versioning used for naming .so files is incorrect (CrazyEddie) - resolved.
 - 0000985: [Build system] Linking of fribidi for debug builds fails, due to trying to link to badly formed library name (CrazyEddie) - resolved.
