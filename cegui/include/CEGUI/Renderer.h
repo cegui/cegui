@@ -36,6 +36,14 @@
 #include "CEGUI/Vector.h"
 #include "CEGUI/RefCounted.h"
 
+#include <vector>
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
+
 namespace CEGUI
 {
     class RenderMaterial;
@@ -127,7 +135,7 @@ public:
 
     /*!
     \brief
-        Create a GeometryBuffer for textured geometry with its default RenderMaterial and return a
+        Creates a GeometryBuffer for textured geometry with its default RenderMaterial and return a
         reference to it.
         You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
         when you want to destroy the GeometryBuffer.
@@ -139,7 +147,7 @@ public:
 
     /*!
     \brief
-        Create a GeometryBuffer for coloured geometry and return a reference to it.
+        Creates a GeometryBuffer for coloured geometry and return a reference to it.
         You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
         when you want to destroy the GeometryBuffer.
 
@@ -150,7 +158,7 @@ public:
 
     /*!
     \brief
-        Create a GeometryBuffer for coloured geometry with its default RenderMaterial and return a
+        Creates a GeometryBuffer for coloured geometry with its default RenderMaterial and return a
         reference to it.
         You should remove the GeometryBuffer from any RenderQueues and call destroyGeometryBuffer
         when you want to destroy the GeometryBuffer.
@@ -162,21 +170,21 @@ public:
 
     /*!
     \brief
-        Destroy a GeometryBuffer that was returned when calling the
-        createGeometryBuffer function.  Before destroying any GeometryBuffer
+        Destroys a GeometryBuffer that was returned when calling one of the
+        createGeometryBuffer functions. Before destroying any GeometryBuffer
         you should ensure that it has been removed from any RenderQueue that
         was using it.
 
     \param buffer
         The GeometryBuffer object to be destroyed.
     */
-    virtual void destroyGeometryBuffer(const GeometryBuffer& buffer) = 0;
+    void destroyGeometryBuffer(const GeometryBuffer& buffer);
 
     /*!
     \brief
-        Destroy all GeometryBuffer objects created by this Renderer.
+        Destroys all GeometryBuffer objects created by this Renderer.
     */
-    virtual void destroyAllGeometryBuffers() = 0;
+    void destroyAllGeometryBuffers();
 
     /*!
     \brief
@@ -204,13 +212,13 @@ public:
 
     /*!
     \brief
-        Destory all TextureTarget objects created by this Renderer.
+        Destroys all TextureTarget objects created by this Renderer.
     */
     virtual void destroyAllTextureTargets() = 0;
 
     /*!
     \brief
-        Create a 'null' Texture object.
+        Creates a 'null' Texture object.
 
     \param name
         String holding the name for the new texture.  Texture names must be
@@ -262,7 +270,7 @@ public:
 
     /*!
     \brief
-        Create a Texture object with the given pixel dimensions as specified by
+        Creates a Texture object with the given pixel dimensions as specified by
         \a size.
 
     \param name
@@ -289,7 +297,7 @@ public:
 
     /*!
     \brief
-        Destroy a Texture object that was previously created by calling the
+        Destroys a Texture object that was previously created by calling the
         createTexture functions.
 
     \param texture
@@ -299,7 +307,7 @@ public:
 
     /*!
     \brief
-        Destroy a Texture object that was previously created by calling the
+        Destroys a Texture object that was previously created by calling the
         createTexture functions.
 
     \param name
@@ -309,13 +317,13 @@ public:
 
     /*!
     \brief
-        Destroy all Texture objects created by this Renderer.
+        Destroys all Texture objects created by this Renderer.
     */
     virtual void destroyAllTextures() = 0;
 
     /*!
     \brief
-        Return a Texture object that was previously created by calling the
+        Returns a Texture object that was previously created by calling the
         createTexture functions.
 
     \param name
@@ -332,20 +340,20 @@ public:
 
     /*!
     \brief
-        Perform any operations required to put the system into a state ready
+        Performs any operations required to put the system into a state ready
         for rendering operations to begin.
     */
     virtual void beginRendering() = 0;
 
     /*!
     \brief
-        Perform any operations required to finalise rendering.
+        Performs any operations required to finalise rendering.
     */
     virtual void endRendering() = 0;
 
     /*!
     \brief
-        Set the size of the display or host window in pixels for this Renderer
+        Sets the size of the display or host window in pixels for this Renderer
         object.
 
         This is intended to be called by the System as part of the notification
@@ -364,7 +372,7 @@ public:
 
     /*!
     \brief
-        Return the size of the display or host window in pixels.
+        Returns the size of the display or host window in pixels.
 
     \return
         Size object describing the pixel dimesntions of the current display or
@@ -374,7 +382,7 @@ public:
 
     /*!
     \brief
-        Return the resolution of the display or host window in dots per inch.
+        Returns the resolution of the display or host window in dots per inch.
 
     \return
         Vector2 object that describes the resolution of the display or host
@@ -384,7 +392,7 @@ public:
 
     /*!
     \brief
-        Return the pixel size of the maximum supported texture.
+        Returns the pixel size of the maximum supported texture.
 
     \return
         Size of the maximum supported texture in pixels.
@@ -393,7 +401,7 @@ public:
 
     /*!
     \brief
-        Return identification string for the renderer module.
+        Returns identification string for the renderer module.
 
     \return
         String object holding text that identifies the Renderer in use.
@@ -414,9 +422,30 @@ public:
 
     //! Destructor.
     virtual ~Renderer() {}
+
+protected:
+    /*!
+    \brief
+        Adds a created GeometryBuffer, which was returned when calling one of the
+        createGeometryBuffer functions, to the list of GeometryBuffers.
+
+    \param buffer
+        The GeometryBuffer object to be destroyed.
+    */
+    void addGeometryBuffer(GeometryBuffer& buffer);
+
+private:
+    //! container type used to hold GeometryBuffers created.
+    typedef std::vector<GeometryBuffer*> GeometryBufferList;
+    //! Container used to track geometry buffers.
+    GeometryBufferList d_geometryBuffers;
+
 };
 
 }
 
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
