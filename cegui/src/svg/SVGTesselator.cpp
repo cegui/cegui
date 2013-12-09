@@ -1244,7 +1244,7 @@ glm::vec2 SVGTesselator::determineScaleFactors(const glm::mat3& transformation, 
                       glm::length(glm::vec3(transformation[0].y, transformation[1].y, transformation[2].y)) );
 
     scale *= glm::vec2( render_settings.d_scaleFactor.x, render_settings.d_scaleFactor.y );
-    scale = 1.f / scale;
+    scale = 1.0f / scale;
 
     return scale;
 }

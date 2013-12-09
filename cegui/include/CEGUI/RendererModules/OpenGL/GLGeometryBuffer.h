@@ -51,12 +51,17 @@ public:
     //! Constructor
     OpenGLGeometryBuffer(OpenGLRenderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
-    // implementation/overrides of members from GeometryBuffer
+    // Implementation/overrides of members from GeometryBuffer
     void draw() const;
 
-    void setupVertexDataPointers() const;
-
+    // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
     void finaliseVertexAttributes();
+
+    /*
+    \brief
+        Updates the fixed-function vertex data pointers based on the defined vertex attributes
+    */
+    void setupVertexDataPointers() const;
 };
 
 } // End of  CEGUI namespace section

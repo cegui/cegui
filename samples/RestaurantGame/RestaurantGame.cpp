@@ -217,7 +217,7 @@ void HUDDemo::setupPointerIndicator()
     d_pointerIndicatorWnd = winMgr.createWindow("Generic/Image");
     d_pointerIndicatorWnd->setProperty("Image", "HUDDemo/Spoon");
     d_pointerIndicatorWnd->setAspectMode(CEGUI::AM_EXPAND);
-    d_pointerIndicatorWnd->setAspectRatio(1.f);
+    d_pointerIndicatorWnd->setAspectRatio(1.0f);
     d_pointerIndicatorWnd->setSize(CEGUI::USize(cegui_absdim(0.0f), cegui_reldim(0.1f)));
     d_pointerIndicatorWnd->setAlwaysOnTop(true);
     d_pointerIndicatorWnd->setPointerPassThroughEnabled(true);

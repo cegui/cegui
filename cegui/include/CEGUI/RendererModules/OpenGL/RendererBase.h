@@ -37,6 +37,9 @@
 #include "../../TextureTarget.h"
 #include "../../RefCounted.h"
 #include "CEGUI/RendererModules/OpenGL/GL.h"
+
+#include "glm/glm.hpp"
+
 #include <vector>
 #include <map>
 
@@ -70,8 +73,6 @@ public:
     RenderTarget& getDefaultRenderTarget();
     GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    void destroyGeometryBuffer(const GeometryBuffer& buffer);
-    void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
     void destroyTextureTarget(TextureTarget* target);
     void destroyAllTextureTargets();
@@ -178,7 +179,7 @@ public:
     \return
         The view projection matrix.
     */
-    virtual const mat4Pimpl* getViewProjectionMatrix();
+    virtual const glm::mat4& getViewProjectionMatrix();
 
     /*!
     \brief
@@ -187,7 +188,7 @@ public:
     \param viewProjectionMatrix
         The view projection matrix.
     */
-    virtual void setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix);
+    virtual void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);
 
     /*!
     \brief
@@ -260,10 +261,6 @@ protected:
     typedef std::vector<TextureTarget*> TextureTargetList;
     //! Container used to track texture targets.
     TextureTargetList d_textureTargets;
-    //! container type used to hold GeometryBuffers created.
-    typedef std::vector<OpenGLGeometryBufferBase*> GeometryBufferList;
-    //! Container used to track geometry buffers.
-    GeometryBufferList d_geometryBuffers;
     //! container type used to hold Textures we create.
     typedef std::map<String, OpenGLTexture*, StringFastLessCompare
                      CEGUI_MAP_ALLOC(String, OpenGLTexture*)> TextureMap;
@@ -276,7 +273,7 @@ protected:
     //! What blend mode we think is active.
     BlendMode d_activeBlendMode;
     //! View projection matrix
-    mat4Pimpl* d_viewProjectionMatrix;
+    glm::mat4 d_viewProjectionMatrix;
     //! The active RenderTarget
     RenderTarget* d_activeRenderTarget;
 };
