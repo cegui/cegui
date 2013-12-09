@@ -36,84 +36,25 @@
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/RendererModules/OpenGL/Texture.h"
 #include "CEGUI/Vertex.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
-#include "CEGUI/ShaderParameterBindings.h"
 
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial) :
-    GeometryBuffer(renderMaterial),
-    d_owner(&owner),
-    d_clipRect(0, 0, 0, 0),
-    d_clippingActive(true),
-    d_translation(0, 0, 0),
-    d_rotation(Quaternion::IDENTITY),
-    d_scale(1.0f, 1.0f, 1.0f),
-    d_pivot(0, 0, 0),
-    d_customTransform(1.0f),
-    d_effect(0),
-    d_matrix(new mat4Pimpl()),
-    d_matrixValid(false),
-    d_vertexCount(0)
+OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial)
+    : GeometryBuffer(renderMaterial)
+    , d_owner(&owner)
+    , d_clipRect(0, 0, 0, 0)
+    , d_clippingActive(true)
+    , d_matrix(1.0)
 {
 }
 
 //----------------------------------------------------------------------------//
 OpenGLGeometryBufferBase::~OpenGLGeometryBufferBase()
 {
-    delete d_matrix;
 }
 
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setTranslation(const Vector3f& v)
-{
-    if(d_translation != v)
-    {
-        d_translation = v;
-        d_matrixValid = false;
-    }
-}
 
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setRotation(const Quaternion& r)
-{
-    if(d_rotation != r)
-    {
-        d_rotation = r;
-        d_matrixValid = false;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setScale(const Vector3f& v)
-{
-    if(d_scale != v)
-    {
-        d_scale = v;
-        d_matrixValid = false;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setPivot(const Vector3f& p)
-{
-    if(d_pivot != p)
-    {
-        d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
-        d_matrixValid = false;
-    }
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setCustomTransform(const glm::mat4x4& transformation)
-{
-    if(d_customTransform != transformation)
-    {
-        d_customTransform = transformation;
-        d_matrixValid = false;
-    }
-}
 
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
@@ -125,39 +66,13 @@ void OpenGLGeometryBufferBase::setClippingRegion(const Rectf& region)
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setTexture(Texture* texture)
-{
-    CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-    shaderParameterBindings->setParameter("texture0", texture);
-}
-
-//----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::reset()
 {
-    d_vertexData.clear();
-    d_clippingActive = true;
+    GeometryBuffer::reset();
 }
 
 //----------------------------------------------------------------------------//
-uint OpenGLGeometryBufferBase::getVertexCount() const
-{
-    return d_vertexCount;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setRenderEffect(RenderEffect* effect)
-{
-    d_effect = effect;
-}
-
-//----------------------------------------------------------------------------//
-RenderEffect* OpenGLGeometryBufferBase::getRenderEffect()
-{
-    return d_effect;
-}
-
-//----------------------------------------------------------------------------//
-const mat4Pimpl* OpenGLGeometryBufferBase::getMatrix() const
+const glm::mat4& OpenGLGeometryBufferBase::getMatrix() const
 {
     if (!d_matrixValid)
         updateMatrix();
@@ -168,24 +83,22 @@ const mat4Pimpl* OpenGLGeometryBufferBase::getMatrix() const
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBufferBase::updateMatrix() const
 {
-    glm::mat4& model_matrix = d_matrix->d_matrix;
-
     const glm::vec3 final_trans(d_translation.d_x + d_pivot.d_x,
                                 d_translation.d_y + d_pivot.d_y,
                                 d_translation.d_z + d_pivot.d_z);
 
-    model_matrix = glm::translate(glm::mat4(1.0f), final_trans);
+    d_matrix = glm::translate(glm::mat4(1.0f), final_trans);
 
     glm::quat rotationQuat = glm::quat(d_rotation.d_w, d_rotation.d_x, d_rotation.d_y, d_rotation.d_z);
     glm::mat4 rotation_matrix = glm::mat4_cast(rotationQuat);
 
     glm::mat4 scale_matrix(glm::scale(glm::mat4(1.0f), glm::vec3(d_scale.d_x, d_scale.d_y, d_scale.d_z)));
 
-    model_matrix *= rotation_matrix * scale_matrix;
+    d_matrix *= rotation_matrix * scale_matrix;
 
     glm::vec3 transl = glm::vec3(-d_pivot.d_x, -d_pivot.d_y, -d_pivot.d_z);
-    glm::mat4 translMatrix = glm::translate(glm::mat4(1.f), transl);
-    model_matrix *=  translMatrix * d_customTransform;
+    glm::mat4 translMatrix = glm::translate(glm::mat4(1.0f), transl);
+    d_matrix *=  translMatrix * d_customTransform;
 
     d_matrixValid = true;
 }

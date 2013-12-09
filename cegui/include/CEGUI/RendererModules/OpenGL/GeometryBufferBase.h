@@ -61,23 +61,22 @@ public:
     virtual ~OpenGLGeometryBufferBase();
 
     // implementation of abstract members from GeometryBuffer
-    void setTranslation(const Vector3f& v);
-    void setRotation(const Quaternion& r);
-    void setScale(const Vector3f& v);
-    void setPivot(const Vector3f& p);
     void setCustomTransform(const glm::mat4x4& transformation);
     void setClippingRegion(const Rectf& region);
     void appendGeometry(const std::vector<float>& vertex_data);
-    void setTexture(Texture* texture);
     void reset();
-    uint getVertexCount() const;
-    void setRenderEffect(RenderEffect* effect);
-    RenderEffect* getRenderEffect();
     void setClippingActive(const bool active);
     bool isClippingActive() const;
 
     //! return the GL modelview matrix used for this buffer.
-    const mat4Pimpl* getMatrix() const;
+    const glm::mat4& getMatrix() const;
+
+    /*
+    \brief
+        The update function that is to be called when all the vertex attributes
+        are set.
+    */
+    virtual void finaliseVertexAttributes() = 0;
 
 protected:
     //! update cached matrix
@@ -85,32 +84,12 @@ protected:
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
     OpenGLRendererBase* d_owner;
-    //! type of container used to queue the geometry
-    typedef std::vector<float> VertexData;
-    //! container where added geometry is stored.
-    VertexData d_vertexData;
-    //! vertex count in respect to the used vertex layout
-    unsigned int d_vertexCount;
     //! rectangular clip region
     Rectf d_clipRect;
     //! whether clipping will be active for the current batch
     bool d_clippingActive;
-    //! translation vector
-    Vector3f d_translation;
-    //! rotation quaternion
-    Quaternion d_rotation;
-    //! scaling vector
-    Vector3f d_scale;
-    //! pivot point for rotation
-    Vector3f d_pivot;
-    //! custom transformation matrix
-    glm::mat4x4 d_customTransform;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect* d_effect;
-    //! cche of the model matrix
-    mutable mat4Pimpl*              d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool                    d_matrixValid;
+    //! cache of the model matrix
+    mutable glm::mat4 d_matrix;
 };
 
 }
