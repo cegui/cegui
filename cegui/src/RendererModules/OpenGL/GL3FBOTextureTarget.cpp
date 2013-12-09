@@ -122,7 +122,12 @@ void OpenGL3FBOTextureTarget::clear()
     // Clear it.
     d_glStateChanger->disable(GL_SCISSOR_TEST);
     glClearColor(0,0,0,0);
-    glClear(GL_COLOR_BUFFER_BIT);
+
+    if(!d_usesStencil)
+        glClear(GL_COLOR_BUFFER_BIT);
+    else
+        glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
+
     // switch back to rendering to the previously bound FBO
     glBindFramebuffer(GL_FRAMEBUFFER, previousFBO);
 
@@ -206,13 +211,14 @@ void OpenGL3FBOTextureTarget::resizeRenderTexture()
                  static_cast<GLsizei>(sz.d_width),
                  static_cast<GLsizei>(sz.d_height),
                  0, GL_RGBA, GL_UNSIGNED_BYTE, 0);
-    clear();
 
     glBindRenderbuffer(GL_RENDERBUFFER, d_stencilBufferRBO);
     glRenderbufferStorage(GL_RENDERBUFFER,
                           GL_STENCIL_INDEX8,
                           static_cast<GLsizei>(sz.d_width),
                           static_cast<GLsizei>(sz.d_height));
+
+    clear();
 
     // ensure the CEGUI::Texture is wrapping the gl texture and has correct size
     d_CEGUITexture->setOpenGLTexture(d_texture, sz);
