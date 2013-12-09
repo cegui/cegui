@@ -31,7 +31,6 @@
 #include "CEGUI/RendererModules/OpenGL/GLRenderer.h"
 #include "CEGUI/RenderEffect.h"
 #include "CEGUI/Vertex.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 #include "glm/gtc/type_ptr.hpp"
 
 // Start of CEGUI namespace section
@@ -68,7 +67,7 @@ void OpenGLGeometryBuffer::draw() const
         updateMatrix();
 
     glMatrixMode(GL_MODELVIEW);
-    glLoadMatrixf(glm::value_ptr(d_matrix->d_matrix));
+    glLoadMatrixf(glm::value_ptr(d_matrix));
 
     // activate desired blending mode
     d_owner->setupRenderingBlendMode(d_blendMode);
@@ -101,7 +100,6 @@ void OpenGLGeometryBuffer::finaliseVertexAttributes()
 //----------------------------------------------------------------------------//
 void OpenGLGeometryBuffer::setupVertexDataPointers() const
 {
-    //Update the fixed function vertex pointers to our vertex data depending on the defined attributes
     int dataOffset = 0;
     GLsizei stride = getVertexAttributeElementCount() * sizeof(GL_FLOAT);
 

@@ -42,7 +42,6 @@
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
 
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 #include "glm/gtc/type_ptr.hpp"
 
 #include <sstream>
@@ -426,12 +425,12 @@ bool OpenGLRenderer::isS3TCSupported() const
 }
 
 //----------------------------------------------------------------------------//
-void OpenGLRenderer::setViewProjectionMatrix(const mat4Pimpl* viewProjectionMatrix)
+void OpenGLRenderer::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
 {
     OpenGLRendererBase::setViewProjectionMatrix(viewProjectionMatrix);
 
     glMatrixMode(GL_PROJECTION);
-    glLoadMatrixf(glm::value_ptr(d_viewProjectionMatrix->d_matrix));
+    glLoadMatrixf(glm::value_ptr(d_viewProjectionMatrix));
 }
 
 
