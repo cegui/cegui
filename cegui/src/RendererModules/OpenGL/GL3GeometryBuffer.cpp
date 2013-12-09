@@ -38,7 +38,6 @@
 #include "CEGUI/RendererModules/OpenGL/ShaderManager.h"
 #include "CEGUI/RendererModules/OpenGL/Shader.h"
 #include "CEGUI/RendererModules/OpenGL/StateChangeWrapper.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 #include "CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
@@ -87,7 +86,7 @@ void OpenGL3GeometryBuffer::draw() const
 
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
     // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix()->d_matrix * d_matrix->d_matrix;
+    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix() * d_matrix;
     shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
     // activate desired blending mode
