@@ -1,10 +1,10 @@
 /***********************************************************************
-    filename:   CEGUINullGeometryBuffer.h
-    created:    Fri Jan 15 2010
-    author:     Eugene Marcotte
+    filename:   ShaderWrapper.cpp
+    created:    7th December 2013
+    author:     Lukas Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2010 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -25,51 +25,27 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUINullGeometryBuffer_h_
-#define _CEGUINullGeometryBuffer_h_
+#include "CEGUI/RendererModules/Null/ShaderWrapper.h"
+#include "CEGUI/ShaderParameterBindings.h"
 
-#include "../../GeometryBuffer.h"
-#include "CEGUI/RendererModules/Null/Renderer.h"
-#include "../../Rect.h"
-#include "../../Colour.h"
-#include "../../Vertex.h"
-#include "../../Quaternion.h"
-
-#include <utility>
-#include <vector>
-
-#if defined(_MSC_VER)
-#   pragma warning(push)
-#   pragma warning(disable : 4251)
-#endif
-
-// Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Implementation of CEGUI::GeometryBuffer for the Null engine
-class NULL_GUIRENDERER_API NullGeometryBuffer : public GeometryBuffer
+
+//----------------------------------------------------------------------------//
+NullShaderWrapper::NullShaderWrapper()
 {
-public:
-    //! Constructor
-    NullGeometryBuffer(CEGUI::RefCounted<RenderMaterial> renderMaterial);
-    //! Destructor
-    virtual ~NullGeometryBuffer();
+}
 
-    // Implementation/overrides of member functions inherited from GeometryBuffer
-    void draw() const;
-    void appendGeometry(const std::vector<float>& vertex_data);
-    void finaliseVertexAttributes();
-    void setClippingRegion(const Rectf& region);
-protected:
-    //! rectangular clip region
-    Rectf d_clipRect;
-};
+//----------------------------------------------------------------------------//
+NullShaderWrapper::~NullShaderWrapper()
+{
+}
 
+//----------------------------------------------------------------------------//
+void NullShaderWrapper::prepareForRendering(const ShaderParameterBindings* shaderParameterBindings)
+{
+}
 
-} // End of  CEGUI namespace section
+//----------------------------------------------------------------------------//
+}
 
-#if defined(_MSC_VER)
-#   pragma warning(pop)
-#endif
-
-#endif  // end of guard _CEGUINullGeometryBuffer_h_
