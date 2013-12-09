@@ -46,12 +46,13 @@ public:
     OpenGL3GeometryBuffer(OpenGL3Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
     virtual ~OpenGL3GeometryBuffer();
 
-    // implementation/overrides of members from GeometryBuffer
+    // Implementation/overrides of member functions inherited from GeometryBuffer
     void draw() const;
     void appendGeometry(const std::vector<float>& vertex_data);
     void reset();
+
+    // Implementation/overrides of member functions inherited from OpenGLGeometryBufferBase
     void finaliseVertexAttributes();
- 
 
 protected:
     void initialiseVertexBuffers();

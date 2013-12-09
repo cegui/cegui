@@ -164,7 +164,7 @@ public:
                                  const bool force = false);
     RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
 
-private:
+protected:
     OpenGLGeometryBufferBase* createGeometryBuffer_impl(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     TextureTarget* createTextureTarget_impl();
 
@@ -185,10 +185,12 @@ private:
     */
     OpenGL3Renderer(const Sizef& display_size);
 
+    //! Initialises the ShaderManager and the required OpenGL shaders
     void initialiseOpenGLShaders();
-
+    //! Initialises the OpenGL ShaderWrapper for textured objects
     void initialiseStandardTexturedShaderWrapper();
-    void initialiseStandardSolidShaderWrapper();
+    //! Initialises the OpenGL ShaderWrapper for coloured objects
+    void initialiseStandardColouredShaderWrapper();
 
     void initialiseGLExtensions();
 
