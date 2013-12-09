@@ -44,12 +44,12 @@ namespace CEGUI
 {
 class Direct3D11Texture;
 
-//! Implementation of CEGUI::GeometryBuffer for the Direct3D 10 API.
+//! Implementation of CEGUI::GeometryBuffer for the Direct3D 11 API.
 class D3D11_GUIRENDERER_API Direct3D11GeometryBuffer : public GeometryBuffer
 {
 public:
     //! Constructor
-    Direct3D11GeometryBuffer(Direct3D11Renderer& owner);
+    Direct3D11GeometryBuffer(Direct3D11Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial);
 
     //! Destructor
     ~Direct3D11GeometryBuffer();
@@ -59,21 +59,8 @@ public:
 
     // Implement GeometryBuffer interface.
     void draw() const;
-    void setTranslation(const Vector3f& v);
-    void setRotation(const Quaternion& r);
-    void setPivot(const Vector3f& p);
+    void appendGeometry(const std::vector<float>& vertex_data);
     void setClippingRegion(const Rectf& region);
-    void appendVertex(const Vertex& vertex);
-    void appendGeometry(const Vertex* const vbuff, uint vertex_count);
-    void setActiveTexture(Texture* texture);
-    void reset();
-    Texture* getActiveTexture() const;
-    uint getVertexCount() const;
-    uint getBatchCount() const;
-    void setRenderEffect(RenderEffect* effect);
-    RenderEffect* getRenderEffect();
-    void setClippingActive(const bool active);
-    bool isClippingActive() const;
 
 protected:
     //! update cached matrix
@@ -116,26 +103,8 @@ protected:
     mutable UINT d_bufferSize;
     //! whether the h/w buffer is in sync with the added geometry
     mutable bool d_bufferSynched;
-    //! type of container that tracks BatchInfos.
-    typedef std::vector<BatchInfo> BatchList;
-    //! list of texture batches added to the geometry buffer
-    BatchList d_batches;
-    //! type of container used to queue the geometry
-    typedef std::vector<D3DVertex> VertexList;
-    //! container where added geometry is stored.
-    VertexList d_vertices;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! whether clipping will be active for the current batch
-    bool d_clippingActive;
-    //! translation vector
-    Vector3f d_translation;
-    //! rotation vector
-    Quaternion d_rotation;
-    //! pivot point for rotation
-    Vector3f d_pivot;
-    //! RenderEffect that will be used by the GeometryBuffer
-    RenderEffect* d_effect;
     //! model matrix cache
     mutable D3DXMATRIX d_matrix;
     //! true when d_matrix is valid and up to date

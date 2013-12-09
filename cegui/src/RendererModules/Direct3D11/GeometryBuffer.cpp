@@ -34,20 +34,13 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner) :
-    d_owner(owner),
-    d_device(d_owner.getDirect3DDevice()),
-    d_activeTexture(0),
-    d_vertexBuffer(0),
-    d_bufferSize(0),
-    d_bufferSynched(false),
-    d_clipRect(0, 0, 0, 0),
-    d_clippingActive(true),
-    d_translation(0, 0, 0),
-    d_rotation(0, 0, 0),
-    d_pivot(0, 0, 0),
-    d_effect(0),
-    d_matrixValid(false)
+Direct3D11GeometryBuffer::Direct3D11GeometryBuffer(Direct3D11Renderer& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial)
+    : GeometryBuffer(renderMaterial)
+    , d_owner(owner)
+    , d_device(d_owner.getDirect3DDevice())
+    , d_bufferSize(0)
+    , d_bufferSynched(false)
+    , d_clipRect(0, 0, 0, 0)
 {
 }
 
@@ -60,6 +53,7 @@ Direct3D11GeometryBuffer::~Direct3D11GeometryBuffer()
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::draw() const
 {
+/*
     // setup clip region
     D3D11_RECT clip;
     clip.left   = static_cast<LONG>(d_clipRect.left());
@@ -106,28 +100,7 @@ void Direct3D11GeometryBuffer::draw() const
 
     // clean up RenderEffect
     if (d_effect)
-        d_effect->performPostRenderFunctions();
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setTranslation(const Vector3f& v)
-{
-    d_translation = v;
-    d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setRotation(const Quaternion& r)
-{
-    d_rotation = r;
-    d_matrixValid = false;
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setPivot(const Vector3f& p)
-{
-    d_pivot = p;
-    d_matrixValid = false;
+        d_effect->performPostRenderFunctions();*/
 }
 
 //----------------------------------------------------------------------------//
@@ -139,32 +112,12 @@ void Direct3D11GeometryBuffer::setClippingRegion(const Rectf& region)
     d_clipRect.right(ceguimax(0.0f, region.right()));
 }
 
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::appendVertex(const Vertex& vertex)
-{
-    appendGeometry(&vertex, 1);
-}
 
 //----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::appendGeometry(const Vertex* const vbuff,
-                                              uint vertex_count)
+void Direct3D11GeometryBuffer::appendGeometry(const std::vector<float>& vertex_data)
 {
-    const ID3D11ShaderResourceView* srv =
-        d_activeTexture ? d_activeTexture->getDirect3DShaderResourceView() : 0;
-
-    // create a new batch if there are no batches yet, or if the active texture
-    // differs from that used by the current batch.
-    if (d_batches.empty() ||
-        srv != d_batches.back().texture ||
-        d_clippingActive != d_batches.back().clip)
-    {
-        BatchInfo batch = {srv, 0, d_clippingActive};
-        d_batches.push_back(batch);
-    }
-
-    // update size of current batch
-    d_batches.back().vertexCount += vertex_count;
-
+    //TODO IDENT: fix this
+/*
     // buffer these vertices
     D3DVertex vd;
     const Vertex* vs = vbuff;
@@ -181,51 +134,7 @@ void Direct3D11GeometryBuffer::appendGeometry(const Vertex* const vbuff,
         d_vertices.push_back(vd);
     }
 
-    d_bufferSynched = false;
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setActiveTexture(Texture* texture)
-{
-    d_activeTexture = static_cast<Direct3D11Texture*>(texture);
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::reset()
-{
-    d_batches.clear();
-    d_vertices.clear();
-    d_activeTexture = 0;
-}
-
-//----------------------------------------------------------------------------//
-Texture* Direct3D11GeometryBuffer::getActiveTexture() const
-{
-    return d_activeTexture;
-}
-
-//----------------------------------------------------------------------------//
-uint Direct3D11GeometryBuffer::getVertexCount() const
-{
-    return d_vertices.size();
-}
-
-//----------------------------------------------------------------------------//
-uint Direct3D11GeometryBuffer::getBatchCount() const
-{
-    return d_batches.size();
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setRenderEffect(RenderEffect* effect)
-{
-    d_effect = effect;
-}
-
-//----------------------------------------------------------------------------//
-RenderEffect* Direct3D11GeometryBuffer::getRenderEffect()
-{
-    return d_effect;
+    d_bufferSynched = false;*/
 }
 
 //----------------------------------------------------------------------------//
@@ -259,6 +168,7 @@ const D3DXMATRIX* Direct3D11GeometryBuffer::getMatrix() const
 //----------------------------------------------------------------------------//
 void Direct3D11GeometryBuffer::syncHardwareBuffer() const
 {
+/*
     const size_t vertex_count = d_vertices.size();
 
     if (vertex_count > d_bufferSize)
@@ -279,7 +189,7 @@ void Direct3D11GeometryBuffer::syncHardwareBuffer() const
         d_device.d_context->Unmap(d_vertexBuffer,0);
     }
 
-    d_bufferSynched = true;
+    d_bufferSynched = true;*/
 }
 
 //----------------------------------------------------------------------------//
@@ -307,18 +217,6 @@ void Direct3D11GeometryBuffer::cleanupVertexBuffer() const
         d_vertexBuffer = 0;
         d_bufferSize = 0;
     }
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11GeometryBuffer::setClippingActive(const bool active)
-{
-    d_clippingActive = active;
-}
-
-//----------------------------------------------------------------------------//
-bool Direct3D11GeometryBuffer::isClippingActive() const
-{
-    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//
