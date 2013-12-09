@@ -33,6 +33,7 @@
 #include "CEGUI/Rect.h"
 #include "CEGUI/RefCounted.h"
 #include "CEGUI/RenderMaterial.h"
+#include "CEGUI/Quaternion.h"
 
 #include "glm/glm.hpp"
 
@@ -109,20 +110,20 @@ public:
         Set the translation to be applied to the geometry in the buffer when it
         is subsequently rendered.
 
-    \param v
+    \param translation
         Vector3 describing the three axis translation vector to be used.
     */
-    virtual void setTranslation(const Vector3f& v) = 0;
+    virtual void setTranslation(const Vector3f& translation);
 
     /*!
     \brief
         Set the rotations to be applied to the geometry in the buffer when it is
         subsequently rendered.
 
-    \param r
+    \param rotationQuat
         Quaternion describing the rotation to be used.
     */
-    virtual void setRotation(const Quaternion& r) = 0;
+    virtual void setRotation(const Quaternion& rotationQuat);
 
     /*!
     \brief
@@ -132,7 +133,7 @@ public:
     \param scale
         Vector3 describing the scale to be used.
     */
-    virtual void setScale(const Vector3f& v) = 0;
+    virtual void setScale(const Vector3f& scale);
 
     /*!
     \brief
@@ -142,10 +143,7 @@ public:
     \param scale
         Vector2 describing the x and y scale to be used.
     */
-    void setScale(const Vector2f& v)
-    {
-        setScale(Vector3f(v, 0.f));
-    }
+    void setScale(const Vector2f& scale);
 
     /*!
     \brief
@@ -155,7 +153,7 @@ public:
         Vector3 describing the location of the pivot point to be used when
         applying the rotation to the geometry.
     */
-    virtual void setPivot(const Vector3f& p) = 0;
+    void setPivot(const Vector3f& p);
 
     /*!
     \brief
@@ -165,7 +163,7 @@ public:
     \param transformation
         3x3 Matrix that describes the transformation.
     */
-    virtual void setCustomTransform(const glm::mat4x4& transformation) = 0;
+    void setCustomTransform(const glm::mat4x4& transformation);
 
     /*!
     \brief
@@ -180,7 +178,7 @@ public:
     \param fill_rule
         The fill rule that should be used when rendering the geometry.
     */
-    virtual void setStencilRenderingActive(PolygonFillRule fill_rule);
+    void setStencilRenderingActive(PolygonFillRule fill_rule);
 
     /*!
     \brief
@@ -289,24 +287,24 @@ public:
         vertices.  This may be 0, in which case texturing will be disabled for
         subsequently added vertices.
     */
-    virtual void setTexture(Texture* texture) = 0;
+    virtual void setTexture(Texture* texture);
 
     /*!
     \brief
         Clear all buffered data and reset the GeometryBuffer to the default
         state. This excludes resettings the vertex attributes.
     */
-    virtual void reset() = 0;
+    virtual void reset();
 
     /*!
     \brief
-        Return the total number of vertices currently held by this
-        GeometryBuffer object.
+        Returns the vertex count of this GeometryBuffer, which is determined based
+        on the the used vertex layout and the size of the vertex data
 
     \return
         The number of vertices that have been appended to this GeometryBuffer.
     */
-    virtual uint getVertexCount() const = 0;
+    virtual uint getVertexCount() const;
 
     /*!
     \brief
@@ -334,14 +332,14 @@ public:
         you need to be careful not to delete the RenderEffect if it might still
         be in use!
     */
-    virtual void setRenderEffect(RenderEffect* effect) = 0;
+    virtual void setRenderEffect(RenderEffect* effect);
 
     /*!
     \brief
         Return the RenderEffect object that is assigned to this GeometryBuffer
         or 0 if none.
     */
-    virtual RenderEffect* getRenderEffect() = 0;
+    virtual RenderEffect* getRenderEffect();
 
     /*!
     \brief
@@ -378,7 +376,7 @@ public:
         - false if vertices added after this call should not be clipped
           (other than to the edges of rendering target.
     */
-    virtual void setClippingActive(const bool active) = 0;
+    virtual void setClippingActive(const bool active);
 
     /*
     \brief
@@ -391,7 +389,7 @@ public:
         - false if vertices subsequently added will not be clipped (other than
           to the edges of the rendering target).
     */
-    virtual bool isClippingActive() const = 0;
+    virtual bool isClippingActive() const;
 
     /*
     \brief
@@ -416,13 +414,6 @@ public:
 
     /*
     \brief
-        The update function that is to be called when all the vertex attributes
-        are set.
-    */
-    virtual void finaliseVertexAttributes() = 0;
-
-    /*
-    \brief
         Returns the RenderMaterial that is currently used by this GeometryBuffer.
 
     \return
@@ -441,15 +432,17 @@ public:
     void setRenderMaterial(RefCounted<RenderMaterial> render_material);
 
 protected:
-    //! Constructor.
     GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
 
-    //! The BlendMode to use when rendering this GeometryBuffer.
-    BlendMode d_blendMode;
-
     //! Reference to the RenderMaterial used for this GeometryBuffer
-    RefCounted<RenderMaterial> d_renderMaterial;
+    RefCounted<RenderMaterial>  d_renderMaterial;
 
+    //! type of container used to store the geometry's vertex data
+    typedef std::vector<float>  VertexData;
+    //! The container in which the vertex data is stored.
+    VertexData                  d_vertexData;
+    //! The vertex count which is determined based on the used vertex layout
+    unsigned int                d_vertexCount;
     /*
     \brief
         A vector of the attributes of the vertices of this GeometryBuffer. The order
@@ -458,11 +451,30 @@ protected:
     */
     std::vector<VertexAttributeType> d_vertexAttributes;
 
+
+    //! translation vector
+    Vector3f        d_translation;
+    //! rotation quaternion
+    Quaternion      d_rotation;
+    //! scaling vector
+    Vector3f        d_scale;
+    //! pivot point for rotation
+    Vector3f        d_pivot;
+    //! custom transformation matrix
+    glm::mat4x4     d_customTransform;
+    //! true when there have been no changes to the GeometryBuffer's transformation since it has last been updated.
+    mutable bool    d_matrixValid;
+
+    //! The BlendMode to use when rendering this GeometryBuffer.
+    BlendMode       d_blendMode;
     //! The fill rule that should be used when rendering the geometry.
     PolygonFillRule d_polygonFillRule;
-
     //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
-    unsigned int d_postStencilVertexCount;
+    unsigned int    d_postStencilVertexCount;
+    //! RenderEffect that will be used by the GeometryBuffer
+    RenderEffect*   d_effect;
+    //! True if clipping will be active for the current batch
+    bool d_clippingActive;
 };
 
 }
