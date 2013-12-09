@@ -273,7 +273,7 @@ void CEGuiGLFWSharedBase::initGLFW()
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::createGLFWWindow()
 {
-    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
+    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 8, 8, 8, 0, 24, 0, GLFW_WINDOW) != GL_TRUE)
     {
         CEGUI_THROW(CEGUI::RendererException("Failed to open GLFW window."));
         glfwTerminate();
