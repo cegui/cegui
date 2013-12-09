@@ -27,10 +27,40 @@
  ***************************************************************************/
 #include "CEGUI/Renderer.h"
 #include "CEGUI/RenderMaterial.h"
+#include "CEGUI/GeometryBuffer.h"
 
+#include <algorithm>
 
 namespace CEGUI
 {
+
+//----------------------------------------------------------------------------//
+void Renderer::addGeometryBuffer(GeometryBuffer& buffer) 
+{
+    d_geometryBuffers.push_back(&buffer);
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::destroyGeometryBuffer(const GeometryBuffer& buffer)
+{
+    GeometryBufferList::iterator i = std::find(d_geometryBuffers.begin(),
+                                               d_geometryBuffers.end(),
+                                               &buffer);
+
+    if (d_geometryBuffers.end() != i)
+    {
+        d_geometryBuffers.erase(i);
+        CEGUI_DELETE_AO &buffer;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Renderer::destroyAllGeometryBuffers()
+{
+    while (!d_geometryBuffers.empty())
+        destroyGeometryBuffer(**d_geometryBuffers.begin());
+}
+
 //----------------------------------------------------------------------------//
 GeometryBuffer& Renderer::createGeometryBufferTextured()
 {
