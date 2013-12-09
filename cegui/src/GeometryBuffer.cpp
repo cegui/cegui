@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "CEGUI/GeometryBuffer.h"
 #include "CEGUI/Vertex.h"
+#include "CEGUI/ShaderParameterBindings.h"
 
 #include <vector>
 
@@ -34,7 +35,14 @@ namespace CEGUI
 {
 //---------------------------------------------------------------------------//
 GeometryBuffer::GeometryBuffer(RefCounted<RenderMaterial> renderMaterial)
-    : d_blendMode(BM_NORMAL)
+    : d_translation(0, 0, 0)
+    , d_rotation(Quaternion::IDENTITY)
+    , d_scale(1.0f, 1.0f, 1.0f)
+    , d_pivot(0, 0, 0)
+    , d_customTransform(1.0f)
+    , d_effect(0)
+    , d_matrixValid(false)
+    , d_blendMode(BM_NORMAL)
     , d_renderMaterial(renderMaterial)
     , d_polygonFillRule(PFR_NONE)
     , d_postStencilVertexCount(0)
@@ -118,7 +126,7 @@ void GeometryBuffer::appendGeometry(const TexturedColouredVertex* vertex_array,
         vertexData.push_back(vs->d_colour.getGreen());
         vertexData.push_back(vs->d_colour.getBlue());
         vertexData.push_back(vs->d_colour.getAlpha());
-    vertexData.push_back(vs->d_texCoords.x);
+        vertexData.push_back(vs->d_texCoords.x);
         vertexData.push_back(vs->d_texCoords.y);
     }
 
@@ -233,6 +241,108 @@ void GeometryBuffer::setStencilRenderingActive(PolygonFillRule fill_rule)
 void GeometryBuffer::setStencilPostRenderingVertexCount(unsigned int vertex_count)
 {
     d_postStencilVertexCount = vertex_count;
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setRenderEffect(RenderEffect* effect)
+{
+    d_effect = effect;
+}
+
+//----------------------------------------------------------------------------//
+RenderEffect* GeometryBuffer::getRenderEffect()
+{
+    return d_effect;
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setTranslation(const Vector3f& translation)
+{
+    if(d_translation != translation)
+    {
+        d_translation = translation;
+        d_matrixValid = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setRotation(const Quaternion& rotationQuat)
+{
+    if(d_rotation != rotationQuat)
+    {
+        d_rotation = rotationQuat;
+        d_matrixValid = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setScale(const Vector3f& scale)
+{
+    if(d_scale != scale)
+    {
+        d_scale = scale;
+        d_matrixValid = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setScale(const Vector2f& scale)
+{
+    setScale(Vector3f(scale, 0.f));
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setPivot(const Vector3f& p)
+{
+    if(d_pivot != p)
+    {
+        d_pivot = Vector3f(p.d_x, p.d_y, p.d_z);
+        d_matrixValid = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setCustomTransform(const glm::mat4x4& transformation)
+{
+    if(d_customTransform != transformation)
+    {
+        d_customTransform = transformation;
+        d_matrixValid = false;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setClippingActive(const bool active)
+{
+    d_clippingActive = active;
+}
+
+//----------------------------------------------------------------------------//
+bool GeometryBuffer::isClippingActive() const
+{
+    return d_clippingActive;
+}
+
+
+//----------------------------------------------------------------------------//
+uint GeometryBuffer::getVertexCount() const
+{
+    return d_vertexCount;
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::reset()
+{
+    d_vertexData.clear();
+    d_clippingActive = true;
+    setTexture(0);
+}
+
+//----------------------------------------------------------------------------//
+void GeometryBuffer::setTexture(Texture* texture)
+{
+    CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
+    shaderParameterBindings->setParameter("texture0", texture);
 }
 
 //---------------------------------------------------------------------------//
