@@ -660,7 +660,7 @@ void FrameWindow::onPointerActivate(PointerEventArgs& e)
 	// default processing (this is now essential as it controls event firing).
     Window::onPointerActivate(e);
 
-    if (e.scroll == PS_Left && isCapturedByThis())
+    if (e.source == PS_Left && isCapturedByThis())
 	{
 		// release our capture on the input data
 		releaseInput();
