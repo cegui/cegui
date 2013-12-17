@@ -335,8 +335,8 @@
                 <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
                 <KeyFrame position="0.28" value="tl:00000000 tr:00000000 bl:00000000 br:00000000" progression="quadratic decelerating" />
             </Affector>
-            <Subscription event="MouseLeavesArea" action="Stop" />
-            <Subscription event="MouseEntersArea" action="Start" />
+            <Subscription event="PointerLeavesArea" action="Stop" />
+            <Subscription event="PointerEntersArea" action="Start" />
         </AnimationDefinition>
 
         <AnimationDefinition name="SamplePreviewFadeOut" duration="0.39" replayMode="once" autoStart="false">
@@ -344,8 +344,8 @@
                 <KeyFrame position="0" sourceProperty="ForegroundFadeColours" />
                 <KeyFrame position="0.39" value="tl:CC000000 tr:CC000000 bl:CC000000 br:CC000000" progression="quadratic decelerating" />
             </Affector>
-            <Subscription event="MouseEntersArea" action="Stop" />
-            <Subscription event="MouseLeavesArea" action="Start" />
+            <Subscription event="PointerEntersArea" action="Stop" />
+            <Subscription event="PointerLeavesArea" action="Start" />
         </AnimationDefinition>
     </WidgetLook>
 
