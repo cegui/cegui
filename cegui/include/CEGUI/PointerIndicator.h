@@ -394,22 +394,22 @@ private:
 
     /*!
     \brief
-        Destroys the geometry buffers of this MouseCursor.
+        Destroys the geometry buffers of this PointerIndicator.
     */
     void destroyGeometryBuffers();
 
     /*!
     \brief
-        Updates the translation of the geometry buffers of this MouseCursor.
+        Updates the translation of the geometry buffers of this PointerIndicator.
     */
     void updateGeometryBuffersTranslation();
 
     /*!
     \brief
-        Updates the clipping area of the geometry buffers of this MouseCursor.
+        Updates the clipping area of the geometry buffers of this PointerIndicator.
         
     \param clipping_area
-        The clipping area that will be applied to the geometry buffers of this MouseCursor.
+        The clipping area that will be applied to the geometry buffers of this PointerIndicator.
     */
     void updateGeometryBuffersClipping(const Rectf& clipping_area);
 

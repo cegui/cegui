@@ -58,7 +58,7 @@ The reference for each element is arranged into sections, as described below:
         - \<DefaultXMLParser\> elements.
         - \<DefaultImageCodec\> elements.
         - \<DefaultFont\> elements.
-        - \<DefaultMouseCursor\> elements.
+        - \<DefaultPointerIndicator\> elements.
         - \<DefaultTooltip\> elements.
         - \<DefaultGUISheet\> elements.
     - No element may contain \<CEGUIConfig\> as a sub-element.

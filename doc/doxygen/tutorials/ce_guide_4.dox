@@ -212,10 +212,10 @@ movement (rolling the wheel towards the user).
 @subsection input_tutorial_click bool InjectedInputReceiver::injectMouseButtonClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 click has occurred; normally that is a down -> up sequence.  Calling this
-function is only neccessary if the built-in automatic generation of click and
+function is only necessary if the built-in automatic generation of click and
 multi-click events is unsuitable for your needs.  If you decide you need to use
 this function you will normally disable the automatic event generation first by
-way of the GUIContext::setMouseClickEventGenerationEnabled function.  While it is
+way of the InputAggregator::setMouseClickEventGenerationEnabled function.  While it is
 possible to call this injection function \e without disabling the auto generated
 events, it will affect the behaviour as to the way events are marked as
 'handled' and therefore the return code from this function.
@@ -223,10 +223,10 @@ events, it will affect the behaviour as to the way events are marked as
 @subsection input_tutorial_doubleclick bool InjectedInputReceiver::injectMouseButtonDoubleClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 double-click has occurred; normally that is a down -> up -> down sequence.
-Calling this function is only neccessary if the built-in automatic generation of
+Calling this function is only necessary if the built-in automatic generation of
 click and multi-click events is unsuitable for your needs.  If you decide you
 need to use this function you will normally disable the automatic event
-generation first by way of the GUIContext::setMouseClickEventGenerationEnabled
+generation first by way of the InputAggregator::setMouseClickEventGenerationEnabled
 function.  While it is possible to call this injection function \e without
 disabling the auto generated events, it will affect the behaviour as to the way
 events are marked as 'handled' and therefore the return code from this function.
@@ -234,11 +234,11 @@ events are marked as 'handled' and therefore the return code from this function.
 @subsection input_tutorial_tripleclick bool InjectedInputReceiver::injectMouseButtonTripleClick( MouseButton button )
 This is an optional injection function that informs CEGUI that a mouse button
 triple-click has occurred; normally that is a down -> up -> down -> up -> down
-sequence.  Calling this function is only neccessary if the built-in automatic
+sequence.  Calling this function is only necessary if the built-in automatic
 generation of click and multi-click events is unsuitable for your needs.  If you
 decide you need to use this function you will normally disable the automatic
 event generation first by way of the
-GUIContext::setMouseClickEventGenerationEnabled function.  While it is possible
+InputAggregator::setMouseClickEventGenerationEnabled function.  While it is possible
 to call this injection function \e without disabling the auto generated events,
 it will affect the behaviour as to the way events are marked as 'handled' and
 therefore the return code from this function.
