@@ -195,7 +195,7 @@ for the initial, default GUIContext is as follows:
 TaharezLook scheme we loaded above.
 
 @code
-System::getSingleton().getDefaultGUIContext().
+CEGUI::System::getSingleton().getDefaultGUIContext().
     getMouseCursor().setDefaultImage( "TaharezLook/MouseArrow" );
 @endcode
 
@@ -206,7 +206,7 @@ required, and is beyond the scope of this introductory tutorial.  The code to
 set the default tool tip window type for the initial, default GUIContext looks
 like this:
 @code
-System::getSingleton().getDefaultGUIContext().
+CEGUI::System::getSingleton().getDefaultGUIContext().
     setDefaultTooltipType( "TaharezLook/Tooltip" );
 @endcode
 
