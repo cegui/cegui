@@ -14,17 +14,23 @@ set(OIS_PREFIX_PATH
 
 
 find_path(OIS_H_PATH NAMES OIS.h
-        PATHS ${OIS_PREFIX_PATH} 
-        PATH_SUFFIXES OIS include includes)
+          PATHS ${OIS_PREFIX_PATH} 
+          PATH_SUFFIXES OIS include includes)
+        
+if(NOT OIS_H_PATH)
+    find_path(OIS_H_PATH NAMES OIS.h
+              PATHS ${OIS_PREFIX_PATH} 
+              PATH_SUFFIXES OIS include include/OIS)
+endif()
         
 find_library(OIS_LIB NAMES OIS libOIS
-        PATHS ${OIS_PREFIX_PATH}
-        PATH_SUFFIXES Release lib/Release
-        )
+             PATHS ${OIS_PREFIX_PATH}
+             PATH_SUFFIXES Release lib/Release)
+             
 find_library(OIS_LIB_DBG NAMES OIS_d libOIS_d
-        PATHS ${OIS_PREFIX_PATH}
-        PATH_SUFFIXES Debug lib/Debug
-        )
+             PATHS ${OIS_PREFIX_PATH}
+             PATH_SUFFIXES Debug lib/Debug)
+             
 mark_as_advanced(OIS_H_PATH OIS_LIB OIS_LIB_DBG)
 
 find_package_handle_standard_args(OIS DEFAULT_MSG OIS_LIB OIS_H_PATH)
