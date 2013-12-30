@@ -75,13 +75,13 @@ find_path(OGRE_H_BUILD_SETTINGS_PATH
 
 # Find the release and debug libraries.
 find_library(OGRE_LIB NAMES OgreMain
-    PATHS ${OGRE_PREFIX_PATH}
-    PATH_SUFFIXES Release lib/Release
-)
+             PATHS ${OGRE_PREFIX_PATH}
+             PATH_SUFFIXES Release lib/Release)
+             
 find_library(OGRE_LIB_DBG NAMES OgreMain_d
-    PATHS ${OGRE_PREFIX_PATH}
-    PATH_SUFFIXES Debug lib/Debug
-)
+             PATHS ${OGRE_PREFIX_PATH}
+             PATH_SUFFIXES Debug lib/Debug)
+             
 mark_as_advanced(OGRE_H_PATH OGRE_H_BUILD_SETTINGS_PATH OGRE_LIB OGRE_LIB_DBG)
 
 # If the Ogre build settings file was found, parse it to identify the Ogre Thread provider.
@@ -100,7 +100,7 @@ if (OGRE_FOUND)
     # Set-up the list of directories for the OGRE libraries to link against in the Ogre related components.
     set (OGRE_LIBRARIES ${OGRE_LIB})
     if (OGRE_LIB_DBG)
-        set (OGRE_LIBRARIES_DBG ${OGRE_LIB_DBG};${Boost_THREAD_LIBRARY_DEBUG};${Boost_SYSTEM_LIBRARY_DEBUG};${Boost_DATE_TIME_LIBRARY_DEBUG};${Boost_CHRONO_LIBRARY_DEBUG})
+        set (OGRE_LIBRARIES_DBG ${OGRE_LIB_DBG})
     endif()
 
     # Ogre was found. If the thread provider is boost, also search for the boost libs.
