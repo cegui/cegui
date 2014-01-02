@@ -459,7 +459,7 @@ String TextComponent::getEffectiveVisualText(const Window& wnd) const
         return visual;
     }
     // do we use a static text string from the looknfeel
-    else if (d_text.empty())
+    else if (d_textLogical.empty())
         return wnd.getTextVisual();
     else
         getTextVisual();
