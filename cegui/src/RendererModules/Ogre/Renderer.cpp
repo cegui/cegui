@@ -646,7 +646,7 @@ OgreRenderer::~OgreRenderer()
 void OgreRenderer::checkOgreInitialised()
 {
     if (!d_pimpl->d_ogreRoot)
-        CEGUI_THROW(RendererException("T    been "
+        CEGUI_THROW(RendererException("The Ogre::Root object has not been 
             "created. You must initialise Ogre first!"));
 
     if (!d_pimpl->d_ogreRoot->isInitialised())
