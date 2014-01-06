@@ -260,12 +260,25 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
                 Ogre::StringVector::iterator optionsIterEnd = foundConfigIter->second.possibleValues.end();
                 while(optionsIterCur != optionsIterEnd)
                 {
-                    if(optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
+                    if(optionsIterCur->compare("1280 x 768 @ 32-bit colour") == 0)
                     {
-                        currentRenderSys->setConfigOption("Video Mode", *optionsIterCur); 
+                        currentRenderSys->setConfigOption("Video Mode", *optionsIterCur);
                         break;
                     }
                     ++optionsIterCur;
+                }
+                if(optionsIterCur == optionsIterEnd)
+                {
+                    optionsIterCur = foundConfigIter->second.possibleValues.begin();
+                    while(optionsIterCur != optionsIterEnd)
+                    {
+                        if(optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
+                        {
+                            currentRenderSys->setConfigOption("Video Mode", *optionsIterCur); 
+                            break;
+                        }
+                        ++optionsIterCur;
+                    }
                 }
             }
         }
