@@ -67,6 +67,10 @@ protected:
     void beginRendering(const float elapsed);
     void endRendering();
 
+    // We set up our Ogre default config to match our other renderer's default values if possible
+    // and if no config available already
+    void setupDefaultConfigIfNeeded();
+
     /*************************************************************************
         Data Fields
     *************************************************************************/
