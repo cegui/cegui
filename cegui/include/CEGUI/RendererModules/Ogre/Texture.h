@@ -85,8 +85,11 @@ protected:
     //! construct texture from existing Ogre texture.
     OgreTexture(const String& name, Ogre::TexturePtr& tex, bool take_ownership);
 
+
     //! destructor.
     virtual ~OgreTexture();
+    //! construct an empty texture
+    void createEmptyOgreTexture();
     //! release the underlying Ogre texture.
     void freeOgreTexture();
     //! updates cached scale value used to map pixels to texture co-ords.
