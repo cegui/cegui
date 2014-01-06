@@ -72,13 +72,13 @@ static Ogre::String S_hlsl_vs_source(
 static Ogre::String S_hlsl_ps_source(
     "float4 main(float4 colour : COLOR,"
     "            float2 texCoord : TEXCOORD0,"
-    "            uniform sampler2D texture : TEXUNIT0) : COLOR"
+    "            uniform sampler2D texture0 : TEXUNIT0) : COLOR"
     "{"
-    "    return tex2D(texture, texCoord) * colour;"
+    "    return tex2D(texture0, texCoord) * colour;"
     "}"
 );
 
-static Ogre::String S_glsl_vs_source(
+static Ogre::String S_glsl_compat_vs_source(
     "void main(void)"
     "{"
     "    gl_TexCoord[0] = gl_MultiTexCoord0;"
@@ -86,12 +86,48 @@ static Ogre::String S_glsl_vs_source(
     "    gl_Position = gl_ModelViewProjectionMatrix * gl_Vertex;"
     "}"
 );
-
-static Ogre::String S_glsl_ps_source(
-    "uniform sampler2D texture;"
+static Ogre::String S_glsl_compat_ps_source(
+    "uniform sampler2D texture0;"
     "void main(void)"
     "{"
-    "    gl_FragColor = texture2D(texture, gl_TexCoord[0].st) * gl_Color;"
+    "    gl_FragColor = texture2D(texture0, gl_TexCoord[0].st) * gl_Color;"
+    "}"
+);
+
+static Ogre::String S_glsl_core_vs_source(
+    "#version 150 core \n"
+
+    "uniform mat4 modelViewPerspMatrix;"
+
+    "in vec4 vertex;"
+    "in vec2 uv0;"
+    "in vec4 colour;"
+
+    "out vec2 exTexCoord;"
+    "out vec4 exColour;"
+
+    "void main(void)"
+    "{"
+    "   exTexCoord = uv0;"
+    "   exColour = colour;"
+
+    "   gl_Position = modelViewPerspMatrix * vertex;"
+    "}"
+);
+
+static Ogre::String S_glsl_core_ps_source(
+    "#version 150 core \n"
+
+    "uniform sampler2D texture0;"
+
+    "in vec2 exTexCoord;"
+    "in vec4 exColour;"
+
+    "out vec4 fragColour;"
+
+    "void main(void)"
+    "{"
+    "   fragColour = texture(texture0, exTexCoord) * exColour;"
     "}"
 );
 
@@ -140,7 +176,9 @@ struct OgreRenderer_impl :
         d_viewMatrix(Ogre::Matrix4::IDENTITY),
         d_projectionMatrix(Ogre::Matrix4::IDENTITY),
         d_worldViewProjMatrix(Ogre::Matrix4::IDENTITY),
-        d_combinedMatrixValid(true)
+        d_combinedMatrixValid(true),
+        d_useGLSL(false),
+        d_useGLSLCore(false)
         {}
 
     //! String holding the renderer identification text.
@@ -173,8 +211,11 @@ struct OgreRenderer_impl :
     bool d_makeFrameControlCalls;
     //! Whether shaders will be used for basic rendering
     bool d_useShaders;
-    //! whether shaders are glsl or hlsl
+    //! Whether shaders are glsl or hlsl
     bool d_useGLSL;
+    //! Whether we use the ARB glsl shaders or the OpenGL 3.2 Core shader profile (140 core)
+    bool d_useGLSLCore;
+
     Ogre::HighLevelGpuProgramPtr d_vertexShader;
     Ogre::HighLevelGpuProgramPtr d_pixelShader;
     Ogre::GpuProgramParametersSharedPtr d_vertexShaderParameters;
@@ -605,7 +646,7 @@ OgreRenderer::~OgreRenderer()
 void OgreRenderer::checkOgreInitialised()
 {
     if (!d_pimpl->d_ogreRoot)
-        CEGUI_THROW(RendererException("The Ogre::Root object has not been "
+        CEGUI_THROW(RendererException("T    been "
             "created. You must initialise Ogre first!"));
 
     if (!d_pimpl->d_ogreRoot->isInitialised())
@@ -621,13 +662,24 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_displaySize.d_width  = target.getWidth();
     d_pimpl->d_displaySize.d_height = target.getHeight();
 
+    d_pimpl->d_useGLSLCore = ( d_pimpl->d_renderSystem->getName().compare(0, 8, "OpenGL 3") == 0 ) ;
+
     // create default target & rendering root (surface) that uses it
     d_pimpl->d_defaultTarget =
         CEGUI_NEW_AO OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
+    bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
+
+#ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
+    if (!isFixedFunctionEnabled)
+        CEGUI_THROW(RendererException("RT Shader System not available and fixed-function pipeline disabled. "
+        "When the fixed-function pipeline is disabled, the RT Shader System component of Ogre is required for rendering."));
+#endif
+
 #if defined RTSHADER_SYSTEM_BUILD_CORE_SHADERS && OGRE_VERSION >= 0x10800
-    // default to using shaders when that is the sane thing to do.
-    if (!d_pimpl->d_renderSystem->getFixedPipelineEnabled())
+    // Default to using shaders when that is the sane thing to do.
+    // We check for use of the OpenGL 3+ Renderer in which case we always wanna (because we have to) use shaders
+    if (!isFixedFunctionEnabled || d_pimpl->d_useGLSLCore)
         setUsingShaders(true);
 #endif
 
@@ -641,58 +693,110 @@ void OgreRenderer::initialiseShaders()
     d_pimpl->d_useGLSL = Ogre::HighLevelGpuProgramManager::getSingleton().
         isLanguageSupported("glsl");
 
-    // create vertex shader
+    Ogre::String shaderLanguage;
+    if(d_pimpl->d_useGLSL)
+    {
+        if(d_pimpl->d_useGLSLCore)
+            shaderLanguage = "glsl";
+        else
+            shaderLanguage = "glsl";
+    }
+    else
+        shaderLanguage = "hlsl";
+
+    // Create vertex shader
     d_pimpl->d_vertexShader = Ogre::HighLevelGpuProgramManager::getSingleton().
         createProgram("__cegui_internal_vs__",
                Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-               d_pimpl->d_useGLSL ? "glsl" : "hlsl", Ogre::GPT_VERTEX_PROGRAM);
-
+               shaderLanguage, Ogre::GPT_VERTEX_PROGRAM);
+    // We always enter through the main function
     d_pimpl->d_vertexShader->setParameter("entry_point", "main");
 
+    // If we use GLSL
     if (d_pimpl->d_useGLSL)
-        d_pimpl->d_vertexShader->setParameter("target", "arbvp1");
-    else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
-        d_pimpl->d_vertexShader->setParameter("target", "vs_4_0");
-    else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_2_0"))
-        d_pimpl->d_vertexShader->setParameter("target", "vs_2_0");
-    else
     {
-        d_pimpl->d_vertexShader.setNull();
-        CEGUI_THROW(RendererException(
-            "OgreRenderer::initialiseShaders: No supported syntax - "
-            "unable to compile '__cegui_internal_vs__'"));
+        // We check if we want to use a GLSL core shader, which is required for the Ogre OpenGL 3+ Renderer
+        if(d_pimpl->d_useGLSLCore)
+        {
+            d_pimpl->d_vertexShader->setParameter("target", "glsl");
+            d_pimpl->d_vertexShader->setSource(S_glsl_core_vs_source);
+        }
+        else // else we use regular GLSL shader, as in the normal Ogre OpenGL Renderer
+        {
+            d_pimpl->d_vertexShader->setParameter("target", "arbvp1");
+            d_pimpl->d_vertexShader->setSource(S_glsl_compat_vs_source);
+        }
+
+    }
+    else // else we use a hlsl shader with an available syntax code
+    {
+        if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
+        {
+            d_pimpl->d_vertexShader->setParameter("target", "vs_4_0");
+            d_pimpl->d_vertexShader->setSource(S_hlsl_vs_source);    
+        }
+        else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_2_0"))
+        {
+            d_pimpl->d_vertexShader->setParameter("target", "vs_2_0");
+            d_pimpl->d_vertexShader->setSource(S_hlsl_vs_source);
+        }
+        else// If no shader was compatible
+        {
+            d_pimpl->d_vertexShader.setNull();
+            CEGUI_THROW(RendererException(
+                "OgreRenderer::initialiseShaders: No supported syntax - "
+                "unable to compile '__cegui_internal_vs__'"));
+        }
     }
 
-    d_pimpl->d_vertexShader->setSource(d_pimpl->d_useGLSL ? S_glsl_vs_source :
-                                                            S_hlsl_vs_source);
     d_pimpl->d_vertexShader->load();
 
-    // create pixel shader
+    // Create pixel shader
     d_pimpl->d_pixelShader = Ogre::HighLevelGpuProgramManager::getSingleton().
         createProgram("__cegui_internal_ps__",
                Ogre::ResourceGroupManager::DEFAULT_RESOURCE_GROUP_NAME,
-               d_pimpl->d_useGLSL ? "glsl" : "hlsl", Ogre::GPT_FRAGMENT_PROGRAM);
-
+               shaderLanguage, Ogre::GPT_FRAGMENT_PROGRAM);
+    // We always enter through the main function
     d_pimpl->d_pixelShader->setParameter("entry_point", "main");
 
     if (d_pimpl->d_useGLSL)
-        d_pimpl->d_pixelShader->setParameter("target", "arbfp1");
-    else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_4_0"))
-        d_pimpl->d_pixelShader->setParameter("target", "ps_4_0");
-    else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_2_0"))
-        d_pimpl->d_pixelShader->setParameter("target", "ps_2_0");
+    {
+        // We check if we want to use a GLSL core shader, which is required for the Ogre OpenGL 3+ Renderer
+        if(d_pimpl->d_useGLSLCore)
+        {
+            d_pimpl->d_pixelShader->setParameter("target", "glsl");
+            d_pimpl->d_pixelShader->setSource(S_glsl_core_ps_source);
+        }
+        else // else we use regular GLSL shader, as in the normal Ogre OpenGL Renderer
+        {
+            d_pimpl->d_pixelShader->setParameter("target", "arbfp1");
+            d_pimpl->d_pixelShader->setSource(S_glsl_compat_ps_source);
+        }
+    }
     else
     {
-        d_pimpl->d_vertexShader.setNull();
-        d_pimpl->d_pixelShader.setNull();
+        // D3D shaders
+        if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_4_0"))
+        {    
+            d_pimpl->d_pixelShader->setParameter("target", "ps_4_0");
+            d_pimpl->d_pixelShader->setSource(S_hlsl_ps_source);
+        }
+        else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_2_0"))
+        {
+            d_pimpl->d_pixelShader->setParameter("target", "ps_2_0");
+            d_pimpl->d_pixelShader->setSource(S_hlsl_ps_source);
+        }
+        else
+        {
+            d_pimpl->d_vertexShader.setNull();
+            d_pimpl->d_pixelShader.setNull();
 
-        CEGUI_THROW(RendererException(
-            "OgreRenderer::initialiseShaders: No supported syntax - "
-            "unable to compile '__cegui_internal_ps__'"));
+            CEGUI_THROW(RendererException(
+                "OgreRenderer::initialiseShaders: No supported syntax - "
+                "unable to compile '__cegui_internal_ps__'"));
+        }
     }
 
-    d_pimpl->d_pixelShader->setSource(d_pimpl->d_useGLSL ? S_glsl_ps_source :
-                                                           S_hlsl_ps_source);
     d_pimpl->d_pixelShader->load();
 
     d_pimpl->d_vertexShaderParameters =
@@ -700,7 +804,6 @@ void OgreRenderer::initialiseShaders()
 
     d_pimpl->d_pixelShaderParameters =
         d_pimpl->d_pixelShader->createParameters();
-
 }
 
 //----------------------------------------------------------------------------//
@@ -841,13 +944,24 @@ void OgreRenderer::updateShaderParams() const
 
     if (d_pimpl->d_useGLSL)
     {
+        if(d_pimpl->d_useGLSLCore)
+        {
+            d_pimpl->d_vertexShaderParameters->
+                setNamedConstant("modelViewPerspMatrix", getWorldViewProjMatrix());    
+
+            d_pimpl->d_renderSystem->
+                bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM,
+                                            d_pimpl->d_vertexShaderParameters,
+                                            Ogre::GPV_ALL);
+        }
+
         d_pimpl->d_pixelShaderParameters->
-            setNamedConstant("texture", 0);
+            setNamedConstant("texture0", 0);
 
         d_pimpl->d_renderSystem->
             bindGpuProgramParameters(Ogre::GPT_FRAGMENT_PROGRAM,
-                                     d_pimpl->d_pixelShaderParameters,
-                                     Ogre::GPV_ALL);
+                                        d_pimpl->d_pixelShaderParameters,
+                                        Ogre::GPV_ALL);
     }
     else
     {
