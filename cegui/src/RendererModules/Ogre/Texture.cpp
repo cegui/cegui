@@ -73,6 +73,69 @@ static size_t calculateDataSize(const Sizef size, Texture::PixelFormat fmt)
 uint32 OgreTexture::d_textureNumber = 0;
 
 //----------------------------------------------------------------------------//
+OgreTexture::OgreTexture(const String& name) :
+    d_isLinked(false),
+    d_size(0, 0),
+    d_dataSize(0, 0),
+    d_texelScaling(0, 0),
+    d_name(name)
+{
+    createEmptyOgreTexture();
+}
+
+//----------------------------------------------------------------------------//
+OgreTexture::OgreTexture(const String& name, const String& filename,
+                         const String& resourceGroup) :
+    d_isLinked(false),
+    d_size(0, 0),
+    d_dataSize(0, 0),
+    d_texelScaling(0, 0),
+    d_name(name)
+{
+    createEmptyOgreTexture();
+    loadFromFile(filename, resourceGroup);
+}
+
+//----------------------------------------------------------------------------//
+OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
+    d_isLinked(false),
+    d_size(0, 0),
+    d_dataSize(0, 0),
+    d_texelScaling(0, 0),
+    d_name(name)
+{
+    createEmptyOgreTexture();
+
+    // throw exception if no texture was able to be created
+    if (d_texture.isNull())
+        CEGUI_THROW(RendererException(
+            "Failed to create Texture object with spcecified size."));
+    
+    d_size.d_width = d_texture->getWidth();
+    d_size.d_height = d_texture->getHeight();
+    d_dataSize = sz;
+    updateCachedScaleValues();
+}
+
+//----------------------------------------------------------------------------//
+OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
+                         bool take_ownership) :
+    d_isLinked(false),
+    d_size(0, 0),
+    d_dataSize(0, 0),
+    d_texelScaling(0, 0),
+    d_name(name)
+{
+    setOgreTexture(tex, take_ownership);
+}
+
+//----------------------------------------------------------------------------//
+OgreTexture::~OgreTexture()
+{
+    freeOgreTexture();
+}
+
+//----------------------------------------------------------------------------//
 const String& OgreTexture::getName() const
 {
     return d_name;
@@ -145,24 +208,24 @@ void OgreTexture::loadFromMemory(const void* buffer, const Sizef& buffer_size,
         CEGUI_THROW(InvalidRequestException(
             "Data was supplied in an unsupported pixel format."));
 
-    // get rid of old texture
-    freeOgreTexture();
-
     const size_t byte_size = calculateDataSize(buffer_size, pixel_format);
 
-    DataStreamPtr odc(OGRE_NEW MemoryDataStream(const_cast<void*>(buffer),
-                byte_size, false));
+    char* bufferCopy = new char[byte_size];
+    memcpy(bufferCopy, buffer, byte_size);
 
-    // try to create a Ogre::Texture from the input data
-    d_texture = TextureManager::getSingleton().loadRawData(
-        getUniqueName(), "General", odc,
-        buffer_size.d_width, buffer_size.d_height,
-        toOgrePixelFormat(pixel_format), TEX_TYPE_2D, 0, 1.0f);
+    const Ogre::PixelBox* pixelBox = new Ogre::PixelBox(buffer_size.d_width, buffer_size.d_height,
+                                                        1, toOgrePixelFormat(pixel_format), bufferCopy);
+    d_texture->freeInternalResources();
+    d_texture->setWidth(buffer_size.d_width);
+    d_texture->setHeight(buffer_size.d_height);
+    d_texture->setDepth(1);
+    d_texture->createInternalResources();
+    d_texture->getBuffer(0,0).get()->blitFromMemory(*pixelBox);
 
     // throw exception if no texture was able to be created
     if (d_texture.isNull())
         CEGUI_THROW(RendererException(
-            "Failed to create Texture object from memory."));
+            "Failed to blit to Texture from memory."));
 
     d_size.d_width = d_texture->getWidth();
     d_size.d_height = d_texture->getHeight();
@@ -194,73 +257,6 @@ void OgreTexture::blitToMemory(void* targetData)
     Ogre::PixelBox pb(d_size.d_width, d_size.d_height,
                       1, Ogre::PF_A8R8G8B8, targetData);
     d_texture->getBuffer()->blitToMemory(pb);
-}
-
-//----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& name) :
-    d_isLinked(false),
-    d_size(0, 0),
-    d_dataSize(0, 0),
-    d_texelScaling(0, 0),
-    d_name(name)
-{
-}
-
-//----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& name, const String& filename,
-                         const String& resourceGroup) :
-    d_isLinked(false),
-    d_size(0, 0),
-    d_dataSize(0, 0),
-    d_texelScaling(0, 0),
-    d_name(name)
-{
-    loadFromFile(filename, resourceGroup);
-}
-
-//----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& name, const Sizef& sz) :
-    d_isLinked(false),
-    d_size(0, 0),
-    d_dataSize(0, 0),
-    d_texelScaling(0, 0),
-    d_name(name)
-{
-    using namespace Ogre;
-
-    // try to create a Ogre::Texture with given dimensions
-    d_texture = TextureManager::getSingleton().createManual(
-                                   getUniqueName(), "General", TEX_TYPE_2D,
-                                   sz.d_width, sz.d_height, 0,
-                                   Ogre::PF_A8B8G8R8);
-    
-    // throw exception if no texture was able to be created
-    if (d_texture.isNull())
-        CEGUI_THROW(RendererException(
-            "Failed to create Texture object with spcecified size."));
-    
-    d_size.d_width = d_texture->getWidth();
-    d_size.d_height = d_texture->getHeight();
-    d_dataSize = sz;
-    updateCachedScaleValues();
-}
-
-//----------------------------------------------------------------------------//
-OgreTexture::OgreTexture(const String& name, Ogre::TexturePtr& tex,
-                         bool take_ownership) :
-    d_isLinked(false),
-    d_size(0, 0),
-    d_dataSize(0, 0),
-    d_texelScaling(0, 0),
-    d_name(name)
-{
-    setOgreTexture(tex, take_ownership);
-}
-
-//----------------------------------------------------------------------------//
-OgreTexture::~OgreTexture()
-{
-    freeOgreTexture();
 }
 
 //----------------------------------------------------------------------------//
@@ -395,6 +391,17 @@ Texture::PixelFormat OgreTexture::fromOgrePixelFormat(
                 "Invalid pixel format translation."));
     }
 }
+
+//----------------------------------------------------------------------------//
+void OgreTexture::createEmptyOgreTexture()
+{
+    // try to create a Ogre::Texture with given dimensions
+    d_texture = Ogre::TextureManager::getSingleton().createManual(
+        getUniqueName(), "General", Ogre::TEX_TYPE_2D,
+        1, 1, 0,
+        Ogre::PF_A8B8G8R8);
+}
+
 
 //----------------------------------------------------------------------------//
 
