@@ -190,7 +190,7 @@ cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample 
 # This vile construct is needed because of things that changed in boost and the
 # total fail that is Ogre forcing its boost dependency onto its clients.
 if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
-    if (NOT Boost_VERSION LESS 105000 AND NOT "${OGRE_THREAD_PROVIDER}" STREQUAL "0")
+    if (NOT Boost_VERSION LESS 105000 AND "${OGRE_THREAD_PROVIDER}" STREQUAL "1") #Check additionally if we use boost as thread provider at all
         if (Boost_SYSTEM_FOUND)
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS ${Boost_SYSTEM_LIBRARY})
             set (CEGUI_OGRE_SAMPLES_AVAILABLE TRUE)
