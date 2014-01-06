@@ -60,6 +60,8 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
     d_ogreRoot = new Root(pluginsFileName);
 
+    setupDefaultConfigIfNeeded();
+
     if (d_ogreRoot->showConfigDialog())
     {
         // initialise system according to user options.
@@ -224,11 +226,52 @@ bool CEGuiOgreBaseApplication::frameRenderingQueued(const Ogre::FrameEvent& args
 }
 
 //----------------------------------------------------------------------------//
-
 bool CEGuiOgreBaseApplication::isInitialised()
 {
     return d_initialised;
 }
+
+//----------------------------------------------------------------------------//
+void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
+{
+    // Check if the config exists
+    bool success = d_ogreRoot->restoreConfig();
+
+    if(!success)
+    {
+        // If not we set our default values for all renderers if possible
+        const Ogre::RenderSystemList& renderSystems = d_ogreRoot->getAvailableRenderers(); 
+
+        size_t renderSystemCount = renderSystems.size();
+        for(size_t i = 0; i < renderSystemCount; ++i)
+        {
+            Ogre::RenderSystem* currentRenderSys = renderSystems.at(i);
+            Ogre::ConfigOptionMap& configOptions = currentRenderSys->getConfigOptions();
+            Ogre::ConfigOptionMap::iterator foundConfigIter;
+
+            foundConfigIter = configOptions.find("Full Screen");
+            if(foundConfigIter != configOptions.end())
+                currentRenderSys->setConfigOption("Full Screen","No");  
+
+            foundConfigIter = configOptions.find("Video Mode");
+            if(foundConfigIter != configOptions.end())
+            {
+                Ogre::StringVector::iterator optionsIterCur = foundConfigIter->second.possibleValues.begin();
+                Ogre::StringVector::iterator optionsIterEnd = foundConfigIter->second.possibleValues.end();
+                while(optionsIterCur != optionsIterEnd)
+                {
+                    if(optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
+                    {
+                        currentRenderSys->setConfigOption("Video Mode", *optionsIterCur); 
+                        break;
+                    }
+                    ++optionsIterCur;
+                }
+            }
+        }
+    }
+}
+
 
 //----------------------------------------------------------------------------//
 
@@ -256,10 +299,12 @@ CEGuiDemoFrameListener::CEGuiDemoFrameListener(CEGuiOgreBaseApplication* baseApp
     windowHndStr << (unsigned int)windowHnd;
     paramList.insert(std::make_pair(std::string("WINDOW"), windowHndStr.str()));
 
-#if OGRE_PLATFORM == OGRE_PLATFORM_LINUX && defined (DEBUG)
-    paramList.insert(std::make_pair(std::string("x11_keyboard_grab"), "false"));
-    paramList.insert(std::make_pair(std::string("x11_mouse_grab"), "false"));
-    paramList.insert(std::make_pair(std::string("x11_mouse_hide"), "false"));
+#if OGRE_PLATFORM != OGRE_PLATFORM_ANDROID && OGRE_PLATFORM != OGRE_PLATFORM_WINRT && OGRE_PLATFORM != OGRE_PLATFORM_LINUX && defined (DEBUG)
+    paramList.insert(std::make_pair("x11_keyboard_grab", "false"));
+    paramList.insert(std::make_pair("x11_mouse_grab", "false"));
+    paramList.insert(std::make_pair("x11_mouse_hide", "false"));
+    paramList.insert(std::make_pair("w32_mouse", "DISCL_FOREGROUND"));
+    paramList.insert(std::make_pair("w32_mouse", "DISCL_NONEXCLUSIVE"));
 #endif
 
     // create input system
