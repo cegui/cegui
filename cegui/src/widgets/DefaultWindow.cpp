@@ -44,8 +44,10 @@ DefaultWindow::DefaultWindow(const String& type, const String& name) :
     Window(type, name)
 {
     USize sz(cegui_reldim(1.0f), cegui_reldim(1.0f));
-    setMaxSize(sz);
     setSize(sz);
+
+    USize max_size(cegui_reldim(0.0f), cegui_reldim(0.0f));
+    setMaxSize(max_size);
 }
 
 //----------------------------------------------------------------------------//
