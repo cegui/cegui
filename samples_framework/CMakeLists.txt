@@ -168,6 +168,22 @@ if (APPLE)
     cegui_apple_app_setup(${CEGUI_TARGET_NAME} FALSE)
 endif()
 
+###########################################################################
+#                    MSVC PROJ USER FILE TEMPLATES
+###########################################################################
+  if (MSVC)
+    configure_file(
+	  ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcproj.user.in
+	  ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcproj.user
+	  @ONLY
+	)
+    configure_file(
+	  ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcxproj.user.in
+	  ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcxproj.user
+	  @ONLY
+	)
+  endif ()
+
 
 ###########################################################################
 #                      LIBRARY LINK SETUP
