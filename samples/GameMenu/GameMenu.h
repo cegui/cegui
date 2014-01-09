@@ -86,10 +86,10 @@ protected:
     bool handleCheckIfNaviIconAnimationNeedsChange(const CEGUI::EventArgs& args);
     bool handleNaviSelectionIconAnimStart(const CEGUI::EventArgs& args);
 
-    bool handleMouseEntersLeftArrowArea(const CEGUI::EventArgs& args);
-    bool handleMouseLeavesLeftArrowArea(const CEGUI::EventArgs& args);
-    bool handleMouseEntersRightArrowArea(const CEGUI::EventArgs& args);
-    bool handleMouseLeavesRightArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerEntersLeftArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerLeavesLeftArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerEntersRightArrowArea(const CEGUI::EventArgs& args);
+    bool handlePointerLeavesRightArrowArea(const CEGUI::EventArgs& args);
 
     bool handleStartPopupLinesSaveDisplay(const CEGUI::EventArgs& args);
     bool handleStartPopupLinesLoadDisplay(const CEGUI::EventArgs& args);
@@ -121,7 +121,7 @@ protected:
     bool d_interactivePlanetElementsAreEnabled;
     bool d_navigationIsEnabled;
     bool d_loginWasAccepted;
-    bool d_mouseIsHoveringNavi;
+    bool d_pointerIsHoveringNavi;
     bool d_startButtonClicked;
 
     WriteFocus d_currentWriteFocus;

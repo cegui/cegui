@@ -32,6 +32,8 @@
 #include "CEGUI/Rect.h"
 #include "CEGUI/falagard/Enums.h"
 
+#include <vector>
+
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
@@ -82,7 +84,7 @@ public:
     bool getAspectLock() const;
 
     //! draw the component.
-    virtual void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+    virtual void draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
                       const Vector2f& position, const ColourRect* mod_colours,
                       const Rectf* clip_rect, const float vertical_space,
                       const float space_extra) const = 0;

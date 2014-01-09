@@ -30,7 +30,7 @@
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/widgets/Editbox.h"
 
-#include "CEGUI/MouseCursor.h"
+#include "CEGUI/PointerIndicator.h"
 #include "CEGUI/WindowManager.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/CoordConverter.h"
@@ -96,7 +96,7 @@ void ColourPicker::initialiseComponents(void)
     Window* colourRect = getColourRect();
 
     // bind handler to close button 'Click' event
-    colourRect->subscribeEvent(Window::EventMouseClick,
+    colourRect->subscribeEvent(Window::EventPointerActivate,
         Event::Subscriber(&ColourPicker::colourRect_ColourRectClickedHandler,
                           this));
 

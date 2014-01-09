@@ -52,7 +52,7 @@ void RightAlignedRenderedString::format(const Window* ref_wnd,
 
 //----------------------------------------------------------------------------//
 void RightAlignedRenderedString::draw(const Window* ref_wnd,
-                                      GeometryBuffer& buffer,
+                                      std::vector<GeometryBuffer*>& geometry_buffers,
                                       const Vector2f& position,
                                       const ColourRect* mod_colours,
                                       const Rectf* clip_rect) const
@@ -63,7 +63,7 @@ void RightAlignedRenderedString::draw(const Window* ref_wnd,
     for (size_t i = 0; i < d_renderedString->getLineCount(); ++i)
     {
         draw_pos.d_x = position.d_x + d_offsets[i];
-        d_renderedString->draw(ref_wnd, i, buffer, draw_pos, mod_colours, clip_rect, 0.0f);
+        d_renderedString->draw(ref_wnd, i, geometry_buffers, draw_pos, mod_colours, clip_rect, 0.0f);
         draw_pos.d_y += d_renderedString->getPixelSize(ref_wnd, i).d_height;
     }
 }

@@ -57,14 +57,14 @@ public:
      * WindowEventArgs::window set to the TabButton that was clicked.
      */
 	static const String EventClicked;
-    /** Event fired when use user attempts to drag the button with middle mouse
-     * button.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when use user attempts to drag the button with middle pointer
+     * source.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
 	static const String EventDragged;
-    /** Event fired when the scroll wheel is used on top of the button.
-     * Handlers are passed a const MouseEventArgs reference with all fields
+    /** Event fired when a scroll action is executed on top of the button.
+     * Handlers are passed a const PointerEventArgs reference with all fields
      * valid.
      */
 	static const String EventScrolled;
@@ -131,10 +131,10 @@ protected:
 	/*************************************************************************
 		Overridden Event Handlers
 	*************************************************************************/
-    virtual void onMouseButtonUp(MouseEventArgs& e);
-    virtual void onMouseButtonDown(MouseEventArgs& e);
-    virtual void onMouseWheel(MouseEventArgs& e);
-    virtual void onMouseMove(MouseEventArgs& e);
+    virtual void onPointerActivate(PointerEventArgs& e);
+    virtual void onPointerPressHold(PointerEventArgs& e);
+    virtual void onScroll(PointerEventArgs& e);
+    virtual void onPointerMove(PointerEventArgs& e);
 };
 
 
