@@ -1,0 +1,7 @@
+<SampleDefinition
+    name      = "CEGUISample_MenuNavigation"
+    type      = "C++ Module"
+    summary         = "A demo that shows a 2D menu which can be navigated using the keyboard or other devices."
+    description     = "The demo uses the WindowManager to create from code a window with a menu that contains multiple buttons arranged in a 4x4 matrix. "
+    credits         = "Timotei Dolean"
+/>

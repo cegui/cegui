@@ -105,9 +105,25 @@ void FalagardMultiLineEditbox::cacheEditboxBaseImagery()
 
     // get WidgetLookFeel for the assigned look.
     const WidgetLookFeel& wlf = getLookNFeel();
+
+    String state;
+
+    if (w->isEffectiveDisabled())
+        state = "Disabled";
+    else
+    {
+        if (w->isReadOnly())
+            state = "ReadOnly";
+        else
+            state = "Enabled";
+
+        if (w->isFocused())
+            state += "Focused";
+    }
+
     // try and get imagery for our current state
-    imagery = &wlf.getStateImagery(w->isEffectiveDisabled() ? "Disabled" : (w->isReadOnly() ? "ReadOnly" : "Enabled"));
-    // peform the rendering operation.
+    imagery = &wlf.getStateImagery(state);
+    // perform the rendering operation.
     imagery->render(*w);
 }
 
@@ -225,8 +241,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
             {
                 colours = normalTextCol;
                 // render the complete line.
-                fnt->drawText(w->getGeometryBuffer(), lineText,
-                                lineRect.getPosition(), &dest_area, colours);
+                fnt->drawText(w->getGeometryBuffers(), lineText,
+                              lineRect.getPosition(), &dest_area, true, colours);
             }
             // we have at least some selection highlighting to do
             else
@@ -251,8 +267,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                     // draw this portion of the text
                     colours = normalTextCol;
-                    fnt->drawText(w->getGeometryBuffer(), sect,
-                                    lineRect.getPosition(), &dest_area, colours);
+                    fnt->drawText(w->getGeometryBuffers(), sect,
+                                    lineRect.getPosition(), &dest_area, true, colours);
 
                     // set position ready for next portion of text
                     lineRect.d_min.d_x += selStartOffset;
@@ -278,12 +294,12 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                 // render the selection area brush for this line
                 colours = selectBrushCol;
-                w->getSelectionBrushImage()->render(w->getGeometryBuffer(), lineRect, &dest_area, colours);
+                w->getSelectionBrushImage()->render(w->getGeometryBuffers(), lineRect, &dest_area, true, colours);
 
                 // draw the text for this section
                 colours = selectTextCol;
-                fnt->drawText(w->getGeometryBuffer(), sect,
-                                lineRect.getPosition(), &dest_area, colours);
+                fnt->drawText(w->getGeometryBuffers(), sect,
+                                lineRect.getPosition(), &dest_area, true, colours);
 
                 lineRect.top(text_top);
 
@@ -301,8 +317,8 @@ void FalagardMultiLineEditbox::cacheTextLines(const Rectf& dest_area)
 
                     // render the text for this section.
                     colours = normalTextCol;
-                    fnt->drawText(w->getGeometryBuffer(), sect,
-                                    lineRect.getPosition(), &dest_area, colours);
+                    fnt->drawText(w->getGeometryBuffers(), sect,
+                                    lineRect.getPosition(), &dest_area, true, colours);
                 }
             }
 

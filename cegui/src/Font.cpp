@@ -31,6 +31,7 @@
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/System.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/BitmapImage.h"
 
 namespace CEGUI
 {
@@ -242,8 +243,9 @@ size_t Font::getCharAtPixel(const String& text, size_t start_char, float pixel,
 }
 
 //----------------------------------------------------------------------------//
-float Font::drawText(GeometryBuffer& buffer, const String& text,
-                    const Vector2f& position, const Rectf* clip_rect,
+float Font::drawText(std::vector<GeometryBuffer*>& geom_buffers,
+                    const String& text, const Vector2f& position,
+                    const Rectf* clip_rect, const bool clipping_enabled,
                     const ColourRect& colours, const float space_extra,
                     const float x_scale, const float y_scale) const
 {
@@ -256,10 +258,11 @@ float Font::drawText(GeometryBuffer& buffer, const String& text,
         if ((glyph = getGlyphData(text[c]))) // NB: assignment
         {
             const Image* const img = glyph->getImage();
+
             glyph_pos.d_y =
                 base_y - (img->getRenderedOffset().d_y - img->getRenderedOffset().d_y * y_scale);
-            img->render(buffer, glyph_pos,
-                      glyph->getSize(x_scale, y_scale), clip_rect, colours);
+            img->render(geom_buffers, glyph_pos,
+                      glyph->getSize(x_scale, y_scale), clip_rect, clipping_enabled, colours);
             glyph_pos.d_x += glyph->getAdvance(x_scale);
             // apply extra spacing to space chars
             if (text[c] == ' ')

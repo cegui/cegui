@@ -56,6 +56,7 @@ namespace CEGUI
 {
 class NullGeometryBuffer;
 class NullTexture;
+class NullShaderWrapper;
 
 //! CEGUI::Renderer implementation for no particular engine
 class NULL_GUIRENDERER_API NullRenderer : public Renderer
@@ -108,7 +109,9 @@ public:
 
     // implement CEGUI::Renderer interface
     RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+    GeometryBuffer& createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial);
+    GeometryBuffer& createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial);
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
@@ -170,6 +173,11 @@ protected:
     TextureMap d_textures;
     //! What the renderer thinks the max texture size is.
     uint d_maxTextureSize;
+
+    //! Shaderwrapper for textured & coloured vertices
+    NullShaderWrapper* d_shaderWrapperTextured;
+    //! Shaderwrapper for coloured vertices
+    NullShaderWrapper* d_shaderWrapperSolid;
 };
 
 
