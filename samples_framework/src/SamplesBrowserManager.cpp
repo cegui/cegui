@@ -39,6 +39,7 @@ author:     Lukas E Meindl
 #include "CEGUI/widgets/FrameWindow.h"
 #include "CEGUI/widgets/PushButton.h"
 #include "CEGUI/Image.h"
+#include "CEGUI/InputAggregator.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
 
 using namespace CEGUI;
@@ -110,7 +111,7 @@ void SamplesBrowserManager::updateWindows()
     d_root->setSize(USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));
 }
 
-bool SamplesBrowserManager::handleMouseClickSampleWindow(const CEGUI::EventArgs& args)
+bool SamplesBrowserManager::handlePointerActivateSampleWindow(const CEGUI::EventArgs& args)
 {
     const WindowEventArgs& winArgs(static_cast<const WindowEventArgs&>(args));
 
@@ -122,11 +123,11 @@ bool SamplesBrowserManager::handleMouseClickSampleWindow(const CEGUI::EventArgs&
 }
 
 
-bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& args)
+bool SamplesBrowserManager::handlePointerMoveSampleWindow(const CEGUI::EventArgs& args)
 {
-    const MouseEventArgs& mouseArgs(static_cast<const MouseEventArgs&>(args));
+    const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
 
-    CEGUI::Window* wnd(mouseArgs.window);
+    CEGUI::Window* wnd(pointerArgs.window);
 
     if(d_selectedWindow != wnd)
     {
@@ -137,12 +138,12 @@ bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& 
     const CEGUI::String& lookNFeel(wnd->getLookNFeel());
     CEGUI::Rectf innerRectangle = CEGUI::WidgetLookManager::getSingleton().getWidgetLook(lookNFeel).getNamedArea("InnerArea").getArea().getPixelRect(*wnd);
 
-    const CEGUI::Vector2f& mousePos(mouseArgs.position);
+    const CEGUI::Vector2f& pointerPos(pointerArgs.position);
 
     const CEGUI::Rectf& windowDimensions(wnd->getUnclippedOuterRect().get());
 
-    float relPosX = (mousePos.d_x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
-    float relPosY = (mousePos.d_y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
+    float relPosX = (pointerPos.d_x - windowDimensions.left() - innerRectangle.getPosition().d_x) / innerRectangle.getWidth();
+    float relPosY = (pointerPos.d_y - windowDimensions.top()  - innerRectangle.getPosition().d_y) / innerRectangle.getHeight();
 
     if(relPosX >= 0.0f && relPosX <= 1.0f && relPosY >= 0.0f && relPosY <= 1.0f)
     {
@@ -152,15 +153,14 @@ bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& 
         float absPosX = relPosX * contextSize.d_width;
         float absPosY = relPosY * contextSize.d_height;
 
-
-        sampleData->getGuiContext()->injectMousePosition(absPosX, absPosY);
+        sampleData->getInputAggregator()->injectMousePosition(absPosX, absPosY);
         sampleData->getGuiContext()->markAsDirty();
 
-        wnd->setMouseCursor("SampleBrowserSkin/MouseArrowHover");
+        wnd->setPointerIndicator("SampleBrowserSkin/MouseArrowHover");
     }
     else
     {
-        wnd->setMouseCursor("SampleBrowserSkin/MouseArrow");
+        wnd->setPointerIndicator("SampleBrowserSkin/MouseArrow");
     }
 
     return true;
@@ -169,10 +169,10 @@ bool SamplesBrowserManager::handleMouseMoveSampleWindow(const CEGUI::EventArgs& 
 
 bool SamplesBrowserManager::handleLeaveSampleWindow(const CEGUI::EventArgs& args)
 { 
-    const MouseEventArgs& mouseArgs(static_cast<const MouseEventArgs&>(args));
+    const PointerEventArgs& pointerArgs(static_cast<const PointerEventArgs&>(args));
 
-    CEGUI::Window* wnd(mouseArgs.window);
-    wnd->setMouseCursor("SampleBrowserSkin/MouseArrow");
+    CEGUI::Window* wnd(pointerArgs.window);
+    wnd->setPointerIndicator("SampleBrowserSkin/MouseArrow");
 
     return true;
 }
@@ -198,7 +198,7 @@ void SamplesBrowserManager::init()
     d_verticalLayoutContainerSamples = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
 
     d_verticalLayoutContainerSamples->setMargin(CEGUI::UBox(cegui_reldim(0.0f), cegui_reldim(0.1f), cegui_absdim(14.f), cegui_reldim(0.1f)));
-    d_verticalLayoutContainerSamples->setMouseInputPropagationEnabled(true);
+    d_verticalLayoutContainerSamples->setPointerInputPropagationEnabled(true);
 
     d_root->addChild(d_verticalLayoutContainerSamples);
 
@@ -213,7 +213,7 @@ CEGUI::DefaultWindow* SamplesBrowserManager::createPreviewHeaderNameWindow(const
     windowName->setText(name);
     windowName->setFont("DejaVuSans-12-NoScale");
     windowName->setProperty("HorzFormatting", "Centre");
-    windowName->setMouseInputPropagationEnabled(true);
+    windowName->setPointerInputPropagationEnabled(true);
 
     return windowName;
 }
@@ -224,7 +224,7 @@ CEGUI::VerticalLayoutContainer* SamplesBrowserManager::createPreviewLayoutContai
 
     CEGUI::VerticalLayoutContainer* root = static_cast<VerticalLayoutContainer*>(winMgr.createWindow("VerticalLayoutContainer"));
     root->setSize(CEGUI::USize(cegui_reldim(0.8f), cegui_reldim(1.0f)));
-    root->setMouseInputPropagationEnabled(true);
+    root->setPointerInputPropagationEnabled(true);
     root->setMargin(CEGUI::UBox(UDim(0.0f, 0.0f),UDim(0.0f, 0.0f),UDim(0.0f, 8.f), UDim(0.0f, 0.0f)));
 
     return root;
@@ -239,11 +239,11 @@ CEGUI::FrameWindow* SamplesBrowserManager::createPreviewSampleWindow(const CEGUI
     sampleWindow->setProperty("Image", imageName);
 
     sampleWindow->setSize(USize(UDim(1.0f, -10.0f), cegui_absdim(1.0f)));
-    sampleWindow->setMouseInputPropagationEnabled(true);
+    sampleWindow->setPointerInputPropagationEnabled(true);
 
-    sampleWindow->subscribeEvent(Window::EventMouseMove, Event::Subscriber(&SamplesBrowserManager::handleMouseMoveSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseClick, Event::Subscriber(&SamplesBrowserManager::handleMouseClickSampleWindow, this));
-    sampleWindow->subscribeEvent(Window::EventMouseLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerMove, Event::Subscriber(&SamplesBrowserManager::handlePointerMoveSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerActivate, Event::Subscriber(&SamplesBrowserManager::handlePointerActivateSampleWindow, this));
+    sampleWindow->subscribeEvent(Window::EventPointerLeavesArea, Event::Subscriber(&SamplesBrowserManager::handleLeaveSampleWindow, this));
 
     CEGUI::ColourRect colRect((CEGUI::Colour(d_sampleWindowFrameNormal)));
     sampleWindow->setProperty("FrameColours", CEGUI::PropertyHelper<ColourRect>::toString(colRect));
@@ -259,7 +259,7 @@ CEGUI::HorizontalLayoutContainer* SamplesBrowserManager::createPreviewHeader()
 
     CEGUI::HorizontalLayoutContainer* header = static_cast<HorizontalLayoutContainer*>(winMgr.createWindow("HorizontalLayoutContainer"));
     header->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_absdim(40.0f)));
-    header->setMouseInputPropagationEnabled(true);
+    header->setPointerInputPropagationEnabled(true);
     header->setMargin(CEGUI::UBox(UDim(0.0f, 12.f),UDim(0.0f, 0.0f),UDim(0.0f, 0), UDim(0.0f, 0.0f)));
     header->setHorizontalAlignment(HA_CENTRE);
 
@@ -276,7 +276,7 @@ CEGUI::PushButton* SamplesBrowserManager::createPreviewHeaderEnterButton()
     button->setAspectMode(AM_EXPAND);
     button->setAspectRatio(1.0f);
     button->setPosition(CEGUI::UVector2(cegui_absdim(-7.f), cegui_absdim(0.0f)));
-    button->setMouseInputPropagationEnabled(true);
+    button->setPointerInputPropagationEnabled(true);
     button->setProperty("NormalImage", "SampleBrowserSkin/EntryButtonNormal");
     button->setProperty("HoverImage", "SampleBrowserSkin/EntryButtonHover");
     button->setProperty("PushedImage", "SampleBrowserSkin/EntryButtonClicked");

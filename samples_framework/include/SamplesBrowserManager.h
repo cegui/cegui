@@ -63,8 +63,8 @@ private:
 
     void updateWindows();
 
-    bool handleMouseClickSampleWindow(const CEGUI::EventArgs& args);
-    bool handleMouseMoveSampleWindow(const CEGUI::EventArgs& args);
+    bool handlePointerActivateSampleWindow(const CEGUI::EventArgs& args);
+    bool handlePointerMoveSampleWindow(const CEGUI::EventArgs& args);
     bool handleLeaveSampleWindow(const CEGUI::EventArgs& args);
 
     bool handleSampleEnterButtonClicked(const CEGUI::EventArgs& args);

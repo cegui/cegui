@@ -77,6 +77,7 @@ namespace CEGUI
 {
 class Direct3D11GeometryBuffer;
 class Direct3D11Texture;
+class Direct3D11ShaderWrapper;
 
 
 //! Renderer implementation using Direct3D 10.
@@ -144,12 +145,6 @@ public:
     */
     static void destroy(Direct3D11Renderer& renderer);
 
-//     //! return the ID3D10Device used by this renderer object.
-//     ID3D11Device& getDirect3DDevice() const;
-// 
-// 	//! return the ID3D11Device context used by this renderer object.
-// 	ID3D11DeviceContext& getDirect3DDeviceContext() const;
-
 	//returns d3d11 container for further rendering and creating
 	IDevice11& getDirect3DDevice(); 
 	
@@ -164,7 +159,9 @@ public:
 
     // Implement interface from Renderer
     RenderTarget& getDefaultRenderTarget();
-    GeometryBuffer& createGeometryBuffer();
+    RefCounted<RenderMaterial> createRenderMaterial(const DefaultShaderType shaderType) const;
+    GeometryBuffer& createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
+    GeometryBuffer& createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial);
     void destroyGeometryBuffer(const GeometryBuffer& buffer);
     void destroyAllGeometryBuffers();
     TextureTarget* createTextureTarget();
@@ -194,6 +191,18 @@ protected:
 
     //! destructor.
     ~Direct3D11Renderer();
+
+    //! Initialises the ShaderManager and the required D3D11 shaders
+    void initialiseShaders();
+    //! Initialises the D3D11 ShaderWrapper for textured objects
+    void initialiseStandardTexturedShaderWrapper();
+    //! Initialises the D3D11 ShaderWrapper for coloured objects
+    void initialiseStandardColouredShaderWrapper();
+
+    //! Wrapper of the OpenGL shader we will use for textured geometry
+    Direct3D11ShaderWrapper* d_shaderWrapperTextured;
+    //! Wrapper of the OpenGL shader we will use for solid geometry
+    Direct3D11ShaderWrapper* d_shaderWrapperSolid;
 
     //! return size of the D3D device viewport.
     Sizef getViewportSize();
