@@ -89,11 +89,15 @@
 // fix to undefine _STLP_DEBUG if STLport is not actually being used
 // (resolves some unresolved externals concerning boost)
 #if defined(_STLP_DEBUG) && defined(_MSC_VER) && (_MSC_VER >= 1200)
-#	if !defined(_STLPORT_VERSION)
-#		undef _STLP_DEBUG
-#	endif
+#   if !defined(_STLPORT_VERSION)
+#       undef _STLP_DEBUG
+#   endif
 #endif
 
+// min/max is defined in <algorithm> in VS2013+
+#if (_MSC_VER >= 1800)
+#   include <algorithm>
+#endif
 
 // The following defines macros used within CEGUI for std::min/std::max
 // usage, and is done as a compatibility measure for VC6 with native STL.
