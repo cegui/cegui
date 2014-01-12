@@ -52,7 +52,7 @@ public:
 
     // implementation of base interface
     void format(const Window* ref_wnd, const Sizef& area_size);
-    void draw(const Window* ref_wnd, GeometryBuffer& buffer,
+    void draw(const Window* ref_wnd, std::vector<GeometryBuffer*>& geometry_buffers,
               const Vector2f& position, const ColourRect* mod_colours,
               const Rectf* clip_rect) const;
     size_t getFormattedLineCount() const;
@@ -128,7 +128,7 @@ void RenderedStringWordWrapper<T>::format(const Window* ref_wnd,
 //----------------------------------------------------------------------------//
 template <typename T>
 void RenderedStringWordWrapper<T>::draw(const Window* ref_wnd,
-                                        GeometryBuffer& buffer,
+                                        std::vector<GeometryBuffer*>& geometry_buffers,
                                         const Vector2f& position,
                                         const ColourRect* mod_colours,
                                         const Rectf* clip_rect) const
@@ -137,7 +137,7 @@ void RenderedStringWordWrapper<T>::draw(const Window* ref_wnd,
     typename LineList::const_iterator i = d_lines.begin();
     for (; i != d_lines.end(); ++i)
     {
-        (*i)->draw(ref_wnd, buffer, line_pos, mod_colours, clip_rect);
+        (*i)->draw(ref_wnd, geometry_buffers, line_pos, mod_colours, clip_rect);
         line_pos.d_y += (*i)->getVerticalExtent(ref_wnd);
     }
 }

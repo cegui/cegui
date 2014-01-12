@@ -83,17 +83,17 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     CEGUI::String logMessage = "[colour='FFFFBBBB']" + d_eventName + "[colour='FFFFFFFF']";
     logMessage += CEGUI::String(" (");
 
-    if(dynamic_cast<const CEGUI::MouseEventArgs*>(&args))
+    if(dynamic_cast<const CEGUI::PointerEventArgs*>(&args))
     {
-        logMessage += "MouseEvent";
+        logMessage += "PointerEvent";
     }
-    else if(dynamic_cast<const CEGUI::MouseCursorEventArgs*>(&args))
+    else if(dynamic_cast<const CEGUI::PointerIndicatorEventArgs*>(&args))
     {
-        logMessage += "MouseCursorEvent";
+        logMessage += "PointerIndicatorEvent";
     }
-    else if(const CEGUI::KeyEventArgs* keyArgs = dynamic_cast<const CEGUI::KeyEventArgs*>(&args))
+    else if(const CEGUI::TextEventArgs* textArgs = dynamic_cast<const CEGUI::TextEventArgs*>(&args))
     {
-        logMessage += "KeyEvent: '" + CEGUI::String(1, keyArgs->codepoint) + "'";
+        logMessage += "TextEvent: '" + CEGUI::String(1, textArgs->character) + "'";
     }
     else if(dynamic_cast<const CEGUI::WindowEventArgs*>(&args))
     {
@@ -107,7 +107,6 @@ bool EventHandlerObject::handleEvent(const CEGUI::EventArgs& args)
     {
         logMessage += "DragDropEvent";
     }
-
 
     logMessage += CEGUI::String(")");
 
@@ -140,7 +139,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
     SchemeManager::getSingleton().createFromFile("WindowsLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
     SchemeManager::getSingleton().createFromFile("OgreTray.scheme");
-    d_guiContext->getMouseCursor().setDefaultImage("Vanilla-Images/MouseArrow");
+    d_guiContext->getPointerIndicator().setDefaultImage("Vanilla-Images/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -150,7 +149,7 @@ bool WidgetDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     // Retrieve the available widget types and save them inside a map
     initialiseAvailableWidgetsMap();
@@ -213,7 +212,7 @@ bool WidgetDemo::handleSkinSelectionAccepted(const CEGUI::EventArgs& args)
 
 bool WidgetDemo::handleRenderingEnded(const CEGUI::EventArgs& args)
 {
-    d_windowLightMouseMoveEvent->disable();
+    d_windowLightPointerMoveEvent->disable();
     d_windowLightUpdatedEvent->disable();
 
     return true;
@@ -457,9 +456,9 @@ CEGUI::Window* WidgetDemo::createWidget(const CEGUI::String &widgetMapping, cons
 
 void WidgetDemo::handleWidgetEventFired(const CEGUI::String& eventName, CEGUI::String logMessage)
 {
-    if(eventName == CEGUI::Window::EventMouseMove)
+    if(eventName == CEGUI::Window::EventPointerMove)
     {
-        d_windowLightMouseMoveEvent->enable();
+        d_windowLightPointerMoveEvent->enable();
     }
     else if(eventName == CEGUI::Window::EventUpdated)
     {
@@ -530,18 +529,18 @@ void WidgetDemo::initialiseEventLights(CEGUI::Window* container)
     updateEventLabel->setFont("DejaVuSans-12-NoScale");
     updateEventLabel->setProperty("HorzFormatting", "LeftAligned");
 
-    d_windowLightMouseMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
-    horizontalLayout->addChild(d_windowLightMouseMoveEvent);
-    d_windowLightMouseMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
-    d_windowLightMouseMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
-    d_windowLightMouseMoveEvent->setProperty("LightColour", "FF77BBFF");
+    d_windowLightPointerMoveEvent = winMgr.createWindow("SampleBrowserSkin/Light");
+    horizontalLayout->addChild(d_windowLightPointerMoveEvent);
+    d_windowLightPointerMoveEvent->setSize(CEGUI::USize(cegui_reldim(0.0f), cegui_reldim(0.04f)));
+    d_windowLightPointerMoveEvent->setAspectMode(CEGUI::AM_EXPAND);
+    d_windowLightPointerMoveEvent->setProperty("LightColour", "FF77BBFF");
 
-    CEGUI::Window* mouseMoveEventLabel = winMgr.createWindow("Vanilla/Label");
-    horizontalLayout->addChild(mouseMoveEventLabel);
-    mouseMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
-    mouseMoveEventLabel->setText("EventMouseMove");
-    mouseMoveEventLabel->setFont("DejaVuSans-12-NoScale");
-    mouseMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
+    CEGUI::Window* pointerMoveEventLabel = winMgr.createWindow("Vanilla/Label");
+    horizontalLayout->addChild(pointerMoveEventLabel);
+    pointerMoveEventLabel->setSize(CEGUI::USize(cegui_reldim(0.25f), cegui_reldim(0.04f)));
+    pointerMoveEventLabel->setText("EventPointerMove");
+    pointerMoveEventLabel->setFont("DejaVuSans-12-NoScale");
+    pointerMoveEventLabel->setProperty("HorzFormatting", "LeftAligned");
 }
 
 void WidgetDemo::logFiredEvent(const CEGUI::String& logMessage)

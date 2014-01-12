@@ -1,7 +1,7 @@
 /***********************************************************************
-filename:   GlmPimpl.h
-created:    Mon, 13th Feb 2012
-author:     Lukas E Meindl
+    filename:   GLShaderWrapper.h
+    created:    23rd September 2013
+    author:     Lukas Meindl
 *************************************************************************/
 /***************************************************************************
 *   Copyright (C) 2004 - 2012 Paul D Turner & The CEGUI Development Team
@@ -25,20 +25,37 @@ author:     Lukas E Meindl
 *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
+#ifndef _CEGUIOpenGLShaderWrapper_h_
+#define _CEGUIOpenGLShaderWrapper_h_
 
-#ifndef _CEGUIGlmPimpl_h_
-#define _CEGUIGlmPimpl_h_
+#include "RendererBase.h"
 
-#include "glm/glm.hpp"
+#include "CEGUI/ShaderWrapper.h"
+#include <string>
 
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
+// Start of CEGUI namespace section
 namespace CEGUI
 {
+class ShaderParameterBindings;
 
-struct mat4Pimpl
+class OPENGL_GUIRENDERER_API OpenGLShaderWrapper : public ShaderWrapper
 {
-    glm::mat4 d_matrix;   
+public:
+    OpenGLShaderWrapper();
+
+    ~OpenGLShaderWrapper();
+
+    //Implementation of ShaderWrapper interface
+    void prepareForRendering(const ShaderParameterBindings* shaderParameterBindings);
 };
+
 
 }
 
 #endif
+

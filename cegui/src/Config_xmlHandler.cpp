@@ -52,7 +52,7 @@ const String Config_xmlHandler::ScriptingElement("Scripting");
 const String Config_xmlHandler::XMLParserElement("DefaultXMLParser");
 const String Config_xmlHandler::ImageCodecElement("DefaultImageCodec");
 const String Config_xmlHandler::DefaultFontElement("DefaultFont");
-const String Config_xmlHandler::DefaultMouseCursorElement("DefaultMouseCursor");
+const String Config_xmlHandler::DefaultPointerIndicatorElement("DefaultPointerIndicator");
 const String Config_xmlHandler::DefaultTooltipElement("DefaultTooltip");
 const String Config_xmlHandler::FilenameAttribute("filename");
 const String Config_xmlHandler::LevelAttribute("level");
@@ -111,8 +111,8 @@ void Config_xmlHandler::elementStart(const String& element,
         handleImageCodecElement(attributes);
     else if (element == DefaultFontElement)
         handleDefaultFontElement(attributes);
-    else if (element == DefaultMouseCursorElement)
-        handleDefaultMouseCursorElement(attributes);
+    else if (element == DefaultPointerIndicatorElement)
+        handleDefaultPointerIndicatorElement(attributes);
     else if (element == DefaultTooltipElement)
         handleDefaultTooltipElement(attributes);
     else
@@ -209,9 +209,9 @@ void Config_xmlHandler::handleDefaultFontElement(const XMLAttributes& attr)
 }
 
 //----------------------------------------------------------------------------//
-void Config_xmlHandler::handleDefaultMouseCursorElement(const XMLAttributes& attr)
+void Config_xmlHandler::handleDefaultPointerIndicatorElement(const XMLAttributes& attr)
 {
-    d_defaultMouseImage = attr.getValueAsString(ImageAttribute, "");
+    d_defaultPointerImage = attr.getValueAsString(ImageAttribute, "");
 }
 
 //----------------------------------------------------------------------------//
@@ -346,11 +346,11 @@ void Config_xmlHandler::initialiseDefaultFont() const
 }
 
 //----------------------------------------------------------------------------//
-void Config_xmlHandler::initialiseDefaultMouseCursor() const
+void Config_xmlHandler::initialiseDefaultPointerIndicator() const
 {
-    if (!d_defaultMouseImage.empty())
-        System::getSingleton().getDefaultGUIContext().getMouseCursor().
-            setDefaultImage(d_defaultMouseImage);
+    if (!d_defaultPointerImage.empty())
+        System::getSingleton().getDefaultGUIContext().getPointerIndicator().
+            setDefaultImage(d_defaultPointerImage);
 }
 
 //----------------------------------------------------------------------------//

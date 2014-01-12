@@ -57,7 +57,7 @@ public:
 		Constants
 	*************************************************************************/
 	// Event names
-    /** Event fired when the user confirms the selection by clicking the mouse.
+    /** Event fired when the user confirms the selection by activation (of the pointer).
      * Handlers are passed a const WindowEventArgs reference with
      * WindowEventArgs::window set to the ComboDropList whose selection has been
      * confirmed by the user.
@@ -83,9 +83,9 @@ public:
 		Set whether the drop-list is 'armed' for selection.
 
 	\note
-		This setting is not exclusively under client control; the ComboDropList will auto-arm in
-		response to certain left mouse button events.  This is also dependant upon the autoArm
-		setting of the ComboDropList.
+        This setting is not exclusively under client control; the ComboDropList will auto-arm in
+        response to certain pointer left source events.  This is also dependent upon the autoArm
+        setting of the ComboDropList.
 
 	\param setting
 		- true to arm the box; items will be highlighted and the next left button up event
@@ -116,9 +116,9 @@ public:
 	\brief
 		Set the mode of operation for the ComboDropList.
 
-	\param setting
-		- true if the ComboDropList auto-arms when the mouse enters the box.
-		- false if the user must click to arm the box.
+    \param setting
+        - true if the ComboDropList auto-arms when the pointer enters the box.
+        - false if the user must activate to arm the box.
 
 	\return
 		Nothing.
@@ -130,9 +130,9 @@ public:
 	\brief
 		returns the mode of operation for the drop-list
 
-	\return
-		- true if the ComboDropList auto-arms when the mouse enters the box.
-		- false if the user must click to arm the box.
+    \return
+        - true if the ComboDropList auto-arms when the pointer enters the box.
+        - false if the user must click to arm the box.
 	*/
 	bool	isAutoArmEnabled(void) const		{ return d_autoArm; }
 
@@ -170,9 +170,9 @@ protected:
 	/*************************************************************************
 		Overridden Event handling
 	*************************************************************************/
-	virtual void	onMouseMove(MouseEventArgs& e);
-	virtual void	onMouseButtonDown(MouseEventArgs& e);
-	virtual void	onMouseButtonUp(MouseEventArgs& e);
+	virtual void	onPointerMove(PointerEventArgs& e);
+    virtual void    onPointerPressHold(PointerEventArgs& e);
+    virtual void    onPointerActivate(PointerEventArgs& e);
 	virtual void	onCaptureLost(WindowEventArgs& e);
 	virtual void	onActivated(ActivationEventArgs& e);
     virtual void    onListContentsChanged(WindowEventArgs& e);
@@ -181,7 +181,7 @@ protected:
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
-	bool	d_autoArm;		//!< true if the box auto-arms when the mouse enters it.
+	bool	d_autoArm;		//!< true if the box auto-arms when the pointer enters it.
 	bool	d_armed;		//!< true when item selection has been armed.
     ListboxItem* d_lastClickSelected; //!< Item last accepted by user.
 };

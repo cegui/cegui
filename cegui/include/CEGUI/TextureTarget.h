@@ -91,6 +91,19 @@ public:
         textures.
     */
     virtual bool isRenderingInverted() const = 0;
+
+    /*!
+    \brief
+        Return whether this TextureTarget has a stencil buffer attached or not.
+    \return 
+        - true if a stencil buffer is attached
+        - false if no stencil buffer is attached
+    */
+    bool getUsesStencil() const {return d_usesStencil;}
+
+protected:
+    //! Determines if the instance has a stencil buffer attached or not
+    bool d_usesStencil;
 };
 
 } // End of  CEGUI namespace section

@@ -1,5 +1,5 @@
 /***********************************************************************
-    filename:   StandardShaderFrag.h
+    filename:   StandardShaderTexturedFrag.h
     created:    Wed, 8th Feb 2012
     author:     Lukas E Meindl
 *************************************************************************/
@@ -26,12 +26,12 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 
-#ifndef _CEGUIOpenGL3StandardShaderFrag_h_
-#define _CEGUIOpenGL3StandardShaderFrag_h_
+#ifndef _CEGUIOpenGL3StandardShaderTexturedFrag_h_
+#define _CEGUIOpenGL3StandardShaderTexturedFrag_h_
 
 namespace CEGUI
 {
-const char StandardShaderFrag[] = 
+const char StandardShaderTexturedFrag[] = 
     "#version 150 core\n"
 
     "uniform sampler2D texture0;\n"

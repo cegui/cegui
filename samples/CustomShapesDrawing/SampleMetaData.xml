@@ -1,0 +1,18 @@
+<SampleDefinition
+    name      = "CEGUISample_CustomShapesDrawing"
+    type      = "C++ Module"
+    summary         = "This sample displays rendering possibilities provided with CEGUI's GeometryBuffer and SVGImage/SVGData class.
+    The goal is to render an FPS graph that displays the last recorded FPS values. SVGImage provides optional anti-aliasing and the possibility to
+    use the Image as part of a window"
+    description     = "In CEGUI the GeometryBuffer can be used to render vertices directly on the screen. However, this comes with limitations,
+                       since CEGUI is not a Rendering Engine. For example only textured and coloured vertices are available out of the box. The vertices for all lines and
+                       the quad of the background of the graph had to be calculated with extra code. The other possibility to render a graph, as display in this sample, 
+                       is by using an SVGImage. Each SVGImage points to a (possibly shared) SVGData object that contains its data. This data can be modified by adding shapes based
+                       on the SVG BasicShapes. The vertices do not have to be calculated in this case and the rendering specifics like colours and line widths can be specified
+                       more conveniently. Additionally, with SVGImages it is possible to switch on anti-aliasing, which is implemented by adding additional blending geometry to all shapes. 
+                       Also, it is easily possible to add the SVGImage to a window, by referring to it via a property, which is not possible with the GeometryBuffer method. This is
+                       displayed in the sample with a WindowsLook/FrameWindow that contains an Generic/Image window. The FrameWindow is sizeable and will also scale its child window when
+                       sized. The Generic/Image window has an 'Image' property that is pointing to our SVGImage. When the FrameWindow is sized it can thus be seen that the image is 
+                       being scaled too."
+    credits         = "Lukas &quot;Ident&quot; Meindl"
+/>

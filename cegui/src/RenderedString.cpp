@@ -282,7 +282,7 @@ size_t RenderedString::getSpaceCount(const size_t line) const
 
 //----------------------------------------------------------------------------//
 void RenderedString::draw(const Window* ref_wnd, const size_t line,
-                          GeometryBuffer& buffer, const Vector2f& position,
+                          std::vector<GeometryBuffer*>& geometry_buffers, const Vector2f& position,
                           const ColourRect* mod_colours, const Rectf* clip_rect,
                           const float space_extra) const
 {
@@ -297,7 +297,7 @@ void RenderedString::draw(const Window* ref_wnd, const size_t line,
     const size_t end_component = d_lines[line].first + d_lines[line].second;
     for (size_t i = d_lines[line].first; i < end_component; ++i)
     {
-        d_components[i]->draw(ref_wnd, buffer, comp_pos, mod_colours, clip_rect,
+        d_components[i]->draw(ref_wnd, geometry_buffers, comp_pos, mod_colours, clip_rect,
                               render_height, space_extra);
         comp_pos.d_x += d_components[i]->getPixelSize(ref_wnd).d_width;
     }

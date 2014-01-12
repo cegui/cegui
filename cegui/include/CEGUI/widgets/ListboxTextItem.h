@@ -191,7 +191,7 @@ public:
 		Required implementations of pure virtuals from the base class.
 	*************************************************************************/
     Sizef getPixelSize(void) const;
-    void draw(GeometryBuffer& buffer, const Rectf& targetRect, float alpha, const Rectf* clipper) const;
+    void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect, float alpha, const Rectf* clipper) const;
 
 protected:
     void parseTextString() const;

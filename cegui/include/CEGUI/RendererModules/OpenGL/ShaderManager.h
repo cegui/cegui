@@ -44,10 +44,12 @@
 namespace CEGUI
 {
     class OpenGL3Shader;
+    class OpenGL3StateChangeWrapper;
 
     enum OpenGL3ShaderID
     {
-        SHADER_ID_STANDARDSHADER,
+        SHADER_ID_STANDARD_TEXTURED,
+        SHADER_ID_STANDARD_SOLID,
 
         SHADER_ID_COUNT
     };
@@ -56,7 +58,7 @@ namespace CEGUI
         public AllocatedObject<OpenGL3ShaderManager>
     {
     public:
-        OpenGL3ShaderManager();
+        OpenGL3ShaderManager(OpenGL3StateChangeWrapper* glStateChanger);
         virtual ~OpenGL3ShaderManager();
 
         OpenGL3Shader* getShader(GLuint id);
@@ -66,11 +68,12 @@ namespace CEGUI
         void deinitialiseShaders();
 
     private:
-
         typedef std::map<GLuint, OpenGL3Shader*> shaderContainerType;
         shaderContainerType d_shaders;
 
         bool d_shadersInitialised;
+
+        OpenGL3StateChangeWrapper* d_glStateChanger;
     };
 
 }
