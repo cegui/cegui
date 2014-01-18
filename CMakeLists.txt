@@ -6,6 +6,10 @@ if (POLICY CMP0017)
     cmake_policy(SET CMP0017 OLD)
 endif()
 
+if (POLICY CMP0045)
+    cmake_policy(SET CMP0045 OLD)
+endif()
+
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake")
 include(CEGUIMacros)
 include(CMakeDependentOption)
