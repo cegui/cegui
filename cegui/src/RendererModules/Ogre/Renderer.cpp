@@ -668,9 +668,10 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_defaultTarget =
         CEGUI_NEW_AO OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
-    bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
 
 #ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
+    bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
+
     if (!isFixedFunctionEnabled)
         CEGUI_THROW(RendererException("RT Shader System not available and fixed-function pipeline disabled. "
         "When the fixed-function pipeline is disabled, the RT Shader System component of Ogre is required for rendering."));
