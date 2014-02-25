@@ -668,16 +668,20 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_defaultTarget =
         CEGUI_NEW_AO OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
 
+#if OGRE_VERSION >= 0x10800
+    // Check if built with RT Shader System and if it is: Check if fixed function pipeline is enabled
+    #if defined RTSHADER_SYSTEM_BUILD_CORE_SHADERS
+        bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
+    #else
+        bool isFixedFunctionEnabled = true;
+    #endif
 
-#ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
-    bool isFixedFunctionEnabled = d_pimpl->d_renderSystem->getFixedPipelineEnabled();
+    #ifndef RTSHADER_SYSTEM_BUILD_CORE_SHADERS
+        if (d_pimpl->d_useGLSLCore)
+            CEGUI_THROW(RendererException("RT Shader System not available but trying to render using OpenGL 3.X+ Core."
+            "When GLSL shaders are necessary, the RT Shader System component of Ogre is required for rendering CEGUI."));
+    #endif
 
-    if (!isFixedFunctionEnabled)
-        CEGUI_THROW(RendererException("RT Shader System not available and fixed-function pipeline disabled. "
-        "When the fixed-function pipeline is disabled, the RT Shader System component of Ogre is required for rendering."));
-#endif
-
-#if defined RTSHADER_SYSTEM_BUILD_CORE_SHADERS && OGRE_VERSION >= 0x10800
     // Default to using shaders when that is the sane thing to do.
     // We check for use of the OpenGL 3+ Renderer in which case we always wanna (because we have to) use shaders
     if (!isFixedFunctionEnabled || d_pimpl->d_useGLSLCore)
