@@ -44,6 +44,9 @@
 #include <OgreHighLevelGpuProgram.h>
 #include <OgreGpuProgramManager.h>
 #include <OgreGpuProgramParams.h>
+#include <OgreFrameListener.h>
+#include <OgreViewport.h>
+#include <OgreCamera.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI

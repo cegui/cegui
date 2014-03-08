@@ -32,6 +32,7 @@
 
 #include <OgreRenderSystem.h>
 #include <OgreCamera.h>
+#include <OgreViewport.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
