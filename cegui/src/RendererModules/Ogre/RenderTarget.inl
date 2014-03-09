@@ -245,7 +245,7 @@ void OgreRenderTarget<T>::updateViewport()
 {
     if (!d_viewport)
     {
-        d_viewport = new Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
+        d_viewport = OGRE_NEW Ogre::Viewport(0, d_renderTarget, 0, 0, 1, 1, 0);
         updateOgreViewportDimensions(d_renderTarget);
     }
 
