@@ -15,7 +15,7 @@
         <PropertyDefinition redrawOnWrite="true" initialValue="CentreAligned" type="VerticalTextFormatting" name="VertFormatting"/>
         <PropertyDefinition redrawOnWrite="true" initialValue="LeftAligned" type="HorizontalTextFormatting" name="HorzFormatting"/>
         <Property name="Size" value="{{0.1, 0}, {0.08, 0}}" />
-        <Property name="MousePassThroughEnabled" value="true" />
+        <Property name="PointerPassThroughEnabled" value="true" />
         <ImagerySection name="Label">
             <TextComponent>
                 <Area>

@@ -42,6 +42,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+class UndoHandler;
+
 //! Base class for the EditboxWindowRenderer class
 class CEGUIEXPORT EditboxWindowRenderer : public WindowRenderer
 {
@@ -152,8 +154,8 @@ public:
         return true if the Editbox has input focus.
 
     \return
-        - true if the Editbox has keyboard input focus.
-        - false if the Editbox does not have keyboard input focus.
+        - true if the Editbox has input focus.
+        - false if the Editbox does not have input focus.
     */
     bool hasInputFocus(void) const;
 
@@ -455,15 +457,21 @@ public:
 
     //! \copydoc Window::performCut
     virtual bool performCut(Clipboard& clipboard);
-    
+
     //! \copydoc Window::performPaste
     virtual bool performPaste(Clipboard& clipboard);
-    
+
     //! Constructor for Editbox class.
     Editbox(const String& type, const String& name);
 
     //! Destructor for Editbox class.
     virtual ~Editbox(void);
+
+    //! \copydoc Window::performUndo
+    virtual bool performUndo();
+
+    //! \copydoc Window::performRedo
+    virtual bool performRedo();
 
 protected:
     /*!
@@ -516,23 +524,23 @@ protected:
     //! Processing for Delete key
     void handleDelete(void);
 
-    //! Processing to move caret one character left
-    void handleCharLeft(uint sysKeys);
+    //! Processing to move caret one character left (and optionally select it)
+    void handleCharLeft(bool select);
 
-    //! Processing to move caret one word left
-    void handleWordLeft(uint sysKeys);
+    //! Processing to move caret one word left (and optionally select it)
+    void handleWordLeft(bool select);
 
-    //! Processing to move caret one character right
-    void handleCharRight(uint sysKeys);
+    //! Processing to move caret one character right (and optionally select it)
+    void handleCharRight(bool select);
 
-    //! Processing to move caret one word right
-    void handleWordRight(uint sysKeys);
+    //! Processing to move caret one word right (and optionally select it)
+    void handleWordRight(bool select);
 
-    //! Processing to move caret to the start of the text.
-    void handleHome(uint sysKeys);
+    //! Processing to move caret to the start of the text. (and optionally select it)
+    void handleHome(bool select);
 
-    //! Processing to move caret to the end of the text
-    void handleEnd(uint sysKeys);
+    //! Processing to move caret to the end of the text (and optionally select it)
+    void handleEnd(bool select);
 
     //! validate window renderer
     virtual bool validateWindowRenderer(const WindowRenderer* renderer) const;
@@ -603,15 +611,14 @@ protected:
     virtual void onTextAcceptedEvent(WindowEventArgs& e);
 
     // Overridden event handlers
-    void onMouseButtonDown(MouseEventArgs& e);
-    void onMouseButtonUp(MouseEventArgs& e);
-    void onMouseDoubleClicked(MouseEventArgs& e);
-    void onMouseTripleClicked(MouseEventArgs& e);
-    void onMouseMove(MouseEventArgs& e);
+    void onPointerPressHold(PointerEventArgs& e);
+    void onPointerActivate(PointerEventArgs& e);
+    void onPointerMove(PointerEventArgs& e);
     void onCaptureLost(WindowEventArgs& e);
-    void onCharacter(KeyEventArgs& e);
-    void onKeyDown(KeyEventArgs& e);
+    void onCharacter(TextEventArgs& e);
     void onTextChanged(WindowEventArgs& e);
+
+    void onSemanticInputEvent(SemanticEventArgs& e);
 
     //! True if the editbox is in read-only mode
     bool d_readOnly;
@@ -641,6 +648,8 @@ protected:
     MatchState d_validatorMatchState;
     //! Previous match state change response
     bool d_previousValidityChangeResponse;
+    //! Undo handler
+    UndoHandler *d_undoHandler;
 
 private:
 

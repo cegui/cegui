@@ -28,7 +28,6 @@
 #include "CEGUI/RendererModules/OpenGL/RenderTarget.h"
 #include "CEGUI/RenderQueue.h"
 #include "CEGUI/RendererModules/OpenGL/GeometryBufferBase.h"
-#include "CEGUI/RendererModules/OpenGL/GlmPimpl.h"
 
 #include <cmath>
 
@@ -47,18 +46,16 @@ template <typename T>
 OpenGLRenderTarget<T>::OpenGLRenderTarget(OpenGLRendererBase& owner) :
     d_owner(owner),
     d_area(0, 0, 0, 0),
-    d_matrix(0),
+    d_matrix(1.0f),
     d_matrixValid(false),
     d_viewDistance(0)
 {
-    d_matrix = new mat4Pimpl();
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 OpenGLRenderTarget<T>::~OpenGLRenderTarget()
 {
-    delete d_matrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -134,11 +131,11 @@ void OpenGLRenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
         static_cast<GLint>(d_area.getHeight())
     };
 
-    GLdouble in_x, in_y, in_z = 0.0;
+    GLdouble in_x, in_y, in_z;
 
     glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
-    const glm::mat4& projMatrix = d_matrix->d_matrix;
-    const glm::mat4& modelMatrix = gb.getMatrix()->d_matrix;
+    const glm::mat4& projMatrix = d_matrix;
+    const glm::mat4& modelMatrix = gb.getMatrix();
 
     // unproject the ends of the ray
     glm::vec3 unprojected1;
@@ -208,7 +205,7 @@ void OpenGLRenderTarget<T>::updateMatrix() const
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
   
-    d_matrix->d_matrix = projectionMatrix * viewMatrix;
+    d_matrix = projectionMatrix * viewMatrix;
 
     d_matrixValid = true;
 }

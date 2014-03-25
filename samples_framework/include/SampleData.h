@@ -35,7 +35,7 @@ author:     Lukas E Meindl
 
 namespace CEGUI
 {
-    class BasicImage;
+    class BitmapImage;
 }
 
 enum SampleType
@@ -60,6 +60,7 @@ public:
     virtual void deinitialise();
 
     virtual CEGUI::GUIContext*  getGuiContext();
+    virtual CEGUI::InputAggregator* getInputAggregator();
     virtual void handleNewWindowSize(float width, float height);
 
     void setTextureTargetImageArea(float height, float width);
@@ -92,8 +93,10 @@ protected:
     CEGUI::Window*          d_sampleWindow;
 
     CEGUI::GUIContext*      d_guiContext;
+    CEGUI::InputAggregator* d_inputAggregator;
+    bool                    d_nonDefaultInputAggregator;
     CEGUI::TextureTarget*   d_textureTarget;
-    CEGUI::BasicImage*      d_textureTargetImage;
+    CEGUI::BitmapImage*      d_textureTargetImage;
 };
 
 class SampleDataModule : public SampleData
