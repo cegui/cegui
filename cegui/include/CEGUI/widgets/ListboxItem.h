@@ -413,7 +413,7 @@ public:
     \return
         Nothing.
     */
-    virtual void draw(GeometryBuffer& buffer, const Rectf& targetRect,
+    virtual void draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                       float alpha, const Rectf* clipper) const = 0;
 
     /*************************************************************************

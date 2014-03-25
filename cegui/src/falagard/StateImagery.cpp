@@ -41,8 +41,6 @@ namespace CEGUI
 
     void StateImagery::render(Window& srcWindow, const ColourRect* modcols, const Rectf* clipper) const
     {
-        srcWindow.getGeometryBuffer().setClippingActive(!d_clipToDisplay);
-
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
             (*curr).render(srcWindow, modcols, clipper, d_clipToDisplay);
@@ -50,8 +48,6 @@ namespace CEGUI
 
     void StateImagery::render(Window& srcWindow, const Rectf& baseRect, const ColourRect* modcols, const Rectf* clipper) const
     {
-        srcWindow.getGeometryBuffer().setClippingActive(!d_clipToDisplay);
-
         // render all layers defined for this state
         for(LayersList::const_iterator curr = d_layers.begin(); curr != d_layers.end(); ++curr)
             (*curr).render(srcWindow, baseRect, modcols, clipper, d_clipToDisplay);

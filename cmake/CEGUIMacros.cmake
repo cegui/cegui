@@ -357,18 +357,19 @@ macro (cegui_apple_app_setup _TARGET_NAME _STATIC)
 endmacro()
 
 #
-# Define a CEGUI sample module
+# Define a CEGUI sample module using some extra header and source files
 #
-macro (cegui_add_sample _NAME)
+macro (cegui_add_sample_with_extra_files _NAME _EXTRA_HEADER_FILES _EXTRA_SOURCE_FILES)
     set (CEGUI_TARGET_NAME ${_NAME})
-
     cegui_gather_files()
 
-	set(CORE_HEADER_FILES ${CORE_HEADER_FILES}
-		${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
-		${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
-	)
-    
+    set(CORE_HEADER_FILES ${CORE_HEADER_FILES} ${_EXTRA_HEADER_FILES}
+        ${CMAKE_SOURCE_DIR}/samples/common/include/Sample.h
+        ${CMAKE_SOURCE_DIR}/samples/common/include/SampleBase.h
+    )
+
+	set(CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${_EXTRA_SOURCE_FILES})
+
     # Each demo will become a dynamically linked library as plugin (module)
     cegui_add_library_impl(${CEGUI_TARGET_NAME} TRUE CORE_SOURCE_FILES CORE_HEADER_FILES FALSE FALSE)
 
@@ -401,6 +402,10 @@ macro (cegui_add_sample _NAME)
     file(APPEND ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "${DEMO_META_DATA}")
  
 endmacro()
+macro (cegui_add_sample _NAME)
+	cegui_add_sample_with_extra_files(${_NAME} "" "")
+endmacro()
+
 
 #
 # Define a PyCEGUI* extension module

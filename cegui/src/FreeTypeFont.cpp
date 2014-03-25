@@ -236,8 +236,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                     Rectf area(0, 0, 0, 0);
                     Vector2f offset(0, 0);
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
-                    BasicImage* img =
-                        CEGUI_NEW_AO BasicImage(name, &texture, area, offset, ASM_Disabled,
+                    BitmapImage* img =
+                        CEGUI_NEW_AO BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);
@@ -274,8 +274,8 @@ void FreeTypeFont::rasterise(utf32 start_codepoint, utf32 end_codepoint) const
                                     -d_fontFace->glyph->metrics.horiBearingY * static_cast<float>(FT_POS_COEF));
 
                     const String name(PropertyHelper<unsigned long>::toString(s->first));
-                    BasicImage* img =
-                        CEGUI_NEW_AO BasicImage(name, &texture, area, offset, ASM_Disabled,
+                    BitmapImage* img =
+                        CEGUI_NEW_AO BitmapImage(name, &texture, area, offset, ASM_Disabled,
                                        d_nativeResolution);
                     d_glyphImages.push_back(img);
                     s->second.setImage(img);

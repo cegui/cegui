@@ -29,6 +29,7 @@
 #include "CEGUI/RendererModules/Direct3D11/TextureTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/ViewportTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
+#include "CEGUI/RendererModules/Direct3D11/ShaderWrapper.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
@@ -104,14 +105,6 @@ void Direct3D11Renderer::destroy(Direct3D11Renderer& renderer)
 RenderTarget& Direct3D11Renderer::getDefaultRenderTarget()
 {
     return *d_defaultTarget;
-}
-
-//----------------------------------------------------------------------------//
-GeometryBuffer& Direct3D11Renderer::createGeometryBuffer()
-{
-    Direct3D11GeometryBuffer* b = new Direct3D11GeometryBuffer(*this);
-    d_geometryBuffers.push_back(b);
-    return *b;
 }
 
 //----------------------------------------------------------------------------//
@@ -423,6 +416,8 @@ Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext 
     }
 
     d_defaultTarget = new Direct3D11ViewportTarget(*this);
+
+    initialiseShaders();
 }
 
 //----------------------------------------------------------------------------//
@@ -492,10 +487,102 @@ void Direct3D11Renderer::setProjectionMatrix(D3DXMATRIX& matrix)
 {
     d_projectionMatrixVariable->SetMatrix(reinterpret_cast<float*>(&matrix));
 }
+
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::setWorldMatrix(D3DXMATRIX& matrix)
 {
     d_worldMatrixVariable->SetMatrix(reinterpret_cast<float*>(&matrix));
+}
+
+//----------------------------------------------------------------------------//
+GeometryBuffer& Direct3D11Renderer::createGeometryBufferTextured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
+{
+    Direct3D11GeometryBuffer* geom_buffer = CEGUI_NEW_AO Direct3D11GeometryBuffer(*this, renderMaterial);
+
+    geom_buffer->addVertexAttribute(VAT_POSITION0);
+    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+    //TODO IDENT
+    //geom_buffer->finaliseVertexAttributes();
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
+}
+
+//----------------------------------------------------------------------------//
+GeometryBuffer& Direct3D11Renderer::createGeometryBufferColoured(CEGUI::RefCounted<RenderMaterial> renderMaterial)
+{
+    Direct3D11GeometryBuffer* geom_buffer = CEGUI_NEW_AO Direct3D11GeometryBuffer(*this, renderMaterial);
+
+    geom_buffer->addVertexAttribute(VAT_POSITION0);
+    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    //TODO IDENT
+    //geom_buffer->finaliseVertexAttributes();
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
+}
+
+//----------------------------------------------------------------------------//
+RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const DefaultShaderType shaderType) const
+{
+    if(shaderType == DS_TEXTURED)
+    {
+        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperTextured));
+
+        return render_material;
+    }
+    else if(shaderType == DS_SOLID)
+    {
+        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperSolid));
+
+        return render_material;
+    }
+    else
+    {
+        CEGUI_THROW(RendererException(
+            "A default shader of this type does not exist."));
+
+        return RefCounted<RenderMaterial>();
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
+{
+    //TODO IDENT
+/*
+    Direct3D11Shader* shader_standard_textured = d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
+    d_shaderWrapperTextured = new Direct3D11ShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
+
+    d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
+
+    d_shaderWrapperTextured->addUniformVariable("modelViewPerspMatrix");
+
+    d_shaderWrapperTextured->addAttributeVariable("inPosition");
+    d_shaderWrapperTextured->addAttributeVariable("inTexCoord");
+    d_shaderWrapperTextured->addAttributeVariable("inColour");*/
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
+{
+    //TODO IDENT
+/*
+    Direct3D11Shader* shader_standard_solid = d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
+    d_shaderWrapperSolid = new Direct3D11ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
+
+    d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix");
+
+    d_shaderWrapperSolid->addAttributeVariable("inPosition");
+    d_shaderWrapperSolid->addAttributeVariable("inColour");*/
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::initialiseShaders()
+{
+    initialiseStandardColouredShaderWrapper();
+    initialiseStandardTexturedShaderWrapper();
 }
 
 //----------------------------------------------------------------------------//

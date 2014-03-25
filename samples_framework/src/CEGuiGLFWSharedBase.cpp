@@ -177,6 +177,33 @@ CEGUI::Key::Scan CEGuiGLFWSharedBase::GlfwToCeguiKey(int glfwKey)
     case GLFW_KEY_HOME      : return CEGUI::Key::Home;
     case GLFW_KEY_END       : return CEGUI::Key::End;
     case GLFW_KEY_KP_ENTER  : return CEGUI::Key::NumpadEnter;
+    case GLFW_KEY_SPACE     : return CEGUI::Key::Space;
+    case 'A'                : return CEGUI::Key::A;
+    case 'B'                : return CEGUI::Key::B;
+    case 'C'                : return CEGUI::Key::C;
+    case 'D'                : return CEGUI::Key::D;
+    case 'E'                : return CEGUI::Key::E;
+    case 'F'                : return CEGUI::Key::F;
+    case 'G'                : return CEGUI::Key::G;
+    case 'H'                : return CEGUI::Key::H;
+    case 'I'                : return CEGUI::Key::I;
+    case 'J'                : return CEGUI::Key::J;
+    case 'K'                : return CEGUI::Key::K;
+    case 'L'                : return CEGUI::Key::L;
+    case 'M'                : return CEGUI::Key::M;
+    case 'N'                : return CEGUI::Key::N;
+    case 'O'                : return CEGUI::Key::O;
+    case 'P'                : return CEGUI::Key::P;
+    case 'Q'                : return CEGUI::Key::Q;
+    case 'R'                : return CEGUI::Key::R;
+    case 'S'                : return CEGUI::Key::S;
+    case 'T'                : return CEGUI::Key::T;
+    case 'U'                : return CEGUI::Key::U;
+    case 'V'                : return CEGUI::Key::V;
+    case 'W'                : return CEGUI::Key::W;
+    case 'X'                : return CEGUI::Key::X;
+    case 'Y'                : return CEGUI::Key::Y;
+    case 'Z'                : return CEGUI::Key::Z;
     default                 : return CEGUI::Key::Unknown;
     }
 }
@@ -246,7 +273,7 @@ void CEGuiGLFWSharedBase::initGLFW()
 //----------------------------------------------------------------------------//
 void CEGuiGLFWSharedBase::createGLFWWindow()
 {
-    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 0, 0, 0, 0, 24, 8, GLFW_WINDOW) != GL_TRUE)
+    if (glfwOpenWindow(s_defaultWindowWidth, s_defaultWindowHeight, 8, 8, 8, 0, 24, 0, GLFW_WINDOW) != GL_TRUE)
     {
         CEGUI_THROW(CEGUI::RendererException("Failed to open GLFW window."));
         glfwTerminate();
