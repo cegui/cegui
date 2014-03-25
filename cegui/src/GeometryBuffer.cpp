@@ -335,7 +335,10 @@ void GeometryBuffer::reset()
 {
     d_vertexData.clear();
     d_clippingActive = true;
-    setTexture(0);
+
+    // If the used render material uses a texture we will reset it in our shader parameter bindings
+    if((*d_renderMaterial).getShaderParamBindings()->getParameter("texture0") != 0)
+        setTexture(0);
 }
 
 //----------------------------------------------------------------------------//
