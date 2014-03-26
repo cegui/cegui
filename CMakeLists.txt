@@ -158,8 +158,8 @@ option( CEGUI_BUILD_IMAGECODEC_SILLY "Specifies whether to build the SILLY based
 option( CEGUI_BUILD_IMAGECODEC_DEVIL "Specifies whether to build the DevIL based ImageCodec module" ${IL_FOUND} )
 option( CEGUI_BUILD_IMAGECODEC_FREEIMAGE "Specifies whether to build the FreeImage based ImageCodec module" ${FREEIMAGE_FOUND} )
 option( CEGUI_BUILD_IMAGECODEC_CORONA "Specifies whether to build the Corona based ImageCodec module" ${CORONA_FOUND} )
-option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based ImageCodec module" TRUE )
-option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" TRUE )
+option( CEGUI_BUILD_IMAGECODEC_STB "Specifies whether to build the STB based ImageCodec module" FALSE )
+option( CEGUI_BUILD_IMAGECODEC_TGA "Specifies whether to build the based TGA only ImageCodec module" FALSE )
 option( CEGUI_BUILD_IMAGECODEC_PVR "Specifies whether to build the PVR only ImageCodec module" ${PVRTOOLS_FOUND} )
 
 cegui_dependent_option( CEGUI_BUILD_RENDERER_OPENGL "Specifies whether to build the OpenGL renderer module" "OPENGL_FOUND;GLEW_FOUND" )
@@ -170,7 +170,7 @@ option( CEGUI_BUILD_RENDERER_DIRECTFB "Specifies whether to build the DirectFB r
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D9 "Specifies whether to build the Direct3D 9 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 9" )
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D10 "Specifies whether to build the Direct3D 10 renderer module" "DIRECTXSDK_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 10" )
 cegui_dependent_option( CEGUI_BUILD_RENDERER_DIRECT3D11 "Specifies whether to build the Direct3D 11 renderer module" "DIRECTXSDK_FOUND;D3DX11EFFECTS_FOUND;NOT DIRECTXSDK_MAX_D3D LESS 11" )
-option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" TRUE )
+option( CEGUI_BUILD_RENDERER_NULL "Specifies whether to build the null renderer module" FALSE )
 option( CEGUI_BUILD_RENDERER_OPENGLES "Specifies whether to build the OpenGLES renderer module" ${OPENGLES_FOUND} )
 
 cegui_dependent_option( CEGUI_BUILD_LUA_MODULE "Specifies whether to build the Lua based script module" "LUA51_FOUND;TOLUAPP_FOUND" )
@@ -188,9 +188,6 @@ if (CEGUI_USE_MINIBIDI AND CEGUI_USE_FRIBIDI)
     message(SEND_ERROR "You may not enable both CEGUI_USE_FRIBIDI and CEGUI_USE_MINIBIDI. Please choose only one of these options.")
 endif()
 
-cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL "Specifies whether the sample applications will use the OpenGL renderer" "CEGUI_BUILD_RENDERER_OPENGL;GLFW_FOUND" )
-cegui_dependent_option( CEGUI_SAMPLES_USE_OPENGL3 "Specifies whether the sample applications will use the OpenGL 3 renderer" "CEGUI_BUILD_RENDERER_OPENGL3;GLFW_FOUND" )
-
 # This vile construct is needed because of things that changed in boost and the
 # total fail that is Ogre forcing its boost dependency onto its clients.
 if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
@@ -201,7 +198,6 @@ if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
         else()
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
             set (CEGUI_OGRE_SAMPLES_AVAILABLE FALSE)
-            message(STATUS "Ogre will not be available in SampleFramework due to missing boost_system library")
         endif()
     else()
         set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
@@ -209,35 +205,30 @@ if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
     endif()
 endif()
 
-cegui_dependent_option( CEGUI_SAMPLES_USE_OGRE "Specifies whether the sample applications will use the Ogre renderer" "CEGUI_OGRE_SAMPLES_AVAILABLE" )
-
-option( CEGUI_SAMPLES_USE_IRRLICHT "Specifies whether the sample applications will use the Irrlicht renderer" ${CEGUI_BUILD_RENDERER_IRRLICHT} )
-option( CEGUI_SAMPLES_USE_DIRECTFB "Specifies whether the sample applications will use the DirectFB renderer" ${CEGUI_BUILD_RENDERER_DIRECTFB} )
-option( CEGUI_SAMPLES_USE_DIRECT3D9 "Specifies whether the sample applications will use the Direct3D 9 renderer" ${CEGUI_BUILD_RENDERER_DIRECT3D9} )
-option( CEGUI_SAMPLES_USE_DIRECT3D10 "Specifies whether the sample applications will use the Direct3D 10 renderer" ${CEGUI_BUILD_RENDERER_DIRECT3D10} )
-option( CEGUI_SAMPLES_USE_DIRECT3D11 "Specifies whether the sample applications will use the Direct3D 11 renderer" ${CEGUI_BUILD_RENDERER_DIRECT3D11} )
-
-if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3 OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11 OR CEGUI_SAMPLES_USE_DIRECTFB)
+# If we use a Renderer then our samples should be ON by default
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3 OR CEGUI_BUILD_RENDERER_OGRE OR CEGUI_BUILD_RENDERER_IRRLICHT OR CEGUI_BUILD_RENDERER_DIRECT3D9 OR CEGUI_BUILD_RENDERER_DIRECT3D10 OR CEGUI_BUILD_RENDERER_DIRECT3D11 OR CEGUI_BUILD_RENDERER_DIRECTFB)
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
 else()
     set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
 endif()
+
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
+if (CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
+    message(STATUS "The SampleFramework is deactivated due to missing Ogre dependencies (boost libraries)")
+endif()
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+    if(NOT GLFW_FOUND)
+        set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
+        message(STATUS "The SampleFramework is deactivated due to missing OpenGL dependencies (GLFW library)")
+    endif()
+endif()
+
+# We set the Samples to the default value
 option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" ${_CEGUI_SAMPLES_ENABLED_DEFAULT} )
 
 if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
-endif()
-
-# Sanity check for samples vs renderers options
-if (CEGUI_SAMPLES_ENABLED)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_OPENGL CEGUI_SAMPLES_USE_OPENGL)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_OPENGL3 CEGUI_SAMPLES_USE_OPENGL3)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_OGRE CEGUI_SAMPLES_USE_OGRE)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_IRRLICHT CEGUI_SAMPLES_USE_IRRLICHT)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECTFB CEGUI_SAMPLES_USE_DIRECTFB)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECT3D9 CEGUI_SAMPLES_USE_DIRECT3D9)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECT3D10 CEGUI_SAMPLES_USE_DIRECT3D10)
-    cegui_sample_renderer_sanity_test(CEGUI_BUILD_RENDERER_DIRECT3D11 CEGUI_SAMPLES_USE_DIRECT3D11)
 endif()
 
 if (WIN32 OR APPLE)

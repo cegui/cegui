@@ -1,5 +1,5 @@
-option(CEGUI_SAMPLES_ENABLE_WIDGETS "Specifies whether this sample should be built or not" TRUE)
-if(CEGUI_SAMPLES_ENABLE_WIDGETS)
+option(CEGUI_SAMPLES_ENABLE_WIDGET_DEMO "Specifies whether this sample should be built or not" TRUE)
+if(CEGUI_SAMPLES_ENABLE_WIDGET_DEMO)
     file(GLOB WIDGET_HEADERS "${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/widgets/*.h")
     list(APPEND WIDGET_HEADERS "${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/Window.h")
  
@@ -21,5 +21,5 @@ if(CEGUI_SAMPLES_ENABLE_WIDGETS)
     include_directories(${CMAKE_BINARY_DIR}/samples/common/include)
 	
     
-    cegui_add_sample(CEGUISample_Widgets)
+    cegui_add_sample(CEGUIWidgetDemo)
 endif()
