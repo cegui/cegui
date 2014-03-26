@@ -1,15 +1,3 @@
-# We check if the required dependencies are available for the sample framework
-
-if(CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
-    message(SEND_ERROR "The Samples and the OgreRenderer are enabled, but certain Ogre dependencies are missing (boost_system or others). Please configure these missing dependencies in CMake")
-endif()
-if(CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
-    if(NOT GLFW_FOUND)
-        message(SEND_ERROR "The Samples and the OpenGL or OpenGL3 Renderer builds are enabled - However this setup requires GLFW, which was not found. Please add GFLW to your dependencies and reconfigure CMake.")
-    endif()
-endif()
-
-
 # We clear the samples.xml file, which will be used by the samples browser, and
 # add the samples header to it before starting to add the samples 
 file(WRITE ${CMAKE_BINARY_DIR}/datafiles/samples/samples.xml "")

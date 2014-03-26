@@ -1,3 +1,15 @@
+# We check if the required dependencies are available for the sample framework
+
+if(CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
+    message(SEND_ERROR "The Samples and the OgreRenderer are enabled, but Ogre dependencies are missing (boost). Please add the dependencies and run 'Configure' in CMake again.")
+endif()
+if(CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+    if(NOT GLFW_FOUND)
+        message(SEND_ERROR "The Samples and the OpenGL or OpenGL3+ Renderer are enabled - GLFW is required for this configuration but was not found. Please add GFLW to your dependencies and run 'Configure' in CMake again.")
+    endif()
+endif()
+
+
 set( CEGUI_TARGET_NAME ${CEGUI_SAMPLEFRAMEWORK_EXENAME} )
 
 set( CORE_SOURCE_FILES
