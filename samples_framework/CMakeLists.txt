@@ -29,40 +29,6 @@ include_directories(${CMAKE_SOURCE_DIR}/samples_framework/include
                     ${CMAKE_SOURCE_DIR}/samples/common/include
                     ${CMAKE_SOURCE_DIR}/cegui/include)
 
-
-if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiGLFWSharedBase.cpp
-    )
-endif()
-
-if (CEGUI_SAMPLES_USE_OPENGL)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiOpenGLBaseApplication.cpp
-    )
-endif()
-
-if (CEGUI_SAMPLES_USE_OPENGL3)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiOpenGL3BaseApplication.cpp
-    )
-endif()
-
-if (CEGUI_SAMPLES_USE_OGRE)
-    # this prevents the boost auto-link dis-feature
-    add_definitions(-DBOOST_ALL_NO_LIB)
-
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiOgreBaseApplication.cpp
-    )
-endif()
-
-if (CEGUI_SAMPLES_USE_IRRLICHT)
-    list (APPEND CORE_SOURCE_FILES
-        ./src/CEGuiIrrlichtBaseApplication.cpp
-    )
-endif()
-
 if (WIN32)
     list (APPEND CORE_SOURCE_FILES
         ./src/Win32AppHelper.cpp
@@ -82,34 +48,68 @@ else()
     )
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D9)
+
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiGLFWSharedBase.cpp
+    )
+endif()
+
+if (CEGUI_BUILD_RENDERER_OPENGL)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOpenGLBaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_BUILD_RENDERER_OPENGL3)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOpenGL3BaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_OGRE_SAMPLES_AVAILABLE)
+    # this prevents the boost auto-link dis-feature
+    add_definitions(-DBOOST_ALL_NO_LIB)
+
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiOgreBaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_BUILD_RENDERER_IRRLICHT)
+    list (APPEND CORE_SOURCE_FILES
+        ./src/CEGuiIrrlichtBaseApplication.cpp
+    )
+endif()
+
+if (CEGUI_BUILD_RENDERER_DIRECT3D9)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiD3D9BaseApplication.cpp
         ./src/DeviceReset_Direct3D9.cpp
     )
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D10)
+if (CEGUI_BUILD_RENDERER_DIRECT3D10)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiD3D10BaseApplication.cpp
         ./src/DeviceReset_Direct3D10.cpp
     )
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D11)
+if (CEGUI_BUILD_RENDERER_DIRECT3D11)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiD3D11BaseApplication.cpp
         ./src/DeviceReset_Direct3D11.cpp
     )
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECTFB)
+if (CEGUI_BUILD_RENDERER_DIRECTFB)
     list (APPEND CORE_SOURCE_FILES
         ./src/CEGuiDirectFBBaseApplication.cpp
     )
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11)
+if (CEGUI_BUILD_RENDERER_DIRECT3D9 OR CEGUI_BUILD_RENDERER_DIRECT3D10 OR CEGUI_BUILD_RENDERER_DIRECT3D11)
     include_directories(${DIRECTXSDK_INCLUDE_DIR})
     link_directories(${DIRECTXSDK_LIBRARY_DIR})
 endif()
@@ -171,18 +171,18 @@ endif()
 ###########################################################################
 #                    MSVC PROJ USER FILE TEMPLATES
 ###########################################################################
-  if (MSVC)
+if (MSVC)
     configure_file(
-	  ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcproj.user.in
-	  ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcproj.user
-	  @ONLY
-	)
+        ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcproj.user.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcproj.user
+        @ONLY
+    )
     configure_file(
-	  ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcxproj.user.in
-	  ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcxproj.user
-	  @ONLY
-	)
-  endif ()
+        ${CMAKE_MODULE_PATH}/templates/VisualStudioUserFile.vcxproj.user.in
+        ${CMAKE_CURRENT_BINARY_DIR}/${CEGUI_TARGET_NAME}.vcxproj.user
+        @ONLY
+    )
+endif ()
 
 
 ###########################################################################
@@ -219,41 +219,41 @@ if (CEGUI_BUILD_STATIC_CONFIGURATION)
 )
 endif()
 
-if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
+if (CEGUI_BUILD_RENDERER_OPENGL OR CEGUI_BUILD_RENDERER_OPENGL3)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OPENGL)
     cegui_add_dependency(${CEGUI_TARGET_NAME} GLFW)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OPENGL_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_SAMPLES_USE_OGRE)
+if (CEGUI_BUILD_RENDERER_OGRE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OGRE)
     cegui_add_dependency(${CEGUI_TARGET_NAME} OIS)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_OGRE_RENDERER_LIBNAME} ${CEGUI_OGRE_SAMPLES_EXTRALIBS})
 endif()
 
-if (CEGUI_SAMPLES_USE_IRRLICHT)
+if (CEGUI_BUILD_RENDERER_IRRLICHT)
     cegui_add_dependency(${CEGUI_TARGET_NAME} IRRLICHT)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_IRRLICHT_RENDERER_LIBNAME})
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11)
+if (CEGUI_BUILD_RENDERER_DIRECT3D9 OR CEGUI_BUILD_RENDERER_DIRECT3D10 OR CEGUI_BUILD_RENDERER_DIRECT3D11)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} dxerr)
 
-    if (CEGUI_SAMPLES_USE_DIRECT3D9)
+    if (CEGUI_BUILD_RENDERER_DIRECT3D9)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D9_RENDERER_LIBNAME} d3d9)
     endif()
 
-    if (CEGUI_SAMPLES_USE_DIRECT3D10)
+    if (CEGUI_BUILD_RENDERER_DIRECT3D10)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D10_RENDERER_LIBNAME} d3d10)
     endif()
 
-    if (CEGUI_SAMPLES_USE_DIRECT3D11)
+    if (CEGUI_BUILD_RENDERER_DIRECT3D11)
         cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECT3D11_RENDERER_LIBNAME} d3d11)
     endif()
 
 endif()
 
-if (CEGUI_SAMPLES_USE_DIRECTFB)
+if (CEGUI_BUILD_RENDERER_DIRECTFB)
     cegui_add_dependency(${CEGUI_TARGET_NAME} DIRECTFB)
     cegui_target_link_libraries(${CEGUI_TARGET_NAME} ${CEGUI_DIRECTFB_RENDERER_LIBNAME})
 endif()
@@ -265,7 +265,7 @@ endif()
 if (APPLE)
     set (CEGUI_EXTRA_FRAMEWORKS "-framework Cocoa")
 
-    if (CEGUI_SAMPLES_USE_OGRE)
+    if (CEGUI_BUILD_RENDERER_OGRE)
         set (CEGUI_EXTRA_FRAMEWORKS "${CEGUI_EXTRA_FRAMEWORKS} -framework IOKit -framework Carbon")
     endif()
 
