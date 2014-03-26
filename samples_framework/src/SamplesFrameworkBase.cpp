@@ -46,29 +46,29 @@
 #endif
 
 // includes for application types
-#ifdef CEGUI_SAMPLES_USE_OGRE
+#ifdef CEGUI_BUILD_RENDERER_OGRE
 #   include "CEGuiOgreBaseApplication.h"
 #endif
-#ifdef CEGUI_SAMPLES_USE_OPENGL
+#ifdef CEGUI_BUILD_RENDERER_OPENGL
 #   include "CEGuiOpenGLBaseApplication.h"
 #endif
-#ifdef CEGUI_SAMPLES_USE_OPENGL3
+#ifdef CEGUI_BUILD_RENDERER_OPENGL3
 #   include "CEGuiOpenGL3BaseApplication.h"
 #endif
-#ifdef CEGUI_SAMPLES_USE_IRRLICHT
+#ifdef CEGUI_BUILD_RENDERER_IRRLICHT
 #   include "CEGuiIrrlichtBaseApplication.h"
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+#ifdef CEGUI_BUILD_RENDERER_DIRECTFB
 #   include "CEGuiDirectFBBaseApplication.h"
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#   ifdef CEGUI_SAMPLES_USE_DIRECT3D9
+#   ifdef CEGUI_BUILD_RENDERER_DIRECT3D9
 #       include "CEGuiD3D9BaseApplication.h"
 #   endif
-#   ifdef CEGUI_SAMPLES_USE_DIRECT3D10
+#   ifdef CEGUI_BUILD_RENDERER_DIRECT3D10
 #       include "CEGuiD3D10BaseApplication.h"
 #   endif
-#   ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+#   ifdef CEGUI_BUILD_RENDERER_DIRECT3D11
 #       include "CEGuiD3D11BaseApplication.h"
 #   endif
 #endif
@@ -158,13 +158,13 @@ bool SamplesFrameworkBase::runApplication()
     d_rendererSelector = new Win32CEGuiRendererSelector;
 
     // enable renderer types supported for Win32
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D9
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D9
     d_rendererSelector->setRendererAvailability(Direct3D9GuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D10
     d_rendererSelector->setRendererAvailability(Direct3D10GuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D11
     d_rendererSelector->setRendererAvailability(Direct3D11GuiRendererType);
 #endif
 
@@ -182,19 +182,19 @@ bool SamplesFrameworkBase::runApplication()
 #endif
 
     // enable available renderer types
-#ifdef CEGUI_SAMPLES_USE_OGRE
+#ifdef CEGUI_BUILD_RENDERER_OGRE
     d_rendererSelector->setRendererAvailability(OgreGuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_OPENGL
+#ifdef CEGUI_BUILD_RENDERER_OPENGL
 	d_rendererSelector->setRendererAvailability(OpenGLGuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_OPENGL3
+#ifdef CEGUI_BUILD_RENDERER_OPENGL3
 	d_rendererSelector->setRendererAvailability(OpenGL3GuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_IRRLICHT
+#ifdef CEGUI_BUILD_RENDERER_IRRLICHT
     d_rendererSelector->setRendererAvailability(IrrlichtGuiRendererType);
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+#ifdef CEGUI_BUILD_RENDERER_DIRECTFB
     d_rendererSelector->setRendererAvailability(DirectFBGuiRendererType);
 #endif
 
@@ -204,7 +204,7 @@ bool SamplesFrameworkBase::runApplication()
         // create appropriate application type based upon users selection
         switch(d_rendererSelector->getSelectedRendererType())
         {
-#ifdef CEGUI_SAMPLES_USE_OGRE
+#ifdef CEGUI_BUILD_RENDERER_OGRE
         case OgreGuiRendererType:
             {
                 CEGuiOgreBaseApplication* ogreBaseApp = new CEGuiOgreBaseApplication();
@@ -216,38 +216,38 @@ bool SamplesFrameworkBase::runApplication()
             break;
 #endif
 #if defined( __WIN32__ ) || defined( _WIN32 )
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D9
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D9
         case Direct3D9GuiRendererType:
             d_baseApp = new CEGuiD3D9BaseApplication();
             break;
 #endif // DX9
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D10
         case Direct3D10GuiRendererType:
             d_baseApp = new CEGuiD3D10BaseApplication();
             break;
 #endif // DX10
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D11
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D11
         case Direct3D11GuiRendererType:
             d_baseApp = new CEGuiD3D11BaseApplication();
             break;
 #endif // DX11
 #endif // Win32
-#ifdef CEGUI_SAMPLES_USE_OPENGL
+#ifdef CEGUI_BUILD_RENDERER_OPENGL
         case OpenGLGuiRendererType:
 			d_baseApp = new CEGuiOpenGLBaseApplication();
 			break;
 #endif
-#ifdef CEGUI_SAMPLES_USE_OPENGL3
+#ifdef CEGUI_BUILD_RENDERER_OPENGL3
 		case OpenGL3GuiRendererType:
 			d_baseApp = new CEGuiOpenGL3BaseApplication();
 			break;
 #endif
-#ifdef CEGUI_SAMPLES_USE_IRRLICHT
+#ifdef CEGUI_BUILD_RENDERER_IRRLICHT
         case IrrlichtGuiRendererType:
             d_baseApp = new CEGuiIrrlichtBaseApplication();
             break;
 #endif
-#ifdef CEGUI_SAMPLES_USE_DIRECTFB
+#ifdef CEGUI_BUILD_RENDERER_DIRECTFB
         case DirectFBGuiRendererType:
             d_baseApp = new CEGuiDirectFBBaseApplication();
             break;
