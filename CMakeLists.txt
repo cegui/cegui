@@ -198,7 +198,6 @@ if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
         else()
             set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
             set (CEGUI_OGRE_SAMPLES_AVAILABLE FALSE)
-            message(STATUS "Ogre will not be available in SampleFramework due to missing boost_system library")
         endif()
     else()
         set (CEGUI_OGRE_SAMPLES_EXTRALIBS)
@@ -206,7 +205,27 @@ if (CEGUI_BUILD_RENDERER_OGRE AND OIS_FOUND)
     endif()
 endif()
 
-option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" TRUE )
+# If we use a Renderer then our samples should be ON by default
+if (CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3 OR CEGUI_SAMPLES_USE_OGRE OR CEGUI_SAMPLES_USE_IRRLICHT OR CEGUI_SAMPLES_USE_DIRECT3D9 OR CEGUI_SAMPLES_USE_DIRECT3D10 OR CEGUI_SAMPLES_USE_DIRECT3D11 OR CEGUI_SAMPLES_USE_DIRECTFB)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT TRUE)
+else()
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
+endif()
+   
+# Ogre and OpenGL have dependencies for the sample browser, if these are not available then the samples will be OFF by default   
+if(CEGUI_BUILD_RENDERER_OGRE AND NOT CEGUI_OGRE_SAMPLES_AVAILABLE)
+    set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
+    message(STATUS "The SampleFramework will not work due to missing Ogre dependencies (boost libraries)")
+endif()
+if(CEGUI_SAMPLES_USE_OPENGL OR CEGUI_SAMPLES_USE_OPENGL3)
+    if(NOT GLFW_FOUND)
+        set (_CEGUI_SAMPLES_ENABLED_DEFAULT FALSE)
+        message(STATUS "The SampleFramework will not work due to missing OpenGL dependencies (GLFW library)")
+    endif()
+endif()
+
+# We set the Samples to the default value
+option( CEGUI_SAMPLES_ENABLED "Specifies whether to build the CEGUI sample applications" _CEGUI_SAMPLES_ENABLED_DEFAULT )
 
 if (UNIX AND NOT APPLE AND NOT WIN32)
     option( CEGUI_SAMPLES_USE_GTK2 "Specifies whether the sample applications will make use of the GTK2 UI for renderer selection." FALSE )
