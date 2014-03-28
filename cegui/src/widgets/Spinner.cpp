@@ -348,12 +348,14 @@ namespace CEGUI
         bool wasMuted = editbox->isMuted();
         editbox->setMutedState(true);
 
-        // Update text with new value.
+        // Update editbox and spinner text with new value.
         // (allow empty and '-' cases to equal 0 with no text change required)
         if (!(d_currentValue == 0 &&
               (editbox->getText().empty() || editbox->getText() == "-")))
         {
-            editbox->setText(getTextFromValue());
+            const CEGUI::String& valueString = getTextFromValue();
+            editbox->setText(valueString);
+            setText(valueString);
         }
         // restore previous mute state.
         editbox->setMutedState(wasMuted);
