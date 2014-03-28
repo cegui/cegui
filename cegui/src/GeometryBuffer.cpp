@@ -335,17 +335,13 @@ void GeometryBuffer::reset()
 {
     d_vertexData.clear();
     d_clippingActive = true;
-
-    // If the used render material uses a texture we will reset it in our shader parameter bindings
-    if((*d_renderMaterial).getShaderParamBindings()->getParameter("texture0") != 0)
-        setTexture(0);
 }
 
 //----------------------------------------------------------------------------//
-void GeometryBuffer::setTexture(Texture* texture)
+void GeometryBuffer::setTexture(const std::string& parameterName, const Texture* texture)
 {
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
-    shaderParameterBindings->setParameter("texture0", texture);
+    shaderParameterBindings->setParameter(parameterName, texture);
 }
 
 //---------------------------------------------------------------------------//

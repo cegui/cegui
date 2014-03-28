@@ -279,15 +279,19 @@ public:
 
     /*!
     \brief
-        Sets the default texture to be used by the RenderMaterial of this
+        A helper function that sets a texture parameter of the RenderMaterial of this
         Geometrybuffer.
+
+    \param parameterName
+        Name of the parameter as used inside the shader program. The regular CEGUI
+        texture-parameter that is used inside CEGUI's materials is called "texture0".
 
     \param texture
         Pointer to a Texture object that shall be used for subsequently added
         vertices.  This may be 0, in which case texturing will be disabled for
         subsequently added vertices.
     */
-    virtual void setTexture(Texture* texture);
+    virtual void setTexture(const std::string& parameterName, const Texture* texture);
 
     /*!
     \brief
