@@ -1130,7 +1130,11 @@ void SVGTesselator::createStrokeLinejoinBevelOrRoundAA(StrokeSegmentData &stroke
     const glm::vec2 inner_fade_AA = inner_point + fade_offset_vec_inner;
 
     // Get the dir to the edge between the two outer corner points and its orthogonal direction
-    glm::vec2 edge_dir = glm::normalize(second_bevel_point - outer_point);
+    glm::vec2 edge_dir;
+    if (!(second_bevel_point == outer_point))
+        edge_dir = glm::normalize(second_bevel_point - outer_point);
+    else //TODO Ident: Check if this is a sufficient workaround
+        edge_dir = prev_to_cur;
     glm::vec2 edge_perpendicular_dir( polygon_is_clockwise ? edge_dir.y : -edge_dir.y,
         polygon_is_clockwise ? -edge_dir.x : edge_dir.x);
 
@@ -1268,24 +1272,42 @@ glm::vec2 SVGTesselator::calculateScaledCombinedVector(const glm::vec2& scale_fa
                                                        const glm::vec2& next_dir_to_inside,
                                                        const bool polygon_is_clockwise)
 {
-    // Get the scaled-widths of the incoming and outgoing line segments
-    float length_scale1 = calculateLengthScale(prev_dir_to_inside, scale_factors);
-    float length_scale2 = calculateLengthScale(next_dir_to_inside, scale_factors);
+    bool almost_parallel = glm::dot(prev_dir_to_inside, next_dir_to_inside)/ ( glm::length(prev_dir_to_inside) * glm::length(next_dir_to_inside) ) > 0.9999f;
 
-    glm::vec2 vec_to_corner = glm::normalize(prev_to_cur * length_scale2 - cur_to_next * length_scale1);
+    if(!almost_parallel)
+    {
+        // Get the scaled-widths of the incoming and outgoing line segments
+        float length_scale1 = calculateLengthScale(prev_dir_to_inside, scale_factors);
+        float length_scale2 = calculateLengthScale(next_dir_to_inside, scale_factors);
 
-    // Calculate scale-distorted direction
-    // glm::vec2 vec_to_corner = glm::normalize(prev_to_cur * length_scale2 - cur_to_next * length_scale1);
+        glm::vec2 vec_to_outer_corner = glm::normalize(prev_to_cur * length_scale2 - cur_to_next * length_scale1);
 
-    // Calculate how much we need to offset along the direction depending on the angle
-    /* We get the distance to our new corner using a factor. The factor would, in case we didn't prepare for non-uniform scaling, just consist
-    of a simple vector projection. However, here we also need to multiply the local stroke width's scale factor (in the direction of the stroke)
-    to get currect results. We have two alternative calculations available for this with the same results.
-    Alternative version:  length_scale2 / glm::dot( (polygon_is_clockwise ? -next_dir_to_inside : next_dir_to_inside) , vec_to_corner );
-    */
-    float length_to_corner = length_scale1 / glm::dot( (polygon_is_clockwise ? -prev_dir_to_inside : prev_dir_to_inside) , vec_to_corner );
+        // Calculate scale-distorted direction
+        // glm::vec2 vec_to_corner = glm::normalize(prev_to_cur * length_scale2 - cur_to_next * length_scale1);
+
+        // Calculate how much we need to offset along the direction depending on the angle
+        /* We get the distance to our new corner using a factor. The factor would, in case we didn't prepare for non-uniform scaling, just consist
+        of a simple vector projection. However, here we also need to multiply the local stroke width's scale factor (in the direction of the stroke)
+        to get currect results. We have two alternative calculations available for this with the same results.
+        Alternative version:  length_scale2 / glm::dot( (polygon_is_clockwise ? -next_dir_to_inside : next_dir_to_inside) , vec_to_corner );
+        */
+        float length_to_corner = length_scale1 / glm::dot( (polygon_is_clockwise ? -prev_dir_to_inside : prev_dir_to_inside) , vec_to_outer_corner );
  
-    return vec_to_corner * length_to_corner;
+        return vec_to_outer_corner * length_to_corner;
+    }
+    //TODO Ident: Check if this fix is valid in all cases
+    else
+    {
+        //If we are near-parallel we need to calculate the corner vector differently
+        float length_scale1 = calculateLengthScale(prev_dir_to_inside, scale_factors);
+
+        glm::vec2 vec_to_outer_corner = 0.5f * ( next_dir_to_inside + prev_dir_to_inside );
+
+        float length_to_corner = length_scale1 / glm::dot( (polygon_is_clockwise ? -prev_dir_to_inside : prev_dir_to_inside) , vec_to_outer_corner );
+ 
+        
+        return vec_to_outer_corner * length_to_corner;
+    }
 }
 
 //----------------------------------------------------------------------------//
