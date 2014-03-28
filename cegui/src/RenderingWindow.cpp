@@ -296,7 +296,7 @@ void RenderingWindow::realiseGeometry_impl()
     vbuffer[5].d_colour = c;
     vbuffer[5].d_texCoords = glm::vec2(tex_rect.d_max.d_x, tex_rect.d_max.d_y);
 
-    d_geometryBuffer.setTexture(&tex);
+    d_geometryBuffer.setTexture("texture0", &tex);
     d_geometryBuffer.appendGeometry(vbuffer, 6);
 }
 
