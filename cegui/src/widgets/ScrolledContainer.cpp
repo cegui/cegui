@@ -131,9 +131,15 @@ Rectf ScrolledContainer::getChildExtentsArea(void) const
     for (size_t i = 0; i < childCount; ++i)
     {
         const Window* const wnd = getChildAtIdx(i);
-        const Rectf area(
+        Rectf area(
             CoordConverter::asAbsolute(wnd->getPosition(), d_pixelSize),
             wnd->getPixelSize());
+
+        if(wnd->getHorizontalAlignment() == HA_CENTRE)
+            area.setPosition( area.getPosition() - CEGUI::Vector2f( area.getWidth() * 0.5f - d_pixelSize.d_width * 0.5f, 0.0f ) );
+        if(wnd->getHorizontalAlignment() == VA_CENTRE)
+            area.setPosition( area.getPosition() - CEGUI::Vector2f( 0.0f, area.getHeight() * 0.5f - d_pixelSize.d_height * 0.5f ) );
+
 
         if (area.d_min.d_x < extents.d_min.d_x)
             extents.d_min.d_x = area.d_min.d_x;
