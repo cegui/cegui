@@ -65,10 +65,8 @@ public:
     void setClippingRegion(const Rectf& region);
     void appendGeometry(const std::vector<float>& vertex_data);
     void reset();
-    void setClippingActive(const bool active);
-    bool isClippingActive() const;
 
-    //! return the GL modelview matrix used for this buffer.
+    //! Returns the model matrix, which is in effect for this GeometryBuffer
     const glm::mat4& getMatrix() const;
 
     /*
@@ -83,11 +81,9 @@ protected:
     void updateMatrix() const;
 
     //! OpenGLRendererBase that owns the GeometryBuffer.
-    OpenGLRendererBase* d_owner;
+    OpenGLRendererBase& d_owner;
     //! rectangular clip region
     Rectf d_clipRect;
-    //! whether clipping will be active for the current batch
-    bool d_clippingActive;
     //! cache of the model matrix
     mutable glm::mat4 d_matrix;
 };

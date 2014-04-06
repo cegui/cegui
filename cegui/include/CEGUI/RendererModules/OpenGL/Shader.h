@@ -43,7 +43,6 @@ namespace CEGUI
 class OpenGL3StateChangeWrapper;
 
 class OPENGL_GUIRENDERER_API OpenGL3Shader :
-
     public AllocatedObject<OpenGL3Shader>
 {
 public:

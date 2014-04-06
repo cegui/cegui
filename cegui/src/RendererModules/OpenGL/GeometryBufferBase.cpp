@@ -42,9 +42,8 @@ namespace CEGUI
 //----------------------------------------------------------------------------//
 OpenGLGeometryBufferBase::OpenGLGeometryBufferBase(OpenGLRendererBase& owner, CEGUI::RefCounted<RenderMaterial> renderMaterial)
     : GeometryBuffer(renderMaterial)
-    , d_owner(&owner)
+    , d_owner(owner)
     , d_clipRect(0, 0, 0, 0)
-    , d_clippingActive(true)
     , d_matrix(1.0)
 {
 }
@@ -101,18 +100,6 @@ void OpenGLGeometryBufferBase::updateMatrix() const
     d_matrix *=  translMatrix * d_customTransform;
 
     d_matrixValid = true;
-}
-
-//----------------------------------------------------------------------------//
-void OpenGLGeometryBufferBase::setClippingActive(const bool active)
-{
-    d_clippingActive = active;
-}
-
-//----------------------------------------------------------------------------//
-bool OpenGLGeometryBufferBase::isClippingActive() const
-{
-    return d_clippingActive;
 }
 
 //----------------------------------------------------------------------------//

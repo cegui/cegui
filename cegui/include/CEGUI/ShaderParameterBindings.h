@@ -59,7 +59,7 @@ enum ShaderParamType
     //! A pointer to a CEGUI Texture
     SPT_TEXTURE,
     //! A pointer to a 4x4 Matrix
-    SPT_MATRIX,
+    SPT_MATRIX_4X4,
 
     //! Total number of shader parameter types
     SPT_COUNT
@@ -208,7 +208,7 @@ public:
 
     //! Implementation of the shader_parameter interface
     virtual ShaderParamType getType() const
-    { return SPT_MATRIX; }
+    { return SPT_MATRIX_4X4; }
     virtual ShaderParameterMatrix* clone() const
     { return new ShaderParameterMatrix(*this); }
     bool equal(const ShaderParameter* other_parameter) const;

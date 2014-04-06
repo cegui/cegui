@@ -48,7 +48,8 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-    class RenderMaterial;
+
+class RenderMaterial;
 
 //----------------------------------------------------------------------------//
 
@@ -478,7 +479,7 @@ protected:
     //! RenderEffect that will be used by the GeometryBuffer
     RenderEffect*   d_effect;
     //! True if clipping will be active for the current batch
-    bool d_clippingActive;
+    bool            d_clippingActive;
 };
 
 }

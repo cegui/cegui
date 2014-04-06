@@ -48,7 +48,7 @@ void OpenGLGeometryBuffer::draw() const
     if(d_vertexData.empty())
         return;
 
-    CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
+    CEGUI::Rectf viewPort = d_owner.getActiveViewPort();
 
     if (d_clippingActive)
     {
@@ -70,7 +70,7 @@ void OpenGLGeometryBuffer::draw() const
     glLoadMatrixf(glm::value_ptr(d_matrix));
 
     // activate desired blending mode
-    d_owner->setupRenderingBlendMode(d_blendMode);
+    d_owner.setupRenderingBlendMode(d_blendMode);
 
     const int pass_count = d_effect ? d_effect->getPassCount() : 1;
     for (int pass = 0; pass < pass_count; ++pass)

@@ -142,7 +142,7 @@ void OpenGL3ShaderWrapper::prepareForRendering(const ShaderParameterBindings* sh
                 glUniform1f(location, parameterFloat->d_parameterValue);
             }
             break;
-        case SPT_MATRIX:
+        case SPT_MATRIX_4X4:
             {
                 const CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<const CEGUI::ShaderParameterMatrix*>(parameter);
                 glUniformMatrix4fv(location, 1, GL_FALSE, glm::value_ptr(parameterMatrix->d_parameterValue));
