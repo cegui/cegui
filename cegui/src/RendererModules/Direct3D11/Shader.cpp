@@ -32,7 +32,6 @@
 
 #include <D3Dcompiler.h>
 
-
 #include <sstream>
 #include <iostream>
 
