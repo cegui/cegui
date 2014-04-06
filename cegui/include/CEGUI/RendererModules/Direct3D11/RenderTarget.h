@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D10RenderTarget.h
-    created:    Wed May 5 2010
+    filename:   RenderTarget.h
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,13 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIDirect3D10RenderTarget_h_
-#define _CEGUIDirect3D10RenderTarget_h_
+#ifndef _CEGUIDirect3D11RenderTarget_h_
+#define _CEGUIDirect3D11RenderTarget_h_
 
 #include "../../RenderTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Renderer.h"
 #include "../../Rect.h"
-#include <d3dx10.h>
 
 
 #if defined(_MSC_VER)
@@ -68,22 +68,26 @@ protected:
 
     //! Renderer that created and owns the render target.
     Direct3D11Renderer& d_owner;
-    //! D3D10Device interface.
-    IDevice11& d_device;
+    //! The D3D Device
+    ID3D11Device& d_device;
+    //! The D3D DeviceContext
+    ID3D11DeviceContext& d_deviceContext;
     //! holds defined area for the RenderTarget
     Rectf d_area;
-    //! projection / view matrix cache
-    mutable D3DXMATRIX d_matrix;
+    //! tangent of the y FOV half-angle; used to calculate viewing distance.
+    static const double d_yfov_tan;
+    //! View projection matrix cache
+    mutable glm::mat4 d_projViewMatrix;
     //! true when d_matrix is valid and up to date
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)
-    mutable float d_viewDistance;
+    mutable double d_viewDistance;
 };
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIDirect3D10RenderTarget_h_
+#endif

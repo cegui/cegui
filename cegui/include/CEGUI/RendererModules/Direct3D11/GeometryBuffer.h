@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D11GeometryBuffer.h
-    created:    Wed May 5 2010
+    filename:   GeometryBuffer.h
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -33,13 +34,12 @@
 #include "../../Quaternion.h"
 
 
-
 #if defined(_MSC_VER)
 #   pragma warning(push)
 #   pragma warning(disable : 4251)
 #endif
 
-// Start of CEGUI namespace section
+
 namespace CEGUI
 {
 class Direct3D11Texture;
@@ -54,68 +54,60 @@ public:
     //! Destructor
     ~Direct3D11GeometryBuffer();
 
-    //! return pointer to D3DXMATRIX used by this GeometryBuffer
-    const D3DXMATRIX* getMatrix() const;
+    //! Returns the model matrix, which is in effect for this GeometryBuffer
+    const glm::mat4& getMatrix() const;
 
     // Implement GeometryBuffer interface.
     void draw() const;
+
     void appendGeometry(const std::vector<float>& vertex_data);
     void setClippingRegion(const Rectf& region);
+
+    /*
+    \brief
+        The update function that is to be called when all the vertex attributes
+        are set.
+
+     \return Returns the created D3D input layout for the attribute layout of the used shader.
+    */
+    void finaliseVertexAttributes();
 
 protected:
     //! update cached matrix
     void updateMatrix() const;
     //! Synchronise data in the hardware buffer with what's been added
-    void syncHardwareBuffer() const;
-    //! allocate the hardware vertex buffer large enough for \a count vertices.
-    void allocateVertexBuffer(const size_t count) const;
+    void updateVertexBuffer() const;
+    //! Allocates a hardware vertex buffer of size 'dataSize' (size in bytes).
+    void allocateVertexBuffer(const UINT dataSize) const;
     //! cleanup the hardware vertex buffer.
     void cleanupVertexBuffer() const;
-
-    //! internal Vertex structure used for Direct3D based geometry.
-    struct D3DVertex
-    {
-        //! The transformed position for the vertex.
-        FLOAT x, y, z;
-        //! colour of the vertex.
-        DWORD diffuse;
-        //! texture coordinates.
-        float tu, tv;
-    };
-
-    //! type to track info for per-texture sub batches of geometry
-    struct BatchInfo
-    {
-        const ID3D11ShaderResourceView* texture;
-        uint vertexCount;
-        bool clip;
-    };
-
+    //! Draws the vertex data depending on the fill rule that was set for this object.
+    void drawDependingOnFillRule() const;
+    //! Calls the D3D11 function fot setting the scissor rectangle
+    void setScissorRects() const;
     // Direct3D11Renderer object that created and owns this GeometryBuffer.
     Direct3D11Renderer& d_owner;
     //! The D3D Device
-    IDevice11& d_device;
-    //! last texture that was set as active
-    Direct3D11Texture* d_activeTexture;
+    ID3D11Device* d_device;
+    //! The D3D DeviceContext
+    ID3D11DeviceContext* d_deviceContext;
     //! hardware buffer where vertices will be drawn from.
     mutable ID3D11Buffer* d_vertexBuffer;
     //! Size of the currently allocated vertex buffer.
     mutable UINT d_bufferSize;
-    //! whether the h/w buffer is in sync with the added geometry
-    mutable bool d_bufferSynched;
     //! rectangular clip region
     Rectf d_clipRect;
     //! model matrix cache
-    mutable D3DXMATRIX d_matrix;
-    //! true when d_matrix is valid and up to date
-    mutable bool d_matrixValid;
+    mutable glm::mat4 d_matrix;
+    //! D3D11 input layout describing the vertex format we use.
+    ID3D11InputLayout* d_inputLayout;
 };
 
 
-} // End of  CEGUI namespace section
+}
 
 #if defined(_MSC_VER)
 #   pragma warning(pop)
 #endif
 
-#endif  // end of guard _CEGUIDirect3D11GeometryBuffer_h_
+#endif
