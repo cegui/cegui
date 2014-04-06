@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D11Renderer.h
-    created:    Wed May 5 2010
+    filename:   Renderer.h
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,6 +31,9 @@
 #include "../../Renderer.h"
 #include "../../Size.h"
 #include "../../Vector.h"
+
+#include <glm/glm.hpp>
+
 #include <vector>
 #include <map>
 
@@ -51,26 +55,9 @@
 // D3D forward refs
 struct ID3D11Device;
 struct ID3D11DeviceContext;
-struct ID3DX11Effect;//D3DXEffect11 in dependences
-struct ID3DX11EffectTechnique;//D3DXEffect11 in dependences
 struct ID3D11InputLayout;
-struct ID3DX11EffectShaderResourceVariable;//D3DXEffect11 in dependences
-struct ID3DX11EffectMatrixVariable;//D3DXEffect11 in dependences
-struct ID3D11ShaderResourceView;//D3DXEffect11 in dependences
-struct D3DXMATRIX;
 
 #include <d3d11.h>
-#include <d3dx11.h>
-#include <d3dx10.h>
-
-
-struct IDevice11//little structure that keeps both device, in order to reduce copy & paste around module
-{
-	//! The D3D device context we're using to create various resources with.
-	ID3D11Device* d_device;
-	//! The D3D device context we're using to render
-	ID3D11DeviceContext* d_context;
-};
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -133,7 +120,7 @@ public:
     \brief
         Create an Direct3D11Renderer object.
     */
-    static Direct3D11Renderer& create(ID3D11Device* device,ID3D11DeviceContext* context,
+    static Direct3D11Renderer& create(ID3D11Device* device, ID3D11DeviceContext* deviceContext,
                                       const int abi = CEGUI_VERSION_ABI);
 
     /*!
@@ -145,17 +132,39 @@ public:
     */
     static void destroy(Direct3D11Renderer& renderer);
 
-	//returns d3d11 container for further rendering and creating
-	IDevice11& getDirect3DDevice(); 
-	
-    //! low-level function that binds the technique pass ready for use
-    void bindTechniquePass(const BlendMode mode, const bool clipped);
-    //! low-level function to set the texture shader resource view to be used.
-    void setCurrentTextureShaderResource(ID3D11ShaderResourceView* srv); 
-    //! low-level function to set the projection matrix to be used.
-    void setProjectionMatrix(D3DXMATRIX& matrix);
-    //! low-level function to set the world matrix to be used.
-    void setWorldMatrix(D3DXMATRIX& matrix);
+	//Returns Direct3D device
+	ID3D11Device* getDirect3DDevice(); 
+    //Returns Direct3D context
+	ID3D11DeviceContext* getDirect3DDeviceContext(); 
+
+    /*!
+    \brief
+        Helper to set the view projection matrix.
+
+    \param viewProjectionMatrix
+        The view projection matrix.
+    */
+    virtual void setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix);    
+    /*!
+    \brief
+        Helper to return view projection matrix.
+
+    \return
+        The view projection matrix.
+    */
+    const glm::mat4& Direct3D11Renderer::getViewProjectionMatrix();
+
+    /*!
+    \brief
+        Binds the corresponding D3D11 blend mode.
+    */
+    void bindBlendMode(BlendMode d_blendMode);
+
+    /*!
+    \brief
+        Binds the D3D11 RasterizerState corresponding to the scissorEnabled boolean.
+    */
+    void bindRasterizerState(bool scissorEnabled);
 
     // Implement interface from Renderer
     RenderTarget& getDefaultRenderTarget();
@@ -184,7 +193,6 @@ public:
     const Vector2f& getDisplayDPI() const;
     uint getMaxTextureSize() const;
     const String& getIdentifierString() const;
-
 protected:
     //! constructor
     Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext* context);
@@ -192,13 +200,18 @@ protected:
     //! destructor.
     ~Direct3D11Renderer();
 
+    //! Initialises the D3D states
+    void initialiseSamplerStates();
+    void initialiseDepthStencilState();
+    void initialiseRasterizerStates();
+    void initialiseBlendStates();
+
     //! Initialises the ShaderManager and the required D3D11 shaders
     void initialiseShaders();
     //! Initialises the D3D11 ShaderWrapper for textured objects
     void initialiseStandardTexturedShaderWrapper();
     //! Initialises the D3D11 ShaderWrapper for coloured objects
     void initialiseStandardColouredShaderWrapper();
-
     //! Wrapper of the OpenGL shader we will use for textured geometry
     Direct3D11ShaderWrapper* d_shaderWrapperTextured;
     //! Wrapper of the OpenGL shader we will use for solid geometry
@@ -213,12 +226,26 @@ protected:
     static void logTextureCreation(const String& name);
     //! helper to safely log the destruction of a named texture
     static void logTextureDestruction(const String& name);
-
     //! String holding the renderer identification text.
     static String d_rendererID;
-    //! The D3D device we're using to render with.
-
-	IDevice11 d_device;
+	//! The D3D device context we're using to create various resources with.
+	ID3D11Device* d_device;
+	//! The D3D device context we're using to render
+	ID3D11DeviceContext* d_deviceContext;
+    //! BlendState for regular blending in CEGUI
+    ID3D11BlendState* d_blendStateNormal;
+    //! BlendState for premultiplied blending in CEGUI
+    ID3D11BlendState* d_blendStatePreMultiplied;
+    //! The currently set BlendState
+    ID3D11BlendState* d_currentBlendState;
+    //! The rasterizer state for CEGUI with scissor enabled
+    ID3D11RasterizerState* d_rasterizerStateScissorEnabled;
+    //! The rasterizer state for CEGUI with scissor enabled
+    ID3D11RasterizerState* d_rasterizerStateScissorDisabled;
+    //! The current rasterizer state
+    ID3D11RasterizerState* d_currentRasterizerState;
+    //! The default depth/stencil state
+    ID3D11DepthStencilState* d_depthStencilStateDefault;
 
     //! What the renderer considers to be the current display size.
     Sizef d_displaySize;
@@ -239,24 +266,12 @@ protected:
                      CEGUI_MAP_ALLOC(String, Direct3D11Texture*)> TextureMap;
     //! Container used to track textures.
     TextureMap d_textures;
-    //! Effect (shader) used when rendering.
-    ID3DX11Effect* d_effect;
-    //! Rendering technique that supplies scissor clipped BM_NORMAL type rendering
-    ID3DX11EffectTechnique* d_normalClippedTechnique;
-    //! Rendering technique that supplies BM_NORMAL type rendering
-    ID3DX11EffectTechnique* d_normalUnclippedTechnique;
-    //! Rendering technique that supplies scissor clipped BM_RTT_PREMULTIPLIED type rendering
-    ID3DX11EffectTechnique* d_premultipliedClippedTechnique;
-    //! Rendering technique that supplies BM_RTT_PREMULTIPLIED type rendering
-    ID3DX11EffectTechnique* d_premultipliedUnclippedTechnique;
-    //! D3D11 input layout describing the vertex format we use.
-    ID3D11InputLayout* d_inputLayout;
-    //! Variable to access current texture (actually shader resource view)
-    ID3DX11EffectShaderResourceVariable* d_boundTextureVariable;
-    //! Variable to access world matrix used in geometry transformation.
-    ID3DX11EffectMatrixVariable* d_worldMatrixVariable;
-    //! Variable to access projection matrix used in geometry transformation.
-    ID3DX11EffectMatrixVariable* d_projectionMatrixVariable;
+
+    //! Variable containing the sampler state for CEGUI textures
+    ID3D11SamplerState* d_samplerState;
+
+    //! View projection matrix
+    glm::mat4 d_viewProjectionMatrix;
 };
 
 

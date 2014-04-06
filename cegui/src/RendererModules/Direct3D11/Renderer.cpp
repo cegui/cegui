@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D11Renderer.cpp
-    created:    Wed May 5 2010
+    filename:   Renderer.cpp
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -30,29 +31,74 @@
 #include "CEGUI/RendererModules/Direct3D11/ViewportTarget.h"
 #include "CEGUI/RendererModules/Direct3D11/Texture.h"
 #include "CEGUI/RendererModules/Direct3D11/ShaderWrapper.h"
+#include "CEGUI/RendererModules/Direct3D11/Shader.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
 #include <algorithm>
 
-#include "d3dx11effect.h"
-
-#include "shader.txt"
+#include "Shaders.inl"
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 String Direct3D11Renderer::d_rendererID(
-"CEGUI::Direct3D11Renderer - Official Direct3D 11 based 2nd generation renderer"
+"CEGUI::Direct3D11Renderer - Official Direct3D 11 based 3rd generation renderer"
 " module.");
 
+
 //----------------------------------------------------------------------------//
-Direct3D11Renderer& Direct3D11Renderer::bootstrapSystem(
-                                                   ID3D11Device* device,
-                                                   ID3D11DeviceContext* context,
-                                                   const int abi)
+Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,
+                                       ID3D11DeviceContext*deviceContext)
+    : d_device(device)
+    , d_deviceContext(deviceContext)
+    , d_displayDPI(96, 96)
+    , d_defaultTarget(0)
+    , d_samplerState(0)
+    , d_currentBlendState(0)
+    , d_currentRasterizerState(0)
+{
+ 
+	if(!device || !deviceContext) 
+	{
+		std::string msg("In Order To Use Direct3D11 Module, You Must Provide Both Device And Context");
+		CEGUI_THROW(RendererException(msg));
+	}
+
+	d_displaySize = getViewportSize();
+
+    d_defaultTarget = new Direct3D11ViewportTarget(*this);
+
+    initialiseSamplerStates();
+    initialiseBlendStates();
+    initialiseRasterizerStates();
+    initialiseDepthStencilState();
+
+    
+
+
+    initialiseShaders();
+}
+
+//----------------------------------------------------------------------------//
+Direct3D11Renderer::~Direct3D11Renderer()
+{
+    destroyAllTextureTargets();
+    destroyAllTextures();
+    destroyAllGeometryBuffers();
+
+    d_blendStateNormal->Release();
+    d_blendStatePreMultiplied->Release();
+
+    delete d_defaultTarget;
+}
+
+//----------------------------------------------------------------------------//
+Direct3D11Renderer& Direct3D11Renderer::bootstrapSystem(ID3D11Device* device,
+                                                        ID3D11DeviceContext* context,
+                                                        const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
@@ -92,7 +138,7 @@ Direct3D11Renderer& Direct3D11Renderer::create(ID3D11Device* device,
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    return *new Direct3D11Renderer(device,context);
+    return *new Direct3D11Renderer(device, context);
 }
 
 //----------------------------------------------------------------------------//
@@ -162,7 +208,7 @@ Texture& Direct3D11Renderer::createTexture(const String& name)
 {
     throwIfNameExists(name);
 
-    Direct3D11Texture* tex = new Direct3D11Texture(d_device, name);
+    Direct3D11Texture* tex = new Direct3D11Texture(*d_device, *d_deviceContext, name);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -177,7 +223,8 @@ Texture& Direct3D11Renderer::createTexture(const String& name,
 {
     throwIfNameExists(name);
 
-    Direct3D11Texture* tex = new Direct3D11Texture(d_device, name, filename,
+    Direct3D11Texture* tex = new Direct3D11Texture(*d_device, *d_deviceContext,
+                                                   name, filename,
                                                    resourceGroup);
     d_textures[name] = tex;
 
@@ -192,7 +239,7 @@ Texture& Direct3D11Renderer::createTexture(const String& name,
 {
     throwIfNameExists(name);
 
-    Direct3D11Texture* tex = new Direct3D11Texture(d_device, name, size);
+    Direct3D11Texture* tex = new Direct3D11Texture(*d_device, *d_deviceContext, name, size);
     d_textures[name] = tex;
 
     logTextureCreation(name);
@@ -270,8 +317,12 @@ bool Direct3D11Renderer::isTextureDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::beginRendering()
 {
-    d_device.d_context->IASetInputLayout(d_inputLayout);
-    d_device.d_context->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    d_currentBlendState = 0;
+    d_currentRasterizerState = 0;
+
+    d_deviceContext->IASetPrimitiveTopology(D3D11_PRIMITIVE_TOPOLOGY_TRIANGLELIST);
+    d_deviceContext->OMSetDepthStencilState(d_depthStencilStateDefault, 0);
+    d_deviceContext->PSSetSamplers(0, 1, &d_samplerState);
 }
 
 //----------------------------------------------------------------------------//
@@ -291,7 +342,6 @@ void Direct3D11Renderer::setDisplaySize(const Sizef& sz)
         area.setSize(sz);
         d_defaultTarget->setArea(area);
     }
-
 }
 
 //----------------------------------------------------------------------------//
@@ -309,7 +359,7 @@ const Vector2f& Direct3D11Renderer::getDisplayDPI() const
 //----------------------------------------------------------------------------//
 uint Direct3D11Renderer::getMaxTextureSize() const
 {
-    return 8192;//DIRECTX11 may support even 16384, but most users will use it as feauture level 10, so keep it for now
+    return 8192; //DIRECT3D11 may support even 16384, but most users will use it as feature level 10, so keep it for now
 }
 
 //----------------------------------------------------------------------------//
@@ -319,131 +369,12 @@ const String& Direct3D11Renderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
-Direct3D11Renderer::Direct3D11Renderer(ID3D11Device* device,ID3D11DeviceContext *context) :
-    
-    d_displayDPI(96, 96),
-    d_defaultTarget(0),
-    d_effect(0),
-    d_normalClippedTechnique(0),
-    d_normalUnclippedTechnique(0),
-    d_premultipliedClippedTechnique(0),
-    d_premultipliedUnclippedTechnique(0),
-    d_inputLayout(0),
-    d_boundTextureVariable(0),
-    d_worldMatrixVariable(0),
-    d_projectionMatrixVariable(0)
-{
-
-	if(!device || !context) 
-	{
-		std::string msg("In Order To Use Direct3D11 Module, You Must Provide Both Device And Context");
-		CEGUI_THROW(RendererException(msg));
-	}
-
-	//ToDo
-	//For Perfomance Reasons this little struct can be replaced with pointer
-	d_device.d_device=device;
-	d_device.d_context=context;
-
-	d_displaySize=getViewportSize();
-
-    // create the main effect from the shader source.
-    ID3D10Blob* errors = 0;
-
-	DWORD DefaultOptions=NULL;//D3D10_SHADER_PACK_MATRIX_ROW_MAJOR|D3D10_SHADER_PARTIAL_PRECISION|D3D10_SHADER_SKIP_VALIDATION;
-
-	ID3D10Blob* ShaderBlob=NULL;//first we compile shader, then create effect from it
-
-	if (FAILED(D3DX11CompileFromMemory(shaderSource,sizeof(shaderSource),
-		"shaderSource",NULL,NULL,NULL,"fx_5_0",
-		DefaultOptions,NULL,NULL,&ShaderBlob,&errors,NULL)))
-	{
-		std::string msg(static_cast<const char*>(errors->GetBufferPointer()),
-			errors->GetBufferSize());
-		errors->Release();
-		CEGUI_THROW(RendererException(msg));
-	}
-
-	if (FAILED(D3DX11CreateEffectFromMemory(ShaderBlob->GetBufferPointer(), ShaderBlob->GetBufferSize(),0, 
-		d_device.d_device, &d_effect) ))
-	{
-		CEGUI_THROW(RendererException("failed to create effect!"));
-	}
-
-	if(ShaderBlob) 
-		ShaderBlob->Release();
-
-    // extract the rendering techniques
-    d_normalClippedTechnique =
-            d_effect->GetTechniqueByName("BM_NORMAL_Clipped_Rendering");
-    d_normalUnclippedTechnique =
-            d_effect->GetTechniqueByName("BM_NORMAL_Unclipped_Rendering");
-    d_premultipliedClippedTechnique =
-            d_effect->GetTechniqueByName("BM_RTT_PREMULTIPLIED_Clipped_Rendering");
-    d_premultipliedClippedTechnique =
-            d_effect->GetTechniqueByName("BM_RTT_PREMULTIPLIED_Unclipped_Rendering");
-
-    // Get the variables from the shader we need to be able to access
-    d_boundTextureVariable =
-            d_effect->GetVariableByName("BoundTexture")->AsShaderResource();
-    d_worldMatrixVariable =
-            d_effect->GetVariableByName("WorldMatrix")->AsMatrix();
-    d_projectionMatrixVariable =
-            d_effect->GetVariableByName("ProjectionMatrix")->AsMatrix();
-
-    // Create the input layout
-    const D3D11_INPUT_ELEMENT_DESC vertex_layout[] =
-    {
-        { "POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,  0, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "COLOR",    0, DXGI_FORMAT_R8G8B8A8_UNORM,  0, 12, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-        { "TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT,	  0, 16, D3D11_INPUT_PER_VERTEX_DATA, 0 },
-    };
-
-    const UINT element_count = sizeof(vertex_layout) / sizeof(vertex_layout[0]);
-
-    D3DX11_PASS_DESC pass_desc;
-    if (FAILED(d_normalClippedTechnique->GetPassByIndex(0)->GetDesc(&pass_desc)))
-        CEGUI_THROW(RendererException(
-            "failed to obtain technique description for pass 0."));
-
-    if (FAILED(d_device.d_device->CreateInputLayout(vertex_layout, element_count,
-                                            pass_desc.pIAInputSignature,
-                                            pass_desc.IAInputSignatureSize,
-                                            &d_inputLayout)))
-    {
-        CEGUI_THROW(RendererException(
-            "failed to create D3D 11 input layout."));
-    }
-
-    d_defaultTarget = new Direct3D11ViewportTarget(*this);
-
-    initialiseShaders();
-}
-
-//----------------------------------------------------------------------------//
-Direct3D11Renderer::~Direct3D11Renderer()
-{
-    destroyAllTextureTargets();
-    destroyAllTextures();
-    destroyAllGeometryBuffers();
-
-    delete d_defaultTarget;
-
-    if (d_effect)
-        d_effect->Release();
-
-    if (d_inputLayout)
-        d_inputLayout->Release();
-
-}
-
-//----------------------------------------------------------------------------//
 Sizef Direct3D11Renderer::getViewportSize()
 {
     D3D11_VIEWPORT vp;
     UINT vp_count = 1;
 
-    d_device.d_context->RSGetViewports(&vp_count, &vp);
+    d_deviceContext->RSGetViewports(&vp_count, &vp);
 
     if (vp_count != 1)
         CEGUI_THROW(RendererException(
@@ -455,43 +386,15 @@ Sizef Direct3D11Renderer::getViewportSize()
 }
 
 //----------------------------------------------------------------------------//
-IDevice11& Direct3D11Renderer::getDirect3DDevice()
+void Direct3D11Renderer::setViewProjectionMatrix(const glm::mat4& viewProjectionMatrix)
 {
-	return d_device;
+    d_viewProjectionMatrix = viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11Renderer::bindTechniquePass(const BlendMode mode,
-                                           const bool clipped)
+const glm::mat4& Direct3D11Renderer::getViewProjectionMatrix()
 {
-    if (mode == BM_RTT_PREMULTIPLIED)
-        if (clipped)
-            d_premultipliedClippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
-        else
-            d_premultipliedUnclippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
-    else if (clipped)
-        d_normalClippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
-    else
-        d_normalUnclippedTechnique->GetPassByIndex(0)->Apply(0, d_device.d_context);
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11Renderer::setCurrentTextureShaderResource(
-    ID3D11ShaderResourceView* srv)
-{
-    d_boundTextureVariable->SetResource(srv);
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11Renderer::setProjectionMatrix(D3DXMATRIX& matrix)
-{
-    d_projectionMatrixVariable->SetMatrix(reinterpret_cast<float*>(&matrix));
-}
-
-//----------------------------------------------------------------------------//
-void Direct3D11Renderer::setWorldMatrix(D3DXMATRIX& matrix)
-{
-    d_worldMatrixVariable->SetMatrix(reinterpret_cast<float*>(&matrix));
+    return d_viewProjectionMatrix;
 }
 
 //----------------------------------------------------------------------------//
@@ -502,8 +405,7 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferTextured(CEGUI::RefCount
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
     geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
-    //TODO IDENT
-    //geom_buffer->finaliseVertexAttributes();
+    geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -516,8 +418,7 @@ GeometryBuffer& Direct3D11Renderer::createGeometryBufferColoured(CEGUI::RefCount
 
     geom_buffer->addVertexAttribute(VAT_POSITION0);
     geom_buffer->addVertexAttribute(VAT_COLOUR0);
-    //TODO IDENT
-    //geom_buffer->finaliseVertexAttributes();
+    geom_buffer->finaliseVertexAttributes();
 
     addGeometryBuffer(*geom_buffer);
     return *geom_buffer;
@@ -540,8 +441,7 @@ RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const Defaul
     }
     else
     {
-        CEGUI_THROW(RendererException(
-            "A default shader of this type does not exist."));
+        CEGUI_THROW(RendererException("A default shader of this type does not exist."));
 
         return RefCounted<RenderMaterial>();
     }
@@ -550,32 +450,21 @@ RefCounted<RenderMaterial> Direct3D11Renderer::createRenderMaterial(const Defaul
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseStandardTexturedShaderWrapper()
 {
-    //TODO IDENT
-/*
-    Direct3D11Shader* shader_standard_textured = d_shaderManager->getShader(SHADER_ID_STANDARD_TEXTURED);
-    d_shaderWrapperTextured = new Direct3D11ShaderWrapper(*shader_standard_textured, d_openGLStateChanger);
+    Direct3D11Shader* shader_standard_textured = CEGUI_NEW_AO Direct3D11Shader(*this, VertexShaderTextured, PixelShaderTextured);
+    d_shaderWrapperTextured = CEGUI_NEW_AO Direct3D11ShaderWrapper(*shader_standard_textured, this);
 
-    d_shaderWrapperTextured->addTextureUniformVariable("texture0", 0);
+    d_shaderWrapperTextured->addUniformVariable("texture0", ST_PIXEL, SPT_TEXTURE);
 
-    d_shaderWrapperTextured->addUniformVariable("modelViewPerspMatrix");
-
-    d_shaderWrapperTextured->addAttributeVariable("inPosition");
-    d_shaderWrapperTextured->addAttributeVariable("inTexCoord");
-    d_shaderWrapperTextured->addAttributeVariable("inColour");*/
+    d_shaderWrapperTextured->addUniformVariable("modelViewPerspMatrix", ST_VERTEX, SPT_MATRIX_4X4);
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseStandardColouredShaderWrapper()
 {
-    //TODO IDENT
-/*
-    Direct3D11Shader* shader_standard_solid = d_shaderManager->getShader(SHADER_ID_STANDARD_SOLID);
-    d_shaderWrapperSolid = new Direct3D11ShaderWrapper(*shader_standard_solid, d_openGLStateChanger);
+    Direct3D11Shader* shader_standard_solid = CEGUI_NEW_AO Direct3D11Shader(*this, VertexShaderColoured, PixelShaderColoured);
+    d_shaderWrapperSolid = CEGUI_NEW_AO Direct3D11ShaderWrapper(*shader_standard_solid, this);
 
-    d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix");
-
-    d_shaderWrapperSolid->addAttributeVariable("inPosition");
-    d_shaderWrapperSolid->addAttributeVariable("inColour");*/
+    d_shaderWrapperSolid->addUniformVariable("modelViewPerspMatrix", ST_VERTEX, SPT_MATRIX_4X4);
 }
 
 //----------------------------------------------------------------------------//
@@ -586,5 +475,175 @@ void Direct3D11Renderer::initialiseShaders()
 }
 
 //----------------------------------------------------------------------------//
+ID3D11DeviceContext* Direct3D11Renderer::getDirect3DDeviceContext()
+{
+    return d_deviceContext;
+}
+
+//----------------------------------------------------------------------------//
+ID3D11Device* Direct3D11Renderer::getDirect3DDevice()
+{
+    return d_device;
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::initialiseBlendStates()
+{
+    D3D11_BLEND_DESC blendDesc;
+    ZeroMemory(&blendDesc, sizeof(blendDesc));
+
+    D3D11_RENDER_TARGET_BLEND_DESC rtbd;
+    ZeroMemory(&rtbd, sizeof(rtbd));
+
+    blendDesc.AlphaToCoverageEnable = FALSE;
+    blendDesc.IndependentBlendEnable = FALSE;
+
+    rtbd.BlendEnable			 = TRUE;
+    rtbd.SrcBlend				 = D3D11_BLEND_SRC_ALPHA;
+    rtbd.DestBlend				 = D3D11_BLEND_INV_SRC_ALPHA;
+    rtbd.BlendOp                 = D3D11_BLEND_OP_ADD;
+    rtbd.SrcBlendAlpha			 = D3D11_BLEND_INV_DEST_ALPHA;
+    rtbd.DestBlendAlpha			 = D3D11_BLEND_ONE;
+    rtbd.BlendOpAlpha            = D3D11_BLEND_OP_ADD;
+    rtbd.RenderTargetWriteMask   = D3D11_COLOR_WRITE_ENABLE_ALL;
+    blendDesc.RenderTarget[0]    = rtbd;
+
+    d_device->CreateBlendState(&blendDesc, &d_blendStateNormal);
+
+
+    ZeroMemory(&blendDesc, sizeof(blendDesc));
+    ZeroMemory(&rtbd, sizeof(rtbd));
+
+    blendDesc.AlphaToCoverageEnable = FALSE;
+    blendDesc.IndependentBlendEnable = TRUE;
+
+    rtbd.BlendEnable			 = TRUE;
+    rtbd.SrcBlend				 = D3D11_BLEND_ONE;
+    rtbd.DestBlend				 = D3D11_BLEND_INV_SRC_ALPHA;
+    rtbd.BlendOp                 = D3D11_BLEND_OP_ADD;
+    rtbd.SrcBlendAlpha			 = D3D11_BLEND_ONE;
+    rtbd.DestBlendAlpha			 = D3D11_BLEND_INV_SRC_ALPHA;
+    rtbd.BlendOpAlpha            = D3D11_BLEND_OP_ADD;
+    rtbd.RenderTargetWriteMask   = D3D11_COLOR_WRITE_ENABLE_ALL;
+    blendDesc.RenderTarget[0]    = rtbd;
+
+    d_device->CreateBlendState(&blendDesc, &d_blendStatePreMultiplied);
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
+{
+    if (d_blendMode == BM_NORMAL)
+    {
+        if (d_currentBlendState != d_blendStateNormal)
+        {
+            d_deviceContext->OMSetBlendState(d_blendStateNormal, 0, 0xffffffff);
+            d_currentBlendState = d_blendStateNormal;
+        }
+    }
+
+    if (d_blendMode == BM_RTT_PREMULTIPLIED)
+    {
+        if (d_currentBlendState != d_blendStatePreMultiplied)
+        {
+            d_deviceContext->OMSetBlendState(d_blendStatePreMultiplied, 0, 0xffffffff);
+            d_currentBlendState = d_blendStatePreMultiplied;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::bindRasterizerState(bool scissorEnabled)
+{
+    if (scissorEnabled)
+    {
+        if (d_currentRasterizerState != d_rasterizerStateScissorEnabled)
+        {
+            d_deviceContext->RSSetState(d_rasterizerStateScissorEnabled);
+            d_currentRasterizerState = d_rasterizerStateScissorEnabled;
+        }
+    }
+    else
+    {
+        if (d_currentRasterizerState != d_rasterizerStateScissorDisabled)
+        {
+            d_deviceContext->RSSetState(d_rasterizerStateScissorDisabled);
+            d_currentRasterizerState = d_rasterizerStateScissorDisabled;
+        }
+    }
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::initialiseRasterizerStates()
+{
+    D3D11_RASTERIZER_DESC cmdesc;
+    ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
+
+    cmdesc.FillMode = D3D11_FILL_SOLID;
+    cmdesc.CullMode = D3D11_CULL_NONE;
+    cmdesc.DepthClipEnable = FALSE;
+    cmdesc.ScissorEnable = TRUE;
+
+    HRESULT result = d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorEnabled);
+
+    ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
+
+    cmdesc.FillMode = D3D11_FILL_SOLID;
+    cmdesc.CullMode = D3D11_CULL_NONE;
+    cmdesc.DepthClipEnable = FALSE;
+    cmdesc.ScissorEnable = FALSE;
+
+    result = d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorDisabled);
+
+    ZeroMemory(&cmdesc, sizeof(D3D11_RASTERIZER_DESC));
+}
+
+//----------------------------------------------------------------------------//
+void Direct3D11Renderer::initialiseDepthStencilState()
+{
+    D3D11_DEPTH_STENCIL_DESC depthStencilDesc;
+    ZeroMemory(&depthStencilDesc, sizeof(D3D11_DEPTH_STENCIL_DESC));
+
+    depthStencilDesc.DepthEnable                    = FALSE;
+    depthStencilDesc.DepthWriteMask                 = D3D11_DEPTH_WRITE_MASK_ZERO;
+    depthStencilDesc.DepthFunc                      = D3D11_COMPARISON_LESS;
+    depthStencilDesc.StencilEnable                  = FALSE;
+    depthStencilDesc.StencilReadMask                = 0x00;
+    depthStencilDesc.StencilWriteMask               = 0x00;
+    depthStencilDesc.FrontFace.StencilFunc          = D3D11_COMPARISON_ALWAYS;
+    depthStencilDesc.BackFace.StencilFunc           = D3D11_COMPARISON_ALWAYS;
+    depthStencilDesc.FrontFace.StencilDepthFailOp   = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilDepthFailOp    = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilPassOp        = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilPassOp         = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.FrontFace.StencilFailOp        = D3D11_STENCIL_OP_KEEP;
+    depthStencilDesc.BackFace.StencilFailOp         = D3D11_STENCIL_OP_KEEP;
+ 
+    HRESULT result = d_device->CreateDepthStencilState(&depthStencilDesc, &d_depthStencilStateDefault);
+    if(FAILED(result))
+        CEGUI_THROW(RendererException("SamplerDescription creation failed"));
+}
+
+//----------------------------------------------------------------------------//
+void CEGUI::Direct3D11Renderer::initialiseSamplerStates()
+{
+    D3D11_SAMPLER_DESC samplerDescription;
+    ZeroMemory( &samplerDescription, sizeof(samplerDescription) );
+    samplerDescription.Filter =         D3D11_FILTER_MIN_MAG_MIP_LINEAR;
+    samplerDescription.AddressU =       D3D11_TEXTURE_ADDRESS_CLAMP;
+    samplerDescription.AddressV =       D3D11_TEXTURE_ADDRESS_CLAMP;
+    samplerDescription.AddressW =       D3D11_TEXTURE_ADDRESS_CLAMP;
+    samplerDescription.ComparisonFunc = D3D11_COMPARISON_NEVER;
+    samplerDescription.MinLOD =         0;
+    samplerDescription.MaxLOD =         D3D11_FLOAT32_MAX;
+
+    HRESULT result = d_device->CreateSamplerState( &samplerDescription, &d_samplerState );
+    if(FAILED(result))
+        CEGUI_THROW(RendererException("SamplerDescription creation failed"));
+}
+
+
+//----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
+

@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D11Texture.h
-    created:    Wed May 5 2010
+    filename:   Texture.h
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -109,14 +110,14 @@ protected:
     friend void Direct3D11Renderer::destroyTexture(const String&);
 
     //! Basic constructor.
-    Direct3D11Texture(IDevice11& device, const String& name);
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name);
     //! Construct texture from an image file.
-    Direct3D11Texture(IDevice11& device, const String& name, const String& filename,
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, const String& filename,
                       const String& resourceGroup);
     //! Construct texture with a given size.
-    Direct3D11Texture(IDevice11& device, const String& name, const Sizef& sz);
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, const Sizef& sz);
     //! Construct texture that wraps an existing D3D10 texture.
-    Direct3D11Texture(IDevice11& device, const String& name, ID3D11Texture2D* tex);
+    Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, ID3D11Texture2D* tex);
     //! Destructor.
     virtual ~Direct3D11Texture();
 
@@ -129,8 +130,10 @@ protected:
     //! creates shader resource view for the current D3D texture
     void initialiseShaderResourceView();
 
-    //! D3D device used to do the business.
-    IDevice11& d_device;
+    //! The D3D Device
+    ID3D11Device& d_device;
+    //! The D3D DeviceContext
+    ID3D11DeviceContext& d_deviceContext;
     //! The D3D 10 texture we're wrapping.
     ID3D11Texture2D* d_texture;
     //! Shader resource view for the texture.

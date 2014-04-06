@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D10ViewportTarget.h
-    created:    Wed May 5 2010
+    filename:   ViewportTarget.h
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -24,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIDirect3D10ViewportTarget_h_
-#define _CEGUIDirect3D10ViewportTarget_h_
+#ifndef _CEGUIDirect3D11ViewportTarget_h_
+#define _CEGUIDirect3D11ViewportTarget_h_
 
 #include "CEGUI/RendererModules/Direct3D11/RenderTarget.h"
 
