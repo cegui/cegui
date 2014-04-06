@@ -1,7 +1,7 @@
 /***********************************************************************
     filename:   ShaderWrapper.cpp
-    created:    9th December 2013
-    author:     Lukas Meindl
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
