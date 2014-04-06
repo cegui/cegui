@@ -66,7 +66,7 @@ void OpenGL3GeometryBuffer::draw() const
     if(d_vertexData.empty())
         return;
 
-    CEGUI::Rectf viewPort = d_owner->getActiveViewPort();
+    CEGUI::Rectf viewPort = d_owner.getActiveViewPort();
 
     if (d_clippingActive)
     {
@@ -86,11 +86,11 @@ void OpenGL3GeometryBuffer::draw() const
 
     CEGUI::ShaderParameterBindings* shaderParameterBindings = (*d_renderMaterial).getShaderParamBindings();
     // Set the ModelViewProjection matrix in the bindings
-    glm::mat4 modelViewProjectionMatrix = d_owner->getViewProjectionMatrix() * d_matrix;
+    glm::mat4 modelViewProjectionMatrix = d_owner.getViewProjectionMatrix() * d_matrix;
     shaderParameterBindings->setParameter("modelViewPerspMatrix", modelViewProjectionMatrix);
 
     // activate desired blending mode
-    d_owner->setupRenderingBlendMode(d_blendMode);
+    d_owner.setupRenderingBlendMode(d_blendMode);
 
     // Bind our vao
     d_glStateChanger->bindVertexArray(d_verticesVAO);
