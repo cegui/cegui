@@ -489,6 +489,8 @@ ID3D11Device* Direct3D11Renderer::getDirect3DDevice()
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::initialiseBlendStates()
 {
+    HRESULT result;
+
     D3D11_BLEND_DESC blendDesc;
     ZeroMemory(&blendDesc, sizeof(blendDesc));
 
@@ -508,14 +510,15 @@ void Direct3D11Renderer::initialiseBlendStates()
     rtbd.RenderTargetWriteMask   = D3D11_COLOR_WRITE_ENABLE_ALL;
     blendDesc.RenderTarget[0]    = rtbd;
 
-    d_device->CreateBlendState(&blendDesc, &d_blendStateNormal);
-
+    result = d_device->CreateBlendState(&blendDesc, &d_blendStateNormal);
+    if(FAILED(result))
+        CEGUI_THROW(RendererException("Creation of BlendState failed"));
 
     ZeroMemory(&blendDesc, sizeof(blendDesc));
     ZeroMemory(&rtbd, sizeof(rtbd));
 
     blendDesc.AlphaToCoverageEnable = FALSE;
-    blendDesc.IndependentBlendEnable = TRUE;
+    blendDesc.IndependentBlendEnable = FALSE;
 
     rtbd.BlendEnable			 = TRUE;
     rtbd.SrcBlend				 = D3D11_BLEND_ONE;
@@ -527,17 +530,21 @@ void Direct3D11Renderer::initialiseBlendStates()
     rtbd.RenderTargetWriteMask   = D3D11_COLOR_WRITE_ENABLE_ALL;
     blendDesc.RenderTarget[0]    = rtbd;
 
-    d_device->CreateBlendState(&blendDesc, &d_blendStatePreMultiplied);
+    result = d_device->CreateBlendState(&blendDesc, &d_blendStatePreMultiplied);
+    if(FAILED(result))
+        CEGUI_THROW(RendererException("Creation of BlendState failed"));
 }
 
 //----------------------------------------------------------------------------//
 void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
 {
+    const FLOAT blendFactor[4] = {0.0f, 0.0f, 0.0f, 0.0f};
+
     if (d_blendMode == BM_NORMAL)
     {
         if (d_currentBlendState != d_blendStateNormal)
         {
-            d_deviceContext->OMSetBlendState(d_blendStateNormal, 0, 0xffffffff);
+            d_deviceContext->OMSetBlendState(d_blendStateNormal, blendFactor, 0xFFFFFFFF);
             d_currentBlendState = d_blendStateNormal;
         }
     }
@@ -546,7 +553,7 @@ void Direct3D11Renderer::bindBlendMode(BlendMode d_blendMode)
     {
         if (d_currentBlendState != d_blendStatePreMultiplied)
         {
-            d_deviceContext->OMSetBlendState(d_blendStatePreMultiplied, 0, 0xffffffff);
+            d_deviceContext->OMSetBlendState(d_blendStatePreMultiplied, blendFactor, 0xFFFFFFFF);
             d_currentBlendState = d_blendStatePreMultiplied;
         }
     }
