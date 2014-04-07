@@ -48,23 +48,6 @@ Direct3D11ShaderWrapper::Direct3D11ShaderWrapper(Direct3D11Shader& shader,
 {
     createPerObjectBuffer(ST_VERTEX);
     createPerObjectBuffer(ST_PIXEL);
-
-
-
-
-        D3D11_SAMPLER_DESC samplerDescription;
-    ZeroMemory( &samplerDescription, sizeof(samplerDescription) );
-    samplerDescription.Filter =         D3D11_FILTER_MIN_MAG_MIP_LINEAR;
-    samplerDescription.AddressU =       D3D11_TEXTURE_ADDRESS_CLAMP;
-    samplerDescription.AddressV =       D3D11_TEXTURE_ADDRESS_CLAMP;
-    samplerDescription.AddressW =       D3D11_TEXTURE_ADDRESS_CLAMP;
-    samplerDescription.ComparisonFunc = D3D11_COMPARISON_NEVER;
-    samplerDescription.MinLOD =         0;
-    samplerDescription.MaxLOD =         D3D11_FLOAT32_MAX;
-
-    HRESULT result = d_device->CreateSamplerState( &samplerDescription, &d_samplerState );
-    if(FAILED(result))
-        CEGUI_THROW(RendererException("SamplerDescription creation failed"));
 }
 
 //----------------------------------------------------------------------------//
@@ -106,10 +89,10 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
 {
     d_shader.bind();
 
-    d_deviceContext->PSSetSamplers(0, 1, &d_samplerState);
-
-    D3D11_MAPPED_SUBRESOURCE mappedResourceVertShader, mappedResourcePixelShader;
-    prepareUniformVariableMapping(mappedResourceVertShader, mappedResourcePixelShader);
+    // The pointers to the mapped resource data
+    unsigned char* resourceDataVS = 0;
+    unsigned char* resourceDataPS = 0;
+    prepareUniformVariableMapping(resourceDataVS, resourceDataPS);
 
     const ShaderParameterBindings::ShaderParameterBindingsMap& shader_parameter_bindings = shaderParameterBindings->getShaderParameterBindings();
     ShaderParameterBindings::ShaderParameterBindingsMap::const_iterator iter = shader_parameter_bindings.begin();
@@ -155,41 +138,37 @@ void Direct3D11ShaderWrapper::prepareForRendering(const ShaderParameterBindings*
                 last_shader_parameter->takeOverParameterValue(parameter);
         }
 
-
+        // Get the data pointer pointing to the memory position of our current uniform variable
+        unsigned char* paramDataPointer = 0;
+        if (parameterDescription.d_shaderType == ST_VERTEX)
+            paramDataPointer = resourceDataVS + parameterDescription.d_boundLocation;
+        else if (parameterDescription.d_shaderType == ST_PIXEL)
+            paramDataPointer = resourceDataPS + parameterDescription.d_boundLocation;
 
         switch(parameterType)
         {
         case SPT_INT:
             {
-/*
                 const CEGUI::ShaderParameterInt* parameterInt = static_cast<const CEGUI::ShaderParameterInt*>(parameter);
-                glUniform1i(location, parameterInt->d_parameterValue);*/
+
+                //Copy the data
+                memcpy(paramDataPointer, &(parameterInt->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
         case SPT_FLOAT:
             {
-/*
                 const CEGUI::ShaderParameterFloat* parameterFloat = static_cast<const CEGUI::ShaderParameterFloat*>(parameter);
-                glUniform1f(location, parameterFloat->d_parameterValue);*/
+
+                //Copy the data
+                memcpy(paramDataPointer, &(parameterFloat->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
         case SPT_MATRIX_4X4:
             {
                 const CEGUI::ShaderParameterMatrix* parameterMatrix = static_cast<const CEGUI::ShaderParameterMatrix*>(parameter);
-                
 
-
-
-                // Get the pointer to the mapped resource data
-                unsigned char* dataInBytes = 0;
-                if (parameterDescription.d_shaderType == ST_VERTEX)
-                    dataInBytes = static_cast<unsigned char*>(mappedResourceVertShader.pData);
-                else if (parameterDescription.d_shaderType == ST_PIXEL)
-                    dataInBytes = static_cast<unsigned char*>(mappedResourcePixelShader.pData);
-
-                // Go to the memory position of our uniform variable
-                dataInBytes += parameterDescription.d_boundLocation;
-                memcpy(dataInBytes, glm::value_ptr(parameterMatrix->d_parameterValue), parameterDescription.d_boundSize);
+                //Copy the data
+                memcpy(paramDataPointer, glm::value_ptr(parameterMatrix->d_parameterValue), parameterDescription.d_boundSize);
             }
             break;
         case SPT_TEXTURE:
@@ -263,23 +242,29 @@ void Direct3D11ShaderWrapper::createPerObjectBuffer(ShaderType shaderType)
 }
 
 //----------------------------------------------------------------------------//
-void Direct3D11ShaderWrapper::prepareUniformVariableMapping(D3D11_MAPPED_SUBRESOURCE& mappedResourceVertShader, D3D11_MAPPED_SUBRESOURCE& mappedResourcePixelShader)
+void Direct3D11ShaderWrapper::prepareUniformVariableMapping(unsigned char*& resourceDataVS, unsigned char*& resourceDataPS)
 {
     if(d_perObjectUniformVarBufferVert != 0)
     {
         d_deviceContext->VSSetConstantBuffers(0, 1, &d_perObjectUniformVarBufferVert);
 
+        D3D11_MAPPED_SUBRESOURCE mappedResourceVertShader;
         HRESULT result = d_deviceContext->Map(d_perObjectUniformVarBufferVert, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResourceVertShader);
         if(FAILED(result))
             CEGUI_THROW(RendererException("Failed to map constant shader buffer.\n"));
+
+        resourceDataVS = static_cast<unsigned char*>(mappedResourceVertShader.pData);
     }
     if(d_perObjectUniformVarBufferPixel != 0)
     {
         d_deviceContext->PSSetConstantBuffers(0, 1, &d_perObjectUniformVarBufferPixel);
 
+        D3D11_MAPPED_SUBRESOURCE mappedResourcePixelShader;
         HRESULT result = d_deviceContext->Map(d_perObjectUniformVarBufferPixel, 0, D3D11_MAP_WRITE_DISCARD, 0, &mappedResourcePixelShader);
         if(FAILED(result))
             CEGUI_THROW(RendererException("Failed to map constant shader buffer.\n"));
+
+        resourceDataPS = static_cast<unsigned char*>(mappedResourcePixelShader.pData);
     }
 }
 
