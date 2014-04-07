@@ -63,8 +63,8 @@ SampleData::SampleData(CEGUI::String sampleName,
     , d_usedFilesString("")
     , d_credits(credits)
     , d_sampleWindow(0)
-    , d_inputAggregator(0),
-    , d_nonDefaultInputAggregator(true),
+    , d_inputAggregator(0)
+    , d_nonDefaultInputAggregator(true)
     , d_guiContext(0)
     , d_textureTarget(0)
     , d_textureTargetImage(0)
