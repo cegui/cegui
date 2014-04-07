@@ -20,22 +20,26 @@ endif()
 if (NOT CEGUI_BUILD_RENDERER_OPENGL)
     list (REMOVE_ITEM CORE_SOURCE_FILES GLRenderer.cpp
                                         GLGeometryBuffer.cpp
-                                        GLFBOTextureTarget.cpp)
+                                        GLFBOTextureTarget.cpp
+                                        GLShaderWrapper.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLRenderer.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLGeometryBuffer.h
-                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h)
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLFBOTextureTarget.h
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GLShaderWrapper.h)
 endif()
 
 if (NOT CEGUI_BUILD_RENDERER_OPENGL3)
     list (REMOVE_ITEM CORE_SOURCE_FILES GL3Renderer.cpp
                                         GL3GeometryBuffer.cpp
                                         GL3FBOTextureTarget.cpp
+                                        GL3ShaderWrapper.cpp
                                         Shader.cpp
                                         ShaderManager.cpp
                                         StateChangeWrapper.cpp)
     list (REMOVE_ITEM CORE_HEADER_FILES ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3Renderer.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3GeometryBuffer.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3FBOTextureTarget.h
+                                        ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/GL3ShaderWrapper.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/Shader.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/ShaderManager.h
                                         ${CMAKE_SOURCE_DIR}/cegui/include/CEGUI/RendererModules/OpenGL/StateChangeWrapper.h

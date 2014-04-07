@@ -37,6 +37,7 @@
 
 #include <stdexcept>
 #include <d3d11.h>
+#define DIRECTINPUT_VERSION 0x0800
 #include <dinput.h>
 
 //----------------------------------------------------------------------------//
@@ -191,15 +192,55 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
     scd.SampleDesc.Quality = 0;
     scd.Windowed = windowed;
 
+    UINT creationFlags = D3D11_CREATE_DEVICE_BGRA_SUPPORT;
+
+
+#if defined(DEBUG) || defined (_DEBUG)
+        creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
+#endif
+
     // initialise main parts of D3D
     res = D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE,
-                                        0, 0, 0, 0, D3D11_SDK_VERSION,
+                                        0, creationFlags, 0, 0, D3D11_SDK_VERSION,
                                         &scd, &pimpl->d_swapChain,
                                         &pimpl->d_device, &pimpl->d_featureLevel,
                                         &pimpl->d_context);
 
     if (SUCCEEDED(res))
     {
+         //Debugging stuff
+         ID3D11Debug *d3dDebug = nullptr;
+         if( SUCCEEDED( pimpl->d_device->QueryInterface( __uuidof(ID3D11Debug), (void**)&d3dDebug ) ) )
+         {
+             ID3D11InfoQueue *d3dInfoQueue = nullptr;
+             if( SUCCEEDED( d3dDebug->QueryInterface( __uuidof(ID3D11InfoQueue), (void**)&d3dInfoQueue ) ) )
+             {
+                 #if defined(DEBUG) || defined (_DEBUG)
+                 d3dInfoQueue->SetBreakOnSeverity( D3D11_MESSAGE_SEVERITY_CORRUPTION, true );
+                 d3dInfoQueue->SetBreakOnSeverity( D3D11_MESSAGE_SEVERITY_ERROR, true );
+                 #endif
+ 
+                 D3D11_MESSAGE_ID hide [] =
+                 {
+                     D3D11_MESSAGE_ID_SETPRIVATEDATA_CHANGINGPARAMS,
+                     // Add more message IDs here as needed
+                 };
+ 
+                 D3D11_INFO_QUEUE_FILTER filter;
+                 memset( &filter, 0, sizeof(filter) );
+                 filter.DenyList.NumIDs = _countof(hide);
+                 filter.DenyList.pIDList = hide;
+                 d3dInfoQueue->AddStorageFilterEntries( &filter );
+                 d3dInfoQueue->Release();
+             }
+
+             d3dDebug->ReportLiveDeviceObjects(D3D11_RLDO_SUMMARY | D3D11_RLDO_DETAIL);
+
+             d3dDebug->Release();
+         }
+
+
+
         // obtain handle to thr back buffer of the swap chain
         ID3D11Texture2D* back_buffer;
         res = pimpl->d_swapChain->GetBuffer(0, __uuidof(ID3D11Texture2D),

@@ -190,17 +190,12 @@ void OpenGLTexture::loadFromFile(const String& filename,
 
     // load file to memory via resource provider
     RawDataContainer texFile;
-    System::getSingleton().getResourceProvider()->
+    CEGUI::System& system = System::getSingleton();
+
+    system.getResourceProvider()->
         loadRawDataContainer(filename, texFile, resourceGroup);
 
-    // get and check existence of CEGUI::System (needed to access ImageCodec)
-    System* sys = System::getSingletonPtr();
-    if (!sys)
-        CEGUI_THROW(RendererException(
-            "CEGUI::System object has not been created: "
-            "unable to access ImageCodec."));
-
-    Texture* res = sys->getImageCodec().load(texFile, this);
+    Texture* res = system.getImageCodec().load(texFile, this);
 
     // unload file data buffer
     System::getSingleton().getResourceProvider()->
@@ -209,7 +204,7 @@ void OpenGLTexture::loadFromFile(const String& filename,
     if (!res)
         // It's an error
         CEGUI_THROW(RendererException(
-            sys->getImageCodec().getIdentifierString() +
+            system.getImageCodec().getIdentifierString() +
             " failed to load image '" + filename + "'."));
 }
 
@@ -411,29 +406,9 @@ void OpenGLTexture::blitToMemory(void* targetData)
 //----------------------------------------------------------------------------//
 void OpenGLTexture::updateCachedScaleValues()
 {
-    //
-    // calculate what to use for x scale
-    //
-    const float orgW = d_dataSize.d_width;
-    const float texW = d_size.d_width;
-
-    // if texture and original data width are the same, scale is based
-    // on the original size.
-    // if texture is wider (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    d_texelScaling.d_x = 1.0f / ((orgW == texW) ? orgW : texW);
-
-    //
-    // calculate what to use for y scale
-    //
-    const float orgH = d_dataSize.d_height;
-    const float texH = d_size.d_height;
-
-    // if texture and original data height are the same, scale is based
-    // on the original size.
-    // if texture is taller (and source data was not stretched), scale
-    // is based on the size of the resulting texture.
-    d_texelScaling.d_y = 1.0f / ((orgH == texH) ? orgH : texH);
+    //Update the scale of a texel based on the absolute size
+    d_texelScaling.d_x = 1.0f / d_size.d_width;
+    d_texelScaling.d_y = 1.0f / d_size.d_height;
 }
 
 //----------------------------------------------------------------------------//

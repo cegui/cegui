@@ -119,7 +119,7 @@ protected:
 
     CEGUI::Window* d_currentlyDisplayedWidgetRoot;
 
-    CEGUI::Window* d_windowLightMouseMoveEvent;
+    CEGUI::Window* d_windowLightPointerMoveEvent;
     CEGUI::Window* d_windowLightUpdatedEvent;
 
     CEGUI::MultiColumnList* d_widgetPropertiesDisplayWindow;

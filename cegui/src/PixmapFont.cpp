@@ -28,7 +28,7 @@
 
 #include "CEGUI/PixmapFont.h"
 #include "CEGUI/ImageManager.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/Font_xmlHandler.h"
 #include "CEGUI/PropertyHelper.h"
 #include "CEGUI/Logger.h"
@@ -125,7 +125,7 @@ void PixmapFont::updateFont()
 
         Image* img = i->second.getImage();
 
-        BasicImage* bi = dynamic_cast<BasicImage*>(img);
+        BitmapImage* bi = dynamic_cast<BitmapImage*>(img);
         if (bi)
         {
             bi->setAutoScaled(d_autoScaled);

@@ -62,10 +62,11 @@ void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer)
     CEGUI::Direct3D11Renderer* d3d_renderer =
         static_cast<CEGUI::Direct3D11Renderer*>(renderer);
 
-    IDevice11& d3d_device = d3d_renderer->getDirect3DDevice();
+    ID3D11Device* d3d_device = d3d_renderer->getDirect3DDevice();
+    ID3D11DeviceContext* d3d_deviceContext = d3d_renderer->getDirect3DDeviceContext();
 
     ID3D11RenderTargetView* rtview;
-    d3d_device.d_context->OMGetRenderTargets(1, &rtview, 0);
+    d3d_deviceContext->OMGetRenderTargets(1, &rtview, 0);
 
     // we release once for the reference we just asked for
     rtview->Release();
@@ -96,7 +97,7 @@ void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer)
     if (SUCCEEDED(res))
     {
         // create render target view using the back buffer
-        res = d3d_device.d_device->CreateRenderTargetView(back_buffer, 0, &rtview);
+        res = d3d_device->CreateRenderTargetView(back_buffer, 0, &rtview);
 
         // release handle to buffer - we have done all we needed to with it.
         back_buffer->Release();
@@ -104,7 +105,7 @@ void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer)
         if (SUCCEEDED(res))
         {
             // bind the back-buffer render target to get the output.
-            d3d_device.d_context->OMSetRenderTargets(1, &rtview, 0);
+            d3d_deviceContext->OMSetRenderTargets(1, &rtview, 0);
 
             // set a basic viewport.
             D3D11_VIEWPORT view_port;
@@ -114,7 +115,7 @@ void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer)
             view_port.MaxDepth = 1.0f;
             view_port.TopLeftX = 0;
             view_port.TopLeftY = 0;
-            d3d_device.d_context->RSSetViewports(1, &view_port);
+            d3d_deviceContext->RSSetViewports(1, &view_port);
 
             // notify CEGUI of change.
             CEGUI::System::getSingleton().notifyDisplaySizeChanged(

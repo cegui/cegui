@@ -58,7 +58,7 @@ public:
     static const String XMLParserElement;
     static const String ImageCodecElement;
     static const String DefaultFontElement;
-    static const String DefaultMouseCursorElement;
+    static const String DefaultPointerIndicatorElement;
     static const String DefaultTooltipElement;
     // xml attribute names
     static const String FilenameAttribute;
@@ -92,8 +92,8 @@ public:
     void loadAutoResources() const;
     //! initialise the system default font according to the config.
     void initialiseDefaultFont() const;
-    //! initialise the system default mouse cursor image according to the config.
-    void initialiseDefaultMouseCursor() const;
+    //! initialise the system default pointer indicator image according to the config.
+    void initialiseDefaultPointerIndicator() const;
     //! initialise the system default tooltip according to the config.
     void initialiseDefaulTooltip() const;
     //! execute the init script as specified in the config.
@@ -156,7 +156,7 @@ private:
     void handleImageCodecElement(const XMLAttributes& attr);
     void handleDefaultTooltipElement(const XMLAttributes& attr);
     void handleDefaultFontElement(const XMLAttributes& attr);
-    void handleDefaultMouseCursorElement(const XMLAttributes& attr);
+    void handleDefaultPointerIndicatorElement(const XMLAttributes& attr);
 
     //! helper to convert resource type string to something more useful.
     ResourceType stringToResourceType(const String& type) const;
@@ -184,8 +184,8 @@ private:
     String d_imageCodecName;
     //! The name of the default font to be set.
     String d_defaultFont;
-    //! The name of the default mouse cursor image to use.
-    String d_defaultMouseImage;
+    //! The name of the default pointer indicator image to use.
+    String d_defaultPointerImage;
     //! The name of the default tooltip window type.
     String d_defaultTooltipType;
     //! name of the initialisation script.
