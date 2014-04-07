@@ -673,8 +673,7 @@ bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1,
     return  clipRect1.left() < clipRect2.right()
         && clipRect1.right() > clipRect2.left()
         && clipRect1.top() < clipRect2.bottom()
-        && clipRect1.bottom() > clipRect2.top()
-        ;
+        && clipRect1.bottom() > clipRect2.top();
 }
 
 //----------------------------------------------------------------------------//
