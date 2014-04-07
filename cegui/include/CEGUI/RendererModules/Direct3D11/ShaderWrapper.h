@@ -81,7 +81,7 @@ public:
 
 protected:
     //! Prepare the uniform variable mapping
-    void prepareUniformVariableMapping(D3D11_MAPPED_SUBRESOURCE& mappedResourceVertShader, D3D11_MAPPED_SUBRESOURCE& mappedResourcePixelShader);
+    void prepareUniformVariableMapping(unsigned char*& resourceDataVS, unsigned char*& resourceDataPS);
     //! Finish the uniform variable mapping
     void finishUniformVariableMapping();
 
@@ -102,9 +102,6 @@ protected:
     std::map<std::string, Direct3D11ParamDesc> d_uniformVariables;
     //! Last states of the set shader parameters
     std::map<std::string, ShaderParameter*> d_shaderParameterStates;
-
-
-        ID3D11SamplerState* d_samplerState;
 };
 
 
