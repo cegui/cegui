@@ -95,7 +95,7 @@ public:
         thrown if \a line is out of range.
     */
     void draw(const Window* ref_wnd,
-              const size_t line, GeometryBuffer& buffer,
+              const size_t line, std::vector<GeometryBuffer*>& geometry_buffers,
               const Vector2f& position, const ColourRect* mod_colours,
               const Rectf* clip_rect, const float space_extra) const;
 

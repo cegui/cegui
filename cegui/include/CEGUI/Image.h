@@ -33,6 +33,13 @@
 #include "CEGUI/ColourRect.h"
 #include "CEGUI/Rect.h"
 
+#include <vector>
+
+#if defined(_MSC_VER)
+#	pragma warning(push)
+#	pragma warning(disable : 4251)
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -161,53 +168,196 @@ class CEGUIEXPORT Image :
     public ChainedXMLHandler
 {
 public:
+
+    /*!
+    \brief
+        A struct that contains the render settings for the Image class.
+    */
+    struct ImageRenderSettings
+    {
+        //! Constructor
+        ImageRenderSettings(const Rectf& dest_area,
+                            const Rectf* clip_area,
+                            bool clipping_enabled,
+                            const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF)) :
+            d_destArea(dest_area),
+            d_clipArea(clip_area),
+            d_clippingEnabled(clipping_enabled),
+            d_multiplyColours(multiplication_colours)
+        {
+        }
+
+        ImageRenderSettings(const ImageRenderSettings& source) :
+            d_destArea(source.d_destArea),
+            d_clipArea(source.d_clipArea),
+            d_clippingEnabled(source.d_clippingEnabled),
+            d_multiplyColours(source.d_multiplyColours)
+        {
+        }
+
+        //! The destination area for the Image.
+        Rectf d_destArea;
+        //! The clipping area of the Image.
+        const Rectf* d_clipArea;
+        //! True of clipping should be enabled for the geometry of this Image.
+        bool d_clippingEnabled;
+        //! The colour rectangle set for this Image. The colours of the rectangle will be multiplied with
+        //! the Image's colours when rendered, i.e. if the colours are all '0xFFFFFFFF' no effect will be seen.
+        //! If this will be used depends on the underlying image.
+        ColourRect d_multiplyColours;
+    };
+
+
+
+    //! Constructor
+    Image(const String& name);
+    Image(const String& name, const Vector2f& pixel_offset,
+          const Rectf& image_area, AutoScaledMode auto_scaled,
+          const Sizef& native_resolution);
+
     virtual ~Image();
 
-    virtual const String& getName() const = 0;
+    /*!
+    \brief
+        Creates a GeometryBuffer from the Image, providing the data
+        needed for rendering.
 
-    virtual const Sizef& getRenderedSize() const = 0;
-    virtual const Vector2f& getRenderedOffset() const = 0;
+    \param geometry_buffers
+        The GeometryBuffer list to which the new geometry of this Image will be added to.
+    \param render_settings
+        The ImageRenderSettings that contain render settings for new GeometryBuffers.
+     */
+    virtual void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                        const ImageRenderSettings& render_settings) const = 0;
+        
+    /*!
+    \brief
+        Returns the name of the Image.
 
-    virtual void render(GeometryBuffer& buffer,
-                        const Rectf& dest_area,
-                        const Rectf* clip_area,
-                        const ColourRect& colours) const = 0;
+    \return
+        The name of the Image.
+    */
+    virtual const String& getName() const;
+        
+    /*!
+    \brief
+        Returns the rendered size of this Image considering the autoscale
+        options that were set.
 
-    virtual void notifyDisplaySizeChanged(const Sizef& size) = 0;
+    \return
+        The rendered size of this Image.
+    */
+    virtual const Sizef& getRenderedSize() const;
+
+        
+    /*!
+    \brief
+        Returns the rendered offset of this Image considering the autoscale
+        options that were set.
+
+    \return
+        The rendered offset of this Image.
+    */
+    virtual const Vector2f& getRenderedOffset() const;
+
+    /*!
+    \brief
+        Notifies the class that the display size of the renderer has changed so that
+        the window can adapt to the new display size accordingly.
+
+    \param size
+        The new display size.
+     */
+    virtual void notifyDisplaySizeChanged(const Sizef& renderer_display_size);
+
+    /*!
+    \brief
+        Sets the rectangular image area of this Image.
+
+    \param image_area
+        The rectangular image area of this Image.
+     */
+    void setImageArea(const Rectf& image_area);
+
+    /*!
+    \brief
+        Sets the pixel offset of this Image.
+
+    \param pixel_offset
+        The pixel offset of this Image.
+    */
+    void setOffset(const Vector2f& pixel_offset);
+
+    
+    /*!
+    \brief
+        Sets the autoscale mode of this Image.
+
+    \param autoscaled
+        The  autoscale mode of this Image.
+    */
+    void setAutoScaled(const AutoScaledMode autoscaled);
+
+    /*!
+    \brief
+        Sets the autoscale native resolution of this Image.
+
+    \param autoscaled
+        The  autoscale native resolution of this Image.
+    */
+    void setNativeResolution(const Sizef& native_res);
+
 
     // Standard Image::render overloads
-    void render(GeometryBuffer& buffer,
-                const Vector2f& position,
-                const Rectf* clip_area = 0) const
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const Rectf& dest_area,
+                const Rectf* clip_area,
+                bool clipping_enabled,
+                const ColourRect& multiplication_colours = ColourRect(0XFFFFFFFF)) const
     {
-        const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rectf(position, getRenderedSize()), clip_area, colours);
+        ImageRenderSettings render_settings(dest_area, clip_area, clipping_enabled, multiplication_colours);
+        render(geometry_buffers, render_settings);
     }
 
-    void render(GeometryBuffer& buffer,
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
+                const Vector2f& position,
+                const Rectf* clip_area = 0,
+                const bool clipping_enabled = false) const
+    {
+        ImageRenderSettings render_settings(Rectf(position, getRenderedSize()), clip_area, clipping_enabled);
+        render(geometry_buffers, render_settings);
+    }
+
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
                 const Vector2f& position,
                 const Rectf* clip_area,
+                const bool clipping_enabled,
                 const ColourRect& colours) const
     {
-        render(buffer, Rectf(position, getRenderedSize()), clip_area, colours);
+        ImageRenderSettings render_settings(Rectf(position, getRenderedSize()), clip_area, clipping_enabled, colours);
+        render(geometry_buffers, render_settings);
     }
 
-    void render(GeometryBuffer& buffer,
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
                 const Vector2f& position,
                 const Sizef& size,
-                const Rectf* clip_area = 0) const
+                const Rectf* clip_area = 0,
+                const bool clipping_enabled = false) const
     {
-        const ColourRect colours(0XFFFFFFFF);
-        render(buffer, Rectf(position, size), clip_area, colours);
+        ImageRenderSettings render_settings(Rectf(position, size), clip_area, clipping_enabled);
+        render(geometry_buffers, render_settings);
     }
 
-    void render(GeometryBuffer& buffer,
+
+    void render(std::vector<GeometryBuffer*>& geometry_buffers,
                 const Vector2f& position,
                 const Sizef& size,
                 const Rectf* clip_area,
+                const bool clipping_enabled,
                 const ColourRect& colours) const
     {
-        render(buffer, Rectf(position, size), clip_area, colours);
+        ImageRenderSettings render_settings(Rectf(position, size), clip_area, clipping_enabled, colours);
+        render(geometry_buffers, render_settings);
     }
 
     /*!
@@ -229,9 +379,38 @@ protected:
     void elementStartLocal(const String& element,
                            const XMLAttributes& attributes);
     void elementEndLocal(const String& element);
+
+    //! Updates the scaled size and offset values according to the new display size of the renderer 
+    void updateScaledSizeAndOffset(const Sizef& renderer_display_size);
+    //! Updates only the scaled size values according to the new display size of the renderer 
+    void updateScaledSize(const Sizef& renderer_display_size);
+    //! Updates only the scaled offset values according to the new display size of the renderer 
+    void updateScaledOffset(const Sizef& renderer_display_size);
+
+    //! Name used for the Image as defined during creation.
+    String d_name;
+    //! The rectangular area defined for this Image defining position and size of it in relation to
+    //! the underlying data of the Image.
+    Rectf d_imageArea;
+    //! The pixel offset of the Image. It defines ???
+    Vector2f d_pixelOffset;
+    //! Whether image is auto-scaled or not and how.
+    AutoScaledMode d_autoScaled;
+    //! Native resolution used for autoscaling.
+    Sizef d_nativeResolution;
+    //! The size in pixels after having autoscaling applied.
+    Sizef d_scaledSize;
+    //! The offset in pixels after having autoscaling applied.
+    Vector2f d_scaledOffset;
+
 };
 
 } // End of  CEGUI namespace section
+
+
+#if defined(_MSC_VER)
+#	pragma warning(pop)
+#endif
 
 #endif  // end of guard _CEGUIImage_h_
 

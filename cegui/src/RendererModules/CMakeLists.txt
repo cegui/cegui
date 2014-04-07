@@ -6,10 +6,6 @@ if (CEGUI_BUILD_RENDERER_DIRECT3D9)
     add_subdirectory(Direct3D9)
 endif()
 
-if (CEGUI_BUILD_RENDERER_DIRECT3D10)
-    add_subdirectory(Direct3D10)
-endif()
-
 if (CEGUI_BUILD_RENDERER_DIRECT3D11)
     add_subdirectory(Direct3D11)
 endif()

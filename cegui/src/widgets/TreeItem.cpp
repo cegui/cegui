@@ -280,7 +280,7 @@ TreeItem *TreeItem::getTreeItemFromIndex(size_t itemIndex)
 /*************************************************************************
     Draw the tree item in its current state.
 *************************************************************************/
-void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
+void TreeItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                     float alpha, const Rectf* clipper) const
 {
     Rectf finalRect(targetRect);
@@ -290,14 +290,17 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
         Rectf finalPos(finalRect);
         finalPos.setWidth(targetRect.getHeight());
         finalPos.setHeight(targetRect.getHeight());
-        d_iconImage->render(buffer, finalPos, clipper,
+
+        d_iconImage->render(geometry_buffers, finalPos, clipper, true,
                           ColourRect(Colour(1,1,1,alpha)));
         finalRect.d_min.d_x += targetRect.getHeight();
     }
 
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->render(buffer, finalRect, clipper,
+    {
+        d_selectBrush->render(geometry_buffers, finalRect, clipper, true,
                             getModulateAlphaColourRect(d_selectCols, alpha));
+    }
 
     const Font* font = getFont();
 
@@ -315,7 +318,7 @@ void TreeItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
+        d_renderedString.draw(d_owner, i, geometry_buffers, draw_pos, &final_colours, clipper, 0.0f);
         draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }

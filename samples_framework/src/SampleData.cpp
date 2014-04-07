@@ -35,10 +35,11 @@ author:     Lukas E Meindl
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
 #include "CEGUI/TextureTarget.h"
-#include "CEGUI/BasicImage.h"
+#include "CEGUI/BitmapImage.h"
 #include "CEGUI/GUIContext.h"
 #include "CEGUI/Texture.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/InputAggregator.h"
 #include "CEGUI/Window.h"
 #include "CEGUI/Vector.h"
 
@@ -62,6 +63,8 @@ SampleData::SampleData(CEGUI::String sampleName,
     , d_usedFilesString("")
     , d_credits(credits)
     , d_sampleWindow(0)
+    , d_inputAggregator(0),
+    , d_nonDefaultInputAggregator(true),
     , d_guiContext(0)
     , d_textureTarget(0)
     , d_textureTargetImage(0)
@@ -133,10 +136,12 @@ void SampleData::initialise(int width, int height)
 
     d_textureTarget = system.getRenderer()->createTextureTarget();
     d_guiContext = &system.createGUIContext((RenderTarget&)*d_textureTarget);
+    d_inputAggregator = new CEGUI::InputAggregator(d_guiContext);
+    d_inputAggregator->initialise();
     d_textureTarget->declareRenderSize(size);
 
     CEGUI::String imageName(d_textureTarget->getTexture().getName());
-    d_textureTargetImage = static_cast<CEGUI::BasicImage*>(&CEGUI::ImageManager::getSingleton().create("BasicImage", "SampleBrowser/" + imageName));
+    d_textureTargetImage = static_cast<CEGUI::BitmapImage*>(&CEGUI::ImageManager::getSingleton().create("BitmapImage", "SampleBrowser/" + imageName));
     d_textureTargetImage->setTexture(&d_textureTarget->getTexture());
 
     setTextureTargetImageArea(static_cast<float>(height), static_cast<float>(width));
@@ -150,6 +155,12 @@ void SampleData::deinitialise()
     {
         system.destroyGUIContext(*d_guiContext);
         d_guiContext = 0;
+    }
+
+    if (d_inputAggregator && !d_nonDefaultInputAggregator)
+    {
+        delete d_inputAggregator;
+        d_inputAggregator = 0;
     }
 
     if(d_textureTarget)
@@ -168,6 +179,11 @@ void SampleData::deinitialise()
 GUIContext* SampleData::getGuiContext()
 {
     return d_guiContext;
+}
+
+InputAggregator* SampleData::getInputAggregator()
+{
+    return d_inputAggregator;
 }
 
 void SampleData::handleNewWindowSize(float width, float height)
@@ -211,7 +227,7 @@ void SampleData::setTextureTargetImageArea(float height, float width)
 
 
         if(d_textureTargetImage)
-            d_textureTargetImage->setArea(renderArea);
+            d_textureTargetImage->setImageArea(renderArea);
     }
 }
 
@@ -239,6 +255,15 @@ void SampleDataModule::initialise(int width, int height)
 
     d_sample->initialise(d_guiContext);
     d_usedFilesString = d_sample->getUsedFilesString();
+
+    // we need to override the default sample input aggregator
+    if (d_sample->getInputAggregator() != 0)
+    {
+        delete d_inputAggregator;
+
+        d_inputAggregator = d_sample->getInputAggregator();
+        d_nonDefaultInputAggregator = true;
+    }
 }
 
 void SampleDataModule::deinitialise()
