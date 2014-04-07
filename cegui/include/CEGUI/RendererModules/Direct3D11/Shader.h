@@ -44,17 +44,17 @@ namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 /*!
-\brief Enumerated type used when specifying the parameters for one of the shaders
+\brief Enumerated type used when specifying the type of a shader (e.g. vertex shader, or pixel shader)
 
  */
 enum ShaderType
 {
     /**
-     * The vertex shader is associated with the parameter
+     * The ShaderType represents a vertex shader
      */
     ST_VERTEX,
     /**
-     * The pixel shader is associated with the parameter
+     * The ShaderType represents a pixel shader
      */
     ST_PIXEL
 };
