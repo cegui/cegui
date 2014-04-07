@@ -71,8 +71,8 @@ protected:
     Rectf d_area;
     //! tangent of the y FOV half-angle; used to calculate viewing distance.
     static const double d_yfov_tan;
-    //! saved copy of projection matrix
-    mutable mat4Pimpl* d_matrix;
+    //! Projection view matrix cache
+    mutable glm::mat4 d_matrix;
     //! true if saved matrix is up to date
     mutable bool d_matrixValid;
     //! tracks viewing distance (this is set up at the same time as d_matrix)

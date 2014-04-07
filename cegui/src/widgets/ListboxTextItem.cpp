@@ -33,6 +33,7 @@
 #include "CEGUI/Window.h"
 #include "CEGUI/Image.h"
 #include "CEGUI/CoordConverter.h"
+#include "CEGUI/GeometryBuffer.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -132,12 +133,14 @@ Sizef ListboxTextItem::getPixelSize(void) const
 /*************************************************************************
 	Draw the list box item in its current state.
 *************************************************************************/
-void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
+void ListboxTextItem::draw(std::vector<GeometryBuffer*>& geometry_buffers, const Rectf& targetRect,
                            float alpha, const Rectf* clipper) const
 {
     if (d_selected && d_selectBrush != 0)
-        d_selectBrush->render(buffer, targetRect, clipper,
+    {
+        d_selectBrush->render(geometry_buffers, targetRect, clipper, true,
                             getModulateAlphaColourRect(d_selectCols, alpha));
+    }
 
     const Font* font = getFont();
 
@@ -157,7 +160,7 @@ void ListboxTextItem::draw(GeometryBuffer& buffer, const Rectf& targetRect,
 
     for (size_t i = 0; i < d_renderedString.getLineCount(); ++i)
     {
-        d_renderedString.draw(d_owner, i, buffer, draw_pos, &final_colours, clipper, 0.0f);
+        d_renderedString.draw(d_owner, i, geometry_buffers, draw_pos, &final_colours, clipper, 0.0f);
         draw_pos.d_y += d_renderedString.getPixelSize(d_owner, i).d_height;
     }
 }

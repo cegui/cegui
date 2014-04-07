@@ -83,11 +83,11 @@ public:
 
         // load scheme and set up defaults
         SchemeManager::getSingleton().createFromFile(SKIN ".scheme");
-        d_guiContext->getMouseCursor().setDefaultImage(SKIN "/MouseArrow");
+        d_guiContext->getPointerIndicator().setDefaultImage(SKIN "/MouseArrow");
 
         // load an image to use as a background
         if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-            ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+            ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
         // here we will use a StaticImage as the root, then we can use it to place a background image
         Window* background = winMgr.createWindow(SKIN "/StaticImage");

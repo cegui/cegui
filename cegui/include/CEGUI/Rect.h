@@ -354,6 +354,11 @@ public:
         return Rect(d_min * scalar, d_max * scalar);
     }
 
+     inline Rect operator*(Vector2<T> vector) const
+    {
+        return Rect(d_min * vector, d_max * vector);
+    }
+
     const Rect& operator*=(T scalar)
     {
         d_min *= scalar;
@@ -364,6 +369,11 @@ public:
 	Rect operator+(const Rect& r) const
     {
         return Rect(d_min + r.d_min, d_max + r.d_max);
+    }
+
+    Rect operator-(const Rect& r) const
+    {
+        return Rect(d_min - r.d_min, d_max - r.d_max);
     }
     
     inline friend std::ostream& operator << (std::ostream& s, const Rect& v)

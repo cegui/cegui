@@ -41,7 +41,6 @@ Clipboard::Clipboard():
     d_mimeType("text/plain"), // reasonable default I think
     d_buffer(0),
     d_bufferSize(0),
-    
     d_nativeProvider(0)
 {}
 

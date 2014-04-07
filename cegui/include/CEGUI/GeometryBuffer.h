@@ -31,10 +31,64 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/Renderer.h"
 #include "CEGUI/Rect.h"
+#include "CEGUI/RefCounted.h"
+#include "CEGUI/RenderMaterial.h"
+#include "CEGUI/Quaternion.h"
+
+#include "glm/glm.hpp"
+
+#include <vector>
+
+#if defined(_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+class RenderMaterial;
+
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
+    Enumerated type that contains the valid options to specify a vertex attribute
+    of a vertex used in CEGUI
+*/
+enum VertexAttributeType
+{
+    //! Position 0 attribute
+    VAT_POSITION0,
+    //! Colour 0 attribute
+    VAT_COLOUR0,
+    //! Texture coordinate 0 attribute
+    VAT_TEXCOORD0
+};
+
+//----------------------------------------------------------------------------//
+
+/*!
+\brief
+    Enumerated type that contains the valid options for the fill rule mode. The
+    fill rule defines how overlaps of the polygon defined by this GeometryBuffer
+    should be rendered. For further information see "fill-rule" in the SVG
+    standard: http://www.w3.org/TR/SVGTiny12/painting.html#FillRuleProperty
+*/
+enum PolygonFillRule
+{
+    //! Draw the polygon normally - without a fill-rule.
+    PFR_NONE,
+    //! Uses the nonzero rule to determine how the polygon is to be filled.
+    PFR_NON_ZERO,
+    //! Uses the  evenodd rule to determine how the polygon is to be filled.
+    PFR_EVEN_ODD
+};
+
+//----------------------------------------------------------------------------//
+
 /*!
 \brief
     Abstract class defining the interface for objects that buffer geometry for
@@ -44,7 +98,6 @@ class CEGUIEXPORT GeometryBuffer :
     public AllocatedObject<GeometryBuffer>
 {
 public:
-    //! Destructor
     virtual ~GeometryBuffer();
 
     /*!
@@ -58,20 +111,40 @@ public:
         Set the translation to be applied to the geometry in the buffer when it
         is subsequently rendered.
 
-    \param v
+    \param translation
         Vector3 describing the three axis translation vector to be used.
     */
-    virtual void setTranslation(const Vector3f& v) = 0;
+    virtual void setTranslation(const Vector3f& translation);
 
     /*!
     \brief
         Set the rotations to be applied to the geometry in the buffer when it is
         subsequently rendered.
 
-    \param r
+    \param rotationQuat
         Quaternion describing the rotation to be used.
     */
-    virtual void setRotation(const Quaternion& r) = 0;
+    virtual void setRotation(const Quaternion& rotationQuat);
+
+    /*!
+    \brief
+        Set the scaling to be applied to the geometry in the buffer when it is
+        subsequently rendered.
+
+    \param scale
+        Vector3 describing the scale to be used.
+    */
+    virtual void setScale(const Vector3f& scale);
+
+    /*!
+    \brief
+        Set the scaling to be applied to the geometry in the buffer when it is
+        subsequently rendered.
+
+    \param scale
+        Vector2 describing the x and y scale to be used.
+    */
+    void setScale(const Vector2f& scale);
 
     /*!
     \brief
@@ -81,7 +154,17 @@ public:
         Vector3 describing the location of the pivot point to be used when
         applying the rotation to the geometry.
     */
-    virtual void setPivot(const Vector3f& p) = 0;
+    void setPivot(const Vector3f& p);
+
+    /*!
+    \brief
+        Set a custom transformation matrix that will be applied to the
+        geometry in the buffer after all the other transformations.
+
+    \param transformation
+        3x3 Matrix that describes the transformation.
+    */
+    void setCustomTransform(const glm::mat4x4& transformation);
 
     /*!
     \brief
@@ -91,80 +174,154 @@ public:
 
     /*!
     \brief
+        Sets the fill rule that should be used when rendering the geometry.
+
+    \param fill_rule
+        The fill rule that should be used when rendering the geometry.
+    */
+    void setStencilRenderingActive(PolygonFillRule fill_rule);
+
+    /*!
+    \brief
+        Sets the number of vertices that should be rendered after the stencil buffer was filled.
+
+    \param vertex_count
+        The number of vertices that should be rendered after the stencil buffer was filled.
+    */
+    void setStencilPostRenderingVertexCount(unsigned int vertex_count);
+
+    /*!
+    \brief
+        Append the geometry data to the existing data
+
+    \param vertex_data
+        Pointer to an array of floats containing the geometry data that
+        should be added to the GeometryBuffer.
+
+    \param array_size
+        The number of elements in the array.
+    */
+    virtual void appendGeometry(const float* const vertex_data, uint array_size);
+
+
+    /*!
+    \brief
+        Append the geometry data to the existing data
+
+    \param vertex_data
+        Vector of floats containing the geometry data that should be added to the
+        GeometryBuffer.
+    */
+    virtual void appendGeometry(const std::vector<float>& vertex_data) = 0;
+
+    /*!
+    \brief
         Append a single vertex to the buffer.
 
     \param vertex
         Vertex object describing the vertex to be added to the GeometryBuffer.
     */
-    virtual void appendVertex(const Vertex& vertex) = 0;
+    virtual void appendVertex(const TexturedColouredVertex& vertex);
 
     /*!
     \brief
-        Append a number of vertices from an array to the GeometryBuffer.
+        Append a single vertex to the buffer.
 
-    \param vbuff
+    \param vertex
+        Vertex object describing the vertex to be added to the GeometryBuffer.
+    */
+    virtual void appendVertex(const ColouredVertex& vertex);
+
+    /*!
+    \brief
+        Appends vertices with colour attributes from an std::vector to the GeometryBuffer.
+    \param coloured_vertices
+        The vector of ColouredVertices.
+    */
+    void appendGeometry(const std::vector<ColouredVertex>& coloured_vertices);
+
+    /*!
+    \brief
+        Append a number of vertices with colour attributes from an array to the GeometryBuffer.
+
+    \param vertex_array
         Pointer to an array of Vertex objects that describe the vertices that
         are to be added to the GeometryBuffer.
 
     \param vertex_count
-        The number of Vertex objects from the array \a vbuff that are to be
+        The number of Vertex objects from the array \a vertex_array that are to be
         added to the GeometryBuffer.
     */
-    virtual void appendGeometry(const Vertex* const vbuff, uint vertex_count)=0;
+    virtual void appendGeometry(const ColouredVertex* vertex_array, uint vertex_count);
 
     /*!
     \brief
-        Set the active texture to be used with all subsequently added vertices.
+        Appends vertices with texture coordinate and colour attributes from an std::vector to 
+        the GeometryBuffer.
+    \param textured_vertices
+        The vector of TexturedColouredVertices.
+    */
+    void appendGeometry(const std::vector<TexturedColouredVertex>& textured_vertices);
+
+    /*!
+    \brief
+        Append a number of vertices, with texture coordinate and colour attributes,
+        from an array to the GeometryBuffer.
+
+    \param vertex_array
+        Pointer to an array of Vertex objects that describe the vertices that
+        are to be added to the GeometryBuffer.
+
+    \param vertex_count
+        The number of Vertex objects from the array \a vertex_array that are to be
+        added to the GeometryBuffer.
+    */
+    virtual void appendGeometry(const TexturedColouredVertex* vertex_array, uint vertex_count);
+
+    /*!
+    \brief
+        A helper function that sets a texture parameter of the RenderMaterial of this
+        Geometrybuffer.
+
+    \param parameterName
+        Name of the parameter as used inside the shader program. The regular CEGUI
+        texture-parameter that is used inside CEGUI's materials is called "texture0".
 
     \param texture
         Pointer to a Texture object that shall be used for subsequently added
         vertices.  This may be 0, in which case texturing will be disabled for
         subsequently added vertices.
     */
-    virtual void setActiveTexture(Texture* texture) = 0;
+    virtual void setTexture(const std::string& parameterName, const Texture* texture);
 
     /*!
     \brief
         Clear all buffered data and reset the GeometryBuffer to the default
-        state.
+        state. This excludes resettings the vertex attributes.
     */
-    virtual void reset() = 0;
+    virtual void reset();
 
     /*!
     \brief
-        Return a pointer to the currently active Texture object.  This may
-        return 0 if no texture is set.
-
-    \return
-        Pointer the Texture object that is currently active, or 0 if texturing
-        is not being used.
-    */
-    virtual Texture* getActiveTexture() const = 0;
-
-    /*!
-    \brief
-        Return the total number of vertices currently held by this
-        GeometryBuffer object.
+        Returns the vertex count of this GeometryBuffer, which is determined based
+        on the the used vertex layout and the size of the vertex data
 
     \return
         The number of vertices that have been appended to this GeometryBuffer.
     */
-    virtual uint getVertexCount() const = 0;
+    virtual uint getVertexCount() const;
 
     /*!
     \brief
-        Return the number of batches of geometry that this GeometryBuffer has
-        split the vertices into.
-
-    \note
-        How batching is done will be largely implementation specific, although
-        it would be reasonable to expect that you will have <em>at least</em>
-        one batch of geometry per texture switch.
+        Returns the total number of floats used by the attributes of the
+        current vertex layout.
 
     \return
-        The number of batches of geometry held by the GeometryBuffer.
+        The total number of floats used by the attributes of the current vertex
+        layout.
     */
-    virtual uint getBatchCount() const = 0;
+    int getVertexAttributeElementCount() const;
+
 
     /*!
     \brief
@@ -180,14 +337,14 @@ public:
         you need to be careful not to delete the RenderEffect if it might still
         be in use!
     */
-    virtual void setRenderEffect(RenderEffect* effect) = 0;
+    virtual void setRenderEffect(RenderEffect* effect);
 
     /*!
     \brief
         Return the RenderEffect object that is assigned to this GeometryBuffer
         or 0 if none.
     */
-    virtual RenderEffect* getRenderEffect() = 0;
+    virtual RenderEffect* getRenderEffect();
 
     /*!
     \brief
@@ -224,7 +381,7 @@ public:
         - false if vertices added after this call should not be clipped
           (other than to the edges of rendering target.
     */
-    virtual void setClippingActive(const bool active) = 0;
+    virtual void setClippingActive(const bool active);
 
     /*
     \brief
@@ -234,19 +391,101 @@ public:
     \return
         - true if vertices subsequently added to the GeometryBuffer will
           be clipped to the clipping region defined for this GeometryBuffer.
-        - false if vertices subsequently added will not be clippled (other than
+        - false if vertices subsequently added will not be clipped (other than
           to the edges of the rendering target).
     */
-    virtual bool isClippingActive() const = 0;
+    virtual bool isClippingActive() const;
+
+    /*
+    \brief
+        Resets the vertex attributes that were set for the vertices of this
+        GeometryBuffer.
+    */
+    void resetVertexAttributes();
+
+    /*
+    \brief
+        Adds a vertex attributes to the list of vertex attributes. The vertex
+        attributes are used to describe the layout of the verrex data. The
+        order in which the attributes are added is the same order in which the
+        data has to be aligned for the vertex. This has be done before adding
+        actual vertex data to the GeometryBuffer.
+
+    \param attribute
+        The attribute that should be added to the list of vertex attributes
+        describing the vertices of this GeometryBuffer.
+    */
+    void addVertexAttribute(VertexAttributeType attribute);
+
+    /*
+    \brief
+        Returns the RenderMaterial that is currently used by this GeometryBuffer.
+
+    \return
+        A reference to the RenderMaterial that is used by this GeometryBuffer.
+    */
+    RefCounted<RenderMaterial> getRenderMaterial() const;
+
+    /*
+    \brief
+        Set a new RenderMaterial to be used by this GeometryBuffer.
+
+    \param render_material
+        A reference to the RenderMaterial that will be set to be used by this
+        GeometryBuffer.
+    */
+    void setRenderMaterial(RefCounted<RenderMaterial> render_material);
 
 protected:
-    //! Constructor.
-    GeometryBuffer();
+    GeometryBuffer(RefCounted<RenderMaterial> renderMaterial);
+
+    //! Reference to the RenderMaterial used for this GeometryBuffer
+    RefCounted<RenderMaterial>  d_renderMaterial;
+
+    //! type of container used to store the geometry's vertex data
+    typedef std::vector<float>  VertexData;
+    //! The container in which the vertex data is stored.
+    VertexData                  d_vertexData;
+    //! The vertex count which is determined based on the used vertex layout
+    unsigned int                d_vertexCount;
+    /*
+    \brief
+        A vector of the attributes of the vertices of this GeometryBuffer. The order
+        in which they were added to the vector is used to define the alignment of the
+        vertex data.
+    */
+    std::vector<VertexAttributeType> d_vertexAttributes;
+
+
+    //! translation vector
+    Vector3f        d_translation;
+    //! rotation quaternion
+    Quaternion      d_rotation;
+    //! scaling vector
+    Vector3f        d_scale;
+    //! pivot point for rotation
+    Vector3f        d_pivot;
+    //! custom transformation matrix
+    glm::mat4x4     d_customTransform;
+    //! true when there have been no changes to the GeometryBuffer's transformation since it has last been updated.
+    mutable bool    d_matrixValid;
 
     //! The BlendMode to use when rendering this GeometryBuffer.
-    BlendMode d_blendMode;
+    BlendMode       d_blendMode;
+    //! The fill rule that should be used when rendering the geometry.
+    PolygonFillRule d_polygonFillRule;
+    //! The amount of vertices that need to be rendered after rendering to the stencil buffer.
+    unsigned int    d_postStencilVertexCount;
+    //! RenderEffect that will be used by the GeometryBuffer
+    RenderEffect*   d_effect;
+    //! True if clipping will be active for the current batch
+    bool            d_clippingActive;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIGeometryBuffer_h_
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
+
+#endif

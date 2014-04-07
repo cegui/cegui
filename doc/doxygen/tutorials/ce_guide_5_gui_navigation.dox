@@ -1,0 +1,83 @@
+namespace CEGUI {
+/**
+@page gui_navigation_tutorial The Beginners Guide to GUI navigation
+@author Timotei Dolean
+@tableofcontents
+
+@section gui_navigation_tutorial_intro Introduction
+GUI navigation is a feature that allows the user of the application to be
+able to navigate through the UI using a specific set of inputs. This can vary
+based on the UI type: in a form you expect that a `tab` would go to the next
+item to be completed or in a game, pressing up/down/enter would navigate the
+menu.
+
+There are two important terms for GUI navigation:
+- Window Navigator
+- Navigation Strategy
+
+<br>
+@section gui_navigation_tutorial_navigation_strategy The Navigation Strategy
+A navigation strategy provides a specific algorithm for navigating the UI.
+This separation between the navigation strategy and the GUIContext or the
+window navigator provides a powerful opportunity to implement custom logic
+for navigation which takes into account any extra external data you want.
+
+The navigation strategy is represented by the NavigationStrategy interface,
+which comprises a single method:
+@code
+Window* getWindow(Window* neighbour, const String& payload);
+@endcode
+
+- The first parameter is (usually) the current focused (if any) window inside
+the current GUIContext.
+- The second parameter, the payload, is sent based on the way the developer
+creates the window navigator (see below).
+
+Using just this two parameters one can compute the next logical window to be
+focused. The way this strategy can access the current GUI tree is left to the
+developer. For example, the samples define three different strategies:
+LinearNavigationStrategy, MatrixNavigationStrategy and WindowChildrenNavigationStrategy.
+Like their name suggest they either navigate the UI in a linear fashion (e.g.:
+a form), in two dimensional way (e.g.: complex menu) or based on a specific
+Window's children list.
+
+<br>
+@section gui_navigation_tutorial_window_navigator The Window Navigator
+The WindowNavigator is the entity that manages the current focused (active)
+window inside the GUIContext. It takes a series of mappings between
+semantic values and a string payload. When a new semantic input event is injected
+into the GUIContext it checks if the semantic value is present in the map.
+If so, it will unfocus the current (if any) window, and focus the next window
+(if any), which is retrieved based on the NavigationStrategy, by passing the
+mapped payload.
+
+<br>
+@section gui_navigation_tutorial_adding_navigation How to add GUI navigation
+To add GUI navigation you need to perform the following steps:
+- Create a new navigation strategy which inherits from NavigationStrategy:
+@code
+class LinearNavigationStrategy : public CEGUI::NavigationStrategy { ... }
+@endcode
+- Create a method that creates the mappings between semantic values and
+payloads:
+@code
+std::map<int, CEGUI::String> createLinearNavigationMappings()
+{
+    std::map<int, String> mappings;
+
+    mappings[SV_NavigateToNext] = NAVIGATE_NEXT;
+    mappings[SV_NavigateToPrevious] = NAVIGATE_PREVIOUS;
+
+    return mappings;
+}
+@endcode
+- Create a navigation strategy and window navigator instance and attach them
+to the GUIContext:
+@code
+LinearNavigationStrategy* d_linearNavigatorStrategy = new LinearNavigationStrategy();
+WindowNavigator* d_linearWindowNavigator = new WindowNavigator(createLinearNavigationMappings(), d_linearNavigatorStrategy);
+getGUIContext()->setWindowNavigator(d_linearWindowNavigator);
+@endcode
+
+*/
+}

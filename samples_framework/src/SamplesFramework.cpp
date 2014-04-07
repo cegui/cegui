@@ -47,7 +47,7 @@ author:     Lukas E Meindl
 using namespace CEGUI;
 
 //platform-dependant DLL delay-loading includes
-#if (defined( __WIN32__ ) || defined( _WIN32 )) 
+#if (defined( __WIN32__ ) || defined( _WIN32 ))
 #include "windows.h"
 #endif
 
@@ -68,7 +68,7 @@ int main(int argc, char* argv[])
         ++argidx;
     }
 #endif
-    
+
     SamplesFramework sampleFramework(argc > 1 ? argv[argidx] : "");
     return sampleFramework.run();
 }
@@ -92,14 +92,16 @@ SamplesFramework::~SamplesFramework()
         delete d_metaDataWinMgr;
 }
 
-
-
 //----------------------------------------------------------------------------//
 bool SamplesFramework::initialise()
 {
     using namespace CEGUI;
 
     initialiseLoadScreenLayout();
+
+    d_systemInputAggregator = new InputAggregator(
+        &CEGUI::System::getSingletonPtr()->getDefaultGUIContext());
+    d_systemInputAggregator->initialise();
 
     // return true to signalize the initialisation was sucessful and run the
     // SamplesFramework
@@ -110,6 +112,12 @@ bool SamplesFramework::initialise()
 void SamplesFramework::deinitialise()
 {
     unloadSamples();
+
+    if (d_systemInputAggregator != 0)
+    {
+        delete d_systemInputAggregator;
+        d_systemInputAggregator = 0;
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -196,22 +204,12 @@ void SamplesFramework::addSampleDataCppModule(CEGUI::String sampleName,
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 {
-    if (d_selectedSampleData)
-    {
-        if (Key::Escape != ceguiKey)
-            return d_selectedSampleData->getGuiContext()->injectKeyDown(ceguiKey);
-        else
-            stopDisplaySample();
-    }
+    if (Key::Escape != ceguiKey)
+        return getCurrentInputAggregator()->injectKeyDown(ceguiKey);
     else
     {
-        if (Key::Escape != ceguiKey)
-        {
-            if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-                return ceguiSystem->getDefaultGUIContext().injectKeyDown(ceguiKey);
-            else
-                return false;
-        }
+        if (d_selectedSampleData)
+            stopDisplaySample();
         else
             setQuitting(true);
     }
@@ -222,80 +220,57 @@ bool SamplesFramework::injectKeyDown(const CEGUI::Key::Scan& ceguiKey)
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectKeyUp(const CEGUI::Key::Scan& ceguiKey)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->injectKeyUp(ceguiKey);
+    if (getCurrentInputAggregator() == 0)
+        return false;
 
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectKeyUp(ceguiKey);
-
-    return false;
+    return getCurrentInputAggregator()->injectKeyUp(ceguiKey);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectChar(int character)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->injectChar(character);
+    if (getCurrentInputAggregator() == 0)
+        return false;
 
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectChar(character);
-
-    return false;
+    return getCurrentInputAggregator()->injectChar(character);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMouseButtonDown(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->
-            injectMouseButtonDown(ceguiMouseButton);
+    if (getCurrentInputAggregator() == 0)
+        return false;
 
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().
-            injectMouseButtonDown(ceguiMouseButton);
-
-    return false;
+    return getCurrentInputAggregator()->injectMouseButtonDown(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMouseButtonUp(
                                     const CEGUI::MouseButton& ceguiMouseButton)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->
-            injectMouseButtonUp(ceguiMouseButton);
+    if (getCurrentInputAggregator() == 0)
+        return false;
 
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().
-            injectMouseButtonUp(ceguiMouseButton);
-
-    return false;
+    return getCurrentInputAggregator()->injectMouseButtonUp(ceguiMouseButton);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMouseWheelChange(float position)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->
-            injectMouseWheelChange(position);
+    if (getCurrentInputAggregator() == 0)
+        return false;
 
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectMouseWheelChange(position);
-
-    return false;
+    return getCurrentInputAggregator()->injectMouseWheelChange(position);
 }
 
 //----------------------------------------------------------------------------//
 bool SamplesFramework::injectMousePosition(float x, float y)
 {
-    if (d_selectedSampleData)
-        return d_selectedSampleData->getGuiContext()->injectMousePosition(x, y);
+    if (getCurrentInputAggregator() == 0)
+        return false;
 
-    if (CEGUI::System* ceguiSystem = CEGUI::System::getSingletonPtr())
-        ceguiSystem->getDefaultGUIContext().injectMousePosition(x, y);
-
-    return false;
+    return getCurrentInputAggregator()->injectMousePosition(x, y);
 }
 
 //----------------------------------------------------------------------------//
@@ -395,8 +370,8 @@ void SamplesFramework::handleStartDisplaySample(CEGUI::Window* sampleWindow)
     sampleContext->setRenderTarget(defaultRenderTarget);
 
     sampleContext->getRootWindow()->addChild(d_sampleExitButton);
-    sampleContext->getMouseCursor().setPosition(
-        CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().
+    sampleContext->getPointerIndicator().setPosition(
+        CEGUI::System::getSingleton().getDefaultGUIContext().getPointerIndicator().
             getPosition());
 
     d_selectedSampleData = correspondingSampleData;
@@ -411,14 +386,15 @@ void SamplesFramework::stopDisplaySample()
 
     // Since we switch our contexts, the mouse release won't be injected if we
     // don't do it manually
-    sampleGUIContext->injectMouseButtonUp(CEGUI::LeftButton);
+    if (getCurrentInputAggregator() != 0)
+        getCurrentInputAggregator()->injectMouseButtonUp(CEGUI::LeftButton);
     sampleGUIContext->injectTimePulse(0.0f);
 
     sampleGUIContext->getRootWindow()->removeChild(d_sampleExitButton);
     d_selectedSampleData->setGUIContextRTT();
 
-    CEGUI::System::getSingleton().getDefaultGUIContext().getMouseCursor().
-        setPosition(sampleGUIContext->getMouseCursor().getPosition());
+    CEGUI::System::getSingleton().getDefaultGUIContext().getPointerIndicator().
+        setPosition(sampleGUIContext->getPointerIndicator().getPosition());
 
     d_selectedSampleData = 0;
     d_quittingSampleView = false;
@@ -489,7 +465,7 @@ void SamplesFramework::initialiseSampleBrowserLayout()
     CEGUI::SchemeManager::getSingleton().createFromFile("Generic.scheme");
 
     if (!ImageManager::getSingleton().isDefined("BackgroundSampleBrowser"))
-        ImageManager::getSingleton().addFromImageFile(
+        ImageManager::getSingleton().addBitmapImageFromFile(
             "BackgroundSampleBrowser", "BackgroundSampleBrowser.jpg");
 
     d_root = winMgr.loadLayoutFromFile("SampleBrowser.layout");
@@ -574,7 +550,7 @@ bool SamplesFramework::updateInitialisationStep()
 //----------------------------------------------------------------------------//
 void SamplesFramework::initialisationFinalisation()
 {
-    System::getSingleton().getDefaultGUIContext().getMouseCursor().
+    System::getSingleton().getDefaultGUIContext().getPointerIndicator().
         setDefaultImage("SampleBrowserSkin/MouseArrow");
     d_samplesWinMgr->setWindowRatio(d_appWindowWidth / (float)d_appWindowHeight);
 
@@ -675,6 +651,15 @@ bool SamplesFramework::areWindowsIntersecting(CEGUI::Window* window1,
         && clipRect1.top() < clipRect2.bottom()
         && clipRect1.bottom() > clipRect2.top()
         ;
+}
+
+//----------------------------------------------------------------------------//
+CEGUI::InputAggregator* SamplesFramework::getCurrentInputAggregator()
+{
+    if (d_selectedSampleData != 0)
+        return d_selectedSampleData->getInputAggregator();
+
+    return d_systemInputAggregator;
 }
 
 //----------------------------------------------------------------------------//

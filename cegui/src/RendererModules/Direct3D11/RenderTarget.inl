@@ -28,14 +28,21 @@
 #include "CEGUI/RendererModules/Direct3D11/GeometryBuffer.h"
 #include "CEGUI/RenderQueue.h"
 
+#include "glm/gtc/matrix_transform.hpp"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
 template <typename T>
+const double Direct3D11RenderTarget<T>::d_yfov_tan = 0.267949192431123;
+
+//----------------------------------------------------------------------------//
+template <typename T>
 Direct3D11RenderTarget<T>::Direct3D11RenderTarget(Direct3D11Renderer& owner) :
     d_owner(owner),
-    d_device(d_owner.getDirect3DDevice()),
+    d_device(*d_owner.getDirect3DDevice()),
+    d_deviceContext(*d_owner.getDirect3DDeviceContext()),
     d_area(0, 0, 0, 0),
     d_viewDistance(0),
     d_matrixValid(false)
@@ -83,9 +90,9 @@ void Direct3D11RenderTarget<T>::activate()
 
     D3D11_VIEWPORT vp;
     setupViewport(vp);
-    d_device.d_context->RSSetViewports(1, &vp);
+    d_deviceContext.RSSetViewports(1, &vp);
 
-    d_owner.setProjectionMatrix(d_matrix);
+    d_owner.setViewProjectionMatrix(d_projViewMatrix);
 }
 
 //----------------------------------------------------------------------------//
@@ -97,96 +104,106 @@ void Direct3D11RenderTarget<T>::deactivate()
 //----------------------------------------------------------------------------//
 template <typename T>
 void Direct3D11RenderTarget<T>::unprojectPoint(const GeometryBuffer& buff,
-                                            const Vector2f& p_in,
-                                            Vector2f& p_out) const
+    const Vector2f& p_in, Vector2f& p_out) const
 {
     if (!d_matrixValid)
         updateMatrix();
 
+    
     const Direct3D11GeometryBuffer& gb =
         static_cast<const Direct3D11GeometryBuffer&>(buff);
 
-    D3D11_VIEWPORT vp_;
-    setupViewport(vp_);
+    const int vp[4] = {
+        static_cast<int>(d_area.left()),
+        static_cast<int>(d_area.top()),
+        static_cast<int>(d_area.getWidth()),
+        static_cast<int>(d_area.getHeight())
+    };
 
-	//ToDo
-	//ms didn't update their math for 11, so use 10
-	D3D10_VIEWPORT vp;
-	vp.Width=static_cast<unsigned int>(vp_.Width);
-	vp.Height=static_cast<unsigned int>(vp_.Height);
-	vp.TopLeftX=static_cast<int>(vp_.TopLeftX);
-	vp.TopLeftY=static_cast<int>(vp_.TopLeftY);
-	vp.MinDepth=vp_.MinDepth;
-	vp.MaxDepth=vp_.MaxDepth;
+    double in_x, in_y, in_z;
 
-    D3DXVECTOR3 in_vec;
-    in_vec.z = 0.0f;
+    glm::ivec4 viewPort = glm::ivec4(vp[0], vp[1], vp[2], vp[3]);
+    const glm::mat4& projMatrix = d_projViewMatrix;
+    const glm::mat4& modelMatrix = gb.getMatrix();
 
-    // project points to create a plane orientated with GeometryBuffer's data
-    D3DXVECTOR3 p1;
-    D3DXVECTOR3 p2;
-    D3DXVECTOR3 p3;
-    in_vec.x = 0;
-    in_vec.y = 0;
-    D3DXVec3Project(&p1, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    // unproject the ends of the ray
+    glm::vec3 unprojected1;
+    glm::vec3 unprojected2;
+    in_x = vp[2] * 0.5;
+    in_y = vp[3] * 0.5;
+    in_z = -d_viewDistance;
+    unprojected1 =  glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
+    in_x = p_in.d_x;
+    in_y = vp[3] - p_in.d_y;
+    in_z = 0.0;
+    unprojected2 = glm::unProject(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
-    in_vec.x = 1;
-    in_vec.y = 0;
-    D3DXVec3Project(&p2, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    // project points to orientate them with GeometryBuffer plane
+    glm::vec3 projected1;
+    glm::vec3 projected2;
+    glm::vec3 projected3;
+    in_x = 0.0;
+    in_y = 0.0;
+    projected1 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
+    in_x = 1.0;
+    in_y = 0.0;
+    projected2 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
+    in_x = 0.0;
+    in_y = 1.0;
+    projected3 = glm::project(glm::vec3(in_x, in_y, in_z), modelMatrix, projMatrix, viewPort);
 
-    in_vec.x = 0;
-    in_vec.y = 1;
-    D3DXVec3Project(&p3, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
+    // calculate vectors for generating the plane
+    const glm::vec3 pv1 = projected2 - projected1;
+    const glm::vec3 pv2 = projected3 - projected1;
+    // given the vectors, calculate the plane normal
+    const glm::vec3 planeNormal = glm::cross(pv1, pv2);
+    // calculate plane
+    const glm::vec3 planeNormalNormalized = glm::normalize(planeNormal);
+    const double pl_d = - glm::dot(projected1, planeNormalNormalized);
+    // calculate vector of picking ray
+    const glm::vec3 rv = unprojected1 - unprojected2;
+    // calculate intersection of ray and plane
+    const double pn_dot_r1 = glm::dot(unprojected1, planeNormal);
+    const double pn_dot_rv = glm::dot(rv, planeNormal);
+    const double tmp1 = pn_dot_rv != 0.0 ? (pn_dot_r1 + pl_d) / pn_dot_rv : 0.0;
+    const double is_x = unprojected1.x - rv.x * tmp1;
+    const double is_y = unprojected1.y - rv.y * tmp1;
 
-    // create plane from projected points
-    D3DXPLANE surface_plane;
-    D3DXPlaneFromPoints(&surface_plane, &p1, &p2, &p3);
+    p_out.d_x = static_cast<float>(is_x);
+    p_out.d_y = static_cast<float>(is_y);
 
-    // unproject ends of ray
-    in_vec.x = vp.Width * 0.5f;
-    in_vec.y = vp.Height * 0.5f;
-    in_vec.z = -d_viewDistance;
-    D3DXVECTOR3 t1;
-    D3DXVec3Unproject(&t1, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
-
-    in_vec.x = p_in.d_x;
-    in_vec.y = p_in.d_y;
-    in_vec.z = 0.0f;
-    D3DXVECTOR3 t2;
-    D3DXVec3Unproject(&t2, &in_vec, &vp, &d_matrix, 0, gb.getMatrix()); 
-
-    // get intersection of ray and plane
-    D3DXVECTOR3 intersect;
-    D3DXPlaneIntersectLine(&intersect, &surface_plane, &t1, &t2);
-
-    p_out.d_x = intersect.x;
-    p_out.d_y = intersect.y;
+    p_out = p_in; // CrazyEddie wanted this
 }
 
 //----------------------------------------------------------------------------//
 template <typename T>
 void Direct3D11RenderTarget<T>::updateMatrix() const
 {
-    const float fov = 0.523598776f;
     const float w = d_area.getWidth();
     const float h = d_area.getHeight();
     const float aspect = w / h;
     const float midx = w * 0.5f;
     const float midy = h * 0.5f;
-    d_viewDistance = midx / (aspect * 0.267949192431123f);
+    d_viewDistance = midx / (aspect * d_yfov_tan);
 
-    D3DXVECTOR3 eye(midx, midy, -d_viewDistance);
-    D3DXVECTOR3 at(midx, midy, 1);
-    D3DXVECTOR3 up(0, -1, 0);
+    glm::vec3 eye = glm::vec3(midx, midy, float(-d_viewDistance));
+    glm::vec3 center = glm::vec3(midx, midy, 1);
+    glm::vec3 up = glm::vec3(0, -1, 0);
 
-    D3DXMATRIX tmp;
-    D3DXMatrixMultiply(&d_matrix,
-        D3DXMatrixLookAtRH(&d_matrix, &eye, &at, &up),
-        D3DXMatrixPerspectiveFovRH(&tmp, fov, aspect,
-                                   d_viewDistance * 0.5f,
-                                   d_viewDistance * 2.0f));
+    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
 
-    d_matrixValid = false;
+    //D3D depth adaption:
+    glm::mat4 projDepthScale = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.5f));
+    glm::mat4 projDepthTransl = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+
+    projectionMatrix = projDepthScale * projDepthTransl * projectionMatrix;
+
+    // Projection matrix abuse!
+    glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
+  
+    d_projViewMatrix = projectionMatrix * viewMatrix;
+
+    d_matrixValid = true;
 }
 
 //----------------------------------------------------------------------------//

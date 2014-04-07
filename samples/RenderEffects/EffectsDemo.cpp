@@ -100,7 +100,7 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         (window.getTextureTarget().isRenderingInverted() ? -qh : qh) *
             tex.getTexelScaling().d_y;
 
-    const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
+    const glm::vec3 windowPosition = glm::vec3(window.getPosition().d_x, window.getPosition().d_y, 0.0f);
 
     for (size_t y = 0; y < ds_yPivotCount - 1; ++y)
     {
@@ -113,40 +113,40 @@ bool WobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             // first triangle
 
             // vertex 0 - top left
-            d_vertices[idx + 0].position   = Vector3f(d_pivots[x][y], 0.0f) - windowPosition;
-            d_vertices[idx + 0].colour_val = c;
-            d_vertices[idx + 0].tex_coords = Vector2f(x * tcx, y * tcy);
+            d_vertices[idx + 0].d_position   = glm::vec3(d_pivots[x][y].d_x, d_pivots[x][y].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 0].d_colour = c;
+            d_vertices[idx + 0].d_texCoords = glm::vec2(x * tcx, y * tcy);
 
             // vertex 1 - bottom left
-            d_vertices[idx + 1].position   = Vector3f(d_pivots[x][y + 1], 0.0f) - windowPosition;
-            d_vertices[idx + 1].colour_val = c;
-            d_vertices[idx + 1].tex_coords = Vector2f(x * tcx, (y + 1) * tcy);
+            d_vertices[idx + 1].d_position   = glm::vec3(d_pivots[x][y + 1].d_x, d_pivots[x][y + 1].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 1].d_colour = c;
+            d_vertices[idx + 1].d_texCoords = glm::vec2(x * tcx, (y + 1) * tcy);
 
             // vertex 2 - bottom right
-            d_vertices[idx + 2].position   = Vector3f(d_pivots[x + 1][y + 1], 0.0f) - windowPosition;
-            d_vertices[idx + 2].colour_val = c;
-            d_vertices[idx + 2].tex_coords = Vector2f((x + 1) * tcx, (y + 1) * tcy);
+            d_vertices[idx + 2].d_position   = glm::vec3(d_pivots[x + 1][y + 1].d_x, d_pivots[x + 1][y + 1].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 2].d_colour = c;
+            d_vertices[idx + 2].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
 
             // second triangle
 
             // vertex 3 - bottom right
-            d_vertices[idx + 3].position   = Vector3f(d_pivots[x + 1][y + 1], 0.0f) - windowPosition;
-            d_vertices[idx + 3].colour_val = c;
-            d_vertices[idx + 3].tex_coords = Vector2f((x + 1) * tcx, (y + 1) * tcy);
+            d_vertices[idx + 3].d_position   = glm::vec3(d_pivots[x + 1][y + 1].d_x, d_pivots[x + 1][y + 1].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 3].d_colour = c;
+            d_vertices[idx + 3].d_texCoords = glm::vec2((x + 1) * tcx, (y + 1) * tcy);
 
             // vertex 4 - top right
-            d_vertices[idx + 4].position   = Vector3f(d_pivots[x + 1][y], 0.0f) - windowPosition;
-            d_vertices[idx + 4].colour_val = c;
-            d_vertices[idx + 4].tex_coords = Vector2f((x + 1) * tcx, y * tcy);
+            d_vertices[idx + 4].d_position   = glm::vec3(d_pivots[x + 1][y].d_x, d_pivots[x + 1][y].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 4].d_colour = c;
+            d_vertices[idx + 4].d_texCoords = glm::vec2((x + 1) * tcx, y * tcy);
 
             // vertex 5 - top left
-            d_vertices[idx + 5].position   = Vector3f(d_pivots[x][y], 0.0f) - windowPosition;
-            d_vertices[idx + 5].colour_val = c;
-            d_vertices[idx + 5].tex_coords = Vector2f(x * tcx, y * tcy);
+            d_vertices[idx + 5].d_position   = glm::vec3(d_pivots[x][y].d_x, d_pivots[x][y].d_y, 0.0f) - windowPosition;
+            d_vertices[idx + 5].d_colour = c;
+            d_vertices[idx + 5].d_texCoords = glm::vec2(x * tcx, y * tcy);
         }
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture("texture0", &tex);
     geometry.appendGeometry(d_vertices, ds_vertexCount);
 
     // false, because we do not want the default geometry added!
@@ -168,7 +168,7 @@ bool WobblyWindowEffect::update(const float elapsed, CEGUI::RenderingWindow& win
 
     const CEGUI::Rectf pixelRect = CEGUI::Rectf(window.getPosition(), window.getSize());
 
-    const CEGUI::MouseCursor& cursor = d_window->getGUIContext().getMouseCursor();
+    const CEGUI::PointerIndicator& cursor = d_window->getGUIContext().getPointerIndicator();
 
     bool changed = false;
 
@@ -279,38 +279,38 @@ bool OldWobblyWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
             rig_adj = ((rig_adj*rig_adj) / 3) * (dragY < 0 ? -1 : 1);
 
             // vertex 0
-            vb[idx + 0].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
-            vb[idx + 0].colour_val = c;
-            vb[idx + 0].tex_coords = Vector2f(i * tcx, j*tcy);
+            vb[idx + 0].d_position   = glm::vec3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 0].d_colour = c;
+            vb[idx + 0].d_texCoords = glm::vec2(i * tcx, j*tcy);
 
             // vertex 1
-            vb[idx + 1].position   = Vector3f(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
-            vb[idx + 1].colour_val = c;
-            vb[idx + 1].tex_coords = Vector2f(i*tcx, j*tcy+tcy);
+            vb[idx + 1].d_position   = glm::vec3(i * qw - bot_adj, j * qh + qh - lef_adj, 0.0f);
+            vb[idx + 1].d_colour = c;
+            vb[idx + 1].d_texCoords = glm::vec2(i*tcx, j*tcy+tcy);
 
             // vertex 2
-            vb[idx + 2].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
-            vb[idx + 2].colour_val = c;
-            vb[idx + 2].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 2].d_position   = glm::vec3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 2].d_colour = c;
+            vb[idx + 2].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 3
-            vb[idx + 3].position   = Vector3f(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
-            vb[idx + 3].colour_val = c;
-            vb[idx + 3].tex_coords = Vector2f(i*tcx+tcx, j*tcy+tcy);
+            vb[idx + 3].d_position   = glm::vec3(i * qw + qw - bot_adj, j * qh + qh - rig_adj, 0.0f);
+            vb[idx + 3].d_colour = c;
+            vb[idx + 3].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy+tcy);
 
             // vertex 4
-            vb[idx + 4].position   = Vector3f(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
-            vb[idx + 4].colour_val = c;
-            vb[idx + 4].tex_coords = Vector2f(i*tcx+tcx, j*tcy);
+            vb[idx + 4].d_position   = glm::vec3(i * qw + qw - top_adj, j * qh - rig_adj, 0.0f);
+            vb[idx + 4].d_colour = c;
+            vb[idx + 4].d_texCoords = glm::vec2(i*tcx+tcx, j*tcy);
 
             // vertex 5
-            vb[idx + 5].position   = Vector3f(i * qw - top_adj, j * qh - lef_adj, 0.0f);
-            vb[idx + 5].colour_val = c;
-            vb[idx + 5].tex_coords = Vector2f(i * tcx, j*tcy);
+            vb[idx + 5].d_position   = glm::vec3(i * qw - top_adj, j * qh - lef_adj, 0.0f);
+            vb[idx + 5].d_colour = c;
+            vb[idx + 5].d_texCoords = glm::vec2(i * tcx, j*tcy);
         }
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture("texture0", &tex);
     geometry.appendGeometry(vb, buffsize);
 
     // false, because we do not want the default geometry added!
@@ -443,7 +443,7 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
     float uvTop = window.getTextureTarget().isRenderingInverted() ? 1.0f : 0.0f;
     float uvBot = window.getTextureTarget().isRenderingInverted() ? 0.0f : 1.0f;
 
-    const Vector3f windowPosition = Vector3f(window.getPosition(), 0.0f);
+    const glm::vec3 windowPosition = glm::vec3(window.getPosition().d_x, window.getPosition().d_y, 0.0f);
     const Vector2f& currentTopLeft = d_currentPosition ;
     const Vector2f currentBottomRight = d_currentPosition +
         Vector2f(window.getSize().d_width, window.getSize().d_height);
@@ -452,39 +452,39 @@ bool ElasticWindowEffect::realiseGeometry(CEGUI::RenderingWindow& window,
         // first triangle
 
         // vertex 0 - top left
-        d_vertices[0].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
-        d_vertices[0].colour_val = c;
-        d_vertices[0].tex_coords = Vector2f(0.0f, uvTop);
+        d_vertices[0].d_position   = glm::vec3(currentTopLeft.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[0].d_colour = c;
+        d_vertices[0].d_texCoords = glm::vec2(0.0f, uvTop);
 
         // vertex 1 - bottom left
-        d_vertices[1].position   = Vector3f(currentTopLeft.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
-        d_vertices[1].colour_val = c;
-        d_vertices[1].tex_coords = Vector2f(0.0f, uvBot);
+        d_vertices[1].d_position   = glm::vec3(currentTopLeft.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[1].d_colour = c;
+        d_vertices[1].d_texCoords = glm::vec2(0.0f, uvBot);
 
         // vertex 2 - bottom right
-        d_vertices[2].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
-        d_vertices[2].colour_val = c;
-        d_vertices[2].tex_coords = Vector2f(1.0f, uvBot);
+        d_vertices[2].d_position   = glm::vec3(currentBottomRight.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[2].d_colour = c;
+        d_vertices[2].d_texCoords = glm::vec2(1.0f, uvBot);
 
         // second triangle
 
         // vertex 3 - bottom right
-        d_vertices[3].position   = Vector3f(currentBottomRight, 0.0f) - windowPosition;
-        d_vertices[3].colour_val = c;
-        d_vertices[3].tex_coords = Vector2f(1.0f, uvBot);
+        d_vertices[3].d_position   = glm::vec3(currentBottomRight.d_x, currentBottomRight.d_y, 0.0f) - windowPosition;
+        d_vertices[3].d_colour = c;
+        d_vertices[3].d_texCoords = glm::vec2(1.0f, uvBot);
 
         // vertex 4 - top right
-        d_vertices[4].position   = Vector3f(currentBottomRight.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
-        d_vertices[4].colour_val = c;
-        d_vertices[4].tex_coords = Vector2f(1.0f, uvTop);
+        d_vertices[4].d_position   = glm::vec3(currentBottomRight.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[4].d_colour = c;
+        d_vertices[4].d_texCoords = glm::vec2(1.0f, uvTop);
 
         // vertex 5 - top left
-        d_vertices[5].position   = Vector3f(currentTopLeft, 0.0f) - windowPosition;
-        d_vertices[5].colour_val = c;
-        d_vertices[5].tex_coords = Vector2f(0.0f, uvTop);
+        d_vertices[5].d_position   = glm::vec3(currentTopLeft.d_x, currentTopLeft.d_y, 0.0f) - windowPosition;
+        d_vertices[5].d_colour = c;
+        d_vertices[5].d_texCoords = glm::vec2(0.0f, uvTop);
     }
 
-    geometry.setActiveTexture(&tex);
+    geometry.setTexture("texture0", &tex);
     geometry.appendGeometry(d_vertices, ds_vertexCount);
 
     // false, because we do not want the default geometry added!
@@ -578,7 +578,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     // load scheme and set up defaults
     SchemeManager::getSingleton().createFromFile("TaharezLook.scheme");
     SchemeManager::getSingleton().createFromFile("VanillaSkin.scheme");
-    guiContext->getMouseCursor().setDefaultImage("TaharezLook/MouseArrow");
+    guiContext->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     // load font and setup default if not loaded via scheme
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
@@ -587,10 +587,10 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
 
     // load an image to use as a background
     if( !ImageManager::getSingleton().isDefined("SpaceBackgroundImage") )
-        ImageManager::getSingleton().addFromImageFile("SpaceBackgroundImage", "SpaceBackground.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("SpaceBackgroundImage", "SpaceBackground.jpg");
 
     if( !ImageManager::getSingleton().isDefined("AliasingTestImage") )
-        ImageManager::getSingleton().addFromImageFile("AliasingTestImage", "Aliasing.jpg");
+        ImageManager::getSingleton().addBitmapImageFromFile("AliasingTestImage", "Aliasing.jpg");
 
     // here we will use a StaticImage as the root, then we can use it to place a background image
     Window* background = winMgr.createWindow("TaharezLook/StaticImage", "background_wnd");
@@ -651,7 +651,7 @@ bool EffectsDemo::initialise(CEGUI::GUIContext* guiContext)
     aliasingFrameWnd->setSizingEnabled(true);
     aliasingFrameWnd->setCloseButtonEnabled(false);
     aliasingFrameWnd->setTitleBarEnabled(true);
-    aliasingFrameWnd->setText("Elastic Window - Aliasing Testimage");
+    aliasingFrameWnd->setText("Elastic Window Effect");
 
     // Image window setup
     aliasingWnd->setSize(CEGUI::USize(cegui_reldim(1.0f), cegui_reldim(1.0f)));

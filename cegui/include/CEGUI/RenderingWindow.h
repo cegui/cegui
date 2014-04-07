@@ -299,8 +299,8 @@ protected:
     TextureTarget& d_textarget;
     //! RenderingSurface that owns this object, we render back to this object.
     RenderingSurface* d_owner;
-    //! GeometryBuffer that holds geometry for drawing this window.
-    GeometryBuffer* d_geometry;
+    //! The geometry buffers that cache the geometry drawn by this Window.
+    GeometryBuffer& d_geometryBuffer;
     //! indicates whether data in GeometryBuffer is up-to-date
     bool d_geometryValid;
     //! Position of this RenderingWindow

@@ -1,9 +1,10 @@
 /***********************************************************************
-    filename:   CEGUIDirect3D11TextureTarget.cpp
-    created:    Wed May 5 2010
+    filename:   TextureTarget.cpp
+    created:    Sun, 6th April 2014
+    author:     Lukas E Meindl
 *************************************************************************/
 /***************************************************************************
- *   Copyright (C) 2004 - 2011 Paul D Turner & The CEGUI Development Team
+ *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
  *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
@@ -82,7 +83,7 @@ bool Direct3D11TextureTarget::isImageryCache() const
 void Direct3D11TextureTarget::clear()
 {
     const float colour[] = { 0, 0, 0, 0 };
-    d_device.d_context->ClearRenderTargetView(d_renderTargetView, colour);
+    d_deviceContext.ClearRenderTargetView(d_renderTargetView, colour);
 }
 
 //----------------------------------------------------------------------------//
@@ -123,14 +124,14 @@ void Direct3D11TextureTarget::initialiseRenderTexture()
     tex_desc.SampleDesc.Count = 1;
     tex_desc.Usage = D3D11_USAGE_DEFAULT;
     tex_desc.BindFlags = D3D11_BIND_RENDER_TARGET | D3D11_BIND_SHADER_RESOURCE;
-    d_device.d_device->CreateTexture2D(&tex_desc, 0, &d_texture);
+    d_device.CreateTexture2D(&tex_desc, 0, &d_texture);
 
     // create render target view, so we can render to the thing
     D3D11_RENDER_TARGET_VIEW_DESC rtv_desc;
     rtv_desc.Format = tex_desc.Format;
     rtv_desc.ViewDimension = D3D11_RTV_DIMENSION_TEXTURE2D;
     rtv_desc.Texture2D.MipSlice = 0;
-    d_device.d_device->CreateRenderTargetView(d_texture, &rtv_desc, &d_renderTargetView);
+    d_device.CreateRenderTargetView(d_texture, &rtv_desc, &d_renderTargetView);
 
     d_CEGUITexture->setDirect3DTexture(d_texture);
     d_CEGUITexture->setOriginalDataSize(d_area.getSize());
@@ -162,10 +163,10 @@ void Direct3D11TextureTarget::resizeRenderTexture()
 //----------------------------------------------------------------------------//
 void Direct3D11TextureTarget::enableRenderTexture()
 {
-    d_device.d_context->OMGetRenderTargets(1, &d_previousRenderTargetView,
+    d_deviceContext.OMGetRenderTargets(1, &d_previousRenderTargetView,
                                 &d_previousDepthStencilView);
 
-    d_device.d_context->OMSetRenderTargets(1, &d_renderTargetView, 0);
+    d_deviceContext.OMSetRenderTargets(1, &d_renderTargetView, 0);
 }
 
 //----------------------------------------------------------------------------//
@@ -176,7 +177,7 @@ void Direct3D11TextureTarget::disableRenderTexture()
     if (d_previousDepthStencilView)
         d_previousDepthStencilView->Release();
 
-    d_device.d_context->OMSetRenderTargets(1, &d_previousRenderTargetView,
+    d_deviceContext.OMSetRenderTargets(1, &d_previousRenderTargetView,
                                 d_previousDepthStencilView);
 
     d_previousRenderTargetView = 0;
