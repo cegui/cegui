@@ -29,6 +29,7 @@
 #include "CEGUI/RendererModules/Null/GeometryBuffer.h"
 #include "CEGUI/RendererModules/Null/TextureTarget.h"
 #include "CEGUI/RendererModules/Null/Texture.h"
+#include "CEGUI/RendererModules/Null/ShaderWrapper.h"
 #include "CEGUI/ImageCodec.h"
 #include "CEGUI/Exceptions.h"
 #include "CEGUI/System.h"
@@ -106,12 +107,52 @@ RenderTarget& NullRenderer::getDefaultRenderTarget()
 }
 
 //----------------------------------------------------------------------------//
-GeometryBuffer& NullRenderer::createGeometryBuffer()
+RefCounted<RenderMaterial> NullRenderer::createRenderMaterial(const DefaultShaderType shaderType) const
 {
-    NullGeometryBuffer* gb = CEGUI_NEW_AO NullGeometryBuffer();
+    if(shaderType == DS_TEXTURED)
+    {
+        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperTextured));
 
-    d_geometryBuffers.push_back(gb);
-    return *gb;
+        return render_material;
+    }
+    else if(shaderType == DS_SOLID)
+    {
+        RefCounted<RenderMaterial> render_material(CEGUI_NEW_AO RenderMaterial(d_shaderWrapperSolid));
+
+        return render_material;
+    }
+    else
+    {
+        CEGUI_THROW(RendererException(
+            "A default shader of this type does not exist."));
+
+        return RefCounted<RenderMaterial>();
+    }
+}
+
+//----------------------------------------------------------------------------//
+GeometryBuffer& NullRenderer::createGeometryBufferTextured(RefCounted<RenderMaterial> renderMaterial)
+{
+    NullGeometryBuffer* geom_buffer = CEGUI_NEW_AO NullGeometryBuffer(renderMaterial);
+
+    geom_buffer->addVertexAttribute(VAT_POSITION0);
+    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+    geom_buffer->addVertexAttribute(VAT_TEXCOORD0);
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
+}
+
+//----------------------------------------------------------------------------//
+GeometryBuffer& NullRenderer::createGeometryBufferColoured(RefCounted<RenderMaterial> renderMaterial)
+{
+    NullGeometryBuffer* geom_buffer = CEGUI_NEW_AO NullGeometryBuffer(renderMaterial);
+
+    geom_buffer->addVertexAttribute(VAT_POSITION0);
+    geom_buffer->addVertexAttribute(VAT_COLOUR0);
+
+    addGeometryBuffer(*geom_buffer);
+    return *geom_buffer;
 }
 
 //----------------------------------------------------------------------------//
@@ -318,6 +359,9 @@ NullRenderer::NullRenderer() :
 //----------------------------------------------------------------------------//
 NullRenderer::~NullRenderer()
 {
+    delete d_shaderWrapperTextured;
+    delete d_shaderWrapperSolid;
+
     destroyAllGeometryBuffers();
     destroyAllTextureTargets();
     destroyAllTextures();
@@ -328,6 +372,9 @@ NullRenderer::~NullRenderer()
 //----------------------------------------------------------------------------//
 void NullRenderer::constructor_impl()
 {
+    d_shaderWrapperTextured = new NullShaderWrapper();
+    d_shaderWrapperSolid = new NullShaderWrapper();
+
     // create default target & rendering root (surface) that uses it
     d_defaultTarget = CEGUI_NEW_AO NullRenderTarget<>(*this);
 }
