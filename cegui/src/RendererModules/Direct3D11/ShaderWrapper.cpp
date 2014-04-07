@@ -228,11 +228,11 @@ void Direct3D11ShaderWrapper::createPerObjectBuffer(ShaderType shaderType)
         D3D11_BUFFER_DESC bufferDescription;
         ZeroMemory(&bufferDescription, sizeof(bufferDescription));
         
-        bufferDescription.BindFlags = D3D11_BIND_CONSTANT_BUFFER;
-        bufferDescription.Usage = D3D11_USAGE_DYNAMIC;
+        bufferDescription.BindFlags      = D3D11_BIND_CONSTANT_BUFFER;
+        bufferDescription.Usage          = D3D11_USAGE_DYNAMIC;
         bufferDescription.CPUAccessFlags = D3D11_CPU_ACCESS_WRITE;
-        bufferDescription.MiscFlags = 0;
-        bufferDescription.ByteWidth = shaderBufferDesc.Size;
+        bufferDescription.MiscFlags      = 0;
+        bufferDescription.ByteWidth      = shaderBufferDesc.Size;
     
         if (shaderType == ST_VERTEX)
             d_device->CreateBuffer(&bufferDescription, nullptr, &d_perObjectUniformVarBufferVert);

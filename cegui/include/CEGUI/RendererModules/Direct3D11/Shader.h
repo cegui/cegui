@@ -77,7 +77,7 @@ public:
 
     /*!
     \brief
-        Bind the shader
+        Binds the shader - prepares it to be used for follow-up rendering
     */
     void bind() const;
 
@@ -85,9 +85,9 @@ public:
     D3D11_SHADER_INPUT_BIND_DESC getTextureBindingDesc(const std::string& variableName, ShaderType shaderType);
     //! Returns the binding location of a uniform (constant) variable in the shader
     D3D11_SHADER_VARIABLE_DESC getUniformVariableDescription(const std::string& variableName, ShaderType shaderType);
-
+    //! Returns the ID3D10Blob pointer to the buffer of the vertex shader 
     ID3D10Blob* getVertexShaderBuffer() const;
-
+    //! Returns the ID3D11ShaderReflectionConstantBuffer pointer of the specified shader type
     ID3D11ShaderReflectionConstantBuffer* getShaderReflectionConstBuffer(ShaderType shaderType);
 
 private:
