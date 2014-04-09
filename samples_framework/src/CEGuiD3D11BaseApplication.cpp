@@ -199,9 +199,19 @@ bool CEGuiD3D11BaseApplication::initialiseDirect3D(unsigned int width,
         creationFlags |= D3D11_CREATE_DEVICE_DEBUG;
 #endif
 
+    const D3D_FEATURE_LEVEL featureLevels[] =
+    {
+        D3D_FEATURE_LEVEL_11_0,
+        D3D_FEATURE_LEVEL_10_1,
+        D3D_FEATURE_LEVEL_10_0,
+        D3D_FEATURE_LEVEL_9_3,
+        D3D_FEATURE_LEVEL_9_2,
+        D3D_FEATURE_LEVEL_9_1,
+    };
+
     // initialise main parts of D3D
     res = D3D11CreateDeviceAndSwapChain(0, D3D_DRIVER_TYPE_HARDWARE,
-                                        0, creationFlags, 0, 0, D3D11_SDK_VERSION,
+                                        0, creationFlags, featureLevels, 6, D3D11_SDK_VERSION,
                                         &scd, &pimpl->d_swapChain,
                                         &pimpl->d_device, &pimpl->d_featureLevel,
                                         &pimpl->d_context);
