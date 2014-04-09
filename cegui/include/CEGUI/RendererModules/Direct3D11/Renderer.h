@@ -226,8 +226,9 @@ protected:
     static void logTextureCreation(const String& name);
     //! helper to safely log the destruction of a named texture
     static void logTextureDestruction(const String& name);
+
     //! String holding the renderer identification text.
-    static String d_rendererID;
+    const static String d_rendererID;
 	//! The D3D device context we're using to create various resources with.
 	ID3D11Device* d_device;
 	//! The D3D device context we're using to render

@@ -36,17 +36,16 @@
 #include "CEGUI/System.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/Logger.h"
-#include <algorithm>
-
 #include "Shaders.inl"
+
+#include <algorithm>
 
 // Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-String Direct3D11Renderer::d_rendererID(
-"CEGUI::Direct3D11Renderer - Official Direct3D 11 based 3rd generation renderer"
-" module.");
+const String Direct3D11Renderer::d_rendererID(
+"CEGUI::Direct3D11Renderer - Official Direct3D 11 based 3rd generation renderer module.");
 
 
 //----------------------------------------------------------------------------//
@@ -359,7 +358,31 @@ const Vector2f& Direct3D11Renderer::getDisplayDPI() const
 //----------------------------------------------------------------------------//
 uint Direct3D11Renderer::getMaxTextureSize() const
 {
-    return 8192; //DIRECT3D11 may support even 16384, but most users will use it as feature level 10, so keep it for now
+    //Values taken from http://msdn.microsoft.com/en-us/library/windows/desktop/ff476876%28v=vs.85%29.aspx
+    D3D_FEATURE_LEVEL featureLevel = d_device->GetFeatureLevel();
+    
+    switch(featureLevel)
+    {
+    default:
+    case D3D_FEATURE_LEVEL_11_0:
+        return D3D11_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+        break;
+    case D3D_FEATURE_LEVEL_10_1:
+        return D3D10_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+        break;
+    case D3D_FEATURE_LEVEL_10_0:
+        return D3D10_REQ_TEXTURE2D_U_OR_V_DIMENSION;
+        break;
+    case D3D_FEATURE_LEVEL_9_3:
+        return 4096;
+        break;
+    case D3D_FEATURE_LEVEL_9_2:
+        return 2048;
+        break;
+    case D3D_FEATURE_LEVEL_9_1:
+        return 2048;
+        break;
+    }   
 }
 
 //----------------------------------------------------------------------------//
@@ -588,7 +611,7 @@ void Direct3D11Renderer::initialiseRasterizerStates()
 
     cmdesc.FillMode = D3D11_FILL_SOLID;
     cmdesc.CullMode = D3D11_CULL_NONE;
-    cmdesc.DepthClipEnable = FALSE;
+    cmdesc.DepthClipEnable = TRUE;
     cmdesc.ScissorEnable = TRUE;
 
     HRESULT result = d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorEnabled);
@@ -597,7 +620,7 @@ void Direct3D11Renderer::initialiseRasterizerStates()
 
     cmdesc.FillMode = D3D11_FILL_SOLID;
     cmdesc.CullMode = D3D11_CULL_NONE;
-    cmdesc.DepthClipEnable = FALSE;
+    cmdesc.DepthClipEnable = TRUE;
     cmdesc.ScissorEnable = FALSE;
 
     result = d_device->CreateRasterizerState(&cmdesc, &d_rasterizerStateScissorDisabled);
