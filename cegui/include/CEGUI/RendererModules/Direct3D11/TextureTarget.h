@@ -54,7 +54,7 @@ public:
     Direct3D11TextureTarget(Direct3D11Renderer& owner);
     virtual ~Direct3D11TextureTarget();
 
-    // overrides from Direct3D10RenderTarget
+    // overrides from the superclass
     void activate();
     void deactivate();
     // implementation of RenderTarget interface
@@ -84,7 +84,7 @@ protected:
     //! switch back to previous surface
     void disableRenderTexture();
 
-    //! Direct3D10 texture that's rendered to.
+    //! The texture that we will render to
     ID3D11Texture2D* d_texture;
     //! render target view for d_texture
     ID3D11RenderTargetView* d_renderTargetView;

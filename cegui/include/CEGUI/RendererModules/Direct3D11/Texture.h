@@ -53,26 +53,26 @@ class D3D11_GUIRENDERER_API Direct3D11Texture : public Texture
 public:
     /*!
     \brief
-        set the D3D10 texture that this Texture is based on to the specified
+        set the texture that this Texture is based on to the specified
         texture.
     */
     void setDirect3DTexture(ID3D11Texture2D* tex);
 
     /*!
     \brief
-        Return the internal D3D10 texture used by this Texture object.
+        Return the internal texture used by this Texture object.
 
     \return
-        Pointer to the D3D10 texture interface that this object is using.
+        Pointer to the texture interface that this object is using.
     */
     ID3D11Texture2D* getDirect3DTexture() const;
 
     /*!
     \brief
-        Return the internal D3D10 shader resource view for the texture.
+        Return the internal shader resource view for the texture.
 
     \return
-        Pointer to the ID3D10ShaderResourceView interface.
+        Pointer to the ShaderResourceView interface.
     */
     ID3D11ShaderResourceView* getDirect3DShaderResourceView() const;
 
@@ -105,7 +105,6 @@ protected:
                                                       const String&);
     friend Texture& Direct3D11Renderer::createTexture(const String&,
                                                       const Sizef&);
-    //friend Texture& Direct3D11Renderer::createTexture(ID3D10Texture2D* tex);
     friend void Direct3D11Renderer::destroyTexture(Texture&);
     friend void Direct3D11Renderer::destroyTexture(const String&);
 
@@ -116,7 +115,7 @@ protected:
                       const String& resourceGroup);
     //! Construct texture with a given size.
     Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, const Sizef& sz);
-    //! Construct texture that wraps an existing D3D10 texture.
+    //! Construct texture that wraps an existing texture.
     Direct3D11Texture(ID3D11Device& device, ID3D11DeviceContext& deviceContext, const String& name, ID3D11Texture2D* tex);
     //! Destructor.
     virtual ~Direct3D11Texture();

@@ -33,20 +33,20 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
-//! Direct3D10 based RenderTarget that represents the screen or a portion of it.
+//! Direct3D11 based RenderTarget that represents the screen or a portion of it.
 class D3D11_GUIRENDERER_API Direct3D11ViewportTarget : public Direct3D11RenderTarget<>
 {
 public:
     /*!
     \brief
-        Construct a default Direct3D10ViewportTarget that uses the current
-        Direct3D10 viewport as it's initial area.
+        Construct a default Direct3D11ViewportTarget that uses the current
+        Direct3D11 viewport as it's initial area.
     */
     Direct3D11ViewportTarget(Direct3D11Renderer& owner);
 
     /*!
     \brief
-        Construct a Direct3D10ViewportTarget that uses the specified Rect as
+        Construct a Direct3D11ViewportTarget that uses the specified Rect as
         it's initial area.
 
     \param area
@@ -62,4 +62,4 @@ public:
 
 } // End of  CEGUI namespace section
 
-#endif  // end of guard _CEGUIDirect3D10ViewportTarget_h_
+#endif
