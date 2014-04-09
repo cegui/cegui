@@ -61,8 +61,6 @@ SamplesFrameworkBase* Win32AppHelper::s_samplesFramework(0);
     we othereise would need multiple versions of the D3D headers included
     which is obviously a big no-no.
 *************************************************************************/
-void DeviceReset_Direct3D9(HWND window, CEGUI::Renderer* renderer);
-void DeviceReset_Direct3D10(HWND window, CEGUI::Renderer* renderer);
 void DeviceReset_Direct3D11(HWND window, CEGUI::Renderer* renderer);
 
 /*************************************************************************

@@ -63,7 +63,7 @@ public:
 protected:
     //! helper that initialises the cached matrix
     void updateMatrix() const;
-    //! helper to initialise the D3D10_VIEWPORT \a vp for this target.
+    //! helper to initialise the viewport \a vp for this target.
     void setupViewport(D3D11_VIEWPORT& vp) const;
 
     //! Renderer that created and owns the render target.
