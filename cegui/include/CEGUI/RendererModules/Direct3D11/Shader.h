@@ -95,6 +95,10 @@ private:
     void createVertexShader(const std::string& vertexShaderSource);
     //! Creates the pixel shader from a shader source code string
     void createPixelShader(const std::string& pixelShaderSource);
+    //! Returns the highest pixel shader version available that CEGUI supports
+    std::string getVertexShaderVersion() const;
+    //! Returns the highest pixel shader version available that CEGUI supports
+    std::string getPixelShaderVersion() const;
 
     //! The D3D Device
     ID3D11Device* d_device;

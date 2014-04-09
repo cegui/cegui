@@ -98,8 +98,8 @@ void Direct3D11Shader::createVertexShader(const std::string& vertexShaderSource)
         flags1 |= 0;
 #endif
 
-    result = D3DCompile(static_cast<LPCSTR>(vertexShaderSource.c_str()), vertexShaderSource.size(), "D3D11 Vertex Shader",
-                        0, 0, "VSMain", "vs_4_0", flags1, 0, &d_vertexShaderBuffer, &errorMessage);
+    result = D3DCompile(static_cast<LPCSTR>(vertexShaderSource.c_str()), vertexShaderSource.size(), "CEGUI Vertex Shader",
+                        0, 0, "VSMain", getVertexShaderVersion().c_str(), flags1, 0, &d_vertexShaderBuffer, &errorMessage);
     if(FAILED(result))
     {
 		std::string msg(static_cast<const char*>(errorMessage->GetBufferPointer()), errorMessage->GetBufferSize());
@@ -107,7 +107,6 @@ void Direct3D11Shader::createVertexShader(const std::string& vertexShaderSource)
 		errorMessage->Release();
 		CEGUI_THROW(RendererException(msg));
     }
-
 
     result = d_device->CreateVertexShader(d_vertexShaderBuffer->GetBufferPointer(), d_vertexShaderBuffer->GetBufferSize(), 0, &d_vertShader);
     if(FAILED(result))
@@ -139,7 +138,7 @@ void Direct3D11Shader::createPixelShader(const std::string& pixelShaderSource)
 #endif
 
     result = D3DCompile(static_cast<LPCSTR>(pixelShaderSource.c_str()), pixelShaderSource.size(), "D3D11 Pixel Shader",
-                        0, 0, "PSMain", "ps_4_0", flags1, 0, &d_pixelShaderBuffer, &errorMessage);
+                        0, 0, "PSMain", getPixelShaderVersion().c_str(), flags1, 0, &d_pixelShaderBuffer, &errorMessage);
     if(FAILED(result))
     {
 		std::string msg(static_cast<const char*>(errorMessage->GetBufferPointer()), errorMessage->GetBufferSize());
@@ -162,6 +161,67 @@ void Direct3D11Shader::createPixelShader(const std::string& pixelShaderSource)
         std::string msg("D3DReflect: Shader reflection failed");
 		CEGUI_THROW(RendererException(msg));
     }
+}
+
+
+//----------------------------------------------------------------------------//
+std::string Direct3D11Shader::getVertexShaderVersion() const
+{
+    //Values taken from http://msdn.microsoft.com/en-us/library/windows/desktop/ff476876%28v=vs.85%29.aspx
+    D3D_FEATURE_LEVEL featureLevel = d_device->GetFeatureLevel();
+    
+    switch(featureLevel)
+    {
+    default:
+    case D3D_FEATURE_LEVEL_11_0:
+        return "vs_5_0";
+        break;
+    case D3D_FEATURE_LEVEL_10_1:
+        return "vs_4_0";
+        break;
+    case D3D_FEATURE_LEVEL_10_0:
+        return "vs_4_0";
+        break;
+    case D3D_FEATURE_LEVEL_9_3:
+        return "vs_4_0_level_9_3";
+        break;
+    case D3D_FEATURE_LEVEL_9_2:
+        return "vs_4_0_level_9_1";
+        break;
+    case D3D_FEATURE_LEVEL_9_1:
+        return "vs_4_0_level_9_1";
+        break;
+    }   
+}
+
+//----------------------------------------------------------------------------//
+std::string Direct3D11Shader::getPixelShaderVersion() const
+{
+    //Values taken from http://msdn.microsoft.com/en-us/library/windows/desktop/ff476876%28v=vs.85%29.aspx
+    D3D_FEATURE_LEVEL featureLevel = d_device->GetFeatureLevel();
+    
+    switch(featureLevel)
+    {
+    default:
+    case D3D_FEATURE_LEVEL_11_0:
+        return "ps_5_0";
+        break;
+    case D3D_FEATURE_LEVEL_10_1:
+        return "ps_4_0";
+        break;
+    case D3D_FEATURE_LEVEL_10_0:
+        return "ps_4_0";
+        break;
+    case D3D_FEATURE_LEVEL_9_3:
+        return "ps_4_0_level_9_3";
+        break;
+    case D3D_FEATURE_LEVEL_9_2:
+        return "ps_4_0_level_9_1";
+        break;
+    case D3D_FEATURE_LEVEL_9_1:
+        return "ps_4_0_level_9_1";
+        break;
+    }   
 }
 
 //----------------------------------------------------------------------------//
