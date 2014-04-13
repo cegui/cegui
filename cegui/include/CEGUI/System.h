@@ -228,6 +228,15 @@ public:
     */
     void renderAllGUIContexts();
 
+    /*!
+    \brief
+        Renders the contexts associated with the renderer
+    \todo
+        This needs to be actually made to check if context matches the renderer
+        and for that to work all the contexts need to know their renderer
+    \see renderAllGUIContexts
+    */
+    void renderAllGUIContextsOnTarget(Renderer* contained_in);
 
 	/*!
 	\brief
@@ -607,7 +616,6 @@ protected:
 
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
-
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/

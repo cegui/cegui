@@ -420,6 +420,24 @@ void System::renderAllGUIContexts()
     WindowManager::getSingleton().cleanDeadPool();
 }
 
+void System::renderAllGUIContextsOnTarget(Renderer* contained_in)
+{
+    d_renderer->beginRendering();
+
+    for (GUIContextCollection::iterator i = d_guiContexts.begin();
+        i != d_guiContexts.end();
+        ++i)
+    {
+        // Add a check here to see if the renderer of context matches
+        // contained_in
+        (*i)->draw();
+    }
+
+    d_renderer->endRendering();
+
+    // do final destruction on dead-pool windows
+    WindowManager::getSingleton().cleanDeadPool();
+}
 
 /*************************************************************************
 	Return a pointer to the ScriptModule being used for scripting within
@@ -1003,7 +1021,6 @@ const StringTranscoder& System::getStringTranscoder()
 {
     return d_stringTranscoder;
 }
-
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
