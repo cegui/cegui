@@ -616,6 +616,7 @@ protected:
 
     //! invalidate all windows and any rendering surfaces they may be using.
     void invalidateAllWindows();
+    
 	/*************************************************************************
 		Implementation Data
 	*************************************************************************/
