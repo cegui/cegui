@@ -195,6 +195,16 @@ public:
     //! function to destroy a CEGUI::OgreImageCodec object.
     static void destroyOgreImageCodec(OgreImageCodec& ic);
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    //! Function to initialize required Ogre::Compositor2 workspaces
+    static void createOgreCompositorResources();
+
+	//! Function to update the workspace render target
+	void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
+
     //! set whether CEGUI rendering will occur
     void setRenderingEnabled(const bool enabled);
 
