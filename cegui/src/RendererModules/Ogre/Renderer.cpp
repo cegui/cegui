@@ -390,7 +390,7 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 void OgreRenderer::createOgreCompositorResources(){
     // Create all the definitions for the workspaces and nodes
 
-    Ogre::CompositorManager2* manager = Ogre::Root().getSingleton().
+    Ogre::CompositorManager2* manager = Ogre::Root::getSingleton().
         getCompositorManager2();
 
     auto templatedworkspace = manager->addWorkspaceDefinition("CEGUI_workspace");

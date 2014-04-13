@@ -90,7 +90,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
         // Create a full screen workspace that just clears the screen
-        Ogre::CompositorManager2* manager = Ogre::Root().getSingleton().
+        Ogre::CompositorManager2* manager = Ogre::Root::getSingleton().
             getCompositorManager2();
 
         // Define the workspace first
