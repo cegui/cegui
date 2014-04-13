@@ -29,7 +29,10 @@
 #include "CEGUI/RendererModules/Direct3D11/GeometryBuffer.h"
 #include "CEGUI/RenderQueue.h"
 
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
+#include <math.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -191,13 +194,23 @@ void Direct3D11RenderTarget<T>::updateMatrix() const
     glm::vec3 center = glm::vec3(midx, midy, 1);
     glm::vec3 up = glm::vec3(0, -1, 0);
 
-    glm::mat4 projectionMatrix = glm::perspective(30.f, aspect, float(d_viewDistance * 0.5), float(d_viewDistance * 2.0));
+    const float fovy = 30.f;
+    const float zNear = static_cast<float>(d_viewDistance * 0.5f);
+    const float zFar = static_cast<float>(d_viewDistance * 2.0f);
+    const float f = 1.0f / std::tan(fovy * glm::pi<float>() * 0.5f / 180.0f);
+    const float Q = zFar / (zNear - zFar);
 
-    //D3D depth adaption:
-    glm::mat4 projDepthScale = glm::scale(glm::mat4(1.0f), glm::vec3(1.0f, 1.0f, 0.5f));
-    glm::mat4 projDepthTransl = glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    // We need to have a projection matrix with its depth in clip space ranging from 0 to 1 for nearclip to farclip.
+    // The regular OpenGL projection matrix would work too, but we would lose 1 bit of depth precision, which this matrix should fix:
+    float projectionMatrixFloat[16] =
+    {
+        f/aspect,           0.0f,               0.0f,           0.0f,
+        0.0f,               f,                  0.0f,           0.0f,
+        0.0f,               0.0f,               Q,              -1.0f,
+        0.0f,               0.0f,               Q * zNear,      0.0f
+    };
 
-    projectionMatrix = projDepthScale * projDepthTransl * projectionMatrix;
+    glm::mat4 projectionMatrix = glm::make_mat4(projectionMatrixFloat);
 
     // Projection matrix abuse!
     glm::mat4 viewMatrix = glm::lookAt(eye, center, up);
