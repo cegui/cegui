@@ -266,6 +266,12 @@ void OgreRenderTarget<T>::updateViewport()
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
+	if(d_renderTargetUpdated)
+	{
+		// Change the workspace's target
+		d_owner.updateWorkspaceRenderTarget(*d_renderTarget);
+		d_renderTargetUpdated = false;
+	}
 
 
 #else

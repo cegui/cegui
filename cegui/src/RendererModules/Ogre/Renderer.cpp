@@ -47,9 +47,11 @@
 #include <OgreFrameListener.h>
 #include <OgreViewport.h>
 #include <OgreCamera.h>
+
 #include <Compositor/OgreCompositorManager2.h>
 #include <Compositor/OgreCompositorCommon.h>
 #include <Compositor/OgreCompositorWorkspaceDef.h>
+#include <Compositor/OgreCompositorWorkspace.h>
 #include <Compositor/OgreCompositorNodeDef.h>
 #include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
 #include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
@@ -146,19 +148,21 @@ static Ogre::String S_glsl_core_ps_source(
 // The new method will be used
 // Internal Ogre::RenderQueueListener. This is how the renderer gets notified
 // of workspaces that need rendering
-static class OgreGUIRenderQueueListener
+class OgreGUIRenderQueueListener : public Ogre::RenderQueueListener
 {
 public:
-    OgreGUIRenderQueueListener();
+    OgreGUIRenderQueueListener(OgreRenderer* owner);
 
     void setCEGUIRenderEnabled(bool enabled);
     bool isCEGUIRenderEnabled() const;
+
+	virtual void renderQueueStarted(RenderQueue *rq, uint8 queueGroupId, const String& invocation, bool& skipThisInvocation);
 
 private:
     bool d_enabled;
     OgreRenderer* d_owner;
 
-} S_frameListener;
+};
 
 
 #else // Use the old method
@@ -201,6 +205,11 @@ struct OgreRenderer_impl :
         d_ogreRoot(Ogre::Root::getSingletonPtr()),
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
         d_previousVP(0),
+#else
+		d_frameListener(0),
+		d_dummyScene(0),
+		d_dummyCamera(0),
+		d_workspace(0),
 #endif
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
@@ -239,6 +248,22 @@ struct OgreRenderer_impl :
     Ogre::Viewport* d_previousVP;
     //! Previous projection matrix set on render system.
     Ogre::Matrix4 d_previousProjMatrix;
+
+#else
+    //! This is used to get notifications when our scene is rendered
+    //! no longer static because it requires a pointer to this
+    OgreGUIRenderQueueListener* d_frameListener;
+
+    //! Used to render at the correct time
+    Ogre::SceneManager* d_dummyScene;
+    //! This might not be needed, but it's here
+    Ogre::Camera* d_dummyCamera;
+
+    Ogre::CompositorWorkspace* d_workspace;
+
+    //! Makes all scene names unique
+    static int s_createdSceneNumber;
+
 #endif
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
@@ -267,6 +292,8 @@ struct OgreRenderer_impl :
 String OgreRenderer_impl::d_rendererID(
 "CEGUI::OgreRenderer - Official OGRE based 2nd generation renderer module.");
 
+int OgreRenderer_impl::s_createdSceneNumber = 0;
+
 //----------------------------------------------------------------------------//
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
@@ -294,6 +321,10 @@ OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
             "CEGUI::System object is already initialised."));
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    createOgreCompositorResources();
+#endif
 
     OgreRenderer& renderer = OgreRenderer::create(target);
     OgreResourceProvider& rp = createOgreResourceProvider();
@@ -354,6 +385,52 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+void OgreRenderer::createOgreCompositorResources(){
+    // Create all the definitions for the workspaces and nodes
+
+    Ogre::CompositorManager2* manager = Ogre::Root().getSingleton().
+        getCompositorManager2();
+
+    auto templatedworkspace = manager->addWorkspaceDefinition("CEGUI_workspace");
+
+    // Create a node for rendering on top of everything
+    auto rendernode = manager->addNodeDefinition("CEGUIRenderNode");
+
+    // Use the render target passed from the workspace for rendering on top of
+    // everything
+    rendernode->addTextureSourceName("renderwindow", 0, 
+        Ogre::TextureDefinitionBase::TEXTURE_INPUT);
+
+    // Pass for it
+    auto targetpasses = rendernode->addTargetPass("renderwindow");
+    targetpasses->setNumPasses(2);
+
+    Ogre::CompositorPassClearDef* clearpass = 
+        static_cast<Ogre::CompositorPassClearDef*>(targetpasses->
+            addPass(Ogre::PASS_CLEAR));
+
+    // Only clear depth and stencil since we are rendering on top 
+    // of an existing image
+    clearpass->mClearBufferFlags = Ogre::FBT_DEPTH | Ogre::FBT_STENCIL;
+
+    // Now the render scene pass during which the render queue listener 
+    // should render the GUI
+    Ogre::CompositorPassSceneDef* scenepass = 
+        static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
+            addPass(Ogre::PASS_SCENE));
+
+    // Just render the overlay group since it is the only one used
+    scenepass->mFirstRQ = Ogre::RENDER_QUEUE_OVERLAY;
+    scenepass->mLastRQ = Ogre::RENDER_QUEUE_OVERLAY;
+
+    // Connect the main render target to the node
+    templatedworkspace->connectOutput("OverlayRenderNode", 0);
+    
+}
+#endif
+
+//----------------------------------------------------------------------------//
 void OgreRenderer::destroyOgreResourceProvider(OgreResourceProvider& rp)
 {
     CEGUI_DELETE_AO &rp;
@@ -374,13 +451,21 @@ void OgreRenderer::destroyOgreImageCodec(OgreImageCodec& ic)
 //----------------------------------------------------------------------------//
 void OgreRenderer::setRenderingEnabled(const bool enabled)
 {
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    d_pimpl->d_frameListener->setCEGUIRenderEnabled(enabled);
+#else
     S_frameListener.setCEGUIRenderEnabled(enabled);
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 }
 
 //----------------------------------------------------------------------------//
 bool OgreRenderer::isRenderingEnabled() const
 {
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    return d_pimpl->d_frameListener->isCEGUIRenderEnabled();
+#else
     return S_frameListener.isCEGUIRenderEnabled();
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 }
 
 //----------------------------------------------------------------------------//
@@ -678,9 +763,24 @@ OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
 OgreRenderer::~OgreRenderer()
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    // Remove the listener and then delete the scene
+    d_pimpl->d_dummyScene->removeRenderQueueListener(d_pimpl->d_frameListener);
+
+    d_pimpl->d_ogreRoot->destroySceneManager(d_pimpl->d_dummyScene);
+
+    d_pimpl->d_dummyScene = 0;
+    d_pimpl->d_dummyCamera = 0;
+
+    CEGUI_DELETE_AO d_pimpl->d_frameListener;
+
+    // Remove the workspace so the contents aren't rendered anymore
+    d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
+        d_pimpl->d_workspace);
+    
+    d_pimpl->d_workspace = 0;
 
 #else
-	d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
+    d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
     cleanupShaders();
@@ -688,6 +788,8 @@ OgreRenderer::~OgreRenderer()
     destroyAllGeometryBuffers();
     destroyAllTextureTargets();
     destroyAllTextures();
+
+
 
     CEGUI_DELETE_AO d_pimpl->d_defaultTarget;
     CEGUI_DELETE_AO d_pimpl;
@@ -741,6 +843,35 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 
     // hook into the rendering process
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
+
+    // Create the dummy scene and camera
+    std::stringstream scene_name;
+    scene_name << "CEGUI_forWindow_" << 
+        OgreRenderer_impl::s_createdSceneNumber++;
+
+    d_pimpl->d_dummyScene = d_pimpl->d_ogreRoot->createSceneManager(
+        Ogre::ST_INTERIOR, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD, 
+        scene_name.str());
+
+    // Unused camera for the scene
+    d_pimpl->d_dummyCamera = d_pimpl->d_dummyScene->createCamera(
+        "CEGUI_dummy_camera");
+    
+
+    // We will get notified when the scene is drawn
+    d_pimpl->d_frameListener = CEGUI_NEW_AO OgreGUIRenderQueueListener(this);
+
+    d_pimpl->d_dummyScene->addRenderQueueListener(d_pimpl->d_frameListener);
+
+
+    // Create the workspace for rendering
+    Ogre::CompositorManager2* manager = d_pimpl->d_ogreRoot->
+        getCompositorManager2();
+
+    // The -1 should guarantee this to be rendered last on top of everything
+    d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
+        &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
+
 
 #else
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
@@ -959,6 +1090,21 @@ void OgreRenderer::setDefaultRootRenderTarget(Ogre::RenderTarget& target)
     d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
 }
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target){
+    // There seems to be no way to change the target, so we need to recreate it
+    Ogre::CompositorManager2* manager = d_pimpl->d_ogreRoot->
+        getCompositorManager2();
+
+    d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
+        d_pimpl->d_workspace);
+
+    // The -1 should guarantee this to be rendered last on top of everything
+    d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
+        &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
+}
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
 //----------------------------------------------------------------------------//
 void OgreRenderer::bindShaders()
 {
@@ -1108,7 +1254,8 @@ void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
 
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-OgreGUIRenderQueueListener::OgreGUIRenderQueueListener() : d_enabled(true)
+OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) : 
+	d_enabled(true), d_owner(owner)
 {
 
 }
@@ -1123,6 +1270,16 @@ void OgreGUIRenderQueueListener::setCEGUIRenderEnabled(bool enabled)
 bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
 {
     return d_enabled;
+}
+
+void OgreGUIRenderQueueListener::renderQueueStarted(RenderQueue *rq, 
+    uint8 queueGroupId, const String& invocation, bool& skipThisInvocation)
+{
+    if (d_enabled){
+
+        // We should only render contexts that are on this render target //
+        System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
+    }
 }
 
 //----------------------------------------------------------------------------//

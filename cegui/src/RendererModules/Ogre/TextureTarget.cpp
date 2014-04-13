@@ -74,7 +74,8 @@ void OgreTextureTarget::clear()
     if (!d_viewportValid)
         updateViewport();
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-	
+	// Hopefully it doesn't need clearing, or else we are screwed since we
+	// don't have a pointer to the ViewPort
 #else
 	Ogre::Viewport* const saved_vp = d_renderSystem._getViewport();
 
