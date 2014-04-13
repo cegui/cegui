@@ -149,13 +149,14 @@ static Ogre::String S_glsl_core_ps_source(
 static class OgreGUIRenderQueueListener
 {
 public:
-	OgreGUIRenderQueueListener();
+    OgreGUIRenderQueueListener();
 
-	void setCEGUIRenderEnabled(bool enabled);
-	bool isCEGUIRenderEnabled() const;
+    void setCEGUIRenderEnabled(bool enabled);
+    bool isCEGUIRenderEnabled() const;
 
 private:
-	bool d_enabled;
+    bool d_enabled;
+    OgreRenderer* d_owner;
 
 } S_frameListener;
 
@@ -166,15 +167,15 @@ private:
 static class OgreGUIFrameListener : public Ogre::FrameListener
 {
 public:
-	OgreGUIFrameListener();
+    OgreGUIFrameListener();
 
-	void setCEGUIRenderEnabled(bool enabled);
-	bool isCEGUIRenderEnabled() const;
+    void setCEGUIRenderEnabled(bool enabled);
+    bool isCEGUIRenderEnabled() const;
 
-	bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+    bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 private:
-	bool d_enabled;
+    bool d_enabled;
 
 } S_frameListener;
 
@@ -575,16 +576,16 @@ void OgreRenderer::beginRendering()
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
 #else
-	if ( !d_pimpl->d_previousVP ) 
-	{
-		d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
-		if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
-			d_pimpl->d_previousProjMatrix =
-			d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
-	}
+    if ( !d_pimpl->d_previousVP ) 
+    {
+        d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
+        if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
+            d_pimpl->d_previousProjMatrix =
+            d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+    }
 
-	//FIXME: ???
-	System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
+    //FIXME: ???
+    System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
     initialiseRenderStateSettings();
@@ -599,25 +600,25 @@ void OgreRenderer::endRendering()
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_endFrame();
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-	
+    
 #else
-	//FIXME: ???
-	System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
+    //FIXME: ???
+    System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
-	if ( d_pimpl->d_previousVP ) 
-	{
-		d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
+    if ( d_pimpl->d_previousVP ) 
+    {
+        d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
 
-		if ( d_pimpl->d_previousVP->getCamera() )
-		{
-			d_pimpl->d_renderSystem->_setProjectionMatrix(
-				d_pimpl->d_previousProjMatrix);
-			d_pimpl->d_renderSystem->_setViewMatrix(
-				d_pimpl->d_previousVP->getCamera()->getViewMatrix());
-		}
-		d_pimpl->d_previousVP = 0;
-		d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
-	}
+        if ( d_pimpl->d_previousVP->getCamera() )
+        {
+            d_pimpl->d_renderSystem->_setProjectionMatrix(
+                d_pimpl->d_previousProjMatrix);
+            d_pimpl->d_renderSystem->_setViewMatrix(
+                d_pimpl->d_previousVP->getCamera()->getViewMatrix());
+        }
+        d_pimpl->d_previousVP = 0;
+        d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
+    }
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 }
 
@@ -1115,42 +1116,42 @@ OgreGUIRenderQueueListener::OgreGUIRenderQueueListener() : d_enabled(true)
 //----------------------------------------------------------------------------//
 void OgreGUIRenderQueueListener::setCEGUIRenderEnabled(bool enabled)
 {
-	d_enabled = enabled;
+    d_enabled = enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
 {
-	return d_enabled;
+    return d_enabled;
 }
 
 //----------------------------------------------------------------------------//
 
 #else
 OgreGUIFrameListener::OgreGUIFrameListener() :
-	d_enabled(true)
+    d_enabled(true)
 {
 }
 
 //----------------------------------------------------------------------------//
 void OgreGUIFrameListener::setCEGUIRenderEnabled(bool enabled)
 {
-	d_enabled = enabled;
+    d_enabled = enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool OgreGUIFrameListener::isCEGUIRenderEnabled() const
 {
-	return d_enabled;
+    return d_enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool OgreGUIFrameListener::frameRenderingQueued(const Ogre::FrameEvent&)
 {
-	if (d_enabled)
-		System::getSingleton().renderAllGUIContexts();
+    if (d_enabled)
+        System::getSingleton().renderAllGUIContexts();
 
-	return true;
+    return true;
 }
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
 
