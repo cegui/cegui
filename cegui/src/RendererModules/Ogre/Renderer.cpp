@@ -47,6 +47,13 @@
 #include <OgreFrameListener.h>
 #include <OgreViewport.h>
 #include <OgreCamera.h>
+#include <Compositor/OgreCompositorManager2.h>
+#include <Compositor/OgreCompositorCommon.h>
+#include <Compositor/OgreCompositorWorkspaceDef.h>
+#include <Compositor/OgreCompositorNodeDef.h>
+#include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
+#include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
+#include <OgreRenderQueueListener.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -135,23 +142,43 @@ static Ogre::String S_glsl_core_ps_source(
 );
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+// The new method will be used
+// Internal Ogre::RenderQueueListener. This is how the renderer gets notified
+// of workspaces that need rendering
+static class OgreGUIRenderQueueListener
+{
+public:
+	OgreGUIRenderQueueListener();
+
+	void setCEGUIRenderEnabled(bool enabled);
+	bool isCEGUIRenderEnabled() const;
+
+private:
+	bool d_enabled;
+
+} S_frameListener;
+
+
+#else // Use the old method
 // Internal Ogre::FrameListener based class.  This is how we noew hook into the
 // rendering process (as opposed to render queues previously)
 static class OgreGUIFrameListener : public Ogre::FrameListener
 {
 public:
-    OgreGUIFrameListener();
+	OgreGUIFrameListener();
 
-    void setCEGUIRenderEnabled(bool enabled);
-    bool isCEGUIRenderEnabled() const;
+	void setCEGUIRenderEnabled(bool enabled);
+	bool isCEGUIRenderEnabled() const;
 
-    bool frameRenderingQueued(const Ogre::FrameEvent& evt);
+	bool frameRenderingQueued(const Ogre::FrameEvent& evt);
 
 private:
-    bool d_enabled;
+	bool d_enabled;
 
 } S_frameListener;
 
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 //----------------------------------------------------------------------------//
 //! container type used to hold TextureTargets we create.
 typedef std::vector<TextureTarget*> TextureTargetList;
@@ -171,7 +198,9 @@ struct OgreRenderer_impl :
         // TODO: should be set to correct value
         d_maxTextureSize(2048),
         d_ogreRoot(Ogre::Root::getSingletonPtr()),
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
         d_previousVP(0),
+#endif
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
         d_useShaders(false),
@@ -204,10 +233,12 @@ struct OgreRenderer_impl :
     Ogre::Root* d_ogreRoot;
     //! Pointer to the render system for Ogre.
     Ogre::RenderSystem* d_renderSystem;
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     //! Pointer to the previous viewport set in render system.
     Ogre::Viewport* d_previousVP;
     //! Previous projection matrix set on render system.
     Ogre::Matrix4 d_previousProjMatrix;
+#endif
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
     //! Whether _beginFrame and _endFrame will be called.
@@ -236,6 +267,7 @@ String OgreRenderer_impl::d_rendererID(
 "CEGUI::OgreRenderer - Official OGRE based 2nd generation renderer module.");
 
 //----------------------------------------------------------------------------//
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
@@ -251,7 +283,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 
     return renderer;
 }
-
+#endif
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
                                             const int abi)
@@ -291,13 +323,14 @@ void OgreRenderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer& OgreRenderer::create(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *CEGUI_NEW_AO OgreRenderer();
 }
-
+#endif
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target,
                                    const int abi)
@@ -539,16 +572,21 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
-    if ( !d_pimpl->d_previousVP ) 
-    {
-        d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
-        if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
-            d_pimpl->d_previousProjMatrix =
-                d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
-    }
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
-    //FIXME: ???
-    System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
+#else
+	if ( !d_pimpl->d_previousVP ) 
+	{
+		d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
+		if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
+			d_pimpl->d_previousProjMatrix =
+			d_pimpl->d_previousVP->getCamera()->getProjectionMatrixRS();
+	}
+
+	//FIXME: ???
+	System::getSingleton().getDefaultGUIContext().getRenderTarget().activate();
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
     initialiseRenderStateSettings();
 
     if (d_pimpl->d_makeFrameControlCalls)
@@ -560,24 +598,27 @@ void OgreRenderer::endRendering()
 {
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_endFrame();
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+	
+#else
+	//FIXME: ???
+	System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
-    //FIXME: ???
-    System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
+	if ( d_pimpl->d_previousVP ) 
+	{
+		d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
 
-    if ( d_pimpl->d_previousVP ) 
-    {
-        d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
-    
-        if ( d_pimpl->d_previousVP->getCamera() )
-        {
-            d_pimpl->d_renderSystem->_setProjectionMatrix(
-                d_pimpl->d_previousProjMatrix);
-            d_pimpl->d_renderSystem->_setViewMatrix(
-                d_pimpl->d_previousVP->getCamera()->getViewMatrix());
-        }
-        d_pimpl->d_previousVP = 0;
-        d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
-    }
+		if ( d_pimpl->d_previousVP->getCamera() )
+		{
+			d_pimpl->d_renderSystem->_setProjectionMatrix(
+				d_pimpl->d_previousProjMatrix);
+			d_pimpl->d_renderSystem->_setViewMatrix(
+				d_pimpl->d_previousVP->getCamera()->getViewMatrix());
+		}
+		d_pimpl->d_previousVP = 0;
+		d_pimpl->d_previousProjMatrix = Ogre::Matrix4::IDENTITY;
+	}
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 }
 
 //----------------------------------------------------------------------------//
@@ -605,6 +646,7 @@ const String& OgreRenderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer::OgreRenderer() :
     d_pimpl(CEGUI_NEW_AO OgreRenderer_impl())
 {
@@ -620,6 +662,7 @@ OgreRenderer::OgreRenderer() :
 
     constructor_impl(*rwnd);
 }
+#endif
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
@@ -633,7 +676,11 @@ OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
 //----------------------------------------------------------------------------//
 OgreRenderer::~OgreRenderer()
 {
-    d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+
+#else
+	d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 
     cleanupShaders();
 
@@ -692,7 +739,12 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 #endif
 
     // hook into the rendering process
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+
+#else
     d_pimpl->d_ogreRoot->addFrameListener(&S_frameListener);
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
 }
 
 //----------------------------------------------------------------------------//
@@ -1054,30 +1106,52 @@ void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
 }
 
 //----------------------------------------------------------------------------//
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+OgreGUIRenderQueueListener::OgreGUIRenderQueueListener() : d_enabled(true)
+{
+
+}
+
+//----------------------------------------------------------------------------//
+void OgreGUIRenderQueueListener::setCEGUIRenderEnabled(bool enabled)
+{
+	d_enabled = enabled;
+}
+
+//----------------------------------------------------------------------------//
+bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
+{
+	return d_enabled;
+}
+
+//----------------------------------------------------------------------------//
+
+#else
 OgreGUIFrameListener::OgreGUIFrameListener() :
-    d_enabled(true)
+	d_enabled(true)
 {
 }
 
 //----------------------------------------------------------------------------//
 void OgreGUIFrameListener::setCEGUIRenderEnabled(bool enabled)
 {
-    d_enabled = enabled;
+	d_enabled = enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool OgreGUIFrameListener::isCEGUIRenderEnabled() const
 {
-    return d_enabled;
+	return d_enabled;
 }
 
 //----------------------------------------------------------------------------//
 bool OgreGUIFrameListener::frameRenderingQueued(const Ogre::FrameEvent&)
 {
-    if (d_enabled)
-        System::getSingleton().renderAllGUIContexts();
+	if (d_enabled)
+		System::getSingleton().renderAllGUIContexts();
 
-    return true;
+	return true;
 }
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 } // End of  CEGUI namespace section

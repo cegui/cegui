@@ -65,6 +65,12 @@ typedef SharedPtr<Texture> TexturePtr;
 class Matrix4;
 }
 
+#if (CEGUI_OGRE_VERSION >= (2 << 16))
+// The new Ogre Compositor2 system has to be used since ViewPorts 
+// no longer have the required functionality
+#define CEGUI_USE_OGRE_COMPOSITOR2
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -79,6 +85,7 @@ struct OgreRenderer_impl;
 class OGRE_GUIRENDERER_API OgreRenderer : public Renderer
 {
 public:
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -105,7 +112,7 @@ public:
         use the overload that takes an Ogre::RenderTarget as input.
     */
     static OgreRenderer& bootstrapSystem(const int abi = CEGUI_VERSION_ABI);
-
+#endif
     /*!
     \brief
         Convenience function that creates all the Ogre specific objects and
@@ -151,6 +158,7 @@ public:
     */
     static void destroySystem();
 
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     /*!
     \brief
         Create an OgreRenderer object that uses the default Ogre rendering
@@ -162,6 +170,7 @@ public:
         use the overload that takes an Ogre::RenderTarget as input.
     */
     static OgreRenderer& create(const int abi = CEGUI_VERSION_ABI);
+#endif
 
     /*!
     \brief
