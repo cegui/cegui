@@ -26,22 +26,31 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #ifdef HAVE_CONFIG_H
-#   include "config.h"
+#include "config.h"
 #endif
 
 #if defined(__linux__) || defined(__FreeBSD__) || defined(__NetBSD__) || defined(__HAIKU__)
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 // this controls conditional compile of file for Apple
 #include "CEGUISamplesConfig.h"
-#ifdef CEGUI_SAMPLES_USE_OGRE
+#ifdef CEGUI_BUILD_RENDERER_OGRE
 
 #include <OgreWindowEventUtilities.h>
 #include "CEGuiOgreBaseApplication.h"
 #include "SamplesFrameworkBase.h"
 #include "CEGUI/RendererModules/Ogre/ImageCodec.h"
 #include "CEGUI/RendererModules/Ogre/ResourceProvider.h"
+
+#include <Compositor/OgreCompositorManager2.h>
+#include <Compositor/OgreCompositorCommon.h>
+#include <Compositor/OgreCompositorWorkspaceDef.h>
+#include <Compositor/OgreCompositorWorkspace.h>
+#include <Compositor/OgreCompositorNodeDef.h>
+#include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
+#include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
+#include "Compositor/OgreTextureDefinition.h"
 
 //----------------------------------------------------------------------------//
 CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
@@ -69,18 +78,77 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create the scene manager
         SceneManager* sm = d_ogreRoot->
-            createSceneManager(ST_GENERIC, "SampleSceneMgr");
+            createSceneManager(ST_GENERIC, 2, INSTANCING_CULLING_SINGLETHREAD, 
+			"SampleSceneMgr");
+
         // Create and initialise the camera
         d_camera = sm->createCamera("SampleCam");
         d_camera->setPosition(Vector3(0,0,500));
         d_camera->lookAt(Vector3(0,0,-300));
         d_camera->setNearClipDistance(5);
 
-        // Create a viewport covering whole window
-        Viewport* vp = d_window->addViewport(d_camera);
-        vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
-        // Update the camera aspect ratio to that of the viewport
-        d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+
+        // Create a full screen workspace that just clears the screen
+        Ogre::CompositorManager2* manager = Ogre::Root().getSingleton().
+            getCompositorManager2();
+
+        // Define the workspace first
+        auto templatedworkspace = manager->addWorkspaceDefinition(
+            "Sample_workspace");
+
+        // Create a node for rendering on top of everything
+        auto rendernode = manager->addNodeDefinition("SampleCleaner");
+        
+        rendernode->addTextureSourceName("renderwindow", 0, 
+            Ogre::TextureDefinitionBase::TEXTURE_INPUT);
+
+        // Pass for it
+        auto targetpasses = rendernode->addTargetPass("renderwindow");
+        targetpasses->setNumPasses(2);
+
+        Ogre::CompositorPassClearDef* clearpass = 
+            static_cast<Ogre::CompositorPassClearDef*>(targetpasses->
+            addPass(Ogre::PASS_CLEAR));
+
+        // Only clear depth and stencil since we are rendering on top 
+        // of an existing image
+        clearpass->mClearBufferFlags = Ogre::FBT_COLOUR | Ogre::FBT_DEPTH | 
+            Ogre::FBT_STENCIL;
+
+        // Set the same colour as in below
+        clearpass->mColourValue = ColourValue(0.f, 0.f, 0.f, 0.f);
+        // Other clear value defaults should be fine
+
+
+        // Not sure if the samples want anything in their scenes so every group
+        // will be rendered
+        Ogre::CompositorPassSceneDef* scenepass = 
+            static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
+            addPass(Ogre::PASS_SCENE));
+
+        // Just render the overlay group since it is the only one used
+        scenepass->mFirstRQ = Ogre::RENDER_QUEUE_BACKGROUND;
+        scenepass->mLastRQ = Ogre::RENDER_QUEUE_MAX;
+
+        // Connect the main render target to the node
+        templatedworkspace->connectOutput("SampleCleaner", 0);
+
+        // Create the workspace for rendering
+
+        // This needs to be rendered first...
+        manager->addWorkspace(sm, d_window, d_camera, "Sample_workspace", 
+            true, 0);
+
+#else
+		// Create a viewport covering whole window
+		Viewport* vp = d_window->addViewport(d_camera);
+		vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
+		// Update the camera aspect ratio to that of the viewport
+		d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+        
 
         // create ogre renderer, image codec and resource provider.
         CEGUI::OgreRenderer& renderer = CEGUI::OgreRenderer::create();

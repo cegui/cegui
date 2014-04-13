@@ -295,14 +295,17 @@ String OgreRenderer_impl::d_rendererID(
 int OgreRenderer_impl::s_createdSceneNumber = 0;
 
 //----------------------------------------------------------------------------//
-#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     if (System::getSingletonPtr())
         CEGUI_THROW(InvalidRequestException(
-            "CEGUI::System object is already initialised."));
+	        "CEGUI::System object is already initialised."));
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+	createOgreCompositorResources();
+#endif
 
     OgreRenderer& renderer = create();
     OgreResourceProvider& rp = createOgreResourceProvider();
@@ -311,7 +314,6 @@ OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 
     return renderer;
 }
-#endif
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
                                             const int abi)
@@ -355,14 +357,13 @@ void OgreRenderer::destroySystem()
 }
 
 //----------------------------------------------------------------------------//
-#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer& OgreRenderer::create(const int abi)
 {
     System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
     return *CEGUI_NEW_AO OgreRenderer();
 }
-#endif
+
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::create(Ogre::RenderTarget& target,
                                    const int abi)
@@ -732,7 +733,6 @@ const String& OgreRenderer::getIdentifierString() const
 }
 
 //----------------------------------------------------------------------------//
-#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
 OgreRenderer::OgreRenderer() :
     d_pimpl(CEGUI_NEW_AO OgreRenderer_impl())
 {
@@ -748,7 +748,6 @@ OgreRenderer::OgreRenderer() :
 
     constructor_impl(*rwnd);
 }
-#endif
 
 //----------------------------------------------------------------------------//
 OgreRenderer::OgreRenderer(Ogre::RenderTarget& target) :
