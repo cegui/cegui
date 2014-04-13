@@ -264,6 +264,10 @@ struct OgreRenderer_impl :
     //! Makes all scene names unique
     static int s_createdSceneNumber;
 
+	//! Allows the initialization to remain the same by automatically 
+	//! initializing the Compositor if it isn't already
+	static bool s_compositorResourcesInitialized;
+
 #endif
     //! What we think is the current blend mode to use
     BlendMode d_activeBlendMode;
@@ -293,6 +297,7 @@ String OgreRenderer_impl::d_rendererID(
 "CEGUI::OgreRenderer - Official OGRE based 2nd generation renderer module.");
 
 int OgreRenderer_impl::s_createdSceneNumber = 0;
+bool OgreRenderer_impl::s_compositorResourcesInitialized = false;
 
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
@@ -393,6 +398,13 @@ void OgreRenderer::createOgreCompositorResources(){
     Ogre::CompositorManager2* manager = Ogre::Root::getSingleton().
         getCompositorManager2();
 
+	// We want this to fail if it isn't initialized
+	if (!manager)
+		CEGUI_THROW(RendererException(
+		"Ogre CompositorManager2 is not initialized, "
+		"you must call Ogre::Root::initialiseCompositor() after "
+		"creating at least one window."));
+
     auto templatedworkspace = manager->addWorkspaceDefinition("CEGUI_workspace");
 
     // Create a node for rendering on top of everything
@@ -402,6 +414,8 @@ void OgreRenderer::createOgreCompositorResources(){
     // everything
     rendernode->addTextureSourceName("renderwindow", 0, 
         Ogre::TextureDefinitionBase::TEXTURE_INPUT);
+
+	rendernode->setNumTargetPass(1);
 
     // Pass for it
     auto targetpasses = rendernode->addTargetPass("renderwindow");
@@ -425,9 +439,14 @@ void OgreRenderer::createOgreCompositorResources(){
     scenepass->mFirstRQ = Ogre::RENDER_QUEUE_OVERLAY;
     scenepass->mLastRQ = Ogre::RENDER_QUEUE_OVERLAY;
 
+
+
     // Connect the main render target to the node
-    templatedworkspace->connectOutput("OverlayRenderNode", 0);
+    templatedworkspace->connectOutput("CEGUIRenderNode", 0);
     
+    // Resources now created
+    OgreRenderer_impl::s_compositorResourcesInitialized = true;
+
 }
 #endif
 
@@ -773,8 +792,8 @@ OgreRenderer::~OgreRenderer()
     CEGUI_DELETE_AO d_pimpl->d_frameListener;
 
     // Remove the workspace so the contents aren't rendered anymore
-    d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
-        d_pimpl->d_workspace);
+    //d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
+    //    d_pimpl->d_workspace);
     
     d_pimpl->d_workspace = 0;
 
@@ -843,6 +862,13 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // hook into the rendering process
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
+    // Some automatic bootstrapping
+    if (!OgreRenderer_impl::s_compositorResourcesInitialized)
+    {
+        createOgreCompositorResources();
+    }
+
+
     // Create the dummy scene and camera
     std::stringstream scene_name;
     scene_name << "CEGUI_forWindow_" << 
@@ -868,8 +894,8 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
         getCompositorManager2();
 
     // The -1 should guarantee this to be rendered last on top of everything
-    d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
-        &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
+    //d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
+    //    &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
 
 
 #else
@@ -1274,7 +1300,7 @@ bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
 void OgreGUIRenderQueueListener::renderQueueStarted(RenderQueue *rq, 
     uint8 queueGroupId, const String& invocation, bool& skipThisInvocation)
 {
-    if (d_enabled){
+    if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && d_enabled){
 
         // We should only render contexts that are on this render target //
         System::getSingleton().renderAllGUIContextsOnTarget(d_owner);

@@ -89,9 +89,17 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 
+        Ogre::CompositorManager2* manager = d_ogreRoot->getCompositorManager2();
+
+        // The compositor has to be initialized
+        if (!manager)
+        {
+            d_ogreRoot->initialiseCompositor();
+            manager = d_ogreRoot->getCompositorManager2();
+        }
+
         // Create a full screen workspace that just clears the screen
-        Ogre::CompositorManager2* manager = Ogre::Root::getSingleton().
-            getCompositorManager2();
+        
 
         // Define the workspace first
         auto templatedworkspace = manager->addWorkspaceDefinition(
@@ -103,6 +111,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         rendernode->addTextureSourceName("renderwindow", 0, 
             Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
+		rendernode->setNumTargetPass(1);
         // Pass for it
         auto targetpasses = rendernode->addTargetPass("renderwindow");
         targetpasses->setNumPasses(2);
