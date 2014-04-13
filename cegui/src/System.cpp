@@ -1021,6 +1021,7 @@ const StringTranscoder& System::getStringTranscoder()
 {
     return d_stringTranscoder;
 }
+
 //----------------------------------------------------------------------------//
 
 } // End of  CEGUI namespace section
