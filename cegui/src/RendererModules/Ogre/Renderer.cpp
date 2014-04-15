@@ -428,6 +428,7 @@ void OgreRenderer::createOgreCompositorResources(){
     // of an existing image
     clearpass->mClearBufferFlags = Ogre::FBT_DEPTH | Ogre::FBT_STENCIL;
 
+
     // Now the render scene pass during which the render queue listener 
     // should render the GUI
     Ogre::CompositorPassSceneDef* scenepass = 
@@ -470,6 +471,7 @@ void OgreRenderer::setRenderingEnabled(const bool enabled)
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     d_pimpl->d_frameListener->setCEGUIRenderEnabled(enabled);
+	d_pimpl->d_workspace->setEnabled(false);
 #else
     S_frameListener.setCEGUIRenderEnabled(enabled);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
@@ -789,10 +791,10 @@ OgreRenderer::~OgreRenderer()
     CEGUI_DELETE_AO d_pimpl->d_frameListener;
 
     // Remove the workspace so the contents aren't rendered anymore
-    //d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
-    //    d_pimpl->d_workspace);
+    d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
+        d_pimpl->d_workspace);
     
-    //d_pimpl->d_workspace = 0;
+    d_pimpl->d_workspace = 0;
 
 #else
     d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
@@ -890,8 +892,8 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
         getCompositorManager2();
 
     // The -1 should guarantee this to be rendered last on top of everything
-    //d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
-    //    &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
+    d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
+        &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
 
 
 #else
