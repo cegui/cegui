@@ -248,7 +248,6 @@ struct OgreRenderer_impl :
     Ogre::Viewport* d_previousVP;
     //! Previous projection matrix set on render system.
     Ogre::Matrix4 d_previousProjMatrix;
-
 #else
     //! This is used to get notifications when our scene is rendered
     //! no longer static because it requires a pointer to this
@@ -438,8 +437,6 @@ void OgreRenderer::createOgreCompositorResources(){
     // Just render the overlay group since it is the only one used
     scenepass->mFirstRQ = Ogre::RENDER_QUEUE_OVERLAY;
     scenepass->mLastRQ = Ogre::RENDER_QUEUE_OVERLAY;
-
-
 
     // Connect the main render target to the node
     templatedworkspace->connectOutput("CEGUIRenderNode", 0);
@@ -795,7 +792,7 @@ OgreRenderer::~OgreRenderer()
     //d_pimpl->d_ogreRoot->getCompositorManager2()->removeWorkspace(
     //    d_pimpl->d_workspace);
     
-    d_pimpl->d_workspace = 0;
+    //d_pimpl->d_workspace = 0;
 
 #else
     d_pimpl->d_ogreRoot->removeFrameListener(&S_frameListener);
@@ -834,7 +831,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_displaySize.d_height = target.getHeight();
 
     d_pimpl->d_useGLSLCore = ( d_pimpl->d_renderSystem->getName().compare(0, 8, "OpenGL 3") == 0 ) ;
-
+	
     // create default target & rendering root (surface) that uses it
     d_pimpl->d_defaultTarget =
         CEGUI_NEW_AO OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
@@ -867,7 +864,6 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     {
         createOgreCompositorResources();
     }
-
 
     // Create the dummy scene and camera
     std::stringstream scene_name;
@@ -1112,11 +1108,12 @@ void OgreRenderer::initialiseRenderStateSettings()
 //----------------------------------------------------------------------------//
 void OgreRenderer::setDefaultRootRenderTarget(Ogre::RenderTarget& target)
 {
-    d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
+	d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
 }
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target){
+void OgreRenderer::updateWorkspaceRenderTarget(Ogre::RenderTarget& target)
+{
     // There seems to be no way to change the target, so we need to recreate it
     Ogre::CompositorManager2* manager = d_pimpl->d_ogreRoot->
         getCompositorManager2();
