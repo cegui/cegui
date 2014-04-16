@@ -66,7 +66,7 @@ class Matrix4;
 }
 
 #if (CEGUI_OGRE_VERSION >= (2 << 16))
-// The new Ogre Compositor2 system has to be used since ViewPorts 
+// The new Ogre Compositor2 system has to be used since ViewPorts
 // no longer have the required functionality
 #define CEGUI_USE_OGRE_COMPOSITOR2
 #endif
