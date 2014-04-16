@@ -263,7 +263,7 @@ struct OgreRenderer_impl :
     //! Makes all scene names unique
     static int s_createdSceneNumber;
 
-    //! Allows the initialization to remain the same by automatically 
+    //! Allows the initialization to remain the same by automatically
     //! initializing the Compositor if it isn't already
     static bool s_compositorResourcesInitialized;
 
@@ -413,7 +413,7 @@ void OgreRenderer::createOgreCompositorResources()
 
     // Use the render target passed from the workspace for rendering on top of
     // everything
-    rendernode->addTextureSourceName("renderwindow", 0, 
+    rendernode->addTextureSourceName("renderwindow", 0,
         Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
     rendernode->setNumTargetPass(1);
@@ -422,18 +422,18 @@ void OgreRenderer::createOgreCompositorResources()
     auto targetpasses = rendernode->addTargetPass("renderwindow");
     targetpasses->setNumPasses(2);
 
-    Ogre::CompositorPassClearDef* clearpass = 
+    Ogre::CompositorPassClearDef* clearpass =
         static_cast<Ogre::CompositorPassClearDef*>(targetpasses->
             addPass(Ogre::PASS_CLEAR));
 
-    // Only clear depth and stencil since we are rendering on top 
+    // Only clear depth and stencil since we are rendering on top
     // of an existing image
     clearpass->mClearBufferFlags = Ogre::FBT_DEPTH | Ogre::FBT_STENCIL;
 
 
-    // Now the render scene pass during which the render queue listener 
+    // Now the render scene pass during which the render queue listener
     // should render the GUI
-    Ogre::CompositorPassSceneDef* scenepass = 
+    Ogre::CompositorPassSceneDef* scenepass =
         static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
             addPass(Ogre::PASS_SCENE));
 
@@ -680,7 +680,7 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 void OgreRenderer::beginRendering()
 {
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
-    if ( !d_pimpl->d_previousVP ) 
+    if ( !d_pimpl->d_previousVP )
     {
         d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
         if ( d_pimpl->d_previousVP && d_pimpl->d_previousVP->getCamera() )
@@ -708,7 +708,7 @@ void OgreRenderer::endRendering()
     //FIXME: ???
     System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
-    if ( d_pimpl->d_previousVP ) 
+    if ( d_pimpl->d_previousVP )
     {
         d_pimpl->d_renderSystem->_setViewport(d_pimpl->d_previousVP);
 
@@ -868,11 +868,11 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
 
     // Create the dummy scene and camera
     std::stringstream scene_name;
-    scene_name << "CEGUI_forWindow_" << 
+    scene_name << "CEGUI_forWindow_" <<
         OgreRenderer_impl::s_createdSceneNumber++;
 
     d_pimpl->d_dummyScene = d_pimpl->d_ogreRoot->createSceneManager(
-        Ogre::ST_INTERIOR, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD, 
+        Ogre::ST_INTERIOR, 1, Ogre::INSTANCING_CULLING_SINGLETHREAD,
         scene_name.str());
 
     // Unused camera for the scene
@@ -947,7 +947,7 @@ void OgreRenderer::initialiseShaders()
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_4_0"))
         {
             d_pimpl->d_vertexShader->setParameter("target", "vs_4_0");
-            d_pimpl->d_vertexShader->setSource(S_hlsl_vs_source);    
+            d_pimpl->d_vertexShader->setSource(S_hlsl_vs_source);
         }
         else if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("vs_2_0"))
         {
@@ -991,7 +991,7 @@ void OgreRenderer::initialiseShaders()
     {
         // D3D shaders
         if (Ogre::GpuProgramManager::getSingleton().isSyntaxSupported("ps_4_0"))
-        {    
+        {
             d_pimpl->d_pixelShader->setParameter("target", "ps_4_0");
             d_pimpl->d_pixelShader->setSource(S_hlsl_ps_source);
         }
@@ -1177,7 +1177,7 @@ void OgreRenderer::updateShaderParams() const
         if (d_pimpl->d_useGLSLCore)
         {
             d_pimpl->d_vertexShaderParameters->
-                setNamedConstant("modelViewPerspMatrix", getWorldViewProjMatrix());    
+                setNamedConstant("modelViewPerspMatrix", getWorldViewProjMatrix());
 
             d_pimpl->d_renderSystem->
                 bindGpuProgramParameters(Ogre::GPT_VERTEX_PROGRAM,
@@ -1277,7 +1277,7 @@ void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
 
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) : 
+OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) :
     d_enabled(true), d_owner(owner)
 {
 
@@ -1295,7 +1295,7 @@ bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
     return d_enabled;
 }
 
-void OgreGUIRenderQueueListener::renderQueueStarted(RenderQueue *rq, 
+void OgreGUIRenderQueueListener::renderQueueStarted(RenderQueue *rq,
     uint8 queueGroupId, const String& invocation, bool& skipThisInvocation)
 {
     if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && d_enabled)

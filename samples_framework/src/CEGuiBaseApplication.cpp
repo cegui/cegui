@@ -202,9 +202,9 @@ void CEGuiBaseApplication::initialiseResourceGroupDirectories()
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "lua_scripts/");
     rp->setResourceGroupDirectory("lua_scripts", resourcePath);
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "xml_schemas/");
-    rp->setResourceGroupDirectory("schemas", resourcePath);   
+    rp->setResourceGroupDirectory("schemas", resourcePath);
     sprintf(resourcePath, "%s/%s", dataPathPrefix, "animations/");
-    rp->setResourceGroupDirectory("animations", resourcePath); 
+    rp->setResourceGroupDirectory("animations", resourcePath);
 }
 
 //----------------------------------------------------------------------------//
@@ -311,7 +311,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         // reset counter state
         d_FPSFrames = 0;
 
-        float modValue = 1.f; 
+        float modValue = 1.f;
         d_FPSElapsed = std::modf(d_FPSElapsed, &modValue);
     }
 }

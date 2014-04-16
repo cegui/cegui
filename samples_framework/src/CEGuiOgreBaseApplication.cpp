@@ -78,7 +78,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Create the scene manager
         SceneManager* sm = d_ogreRoot->
-            createSceneManager(ST_GENERIC, 2, INSTANCING_CULLING_SINGLETHREAD, 
+            createSceneManager(ST_GENERIC, 2, INSTANCING_CULLING_SINGLETHREAD,
             "SampleSceneMgr");
 
         // Create and initialise the camera
@@ -108,7 +108,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // Create a node for rendering on top of everything
         auto rendernode = manager->addNodeDefinition("SampleCleaner");
         
-        rendernode->addTextureSourceName("renderwindow", 0, 
+        rendernode->addTextureSourceName("renderwindow", 0,
             Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
         rendernode->setNumTargetPass(1);
@@ -116,13 +116,13 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         auto targetpasses = rendernode->addTargetPass("renderwindow");
         targetpasses->setNumPasses(2);
 
-        Ogre::CompositorPassClearDef* clearpass = 
+        Ogre::CompositorPassClearDef* clearpass =
             static_cast<Ogre::CompositorPassClearDef*>(targetpasses->
             addPass(Ogre::PASS_CLEAR));
 
-        // Only clear depth and stencil since we are rendering on top 
+        // Only clear depth and stencil since we are rendering on top
         // of an existing image
-        clearpass->mClearBufferFlags = Ogre::FBT_COLOUR | Ogre::FBT_DEPTH | 
+        clearpass->mClearBufferFlags = Ogre::FBT_COLOUR | Ogre::FBT_DEPTH |
             Ogre::FBT_STENCIL;
 
         // Set the same colour as in below
@@ -132,7 +132,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
 
         // Not sure if the samples want anything in their scenes so every group
         // will be rendered
-        Ogre::CompositorPassSceneDef* scenepass = 
+        Ogre::CompositorPassSceneDef* scenepass =
             static_cast<Ogre::CompositorPassSceneDef*>(targetpasses->
             addPass(Ogre::PASS_SCENE));
 
@@ -146,7 +146,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // Create the workspace for rendering
 
         // This needs to be rendered first...
-        manager->addWorkspace(sm, d_window, d_camera, "Sample_workspace", 
+        manager->addWorkspace(sm, d_window, d_camera, "Sample_workspace",
             true, 0);
 
 #else
@@ -317,7 +317,7 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
     if (!success)
     {
         // If not we set our default values for all renderers if possible
-        const Ogre::RenderSystemList& renderSystems = d_ogreRoot->getAvailableRenderers(); 
+        const Ogre::RenderSystemList& renderSystems = d_ogreRoot->getAvailableRenderers();
 
         size_t renderSystemCount = renderSystems.size();
         for(size_t i = 0; i < renderSystemCount; ++i)
@@ -328,7 +328,7 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
 
             foundConfigIter = configOptions.find("Full Screen");
             if (foundConfigIter != configOptions.end())
-                currentRenderSys->setConfigOption("Full Screen","No");  
+                currentRenderSys->setConfigOption("Full Screen","No");
 
             foundConfigIter = configOptions.find("Video Mode");
             if (foundConfigIter != configOptions.end())
@@ -349,9 +349,9 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
                     optionsIterCur = foundConfigIter->second.possibleValues.begin();
                     while(optionsIterCur != optionsIterEnd)
                     {
-                        if (optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
+                        if (optionsIterCur->compare(0, 10, "1280 x 768") == 0)
                         {
-                            currentRenderSys->setConfigOption("Video Mode", *optionsIterCur); 
+                            currentRenderSys->setConfigOption("Video Mode", *optionsIterCur);
                             break;
                         }
                         ++optionsIterCur;

@@ -576,7 +576,7 @@ bool GUIContext::updateWindowContainingMouse_impl() const
 }
 
 //----------------------------------------------------------------------------//
-Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const 
+Window* GUIContext::getCommonAncestor(Window* w1, Window* w2) const
 {
     if (!w2)
         return w2;
