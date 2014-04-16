@@ -50,10 +50,10 @@ OgreWindowTarget::~OgreWindowTarget()
 //----------------------------------------------------------------------------//
 void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
 {
-	// cleanup viewport since it's RT dependent.
-	OGRE_DELETE d_viewport;
-	d_viewport = 0;
-	d_viewportValid = false;
+    // cleanup viewport since it's RT dependent.
+    OGRE_DELETE d_viewport;
+    d_viewport = 0;
+    d_viewportValid = false;
 
     initRenderTarget(target);
 

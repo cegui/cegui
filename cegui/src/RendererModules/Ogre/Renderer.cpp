@@ -156,7 +156,7 @@ public:
     void setCEGUIRenderEnabled(bool enabled);
     bool isCEGUIRenderEnabled() const;
 
-	virtual void renderQueueStarted(RenderQueue *rq, uint8 queueGroupId, const String& invocation, bool& skipThisInvocation);
+    virtual void renderQueueStarted(RenderQueue *rq, uint8 queueGroupId, const String& invocation, bool& skipThisInvocation);
 
 private:
     bool d_enabled;
@@ -206,10 +206,10 @@ struct OgreRenderer_impl :
 #if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
         d_previousVP(0),
 #else
-		d_frameListener(0),
-		d_dummyScene(0),
-		d_dummyCamera(0),
-		d_workspace(0),
+        d_frameListener(0),
+        d_dummyScene(0),
+        d_dummyCamera(0),
+        d_workspace(0),
 #endif
         d_activeBlendMode(BM_INVALID),
         d_makeFrameControlCalls(true),
@@ -263,9 +263,9 @@ struct OgreRenderer_impl :
     //! Makes all scene names unique
     static int s_createdSceneNumber;
 
-	//! Allows the initialization to remain the same by automatically 
-	//! initializing the Compositor if it isn't already
-	static bool s_compositorResourcesInitialized;
+    //! Allows the initialization to remain the same by automatically 
+    //! initializing the Compositor if it isn't already
+    static bool s_compositorResourcesInitialized;
 
 #endif
     //! What we think is the current blend mode to use
@@ -301,23 +301,24 @@ bool OgreRenderer_impl::s_compositorResourcesInitialized = false;
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(const int abi)
 {
-    System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
+	System::performVersionTest(CEGUI_VERSION_ABI, abi, CEGUI_FUNCTION_NAME);
 
-    if (System::getSingletonPtr())
-        CEGUI_THROW(InvalidRequestException(
-	        "CEGUI::System object is already initialised."));
+	if (System::getSingletonPtr())
+		CEGUI_THROW(InvalidRequestException(
+		"CEGUI::System object is already initialised."));
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 	createOgreCompositorResources();
 #endif
 
-    OgreRenderer& renderer = create();
-    OgreResourceProvider& rp = createOgreResourceProvider();
-    OgreImageCodec& ic = createOgreImageCodec();
-    System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
+	OgreRenderer& renderer = create();
+	OgreResourceProvider& rp = createOgreResourceProvider();
+	OgreImageCodec& ic = createOgreImageCodec();
+	System::create(renderer, &rp, static_cast<XMLParser*>(0), &ic);
 
-    return renderer;
+	return renderer;
 }
+
 //----------------------------------------------------------------------------//
 OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
                                             const int abi)
@@ -329,7 +330,7 @@ OgreRenderer& OgreRenderer::bootstrapSystem(Ogre::RenderTarget& target,
             "CEGUI::System object is already initialised."));
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    createOgreCompositorResources();
+	createOgreCompositorResources();
 #endif
 
     OgreRenderer& renderer = OgreRenderer::create(target);
@@ -391,18 +392,19 @@ OgreResourceProvider& OgreRenderer::createOgreResourceProvider()
 
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
-void OgreRenderer::createOgreCompositorResources(){
+void OgreRenderer::createOgreCompositorResources()
+{
     // Create all the definitions for the workspaces and nodes
 
     Ogre::CompositorManager2* manager = Ogre::Root::getSingleton().
         getCompositorManager2();
 
-	// We want this to fail if it isn't initialized
-	if (!manager)
-		CEGUI_THROW(RendererException(
-		"Ogre CompositorManager2 is not initialized, "
-		"you must call Ogre::Root::initialiseCompositor() after "
-		"creating at least one window."));
+    // We want this to fail if it isn't initialized
+    if (!manager)
+        CEGUI_THROW(RendererException(
+        "Ogre CompositorManager2 is not initialized, "
+        "you must call Ogre::Root::initialiseCompositor() after "
+        "creating at least one window."));
 
     auto templatedworkspace = manager->addWorkspaceDefinition("CEGUI_workspace");
 
@@ -414,7 +416,7 @@ void OgreRenderer::createOgreCompositorResources(){
     rendernode->addTextureSourceName("renderwindow", 0, 
         Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
-	rendernode->setNumTargetPass(1);
+    rendernode->setNumTargetPass(1);
 
     // Pass for it
     auto targetpasses = rendernode->addTargetPass("renderwindow");
@@ -471,7 +473,7 @@ void OgreRenderer::setRenderingEnabled(const bool enabled)
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     d_pimpl->d_frameListener->setCEGUIRenderEnabled(enabled);
-	d_pimpl->d_workspace->setEnabled(false);
+    d_pimpl->d_workspace->setEnabled(false);
 #else
     S_frameListener.setCEGUIRenderEnabled(enabled);
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
@@ -677,9 +679,7 @@ bool OgreRenderer::isTextureDefined(const String& name) const
 //----------------------------------------------------------------------------//
 void OgreRenderer::beginRendering()
 {
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-
-#else
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     if ( !d_pimpl->d_previousVP ) 
     {
         d_pimpl->d_previousVP = d_pimpl->d_renderSystem->_getViewport();
@@ -703,9 +703,8 @@ void OgreRenderer::endRendering()
 {
     if (d_pimpl->d_makeFrameControlCalls)
         d_pimpl->d_renderSystem->_endFrame();
-#ifdef CEGUI_USE_OGRE_COMPOSITOR2
-    
-#else
+
+#if !defined(CEGUI_USE_OGRE_COMPOSITOR2)
     //FIXME: ???
     System::getSingleton().getDefaultGUIContext().getRenderTarget().deactivate();
 
@@ -833,7 +832,7 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     d_pimpl->d_displaySize.d_height = target.getHeight();
 
     d_pimpl->d_useGLSLCore = ( d_pimpl->d_renderSystem->getName().compare(0, 8, "OpenGL 3") == 0 ) ;
-	
+    
     // create default target & rendering root (surface) that uses it
     d_pimpl->d_defaultTarget =
         CEGUI_NEW_AO OgreWindowTarget(*this, *d_pimpl->d_renderSystem, target);
@@ -909,9 +908,9 @@ void OgreRenderer::initialiseShaders()
         isLanguageSupported("glsl");
 
     Ogre::String shaderLanguage;
-    if(d_pimpl->d_useGLSL)
+    if (d_pimpl->d_useGLSL)
     {
-        if(d_pimpl->d_useGLSLCore)
+        if (d_pimpl->d_useGLSLCore)
             shaderLanguage = "glsl";
         else
             shaderLanguage = "glsl";
@@ -931,7 +930,7 @@ void OgreRenderer::initialiseShaders()
     if (d_pimpl->d_useGLSL)
     {
         // We check if we want to use a GLSL core shader, which is required for the Ogre OpenGL 3+ Renderer
-        if(d_pimpl->d_useGLSLCore)
+        if (d_pimpl->d_useGLSLCore)
         {
             d_pimpl->d_vertexShader->setParameter("target", "glsl");
             d_pimpl->d_vertexShader->setSource(S_glsl_core_vs_source);
@@ -977,7 +976,7 @@ void OgreRenderer::initialiseShaders()
     if (d_pimpl->d_useGLSL)
     {
         // We check if we want to use a GLSL core shader, which is required for the Ogre OpenGL 3+ Renderer
-        if(d_pimpl->d_useGLSLCore)
+        if (d_pimpl->d_useGLSLCore)
         {
             d_pimpl->d_pixelShader->setParameter("target", "glsl");
             d_pimpl->d_pixelShader->setSource(S_glsl_core_ps_source);
@@ -1110,7 +1109,7 @@ void OgreRenderer::initialiseRenderStateSettings()
 //----------------------------------------------------------------------------//
 void OgreRenderer::setDefaultRootRenderTarget(Ogre::RenderTarget& target)
 {
-	d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
+    d_pimpl->d_defaultTarget->setOgreRenderTarget(target);
 }
 
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
@@ -1175,7 +1174,7 @@ void OgreRenderer::updateShaderParams() const
 
     if (d_pimpl->d_useGLSL)
     {
-        if(d_pimpl->d_useGLSLCore)
+        if (d_pimpl->d_useGLSLCore)
         {
             d_pimpl->d_vertexShaderParameters->
                 setNamedConstant("modelViewPerspMatrix", getWorldViewProjMatrix());    
@@ -1279,7 +1278,7 @@ void OgreRenderer::setProjectionMatrix(const Ogre::Matrix4& m)
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 OgreGUIRenderQueueListener::OgreGUIRenderQueueListener(OgreRenderer* owner) : 
-	d_enabled(true), d_owner(owner)
+    d_enabled(true), d_owner(owner)
 {
 
 }
@@ -1299,9 +1298,9 @@ bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
 void OgreGUIRenderQueueListener::renderQueueStarted(RenderQueue *rq, 
     uint8 queueGroupId, const String& invocation, bool& skipThisInvocation)
 {
-    if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && d_enabled){
-
-        // We should only render contexts that are on this render target //
+    if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && d_enabled)
+    {
+        // We should only render contexts that are on this render target
         System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
     }
 }

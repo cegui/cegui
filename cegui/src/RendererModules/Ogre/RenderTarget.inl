@@ -42,15 +42,15 @@ template <typename T>
 OgreRenderTarget<T>::OgreRenderTarget(OgreRenderer& owner,
                                       Ogre::RenderSystem& rs) :
     d_owner(owner),
-    d_renderSystem(rs),
-    d_area(0, 0, 0, 0),
-    d_renderTarget(0),
+	d_renderSystem(rs),
+	d_area(0, 0, 0, 0),
+	d_renderTarget(0),
 	d_viewport(0),
 	d_ogreViewportDimensions(0, 0, 0, 0),
-    d_matrix(Ogre::Matrix3::ZERO),
-    d_matrixValid(false),
-    d_viewportValid(false),
-    d_viewDistance(0)
+	d_matrix(Ogre::Matrix3::ZERO),
+	d_matrixValid(false),
+	d_viewportValid(false),
+	d_viewDistance(0)
 {
 }
 
@@ -79,13 +79,13 @@ void OgreRenderTarget<T>::draw(const RenderQueue& queue)
 template <typename T>
 void OgreRenderTarget<T>::setArea(const Rectf& area)
 {
-    d_area = area;
-    setOgreViewportDimensions(area);
-	
-    d_matrixValid = false;
+	d_area = area;
+	setOgreViewportDimensions(area);
 
-    RenderTargetEventArgs args(this);
-    T::fireEvent(RenderTarget::EventAreaChanged, args);
+	d_matrixValid = false;
+
+	RenderTargetEventArgs args(this);
+	T::fireEvent(RenderTarget::EventAreaChanged, args);
 }
 
 //----------------------------------------------------------------------------//
@@ -99,7 +99,7 @@ void OgreRenderTarget<T>::setOgreViewportDimensions(const Rectf& area)
 
 
 
-    d_viewportValid = false;
+	d_viewportValid = false;
 }
 
 //----------------------------------------------------------------------------//
@@ -107,15 +107,15 @@ template <typename T>
 void OgreRenderTarget<T>::updateOgreViewportDimensions(
                                             const Ogre::RenderTarget* const rt)
 {
-	if (rt)
-	{
-		if(d_viewport)
-			d_viewport->setDimensions(
-			d_ogreViewportDimensions.left() / rt->getWidth(),
-			d_ogreViewportDimensions.top() / rt->getHeight(),
-			d_ogreViewportDimensions.getWidth() / rt->getWidth(),
-			d_ogreViewportDimensions.getHeight() / rt->getHeight());
-	}
+    if (rt)
+    {
+        if(d_viewport)
+            d_viewport->setDimensions(
+            d_ogreViewportDimensions.left() / rt->getWidth(),
+            d_ogreViewportDimensions.top() / rt->getHeight(),
+            d_ogreViewportDimensions.getWidth() / rt->getWidth(),
+            d_ogreViewportDimensions.getHeight() / rt->getHeight());
+    }
 }
 
 //----------------------------------------------------------------------------//
@@ -135,10 +135,10 @@ void OgreRenderTarget<T>::activate()
     if (!d_viewportValid)
         updateViewport();
 
-    d_renderSystem._setViewport(d_viewport);
+	d_renderSystem._setViewport(d_viewport);
 
-    d_owner.setProjectionMatrix(d_matrix);
-    d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
+	d_owner.setProjectionMatrix(d_matrix);
+	d_owner.setViewMatrix(Ogre::Matrix4::IDENTITY);
 }
 
 //----------------------------------------------------------------------------//

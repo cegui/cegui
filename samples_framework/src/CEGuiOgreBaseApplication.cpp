@@ -79,7 +79,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         // Create the scene manager
         SceneManager* sm = d_ogreRoot->
             createSceneManager(ST_GENERIC, 2, INSTANCING_CULLING_SINGLETHREAD, 
-			"SampleSceneMgr");
+            "SampleSceneMgr");
 
         // Create and initialise the camera
         d_camera = sm->createCamera("SampleCam");
@@ -111,7 +111,7 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
         rendernode->addTextureSourceName("renderwindow", 0, 
             Ogre::TextureDefinitionBase::TEXTURE_INPUT);
 
-		rendernode->setNumTargetPass(1);
+        rendernode->setNumTargetPass(1);
         // Pass for it
         auto targetpasses = rendernode->addTargetPass("renderwindow");
         targetpasses->setNumPasses(2);
@@ -150,11 +150,11 @@ CEGuiOgreBaseApplication::CEGuiOgreBaseApplication() :
             true, 0);
 
 #else
-		// Create a viewport covering whole window
-		Viewport* vp = d_window->addViewport(d_camera);
-		vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
-		// Update the camera aspect ratio to that of the viewport
-		d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
+        // Create a viewport covering whole window
+        Viewport* vp = d_window->addViewport(d_camera);
+        vp->setBackgroundColour(ColourValue(0.0f, 0.0f, 0.0f, 0.0f));
+        // Update the camera aspect ratio to that of the viewport
+        d_camera->setAspectRatio(Real(vp->getActualWidth()) / Real(vp->getActualHeight()));
 
 #endif // CEGUI_USE_OGRE_COMPOSITOR2
         
@@ -314,7 +314,7 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
     // Check if the config exists
     bool success = d_ogreRoot->restoreConfig();
 
-    if(!success)
+    if (!success)
     {
         // If not we set our default values for all renderers if possible
         const Ogre::RenderSystemList& renderSystems = d_ogreRoot->getAvailableRenderers(); 
@@ -327,29 +327,29 @@ void CEGuiOgreBaseApplication::setupDefaultConfigIfNeeded()
             Ogre::ConfigOptionMap::iterator foundConfigIter;
 
             foundConfigIter = configOptions.find("Full Screen");
-            if(foundConfigIter != configOptions.end())
+            if (foundConfigIter != configOptions.end())
                 currentRenderSys->setConfigOption("Full Screen","No");  
 
             foundConfigIter = configOptions.find("Video Mode");
-            if(foundConfigIter != configOptions.end())
+            if (foundConfigIter != configOptions.end())
             {
                 Ogre::StringVector::iterator optionsIterCur = foundConfigIter->second.possibleValues.begin();
                 Ogre::StringVector::iterator optionsIterEnd = foundConfigIter->second.possibleValues.end();
                 while(optionsIterCur != optionsIterEnd)
                 {
-                    if(optionsIterCur->compare("1280 x 768 @ 32-bit colour") == 0)
+                    if (optionsIterCur->compare("1280 x 768 @ 32-bit colour") == 0)
                     {
                         currentRenderSys->setConfigOption("Video Mode", *optionsIterCur);
                         break;
                     }
                     ++optionsIterCur;
                 }
-                if(optionsIterCur == optionsIterEnd)
+                if (optionsIterCur == optionsIterEnd)
                 {
                     optionsIterCur = foundConfigIter->second.possibleValues.begin();
                     while(optionsIterCur != optionsIterEnd)
                     {
-                        if(optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
+                        if (optionsIterCur->compare(0, 10, "1280 x 768") == 0) 
                         {
                             currentRenderSys->setConfigOption("Video Mode", *optionsIterCur); 
                             break;
@@ -449,7 +449,7 @@ CEGuiDemoFrameListener::~CEGuiDemoFrameListener()
 //----------------------------------------------------------------------------//
 bool CEGuiDemoFrameListener::frameStarted(const Ogre::FrameEvent& evt)
 {
-    if(d_window->isClosed() || d_sampleApp->isQuitting())
+    if (d_window->isClosed() || d_sampleApp->isQuitting())
         return false;
 
     static_cast<CEGuiOgreBaseApplication*>(d_baseApp)->
