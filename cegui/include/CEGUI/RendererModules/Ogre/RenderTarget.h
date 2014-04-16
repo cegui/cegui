@@ -46,7 +46,7 @@ public:
 
     //! Destructor
     virtual ~OgreRenderTarget();
-	
+    
     /*!
     \brief
         Set the underlying viewport area directly - bypassing what the
@@ -88,11 +88,11 @@ protected:
     Rectf d_area;
     //! Ogre render target that we are effectively wrapping
     Ogre::RenderTarget* d_renderTarget;
-	
-	//! Ogre viewport used for this target.
-	Ogre::Viewport* d_viewport;
-	//! holds set Ogre viewport dimensions
-	Rectf d_ogreViewportDimensions;
+    
+    //! Ogre viewport used for this target.
+    Ogre::Viewport* d_viewport;
+    //! holds set Ogre viewport dimensions
+    Rectf d_ogreViewportDimensions;
 
 
     //! projection / view matrix cache
@@ -102,8 +102,8 @@ protected:
     //! tracks viewing distance (this is set up at the same time as d_matrix)
     mutable float d_viewDistance;
     //! true when d_viewport is up to date and valid.
-	//! \version Beginning from Ogre 2.0 this indicates whether the workspace is
-	//! up to date
+    //! \version Beginning from Ogre 2.0 this indicates whether the workspace is
+    //! up to date
     bool d_viewportValid;
 };
 
