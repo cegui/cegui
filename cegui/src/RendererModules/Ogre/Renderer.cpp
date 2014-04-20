@@ -55,7 +55,7 @@
 #include <Compositor/OgreCompositorNodeDef.h>
 #include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
 #include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
-#include <OgreRenderQueueListener.h>
+#include <Compositor/OgreCompositorWorkspaceListener.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -146,21 +146,21 @@ static Ogre::String S_glsl_core_ps_source(
 //----------------------------------------------------------------------------//
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
 // The new method will be used
-// Internal Ogre::RenderQueueListener. This is how the renderer gets notified
+// Internal Ogre::CompositorWorkspaceListener. This is how the renderer gets notified
 // of workspaces that need rendering
-class OgreGUIRenderQueueListener : public Ogre::RenderQueueListener
+class OgreGUIRenderQueueListener : public Ogre::CompositorWorkspaceListener
 {
 public:
-    OgreGUIRenderQueueListener(OgreRenderer* owner);
+	OgreGUIRenderQueueListener(OgreRenderer* owner);
 
-    void setCEGUIRenderEnabled(bool enabled);
-    bool isCEGUIRenderEnabled() const;
+	void setCEGUIRenderEnabled(bool enabled);
+	bool isCEGUIRenderEnabled() const;
 
-    virtual void renderQueueStarted(RenderQueue *rq, uint8 queueGroupId, const String& invocation, bool& skipThisInvocation);
+	virtual void passPreExecute(Ogre::CompositorPass *pass);
 
 private:
-    bool d_enabled;
-    OgreRenderer* d_owner;
+	bool d_enabled;
+	OgreRenderer* d_owner;
 
 };
 
@@ -439,7 +439,7 @@ void OgreRenderer::createOgreCompositorResources()
 
     // Just render the overlay group since it is the only one used
     scenepass->mFirstRQ = Ogre::RENDER_QUEUE_OVERLAY;
-    scenepass->mLastRQ = Ogre::RENDER_QUEUE_OVERLAY;
+    scenepass->mLastRQ = Ogre::RENDER_QUEUE_OVERLAY+1;
 
     // Connect the main render target to the node
     templatedworkspace->connectOutput("CEGUIRenderNode", 0);
@@ -780,7 +780,7 @@ OgreRenderer::~OgreRenderer()
 {
 #ifdef CEGUI_USE_OGRE_COMPOSITOR2
     // Remove the listener and then delete the scene
-    d_pimpl->d_dummyScene->removeRenderQueueListener(d_pimpl->d_frameListener);
+    d_pimpl->d_workspace->setListener(0);
 
     d_pimpl->d_ogreRoot->destroySceneManager(d_pimpl->d_dummyScene);
 
@@ -880,10 +880,8 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
         "CEGUI_dummy_camera");
     
 
-    // We will get notified when the scene is drawn
+    // We will get notified when the workspace is drawn
     d_pimpl->d_frameListener = CEGUI_NEW_AO OgreGUIRenderQueueListener(this);
-
-    d_pimpl->d_dummyScene->addRenderQueueListener(d_pimpl->d_frameListener);
 
 
     // Create the workspace for rendering
@@ -893,6 +891,8 @@ void OgreRenderer::constructor_impl(Ogre::RenderTarget& target)
     // The -1 should guarantee this to be rendered last on top of everything
     d_pimpl->d_workspace = manager->addWorkspace(d_pimpl->d_dummyScene,
         &target, d_pimpl->d_dummyCamera, "CEGUI_workspace", true, -1);
+
+    d_pimpl->d_workspace->setListener(d_pimpl->d_frameListener);
 
 
 #else
@@ -1295,10 +1295,10 @@ bool OgreGUIRenderQueueListener::isCEGUIRenderEnabled() const
     return d_enabled;
 }
 
-void OgreGUIRenderQueueListener::renderQueueStarted(RenderQueue *rq,
-    uint8 queueGroupId, const String& invocation, bool& skipThisInvocation)
+void OgreGUIRenderQueueListener::passPreExecute(Ogre::CompositorPass *pass)
 {
-    if (queueGroupId == Ogre::RENDER_QUEUE_OVERLAY && d_enabled)
+    
+	if (d_enabled && pass->getType() == Ogre::PASS_SCENE)
     {
         // We should only render contexts that are on this render target
         System::getSingleton().renderAllGUIContextsOnTarget(d_owner);
