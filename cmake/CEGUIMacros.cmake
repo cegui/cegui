@@ -12,7 +12,7 @@ macro (cegui_gather_files)
     set (_CURR_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/${_REL_INC_DIR}")
 
     file (GLOB CORE_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" *.cpp)
-    file (GLOB CORE_HEADER_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${_CURR_INCLUDE_DIR}/*.h")
+    file (GLOB CORE_HEADER_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" "${_CURR_INCLUDE_DIR}/*.h" "${CMAKE_CURRENT_SOURCE_DIR}" *.inl)
 endmacro()
 
 #
@@ -654,15 +654,6 @@ macro(cegui_defaultmodule_sanity_test _DEFAULTVAR _MODNAME _BUILDVAR)
         if (NOT ${_BUILDVAR})
             message(SEND_ERROR "${_DEFAULTVAR} is set to ${_MODNAME} but this module is not going to be built (see ${_BUILDVAR})")
         endif()
-    endif()
-endmacro()
-
-################################################################################
-# Sanity check regarding renderers being built vs being used in samples
-################################################################################
-macro(cegui_sample_renderer_sanity_test _RENDERERVAR _SAMPLEUSEVAR)
-    if (${_SAMPLEUSEVAR} AND NOT ${_RENDERERVAR})
-        message(SEND_ERROR "${_SAMPLEUSEVAR} is enabled, but corresponding renderer is not going to be built (see: ${_RENDERERVAR})")
     endif()
 endmacro()
 

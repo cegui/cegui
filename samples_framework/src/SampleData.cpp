@@ -50,18 +50,21 @@ using namespace CEGUI;
 typedef Sample& (*getSampleInstance)();
 #define GetSampleInstanceFuncName "getSampleInstance"
 
-SampleData::SampleData(CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits)
-    : d_name(sampleName),
-    d_summary(summary),
-    d_description(description),
-    d_type(sampleTypeEnum),
-    d_usedFilesString(""),
-    d_credits(credits),
-    d_sampleWindow(0),
-    d_guiContext(0),
-    d_textureTarget(0),
-    d_textureTargetImage(0)
+SampleData::SampleData(CEGUI::String sampleName,
+                       CEGUI::String summary,
+                       CEGUI::String description,
+                       SampleType sampleTypeEnum,
+                       CEGUI::String credits)
+    : d_name(sampleName)
+    , d_summary(summary)
+    , d_description(description)
+    , d_type(sampleTypeEnum)
+    , d_usedFilesString("")
+    , d_credits(credits)
+    , d_sampleWindow(0)
+    , d_guiContext(0)
+    , d_textureTarget(0)
+    , d_textureTargetImage(0)
 {
 }
 
@@ -212,10 +215,15 @@ void SampleData::setTextureTargetImageArea(float height, float width)
     }
 }
 
-
-SampleDataModule::SampleDataModule(CEGUI::String sampleName, CEGUI::String summary,
-    CEGUI::String description, SampleType sampleTypeEnum, CEGUI::String credits)
+//----------------------------------------------------------------------------//
+SampleDataModule::SampleDataModule(CEGUI::String sampleName,
+                                   CEGUI::String summary,
+                                   CEGUI::String description,
+                                   SampleType sampleTypeEnum,
+                                   CEGUI::String credits)
     : SampleData(sampleName, summary, description, sampleTypeEnum, credits)
+    , d_sample(0)
+    , d_dynamicModule(0)
 {
 }
 
@@ -235,7 +243,8 @@ void SampleDataModule::initialise(int width, int height)
 
 void SampleDataModule::deinitialise()
 {
-    d_sample->deinitialise();
+    if(d_sample)
+        d_sample->deinitialise();
 
     SampleData::deinitialise();   
 }

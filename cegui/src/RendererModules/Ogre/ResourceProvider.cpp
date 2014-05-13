@@ -31,6 +31,7 @@
 #include "CEGUI/Exceptions.h"
 
 #include <OgreArchiveManager.h>
+#include <OgreResourceGroupManager.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
