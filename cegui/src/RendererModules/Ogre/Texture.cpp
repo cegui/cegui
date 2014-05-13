@@ -271,10 +271,18 @@ void OgreTexture::freeOgreTexture()
 //----------------------------------------------------------------------------//
 Ogre::String OgreTexture::getUniqueName()
 {
-    Ogre::StringUtil::StrStreamType strstream;
-    strstream << "_cegui_ogre_" << d_textureNumber++;
+    #if OGRE_VERSION < 0x10A00
+        Ogre::StringUtil::StrStreamType strstream;
+        strstream << "_cegui_ogre_" << d_textureNumber++;
 
-    return strstream.str();
+        return strstream.str();
+    #endif
+    #if OGRE_VERSION >= 0x10A00
+        Ogre::StringStream strstream;
+        strstream << "_cegui_ogre_" << d_textureNumber++;
+
+        return strstream.str();
+    #endif   
 }
 
 //----------------------------------------------------------------------------//

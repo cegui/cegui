@@ -28,6 +28,7 @@
 #include "CEGUI/RendererModules/Ogre/WindowTarget.h"
 
 #include <OgreRenderTarget.h>
+#include <OgreViewport.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -50,7 +51,7 @@ OgreWindowTarget::~OgreWindowTarget()
 void OgreWindowTarget::setOgreRenderTarget(Ogre::RenderTarget& target)
 {
     // cleanup viewport since it's RT dependent.
-    delete d_viewport;
+    OGRE_DELETE d_viewport;
     d_viewport = 0;
     d_viewportValid = false;
 

@@ -16,9 +16,9 @@ if(CEGUI_SAMPLES_ENABLE_WIDGET_DEMO)
         endforeach()
     endforeach()
  
-    file(WRITE ${CMAKE_BINARY_DIR}/Samples/common/include/AllEvents.inc "${ALL_EVENTS_CODE}")
+    file(WRITE ${CMAKE_BINARY_DIR}/samples/common/include/AllEvents.inc "${ALL_EVENTS_CODE}")
 
-    include_directories(${CMAKE_BINARY_DIR}/Samples/common/include)
+    include_directories(${CMAKE_BINARY_DIR}/samples/common/include)
 	
     
     cegui_add_sample(CEGUIWidgetDemo)
