@@ -48,6 +48,7 @@
 #include <OgreViewport.h>
 #include <OgreCamera.h>
 
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
 #include <Compositor/OgreCompositorManager2.h>
 #include <Compositor/OgreCompositorCommon.h>
 #include <Compositor/OgreCompositorWorkspaceDef.h>
@@ -56,6 +57,7 @@
 #include <Compositor/Pass/PassClear/OgreCompositorPassClear.h>
 #include <Compositor/Pass/PassScene/OgreCompositorPassScene.h>
 #include <Compositor/OgreCompositorWorkspaceListener.h>
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
 
 // Start of CEGUI namespace section
 namespace CEGUI
