@@ -31,6 +31,7 @@
 #include "../../Texture.h"
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <OgreTexture.h>
+#include <OgreSharedPtr.h>
 
 // Start of CEGUI namespace section
 namespace CEGUI
