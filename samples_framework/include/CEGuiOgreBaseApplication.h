@@ -34,6 +34,7 @@
 #include "CEGUI/RendererModules/Ogre/Renderer.h"
 #include <Ogre.h>
 #include <OIS.h>
+#include <OgreFrameListener.h>
 
 // Frame listener forward ref (see class below)
 class CEGuiDemoFrameListener;

@@ -330,7 +330,7 @@ void CEGuiBaseApplication::updateFPS(const float elapsed)
         // reset counter state
         d_FPSFrames = 0;
 
-        float modValue = 1.0f;
+        float modValue = 1.f;
         d_FPSElapsed = std::modf(d_FPSElapsed, &modValue);
     }
 }

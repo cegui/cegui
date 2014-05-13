@@ -65,6 +65,12 @@ typedef SharedPtr<Texture> TexturePtr;
 class Matrix4;
 }
 
+#if (CEGUI_OGRE_VERSION >= (2 << 16))
+// The new Ogre Compositor2 system has to be used since ViewPorts
+// no longer have the required functionality
+#define CEGUI_USE_OGRE_COMPOSITOR2
+#endif
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
@@ -185,6 +191,16 @@ public:
 
     //! function to destroy a CEGUI::OgreImageCodec object.
     static void destroyOgreImageCodec(OgreImageCodec& ic);
+
+#ifdef CEGUI_USE_OGRE_COMPOSITOR2
+    //! Function to initialize required Ogre::Compositor2 workspaces
+    static void createOgreCompositorResources();
+
+    //! Function to update the workspace render target
+    void updateWorkspaceRenderTarget(Ogre::RenderTarget& target);
+
+#endif // CEGUI_USE_OGRE_COMPOSITOR2
+
 
     //! set whether CEGUI rendering will occur
     void setRenderingEnabled(const bool enabled);

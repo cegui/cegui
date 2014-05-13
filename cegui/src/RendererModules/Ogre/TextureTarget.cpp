@@ -78,7 +78,7 @@ void OgreTextureTarget::clear()
 
     d_renderSystem._setViewport(d_viewport);
     d_renderSystem.clearFrameBuffer(Ogre::FBT_COLOUR,
-                                    Ogre::ColourValue(0, 0, 0, 0));
+        Ogre::ColourValue(0, 0, 0, 0));
 
 #if OGRE_VERSION < 0x10800
     if (saved_vp)
@@ -86,6 +86,7 @@ void OgreTextureTarget::clear()
 #else
     d_renderSystem._setViewport(saved_vp);
 #endif
+
 }
 
 //----------------------------------------------------------------------------//
@@ -120,6 +121,8 @@ void OgreTextureTarget::declareRenderSize(const Sizef& sz)
     // required because we have changed d_renderTarget so need a new VP also.
     OGRE_DELETE d_viewport;
     d_viewport = 0;
+
+
 
     // because Texture takes ownership, the act of setting the new ogre texture
     // also ensures any previous ogre texture is released.
