@@ -3,8 +3,12 @@
 ################################################################################
 include(FindPackageHandleStandardArgs)
 
-find_path(FREETYPE_H_PATH_ft2build NAMES ft2build.h)
+find_path(FREETYPE_H_PATH_ft2build NAMES ft2build.h PATH_SUFFIXES include/freetype2 include)
 find_path(FREETYPE_H_PATH_ftconfig NAMES freetype/config/ftconfig.h PATH_SUFFIXES freetype2)
+if (NOT FREETYPE_H_PATH_ftconfig)
+    find_path(FREETYPE_H_PATH_ftconfig NAMES config/ftconfig.h PATH_SUFFIXES include/freetype2 include)
+endif()
+
 find_library(FREETYPE_LIB NAMES freetype2 freetype libfreetype PATH_SUFFIXES dynamic)
 find_library(FREETYPE_LIB_DBG NAMES freetype_d libfreetype_d PATH_SUFFIXES dynamic)
 mark_as_advanced(FREETYPE_H_PATH_ft2build FREETYPE_H_PATH_ftconfig FREETYPE_LIB FREETYPE_LIB_DBG)
