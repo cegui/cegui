@@ -27,7 +27,7 @@
  ***************************************************************************/
 #include "CEGUISamplesConfig.h"
 
-#ifdef CEGUI_SAMPLES_USE_DIRECT3D10
+#ifdef CEGUI_BUILD_RENDERER_DIRECT3D10
 
 #include "CEGUI/CEGUI.h"
 #include "CEGUI/RendererModules/Direct3D10/Renderer.h"
