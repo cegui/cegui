@@ -36,7 +36,7 @@ namespace CEGUI
 {
 /*!
 \brief
-    Structure that is holds an index to a model item, specified by row and column.
+    Structure that holds an index to a model item, specified by row and column.
 */
 struct ModelIndex
 {
