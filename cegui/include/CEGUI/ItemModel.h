@@ -31,14 +31,18 @@
 #ifndef _CEGUIItemModel_h_
 #define _CEGUIItemModel_h_
 
+#include "CEGUI/Base.h"
+#include "CEGUI/String.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
 /*!
 \brief
-    Structure that holds an index to a model item, specified by row and column.
+    Class that holds an index to a model item, specified by row and column.
 */
-class ModelIndex
+class CEGUIEXPORT ModelIndex
 {
 public:
     //! Constructs a default index
@@ -68,6 +72,108 @@ public:
         to be able to manage its data and logic.
     */
     void* d_modelData;
+};
+
+/*!
+\brief
+    Abstract class defining the interface between the view and the model.
+    This is used by views to query data that is to be shown.
+*/
+class CEGUIEXPORT ItemModel
+{
+public:
+    virtual ~ItemModel();
+
+    //! Name of the event triggered after new rows were added
+    static const String EventRowsAdded;
+    //! Name of the event triggered after existing rows were removed
+    static const String EventRowsRemoved;
+    //! Name of the event triggered after existing rows' data was changed
+    static const String EventRowsDataChanged;
+    //! Name of the event triggered after new columns were added
+    static const String EventColumnsAdded;
+    //! Name of the event triggered after existing columns were removed
+    static const String EventColumnsRemoved;
+    //! Name of the event triggered after existing columns' data was changed
+    static const String EventColumnsDataChanged;
+
+    /*!
+    \brief
+        Returns true if the specified ModelIndex is valid, false otherwise.
+
+    \param model_index
+        The ModelIndex for which to get the validity.
+    */
+    virtual bool isValidIndex(const ModelIndex& model_index) const = 0;
+
+    /*!
+    \brief
+        Creates a new ModelIndex from the specified row, column and parent index.
+
+    \param row
+        The row of the new index.
+
+    \param column
+        The column of the new index.
+
+    \param model_index
+        The parent ModelIndex of the new index.
+
+    \return
+        The newly created ModelIndex.
+    */
+    virtual ModelIndex makeIndex(int row, int column, const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the ModelIndex which is parent for the specified ModelIndex.
+
+    \param model_index
+        The ModelIndex for which to compute the parent index.
+
+    \return
+        The parent ModelIndex.
+    */
+    virtual ModelIndex getParentIndex(const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the numbers of rows of the specified ModelIndex.
+
+    \param model_index
+        The ModelIndex for which to compute the number of rows.
+    */
+    virtual int getRowCount(const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the number of columns of the specified ModelIndex.
+
+    \param model_index
+        The ModelIndex for which to compute the number of columns.
+    */
+    virtual int getColumnCount(const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the string representation of the specified ModelIndex
+
+    \param model_index
+        The ModelIndex for which to compute the string representation
+    */
+    virtual String getString(const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the Image representation of the specified ModelIndex
+
+    \param model_index
+        The ModelIndex for which to compute the image representation
+
+    \return
+        A pointer to the Image representation
+    */
+    virtual const Image* getImage(const ModelIndex& model_index) = 0;
 };
 
 } // End of  CEGUI namespace section
