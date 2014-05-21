@@ -38,22 +38,24 @@ namespace CEGUI
 \brief
     Structure that holds an index to a model item, specified by row and column.
 */
-struct ModelIndex
+class ModelIndex
 {
-    //! Constructs a default, invalid index
+public:
+    //! Constructs a default index
     ModelIndex() :
-        d_row(-1), d_column(-1), modelData(0)
+        d_row(-1), d_column(-1), d_modelData(0)
     {
     }
 
-    //! Constructs an index with the specified row and column
-    ModelIndex(int row, int column, void* modelData = 0) :
-        d_row(row), d_column(column), modelData(modelData)
+    //! Constructs an index with the specified row, column and optionally, the model data
+    ModelIndex(int row, int column, void* model_data = 0) :
+        d_row(row), d_column(column), d_modelData(model_data)
     {
     }
 
     //! The row represented by this index.
     int d_row;
+
     //! The column represented by this index.
     int d_column;
 
@@ -65,10 +67,7 @@ struct ModelIndex
         DO NOT USE/INTERPRET in view. This is just a simple way for the model
         to be able to manage its data and logic.
     */
-    void* modelData;
-
-    //! Returns true if this model index represents a valid index, false otherwise.
-    bool isValid() const { return d_row > 0 && d_column > 0; }
+    void* d_modelData;
 };
 
 } // End of  CEGUI namespace section

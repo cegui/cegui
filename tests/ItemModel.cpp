@@ -35,40 +35,12 @@ using namespace CEGUI;
 BOOST_AUTO_TEST_SUITE(ModelIndexTestSuite)
 
 //----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(Ctor_Default_InvalidModel)
+BOOST_AUTO_TEST_CASE(Ctor_Default_InitialisesDefaultValues)
 {
     ModelIndex modelIndex;
-    BOOST_CHECK(!modelIndex.isValid());
-    BOOST_CHECK(modelIndex.modelData == 0);
-}
-
-//----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(Ctor_WithValidRowAndColumn_ValidModel)
-{
-    ModelIndex modelIndex(2, 3);
-    BOOST_CHECK(modelIndex.isValid());
-    BOOST_CHECK(modelIndex.modelData == 0);
-}
-
-//----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(isValid_ValidRowAndColumn_IsValidModel)
-{
-    ModelIndex modelIndex(2, 3);
-    BOOST_CHECK(modelIndex.isValid());
-}
-
-//----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(isValid_WithInvalidRowAndValidColumn_IsInvalidModel)
-{
-    ModelIndex modelIndex(-2, 3);
-    BOOST_CHECK(!modelIndex.isValid());
-}
-
-//----------------------------------------------------------------------------//
-BOOST_AUTO_TEST_CASE(isValid_WithValidRowAndInvalidColumn_IsInvalidModel)
-{
-    ModelIndex modelIndex(2, -3);
-    BOOST_CHECK(!modelIndex.isValid());
+    BOOST_CHECK(modelIndex.d_modelData == 0);
+    BOOST_CHECK(modelIndex.d_row == -1);
+    BOOST_CHECK(modelIndex.d_column == -1);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
