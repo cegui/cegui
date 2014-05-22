@@ -45,23 +45,17 @@ namespace CEGUI
 class CEGUIEXPORT ModelIndex
 {
 public:
-    //! Constructs a default index
-    ModelIndex() :
-        d_row(-1), d_column(-1), d_modelData(0)
+    /*!
+    \brief
+        Constructs an index with the specified model data
+
+    \param model_data
+        Optional model data associated with this index.
+    */
+    ModelIndex(void* model_data = 0) :
+        d_modelData(model_data)
     {
     }
-
-    //! Constructs an index with the specified row, column and optionally, the model data
-    ModelIndex(int row, int column, void* model_data = 0) :
-        d_row(row), d_column(column), d_modelData(model_data)
-    {
-    }
-
-    //! The row represented by this index.
-    int d_row;
-
-    //! The column represented by this index.
-    int d_column;
 
     /*!
     \brief
