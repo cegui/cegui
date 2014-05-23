@@ -68,6 +68,23 @@ public:
     void* d_modelData;
 };
 
+
+/*!
+\brief
+    Enumeration that specifies which type of data is required from the ItemModel
+    in order for the View to render it.
+
+    Users can use the IDR_UserDefinedItemDataRole as a base for custom roles.
+*/
+enum ItemDataRole
+{
+    IDR_Text,
+    IDR_ImageDecoration,
+    IDR_Tooltip,
+
+    IDR_UserDefinedItemDataRole = 0x1000 //!< This marks the beginning of the user-defined item data roles
+};
+
 /*!
 \brief
     Abstract class defining the interface between the view and the model.
