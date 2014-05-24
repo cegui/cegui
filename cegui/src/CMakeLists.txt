@@ -2,12 +2,14 @@ set( CEGUI_TARGET_NAME ${CEGUI_BASE_LIBNAME} )
 
 # we do not use cegui_gather_files() here since our needs are more complex.
 file (GLOB CORE_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" *.cpp)
+file (GLOB VIEW_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" views/*.cpp)
 file (GLOB WIDGET_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" widgets/*.cpp)
 file (GLOB FALAGARD_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" falagard/*.cpp)
 file (GLOB SVG_SOURCE_FILES RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}" svg/*.cpp)
-set (CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${WIDGET_SOURCE_FILES} ${FALAGARD_SOURCE_FILES} ${SVG_SOURCE_FILES})
+set (CORE_SOURCE_FILES ${CORE_SOURCE_FILES} ${VIEW_SOURCE_FILES} ${WIDGET_SOURCE_FILES} ${FALAGARD_SOURCE_FILES} ${SVG_SOURCE_FILES})
 
 file (GLOB CORE_HEADER_FILES ../include/CEGUI/*.h)
+file (GLOB VIEW_HEADER_FILES ../include/CEGUI/views/*.h)
 file (GLOB WIDGET_HEADER_FILES ../include/CEGUI/widgets/*.h)
 file (GLOB FALAGARD_HEADER_FILES ../include/CEGUI/falagard/*.h)
 file (GLOB SVG_HEADER_FILES ../include/CEGUI/svg/*.h)
@@ -20,7 +22,7 @@ list (APPEND CORE_HEADER_FILES
 
 # We don't append all to CORE_HEADER_FILES since that would mess up installation
 # on systems where files are installed.
-set (ALL_HEADER_FILES ${CORE_HEADER_FILES} ${WIDGET_HEADER_FILES} ${FALAGARD_HEADER_FILES} ${SVG_HEADER_FILES})
+set (ALL_HEADER_FILES ${CORE_HEADER_FILES} ${VIEW_HEADER_FILES} ${WIDGET_HEADER_FILES} ${FALAGARD_HEADER_FILES} ${SVG_HEADER_FILES})
 
 # never compile this directly, it's included in another file
 list (REMOVE_ITEM CORE_SOURCE_FILES minibidi.cpp)
@@ -63,10 +65,12 @@ endif()
 # multiple sub-dirs.
 cegui_add_library_impl(${CEGUI_TARGET_NAME} FALSE CORE_SOURCE_FILES ALL_HEADER_FILES TRUE FALSE)
 
+source_group("Source Files\\view" FILES ${VIEW_SOURCE_FILES})
 source_group("Source Files\\widget" FILES ${WIDGET_SOURCE_FILES})
 source_group("Source Files\\falagard" FILES ${FALAGARD_SOURCE_FILES})
 source_group("Source Files\\svg" FILES ${SVG_SOURCE_FILES})
 
+source_group("Header Files\\view" FILES ${VIEW_HEADER_FILES})
 source_group("Header Files\\widget" FILES ${WIDGET_HEADER_FILES})
 source_group("Header Files\\falagard" FILES ${FALAGARD_HEADER_FILES})
 source_group("Header Files\\svg" FILES ${SVG_HEADER_FILES})
@@ -103,6 +107,7 @@ if (APPLE AND CEGUI_BUILD_SHARED_LIBS_WITH_STATIC_DEPENDENCIES)
 endif()
 
 install(FILES ${CORE_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI)
+install(FILES ${VIEW_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/views)
 install(FILES ${WIDGET_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/widgets)
 install(FILES ${FALAGARD_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/falagard)
 install(FILES ${SVG_HEADER_FILES} DESTINATION ${CEGUI_INCLUDE_INSTALL_DIR}/CEGUI/svg)
