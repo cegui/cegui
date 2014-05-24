@@ -31,12 +31,9 @@
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
-const String ItemModel::EventRowsAdded("RowsAdded");
-const String ItemModel::EventRowsRemoved("RowsRemoved");
-const String ItemModel::EventRowsDataChanged("RowsDataChanged");
-const String ItemModel::EventColumnsAdded("ColumnsAdded");
-const String ItemModel::EventColumnsRemoved("ColumnsRemoved");
-const String ItemModel::EventColumnsDataChanged("ColumnsDataChanged");
+const String ItemModel::EventChildrenAdded("ChildrenAdded");
+const String ItemModel::EventChildrenRemoved("ChildrenRemoved");
+const String ItemModel::EventChildrenDataChanged("ChildrenDataChanged");
 
 //----------------------------------------------------------------------------//
 ItemModel::~ItemModel()
