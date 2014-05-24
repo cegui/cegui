@@ -167,24 +167,21 @@ public:
 
     /*!
     \brief
-        Returns the string representation of the specified ModelIndex
+        Returns the string representation of the specified data role.
+        It is up to the view to interpret the string based on the role requested.
+
+    \remark
+        For example, in the case of an image decoration, the name of the image
+        could be returned, and the view could use ImageManager to retrieve the
+        specific Image instance by the name and render that.
 
     \param model_index
-        The ModelIndex for which to compute the string representation
+        The ModelIndex for which to compute the string representation.
+
+    \param role
+        The role of data to be returned.
     */
-    virtual String getString(const ModelIndex& model_index) = 0;
-
-    /*!
-    \brief
-        Returns the Image representation of the specified ModelIndex
-
-    \param model_index
-        The ModelIndex for which to compute the image representation
-
-    \return
-        A pointer to the Image representation
-    */
-    virtual const Image* getImage(const ModelIndex& model_index) = 0;
+    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text) = 0;
 };
 
 } // End of  CEGUI namespace section
