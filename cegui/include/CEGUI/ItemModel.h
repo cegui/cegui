@@ -40,7 +40,7 @@ namespace CEGUI
 
 /*!
 \brief
-    Class that holds an index to a model item, specified by row and column.
+    Class that holds an index to a model item.
 */
 class CEGUIEXPORT ModelIndex
 {
@@ -68,7 +68,6 @@ public:
     void* d_modelData;
 };
 
-
 /*!
 \brief
     Enumeration that specifies which type of data is required from the ItemModel
@@ -95,18 +94,12 @@ class CEGUIEXPORT ItemModel
 public:
     virtual ~ItemModel();
 
-    //! Name of the event triggered after new rows were added
-    static const String EventRowsAdded;
-    //! Name of the event triggered after existing rows were removed
-    static const String EventRowsRemoved;
-    //! Name of the event triggered after existing rows' data was changed
-    static const String EventRowsDataChanged;
-    //! Name of the event triggered after new columns were added
-    static const String EventColumnsAdded;
-    //! Name of the event triggered after existing columns were removed
-    static const String EventColumnsRemoved;
-    //! Name of the event triggered after existing columns' data was changed
-    static const String EventColumnsDataChanged;
+    //! Name of the event triggered after new children were added
+    static const String EventChildrenAdded;
+    //! Name of the event triggered after existing children were removed
+    static const String EventChildrenRemoved;
+    //! Name of the event triggered after existing children's data was changed
+    static const String EventChildrenDataChanged;
 
     /*!
     \brief
@@ -119,13 +112,10 @@ public:
 
     /*!
     \brief
-        Creates a new ModelIndex from the specified row, column and parent index.
+        Creates a new ModelIndex for the specified child and parent index.
 
-    \param row
-        The row of the new index.
-
-    \param column
-        The column of the new index.
+    \param child
+        The child index, which is a number between 0 and getChildrenCount(parentIndex).
 
     \param model_index
         The parent ModelIndex of the new index.
@@ -133,7 +123,7 @@ public:
     \return
         The newly created ModelIndex.
     */
-    virtual ModelIndex makeIndex(int row, int column, const ModelIndex& model_index) = 0;
+    virtual ModelIndex makeIndex(int child, const ModelIndex& model_index) = 0;
 
     /*!
     \brief
@@ -149,21 +139,12 @@ public:
 
     /*!
     \brief
-        Returns the numbers of rows of the specified ModelIndex.
+        Returns the number of children of the specified ModelIndex.
 
     \param model_index
-        The ModelIndex for which to compute the number of rows.
+        The ModelIndex for which to compute the number of children.
     */
-    virtual int getRowCount(const ModelIndex& model_index) = 0;
-
-    /*!
-    \brief
-        Returns the number of columns of the specified ModelIndex.
-
-    \param model_index
-        The ModelIndex for which to compute the number of columns.
-    */
-    virtual int getColumnCount(const ModelIndex& model_index) = 0;
+    virtual int getChildrenCount(const ModelIndex& model_index) = 0;
 
     /*!
     \brief
