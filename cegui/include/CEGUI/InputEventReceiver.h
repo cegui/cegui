@@ -3,7 +3,7 @@
 	created:	10/7/2013
 	author:		Timotei Dolean <timotei21@gmail.com>
 
-	purpose:	Holds the input events which are used by the Input Aggregator
+	purpose:	Provides an interface for injecting input events
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2013 Paul D Turner & The CEGUI Development Team
