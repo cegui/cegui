@@ -34,6 +34,13 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+ItemView::ItemView(const String& type, const String& name) :
+    Window(type, name),
+    d_itemModel(0)
+{
+}
+
+//----------------------------------------------------------------------------//
 ItemView::~ItemView()
 {
 }
@@ -43,5 +50,4 @@ void ItemView::setModel(ItemModel* item_model)
 {
     d_itemModel = item_model;
 }
-
 } // End of  CEGUI namespace section

@@ -131,6 +131,8 @@
 
 // Model-view
 #include "CEGUI/ItemModel.h"
+#include "CEGUI/views/ItemView.h"
+#include "CEGUI/views/ListView.h"
 
 // Falagard core system include
 #include "CEGUI/falagard/WidgetLookManager.h"

@@ -32,6 +32,7 @@
 
 #include "CEGUI/Base.h"
 #include "CEGUI/ItemModel.h"
+#include "CEGUI/Window.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -41,9 +42,15 @@ namespace CEGUI
 \brief
     Abstract base class for all view classes based on ItemModel
 */
-class CEGUIEXPORT ItemView
+class CEGUIEXPORT ItemView : public Window
 {
 public:
+    /*!
+    \brief
+        Creates a new instance of ItemView
+    */
+    ItemView(const String& type, const String& name);
+
     virtual ~ItemView();
 
     /*!
