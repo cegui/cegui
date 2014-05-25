@@ -31,6 +31,7 @@
 #define _CEGUIItemView_h_
 
 #include "CEGUI/Base.h"
+#include "CEGUI/ItemModel.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -44,6 +45,24 @@ class CEGUIEXPORT ItemView
 {
 public:
     virtual ~ItemView();
+
+    /*!
+    \brief
+    Sets the ItemModel to be used inside this view.
+
+    \param item_model
+    The ItemModel instance to be set.
+    */
+    virtual void setModel(ItemModel* item_model);
+
+    /*!
+    \brief
+    Returns the current ItemModel of this view.
+    */
+    virtual ItemModel* getModel() const { return d_itemModel;  }
+
+protected:
+    ItemModel* d_itemModel;
 };
 
 } // End of  CEGUI namespace section
