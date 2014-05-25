@@ -1,14 +1,12 @@
 /***********************************************************************
-    filename:   ListView.cpp
-    created:    Sat May 24 2014
-    author:     Timotei Dolean <timotei21@gmail.com>
-
-    purpose:    Implementation for a view that displays a list of model items.
+ *    filename:   ListView.cpp
+ *    created:    Sun May 25 2014
+ *    author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
- *   Permission is hereby granted, free of charge, to any person obtaining
+ *    Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
  *   "Software"), to deal in the Software without restriction, including
  *   without limitation the rights to use, copy, modify, merge, publish,
@@ -27,22 +25,12 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
-#include "CEGUI/views/ListView.h"
+#include <boost/test/unit_test.hpp>
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
+#include "CEGUI/CEGUI.h"
 
-//----------------------------------------------------------------------------//
-ListView::ListView(const String& type, const String& name) :
-    ItemView(type, name)
-{
+using namespace CEGUI;
 
-}
+BOOST_AUTO_TEST_SUITE(ListViewTestSuite)
 
-//----------------------------------------------------------------------------//
-ListView::~ListView()
-{
-
-}
-} // End of  CEGUI namespace section
+BOOST_AUTO_TEST_SUITE_END()

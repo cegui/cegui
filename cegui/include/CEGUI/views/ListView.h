@@ -30,9 +30,26 @@
 #ifndef _CEGUIListView_h_
 #define _CEGUIListView_h_
 
+#include "CEGUI/views/ItemView.h"
+
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+
+/*!
+\brief
+    View that displays items in a listed fashion.
+*/
+class CEGUIEXPORT ListView : public ItemView
+{
+    /*!
+    \brief
+        Creates a new instance of ListView
+    */
+    ListView(const String& type, const String& name);
+
+    virtual ~ListView();
+};
 
 } // End of  CEGUI namespace section
 
