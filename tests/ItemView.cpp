@@ -35,6 +35,7 @@ using namespace CEGUI;
 // ItemModel (e.g.: AbstractItemModel / ItemModelBase, a' la Qt) in the main lib
 class ItemModelStub : public ItemModel
 {
+public:
     virtual bool isValidIndex(const ModelIndex& model_index) const
     {
         throw std::exception("The method or operation is not implemented.");
@@ -64,6 +65,8 @@ class ItemModelStub : public ItemModel
 //----------------------------------------------------------------------------//
 class TestItemView : public ItemView
 {
+public:
+    TestItemView(const String& type, const String& name) : ItemView(type, name) {}
 };
 
 //----------------------------------------------------------------------------//
@@ -73,7 +76,7 @@ BOOST_AUTO_TEST_SUITE(ItemViewTestSuite)
 BOOST_AUTO_TEST_CASE(SetModel_SetsTheModel)
 {
     ItemModelStub stub;
-    TestItemView testItemView;
+    TestItemView testItemView("DefaultWindow", "id01");
     testItemView.setModel(&stub);
 
     BOOST_CHECK_EQUAL(&stub, testItemView.getModel());
