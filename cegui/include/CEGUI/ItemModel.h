@@ -117,13 +117,13 @@ public:
     \param child
         The child index, which is a number between 0 and getChildrenCount(parentIndex).
 
-    \param model_index
+    \param parent_index
         The parent ModelIndex of the new index.
 
     \return
         The newly created ModelIndex.
     */
-    virtual ModelIndex makeIndex(int child, const ModelIndex& model_index) = 0;
+    virtual ModelIndex makeIndex(int child, const ModelIndex& parent_index) = 0;
 
     /*!
     \brief
@@ -144,7 +144,7 @@ public:
     \param model_index
         The ModelIndex for which to compute the number of children.
     */
-    virtual int getChildrenCount(const ModelIndex& model_index) = 0;
+    virtual int getChildCount(const ModelIndex& model_index) = 0;
 
     /*!
     \brief

@@ -51,7 +51,7 @@ public:
         throw std::exception("The method or operation is not implemented.");
     }
 
-    virtual int getChildrenCount(const ModelIndex& model_index)
+    virtual int getChildCount(const ModelIndex& model_index)
     {
         throw std::exception("The method or operation is not implemented.");
     }
