@@ -32,6 +32,9 @@
 // Start of CEGUI namespace section
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+const String ListView::EventNamespace("ListView");
+const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
 ListView::ListView(const String& type, const String& name) :
@@ -45,4 +48,5 @@ ListView::~ListView()
 {
 
 }
+
 } // End of  CEGUI namespace section
