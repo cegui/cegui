@@ -56,6 +56,11 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
 
     gui_context->setRootWindow(d_root);
 
+    ListView* list_view = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
+    list_view->setPosition(UVector2(cegui_reldim(0.1), cegui_reldim(0.1)));
+
+    d_root->addChild(list_view);
+
     return true;
 }
 
