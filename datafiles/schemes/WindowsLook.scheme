@@ -45,5 +45,8 @@
 <!--
 	<FalagardMapping windowType="WindowsLook/GroupBox" targetType="DefaultWindow"   renderer="Core/Default"   lookNFeel="WindowsLook/GroupBox" />
 -->
+
+    <!-- Views -->
+    <FalagardMapping windowType="WindowsLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" LookNFeel="WindowsLook/Listbox" />
 </GUIScheme>
 
