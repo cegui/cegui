@@ -45,5 +45,8 @@
     <FalagardMapping windowType="OgreTray/TabControl"           targetType="CEGUI/TabControl"       renderer="Core/TabControl"          lookNFeel="OgreTray/TabControl" />
 
     <FalagardMapping windowType="OgreTray/BG" targetType="DefaultWindow" renderer="Core/Default" lookNFeel="OgreTray/BGTest" />
+
+    <!-- Views -->
+    <FalagardMapping windowType="OgreTray/ListView"             targetType="CEGUI/ListView"         renderer="Core/Listview"            lookNFeel="OgreTray/Listbox" />
 </GUIScheme>
 
