@@ -37,6 +37,7 @@
 #include "CEGUI/WindowRendererSets/Core/ListHeader.h"
 #include "CEGUI/WindowRendererSets/Core/ListHeaderSegment.h"
 #include "CEGUI/WindowRendererSets/Core/Listbox.h"
+#include "CEGUI/WindowRendererSets/Core/ListView.h"
 #include "CEGUI/WindowRendererSets/Core/Menubar.h"
 #include "CEGUI/WindowRendererSets/Core/MenuItem.h"
 #include "CEGUI/WindowRendererSets/Core/MultiColumnList.h"
@@ -78,6 +79,7 @@ CoreWindowRendererModule::CoreWindowRendererModule()
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListHeader>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListHeaderSegment>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListbox>());
+    d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardListView>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardMenubar>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardMenuItem>());
     d_registry.push_back(CEGUI_NEW_AO TplWRFactoryRegisterer<FalagardMultiColumnList>());
