@@ -25,8 +25,8 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIAll_h_
-#define _CEGUIAll_h_
+#ifndef _CEGUIAllWidgets_h_
+#define _CEGUIAllWidgets_h_
 
 #include "./ClippedContainer.h"
 #include "./Combobox.h"
@@ -68,4 +68,4 @@
 #include "./TreeItem.h"
 #include "./VerticalLayoutContainer.h"
 
-#endif // End of guard _CEGUIAll_h_
+#endif // End of guard _CEGUIAllWidgets_h_
