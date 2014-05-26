@@ -55,6 +55,7 @@
 #include "CEGUI/RenderingContext.h"
 #include "CEGUI/DefaultResourceProvider.h"
 #include "CEGUI/ImageCodec.h"
+#include "CEGUI/views/All.h"
 #include "CEGUI/widgets/All.h"
 #include "CEGUI/RegexMatcher.h"
 #include "CEGUI/svg/SVGDataManager.h"
@@ -319,7 +320,7 @@ System::~System(void)
     if (d_ourLogger)
         CEGUI_DELETE_AO Logger::getSingletonPtr();
 #endif
-    
+
     CEGUI_DELETE_AO d_clipboard;
 }
 
@@ -677,6 +678,9 @@ void System::addStandardWindowFactories()
     WindowFactoryManager::addWindowType<HorizontalLayoutContainer>();
     WindowFactoryManager::addWindowType<VerticalLayoutContainer>();
     WindowFactoryManager::addWindowType<GridLayoutContainer>();
+
+    // views
+    WindowFactoryManager::addWindowType<ListView>();
 }
 
 void System::createSingletons()
@@ -935,7 +939,7 @@ void System::setDefaultCustomRenderedStringParser(RenderedStringParser* parser)
     if (parser != d_customRenderedStringParser)
     {
         d_customRenderedStringParser = parser;
-        
+
         // fire event
         EventArgs args;
         fireEvent(EventRenderedStringParserChanged, args, EventNamespace);

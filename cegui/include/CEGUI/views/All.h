@@ -1,9 +1,7 @@
 /***********************************************************************
-    filename:   ListView.h
-    created:    Sat May 24 2014
+    filename:   All.h
+    created:    Mon May 26 2014
     author:     Timotei Dolean <timotei21@gmail.com>
-
-    purpose:    Interface for a view that displays a list of model items.
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
@@ -27,36 +25,10 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIListView_h_
-#define _CEGUIListView_h_
+#ifndef _CEGUIAllViews_h_
+#define _CEGUIAllViews_h_
 
-#include "CEGUI/views/ItemView.h"
+#include "./ItemView.h"
+#include "./ListView.h"
 
-// Start of CEGUI namespace section
-namespace CEGUI
-{
-
-/*!
-\brief
-    View that displays items in a listed fashion.
-*/
-class CEGUIEXPORT ListView : public ItemView
-{
-public:
-    //! Window factory name
-    static const String WidgetTypeName;
-    //! Namespace for global events
-    static const String EventNamespace;
-
-    /*!
-    \brief
-        Creates a new instance of ListView
-    */
-    ListView(const String& type, const String& name);
-
-    virtual ~ListView();
-};
-
-} // End of  CEGUI namespace section
-
-#endif  // end of guard _CEGUIListView_h_
+#endif // End of guard _CEGUIAllViews_h_
