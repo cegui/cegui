@@ -123,7 +123,7 @@ public:
     \return
         The newly created ModelIndex.
     */
-    virtual ModelIndex makeIndex(int child, const ModelIndex& parent_index) = 0;
+    virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index) = 0;
 
     /*!
     \brief

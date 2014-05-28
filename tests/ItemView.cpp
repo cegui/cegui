@@ -41,7 +41,7 @@ public:
         throw std::exception("The method or operation is not implemented.");
     }
 
-    virtual ModelIndex makeIndex(int child, const ModelIndex& model_index)
+    virtual ModelIndex makeIndex(size_t child, const ModelIndex& model_index)
     {
         throw std::exception("The method or operation is not implemented.");
     }
