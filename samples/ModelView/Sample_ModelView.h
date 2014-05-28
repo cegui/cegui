@@ -29,6 +29,7 @@
 #define _Sample_Model_View_h_
 
 #include "SampleBase.h"
+#include "Model.h"
 
 class ModelViewDemo : public Sample
 {
@@ -37,7 +38,8 @@ public:
     virtual void deinitialise();
 
 private:
-    CEGUI::Window*      d_root;
+    CEGUI::Window* d_root;
+    InventoryModel d_inventoryModel;
 };
 
 #endif  // end of guard _Sample_Model_View_h_

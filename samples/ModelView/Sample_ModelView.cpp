@@ -31,8 +31,6 @@
 #include <iostream>
 #include <sstream>
 
-using namespace CEGUI;
-
 /** This sample uses most of the code from the 'HelloWorld' sample.
     Thus, most of the clarifying comments have been removed for brevity. **/
 
@@ -53,11 +51,13 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
 
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
-
     gui_context->setRootWindow(d_root);
 
+    d_inventoryModel.load();
+
     ListView* list_view = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
-    list_view->setPosition(UVector2(cegui_reldim(0.1), cegui_reldim(0.1)));
+    list_view->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim(0.1f)));
+    list_view->setModel(&d_inventoryModel);
 
     d_root->addChild(list_view);
 
