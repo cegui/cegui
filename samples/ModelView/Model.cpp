@@ -120,7 +120,7 @@ bool InventoryModel::isValidIndex(const ModelIndex& model_index) const
     return model_index.d_modelData != 0;
 }
 
-CEGUI::ModelIndex InventoryModel::makeIndex(int child, const ModelIndex& parent_index)
+CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_index)
 {
     // root item
     if (parent_index.d_modelData == 0)
