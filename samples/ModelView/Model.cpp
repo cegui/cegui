@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Model.h"
+#include <string>
 
 using namespace CEGUI;
 
@@ -156,7 +157,7 @@ CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& pare
 
 CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 {
-    throw std::exception("The method or operation is not implemented.");
+    return CEGUI::ModelIndex();
 }
 
 int InventoryModel::getChildCount(const ModelIndex& model_index)

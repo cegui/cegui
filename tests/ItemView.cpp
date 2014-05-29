@@ -38,27 +38,27 @@ class ItemModelStub : public ItemModel
 public:
     virtual bool isValidIndex(const ModelIndex& model_index) const
     {
-        throw std::exception("The method or operation is not implemented.");
+        return false;
     }
 
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& model_index)
     {
-        throw std::exception("The method or operation is not implemented.");
+        return ModelIndex();
     }
 
     virtual ModelIndex getParentIndex(const ModelIndex& model_index)
     {
-        throw std::exception("The method or operation is not implemented.");
+        return ModelIndex();
     }
 
     virtual int getChildCount(const ModelIndex& model_index)
     {
-        throw std::exception("The method or operation is not implemented.");
+        return 0;
     }
 
     virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text)
     {
-        throw std::exception("The method or operation is not implemented.");
+        return "";
     }
 };
 
