@@ -30,176 +30,107 @@
 
 using namespace CEGUI;
 
-
-//----------------------------------------------------------------------------//
-Material Material::make(const CEGUI::String& name, float weight, float unit_price)
+template<typename T>
+static ModelIndex makeValidIndex(size_t id, std::vector<T>& vector)
 {
-    Material mat;
+    if (id >= 0 && id < vector.size())
+        return ModelIndex(&vector.at(id));
 
-    mat.d_materialName = name;
-    mat.d_weight = weight;
-    mat.d_unitPrice = unit_price;
-
-    return mat;
+    return ModelIndex();
 }
 
 //----------------------------------------------------------------------------//
-ObjectPart ObjectPart::make(const CEGUI::String& name)
+InventoryItem InventoryItem::make(const CEGUI::String& name, float weight)
 {
-    ObjectPart part;
+    InventoryItem item;
 
-    part.d_partName = name;
+    item.d_name = name;
+    item.d_weight = weight;
 
-    return part;
-}
-
-//----------------------------------------------------------------------------//
-InventoryObject InventoryObject::make(const CEGUI::String& name, int intelligence, int strength, int agility)
-{
-    InventoryObject obj;
-
-    obj.d_name = name;
-    obj.d_intelligence = intelligence;
-    obj.d_strength = strength;
-    obj.d_agility = agility;
-
-    return obj;
+    return item;
 }
 
 //----------------------------------------------------------------------------//
 void InventoryModel::load()
 {
-    // materials
-    Material wood_material = Material::make("wood", 1.2f, 0.4f);
-    Material iron_material = Material::make("iron", 3.0f, 2.456f);
-    Material onyx_material = Material::make("onyx", 0.5f, 200.0f);
-    Material ruby_material = Material::make("ruby", 0.6f, 120.0f);
-    Material glue_material = Material::make("glue", 0.1f, 0.1f);
-    Material wire_material = Material::make("wire", 0.1f, 0.2f);
-    Material magic_dust_material = Material::make("magic dust", 0.001f, 25.0f);
+    InventoryItem prev_matryoshka;
+    // matryoshka D to A
+    bool has_child = false;
+    for (char chr = 'D'; chr >= 'A'; --chr)
+    {
+        InventoryItem matryoshka = InventoryItem::make("Matryoshka " + chr, 1.0f);
 
-    // object parts
-    ObjectPart wand_rod_part = ObjectPart::make("rod");
-    wand_rod_part.d_materials.push_back(wood_material);
-    wand_rod_part.d_materials.push_back(wire_material);
+        if (has_child)
+            matryoshka.d_items.push_back(prev_matryoshka);
 
-    ObjectPart lightning_wand_head = ObjectPart::make("lightning head");
-    lightning_wand_head.d_materials.push_back(onyx_material);
-    lightning_wand_head.d_materials.push_back(magic_dust_material);
+        prev_matryoshka = matryoshka;
+        has_child = true;
+    }
 
-    ObjectPart fiery_wand_head = ObjectPart::make("fiery head");
-    fiery_wand_head.d_materials.push_back(ruby_material);
-    fiery_wand_head.d_materials.push_back(magic_dust_material);
+    InventoryItem beans = InventoryItem::make("Beans!", 0.1f);
+    InventoryItem beans_can = InventoryItem::make("Beans can", 1.0f);
+    beans_can.d_items.push_back(beans);
 
-    ObjectPart sword_handle_part = ObjectPart::make("sword handle");
-    sword_handle_part.d_materials.push_back(wood_material);
-    sword_handle_part.d_materials.push_back(wire_material);
+    InventoryItem backpack = InventoryItem::make("School backpack", 2.0f);
+    backpack.d_items.push_back(prev_matryoshka);
+    backpack.d_items.push_back(beans_can);
 
-    ObjectPart sword_blade_part = ObjectPart::make("sword blade");
-    sword_blade_part.d_materials.push_back(iron_material);
+    d_inventoryItems.push_back(backpack);
 
-    // inventory objects
-    InventoryObject lightning_wand = InventoryObject::make("Lightning Wand", 20, 1, 1);
-    lightning_wand.d_parts.push_back(wand_rod_part);
-    lightning_wand.d_parts.push_back(lightning_wand_head);
-    d_inventoryObjects.push_back(lightning_wand);
-
-    InventoryObject fiery_wand = InventoryObject::make("Fiery Wand", 23, 0, 4);
-    fiery_wand.d_parts.push_back(wand_rod_part);
-    fiery_wand.d_parts.push_back(fiery_wand_head);
-    d_inventoryObjects.push_back(fiery_wand);
-
-    InventoryObject justice_sword = InventoryObject::make("Justice sword", 1, 25, 3);
-    justice_sword.d_parts.push_back(sword_handle_part);
-    justice_sword.d_parts.push_back(sword_blade_part);
-    d_inventoryObjects.push_back(justice_sword);
+    InventoryItem gun = InventoryItem::make("Gun", 23.451f);
+    for (int i = 0; i < 25; ++i)
+    {
+        InventoryItem bullet = InventoryItem::make("bullet " + i, 0.2f);
+        gun.d_items.push_back(bullet);
+    }
+    d_inventoryItems.push_back(gun);
 }
 
+//----------------------------------------------------------------------------//
 bool InventoryModel::isValidIndex(const ModelIndex& model_index) const
 {
     //TODO: check if we still have a reference to model_index.userdata?
     return model_index.d_modelData != 0;
 }
 
+//----------------------------------------------------------------------------//
 CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_index)
 {
     // root item
     if (parent_index.d_modelData == 0)
     {
-        //TODO: find a better way of validating all these conditions without
-        // so much duplication(s). Maybe we can't remove it if we have this
-        // level of depth (3 in our case)
-        return child >= 0 && child <= d_inventoryObjects.size()
-            ? ModelIndex(&d_inventoryObjects.at(child))
-            : ModelIndex();
+        return makeValidIndex(child, d_inventoryItems);
     }
 
-    Model* model = static_cast<Model*>(parent_index.d_modelData);
+    InventoryItem* item = static_cast<InventoryItem*>(parent_index.d_modelData);
 
-    InventoryObject* object = dynamic_cast<InventoryObject*>(model);
-    if (object != 0)
-    {
-        return child >= 0 && child <= object->d_parts.size()
-            ? ModelIndex(&object->d_parts.at(child))
-            : ModelIndex();
-    }
-
-    ObjectPart* part = dynamic_cast<ObjectPart*>(model);
-    if (part != 0)
-    {
-        return child >= 0 && child <= part->d_materials.size()
-            ? ModelIndex(&part->d_materials.at(child))
-            : ModelIndex();
-    }
-
-    return ModelIndex();
+    return makeValidIndex(child, item->d_items);
 }
 
+//----------------------------------------------------------------------------//
 CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 {
     return CEGUI::ModelIndex();
 }
 
+//----------------------------------------------------------------------------//
 int InventoryModel::getChildCount(const ModelIndex& model_index)
 {
     if (model_index.d_modelData == 0)
-        return d_inventoryObjects.size();
+        return d_inventoryItems.size();
 
-    Model* model = static_cast<Model*>(model_index.d_modelData);
-    InventoryObject* object = dynamic_cast<InventoryObject*>(model);
-    if (object != 0)
-        return object->d_parts.size();
-
-    ObjectPart* part = dynamic_cast<ObjectPart*>(model);
-    if (part != 0)
-        return part->d_materials.size();
-
-    return 0;
+    return static_cast<InventoryItem*>(model_index.d_modelData)->d_items.size();
 }
 
+//----------------------------------------------------------------------------//
 CEGUI::String InventoryModel::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
 {
-    Model* model = static_cast<Model*>(model_index.d_modelData);
-    InventoryObject* object = dynamic_cast<InventoryObject*>(model);
-    if (object != 0)
-    {
-        if (role == CEGUI::IDR_Text)
-            return object->d_name;
-    }
+    if (model_index.d_modelData == 0)
+        return "";
 
-    ObjectPart* part = dynamic_cast<ObjectPart*>(model);
-    if (part != 0)
-    {
-        if (role == CEGUI::IDR_Text)
-            return part->d_partName;
-    }
-
-    Material* material = dynamic_cast<Material*>(model);
-    if (material != 0)
-    {
-        if (role == CEGUI::IDR_Text)
-            return material->d_materialName;
-    }
+    InventoryItem* item = static_cast<InventoryItem*>(model_index.d_modelData);
+    if (role == CEGUI::IDR_Text)
+        return item->d_name;
 
     return "";
 }
