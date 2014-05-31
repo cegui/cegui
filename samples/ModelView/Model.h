@@ -34,60 +34,29 @@
 
 /*
     This is a sample Model in order to show how different views render it.
-    So, we have multiple nested levels and columns for some of them, in the
-    following way, so we can demo many different cases of a model:
+    So, we have multiple nested levels and columns (properties) for some of them,
+    in the following way.
 
-
-    InventoryObject     INT     STR     AGI
-        ObjectPart1
-            Material1   WEIGHT  UNIT_PRICE
-            Material2   WEIGHT  UNIT_PRICE
-            ...
-        ObjectPart2
+    Inventory Item (backpack)                           weight
+        Inventory Item (can)                            ...
+            Inventory Item (beans)
+        Inventory Item (matryoshka doll)
+            Inventory Item (matryoshka doll)
+                Inventory Item (matryoshka doll)
+                    Inventory Item (matryoshka doll)
+                        ...
         ...
-    InventoryObject
-        ...
+    ...
 */
 
-// just a marker class so we can use dynamic_cast :) on ModelIndex's user data void*
-// TIP: Instead of doing a dynamic cast, we could have a nice data structure with
-// a boolean-flag that tells us what kind of data we stored for a ModelIndex.
-class Model
+class InventoryItem
 {
 public:
-    virtual ~Model() { }
-};
-
-class Material : public Model
-{
-public:
-    CEGUI::String d_materialName;
     float d_weight;
-    float d_unitPrice;
-
-    static Material make(const CEGUI::String& name, float weight, float unit_price);
-};
-
-class ObjectPart : public Model
-{
-public:
-    CEGUI::String d_partName;
-    std::vector<Material> d_materials;
-
-    static ObjectPart make(const CEGUI::String& name);
-};
-
-class InventoryObject : public Model
-{
-public:
-    int d_intelligence;
-    int d_strength;
-    int d_agility;
     CEGUI::String d_name;
-    std::vector<ObjectPart> d_parts;
+    std::vector<InventoryItem> d_items;
 
-    static InventoryObject make(const CEGUI::String& name, int intelligence,
-        int strength, int agility);
+    static InventoryItem make(const CEGUI::String& name, float weight);
 };
 
 
@@ -105,7 +74,7 @@ public:
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
 
 private:
-    std::vector<InventoryObject> d_inventoryObjects;
+    std::vector<InventoryItem> d_inventoryItems;
 };
 
 #endif  // end of guard_Sample_Model_View_Model_h_
