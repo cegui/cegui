@@ -26,7 +26,6 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Model.h"
-#include <string>
 
 using namespace CEGUI;
 
