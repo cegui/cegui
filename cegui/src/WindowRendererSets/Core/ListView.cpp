@@ -29,15 +29,17 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 
-// Start of CEGUI namespace section
+#include "CEGUI/views/ListView.h"
+
 namespace CEGUI
 {
+
 //----------------------------------------------------------------------------//
 const String FalagardListView::TypeName("Core/ListView");
 
 //----------------------------------------------------------------------------//
 FalagardListView::FalagardListView(const String& type) :
-    WindowRenderer(type)
+    ItemViewRenderer(type)
 {
 }
 
@@ -46,9 +48,10 @@ void FalagardListView::render()
 {
     const StateImagery* imagery;
     const WidgetLookFeel& wlf = getLookNFeel();
+    ListView* list_view = static_cast<ListView*>(d_window);
 
-    imagery = &wlf.getStateImagery(d_window->isEffectiveDisabled() ? "Disabled" : "Enabled");
-    imagery->render(*d_window);
+    imagery = &wlf.getStateImagery(list_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
+    imagery->render(*list_view);
 }
 
-} // End of  CEGUI namespace section
+}
