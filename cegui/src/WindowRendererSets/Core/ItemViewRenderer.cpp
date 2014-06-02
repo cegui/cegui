@@ -1,6 +1,6 @@
 /***********************************************************************
-    filename:   ListView.h
-    created:    Mon May 26 2014
+    filename:   ItemViewRenderer.cpp
+    created:    Mon Jun 02 2014
     author:     Timotei Dolean <timotei21@gmail.com>
 *************************************************************************/
 /***************************************************************************
@@ -25,61 +25,50 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _FalListView_h_
-#define _FalListView_h_
-
 #include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
+#include "CEGUI/falagard/WidgetLookManager.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
-/*!
-\brief
-    ListView class for the FalagardBase module.
-
-    This class requires LookNFeel to be assigned.
-    The LookNFeel should provide the following:
-
-    States:
-        - Enabled
-        - Disabled
-
-    Named Areas:
-        - ItemRenderingArea
-        - ItemRenderingAreaHScroll
-        - ItemRenderingAreaVScroll
-        - ItemRenderingAreaHVScroll
-
-          OR
-
-        - ItemRenderArea
-        - ItemRenderAreaHScroll
-        - ItemRenderAreaVScroll
-        - ItemRenderAreaHVScroll
-
-    Child Widgets:
-        Scrollbar based widget with name suffix "__auto_vscrollbar__"
-        Scrollbar based widget with name suffix "__auto_hscrollbar__"
-*/
-class COREWRSET_API FalagardListView : public ItemViewRenderer
+//----------------------------------------------------------------------------//
+ItemViewRenderer::ItemViewRenderer(const String& type) :
+    WindowRenderer(type)
 {
-public:
-    //! Type name for this widget.
-    static const String TypeName;
+}
 
-    /*!
-    \brief
-        Constructor for the ListView Falagard class.
+//----------------------------------------------------------------------------//
+Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
+{
+    const WidgetLookFeel& wlf = getLookNFeel();
+    String scroll_suffix;
 
-    \param type
-        The name of this renderer's factory.
-    */
-    FalagardListView(const String& type);
+    if (vscroll)
+        scroll_suffix += "V";
 
-    void render();
-};
+    if (hscroll)
+        scroll_suffix += "H";
 
-} // End of  CEGUI namespace section
+    if(!scroll_suffix.empty())
+        scroll_suffix += "Scroll";
 
-#endif  // end of guard _FalListView_h_
+    const String area_names[] = { "ItemRenderingArea", "ItemRenderArea" };
+    const String suffixes[] = { scroll_suffix, "" };
+
+    for (size_t suffix_id = 0; suffix_id < 2; suffix_id++)
+    {
+        const String suffix = suffixes[suffix_id];
+
+        for (size_t area_id = 0; area_id < 2; ++area_id)
+        {
+            const String area_name = area_names[area_id];
+
+            if (wlf.isNamedAreaDefined(area_name + suffix))
+                return wlf.getNamedArea(area_name + suffix).getArea().getPixelRect(*d_window);
+        }
+    }
+
+    CEGUI_THROW(UnknownObjectException("There is no item rendering area defined!"));
+}
+
+}

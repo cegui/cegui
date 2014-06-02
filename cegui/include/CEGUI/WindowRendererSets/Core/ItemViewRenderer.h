@@ -1,7 +1,8 @@
 /***********************************************************************
-    filename:   ListView.h
-    created:    Mon May 26 2014
+    filename:   ItemViewRenderer.h
+    created:    Mon Jun 02 2014
     author:     Timotei Dolean <timotei21@gmail.com>
+    purpose:    Contains common rendering-related routines
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
@@ -25,61 +26,28 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _FalListView_h_
-#define _FalListView_h_
+#ifndef _FalItemViewRenderer_h_
+#define _FalItemViewRenderer_h_
 
-#include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
+#include "CEGUI/WindowRendererSets/Core/Module.h"
+#include "CEGUI/Rect.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
 /*!
 \brief
-    ListView class for the FalagardBase module.
-
-    This class requires LookNFeel to be assigned.
-    The LookNFeel should provide the following:
-
-    States:
-        - Enabled
-        - Disabled
-
-    Named Areas:
-        - ItemRenderingArea
-        - ItemRenderingAreaHScroll
-        - ItemRenderingAreaVScroll
-        - ItemRenderingAreaHVScroll
-
-          OR
-
-        - ItemRenderArea
-        - ItemRenderAreaHScroll
-        - ItemRenderAreaVScroll
-        - ItemRenderAreaHVScroll
-
-    Child Widgets:
-        Scrollbar based widget with name suffix "__auto_vscrollbar__"
-        Scrollbar based widget with name suffix "__auto_hscrollbar__"
+    Base class that contains common routines for view renderers.
 */
-class COREWRSET_API FalagardListView : public ItemViewRenderer
+class COREWRSET_API ItemViewRenderer : public WindowRenderer
 {
 public:
-    //! Type name for this widget.
-    static const String TypeName;
+    ItemViewRenderer(const String& type);
 
-    /*!
-    \brief
-        Constructor for the ListView Falagard class.
-
-    \param type
-        The name of this renderer's factory.
-    */
-    FalagardListView(const String& type);
-
-    void render();
+protected:
+    Rectf getItemRenderingArea(bool hscroll, bool vscroll) const;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _FalListView_h_
+#endif
