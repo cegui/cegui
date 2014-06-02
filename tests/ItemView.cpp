@@ -51,7 +51,7 @@ public:
         return ModelIndex();
     }
 
-    virtual int getChildCount(const ModelIndex& model_index)
+    virtual size_t getChildCount(const ModelIndex& model_index)
     {
         return 0;
     }

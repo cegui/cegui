@@ -144,7 +144,7 @@ public:
     \param model_index
         The ModelIndex for which to compute the number of children.
     */
-    virtual int getChildCount(const ModelIndex& model_index) = 0;
+    virtual size_t getChildCount(const ModelIndex& model_index) = 0;
 
     /*!
     \brief

@@ -113,7 +113,7 @@ CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 }
 
 //----------------------------------------------------------------------------//
-int InventoryModel::getChildCount(const ModelIndex& model_index)
+size_t InventoryModel::getChildCount(const ModelIndex& model_index)
 {
     if (model_index.d_modelData == 0)
         return d_inventoryItems.size();
