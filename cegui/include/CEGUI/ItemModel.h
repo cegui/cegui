@@ -47,7 +47,7 @@ class CEGUIEXPORT ModelIndex
 public:
     /*!
     \brief
-        Constructs an index with the specified model data
+        Constructs an index with the specified model data.
 
     \param model_data
         Optional model data associated with this index.
@@ -136,6 +136,12 @@ public:
         The parent ModelIndex.
     */
     virtual ModelIndex getParentIndex(const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the root ModelIndex of this model.
+    */
+    virtual ModelIndex getRootIndex() = 0;
 
     /*!
     \brief

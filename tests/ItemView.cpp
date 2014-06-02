@@ -60,6 +60,11 @@ public:
     {
         return "";
     }
+
+    virtual ModelIndex getRootIndex()
+    {
+        return ModelIndex();
+    }
 };
 
 //----------------------------------------------------------------------------//
