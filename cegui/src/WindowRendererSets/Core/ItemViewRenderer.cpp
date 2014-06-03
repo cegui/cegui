@@ -57,14 +57,14 @@ Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
 
     for (size_t suffix_id = 0; suffix_id < 2; suffix_id++)
     {
-        const String suffix = suffixes[suffix_id];
+        const String& suffix = suffixes[suffix_id];
 
         for (size_t area_id = 0; area_id < 2; ++area_id)
         {
-            const String area_name = area_names[area_id];
+            const String& full_area_name = area_names[area_id] + suffix;
 
-            if (wlf.isNamedAreaDefined(area_name + suffix))
-                return wlf.getNamedArea(area_name + suffix).getArea().getPixelRect(*d_window);
+            if (wlf.isNamedAreaDefined(full_area_name))
+                return wlf.getNamedArea(full_area_name).getArea().getPixelRect(*d_window);
         }
     }
 
