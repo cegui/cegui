@@ -70,19 +70,19 @@ void InventoryModel::load()
     InventoryItem beans_can = InventoryItem::make("Beans can", 1.0f);
     beans_can.d_items.push_back(beans);
 
-    InventoryItem backpack = InventoryItem::make("School backpack", 2.0f);
+    InventoryItem backpack = InventoryItem::make("Trip backpack", 2.0f);
     backpack.d_items.push_back(prev_matryoshka);
     backpack.d_items.push_back(beans_can);
 
     d_inventoryItems.push_back(backpack);
 
-    InventoryItem gun = InventoryItem::make("Gun", 23.451f);
+    InventoryItem bow = InventoryItem::make("Bow", 23.451f);
     for (int i = 0; i < 25; ++i)
     {
-        InventoryItem bullet = InventoryItem::make("bullet " + i, 0.2f);
-        gun.d_items.push_back(bullet);
+        InventoryItem arrow = InventoryItem::make("arrow " + i, 0.2f);
+        bow.d_items.push_back(arrow);
     }
-    d_inventoryItems.push_back(gun);
+    d_inventoryItems.push_back(bow);
 }
 
 //----------------------------------------------------------------------------//
