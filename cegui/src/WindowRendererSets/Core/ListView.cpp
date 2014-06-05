@@ -29,7 +29,10 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 
-#include "CEGUI/views/ListView.h"
+#include "CEGUI/Colour.h"
+#include "CEGUI/Vector.h"
+#include "CEGUI/Font.h"
+#include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
 {
@@ -50,8 +53,56 @@ void FalagardListView::render()
     const WidgetLookFeel& wlf = getLookNFeel();
     ListView* list_view = static_cast<ListView*>(d_window);
 
+    list_view->prepareForRender();
+    ListViewRenderingState* state = list_view->getRenderingState();
+
     imagery = &wlf.getStateImagery(list_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
     imagery->render(*list_view);
+
+    renderState(list_view, state);
 }
 
+//----------------------------------------------------------------------------//
+void FalagardListView::renderString(ListView* list_view,
+    RenderedString &rendered_string, Vector2f draw_pos,
+    const Font* font, const Rectf* item_clipper)
+{
+    for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
+    {
+        draw_pos.d_y += CoordConverter::alignToPixels(
+            (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+
+        rendered_string.draw(list_view, i, list_view->getGeometryBuffers(),
+            draw_pos, 0, item_clipper, 0.0f);
+
+        draw_pos.d_y += rendered_string.getPixelSize(list_view, i).d_height;
+    }
+}
+
+//----------------------------------------------------------------------------//
+void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* state)
+{
+    Rectf items_area(getItemRenderingArea(false, false));
+    Vector3f item_pos(items_area.left(), items_area.top(), 0.0f);
+
+    for (size_t i = 0; i < state->d_renderedStrings.size(); ++i)
+    {
+        RenderedString& rendered_string = state->d_renderedStrings.at(i);
+
+        Sizef size(state->d_renderedStringSizes.at(i));
+
+        size.d_width = ceguimax(items_area.getWidth(), size.d_width);
+
+        Rectf item_rect;
+        item_rect.left(item_pos.d_x);
+        item_rect.top(item_pos.d_y);
+        item_rect.setSize(size);
+
+        Rectf item_clipper(item_rect.getIntersection(items_area));
+        renderString(list_view, rendered_string, item_rect.getPosition(),
+            list_view->getFont(), &item_clipper);
+
+        item_pos.d_y += size.d_height;
+    }
+}
 }
