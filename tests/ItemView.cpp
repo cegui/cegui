@@ -83,13 +83,41 @@ private:
 
 BOOST_AUTO_TEST_SUITE(ItemViewTestSuite)
 
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(SetModel_SetsTheModel)
 {
     ItemModelStub stub;
     TestItemView testItemView("DefaultWindow", "id01");
+
     testItemView.setModel(&stub);
 
     BOOST_CHECK_EQUAL(&stub, testItemView.getModel());
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetModel_SameModel_DoesNotSetDirtyState)
+{
+    ItemModelStub stub;
+    TestItemView testItemView("DefaultWindow", "id01");
+    testItemView.setModel(&stub);
+    testItemView.getRenderingState()->d_isDirty = false;
+
+    testItemView.setModel(&stub);
+
+    BOOST_CHECK_EQUAL(false, testItemView.getRenderingState()->d_isDirty);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_SetsDirtyState)
+{
+    ItemModelStub stub, stub2;
+    TestItemView testItemView("DefaultWindow", "id01");
+    testItemView.setModel(&stub);
+    testItemView.getRenderingState()->d_isDirty = false;
+
+    testItemView.setModel(&stub2);
+
+    BOOST_CHECK_EQUAL(true, testItemView.getRenderingState()->d_isDirty);
 }
 
 BOOST_AUTO_TEST_SUITE_END()
