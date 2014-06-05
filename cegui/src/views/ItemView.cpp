@@ -33,6 +33,18 @@ namespace CEGUI
 {
 
 //----------------------------------------------------------------------------//
+ViewRenderingState::ViewRenderingState() :
+    d_isDirty(true)
+{
+}
+
+//----------------------------------------------------------------------------//
+ViewRenderingState::~ViewRenderingState()
+{
+
+}
+
+//----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
     Window(type, name),
     d_itemModel(0)

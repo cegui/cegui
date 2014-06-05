@@ -72,6 +72,11 @@ class TestItemView : public ItemView
 {
 public:
     TestItemView(const String& type, const String& name) : ItemView(type, name) {}
+
+    virtual ViewRenderingState* getRenderingState() { return &d_renderingState;  }
+
+private:
+    ViewRenderingState d_renderingState;
 };
 
 //----------------------------------------------------------------------------//
