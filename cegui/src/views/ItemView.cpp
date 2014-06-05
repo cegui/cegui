@@ -29,7 +29,6 @@
 ***************************************************************************/
 #include "CEGUI/views/ItemView.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -50,4 +49,5 @@ void ItemView::setModel(ItemModel* item_model)
 {
     d_itemModel = item_model;
 }
-} // End of  CEGUI namespace section
+
+}

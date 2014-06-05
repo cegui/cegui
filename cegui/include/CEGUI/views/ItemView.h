@@ -34,7 +34,6 @@
 #include "CEGUI/ItemModel.h"
 #include "CEGUI/Window.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -55,16 +54,16 @@ public:
 
     /*!
     \brief
-    Sets the ItemModel to be used inside this view.
+        Sets the ItemModel to be used inside this view.
 
     \param item_model
-    The ItemModel instance to be set.
+        The ItemModel instance to be set.
     */
     virtual void setModel(ItemModel* item_model);
 
     /*!
     \brief
-    Returns the current ItemModel of this view.
+        Returns the current ItemModel of this view.
     */
     virtual ItemModel* getModel() const { return d_itemModel;  }
 
@@ -72,6 +71,6 @@ protected:
     ItemModel* d_itemModel;
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIItemView_h_
+#endif

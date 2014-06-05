@@ -31,4 +31,4 @@
 #include "./ItemView.h"
 #include "./ListView.h"
 
-#endif // End of guard _CEGUIAllViews_h_
+#endif

@@ -29,7 +29,6 @@
 ***************************************************************************/
 #include "CEGUI/views/ListView.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -49,4 +48,4 @@ ListView::~ListView()
 
 }
 
-} // End of  CEGUI namespace section
+}

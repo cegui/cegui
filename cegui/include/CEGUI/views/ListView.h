@@ -32,7 +32,6 @@
 
 #include "CEGUI/views/ItemView.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -57,6 +56,6 @@ public:
     virtual ~ListView();
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIListView_h_
+#endif
