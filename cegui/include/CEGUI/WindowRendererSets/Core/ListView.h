@@ -29,6 +29,7 @@
 #define _FalListView_h_
 
 #include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
+#include "CEGUI/views/ListView.h"
 
 // Start of CEGUI namespace section
 namespace CEGUI
@@ -78,6 +79,12 @@ public:
     FalagardListView(const String& type);
 
     void render();
+
+
+private:
+    void renderState(ListView* list_view, ListViewRenderingState* state);
+    void renderString(ListView* list_view, RenderedString &rendered_string, Vector2f draw_pos,
+        const Font* font, const Rectf* item_clipper);
 };
 
 } // End of  CEGUI namespace section
