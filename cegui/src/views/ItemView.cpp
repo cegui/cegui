@@ -59,7 +59,11 @@ ItemView::~ItemView()
 //----------------------------------------------------------------------------//
 void ItemView::setModel(ItemModel* item_model)
 {
+    if (item_model == d_itemModel)
+        return;
+
     d_itemModel = item_model;
+    getRenderingState()->d_isDirty = true;
 }
 
 }
