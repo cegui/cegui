@@ -39,6 +39,25 @@ namespace CEGUI
 
 /*!
 \brief
+    Class that stores the rendering state of a view
+*/
+class CEGUIEXPORT ViewRenderingState
+{
+public:
+    /*!
+    \brief
+        Creates a new dirty rendering state.
+    */
+    ViewRenderingState();
+
+    virtual ~ViewRenderingState();
+
+    //! Specifies whether this view requires processing before being able to render it.
+    bool d_isDirty;
+};
+
+/*!
+\brief
     Abstract base class for all view classes based on ItemModel
 */
 class CEGUIEXPORT ItemView : public Window
@@ -65,7 +84,13 @@ public:
     \brief
         Returns the current ItemModel of this view.
     */
-    virtual ItemModel* getModel() const { return d_itemModel;  }
+    virtual ItemModel* getModel() const { return d_itemModel; }
+
+    /*!
+    \brief
+        Returns the current rendering state of this view.
+    */
+    virtual ViewRenderingState* getRenderingState() = 0;
 
 protected:
     ItemModel* d_itemModel;

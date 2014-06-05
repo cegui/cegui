@@ -37,6 +37,14 @@ namespace CEGUI
 
 /*!
 \brief
+    Rendering state class for the ListView
+*/
+class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
+{
+};
+
+/*!
+\brief
     View that displays items in a listed fashion.
 */
 class CEGUIEXPORT ListView : public ItemView
@@ -54,6 +62,11 @@ public:
     ListView(const String& type, const String& name);
 
     virtual ~ListView();
+
+    virtual ViewRenderingState* getRenderingState() { return &d_renderingState; }
+
+private:
+    ListViewRenderingState d_renderingState;
 };
 
 }
