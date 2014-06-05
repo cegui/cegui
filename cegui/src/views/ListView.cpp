@@ -36,6 +36,9 @@ const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
+BasicRenderedStringParser ListView::d_stringParser;
+
+//----------------------------------------------------------------------------//
 ListView::ListView(const String& type, const String& name) :
     ItemView(type, name)
 {
@@ -48,4 +51,53 @@ ListView::~ListView()
 
 }
 
+//----------------------------------------------------------------------------//
+void ListView::prepareForRender()
+{
+    if (!d_renderingState.d_isDirty)
+        return;
+
+    ModelIndex root_index = d_itemModel->getRootIndex();
+    size_t child_count = d_itemModel->getChildCount(root_index);
+
+    d_renderingState.d_renderedStrings.clear();
+    d_renderingState.d_renderedStrings.resize(child_count);
+
+    d_renderingState.d_renderedStringSizes.clear();
+    d_renderingState.d_renderedStringSizes.resize(child_count);
+
+    // TODO: migrate ListboxTextItem colorness
+    ColourRect colour_rect(Colour(1, 1, 1));
+
+    for (size_t child = 0; child < child_count; ++child)
+    {
+        String text = d_itemModel->getData(d_itemModel->makeIndex(child, root_index));
+
+        // TODO: migrate the ListboxTextItem string rendering
+        RenderedString rendered_string =
+            d_stringParser.parse(text, getFont(), &colour_rect);
+        d_renderingState.d_renderedStrings.at(child) = rendered_string;
+
+        d_renderingState.d_renderedStringSizes.at(child) = computeSizeOfRenderedString(rendered_string);
+    }
+
+    d_renderingState.d_isDirty = false;
+}
+
+//----------------------------------------------------------------------------//
+Sizef ListView::computeSizeOfRenderedString(RenderedString &rendered_string)
+{
+    Sizef string_size;
+
+    for (size_t line = 0; line < rendered_string.getLineCount(); ++line)
+    {
+        const Sizef line_sz(rendered_string.getPixelSize(this, line));
+
+        string_size.d_height += line_sz.d_height;
+        if (line_sz.d_width > string_size.d_width)
+            string_size.d_width = line_sz.d_width;
+    }
+
+    return string_size;
+}
 }
