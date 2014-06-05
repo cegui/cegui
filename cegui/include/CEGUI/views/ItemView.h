@@ -86,6 +86,15 @@ public:
     */
     virtual ItemModel* getModel() const { return d_itemModel; }
 
+
+    /*!
+    \brief
+        Instructs this ItemView to prepare its rendering state for rendering.
+        This is usually done by updating the rendering state if it got dirty
+        in the meantime.
+    */
+    virtual void prepareForRender() { }
+
     /*!
     \brief
         Returns the current rendering state of this view.
