@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "Model.h"
+#include "CEGUI/PropertyHelper.h"
 
 using namespace CEGUI;
 
@@ -79,10 +80,19 @@ void InventoryModel::load()
     InventoryItem bow = InventoryItem::make("Bow", 23.451f);
     for (int i = 0; i < 25; ++i)
     {
-        InventoryItem arrow = InventoryItem::make("arrow " + i, 0.2f);
+        InventoryItem arrow = InventoryItem::make(
+            "arrow " + PropertyHelper<int>::toString(i), 0.2f);
         bow.d_items.push_back(arrow);
     }
     d_inventoryItems.push_back(bow);
+
+    // generate *many* items :D
+    for (int i = 1960; i < 2000; i += 2)
+    {
+        InventoryItem almanach = InventoryItem::make(
+            "Almanach " + PropertyHelper<int>::toString(i), 0.34f);
+        d_inventoryItems.push_back(almanach);
+    }
 }
 
 //----------------------------------------------------------------------------//
