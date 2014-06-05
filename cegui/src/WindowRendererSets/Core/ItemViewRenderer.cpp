@@ -61,7 +61,7 @@ Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
 
         for (size_t area_id = 0; area_id < 2; ++area_id)
         {
-            const String& full_area_name = area_names[area_id] + suffix;
+            const String full_area_name(area_names[area_id] + suffix);
 
             if (wlf.isNamedAreaDefined(full_area_name))
                 return wlf.getNamedArea(full_area_name).getArea().getPixelRect(*d_window);
