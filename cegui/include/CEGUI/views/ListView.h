@@ -31,6 +31,7 @@
 #define _CEGUIListView_h_
 
 #include "CEGUI/views/ItemView.h"
+#include <vector>
 
 namespace CEGUI
 {
@@ -41,6 +42,9 @@ namespace CEGUI
 */
 class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
 {
+public:
+    std::vector<RenderedString> d_renderedStrings;
+    std::vector<Sizef> d_renderedStringSizes;
 };
 
 /*!
@@ -63,10 +67,15 @@ public:
 
     virtual ~ListView();
 
-    virtual ViewRenderingState* getRenderingState() { return &d_renderingState; }
+    virtual ListViewRenderingState* getRenderingState() { return &d_renderingState; }
+    virtual void prepareForRender();
+
+    Sizef computeSizeOfRenderedString(RenderedString &rendered_string);
 
 private:
     ListViewRenderingState d_renderingState;
+
+    static BasicRenderedStringParser d_stringParser;
 };
 
 }
