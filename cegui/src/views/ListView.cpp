@@ -87,7 +87,7 @@ void ListView::prepareForRender()
 //----------------------------------------------------------------------------//
 Sizef ListView::computeSizeOfRenderedString(RenderedString &rendered_string)
 {
-    Sizef string_size;
+    Sizef string_size(0.0f, 0.0f);
 
     for (size_t line = 0; line < rendered_string.getLineCount(); ++line)
     {
