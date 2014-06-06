@@ -61,6 +61,11 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
     list_view->setModel(&d_inventoryModel);
     d_root->addChild(list_view);
 
+    TreeView* tree_view = static_cast<TreeView*>(win_mgr.createWindow("TaharezLook/TreeView", "treeView"));
+    tree_view->setPosition(UVector2(cegui_reldim(0.3f), cegui_reldim(0.1f)));
+    tree_view->setModel(&d_inventoryModel);
+    d_root->addChild(tree_view);
+
     Window* btn_add_item = d_root->getChild("btnAddRandomItem");
     btn_add_item->subscribeEvent(PushButton::EventClicked,
         Event::Subscriber(&ModelViewDemo::handleAddRandomItem, this));
