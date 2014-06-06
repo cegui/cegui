@@ -73,7 +73,8 @@ public:
     virtual CEGUI::ModelIndex getRootIndex();
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
-
+    void clear();
+    void addItem(InventoryItem& new_item);
 private:
     std::vector<InventoryItem> d_inventoryItems;
 };
