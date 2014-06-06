@@ -681,6 +681,7 @@ void System::addStandardWindowFactories()
 
     // views
     WindowFactoryManager::addWindowType<ListView>();
+    WindowFactoryManager::addWindowType<TreeView>();
 }
 
 void System::createSingletons()

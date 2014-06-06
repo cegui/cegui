@@ -1,7 +1,9 @@
 /***********************************************************************
-    filename:   All.h
-    created:    Mon May 26 2014
+    filename:   TreeView.h
+    created:    Fri Jun 06 2014
     author:     Timotei Dolean <timotei21@gmail.com>
+
+    purpose:    Interface for a view that displays a tree of model items.
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
@@ -25,11 +27,51 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-#ifndef _CEGUIAllViews_h_
-#define _CEGUIAllViews_h_
+#ifndef _CEGUITreeView_h_
+#define _CEGUITreeView_h_
 
-#include "./ItemView.h"
-#include "./ListView.h"
-#include "./TreeView.h"
+#include "CEGUI/views/ItemView.h"
+#include <vector>
+
+namespace CEGUI
+{
+
+/*!
+\brief
+    Rendering state class for the TreeView
+*/
+class CEGUIEXPORT TreeViewRenderingState : public ViewRenderingState
+{
+public:
+};
+
+/*!
+\brief
+    View that displays items in a listed fashion.
+*/
+class CEGUIEXPORT TreeView : public ItemView
+{
+public:
+    //! Window factory name
+    static const String WidgetTypeName;
+    //! Namespace for global events
+    static const String EventNamespace;
+
+    /*!
+    \brief
+        Creates a new instance of TreeView
+    */
+    TreeView(const String& type, const String& name);
+
+    virtual ~TreeView();
+
+    virtual TreeViewRenderingState* getRenderingState() { return &d_renderingState; }
+    virtual void prepareForRender();
+
+private:
+    TreeViewRenderingState d_renderingState;
+};
+
+};
 
 #endif
