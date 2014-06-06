@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<GUILayout version="4" >
+    <Window type="DefaultWindow" name="DefaultWindow" >
+        <Property name="Area" value="{{0,-1},{0,0},{1,-1},{1,0}}" />
+        <Property name="MaxSize" value="{{1,0},{1,0}}" />
+        <Window type="TaharezLook/Button" name="btnAddRandomItem" >
+            <Property name="Area" value="{{0,993},{0,133},{0,1215},{0,165}}" />
+            <Property name="Text" value="Add random item" />
+        </Window>
+        <Window type="TaharezLook/Button" name="btnRemoveSelectedListItem" >
+            <Property name="Area" value="{{0,992},{0,175},{0,1215},{0,207}}" />
+            <Property name="Text" value="Remove selected list item" />
+        </Window>
+        <Window type="TaharezLook/Button" name="btnClearItems" >
+            <Property name="Area" value="{{0,990},{0,218},{0,1214},{0,250}}" />
+            <Property name="Text" value="Clear items" />
+        </Window>
+    </Window>
+</GUILayout>

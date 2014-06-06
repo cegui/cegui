@@ -149,3 +149,15 @@ CEGUI::String InventoryModel::getData(const ModelIndex& model_index, ItemDataRol
 
     return "";
 }
+
+//----------------------------------------------------------------------------//
+void InventoryModel::clear()
+{
+    d_inventoryItems.clear();
+}
+
+//----------------------------------------------------------------------------//
+void InventoryModel::addItem(InventoryItem& new_item)
+{
+    d_inventoryItems.push_back(new_item);
+}

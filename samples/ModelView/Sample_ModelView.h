@@ -38,8 +38,14 @@ public:
     virtual void deinitialise();
 
 private:
+
+    bool handleAddRandomItem(const CEGUI::EventArgs& e);
+    bool handleRemoveSelectedListItem(const CEGUI::EventArgs& e);
+    bool handleClearItems(const CEGUI::EventArgs& e);
+
     CEGUI::Window* d_root;
     InventoryModel d_inventoryModel;
+    int d_newItemsCount;
 };
 
 #endif  // end of guard _Sample_Model_View_h_

@@ -47,19 +47,31 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
     gui_context->getPointerIndicator().setDefaultImage("TaharezLook/MouseArrow");
 
     WindowManager& win_mgr = WindowManager::getSingleton();
-    d_root = (DefaultWindow*)win_mgr.createWindow("DefaultWindow", "Root");
+    d_root = win_mgr.loadLayoutFromFile("ModelViewDemo.layout");
 
     Font& defaultFont = FontManager::getSingleton().createFromFile("DejaVuSans-12.font");
     gui_context->setDefaultFont(&defaultFont);
     gui_context->setRootWindow(d_root);
 
     d_inventoryModel.load();
+    d_newItemsCount = 0;
 
     ListView* list_view = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
     list_view->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim(0.1f)));
     list_view->setModel(&d_inventoryModel);
-
     d_root->addChild(list_view);
+
+    Window* btn_add_item = d_root->getChild("btnAddRandomItem");
+    btn_add_item->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleAddRandomItem, this));
+
+    Window* btn_remove_item = d_root->getChild("btnRemoveSelectedListItem");
+    btn_remove_item->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleRemoveSelectedListItem, this));
+
+    Window* btn_clear_list = d_root->getChild("btnClearItems");
+    btn_clear_list->subscribeEvent(PushButton::EventClicked,
+        Event::Subscriber(&ModelViewDemo::handleClearItems, this));
 
     return true;
 }
@@ -69,6 +81,38 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
 *************************************************************************/
 void ModelViewDemo::deinitialise()
 {
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleClearItems(const CEGUI::EventArgs& e)
+{
+    d_inventoryModel.clear();
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleRemoveSelectedListItem(const CEGUI::EventArgs& e)
+{
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ModelViewDemo::handleAddRandomItem(const CEGUI::EventArgs& e)
+{
+    using namespace CEGUI;
+
+    InventoryItem new_item = InventoryItem::make(
+        "New random item #" + PropertyHelper<int>::toString(d_newItemsCount), 0.3f);
+
+    InventoryItem new_subitem = InventoryItem::make(
+        "New sub item #" + PropertyHelper<int>::toString(d_newItemsCount), 1.3f);
+
+    new_item.d_items.push_back(new_subitem);
+
+    d_inventoryModel.addItem(new_item);
+
+    d_newItemsCount++;
+    return true;
 }
 
 /*************************************************************************
