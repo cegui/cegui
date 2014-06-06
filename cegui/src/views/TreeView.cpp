@@ -1,7 +1,9 @@
 /***********************************************************************
-    filename:   All.h
-    created:    Mon May 26 2014
+    filename:   TreeView.cpp
+    created:    Fri Jun 06 2014
     author:     Timotei Dolean <timotei21@gmail.com>
+
+    purpose:    Implementation of the base class for all item model-based views.
 *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
@@ -24,12 +26,32 @@
  *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
- ***************************************************************************/
-#ifndef _CEGUIAllViews_h_
-#define _CEGUIAllViews_h_
+***************************************************************************/
+#include "CEGUI/views/TreeView.h"
 
-#include "./ItemView.h"
-#include "./ListView.h"
-#include "./TreeView.h"
+namespace CEGUI
+{
+//----------------------------------------------------------------------------//
+const String TreeView::EventNamespace("TreeView");
+const String TreeView::WidgetTypeName("CEGUI/TreeView");
 
-#endif
+//----------------------------------------------------------------------------//
+TreeView::TreeView(const String& type, const String& name) :
+    ItemView(type, name)
+{
+
+}
+
+//----------------------------------------------------------------------------//
+TreeView::~TreeView()
+{
+
+}
+
+//----------------------------------------------------------------------------//
+void TreeView::prepareForRender()
+{
+
+}
+
+}
