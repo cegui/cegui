@@ -159,5 +159,5 @@ void InventoryModel::clear()
 //----------------------------------------------------------------------------//
 void InventoryModel::addItem(InventoryItem& new_item)
 {
-    d_inventoryItems.push_back(new_item);
+    d_inventoryItems.insert(d_inventoryItems.begin(), new_item);
 }

@@ -47,13 +47,16 @@ ViewRenderingState::~ViewRenderingState()
 //----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
     Window(type, name),
-    d_itemModel(0)
+    d_itemModel(0),
+    d_eventChildrenAddedConnection(0),
+    d_eventChildrenRemovedConnection(0)
 {
 }
 
 //----------------------------------------------------------------------------//
 ItemView::~ItemView()
 {
+    disconnectModelEvents();
 }
 
 //----------------------------------------------------------------------------//
@@ -62,8 +65,47 @@ void ItemView::setModel(ItemModel* item_model)
     if (item_model == d_itemModel)
         return;
 
+    if (d_itemModel != 0)
+    {
+        disconnectModelEvents();
+    }
+
     d_itemModel = item_model;
+
+    connectToModelEvents(d_itemModel);
     getRenderingState()->d_isDirty = true;
 }
 
+//----------------------------------------------------------------------------//
+void ItemView::connectToModelEvents(ItemModel* d_itemModel)
+{
+    d_eventChildrenAddedConnection = d_itemModel->subscribeEvent(ItemModel::EventChildrenAdded,
+        &ItemView::onChildrenAdded, this);
+    d_eventChildrenRemovedConnection = d_itemModel->subscribeEvent(ItemModel::EventChildrenRemoved,
+        &ItemView::onChildrenRemoved, this);
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::onChildrenAdded(const EventArgs& args)
+{
+    getRenderingState()->d_isDirty = true;
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::onChildrenRemoved(const EventArgs& args)
+{
+    getRenderingState()->d_isDirty = true;
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::disconnectModelEvents()
+{
+    if (d_eventChildrenAddedConnection != 0)
+        d_eventChildrenAddedConnection->disconnect();
+
+    if (d_eventChildrenRemovedConnection != 0)
+        d_eventChildrenRemovedConnection->disconnect();
+}
 }

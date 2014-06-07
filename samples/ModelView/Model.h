@@ -66,6 +66,9 @@ public:
     // simulate loading the model
     void load();
 
+    void clear();
+    void addItem(InventoryItem& new_item);
+
     // implementation of ItemModel
     virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
     virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& parent_index);
@@ -73,8 +76,6 @@ public:
     virtual CEGUI::ModelIndex getRootIndex();
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
-    void clear();
-    void addItem(InventoryItem& new_item);
 private:
     std::vector<InventoryItem> d_inventoryItems;
 };
