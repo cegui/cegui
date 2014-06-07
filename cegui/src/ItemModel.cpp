@@ -27,7 +27,6 @@
  ***************************************************************************/
 #include "CEGUI/ItemModel.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 //----------------------------------------------------------------------------//
@@ -40,4 +39,18 @@ ItemModel::~ItemModel()
 {
 }
 
-} // End of CEGUI namespace section
+//----------------------------------------------------------------------------//
+void ItemModel::notifyChildrenAdded(ModelIndex start_index, size_t count)
+{
+    ModelEventArgs args(this, start_index, count);
+    fireEvent(EventChildrenAdded, args);
+}
+
+//----------------------------------------------------------------------------//
+void ItemModel::notifyChildrenRemoved(ModelIndex start_index, size_t count)
+{
+    ModelEventArgs args(this, start_index, count);
+    fireEvent(EventChildrenRemoved, args);
+}
+
+}
