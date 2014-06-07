@@ -209,6 +209,10 @@ public:
 
     \param count
         The number of children that have been added.
+
+    \remark
+        If this method is overridden, it *needs* to call this base method or invoke
+        manually the EventChildrenAdded event.
     */
     virtual void notifyChildrenAdded(ModelIndex start_index, size_t count);
 
@@ -222,6 +226,10 @@ public:
 
     \param count
         The number of children that have been removed.
+
+    \remark
+        If this method is overridden, it *needs* to call this base method or invoke
+        manually the EventChildrenRemoved event.
     */
     virtual void notifyChildrenRemoved(ModelIndex start_index, size_t count);
 };
