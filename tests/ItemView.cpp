@@ -80,7 +80,6 @@ private:
 };
 
 //----------------------------------------------------------------------------//
-
 BOOST_AUTO_TEST_SUITE(ItemViewTestSuite)
 
 //----------------------------------------------------------------------------//
@@ -104,7 +103,7 @@ BOOST_AUTO_TEST_CASE(SetModel_SameModel_DoesNotSetDirtyState)
 
     testItemView.setModel(&stub);
 
-    BOOST_CHECK_EQUAL(false, testItemView.getRenderingState()->d_isDirty);
+    BOOST_CHECK(!testItemView.getRenderingState()->d_isDirty);
 }
 
 //----------------------------------------------------------------------------//
@@ -117,7 +116,45 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_SetsDirtyState)
 
     testItemView.setModel(&stub2);
 
-    BOOST_CHECK_EQUAL(true, testItemView.getRenderingState()->d_isDirty);
+    BOOST_CHECK(testItemView.getRenderingState()->d_isDirty);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
+{
+    ItemModelStub stub;
+    TestItemView test_item_view("DefaultWindow", "id01");
+
+    test_item_view.setModel(&stub);
+
+    {
+        test_item_view.getRenderingState()->d_isDirty = false;
+        stub.notifyChildrenAdded(stub.makeIndex(0, stub.getRootIndex()), 1);
+
+        BOOST_CHECK(test_item_view.getRenderingState()->d_isDirty);
+    }
+
+    {
+        test_item_view.getRenderingState()->d_isDirty = false;
+        stub.notifyChildrenRemoved(stub.makeIndex(0, stub.getRootIndex()), 1);
+
+        BOOST_CHECK(test_item_view.getRenderingState()->d_isDirty);
+    }
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
+{
+    ItemModelStub stub1, stub2;
+    TestItemView test_item_view("DefaultWindow", "id01");
+    test_item_view.setModel(&stub1);
+
+    test_item_view.setModel(&stub2);
+
+    test_item_view.getRenderingState()->d_isDirty = false;
+    stub1.notifyChildrenAdded(stub1.makeIndex(0, stub1.getRootIndex()), 1);
+
+    BOOST_CHECK(!test_item_view.getRenderingState()->d_isDirty);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

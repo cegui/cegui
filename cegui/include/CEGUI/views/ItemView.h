@@ -34,6 +34,11 @@
 #include "CEGUI/ItemModel.h"
 #include "CEGUI/Window.h"
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
 
@@ -100,11 +105,22 @@ public:
         Returns the current rendering state of this view.
     */
     virtual ViewRenderingState* getRenderingState() = 0;
-
 protected:
     ItemModel* d_itemModel;
+
+    bool onChildrenAdded(const EventArgs& args);
+    bool onChildrenRemoved(const EventArgs& args);
+
+    Event::Connection d_eventChildrenAddedConnection;
+    Event::Connection d_eventChildrenRemovedConnection;
+    void connectToModelEvents(ItemModel* d_itemModel);
+    void disconnectModelEvents();
 };
 
 }
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
