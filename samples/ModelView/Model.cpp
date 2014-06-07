@@ -153,11 +153,14 @@ CEGUI::String InventoryModel::getData(const ModelIndex& model_index, ItemDataRol
 //----------------------------------------------------------------------------//
 void InventoryModel::clear()
 {
+    size_t items_count = d_inventoryItems.size();
     d_inventoryItems.clear();
+    notifyChildrenRemoved(makeIndex(0, getRootIndex()), items_count);
 }
 
 //----------------------------------------------------------------------------//
 void InventoryModel::addItem(InventoryItem& new_item)
 {
     d_inventoryItems.insert(d_inventoryItems.begin(), new_item);
+    notifyChildrenAdded(makeIndex(0, getRootIndex()), 1);
 }
