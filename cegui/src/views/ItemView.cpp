@@ -89,6 +89,8 @@ void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 bool ItemView::onChildrenAdded(const EventArgs& args)
 {
     getRenderingState()->d_isDirty = true;
+    invalidate(false);
+
     return true;
 }
 
@@ -96,6 +98,8 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
 bool ItemView::onChildrenRemoved(const EventArgs& args)
 {
     getRenderingState()->d_isDirty = true;
+    invalidate(false);
+
     return true;
 }
 
