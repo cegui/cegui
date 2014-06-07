@@ -32,9 +32,10 @@
 #define _CEGUIItemModel_h_
 
 #include "CEGUI/Base.h"
+#include "CEGUI/EventArgs.h"
+#include "CEGUI/EventSet.h"
 #include "CEGUI/String.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -81,15 +82,43 @@ enum ItemDataRole
     IDR_ImageDecoration,
     IDR_Tooltip,
 
-    IDR_UserDefinedItemDataRole = 0x1000 //!< This marks the beginning of the user-defined item data roles
+    //!< This marks the beginning of the user-defined item data roles
+    IDR_UserDefinedItemDataRole = 0x1000
 };
+
+class ItemModel;
+
+/*!
+\brief
+    Arguments class for events that happened with regards to the specified ItemModel.
+*/
+class CEGUIEXPORT ModelEventArgs : public EventArgs
+{
+public:
+    ModelEventArgs(ItemModel* item_model, ModelIndex start_index, size_t count = 1) :
+        d_itemModel(item_model),
+        d_startIndex(start_index),
+        d_count(count)
+    {
+    }
+
+    //! The source ItemModel that triggered the event.
+    ItemModel* d_itemModel;
+
+    //! The starting ModelIndex the event happened on.
+    ModelIndex d_startIndex;
+
+    //! The number of items after the start index that have been affected by the event.
+    size_t d_count;
+};
+
 
 /*!
 \brief
     Abstract class defining the interface between the view and the model.
     This is used by views to query data that is to be shown.
 */
-class CEGUIEXPORT ItemModel
+class CEGUIEXPORT ItemModel : public EventSet
 {
 public:
     virtual ~ItemModel();
@@ -169,8 +198,34 @@ public:
         The role of data to be returned.
     */
     virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text) = 0;
+
+    /*!
+    \brief
+        Notifies any listeners of the EventChildrenAdded event that new children
+        have been added to this model.
+
+    \param start_index
+        The start index where the children have been added.
+
+    \param count
+        The number of children that have been added.
+    */
+    virtual void notifyChildrenAdded(ModelIndex start_index, size_t count);
+
+    /*!
+    \brief
+        Notifies any listeners of the EventChildrenRemoved event that existing
+        children have been removed from this model.
+
+    \param start_index
+        The start index where the children have been removed.
+
+    \param count
+        The number of children that have been removed.
+    */
+    virtual void notifyChildrenRemoved(ModelIndex start_index, size_t count);
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _CEGUIItemModel_h
+#endif
