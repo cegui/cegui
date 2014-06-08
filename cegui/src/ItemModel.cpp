@@ -35,6 +35,18 @@ const String ItemModel::EventChildrenRemoved("ChildrenRemoved");
 const String ItemModel::EventChildrenDataChanged("ChildrenDataChanged");
 
 //----------------------------------------------------------------------------//
+bool ModelIndex::operator==(const ModelIndex& other) const
+{
+    return d_modelData == other.d_modelData;
+}
+
+//----------------------------------------------------------------------------//
+bool ModelIndex::operator!=(const ModelIndex& other) const
+{
+    return !(*this == other);
+}
+
+//----------------------------------------------------------------------------//
 ItemModel::~ItemModel()
 {
 }
