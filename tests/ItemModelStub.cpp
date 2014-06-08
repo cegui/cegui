@@ -25,7 +25,6 @@
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
-
 #include "ItemModelStub.h"
 
 using namespace CEGUI;
@@ -33,19 +32,19 @@ using namespace CEGUI;
 //----------------------------------------------------------------------------//
 bool ItemModelStub::isValidIndex(const ModelIndex& model_index) const
 {
-    return false;
+    return model_index.d_modelData != 0;
 }
 
 //----------------------------------------------------------------------------//
 ModelIndex ItemModelStub::makeIndex(size_t child, const ModelIndex& model_index)
 {
-    return ModelIndex();
+    return ModelIndex(&d_items.at(child));
 }
 
 //----------------------------------------------------------------------------//
 size_t ItemModelStub::getChildCount(const ModelIndex& model_index)
 {
-    return 0;
+    return d_items.size();
 }
 
 //----------------------------------------------------------------------------//
@@ -63,5 +62,5 @@ ModelIndex ItemModelStub::getRootIndex()
 //----------------------------------------------------------------------------//
 String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
 {
-    return "";
+    return *(static_cast<String*>(model_index.d_modelData));
 }

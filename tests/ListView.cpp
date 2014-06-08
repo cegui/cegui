@@ -32,6 +32,64 @@
 
 using namespace CEGUI;
 
-BOOST_AUTO_TEST_SUITE(ListViewTestSuite)
+//----------------------------------------------------------------------------//
+static const String ITEM1 = "ITEM 1";
+static const String ITEM2 = "ITEM 2";
+
+//----------------------------------------------------------------------------//
+struct ListViewFixture
+{
+    ListViewFixture() : view("TaharezLook/ListView", "lv")
+    {
+        view.setModel(&model);
+    }
+
+    ListView view;
+    ItemModelStub model;
+
+};
+
+BOOST_FIXTURE_TEST_SUITE(ListViewTestSuite, ListViewFixture)
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
+{
+    ModelIndex index = view.indexAt(Vector2f(0, 0));
+
+    BOOST_CHECK(index.d_modelData == 0);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
+{
+    model.d_items.push_back(ITEM1);
+
+    ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() / 2.0f));
+
+    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_CHECK_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideSingleObject_ReturnsInvalidIndex)
+{
+    model.d_items.push_back(ITEM1);
+
+    ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() * 2));
+
+    BOOST_REQUIRE(index.d_modelData == 0);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+
+    ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() * 2));
+
+    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_CHECK_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
+}
 
 BOOST_AUTO_TEST_SUITE_END()

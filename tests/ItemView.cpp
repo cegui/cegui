@@ -89,7 +89,7 @@ BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
 {
     ItemModelStub stub;
     TestItemView test_item_view("DefaultWindow", "id01");
-
+    stub.d_items.push_back("item");
     test_item_view.setModel(&stub);
 
     {
@@ -112,6 +112,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
 {
     ItemModelStub stub1, stub2;
     TestItemView test_item_view("DefaultWindow", "id01");
+    stub1.d_items.push_back("item");
     test_item_view.setModel(&stub1);
 
     test_item_view.setModel(&stub2);

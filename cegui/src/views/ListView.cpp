@@ -42,19 +42,17 @@ BasicRenderedStringParser ListView::d_stringParser;
 ListView::ListView(const String& type, const String& name) :
     ItemView(type, name)
 {
-
 }
 
 //----------------------------------------------------------------------------//
 ListView::~ListView()
 {
-
 }
 
 //----------------------------------------------------------------------------//
 void ListView::prepareForRender()
 {
-    if (!d_renderingState.d_isDirty)
+    if (d_itemModel == 0 || !d_renderingState.d_isDirty)
         return;
 
     ModelIndex root_index = d_itemModel->getRootIndex();
@@ -100,4 +98,57 @@ Sizef ListView::computeSizeOfRenderedString(RenderedString &rendered_string)
 
     return string_size;
 }
+
+//----------------------------------------------------------------------------//
+void ListView::onPointerPressHold(PointerEventArgs& e)
+{
+    Window::onPointerPressHold(e);
+
+    if (e.source != PS_Left)
+        return;
+
+    ModelIndex index = indexAt(e.position);
+    setSelectedItem(index);
+
+    ++e.handled;
+}
+
+//----------------------------------------------------------------------------//
+ModelIndex ListView::indexAt(const Vector2f& position)
+{
+    if (d_itemModel == 0)
+        return ModelIndex();
+
+    //TODO: add prepareForLayout() as a cheaper operation alternative?
+    prepareForRender();
+
+    size_t index;
+    float cur_height = 0;
+    for (index = 0; index < d_renderingState.d_renderedStringSizes.size(); ++index)
+    {
+        Sizef size = d_renderingState.d_renderedStringSizes.at(index);
+        float next_height = cur_height + size.d_height;
+
+        if (position.d_y >= cur_height &&
+            position.d_y <= next_height)
+        {
+            return ModelIndex(d_itemModel->makeIndex(index, d_itemModel->getRootIndex()));
+        }
+
+        cur_height = next_height;
+    }
+
+    return ModelIndex();
+}
+
+//----------------------------------------------------------------------------//
+bool ListView::setSelectedItem(ModelIndex index)
+{
+    if (d_itemModel == 0 ||
+        !d_itemModel->isValidIndex(index))
+        return false;
+
+    return true;
+}
+
 }

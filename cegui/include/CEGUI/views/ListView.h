@@ -72,13 +72,41 @@ public:
 
     virtual ~ListView();
 
+    /*!
+    \brief
+        Sets the specified item index's as the currently selected item.
+
+    \param index
+        The index of the item to be selected.
+
+    \return
+        True if the item has been successfully selected, false otherwise.
+    */
+    virtual bool setSelectedItem(ModelIndex index);
+
+    /*!
+    \brief
+        Returns the ModelIndex at the specified position.
+
+    \param position
+        The position for which to get the ModelIndex.
+
+    \return
+        The ModelIndex for the position or a default-constructed ModelIndex
+        if nothing was found at that position.
+    */
+    virtual ModelIndex indexAt(const Vector2f& position);
+
     virtual ListViewRenderingState* getRenderingState() { return &d_renderingState; }
     virtual void prepareForRender();
 
-    Sizef computeSizeOfRenderedString(RenderedString &rendered_string);
+protected:
+    virtual void onPointerPressHold(PointerEventArgs& e);
 
 private:
     ListViewRenderingState d_renderingState;
+
+    Sizef computeSizeOfRenderedString(RenderedString &rendered_string);
 
     static BasicRenderedStringParser d_stringParser;
 };
