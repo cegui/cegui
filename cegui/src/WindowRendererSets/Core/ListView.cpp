@@ -89,7 +89,6 @@ void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* 
     {
         ListViewItemRenderingState item = state->d_items.at(i);
         RenderedString& rendered_string = item.d_string;
-
         Sizef size(item.d_size);
 
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
@@ -100,6 +99,18 @@ void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* 
         item_rect.setSize(size);
 
         Rectf item_clipper(item_rect.getIntersection(items_area));
+
+        ColourRect colour_rect(Colour(0.5f, 0.5f, 0.5f));
+        if (list_view->getSelectionBrushImage() != 0 && item.d_isSelected)
+        {
+            list_view->getSelectionBrushImage()->render(
+                list_view->getGeometryBuffers(),
+                item_rect,
+                &item_clipper,
+                true,
+                colour_rect);
+        }
+
         renderString(list_view, rendered_string, item_rect.getPosition(),
             list_view->getFont(), &item_clipper);
 

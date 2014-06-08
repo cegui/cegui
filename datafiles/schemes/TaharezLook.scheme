@@ -50,7 +50,7 @@
     <FalagardMapping windowType="TaharezLook/Tree" targetType="CEGUI/Tree"   renderer="Core/Tree"   lookNFeel="TaharezLook/Tree" />
 
     <!-- Views -->
-    <FalagardMapping windowType="TaharezLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="TaharezLook/Listbox" />
+    <FalagardMapping windowType="TaharezLook/ListView" targetType="CEGUI/ListView" renderer="Core/ListView" lookNFeel="TaharezLook/ListView" />
     <FalagardMapping windowType="TaharezLook/TreeView" targetType="CEGUI/TreeView" renderer="Core/TreeView" lookNFeel="TaharezLook/Tree" />
 </GUIScheme>
 
