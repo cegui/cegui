@@ -28,7 +28,8 @@
 #ifndef _CEGUITestsItemModelStub_h_
 #define _CEGUITestsItemModelStub_h_
 
-#include "CEGUI//CEGUI.h"
+#include "CEGUI/CEGUI.h"
+#include <vector>
 
 // TODO: see if we can migrate basic logic from this to an abstract base
 // ItemModel (e.g.: AbstractItemModel / ItemModelBase, a' la Qt) in the main lib
@@ -41,6 +42,8 @@ public:
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
     virtual CEGUI::ModelIndex getRootIndex();
+
+    std::vector<CEGUI::String> d_items;
 };
 
 #endif

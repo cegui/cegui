@@ -162,5 +162,7 @@ void InventoryModel::clear()
 void InventoryModel::addItem(InventoryItem& new_item)
 {
     d_inventoryItems.insert(d_inventoryItems.begin(), new_item);
+
+    //TODO: see how we specify that we added items starting *before* or *after* that start index
     notifyChildrenAdded(makeIndex(0, getRootIndex()), 1);
 }
