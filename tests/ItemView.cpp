@@ -28,44 +28,9 @@
 #include <boost/test/unit_test.hpp>
 
 #include "CEGUI/CEGUI.h"
+#include "ItemModelStub.h"
 
 using namespace CEGUI;
-
-// TODO: see if we can migrate basic logic from this to an abstract base
-// ItemModel (e.g.: AbstractItemModel / ItemModelBase, a' la Qt) in the main lib
-class ItemModelStub : public ItemModel
-{
-public:
-    virtual bool isValidIndex(const ModelIndex& model_index) const
-    {
-        return false;
-    }
-
-    virtual ModelIndex makeIndex(size_t child, const ModelIndex& model_index)
-    {
-        return ModelIndex();
-    }
-
-    virtual ModelIndex getParentIndex(const ModelIndex& model_index)
-    {
-        return ModelIndex();
-    }
-
-    virtual size_t getChildCount(const ModelIndex& model_index)
-    {
-        return 0;
-    }
-
-    virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text)
-    {
-        return "";
-    }
-
-    virtual ModelIndex getRootIndex()
-    {
-        return ModelIndex();
-    }
-};
 
 //----------------------------------------------------------------------------//
 class TestItemView : public ItemView

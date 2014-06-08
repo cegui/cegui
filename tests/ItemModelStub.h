@@ -1,12 +1,12 @@
 /***********************************************************************
- *    filename:   ListView.cpp
- *    created:    Sun May 25 2014
+ *    filename:   ItemModelStub.h
+ *    created:    Sat Jun 07 2014
  *    author:     Timotei Dolean <timotei21@gmail.com>
-*************************************************************************/
+ *************************************************************************/
 /***************************************************************************
  *   Copyright (C) 2004 - 2014 Paul D Turner & The CEGUI Development Team
  *
- *    Permission is hereby granted, free of charge, to any person obtaining
+ *   Permission is hereby granted, free of charge, to any person obtaining
  *   a copy of this software and associated documentation files (the
  *   "Software"), to deal in the Software without restriction, including
  *   without limitation the rights to use, copy, modify, merge, publish,
@@ -24,14 +24,23 @@
  *   OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
  *   ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
  *   OTHER DEALINGS IN THE SOFTWARE.
-***************************************************************************/
-#include <boost/test/unit_test.hpp>
+ ***************************************************************************/
+#ifndef _CEGUITestsItemModelStub_h_
+#define _CEGUITestsItemModelStub_h_
 
-#include "CEGUI/CEGUI.h"
-#include "ItemModelStub.h"
+#include "CEGUI//CEGUI.h"
 
-using namespace CEGUI;
+// TODO: see if we can migrate basic logic from this to an abstract base
+// ItemModel (e.g.: AbstractItemModel / ItemModelBase, a' la Qt) in the main lib
+class ItemModelStub : public CEGUI::ItemModel
+{
+public:
+    virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
+    virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& model_index);
+    virtual CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index);
+    virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
+    virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
+    virtual CEGUI::ModelIndex getRootIndex();
+};
 
-BOOST_AUTO_TEST_SUITE(ListViewTestSuite)
-
-BOOST_AUTO_TEST_SUITE_END()
+#endif
