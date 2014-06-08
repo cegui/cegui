@@ -29,6 +29,7 @@
 ***************************************************************************/
 #include "CEGUI/views/ListView.h"
 #include "CEGUI/ImageManager.h"
+#include "CEGUI/CoordConverter.h"
 
 namespace CEGUI
 {
@@ -123,6 +124,7 @@ ModelIndex ListView::indexAt(const Vector2f& position)
     //TODO: add prepareForLayout() as a cheaper operation alternative?
     prepareForRender();
 
+    Vector2f window_position = CoordConverter::screenToWindow(*this, position);
     size_t index;
     float cur_height = 0;
     for (index = 0; index < d_renderingState.d_items.size(); ++index)
@@ -130,8 +132,8 @@ ModelIndex ListView::indexAt(const Vector2f& position)
         Sizef size = d_renderingState.d_items.at(index).d_size;
         float next_height = cur_height + size.d_height;
 
-        if (position.d_y >= cur_height &&
-            position.d_y <= next_height)
+        if (window_position.d_y >= cur_height &&
+            window_position.d_y <= next_height)
         {
             return ModelIndex(d_itemModel->makeIndex(index, d_itemModel->getRootIndex()));
         }

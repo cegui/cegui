@@ -71,6 +71,22 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
 }
 
 //----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObjectListWithOffset_ReturnsCorrectIndex)
+{
+    float x_offset = 500;
+    float y_offset = 354;
+    view.setPosition(UVector2(cegui_absdim(x_offset), cegui_absdim(y_offset)));
+    model.d_items.push_back(ITEM1);
+
+    ModelIndex index = view.indexAt(Vector2f(
+        x_offset + 0,
+        y_offset + view.getFont()->getFontHeight() / 2.0f));
+
+    BOOST_REQUIRE(index.d_modelData != 0);
+    BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
+}
+
+//----------------------------------------------------------------------------//
 BOOST_AUTO_TEST_CASE(IndexAt_PositionOutsideSingleObject_ReturnsInvalidIndex)
 {
     model.d_items.push_back(ITEM1);
@@ -120,5 +136,6 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     BOOST_REQUIRE(!view.getRenderingState()->d_items.at(0).d_isSelected);
     BOOST_REQUIRE(view.getRenderingState()->d_items.at(1).d_isSelected);
 }
+
 
 BOOST_AUTO_TEST_SUITE_END()
