@@ -108,6 +108,9 @@ public:
 protected:
     ItemModel* d_itemModel;
 
+    //! Invalidates this view by marking the rendering state as dirty and calling the base
+    virtual void invalidateView(bool recursive);
+
     bool onChildrenAdded(const EventArgs& args);
     bool onChildrenRemoved(const EventArgs& args);
 

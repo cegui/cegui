@@ -73,7 +73,7 @@ void ItemView::setModel(ItemModel* item_model)
     d_itemModel = item_model;
 
     connectToModelEvents(d_itemModel);
-    getRenderingState()->d_isDirty = true;
+    invalidateView(true);
 }
 
 //----------------------------------------------------------------------------//
@@ -88,8 +88,7 @@ void ItemView::connectToModelEvents(ItemModel* d_itemModel)
 //----------------------------------------------------------------------------//
 bool ItemView::onChildrenAdded(const EventArgs& args)
 {
-    getRenderingState()->d_isDirty = true;
-    invalidate(false);
+    invalidateView(false);
 
     return true;
 }
@@ -97,8 +96,7 @@ bool ItemView::onChildrenAdded(const EventArgs& args)
 //----------------------------------------------------------------------------//
 bool ItemView::onChildrenRemoved(const EventArgs& args)
 {
-    getRenderingState()->d_isDirty = true;
-    invalidate(false);
+    invalidateView(false);
 
     return true;
 }
@@ -112,4 +110,12 @@ void ItemView::disconnectModelEvents()
     if (d_eventChildrenRemovedConnection != 0)
         d_eventChildrenRemovedConnection->disconnect();
 }
+
+//----------------------------------------------------------------------------//
+void ItemView::invalidateView(bool recursive)
+{
+    getRenderingState()->d_isDirty = true;
+    invalidate(recursive);
+}
+
 }
