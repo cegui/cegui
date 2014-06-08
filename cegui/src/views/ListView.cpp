@@ -76,27 +76,11 @@ void ListView::prepareForRender()
             d_stringParser.parse(text, getFont(), &colour_rect);
         d_renderingState.d_renderedStrings.at(child) = rendered_string;
 
-        d_renderingState.d_renderedStringSizes.at(child) = computeSizeOfRenderedString(rendered_string);
+        d_renderingState.d_renderedStringSizes.at(child) =
+            Sizef(rendered_string.getHorizontalExtent(this), rendered_string.getVerticalExtent(this));
     }
 
     d_renderingState.d_isDirty = false;
-}
-
-//----------------------------------------------------------------------------//
-Sizef ListView::computeSizeOfRenderedString(RenderedString &rendered_string)
-{
-    Sizef string_size(0.0f, 0.0f);
-
-    for (size_t line = 0; line < rendered_string.getLineCount(); ++line)
-    {
-        const Sizef line_sz(rendered_string.getPixelSize(this, line));
-
-        string_size.d_height += line_sz.d_height;
-        if (line_sz.d_width > string_size.d_width)
-            string_size.d_width = line_sz.d_width;
-    }
-
-    return string_size;
 }
 
 //----------------------------------------------------------------------------//

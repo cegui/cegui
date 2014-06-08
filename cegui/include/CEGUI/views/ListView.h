@@ -106,8 +106,6 @@ protected:
 private:
     ListViewRenderingState d_renderingState;
 
-    Sizef computeSizeOfRenderedString(RenderedString &rendered_string);
-
     static BasicRenderedStringParser d_stringParser;
 };
 
