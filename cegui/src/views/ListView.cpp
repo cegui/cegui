@@ -58,26 +58,26 @@ void ListView::prepareForRender()
     ModelIndex root_index = d_itemModel->getRootIndex();
     size_t child_count = d_itemModel->getChildCount(root_index);
 
-    d_renderingState.d_renderedStrings.clear();
-    d_renderingState.d_renderedStrings.resize(child_count);
-
-    d_renderingState.d_renderedStringSizes.clear();
-    d_renderingState.d_renderedStringSizes.resize(child_count);
+    d_renderingState.d_items.clear();
+    d_renderingState.d_items.resize(child_count);
 
     // TODO: migrate ListboxTextItem colorness
     ColourRect colour_rect(Colour(1, 1, 1));
 
     for (size_t child = 0; child < child_count; ++child)
     {
+        ListViewItemRenderingState& item = d_renderingState.d_items.at(child);
+
         String text = d_itemModel->getData(d_itemModel->makeIndex(child, root_index));
 
         // TODO: migrate the ListboxTextItem string rendering
         RenderedString rendered_string =
             d_stringParser.parse(text, getFont(), &colour_rect);
-        d_renderingState.d_renderedStrings.at(child) = rendered_string;
+        item.d_string = rendered_string;
 
-        d_renderingState.d_renderedStringSizes.at(child) =
-            Sizef(rendered_string.getHorizontalExtent(this), rendered_string.getVerticalExtent(this));
+        item.d_size = Sizef(
+            rendered_string.getHorizontalExtent(this),
+            rendered_string.getVerticalExtent(this));
     }
 
     d_renderingState.d_isDirty = false;
@@ -108,9 +108,9 @@ ModelIndex ListView::indexAt(const Vector2f& position)
 
     size_t index;
     float cur_height = 0;
-    for (index = 0; index < d_renderingState.d_renderedStringSizes.size(); ++index)
+    for (index = 0; index < d_renderingState.d_items.size(); ++index)
     {
-        Sizef size = d_renderingState.d_renderedStringSizes.at(index);
+        Sizef size = d_renderingState.d_items.at(index).d_size;
         float next_height = cur_height + size.d_height;
 
         if (position.d_y >= cur_height &&

@@ -43,13 +43,23 @@ namespace CEGUI
 
 /*!
 \brief
+    Rendering state for a ListView item.
+*/
+class CEGUIEXPORT ListViewItemRenderingState
+{
+public:
+    RenderedString d_string;
+    Sizef d_size;
+};
+
+/*!
+\brief
     Rendering state class for the ListView
 */
 class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
 {
 public:
-    std::vector<RenderedString> d_renderedStrings;
-    std::vector<Sizef> d_renderedStringSizes;
+    std::vector<ListViewItemRenderingState> d_items;
 };
 
 /*!

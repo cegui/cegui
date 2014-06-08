@@ -85,11 +85,12 @@ void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* 
     Rectf items_area(getItemRenderingArea(false, false));
     Vector3f item_pos(items_area.left(), items_area.top(), 0.0f);
 
-    for (size_t i = 0; i < state->d_renderedStrings.size(); ++i)
+    for (size_t i = 0; i < state->d_items.size(); ++i)
     {
-        RenderedString& rendered_string = state->d_renderedStrings.at(i);
+        ListViewItemRenderingState item = state->d_items.at(i);
+        RenderedString& rendered_string = item.d_string;
 
-        Sizef size(state->d_renderedStringSizes.at(i));
+        Sizef size(item.d_size);
 
         size.d_width = ceguimax(items_area.getWidth(), size.d_width);
 
