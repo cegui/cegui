@@ -50,6 +50,10 @@ class CEGUIEXPORT ListViewItemRenderingState
 public:
     RenderedString d_string;
     Sizef d_size;
+    bool d_isSelected;
+
+    ListViewItemRenderingState() : d_isSelected(false) {}
+
 };
 
 /*!
@@ -60,6 +64,7 @@ class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
 {
 public:
     std::vector<ListViewItemRenderingState> d_items;
+    std::vector<ModelIndex> d_selectedIndices;
 };
 
 /*!
@@ -92,7 +97,7 @@ public:
     \return
         True if the item has been successfully selected, false otherwise.
     */
-    virtual bool setSelectedItem(ModelIndex index);
+    virtual bool setSelectedItem(const ModelIndex& index);
 
     /*!
     \brief
@@ -112,6 +117,7 @@ public:
 
 protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
+    bool isIndexSelected(const ModelIndex& index) const;
 
 private:
     ListViewRenderingState d_renderingState;

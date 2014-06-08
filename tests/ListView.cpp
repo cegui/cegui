@@ -56,7 +56,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_NoItems_ReturnsInvalidIndex)
 {
     ModelIndex index = view.indexAt(Vector2f(0, 0));
 
-    BOOST_CHECK(index.d_modelData == 0);
+    BOOST_REQUIRE(index.d_modelData == 0);
 }
 
 //----------------------------------------------------------------------------//
@@ -67,7 +67,7 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSingleObject_ReturnsCorrectIndex)
     ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() / 2.0f));
 
     BOOST_REQUIRE(index.d_modelData != 0);
-    BOOST_CHECK_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
+    BOOST_REQUIRE_EQUAL(ITEM1, *(static_cast<String*>(index.d_modelData)));
 }
 
 //----------------------------------------------------------------------------//
@@ -89,7 +89,36 @@ BOOST_AUTO_TEST_CASE(IndexAt_PositionInsideSecondObject_ReturnsCorrectIndex)
     ModelIndex index = view.indexAt(Vector2f(0, view.getFont()->getFontHeight() * 2));
 
     BOOST_REQUIRE(index.d_modelData != 0);
-    BOOST_CHECK_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
+    BOOST_REQUIRE_EQUAL(ITEM2, *(static_cast<String*>(index.d_modelData)));
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+
+    bool selected = view.setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    view.prepareForRender();
+
+    BOOST_REQUIRE(selected);
+    BOOST_REQUIRE(view.getRenderingState()->d_items.at(0).d_isSelected);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+    view.setSelectedItem(ModelIndex(&model.d_items.at(0)));
+    view.prepareForRender();
+
+    bool selected = view.setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view.prepareForRender();
+
+    BOOST_REQUIRE(selected);
+    BOOST_REQUIRE(!view.getRenderingState()->d_items.at(0).d_isSelected);
+    BOOST_REQUIRE(view.getRenderingState()->d_items.at(1).d_isSelected);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

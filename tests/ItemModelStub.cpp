@@ -26,6 +26,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
  ***************************************************************************/
 #include "ItemModelStub.h"
+#include <cassert>
 
 using namespace CEGUI;
 
@@ -38,6 +39,7 @@ bool ItemModelStub::isValidIndex(const ModelIndex& model_index) const
 //----------------------------------------------------------------------------//
 ModelIndex ItemModelStub::makeIndex(size_t child, const ModelIndex& model_index)
 {
+    assert(child < d_items.size());
     return ModelIndex(&d_items.at(child));
 }
 
@@ -62,5 +64,6 @@ ModelIndex ItemModelStub::getRootIndex()
 //----------------------------------------------------------------------------//
 String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole role /*= IDR_Text*/)
 {
+    assert(model_index.d_modelData != 0);
     return *(static_cast<String*>(model_index.d_modelData));
 }
