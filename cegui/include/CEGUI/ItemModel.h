@@ -67,6 +67,9 @@ public:
         to be able to manage its data and logic.
     */
     void* d_modelData;
+
+    bool operator== (const ModelIndex& other) const;
+    bool operator!= (const ModelIndex& other) const;
 };
 
 /*!
