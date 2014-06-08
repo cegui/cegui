@@ -112,15 +112,44 @@ public:
     */
     virtual ModelIndex indexAt(const Vector2f& position);
 
+    /*!
+    \brief
+        Sets the selection highlighting brush image.
+
+    \param image
+        Pointer to the Image object to be used for selection highlighting.
+    */
+    void setSelectionBrushImage(const Image* image);
+
+
+    /*!
+    \brief
+        Set the selection highlighting brush image.
+
+    \param name
+        Name of the image to be used.
+    */
+    void setSelectionBrushImage(const String& name);
+
+    /*!
+    \brief
+        Returns the current selection highlighting brush.
+
+    \return
+        Pointer to the Image object currently used for selection highlighting.
+    */
+    const Image* getSelectionBrushImage(void) const { return d_selectionBrush; }
+
     virtual ListViewRenderingState* getRenderingState() { return &d_renderingState; }
     virtual void prepareForRender();
 
 protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
     bool isIndexSelected(const ModelIndex& index) const;
-
+    void addListViewProperties();
 private:
     ListViewRenderingState d_renderingState;
+    const Image* d_selectionBrush;
 
     static BasicRenderedStringParser d_stringParser;
 };

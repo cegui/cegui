@@ -28,6 +28,7 @@
  *   OTHER DEALINGS IN THE SOFTWARE.
 ***************************************************************************/
 #include "CEGUI/views/ListView.h"
+#include "CEGUI/ImageManager.h"
 
 namespace CEGUI
 {
@@ -42,11 +43,24 @@ BasicRenderedStringParser ListView::d_stringParser;
 ListView::ListView(const String& type, const String& name) :
     ItemView(type, name)
 {
+    addListViewProperties();
 }
 
 //----------------------------------------------------------------------------//
 ListView::~ListView()
 {
+}
+
+//----------------------------------------------------------------------------//
+void ListView::addListViewProperties()
+{
+    const String& propertyOrigin = WidgetTypeName;
+
+    CEGUI_DEFINE_PROPERTY(ListView, Image*,
+        "SelectionBrushImage",
+        "Property to get/set the selection brush image for the list view. Value should be \"set:[imageset name] image:[image name]\".",
+        &ListView::setSelectionBrushImage, &ListView::getSelectionBrushImage, 0
+    );
 }
 
 //----------------------------------------------------------------------------//
@@ -158,4 +172,16 @@ bool ListView::isIndexSelected(const ModelIndex& index) const
     return found_index != d_renderingState.d_selectedIndices.end();
 }
 
+//----------------------------------------------------------------------------//
+void ListView::setSelectionBrushImage(const String& name)
+{
+    setSelectionBrushImage(&ImageManager::getSingleton().get(name));
+}
+
+//----------------------------------------------------------------------------//
+void ListView::setSelectionBrushImage(const Image* image)
+{
+    d_selectionBrush = image;
+    invalidateView(false);
+}
 }
