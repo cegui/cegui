@@ -4261,6 +4261,131 @@
     </WidgetLook>
 
 
+    <!--
+    ***************************************************
+        TaharezLook/ListView
+    ***************************************************
+    -->
+    <WidgetLook name="TaharezLook/ListView">
+        <Property name="Size" value="{{0, 256}, {0, 256}}" />
+        <Property name="SelectionBrushImage" value="WindowsLook/Background"/>
+        <NamedArea name="ItemRenderingArea">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaHScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <ImageDim name="TaharezLook/ListboxRight" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <ImageDim name="TaharezLook/ListboxBottom" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <NamedArea name="ItemRenderingAreaHVScroll">
+            <Area>
+                <Dim type="LeftEdge" ><ImageDim name="TaharezLook/ListboxLeft" dimension="Width" /></Dim>
+                <Dim type="TopEdge" ><ImageDim name="TaharezLook/ListboxTop" dimension="Height" /></Dim>
+                <Dim type="RightEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="RightEdge" />
+                        <WidgetDim widget="__auto_vscrollbar__" dimension="Width" />
+                    </OperatorDim>
+                </Dim>
+                <Dim type="BottomEdge" >
+                    <OperatorDim op="Subtract">
+                        <UnifiedDim scale="1" type="BottomEdge" />
+                        <WidgetDim widget="__auto_hscrollbar__" dimension="Height" />
+                    </OperatorDim>
+                </Dim>
+            </Area>
+        </NamedArea>
+        <Child  type="TaharezLook/HorizontalScrollbar" nameSuffix="__auto_hscrollbar__">
+            <Area>
+                <Dim type="Width" ><UnifiedDim scale="1" offset="-12" type="Width" /></Dim>
+                <Dim type="Height" ><AbsoluteDim value="12" /></Dim>
+            </Area>
+            <VertAlignment type="BottomAligned" />
+        </Child>
+        <Child  type="TaharezLook/VerticalScrollbar" nameSuffix="__auto_vscrollbar__">
+            <Area>
+                <Dim type="Width" ><AbsoluteDim value="12" /></Dim>
+                <Dim type="Height" ><UnifiedDim scale="1" offset="-12" type="Height" /></Dim>
+            </Area>
+            <HorzAlignment type="RightAligned" />
+        </Child>
+        <ImagerySection name="main">
+            <FrameComponent>
+                <Image component="TopLeftCorner" name="TaharezLook/ListboxTopLeft" />
+                <Image component="TopRightCorner" name="TaharezLook/ListboxTopRight" />
+                <Image component="BottomLeftCorner" name="TaharezLook/ListboxBottomLeft" />
+                <Image component="BottomRightCorner" name="TaharezLook/ListboxBottomRight" />
+                <Image component="LeftEdge" name="TaharezLook/ListboxLeft" />
+                <Image component="RightEdge" name="TaharezLook/ListboxRight" />
+                <Image component="TopEdge" name="TaharezLook/ListboxTop" />
+                <Image component="BottomEdge" name="TaharezLook/ListboxBottom" />
+                <Image component="Background" name="TaharezLook/ListboxBackdrop" />
+            </FrameComponent>
+        </ImagerySection>
+        <StateImagery name="Enabled">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="EnabledFocused">
+            <Layer>
+                <Section section="main" />
+            </Layer>
+        </StateImagery>
+        <StateImagery name="Disabled">
+            <Layer>
+                <Section section="main">
+                    <Colours topLeft="FF7F7F7F" topRight="FF7F7F7F" bottomLeft="FF7F7F7F" bottomRight="FF7F7F7F" />
+                </Section>
+            </Layer>
+        </StateImagery>
+    </WidgetLook>
 </Falagard>
 
 
