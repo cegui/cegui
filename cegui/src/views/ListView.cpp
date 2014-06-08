@@ -67,8 +67,9 @@ void ListView::prepareForRender()
     for (size_t child = 0; child < child_count; ++child)
     {
         ListViewItemRenderingState& item = d_renderingState.d_items.at(child);
+        ModelIndex index = d_itemModel->makeIndex(child, root_index);
 
-        String text = d_itemModel->getData(d_itemModel->makeIndex(child, root_index));
+        String text = d_itemModel->getData(index);
 
         // TODO: migrate the ListboxTextItem string rendering
         RenderedString rendered_string =
@@ -78,6 +79,8 @@ void ListView::prepareForRender()
         item.d_size = Sizef(
             rendered_string.getHorizontalExtent(this),
             rendered_string.getVerticalExtent(this));
+
+        item.d_isSelected = isIndexSelected(index);
     }
 
     d_renderingState.d_isDirty = false;
@@ -126,13 +129,33 @@ ModelIndex ListView::indexAt(const Vector2f& position)
 }
 
 //----------------------------------------------------------------------------//
-bool ListView::setSelectedItem(ModelIndex index)
+bool ListView::setSelectedItem(const ModelIndex& index)
 {
     if (d_itemModel == 0 ||
         !d_itemModel->isValidIndex(index))
         return false;
 
+    if (isIndexSelected(index))
+        return true;
+
+    //TODO: take into account multiple & cumulative selection
+    d_renderingState.d_selectedIndices.clear();
+
+    d_renderingState.d_selectedIndices.push_back(index);
+    invalidateView(false);
+
     return true;
+}
+
+//----------------------------------------------------------------------------//
+bool ListView::isIndexSelected(const ModelIndex& index) const
+{
+    std::vector<ModelIndex>::const_iterator found_index = std::find(
+        d_renderingState.d_selectedIndices.begin(),
+        d_renderingState.d_selectedIndices.end(),
+        index);
+
+    return found_index != d_renderingState.d_selectedIndices.end();
 }
 
 }
