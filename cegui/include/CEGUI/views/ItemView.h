@@ -81,7 +81,7 @@ public:
     \brief
         Returns the current ItemModel of this view.
     */
-    virtual ItemModel* getModel() const { return d_itemModel; }
+    virtual ItemModel* getModel() const;
 
 
     /*!
@@ -90,7 +90,7 @@ public:
         This is usually done by updating the rendering state if it got dirty
         in the meantime.
     */
-    virtual void prepareForRender() { }
+    virtual void prepareForRender();
 
     /*!
     \brief

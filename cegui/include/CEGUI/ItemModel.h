@@ -53,10 +53,7 @@ public:
     \param model_data
         Optional model data associated with this index.
     */
-    ModelIndex(void* model_data = 0) :
-        d_modelData(model_data)
-    {
-    }
+    ModelIndex(void* model_data = 0);
 
     /*!
     \brief
@@ -98,12 +95,7 @@ class ItemModel;
 class CEGUIEXPORT ModelEventArgs : public EventArgs
 {
 public:
-    ModelEventArgs(ItemModel* item_model, ModelIndex start_index, size_t count = 1) :
-        d_itemModel(item_model),
-        d_startIndex(start_index),
-        d_count(count)
-    {
-    }
+    ModelEventArgs(ItemModel* item_model, ModelIndex start_index, size_t count = 1);
 
     //! The source ItemModel that triggered the event.
     ItemModel* d_itemModel;
