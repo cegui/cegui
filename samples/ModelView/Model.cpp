@@ -166,3 +166,9 @@ void InventoryModel::addItem(InventoryItem& new_item)
     //TODO: see how we specify that we added items starting *before* or *after* that start index
     notifyChildrenAdded(makeIndex(0, getRootIndex()), 1);
 }
+
+//----------------------------------------------------------------------------//
+bool InventoryModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2)
+{
+    return index1.d_modelData == index2.d_modelData;
+}

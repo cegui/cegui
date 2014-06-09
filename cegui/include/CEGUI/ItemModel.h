@@ -64,9 +64,6 @@ public:
         to be able to manage its data and logic.
     */
     void* d_modelData;
-
-    bool operator== (const ModelIndex& other) const;
-    bool operator!= (const ModelIndex& other) const;
 };
 
 /*!
@@ -148,6 +145,12 @@ public:
         The newly created ModelIndex.
     */
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index) = 0;
+
+    /*!
+    \brief
+        Compares two indices and returns true if they are equal, false otherwise.
+    */
+    virtual bool areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2) = 0;
 
     /*!
     \brief
