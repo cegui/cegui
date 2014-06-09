@@ -41,20 +41,24 @@
 namespace CEGUI
 {
 
-class CEGUIEXPORT ListViewItemRenderingState
+struct CEGUIEXPORT ListViewItemRenderingState
 {
-public:
     RenderedString d_string;
     Sizef d_size;
     bool d_isSelected;
 
     ListViewItemRenderingState();
-
 };
 
 class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
 {
 public:
+    const std::vector<ListViewItemRenderingState>& getItems() const;
+    void setItems(const std::vector<ListViewItemRenderingState>& val);
+
+    const std::vector<ModelIndex>& getSelectedIndices() const;
+    void setSelectedIndices(const std::vector<ModelIndex>& val);
+protected:
     std::vector<ListViewItemRenderingState> d_items;
     std::vector<ModelIndex> d_selectedIndices;
 };

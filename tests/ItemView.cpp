@@ -64,11 +64,11 @@ BOOST_AUTO_TEST_CASE(SetModel_SameModel_DoesNotSetDirtyState)
     ItemModelStub stub;
     TestItemView testItemView("DefaultWindow", "id01");
     testItemView.setModel(&stub);
-    testItemView.getRenderingState()->d_isDirty = false;
+    testItemView.getRenderingState()->setIsDirty(false);
 
     testItemView.setModel(&stub);
 
-    BOOST_CHECK(!testItemView.getRenderingState()->d_isDirty);
+    BOOST_CHECK(!testItemView.getRenderingState()->isDirty());
 }
 
 //----------------------------------------------------------------------------//
@@ -77,11 +77,11 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_SetsDirtyState)
     ItemModelStub stub, stub2;
     TestItemView testItemView("DefaultWindow", "id01");
     testItemView.setModel(&stub);
-    testItemView.getRenderingState()->d_isDirty = false;
+    testItemView.getRenderingState()->setIsDirty(false);
 
     testItemView.setModel(&stub2);
 
-    BOOST_CHECK(testItemView.getRenderingState()->d_isDirty);
+    BOOST_CHECK(testItemView.getRenderingState()->isDirty());
 }
 
 //----------------------------------------------------------------------------//
@@ -93,17 +93,17 @@ BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
     test_item_view.setModel(&stub);
 
     {
-        test_item_view.getRenderingState()->d_isDirty = false;
+        test_item_view.getRenderingState()->setIsDirty(false);
         stub.notifyChildrenAdded(stub.makeIndex(0, stub.getRootIndex()), 1);
 
-        BOOST_CHECK(test_item_view.getRenderingState()->d_isDirty);
+        BOOST_CHECK(test_item_view.getRenderingState()->isDirty());
     }
 
     {
-        test_item_view.getRenderingState()->d_isDirty = false;
+        test_item_view.getRenderingState()->setIsDirty(false);
         stub.notifyChildrenRemoved(stub.makeIndex(0, stub.getRootIndex()), 1);
 
-        BOOST_CHECK(test_item_view.getRenderingState()->d_isDirty);
+        BOOST_CHECK(test_item_view.getRenderingState()->isDirty());
     }
 }
 
@@ -117,10 +117,10 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
 
     test_item_view.setModel(&stub2);
 
-    test_item_view.getRenderingState()->d_isDirty = false;
+    test_item_view.getRenderingState()->setIsDirty(false);
     stub1.notifyChildrenAdded(stub1.makeIndex(0, stub1.getRootIndex()), 1);
 
-    BOOST_CHECK(!test_item_view.getRenderingState()->d_isDirty);
+    BOOST_CHECK(!test_item_view.getRenderingState()->isDirty());
 }
 
 BOOST_AUTO_TEST_SUITE_END()
