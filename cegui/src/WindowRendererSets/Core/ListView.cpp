@@ -85,9 +85,9 @@ void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* 
     Rectf items_area(getItemRenderingArea(false, false));
     Vector3f item_pos(items_area.left(), items_area.top(), 0.0f);
 
-    for (size_t i = 0; i < state->d_items.size(); ++i)
+    for (size_t i = 0; i < state->getItems().size(); ++i)
     {
-        ListViewItemRenderingState item = state->d_items.at(i);
+        ListViewItemRenderingState item = state->getItems().at(i);
         RenderedString& rendered_string = item.d_string;
         Sizef size(item.d_size);
 

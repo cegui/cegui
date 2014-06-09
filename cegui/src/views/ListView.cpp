@@ -72,21 +72,20 @@ void ListView::addListViewProperties()
 //----------------------------------------------------------------------------//
 void ListView::prepareForRender()
 {
-    if (d_itemModel == 0 || !d_renderingState.d_isDirty)
+    if (d_itemModel == 0 || !d_renderingState.isDirty())
         return;
 
     ModelIndex root_index = d_itemModel->getRootIndex();
     size_t child_count = d_itemModel->getChildCount(root_index);
 
-    d_renderingState.d_items.clear();
-    d_renderingState.d_items.resize(child_count);
+    std::vector<ListViewItemRenderingState> items;
 
     // TODO: migrate ListboxTextItem colorness
     ColourRect colour_rect(Colour(1, 1, 1));
 
     for (size_t child = 0; child < child_count; ++child)
     {
-        ListViewItemRenderingState& item = d_renderingState.d_items.at(child);
+        ListViewItemRenderingState item;
         ModelIndex index = d_itemModel->makeIndex(child, root_index);
 
         String text = d_itemModel->getData(index);
@@ -101,9 +100,11 @@ void ListView::prepareForRender()
             rendered_string.getVerticalExtent(this));
 
         item.d_isSelected = isIndexSelected(index);
+        items.push_back(item);
     }
 
-    d_renderingState.d_isDirty = false;
+    d_renderingState.setItems(items);
+    d_renderingState.setIsDirty(false);
 }
 
 //----------------------------------------------------------------------------//
@@ -132,9 +133,9 @@ ModelIndex ListView::indexAt(const Vector2f& position)
     Vector2f window_position = CoordConverter::screenToWindow(*this, position);
     size_t index;
     float cur_height = 0;
-    for (index = 0; index < d_renderingState.d_items.size(); ++index)
+    for (index = 0; index < d_renderingState.getItems().size(); ++index)
     {
-        Sizef size = d_renderingState.d_items.at(index).d_size;
+        Sizef size = d_renderingState.getItems().at(index).d_size;
         float next_height = cur_height + size.d_height;
 
         if (window_position.d_y >= cur_height &&
@@ -160,9 +161,10 @@ bool ListView::setSelectedItem(const ModelIndex& index)
         return true;
 
     //TODO: take into account multiple & cumulative selection
-    d_renderingState.d_selectedIndices.clear();
+    std::vector<ModelIndex> selected_indices;
+    selected_indices.push_back(index);
+    d_renderingState.setSelectedIndices(selected_indices);
 
-    d_renderingState.d_selectedIndices.push_back(index);
     invalidateView(false);
 
     return true;
@@ -171,12 +173,13 @@ bool ListView::setSelectedItem(const ModelIndex& index)
 //----------------------------------------------------------------------------//
 bool ListView::isIndexSelected(const ModelIndex& index) const
 {
+    const std::vector<ModelIndex>& indices = d_renderingState.getSelectedIndices();
     std::vector<ModelIndex>::const_iterator found_index = std::find(
-        d_renderingState.d_selectedIndices.begin(),
-        d_renderingState.d_selectedIndices.end(),
+        indices.begin(),
+        indices.end(),
         index);
 
-    return found_index != d_renderingState.d_selectedIndices.end();
+    return found_index != indices.end();
 }
 
 //----------------------------------------------------------------------------//
@@ -202,5 +205,29 @@ const Image* ListView::getSelectionBrushImage(void) const
 ListViewRenderingState* ListView::getRenderingState()
 {
     return &d_renderingState;
+}
+
+//----------------------------------------------------------------------------//
+const std::vector<ListViewItemRenderingState>& ListViewRenderingState::getItems() const
+{
+    return d_items;
+}
+
+//----------------------------------------------------------------------------//
+void ListViewRenderingState::setItems(const std::vector<ListViewItemRenderingState>& val)
+{
+    d_items = val;
+}
+
+//----------------------------------------------------------------------------//
+const std::vector<ModelIndex>& ListViewRenderingState::getSelectedIndices() const
+{
+    return d_selectedIndices;
+}
+
+//----------------------------------------------------------------------------//
+void ListViewRenderingState::setSelectedIndices(const std::vector<ModelIndex>& val)
+{
+    d_selectedIndices = val;
 }
 }

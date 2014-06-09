@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
     view.prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(view.getRenderingState()->d_items.at(0).d_isSelected);
+    BOOST_REQUIRE(view.getRenderingState()->getItems().at(0).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -133,8 +133,8 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     view.prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view.getRenderingState()->d_items.at(0).d_isSelected);
-    BOOST_REQUIRE(view.getRenderingState()->d_items.at(1).d_isSelected);
+    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(view.getRenderingState()->getItems().at(1).d_isSelected);
 }
 
 

@@ -50,10 +50,13 @@ public:
         Creates a new dirty rendering state.
     */
     ViewRenderingState();
-
     virtual ~ViewRenderingState();
 
+    bool isDirty() const;
     //! Specifies whether this view requires processing before being able to render it.
+    void setIsDirty(bool value);
+
+protected:
     bool d_isDirty;
 };
 

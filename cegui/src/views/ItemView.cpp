@@ -41,7 +41,18 @@ ViewRenderingState::ViewRenderingState() :
 //----------------------------------------------------------------------------//
 ViewRenderingState::~ViewRenderingState()
 {
+}
 
+//----------------------------------------------------------------------------//
+void ViewRenderingState::setIsDirty(bool value)
+{
+    d_isDirty = value;
+}
+
+//----------------------------------------------------------------------------//
+bool ViewRenderingState::isDirty() const
+{
+    return d_isDirty;
 }
 
 //----------------------------------------------------------------------------//
@@ -114,7 +125,7 @@ void ItemView::disconnectModelEvents()
 //----------------------------------------------------------------------------//
 void ItemView::invalidateView(bool recursive)
 {
-    getRenderingState()->d_isDirty = true;
+    getRenderingState()->setIsDirty(true);
     invalidate(recursive);
 }
 
@@ -128,4 +139,5 @@ ItemModel* ItemView::getModel() const
 void ItemView::prepareForRender()
 {
 }
+
 }
