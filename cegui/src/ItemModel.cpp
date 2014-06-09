@@ -47,20 +47,8 @@ ModelEventArgs::ModelEventArgs(ItemModel* item_model, ModelIndex start_index, si
 ModelIndex::ModelIndex(void* model_data /*= 0*/) :
     d_modelData(model_data)
 {
-
 }
 
-//----------------------------------------------------------------------------//
-bool ModelIndex::operator==(const ModelIndex& other) const
-{
-    return d_modelData == other.d_modelData;
-}
-
-//----------------------------------------------------------------------------//
-bool ModelIndex::operator!=(const ModelIndex& other) const
-{
-    return !(*this == other);
-}
 //----------------------------------------------------------------------------//
 ItemModel::~ItemModel()
 {

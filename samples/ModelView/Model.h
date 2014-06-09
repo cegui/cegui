@@ -72,10 +72,12 @@ public:
     // implementation of ItemModel
     virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
     virtual CEGUI::ModelIndex makeIndex(size_t child, const CEGUI::ModelIndex& parent_index);
+    virtual bool areIndicesEqual(const CEGUI::ModelIndex& index1, const CEGUI::ModelIndex& index2);
     virtual CEGUI::ModelIndex getParentIndex(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::ModelIndex getRootIndex();
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
+
 private:
     std::vector<InventoryItem> d_inventoryItems;
 };

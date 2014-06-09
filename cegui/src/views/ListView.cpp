@@ -174,12 +174,15 @@ bool ListView::setSelectedItem(const ModelIndex& index)
 bool ListView::isIndexSelected(const ModelIndex& index) const
 {
     const std::vector<ModelIndex>& indices = d_renderingState.getSelectedIndices();
-    std::vector<ModelIndex>::const_iterator found_index = std::find(
-        indices.begin(),
-        indices.end(),
-        index);
 
-    return found_index != indices.end();
+    for (std::vector<ModelIndex>::const_iterator itor = indices.begin();
+        itor != indices.end(); ++itor)
+    {
+        if (d_itemModel->areIndicesEqual(index, *itor))
+            return true;
+    }
+
+    return false;
 }
 
 //----------------------------------------------------------------------------//

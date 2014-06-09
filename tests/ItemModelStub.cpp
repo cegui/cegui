@@ -67,3 +67,9 @@ String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole role /
     assert(model_index.d_modelData != 0);
     return *(static_cast<String*>(model_index.d_modelData));
 }
+
+//----------------------------------------------------------------------------//
+bool ItemModelStub::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2)
+{
+    return index1.d_modelData == index2.d_modelData;
+}
