@@ -31,7 +31,6 @@
 #include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
 #include "CEGUI/views/ListView.h"
 
-// Start of CEGUI namespace section
 namespace CEGUI
 {
 
@@ -87,6 +86,6 @@ private:
         const Font* font, const Rectf* item_clipper);
 };
 
-} // End of  CEGUI namespace section
+}
 
-#endif  // end of guard _FalListView_h_
+#endif

@@ -41,10 +41,6 @@
 namespace CEGUI
 {
 
-/*!
-\brief
-    Rendering state for a ListView item.
-*/
 class CEGUIEXPORT ListViewItemRenderingState
 {
 public:
@@ -56,10 +52,6 @@ public:
 
 };
 
-/*!
-\brief
-    Rendering state class for the ListView
-*/
 class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
 {
 public:
@@ -79,12 +71,7 @@ public:
     //! Namespace for global events
     static const String EventNamespace;
 
-    /*!
-    \brief
-        Creates a new instance of ListView
-    */
     ListView(const String& type, const String& name);
-
     virtual ~ListView();
 
     /*!
