@@ -42,10 +42,6 @@
 namespace CEGUI
 {
 
-/*!
-\brief
-    Class that stores the rendering state of a view
-*/
 class CEGUIEXPORT ViewRenderingState
 {
 public:
@@ -68,10 +64,6 @@ public:
 class CEGUIEXPORT ItemView : public Window
 {
 public:
-    /*!
-    \brief
-        Creates a new instance of ItemView
-    */
     ItemView(const String& type, const String& name);
 
     virtual ~ItemView();

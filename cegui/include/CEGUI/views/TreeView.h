@@ -36,10 +36,6 @@
 namespace CEGUI
 {
 
-/*!
-\brief
-    Rendering state class for the TreeView
-*/
 class CEGUIEXPORT TreeViewRenderingState : public ViewRenderingState
 {
 public:
@@ -57,10 +53,6 @@ public:
     //! Namespace for global events
     static const String EventNamespace;
 
-    /*!
-    \brief
-        Creates a new instance of TreeView
-    */
     TreeView(const String& type, const String& name);
 
     virtual ~TreeView();
