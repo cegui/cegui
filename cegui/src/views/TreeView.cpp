@@ -54,4 +54,9 @@ void TreeView::prepareForRender()
 
 }
 
+//----------------------------------------------------------------------------//
+TreeViewRenderingState* TreeView::getRenderingState()
+{
+    return &d_renderingState;
+}
 }

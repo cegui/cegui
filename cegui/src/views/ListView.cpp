@@ -41,6 +41,11 @@ const String ListView::WidgetTypeName("CEGUI/ListView");
 BasicRenderedStringParser ListView::d_stringParser;
 
 //----------------------------------------------------------------------------//
+ListViewItemRenderingState::ListViewItemRenderingState() : d_isSelected(false)
+{
+}
+
+//----------------------------------------------------------------------------//
 ListView::ListView(const String& type, const String& name) :
     ItemView(type, name)
 {
@@ -185,5 +190,17 @@ void ListView::setSelectionBrushImage(const Image* image)
 {
     d_selectionBrush = image;
     invalidateView(false);
+}
+
+//----------------------------------------------------------------------------//
+const Image* ListView::getSelectionBrushImage(void) const
+{
+    return d_selectionBrush;
+}
+
+//----------------------------------------------------------------------------//
+ListViewRenderingState* ListView::getRenderingState()
+{
+    return &d_renderingState;
 }
 }

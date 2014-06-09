@@ -118,4 +118,14 @@ void ItemView::invalidateView(bool recursive)
     invalidate(recursive);
 }
 
+//----------------------------------------------------------------------------//
+ItemModel* ItemView::getModel() const
+{
+    return d_itemModel;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::prepareForRender()
+{
+}
 }

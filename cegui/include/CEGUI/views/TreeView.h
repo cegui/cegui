@@ -43,7 +43,7 @@ public:
 
 /*!
 \brief
-    View that displays items in a listed fashion.
+    View that displays items in a tree fashion.
 */
 class CEGUIEXPORT TreeView : public ItemView
 {
@@ -57,7 +57,7 @@ public:
 
     virtual ~TreeView();
 
-    virtual TreeViewRenderingState* getRenderingState() { return &d_renderingState; }
+    virtual TreeViewRenderingState* getRenderingState();
     virtual void prepareForRender();
 
 private:

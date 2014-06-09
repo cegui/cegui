@@ -48,7 +48,7 @@ public:
     Sizef d_size;
     bool d_isSelected;
 
-    ListViewItemRenderingState() : d_isSelected(false) {}
+    ListViewItemRenderingState();
 
 };
 
@@ -125,9 +125,9 @@ public:
     \return
         Pointer to the Image object currently used for selection highlighting.
     */
-    const Image* getSelectionBrushImage(void) const { return d_selectionBrush; }
+    const Image* getSelectionBrushImage(void) const;
 
-    virtual ListViewRenderingState* getRenderingState() { return &d_renderingState; }
+    virtual ListViewRenderingState* getRenderingState();
     virtual void prepareForRender();
 
 protected:
