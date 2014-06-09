@@ -58,7 +58,7 @@ void InventoryModel::load()
     bool has_child = false;
     for (char chr = 'D'; chr >= 'A'; --chr)
     {
-        InventoryItem matryoshka = InventoryItem::make("Matryoshka " + chr, 1.0f);
+        InventoryItem matryoshka = InventoryItem::make("Matryoshka " + String(1, chr), 1.0f);
 
         if (has_child)
             matryoshka.d_items.push_back(prev_matryoshka);
