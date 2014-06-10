@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "Model.h"
 #include "CEGUI/PropertyHelper.h"
+#include <iterator>
 
 using namespace CEGUI;
 
@@ -50,6 +51,26 @@ InventoryItem InventoryItem::make(const CEGUI::String& name, float weight)
     return item;
 }
 
+//----------------------------------------------------------------------------//
+bool InventoryItem::operator==(const InventoryItem& other)
+{
+    if (d_weight != other.d_weight) return false;
+    if (d_name != other.d_name) return false;
+    if (d_items.size() != other.d_items.size()) return false;
+
+    for (size_t i = 0; i < d_items.size(); ++i)
+    {
+        if (d_items.at(i) != other.d_items.at(i))
+            return false;
+    }
+    return true;
+}
+
+//----------------------------------------------------------------------------//
+bool InventoryItem::operator!=(const InventoryItem& other)
+{
+    return !(*this == other);
+}
 //----------------------------------------------------------------------------//
 void InventoryModel::load()
 {
@@ -119,7 +140,7 @@ CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& pare
 //----------------------------------------------------------------------------//
 CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 {
-    return CEGUI::ModelIndex();
+    return ModelIndex();
 }
 
 //----------------------------------------------------------------------------//
@@ -171,4 +192,21 @@ void InventoryModel::addItem(InventoryItem& new_item)
 bool InventoryModel::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2)
 {
     return index1.d_modelData == index2.d_modelData;
+}
+
+//----------------------------------------------------------------------------//
+int InventoryModel::getChildId(const ModelIndex& model_index)
+{
+    ModelIndex parent_index = getParentIndex(model_index);
+    InventoryItem* parent_item = static_cast<InventoryItem*>(parent_index.d_modelData);
+
+    InventoryItem* child_item = static_cast<InventoryItem*>(model_index.d_modelData);
+
+    std::vector<InventoryItem>::iterator itor = std::find(
+        parent_item->d_items.begin(), parent_item->d_items.end(), *child_item);
+
+    if (itor == parent_item->d_items.end())
+        return -1;
+
+    return std::distance(parent_item->d_items.begin(), itor);
 }

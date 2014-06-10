@@ -136,13 +136,7 @@ public:
         Creates a new ModelIndex for the specified child and parent index.
 
     \param child
-        The child index, which is a number between 0 and getChildrenCount(parentIndex).
-
-    \param parent_index
-        The parent ModelIndex of the new index.
-
-    \return
-        The newly created ModelIndex.
+        The child id, which is a number between 0 and getChildrenCount(parentIndex).
     */
     virtual ModelIndex makeIndex(size_t child, const ModelIndex& parent_index) = 0;
 
@@ -155,14 +149,15 @@ public:
     /*!
     \brief
         Returns the ModelIndex which is parent for the specified ModelIndex.
-
-    \param model_index
-        The ModelIndex for which to compute the parent index.
-
-    \return
-        The parent ModelIndex.
     */
     virtual ModelIndex getParentIndex(const ModelIndex& model_index) = 0;
+
+    /*!
+    \brief
+        Returns the child id (between 0 and getChildrenCount(getParentIndex(model_index)))
+        or -1 if no such child exists, for the given ModelIndex.
+    */
+    virtual int getChildId(const ModelIndex& model_index) = 0;
 
     /*!
     \brief
@@ -181,19 +176,14 @@ public:
 
     /*!
     \brief
-        Returns the string representation of the specified data role.
+        Returns the string representation of the specified ModelIndex based on
+        the specified role.
         It is up to the view to interpret the string based on the role requested.
 
     \remark
         For example, in the case of an image decoration, the name of the image
         could be returned, and the view could use ImageManager to retrieve the
         specific Image instance by the name and render that.
-
-    \param model_index
-        The ModelIndex for which to compute the string representation.
-
-    \param role
-        The role of data to be returned.
     */
     virtual String getData(const ModelIndex& model_index, ItemDataRole role = IDR_Text) = 0;
 
