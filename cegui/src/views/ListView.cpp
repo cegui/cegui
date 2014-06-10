@@ -31,8 +31,11 @@
 #include "CEGUI/ImageManager.h"
 #include "CEGUI/CoordConverter.h"
 
+
 namespace CEGUI
 {
+typedef std::vector<ModelIndexSelectionState> SelectionStatesVector;
+
 //----------------------------------------------------------------------------//
 const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
@@ -166,7 +169,7 @@ bool ListView::setSelectedItem(const ModelIndex& index)
     selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
 
     //TODO: take into account multiple & cumulative selection
-    std::vector<ModelIndexSelectionState> selection_states;
+    SelectionStatesVector selection_states;
     selection_states.push_back(selection_state);
     d_renderingState.setSelectionStates(selection_states);
 
@@ -178,9 +181,9 @@ bool ListView::setSelectedItem(const ModelIndex& index)
 //----------------------------------------------------------------------------//
 bool ListView::isIndexSelected(const ModelIndex& index) const
 {
-    const std::vector<ModelIndexSelectionState>& states = d_renderingState.getSelectionStates();
+    const SelectionStatesVector& states = d_renderingState.getSelectionStates();
 
-    for (std::vector<ModelIndexSelectionState>::const_iterator itor = states.begin();
+    for (SelectionStatesVector::const_iterator itor = states.begin();
         itor != states.end(); ++itor)
     {
         if (d_itemModel->areIndicesEqual(index, (*itor).d_selectedIndex))
@@ -216,6 +219,50 @@ ListViewRenderingState* ListView::getRenderingState()
 }
 
 //----------------------------------------------------------------------------//
+bool ListView::onChildrenAdded(const EventArgs& args)
+{
+    const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
+
+    for (SelectionStatesVector::iterator itor = d_renderingState.d_selectionStates.begin();
+        itor != d_renderingState.d_selectionStates.end(); ++itor)
+    {
+        ModelIndexSelectionState& state = *itor;
+
+        if (state.d_childId >= model_args.d_startId)
+        {
+            state.d_childId += model_args.d_count;
+            state.d_selectedIndex = d_itemModel->makeIndex(state.d_childId, state.d_parentIndex);
+        }
+    }
+
+    return ItemView::onChildrenAdded(args);
+}
+
+//----------------------------------------------------------------------------//
+bool ListView::onChildrenRemoved(const EventArgs& args)
+{
+    const ModelEventArgs& model_args = static_cast<const ModelEventArgs&>(args);
+
+    SelectionStatesVector::iterator itor = d_renderingState.d_selectionStates.begin();
+    while(itor != d_renderingState.d_selectionStates.end())
+    {
+        ModelIndexSelectionState& state = *itor;
+
+        if (state.d_childId >= model_args.d_startId &&
+            state.d_childId <= model_args.d_startId + model_args.d_count)
+        {
+            itor = d_renderingState.d_selectionStates.erase(itor);
+        }
+        else
+        {
+            ++itor;
+        }
+    }
+
+    return ItemView::onChildrenRemoved(args);
+}
+
+//----------------------------------------------------------------------------//
 const std::vector<ListViewItemRenderingState>& ListViewRenderingState::getItems() const
 {
     return d_items;
@@ -228,13 +275,13 @@ void ListViewRenderingState::setItems(const std::vector<ListViewItemRenderingSta
 }
 
 //----------------------------------------------------------------------------//
-const std::vector<ModelIndexSelectionState>& ListViewRenderingState::getSelectionStates() const
+const SelectionStatesVector& ListViewRenderingState::getSelectionStates() const
 {
     return d_selectionStates;
 }
 
 //----------------------------------------------------------------------------//
-void ListViewRenderingState::setSelectionStates(const std::vector<ModelIndexSelectionState>& val)
+void ListViewRenderingState::setSelectionStates(const SelectionStatesVector& val)
 {
     d_selectionStates = val;
 }

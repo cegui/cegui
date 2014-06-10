@@ -106,8 +106,8 @@ protected:
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);
 
-    bool onChildrenAdded(const EventArgs& args);
-    bool onChildrenRemoved(const EventArgs& args);
+    virtual bool onChildrenAdded(const EventArgs& args);
+    virtual bool onChildrenRemoved(const EventArgs& args);
 
     Event::Connection d_eventChildrenAddedConnection;
     Event::Connection d_eventChildrenRemovedConnection;

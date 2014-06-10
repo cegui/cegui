@@ -70,6 +70,8 @@ public:
 protected:
     std::vector<ListViewItemRenderingState> d_items;
     std::vector<ModelIndexSelectionState> d_selectionStates;
+
+    friend class ListView;
 };
 
 /*!
@@ -147,9 +149,16 @@ protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
     bool isIndexSelected(const ModelIndex& index) const;
     void addListViewProperties();
+
+    // overrides
+    virtual bool onChildrenAdded(const EventArgs& args);
+    virtual bool onChildrenRemoved(const EventArgs& args);
+
 private:
     ListViewRenderingState d_renderingState;
     const Image* d_selectionBrush;
+
+    void computeSelectionStateModelIndices();
 
     static BasicRenderedStringParser d_stringParser;
 };
