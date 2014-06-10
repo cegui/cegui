@@ -70,6 +70,7 @@ public:
 
     void clear();
     void addItem(InventoryItem& new_item);
+    void removeItem(const CEGUI::ModelIndex& index);
 
     // implementation of ItemModel
     virtual bool isValidIndex(const CEGUI::ModelIndex& model_index) const;
@@ -80,7 +81,6 @@ public:
     virtual CEGUI::ModelIndex getRootIndex();
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
-
 private:
     InventoryItem d_inventoryRoot;
 };
