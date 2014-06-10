@@ -35,9 +35,10 @@ const String ItemModel::EventChildrenRemoved("ChildrenRemoved");
 const String ItemModel::EventChildrenDataChanged("ChildrenDataChanged");
 
 //----------------------------------------------------------------------------//
-ModelEventArgs::ModelEventArgs(ItemModel* item_model, ModelIndex start_index, size_t count /*= 1*/) :
+ModelEventArgs::ModelEventArgs(ItemModel* item_model, ModelIndex parent_index, size_t start_id, size_t count /*= 1*/) :
     d_itemModel(item_model),
-    d_startIndex(start_index),
+    d_parentIndex(parent_index),
+    d_startId(start_id),
     d_count(count)
 {
 
@@ -55,16 +56,16 @@ ItemModel::~ItemModel()
 }
 
 //----------------------------------------------------------------------------//
-void ItemModel::notifyChildrenAdded(ModelIndex start_index, size_t count)
+void ItemModel::notifyChildrenAdded(ModelIndex parent_index, size_t start_id, size_t count)
 {
-    ModelEventArgs args(this, start_index, count);
+    ModelEventArgs args(this, parent_index, start_id, count);
     fireEvent(EventChildrenAdded, args);
 }
 
 //----------------------------------------------------------------------------//
-void ItemModel::notifyChildrenRemoved(ModelIndex start_index, size_t count)
+void ItemModel::notifyChildrenRemoved(ModelIndex parent_index, size_t start_id, size_t count)
 {
-    ModelEventArgs args(this, start_index, count);
+    ModelEventArgs args(this, parent_index, start_id, count);
     fireEvent(EventChildrenRemoved, args);
 }
 

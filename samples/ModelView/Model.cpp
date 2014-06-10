@@ -176,7 +176,7 @@ void InventoryModel::clear()
 {
     size_t items_count = d_inventoryItems.size();
     d_inventoryItems.clear();
-    notifyChildrenRemoved(makeIndex(0, getRootIndex()), items_count);
+    notifyChildrenRemoved(getRootIndex(), 0, items_count);
 }
 
 //----------------------------------------------------------------------------//
@@ -185,7 +185,7 @@ void InventoryModel::addItem(InventoryItem& new_item)
     d_inventoryItems.insert(d_inventoryItems.begin(), new_item);
 
     //TODO: see how we specify that we added items starting *before* or *after* that start index
-    notifyChildrenAdded(makeIndex(0, getRootIndex()), 1);
+    notifyChildrenAdded(getRootIndex(), 0, 1);
 }
 
 //----------------------------------------------------------------------------//

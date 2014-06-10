@@ -94,7 +94,7 @@ BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
 
     {
         test_item_view.getRenderingState()->setIsDirty(false);
-        stub.notifyChildrenAdded(stub.makeIndex(0, stub.getRootIndex()), 1);
+        stub.notifyChildrenAdded(stub.getRootIndex(), 0, 1);
 
         BOOST_CHECK(test_item_view.getRenderingState()->isDirty());
     }
