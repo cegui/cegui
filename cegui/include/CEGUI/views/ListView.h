@@ -50,17 +50,26 @@ struct CEGUIEXPORT ListViewItemRenderingState
     ListViewItemRenderingState();
 };
 
+struct CEGUIEXPORT ModelIndexSelectionState
+{
+    ModelIndex d_parentIndex;
+    size_t d_childId;
+
+    ModelIndex d_selectedIndex;
+};
+
 class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
 {
 public:
     const std::vector<ListViewItemRenderingState>& getItems() const;
     void setItems(const std::vector<ListViewItemRenderingState>& val);
 
-    const std::vector<ModelIndex>& getSelectedIndices() const;
-    void setSelectedIndices(const std::vector<ModelIndex>& val);
+    const std::vector<ModelIndexSelectionState>& getSelectionStates() const;
+    void setSelectionStates(const std::vector<ModelIndexSelectionState>& val);
+
 protected:
     std::vector<ListViewItemRenderingState> d_items;
-    std::vector<ModelIndex> d_selectedIndices;
+    std::vector<ModelIndexSelectionState> d_selectionStates;
 };
 
 /*!
