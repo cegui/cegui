@@ -92,13 +92,16 @@ class ItemModel;
 class CEGUIEXPORT ModelEventArgs : public EventArgs
 {
 public:
-    ModelEventArgs(ItemModel* item_model, ModelIndex start_index, size_t count = 1);
+    ModelEventArgs(ItemModel* item_model, ModelIndex parent_index, size_t start_id, size_t count = 1);
 
     //! The source ItemModel that triggered the event.
     ItemModel* d_itemModel;
 
-    //! The starting ModelIndex the event happened on.
-    ModelIndex d_startIndex;
+    //! The parent ModelIndex the event happened under.
+    ModelIndex d_parentIndex;
+
+    //! The starting id the event happened on.
+    size_t d_startId;
 
     //! The number of items after the start index that have been affected by the event.
     size_t d_count;
@@ -192,8 +195,11 @@ public:
         Notifies any listeners of the EventChildrenAdded event that new children
         have been added to this model.
 
-    \param start_index
-        The start index where the children have been added.
+    \param parent_index
+        The parent index under which children have been added.
+
+    \param start_id
+        The id of the child starting from which children have been added.
 
     \param count
         The number of children that have been added.
@@ -202,15 +208,18 @@ public:
         If this method is overridden, it *needs* to call this base method or invoke
         manually the EventChildrenAdded event.
     */
-    virtual void notifyChildrenAdded(ModelIndex start_index, size_t count);
+    virtual void notifyChildrenAdded(ModelIndex parent_index, size_t start_id, size_t count);
 
     /*!
     \brief
         Notifies any listeners of the EventChildrenRemoved event that existing
         children have been removed from this model.
 
-    \param start_index
-        The start index where the children have been removed.
+    \param parent_index
+        The parent index under which children have been removed.
+
+    \param start_id
+        The id of the child starting from which children have been removed.
 
     \param count
         The number of children that have been removed.
@@ -219,7 +228,7 @@ public:
         If this method is overridden, it *needs* to call this base method or invoke
         manually the EventChildrenRemoved event.
     */
-    virtual void notifyChildrenRemoved(ModelIndex start_index, size_t count);
+    virtual void notifyChildrenRemoved(ModelIndex parent_index, size_t start_id, size_t count);
 };
 
 }
