@@ -62,7 +62,6 @@ public:
     static InventoryItem make(const CEGUI::String& name, float weight);
 };
 
-
 class InventoryModel : public CEGUI::ItemModel
 {
 public:
@@ -82,9 +81,8 @@ public:
     virtual size_t getChildCount(const CEGUI::ModelIndex& model_index);
     virtual CEGUI::String getData(const CEGUI::ModelIndex& model_index, CEGUI::ItemDataRole role = CEGUI::IDR_Text);
 
-
 private:
-    std::vector<InventoryItem> d_inventoryItems;
+    InventoryItem d_inventoryRoot;
 };
 
 #endif
