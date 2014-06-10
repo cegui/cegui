@@ -74,6 +74,8 @@ bool InventoryItem::operator!=(const InventoryItem& other)
 //----------------------------------------------------------------------------//
 void InventoryModel::load()
 {
+    d_inventoryRoot = InventoryItem::make("Inventory", 0.0f);
+
     InventoryItem prev_matryoshka;
     // matryoshka D to A
     bool has_child = false;
@@ -96,7 +98,7 @@ void InventoryModel::load()
     backpack.d_items.push_back(prev_matryoshka);
     backpack.d_items.push_back(beans_can);
 
-    d_inventoryItems.push_back(backpack);
+    d_inventoryRoot.d_items.push_back(backpack);
 
     InventoryItem bow = InventoryItem::make("Bow", 23.451f);
     for (int i = 0; i < 25; ++i)
@@ -105,14 +107,14 @@ void InventoryModel::load()
             "arrow " + PropertyHelper<int>::toString(i), 0.2f);
         bow.d_items.push_back(arrow);
     }
-    d_inventoryItems.push_back(bow);
+    d_inventoryRoot.d_items.push_back(bow);
 
     // generate *many* items :D
     for (int i = 1960; i < 2000; i += 2)
     {
         InventoryItem almanach = InventoryItem::make(
             "Almanach " + PropertyHelper<int>::toString(i), 0.34f);
-        d_inventoryItems.push_back(almanach);
+        d_inventoryRoot.d_items.push_back(almanach);
     }
 }
 
@@ -126,34 +128,33 @@ bool InventoryModel::isValidIndex(const ModelIndex& model_index) const
 //----------------------------------------------------------------------------//
 CEGUI::ModelIndex InventoryModel::makeIndex(size_t child, const ModelIndex& parent_index)
 {
-    // root item
     if (parent_index.d_modelData == 0)
-    {
-        return makeValidIndex(child, d_inventoryItems);
-    }
+        return ModelIndex();
 
     InventoryItem* item = static_cast<InventoryItem*>(parent_index.d_modelData);
-
     return makeValidIndex(child, item->d_items);
 }
 
 //----------------------------------------------------------------------------//
 CEGUI::ModelIndex InventoryModel::getParentIndex(const ModelIndex& model_index)
 {
-    return ModelIndex();
+    if (model_index.d_modelData == &d_inventoryRoot)
+        return ModelIndex();
+
+    return getRootIndex();
 }
 
 //----------------------------------------------------------------------------//
 CEGUI::ModelIndex InventoryModel::getRootIndex()
 {
-    return ModelIndex();
+    return ModelIndex(&d_inventoryRoot);
 }
 
 //----------------------------------------------------------------------------//
 size_t InventoryModel::getChildCount(const ModelIndex& model_index)
 {
     if (model_index.d_modelData == 0)
-        return d_inventoryItems.size();
+        return d_inventoryRoot.d_items.size();
 
     return static_cast<InventoryItem*>(model_index.d_modelData)->d_items.size();
 }
@@ -174,15 +175,15 @@ CEGUI::String InventoryModel::getData(const ModelIndex& model_index, ItemDataRol
 //----------------------------------------------------------------------------//
 void InventoryModel::clear()
 {
-    size_t items_count = d_inventoryItems.size();
-    d_inventoryItems.clear();
+    size_t items_count = d_inventoryRoot.d_items.size();
+    d_inventoryRoot.d_items.clear();
     notifyChildrenRemoved(getRootIndex(), 0, items_count);
 }
 
 //----------------------------------------------------------------------------//
 void InventoryModel::addItem(InventoryItem& new_item)
 {
-    d_inventoryItems.insert(d_inventoryItems.begin(), new_item);
+    d_inventoryRoot.d_items.insert(d_inventoryRoot.d_items.begin(), new_item);
 
     //TODO: see how we specify that we added items starting *before* or *after* that start index
     notifyChildrenAdded(getRootIndex(), 0, 1);
