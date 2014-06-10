@@ -80,7 +80,7 @@ void ListView::prepareForRender()
 
     std::vector<ListViewItemRenderingState> items;
 
-    // TODO: migrate ListboxTextItem colorness
+    // TODO: migrate ListboxTextItem colorfulness
     ColourRect colour_rect(Colour(1, 1, 1));
 
     for (size_t child = 0; child < child_count; ++child)
@@ -160,10 +160,15 @@ bool ListView::setSelectedItem(const ModelIndex& index)
     if (isIndexSelected(index))
         return true;
 
+    ModelIndexSelectionState selection_state;
+    selection_state.d_selectedIndex = index;
+    selection_state.d_childId = d_itemModel->getChildId(index);
+    selection_state.d_parentIndex = d_itemModel->getParentIndex(index);
+
     //TODO: take into account multiple & cumulative selection
-    std::vector<ModelIndex> selected_indices;
-    selected_indices.push_back(index);
-    d_renderingState.setSelectedIndices(selected_indices);
+    std::vector<ModelIndexSelectionState> selection_states;
+    selection_states.push_back(selection_state);
+    d_renderingState.setSelectionStates(selection_states);
 
     invalidateView(false);
 
@@ -173,12 +178,12 @@ bool ListView::setSelectedItem(const ModelIndex& index)
 //----------------------------------------------------------------------------//
 bool ListView::isIndexSelected(const ModelIndex& index) const
 {
-    const std::vector<ModelIndex>& indices = d_renderingState.getSelectedIndices();
+    const std::vector<ModelIndexSelectionState>& states = d_renderingState.getSelectionStates();
 
-    for (std::vector<ModelIndex>::const_iterator itor = indices.begin();
-        itor != indices.end(); ++itor)
+    for (std::vector<ModelIndexSelectionState>::const_iterator itor = states.begin();
+        itor != states.end(); ++itor)
     {
-        if (d_itemModel->areIndicesEqual(index, *itor))
+        if (d_itemModel->areIndicesEqual(index, (*itor).d_selectedIndex))
             return true;
     }
 
@@ -223,14 +228,14 @@ void ListViewRenderingState::setItems(const std::vector<ListViewItemRenderingSta
 }
 
 //----------------------------------------------------------------------------//
-const std::vector<ModelIndex>& ListViewRenderingState::getSelectedIndices() const
+const std::vector<ModelIndexSelectionState>& ListViewRenderingState::getSelectionStates() const
 {
-    return d_selectedIndices;
+    return d_selectionStates;
 }
 
 //----------------------------------------------------------------------------//
-void ListViewRenderingState::setSelectedIndices(const std::vector<ModelIndex>& val)
+void ListViewRenderingState::setSelectionStates(const std::vector<ModelIndexSelectionState>& val)
 {
-    d_selectedIndices = val;
+    d_selectionStates = val;
 }
 }
