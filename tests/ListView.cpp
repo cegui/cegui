@@ -35,6 +35,7 @@ using namespace CEGUI;
 //----------------------------------------------------------------------------//
 static const String ITEM1 = "ITEM 1";
 static const String ITEM2 = "ITEM 2";
+static const String ITEM3 = "ITEM 3";
 
 //----------------------------------------------------------------------------//
 struct ListViewFixture
@@ -137,5 +138,41 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     BOOST_REQUIRE(view.getRenderingState()->getItems().at(1).d_isSelected);
 }
 
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+    view.setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view.prepareForRender();
+
+    model.d_items.insert(model.d_items.begin() + 1, 1, ITEM3);
+    model.notifyChildrenAdded(model.getRootIndex(), 1, 1);
+
+    view.prepareForRender();
+
+    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(view.getRenderingState()->getItems().at(2).d_isSelected);
+}
+
+//----------------------------------------------------------------------------//
+BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
+{
+    model.d_items.push_back(ITEM1);
+    model.d_items.push_back(ITEM2);
+    model.d_items.push_back(ITEM3);
+    view.setSelectedItem(ModelIndex(&model.d_items.at(1)));
+    view.prepareForRender();
+
+    model.d_items.erase(model.d_items.begin() + 1);
+    model.notifyChildrenRemoved(model.getRootIndex(), 1, 1);
+
+    view.prepareForRender();
+
+    BOOST_REQUIRE(view.getRenderingState()->getItems().size() == 2);
+    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(1).d_isSelected);
+}
 
 BOOST_AUTO_TEST_SUITE_END()

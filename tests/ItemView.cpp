@@ -101,7 +101,7 @@ BOOST_AUTO_TEST_CASE(SetModel_ModelHasNewChildren_SetsDirtyState)
 
     {
         test_item_view.getRenderingState()->setIsDirty(false);
-        stub.notifyChildrenRemoved(stub.makeIndex(0, stub.getRootIndex()), 1);
+        stub.notifyChildrenRemoved(stub.getRootIndex(), 0, 1);
 
         BOOST_CHECK(test_item_view.getRenderingState()->isDirty());
     }
@@ -118,7 +118,7 @@ BOOST_AUTO_TEST_CASE(SetModel_DifferentModel_UnhooksPreviousModelEvents)
     test_item_view.setModel(&stub2);
 
     test_item_view.getRenderingState()->setIsDirty(false);
-    stub1.notifyChildrenAdded(stub1.makeIndex(0, stub1.getRootIndex()), 1);
+    stub1.notifyChildrenAdded(stub1.getRootIndex(), 0, 1);
 
     BOOST_CHECK(!test_item_view.getRenderingState()->isDirty());
 }
