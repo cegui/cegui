@@ -200,7 +200,6 @@ int InventoryModel::getChildId(const ModelIndex& model_index)
 {
     ModelIndex parent_index = getParentIndex(model_index);
     InventoryItem* parent_item = static_cast<InventoryItem*>(parent_index.d_modelData);
-
     InventoryItem* child_item = static_cast<InventoryItem*>(model_index.d_modelData);
 
     std::vector<InventoryItem>::iterator itor = std::find(
@@ -210,4 +209,22 @@ int InventoryModel::getChildId(const ModelIndex& model_index)
         return -1;
 
     return std::distance(parent_item->d_items.begin(), itor);
+}
+
+//----------------------------------------------------------------------------//
+void InventoryModel::removeItem(const ModelIndex& index)
+{
+    ModelIndex parent_index = getParentIndex(index);
+    InventoryItem* parent_item = static_cast<InventoryItem*>(parent_index.d_modelData);
+    InventoryItem* child_item = static_cast<InventoryItem*>(index.d_modelData);
+
+    std::vector<InventoryItem>::iterator itor = std::find(
+        parent_item->d_items.begin(), parent_item->d_items.end(), *child_item);
+
+    if (itor != parent_item->d_items.end())
+    {
+        size_t child_id = std::distance(parent_item->d_items.begin(), itor);
+        parent_item->d_items.erase(itor);
+        notifyChildrenRemoved(parent_index, child_id, 1);
+    }
 }

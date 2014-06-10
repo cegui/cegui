@@ -56,10 +56,10 @@ bool ModelViewDemo::initialise(CEGUI::GUIContext* gui_context)
     d_inventoryModel.load();
     d_newItemsCount = 0;
 
-    ListView* list_view = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
-    list_view->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim(0.1f)));
-    list_view->setModel(&d_inventoryModel);
-    d_root->addChild(list_view);
+    d_listView = static_cast<ListView*>(win_mgr.createWindow("TaharezLook/ListView", "listView"));
+    d_listView->setPosition(UVector2(cegui_reldim(0.1f), cegui_reldim(0.1f)));
+    d_listView->setModel(&d_inventoryModel);
+    d_root->addChild(d_listView);
 
     TreeView* tree_view = static_cast<TreeView*>(win_mgr.createWindow("TaharezLook/TreeView", "treeView"));
     tree_view->setPosition(UVector2(cegui_reldim(0.3f), cegui_reldim(0.1f)));
@@ -98,6 +98,11 @@ bool ModelViewDemo::handleClearItems(const CEGUI::EventArgs& e)
 //----------------------------------------------------------------------------//
 bool ModelViewDemo::handleRemoveSelectedListItem(const CEGUI::EventArgs& e)
 {
+    const std::vector<CEGUI::ModelIndexSelectionState>& selections = d_listView->getRenderingState()->getSelectionStates();
+    if (!selections.empty())
+    {
+        d_inventoryModel.removeItem((*selections.begin()).d_selectedIndex);
+    }
     return true;
 }
 
