@@ -27,6 +27,7 @@
  ***************************************************************************/
 #include "ItemModelStub.h"
 #include <cassert>
+#include <iterator>
 
 using namespace CEGUI;
 
@@ -72,4 +73,15 @@ String ItemModelStub::getData(const ModelIndex& model_index, ItemDataRole role /
 bool ItemModelStub::areIndicesEqual(const ModelIndex& index1, const ModelIndex& index2)
 {
     return index1.d_modelData == index2.d_modelData;
+}
+
+//----------------------------------------------------------------------------//
+int ItemModelStub::getChildId(const ModelIndex& model_index)
+{
+    String* str = static_cast<String*>(model_index.d_modelData);
+    std::vector<String>::iterator itor = std::find(d_items.begin(), d_items.end(), *str);
+    if (itor == d_items.end())
+        return -1;
+
+    return std::distance(d_items.begin(), itor);
 }
