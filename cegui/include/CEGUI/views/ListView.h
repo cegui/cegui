@@ -159,8 +159,6 @@ private:
     const Image* d_selectionBrush;
 
     void computeSelectionStateModelIndices();
-
-    static BasicRenderedStringParser d_stringParser;
 };
 
 }

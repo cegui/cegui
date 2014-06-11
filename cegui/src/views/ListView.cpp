@@ -41,9 +41,6 @@ const String ListView::EventNamespace("ListView");
 const String ListView::WidgetTypeName("CEGUI/ListView");
 
 //----------------------------------------------------------------------------//
-BasicRenderedStringParser ListView::d_stringParser;
-
-//----------------------------------------------------------------------------//
 ListViewItemRenderingState::ListViewItemRenderingState() : d_isSelected(false)
 {
 }
@@ -90,9 +87,8 @@ void ListView::prepareForRender()
 
         String text = d_itemModel->getData(index);
 
-        // TODO: migrate the ListboxTextItem string rendering
         RenderedString rendered_string =
-            d_stringParser.parse(text, getFont(), &d_textColourRect);
+            getRenderedStringParser().parse(text, getFont(), &d_textColourRect);
         item.d_string = rendered_string;
 
         item.d_size = Sizef(
