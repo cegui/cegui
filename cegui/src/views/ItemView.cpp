@@ -31,6 +31,8 @@
 
 namespace CEGUI
 {
+//----------------------------------------------------------------------------//
+const Colour ItemView::DefaultTextColour = 0xFFFFFFFF;
 
 //----------------------------------------------------------------------------//
 ViewRenderingState::ViewRenderingState() :
@@ -59,6 +61,7 @@ bool ViewRenderingState::isDirty() const
 ItemView::ItemView(const String& type, const String& name) :
     Window(type, name),
     d_itemModel(0),
+    d_textColourRect(ColourRect(DefaultTextColour)),
     d_eventChildrenAddedConnection(0),
     d_eventChildrenRemovedConnection(0)
 {
@@ -140,4 +143,15 @@ void ItemView::prepareForRender()
 {
 }
 
+//----------------------------------------------------------------------------//
+const ColourRect& ItemView::getTextColourRect() const
+{
+    return d_textColourRect;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setTextColourRect(const ColourRect& colour_rect)
+{
+    d_textColourRect = colour_rect;
+}
 }
