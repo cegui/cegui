@@ -194,20 +194,20 @@ public:
     PythonEventSubscription(PyObject* callable):
         d_callable(boost::python::incref(callable))
     {}
-    
+
     PythonEventSubscription(const PythonEventSubscription& other):
         d_callable(boost::python::incref(other.d_callable))
     {}
-    
+
     ~PythonEventSubscription()
     {
         boost::python::decref(d_callable);
-    } 
-    
+    }
+
     bool operator() (const CEGUI::EventArgs& args) const
     {
         // FIXME: We have to cast, otherwise only base class gets to python!
-        
+
         // I don't understand why this is happening, I think boost::python should use typeid(args).name() and deduce that it's a
         // derived class, not CEGUI::EventArgs base class
         // However this is not happening so I have to go through all EventArgs classes and try casting one after another
@@ -227,16 +227,16 @@ public:
     PythonEventConnection(const CEGUI::Event::Connection& connection):
         d_connection(connection)
     {}
-    
+
     PythonEventConnection(const PythonEventConnection& v):
         d_connection(v.d_connection)
     {}
-    
+
     bool connected()
     {
         return d_connection.isValid() ? d_connection->connected() : false;
     }
-    
+
     void disconnect()
     {
         // TODO: Throw on invalid disconnects?
@@ -245,7 +245,7 @@ public:
             d_connection->disconnect();
         }
     }
-    
+
 private:
     CEGUI::Event::Connection d_connection;
 };
@@ -257,29 +257,29 @@ PythonEventConnection EventSet_subscribeEvent(CEGUI::EventSet* self, const CEGUI
 """
     )
     eventSet.add_registration_code(
-"""  
+"""
 def( "subscribeEvent", &EventSet_subscribeEvent);
-                        
+
     {   // PythonEventConnection
-    
+
         typedef bp::class_< PythonEventConnection > PythonEventConnection_exposer_t;
         PythonEventConnection_exposer_t PythonEventConnection_exposer = PythonEventConnection_exposer_t( "PythonEventConnection" );
         bp::scope PythonEventConnection_scope( PythonEventConnection_exposer );
         PythonEventConnection_exposer.def( bp::init<>() );
         {
-        
+
             typedef bool ( PythonEventConnection::*connected_function_type )(  ) ;
-            
-            PythonEventConnection_exposer.def( 
+
+            PythonEventConnection_exposer.def(
                 "connected"
                 , connected_function_type( &PythonEventConnection::connected ) );
-        
+
         }
         {
-        
+
             typedef void ( PythonEventConnection::*disconnect_function_type )(  ) ;
-            
-            PythonEventConnection_exposer.def( 
+
+            PythonEventConnection_exposer.def(
                 "disconnect"
                 , disconnect_function_type( &PythonEventConnection::disconnect ) );
         }
@@ -346,6 +346,9 @@ def( "subscribeEvent", &EventSet_subscribeEvent);
     # GUIContext.h
     guiContext = CEGUI_ns.class_("GUIContext")
     guiContext.include()
+    for decl in guiContext.mem_funs("getMouseCursor"):
+        if decl.has_const:
+            decl.exclude()
 
     # GUILayout_xmlHandler.h
     # not needed in python
@@ -671,14 +674,14 @@ void
 Window_setUserData ( ::CEGUI::Window & me, PyObject * data ) {
     me.setUserData ( data );
     }
-    
+
 PyObject *
 Window_getUserData ( ::CEGUI::Window & me) {
     void *  data = me.getUserData (  );
     Py_INCREF( (PyObject *) data );     // I'm passing a reference to this object so better inc the ref :)
     return  (PyObject *) data;
     }
-    
+
 typedef bool ( ::CEGUI::Window::*isChild_string_function_type )( const ::CEGUI::String& ) const;
 typedef bool ( ::CEGUI::Window::*isChild_ptr_function_type )( const ::CEGUI::Element* ) const;
 
@@ -935,17 +938,17 @@ void Iterator_previous(::CEGUI::%s& t)
         CEGUI::ListboxItem* nativeItem = boost::python::extract<CEGUI::ListboxItem*>(boost::python::incref(item));
         // passed from python so don't delete it!
         nativeItem->setAutoDeleted(false);
-        
+
         self.addItem(nativeItem);
     }
-    
+
     void
     Listbox_removeItem(CEGUI::Listbox& self, PyObject* item)
     {
         CEGUI::ListboxItem* nativeItem = boost::python::extract<CEGUI::ListboxItem*>(item);
         // don't delete it, python will take care of it
         nativeItem->setAutoDeleted(false);
-        
+
         self.removeItem(nativeItem);
         boost::python::decref(item);
     }
@@ -1196,7 +1199,7 @@ void Iterator_previous(::CEGUI::%s& t)
         except:
             pass
 
-    # taken from python ogre        
+    # taken from python ogre
     ## lets work around a bug in GCCXMl - http://language-binding.net/pygccxml/design.html#patchers
     draws = mb.mem_funs("draw")   # find all the draw functions
     for draw in draws:
@@ -1256,7 +1259,7 @@ def generate():
 
     common_utils.setDefaultCallPolicies(CEGUI_ns)
 
-    ## add additional version information to the module to help identify it correctly 
+    ## add additional version information to the module to help identify it correctly
     # todo: this should be done automatically
     common_utils.addVersionInfo(mb, PACKAGE_NAME, PACKAGE_VERSION)
 

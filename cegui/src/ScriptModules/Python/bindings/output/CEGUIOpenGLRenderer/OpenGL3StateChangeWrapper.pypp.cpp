@@ -10,10 +10,7 @@ void register_OpenGL3StateChangeWrapper_class(){
 
     { //::CEGUI::OpenGL3StateChangeWrapper
         typedef bp::class_< CEGUI::OpenGL3StateChangeWrapper, boost::noncopyable > OpenGL3StateChangeWrapper_exposer_t;
-        OpenGL3StateChangeWrapper_exposer_t OpenGL3StateChangeWrapper_exposer = OpenGL3StateChangeWrapper_exposer_t( "OpenGL3StateChangeWrapper", "*!\n\
-        \n\
-        OpenGL3StateChangeWrapper - wraps OpenGL calls and checks for redundant calls beforehand\n\
-        *\n", bp::init< CEGUI::OpenGL3Renderer & >(( bp::arg("owner") ), "! constructor.\n") );
+        OpenGL3StateChangeWrapper_exposer_t OpenGL3StateChangeWrapper_exposer = OpenGL3StateChangeWrapper_exposer_t( "OpenGL3StateChangeWrapper", bp::init< CEGUI::OpenGL3Renderer & >(( bp::arg("owner") ), "! constructor.\n") );
         bp::scope OpenGL3StateChangeWrapper_scope( OpenGL3StateChangeWrapper_exposer );
         bp::implicitly_convertible< CEGUI::OpenGL3Renderer &, CEGUI::OpenGL3StateChangeWrapper >();
         { //::CEGUI::OpenGL3StateChangeWrapper::bindBuffer
