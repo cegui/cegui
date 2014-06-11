@@ -36,6 +36,18 @@ const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
 
 //----------------------------------------------------------------------------//
+TreeViewItemRenderingState& TreeViewRenderingState::getRootItemState()
+{
+    return d_rootItemState;
+}
+
+//----------------------------------------------------------------------------//
+void TreeViewRenderingState::setRootItemState(const TreeViewItemRenderingState& val)
+{
+    d_rootItemState = val;
+}
+
+//----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
     ItemView(type, name)
 {
@@ -51,7 +63,12 @@ TreeView::~TreeView()
 //----------------------------------------------------------------------------//
 void TreeView::prepareForRender()
 {
+    if (d_itemModel == 0 || !d_renderingState.isDirty())
+        return;
 
+    ModelIndex root_index = d_itemModel->getRootIndex();
+    d_renderingState.setRootItemState(computeRenderingStateForIndex(root_index));
+    d_renderingState.setIsDirty(false);
 }
 
 //----------------------------------------------------------------------------//
@@ -59,4 +76,34 @@ TreeViewRenderingState* TreeView::getRenderingState()
 {
     return &d_renderingState;
 }
+
+//----------------------------------------------------------------------------//
+TreeViewItemRenderingState TreeView::computeRenderingStateForIndex(const ModelIndex& index)
+{
+    if (d_itemModel == 0)
+        return TreeViewItemRenderingState();
+
+    size_t child_count = d_itemModel->getChildCount(index);
+    ColourRect text_colour = getTextColourRect();
+
+    TreeViewItemRenderingState state;
+    String text = d_itemModel->getData(index);
+    RenderedString rendered_string = getRenderedStringParser().parse(
+        text, getFont(), &d_textColourRect);
+    state.d_string = rendered_string;
+    state.d_size = Sizef(
+        rendered_string.getHorizontalExtent(this),
+        rendered_string.getVerticalExtent(this));
+
+    //TODO: move the selection state to ItemView
+    //state.d_isSelected = isIndexSelected(index);
+    for (size_t child = 0; child < child_count; ++child)
+    {
+        ModelIndex child_index = d_itemModel->makeIndex(child, index);
+        state.d_children.push_back(computeRenderingStateForIndex(child_index));
+    }
+
+    return state;
+}
+
 }

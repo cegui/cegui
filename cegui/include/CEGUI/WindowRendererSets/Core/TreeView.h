@@ -29,6 +29,7 @@
 #define _FalTreeView_h_
 
 #include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
+#include "CEGUI/views/TreeView.h"
 
 namespace CEGUI
 {
@@ -79,6 +80,8 @@ public:
     void render();
 
 private:
+    void renderTreeItem(TreeView* tree_view, const Rectf& items_area,
+        Vector2f& item_pos, TreeViewItemRenderingState& item_state);
 };
 
 }

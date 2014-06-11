@@ -33,12 +33,31 @@
 #include "CEGUI/views/ItemView.h"
 #include <vector>
 
+#if defined (_MSC_VER)
+#   pragma warning(push)
+#   pragma warning(disable : 4251)
+#endif
+
 namespace CEGUI
 {
+
+struct CEGUIEXPORT TreeViewItemRenderingState
+{
+    std::vector<TreeViewItemRenderingState> d_children;
+
+    RenderedString d_string;
+    Sizef d_size;
+    bool d_isSelected;
+};
 
 class CEGUIEXPORT TreeViewRenderingState : public ViewRenderingState
 {
 public:
+    TreeViewItemRenderingState& getRootItemState();
+    void setRootItemState(const TreeViewItemRenderingState& val);
+
+private:
+    TreeViewItemRenderingState d_rootItemState;
 };
 
 /*!
@@ -62,8 +81,14 @@ public:
 
 private:
     TreeViewRenderingState d_renderingState;
+
+    TreeViewItemRenderingState computeRenderingStateForIndex(const ModelIndex& index);
 };
 
 };
+
+#if defined(_MSC_VER)
+#   pragma warning(pop)
+#endif
 
 #endif
