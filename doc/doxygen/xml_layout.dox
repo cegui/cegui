@@ -1,0 +1,166 @@
+/**
+@page xml_layout Layout XML files.
+@author Paul D Turner
+
+A layout XML file defines a hierachy of window based objects to be created, with
+property and event binding information for each window.
+
+@section xml_layout_contents Layout Element List:
+@ref xml_layout_autowindow <br>
+@ref xml_layout_event <br>
+@ref xml_layout_guilayout <br>
+@ref xml_layout_layoutimport <br>
+@ref xml_layout_property <br>
+@ref xml_layout_window <br>
+
+<br>
+@section xml_layout_overview Overview
+The reference for each element is arranged into sections, as described below:
+- Purpose:
+    - This section describes what the elements general purpose is within the
+      specifications.
+
+- Attributes:
+    - This section describes available attributes for the elements, and whether
+      they are required or optional.
+
+- Usage:
+    - Describes where the element may appear, whether the element may have
+      sub-elements, and other important usage information.
+
+- Examples:
+    - For many elements, this section will contain brief examples showing the
+      element used in context.
+
+<br>
+@section xml_layout_guilayout \<GUILayout\> Element
+- Purpose:
+    - \<GUILayout\> is the root element in layout XML files.
+
+- Attributes:
+    - @c version: specifies the version of the resource file. Should be
+    specified for all files, current CEGUI layout version is: 4
+
+- Usage:
+    - The \<GUILayout\> element is the root element for layout files.
+    - The \<GUILayout\> element must contain a single \<Window\> element.
+    - No element may contain a \<GUILayout\> element as a sub-element.
+
+- Examples:
+
+<br>
+@section xml_layout_window \<Window\> Element
+- Purpose:
+    - The \<Window\> element is used to specify a new window object to be
+      created.
+
+- Attributes:
+    - @c type: Specifies the type of window to be created.  This may refer to
+      a concrete window type, an alias, or a falagard mapped type.
+      Required attribute.
+    - @c name: Specifies the name to give the window.  Window names must be
+      unique within the system.  Optional attribute, if the attribute is not
+      specified a name will be generated automatically.
+
+- Usage:
+    - The \<Window\> may appear as a sub-element of the following:
+        - \<GUILayout\> elements.
+        - \<Window\> elements.
+        - \<AutoWindow\> elements.
+    - The \<Window\> element may contain the following sub-elements:
+        - Any number of \<LayoutImport\> elements.  Followed by,
+        - Any number of \<Property\> elements.  Followed by,
+        - Any number of \<Event\> elements.  Followed by,
+        - Any number of \<Window\> elements.
+        - Any number of \<AutoWindow\> elements.
+        - Finally, any number of \<Property\> elements (again).
+
+- Examples:
+
+<br>
+@section xml_layout_property \<Property\> Element
+- Purpose:
+    - The \<Property\> element is used to set properties on the Window created
+      by the containing \<Window\> element.
+
+- Attributes:
+    - @c name: Specifies the name of the property to set.  Required attribute.
+    - @c value: Specifies the value to set on the property.
+      Optional attribute, if the attribute is not specified the value to be set
+      should be given via the element text content.
+
+- Usage:
+    - The \<Property\> may appear as a sub-element of \<Window\> elements and
+      \<AutoWindow\> elements.
+    - The \<Property\> element may not contain any sub-elements.
+    - The \<Property\> element may contain text content to be used as the value.
+
+- Examples:
+
+<br>
+@section xml_layout_event \<Event\> Element
+- Purpose:
+    - The Event element is used to create bindings between GUI elements and
+      script functions.
+
+- Attributes:
+    - @c name: Specifies the name of the event to which the handler function
+      specified by the @c Function attribute will be subscribed.
+      Required attribute.
+    - @c function: Specifis the name of a script function to be subscribed to
+      the event specified by the @c Name attribute.  Required attribute.
+
+- Usage:
+    - The \<Event\> may appear as a sub-element of \<Window\> elements
+      and \<AutoWindow\> elements.
+    - The \<Event\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_layout_layoutimport \<LayoutImport\> Element
+- Purpose:
+    - The \<LayoutImport\> element is used to reference (import) a layout file
+      into another.  The root window of the imported layout is attached to the
+      Window where the import occurrs.
+
+- Attributes:
+    - @c filename: Specifies the path to the xml layout file to be imported.
+      Required attribute.
+    - @c resourceGroup: Specifies the resource group identifier to pass to the
+      ResourceProvider when loading the file given in the @c Filename attribute.
+      Optional attribute, default is the WindowManager default group.
+
+- Usage:
+    - The \<LayoutImport\> may appear as a sub-element of \<Window\> elements
+      and \<AutoWindow\> elements.
+    - The \<LayoutImport\> element may not contain any sub-elements.
+
+- Examples:
+
+<br>
+@section xml_layout_autowindow \<AutoWindow\> Element
+- Purpose:
+    - The \<AutoWindow\> element is used to target property settings, events and
+      other content on to an automatically created child window of the current
+      Window (or AutoWindow).
+
+- Attributes:
+    - @c namePath: Specifies the name path for the target auto-window.
+      Required attribute.
+
+- Usage:
+    - The \<AutoWindow\> may appear as a sub-element of the following:
+        - \<Window\> elements.
+        - \<AutoWindow\> elements.
+    - The \<AutoWindow\> element may contain the following sub-elements:
+        - Any number of \<LayoutImport\> elements.  Followed by,
+        - Any number of \<Property\> elements.  Followed by,
+        - Any number of \<Event\> elements.  Followed by,
+        - Any number of \<Window\> elements.
+        - Any number of \<AutoWindow\> elements.
+        - Finally, any number of \<Property\> elements (again).
+
+- Examples:
+
+*/

@@ -1,0 +1,110 @@
+/**
+@page authors List of authors and contributors
+The following is a list of primary authors and contributors for Crazy Eddie's GUI System Mk-2.
+
+@section authors_sec_1 Current CEGUI Team Members
+- Paul D Turner (crayzed / CrazyEddie / ice-drezday)
+- Martin Preisler (Kulik)
+- Lukas Meindl (Ident)
+
+@section authors_sec_2 Retired or Semi-retired CEGUI Team Members
+- Patrick Kooman (scriptkid)
+- Frederico Jeronimo (fjeronimo)
+- Stephane (rackle)
+- Tomas Lindquist Olsen (lindquist)
+- Olivier Delannoy (Dalfy)
+- Paul Schifferer (Exsortis)
+- James O'Sullivan (_mental_)
+
+<br>
+@section authors_sec_4 Main Contributors
+The following have made large, important, or on-going contributions to the system
+(these people may have made additional contributions than those specifically mentioned):
+- 'Blakharaz':
+    - Initial XmlHandlerHelper class and general cleanup of original XML parsing code.
+- Jeff Leigh:
+    - Original CEGUI::ColourManipulator class (now re-factored into CEGUI::colour class) and related fixes.
+- Eugene Marcotte:
+    - Implementation of the NullRenderer module classes.
+- Hans Mackowiak:
+    - Composite resource provider
+    - Migrating properties to TplProperty
+- Jeff A. Marr:
+    - Implementation of the MinizipResourceProvider class.
+- Jose A Milan:
+    - Refactoring of XML handling classes to remove public dependency on Xerces-C++
+    - Initial updates to Ogre renderer to support Ogre 1.0.
+- Keith Mok:
+    - Original version of the DirectFB renderer module and supporting sample base application.
+- Magnus Osterlind:
+    - Original version of the Direct3D 9 GUI renderer module.
+- Assaf Raman:
+    - Support for bi-directional text.
+- Lars Rinde:
+    - Original TaharezLook graphics design.
+- Tobias Schlegel:
+    - STBImageCodec module.
+- Sunil Shah:
+    - Item visibility functions for MultiColumnList.
+- Steve Streeting:
+    - TabControl widget base classes & related 'TaharezLook' classes.
+- Mark Strom:
+    - Original version of the OpenGL GUI renderer module.
+- Thomas Suter:
+    - Original version of the Irrlicht engine GUI renderer module.
+- Jonathan Welch:
+    - Static build support.
+    - Tree widget (based on original code by David Durant)
+    - Tree Demo.
+- Andrew Zabolotny:
+    - Font class rewrite.
+
+<br>
+@section authors_sec_5 Other Contributors
+The following have contributed patches, bug reports, and other such valuable things...
+- Tupone Alfredo
+- Geoff Carlton
+- Clay Culver
+- Paul Downey
+- Jeff Doyle
+- Jan Eickmann
+- Andrzej Krzysztof Haczewski
+- Markus Henschel
+- Erik Hjortsberg
+- Rafal Jastrzebski
+- Chris Kang
+- Peter Newman
+- Chris Osborn
+- Shane Parker
+- Andrea Santambrogio
+- Robert Stoll
+- James Turner
+- Chris Weaver
+- Christopher Wedman
+- armaduck
+- genva
+- Te'ja
+- Xavier
+- s5zone
+- Jason "Avengre" Assalita
+- Pavlos Touboulidis
+
+<br>
+@section authors_sec_6 Special Thanks
+- Shawn Carroll   - For his tutorial series (no longer available, though!).
+- Chris McGuirk   - For his C#.Net port.
+- Shane Parker    - For giving permission to use his "Vanilla GUI" imagery.
+
+Everyone on the GameDev.Net forums who looked at earlier versions of the system
+and gave constructive criticism.
+
+Everyone on the Ogre forums who encouraged the development of this Mk-2 version
+of the system.
+
+<br>
+@section authors_sec_7 Have We Missed You?
+If you feel that we have missed you from some section of this list, then please
+contact us (team@cegui.org.uk) and let us know who you are and what you did, and
+we'll correct the mistake as soon as possible.
+
+*/
