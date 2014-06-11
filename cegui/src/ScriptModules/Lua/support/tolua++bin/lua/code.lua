@@ -77,7 +77,6 @@ function classCode:print (ident,close)
  print(ident.."}"..close)
 end
 
-
 -- Internal constructor
 function _Code (t)
  setmetatable(t,classCode)

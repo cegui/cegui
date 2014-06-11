@@ -371,3 +371,27 @@ function parser_hook(s)
 end
 
 
+--- 
+-- LuaDoc Patch
+-- takes a string of a C++ type and "cleanses it" by
+-- removing const indentifiers, replacing template symbols <>, 
+-- :: operators and converting C++ primitives to Lua primitives.
+-- returns the cleansed type or nil if the type is (void)
+-- by klapeto (http://cegui.org.uk/forum/viewtopic.php?f=7&t=6784)
+function cleanseType(type)
+	local ret = string.gsub(type,"const ","")
+	ret = string.gsub(ret,"::",".")
+	ret = string.gsub(ret,"[<>]","_")
+	ret = string.gsub(ret,"*","")
+	if (ret ~= 'void') then
+		if (ret == 'bool') then
+			return 'boolean'
+		elseif (ret == 'float' or ret == 'int'  or ret=='double' or ret=='char' or string.find(ret,'short') or string.find(ret,'unsigned') or string.find(ret,'long')or string.find(ret,'signed')) then
+			return 'number'
+		else
+			return ret
+		end
+	else
+		return nil
+	end
+end

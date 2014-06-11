@@ -42,6 +42,7 @@ static void help (void)
          "             constructors (for compatibility with tolua5)\n"
          "  -W       : disable warnings for unsupported features (for compatibility\n"
          "             with tolua5)\n"
+         "  -k       : produce LuaDoc API export to output instead\n"
          "  -C       : disable cleanup of included lua code (for easier debugging)\n"
          "  -E  value[=value] : add extra values to the luastate\n"
          "  -t       : export a list of types asociates with the C++ typeid name\n"
@@ -135,6 +136,7 @@ int main (int argc, char* argv[])
      case 'S': setfield(L,t,"S",""); break;
      case '1': setfield(L,t,"1",""); break;
      case 'L': setfield(L,t,"L",argv[++i]); break;
+     case 'k': setfield(L,t,"k",""); break;
      case 'D': setfield(L,t,"D",""); break;
      case 'W': setfield(L,t,"W",""); break;
      case 'C': setfield(L,t,"C",""); break;
