@@ -63,23 +63,6 @@ void FalagardListView::render()
 }
 
 //----------------------------------------------------------------------------//
-void FalagardListView::renderString(ListView* list_view,
-    RenderedString &rendered_string, Vector2f draw_pos,
-    const Font* font, const Rectf* item_clipper)
-{
-    for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
-    {
-        draw_pos.d_y += CoordConverter::alignToPixels(
-            (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
-
-        rendered_string.draw(list_view, i, list_view->getGeometryBuffers(),
-            draw_pos, 0, item_clipper, 0.0f);
-
-        draw_pos.d_y += rendered_string.getPixelSize(list_view, i).d_height;
-    }
-}
-
-//----------------------------------------------------------------------------//
 void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* state)
 {
     Rectf items_area(getItemRenderingArea(false, false));

@@ -27,6 +27,8 @@
  ***************************************************************************/
 #include "CEGUI/WindowRendererSets/Core/ItemViewRenderer.h"
 #include "CEGUI/falagard/WidgetLookManager.h"
+#include "CEGUI/CoordConverter.h"
+#include "CEGUI/Font.h"
 
 namespace CEGUI
 {
@@ -71,4 +73,19 @@ Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
     CEGUI_THROW(UnknownObjectException("There is no item rendering area defined!"));
 }
 
+//----------------------------------------------------------------------------//
+void ItemViewRenderer::renderString(Window* window, RenderedString &rendered_string,
+    Vector2f draw_pos, const Font* font, const Rectf* item_clipper)
+{
+    for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
+    {
+        draw_pos.d_y += CoordConverter::alignToPixels(
+            (font->getLineSpacing() - font->getFontHeight()) * 0.5f);
+
+        rendered_string.draw(window, i, window->getGeometryBuffers(),
+            draw_pos, 0, item_clipper, 0.0f);
+
+        draw_pos.d_y += rendered_string.getPixelSize(window, i).d_height;
+    }
+}
 }

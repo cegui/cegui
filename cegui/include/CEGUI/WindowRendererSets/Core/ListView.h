@@ -82,8 +82,6 @@ public:
 
 private:
     void renderState(ListView* list_view, ListViewRenderingState* state);
-    void renderString(ListView* list_view, RenderedString &rendered_string, Vector2f draw_pos,
-        const Font* font, const Rectf* item_clipper);
 };
 
 }
