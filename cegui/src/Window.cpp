@@ -429,7 +429,7 @@ const Window* Window::getActiveChild(void) const
         // don't need full backward scan for activeness as we already know
         // 'this' is active.  NB: This uses the draw-ordered child list, as that
         // should be quicker in most cases.
-        
+
         const Window* wnd = *it;
         if (wnd->d_active)
             return wnd->getActiveChild();
@@ -1048,7 +1048,7 @@ void Window::render()
     // don't do anything if window is not visible
     if (!isEffectiveVisible())
         return;
-    
+
     // get rendering context
     RenderingContext ctx;
     getRenderingContext(ctx);
@@ -1167,16 +1167,16 @@ void Window::cleanupChildren(void)
 void Window::addChild_impl(Element* element)
 {
     Window* wnd = dynamic_cast<Window*>(element);
-    
+
     if (!wnd)
         CEGUI_THROW(InvalidRequestException(
             "Window can only have Elements of type Window added as children "
             "(Window path: " + getNamePath() + ")."));
-    
+
     // if the element is already a child of this Window, this is a NOOP
     if (isChild(element))
         return;
-        
+
     NamedElement::addChild_impl(wnd);
 
     addWindowToDrawList(*wnd);
@@ -1200,7 +1200,7 @@ void Window::removeChild_impl(Element* element)
     removeWindowFromDrawList(*wnd);
 
     Element::removeChild_impl(wnd);
-    
+
     // find this window in the child list
     const ChildList::iterator position =
         std::find(d_children.begin(), d_children.end(), wnd);
@@ -1211,7 +1211,7 @@ void Window::removeChild_impl(Element* element)
         // unban properties window could write as a root window
         wnd->unbanPropertyFromXML("RestoreOldCapture");
     }
-    
+
     wnd->onZChange_impl();
 }
 
@@ -1413,7 +1413,7 @@ void Window::addWindowProperties(void)
         "PointerPassThroughEnabled", "Property to get/set whether the window ignores pointer events and pass them through to any windows behind it. Value is either \"True\" or \"False\".",
         &Window::setPointerPassThroughEnabled, &Window::isPointerPassThroughEnabled, false
     );
-    
+
     addProperty(&d_windowRendererProperty);
     addProperty(&d_lookNFeelProperty);
 
@@ -1431,19 +1431,19 @@ void Window::addWindowProperties(void)
         "  Value is either \"True\" or \"False\".",
         &Window::setUsingAutoRenderingSurface, &Window::isUsingAutoRenderingSurface, false /* TODO: Inconsistency*/
     );
-    
+
     CEGUI_DEFINE_PROPERTY(Window, bool,
         "TextParsingEnabled", "Property to get/set the text parsing setting for the Window.  "
         "Value is either \"True\" or \"False\".",
         &Window::setTextParsingEnabled, &Window::isTextParsingEnabled, true
     );
-   
+
     CEGUI_DEFINE_PROPERTY(Window, UBox,
         "Margin", "Property to get/set margin for the Window. Value format:"
         "{top:{[tops],[topo]},left:{[lefts],[lefto]},bottom:{[bottoms],[bottomo]},right:{[rights],[righto]}}.",
         &Window::setMargin, &Window::getMargin, UBox(UDim(0, 0))
     );
-   
+
     CEGUI_DEFINE_PROPERTY(Window, WindowUpdateMode,
         "UpdateMode", "Property to get/set the window update mode setting.  "
         "Value is one of \"Always\", \"Never\" or \"Visible\".",
@@ -1530,7 +1530,7 @@ void Window::setAutoRepeatRate(float rate)
 
 //----------------------------------------------------------------------------//
 void Window::update(float elapsed)
-{       
+{
     // perform update for 'this' Window
     updateSelf(elapsed);
 
@@ -1735,7 +1735,7 @@ bool Window::isUsingDefaultTooltip(void) const
 //----------------------------------------------------------------------------//
 Tooltip* Window::getTooltip(void) const
 {
-    return isUsingDefaultTooltip() ? 
+    return isUsingDefaultTooltip() ?
         getGUIContext().getDefaultTooltipObject(): d_customTip;
 }
 
@@ -2201,7 +2201,7 @@ void Window::onSized(ElementEventArgs& e)
 void Window::onMoved(ElementEventArgs& e)
 {
     Element::onMoved(e);
-    
+
     // handle invalidation of surfaces and trigger needed redraws
     if (d_parent)
     {
@@ -2454,7 +2454,7 @@ void Window::onChildAdded(ElementEventArgs& e)
     // we no longer want a total redraw here, instead we just get each window
     // to resubmit it's imagery to the Renderer.
     getGUIContext().markAsDirty();
-    
+
     Element::onChildAdded(e);
 }
 
@@ -2466,7 +2466,7 @@ void Window::onChildRemoved(ElementEventArgs& e)
     getGUIContext().markAsDirty();
     // Though we do need to invalidate the rendering surface!
     getTargetRenderingSurface().invalidate();
-    
+
     Element::onChildRemoved(e);
 }
 
@@ -3244,7 +3244,7 @@ void Window::initialiseClippers(const RenderingContext& ctx)
 void Window::onRotated(ElementEventArgs& e)
 {
     Element::onRotated(e);
-    
+
     // if we have no surface set, enable the auto surface
     if (!d_surface)
     {
@@ -3287,9 +3287,8 @@ const RenderedString& Window::getRenderedString() const
 {
     if (!d_renderedStringValid)
     {
-		// FIXME: Evil const cast!
         d_renderedString = getRenderedStringParser().parse(
-            getTextVisual(), const_cast<Font*>(getFont()), 0);
+            getTextVisual(), getFont(), 0);
         d_renderedStringValid = true;
     }
 
@@ -3530,7 +3529,7 @@ void Window::clonePropertiesTo(Window& target) const
 {
     for (PropertySet::PropertyIterator propertyIt = getPropertyIterator();
          !propertyIt.isAtEnd();
-         ++propertyIt) 
+         ++propertyIt)
     {
         const String& propertyName = propertyIt.getCurrentKey();
         const String propertyValue = getProperty(propertyName);
@@ -3659,7 +3658,7 @@ const Font* Window::property_getFont() const
     // for this window but we don't return name of the default font when
     // no font is set. This is IMO more practical. User can always use
     // getFont() directly to get 0.7 behaviour.
-    
+
     return getFont(false);
 }
 
