@@ -1,12 +1,13 @@
-#!/usr/bin/env sh
+#!/bin/bash
 
 jobs=1
-if [ -n "$1" ]; then jobs=$1; fi
-
 if [ -f /proc/cpuinfo ]
 then
     jobs=`cat /proc/cpuinfo | grep processor | wc -l`
 fi
+
+# allow overwriting the number of jobs
+if [ -n "$1" ]; then jobs=$1; fi
 
 cppcheck -j $jobs --enable=all -f \
 -I cegui/include cegui/ 2> cppcheck-output
