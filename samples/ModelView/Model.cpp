@@ -28,6 +28,7 @@
 #include "Model.h"
 #include "CEGUI/PropertyHelper.h"
 #include <iterator>
+#include <algorithm>
 
 using namespace CEGUI;
 
