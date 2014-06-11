@@ -83,9 +83,6 @@ void ListView::prepareForRender()
 
     std::vector<ListViewItemRenderingState> items;
 
-    // TODO: migrate ListboxTextItem colorfulness
-    ColourRect colour_rect(Colour(1, 1, 1));
-
     for (size_t child = 0; child < child_count; ++child)
     {
         ListViewItemRenderingState item;
@@ -95,7 +92,7 @@ void ListView::prepareForRender()
 
         // TODO: migrate the ListboxTextItem string rendering
         RenderedString rendered_string =
-            d_stringParser.parse(text, getFont(), &colour_rect);
+            d_stringParser.parse(text, getFont(), &d_textColourRect);
         item.d_string = rendered_string;
 
         item.d_size = Sizef(

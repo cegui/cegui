@@ -33,6 +33,8 @@
 #include "CEGUI/Base.h"
 #include "CEGUI/ItemModel.h"
 #include "CEGUI/Window.h"
+#include "CEGUI/Colour.h"
+#include "CEGUI/ColourRect.h"
 
 #if defined (_MSC_VER)
 #   pragma warning(push)
@@ -71,6 +73,8 @@ public:
 
     virtual ~ItemView();
 
+    static const Colour DefaultTextColour;
+
     /*!
     \brief
         Sets the ItemModel to be used inside this view.
@@ -86,7 +90,6 @@ public:
     */
     virtual ItemModel* getModel() const;
 
-
     /*!
     \brief
         Instructs this ItemView to prepare its rendering state for rendering.
@@ -100,8 +103,13 @@ public:
         Returns the current rendering state of this view.
     */
     virtual ViewRenderingState* getRenderingState() = 0;
+
+    const ColourRect& getTextColourRect() const;
+    void setTextColourRect(const ColourRect& colour_rect);
+
 protected:
     ItemModel* d_itemModel;
+    ColourRect d_textColourRect;
 
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);
