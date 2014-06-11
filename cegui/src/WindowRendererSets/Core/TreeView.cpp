@@ -29,8 +29,6 @@
 #include "CEGUI/falagard/WidgetLookManager.h"
 #include "CEGUI/falagard/WidgetLookFeel.h"
 
-#include "CEGUI/views/TreeView.h"
-
 namespace CEGUI
 {
 
@@ -55,5 +53,45 @@ void FalagardTreeView::render()
 
     imagery = &wlf.getStateImagery(tree_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
     imagery->render(*tree_view);
+
+    Rectf items_area(getItemRenderingArea(false, false));
+    Vector2f item_pos(items_area.left(), items_area.top());
+    renderTreeItem(tree_view, items_area, item_pos, state->getRootItemState());
 }
+
+//----------------------------------------------------------------------------//
+void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
+    Vector2f& item_pos, TreeViewItemRenderingState& item_state)
+{
+    const float SUBTREE_IDENT = 20.0f;
+    for (size_t i = 0; i < item_state.d_children.size(); ++i)
+    {
+        TreeViewItemRenderingState item = item_state.d_children.at(i);
+        RenderedString& rendered_string = item.d_string;
+        Sizef size(item.d_size);
+
+        size.d_width = ceguimax(items_area.getWidth(), size.d_width);
+
+        Rectf item_rect;
+        item_rect.left(item_pos.d_x);
+        item_rect.top(item_pos.d_y);
+        item_rect.setSize(size);
+
+        Rectf item_clipper(item_rect.getIntersection(items_area));
+
+        //TODO: selection
+        renderString(tree_view, rendered_string, item_rect.getPosition(),
+            tree_view->getFont(), &item_clipper);
+
+        item_pos.d_y += size.d_height;
+
+        //TODO: add opener/closer button
+        item_pos.d_x += SUBTREE_IDENT;
+
+        renderTreeItem(tree_view, items_area, item_pos, item);
+
+        item_pos.d_x -= SUBTREE_IDENT;
+    }
+}
+
 }
