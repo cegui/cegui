@@ -31,6 +31,7 @@
 #include "SampleBase.h"
 #include "Model.h"
 #include "CEGUI/views/ListView.h"
+#include "CEGUI/views/TreeView.h"
 
 class ModelViewDemo : public Sample
 {
@@ -46,7 +47,9 @@ private:
 
     CEGUI::Window* d_root;
     InventoryModel d_inventoryModel;
+
     CEGUI::ListView* d_listView;
+    CEGUI::TreeView* d_treeView;
     int d_newItemsCount;
 };
 
