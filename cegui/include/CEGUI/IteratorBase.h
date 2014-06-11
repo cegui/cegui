@@ -276,6 +276,11 @@ public:
         return tmp;
     }
 
+protected:
+    /*************************************************************************
+		No default construction available
+	*************************************************************************/
+    ConstMapIterator(void) {}
 };
 
 //! iterator for vectors
@@ -352,6 +357,12 @@ public:
 
         return tmp;
     }
+
+protected:
+    /*************************************************************************
+		No default construction available
+	*************************************************************************/
+    ConstVectorIterator(void) {}
 };
 
 } // End of  CEGUI namespace section

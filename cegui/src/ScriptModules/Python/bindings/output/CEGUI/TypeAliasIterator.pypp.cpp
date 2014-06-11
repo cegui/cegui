@@ -15,6 +15,13 @@ struct ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI
         
     }
 
+    ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_greater___greater___greater___greater__wrapper( )
+    : CEGUI::ConstMapIterator<std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > > >( )
+      , bp::wrapper< CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::WindowFactoryManager::AliasTargetStack getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_TypeAliasIterator_class(){
         typedef bp::class_< ConstMapIterator_less__std_scope_map_less_CEGUI_scope_String_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_comma__CEGUI_scope_StringFastLessCompare_comma__std_scope_allocator_less_std_scope_pair_less_CEGUI_scope_String_const_comma__CEGUI_scope_WindowFactoryManager_scope_AliasTargetStack_greater___greater___greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > >, CEGUI::WindowFactoryManager::AliasTargetStack > > > TypeAliasIterator_exposer_t;
         TypeAliasIterator_exposer_t TypeAliasIterator_exposer = TypeAliasIterator_exposer_t( "TypeAliasIterator", bp::no_init );
         bp::scope TypeAliasIterator_scope( TypeAliasIterator_exposer );
+        TypeAliasIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > > >::getCurrentKey
         
             typedef CEGUI::ConstMapIterator< std::map<CEGUI::String, CEGUI::WindowFactoryManager::AliasTargetStack, CEGUI::StringFastLessCompare, std::allocator<std::pair<CEGUI::String const, CEGUI::WindowFactoryManager::AliasTargetStack> > > > exported_class_t;

@@ -15,6 +15,13 @@ struct ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_Scheme_scope
         
     }
 
+    ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_Scheme_scope_LoadableUIElement__greater___greater__wrapper( )
+    : CEGUI::ConstVectorIterator<std::vector<CEGUI::Scheme::LoadableUIElement, std::allocator<CEGUI::Scheme::LoadableUIElement> > >( )
+      , bp::wrapper< CEGUI::ConstVectorIterator< std::vector< CEGUI::Scheme::LoadableUIElement > > >(){
+        // null constructor
+    
+    }
+
     virtual ::CEGUI::Scheme::LoadableUIElement getCurrentValue(  ) const  {
         if( bp::override func_getCurrentValue = this->get_override( "getCurrentValue" ) )
             return func_getCurrentValue(  );
@@ -45,6 +52,9 @@ void register_LoadableUIElementIterator_class(){
         typedef bp::class_< ConstVectorIterator_less__std_scope_vector_less__CEGUI_scope_Scheme_scope_LoadableUIElement__greater___greater__wrapper, bp::bases< CEGUI::ConstBaseIterator< std::vector< CEGUI::Scheme::LoadableUIElement >, CEGUI::Scheme::LoadableUIElement > > > LoadableUIElementIterator_exposer_t;
         LoadableUIElementIterator_exposer_t LoadableUIElementIterator_exposer = LoadableUIElementIterator_exposer_t( "LoadableUIElementIterator", bp::no_init );
         bp::scope LoadableUIElementIterator_scope( LoadableUIElementIterator_exposer );
+        LoadableUIElementIterator_exposer.def( bp::init< >("*************************************************************************\n\
+           No default construction available\n\
+        *************************************************************************\n") );
         { //::CEGUI::ConstVectorIterator< std::vector< CEGUI::Scheme::LoadableUIElement > >::getCurrentValue
         
             typedef CEGUI::ConstVectorIterator< std::vector< CEGUI::Scheme::LoadableUIElement > > exported_class_t;
