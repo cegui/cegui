@@ -49,19 +49,18 @@ void FalagardTreeView::render()
     TreeView* tree_view = static_cast<TreeView*>(d_window);
 
     tree_view->prepareForRender();
-    TreeViewRenderingState* state = tree_view->getRenderingState();
 
     imagery = &wlf.getStateImagery(tree_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
     imagery->render(*tree_view);
 
     Rectf items_area(getItemRenderingArea(false, false));
     Vector2f item_pos(items_area.left(), items_area.top());
-    renderTreeItem(tree_view, items_area, item_pos, state->getRootItemState());
+    renderTreeItem(tree_view, items_area, item_pos, tree_view->getRootItemState());
 }
 
 //----------------------------------------------------------------------------//
 void FalagardTreeView::renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-    Vector2f& item_pos, TreeViewItemRenderingState& item_state)
+    Vector2f& item_pos, const TreeViewItemRenderingState& item_state)
 {
     const float SUBTREE_IDENT = 20.0f;
     for (size_t i = 0; i < item_state.d_children.size(); ++i)

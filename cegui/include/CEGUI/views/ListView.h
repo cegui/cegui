@@ -50,30 +50,6 @@ struct CEGUIEXPORT ListViewItemRenderingState
     ListViewItemRenderingState();
 };
 
-struct CEGUIEXPORT ModelIndexSelectionState
-{
-    ModelIndex d_parentIndex;
-    size_t d_childId;
-
-    ModelIndex d_selectedIndex;
-};
-
-class CEGUIEXPORT ListViewRenderingState : public ViewRenderingState
-{
-public:
-    const std::vector<ListViewItemRenderingState>& getItems() const;
-    void setItems(const std::vector<ListViewItemRenderingState>& val);
-
-    const std::vector<ModelIndexSelectionState>& getSelectionStates() const;
-    void setSelectionStates(const std::vector<ModelIndexSelectionState>& val);
-
-protected:
-    std::vector<ListViewItemRenderingState> d_items;
-    std::vector<ModelIndexSelectionState> d_selectionStates;
-
-    friend class ListView;
-};
-
 /*!
 \brief
     View that displays items in a listed fashion.
@@ -142,11 +118,13 @@ public:
     */
     const Image* getSelectionBrushImage(void) const;
 
-    virtual ListViewRenderingState* getRenderingState();
+    const std::vector<ListViewItemRenderingState>& getItems() const;
+
     virtual void prepareForRender();
 
 protected:
     virtual void onPointerPressHold(PointerEventArgs& e);
+
     bool isIndexSelected(const ModelIndex& index) const;
     void addListViewProperties();
 
@@ -155,8 +133,8 @@ protected:
     virtual bool onChildrenRemoved(const EventArgs& args);
 
 private:
-    ListViewRenderingState d_renderingState;
     const Image* d_selectionBrush;
+    std::vector<ListViewItemRenderingState> d_items;
 
     void computeSelectionStateModelIndices();
 };

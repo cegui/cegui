@@ -54,23 +54,22 @@ void FalagardListView::render()
     ListView* list_view = static_cast<ListView*>(d_window);
 
     list_view->prepareForRender();
-    ListViewRenderingState* state = list_view->getRenderingState();
 
     imagery = &wlf.getStateImagery(list_view->isEffectiveDisabled() ? "Disabled" : "Enabled");
     imagery->render(*list_view);
 
-    renderState(list_view, state);
+    render(list_view);
 }
 
 //----------------------------------------------------------------------------//
-void FalagardListView::renderState(ListView* list_view, ListViewRenderingState* state)
+void FalagardListView::render(ListView* list_view)
 {
     Rectf items_area(getItemRenderingArea(false, false));
     Vector3f item_pos(items_area.left(), items_area.top(), 0.0f);
 
-    for (size_t i = 0; i < state->getItems().size(); ++i)
+    for (size_t i = 0; i < list_view->getItems().size(); ++i)
     {
-        ListViewItemRenderingState item = state->getItems().at(i);
+        ListViewItemRenderingState item = list_view->getItems().at(i);
         RenderedString& rendered_string = item.d_string;
         Sizef size(item.d_size);
 

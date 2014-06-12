@@ -36,18 +36,6 @@ const String TreeView::EventNamespace("TreeView");
 const String TreeView::WidgetTypeName("CEGUI/TreeView");
 
 //----------------------------------------------------------------------------//
-TreeViewItemRenderingState& TreeViewRenderingState::getRootItemState()
-{
-    return d_rootItemState;
-}
-
-//----------------------------------------------------------------------------//
-void TreeViewRenderingState::setRootItemState(const TreeViewItemRenderingState& val)
-{
-    d_rootItemState = val;
-}
-
-//----------------------------------------------------------------------------//
 TreeView::TreeView(const String& type, const String& name) :
     ItemView(type, name)
 {
@@ -61,20 +49,20 @@ TreeView::~TreeView()
 }
 
 //----------------------------------------------------------------------------//
-void TreeView::prepareForRender()
+const TreeViewItemRenderingState& TreeView::getRootItemState() const
 {
-    if (d_itemModel == 0 || !d_renderingState.isDirty())
-        return;
-
-    ModelIndex root_index = d_itemModel->getRootIndex();
-    d_renderingState.setRootItemState(computeRenderingStateForIndex(root_index));
-    d_renderingState.setIsDirty(false);
+    return d_rootItemState;
 }
 
 //----------------------------------------------------------------------------//
-TreeViewRenderingState* TreeView::getRenderingState()
+void TreeView::prepareForRender()
 {
-    return &d_renderingState;
+    if (d_itemModel == 0 || !isDirty())
+        return;
+
+    ModelIndex root_index = d_itemModel->getRootIndex();
+    d_rootItemState = computeRenderingStateForIndex(root_index);
+    setIsDirty(false);
 }
 
 //----------------------------------------------------------------------------//

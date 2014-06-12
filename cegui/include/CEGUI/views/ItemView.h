@@ -44,22 +44,18 @@
 namespace CEGUI
 {
 
-class CEGUIEXPORT ViewRenderingState
+/*!
+\brief
+    Stores the selection state of a ModelIndex. This is used to regenerate
+    the new proper selection index when the model changes in any way (e.g.:
+    new item, removed item).
+*/
+struct CEGUIEXPORT ModelIndexSelectionState
 {
-public:
-    /*!
-    \brief
-        Creates a new dirty rendering state.
-    */
-    ViewRenderingState();
-    virtual ~ViewRenderingState();
+    ModelIndex d_parentIndex;
+    size_t d_childId;
 
-    bool isDirty() const;
-    //! Specifies whether this view requires processing before being able to render it.
-    void setIsDirty(bool value);
-
-protected:
-    bool d_isDirty;
+    ModelIndex d_selectedIndex;
 };
 
 /*!
@@ -98,18 +94,21 @@ public:
     */
     virtual void prepareForRender();
 
-    /*!
-    \brief
-        Returns the current rendering state of this view.
-    */
-    virtual ViewRenderingState* getRenderingState() = 0;
-
     const ColourRect& getTextColourRect() const;
     void setTextColourRect(const ColourRect& colour_rect);
+
+    bool isDirty() const;
+    //! Specifies whether this view requires processing before being able to render it.
+    void setIsDirty(bool value);
+
+    //! Gets the current state of the indices used for selection.
+    const std::vector<ModelIndexSelectionState>& getIndexSelectionStates() const;
 
 protected:
     ItemModel* d_itemModel;
     ColourRect d_textColourRect;
+    bool d_isDirty;
+    std::vector<ModelIndexSelectionState> d_indexSelectionStates;
 
     //! Invalidates this view by marking the rendering state as dirty and calling the base
     virtual void invalidateView(bool recursive);

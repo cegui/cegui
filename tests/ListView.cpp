@@ -119,7 +119,7 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_InitialSelection_SelectsFirstObject)
     view.prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(view.getRenderingState()->getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(view.getItems().at(0).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -134,8 +134,8 @@ BOOST_AUTO_TEST_CASE(SetSelectedItem_SecondSelection_SelectsSecondObject)
     view.prepareForRender();
 
     BOOST_REQUIRE(selected);
-    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(view.getRenderingState()->getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(view.getItems().at(1).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -151,9 +151,9 @@ BOOST_AUTO_TEST_CASE(ItemAdded_ProperSelectionIsPersisted)
 
     view.prepareForRender();
 
-    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(1).d_isSelected);
-    BOOST_REQUIRE(view.getRenderingState()->getItems().at(2).d_isSelected);
+    BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(!view.getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(view.getItems().at(2).d_isSelected);
 }
 
 //----------------------------------------------------------------------------//
@@ -170,9 +170,9 @@ BOOST_AUTO_TEST_CASE(ItemRemoved_NothingIsSelected)
 
     view.prepareForRender();
 
-    BOOST_REQUIRE(view.getRenderingState()->getItems().size() == 2);
-    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(0).d_isSelected);
-    BOOST_REQUIRE(!view.getRenderingState()->getItems().at(1).d_isSelected);
+    BOOST_REQUIRE(view.getItems().size() == 2);
+    BOOST_REQUIRE(!view.getItems().at(0).d_isSelected);
+    BOOST_REQUIRE(!view.getItems().at(1).d_isSelected);
 }
 
 BOOST_AUTO_TEST_SUITE_END()

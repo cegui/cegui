@@ -50,16 +50,6 @@ struct CEGUIEXPORT TreeViewItemRenderingState
     bool d_isSelected;
 };
 
-class CEGUIEXPORT TreeViewRenderingState : public ViewRenderingState
-{
-public:
-    TreeViewItemRenderingState& getRootItemState();
-    void setRootItemState(const TreeViewItemRenderingState& val);
-
-private:
-    TreeViewItemRenderingState d_rootItemState;
-};
-
 /*!
 \brief
     View that displays items in a tree fashion.
@@ -76,13 +66,15 @@ public:
 
     virtual ~TreeView();
 
-    virtual TreeViewRenderingState* getRenderingState();
+    const TreeViewItemRenderingState& getRootItemState() const;
     virtual void prepareForRender();
 
 private:
-    TreeViewRenderingState d_renderingState;
+    TreeViewItemRenderingState d_rootItemState;
 
     TreeViewItemRenderingState computeRenderingStateForIndex(const ModelIndex& index);
+
+
 };
 
 };

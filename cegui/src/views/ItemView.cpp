@@ -35,33 +35,11 @@ namespace CEGUI
 const Colour ItemView::DefaultTextColour = 0xFFFFFFFF;
 
 //----------------------------------------------------------------------------//
-ViewRenderingState::ViewRenderingState() :
-    d_isDirty(true)
-{
-}
-
-//----------------------------------------------------------------------------//
-ViewRenderingState::~ViewRenderingState()
-{
-}
-
-//----------------------------------------------------------------------------//
-void ViewRenderingState::setIsDirty(bool value)
-{
-    d_isDirty = value;
-}
-
-//----------------------------------------------------------------------------//
-bool ViewRenderingState::isDirty() const
-{
-    return d_isDirty;
-}
-
-//----------------------------------------------------------------------------//
 ItemView::ItemView(const String& type, const String& name) :
     Window(type, name),
     d_itemModel(0),
     d_textColourRect(ColourRect(DefaultTextColour)),
+    d_isDirty(true),
     d_eventChildrenAddedConnection(0),
     d_eventChildrenRemovedConnection(0)
 {
@@ -128,7 +106,7 @@ void ItemView::disconnectModelEvents()
 //----------------------------------------------------------------------------//
 void ItemView::invalidateView(bool recursive)
 {
-    getRenderingState()->setIsDirty(true);
+    setIsDirty(true);
     invalidate(recursive);
 }
 
@@ -153,5 +131,23 @@ const ColourRect& ItemView::getTextColourRect() const
 void ItemView::setTextColourRect(const ColourRect& colour_rect)
 {
     d_textColourRect = colour_rect;
+}
+
+//----------------------------------------------------------------------------//
+const std::vector<ModelIndexSelectionState>& ItemView::getIndexSelectionStates() const
+{
+    return d_indexSelectionStates;
+}
+
+//----------------------------------------------------------------------------//
+bool ItemView::isDirty() const
+{
+    return d_isDirty;
+}
+
+//----------------------------------------------------------------------------//
+void ItemView::setIsDirty(bool value)
+{
+    d_isDirty = value;
 }
 }
