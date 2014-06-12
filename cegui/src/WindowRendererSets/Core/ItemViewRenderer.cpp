@@ -74,7 +74,7 @@ Rectf ItemViewRenderer::getItemRenderingArea(bool hscroll, bool vscroll) const
 }
 
 //----------------------------------------------------------------------------//
-void ItemViewRenderer::renderString(Window* window, RenderedString &rendered_string,
+void ItemViewRenderer::renderString(Window* window, RenderedString& rendered_string,
     Vector2f draw_pos, const Font* font, const Rectf* item_clipper)
 {
     for (size_t i = 0; i < rendered_string.getLineCount(); ++i)
