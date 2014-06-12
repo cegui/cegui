@@ -81,7 +81,7 @@ public:
 
 private:
     void renderTreeItem(TreeView* tree_view, const Rectf& items_area,
-        Vector2f& item_pos, TreeViewItemRenderingState& item_state);
+        Vector2f& item_pos, const TreeViewItemRenderingState& item_state);
 };
 
 }

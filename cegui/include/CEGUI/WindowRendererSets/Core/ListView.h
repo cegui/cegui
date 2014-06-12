@@ -81,7 +81,7 @@ public:
 
 
 private:
-    void renderState(ListView* list_view, ListViewRenderingState* state);
+    void render(ListView* list_view);
 };
 
 }

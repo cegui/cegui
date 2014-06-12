@@ -99,7 +99,7 @@ bool ModelViewDemo::handleClearItems(const CEGUI::EventArgs& e)
 //----------------------------------------------------------------------------//
 bool ModelViewDemo::handleRemoveSelectedListItem(const CEGUI::EventArgs& e)
 {
-    const std::vector<CEGUI::ModelIndexSelectionState>& selections = d_listView->getRenderingState()->getSelectionStates();
+    const std::vector<CEGUI::ModelIndexSelectionState>& selections = d_listView->getIndexSelectionStates();
     if (!selections.empty())
     {
         d_inventoryModel.removeItem((*selections.begin()).d_selectedIndex);
